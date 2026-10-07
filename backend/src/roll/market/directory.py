@@ -210,4 +210,3 @@ class MarketDirectory:
                     'watch_events': [json.loads(r[0]) for r in db.execute('SELECT event FROM market_watch_events ORDER BY id DESC')],
                     'account_membership_history': [json.loads(r[0]) for r in db.execute(
                         'SELECT snapshot FROM market_account_memberships ORDER BY account_version DESC')]}
-
