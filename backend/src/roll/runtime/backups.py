@@ -30,7 +30,15 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def file_path(path):
+    path=Path(path)
+    if os.name=='nt' and not str(path).startswith('\\\\?\\'):
+        return Path('\\\\?\\'+str(path.resolve()))
+    return path
+
+
 def persist(path,raw):
+    path=file_path(path)
     path.parent.mkdir(parents=True,exist_ok=True)
     temporary=path.with_name('.tmp-'+uuid4().hex[:12])
     with temporary.open('xb') as stream:
@@ -39,6 +47,7 @@ def persist(path,raw):
 
 
 def private_directory(path):
+    path=file_path(path)
     path.mkdir(parents=True,exist_ok=True)
     if os.name=='nt':
         import win32api,win32con,win32security,ntsecuritycon
@@ -67,7 +76,7 @@ def tables(db):
     return {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
 
 
-def references(db):
+def references(db,directory):
     names=tables(db);result={}
     if 'evidence_archives' in names:
         for row in db.execute('SELECT sha256,value FROM evidence_archives'):
@@ -79,6 +88,16 @@ def references(db):
         for row in db.execute('SELECT value FROM research_datasets'):
             value=json.loads(row[0]);path='research-inputs/'+value['archive_id']+'/browser-live.json'
             result[path]={'path':path,'sha256':value['source_bundle_sha256'],'kind':'RESEARCH_SOURCE_BUNDLE'}
+            for original in value['original_archives']:
+                path='research-inputs/'+value['archive_id']+'/'+original['sha256']+('.parquet' if original['path'].endswith('.parquet') else '.raw')
+                result[path]={'path':path,'sha256':original['sha256'],'kind':'RESEARCH_SOURCE_ORIGINAL'}
+            if value.get('engineering_exposure') is not None:
+                path='research-inputs/'+value['archive_id']+'/engineering-exposure.json'
+                material=attachment_path(directory,path)
+                if not material.is_file():raise HTTPException(409,{'code':'ATTACHMENT_MISSING_OR_CORRUPT','attachment_kind':'ENGINEERING_EXPOSURE'})
+                raw=material.read_bytes()
+                if json.loads(raw)!=value['engineering_exposure']:raise HTTPException(409,{'code':'RESEARCH_EXPOSURE_METADATA_MISMATCH'})
+                result[path]={'path':path,'sha256':sha(raw),'kind':'RESEARCH_ENGINEERING_EXPOSURE'}
     for item in result.values():
         safe_relative(item['path'])
     return sorted(result.values(),key=lambda item:item['path'])
@@ -99,7 +118,7 @@ def attachment_path(directory,relative):
         if part==directory.parent:break
         if part.exists() and (part.is_symlink() or getattr(part.lstat(),'st_file_attributes',0)&0x400):
             raise HTTPException(409,{'code':'ATTACHMENT_REPARSE_POINT'})
-    return target
+    return file_path(target)
 
 
 def facts(db):
@@ -123,8 +142,12 @@ def change_fingerprint(db):
 
 
 def source_fingerprint():
+    import sys
+    from importlib.metadata import version
     root=Path(__file__).parents[1]
-    return sha(encode({p.relative_to(root).as_posix():sha(p.read_bytes()) for p in root.rglob('*.py')}).encode())
+    return sha(encode({'source':{p.relative_to(root).as_posix():sha(p.read_bytes()) for p in root.rglob('*.py')},
+        'dependency_lock':sha((Path(__file__).parents[3]/'uv.lock').read_bytes()),'python':sys.version,
+        'runtime_versions':{name:version(name) for name in ['openai-codex','openai-agents','openai','httpx','pyarrow']}}).encode())
 
 
 def verify_database(path,manifest):
@@ -134,7 +157,7 @@ def verify_database(path,manifest):
         if actual['schema_version'] not in {1,2}:raise HTTPException(409,{'code':'UNSUPPORTED_DATABASE_SCHEMA'})
         for key in ['account_version','account_projection_sha256','event_count','schema_version']:
             if actual[key]!=manifest[key]:raise HTTPException(409,{'code':'RESTORE_POINT_MISMATCH','field':key})
-        refs=references(db)
+        refs=references(db,path.parent)
         expected={r['path']:r['sha256'] for r in refs}
         if expected!={r['path']:r['sha256'] for r in manifest['attachments']}:raise HTTPException(409,{'code':'ATTACHMENT_MANIFEST_MISMATCH'})
     if actual['schema_version']==2:
@@ -157,7 +180,7 @@ class Backups:
     def __init__(self,directory,clock=None):
         self.directory=Path(directory).resolve();self.path=self.directory/'roll.sqlite3'
         self.access=private_directory(self.directory)
-        self.root=self.directory/'backups';private_directory(self.root)
+        self.root=file_path(self.directory/'backups');private_directory(self.root)
         self.clock=clock or (lambda:datetime.now(timezone.utc))
         self.lock=threading.Lock();self.stop_event=threading.Event();self.thread=None
 
@@ -171,7 +194,7 @@ class Backups:
 
     def summary(self,manifest):
         return {'backup_id':manifest['backup_id'],'status':'COMPLETE','reason':manifest['reason'],
-            'completed_at':manifest['completed_at'],'restore_point':{k:manifest[k] for k in ['account_version','event_count','account_confirmed_at']},
+            'completed_at':manifest['completed_at'],'restore_point':{k:manifest[k] for k in ['account_version','event_count','account_confirmed_at','capture_finished_at']},
             'published_at':manifest['published_at'],
             'attachment_count':len(manifest['attachments']),'change_fingerprint':manifest['change_fingerprint']}
 
@@ -181,8 +204,9 @@ class Backups:
             try:
                 with connection(self.path) as source,connection(staging/'roll.sqlite3') as destination:
                     source.backup(destination)
+                captured_at=now()
                 with connection(staging/'roll.sqlite3') as snapshot:
-                    refs=references(snapshot);point=facts(snapshot);fingerprint=change_fingerprint(snapshot)
+                    refs=references(snapshot,self.directory);point=facts(snapshot);fingerprint=change_fingerprint(snapshot)
                 for item in refs:
                     source=attachment_path(self.directory,item['path']);target=attachment_path(staging,item['path'])
                     if not source.is_file() or sha(source.read_bytes())!=item['sha256']:
@@ -191,13 +215,14 @@ class Backups:
                     item['bytes']=target.stat().st_size
                 stamp=self.clock().astimezone(timezone.utc).isoformat()
                 manifest={'format':'ROLL-RECOVERY-1','backup_id':identifier,'reason':reason,'completed_at':stamp,'published_at':now(),
-                    **point,'attachments':refs,'database_sha256':sha((staging/'roll.sqlite3').read_bytes()),
+                    **point,'capture_finished_at':captured_at,'attachments':refs,'database_sha256':sha((staging/'roll.sqlite3').read_bytes()),
                     'change_fingerprint':fingerprint,'deployment_fingerprint':json.loads((self.root/'deployment.json').read_text(encoding='utf-8'))['fingerprint'] if (self.root/'deployment.json').exists() else None,
                     'backup_writer_fingerprint':source_fingerprint(),
                     'access_control':self.access,'credentials':'EXCLUDED; referenced original evidence retained'}
                 self.validate(staging,manifest)
                 with (staging/'roll.sqlite3').open('r+b') as stream:os.fsync(stream.fileno())
                 persist(staging/'manifest.json',encode(manifest).encode())
+                if reason=='MANUAL' and os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BACKUP_FAULT')=='before_publication':os._exit(88)
                 os.replace(staging,self.root/identifier)
                 persist(self.root/'last-check.json',encode({'checked_at':stamp,'last_success':identifier,'error':None}).encode())
                 return self.summary(manifest)
@@ -215,6 +240,7 @@ class Backups:
 
     def export(self,identifier):
         path,manifest=self.get(identifier)
+        identifier=manifest['backup_id']
         try:self.validate(path,manifest)
         except HTTPException as error:
             persist(self.root/'last-verification.json',encode({'backup_id':identifier,'checked_at':now(),'state':'CORRUPT','error':error.detail}).encode())

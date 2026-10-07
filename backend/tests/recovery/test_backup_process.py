@@ -8,6 +8,7 @@ import zipfile
 from pathlib import Path
 
 import pytest
+import httpx
 from test_account_process import Server
 from test_fill_process import BASELINE
 
@@ -62,6 +63,26 @@ def test_pre_ddl_snapshot_and_interrupted_or_failed_migration_restore_real_old_f
         assert accepted.status_code==200,accepted.text
         assert new.client.post('/api/account/confirm',json=command).json()==accepted.json()
         assert new.client.get('/api/account').json()['version']==2
+    finally:new.stop()
+
+
+def test_process_exit_before_backup_publication_never_reports_staging_as_success(tmp_path,monkeypatch):
+    directory=tmp_path/'data'
+    monkeypatch.setenv('ROLL_TEST_BACKUP_FAULT','before_publication')
+    server=Server(directory)
+    try:
+        draft=server.client.post('/api/account/drafts',json=BASELINE).json()
+        command={'draft_id':draft['draft_id'],'idempotency_key':'baseline'}
+        receipt=server.client.post('/api/account/confirm',json=command).json()
+        with pytest.raises(httpx.TransportError):server.client.post('/api/runtime/backups')
+        assert server.process.wait(timeout=10)==88
+    finally:server.stop()
+    monkeypatch.delenv('ROLL_TEST_BACKUP_FAULT')
+    new=Server(directory)
+    try:
+        assert all(item['reason']!='MANUAL' for item in new.client.get('/api/runtime/backups').json())
+        assert new.client.post('/api/account/confirm',json=command).json()==receipt
+        assert new.client.get('/api/account').json()['version']==1
     finally:new.stop()
 
 
@@ -138,7 +159,12 @@ def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tm
         output=io.StringIO();writer=__import__('csv').DictWriter(output,columns);writer.writeheader()
         writer.writerow({'template_version':'ROLL-CSV-3','kind':'CASH_IN','effective_at':'2026-10-07T11:00:00+08:00','source':'真实原件恢复故障案例','record_id':'deposit','amount':'10'})
         uploaded=server.client.post('/api/account/csv/drafts',params={'filename':'original.csv','encoding':'utf-8','expected_account_version':1},content=output.getvalue().encode()).json()
+        csv_command={'draft_id':uploaded['draft_id'],'idempotency_key':'csv-deposit'}
+        csv_receipt=server.client.post('/api/account/confirm',json=csv_command)
+        assert csv_receipt.status_code==200,csv_receipt.text
+        csv_receipt=csv_receipt.json()
         original=server.client.get('/api/account').json()
+        events=server.client.get('/api/account/events').json()
         backup=server.client.post('/api/runtime/backups').json()
         bundle=server.client.get('/api/runtime/backups/'+backup['backup_id']+'/export').content
         assert server.client.post('/api/runtime/restores',content=bundle).status_code==202
@@ -152,6 +178,8 @@ def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tm
         assert client.get('/api/account').json()==original
         assert client.get('/api/account/events').json()==events
         assert client.post('/api/account/confirm',json=command).json()==receipt
+        assert client.post('/api/account/confirm',json=csv_command).json()==csv_receipt
+        assert client.get('/api/account').json()['cash_balance']==original['cash_balance']
         assert client.get('/api/account/csv/files/'+uploaded['file']['sha256']).content==output.getvalue().encode()
         assert client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
         assert client.get('/api/runtime/backups/status').json()['last_restore']['state']=='APPLIED'

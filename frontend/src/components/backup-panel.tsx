@@ -6,7 +6,7 @@ export function BackupPanel(){
   const [state,setState]=useState<State|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[file,setFile]=useState<File|null>(null),[notice,setNotice]=useState('');
   async function refresh(){try{setState(await request<State>('/runtime/backups/status'));setError('');}catch(e){setError(String(e));}}
   useEffect(()=>{void refresh();},[]);
-  async function backup(){setBusy(true);try{await request('/runtime/backups',{method:'POST'});setNotice('备份已完成，数据库与引用附件已校验。');await refresh();}catch(e){setError(String(e));}finally{setBusy(false);}}
+  async function backup(){setBusy(true);try{await request('/runtime/backups',{});setNotice('备份已完成，数据库与引用附件已校验。');await refresh();}catch(e){setError(String(e));}finally{setBusy(false);}}
   async function restore(){if(!file)return;setBusy(true);try{const response=await fetch('/api/runtime/restores',{method:'POST',headers:{'Content-Type':'application/zip'},body:file});const data=await response.json();if(!response.ok)throw new Error(data.detail?.code??'恢复包未通过校验');setNotice('恢复包已校验并待重启。当前账户尚未替换，请关闭所有本机服务后重新启动。');await refresh();}catch(e){setError(String(e));}finally{setBusy(false);}}
   return <section><h2>备份与恢复</h2><p>自动备份只在程序实际运行且有变化时进行；停机期间没有新备份，恢复以最近成功备份为界。</p>
     {error&&<p role="alert">{error}</p>}{notice&&<p role="status">{notice}</p>}

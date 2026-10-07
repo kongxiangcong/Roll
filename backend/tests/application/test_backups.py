@@ -243,3 +243,33 @@ def test_pending_restore_identity_and_concurrent_confirmation_snapshot(tmp_path)
         assert restored['cash_balance']==('100020.10' if restored['version']==2 else '100000.10')
         assert len(client.get('/api/account/events').json())==backup['restore_point']['event_count']
 
+
+def test_registered_research_feature_model_forecast_and_source_files_restore_as_method_only(tmp_path):
+    from test_transparent_models import known_method
+    source=tmp_path/'source'
+    with TestClient(create_app(source)) as client:
+        dataset,protocol,dates=known_method(client,source)
+        model=client.post('/api/research/protocols/'+protocol['protocol_id']+'/models',json={'purpose':'METHOD_VALIDATION','basis':'16完整原件恢复联验，仅数学工程METHOD'}).json()
+        forecast=client.post('/api/research/models/'+model['model_run_id']+'/forecasts',json={'observation_date':dates[110],'basis':'16数学METHOD回放，不是正式预测'}).json()
+        assert model['status']=='METHOD_ARTIFACT_ONLY' and forecast['capability']=='NOT_GRANTED'
+        backup=client.post('/api/runtime/backups').json()
+        bundle=client.get('/api/runtime/backups/'+backup['backup_id']+'/export').content
+        with zipfile.ZipFile(io.BytesIO(bundle)) as archived:
+            manifest=json.loads(archived.read('manifest.json'))
+            hashes={item['sha256'] for item in manifest['attachments']}
+            assert {model[key]['sha256'] for key in ['input_archive','model_artifact','calibrator_artifact','calibration_prediction_archive']}<=hashes
+            assert forecast['archive']['sha256'] in hashes
+    target=tmp_path/'target'
+    with TestClient(create_app(target)) as client:assert client.post('/api/runtime/restores',content=bundle).status_code==202
+    with TestClient(create_app(target)) as client:
+        assert client.get('/api/research/models/'+model['model_run_id']).json()==model
+        assert client.get('/api/research/forecasts/'+forecast['forecast_id']).json()==forecast
+        replay=client.post('/api/research/forecasts/'+forecast['forecast_id']+'/replay').json()
+        assert replay['matches_original'] is True and replay['network_calls']==0
+        assert client.get('/api/research/datasets/'+dataset['dataset_id']).json()==dataset
+        # The registered original source bundle still supports the same real
+        # local importer, including its original source raw/Parquet dependencies.
+        repeated=client.post('/api/research/datasets',json={'archive_id':'method-execution','basis':'恢复原件本机复验，不创造前向样本'})
+        assert repeated.status_code==201,repeated.text
+        assert client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
+
