@@ -32,6 +32,8 @@ Windows、Python3.13.12、01已锁定的 FastAPI0.141.1 / Uvicorn0.52.4 / pytest
 
 规则实际覆盖：普通人民币现金账户A股，沪主板/科创板、深主板/创业板，2026-07-06至2026-12-31基本数量/价格/日期规则。日历实际覆盖：SSE/SZSE2026年度安排。每次启动将原件SHA核对后复制至隔离运行目录raw，并登记同一SQLite；归档下载API的原字节与元数据SHA一致。
 
+北交所两个官方原页再次实际GET均返回403，见 [获取缺口记录](bse-acquisition-gap.json) 与其引用的阻断页。阻断页中的网络地址和请求标识已脱敏；记录区分原响应SHA/字节数与脱敏件SHA，不把阻断页当作交易所规则正文或有效日历。
+
 明确未验证/未适配：BSE规则与日历、其他年份/证券类型、证券当前特殊状态、临时停市实时源、精细竞价执行、实际券商佣金/最低收费与税费估计。费用未知不作零费。年度日历不证明盘中未临时停市；当前证券状态UNKNOWN不虚构数据来源，也不禁止展示已知实际资产。新增关注不授予模型资格，scope成功不授予资金或账户权限。
 
 ## 复现与职责
@@ -39,3 +41,7 @@ Windows、Python3.13.12、01已锁定的 FastAPI0.141.1 / Uvicorn0.52.4 / pytest
 在backend运行 `.venv/Scripts/python.exe -m pytest -q --basetemp .roll-data/pytest-06`。在frontend设置ROLL_TEST_API_PORT=8026、ROLL_TEST_WEB_PORT=5186、ROLL_BROWSER_CHANNEL=chrome，运行 `npm run build` 和 `npm run test:e2e`；21只独立样例运行 `npx playwright test --config playwright.overflow.config.ts`。每次Playwright运行清理test-results，先保存证据再运行下一独立样例。
 
 新增两项业务实现文件、实际使用的归档原件、一个页面/样式与公用API路由；市场表只幂等创建，不竞争02全局user_version=2。Ledger仅追加公开只读versions查询。没有预造07取证、研究、资格或动作模块。07在单证券获取前消费check_scope，并另取得当前证券状态；15/18处理已定义观察/样本时序；25/26联验新动作及执行意向的权限边界。
+
+## 集成分支复验
+
+06分支已合入当时集成tip `e981380`（含01/10），只在FastAPI入口及五入口导航发生冲突：保留全部market/funding路由，同时呈现Market和Settings。合并后真实SQLite/已有恢复回归67 passed，[输出](integrated-backend-test.txt)；TypeScript/Vite构建通过，[输出](integrated-frontend-build.txt)；实际Chrome的账户、资金、名单三流程3 passed，[输出](integrated-browser-test.txt)、[JSON](integrated-browser-result.json)、[名单截图](integrated-market-watch-history-calendar.png)。最终身份表单要求显式选择证券类型，不默认将其他证券当作普通A股；浏览器已验证该选择。此时02尚未进入集成tip，02合入后的跨票检查由集成人继续执行，不冒充已完成。

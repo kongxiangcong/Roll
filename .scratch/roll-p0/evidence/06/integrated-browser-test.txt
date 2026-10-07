@@ -1,0 +1,22 @@
+
+> roll-frontend@0.1.0 test:e2e
+> playwright test
+
+[WebServer] INFO:     Started server process [35508]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8026 (Press CTRL+C to quit)
+[WebServer] (node:10128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:4460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today (2.4s)
+  ok 2 tests\e2e\funding.spec.ts:3:1 › user confirms funds and sees independent funding, technical and runtime states (1.5s)
+  ok 3 tests\e2e\market.spec.ts:3:1 › finite market page preserves holdings, distinct restrictions, membership versions and exchange calendar gaps (1.8s)
+
+  3 passed (15.1s)

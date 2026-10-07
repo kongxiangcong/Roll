@@ -18,6 +18,7 @@ test('finite market page preserves holdings, distinct restrictions, membership v
   await holding.getByText('核对证券身份与依据',{exact:true}).click();
   await holding.getByLabel('证券名称').fill('浦发银行');
   await holding.getByLabel('已核对板块').selectOption('MAIN');
+  await holding.getByLabel('证券类型',{exact:true}).selectOption('STOCK');
   await holding.getByLabel('身份确认依据').fill('脱敏券商详情明确：上交所主板普通A股');
   await holding.getByRole('button',{name:'保存已核对身份'}).click();
   await expect(holding.getByText('规则：基本规则已适配 · 账户权限：未开通')).toBeVisible();

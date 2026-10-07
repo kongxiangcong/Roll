@@ -14,16 +14,18 @@ const localNow=()=>new Date(Date.now()+8*60*60*1000).toISOString().slice(0,16);
 function IdentityForm({member,onDone}:{member:Member;onDone:(v:Listing)=>void}) {
   const [board,setBoard]=useState(member.identity.board);
   const [name,setName]=useState(member.identity.name??'');
+  const [instrumentType,setInstrumentType]=useState(member.identity.instrument_type==='UNKNOWN'?'':member.identity.instrument_type);
   const [basis,setBasis]=useState('');
   const [at,setAt]=useState(localNow());
   const [error,setError]=useState('');
   async function save(e:FormEvent){e.preventDefault();try{
-    onDone(await request<Listing>('/market/identities',{instrument:member.instrument,exchange:member.identity.exchange,board,instrument_type:'STOCK',name,basis,effective_at:`${at}+08:00`}));setError('');
+    onDone(await request<Listing>('/market/identities',{instrument:member.instrument,exchange:member.identity.exchange,board,instrument_type:instrumentType,name,basis,effective_at:`${at}+08:00`}));setError('');
   }catch(e){setError(String(e));}}
   return <details><summary>核对证券身份与依据</summary><form onSubmit={save}>
     <p className="muted">按券商证券详情确认板块与普通 A 股身份，未核对时保留未知。确认身份后仍会分别核对账户权限、当前状态与模型资格。</p>
     <label>证券名称<input value={name} onChange={e=>setName(e.target.value)} required maxLength={80}/></label>
     <label>已核对板块<select value={board} onChange={e=>setBoard(e.target.value)}>{Object.entries(boardNames).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label>
+    <label>证券类型<select aria-label="证券类型" value={instrumentType} onChange={e=>setInstrumentType(e.target.value)} required><option value="">未核对</option><option value="STOCK">普通 A 股</option><option value="OTHER">其他证券（基本规则未适配）</option></select></label>
     <label>身份确认依据<input value={basis} onChange={e=>setBasis(e.target.value)} required maxLength={1000}/></label>
     <label>身份事实截至时点（上海时间）<input type="datetime-local" value={at} onChange={e=>setAt(e.target.value)} required/></label>
     {error&&<p role="alert">{error}</p>}<button>保存已核对身份</button>
@@ -61,7 +63,7 @@ export function Market() {
       {listing.members.map(m=><article className="market-member" key={m.instrument} aria-label={m.instrument}>
         <div className="member-heading"><h2>{m.identity.name??m.instrument}{m.identity.name&&<span className="muted"> · {m.instrument}</span>}</h2><button disabled={busy} onClick={()=>void edit(m.watched?'REMOVE':'ADD',m.instrument)}>{m.watched?'取消关注':'加入关注'}</button></div>
         <p>{m.holding?`实际持仓 ${m.holding.quantity} 股 · 可卖 ${m.holding.sellable_quantity??'未知'}`:'关注证券'}</p>
-        <p>身份：{m.identity.exchange} / {boardNames[m.identity.board]??m.identity.board} / {m.identity.instrument_type==='STOCK'?'普通 A 股':'类型未核对'}</p>
+        <p>身份：{m.identity.exchange} / {boardNames[m.identity.board]??m.identity.board} / {m.identity.instrument_type==='STOCK'?'普通 A 股':m.identity.instrument_type==='OTHER'?'其他证券':'类型未核对'}</p>
         <p>规则：{m.rule.implementation_status==='ADAPTED'?'基本规则已适配':'未适配'} · 账户权限：{status[m.account_permission.status]}</p>
         <p className="muted">当前证券状态未知，依赖该状态的交易用途受限。账户权限{status[m.account_permission.status]} · 模型资格未授予。</p>
         <details><summary>查看规则、状态与依据</summary>
