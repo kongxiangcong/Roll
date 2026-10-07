@@ -364,8 +364,9 @@ class Ledger:
                 if kind=="FILL":
                     account["fills"][-1].update(event_id=payload["event_id"],receipt_id=payload["receipt_id"])
             elif event["event_type"] in EVENT_FIELDS:
-                fields=EVENT_FIELDS[event["event_type"]]
-                account,_=self.prepare({"kind":event["event_type"],"payload":{key:payload[key] for key in fields}},account)
+                kind=payload.get("kind",event["event_type"])
+                fields=EVENT_FIELDS[kind]
+                account,_=self.prepare({"kind":kind,"payload":{key:payload[key] for key in fields}},account)
                 stamp_cash(account,payload,event_id=payload["event_id"],receipt_id=payload["receipt_id"],confirmed_at=event["recorded_at"])
             account.update(version=event["account_version"],effective_at=event["effective_at"],confirmed_at=event["recorded_at"],state="CONFIRMED_AS_OF")
         return account

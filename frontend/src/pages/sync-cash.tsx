@@ -1,7 +1,7 @@
 import {useEffect,useState} from 'react';
 import {Account,Draft,Receipt,request} from '../api';
 
-const names:Record<string,string>={CASH_IN:'现金转入',CASH_OUT:'现金转出',DIVIDEND:'分红到账',INTEREST:'利息到账',TAX:'税款扣除',FEE:'费用扣除',PENDING_ITEM:'确认应收/应付',SETTLEMENT:'关联实际结算',CASH_CORRECTION:'追加金额更正',SHARE_CHANGE:'实际股份变动'};
+const names:Record<string,string>={CASH_IN:'现金转入',CASH_OUT:'现金转出',DIVIDEND:'分红到账',INTEREST:'利息到账',TAX:'税款扣除',FEE:'费用扣除',PENDING_ITEM:'确认应收/应付',SETTLEMENT:'关联实际结算',CASH_CORRECTION:'追加金额更正',SHARE_CHANGE:'实际送转/拆并',RIGHTS_SUBSCRIPTION:'实际配股到账及支付'};
 const labels:Record<string,string>={cash_balance:'实际账面现金',positions:'实际持仓与成本',broker_available:'券商可用资金',investment_income:'累计实际到账投资收入',investment_expenses:'累计实际扣款税费',external_cash_in:'累计外部转入',external_cash_out:'累计外部转出',pending_income:'未结应收',pending_expenses:'未结应付',pending_items:'应收/应付状态'};
 const optional=(value:string)=>value.trim()||null;
 const states:Record<string,string>={OPEN:'未结',PARTIAL:'部分结算',SETTLED:'已结清',CANCELLED:'已追加取消'};
@@ -15,6 +15,7 @@ function display(value:unknown,field:string){
 export function SyncCash({account,onDone}:{account:Account;onDone:()=>void}){
   const [kind,setKind]=useState('CASH_IN'),[record,setRecord]=useState<string>(()=>crypto.randomUUID()),[amount,setAmount]=useState(''),[target,setTarget]=useState('');
   const [security,setSecurity]=useState(''),[quantity,setQuantity]=useState(''),[itemType,setItemType]=useState('DIVIDEND'),[available,setAvailable]=useState('');
+  const [rightsFee,setRightsFee]=useState('');
   const [effective,setEffective]=useState(()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16));
   const [source,setSource]=useState('用户核对账户流水'),[basis,setBasis]=useState(''),[draft,setDraft]=useState<Draft|null>(null),[key,setKey]=useState('');
   const [receipt,setReceipt]=useState<Receipt|null>(null),[queried,setQueried]=useState(false),[error,setError]=useState(''),[busy,setBusy]=useState(false);
@@ -22,7 +23,8 @@ export function SyncCash({account,onDone}:{account:Account;onDone:()=>void}){
   useEffect(()=>{const raw=sessionStorage.getItem('roll.pending-CASH_EVENT');if(raw){const saved=JSON.parse(raw);request<Draft>(`/account/drafts/${saved.draft_id}`).then(d=>{setDraft(d);setKey(saved.key);}).catch(()=>sessionStorage.removeItem('roll.pending-CASH_EVENT'));}},[]);
   async function preview(){setBusy(true);setError('');try{
     const common={effective_at:effective?new Date(effective).toISOString():null,source,record_id:record,basis};
-    const payload=kind==='SHARE_CHANGE'?{...common,instrument:optional(security),new_quantity:optional(quantity)}
+    const payload=kind==='RIGHTS_SUBSCRIPTION'?{...common,instrument:optional(security),quantity:optional(quantity),amount:optional(amount),fee_amount:optional(rightsFee),broker_available_after:optional(available)}
+      :kind==='SHARE_CHANGE'?{...common,instrument:optional(security),new_quantity:optional(quantity)}
       :kind==='PENDING_ITEM'?{...common,instrument:optional(security),item_type:itemType,amount:optional(amount)}
       :kind==='SETTLEMENT'?{...common,target_record_id:target,amount:optional(amount),broker_available_after:optional(available)}
       :kind==='CASH_CORRECTION'?{...common,target_record_id:target,corrected_amount:optional(amount),broker_available_after:optional(available)}
@@ -40,6 +42,7 @@ export function SyncCash({account,onDone}:{account:Account;onDone:()=>void}){
       {kind==='PENDING_ITEM'&&<label>应收/应付类别<select value={itemType} onChange={e=>setItemType(e.target.value)}><option value="DIVIDEND">应收分红</option><option value="INTEREST">应收利息</option><option value="TAX">应付税款</option><option value="FEE">应付费用</option></select></label>}
       {['SETTLEMENT','CASH_CORRECTION'].includes(kind)&&<label>关联原流水标识<input value={target} required onChange={e=>setTarget(e.target.value)}/></label>}
       {kind==='SHARE_CHANGE'?<label>变动后持仓数量<input value={quantity} inputMode="decimal" onChange={e=>setQuantity(e.target.value)}/></label>:<label>{kind==='CASH_CORRECTION'?'更正后原总金额（元）':'金额（元）'}<input value={amount} inputMode="decimal" onChange={e=>setAmount(e.target.value)}/></label>}
+      {kind==='RIGHTS_SUBSCRIPTION'&&<><label>实际配股新增数量<input value={quantity} inputMode="decimal" onChange={e=>setQuantity(e.target.value)}/></label><label>支付总额中已知费用（元，可空）<input value={rightsFee} inputMode="decimal" onChange={e=>setRightsFee(e.target.value)}/></label><p>金额填写已实际支付总额，含已支付费用；空白费用表示分拆未知，实际现金仍可确认。后补费用分拆不再扣一次现金。</p></>}
       {!['SETTLEMENT','CASH_CORRECTION'].includes(kind)&&<label>证券（交易所:代码，现金事项可空）<input value={security} onChange={e=>setSecurity(e.target.value)}/></label>}
       {!['PENDING_ITEM','SHARE_CHANGE'].includes(kind)&&<label>核对后的当前券商可用资金（元，可空）<input value={available} inputMode="decimal" onChange={e=>setAvailable(e.target.value)}/></label>}
       {kind==='CASH_CORRECTION'&&<p>填写原事项更正后的总金额，系统只追加差额；更正应收/应付时请保持券商可用资金空白。</p>}

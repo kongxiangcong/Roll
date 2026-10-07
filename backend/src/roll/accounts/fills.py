@@ -39,6 +39,8 @@ def actual_fill(payload, account, number, text_value):
             raise HTTPException(422,"未知费用需正数保守预留，不得当成已知零费用")
     basis=text_value(fee["basis"],"fee.basis")
     record_id=text_value(payload["record_id"],"record_id")
+    if any(item["record_id"]==record_id for item in account.get("share_records",[]) if item["kind"]=="RIGHTS_SUBSCRIPTION"):
+        raise HTTPException(422,"成交标识与已确认配股重复，请核对原记录")
     fill_id=text_value(payload["fill_id"],"fill_id") if payload["fill_id"] is not None else None
     order_id=text_value(payload["order_id"],"order_id") if payload["order_id"] is not None else None
     behavior=payload["behavior_context"]
@@ -152,8 +154,10 @@ def update_fee_state(account):
     unresolved=[f["record_id"] for f in account.get("fills",[]) if f["fee"]["status"]=="PROVISIONAL"
                 and f["record_id"] not in account.get("fee_resolutions",{})]
     account["fees_pending"]=unresolved
-    account["cash_balance_basis"]="PROVISIONAL_FEES" if unresolved else "KNOWN_FEES"
-    account["net_result_state"]="FEE_PENDING" if unresolved else "COST_UNKNOWN" if account.get("realized_gain","0.00") is None else "KNOWN_FEES"
+    breakdown=[r["record_id"] for r in account.get("share_records",[]) if r["kind"]=="RIGHTS_SUBSCRIPTION" and r["fee_amount"] is None and r["record_id"] not in account.get("fee_resolutions",{})]
+    account["rights_fee_breakdown_pending"]=breakdown
+    account["cash_balance_basis"]="PROVISIONAL_FEES" if unresolved else "KNOWN_PAYMENTS_FEE_SPLIT_PENDING" if breakdown else "KNOWN_FEES"
+    account["net_result_state"]="FEE_PENDING" if unresolved else "FEE_BREAKDOWN_PENDING" if breakdown else "COST_UNKNOWN" if account.get("realized_gain","0.00") is None else "KNOWN_FEES"
     for position in account["positions"]:
         active=[l for l in account.get("lots",[]) if l["instrument"]==position["instrument"] and Decimal(l["remaining_quantity"])>0]
         position["acquisition_cost"]=None if any(l["cost_basis"] in {"REFERENCE","UNKNOWN"} for l in active) else money(sum((Decimal(l["remaining_cost"]) for l in active),Decimal(0)))
@@ -168,6 +172,15 @@ def fee_adjustment(payload,account,number,text_value):
     basis=text_value(payload["basis"],"basis")
     fill=next((f for f in account.get("fills",[]) if f["record_id"]==target),None)
     if fill is None:
+        rights=next((r for r in account.get("share_records",[]) if r["record_id"]==target and r["kind"]=="RIGHTS_SUBSCRIPTION"),None)
+        if rights is not None:
+            if Decimal(amount)>Decimal(rights["amount"]):
+                raise HTTPException(422,"配股费用分拆不能超过原已付总额")
+            projection=copy.deepcopy(account)
+            gross=money(Decimal(rights["amount"])-Decimal(amount))
+            projection.setdefault("fee_resolutions",{})[target]={"actual_fee_amount":amount,"gross_subscription_amount":gross,"basis":basis,"effective_at":payload["effective_at"]}
+            update_fee_state(projection)
+            return projection,[{"event_type":"FEE_ADJUSTMENT","payload":{**payload,"actual_fee_amount":amount,"cash_delta":"0.00","remaining_cost_delta":"0.00","payment_amount":rights["amount"],"gross_subscription_amount":gross,"adjustment_type":"PAID_TOTAL_FEE_BREAKDOWN"}}]
         raise HTTPException(422,"费用调整找不到已确认成交")
     prior=account.get("fee_resolutions",{}).get(target,{}).get("actual_fee_amount",fill["charged_fee"])
     delta=Decimal(amount)-Decimal(prior)

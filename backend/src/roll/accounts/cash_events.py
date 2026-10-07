@@ -13,7 +13,8 @@ PENDING_FIELDS={"effective_at","source","record_id","item_type","amount","instru
 SETTLEMENT_FIELDS={"effective_at","source","record_id","target_record_id","amount","basis","broker_available_after"}
 CORRECTION_FIELDS={"effective_at","source","record_id","target_record_id","corrected_amount","basis","broker_available_after"}
 SHARE_FIELDS={"effective_at","source","record_id","instrument","new_quantity","basis"}
-EVENT_FIELDS={**{kind:CASH_FIELDS for kind in CASH_KINDS},"PENDING_ITEM":PENDING_FIELDS,"SETTLEMENT":SETTLEMENT_FIELDS,"CASH_CORRECTION":CORRECTION_FIELDS,"SHARE_CHANGE":SHARE_FIELDS}
+RIGHTS_FIELDS={"effective_at","source","record_id","instrument","quantity","amount","fee_amount","basis","broker_available_after"}
+EVENT_FIELDS={**{kind:CASH_FIELDS for kind in CASH_KINDS},"PENDING_ITEM":PENDING_FIELDS,"SETTLEMENT":SETTLEMENT_FIELDS,"CASH_CORRECTION":CORRECTION_FIELDS,"SHARE_CHANGE":SHARE_FIELDS,"RIGHTS_SUBSCRIPTION":RIGHTS_FIELDS}
 
 
 def instrument(value,text_value):
@@ -35,6 +36,10 @@ def actual_cash(kind,payload,account,number,text_value):
         raise HTTPException(422,"流水标识已存在，请核对原记录，不重复入账")
     if kind=="SHARE_CHANGE":
         return share_change(payload,account,number,text_value)
+    if kind=="RIGHTS_SUBSCRIPTION":
+        if any(item["record_id"]==record for item in account.get("fills",[])):
+            raise HTTPException(422,"配股标识与已确认成交重复，请核对原记录")
+        return rights_subscription(payload,account,number,text_value)
     if kind=="CASH_CORRECTION":
         return cash_correction(payload,account,number,text_value)
     amount=number(payload["amount"],"amount")
@@ -192,4 +197,49 @@ def share_change(payload,account,number,text_value):
             "new_quantity":quantity,"quantity_before":format(old_quantity,"f"),"basis":text_value(payload["basis"],"basis"),
             "cost_after":position["acquisition_cost"],"reference_cost_before":reference_before,"lot_transfers":[{"parent_lot_id":c["parent_lot_id"],"lot_id":c["lot_id"],"quantity":c["original_quantity"],"cost":c["original_cost"]} for c in children]}
     projection.setdefault("share_records",[]).append(record)
+    return projection,[{"event_type":"SHARE_CHANGE","payload":record}]
+
+
+def rights_subscription(payload,account,number,text_value):
+    security=instrument(payload["instrument"],text_value)
+    quantity=number(payload["quantity"],"quantity",8)
+    amount=number(payload["amount"],"amount")
+    fee=number(payload["fee_amount"],"fee_amount",nullable=True)
+    if security is None or Decimal(quantity)<=0 or Decimal(amount)<=0 or (fee is not None and Decimal(fee)>Decimal(amount)):
+        raise HTTPException(422,"配股需明确证券、正数量、实际总支付金额；费用不能超过已付总额")
+    projection=copy.deepcopy(account)
+    cash=Decimal(account["cash_balance"])-Decimal(amount)
+    if cash<0:
+        raise HTTPException(422,"配股支付导致负现金，需要核对漏记资金")
+    position=next((p for p in projection["positions"] if p["instrument"]==security),None)
+    lots=projection.setdefault("lots",[])
+    if position is not None and not any(l["instrument"]==security for l in lots):
+        reference=position["reference_cost"]
+        cost=None if reference is None else money(Decimal(reference)*Decimal(position["quantity"]))
+        lots.append({"lot_id":"baseline:"+security,"instrument":security,"original_quantity":position["quantity"],
+                     "remaining_quantity":position["quantity"],"original_cost":cost,"remaining_cost":cost,
+                     "cost_basis":"UNKNOWN" if reference is None else "REFERENCE","effective_at":account["effective_at"]})
+    if position is None:
+        position={"instrument":security,"quantity":"0","sellable_quantity":None,"reference_cost":None,"buy_time":None,"historical_fees":None}
+        projection["positions"].append(position)
+    before=position["quantity"]
+    position.update(quantity=format(Decimal(before)+Decimal(quantity),"f"),sellable_quantity=None,reference_cost=None)
+    lots.append({"lot_id":payload["record_id"],"instrument":security,"original_quantity":quantity,"remaining_quantity":quantity,
+                 "original_cost":amount,"remaining_cost":amount,"cost_basis":"KNOWN","effective_at":payload["effective_at"],"origin":"PAID_RIGHTS"})
+    projection["cash_balance"]=money(cash)
+    projection["broker_available"]=number(payload["broker_available_after"],"broker_available_after",nullable=True)
+    projection["broker_available_as_of"]=payload["effective_at"] if projection["broker_available"] is not None else None
+    projection["broker_available_basis"]="USER_CONFIRMED" if projection["broker_available"] is not None else "UNKNOWN_AFTER_RIGHTS_PAYMENT"
+    projection["conservative_available"]=projection["broker_available"]
+    projection["conservative_available_basis"]="USER_CONFIRMED" if projection["broker_available"] is not None else "当前券商快照未知"
+    projection["broker_frozen_as_of"]=account.get("broker_frozen_as_of",account["effective_at"])
+    projection["withdrawable_as_of"]=account.get("withdrawable_as_of",account["effective_at"])
+    record={**payload,"kind":"RIGHTS_SUBSCRIPTION","record_id":text_value(payload["record_id"],"record_id"),"instrument":security,
+            "quantity":quantity,"amount":amount,"fee_amount":fee,"basis":text_value(payload["basis"],"basis"),
+            "quantity_before":before,"new_quantity":position["quantity"],"flow_category":"INVESTMENT_ACQUISITION",
+            "gross_subscription_amount":None if fee is None else money(Decimal(amount)-Decimal(fee))}
+    projection.setdefault("share_records",[]).append(record)
+    refresh_balances(projection)
+    update_fee_state(projection)
+    record["cost_after"]=position["acquisition_cost"]
     return projection,[{"event_type":"SHARE_CHANGE","payload":record}]

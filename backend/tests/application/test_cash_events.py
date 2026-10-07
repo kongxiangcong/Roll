@@ -311,3 +311,43 @@ def test_fee_resolution_across_two_share_transfers_and_partial_sales_keeps_liter
         assert replay["cash_balance"]=="97985.00"
         assert replay["lots"]==account["lots"]
         assert replay["realized_gain"]=="-11.66"
+
+
+def test_paid_rights_use_actual_total_cash_and_new_cost_while_unknown_fee_split_is_not_zero(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        establish(client)
+        submit(client,fill(),"buy")
+        command={"kind":"RIGHTS_SUBSCRIPTION","expected_account_version":2,"payload":{
+            "effective_at":"2026-10-07T12:00:00+08:00","source":"用户核对实际配股到账及扣款",
+            "record_id":"rights-1","instrument":"SSE:600000","quantity":"100","amount":"500.00",
+            "fee_amount":None,"basis":"配股到账100股；实际总扣款500元，费用分拆尚未查明","broker_available_after":None}}
+        draft=client.post("/api/account/drafts",json=command)
+        assert draft.status_code==201
+        assert draft.json()["status"]=="READY"
+        assert draft.json()["preview"]["cash_balance"]["after"]=="96495.00"
+        assert client.get("/api/account").json()["positions"][0]["quantity"]=="300"
+        receipt=client.post("/api/account/confirm",json={"draft_id":draft.json()["draft_id"],"idempotency_key":"rights"}).json()
+        assert client.get("/api/account/receipts/"+receipt["receipt_id"]).json()==receipt
+        account=client.get("/api/account").json()
+        assert account["cash_balance"]=="96495.00"
+        assert account["positions"][0]["quantity"]=="400"
+        assert account["positions"][0]["acquisition_cost"]=="3505.00"
+        assert account["external_cash_out"]=="0.00"
+        assert account["investment_income"]=="0.00"
+        assert account["share_records"][0]["gross_subscription_amount"] is None
+        assert account["share_records"][0]["fee_amount"] is None
+        assert account["net_result_state"]=="FEE_BREAKDOWN_PENDING"
+        assert "配股 rights-1 费用分拆待核" in " ".join(client.get("/api/today").json()["pending_items"])
+        adjustment=fee_adjustment(3,"5.00","rights-1")
+        assert submit(client,adjustment,"right-fee-known").status_code==200
+        account=client.get("/api/account").json()
+        assert account["cash_balance"]=="96495.00"
+        assert account["positions"][0]["acquisition_cost"]=="3505.00"
+        assert account["share_records"][0]["fee_amount"] is None
+        assert account["fee_resolutions"]["rights-1"]["gross_subscription_amount"]=="495.00"
+        assert account["net_result_state"]=="KNOWN_FEES"
+        event=client.get("/api/account/events").json()[-1]
+        assert event["payload"]["cash_delta"]=="0.00"
+        replay=client.get("/api/account/replay").json()
+        assert replay["cash_balance"]=="96495.00"
+        assert replay["lots"]==account["lots"]

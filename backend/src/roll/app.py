@@ -6,6 +6,7 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import FileResponse
 
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, EquityHint, Ledger
+from roll.accounts.cash_events import EVENT_FIELDS
 from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
@@ -180,9 +181,11 @@ def create_app(directory: Path | None = None):
             account["state"]="RECONCILE_REQUIRED"
             if any(d["command"]["kind"] in {"FILL","FEE_ADJUSTMENT"} for d in ledger.quarantined_drafts()):
                 pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
-            if any(d["command"]["kind"] in {"CASH_IN","CASH_OUT","DIVIDEND","INTEREST","TAX","FEE","PENDING_ITEM","SETTLEMENT","CASH_CORRECTION","SHARE_CHANGE"} for d in ledger.quarantined_drafts()):
+            if any(d["command"]["kind"] in EVENT_FIELDS for d in ledger.quarantined_drafts()):
                 pending.append("资金或权益输入待核，原始材料已保留，尚未影响账面现金与持仓")
         pending.extend(account.get("latest_fill_facts",[]))
+        for record in account.get("rights_fee_breakdown_pending",[]):
+            pending.append(f"配股 {record} 费用分拆待核；实际总支付已确认，费用前损益未知")
         for item in account.get("pending_items",[]):
             if item["status"] in {"OPEN","PARTIAL"}:
                 pending.append(f"{item['record_id']} {'应收' if item['flow_category']=='INVESTMENT_INCOME' else '应付'}待结算 {item['outstanding_amount']} 元")
