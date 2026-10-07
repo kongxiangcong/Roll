@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+<!--   <title>深交所主页</title>   -->
+<title>“基金入门300问”系列之十九投资进阶：场内基金投资策略（上）</title>
+<script>
+  if(location.protocol == 'https:'){
+    document.write('<link href="https://res.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }else{
+    document.write('<link href="http://res.static.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+<meta http-equiv="cache-control" content="max-age=0">
+<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="expires" content="Web, 26 Feb 1997 08:21:57 GMT">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="author" content="inverstor.szse.cn">
+<meta name="description" content="投资者教育">
+<meta name="keywords" content="投资者教育,投教,深交所">
+<meta name="renderer" content="webkit">
+<meta name="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="google" value="notranslate">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="screen-orientation" content="portrait">
+<meta name="full-screen" content="yes">
+<meta name="browermode" content="application">
+<meta name="x5-orientation" content="portrait">
+<meta name="HandheldFriendly" content="true">
+<script type="text/javascript">
+	var u = navigator.userAgent;
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;//android终端
+
+	function addElementMeta(name,  content) {
+		var head = document.getElementsByTagName('head')[0];
+		var meta = document.createElement('meta');
+
+		meta.setAttribute('name', name);
+		meta.setAttribute('content', content);
+		head.appendChild(meta);
+	}
+	if(isAndroid) {
+		addElementMeta('x5-fullscreen', 'true');
+		addElementMeta('x5-page-mode', 'app');
+	}
+</script>
+<script>
+  (function () {
+    var _versionDate = new Date().getTime();
+    if (location.protocol == 'https:') {
+      var _path = 'https://res.szse.cn';
+    } else {
+      var _path = 'http://res.static.szse.cn';
+    }
+    // _path = _path.replace(".static.", ".");
+    //var _path = 'http://res.szse.cn';
+    //document.write( " <script src='" + _path + "/common/js/first.js?random=" + _versionDate + "'> <\/script> ");
+    var _host = 'http://www.szse.cn';
+    if (location.protocol == 'https:') {
+      _host = 'https://www.szse.cn';
+    }
+
+
+    var backDomain = 'http://www.sse.org.cn'
+    var reg = /([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)\.?(:\d+)?/;
+    if (backDomain && window.location.host.match(reg)[2] === backDomain.match(reg)[2]) {
+      _host = 'http://www.sse.org.cn';
+      _path = 'http://res.static.sse.org.cn';
+      if (location.protocol == 'https:') {
+        _host = 'https://www.sse.org.cn';
+        _path = 'https://res.static.sse.org.cn';
+      }
+
+    }
+
+    _path = _path.replace(".static.", ".");
+
+    document.write(" <script src='" + _host + "/szsePath.js?random=" + _versionDate + "'> <\/script> "
+      + " <script src='" + _path + "/common/js/concatversion.js?random=" + _versionDate + "'> <\/script> ");
+  }());
+</script>
+
+<script>
+
+  function backDomainLinkSwitch(value, type) {
+    var _port = location.port ? (":" + location.port) : "";
+    var reg = /([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)\.?(:\d+)?/;
+    var urlRegx = /(.*)(http:|https:)(\/\/)(([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+))\.?(:\d+)?(.*)/;
+
+    // html字符串替换
+    if (type == 'str') {
+      var strArr = value.split("=");
+      strArr = strArr.map(function (v) {
+        var host = reg.test(v) ? v.match(reg)[0] : null;
+        if (pathObj.szseHosts.indexOf(host) > -1) {
+          if (window.location.protocol == 'https:' && urlRegx.test(v)) {
+            v = v.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+          };
+          if (pathObj.current_host === pathObj.back_host) {
+            v = v.replace(pathObj.main_host, pathObj.back_host);
+          }
+        }
+        return v
+      });
+      value = strArr.join("=");
+      return value;
+    }
+
+    // a标签地址替换
+    if (type === 'A') {
+      var eleA = document.querySelectorAll(value);
+      for (var i = 0; i < eleA.length; i++) {
+        var href = eleA[i].getAttribute("href");
+        var host = reg.test(href) ? href.match(reg)[0] : null;
+        if (href && pathObj.szseHosts.indexOf(host) > -1) {
+          if (window.location.protocol == 'https:') {
+            href = href.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+          };
+          if (pathObj.current_host === pathObj.back_host) {
+            href = href.replace(pathObj.main_host, pathObj.back_host);
+          }
+          eleA[i].setAttribute('href', href);
+        }
+      }
+    }
+
+    // 单链接替换
+    if (type === "link") {
+      if (window.location.protocol == 'https:' && !!value) {
+        value = value.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+      };
+      if (pathObj.current_host === pathObj.back_host) {
+        var host = reg.test(value) ? value.match(reg)[0] : null;
+        if (value && pathObj.szseHosts.indexOf(host) > -1) {
+          value = value.replace(pathObj.main_host, pathObj.back_host);
+        }
+      }
+      return value;
+    }
+
+    // 背景图地址更换
+    if (type === "background") {
+      var eleBg = document.querySelectorAll(value);
+      for (var i = 0; i < eleBg.length; i++) {
+        var href = eleBg[i].style.backgroundImage;
+        if (window.location.protocol == 'https:' && !!href) {
+          href = href.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+        };
+        var host = reg.test(href) ? href.match(reg)[0] : null;
+        if (href && pathObj.szseHosts.indexOf(host) > -1) {
+          if (pathObj.current_host === pathObj.back_host) {
+            href = href.replace(pathObj.main_host, pathObj.back_host);
+          }
+          eleBg[i].style.backgroundImage = href;
+        }
+      }
+    }
+
+  }
+
+</script>
+
+<script>
+   if(document.cookie.indexOf('ft_language=1')>-1){
+    var style = document.createElement('style');
+    style.textContent='body{visibility:hidden;}';
+    document.head.appendChild(style);
+  }
+</script>
+<script>
+    addComCssFile();
+    changeVertion('/investor/common/css/common.css', 'css');
+</script>
+<script>
+        changeVertion('/modules/report/css/report.css', 'css');
+        changeVertion('/modules/aboutus_column/introduction/css/journal.css', 'css');
+    </script>
+
+   <style>
+.audio-container audio{ width:100%;}
+</style>
+</head>
+  <body class="article-body">
+   <script>
+  navMenuAJAX('/application/publicindex/header/index.html', '/application/publicindex/header/index.html', 'header', 'investor');
+</script>
+<div class="g-locationnav">
+    <div class="banner-wrap">
+      <img src="http://res.static.szse.cn/investor/common/images/investlocation-banner.jpg" />
+    </div>
+    <div class="g-container">
+      <div class="g-banner-txt">
+            <h2 class="hidden-xs">基金入门300问</h2>
+            <p>
+              <span class="glyphicon glyphicon-map-marker"></span>位置：<a href="../../../" class="CurrChnlCls">投资者教育</a>/<a href="../../" class="CurrChnlCls">风险教育</a>/<a href="../" class="CurrChnlCls">专题宣传</a>/<a href="./" class="CurrChnlCls">基金入门300问</a>
+            </p>
+          </div>
+    </div>
+</div>
+   
+  
+      <div class="g-container-wrap">
+            <div class="g-container">
+<!--startprint-->
+                <div class="news-detail-con g-conbox"> 
+                    <div class="des-header">
+                        <h2 class="title">“基金入门300问”系列之十九投资进阶：场内基金投资策略（上）</h2>
+                        <script>
+                            var curSubTitle ='';
+                            if(curSubTitle != ''){
+                                document.write('<h4 class="sub-title text-center"><span class="">'+curSubTitle+'</span></h4>')
+                            }                       
+                        </script>
+                        <div class="time">时间：<span>2021-01-08</span></div>
+                        <div class="des-switchsize">
+                          字体：
+                          <span class="bigger">大</span>
+                          <span class="medium">中</span>
+                          <span class="smaller">小</span>
+                        </div>                        
+                        
+            </div>
+                     <div class="des-content" id="desContent">
+                       <div class="audio-container"><a style="display: none;" href="http://docs.static.szse.cn/www/investor/warning/activities/fundIntroduction/W020210108537647571193.mp3" oldsrc="W020210108537647571193.mp3">视频</a><audio style="display: block; margin-left: auto; margin-right: auto;" controls="controls" autoplay="autoplay" src="/owscms/U020210108537542868786.mp3" data-mce-fragment="1"></audio></div>
+<p class="MsoNormal" style="line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman';">编者按：<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman';">经过二十多年的发展，我国公募基金行业从无到有、从小到大<span style="mso-font-kerning: 0pt;">，逐步成为普惠金融的重要载体，日益丰富公募基金产品成为老百姓投资理财的重要工具选择。为帮助新入市投资者和潜在投资者做好基金投资<span lang="EN-US">“</span>入门功课<span lang="EN-US">”</span>，系统掌握基金投资基础知识，深交所投教中心特别推出《投资者入市手册（基金篇）》，并在此基础上精编为<span lang="EN-US">“</span>基金入门<span lang="EN-US">300</span>问<span lang="EN-US">”</span>系列文章。本篇为第十九篇，介绍场内基金投资策略，一起来看看。<span lang="EN-US"><o:p></o:p></span></span></span></p>
+<p class="MsoNormal" style="line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" align="center" style="text-align: center; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman';">“基金入门<span lang="EN-US">300</span>问”系列之十九投资进阶：场内基金投资策略（上）<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">1.<span style="mso-tab-count: 1;"> </span></span></b><b style="mso-bidi-font-weight: normal;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">如何利用<span lang="EN-US">ETF</span>进行长期投资？<span lang="EN-US"><o:p></o:p></span></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">ETF</span><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">的投资目标是复制标的指数、实现对标的指数的紧密跟踪。因此，<span lang="EN-US">ETF</span>具有风险分散度好、透明度高、受管理人主观因素影响小等特点，适用于进行长期投资。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">由于指数基金的费用低，长期投资会因为复利的作用显著增加指数基金的相对收益水平。从长期投资、财富保值增值的角度来看，投资指数基金都是一个较好的选择，而<span lang="EN-US">ETF</span>在跟踪效果上更优于传统开放式指数基金。因此，投资者可以采用低位买入<span lang="EN-US">ETF</span>并长期持有的策略，获得指数增长带来的收益。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;"><o:p>&nbsp;</o:p></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">2.<span style="mso-tab-count: 1;"> </span></span></b><b style="mso-bidi-font-weight: normal;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">如何利用<span lang="EN-US">ETF</span>抓住短期投资机会？<span lang="EN-US"><o:p></o:p></span></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">对于那些希望能够迅速进出整个市场或市场特定的部分以捕捉短期机会的投资者，<span lang="EN-US">ETF</span>也是一种理想的投资工具。这是因为<span lang="EN-US">ETF</span>是由其追踪的标的指数成份股构成的组合，增减<span lang="EN-US">ETF</span>相当于增减了股票仓位。同时，<span lang="EN-US">ETF</span>有较高的交易效率，可以以较快的速度买入卖出，以对市场的变化做出反应。此外，<span lang="EN-US">ETF</span>交易费率相对低廉。对于在行情发生变化，需要大规模增减股票仓位的投资者而言，直接增减<span lang="EN-US">ETF</span>可以避免买卖多只股票的麻烦，减少对股票价格的冲击，迅速进出市场。<span lang="EN-US">ETF</span>特殊的套利机制也有助于提高流动性，降低大额交易的冲击成本。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;"><o:p>&nbsp;</o:p></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">3.<span style="mso-tab-count: 1;"> </span></span></b><b style="mso-bidi-font-weight: normal;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">如何利用<span lang="EN-US">ETF</span>进行杠杆和做空交易？<span lang="EN-US"><o:p></o:p></span></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">投资者通过向具有融资融券业务资格的证券公司提供担保物，借入资金买入<span lang="EN-US">ETF</span>（融资交易），实现杠杆交易的效果；或借入<span lang="EN-US">ETF</span>并卖出（融券交易），实现卖空的效果。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">4.<span style="mso-tab-count: 1;"> </span></span></b><b style="mso-bidi-font-weight: normal;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">什么是<span lang="EN-US">ETF</span>套利？<span lang="EN-US"><o:p></o:p></span></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">ETF</span><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">套利就是利用<span lang="EN-US">ETF</span>独特的交易机制，在单个<span lang="EN-US">ETF</span>、不同<span lang="EN-US">ETF</span>、<span lang="EN-US">ETF</span>与其他资产间构建多空组合，获取低风险稳健收益的过程。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;"><o:p>&nbsp;</o:p></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">5.<span style="mso-tab-count: 1;"> </span></span></b><b style="mso-bidi-font-weight: normal;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">如何利用<span lang="EN-US">ETF</span>进行“<span lang="EN-US">T+0</span>”折溢价套利？<span lang="EN-US"><o:p></o:p></span></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">由于<span lang="EN-US">ETF</span>同时可以在一级市场上申购赎回和在二级市场上交易买卖，因此具有实时净值与实时市值两种价格。根据一价定律，这两种价格应该相等。但实际的交易过程中，由于所处市场和交易参与者有所区别，短期可能受到不同的供需等因素影响，<span lang="EN-US">ETF</span>的净值与市值往往并不相等。这就为套利带来了空间：<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">溢价套利（正向套利）是当<span lang="EN-US">ETF</span>在二级市场中的报价高于其资产净值时，可以在二级市场买进一揽子股票，然后于一级市场申购<span lang="EN-US">ETF</span>，再于二级市场中以高于基金份额净值的价格将此申购得到的<span lang="EN-US">ETF</span>卖出；<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">折价套利（反向套利）是当<span lang="EN-US">ETF</span>在二级市场中的报价低于其资产净值时，在二级市场以低于资产净值的价格买进<span lang="EN-US">ETF</span>，然后于一级市场赎回<span lang="EN-US">ETF</span>，再于二级市场中卖掉股票。 <span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">如果折溢价价差大于交易成本（<span lang="EN-US">ETF</span>手续费、股票交易费用、冲击成本等），这样的套利行为就可以获得无风险收益。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;"><o:p>&nbsp;</o:p></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">6.<span style="mso-tab-count: 1;"> </span></span></b><b style="mso-bidi-font-weight: normal;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">如何利用<span lang="EN-US">ETF</span>进行事件套利？<span lang="EN-US"><o:p></o:p></span></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">事件套利策略主要应用于成份股发生停牌时，即在<span lang="EN-US">ETF</span>成份股因重大事件，例如增发、并购等导致停牌，投资者预估其价格在复牌后会有大幅涨跌的可能，进而在<span lang="EN-US">ETF</span>二级市场价格还没有充分反映其复牌后价格预期之前，进行套利操作，获取低风险收益。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">例如，预估成份股复牌后有较大涨幅，则在二级市场上买入<span lang="EN-US">ETF</span>份额，申请赎回，获得一揽子股票，按照当期价格将股票组合内的非停牌股卖出，停牌股持有至复牌；或预估复牌后有较大跌幅，则在二级市场上买入除停牌股外的其他股票，利用现金替代的方式申购<span lang="EN-US">ETF</span>份额，然后在二级市场上卖出<span lang="EN-US">ETF</span>。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">事件套利是否成功取决于停牌成份股复牌后表现是否符合预期、<span lang="EN-US">ETF</span>是否必须现金替代以及<span lang="EN-US">ETF</span>在事件发生后对相关股票估值调整的幅度等。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-indent: 24.1pt; mso-char-indent-count: 2.0; line-height: 200%;"><b style="mso-bidi-font-weight: normal;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">7. </span></b><b style="mso-bidi-font-weight: normal;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">如何利用<span lang="EN-US">ETF</span>进行日内波段套利？<span lang="EN-US"><o:p></o:p></span></span></b></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman'; mso-bidi-font-style: italic;">目前我国<span lang="EN-US">A</span>股采用“<span lang="EN-US">T+1</span>”交易制度，即当日买入的证券次日才能卖出，因此通过股票较难获取日内收益。例如，上午开盘看好沪深<span lang="EN-US">300</span>指数，买入相关成份股，下午<span lang="EN-US">2</span>点左右指数大涨至投资者的心理价位，预期后续会反转。但持有股票无法卖出，第二天开盘指数跳空，收益随之抹平。而<span lang="EN-US">ETF</span>存在独特的一、二级市场联动机制，投资者可以通过类似折溢价套利的方式实现日内波段套利。假如日内看涨，可在开盘后低点买入<span lang="EN-US">ETF</span>，赎回获得相关股票，在盘中上涨或反弹后卖出；或在开盘后低点买入一揽子股票，申购成<span lang="EN-US">ETF</span>份额，在盘中上涨或反弹后卖出。假如日内看跌，则反向操作。通过这种方式，即可以实现日内至少一轮的回转交易，获取日内收益。通常日内波段套利是否有效取决于投资者对于日内行情研判的准确性，相对持有策略波段套利风险相对可控，但相对折溢价套利风险较大。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 21.0pt; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman';">（登陆<span lang="EN-US">http://investor.szse.cn/</span>阅读手册全文）<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span lang="EN-US" style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast; mso-bidi-font-family: 'Times New Roman';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-indent: 24.0pt; mso-char-indent-count: 2.0; line-height: 200%;"><span style="font-size: 12.0pt; line-height: 200%; font-family: 宋体; mso-ascii-theme-font: minor-fareast; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-fareast;">（免责声明：本文仅为投资者教育之目的而发布，不构成投资建议。投资者据此操作，风险自担。深圳证券交易所力求本文所涉信息准确可靠，但并不对其准确性、完整性和及时性做出任何保证，对因使用本文引发的损失不承担责任。）<span lang="EN-US"><o:p></o:p></span></span></p>
+                    </div>
+                    <script>
+                        var oldCon = document.getElementById("desContent").innerHTML;
+                        oldCon = oldCon.replace(/(o:p)|(u:p)/gi,'span');
+                        oldCon = oldCon.replace(/&lt;!--\[endif\]--&gt;/g,"");
+                        document.getElementById("desContent").innerHTML = oldCon;
+                    </script>
+<!--endprint-->
+                    <div class="des-footer">
+                        <div class="article-page display-none">
+                    
+
+                        </div>
+                        <div class="article-btn">
+                            <a href="javascript:void(0);" class="btn btn-gray art-print">打印</a>
+                            <a href="javascript:void(0);" target="_blank" class="btn btn-gray ml10 art-collect">收藏</a>
+                            <a href="javascript:void(0);" class="btn btn-gray ml10 art-close">关闭</a>
+                        </div>
+                    </div>  
+                </div>
+     
+            </div>
+      </div>
+
+    <script>
+  changeVertion('/common/js/toggleBig5.js', 'js');
+  navMenuAJAX('/application/publicindex/footer/index.html', '/application/publicindex/footer/index.html', 'footer', 'investor');
+  addComJsFile();
+  changeVertion('/investor/common/js/common.js', 'js');
+</script>
+ 
+   <script>
+        var articleDetail = {
+            docTitle:'“基金入门300问”系列之十九投资进阶：场内基金投资策略（上）',
+            subDocTitle:'',
+            docAbstract:'',
+            articleId:'584159',
+            channelCode:'fundIntroductionAQ',
+            channelId : '12405'
+        }
+    </script>
+    <script>
+        changeVertion('/common/js/articleDetail.js','js');
+    </script>
+  </body>
+</html>

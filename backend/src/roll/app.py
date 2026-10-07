@@ -1,15 +1,72 @@
 from pathlib import Path
+from datetime import date, datetime
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from fastapi.responses import FileResponse
 
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.config import data_directory
+from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 
 
 def create_app(directory: Path | None = None):
     app = FastAPI(title="Roll", version="0.1.0")
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
+    market = MarketDirectory(ledger)
+    app.state.market = market
+
+    @app.get('/api/market/list')
+    def market_list():
+        return market.listing()
+
+    @app.get('/api/market/list/versions/{version}')
+    def market_version(version: int):
+        return market.listing(version)
+
+    @app.post('/api/market/watch')
+    def market_watch(command: WatchCommand):
+        return market.watch(command)
+
+    @app.post('/api/market/identities')
+    def market_identity(command: IdentityCommand):
+        return market.identify(command)
+
+    @app.post('/api/market/scope/check')
+    def market_scope(command: ScopeCommand):
+        return market.check_scope(command)
+
+    @app.get('/api/market/history')
+    def market_history():
+        return market.history()
+
+    @app.get('/api/market/calendar')
+    def market_calendar(exchange: str, on: date = Query(alias='date'), at: datetime | None = None):
+        result = market.rules.calendar(exchange, on, at)
+        result['next_trading_day'] = market.rules.next_trading_day(exchange, on) if result['coverage'] != 'UNKNOWN' else None
+        return result
+
+    @app.get('/api/market/rules')
+    def market_rules(exchange: str, board: str, instrument_type: str = 'STOCK', on: date | None = Query(None, alias='date')):
+        return market.rules.rule(exchange, board, instrument_type, on)
+
+    @app.get('/api/market/resale-date')
+    def resale_date(exchange: str, board: str, buy_date: date, instrument_type: str = 'STOCK'):
+        rule = market.rules.rule(exchange, board, instrument_type, buy_date)
+        calendar = market.rules.calendar(exchange, buy_date)
+        allowed = rule['implementation_status'] == 'ADAPTED' and calendar['is_trading_day'] is True
+        return {'buy_date': buy_date.isoformat(), 'earliest_sell_date': market.rules.next_trading_day(exchange, buy_date) if allowed else None,
+                'rule': rule, 'calendar': calendar, 'resale_source': market.rules.source('szse-a-share-resale'),
+                'limitation': '最早日期不代表实际可卖数量或可成交，停牌/当前状态与账户事实须另核对'}
+
+    @app.get('/api/market/sources')
+    def market_sources():
+        return list(market.rules.sources.values())
+
+    @app.get('/api/market/sources/{source_id}/raw')
+    def market_source_raw(source_id: str):
+        source = market.rules.source(source_id)
+        return FileResponse(market.rules.directory / source['archive_path'], media_type='application/octet-stream', filename=source['file'])
 
     @app.get("/api/health")
     def health():
