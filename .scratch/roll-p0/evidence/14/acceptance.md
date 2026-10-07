@@ -44,3 +44,5 @@ Chrome缺入口的[红](raw/browser-red.txt)保留；真实[首次定位器严�
 [运行保全](runtime-preservation.json) 精确登记九个已停止源目录；复制412文件、34,205,250字节至本树 `backend/.roll-data/implementation-evidence/14`，源/目标每项SHA与长度一致、mismatches0、auth_named_files0。每级拒绝junction/reparse/symlink，未复制个人配置/凭据，未移动/清理原件；SQLite原DB/WAL/shm均保留。后续只在额外自己 `14-freeze-query` 的DB副本只读计数，永久源/目标未重新打开，清单注明其他测试暂存仍留本树。
 
 原件/SQLite均忽略、不stage；Git仅存公开脱敏报告、输出、截图及清单，`.gitattributes`保存捕获原字节。root保全应按清单精确复制，不把新copy时点变成材料可得时点。未修改父execution-status；12真实认证/13后端隔离、正式资格及未来权益/新行情真值仍由对应票验收。本票AT-79/80/85的明确触发、独立性、冲突vs不足、复用失效/回放及真实内部故障路径已实施；现实源不足就是输出，不补造依据。
+
+2026-10-08T05:48:00+08:00 最终合实际新root7505019（19模型/forecast路由及其保全），merge tip 8b5867ad1c9c6c79521bc7933af0cd3cb39ab358；保留双方app/history/模型与14/15路由，合并冲突只为浏览器说明两段追加，全部保留。14适配器SHA未变，新增最终[两个交点7.97s](raw/latest-integration.txt)与[51模块build2.02s](raw/build-latest-integration.txt)通过；不重复30项/真实模型/新HTTP。412文件/34,205,250bytes源与目标[重新核验](raw/preservation-recheck.json)0差异；最后两个方法临时目录jI登记保留，不复制凭据。
