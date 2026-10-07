@@ -193,7 +193,7 @@ class ExperimentRegistry:
         def visit(item):
             if isinstance(item,dict):
                 if item.get('group')=='DAILY' and item.get('trade_date'):facts.append(item)
-                elif item.get('instrument') and item.get('event_date') and item.get('kind') in {'PRICE_MOVE_OBSERVATION','OBSERVATION_RISK_ALERT'}:
+                elif item.get('instrument') and item.get('event_date') and item.get('kind'):
                     facts.append({**item,'trade_date':item['event_date']})
                 else:
                     for child in item.values():visit(child)

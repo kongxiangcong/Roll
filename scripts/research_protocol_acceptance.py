@@ -70,7 +70,9 @@ def main():
         attempts=call('GET',f'/research/protocols/{pid}/attempts');assert [a['status'] for a in attempts]==['FAILED','ABORTED','INTERRUPTED']
         assert call('GET',f'/research/protocols/{pid}')==protocol
         audit=call('GET',f'/research/protocols/{pid}/audit');assert any(a['action']=='ATTEMPT_INTERRUPTED' for a in audit)
-        call('POST',f'/research/protocols/{pid}/freeze',{'attempt_ids':ids},409)
+        manifest=call('GET',f'/research/protocols/{pid}/attempt-manifest')
+        refused=call('POST',f'/research/protocols/{pid}/freeze',{'attempt_ids':manifest['attempt_ids']},409)
+        assert 'ATTEMPT_MANIFEST_INCOMPLETE' not in refused['detail']['gaps']
         successor=call('POST','/research/protocols',{'dataset_id':dataset['dataset_id'],'predecessor_id':pid,'basis':'METHOD_CASE关联修正，原结论和区间暴露不重置'},201)
         assert successor['sealed_independence']=='UNPROVEN'
         after=call('GET','/account');assert after==before
