@@ -39,6 +39,8 @@ def actual_fill(payload, account, number, text_value):
             raise HTTPException(422,"未知费用需正数保守预留，不得当成已知零费用")
     basis=text_value(fee["basis"],"fee.basis")
     record_id=text_value(payload["record_id"],"record_id")
+    if any(item["record_id"]==record_id for item in account.get("share_records",[]) if item["kind"]=="RIGHTS_SUBSCRIPTION"):
+        raise HTTPException(422,"成交标识与已确认配股重复，请核对原记录")
     fill_id=text_value(payload["fill_id"],"fill_id") if payload["fill_id"] is not None else None
     order_id=text_value(payload["order_id"],"order_id") if payload["order_id"] is not None else None
     behavior=payload["behavior_context"]
@@ -50,7 +52,7 @@ def actual_fill(payload, account, number, text_value):
                   and Decimal(prior["quantity"])==Decimal(quantity) and Decimal(prior["price"])==Decimal(price)
                   and prior["fee"]["status"]==fee["status"] and Decimal(prior["charged_fee"])==Decimal(amount))
             if same:
-                raise HTTPException(409,{"code":"FILL_ALREADY_RECORDED","record_id":prior["record_id"],"receipt_id":prior["receipt_id"]})
+                raise HTTPException(409,{"code":"FILL_ALREADY_RECORDED","record_id":prior["record_id"],"receipt_id":prior.get("receipt_id")})
             raise HTTPException(422,"成交标识已存在但内容不同，原输入隔离待核，不覆盖既有事实")
     with localcontext() as context:
         context.prec=80
@@ -152,11 +154,13 @@ def update_fee_state(account):
     unresolved=[f["record_id"] for f in account.get("fills",[]) if f["fee"]["status"]=="PROVISIONAL"
                 and f["record_id"] not in account.get("fee_resolutions",{})]
     account["fees_pending"]=unresolved
-    account["cash_balance_basis"]="PROVISIONAL_FEES" if unresolved else "KNOWN_FEES"
-    account["net_result_state"]="FEE_PENDING" if unresolved else "COST_UNKNOWN" if account.get("realized_gain","0.00") is None else "KNOWN_FEES"
+    breakdown=[r["record_id"] for r in account.get("share_records",[]) if r["kind"]=="RIGHTS_SUBSCRIPTION" and r["fee_amount"] is None and r["record_id"] not in account.get("fee_resolutions",{})]
+    account["rights_fee_breakdown_pending"]=breakdown
+    account["cash_balance_basis"]="PROVISIONAL_FEES" if unresolved else "KNOWN_PAYMENTS_FEE_SPLIT_PENDING" if breakdown else "KNOWN_FEES"
+    account["net_result_state"]="FEE_PENDING" if unresolved else "FEE_BREAKDOWN_PENDING" if breakdown else "COST_UNKNOWN" if account.get("realized_gain","0.00") is None else "KNOWN_FEES"
     for position in account["positions"]:
         active=[l for l in account.get("lots",[]) if l["instrument"]==position["instrument"] and Decimal(l["remaining_quantity"])>0]
-        position["acquisition_cost"]=None if any(l["cost_basis"] in {"REFERENCE","UNKNOWN"} for l in active) else money(sum((Decimal(l["remaining_cost"]) for l in active),Decimal(0)))
+        position["acquisition_cost"]=None if (not active and Decimal(position["quantity"])>0) or any(l["cost_basis"] in {"REFERENCE","UNKNOWN"} for l in active) else money(sum((Decimal(l["remaining_cost"]) for l in active),Decimal(0)))
         position["cost_basis"]="PROVISIONAL" if any(l["instrument"]==position["instrument"] and l["cost_basis"]=="PROVISIONAL" for l in account.get("lots",[])) else "KNOWN" if position.get("acquisition_cost") is not None else "UNKNOWN"
 
 
@@ -168,6 +172,15 @@ def fee_adjustment(payload,account,number,text_value):
     basis=text_value(payload["basis"],"basis")
     fill=next((f for f in account.get("fills",[]) if f["record_id"]==target),None)
     if fill is None:
+        rights=next((r for r in account.get("share_records",[]) if r["record_id"]==target and r["kind"]=="RIGHTS_SUBSCRIPTION"),None)
+        if rights is not None:
+            if Decimal(amount)>Decimal(rights["amount"]):
+                raise HTTPException(422,"配股费用分拆不能超过原已付总额")
+            projection=copy.deepcopy(account)
+            gross=money(Decimal(rights["amount"])-Decimal(amount))
+            projection.setdefault("fee_resolutions",{})[target]={"actual_fee_amount":amount,"gross_subscription_amount":gross,"basis":basis,"effective_at":payload["effective_at"]}
+            update_fee_state(projection)
+            return projection,[{"event_type":"FEE_ADJUSTMENT","payload":{**payload,"actual_fee_amount":amount,"cash_delta":"0.00","remaining_cost_delta":"0.00","payment_amount":rights["amount"],"gross_subscription_amount":gross,"adjustment_type":"PAID_TOTAL_FEE_BREAKDOWN"}}]
         raise HTTPException(422,"费用调整找不到已确认成交")
     prior=account.get("fee_resolutions",{}).get(target,{}).get("actual_fee_amount",fill["charged_fee"])
     delta=Decimal(amount)-Decimal(prior)
@@ -178,19 +191,12 @@ def fee_adjustment(payload,account,number,text_value):
     lot=next((l for l in projection.get("lots",[]) if l["lot_id"]==target),None)
     cost_delta=Decimal(0)
     if lot is not None:
-        old_remaining=Decimal(lot["remaining_cost"])
-        old_released=Decimal(lot["original_cost"])-old_remaining
-        original_cost=Decimal(lot["original_cost"])+delta
-        sold=Decimal(lot["original_quantity"])-Decimal(lot["remaining_quantity"])
-        released=Decimal(money(original_cost*sold/Decimal(lot["original_quantity"])))
-        remaining=original_cost-released
-        lot.update(original_cost=money(original_cost),remaining_cost=money(remaining),cost_basis="KNOWN")
-        cost_delta=remaining-old_remaining
+        cost_delta,gain_delta=adjust_lot_fee(lot,projection["lots"],delta)
         position=next((p for p in projection["positions"] if p["instrument"]==fill["instrument"]),None)
         if position and position.get("acquisition_cost") is not None:
             position["acquisition_cost"]=money(Decimal(position["acquisition_cost"])+cost_delta)
-        if sold and projection.get("realized_gain") is not None:
-            projection["realized_gain"]=money(Decimal(projection["realized_gain"])+old_released-released)
+        if projection.get("realized_gain") is not None:
+            projection["realized_gain"]=money(Decimal(projection["realized_gain"])+gain_delta)
     elif projection.get("realized_gain") is not None:
         projection["realized_gain"]=money(Decimal(projection["realized_gain"])-delta)
     projection.setdefault("fee_resolutions",{})[target]={"actual_fee_amount":amount,"basis":basis,"effective_at":payload["effective_at"]}
@@ -202,3 +208,23 @@ def fee_adjustment(payload,account,number,text_value):
     update_fee_state(projection)
     event={**payload,"actual_fee_amount":amount,"previous_charged_fee":prior,"cash_delta":money(-delta),"remaining_cost_delta":money(cost_delta)}
     return projection,[{"event_type":"FEE_ADJUSTMENT","payload":event}]
+
+
+def adjust_lot_fee(lot,lots,delta):
+    """Carry a root buy-fee adjustment through actual share-change transfers."""
+    old_remaining=Decimal(lot["remaining_cost"])
+    old_transfer=Decimal(lot.get("transferred_cost","0.00"))
+    old_released=Decimal(lot["original_cost"])-old_remaining-old_transfer
+    original_cost=Decimal(lot["original_cost"])+delta
+    sold=Decimal(lot["original_quantity"])-Decimal(lot["remaining_quantity"])-Decimal(lot.get("transferred_quantity","0"))
+    released=Decimal(money(original_cost*sold/Decimal(lot["original_quantity"])))
+    remaining=original_cost-released
+    lot.update(original_cost=money(original_cost),cost_basis="KNOWN")
+    gain_delta=old_released-released
+    if "transfer_child_id" in lot:
+        lot["transferred_cost"]=money(remaining)
+        child=next(item for item in lots if item["lot_id"]==lot["transfer_child_id"])
+        cost_delta,child_gain_delta=adjust_lot_fee(child,lots,remaining-old_transfer)
+        return cost_delta,gain_delta+child_gain_delta
+    lot["remaining_cost"]=money(remaining)
+    return remaining-old_remaining,gain_delta

@@ -2,10 +2,12 @@ from pathlib import Path
 from datetime import date, datetime
 import os
 
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, Query, HTTPException, Request, Response
 from fastapi.responses import FileResponse
+from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide
 
-from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
+from roll.accounts.ledger import ConfirmCommand, DraftCommand, EquityHint, Ledger
+from roll.accounts.cash_events import EVENT_FIELDS
 from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.market.evidence import EvidenceStore, DataRequest
@@ -17,6 +19,39 @@ def create_app(directory: Path | None = None, market_transport=None):
     app = FastAPI(title="Roll", version="0.1.0")
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
+    imports = CsvImports(ledger)
+
+    @app.get("/api/account/csv/template")
+    def csv_template(version: str = "ROLL-CSV-2"):
+        content = template(version)
+        return Response(content, media_type="text/csv; charset=utf-8", headers={"Content-Disposition": f'attachment; filename="roll-csv-{version[-1]}.csv"'})
+
+    @app.get("/api/account/csv/guide")
+    def csv_guide():
+        return Response(guide(), media_type="text/html")
+
+    @app.post("/api/account/csv/drafts", status_code=201)
+    async def csv_draft(request: Request, filename: str, encoding: str, expected_account_version: int, revision_of: str | None = None):
+        if expected_account_version < 0:
+            raise HTTPException(422, "账户版本必须非负")
+        raw = bytearray()
+        async for chunk in request.stream():
+            raw.extend(chunk)
+            if len(raw) > 4 * 1024 * 1024:
+                raise HTTPException(413, "CSV 最多4MiB")
+        return imports.upload(bytes(raw), filename, encoding, expected_account_version, revision_of)
+
+    @app.get("/api/account/csv/drafts/{draft_id}")
+    def csv_get(draft_id: str):
+        return imports.get(draft_id)
+
+    @app.post("/api/account/csv/drafts/{draft_id}/revise", status_code=201)
+    def csv_revise(draft_id: str, command: CsvRevision):
+        return imports.revise(draft_id, command)
+
+    @app.get("/api/account/csv/files/{fingerprint}")
+    def csv_file(fingerprint: str):
+        return Response(imports.file(fingerprint), media_type="application/octet-stream")
     market = MarketDirectory(ledger)
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport)
@@ -181,6 +216,8 @@ def create_app(directory: Path | None = None, market_transport=None):
 
     @app.post("/api/account/drafts", status_code=201)
     def draft(command: DraftCommand):
+        if command.kind == "CSV_BATCH":
+            raise HTTPException(422, "CSV 整批草稿只接受原文件上传，不接受外部生成的批命令")
         return ledger.draft(command)
 
     @app.get("/api/account/drafts/{draft_id}")
@@ -211,6 +248,14 @@ def create_app(directory: Path | None = None, market_transport=None):
     def quarantined_drafts():
         return ledger.quarantined_drafts()
 
+    @app.post("/api/account/equity-hints",status_code=201)
+    def equity_hint(command: EquityHint):
+        return ledger.equity_hint(command)
+
+    @app.get("/api/account/equity-hints")
+    def equity_hints():
+        return ledger.equity_hints()
+
     @app.get("/api/today")
     def today():
         account = ledger.account()
@@ -227,8 +272,20 @@ def create_app(directory: Path | None = None, market_transport=None):
             pending.append(f"成交 {record} 费用暂估，现金与净收益待核")
         if ledger.quarantined_drafts():
             account["state"]="RECONCILE_REQUIRED"
-            pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
+            if any(d["command"]["kind"] in {"FILL","FEE_ADJUSTMENT"} for d in ledger.quarantined_drafts()):
+                pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
+            if any(d["command"]["kind"] in EVENT_FIELDS for d in ledger.quarantined_drafts()):
+                pending.append("资金或权益输入待核，原始材料已保留，尚未影响账面现金与持仓")
+            if any(d["command"]["kind"] == "CSV_BATCH" for d in ledger.quarantined_drafts()):
+                pending.append("CSV文件输入待核，原始材料已保留，尚未影响账面现金与持仓")
         pending.extend(account.get("latest_fill_facts",[]))
+        for record in account.get("rights_fee_breakdown_pending",[]):
+            pending.append(f"配股 {record} 费用分拆待核；实际总支付已确认，费用前损益未知")
+        for item in account.get("pending_items",[]):
+            if item["status"] in {"OPEN","PARTIAL"}:
+                pending.append(f"{item['record_id']} {'应收' if item['flow_category']=='INVESTMENT_INCOME' else '应付'}待结算 {item['outstanding_amount']} 元")
+        for hint in ledger.equity_hints():
+            pending.append(f"外部权益线索待核：{hint['content']}；来源 {hint['source']}，获知于 {hint['learned_at']}，未确认个人账户实际发生")
         return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
                 "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health()}
 

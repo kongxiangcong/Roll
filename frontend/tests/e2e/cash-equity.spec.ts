@@ -1,0 +1,87 @@
+import {test,expect} from '@playwright/test';
+
+test('confirmed receivable and partial settlement stay distinct from cash and later corrections',async({page,request})=>{
+  let account=(await request.get('/api/account')).json();
+  if((await account).version===0){
+    const draft=await request.post('/api/account/drafts',{data:{kind:'BASELINE',expected_account_version:0,payload:{effective_at:new Date(Date.now()-60000).toISOString(),source:'合成现金权益浏览器基线',cash_balance:'100000.00',broker_available:'100000.00',broker_frozen:'0.00',withdrawable:null,positions:[],permission_profile:[]}}});
+    await request.post('/api/account/confirm',{data:{draft_id:(await draft.json()).draft_id,idempotency_key:'cash-browser-baseline'}});
+  }
+  await page.goto('/');
+  async function open(){await page.getByRole('button',{name:'同步账户',exact:true}).click();await page.getByRole('button',{name:'资金与权益',exact:true}).click();}
+  await open();
+  await page.getByLabel('变动类别',{exact:true}).selectOption('PENDING_ITEM');
+  await page.getByLabel('流水标识',{exact:true}).fill('browser-dividend-due');
+  await page.getByLabel('金额（元）',{exact:true}).fill('100.00');
+  await page.getByLabel('依据',{exact:true}).fill('浏览器合成个人应收凭证');
+  await page.getByRole('button',{name:'预览差异',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'确认前的差异'})).toBeVisible();
+  await expect(page.getByText('之后：100.00',{exact:true})).toBeVisible();
+  await page.screenshot({path:'test-results/cash-preview.png',fullPage:true});
+  await page.getByRole('button',{name:'确认入账',exact:true}).click();
+  await page.getByRole('button',{name:'查询回执',exact:true}).click();
+  await expect(page.getByText('回执查询成功')).toBeVisible();
+  await page.getByRole('button',{name:'回到今天',exact:true}).click();
+  await expect(page.getByText('browser-dividend-due 应收待结算 100.00 元')).toBeVisible();
+  await open();
+  await page.getByLabel('变动类别',{exact:true}).selectOption('SETTLEMENT');
+  await page.getByLabel('流水标识',{exact:true}).fill('browser-dividend-paid');
+  await page.getByLabel('关联原流水标识',{exact:true}).fill('browser-dividend-due');
+  await page.getByLabel('金额（元）',{exact:true}).fill('40.00');
+  await page.getByLabel('依据',{exact:true}).fill('实际部分到账凭证');
+  await page.getByRole('button',{name:'预览差异',exact:true}).click();
+  await page.getByRole('button',{name:'确认入账',exact:true}).click();
+  await page.getByRole('button',{name:'回到今天',exact:true}).click();
+  await expect(page.getByText('browser-dividend-due 应收待结算 60.00 元')).toBeVisible();
+  await page.screenshot({path:'test-results/cash-partial.png',fullPage:true});
+  await open();
+  await page.getByLabel('变动类别',{exact:true}).selectOption('CASH_CORRECTION');
+  await page.getByLabel('流水标识',{exact:true}).fill('browser-dividend-correction');
+  await page.getByLabel('关联原流水标识',{exact:true}).fill('browser-dividend-due');
+  await page.getByLabel('更正后原总金额（元）',{exact:true}).fill('90.00');
+  await page.getByLabel('依据',{exact:true}).fill('应收总额核对为90，保留原100');
+  await page.getByRole('button',{name:'预览差异',exact:true}).click();
+  await page.getByRole('button',{name:'确认入账',exact:true}).click();
+  await page.getByRole('button',{name:'回到今天',exact:true}).click();
+  await expect(page.getByText('browser-dividend-due 应收待结算 50.00 元')).toBeVisible();
+  await page.getByRole('button',{name:'历史记录',exact:true}).click();
+  await expect(page.getByText(/browser-dividend-correction.*90.00/)).toBeVisible();
+  await page.screenshot({path:'test-results/cash-history.png',fullPage:true});
+});
+
+test('paid rights unknown fee split can be completed without paying twice',async({page,request})=>{
+  const before=await (await request.get('/api/account')).json();
+  await page.goto('/');
+  await page.getByRole('button',{name:'同步账户',exact:true}).click();
+  await page.getByRole('button',{name:'资金与权益',exact:true}).click();
+  await page.getByLabel('变动类别',{exact:true}).selectOption('RIGHTS_SUBSCRIPTION');
+  await page.getByLabel('流水标识',{exact:true}).fill('browser-rights');
+  await page.getByLabel('金额（元）',{exact:true}).fill('500.01');
+  await page.getByLabel('证券（交易所:代码，现金事项可空）',{exact:true}).fill('SSE:600001');
+  await page.getByLabel('实际配股新增数量',{exact:true}).fill('100.00000001');
+  await page.getByLabel('依据',{exact:true}).fill('合成券商配股实际支付及到账');
+  await page.getByRole('button',{name:'预览差异',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'确认前的差异'})).toBeVisible();
+  expect((await (await request.get('/api/account')).json()).cash_balance).toBe(before.cash_balance);
+  await page.screenshot({path:'test-results/rights-preview.png',fullPage:true});
+  await page.getByRole('button',{name:'确认入账',exact:true}).click();
+  await page.getByRole('button',{name:'回到今天',exact:true}).click();
+  await expect(page.getByText('配股 browser-rights 费用分拆待核；实际总支付已确认，费用前损益未知')).toBeVisible();
+  const paid=await (await request.get('/api/account')).json();
+  expect(Number(paid.cash_balance)).toBeCloseTo(Number(before.cash_balance)-500.01,2);
+  expect(paid.positions.find((p:{instrument:string})=>p.instrument==='SSE:600000').acquisition_cost).toBeNull();
+  await page.getByRole('button',{name:'同步账户',exact:true}).click();
+  await page.getByRole('button',{name:'补充费用',exact:true}).click();
+  await page.getByRole('combobox',{name:'费用对应成交'}).selectOption('browser-rights');
+  await page.getByLabel('补充实际费用（元）',{exact:true}).fill('5.01');
+  await page.getByLabel('费用调整依据',{exact:true}).fill('实际总支付内分拆5.01费用');
+  await page.getByRole('button',{name:'预览费用调整',exact:true}).click();
+  await page.getByRole('button',{name:'确认费用调整',exact:true}).click();
+  await page.getByRole('button',{name:'回到今天',exact:true}).click();
+  const adjusted=await (await request.get('/api/account')).json();
+  expect(adjusted.cash_balance).toBe(paid.cash_balance);
+  expect(adjusted.positions).toEqual(paid.positions);
+  expect(adjusted.fee_resolutions['browser-rights'].gross_subscription_amount).toBe('495.00');
+  await page.getByRole('button',{name:'历史记录',exact:true}).click();
+  await expect(page.getByText(/browser-rights.*支付总额 500.01.*费用 5.01/)).toBeVisible();
+  await page.screenshot({path:'test-results/rights-history.png',fullPage:true});
+});
