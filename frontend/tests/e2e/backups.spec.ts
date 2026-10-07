@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+test.skip(process.env.ROLL_BACKUP_BROWSER_PHASE!=='create','Run the isolated create phase before restarting the same data directory.');
 test('actual Chrome exports original bundle, rejects damage and queues restart without replacing live facts',async({page,request})=>{
   const draft=await(await request.post('/api/account/drafts',{data:{kind:'BASELINE',expected_account_version:0,payload:{effective_at:'2026-10-07T10:00:00+08:00',source:'合成备份浏览器基线',cash_balance:'10000.10',broker_available:'10000.10',broker_frozen:'0',withdrawable:null,positions:[],permission_profile:[]}}})).json();
   expect((await request.post('/api/account/confirm',{data:{draft_id:draft.draft_id,idempotency_key:'backup-browser'}})).ok()).toBeTruthy();

@@ -35,3 +35,7 @@ backend/src/roll/research/reference/*.html binary
 
 # Ticket19 captured Windows stdout/process bytes.
 .scratch/roll-p0/evidence/19/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+
+# Ticket16 captured process stdout retains its original Windows bytes.
+.scratch/roll-p0/evidence/16/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/16/*.json text eol=lf

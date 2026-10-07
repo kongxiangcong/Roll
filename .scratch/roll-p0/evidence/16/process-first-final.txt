@@ -1,0 +1,82 @@
+......FFF                                                                [100%]
+================================== FAILURES ===================================
+_ test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts[after_lock] _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-345/test_actual_restore_crash_neve0')
+fault = 'after_lock'
+
+    @pytest.mark.parametrize('fault',['after_lock','after_attachments','after_database'])
+    def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tmp_path,fault):
+        directory=tmp_path/'data';server=Server(directory)
+        try:
+            draft=server.client.post('/api/account/drafts',json=BASELINE).json()
+            command={'draft_id':draft['draft_id'],'idempotency_key':'baseline'}
+            receipt=server.client.post('/api/account/confirm',json=command).json()
+            original=server.client.get('/api/account').json();events=server.client.get('/api/account/events').json()
+            columns=next(__import__('csv').reader(io.StringIO(server.client.get('/api/account/csv/template').text.lstrip('\ufeff'))))
+            output=io.StringIO();writer=__import__('csv').DictWriter(output,columns);writer.writeheader()
+            writer.writerow({'template_version':'ROLL-CSV-3','kind':'CASH_IN','effective_at':'2026-10-07T11:00:00+08:00','source':'真实原件恢复故障案例','record_id':'deposit','amount':'10'})
+            uploaded=server.client.post('/api/account/csv/drafts',params={'filename':'original.csv','encoding':'utf-8','expected_account_version':1},content=output.getvalue().encode()).json()
+            csv_command={'draft_id':uploaded['draft_id'],'idempotency_key':'csv-deposit'}
+            csv_receipt=server.client.post('/api/account/confirm',json=csv_command)
+>           assert csv_receipt.status_code==200,csv_receipt.text
+E           AssertionError: {"detail":{"code":"QUARANTINED_DRAFT","issues":[[{"reason":"basis: 不能为空","row":2}]],"draft_id":"acd4b251-b677-4ebd-a2c2-5c23c2c422c7"}}
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\recovery\test_backup_process.py:164: AssertionError
+_ test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts[after_attachments] _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-345/test_actual_restore_crash_neve1')
+fault = 'after_attachments'
+
+    @pytest.mark.parametrize('fault',['after_lock','after_attachments','after_database'])
+    def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tmp_path,fault):
+        directory=tmp_path/'data';server=Server(directory)
+        try:
+            draft=server.client.post('/api/account/drafts',json=BASELINE).json()
+            command={'draft_id':draft['draft_id'],'idempotency_key':'baseline'}
+            receipt=server.client.post('/api/account/confirm',json=command).json()
+            original=server.client.get('/api/account').json();events=server.client.get('/api/account/events').json()
+            columns=next(__import__('csv').reader(io.StringIO(server.client.get('/api/account/csv/template').text.lstrip('\ufeff'))))
+            output=io.StringIO();writer=__import__('csv').DictWriter(output,columns);writer.writeheader()
+            writer.writerow({'template_version':'ROLL-CSV-3','kind':'CASH_IN','effective_at':'2026-10-07T11:00:00+08:00','source':'真实原件恢复故障案例','record_id':'deposit','amount':'10'})
+            uploaded=server.client.post('/api/account/csv/drafts',params={'filename':'original.csv','encoding':'utf-8','expected_account_version':1},content=output.getvalue().encode()).json()
+            csv_command={'draft_id':uploaded['draft_id'],'idempotency_key':'csv-deposit'}
+            csv_receipt=server.client.post('/api/account/confirm',json=csv_command)
+>           assert csv_receipt.status_code==200,csv_receipt.text
+E           AssertionError: {"detail":{"code":"QUARANTINED_DRAFT","issues":[[{"reason":"basis: 不能为空","row":2}]],"draft_id":"b083dab3-70fb-47e0-90f8-51cfb53eb367"}}
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\recovery\test_backup_process.py:164: AssertionError
+_ test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts[after_database] _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-345/test_actual_restore_crash_neve2')
+fault = 'after_database'
+
+    @pytest.mark.parametrize('fault',['after_lock','after_attachments','after_database'])
+    def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tmp_path,fault):
+        directory=tmp_path/'data';server=Server(directory)
+        try:
+            draft=server.client.post('/api/account/drafts',json=BASELINE).json()
+            command={'draft_id':draft['draft_id'],'idempotency_key':'baseline'}
+            receipt=server.client.post('/api/account/confirm',json=command).json()
+            original=server.client.get('/api/account').json();events=server.client.get('/api/account/events').json()
+            columns=next(__import__('csv').reader(io.StringIO(server.client.get('/api/account/csv/template').text.lstrip('\ufeff'))))
+            output=io.StringIO();writer=__import__('csv').DictWriter(output,columns);writer.writeheader()
+            writer.writerow({'template_version':'ROLL-CSV-3','kind':'CASH_IN','effective_at':'2026-10-07T11:00:00+08:00','source':'真实原件恢复故障案例','record_id':'deposit','amount':'10'})
+            uploaded=server.client.post('/api/account/csv/drafts',params={'filename':'original.csv','encoding':'utf-8','expected_account_version':1},content=output.getvalue().encode()).json()
+            csv_command={'draft_id':uploaded['draft_id'],'idempotency_key':'csv-deposit'}
+            csv_receipt=server.client.post('/api/account/confirm',json=csv_command)
+>           assert csv_receipt.status_code==200,csv_receipt.text
+E           AssertionError: {"detail":{"code":"QUARANTINED_DRAFT","issues":[[{"reason":"basis: 不能为空","row":2}]],"draft_id":"b12ac5cf-c7a4-475c-b36f-37aab1353a28"}}
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\recovery\test_backup_process.py:164: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/recovery/test_backup_process.py::test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts[after_lock]
+FAILED tests/recovery/test_backup_process.py::test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts[after_attachments]
+FAILED tests/recovery/test_backup_process.py::test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts[after_database]
+3 failed, 6 passed in 82.34s (0:01:22)

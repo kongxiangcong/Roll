@@ -160,7 +160,7 @@ def verify_database(path,manifest):
         refs=references(db,path.parent)
         expected={r['path']:r['sha256'] for r in refs}
         if expected!={r['path']:r['sha256'] for r in manifest['attachments']}:raise HTTPException(409,{'code':'ATTACHMENT_MANIFEST_MISMATCH'})
-    if actual['schema_version']==2:
+    if actual['schema_version'] in {1,2}:
         # Replay through the existing public ledger use case; no migration is run here.
         from roll.accounts.ledger import Ledger
         ledger=object.__new__(Ledger);ledger.path=path
@@ -190,12 +190,12 @@ class Backups:
             if path.parent.name.startswith('.'):continue
             manifest=json.loads(path.read_text(encoding='utf-8'))
             result.append(self.summary(manifest))
-        return sorted(result,key=lambda item:(item['completed_at'],item['published_at']),reverse=True)
+        return sorted(result,key=lambda item:(item['completed_at'],item['published_at'] or ''),reverse=True)
 
     def summary(self,manifest):
         return {'backup_id':manifest['backup_id'],'status':'COMPLETE','reason':manifest['reason'],
-            'completed_at':manifest['completed_at'],'restore_point':{k:manifest[k] for k in ['account_version','event_count','account_confirmed_at','capture_finished_at']},
-            'published_at':manifest['published_at'],
+            'completed_at':manifest['completed_at'],'restore_point':{k:manifest.get(k) for k in ['account_version','event_count','account_confirmed_at','capture_finished_at']},
+            'published_at':manifest.get('published_at'),
             'attachment_count':len(manifest['attachments']),'change_fingerprint':manifest['change_fingerprint']}
 
     def create(self,reason='MANUAL'):

@@ -1,6 +1,6 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
-type Backup={backup_id:string;completed_at:string;attachment_count:number;restore_point:{account_version:number;event_count:number;account_confirmed_at:string|null}};
+type Backup={backup_id:string;completed_at:string;attachment_count:number;restore_point:{account_version:number;event_count:number;account_confirmed_at:string|null;capture_finished_at:string|null}};
 type State={latest_backup_known_corrupt:boolean;latest_success:Backup|null;uncovered_changes:boolean;last_check:{error:{code:string}|null}|null;pending_restore:{state:string;backup_id:string}|null;recovery:{state:string;locked_at?:string;restore_point?:{account_version:number};analysis_gap?:string}};
 export function BackupPanel(){
   const [state,setState]=useState<State|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[file,setFile]=useState<File|null>(null),[notice,setNotice]=useState('');
@@ -12,6 +12,7 @@ export function BackupPanel(){
     {error&&<p role="alert">{error}</p>}{notice&&<p role="status">{notice}</p>}
     {!state?<p>正在读取备份…</p>:<>
       <p>{state.latest_success?`最近成功备份：${new Date(state.latest_success.completed_at).toLocaleString('zh-CN')} · 账户版本 ${state.latest_success.restore_point.account_version} · ${state.latest_success.restore_point.event_count} 项事件 · ${state.latest_success.attachment_count} 个附件`:'尚无成功备份'}</p>
+      {state.latest_success&&<p className="muted">数据库复制完成时点：{state.latest_success.restore_point.capture_finished_at?new Date(state.latest_success.restore_point.capture_finished_at).toLocaleString('zh-CN'):'未记录，按原版本、事件与附件清单核对恢复范围'}</p>}
       {state.latest_backup_known_corrupt&&<p role="alert">最近备份的导出校验发现损坏，不能作为可恢复材料；请重新完整备份。</p>}<p>{state.uncovered_changes?'有尚未覆盖的持久化变化':'当前持久化事实已被最近备份覆盖'}</p>
       {state.last_check?.error&&<p role="alert">最近备份失败：{state.last_check.error.code}；此前成功备份仍为恢复边界。</p>}
       <button disabled={busy} onClick={()=>void backup()}>现在完整备份</button>{state.latest_success&&<a href={`/api/runtime/backups/${state.latest_success.backup_id}/export`} download>导出已校验恢复包</a>} <button disabled={busy} onClick={()=>void refresh()}>刷新备份状态</button>

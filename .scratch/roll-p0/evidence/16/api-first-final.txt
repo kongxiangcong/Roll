@@ -1,0 +1,24 @@
+..........F...                                                           [100%]
+================================== FAILURES ===================================
+_____ test_pending_restore_identity_and_concurrent_confirmation_snapshot ______
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-346/test_pending_restore_identity_0')
+
+    def test_pending_restore_identity_and_concurrent_confirmation_snapshot(tmp_path):
+        from concurrent.futures import ThreadPoolExecutor
+        with TestClient(create_app(tmp_path/'source')) as client:
+            confirm(client)
+            draft=client.post('/api/account/drafts',json={'kind':'CASH_IN','expected_account_version':1,'payload':{
+                'effective_at':'2026-10-07T12:00:00+08:00','source':'有据外部转入','record_id':'deposit','amount':'20'}}).json()
+            with ThreadPoolExecutor(2) as pool:
+                created=pool.submit(client.post,'/api/runtime/backups')
+                accepted=pool.submit(client.post,'/api/account/confirm',json={'draft_id':draft['draft_id'],'idempotency_key':'deposit'})
+                backup=created.result().json();receipt=accepted.result()
+>           assert receipt.status_code==200
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\application\test_backups.py:230: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_backups.py::test_pending_restore_identity_and_concurrent_confirmation_snapshot
+1 failed, 13 passed in 66.05s (0:01:06)

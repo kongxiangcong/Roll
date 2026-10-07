@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+test.skip(process.env.ROLL_BACKUP_BROWSER_PHASE!=='restore','Requires the stopped create phase and its explicitly selected recovery point.');
 test('actual restart applies selected point before observers and shows recovery lock across today and settings',async({page,request})=>{
   const state=await(await request.get('/api/runtime/backups/status')).json();
   expect(state.pending_restore).toBeNull();expect(state.recovery.state).toBe('RECOVERY_LOCK');

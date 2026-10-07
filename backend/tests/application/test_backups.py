@@ -222,7 +222,7 @@ def test_pending_restore_identity_and_concurrent_confirmation_snapshot(tmp_path)
     with TestClient(create_app(tmp_path/'source')) as client:
         confirm(client)
         draft=client.post('/api/account/drafts',json={'kind':'CASH_IN','expected_account_version':1,'payload':{
-            'effective_at':'2026-10-07T12:00:00+08:00','source':'有据外部转入','record_id':'deposit','amount':'20'}}).json()
+            'effective_at':'2026-10-07T12:00:00+08:00','source':'有据外部转入','record_id':'deposit','amount':'20','instrument':None,'basis':'券商现金转入原凭证','broker_available_after':None}}).json()
         with ThreadPoolExecutor(2) as pool:
             created=pool.submit(client.post,'/api/runtime/backups')
             accepted=pool.submit(client.post,'/api/account/confirm',json={'draft_id':draft['draft_id'],'idempotency_key':'deposit'})

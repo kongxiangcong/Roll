@@ -157,7 +157,7 @@ def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tm
         original=server.client.get('/api/account').json();events=server.client.get('/api/account/events').json()
         columns=next(__import__('csv').reader(io.StringIO(server.client.get('/api/account/csv/template').text.lstrip('\ufeff'))))
         output=io.StringIO();writer=__import__('csv').DictWriter(output,columns);writer.writeheader()
-        writer.writerow({'template_version':'ROLL-CSV-3','kind':'CASH_IN','effective_at':'2026-10-07T11:00:00+08:00','source':'真实原件恢复故障案例','record_id':'deposit','amount':'10'})
+        writer.writerow({'template_version':'ROLL-CSV-3','kind':'CASH_IN','effective_at':'2026-10-07T11:00:00+08:00','source':'真实原件恢复故障案例','record_id':'deposit','amount':'10','basis':'已核对原现金凭证'})
         uploaded=server.client.post('/api/account/csv/drafts',params={'filename':'original.csv','encoding':'utf-8','expected_account_version':1},content=output.getvalue().encode()).json()
         csv_command={'draft_id':uploaded['draft_id'],'idempotency_key':'csv-deposit'}
         csv_receipt=server.client.post('/api/account/confirm',json=csv_command)
