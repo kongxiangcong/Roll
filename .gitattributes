@@ -2,12 +2,27 @@
 backend/src/roll/market/reference/*.html binary
 backend/src/roll/market/reference/*.docx binary
 backend/src/roll/market/reference/*.pdf binary
+backend/src/roll/market/reference/*-2026.txt binary
 .scratch/roll-p0/evidence/06/bse-gap-*.html binary
+# Earlier captured Windows output and metadata retain their exact bytes.
+.scratch/roll-p0/evidence/03/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/03/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/06/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/06/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/07/runtime-preservation.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/08/root-runtime-preservation.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/10/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 # Preserve ticket07 captured process output, including Windows CRLF bytes.
 .scratch/roll-p0/evidence/07/*.txt -text whitespace=cr-at-eol
 # Preserve ticket08 captured stdout bytes, independently of Git autocrlf.
 .scratch/roll-p0/evidence/08/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+
+# Original research authority pages retain source SHA bytes.
+backend/src/roll/research/reference/*.html binary
+.scratch/roll-p0/evidence/17/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 # Ticket11 immutable public archive bytes and captured Windows stdout.
 .scratch/roll-p0/evidence/11/raw/* binary
 .scratch/roll-p0/evidence/11/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 .scratch/roll-p0/evidence/11/*.json text eol=lf
+# Ticket12 captured provider/method reports preserve original captured bytes.
+.scratch/roll-p0/evidence/12/raw/* binary

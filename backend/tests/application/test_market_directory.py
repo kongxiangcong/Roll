@@ -181,5 +181,3 @@ def test_unopened_actual_fill_membership_transitions_are_not_retroactive_market_
         assert all(m['identity'] is None for h in history for m in h['members'])
         assert all('price' not in h and 'coverage' not in h and 'forecast' not in h for h in history)
         assert client.get('/api/market/list').json()['members'][0]['holding']['quantity'] == '300'
-
-

@@ -69,3 +69,11 @@ Q9 已确认用可复现自动验证、模型技术审阅和确定性资格检�
 Windows实际仍发现个人技能元数据，因此只在独立 `CODEX_HOME` 写技能 disabled 配置，再强制重载核验 enabled=0；模型线程 instructionSources为空。未修改个人配置、技能或认证。纯V8实际工具面仅两个宿主取证工具与无副作用clock，fetch/process/require不存在，node:fs import实际拒绝。生产提示对抗未读取私文件、未写哨兵、未发POST，账户不变；该证据与固定源码检查、组件clock探针、方法案例分列。
 
 真实 FastAPI/SQLite/原件/Parquet/Chrome 多轮取证、取消、SDK错误及实际API宿主硬崩后Job归零/精确凭据清理已验；有限接收字节包含失败/丢弃，字段门禁不因模型完成移除。仅补充登记茅台官方主页，其他对象/资料无能力时保留缺口；原文短引核对不等于断言真值或历史可得性。票12/13、技术审阅23及完整市场资料覆盖仍有独立验收，不能从本票推及。具体接口与局限见 [Codex契约](../codex-evidence-contract.md)。
+
+## 2026-10-08：票12 DeepSeek工程适配（partial）
+
+实际安装Python3.13.12，锁定`openai-agents==0.23.1`、`openai==3.26.0`、`httpx2==2.13.1`、`jsonschema==4.26.0`。采用官方Agents SDK公开Agent/Runner/FunctionTool/OpenAIResponsesModel及公开HTTP transport，非源码摘取或私有补丁。Agents固定[tag c4a1d047b22488234b2ba81056e1b9b8db2127a5](https://github.com/openai/openai-agents-python/tree/c4a1d047b22488234b2ba81056e1b9b8db2127a5)、[MIT许可](https://github.com/openai/openai-agents-python/blob/c4a1d047b22488234b2ba81056e1b9b8db2127a5/LICENSE)，发行wheel SHA256 `0183e6da7370df80f7cf900379d9f113e664e32b426f51aa7486c9091faf8f2d`；OpenAI客户端[tag 4e152cdefe1844c2d5d78653310e9b9c0195c44e](https://github.com/openai/openai-python/tree/4e152cdefe1844c2d5d78653310e9b9c0195c44e)。必要基础传递依赖MCP未加载服务器；不引入extras、LiteLLM、SandboxAgent、插件或技能。
+
+[DeepSeek Responses官方说明](https://api-docs.deepseek.com/zh-cn/guides/responses_api/)与固定SDK源码核查：provider无状态、不支持include，但SDK实际发送空include。唯一兼容适配删除`include=[]`，拒绝非空及有状态字段；不从固定HTTP方法推定真实strict/schema支持。固定`deepseek-flash`及`https://api.deepseek.com/responses`，无OpenAI fallback；全局及运行tracing明确disabled。Roll复用11具体有限工具和07事实归档/门禁，不抽泛化后端框架。
+
+实际SDK三轮固定响应接续、串行受控工具、失败/丢弃接收预算、结构宿主校验、本地脱敏、FastAPI/SQLite/Chrome及OS故障工程通过，17实际模型工具payload发送前封存输入审计通过。仍没有明确DeepSeek API认证，真实服务多轮、模型权限、schema/用量、实际取消/错误未执行，票12保持needs-info/partial、13未解锁；Codex完成与网页订阅不代替本后端验收。条件及分层原输出/精确保全见[12验收](../../.scratch/roll-p0/evidence/12/acceptance.md)、[接入合同](../deepseek-evidence-contract.md)。

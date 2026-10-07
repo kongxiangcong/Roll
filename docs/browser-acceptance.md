@@ -32,3 +32,17 @@ Remove-Item Env:ROLL_PLAYWRIGHT_FACTORY -ErrorAction SilentlyContinue
 ```
 
 方法源不证明真实异常/真实修订，实际源运行保留原字节/SHA、供应商时间、取得时点和有限覆盖。08票级日志/页面/档案保全清单见 [验收](../.scratch/roll-p0/evidence/08/acceptance.md)。不合并不同账户的测试结果冒充一次默认suite全绿。
+
+17研究先用宿主真实07归档目录（非来源账户）运行`backend/.venv/Scripts/python.exe -X utf8 scripts/research_protocol_acceptance.py --data-root backend/.roll-data/acceptance-17-final --port 8037`。需要已有`research-inputs/07-browser`及原字节包，不能用方法fixture代替。
+
+从frontend目录使用独立已归档真实研究目录，原报告与旧协议会保留，每次Chrome生成关联后继记录：
+
+```powershell
+$env:ROLL_RESEARCH_LIVE='1'
+$env:ROLL_RESEARCH_DATA='D:/dsh-proj/Roll/.scratch/worktrees/17-research-protocol/backend/.roll-data/acceptance-17-final'
+$env:ROLL_TEST_API_PORT='8037'
+$env:ROLL_TEST_WEB_PORT='5197'
+npx playwright test --config playwright.research.config.ts
+```
+
+研究在历史子视图、五个主入口保持；不启动真实资金前向。17独立1passed/构建与公开HTTP原件保全见[票级验收](../.scratch/roll-p0/evidence/17/acceptance.md)。默认全文件05共享fixture红仍保留，不用17结果替代默认suite全绿。
