@@ -63,7 +63,7 @@ def recover_directory(run):
         registered=Path(process['task_root'])
         root=registered.resolve()
         if root!=registered or root.parent!=Path(tempfile.gettempdir()).resolve() or not re.fullmatch(
-            'roll-codex-task-'+re.escape(run['run_id'])+'-[a-z0-9_]+',root.name):
+            ('roll-deepseek-task-' if run.get('backend')=='DEEPSEEK' else 'roll-codex-task-')+re.escape(run['run_id'])+'-[a-z0-9_]+',root.name):
             raise ValueError('UNSAFE_TASK_ROOT')
         if not root.exists():return {'status':'ALREADY_ABSENT','credential_removed':True}
         # lstat checks every child without following reparse/junction targets.
@@ -388,7 +388,7 @@ def tool(host, run, request, state, event, deadline, cancel):
                     response_status=response.status_code
                     response_type=response.headers.get('content-type','')
             received = now()
-            archive = host.evidence.archive(bytes(content), 'CODEX_PUBLIC_SOURCE', source_url=source['url'],
+            archive = host.evidence.archive(bytes(content), 'DEEPSEEK_PUBLIC_SOURCE' if run.get('backend')=='DEEPSEEK' else 'CODEX_PUBLIC_SOURCE', source_url=source['url'],
                 source_id=arguments['source_id'], instrument=instrument, received_at=received,
                 available_at=received, time_precision='RECEIPT_ONLY', event_time=None,
                 http_status=response_status,content_type=response_type,
@@ -425,13 +425,13 @@ def publish(host, run, request, state, output):
     try:
         if not isinstance(output,str) or len(output.encode())>run['limits']['response_bytes']:
             raise ValueError('OUTPUT_SIZE_INVALID')
-        output_archive=host.evidence.archive(output.encode(),'CODEX_CANDIDATE_OUTPUT',
+        output_archive=host.evidence.archive(output.encode(),'DEEPSEEK_CANDIDATE_OUTPUT' if run.get('backend')=='DEEPSEEK' else 'CODEX_CANDIDATE_OUTPUT',
             run_id=run['run_id'],received_at=now(),formal_judgment='DISABLED')
         run['candidate_output_hash']=output_archive['sha256']
         candidate = json.loads(output)
         if not isinstance(candidate, dict) or set(candidate) != {'candidates', 'gaps'} or not isinstance(candidate['candidates'], list) or not isinstance(candidate['gaps'], list):
             raise ValueError('OUTPUT_SCHEMA_INVALID')
-        hashes = {a['sha256']:a for a in run['archives'] if a['kind'] in {'RAW_RESPONSE','CODEX_PUBLIC_SOURCE'}
+        hashes = {a['sha256']:a for a in run['archives'] if a['kind'] in {'RAW_RESPONSE','CODEX_PUBLIC_SOURCE','DEEPSEEK_PUBLIC_SOURCE'}
                   and a.get('http_status',200)==200}
         accepted = []
         for value in candidate['candidates']:
@@ -477,7 +477,7 @@ def publish(host, run, request, state, output):
             'coverage': [c for s in state['snapshots'] for c in s['coverage']], 'gaps': run['gaps'],
             'requested_instruments': request['instruments'], 'requested_groups': request['groups'],
             'created_at': now(), 'cutoff': request['cutoff'], 'namespace': 'HISTORICAL' if request['purpose']=='RESEARCH' else 'ACTUAL',
-            'evidence_kind': run['evidence_kind'], 'formal_judgment': 'DISABLED', 'adapter_version': '11-codex-v1'}
+            'evidence_kind': run['evidence_kind'], 'formal_judgment': 'DISABLED', 'adapter_version': '12-deepseek-v1' if run.get('backend')=='DEEPSEEK' else '11-codex-v1'}
         run.update(snapshot_id=snapshot['snapshot_id'], status='PARTIAL' if run['gaps'] else 'COMPLETE')
         run['_snapshot'] = snapshot
     except (ValueError, TypeError, KeyError) as error:

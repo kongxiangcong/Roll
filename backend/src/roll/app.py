@@ -17,15 +17,17 @@ from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
+from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None):
     @asynccontextmanager
     async def lifespan(application):
         yield
         await asyncio.to_thread(application.state.codex.close)
+        await asyncio.to_thread(application.state.deepseek.close)
 
     app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
     ledger = Ledger(directory or data_directory())
@@ -69,6 +71,12 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     app.state.evidence=evidence
     codex = CodexEvidence(evidence, codex_worker)
     app.state.codex = codex
+    deepseek=DeepSeekEvidence(evidence,deepseek_endpoint)
+    app.state.deepseek=deepseek
+
+    @app.post('/api/data/requests/{request_id}/deepseek',status_code=202)
+    def deepseek_start(request_id:str,command:DeepSeekQuestion):
+        return deepseek.start(request_id,command)
 
     @app.post('/api/data/requests/{request_id}/codex', status_code=202)
     def codex_start(request_id: str, command: CodexQuestion):
@@ -76,7 +84,8 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.post('/api/data/runs/{run_id}/cancel')
     def codex_cancel(run_id: str):
-        return codex.cancel(run_id)
+        run=evidence.get('retrieval_runs',run_id)
+        return deepseek.cancel(run_id) if run['backend']=='DEEPSEEK' else codex.cancel(run_id)
     resolutions=SourceResolutions(evidence,market_clock)
     app.state.resolutions=resolutions
 
