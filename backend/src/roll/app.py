@@ -1,7 +1,8 @@
 from pathlib import Path
 import os
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Response
+from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide
 
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.config import data_directory
@@ -12,6 +13,38 @@ def create_app(directory: Path | None = None):
     app = FastAPI(title="Roll", version="0.1.0")
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
+    imports = CsvImports(ledger)
+
+    @app.get("/api/account/csv/template")
+    def csv_template():
+        return Response(template(), media_type="text/csv; charset=utf-8", headers={"Content-Disposition": 'attachment; filename="roll-csv-1.csv"'})
+
+    @app.get("/api/account/csv/guide")
+    def csv_guide():
+        return Response(guide(), media_type="text/html")
+
+    @app.post("/api/account/csv/drafts", status_code=201)
+    async def csv_draft(request: Request, filename: str, encoding: str, expected_account_version: int, revision_of: str | None = None):
+        if expected_account_version < 0:
+            raise HTTPException(422, "账户版本必须非负")
+        raw = bytearray()
+        async for chunk in request.stream():
+            raw.extend(chunk)
+            if len(raw) > 4 * 1024 * 1024:
+                raise HTTPException(413, "CSV 最多4MiB")
+        return imports.upload(bytes(raw), filename, encoding, expected_account_version, revision_of)
+
+    @app.get("/api/account/csv/drafts/{draft_id}")
+    def csv_get(draft_id: str):
+        return imports.get(draft_id)
+
+    @app.post("/api/account/csv/drafts/{draft_id}/revise", status_code=201)
+    def csv_revise(draft_id: str, command: CsvRevision):
+        return imports.revise(draft_id, command)
+
+    @app.get("/api/account/csv/files/{fingerprint}")
+    def csv_file(fingerprint: str):
+        return Response(imports.file(fingerprint), media_type="application/octet-stream")
     funding = Funding(ledger)
 
     if os.environ.get("ROLL_ENV") == "test":
@@ -67,6 +100,8 @@ def create_app(directory: Path | None = None):
 
     @app.post("/api/account/drafts", status_code=201)
     def draft(command: DraftCommand):
+        if command.kind == "CSV_BATCH":
+            raise HTTPException(422, "CSV 整批草稿只接受原文件上传，不接受外部生成的批命令")
         return ledger.draft(command)
 
     @app.get("/api/account/drafts/{draft_id}")

@@ -50,7 +50,7 @@ def actual_fill(payload, account, number, text_value):
                   and Decimal(prior["quantity"])==Decimal(quantity) and Decimal(prior["price"])==Decimal(price)
                   and prior["fee"]["status"]==fee["status"] and Decimal(prior["charged_fee"])==Decimal(amount))
             if same:
-                raise HTTPException(409,{"code":"FILL_ALREADY_RECORDED","record_id":prior["record_id"],"receipt_id":prior["receipt_id"]})
+                raise HTTPException(409,{"code":"FILL_ALREADY_RECORDED","record_id":prior["record_id"],"receipt_id":prior.get("receipt_id")})
             raise HTTPException(422,"成交标识已存在但内容不同，原输入隔离待核，不覆盖既有事实")
     with localcontext() as context:
         context.prec=80
