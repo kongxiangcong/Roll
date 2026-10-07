@@ -5,7 +5,8 @@ import pytest
 import os
 import subprocess
 import sys
-from test_account_process import Server
+import signal
+from test_account_process import Server,free_port
 
 
 def result(client,identifier):
@@ -46,6 +47,38 @@ def test_actual_review_process_commit_and_identity_recover_without_duplicate_aud
         if original:assert value==original
         gaps=recovered.client.get('/api/reviews/coverage').json()['gaps']
         assert gaps and gaps[-1]['monitoring_fault'] is False
+    finally:recovered.stop()
+
+
+@pytest.mark.skipif(sys.platform!='win32',reason='actual Windows uvicorn graceful shutdown boundary')
+def test_actual_windows_graceful_shutdown_keeps_normal_gap_without_fault_or_new_prediction(tmp_path):
+    port=free_port();directory=tmp_path/'data'
+    startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=0
+    with open(tmp_path/'normal-service-close.log','w',encoding='utf-8') as log:
+        process=subprocess.Popen([sys.executable,'-m','uvicorn','roll.app:create_app','--factory','--host','127.0.0.1','--port',str(port)],
+            env={**os.environ,'ROLL_DATA_DIR':str(directory),'ROLL_ENV':'test'},stdout=log,stderr=subprocess.STDOUT,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,startupinfo=startup)
+        try:
+            with httpx.Client(base_url=f'http://127.0.0.1:{port}',timeout=10) as client:
+                for _ in range(200):
+                    try:
+                        if client.get('/api/health').status_code==200:break
+                    except httpx.TransportError:pass
+                    time.sleep(.05)
+                task=client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()
+                original=result(client,task['task_id'])
+            process.send_signal(signal.CTRL_BREAK_EVENT)
+            process.wait(timeout=15)
+        finally:
+            if process.poll() is None:process.kill();process.wait(timeout=10)
+    recovered=Server(directory)
+    try:
+        coverage=recovered.client.get('/api/reviews/coverage').json()
+        assert coverage['sessions'][-2]['close_reason']=='NORMAL_CLOSE_NO_ALWAYS_ON_REQUIREMENT'
+        assert coverage['gaps'][-1]['reason']=='NORMAL_OFFLINE_NO_COVERAGE_PROMISED'
+        assert coverage['gaps'][-1]['monitoring_fault'] is False
+        assert recovered.client.get('/api/reviews/tasks/'+original['task_id']).json()==original
+        assert len(recovered.client.get('/api/reviews/history').json())==1
     finally:recovered.stop()
 
 

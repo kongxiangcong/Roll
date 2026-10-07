@@ -19,7 +19,7 @@ test('five-entry no-trade declaration, on-demand facts, post-close gaps, history
   await expect(page.getByRole('heading',{name:'账户核对已确认，回执已保存'})).toBeVisible();await page.getByRole('button',{name:'回到今天',exact:true}).click();
   const accountBefore=await(await request.get('/api/account')).json();
   await page.getByRole('button',{name:'按需观察',exact:true}).click();await expect(page.getByText('观察记录已保存。')).toBeVisible();
-  await expect(page.getByText('合成停牌风险原时点案例；不代表实际当前状态',{exact:false}).first()).toBeVisible();
+  await expect(page.getByText('合成停牌风险原时点案例；不代表实际当前状态',{exact:true})).toBeVisible();
   await expect(page.getByText('已归档外部权益事实，个人到账仍待确认。',{exact:true})).toBeVisible();
   await expect(page.getByText('固定市场背景',{exact:true})).toBeVisible();await expect(page.getByText('上证指数',{exact:false})).toBeVisible();
   await expect(page.getByText('最近完整日线 2026-09-30',{exact:false}).first()).toBeVisible();

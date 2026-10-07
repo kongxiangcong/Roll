@@ -57,6 +57,7 @@ class VerificationRequest(BaseModel):
     trigger:Literal['USER_SELECTED','MATERIAL_DOUBT','CRITICAL_CONFLICT']
     reason:str=Field(min_length=1)
     facts:list[DecisiveFact]=Field(min_length=1,max_length=10)
+    knowledge_cutoff:datetime|None=None
 
 
 class Reviews:
@@ -72,6 +73,7 @@ class Reviews:
         self.session_started_at=None
         self.start_lock=threading.Lock()
         self.worker_error=None
+        self.last_day_audit=None
         with ledger.connection() as db:
             db.executescript('''
                 CREATE TABLE IF NOT EXISTS review_tasks(id TEXT PRIMARY KEY, task_key TEXT UNIQUE NOT NULL, value TEXT NOT NULL);
@@ -82,7 +84,10 @@ class Reviews:
                 CREATE TABLE IF NOT EXISTS review_maintenance(id TEXT PRIMARY KEY, value TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS review_maintenance_checks(id TEXT PRIMARY KEY, value TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS review_verification_requests(id TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS review_running_days(day TEXT PRIMARY KEY, audit_id TEXT NOT NULL);
             ''')
+            db.execute('CREATE TABLE IF NOT EXISTS schema_migrations(name TEXT PRIMARY KEY, applied_at TEXT NOT NULL)')
+            db.execute('INSERT OR IGNORE INTO schema_migrations VALUES(?,?)',('15-reviews-v1',now()))
 
     def start(self):
         with self.start_lock:self.acquire_worker()
@@ -177,7 +182,33 @@ class Reviews:
                 try:self.perform(identifier)
                 except Exception as error:self.finish_error(identifier,error)
             self.check_maintenance()
+            self.check_running_day()
             self.stop.wait(.05)
+
+    def check_running_day(self):
+        clock=self.clock()
+        day=clock.astimezone(SHANGHAI).date().isoformat()
+        if self.last_day_audit==day:return
+        with self.ledger.connection() as db:
+            if db.execute('SELECT 1 FROM review_running_days WHERE day=?',(day,)).fetchone():
+                self.last_day_audit=day;return
+        account=self.ledger.account()
+        listing=self.market.listing()
+        _,_,gaps,versions=self.facts_at(listing,clock)
+        calendar=self.market.rules.calendar('SSE',clock.astimezone(SHANGHAI).date(),clock)
+        audit=self.audit({'task_id':None,'inputs':{'trading_date':day,'phase':calendar['phase']},'frozen_account':account,'module_errors':[]},
+            {'snapshot_id':None,'account_version':account['version'],'data_versions':versions,'gaps':gaps})
+        audit.update(origin='RUNNING_DAY_CHECK',actual_seen_at=clock.isoformat())
+        with self.ledger.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            if not db.execute('SELECT 1 FROM review_running_days WHERE day=?',(day,)).fetchone():
+                db.execute('INSERT INTO review_audits VALUES(?,?)',(audit['audit_id'],encode(audit)))
+                db.execute('INSERT INTO review_running_days VALUES(?,?)',(day,audit['audit_id']))
+            db.commit()
+        self.last_day_audit=day
+
+    def audits(self):
+        with self.ledger.connection() as db:return [json.loads(row[0]) for row in db.execute('SELECT value FROM review_audits ORDER BY rowid DESC')]
 
     def health(self):
         if not self.stop.is_set() and self.thread is None:self.start()
@@ -277,20 +308,27 @@ class Reviews:
         network=0
         deadline=started+LIMITS['timeout_seconds']
         if task['refresh_missing']:
-            objects=task['frozen_listing']['members']
-            if objects:
-                cutoff=min(datetime.fromisoformat(task['inputs']['cutoff']),datetime.now(timezone.utc))
-                request=self.evidence.request(DataRequest(instruments=[m['instrument'] for m in objects],
-                    groups=['QUOTE','DAILY','STATUS','ADJUSTMENTS','ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS'],purpose='OBSERVATION',
+            cutoff=min(datetime.fromisoformat(task['inputs']['cutoff']),datetime.now(timezone.utc))
+            gaps=task['frozen_result']['gaps']
+            members={m['instrument'] for m in task['frozen_listing']['members']}
+            stock_objects=sorted({g['instrument'] for g in gaps if g['instrument'] in members})
+            stock_groups=[g for g in ['QUOTE','DAILY','STATUS','ADJUSTMENTS','ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS'] if any(x['group']==g and x['instrument'] in members for x in gaps)]
+            background_objects=sorted({g['instrument'] for g in gaps if g['instrument'] not in members})
+            remaining_calls=LIMITS['http_calls_per_attempt'];remaining_bytes=4194304
+            requests=[(stock_objects,stock_groups,'OBSERVATION'),(background_objects,['DAILY','QUOTE'],'BACKGROUND')]
+            for objects,groups,purpose in requests:
+                if not objects or not groups or remaining_calls<1 or remaining_bytes<1 or time.monotonic()>=deadline:continue
+                request=self.evidence.request(DataRequest(instruments=objects,groups=groups,purpose=purpose,
                     start_date=cutoff.astimezone(SHANGHAI).date()-timedelta(days=40),end_date=cutoff.astimezone(SHANGHAI).date(),
-                    cutoff=cutoff,timeout_seconds=LIMITS['timeout_seconds'],max_calls=LIMITS['http_calls_per_attempt']))
-                limits={'deadline':deadline,'max_response_bytes':1048576,'max_total_bytes':4194304,'host_owner':self.owner}
+                    cutoff=cutoff,timeout_seconds=LIMITS['timeout_seconds'],max_calls=remaining_calls))
+                limits={'deadline':deadline,'max_response_bytes':1048576,'max_total_bytes':remaining_bytes,'host_owner':self.owner}
                 run=self.evidence.retrieve(request['request_id'],acquisition_limits=limits,cancel_event=ReviewCancellation(self,identifier))
                 task['retrieval_runs'].append(run['run_id'])
-                error=run['status']=='FAILED'
+                remaining_calls-=len(run['tools']);remaining_bytes-=run.get('retrieved_bytes',0)
+                error=error or run['status']=='FAILED'
                 task['module_errors'].extend({'run_id':run['run_id'],**g} for g in run['gaps']
                     if g['code'].endswith(('Error','Timeout')) or g['code'] in {'REQUEST_FAILED','PARSE_FAILED'})
-                network=sum(max(0,(datetime.fromisoformat(t['finished_at'])-datetime.fromisoformat(t['started_at'])).total_seconds()) for t in run['tools'] if t.get('finished_at'))
+                network+=sum(max(0,(datetime.fromisoformat(t['finished_at'])-datetime.fromisoformat(t['started_at'])).total_seconds()) for t in run['tools'] if t.get('finished_at'))
         acquisition=time.monotonic()-started if task['refresh_missing'] else 0
         local_started=time.monotonic()
         with self.ledger.connection() as db:
@@ -403,8 +441,9 @@ class Reviews:
             facts.extend(selected)
             versions.append(snapshot['snapshot_id'])
             hashes={f['raw_hash'] for f in selected}
-            observations.extend({**o,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id']} for o in snapshot['observations']
-                if set(o['basis_raw_hashes']) & hashes and datetime.fromisoformat(o['observed_at'])<=knowledge)
+            observations.extend({**o,'observed_at':o.get('observed_at') or snapshot['created_at'],'available_time_basis':'ORIGINAL_OBSERVATION_TIME' if o.get('observed_at') else 'ORIGINAL_SNAPSHOT_ACTUAL_PUBLICATION_TIME',
+                'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id']} for o in snapshot['observations']
+                if set(o['basis_raw_hashes']) & hashes and datetime.fromisoformat(o.get('observed_at') or snapshot['created_at'])<=knowledge)
         instruments=[]
         gaps=[]
         facts=list({(f['instrument'],f['group'],f['raw_hash'],f.get('trade_date'),f.get('art_code'),f.get('report_period')):f for f in reversed(facts)}.values())
@@ -469,7 +508,6 @@ class Reviews:
                   'cutoff':cutoff.isoformat(),'account_version':account['version'],'list_version':listing['version'],
                   'data_versions':versions,
                   'shadow_version':None}
-        task_key=hashlib.sha256(encode(identity).encode()).hexdigest()
         result={'snapshot_id':str(uuid4()),'previous_snapshot_id':None,'calendar':calendar,
                 'account_version':account['version'],'account_confirmed_at':account['confirmed_at'],
                 'account_effective_at':account['effective_at'],'cutoff':cutoff.isoformat(),
@@ -480,7 +518,7 @@ class Reviews:
                 'instruments':instruments,'observations':observations,'data_versions':versions,'gaps':gaps}
         result['source_assessments']=self.source_assessments(versions,knowledge)
         identity['refresh_missing']=command.refresh_missing
-        task_key=hashlib.sha256(encode(identity).encode()).hexdigest()
+        task_key=hashlib.sha256(encode({**identity,'cutoff':cutoff.astimezone(timezone.utc).isoformat()}).encode()).hexdigest()
         task={'task_id':str(uuid4()),'task_key':task_key,'inputs':identity,'status':'QUEUED','attempts':0,
               'refresh_missing':command.refresh_missing,'frozen_listing':listing,'frozen_account':account,'frozen_result':result,
               'retrieval_runs':[],'module_errors':[],'timing':{'network_seconds':0,'acquisition_seconds':0,'local_seconds':0},
@@ -513,6 +551,8 @@ class Reviews:
     def verification_request(self,identifier,command:VerificationRequest):
         task=self.get(identifier)
         if not task.get('result'):raise HTTPException(409,'重点复盘须关联已发布观察')
+        cutoff=datetime.fromisoformat(task['result']['knowledge_cutoff'])
+        if command.knowledge_cutoff is not None and command.knowledge_cutoff!=cutoff:raise HTTPException(422,'重点复盘知识截止须保持原观察已保存时点')
         if not command.reason.strip() or len({f.fact_id for f in command.facts})!=len(command.facts):raise HTTPException(422,'疑点说明须非空，决定性事实标识须唯一')
         originals=[]
         for item in command.facts:
@@ -521,11 +561,16 @@ class Reviews:
                 snapshot=self.evidence.get('market_evidence_snapshots',reference.snapshot_id)
                 if reference.fact_index>=len(snapshot['facts']):raise HTTPException(422,'原事实下标不存在')
                 fact=snapshot['facts'][reference.fact_index]
+                event_cutoff=datetime.fromisoformat(task['result']['cutoff'])
+                date=fact.get('trade_date') or fact.get('disclosure_date')
+                if fact['instrument'] not in {i['instrument'] for i in task['result']['instruments']} or datetime.fromisoformat(fact['available_at'])>cutoff or (date and date[:10]>event_cutoff.astimezone(SHANGHAI).date().isoformat()) or (fact.get('upstream_at') and datetime.fromisoformat(fact['upstream_at'])>event_cutoff):
+                    raise HTTPException(422,'决定性原事实须属于原观察对象及实际可得/事件截止，不能借同快照混入其他对象或后知事实')
                 if item.field not in fact:raise HTTPException(422,'原事实不存在该决定性字段')
                 self.evidence.raw(fact['raw_hash'])
                 originals.append({'fact_id':item.fact_id,'reference':reference.model_dump(),'field':item.field,'value':fact[item.field],
                     'raw_hash':fact['raw_hash'],'instrument':fact['instrument'],'available_at':fact['available_at']})
-        payload=command.model_dump(mode='json')
+        payload=command.model_dump(mode='json',exclude_none=True)
+        payload['knowledge_cutoff']=cutoff.isoformat()
         key=hashlib.sha256(encode({'task_id':identifier,'request':payload}).encode()).hexdigest()
         value={'request_id':key,'task_id':identifier,'snapshot_id':task['result']['snapshot_id'],'audit_id':task['audit_id'],
             'request':payload,'original_fact_values':originals,'status':'PENDING_CONSUMER_14','verification_id':None,'created_at':now()}

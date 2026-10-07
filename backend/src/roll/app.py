@@ -164,6 +164,10 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     def review_verification_request(identifier:str,command:VerificationRequest):
         return reviews.verification_request(identifier,command)
 
+    @app.get('/api/reviews/verification-requests/{identifier}')
+    def get_review_verification_request(identifier:str):
+        return evidence.get('review_verification_requests',identifier)
+
     @app.get('/api/reviews/summary')
     def review_summary():
         return reviews.summary()
@@ -179,6 +183,10 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     @app.get('/api/reviews/audits/{identifier}')
     def review_audit(identifier:str):
         return reviews.get_audit(identifier)
+
+    @app.get('/api/reviews/audits')
+    def review_audits():
+        return reviews.audits()
 
     @app.post('/api/reviews/recover',status_code=202)
     def recover_reviews():

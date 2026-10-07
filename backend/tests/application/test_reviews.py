@@ -34,6 +34,7 @@ def test_closed_exchange_on_demand_is_a_complete_fact_flow_without_model_or_dail
         assert observation['forward_sample_created'] is False
         assert observation['coverage']['intraday_observed'] is False
         assert client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id']==task['task_id']
+        assert client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','cutoff':'2026-10-07T02:00:00+00:00'}).json()['task_id']==task['task_id']
         assert len(client.get('/api/reviews/history').json())==1
     with TestClient(create_app(tmp_path,review_clock=clock)) as client:
         assert client.get('/api/reviews/tasks/'+task['task_id']).json()==task
@@ -278,14 +279,101 @@ def test_explicit_critical_review_freezes_decisive_original_reference_without_up
         task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
         audit=client.get('/api/reviews/audits/'+task['audit_id']).json()
         assert audit['critical_review']['status']=='NOT_REQUIRED'
-        command={'trigger':'USER_SELECTED','reason':'重点核对收盘原价，影响复盘归因','facts':[{'fact_id':'decisive-close','field':'close','references':[{'snapshot_id':run['snapshot_id'],'fact_index':0}]}]}
+        command={'trigger':'USER_SELECTED','knowledge_cutoff':task['result']['knowledge_cutoff'],'reason':'重点核对收盘原价，影响复盘归因','facts':[{'fact_id':'decisive-close','field':'close','references':[{'snapshot_id':run['snapshot_id'],'fact_index':0}]}]}
         selected=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=command)
         assert selected.status_code==201,selected.text
         value=selected.json()
         assert value['task_id']==task['task_id'] and value['status']=='PENDING_CONSUMER_14'
         assert value['original_fact_values'][0]['value']=='10'
         assert value['request']==command
+        assert client.get('/api/reviews/verification-requests/'+value['request_id']).json()==value
         assert client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=command).json()==value
         assert client.get('/api/reviews/audits/'+task['audit_id']).json()['critical_review']['request_id']==value['request_id']
         wrong={**command,'facts':[{'fact_id':'wrong','field':'close','references':[{'snapshot_id':'missing','fact_index':0}]}]}
         assert client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=wrong).status_code==422
+
+
+def test_empty_account_can_refresh_fixed_backgrounds_with_shared_budget_and_no_account_write(tmp_path):
+    def background(request):
+        symbol=request.url.params['param'].split(',')[0]
+        return httpx.Response(200,json={'code':0,'data':{symbol:{'day':[['2026-09-30','3800','3830','3840','3790','400000000']]}}})
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(background))) as client:
+        before=client.get('/api/account').json()
+        task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True}).json()['task_id'])
+        assert task['retrieval_runs'],task
+        assert len(task['result']['instruments'])==2
+        assert all(i['last_complete_daily'] and i['last_complete_daily']['trade_date']=='2026-09-30' for i in task['result']['instruments'])
+        run=client.get('/api/data/runs/'+task['retrieval_runs'][0]).json()
+        assert len(run['tools'])<=4
+        assert client.get('/api/account').json()==before
+
+
+def test_real_public_source_revision_changes_new_review_but_keeps_published_old_review_and_replay(tmp_path):
+    price=['10']
+    def source(request):return httpx.Response(200,json={'rc':0,'data':{'code':'600519','market':1,'klines':[f'2026-09-30,{price[0]},{price[0]},{price[0]},{price[0]},100,{int(price[0])*10000}']}})
+    def resolve(client,request_id,prior=None):
+        command={'usage':'POST_MARKET_RECORD','use_cache':False,'allow_fallback':False}
+        if prior:command['revision_of']=prior
+        response=client.post('/api/data/requests/'+request_id+'/resolve',json=command)
+        assert response.status_code==202,response.text
+        identifier=response.json()['resolution_id']
+        for _ in range(100):
+            value=client.get('/api/data/resolutions/'+identifier).json()
+            if value['status']=='COMPLETED':return value
+            time.sleep(.02)
+        raise AssertionError(value)
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(source))) as client:
+        establish(client,['SSE:600519'])
+        client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN','instrument_type':'STOCK','name':'合成普通股','basis':'合成身份','effective_at':'2026-10-07T00:00:00+08:00'})
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-09-30'}).json()
+        first_resolution=resolve(client,req['request_id'])
+        first=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
+        price[0]='11'
+        second_resolution=resolve(client,req['request_id'],first_resolution['resolution_id'])
+        second=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
+        first_item=next(i for i in first['result']['instruments'] if i['instrument']=='SSE:600519')
+        second_item=next(i for i in second['result']['instruments'] if i['instrument']=='SSE:600519')
+        assert first_item['last_complete_daily']['close']=='10' and second_item['last_complete_daily']['close']=='11'
+        assert second['result']['previous_snapshot_id']==first['result']['snapshot_id']
+        assert second['result']['change']=='NEW_INFORMATION'
+        assessments={r['resolution_id']:r for r in second['result']['source_assessments']}
+        assert assessments[first_resolution['resolution_id']]['dependency_status']=='INVALIDATED'
+        assert assessments[second_resolution['resolution_id']]['dependency_status']=='CURRENT'
+        assert client.get('/api/reviews/tasks/'+first['task_id']).json()==first
+        assert client.post('/api/reviews/tasks/'+first['task_id']+'/replay').json()['result']==first['result']
+
+
+def test_running_day_audit_records_only_actual_seen_days_without_creating_observations(tmp_path):
+    clock=[datetime.fromisoformat('2026-10-08T10:00:00+08:00')]
+    with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+        for _ in range(100):
+            response=client.get('/api/reviews/audits')
+            if response.status_code==200 and response.json():break
+            time.sleep(.02)
+        assert response.status_code==200,response.text
+        first=response.json();assert [a['trade_date'] for a in first]==['2026-10-08']
+        assert first[0]['task_id'] is None and first[0]['snapshot_id'] is None
+        assert first[0]['origin']=='RUNNING_DAY_CHECK'
+        assert first[0]['metrics']['unfinished_execution_intents']['value'] is None
+        clock[0]=datetime.fromisoformat('2026-10-12T10:00:00+08:00');time.sleep(.15)
+        audits=client.get('/api/reviews/audits').json()
+        assert {a['trade_date'] for a in audits}=={'2026-10-08','2026-10-12'}
+        assert client.get('/api/reviews/history').json()==[]
+
+
+def test_actual_elapsed_deadline_stops_at_one_attempt_and_keeps_timeout_audit(tmp_path):
+    entered=threading.Event()
+    def delayed(request):
+        entered.set();time.sleep(8.1)
+        return httpx.Response(503,content=b'controlled deadline boundary')
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(delayed))) as client:
+        response=client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True})
+        assert entered.wait(2)
+        for _ in range(500):
+            task=client.get('/api/reviews/tasks/'+response.json()['task_id']).json()
+            if task['status']=='TIMED_OUT':break
+            time.sleep(.02)
+        assert task['status']=='TIMED_OUT' and task['attempts']==1,task
+        assert task['timing']['acquisition_seconds']>=8
+        assert task['result']['gaps']
+        assert client.get('/api/reviews/audits/'+task['audit_id']).status_code==200
