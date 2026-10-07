@@ -36,3 +36,27 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
   const adjustment=await (await request.post('/api/account/drafts',{data:{kind:'FEE_ADJUSTMENT',expected_account_version:account.version,payload:{effective_at:'2026-10-07T12:00:00+08:00',source:'CSV浏览器实际费用核对',target_record_id:fill.record_id,actual_fee_amount:'5.00',basis:'实际券商回报'}}})).json();
   expect((await request.post('/api/account/confirm',{data:{draft_id:adjustment.draft_id,idempotency_key:'csv-browser-fee-adjustment'}})).ok()).toBeTruthy();
 });
+
+test('CSV v2 previews external funds separately from actual interest and confirms one receipt',async({page,request})=>{
+  const template=await (await request.get('/api/account/csv/template')).text();
+  const columns=template.replace(/^\uFEFF/,'').trim().split(',');
+  const rows=[{kind:'CASH_IN',record_id:'csv-browser-deposit',amount:'200.00'},{kind:'INTEREST',record_id:'csv-browser-interest',amount:'25.01'}];
+  const body=template+rows.map(row=>{const fields:Record<string,string>={template_version:'ROLL-CSV-2',effective_at:'2026-10-07T12:00:00+08:00',source:'实际现金流水',basis:'券商实际入账核对',...row};return columns.map(c=>fields[c]??'').join(',')+'\r\n';}).join('');
+  await page.goto('/');
+  await page.getByRole('button',{name:'同步账户',exact:true}).click();
+  await page.getByRole('button',{name:'Roll CSV导入',exact:true}).click();
+  await page.getByLabel('Roll CSV文件').setInputFiles({name:'资金利息.csv',mimeType:'text/csv',buffer:Buffer.from(body)});
+  await page.getByRole('button',{name:'上传并预览整批'}).click();
+  await expect(page.getByText('外部投入',{exact:true})).toBeVisible();
+  await expect(page.getByText('投资收益到账',{exact:true})).toBeVisible();
+  await page.screenshot({path:'test-results/csv-cash-preview.png',fullPage:true});
+  await page.getByRole('button',{name:'确认整批入账'}).click();
+  await expect(page.getByRole('heading',{name:'CSV整批已确认，回执已保存'})).toBeVisible();
+  const account=await (await request.get('/api/account')).json();
+  const deposit=account.cash_records.find((r:{record_id:string})=>r.record_id==='csv-browser-deposit');
+  const interest=account.cash_records.find((r:{record_id:string})=>r.record_id==='csv-browser-interest');
+  expect(deposit.flow_category).toBe('EXTERNAL_IN');
+  expect(interest.amount).toBe('25.01');
+  expect(interest.flow_category).toBe('INVESTMENT_INCOME');
+  expect(interest.receipt_id).toBe(deposit.receipt_id);
+});
