@@ -24,4 +24,6 @@ TDD第一公开切片404红→1passed，下一切片支持拒绝FAILED红→METH
 
 ## 原件保留
 
-最终实际/METHOD目录 `D:/dsh-proj/Roll/.scratch/worktrees/19-transparent-model-freeze/backend/.roll-data/acceptance-19-final`；前次 `acceptance-19` 及所有本票test-19-*方法原件保留。源根18只读 `D:/dsh-proj/Roll/backend/.roll-data/implementation-evidence/18/acceptance-18-final`。所有自有1524运行文件/127,455,836bytes实际source路径→相对保全映射/bytes/SHA见[runtime-preservation.json](runtime-preservation.json)；包含SQLite、raw、Parquet、方法源/过程与报告。保全前所有本票服务已退出。尚未移动或删除源，集成父可依manifest精确保全，未来19/20真实不足不可靠METHOD原件补齐。
+最终实际/METHOD目录 `D:/dsh-proj/Roll/.scratch/worktrees/19-transparent-model-freeze/backend/.roll-data/acceptance-19-final`；前次 `acceptance-19` 及所有本票test-19-*方法原件保留。源根18只读 `D:/dsh-proj/Roll/backend/.roll-data/implementation-evidence/18/acceptance-18-final`。所有自有1523运行文件/127,455,764bytes实际source路径→相对保全映射/bytes/SHA见[runtime-preservation.json](runtime-preservation.json)；包含SQLite、raw、Parquet、方法源/过程与报告。保全前所有本票服务已退出。尚未移动或删除源，集成父可依manifest精确保全，未来19/20真实不足不可靠METHOD原件补齐。
+
+保全审核精确清理 `test-19-final/test_codex_actual_tool_input_d0/method-chatgpt.json`：只对公开测试固定METHOD_CASE_ONLY字面值核SHA后删除此72bytes合成seed、从manifest排除。实际/个人auth未读取或复制；其余1523文件重新逐SHA核对一致。无前缀、个人目录或递归清理。

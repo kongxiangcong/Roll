@@ -3346,12 +3346,6 @@
       "sha256": "1002a119200b00567dc054f0328554792b3e4b37abf32e8250b025e868feaf7a"
     },
     {
-      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\19-transparent-model-freeze\\backend\\.roll-data\\test-19-final\\test_codex_actual_tool_input_d0\\method-chatgpt.json",
-      "relative": "test-19-final/test_codex_actual_tool_input_d0/method-chatgpt.json",
-      "bytes": 72,
-      "sha256": "1ef661b3be23db1d71d229fa4f0ecec93e5921c47cc4c4b33c06228bba6e17f3"
-    },
-    {
       "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\19-transparent-model-freeze\\backend\\.roll-data\\test-19-final\\test_codex_actual_tool_input_d0\\method-worker.py",
       "relative": "test-19-final/test_codex_actual_tool_input_d0/method-worker.py",
       "bytes": 2080,
@@ -9148,10 +9142,18 @@
       "sha256": "fae6c132ca8454c309283a921d9952cd5ae6db6bb497c604ac77fede6aea0667"
     }
   ],
-  "file_count": 1524,
-  "bytes": 127455836,
+  "file_count": 1523,
+  "bytes": 127455764,
   "source_retained": true,
   "actual_source_root": "D:/dsh-proj/Roll/backend/.roll-data/implementation-evidence/18/acceptance-18-final",
   "mapping": "implementation-evidence/19/<relative>; parent performs verified retention",
-  "services_closed": true
+  "services_closed": true,
+  "exclusions": [
+    {
+      "relative": "test-19-final/test_codex_actual_tool_input_d0/method-chatgpt.json",
+      "sha256": "1ef661b3be23db1d71d229fa4f0ecec93e5921c47cc4c4b33c06228bba6e17f3",
+      "bytes": 72,
+      "reason": "Exact public METHOD_CASE_ONLY test seed verified against test literal then removed; never copy personal or actual auth"
+    }
+  ]
 }
