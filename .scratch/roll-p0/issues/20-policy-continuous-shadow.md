@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**Completion:** pending
+
 **Primary acceptance:** AT-39、AT-62、AT-63、AT-74。
 
 **References:** [规格](../spec.md) ID-03、ID-10、ID-14、ID-15、ID-16；Testing Decisions 的主要边界 1、5、6 及“研究隔离”；[PRD](../../../ashare_market_decision_prd.md) EVAL-01/12/16/17、G5；[目录与实施约束](../project-layout.md)。
@@ -26,3 +28,5 @@
 2026-10-07：按已确认拆分发布；尚未实施或验收。
 
 2026-10-07：明确完整冻结包含 G5 及正式期监测政策与方法指纹；仅补齐文档，尚未实施、执行研究或验收。
+
+2026-10-08 本轮依赖前沿核查：未启动本票。19真实训练/时间外校准与模型冻结未完成；05已完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。

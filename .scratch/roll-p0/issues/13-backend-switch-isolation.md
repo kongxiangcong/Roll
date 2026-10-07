@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**Completion:** pending
+
 **Primary acceptance:** AT-43、AT-47、AT-83、AT-89、AT-90。
 
 **References:** [规格](../spec.md) ID-07—08、ID-17—20、Testing Decisions 1、4、6—7 与后端/外部组件、运维容量组合；[目录与实施约束](../project-layout.md)。
@@ -24,3 +26,5 @@
 ## Comments
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。
+
+2026-10-08 本轮依赖前沿核查：未启动本票。12真实DeepSeek多轮接入证据未完成；11已完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。

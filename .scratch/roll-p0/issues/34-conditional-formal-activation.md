@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**Completion:** pending
+
 **Primary acceptance:** 无新增 AT；本票负责真实条件性启用或明确未启用的交付证据。
 
 **References:** [规格](../spec.md) ID-10、ID-12、ID-16、ID-18、ID-19、ID-21；Testing Decisions 的主要边界 1、4、5、7；[PRD](../../../ashare_market_decision_prd.md) EVAL-15—17、RUN-03—06、18.3；[目录与实施约束](../project-layout.md)。
@@ -28,3 +30,5 @@
 2026-10-07：按已确认拆分发布；尚未实施或验收。
 
 2026-10-07：补齐真实启用时的持续监测配置与记录入口核对，区分监测机制工程验收和真实正式运行证据；原 FAIL/INCONCLUSIVE 明确未启用分支仍可完成。仅补充文档，新增要求尚未实施或验收。
+
+2026-10-08 本轮依赖前沿核查：未启动本票。33真实验证与31工程交付未完成；未达到PASS或明确未启用分支的结项条件。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
