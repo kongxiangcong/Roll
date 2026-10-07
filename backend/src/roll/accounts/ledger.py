@@ -147,6 +147,30 @@ class Ledger:
 
     def prepare(self, command, account):
         payload = command["payload"]
+        if command["kind"] == "CSV_BATCH":
+            if payload.get("errors"):
+                raise HTTPException(422, payload["errors"])
+            if set(payload) != {"source", "effective_at", "commands", "errors", "file_sha256"} or not payload["commands"]:
+                raise HTTPException(422, "CSV 批次需要至少一条有效命令")
+            projection, events, errors = account, [], []
+            for item in payload["commands"]:
+                for check in item.get("csv_checks", []):
+                    try:
+                        self.prepare(check, empty_account() if check["kind"] == "BASELINE" else projection)
+                    except HTTPException as error:
+                        errors.append({"row": check["csv_row"], "reason": error.detail})
+                try:
+                    if item["kind"] == "CSV_BATCH":
+                        raise HTTPException(422, "不能嵌套CSV批次")
+                    projection, new_events = self.prepare(item, projection)
+                    for event in new_events:
+                        event.update(source_file_sha256=payload["file_sha256"], source_rows=[check["csv_row"] for check in item.get("csv_checks", [])] or [item["csv_row"]])
+                    events.extend(new_events)
+                except HTTPException as error:
+                    errors.append({"row": item.get("csv_row"), "reason": error.detail})
+            if errors:
+                raise HTTPException(422, errors)
+            return projection, events
         effective_at = timestamp(payload.get("effective_at"))
         source = text_value(payload.get("source"), "source")
         if command["kind"] == "BASELINE":
@@ -210,24 +234,26 @@ class Ledger:
         return {key: {"before": before.get(key), "after": value}
                 for key, value in after.items() if before.get(key) != value}
 
-    def draft(self, command: DraftCommand):
+    def draft(self, command: DraftCommand, db=None):
+        if db is None:
+            with self.connection() as connection:
+                return self.draft(command, connection)
         command = command.model_dump()
-        account = self.account()
+        account = self.account(db=db)
         if command["expected_account_version"] != account["version"]:
             self.version_conflict(command["expected_account_version"], account)
         status,issues="READY",[]
         try:
             projection,_=self.prepare(command,account)
         except HTTPException as error:
-            if command["kind"] not in {"FILL","FEE_ADJUSTMENT"}|EVENT_FIELDS.keys() or error.status_code!=422:
+            if command["kind"] not in {"FILL","FEE_ADJUSTMENT","CSV_BATCH"}|EVENT_FIELDS.keys() or error.status_code!=422:
                 raise
             projection,status,issues=account,"QUARANTINED",[error.detail]
         draft_id, created_at = str(uuid4()), now()
         preview = self.diff(account, projection)
         if status=="READY" and command["kind"]=="FILL" and projection["fills"][-1].get("identity_warning"):
             issues=[projection["fills"][-1]["identity_warning"]]
-        with self.connection() as db:
-            db.execute("INSERT INTO account_drafts(id,command,preview,created_at,status,issues) VALUES(?,?,?,?,?,?)", (draft_id, encode(command), encode(preview), created_at,status,encode(issues)))
+        db.execute("INSERT INTO account_drafts(id,command,preview,created_at,status,issues) VALUES(?,?,?,?,?,?)", (draft_id, encode(command), encode(preview), created_at,status,encode(issues)))
         return {"draft_id": draft_id, "command": command, "preview": preview, "created_at": created_at,"status":status,"issues":issues}
 
     def get_draft(self, draft_id, db=None):
@@ -256,15 +282,23 @@ class Ledger:
                         raise HTTPException(409, {"code": "IDEMPOTENCY_CONTENT_CONFLICT", "receipt_id": prior["id"]})
                     db.rollback()
                     return json.loads(prior["receipt"])
-                if draft["status"]=="QUARANTINED":
-                    raise HTTPException(422,{"code":"QUARANTINED_DRAFT","issues":draft["issues"],"draft_id":command.draft_id})
+                if draft["status"] != "READY":
+                    raise HTTPException(422,{"code":draft["status"]+"_DRAFT","issues":draft["issues"],"draft_id":command.draft_id})
                 account = self.account(db=db)
                 if draft["command"]["expected_account_version"] != account["version"]:
                     self.version_conflict(draft["command"]["expected_account_version"], account)
+                if draft["command"]["kind"] == "CSV_BATCH":
+                    original_hash = draft["command"]["payload"]["file_sha256"]
+                    try:
+                        original = (self.path.parent / "raw" / "account-csv" / original_hash).read_bytes()
+                    except OSError:
+                        original = b""
+                    if hashlib.sha256(original).hexdigest() != original_hash:
+                        raise HTTPException(409, {"code": "CSV_ORIGINAL_UNAVAILABLE", "reason": "原文件缺失或指纹不符，未提交任何账户事实"})
                 projection, events = self.prepare(draft["command"], account)
                 version, confirmed_at, receipt_id = account["version"] + 1, now(), str(uuid4())
                 projection.update(version=version, confirmed_at=confirmed_at)
-                if draft["command"]["kind"] in {"BASELINE","PERMISSIONS"}:
+                if any(event["event_type"] == "PERMISSION_CONFIRMATION" for event in events):
                     for value in projection["permission_profile"]:
                         value.update(confirmed_at=confirmed_at, account_version=version)
                 event_ids = []
@@ -273,6 +307,9 @@ class Ledger:
                     event.update(event_id=event_id, account_version=version, recorded_at=confirmed_at, namespace="ACTUAL")
                     if event["event_type"] in {"BUY_FILL","SELL_FILL"}|EVENT_FIELDS.keys():
                         event["payload"].update(event_id=event_id,receipt_id=receipt_id)
+                        for fill in projection.get("fills", []):
+                            if fill["record_id"] == event["payload"]["record_id"]:
+                                fill.update(event_id=event_id, receipt_id=receipt_id)
                     if event["event_type"] in EVENT_FIELDS:
                         stamp_cash(projection,event["payload"],event_id=event_id,receipt_id=receipt_id,confirmed_at=confirmed_at)
                     event_ids.append(event_id)

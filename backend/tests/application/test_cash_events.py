@@ -351,3 +351,54 @@ def test_paid_rights_use_actual_total_cash_and_new_cost_while_unknown_fee_split_
         replay=client.get("/api/account/replay").json()
         assert replay["cash_balance"]=="96495.00"
         assert replay["lots"]==account["lots"]
+
+
+def test_identifier_whitespace_keeps_cash_and_lot_relationships_canonical_without_changing_raw(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        establish(client)
+        submit(client,pending(1," pending-1 "),"due")
+        raw=settle(2," paid-1 ","60.00"," pending-1 ")
+        draft=client.post("/api/account/drafts",json=raw).json()
+        assert draft["command"]["payload"]["target_record_id"] == " pending-1 "
+        client.post("/api/account/confirm",json={"draft_id":draft["draft_id"],"idempotency_key":"paid"}).raise_for_status()
+        account=client.get("/api/account").json()
+        assert account["cash_balance"]=="100060.00"
+        assert account["pending_items"][0]["outstanding_amount"]=="40.00"
+        assert account["cash_records"][1]["target_record_id"]=="pending-1"
+        excess=client.post("/api/account/drafts",json=settle(3,"excess","50.00"," pending-1 ")).json()
+        assert excess["status"]=="QUARANTINED"
+        correction={"kind":"CASH_CORRECTION","expected_account_version":3,"payload":{
+            "effective_at":"2026-10-07T12:00:00+08:00","source":"实际核对","record_id":" correction ","target_record_id":" pending-1 ","corrected_amount":"90.00","basis":"应收总额更正","broker_available_after":None}}
+        submit(client,correction,"correction")
+        rights={"kind":"RIGHTS_SUBSCRIPTION","expected_account_version":4,"payload":{
+            "effective_at":"2026-10-07T12:00:00+08:00","source":"实际配股","record_id":" rights-1 ","instrument":"SSE:600000","quantity":"100","amount":"500.00","fee_amount":None,"basis":"总支付明确","broker_available_after":None}}
+        submit(client,rights,"rights")
+        submit(client,fee_adjustment(5,"5.00"," rights-1 "),"fees")
+        share={"kind":"SHARE_CHANGE","expected_account_version":6,"payload":{
+            "effective_at":"2026-10-07T13:00:00+08:00","source":"实际送转","record_id":" share-1 ","instrument":"SSE:600000","new_quantity":"200","basis":"股份数量核对"}}
+        submit(client,share,"shares")
+        account=client.get("/api/account").json()
+        assert account["cash_records"][-1]["target_record_id"]=="pending-1"
+        assert account["pending_income"]=="30.00"
+        assert account["lots"][0]["lot_id"]==account["share_records"][0]["record_id"]=="rights-1"
+        assert account["lots"][1]["lot_id"]=="share-1:rights-1"
+        assert "rights-1" in account["fee_resolutions"]
+        replay=client.get("/api/account/replay").json()
+        assert replay["pending_items"]==account["pending_items"]
+        assert replay["lots"]==account["lots"]
+
+
+def test_rights_in_another_security_does_not_turn_unseen_baseline_cost_into_zero(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        baseline={"kind":"BASELINE","expected_account_version":0,"payload":{
+            "effective_at":"2026-10-07T10:00:00+08:00","source":"券商初始快照","cash_balance":"100000.00","broker_available":None,"broker_frozen":None,"withdrawable":None,"permission_profile":[],
+            "positions":[{"instrument":"SSE:600000","quantity":"300","sellable_quantity":None,"reference_cost":None}]}}
+        submit(client,baseline,"baseline")
+        rights={"kind":"RIGHTS_SUBSCRIPTION","expected_account_version":1,"payload":{
+            "effective_at":"2026-10-07T12:00:00+08:00","source":"已核对个人到账","record_id":"new-security","instrument":"SSE:600001","quantity":"100","amount":"500.00","fee_amount":"5.00","basis":"实际到账及扣款","broker_available_after":None}}
+        submit(client,rights,"rights")
+        account=client.get("/api/account").json()
+        assert account["positions"][0]["acquisition_cost"] is None
+        assert account["positions"][0]["cost_basis"]=="UNKNOWN"
+        assert account["positions"][1]["acquisition_cost"]=="500.00"
+        assert client.get("/api/account/replay").json()["positions"]==account["positions"]

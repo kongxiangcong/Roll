@@ -14,7 +14,8 @@
 | PENDING_ITEM | item_type,amount,instrument | item_type为DIVIDEND/INTEREST/TAX/FEE；确认已知个人应收/应付，现金/可用/持仓不变 |
 | SETTLEMENT | target_record_id,amount,broker_available_after | 关联原待结算实际部分/全部到账或扣款；金额不能超过剩余 |
 | CASH_CORRECTION | target_record_id,corrected_amount,broker_available_after | 仅更正04已确认现金、待结算或结算金额；填写更正后的原总额（可明确0），追加差额，不能更正更正记录自身 |
-| SHARE_CHANGE | instrument,new_quantity | 用户核对实际股份变动后的正数总量，不根据公告猜个人数量 |
+| SHARE_CHANGE | instrument,new_quantity | 用户核对免费送转/拆并后正数总量，不根据公告猜个人数量 |
+| RIGHTS_SUBSCRIPTION | instrument,quantity,amount,fee_amount,broker_available_after | 实际配股新增股份与实际总支付；fee_amount可null，未知分拆不转0 |
 
 实际现金流水/结算金额须正数；broker_available_after可null。PENDING_ITEM与SHARE_CHANGE不确认新的券商可用快照；冻结/可取/可用保留原字段时点。实际现金变化无新券商快照时broker_available=null，保守可用也不冒充当前券商余额。更正PENDING_ITEM时broker_available_after必须null，不改变现金/可用。
 
@@ -31,6 +32,12 @@
 送转/拆并等数量变动以明确个人新总量确认。Decimal80位计算先于乘法/分摊；按现存活跃批次数量比例分配新数量，前批舍入8位，最后一批承接余数，总数量精确等于用户输入。每个剩余成本按分原样转入子批次，不计现金或收益，不改写原买入/已卖批次；保留parent_lot_id/transfer_child_id及转移数量/成本。未知/参考历史成本继续UNKNOWN，不能通过送转变成已知取得成本。可卖数量及当前券商单位参考成本变为未知；原单位参考成本保留在此前版本/事件及股份变动reference_cost_before中，不能冒充变动后的新券商参考价。
 
 后补原买入费沿实际转移关系递归分配已售成本和剩余成本，各代使用原数量的累计分舍入/余数；不会把移交到子批次的成本当作已经卖出。样例：买300×10预留费10→现金96990/成本3010；卖100×12费5→98185/余200成本2006.67；送转后余300股成本2006.67；再卖100×8费5；后补买费实际5→现金98985/余200股成本1335.55/已实现收益320.55。原买入数量300及费用暂估记录保持原值。多批八位数量/成本、最高输入精度及事件重放另有公开API验证。
+
+实际配股使用RIGHTS_SUBSCRIPTION。quantity是实际新增数量，amount是已实际支付总额（包含已付费用），新PAID_RIGHTS批次的取得总成本与现金扣款都等于amount，flow_category=INVESTMENT_ACQUISITION；不是外部提现或投资收入。已有买入/已售成本不覆盖；初始未知成本继续未知。ACTUAL事件类型SHARE_CHANGE的payload.kind区分RIGHTS_SUBSCRIPTION与免费数量调整，重放按payload.kind恢复。
+
+fee_amount是总支付内费用分拆，明确已知零必须填0；未知时null，gross_subscription_amount=null、rights_fee_breakdown_pending及FEE_BREAKDOWN_PENDING公开显示费用前损益未知，但实际总支付及取得总成本仍可确认。后补复用FEE_ADJUSTMENT指向配股record_id，actual_fee_amount不得超过总支付，追加fee_resolutions的gross_subscription_amount=amount-fee，不再次扣款、增成本或重复投资支出；原null保留在原记录/版本。09/10应通过该分拆及PAID_RIGHTS批次数量/转移关系取得费用前本金与费用；不能将fee-inclusive总成本再扣一次该费用，未知分拆不能冒充gross已知。04 investment_expenses不含成交和配股取得总成本内费用，后续绩效统一消费其原费用字段。
+
+实测：买300股总成本3005元后实际配股新增100股、总支付500、分拆未知→现金96495、400股、总成本3505；补分拆费用5→现金/数量/总成本不变，本金495，原费用null保留。ROLL-CSV-2同批实际新增100.00000001股、总支付500.01＋费用分拆5.01→只扣500.01，本金495；v1原头与允许kind冻结。
 
 ## 外部线索与时间
 

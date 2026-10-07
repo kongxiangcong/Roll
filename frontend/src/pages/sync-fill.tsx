@@ -10,7 +10,7 @@ export function SyncFill({account,mode,onDone}:{account:Account;mode:'FILL'|'FEE
   const [quantity,setQuantity]=useState(''),[price,setPrice]=useState(''),[fillId,setFillId]=useState(''),[orderId,setOrderId]=useState('');
   const [behavior,setBehavior]=useState('NO_RECOMMENDATION'),[feeStatus,setFeeStatus]=useState('KNOWN');
   const [fee,setFee]=useState(''),[reserve,setReserve]=useState(''),[basis,setBasis]=useState(''),[available,setAvailable]=useState('');
-  const [target,setTarget]=useState(()=>account.fills?.find(f=>f.fee.status==='PROVISIONAL'&&!account.fee_resolutions?.[f.record_id])?.record_id??account.fills?.at(-1)?.record_id??'');
+  const [target,setTarget]=useState(()=>account.fills?.find(f=>f.fee.status==='PROVISIONAL'&&!account.fee_resolutions?.[f.record_id])?.record_id??account.share_records?.find(r=>r.kind==='RIGHTS_SUBSCRIPTION'&&r.fee_amount===null&&!account.fee_resolutions?.[r.record_id])?.record_id??account.fills?.at(-1)?.record_id??account.share_records?.filter(r=>r.kind==='RIGHTS_SUBSCRIPTION').at(-1)?.record_id??'');
   const [draft,setDraft]=useState<Draft|null>(null),[key,setKey]=useState(''),[receipt,setReceipt]=useState<Receipt|null>(null);
   const [busy,setBusy]=useState(false),[error,setError]=useState(''),[queried,setQueried]=useState(false);
   const storageKey=`roll.pending-${mode}`;
@@ -36,7 +36,7 @@ export function SyncFill({account,mode,onDone}:{account:Account;mode:'FILL'|'FEE
       <label>费用状态<select value={feeStatus} onChange={e=>setFeeStatus(e.target.value)}><option value="KNOWN">实际费用已知</option><option value="PROVISIONAL">成交已确认，费用暂估</option></select></label>
       {feeStatus==='KNOWN'?<label>实际费用（元）<input required value={fee} onChange={e=>setFee(e.target.value)}/></label>:<label>保守预留费用（元）<input required value={reserve} onChange={e=>setReserve(e.target.value)}/></label>}<label>费用依据<input required value={basis} onChange={e=>setBasis(e.target.value)}/></label>
       <label>成交后已核对券商可用资金（元，可空）<input value={available} onChange={e=>setAvailable(e.target.value)}/></label><p className="muted">没有当前快照时保持未知；估计可用资金单独列示。暂估不会成为已知零费用或正式净收益。</p></>:
-      <><label>费用对应成交<select value={target} onChange={e=>setTarget(e.target.value)}>{account.fills?.map(f=><option key={f.record_id} value={f.record_id}>{f.fill_id??f.record_id} · {f.instrument} · {f.quantity} 股</option>)}</select></label><label>补充实际费用（元）<input required value={fee} onChange={e=>setFee(e.target.value)}/></label><label>费用调整依据<input required value={basis} onChange={e=>setBasis(e.target.value)}/></label><p>调整追加保存，原成交的暂估记录保持可查。</p></>}
+      <><label>费用对应成交<select value={target} onChange={e=>setTarget(e.target.value)}>{account.fills?.map(f=><option key={f.record_id} value={f.record_id}>{f.fill_id??f.record_id} · {f.instrument} · {f.quantity} 股</option>)}{account.share_records?.filter(r=>r.kind==='RIGHTS_SUBSCRIPTION').map(r=><option key={r.record_id} value={r.record_id}>{r.record_id} · {r.instrument} · 配股支付 {r.amount} 元</option>)}</select></label><label>补充实际费用（元）<input required value={fee} onChange={e=>setFee(e.target.value)}/></label><label>费用调整依据<input required value={basis} onChange={e=>setBasis(e.target.value)}/></label><p>调整追加保存，原记录保持可查。配股填写已支付总额中实际费用的分拆金额，现金与取得总成本保持不变。</p></>}
       <button className="primary" disabled={busy||mode==='FEE_ADJUSTMENT'&&!target}>{mode==='FILL'?'预览成交差异':'预览费用调整'}</button></form>:
       <><h3>{draft.status==='QUARANTINED'?'输入已保存，需核对':'确认前的资金与持仓差异'}</h3>{draft.issues?.map((issue,i)=><p key={i} role="status">{issue}</p>)}{draft.command?.kind==='FILL'&&(draft.command.payload.fee as {status:string})?.status==='PROVISIONAL'&&<p>费用暂估，实际费用仍未知</p>}
       <dl>{Object.entries(draft.preview).filter(([field])=>field in diffLabels).map(([field,value])=><div key={field}><dt>{diffLabels[field]}</dt><dd>之前：{display(field,value.before)}<br/>之后：{display(field,value.after)}</dd></div>)}</dl>
@@ -46,6 +46,6 @@ export function SyncFill({account,mode,onDone}:{account:Account;mode:'FILL'|'FEE
 function display(field:string,value:unknown):string{
   if(value===null||value===undefined)return '未知';
   if(field==='positions')return (value as Account['positions']).map(p=>`${p.instrument} ${p.quantity}股，取得成本${p.acquisition_cost??'未知'}元`).join('；')||'无持仓';
-  const states:Record<string,string>={FEE_PENDING:'费用待核，净收益未确定',KNOWN_FEES:'费用已知',COST_UNKNOWN:'历史成本未知'};
+  const states:Record<string,string>={FEE_PENDING:'费用待核，净收益未确定',KNOWN_FEES:'费用已知',COST_UNKNOWN:'历史成本未知',FEE_BREAKDOWN_PENDING:'配股总支付已确认，费用分拆及费用前损益未知'};
   return states[String(value)]??String(value);
 }

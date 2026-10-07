@@ -32,6 +32,10 @@ def actual_cash(kind,payload,account,number,text_value):
     if account["version"]==0:
         raise HTTPException(409,"请先建立账户基线")
     record=text_value(payload["record_id"],"record_id")
+    # Normalize only projected identity; raw commands and CSV rows stay intact.
+    payload={**payload,"record_id":record}
+    if "target_record_id" in payload:
+        payload["target_record_id"]=text_value(payload["target_record_id"],"target_record_id")
     if any(item["record_id"]==record for item in account.get("cash_records",[])+account.get("share_records",[])):
         raise HTTPException(422,"流水标识已存在，请核对原记录，不重复入账")
     if kind=="SHARE_CHANGE":

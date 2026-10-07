@@ -52,7 +52,7 @@ def actual_fill(payload, account, number, text_value):
                   and Decimal(prior["quantity"])==Decimal(quantity) and Decimal(prior["price"])==Decimal(price)
                   and prior["fee"]["status"]==fee["status"] and Decimal(prior["charged_fee"])==Decimal(amount))
             if same:
-                raise HTTPException(409,{"code":"FILL_ALREADY_RECORDED","record_id":prior["record_id"],"receipt_id":prior["receipt_id"]})
+                raise HTTPException(409,{"code":"FILL_ALREADY_RECORDED","record_id":prior["record_id"],"receipt_id":prior.get("receipt_id")})
             raise HTTPException(422,"成交标识已存在但内容不同，原输入隔离待核，不覆盖既有事实")
     with localcontext() as context:
         context.prec=80
@@ -160,7 +160,7 @@ def update_fee_state(account):
     account["net_result_state"]="FEE_PENDING" if unresolved else "FEE_BREAKDOWN_PENDING" if breakdown else "COST_UNKNOWN" if account.get("realized_gain","0.00") is None else "KNOWN_FEES"
     for position in account["positions"]:
         active=[l for l in account.get("lots",[]) if l["instrument"]==position["instrument"] and Decimal(l["remaining_quantity"])>0]
-        position["acquisition_cost"]=None if any(l["cost_basis"] in {"REFERENCE","UNKNOWN"} for l in active) else money(sum((Decimal(l["remaining_cost"]) for l in active),Decimal(0)))
+        position["acquisition_cost"]=None if (not active and Decimal(position["quantity"])>0) or any(l["cost_basis"] in {"REFERENCE","UNKNOWN"} for l in active) else money(sum((Decimal(l["remaining_cost"]) for l in active),Decimal(0)))
         position["cost_basis"]="PROVISIONAL" if any(l["instrument"]==position["instrument"] and l["cost_basis"]=="PROVISIONAL" for l in account.get("lots",[])) else "KNOWN" if position.get("acquisition_cost") is not None else "UNKNOWN"
 
 
