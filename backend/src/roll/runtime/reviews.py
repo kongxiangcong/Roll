@@ -580,7 +580,7 @@ class Reviews:
             db.execute('INSERT OR IGNORE INTO review_verification_requests VALUES(?,?)',(key,encode(value)))
             value=json.loads(db.execute('SELECT value FROM review_verification_requests WHERE id=?',(key,)).fetchone()[0])
             audit=json.loads(db.execute('SELECT value FROM review_audits WHERE id=?',(task['audit_id'],)).fetchone()[0])
-            audit['critical_review']={'status':value['status'],'request_id':key,'verification_id':None,'trigger':command.trigger,'reason':command.reason}
+            audit['critical_review']={'status':value['status'],'request_id':key,'verification_id':value['verification_id'],'trigger':command.trigger,'reason':command.reason}
             db.execute('UPDATE review_audits SET value=? WHERE id=?',(encode(audit),task['audit_id']))
             db.commit()
         return value

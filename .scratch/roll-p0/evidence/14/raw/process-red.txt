@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_verification_record_and_original_values_survive_native_crash_and_restart[verification_before_commit-0] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/osR/test_verification_record_and_o0')
+fault = 'verification_before_commit', count = 0
+
+    @pytest.mark.parametrize('fault,count',[('verification_before_commit',0),('verification_after_commit',1),('after_receipt',1)])
+    def test_verification_record_and_original_values_survive_native_crash_and_restart(tmp_path,fault,count):
+        directory=tmp_path/'data';raw=[original_quote('A:first')]
+        with TestClient(create_app(directory,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            listing=client.get('/api/market/list').json()
+            assert client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600519',
+                'expected_list_version':listing['version']}).status_code==200
+            a=acquire(client)
+            raw[0]=original_quote('B:second');b=acquire(client)
+        server=Server(directory,None if fault=='after_receipt' else fault)
+        original=None
+        try:
+            if fault=='after_receipt':
+                response=server.client.post('/api/data/verifications',json=command([a,b]))
+                assert response.status_code==201,response.text
+                original=response.json()
+            else:
+>               with pytest.raises(httpx.TransportError):server.client.post('/api/data/verifications',json=command([a,b]))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               Failed: DID NOT RAISE <class 'httpx.TransportError'>
+
+tests\recovery\test_verification_process.py:46: Failed
+=========================== short test summary info ===========================
+FAILED tests/recovery/test_verification_process.py::test_verification_record_and_original_values_survive_native_crash_and_restart[verification_before_commit-0]
+1 failed, 2 deselected in 6.72s

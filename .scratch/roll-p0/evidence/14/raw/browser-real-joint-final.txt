@@ -1,0 +1,42 @@
+[WebServer] INFO:     Started server process [39460]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8034 (Press CTRL+C to quit)
+[WebServer] (node:36012) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:1364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\verification-real.spec.ts:6:1 › real archived supplier chain remains insufficient and issuer PDF is single original basis (1.9s)
+  x  2 tests\e2e\verification-real.spec.ts:29:1 › real saved observation explicitly consumes the original supplier doubt with audit linkage (912ms)
+
+
+  1) tests\e2e\verification-real.spec.ts:29:1 › real saved observation explicitly consumes the original supplier doubt with audit linkage 
+
+    Error: locator.check: Error: strict mode violation: getByLabel(/28304ea7/) resolved to 3 elements:
+        1) <input type="checkbox"/> aka getByRole('checkbox', { name: 'SSE:000001 · 2026-09-30 ·' })
+        2) <input type="checkbox"/> aka getByRole('checkbox', { name: 'SZSE:399001 · 2026-09-30 ·' })
+        3) <input type="checkbox"/> aka getByRole('checkbox', { name: 'SZSE:399997 · 2026-09-30 ·' })
+
+    Call log:
+    [2m  - waiting for getByLabel(/28304ea7/)[22m
+
+
+      36 |   await page.goto('/');await page.getByRole('button',{name:'重点复盘当前观察',exact:true}).click();
+      37 |   await page.getByLabel('疑点及其如何影响结论').fill('实际Sina/Tencent旧收盘材料决定复盘归因；只查当时保存版本和原始独立性');
+    > 38 |   for(const ref of refs)await page.getByLabel(new RegExp(ref.snapshot_id.slice(0,8))).check();
+         |                                                                                       ^
+      39 |   await page.getByRole('button',{name:'核验决定性事实',exact:true}).click();
+      40 |   await expect(page.getByRole('heading',{name:'当前核验：证据不足',exact:true})).toBeVisible();
+      41 |   await expect(page.getByText('原始依据独立性未证明',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\14-independent-verification\frontend\tests\e2e\verification-real.spec.ts:38:87
+
+    Error Context: test-results\verification-real-real-sav-52e80-er-doubt-with-audit-linkage\error-context.md
+
+  1 failed
+    tests\e2e\verification-real.spec.ts:29:1 › real saved observation explicitly consumes the original supplier doubt with audit linkage 
+  1 passed (11.1s)

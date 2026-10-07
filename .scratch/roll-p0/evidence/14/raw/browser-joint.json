@@ -1,0 +1,881 @@
+{
+  "evidence_kind": "METHOD_CASE",
+  "task": {
+    "attempts": 1,
+    "audit_id": "75ee09d2-1e56-481a-b36c-43a2448b0ba1",
+    "created_at": "2026-10-07T21:31:52.474519+00:00",
+    "finished_at": "2026-10-07T21:31:52.531548+00:00",
+    "frozen_account": {
+      "account_scope": "普通现金账户",
+      "broker_available": null,
+      "broker_frozen": null,
+      "cash_balance": null,
+      "confirmed_at": null,
+      "currency": "CNY",
+      "effective_at": null,
+      "historical_return": null,
+      "permission_profile": [],
+      "positions": [],
+      "state": "NOT_ESTABLISHED",
+      "version": 0,
+      "withdrawable": null
+    },
+    "frozen_listing": {
+      "account_version": 0,
+      "as_of_date": "2026-10-08",
+      "background_indices": [
+        {
+          "instrument": "SSE:000001",
+          "instrument_type": "INDEX",
+          "name": "上证指数",
+          "purpose": "BROAD_BACKGROUND",
+          "trading_capability": "NONE"
+        },
+        {
+          "instrument": "SZSE:399001",
+          "instrument_type": "INDEX",
+          "name": "深证成指",
+          "purpose": "BROAD_BACKGROUND",
+          "trading_capability": "NONE"
+        },
+        {
+          "basis": "预固定一个相关行业指数；官网事实表成分列含600519，不作动态行业筛选",
+          "basis_date": "2026-08-31",
+          "basis_source": "csi-399997-sector-basis",
+          "instrument": "SZSE:399997",
+          "instrument_type": "INDEX",
+          "name": "中证白酒",
+          "purpose": "SECTOR_BACKGROUND",
+          "related_instruments": [
+            "SSE:600519"
+          ],
+          "trading_capability": "NONE"
+        }
+      ],
+      "formal_judgment": "DISABLED",
+      "limit": 20,
+      "members": [
+        {
+          "account_permission": {
+            "basis": "账户未确认该范围",
+            "status": "UNKNOWN"
+          },
+          "current_status": {
+            "as_of": null,
+            "reason": "尚未取得该证券当前停牌、风险警示、上市阶段与除权证据",
+            "source": null,
+            "state": "UNKNOWN"
+          },
+          "holding": null,
+          "identity": {
+            "board": "UNKNOWN",
+            "code": "600519",
+            "exchange": "SSE",
+            "instrument_type": "UNKNOWN",
+            "name": null,
+            "source": null
+          },
+          "instrument": "SSE:600519",
+          "limitations": [
+            "CURRENT_STATUS_UNKNOWN",
+            "MODEL_QUALIFICATION_NOT_GRANTED",
+            "IDENTITY_UNKNOWN",
+            "RULE_UNSUPPORTED",
+            "ACCOUNT_PERMISSION_UNKNOWN"
+          ],
+          "model_qualification": "NOT_GRANTED",
+          "new_trade_use": "RESTRICTED",
+          "rule": {
+            "board": "UNKNOWN",
+            "exchange": "SSE",
+            "implementation_status": "UNSUPPORTED",
+            "instrument_type": "UNKNOWN",
+            "reason": "未取得/适配该市场、板块、类型或日期范围的有效规则",
+            "source": null
+          },
+          "watch_added_at": "2026-10-07T21:31:51.992992+00:00",
+          "watched": true
+        }
+      ],
+      "over_limit": false,
+      "recorded_at": "2026-10-07T21:31:51.993104+00:00",
+      "version": 2
+    },
+    "frozen_result": {
+      "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+      "account_confirmed_at": null,
+      "account_effective_at": null,
+      "account_version": 0,
+      "calendar": {
+        "calendar_version": "SSE-2026",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "date": "2026-10-08",
+        "exchange": "SSE",
+        "is_trading_day": true,
+        "phase": "PRE_OPEN",
+        "reason": null,
+        "rules_source": {
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+          "bytes": 65302,
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "file": "sse-rules-text-2026.docx",
+          "id": "sse-rules-text-2026",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+        },
+        "source": {
+          "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+          "attachments": [],
+          "bytes": 30794,
+          "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+          "file": "sse-calendar-2026.html",
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+          "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+        },
+        "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市",
+        "timezone": "Asia/Shanghai"
+      },
+      "change": "NEW_INFORMATION",
+      "coverage": {
+        "intraday_observed": false,
+        "minute_capture_promised": false,
+        "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+      },
+      "cutoff": "2026-10-07T21:31:52.411297+00:00",
+      "data_versions": [
+        "8b30fde9-3e6c-4042-9633-39013f8ddd1e",
+        "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+      ],
+      "forecast": null,
+      "formal_judgment": "DISABLED",
+      "forward_sample_created": false,
+      "gaps": [
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "CURRENT_STATUS_UNKNOWN",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "MAJOR_EVENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399997"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399997"
+        }
+      ],
+      "instruments": [
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:600519",
+          "last_complete_daily": null,
+          "quote": {
+            "adjustment": "RAW",
+            "age_seconds": 657112.311773,
+            "amount_yuan": null,
+            "available_at": "2026-10-07T21:31:52.311773+00:00",
+            "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+            "currency": "CNY",
+            "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+            "evidence_kind": "METHOD_CASE",
+            "fetched_at": "2026-10-07T21:31:52.311773+00:00",
+            "formal_judgment": "DISABLED",
+            "group": "QUOTE",
+            "historical_limitations": [
+              "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+              "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+            ],
+            "instrument": "SSE:600519",
+            "last": "100.000",
+            "method_status": "NORMAL",
+            "point_in_time_input_allowed": false,
+            "published_at": null,
+            "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+            "raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+            "received_at": "2026-10-07T21:31:52.311773+00:00",
+            "reported_limit_down": null,
+            "reported_limit_up": null,
+            "revision_id": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+            "run_id": "4b165bdb-eea1-43f9-a285-26c7ee9dc254",
+            "snapshot_id": "8b30fde9-3e6c-4042-9633-39013f8ddd1e",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "status_basis": "METHOD_CASE independent original generation",
+            "time_precision": "SECOND",
+            "trade_date": "2026-09-30",
+            "upstream_at": "2026-09-30T15:00:00+08:00",
+            "volume_reported": null,
+            "volume_unit": "UNKNOWN"
+          },
+          "quote_status": "OBSERVED_SESSION",
+          "role": "WATCH"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000001",
+          "last_complete_daily": null,
+          "name": "上证指数",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399001",
+          "last_complete_daily": null,
+          "name": "深证成指",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399997",
+          "last_complete_daily": null,
+          "name": "中证白酒",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        }
+      ],
+      "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+      "knowledge_cutoff": "2026-10-07T21:31:52.411297+00:00",
+      "observations": [],
+      "observed_at": "2026-10-07T21:31:52.411297+00:00",
+      "previous_snapshot_id": null,
+      "snapshot_id": "b57654d3-f3e8-462b-89d6-21d71af70a8f",
+      "source_assessments": [],
+      "state_fingerprint": "521fedd88958530e8eea6347b2d347d1041da6ca88ea26d1c07f6ca599162f66"
+    },
+    "host_owner": {
+      "creation_ticks": 134358823027086460,
+      "nonce": "4f7a8ec0-df43-4084-85e3-db3b7fedade4",
+      "pid": 19152
+    },
+    "inputs": {
+      "account_version": 0,
+      "cutoff": "2026-10-07T21:31:52.411297+00:00",
+      "data_versions": [
+        "8b30fde9-3e6c-4042-9633-39013f8ddd1e",
+        "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+      ],
+      "list_version": 2,
+      "mode": "ON_DEMAND",
+      "phase": "PRE_OPEN",
+      "refresh_missing": false,
+      "shadow_version": null,
+      "trading_date": "2026-10-08"
+    },
+    "last_attempt_at": "2026-10-07T21:31:52.518570+00:00",
+    "module_errors": [],
+    "refresh_missing": false,
+    "result": {
+      "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+      "account_confirmed_at": null,
+      "account_effective_at": null,
+      "account_version": 0,
+      "calendar": {
+        "calendar_version": "SSE-2026",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "date": "2026-10-08",
+        "exchange": "SSE",
+        "is_trading_day": true,
+        "phase": "PRE_OPEN",
+        "reason": null,
+        "rules_source": {
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+          "bytes": 65302,
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "file": "sse-rules-text-2026.docx",
+          "id": "sse-rules-text-2026",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+        },
+        "source": {
+          "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+          "attachments": [],
+          "bytes": 30794,
+          "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+          "file": "sse-calendar-2026.html",
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+          "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+        },
+        "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市",
+        "timezone": "Asia/Shanghai"
+      },
+      "change": "NEW_INFORMATION",
+      "coverage": {
+        "intraday_observed": false,
+        "minute_capture_promised": false,
+        "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+      },
+      "cutoff": "2026-10-07T21:31:52.411297+00:00",
+      "data_versions": [
+        "8b30fde9-3e6c-4042-9633-39013f8ddd1e",
+        "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+      ],
+      "forecast": null,
+      "formal_judgment": "DISABLED",
+      "forward_sample_created": false,
+      "gaps": [
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "CURRENT_STATUS_UNKNOWN",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "MAJOR_EVENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399997"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399997"
+        }
+      ],
+      "instruments": [
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:600519",
+          "last_complete_daily": null,
+          "quote": {
+            "adjustment": "RAW",
+            "age_seconds": 657112.311773,
+            "amount_yuan": null,
+            "available_at": "2026-10-07T21:31:52.311773+00:00",
+            "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+            "currency": "CNY",
+            "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+            "evidence_kind": "METHOD_CASE",
+            "fetched_at": "2026-10-07T21:31:52.311773+00:00",
+            "formal_judgment": "DISABLED",
+            "group": "QUOTE",
+            "historical_limitations": [
+              "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+              "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+            ],
+            "instrument": "SSE:600519",
+            "last": "100.000",
+            "method_status": "NORMAL",
+            "point_in_time_input_allowed": false,
+            "published_at": null,
+            "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+            "raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+            "received_at": "2026-10-07T21:31:52.311773+00:00",
+            "reported_limit_down": null,
+            "reported_limit_up": null,
+            "revision_id": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+            "run_id": "4b165bdb-eea1-43f9-a285-26c7ee9dc254",
+            "snapshot_id": "8b30fde9-3e6c-4042-9633-39013f8ddd1e",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "status_basis": "METHOD_CASE independent original generation",
+            "time_precision": "SECOND",
+            "trade_date": "2026-09-30",
+            "upstream_at": "2026-09-30T15:00:00+08:00",
+            "volume_reported": null,
+            "volume_unit": "UNKNOWN"
+          },
+          "quote_status": "OBSERVED_SESSION",
+          "role": "WATCH"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000001",
+          "last_complete_daily": null,
+          "name": "上证指数",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399001",
+          "last_complete_daily": null,
+          "name": "深证成指",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399997",
+          "last_complete_daily": null,
+          "name": "中证白酒",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        }
+      ],
+      "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+      "knowledge_cutoff": "2026-10-07T21:31:52.411297+00:00",
+      "observations": [],
+      "observed_at": "2026-10-07T21:31:52.411297+00:00",
+      "previous_snapshot_id": null,
+      "snapshot_id": "b57654d3-f3e8-462b-89d6-21d71af70a8f",
+      "source_assessments": [],
+      "state_fingerprint": "521fedd88958530e8eea6347b2d347d1041da6ca88ea26d1c07f6ca599162f66"
+    },
+    "retrieval_runs": [],
+    "retry_at": "2026-10-07T21:31:52.474511+00:00",
+    "status": "PARTIAL",
+    "task_id": "9389bde4-2cb2-40a3-a201-910abdf88cc2",
+    "task_key": "4bfbbfe4709f07eb154380bed14eec1031a5210ca610c67123c6831ebb6306cd",
+    "timing": {
+      "acquisition_seconds": 0,
+      "local_seconds": 0.01316,
+      "network_seconds": 0
+    }
+  },
+  "request": {
+    "audit_id": "75ee09d2-1e56-481a-b36c-43a2448b0ba1",
+    "consumed_at": "2026-10-07T21:31:53.385159+00:00",
+    "created_at": "2026-10-07T21:31:53.315484+00:00",
+    "original_fact_values": [
+      {
+        "available_at": "2026-10-07T21:31:52.311773+00:00",
+        "fact_id": "decisive-last",
+        "field": "last",
+        "instrument": "SSE:600519",
+        "raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+        "reference": {
+          "fact_index": 0,
+          "snapshot_id": "8b30fde9-3e6c-4042-9633-39013f8ddd1e"
+        },
+        "value": "100.000"
+      },
+      {
+        "available_at": "2026-10-07T21:31:52.113274+00:00",
+        "fact_id": "decisive-last",
+        "field": "last",
+        "instrument": "SSE:600519",
+        "raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+        "reference": {
+          "fact_index": 0,
+          "snapshot_id": "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+        },
+        "value": "100.000"
+      }
+    ],
+    "request": {
+      "facts": [
+        {
+          "fact_id": "decisive-last",
+          "field": "last",
+          "references": [
+            {
+              "fact_index": 0,
+              "snapshot_id": "8b30fde9-3e6c-4042-9633-39013f8ddd1e"
+            },
+            {
+              "fact_index": 0,
+              "snapshot_id": "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+            }
+          ]
+        }
+      ],
+      "knowledge_cutoff": "2026-10-07T21:31:52.411297+00:00",
+      "reason": "METHOD_CASE 原观察价格影响重大盈亏归因，仅核实际保存版本",
+      "trigger": "USER_SELECTED"
+    },
+    "request_id": "19f07a0af1c8aa54d193d9d80e826f87712d8097ab7a461375de85fc3a2cd638",
+    "snapshot_id": "b57654d3-f3e8-462b-89d6-21d71af70a8f",
+    "status": "CONSUMED",
+    "task_id": "9389bde4-2cb2-40a3-a201-910abdf88cc2",
+    "verification_id": "6f4c7ed1-bbd7-45a2-a91b-1e3fb30c7782",
+    "verification": {
+      "account_confirmation": "NOT_GRANTED",
+      "adapter_hash": "84b70d38413e4895631f863a4478effccdcbc580d01e969447d6900126525471",
+      "adapter_version": "14-verify-v1",
+      "basis_raw_hashes": [
+        "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+        "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f"
+      ],
+      "command": {
+        "facts": [
+          {
+            "fact_id": "decisive-last",
+            "field": "last",
+            "references": [
+              {
+                "fact_index": 0,
+                "snapshot_id": "8b30fde9-3e6c-4042-9633-39013f8ddd1e"
+              },
+              {
+                "fact_index": 0,
+                "snapshot_id": "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+              }
+            ]
+          }
+        ],
+        "knowledge_cutoff": "2026-10-07T21:31:52.411297Z",
+        "reason": "METHOD_CASE 原观察价格影响重大盈亏归因，仅核实际保存版本",
+        "trigger": "USER_SELECTED"
+      },
+      "created_at": "2026-10-07T21:31:53.383076+00:00",
+      "current_result": "VERIFIED",
+      "dependency_status": "CURRENT",
+      "evidence_kind": "METHOD_CASE",
+      "facts": [
+        {
+          "attribution_status": "READY",
+          "comparisons": [
+            {
+              "alternate_reference": {
+                "fact_index": 0,
+                "snapshot_id": "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+              },
+              "alternate_value": "100.000",
+              "comparable": true,
+              "primary_reference": {
+                "fact_index": 0,
+                "snapshot_id": "8b30fde9-3e6c-4042-9633-39013f8ddd1e"
+              },
+              "primary_value": "100.000",
+              "reasons": [],
+              "values": "EQUAL_DECIMAL"
+            }
+          ],
+          "evidence": [
+            {
+              "available_at": "2026-10-07T21:31:52.311773+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "B:second",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "B",
+                "proof_raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "8b30fde9-3e6c-4042-9633-39013f8ddd1e"
+              },
+              "revision_id": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "100.000"
+            },
+            {
+              "available_at": "2026-10-07T21:31:52.113274+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "A:first",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "A",
+                "proof_raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+              },
+              "revision_id": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "100.000"
+            }
+          ],
+          "fact_id": "decisive-last",
+          "field": "last",
+          "gaps": [],
+          "independent_basis_count": 2,
+          "limitations": [],
+          "result": "VERIFIED"
+        }
+      ],
+      "formal_judgment": "DISABLED",
+      "input_fingerprint": "ec38317691d3ddcee06ec4b6ecb799ae74d91d9993066f0619346c705dd689e1",
+      "invalidations": [],
+      "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+      "knowledge_cutoff": "2026-10-07T21:31:52.411297+00:00",
+      "network_calls": 0,
+      "result": "VERIFIED",
+      "reuse_of": null,
+      "review_origin": {
+        "audit_id": "75ee09d2-1e56-481a-b36c-43a2448b0ba1",
+        "request_id": "19f07a0af1c8aa54d193d9d80e826f87712d8097ab7a461375de85fc3a2cd638",
+        "snapshot_id": "b57654d3-f3e8-462b-89d6-21d71af70a8f",
+        "task_id": "9389bde4-2cb2-40a3-a201-910abdf88cc2"
+      },
+      "runtime_versions": {
+        "python": "3.13.12",
+        "sqlite": "3.50.4"
+      },
+      "source_evidence_kinds": [
+        "METHOD_CASE"
+      ],
+      "status": "COMPLETED",
+      "verification_id": "6f4c7ed1-bbd7-45a2-a91b-1e3fb30c7782"
+    }
+  },
+  "audit": {
+    "account_version": 0,
+    "audit_id": "75ee09d2-1e56-481a-b36c-43a2448b0ba1",
+    "checked_at": "2026-10-07T21:31:52.542405+00:00",
+    "critical_review": {
+      "reason": "METHOD_CASE 原观察价格影响重大盈亏归因，仅核实际保存版本",
+      "request_id": "19f07a0af1c8aa54d193d9d80e826f87712d8097ab7a461375de85fc3a2cd638",
+      "status": "CONSUMED",
+      "trigger": "USER_SELECTED",
+      "verification_id": "6f4c7ed1-bbd7-45a2-a91b-1e3fb30c7782"
+    },
+    "data_versions": [
+      "8b30fde9-3e6c-4042-9633-39013f8ddd1e",
+      "5bb03314-f5d1-4dc1-b746-9b70e1c2f7cc"
+    ],
+    "metrics": {
+      "account_differences": {
+        "reasons": [],
+        "state": "NOT_ESTABLISHED",
+        "status": "CHECKED",
+        "value": 0
+      },
+      "action_flips": {
+        "status": "NOT_CONNECTED",
+        "value": null
+      },
+      "data_coverage": {
+        "gaps": [
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "CURRENT_STATUS_UNKNOWN",
+            "group": "STATUS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "ANNOUNCEMENTS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "PERFORMANCE",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "MAJOR_EVENTS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SSE:000001"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SSE:000001"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SZSE:399001"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SZSE:399001"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SZSE:399997"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SZSE:399997"
+          }
+        ],
+        "status": "CHECKED",
+        "value": 12
+      },
+      "duplicate_notifications": {
+        "status": "NOT_CONNECTED",
+        "value": null
+      },
+      "invalidated_actions": {
+        "status": "NOT_CONNECTED",
+        "value": null
+      },
+      "module_errors": {
+        "errors": [],
+        "status": "CHECKED",
+        "value": 0
+      },
+      "shadow_records": {
+        "status": "NOT_CONNECTED",
+        "value": null
+      },
+      "unfinished_execution_intents": {
+        "status": "NOT_CONNECTED",
+        "value": null
+      }
+    },
+    "phase": "PRE_OPEN",
+    "snapshot_id": "b57654d3-f3e8-462b-89d6-21d71af70a8f",
+    "task_id": "9389bde4-2cb2-40a3-a201-910abdf88cc2",
+    "trade_date": "2026-10-08",
+    "verification_links": [
+      {
+        "linked_at": "2026-10-07T21:31:53.385159+00:00",
+        "request_id": "19f07a0af1c8aa54d193d9d80e826f87712d8097ab7a461375de85fc3a2cd638",
+        "verification_id": "6f4c7ed1-bbd7-45a2-a91b-1e3fb30c7782"
+      }
+    ]
+  }
+}

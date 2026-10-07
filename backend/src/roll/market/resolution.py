@@ -15,6 +15,7 @@ from roll.accounts.ledger import encode, now
 from roll.market.directory import ScopeCommand
 from roll.market.evidence import DataRequest
 from roll.market.rules import SHANGHAI
+from roll.market.verification import verification_invalidations
 
 
 class ResolutionCommand(BaseModel):
@@ -260,6 +261,10 @@ class SourceResolutions:
             if changed or additions:
                 invalidations.append({**revision,'invalidation_id':str(uuid4()),'target_type':'RESOLUTION_ASSESSMENT','target_id':prior['resolution_id']})
             changed_hashes={before[k]['raw_hash'] for k in changed}
+            revision['changed_raw_hashes']=sorted(changed_hashes)
+            # Verification also depends on original provenance bytes, even if prices normalize identically.
+            revision['verification_changed_raw_hashes']=sorted(changed_hashes|{
+                before[k]['raw_hash'] for k in before.keys()&after.keys() if before[k]['raw_hash']!=after[k]['raw_hash']})
             for attempt in prior['attempts']:
                 run=self.evidence.get('retrieval_runs',attempt['run_id'])
                 snapshot=self.evidence.get('market_evidence_snapshots',run['snapshot_id'])
@@ -272,6 +277,7 @@ class SourceResolutions:
             try:
                 db.execute('INSERT OR REPLACE INTO source_resolutions VALUES(?,?)',(value['resolution_id'],encode(value)))
                 if revision:db.execute('INSERT INTO source_revisions VALUES(?,?)',(revision['revision_id'],encode(revision)))
+                if revision:invalidations.extend(verification_invalidations(db,set(revision['verification_changed_raw_hashes']),revision))
                 for invalidation in invalidations:
                     db.execute('INSERT INTO evidence_dependency_invalidations VALUES(?,?,?)',
                         (invalidation['invalidation_id'],invalidation['target_id'],encode(invalidation)))

@@ -1,0 +1,44 @@
+[WebServer] INFO:     Started server process [35000]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8034 (Press CTRL+C to quit)
+[WebServer] (node:20660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:39968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\verification-real.spec.ts:5:1 › real archived supplier chain remains insufficient and issuer PDF is single original basis (1.6s)
+
+
+  1) tests\e2e\verification-real.spec.ts:5:1 › real archived supplier chain remains insufficient and issuer PDF is single original basis 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('同一原始依据只计一次', { exact: true })
+    Expected: visible
+    Error: strict mode violation: getByText('同一原始依据只计一次', { exact: true }) resolved to 2 elements:
+        1) <li>同一原始依据只计一次</li> aka getByRole('listitem').filter({ hasText: '同一原始依据只计一次' })
+        2) <p>同一原始依据只计一次</p> aka locator('p').filter({ hasText: '同一原始依据只计一次' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('同一原始依据只计一次', { exact: true })[22m
+
+
+      15 |   await page.getByRole('button',{name:'重放原核验',exact:true}).click();await expect(page.getByText('原记录证据不足，网络调用 0 次',{exact:true})).toBeVisible();
+      16 |   await page.getByLabel('选择已存核验').selectOption(report.issuer_verification.verification_id);
+    > 17 |   await expect(page.getByText('同一原始依据只计一次',{exact:true})).toBeVisible();
+         |                                                           ^
+      18 |   await expect(page.getByText(/可证明的独立原始依据 1 条/)).toBeVisible();
+      19 |   const originalLinks=page.getByRole('link',{name:'原始文件',exact:true});expect(await originalLinks.count()).toBe(2);
+      20 |   const response=await page.request.get((await originalLinks.first().getAttribute('href'))!);expect(response.ok()).toBeTruthy();
+        at D:\dsh-proj\Roll\.scratch\worktrees\14-independent-verification\frontend\tests\e2e\verification-real.spec.ts:17:59
+
+    Error Context: test-results\verification-real-real-arc-24e64-DF-is-single-original-basis\error-context.md
+
+  1 failed
+    tests\e2e\verification-real.spec.ts:5:1 › real archived supplier chain remains insufficient and issuer PDF is single original basis 

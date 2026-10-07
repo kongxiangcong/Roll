@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [18608]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8034 (Press CTRL+C to quit)
+[WebServer] (node:30136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:11204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\verification-method.spec.ts:5:1 › decisive originals verify once, source revision invalidates reuse and conflicting price keeps both values (30.0s)
+
+
+  1) tests\e2e\verification-method.spec.ts:5:1 › decisive originals verify once, source revision invalidates reuse and conflicting price keeps both values 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: '关键复盘', exact: true })[22m
+
+
+      16 |     let value:any;await expect.poll(async()=>{value=await(await page.request.get('/api/data/resolutions/'+start.resolution_id)).json();return value.status;}).not.toBe('RUNNING');return value;}
+      17 |   const basis=await resolve({usage:'HISTORICAL_RESEARCH',allow_fallback:false,basis_run_id:b.run.run_id});
+    > 18 |   await page.goto('/');await page.getByRole('button',{name:'历史记录',exact:true}).click();await page.getByRole('button',{name:'关键复盘',exact:true}).click();
+         |                                                                                                                                                ^
+      19 |   await page.getByLabel('疑点及其如何影响结论').fill('METHOD_CASE 收盘价格决定重大盈亏归因');
+      20 |   await page.getByLabel(new RegExp(a.run.snapshot_id.slice(0,8))).check();await page.getByLabel(new RegExp(b.run.snapshot_id.slice(0,8))).check();
+      21 |   await page.getByRole('button',{name:'核验决定性事实',exact:true}).click();
+        at D:\dsh-proj\Roll\.scratch\worktrees\14-independent-verification\frontend\tests\e2e\verification-method.spec.ts:18:144
+
+    Error Context: test-results\verification-method-decisi-81591-ing-price-keeps-both-values\error-context.md
+
+  1 failed
+    tests\e2e\verification-method.spec.ts:5:1 › decisive originals verify once, source revision invalidates reuse and conflicting price keeps both values 

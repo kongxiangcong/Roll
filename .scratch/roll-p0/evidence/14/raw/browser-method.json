@@ -1,0 +1,738 @@
+{
+  "evidence_kind": "METHOD_CASE",
+  "first": "740af4c1-9913-4731-a8d7-c9985750484e",
+  "revision": {
+    "acquired_facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 656792.056582,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T21:26:32.056582+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "currency": "CNY",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "METHOD_CASE",
+        "fetched_at": "2026-10-07T21:26:32.056582+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "101.000",
+        "method_status": "NORMAL",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8",
+        "received_at": "2026-10-07T21:26:32.056582+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8",
+        "source_id": "tencent-quote",
+        "source_url": "https://qt.gtimg.cn/q=sh600519",
+        "status_basis": "METHOD_CASE independent original generation",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:00:00+08:00",
+        "volume_reported": null,
+        "volume_unit": "UNKNOWN"
+      }
+    ],
+    "attempts": [
+      {
+        "cached": false,
+        "request_id": "763eb29c-102d-4391-b3c5-37b24177e907",
+        "role": "PRIMARY",
+        "run_id": "20a9e2f5-e0c5-4a70-8b35-374e15a65548"
+      }
+    ],
+    "capabilities": {
+      "complete_daily_model": "NOT_REQUESTED",
+      "current_monitoring": "HEALTHY",
+      "new_risk": "BLOCKED_NEW_RISK",
+      "observation": "HEALTHY",
+      "required_inputs": "SATISFIED"
+    },
+    "command": {
+      "allow_fallback": false,
+      "basis_run_id": null,
+      "knowledge_cutoff": null,
+      "revision_of": "da400f82-4c12-4c02-b66f-7201e843a3bb",
+      "usage": "HISTORICAL_RESEARCH",
+      "use_cache": false
+    },
+    "elapsed_seconds": 0.156,
+    "evidence_kind": "METHOD_CASE",
+    "facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 656792.056582,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T21:26:32.056582+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "currency": "CNY",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "METHOD_CASE",
+        "fetched_at": "2026-10-07T21:26:32.056582+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "101.000",
+        "method_status": "NORMAL",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8",
+        "received_at": "2026-10-07T21:26:32.056582+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8",
+        "source_id": "tencent-quote",
+        "source_url": "https://qt.gtimg.cn/q=sh600519",
+        "status_basis": "METHOD_CASE independent original generation",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:00:00+08:00",
+        "volume_reported": null,
+        "volume_unit": "UNKNOWN"
+      }
+    ],
+    "finished_at": "2026-10-07T21:26:32.173833+00:00",
+    "formal_judgment": "DISABLED",
+    "freshness": [
+      {
+        "expected_session": "2026-09-30",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T21:26:32.168338+00:00",
+        "latest_reported_session": "2026-09-30",
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [
+          "2026-10-07T21:26:32.056582+00:00"
+        ],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": [
+          "2026-09-30T15:00:00+08:00"
+        ]
+      }
+    ],
+    "gaps": [],
+    "knowledge_clock_basis": "ACTUAL_SYSTEM_CLOCK",
+    "knowledge_cutoff": "2026-10-07T21:26:32.168338+00:00",
+    "model_qualification": "NOT_GRANTED",
+    "network_calls": 1,
+    "request_fingerprint": "09f542648221b5bacab0213dbd4c04667ec3b7b365240cac5f4339e6f77a6ddc",
+    "request_id": "763eb29c-102d-4391-b3c5-37b24177e907",
+    "requested_groups": [
+      "QUOTE"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "resolution_id": "643a2037-37c7-4200-bd22-17a1f4ea3f85",
+    "revision": {
+      "added_fact_keys": [],
+      "available_basis": "NEW_ACTUAL_RECEIPT; NO_RETROACTIVE_KNOWLEDGE",
+      "changed_fact_keys": [
+        [
+          "SSE:600519",
+          "QUOTE",
+          "2026-09-30",
+          "RAW",
+          null,
+          null,
+          null
+        ]
+      ],
+      "changed_raw_hashes": [
+        "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b"
+      ],
+      "missing_in_new_run": [],
+      "new_resolution_id": "643a2037-37c7-4200-bd22-17a1f4ea3f85",
+      "prior_resolution_id": "da400f82-4c12-4c02-b66f-7201e843a3bb",
+      "reason": "FACT_VALUE_OR_SEMANTICS_REVISED",
+      "recorded_at": "2026-10-07T21:26:32.176396+00:00",
+      "revision_id": "627b2ef2-fb27-4426-beaf-7811b93854d1",
+      "source_run_ids": [
+        "20a9e2f5-e0c5-4a70-8b35-374e15a65548"
+      ],
+      "verification_changed_raw_hashes": [
+        "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b"
+      ]
+    },
+    "revision_of": "da400f82-4c12-4c02-b66f-7201e843a3bb",
+    "source_checks": [],
+    "started_at": "2026-10-07T21:26:32.007230+00:00",
+    "state": "HEALTHY",
+    "status": "COMPLETED",
+    "stop_reason": "PRIMARY_INPUTS_SUFFICIENT",
+    "technical_limits": {
+      "max_calls": 20,
+      "max_response_bytes": 16777216,
+      "retries": 0,
+      "timeout_seconds": 40
+    },
+    "dependency_status": "CURRENT"
+  },
+  "records": [
+    {
+      "account_confirmation": "NOT_GRANTED",
+      "adapter_hash": "53353cfa0c97321d2a0e941beca9352df33bb28d14e6bdfaa6107e5bee38230e",
+      "adapter_version": "14-verify-v1",
+      "basis_raw_hashes": [
+        "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+        "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8"
+      ],
+      "command": {
+        "facts": [
+          {
+            "fact_id": "decisive-last",
+            "field": "last",
+            "references": [
+              {
+                "fact_index": 0,
+                "snapshot_id": "f3992e6c-0c04-4348-8ace-b15048c72cb1"
+              },
+              {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              }
+            ]
+          }
+        ],
+        "knowledge_cutoff": null,
+        "reason": "METHOD_CASE 收盘价格决定重大盈亏归因",
+        "trigger": "USER_SELECTED"
+      },
+      "created_at": "2026-10-07T21:26:32.679879+00:00",
+      "current_result": "CONFLICT",
+      "dependency_status": "CURRENT",
+      "evidence_kind": "METHOD_CASE",
+      "facts": [
+        {
+          "attribution_status": "DEFERRED",
+          "comparisons": [
+            {
+              "alternate_reference": {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              },
+              "alternate_value": "100.000",
+              "comparable": true,
+              "primary_reference": {
+                "fact_index": 0,
+                "snapshot_id": "f3992e6c-0c04-4348-8ace-b15048c72cb1"
+              },
+              "primary_value": "101.000",
+              "reasons": [],
+              "values": "DIFFERENT"
+            }
+          ],
+          "evidence": [
+            {
+              "available_at": "2026-10-07T21:26:32.056582+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "B:revised",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "B",
+                "proof_raw_hash": "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "f3992e6c-0c04-4348-8ace-b15048c72cb1"
+              },
+              "revision_id": "a663f21f69fbab235a6c4e42ffe7608edde77105f0d8b649572dc4cea3273be8",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "101.000"
+            },
+            {
+              "available_at": "2026-10-07T21:26:30.344709+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "A:first",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "A",
+                "proof_raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              },
+              "revision_id": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "100.000"
+            }
+          ],
+          "fact_id": "decisive-last",
+          "field": "last",
+          "gaps": [],
+          "independent_basis_count": 2,
+          "limitations": [],
+          "result": "CONFLICT"
+        }
+      ],
+      "formal_judgment": "DISABLED",
+      "input_fingerprint": "1447dc78a00fbf632c19768892767ac3ee4381dc5ba89be8441218b2eca2e0ae",
+      "invalidations": [],
+      "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+      "knowledge_cutoff": "2026-10-07T21:26:32.624247+00:00",
+      "network_calls": 0,
+      "result": "CONFLICT",
+      "reuse_of": null,
+      "runtime_versions": {
+        "python": "3.13.12",
+        "sqlite": "3.50.4"
+      },
+      "source_evidence_kinds": [
+        "METHOD_CASE"
+      ],
+      "status": "COMPLETED",
+      "verification_id": "224aa36a-5d93-41c3-a481-9dffa620e6da"
+    },
+    {
+      "account_confirmation": "NOT_GRANTED",
+      "adapter_hash": "53353cfa0c97321d2a0e941beca9352df33bb28d14e6bdfaa6107e5bee38230e",
+      "adapter_version": "14-verify-v1",
+      "basis_raw_hashes": [
+        "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+        "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f"
+      ],
+      "command": {
+        "facts": [
+          {
+            "fact_id": "decisive-last",
+            "field": "last",
+            "references": [
+              {
+                "fact_index": 0,
+                "snapshot_id": "e98318e0-2068-4b6f-9e46-d74ccc0105d2"
+              },
+              {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              }
+            ]
+          }
+        ],
+        "knowledge_cutoff": null,
+        "reason": "METHOD_CASE 收盘价格决定重大盈亏归因",
+        "trigger": "USER_SELECTED"
+      },
+      "created_at": "2026-10-07T21:26:31.904233+00:00",
+      "current_result": "INSUFFICIENT",
+      "dependency_status": "INVALIDATED",
+      "evidence_kind": "METHOD_CASE",
+      "facts": [
+        {
+          "attribution_status": "READY",
+          "comparisons": [
+            {
+              "alternate_reference": {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              },
+              "alternate_value": "100.000",
+              "comparable": true,
+              "primary_reference": {
+                "fact_index": 0,
+                "snapshot_id": "e98318e0-2068-4b6f-9e46-d74ccc0105d2"
+              },
+              "primary_value": "100.000",
+              "reasons": [],
+              "values": "EQUAL_DECIMAL"
+            }
+          ],
+          "evidence": [
+            {
+              "available_at": "2026-10-07T21:26:30.510008+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "B:second",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "B",
+                "proof_raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "e98318e0-2068-4b6f-9e46-d74ccc0105d2"
+              },
+              "revision_id": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "100.000"
+            },
+            {
+              "available_at": "2026-10-07T21:26:30.344709+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "A:first",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "A",
+                "proof_raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              },
+              "revision_id": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "100.000"
+            }
+          ],
+          "fact_id": "decisive-last",
+          "field": "last",
+          "gaps": [],
+          "independent_basis_count": 2,
+          "limitations": [],
+          "result": "VERIFIED"
+        }
+      ],
+      "formal_judgment": "DISABLED",
+      "input_fingerprint": "0045f854fc22b03c4633c1768e91260caea2abf76f718d4e750aeeb211573b2c",
+      "invalidations": [
+        {
+          "added_fact_keys": [],
+          "available_basis": "NEW_ACTUAL_RECEIPT; NO_RETROACTIVE_KNOWLEDGE",
+          "basis_raw_hashes": [
+            "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+            "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f"
+          ],
+          "changed_fact_keys": [
+            [
+              "SSE:600519",
+              "QUOTE",
+              "2026-09-30",
+              "RAW",
+              null,
+              null,
+              null
+            ]
+          ],
+          "changed_raw_hashes": [
+            "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b"
+          ],
+          "invalidation_id": "a65f82bf-2f17-45bd-a7a1-b2d8c9a12df2",
+          "missing_in_new_run": [],
+          "new_resolution_id": "643a2037-37c7-4200-bd22-17a1f4ea3f85",
+          "prior_resolution_id": "da400f82-4c12-4c02-b66f-7201e843a3bb",
+          "reason": "FACT_VALUE_OR_SEMANTICS_REVISED",
+          "recorded_at": "2026-10-07T21:26:32.176396+00:00",
+          "revision_id": "627b2ef2-fb27-4426-beaf-7811b93854d1",
+          "source_run_ids": [
+            "20a9e2f5-e0c5-4a70-8b35-374e15a65548"
+          ],
+          "target_id": "28902b84-7a53-4177-815c-5379a6b49f14",
+          "target_type": "VERIFY_REVIEW_EVIDENCE",
+          "verification_changed_raw_hashes": [
+            "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b"
+          ]
+        }
+      ],
+      "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+      "knowledge_cutoff": "2026-10-07T21:26:31.857885+00:00",
+      "network_calls": 0,
+      "result": "VERIFIED",
+      "reuse_of": "740af4c1-9913-4731-a8d7-c9985750484e",
+      "runtime_versions": {
+        "python": "3.13.12",
+        "sqlite": "3.50.4"
+      },
+      "source_evidence_kinds": [
+        "METHOD_CASE"
+      ],
+      "status": "COMPLETED",
+      "verification_id": "28902b84-7a53-4177-815c-5379a6b49f14"
+    },
+    {
+      "account_confirmation": "NOT_GRANTED",
+      "adapter_hash": "53353cfa0c97321d2a0e941beca9352df33bb28d14e6bdfaa6107e5bee38230e",
+      "adapter_version": "14-verify-v1",
+      "basis_raw_hashes": [
+        "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+        "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f"
+      ],
+      "command": {
+        "facts": [
+          {
+            "fact_id": "decisive-last",
+            "field": "last",
+            "references": [
+              {
+                "fact_index": 0,
+                "snapshot_id": "e98318e0-2068-4b6f-9e46-d74ccc0105d2"
+              },
+              {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              }
+            ]
+          }
+        ],
+        "knowledge_cutoff": null,
+        "reason": "METHOD_CASE 收盘价格决定重大盈亏归因",
+        "trigger": "USER_SELECTED"
+      },
+      "created_at": "2026-10-07T21:26:31.722175+00:00",
+      "current_result": "INSUFFICIENT",
+      "dependency_status": "INVALIDATED",
+      "evidence_kind": "METHOD_CASE",
+      "facts": [
+        {
+          "attribution_status": "READY",
+          "comparisons": [
+            {
+              "alternate_reference": {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              },
+              "alternate_value": "100.000",
+              "comparable": true,
+              "primary_reference": {
+                "fact_index": 0,
+                "snapshot_id": "e98318e0-2068-4b6f-9e46-d74ccc0105d2"
+              },
+              "primary_value": "100.000",
+              "reasons": [],
+              "values": "EQUAL_DECIMAL"
+            }
+          ],
+          "evidence": [
+            {
+              "available_at": "2026-10-07T21:26:30.510008+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "B:second",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "B",
+                "proof_raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "e98318e0-2068-4b6f-9e46-d74ccc0105d2"
+              },
+              "revision_id": "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "100.000"
+            },
+            {
+              "available_at": "2026-10-07T21:26:30.344709+00:00",
+              "context": {
+                "adjustment": "RAW",
+                "adjustment_version": null,
+                "currency": "CNY",
+                "ex_date": null,
+                "group": "QUOTE",
+                "instrument": "SSE:600519",
+                "report_period": null,
+                "time_precision": "SECOND",
+                "trade_date": "2026-09-30",
+                "upstream_at": "2026-09-30T15:00:00+08:00",
+                "volume_unit": "UNKNOWN"
+              },
+              "document_hash": null,
+              "evidence_kind": "METHOD_CASE",
+              "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+              "field_unit": "CNY",
+              "known_at_review_cutoff": true,
+              "provenance": {
+                "basis_id": "A:first",
+                "generation_basis": "METHOD_CASE original institutional observation",
+                "producer": "A",
+                "proof_raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+                "reason": "Injected external fixture only; never a production independence assertion",
+                "status": "METHOD_CASE_ORIGINAL_LINEAGE"
+              },
+              "raw_hash": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "reference": {
+                "fact_index": 0,
+                "snapshot_id": "6491a52d-6b43-4900-b2d5-7c3e7f320913"
+              },
+              "revision_id": "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f",
+              "source_errors": [],
+              "source_id": "tencent-quote",
+              "source_url": "https://qt.gtimg.cn/q=sh600519",
+              "value": "100.000"
+            }
+          ],
+          "fact_id": "decisive-last",
+          "field": "last",
+          "gaps": [],
+          "independent_basis_count": 2,
+          "limitations": [],
+          "result": "VERIFIED"
+        }
+      ],
+      "formal_judgment": "DISABLED",
+      "input_fingerprint": "0045f854fc22b03c4633c1768e91260caea2abf76f718d4e750aeeb211573b2c",
+      "invalidations": [
+        {
+          "added_fact_keys": [],
+          "available_basis": "NEW_ACTUAL_RECEIPT; NO_RETROACTIVE_KNOWLEDGE",
+          "basis_raw_hashes": [
+            "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b",
+            "5ce9cc7d22d7b1d3ed663d71ebe4357d3bf493ea157bd378c700d2f8d4e4499f"
+          ],
+          "changed_fact_keys": [
+            [
+              "SSE:600519",
+              "QUOTE",
+              "2026-09-30",
+              "RAW",
+              null,
+              null,
+              null
+            ]
+          ],
+          "changed_raw_hashes": [
+            "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b"
+          ],
+          "invalidation_id": "89143988-b61a-41b3-afd1-b3b631fd1f87",
+          "missing_in_new_run": [],
+          "new_resolution_id": "643a2037-37c7-4200-bd22-17a1f4ea3f85",
+          "prior_resolution_id": "da400f82-4c12-4c02-b66f-7201e843a3bb",
+          "reason": "FACT_VALUE_OR_SEMANTICS_REVISED",
+          "recorded_at": "2026-10-07T21:26:32.176396+00:00",
+          "revision_id": "627b2ef2-fb27-4426-beaf-7811b93854d1",
+          "source_run_ids": [
+            "20a9e2f5-e0c5-4a70-8b35-374e15a65548"
+          ],
+          "target_id": "740af4c1-9913-4731-a8d7-c9985750484e",
+          "target_type": "VERIFY_REVIEW_EVIDENCE",
+          "verification_changed_raw_hashes": [
+            "07f87c829c9e9cc46d00988103c0cf148cc680ad041e91b9adad4ba6a3c6f57b"
+          ]
+        }
+      ],
+      "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+      "knowledge_cutoff": "2026-10-07T21:26:31.691095+00:00",
+      "network_calls": 0,
+      "result": "VERIFIED",
+      "reuse_of": null,
+      "runtime_versions": {
+        "python": "3.13.12",
+        "sqlite": "3.50.4"
+      },
+      "source_evidence_kinds": [
+        "METHOD_CASE"
+      ],
+      "status": "COMPLETED",
+      "verification_id": "740af4c1-9913-4731-a8d7-c9985750484e"
+    }
+  ]
+}

@@ -20,9 +20,11 @@ from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
+from roll.market.verification import IndependentVerifications, VerificationCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
+from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
@@ -85,6 +87,32 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.research=research
     executions=DailyExecutions(research)
     app.state.executions=executions
+    models=TransparentModels(research,executions)
+    app.state.models=models
+
+    @app.post('/api/research/protocols/{protocol_id}/models',status_code=201)
+    def research_model_create(protocol_id:str,command:ModelCommand):
+        return models.create(protocol_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/models')
+    def research_models(protocol_id:str):
+        return models.list(protocol_id)
+
+    @app.get('/api/research/models/{model_id}')
+    def research_model_get(model_id:str):
+        return models.get(model_id)
+
+    @app.post('/api/research/models/{model_id}/forecasts',status_code=201)
+    def research_forecast(model_id:str,command:ForecastCommand):
+        return models.forecast(model_id,command)
+
+    @app.get('/api/research/forecasts/{forecast_id}')
+    def research_forecast_get(forecast_id:str):
+        return models.get_forecast(forecast_id)
+
+    @app.post('/api/research/forecasts/{forecast_id}/replay')
+    def research_forecast_replay(forecast_id:str):
+        return models.replay(forecast_id)
 
     @app.post('/api/research/protocols/{protocol_id}/executions',status_code=201)
     def research_execution(protocol_id:str,command:ExecutionCommand):
@@ -195,7 +223,11 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.get('/api/reviews/verification-requests/{identifier}')
     def get_review_verification_request(identifier:str):
-        return evidence.get('review_verification_requests',identifier)
+        return research.market_input_exposed(verifications.review_request(identifier),'verification-review-request')
+
+    @app.post('/api/reviews/verification-requests/{identifier}/verify')
+    def consume_review_verification_request(identifier:str):
+        return research.market_input_exposed(verifications.consume_review(identifier),'verification-review-consume')
 
     @app.get('/api/reviews/summary')
     def review_summary():
@@ -287,6 +319,24 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return deepseek.cancel(run_id) if run['backend']=='DEEPSEEK' else codex.cancel(run_id)
     resolutions=SourceResolutions(evidence,market_clock)
     app.state.resolutions=resolutions
+    verifications=IndependentVerifications(evidence)
+    app.state.verifications=verifications
+
+    @app.post('/api/data/verifications',status_code=201)
+    def verify_review_evidence(command:VerificationCommand):
+        return research.market_input_exposed(verifications.create(command),'verification-create')
+
+    @app.get('/api/data/verifications')
+    def verification_history():
+        return research.market_input_exposed(verifications.history(),'verification-history')
+
+    @app.get('/api/data/verifications/{verification_id}')
+    def verification(verification_id:str):
+        return research.market_input_exposed(verifications.get(verification_id),'verification-query')
+
+    @app.post('/api/data/verifications/{verification_id}/replay')
+    def verification_replay(verification_id:str):
+        return research.market_input_exposed(verifications.replay(verification_id),'verification-replay')
     reviews.resolutions=resolutions
 
     @app.post('/api/data/requests/{request_id}/resolve',status_code=202)

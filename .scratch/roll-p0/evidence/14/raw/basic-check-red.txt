@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_invalid_source_basic_checks_cannot_become_verified_by_matching_close __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/bR/test_invalid_source_basic_chec0')
+
+    def test_invalid_source_basic_checks_cannot_become_verified_by_matching_close(tmp_path):
+        origin=['A:first']
+        def provider(r):
+            return httpx.Response(200,json={'code':0,'data':{'sh600519':{'day':[['2026-09-30','100','100','90','80','100']],
+                'qfqday':[['2026-09-30','100','100','90','80','100']]}},
+                '_roll14_original_provenance':{'original_record':origin[0],'producer':origin[0].split(':')[0],
+                    'generation_basis':'METHOD_CASE separate generation','origin_kind':'DIRECT_ORIGINAL'}})
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
+            request=setup_request(client,groups=['DAILY'],daily_source='TENCENT')
+            first=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+            origin[0]='B:second';second=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+            payload=command([{'snapshot_id':r['snapshot_id'],'fact_index':0} for r in [first,second]])
+            payload['facts'][0]['field']='close'
+            result=client.post('/api/data/verifications',json=payload).json()
+>           assert result['result']=='INSUFFICIENT'
+E           AssertionError: assert 'VERIFIED' == 'INSUFFICIENT'
+E             
+E             - INSUFFICIENT
+E             + VERIFIED
+
+tests\application\test_independent_verification.py:220: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_invalid_source_basic_checks_cannot_become_verified_by_matching_close
+1 failed, 10 deselected in 3.59s

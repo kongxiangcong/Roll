@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_routine_is_not_upgraded_and_two_supplier_quotes_do_not_prove_independence _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/14-first-red/test_routine_is_not_upgraded_a0')
+
+    def test_routine_is_not_upgraded_and_two_supplier_quotes_do_not_prove_independence(tmp_path):
+        def provider(r):
+            return httpx.Response(200,content=quote_bytes() if r.url.host=='hq.sinajs.cn' else tencent_bytes())
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
+            setup_request(client)
+            before=client.get('/api/account').json()
+            refs=[acquire(client),acquire(client,'SINA')]
+>           assert client.post('/api/data/verifications',json=command(refs,'ROUTINE')).status_code==422
+E           AssertionError: assert 404 == 422
+E            +  where 404 = <Response [404 Not Found]>.status_code
+E            +    where <Response [404 Not Found]> = post('/api/data/verifications', json={'facts': [{'fact_id': 'decisive-close', 'field': 'last', 'references': [{'fact_index': 0, 'snapshot_id': '4c44c463-b4...: 0, 'snapshot_id': 'e8fafb76-2a66-4451-80e9-50dc53c59006'}]}], 'reason': '收盘价格影响重大盈亏归因，核对决定性价格', 'trigger': 'ROUTINE'})
+E            +      where post = <starlette.testclient.TestClient object at 0x000002B736EAAA50>.post
+E            +      and   {'facts': [{'fact_id': 'decisive-close', 'field': 'last', 'references': [{'fact_index': 0, 'snapshot_id': '4c44c463-b4...: 0, 'snapshot_id': 'e8fafb76-2a66-4451-80e9-50dc53c59006'}]}], 'reason': '收盘价格影响重大盈亏归因，核对决定性价格', 'trigger': 'ROUTINE'} = command([{'fact_index': 0, 'snapshot_id': '4c44c463-b449-4122-8a95-1b0619b4a555'}, {'fact_index': 0, 'snapshot_id': 'e8fafb76-2a66-4451-80e9-50dc53c59006'}], 'ROUTINE')
+
+tests\application\test_independent_verification.py:30: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_routine_is_not_upgraded_and_two_supplier_quotes_do_not_prove_independence
+1 failed in 5.80s
