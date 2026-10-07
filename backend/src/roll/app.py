@@ -1,6 +1,8 @@
 from pathlib import Path
 from datetime import date, datetime
 import os
+import asyncio
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Query, HTTPException, Request, Response
 from fastapi.responses import FileResponse
@@ -12,11 +14,17 @@ from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
+from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
-def create_app(directory: Path | None = None, market_transport=None):
-    app = FastAPI(title="Roll", version="0.1.0")
+def create_app(directory: Path | None = None, market_transport=None, codex_worker: Path | None = None):
+    @asynccontextmanager
+    async def lifespan(application):
+        yield
+        await asyncio.to_thread(application.state.codex.close)
+
+    app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
     imports = CsvImports(ledger)
@@ -56,6 +64,16 @@ def create_app(directory: Path | None = None, market_transport=None):
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport)
     app.state.evidence=evidence
+    codex = CodexEvidence(evidence, codex_worker)
+    app.state.codex = codex
+
+    @app.post('/api/data/requests/{request_id}/codex', status_code=202)
+    def codex_start(request_id: str, command: CodexQuestion):
+        return codex.start(request_id, command)
+
+    @app.post('/api/data/runs/{run_id}/cancel')
+    def codex_cancel(run_id: str):
+        return codex.cancel(run_id)
 
     @app.get('/api/data/sources')
     def data_sources():

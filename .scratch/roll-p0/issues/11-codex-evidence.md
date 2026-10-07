@@ -25,3 +25,5 @@
 ## Comments
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。
+
+2026-10-08T01:34:00+08:00：07 已实际完成，基于集成 `1159dc71b610d15c17fd7d889f08c98978f0bc40` 开始本票；独立树/分支 `11-codex-evidence` / `codex/roll-p0-11`。沿已确认 FastAPI、真实 SQLite/隔离原件、Chrome 与实际 Runtime/进程验收 seam 逐切片 TDD；父管理 execution-status。锁 Python SDK/runtime 0.161.0，不引入未使用 Agents SDK 或自造 Node 桥。真实运行与外部 worker 方法案例分别留存。

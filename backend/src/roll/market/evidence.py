@@ -194,7 +194,7 @@ class EvidenceStore:
             'full_history_verified':False,'truncation':'REQUEST_BOUNDED; SOURCE_TOTAL_IS_NOT_RETURNED_COVERAGE',
             'adjustment':adjustment,'raw_hash':archive['sha256']}
 
-    def retrieve(self,request_id):
+    def retrieve(self,request_id,*,acquisition_limits=None,cancel_event=None):
         import time
         request=self.get('data_requests',request_id)
         # Recheck current membership, so a stale request cannot acquire a removed stock.
@@ -205,21 +205,29 @@ class EvidenceStore:
                 'adapter_version':ADAPTER_VERSION,'runtime_versions':self.runtime_versions,
                 'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__]]}).encode()).hexdigest(),
             'evidence_kind':self.evidence_kind,'started_at':now(),'status':'RUNNING','tools':[],'gaps':[]}
+        if acquisition_limits:
+            run['acquisition_limits']={k:acquisition_limits[k] for k in ['max_response_bytes','max_total_bytes']}
         with self.ledger.connection() as db:
             db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)',(run['run_id'],request_id,encode(run)))
         started=time.monotonic();facts=[];archives=[];coverage=[];observations=[]
+        deadline=min(started+request['timeout_seconds'],(acquisition_limits or {}).get('deadline',float('inf')))
+        max_response_bytes=min(16*1024*1024,(acquisition_limits or {}).get('max_response_bytes',16*1024*1024))
+        max_total_bytes=(acquisition_limits or {}).get('max_total_bytes',30*16*1024*1024)
+        total_bytes=0
         with httpx.Client(transport=self.transport,follow_redirects=False) as client:
             def fetch(source_id,instrument,group,url,params=None,**context):
-                if len(run['tools'])>=request['max_calls'] or time.monotonic()-started>=request['timeout_seconds']:
+                nonlocal total_bytes
+                if len(run['tools'])>=request['max_calls'] or time.monotonic()>=deadline or (cancel_event and cancel_event.is_set()) or total_bytes>=max_total_bytes:
                     run['gaps'].append({'instrument':instrument,'group':group,'code':'TECHNICAL_LIMIT',**context});return None
                 tool={'source_id':source_id,'instrument':instrument,'group':group,'started_at':now(),
                     'method':'GET','source_url':str(httpx.Request('GET',url,params=params).url),**context}
                 run['tools'].append(tool)
                 try:
-                    with client.stream('GET',url,params=params,timeout=min(10,max(.1,request['timeout_seconds']-(time.monotonic()-started)))) as response:
+                    with client.stream('GET',url,params=params,timeout=min(10,max(.1,deadline-time.monotonic()))) as response:
                         content=bytearray()
-                        for chunk in response.iter_bytes():
-                            if len(content)+len(chunk)>16*1024*1024 or time.monotonic()-started>request['timeout_seconds']:
+                        for chunk in response.iter_bytes(4096):
+                            total_bytes+=len(chunk)
+                            if len(content)+len(chunk)>max_response_bytes or total_bytes>max_total_bytes or time.monotonic()>deadline or (cancel_event and cancel_event.is_set()):
                                 raise ValueError('RESPONSE_SIZE_OR_TIME_LIMIT')
                             content.extend(chunk)
                         archive=self.archive(bytes(content),'RAW_RESPONSE',source_id=source_id,source_url=str(response.url),
