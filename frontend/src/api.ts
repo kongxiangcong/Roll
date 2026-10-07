@@ -4,6 +4,9 @@ export type Fill = {record_id:string;fill_id:string|null;instrument:string;direc
 export type Account = {version:number;cash_balance:string|null;broker_available:string|null;broker_frozen:string|null;withdrawable:string|null;positions:Position[];permission_profile:Permission[];confirmed_at:string|null;effective_at:string|null;state:string;fills?:Fill[];cash_balance_basis?:string;conservative_available?:string|null;conservative_available_basis?:string;broker_available_as_of?:string|null;broker_frozen_as_of?:string|null;withdrawable_as_of?:string|null;fee_resolutions?:Record<string,{actual_fee_amount:string}>};
 export type Receipt = {receipt_id:string;draft_id:string;account_version:number;confirmed_at:string;event_ids:string[]};
 export type Draft = {draft_id:string;preview:Record<string,{before:unknown;after:unknown}>;status?:string;issues?:string[];command?:{kind:string;payload:Record<string,unknown>}};
+export type Funding = {version:number;state:string;loss_status:string;remaining_loss_allowance:string|null;scope_kind?:'ACCOUNT'|'TRIAL_ACTUAL';scope_id?:string;purpose?:string;capital_amount?:string;total_exposure?:string;single_exposure?:string;cash_reserve?:string;loss_threshold?:string;basis?:string;effective_at?:string;enabled?:boolean;pause_latched?:boolean;confirmed_at?:string};
+export type Capability = {state:string;reason:string};
+export type RuntimeHealth = {service:string;reason:string};
 export async function request<T>(path:string, body?:unknown):Promise<T> {
   const response = await fetch(`/api${path}`,body===undefined ? undefined : {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
   const value = await response.json();

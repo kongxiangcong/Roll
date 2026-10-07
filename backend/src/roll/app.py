@@ -1,16 +1,54 @@
 from pathlib import Path
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.config import data_directory
+from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
 def create_app(directory: Path | None = None):
     app = FastAPI(title="Roll", version="0.1.0")
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
+    funding = Funding(ledger)
+
+    if os.environ.get("ROLL_ENV") == "test":
+        @app.post("/api/testing/funding-loss-samples")
+        def loss_sample(command: LossSample):
+            return funding.sample(command)
+
+        @app.get("/api/testing/funding-loss-samples/{series_id}")
+        def loss_samples(series_id: str):
+            return funding.samples(series_id)
+
+    @app.get("/api/funding")
+    def current_funding():
+        return funding.current()
+
+    @app.get("/api/funding/versions/{version}")
+    def funding_version(version: int):
+        return funding.current(version)
+
+    @app.post("/api/funding/confirm")
+    def confirm_funding(command: FundingConfirmation):
+        return funding.confirm(command)
+
+    @app.get("/api/capabilities")
+    def current_capabilities():
+        return capabilities()
+
+    @app.post("/api/formal/evaluate")
+    @app.post("/api/formal/probability")
+    def formal_closed():
+        raise HTTPException(403, {"code": "TECHNICAL_CAPABILITY_UNGRANTED", "reason": capabilities()["reason"]})
+
+    @app.get("/api/runtime/health")
+    def runtime_health():
+        ledger.account()
+        return {"service": "RUNNING", "storage": "READABLE", "market": "NOT_CONNECTED",
+                "backend": "NOT_CONFIGURED", "reason": "本机账户服务在线；市场和模型接入尚未配置"}
 
     @app.get("/api/health")
     def health():
@@ -77,6 +115,7 @@ def create_app(directory: Path | None = None):
             account["state"]="RECONCILE_REQUIRED"
             pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
         pending.extend(account.get("latest_fill_facts",[]))
-        return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending}
+        return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
+                "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health()}
 
     return app
