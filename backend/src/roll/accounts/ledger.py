@@ -433,6 +433,62 @@ class Ledger:
         with self.connection() as db:
             return [json.loads(row[0]) for row in db.execute("SELECT material FROM account_equity_hints ORDER BY rowid")]
 
+    def price_period(self, baseline, origin_at, as_of, events, marks, fee_amounts):
+        with localcontext() as context:
+            context.prec=80
+            return self._price_period(baseline,origin_at,as_of,events,marks,fee_amounts)
+
+    def _price_period(self, baseline, origin_at, as_of, events, marks, fee_amounts):
+        """Read-only fee-before FIFO replay for a concrete valuation period.
+
+        Opening holdings use the evidenced origin mark, never broker reference
+        cost. The account writer and its actual fee-inclusive lots are untouched.
+        """
+        import copy
+        from roll.accounts.fills import money
+        from roll.accounts.corrections import fact_command
+        projection=copy.deepcopy(baseline)
+        projection.update(lots=[],fills=[],share_records=[],fee_resolutions={},realized_gain="0.00")
+        for position in projection['positions']:
+            price=marks.get(position['instrument'])
+            cost=None if price is None else money(Decimal(position['quantity'])*Decimal(price))
+            position['acquisition_cost']=cost
+            projection['lots'].append({'lot_id':'opening:'+position['instrument'],'instrument':position['instrument'],
+                'original_quantity':position['quantity'],'remaining_quantity':position['quantity'],
+                'original_cost':cost,'remaining_cost':cost,'cost_basis':'UNKNOWN' if cost is None else 'KNOWN',
+                'effective_at':origin_at})
+        active,_,_=active_events(events)
+        for event in sorted(enumerate(active),key=lambda pair:(datetime.fromisoformat(pair[1]['effective_at']),pair[0])):
+            event=event[1]
+            at=datetime.fromisoformat(event['effective_at'])
+            if not datetime.fromisoformat(origin_at)<at<=datetime.fromisoformat(as_of):continue
+            if event['event_type'] in {'INITIAL_CASH','INITIAL_POSITION'}:continue
+            command=fact_command(event)
+            kind,payload=command['kind'],command['payload']
+            if kind=='FILL':
+                payload['fee']={'status':'KNOWN','amount':'0.00','reserve_amount':None,'basis':'费用前价格损益重放'}
+            elif kind=='RIGHTS_SUBSCRIPTION':
+                amount=fee_amounts.get(payload['record_id'].strip())
+                if amount is None:return None
+                payload.update(amount=money(Decimal(payload['amount'])-Decimal(amount)),fee_amount='0.00')
+                if Decimal(payload['amount'])==0:
+                    position=next((p for p in projection['positions'] if p['instrument']==payload['instrument']),None)
+                    if position is None:
+                        position={'instrument':payload['instrument'],'quantity':'0','sellable_quantity':None,'reference_cost':None,'acquisition_cost':'0.00'}
+                        projection['positions'].append(position)
+                    position['quantity']=format(Decimal(position['quantity'])+Decimal(payload['quantity']),'f')
+                    projection['lots'].append({'lot_id':payload['record_id'].strip(),'instrument':payload['instrument'],
+                        'original_quantity':payload['quantity'],'remaining_quantity':payload['quantity'],
+                        'original_cost':'0.00','remaining_cost':'0.00','cost_basis':'KNOWN','effective_at':payload['effective_at']})
+                    continue
+            elif kind=='SHARE_CHANGE':pass
+            elif kind=='RECONCILIATION':
+                if payload['snapshot'].get('positions'):return None
+                continue
+            else:continue
+            projection,_=self._prepare_fact(command,projection)
+        return projection
+
     def replay(self, events=None, known_by=None, effective_at=None):
         events=self.events() if events is None else events
         visible=[e for e in events if known_by is None or datetime.fromisoformat(e["recorded_at"])<=datetime.fromisoformat(known_by)]

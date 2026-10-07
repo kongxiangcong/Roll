@@ -9,6 +9,7 @@ from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide,VE
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, EquityHint, Ledger
 from roll.accounts.cash_events import EVENT_FIELDS
 from roll.accounts.reconcile import UseCheck,use_check,consistency
+from roll.accounts.valuation import Valuations,ValuationRequest
 from roll.accounts.corrections import active_events,fact_command
 from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
@@ -58,6 +59,32 @@ def create_app(directory: Path | None = None, market_transport=None):
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport)
     app.state.evidence=evidence
+    valuations=Valuations(ledger,evidence)
+    app.state.valuations=valuations
+
+    @app.post('/api/account/valuations',status_code=201)
+    def publish_valuation(command:ValuationRequest):
+        return valuations.publish(command)
+
+    @app.get('/api/account/valuation-basis')
+    def valuation_basis():
+        return valuations.basis()
+
+    @app.get('/api/account/valuations')
+    def valuation_history():
+        return valuations.history()
+
+    @app.get('/api/account/valuations/current')
+    def current_valuation():
+        return valuations.get()
+
+    @app.get('/api/account/valuations/{identifier}')
+    def get_valuation(identifier:str):
+        return valuations.get(identifier)
+
+    @app.post('/api/account/valuations/{identifier}/replay')
+    def replay_valuation(identifier:str):
+        return valuations.get(identifier,replay=True)
 
     @app.get('/api/data/sources')
     def data_sources():

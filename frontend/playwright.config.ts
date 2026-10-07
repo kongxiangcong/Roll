@@ -2,7 +2,7 @@ import {defineConfig} from '@playwright/test';
 import {mkdtempSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
-const dataDir=mkdtempSync(join(tmpdir(),'roll-browser-'));
+const dataDir=process.env.ROLL_TEST_DATA_DIR??mkdtempSync(join(tmpdir(),'roll-browser-'));
 const python=resolve('../backend/.venv',process.platform==='win32'?'Scripts/python.exe':'bin/python');
 const apiPort=process.env.ROLL_TEST_API_PORT??'8010';
 const webPort=process.env.ROLL_TEST_WEB_PORT??'5173';
