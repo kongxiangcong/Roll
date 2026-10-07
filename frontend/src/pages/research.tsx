@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
 import {Executions} from './executions';
+import {Models} from './models';
 type Dataset={dataset_id:string;source_evidence_kind:string;coverage:{session_count:number;first_date:string;last_date:string};partitions:Record<string,{rows:number;first_date?:string;last_date?:string}>;limitations:string[]};
 type Protocol={protocol_id:string;dataset_id:string|null;predecessor_id:string|null;registered_at:string;status:string;basis:string;protocol_fingerprint:string;data_fingerprint?:string;freeze_gaps:string[];sealed_independence:string;validation_verdict:string|null;forward_started_at:string|null;capability:string;design?:{primary_objective:{minimum_improvement_nav_return:string};support_projection:{state:string;sealed_mature_label_upper_bound:number};costs:{broker_actual_commission:string};statistics:{pass_look_count:number};stopping:{maximum_natural_months:number}}};
 type Attempt={attempt_id:string;category:string;partition:string;status:string;basis:string;configuration:unknown};
@@ -26,6 +27,7 @@ export function Research(){
       <h4>全部尝试（包括失败、中止和中断）</h4>{attempts.length?<ul>{attempts.map(a=><li key={a.attempt_id}>{a.category} · {a.partition} · {a.status} · {a.basis}<details><summary>尝试配置</summary><pre>{JSON.stringify(a.configuration,null,2)}</pre></details></li>)}</ul>:<p>尚无计算尝试；登记设计不代表已经训练。</p>}
       <details><summary>封存输入访问</summary><p>访问输入会留下暴露记录；本入口不计算结果或授PASS。</p><label>访问依据<input value={reason} onChange={e=>setReason(e.target.value)}/></label><button disabled={!reason.trim()} onClick={()=>void expose()}>访问封存输入并登记</button></details>
       {selected.dataset_id&&datasets.find(d=>d.dataset_id===selected.dataset_id)&&<Executions key={selected.protocol_id} protocolId={selected.protocol_id} partitions={datasets.find(d=>d.dataset_id===selected.dataset_id)!.partitions} evidenceKind={datasets.find(d=>d.dataset_id===selected.dataset_id)!.source_evidence_kind}/>}
+      {selected.dataset_id&&datasets.find(d=>d.dataset_id===selected.dataset_id)&&<Models key={'model-'+selected.protocol_id} protocolId={selected.protocol_id} evidenceKind={datasets.find(d=>d.dataset_id===selected.dataset_id)!.source_evidence_kind} calibrationFirstDate={datasets.find(d=>d.dataset_id===selected.dataset_id)!.partitions.CALIBRATION?.first_date}/>}
       <h4>持久审计</h4><ul>{audit.map(e=><li key={e.event_id}>{e.action} · {new Date(e.recorded_at).toLocaleString('zh-CN')} · {e.reason??e.gaps?.join('、')} {e.confirmatory_pass_look===false?'· 非确认性PASS查看':''}</li>)}</ul>
     </section>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}</section>;
 }

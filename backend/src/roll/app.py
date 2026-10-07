@@ -23,6 +23,7 @@ from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
+from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
@@ -77,6 +78,32 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     app.state.research=research
     executions=DailyExecutions(research)
     app.state.executions=executions
+    models=TransparentModels(research,executions)
+    app.state.models=models
+
+    @app.post('/api/research/protocols/{protocol_id}/models',status_code=201)
+    def research_model_create(protocol_id:str,command:ModelCommand):
+        return models.create(protocol_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/models')
+    def research_models(protocol_id:str):
+        return models.list(protocol_id)
+
+    @app.get('/api/research/models/{model_id}')
+    def research_model_get(model_id:str):
+        return models.get(model_id)
+
+    @app.post('/api/research/models/{model_id}/forecasts',status_code=201)
+    def research_forecast(model_id:str,command:ForecastCommand):
+        return models.forecast(model_id,command)
+
+    @app.get('/api/research/forecasts/{forecast_id}')
+    def research_forecast_get(forecast_id:str):
+        return models.get_forecast(forecast_id)
+
+    @app.post('/api/research/forecasts/{forecast_id}/replay')
+    def research_forecast_replay(forecast_id:str):
+        return models.replay(forecast_id)
 
     @app.post('/api/research/protocols/{protocol_id}/executions',status_code=201)
     def research_execution(protocol_id:str,command:ExecutionCommand):
