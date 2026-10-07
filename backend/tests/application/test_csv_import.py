@@ -5,14 +5,14 @@ from fastapi.testclient import TestClient
 from roll.app import create_app
 
 
-def upload(client, rows, version=0, encoding="utf-8", filename="账户.csv"):
-    template = client.get("/api/account/csv/template").text.lstrip("\ufeff")
+def upload(client, rows, version=0, encoding="utf-8", filename="账户.csv", template_version="ROLL-CSV-1"):
+    template = client.get("/api/account/csv/template", params={"version": template_version}).text.lstrip("\ufeff")
     columns = next(csv.reader(io.StringIO(template)))
     output = io.StringIO(newline="")
     writer = csv.DictWriter(output, columns)
     writer.writeheader()
     for row in rows:
-        writer.writerow({"template_version": "ROLL-CSV-1", "effective_at": "2026-10-07T10:00:00+08:00", "source": "脱敏券商文件", **row})
+        writer.writerow({"template_version": template_version, "effective_at": "2026-10-07T10:00:00+08:00", "source": "脱敏券商文件", **row})
     return client.post("/api/account/csv/drafts", params={"filename": filename, "encoding": encoding, "expected_account_version": version}, content=output.getvalue().encode(encoding), headers={"Content-Type": "text/csv"})
 
 
@@ -203,3 +203,29 @@ def test_confirm_refuses_missing_or_corrupt_required_original_archive(tmp_path):
         assert response.status_code == 409
         assert response.json()["detail"]["code"] == "CSV_ORIGINAL_UNAVAILABLE"
         assert client.get("/api/account").json()["version"] == 0
+
+
+def test_csv_v2_covers_all_current_cash_and_equity_events_in_single_atomic_version(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        columns = next(csv.reader(io.StringIO(client.get("/api/account/csv/template").text.lstrip("\ufeff"))))
+        assert {"amount","item_type","corrected_amount","new_quantity"} <= set(columns)
+        confirm(client, upload(client, baseline_rows(), template_version="ROLL-CSV-2").json(), "baseline")
+        rows = [{"kind":kind,"record_id":kind,"amount":amount,"basis":"用户实际回报"} for kind,amount in [("CASH_IN","1000.00"),("CASH_OUT","100.00"),("DIVIDEND","50.00"),("INTEREST","2.00"),("TAX","3.00"),("FEE","4.00")]]
+        rows += [{"kind":"PENDING_ITEM","record_id":"pending-dividend","item_type":"DIVIDEND","amount":"20.00","basis":"个人应收核对"},
+                 {"kind":"SETTLEMENT","record_id":"paid-dividend","target_record_id":"pending-dividend","amount":"20.00","basis":"实际到账"},
+                 {"kind":"CASH_CORRECTION","record_id":"correct-in","target_record_id":"CASH_IN","corrected_amount":"900.00","basis":"核对原入金差错"},
+                 {"kind":"SHARE_CHANGE","record_id":"shares","exchange":"SZSE","code":"000001","new_quantity":"600.00000000","basis":"券商送转后数量"}]
+        draft = upload(client, rows, 1, template_version="ROLL-CSV-2").json()
+        assert draft["status"] == "READY", draft
+        assert draft["preview"]["cash_balance"]["after"] == "100865.10"
+        receipt = confirm(client,draft,"cash-batch").json()
+        assert receipt["account_version"] == 2
+        assert len(receipt["event_ids"]) == 10
+        account = client.get("/api/account").json()
+        assert account["cash_balance"] == "100865.10"
+        assert account["external_cash_in"] == "900.00"
+        assert account["investment_income"] == "72.00"
+        assert account["pending_income"] == "0.00"
+        assert account["positions"][0]["quantity"] == "600.00000000"
+        assert all(r["receipt_id"] == receipt["receipt_id"] for r in account["cash_records"]+account["share_records"])
+        assert client.get("/api/account/replay").json()["cash_balance"] == "100865.10"

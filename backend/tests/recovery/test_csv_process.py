@@ -14,7 +14,7 @@ def test_whole_csv_batch_and_original_file_survive_real_process_crash(tmp_path, 
     try:
         baseline = server.client.post("/api/account/drafts", json=BASELINE).json()
         server.client.post("/api/account/confirm", json={"draft_id": baseline["draft_id"], "idempotency_key": "baseline"}).raise_for_status()
-        columns = next(csv.reader(io.StringIO(server.client.get("/api/account/csv/template").text.lstrip("\ufeff"))))
+        columns = next(csv.reader(io.StringIO(server.client.get("/api/account/csv/template",params={"version":"ROLL-CSV-1"}).text.lstrip("\ufeff"))))
         output = io.StringIO(newline="")
         writer = csv.DictWriter(output, columns)
         writer.writeheader()

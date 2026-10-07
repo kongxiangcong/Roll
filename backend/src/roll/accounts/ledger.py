@@ -17,6 +17,7 @@ from uuid import uuid4
 from fastapi import HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.fills import actual_fill, fee_adjustment
+from roll.accounts.cash_events import CASH_KINDS, EVENT_FIELDS, actual_cash, stamp_cash
 
 
 class DraftCommand(BaseModel):
@@ -30,6 +31,14 @@ class ConfirmCommand(BaseModel):
     model_config = ConfigDict(extra="forbid")
     draft_id: str
     idempotency_key: str = Field(min_length=1, max_length=128)
+
+
+class EquityHint(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    source: str = Field(min_length=1,max_length=4096)
+    declared_at: str | None
+    instrument: str | None
+    content: str = Field(min_length=1,max_length=65536)
 
 
 def now():
@@ -102,6 +111,7 @@ class Ledger:
                 CREATE TABLE IF NOT EXISTS account_events(id TEXT PRIMARY KEY, version INTEGER NOT NULL, event TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS account_receipts(id TEXT PRIMARY KEY, idempotency_key TEXT UNIQUE NOT NULL, content_hash TEXT NOT NULL, receipt TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS account_audit(id TEXT PRIMARY KEY, version INTEGER NOT NULL, entry TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS account_equity_hints(id TEXT PRIMARY KEY, material TEXT NOT NULL);
             """)
             if db.execute("PRAGMA user_version").fetchone()[0] == 0:
                 db.execute("PRAGMA user_version=1")
@@ -206,6 +216,10 @@ class Ledger:
             with localcontext() as context:
                 context.prec=80
                 projection,events=fee_adjustment(payload,account,number,text_value)
+        elif command["kind"] in EVENT_FIELDS:
+            with localcontext() as context:
+                context.prec=80
+                projection,events=actual_cash(command["kind"],payload,account,number,text_value)
         else:
             raise HTTPException(422, "尚不支持的草稿类型")
         if command["kind"] in {"BASELINE","PERMISSIONS"}:
@@ -232,7 +246,7 @@ class Ledger:
         try:
             projection,_=self.prepare(command,account)
         except HTTPException as error:
-            if command["kind"] not in {"FILL","FEE_ADJUSTMENT","CSV_BATCH"} or error.status_code!=422:
+            if command["kind"] not in {"FILL","FEE_ADJUSTMENT","CSV_BATCH"}|EVENT_FIELDS.keys() or error.status_code!=422:
                 raise
             projection,status,issues=account,"QUARANTINED",[error.detail]
         draft_id, created_at = str(uuid4()), now()
@@ -291,11 +305,13 @@ class Ledger:
                 for event in events:
                     event_id = str(uuid4())
                     event.update(event_id=event_id, account_version=version, recorded_at=confirmed_at, namespace="ACTUAL")
-                    if event["event_type"] in {"BUY_FILL","SELL_FILL"}:
+                    if event["event_type"] in {"BUY_FILL","SELL_FILL"}|EVENT_FIELDS.keys():
                         event["payload"].update(event_id=event_id,receipt_id=receipt_id)
                         for fill in projection.get("fills", []):
                             if fill["record_id"] == event["payload"]["record_id"]:
                                 fill.update(event_id=event_id, receipt_id=receipt_id)
+                    if event["event_type"] in EVENT_FIELDS:
+                        stamp_cash(projection,event["payload"],event_id=event_id,receipt_id=receipt_id,confirmed_at=confirmed_at)
                     event_ids.append(event_id)
                     db.execute("INSERT INTO account_events VALUES(?,?,?)", (event_id, version, encode(event)))
                 receipt = {"receipt_id": receipt_id, "draft_id": command.draft_id, "idempotency_key": command.idempotency_key,
@@ -349,6 +365,22 @@ class Ledger:
             ids=[row[0] for row in db.execute("SELECT id FROM account_drafts WHERE status='QUARANTINED' ORDER BY created_at")]
             return [self.get_draft(draft_id,db) for draft_id in ids]
 
+    def equity_hint(self,command: EquityHint):
+        from roll.accounts.cash_events import instrument
+        value=command.model_dump()
+        value.update(source=text_value(value["source"],"source"),content=text_value(value["content"],"content"),
+                     instrument=instrument(value["instrument"],text_value),hint_id=str(uuid4()),learned_at=now(),
+                     actual_effective_at=None,status="PENDING_USER_CONFIRMATION")
+        if value["declared_at"] is not None:
+            value["declared_at"]=text_value(value["declared_at"],"declared_at")
+        with self.connection() as db:
+            db.execute("INSERT INTO account_equity_hints VALUES(?,?)",(value["hint_id"],encode(value)))
+        return value
+
+    def equity_hints(self):
+        with self.connection() as db:
+            return [json.loads(row[0]) for row in db.execute("SELECT material FROM account_equity_hints ORDER BY rowid")]
+
     def replay(self):
         account=empty_account()
         fill_fields={"effective_at","source","instrument","direction","quantity","price","record_id","fill_id","order_id","behavior_context","fee","broker_available_after"}
@@ -368,5 +400,9 @@ class Ledger:
                 account,_=self.prepare(command,account)
                 if kind=="FILL":
                     account["fills"][-1].update(event_id=payload["event_id"],receipt_id=payload["receipt_id"])
+            elif event["event_type"] in EVENT_FIELDS:
+                fields=EVENT_FIELDS[event["event_type"]]
+                account,_=self.prepare({"kind":event["event_type"],"payload":{key:payload[key] for key in fields}},account)
+                stamp_cash(account,payload,event_id=payload["event_id"],receipt_id=payload["receipt_id"],confirmed_at=event["recorded_at"])
             account.update(version=event["account_version"],effective_at=event["effective_at"],confirmed_at=event["recorded_at"],state="CONFIRMED_AS_OF")
         return account

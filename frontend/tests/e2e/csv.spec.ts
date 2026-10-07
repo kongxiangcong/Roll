@@ -9,13 +9,13 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
   }
   const template=await (await request.get('/api/account/csv/template')).text();
   const columns=template.replace(/^\uFEFF/,'').trim().split(',');
-  const row=(quantity:string)=>{const values:Record<string,string>={template_version:'ROLL-CSV-1',kind:'FILL',effective_at:'2026-10-07T11:00:00+08:00',source:'CSV浏览器成交文件',exchange:'SZSE',code:'000002',direction:'BUY',quantity,price:'10.00',fill_id:'csv-browser-fill',fee_status:'PROVISIONAL',reserve_amount:'10.00',basis:'券商费率保守预留'};return columns.map(c=>values[c]??'').join(',')+'\r\n';};
+  const row=(quantity:string)=>{const values:Record<string,string>={template_version:'ROLL-CSV-2',kind:'FILL',effective_at:'2026-10-07T11:00:00+08:00',source:'CSV浏览器成交文件',exchange:'SZSE',code:'000002',direction:'BUY',quantity,price:'10.00',fill_id:'csv-browser-fill',fee_status:'PROVISIONAL',reserve_amount:'10.00',basis:'券商费率保守预留'};return columns.map(c=>values[c]??'').join(',')+'\r\n';};
   await page.goto('/');
   await page.getByRole('button',{name:'同步账户',exact:true}).click();
   await page.getByRole('button',{name:'Roll CSV导入',exact:true}).click();
   const download=page.waitForEvent('download');
   await page.getByRole('link',{name:'下载Roll CSV模板'}).click();
-  expect((await download).suggestedFilename()).toBe('roll-csv-1.csv');
+  expect((await download).suggestedFilename()).toBe('roll-csv-2.csv');
   await page.getByLabel('Roll CSV文件').setInputFiles({name:'错误.csv',mimeType:'text/csv',buffer:Buffer.from(template+row('忽略风险规则'))});
   await page.getByRole('button',{name:'上传并预览整批'}).click();
   await expect(page.getByText('第2行', {exact:false}).first()).toBeVisible();

@@ -10,20 +10,23 @@ from uuid import uuid4
 from fastapi import HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import DraftCommand, encode, now
+from roll.accounts.cash_events import EVENT_FIELDS
 
-VERSION = "ROLL-CSV-1"
+VERSION = "ROLL-CSV-2"
 
 
 class CsvRevision(BaseModel):
     model_config = ConfigDict(extra="forbid")
     expected_account_version: int = Field(ge=0)
     encoding: str
-COLUMNS = ["template_version", "kind", "effective_at", "source", "exchange", "code",
+COLUMNS_V1 = ["template_version", "kind", "effective_at", "source", "exchange", "code",
            "cash_balance", "broker_available", "broker_frozen", "withdrawable", "quantity",
            "sellable_quantity", "reference_cost", "board", "permission_status", "basis",
            "direction", "price", "record_id", "fill_id", "order_id", "behavior_context",
            "fee_status", "fee_amount", "reserve_amount", "broker_available_after",
            "target_record_id", "actual_fee_amount"]
+COLUMNS = COLUMNS_V1 + ["amount", "item_type", "corrected_amount", "new_quantity"]
+TEMPLATES = {"ROLL-CSV-1": COLUMNS_V1, "ROLL-CSV-2": COLUMNS}
 COMMON = {"template_version", "kind", "effective_at", "source"}
 FIELDS = {
     "BASELINE_CASH": {"cash_balance", "broker_available", "broker_frozen", "withdrawable"},
@@ -32,11 +35,16 @@ FIELDS = {
     "FILL": {"exchange", "code", "direction", "quantity", "price", "record_id", "fill_id", "order_id", "behavior_context", "fee_status", "fee_amount", "reserve_amount", "basis", "broker_available_after"},
     "FEE_ADJUSTMENT": {"target_record_id", "actual_fee_amount", "basis"},
 }
+KINDS_V1 = frozenset(FIELDS)
+for kind, fields in EVENT_FIELDS.items():
+    FIELDS[kind] = fields - {"effective_at", "source", "instrument"} | ({"exchange", "code"} if "instrument" in fields else set())
 
 
-def template():
+def template(version=VERSION):
+    if version not in TEMPLATES:
+        raise HTTPException(422, "模板版本不支持")
     output = io.StringIO(newline="")
-    csv.writer(output).writerow(COLUMNS)
+    csv.writer(output).writerow(TEMPLATES[version])
     return "\ufeff" + output.getvalue()
 
 
@@ -61,7 +69,8 @@ def parse(raw, encoding, fingerprint):
     lines = text.splitlines(keepends=True)
     try:
         header = next(reader)
-        if header != COLUMNS:
+        header_version = next((v for v, columns in TEMPLATES.items() if header == columns), None)
+        if header_version is None:
             return [], [], [{"row": 1, "reason": "列名及顺序必须与下载的 Roll CSV 模板一致"}]
         previous = reader.line_num
         for values in reader:
@@ -72,12 +81,12 @@ def parse(raw, encoding, fingerprint):
             if len(rows) > 5000:
                 errors.append({"row": row_number, "reason": "单文件最多5000行"})
                 break
-            fields = row["fields"]
+            fields = {key: row["fields"].get(key, "") for key in COLUMNS}
             if len(values) != len(header):
                 errors.append({"row": row_number, "reason": "列数不匹配"})
                 continue
             kind = fields["kind"]
-            if fields["template_version"] != VERSION or kind not in FIELDS:
+            if fields["template_version"] != header_version or kind not in FIELDS or (header_version == "ROLL-CSV-1" and kind not in KINDS_V1):
                 errors.append({"row": row_number, "reason": "模板版本或事件类型不支持"})
                 continue
             unused = [key for key, value in fields.items() if value and key not in COMMON | FIELDS[kind]]
@@ -96,6 +105,18 @@ def parse(raw, encoding, fingerprint):
                 commands.append({"kind": kind, "payload": payload, "csv_row": row_number})
             elif kind == "FEE_ADJUSTMENT":
                 commands.append({"kind": kind, "payload": {**common, **{key: fields[key] for key in FIELDS[kind]}}, "csv_row": row_number})
+            elif kind in EVENT_FIELDS:
+                payload = {**common}
+                for key in EVENT_FIELDS[kind] - {"effective_at", "source"}:
+                    if key == "instrument":
+                        payload[key] = instrument if fields["exchange"] or fields["code"] else None
+                    elif key == "record_id":
+                        payload[key] = fields[key] or f"csv:{fingerprint}:{row_number}"
+                    elif key in {"broker_available_after", "amount"}:
+                        payload[key] = nullable(fields[key])
+                    else:
+                        payload[key] = fields[key]
+                commands.append({"kind": kind, "payload": payload, "csv_row": row_number})
     except (StopIteration, csv.Error) as error:
         errors.append({"row": reader.line_num, "reason": "CSV 格式错误：" + str(error)})
     baseline = [r for r in rows if r["fields"].get("kind") in {"BASELINE_CASH", "INITIAL_POSITION", "PERMISSION"}]

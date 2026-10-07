@@ -6,7 +6,7 @@ from fastapi import FastAPI, Query, HTTPException, Request, Response
 from fastapi.responses import FileResponse
 from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide
 
-from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
+from roll.accounts.ledger import ConfirmCommand, DraftCommand, EquityHint, Ledger
 from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
@@ -19,8 +19,9 @@ def create_app(directory: Path | None = None):
     imports = CsvImports(ledger)
 
     @app.get("/api/account/csv/template")
-    def csv_template():
-        return Response(template(), media_type="text/csv; charset=utf-8", headers={"Content-Disposition": 'attachment; filename="roll-csv-1.csv"'})
+    def csv_template(version: str = "ROLL-CSV-2"):
+        content = template(version)
+        return Response(content, media_type="text/csv; charset=utf-8", headers={"Content-Disposition": f'attachment; filename="roll-csv-{version[-1]}.csv"'})
 
     @app.get("/api/account/csv/guide")
     def csv_guide():
@@ -189,6 +190,14 @@ def create_app(directory: Path | None = None):
     def quarantined_drafts():
         return ledger.quarantined_drafts()
 
+    @app.post("/api/account/equity-hints",status_code=201)
+    def equity_hint(command: EquityHint):
+        return ledger.equity_hint(command)
+
+    @app.get("/api/account/equity-hints")
+    def equity_hints():
+        return ledger.equity_hints()
+
     @app.get("/api/today")
     def today():
         account = ledger.account()
@@ -207,6 +216,11 @@ def create_app(directory: Path | None = None):
             account["state"]="RECONCILE_REQUIRED"
             pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
         pending.extend(account.get("latest_fill_facts",[]))
+        for item in account.get("pending_items",[]):
+            if item["status"] in {"OPEN","PARTIAL"}:
+                pending.append(f"{item['record_id']} {'应收' if item['flow_category']=='INVESTMENT_INCOME' else '应付'}待结算 {item['outstanding_amount']} 元")
+        for hint in ledger.equity_hints():
+            pending.append(f"外部权益线索待核：{hint['content']}；来源 {hint['source']}，获知于 {hint['learned_at']}，未确认个人账户实际发生")
         return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
                 "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health()}
 
