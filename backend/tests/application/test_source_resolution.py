@@ -112,6 +112,16 @@ def test_declared_exchange_mismatch_is_archived_as_normalization_failure(tmp_pat
         assert client.get('/api/data/archives/'+run['tools'][0]['raw_hash']).content==raw
 
 
+def test_reported_zero_price_cannot_claim_current_monitoring_even_when_session_matches(tmp_path):
+    with TestClient(create_app(tmp_path,market_clock=lambda:'2026-10-08T08:00:00+08:00',
+        market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=quote_bytes(price='0'))))) as client:
+        request=setup_request(client,quote_source='SINA',required_fields=['QUOTE.last'])
+        value=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
+            json={'usage':'CURRENT_MONITORING','allow_fallback':False}).json()['resolution_id'])
+        assert value['state']=='MONITORING_UNAVAILABLE'
+        assert value['capabilities']['current_monitoring']=='MONITORING_UNAVAILABLE'
+
+
 def test_failed_primary_gets_bounded_alternate_and_preserves_same_daily_fact_format(tmp_path):
     def provider(request):
         if request.url.host=='push2his.eastmoney.com':return httpx.Response(503,content=b'fixed upstream unavailable')

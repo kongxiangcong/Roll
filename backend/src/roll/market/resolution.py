@@ -160,7 +160,8 @@ class SourceResolutions:
         variants=['RAW'] if request['purpose']=='BACKGROUND' else ['RAW','FORWARD_CURRENT_VERSION']
         return all(any(f['instrument']==instrument and f['group']==group and (group!='DAILY' or f.get('adjustment')==variant)
             and not missing(f,request) and not f.get('errors') for f in facts) for variant in variants if group=='DAILY') if group=='DAILY' else any(
-            f['instrument']==instrument and f['group']==group and not missing(f,request) and not f.get('errors') for f in facts)
+            f['instrument']==instrument and f['group']==group and (group!='QUOTE' or f.get('last') is not None)
+            and not missing(f,request) and not f.get('errors') for f in facts)
 
     def expected_session(self,instrument,at,usage,group):
         local=at.astimezone(SHANGHAI);exchange=instrument.split(':')[0]
@@ -220,7 +221,9 @@ class SourceResolutions:
             gaps.append({'instrument':'REQUESTED_SCOPE','group':'DAILY','code':'COMPLETE_DAILY_REQUIRED_INPUTS_NOT_SATISFIED','resolved':False})
         unresolved=any(not g['resolved'] for g in gaps)
         state='DEGRADED' if unresolved else 'HEALTHY'
-        monitoring='MONITORING_UNAVAILABLE' if not any(f['group']=='QUOTE' and f['state'] in {'SESSION_CURRENT','HISTORICAL_WINDOW'} for f in freshness) else 'HEALTHY'
+        monitoring='HEALTHY' if all(any(f['instrument']==instrument and f['group']=='QUOTE' and f.get('last') is not None
+            and not missing(f,request) and not f.get('errors') and f.get('trade_date')==self.expected_session(instrument,at,'CURRENT_MONITORING','QUOTE')
+            for f in selected) for instrument in request['instruments']) else 'MONITORING_UNAVAILABLE'
         if usage=='CURRENT_MONITORING' and monitoring!='HEALTHY':state=monitoring
         if usage=='NEW_RISK':
             state='BLOCKED_NEW_RISK'

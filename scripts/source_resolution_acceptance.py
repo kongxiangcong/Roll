@@ -96,7 +96,9 @@ def measure(backend,directory,port,method):
             def response_hook(response):
                 if response.request.url.path=='/api/account/confirm':confirmation_times.append(time.perf_counter())
             client.event_hooks['response']=[response_hook]
-            performance=measure_confirmations(client,100,10)
+            # Real public acquisition can finish in one second: do not consume
+            # its entire overlap window with discarded warm-up confirmations.
+            performance=measure_confirmations(client,100,10 if method else 0)
             thread.join(timeout=40);finished.set()
             if thread.is_alive() or errors:raise AssertionError('resolution polling did not complete: '+str(errors))
             resolution=checked(client.get('/api/data/resolutions/'+accepted['resolution_id']))
