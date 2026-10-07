@@ -206,12 +206,13 @@ def test_existing_market_query_and_offline_replay_audit_sealed_inputs_without_a_
         request=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH',
             'start_date':dates[160],'end_date':dates[160],'daily_source':'TENCENT'}).json()
         run=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+        assert not any(e['action']=='SEALED_MARKET_INPUT_EXPOSED' for e in client.get('/api/research/protocols/'+pid+'/audit').json())  # run metadata contains no delivered facts
         assert client.get('/api/data/snapshots/'+run['snapshot_id']).status_code==200
         assert client.get('/api/data/snapshots').status_code==200
         before=len(calls);assert client.post('/api/data/runs/'+run['run_id']+'/replay').status_code==200
         assert len(calls)==before
         audit=client.get('/api/research/protocols/'+pid+'/audit').json()
         exposed=[e for e in audit if e['action']=='SEALED_MARKET_INPUT_EXPOSED']
-        assert {e['route'] for e in exposed}=={'direct-retrieval','snapshot-query','snapshots-query','run-replay'}
+        assert {e['route'] for e in exposed}=={'snapshot-query','snapshots-query','run-replay'}
         assert all(e['confirmatory_pass_look'] is False and e['first_date']==dates[160] for e in exposed)
         assert client.get('/api/research/protocols/'+pid).json()==protocol
