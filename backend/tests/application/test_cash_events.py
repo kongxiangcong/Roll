@@ -105,9 +105,11 @@ def test_share_change_carries_exact_cost_and_later_fee_adjustment_through_partia
         assert account["positions"][0]["quantity"]=="300"
         assert account["positions"][0]["acquisition_cost"]=="2006.67"
         sell=fill(4,"post-split-sell","SELL")
-        sell["payload"].update(quantity="100",price="8.00")
+        sell["payload"].update(quantity="100",price="8.00",effective_at="2026-10-07T13:00:00+08:00")
         submit(client,sell,"second-sale")
-        assert submit(client,fee_adjustment(5),"actual-fee").status_code==200
+        actual_fee=fee_adjustment(5)
+        actual_fee["payload"]["effective_at"]="2026-10-07T14:00:00+08:00"
+        assert submit(client,actual_fee,"actual-fee").status_code==200
         account=client.get("/api/account").json()
         assert account["cash_balance"]=="98985.00"
         assert account["positions"][0]["quantity"]=="200"
@@ -280,3 +282,32 @@ def test_share_reference_cost_at_maximum_input_precision_does_not_claim_known_ac
         transfer=client.get("/api/account/events").json()[-1]["payload"]["lot_transfers"][0]
         assert transfer["cost"]=="999999999999999999999999980000000000.00"
         assert client.get("/api/account/replay").json()["lots"]==account["lots"]
+
+
+def test_fee_resolution_across_two_share_transfers_and_partial_sales_keeps_literal_total_cost(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        establish(client)
+        submit(client,fill(fee_status="PROVISIONAL"),"buy")
+        submit(client,shares(2,"600","first-share"),"share-1")
+        first_sale=fill(3,"sale-1","SELL")
+        first_sale["payload"].update(quantity="100",price="5.00",effective_at="2026-10-07T12:45:00+08:00")
+        submit(client,first_sale,"sale-1")
+        second_share=shares(4,"250","second-share")
+        second_share["payload"]["effective_at"]="2026-10-07T13:00:00+08:00"
+        submit(client,second_share,"share-2")
+        second_sale=fill(5,"sale-2","SELL")
+        second_sale["payload"].update(quantity="50",price="10.00",effective_at="2026-10-07T13:30:00+08:00")
+        submit(client,second_sale,"sale-2")
+        fee=fee_adjustment(6)
+        fee["payload"]["effective_at"]="2026-10-07T14:00:00+08:00"
+        submit(client,fee,"fee")
+        account=client.get("/api/account").json()
+        assert account["cash_balance"]=="97985.00"
+        assert account["positions"][0]["quantity"]=="200"
+        assert account["positions"][0]["acquisition_cost"]=="2003.34"
+        assert account["realized_gain"]=="-11.66"
+        assert account["fills"][0]["quantity"]=="300"
+        replay=client.get("/api/account/replay").json()
+        assert replay["cash_balance"]=="97985.00"
+        assert replay["lots"]==account["lots"]
+        assert replay["realized_gain"]=="-11.66"
