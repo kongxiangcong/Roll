@@ -2,6 +2,7 @@ import {FormEvent, useEffect, useState} from 'react';
 import {request, Position, Permission} from '../api';
 import '../styles/market.css';
 import {Evidence} from './evidence';
+import {Valuation} from './valuation';
 
 type Source = {id:string;url:string;sha256:string;fetched_at:string};
 type Rule = {implementation_status:string;reason?:string;effective_from?:string;adapted_date_range?:string[];buy_minimum?:string;buy_increment?:string;price_tick_yuan?:string;normal_price_limit_percent?:string;source:Source|null;fees?:{state:string;reason:string}};
@@ -34,6 +35,7 @@ function IdentityForm({member,onDone}:{member:Member;onDone:(v:Listing)=>void}) 
 }
 
 export function Market() {
+  const [showValuation,setShowValuation]=useState(false);
   const [showEvidence,setShowEvidence]=useState(false);
   const [listing,setListing]=useState<Listing|null>(null);
   const [error,setError]=useState('');
@@ -53,7 +55,8 @@ export function Market() {
   }catch(e){setError(String(e));setListing(await request<Listing>('/market/list'));}finally{setBusy(false);}}
   async function loadHistory(){try{const response=await request<{versions:Listing[];account_membership_history:typeof membership}>('/market/history');setHistory(response.versions);setMembership(response.account_membership_history);setPast(null);}catch(e){setError(String(e));}}
   if(showEvidence)return <><button onClick={()=>setShowEvidence(false)}>返回持仓与关注</button><Evidence/></>;
-  return <><button onClick={()=>setShowEvidence(true)}>市场事实</button><section><h1>持仓与关注</h1><p>真实持仓自动纳入。关注只用于有限名单内观察，交易判断尚未启用。</p>
+  if(showValuation)return <><button onClick={()=>setShowValuation(false)}>返回持仓与关注</button><Valuation/></>;
+  return <><button onClick={()=>setShowEvidence(true)}>市场事实</button><button onClick={()=>setShowValuation(true)}>账户估值与绩效</button><section><h1>持仓与关注</h1><p>真实持仓自动纳入。关注只用于有限名单内观察，交易判断尚未启用。</p>
     {error&&<p role="alert">{error}</p>}
     {!listing?<p>正在读取名单…</p>:<><p className="muted">名单版本 {listing.version} · 账户版本 {listing.account_version} · 共 {listing.members.length} 只</p>
       {listing.over_limit&&<p role="alert">名单超过 {listing.limit} 只，全部真实资产继续展示；新增关注暂受限。</p>}
