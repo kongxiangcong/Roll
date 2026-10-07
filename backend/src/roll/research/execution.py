@@ -9,6 +9,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field,field_validator
+from roll.agents.codex_process import owner_alive
 from roll.accounts.ledger import encode,now
 from roll.market.rules import SHANGHAI
 
@@ -176,13 +177,14 @@ class DailyExecutions:
             db.execute('CREATE TABLE IF NOT EXISTS research_execution_results(id TEXT PRIMARY KEY,value TEXT NOT NULL)')
         with self.ledger.connection() as db:
             pending=[json.loads(r[0]) for r in db.execute('SELECT value FROM research_executions WHERE id NOT IN (SELECT id FROM research_execution_results)')]
-        for item in pending:self._finish(item,{'status':'INTERRUPTED','reason':'宿主重启；原定义和输入保留，不制造标签'})
+        for item in pending:
+            if not owner_alive(item):self._finish(item,{'status':'INTERRUPTED','reason':'原宿主停止或旧版本没有可验证身份；原定义和输入保留，不制造标签'})
 
     def _finish(self,run,completion):
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
-            db.execute('INSERT INTO research_execution_results VALUES(?,?)',(run['execution_id'],encode(completion)))
-            self.registry.event(run['protocol_id'],'EXECUTION_FINISHED',db=db,execution_id=run['execution_id'],status=completion['status'])
+            inserted=db.execute('INSERT OR IGNORE INTO research_execution_results VALUES(?,?)',(run['execution_id'],encode(completion)))
+            if inserted.rowcount:self.registry.event(run['protocol_id'],'EXECUTION_FINISHED',db=db,execution_id=run['execution_id'],status=completion['status'])
             db.commit()
 
     def get(self,identifier):
@@ -282,7 +284,7 @@ class DailyExecutions:
             'data_fingerprint':dataset['data_fingerprint'],'partition_sha256':part['metadata']['artifact']['sha256'],
             'original_archives':dataset['original_archives'],'partition_last_date':part['metadata']['last_date'],'facts':selected,'definition':definition}
         archive=self.evidence.archive(encode(inputs).encode(),'RESEARCH_EXECUTION_INPUT',research_namespace='HISTORICAL')
-        run={'execution_id':str(uuid4()),'protocol_id':protocol_id,'registered_at':now(),**command.model_dump(mode='json'),
+        run={'execution_id':str(uuid4()),'protocol_id':protocol_id,'registered_at':now(),'host_owner':self.registry.owner,**command.model_dump(mode='json'),
             'namespace':'HISTORICAL','capability':'NOT_GRANTED','evidence_kind':dataset['source_evidence_kind'],
             'protocol_fingerprint':protocol['protocol_fingerprint'],'data_fingerprint':dataset['data_fingerprint'],
             'definition':definition,'input_archive':archive,'label_as_of':as_of.isoformat()}
@@ -308,7 +310,7 @@ class DailyExecutions:
         archive=self.evidence.archive(encode(inputs).encode(),'RESEARCH_EXECUTION_INPUT',research_namespace='HISTORICAL')
         run={k:v for k,v in parent.items() if k not in {'status','completed_at','result'}}
         run.update({'execution_id':str(uuid4()),'parent_execution_id':identifier,'root_execution_id':parent.get('root_execution_id',identifier),
-            'registered_at':now(),'basis':command.basis,'label_as_of':command.label_as_of.isoformat(),'definition':definition,'input_archive':archive})
+            'registered_at':now(),'host_owner':self.registry.owner,'basis':command.basis,'label_as_of':command.label_as_of.isoformat(),'definition':definition,'input_archive':archive})
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE');db.execute('INSERT INTO research_executions VALUES(?,?,?)',(run['execution_id'],run['protocol_id'],encode(run)))
             self.registry.event(run['protocol_id'],'EXECUTION_REASSESSMENT_REGISTERED',db=db,execution_id=run['execution_id'],parent_execution_id=identifier,input_sha256=archive['sha256'])

@@ -30,3 +30,7 @@
 2026-10-08：16已实施与验收，保留ready-for-agent分诊标签。实际FastAPI/SQLite/登记raw、Parquet、CSV、19研究/模型/forecast原件的完整备份/导出/校验/恢复；启动前PRE_UPGRADE覆盖真实schema1→2及所有构造DDL，异常/进程死亡回滚；损坏库CLI、双宿主排队恢复、原CSV回执重试不丢不重均已验证。RECOVERY_LOCK在替换前持久保存，旧资金历史不倒改、当前撤权未知，普通观察可用；27真实技术ACTIVE/旧通知出队与解除锁待实际调用方联验。Windows用户/SYSTEM ACL及本机恢复API访问限制已验证。
 
 最终证据：14个不同API场景分层通过（13组合+合法凭证补全后1定向，含14/15调用方）；9原生OS场景91.66s；Chrome创建/导出/排队与同目录重启锁两次分别通过；最终tsc/Vite52modules通过。首次缺少CASH_IN/CSV basis的夹具红与修正后真实结果均保留，不弱化产品确认。见 [完整输入/预期/实际证据](../evidence/16/acceptance.md)、[公共/离线契约](../../../docs/backup-recovery-contract.md) 与 [运行文件SHA保全入口](../evidence/16/runtime-retention.json)。父执行状态未改、未push、未清理原树。后续27/31真实消费者证据应追加，不把本票恢复锁冒称权限/打包完成。
+
+2026-10-08 06:50（Asia/Shanghai）统一审阅修复：统一审阅修复只移除backups.py及两份测试的各一个EOF冗余空行；未重写任何原件/日志字节。文档明确备份create/restore必须两个生命周期共享同一新目录，默认离线Chrome按文件隔离，不能用它替代两阶段证据。 [修复及分层验证](../evidence/review/fixes.md)。完整回归进行中；没有改变本票Completion或后续资格条件。
+
+2026-10-08 07:09统一审阅结项：所有产品修复在一次完整后端343passed/1439.06s验证；最终默认Chrome15passed/2明确profile skipped、构建通过。pending METHOD外部未完成边界准确性单例1passed另列，未再修改产品。原红保留，520件/53,035,699字节自有停止运行数据SHA/长度0差异且父永久保全完成；[最终证据](../evidence/review/fixes.md)。原真实验收/后续条件与本票Completion边界保持。

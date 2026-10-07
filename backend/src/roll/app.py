@@ -37,6 +37,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         application.state.reviews.start()
         application.state.backups.start()
         yield
+        await asyncio.to_thread(application.state.research.close)
         await asyncio.to_thread(application.state.reviews.close)
         await asyncio.to_thread(application.state.codex.close)
         await asyncio.to_thread(application.state.deepseek.close)

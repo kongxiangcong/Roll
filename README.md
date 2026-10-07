@@ -1,6 +1,8 @@
 # Roll
 
-本机 React/FastAPI 应用。支持首次账户基线、权限确认、实际成交与费用追加、现金与权益、待结算/实际到账、版本历史和可靠回执；可登记资金授权并分别查看技术资格和运行健康。交易判断未启用。
+本机 React/FastAPI 应用。支持账户与 CSV 全批确认、成交和费用、现金与权益、更正与一致性检查、估值、资金授权、备份与恢复。市场事实、来源选择、独立核验和重点复盘保留原件、取得时点与版本；研究登记、日线事件、透明模型和独立风险政策保留尝试及失败记录。交易判断与真实资金前向未启用。
+
+Codex 受控取证已有真实任务证据；DeepSeek 工程和固定协议方法已实现，真实提供方仍缺凭据验证。实际研究数据不足以完成模型/校准冻结，不能用 METHOD 案例代替实际训练或授予资格。当前完成与条件见 [任务状态](.scratch/roll-p0/execution-status.md)。
 
 ## 启动（Windows PowerShell）
 
@@ -24,13 +26,13 @@ npm run dev -- --port 5173
 
 打开 `http://127.0.0.1:5173`，在“同步账户”填写当前真实现金与持仓，先预览，再确认。两个服务默认只绑定本机。`npm run build` 生成已检查的前端构建；上述开发服务器是当前可重复的本地启动路径。
 
-`ROLL_DATA_DIR` 控制唯一正式 SQLite 路径；默认位于操作系统用户数据目录，Unix 为 `$XDG_DATA_HOME/roll` 或 `~/.local/share/roll`。不要把真实账户数据、密钥或备份放入源码。当前首次切片只有 `roll.sqlite3`，没有无用途的市场/研究/后台骨架。
+`ROLL_DATA_DIR` 控制应用数据目录；默认位于操作系统用户数据目录，Unix 为 `$XDG_DATA_HOME/roll` 或 `~/.local/share/roll`。其中 `roll.sqlite3` 保存账户、证据和任务元数据，运行时可能有 SQLite WAL/SHM；`raw/` 保存账户 CSV 和来源原字节，`parquet/` 保存规范化事实，`research-inputs/` 保存导入的研究依据，`backups/` 保存完整恢复包与校验记录。原件按 SHA256 引用，复制单个数据库不能替代完整备份。不要把真实账户数据、凭据或备份提交到源码。模型工作进程使用独立临时目录并在结束后清理；凭据不属于取证原件或恢复包。
 
 ## 验证
 
-在 `backend`：`uv run --frozen pytest -q`。应用测试使用临时真实 SQLite；恢复测试启动实际 Uvicorn 子进程，在事务前后和已收到回执后终止进程，通过重启后的 HTTP 查询验证持久性。
+在 `backend`：`uv run --frozen pytest -q`。应用测试使用临时真实 SQLite 和明确 METHOD 来源；恢复测试启动实际 Uvicorn 子进程并检查进程退出、持久性与恢复。SDK 方法使用本地固定提供方，不发送真实计费模型请求。历史真实来源与真实模型验收单列，不由默认测试代替。
 
-在 `frontend`：`npm run build`。浏览器验收自动启动两个真实服务与独立临时运行目录：
+在 `frontend`：`npm run build`。默认浏览器验收逐文件启动真实服务，每个文件有独立空 SQLite，同文件内的顺序用例共享事实链；不会复用用户账户、发真实模型请求或取新公网数据：
 
 ```powershell
 # 使用机器上已经安装的 Chrome；未安装时可 npx playwright install chromium。
@@ -41,6 +43,6 @@ $env:ROLL_TEST_WEB_PORT = '5173'
 npm run test:e2e
 ```
 
-手动改变 API 端口时，前端启动终端设置 `ROLL_API_PORT` 到同一个端口。浏览器验收仅使用合成账户，不能证明真实券商同步或投资资格。
+默认集合及逐文件退出码保存在 `frontend/test-results/default/manifest.json`；任一文件失败都会让命令失败。外部来源、SDK 方法、已有研究原件和备份两阶段使用 [独立验收命令](docs/browser-acceptance.md)，先移除相应 profile 环境变量再运行默认命令。手动改变 API 端口时，前端启动终端设置 `ROLL_API_PORT` 到同一个端口。浏览器默认集合使用合成账户，不能证明真实券商同步或投资资格。
 
-接口和精度说明见 [账户接口](docs/account-contract.md)、[实际成交与费用](docs/fill-contract.md)、[现金与权益](docs/cash-equity-contract.md)、[资金与损失口径](docs/funding-contract.md)。
+接口说明见 [账户](docs/account-contract.md)、[成交与费用](docs/fill-contract.md)、[现金与权益](docs/cash-equity-contract.md)、[资金](docs/funding-contract.md)、[证据取得](docs/data-evidence-contract.md)、[来源选择](docs/source-resolution-contract.md) 和 [研究登记](docs/research-protocol-contract.md)。

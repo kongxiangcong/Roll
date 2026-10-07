@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_overlapping_sibling_manifest_and_budget_include_failed_family_attempts _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/fR/test_overlapping_sibling_manif0')
+
+    def test_overlapping_sibling_manifest_and_budget_include_failed_family_attempts(tmp_path):
+        engineering_archive(tmp_path)
+        with TestClient(create_app(tmp_path)) as client:
+            dataset=client.post('/api/research/datasets',json={'archive_id':'method-181','basis':'same original interval'}).json()
+            a=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'basis':'A registered'}).json()
+            b=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'predecessor_id':a['protocol_id'],'basis':'B successor'}).json()
+            attempts=[]
+            for _ in range(5):
+                attempt=client.post('/api/research/protocols/'+b['protocol_id']+'/attempts',json=ATTEMPT).json();attempts.append(attempt['attempt_id'])
+                assert client.post('/api/research/attempts/'+attempt['attempt_id']+'/finish',json={'status':'FAILED','reason':'actual failure retained'}).status_code==200
+            assert client.post('/api/research/protocols/'+b['protocol_id']+'/attempts',json=ATTEMPT).status_code==409
+            c=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'predecessor_id':a['protocol_id'],'basis':'C from same old parent'}).json()
+>           assert client.post('/api/research/protocols/'+c['protocol_id']+'/attempts',json=ATTEMPT).status_code==409
+E           AssertionError: assert 201 == 409
+E            +  where 201 = <Response [201 Created]>.status_code
+E            +    where <Response [201 Created]> = post((('/api/research/protocols/' + 'bb6ff479-3dbd-4f9b-8f45-4c17af5d4553') + '/attempts'), json={'basis': 'METHOD lifecycle evidence', 'category': 'PRIMARY_FIT', 'configuration': {'candidate_id': 'PRICE_VOLUME_LOGIT_V1'}, 'partition': 'DEVELOPMENT'})
+E            +      where post = <starlette.testclient.TestClient object at 0x0000022444F6B8C0>.post
+
+backend\tests\application\test_research_lifecycle.py:54: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_research_lifecycle.py::test_overlapping_sibling_manifest_and_budget_include_failed_family_attempts
+1 failed, 2 deselected in 4.78s

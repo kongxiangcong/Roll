@@ -184,4 +184,3 @@ def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tm
         assert client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
         assert client.get('/api/runtime/backups/status').json()['last_restore']['state']=='APPLIED'
     finally:restored.stop()
-

@@ -1,6 +1,7 @@
 """Append-only experiment design registration; registration cannot grant qualification."""
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Literal
 from datetime import datetime,timedelta,timezone
@@ -12,6 +13,7 @@ from pydantic import BaseModel,ConfigDict,Field
 from roll.accounts.ledger import encode,now
 from roll.research.datasets import import_dataset,partition
 from roll.research.design import proposal
+from roll.agents.codex_process import owner_alive,process_creation
 
 
 class ProtocolCommand(BaseModel):
@@ -64,15 +66,28 @@ class ExperimentRegistry:
     def __init__(self,ledger,evidence):
         self.ledger=ledger
         self.evidence=evidence
+        self.owner={'pid':os.getpid(),'creation_ticks':process_creation(os.getpid()),'nonce':str(uuid4())}
         with ledger.connection() as db:
             db.execute('CREATE TABLE IF NOT EXISTS research_protocols(id TEXT PRIMARY KEY,value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS research_datasets(id TEXT PRIMARY KEY,value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS research_attempts(id TEXT PRIMARY KEY,protocol_id TEXT NOT NULL,value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS research_events(ordinal INTEGER PRIMARY KEY AUTOINCREMENT,protocol_id TEXT NOT NULL,value TEXT NOT NULL)')
-        # A process cannot silently resume an unfinished fit or manufacture its outcome.
-        for protocol in self.protocols():
-            for attempt in self.attempts(protocol['protocol_id']):
-                if attempt['status']=='RUNNING':self.event(protocol['protocol_id'],'ATTEMPT_INTERRUPTED',attempt_id=attempt['attempt_id'],reason='宿主重启，未完成尝试保留为中断')
+        self._interrupt_abandoned()
+
+    def _interrupt_abandoned(self,owned=False):
+        with self.ledger.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            terminal={e['attempt_id'] for row in db.execute('SELECT value FROM research_events')
+                if (e:=json.loads(row[0]))['action'] in {'ATTEMPT_FINISHED','ATTEMPT_INTERRUPTED'}}
+            for row in db.execute('SELECT value FROM research_attempts'):
+                attempt=json.loads(row[0])
+                abandoned=attempt.get('host_owner')==self.owner if owned else not owner_alive(attempt)
+                if attempt['status']=='RUNNING' and attempt['attempt_id'] not in terminal and abandoned:
+                    self.event(attempt['protocol_id'],'ATTEMPT_INTERRUPTED',db=db,attempt_id=attempt['attempt_id'],
+                        reason='宿主已正常关闭，未完成尝试保留中断' if owned else '原宿主已停止或旧版本没有可验证身份，未完成尝试保留中断')
+            db.commit()
+
+    def close(self):self._interrupt_abandoned(owned=True)
 
     def event(self,protocol_id,action,db=None,**detail):
         value={'event_id':str(uuid4()),'recorded_at':now(),'protocol_id':protocol_id,'action':action,**detail}
@@ -99,26 +114,37 @@ class ExperimentRegistry:
             current=self.get(current['predecessor_id'])
         return list(reversed(ids))
 
+    def family(self,protocol_id,db=None):
+        if db is None:
+            with self.ledger.connection() as connection:return self.family(protocol_id,connection)
+        records={p['protocol_id']:p for row in db.execute('SELECT value FROM research_protocols') if (p:=json.loads(row[0]))}
+        def root(identifier):
+            while records[identifier]['predecessor_id']:identifier=records[identifier]['predecessor_id']
+            return identifier
+        original=root(protocol_id)
+        return [identifier for identifier in records if root(identifier)==original]
+
     def attempt_manifest(self,protocol_id):
-        lineage=self.lineage(protocol_id);attempts=[a for pid in lineage for a in self.attempts(pid)]
-        return {'lineage':lineage,'attempts':attempts,'attempt_ids':[a['attempt_id'] for a in attempts],
-            'basis':'All linked predecessor failures, aborts and interruptions remain required; this is not proof of unreported out-of-host work'}
+        lineage=self.lineage(protocol_id);family=self.family(protocol_id)
+        attempts=[a for pid in family for a in self.attempts(pid)]
+        return {'lineage':lineage,'family_protocol_ids':family,'attempts':attempts,'attempt_ids':[a['attempt_id'] for a in attempts],
+            'basis':'All linked family predecessors and sibling failures, aborts and interruptions remain required; this is not proof of unreported out-of-host work'}
 
     def start_attempt(self,protocol_id,command):
         protocol=self.get(protocol_id)
         if command.partition=='SEALED':
             self.event(protocol_id,'ATTEMPT_REFUSED',reason='完整冻结未完成，不能运行封存确认性尝试',configuration=command.model_dump())
             raise HTTPException(409,'完整冻结未完成')
-        value={'attempt_id':str(uuid4()),'protocol_id':protocol_id,'started_at':now(),'status':'RUNNING',**command.model_dump(),
+        value={'attempt_id':str(uuid4()),'protocol_id':protocol_id,'started_at':now(),'status':'RUNNING','host_owner':self.owner,**command.model_dump(),
             'protocol_fingerprint':protocol['protocol_fingerprint'],'data_fingerprint':protocol.get('data_fingerprint'),
             'qualification':'NONE; 成功执行不等于模型或研究PASS'}
         # Configuration-change records are not fits. Actual executors must begin a
         # PRIMARY_FIT/G5_NEIGHBOR before computing; thresholds reuse frozen predictions.
         fits={'PRIMARY_FIT','G5_NEIGHBOR'}
-        lineage=self.lineage(protocol_id)
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
-            prior=[json.loads(r[0]) for pid in lineage for r in db.execute('SELECT value FROM research_attempts WHERE protocol_id=?',(pid,))]
+            family=self.family(protocol_id,db)
+            prior=[json.loads(r[0]) for pid in family for r in db.execute('SELECT value FROM research_attempts WHERE protocol_id=?',(pid,))]
             over=(command.category in fits and sum(a['category'] in fits for a in prior)>=5) or (command.category=='CALIBRATION' and any(a['category']=='CALIBRATION' for a in prior))
             if over:
                 self.event(protocol_id,'ATTEMPT_BUDGET_REFUSED',db=db,configuration=command.model_dump(),reason='五次拟合及一次校准预算包括失败和中止；不得选择性丢弃')

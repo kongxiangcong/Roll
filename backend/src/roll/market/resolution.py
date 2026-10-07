@@ -1,6 +1,7 @@
 """Bounded source resolution; acquisition stays outside short SQLite transactions."""
 import hashlib
 import json
+import os
 import threading
 import time
 from datetime import datetime, timedelta, time as day_time
@@ -16,6 +17,7 @@ from roll.market.directory import ScopeCommand
 from roll.market.evidence import DataRequest
 from roll.market.rules import SHANGHAI
 from roll.market.verification import verification_invalidations
+from roll.agents.codex_process import owner_alive,process_creation
 
 
 class ResolutionCommand(BaseModel):
@@ -42,6 +44,7 @@ class SourceResolutions:
     def __init__(self,evidence,clock=None):
         self.evidence=evidence
         self.ledger=evidence.ledger
+        self.owner={'pid':os.getpid(),'creation_ticks':process_creation(os.getpid()),'nonce':str(uuid4())}
         self.slot=threading.Lock()
         self.clock=clock or now
         self.clock_basis='METHOD_CLOCK' if clock else 'ACTUAL_SYSTEM_CLOCK'
@@ -51,9 +54,10 @@ class SourceResolutions:
             db.execute('CREATE TABLE IF NOT EXISTS evidence_dependency_invalidations(id TEXT PRIMARY KEY,target_id TEXT NOT NULL,value TEXT NOT NULL)')
             db.execute('CREATE INDEX IF NOT EXISTS evidence_dependency_target ON evidence_dependency_invalidations(target_id)')
             db.execute('CREATE TABLE IF NOT EXISTS source_resolution_replays(id TEXT PRIMARY KEY,value TEXT NOT NULL)')
+            db.execute('BEGIN IMMEDIATE')
             for row in db.execute('SELECT id,value FROM source_resolutions'):
                 value=json.loads(row['value'])
-                if value['status']=='RUNNING':
+                if value['status']=='RUNNING' and not owner_alive(value):
                     value.update(status='INTERRUPTED',finished_at=now(),reason='PROCESS_RESTART_BEFORE_RESOLUTION_COMMIT')
                     db.execute('UPDATE source_resolutions SET value=? WHERE id=?',(encode(value),row['id']))
 
@@ -82,7 +86,7 @@ class SourceResolutions:
         if command.knowledge_cutoff is not None and (command.knowledge_cutoff.tzinfo is None or command.knowledge_cutoff>datetime.fromisoformat(self.clock())):
             raise HTTPException(422,'消费知识截止须带时区且不晚于现在')
         value={'resolution_id':str(uuid4()),'request_id':request_id,'command':command.model_dump(mode='json'),
-            'status':'RUNNING','started_at':now(),'attempts':[],'source_checks':[],'facts':[],
+            'status':'RUNNING','host_owner':self.owner,'started_at':now(),'attempts':[],'source_checks':[],'facts':[],
             'evidence_kind':self.evidence.evidence_kind,'model_qualification':'NOT_GRANTED','formal_judgment':'DISABLED',
             'requested_instruments':request['instruments'],'requested_groups':request['groups'],'technical_limits':request['technical_limits']}
         value['request_fingerprint']=hashlib.sha256(encode({k:request.get(k) for k in

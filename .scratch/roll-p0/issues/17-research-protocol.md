@@ -39,3 +39,7 @@
 2026-10-08：17专项最终10passed；17+11合入组合22passed；市场/换源/估值/账户相关组合65passed（分层而非一个HEAD全套重复）；真实隔离HTTP重启与档案SHA/账户0保持通过，独立Chrome1passed、47module构建通过。实际报告、原stdout/截图、3份官方费用原HTML Git字节校验、151文件原件/SQLite/Parquet保全路径与SHA见[17验收](../evidence/17/acceptance.md)；[公开契约](../../../docs/research-protocol-contract.md)。未改父execution-status；默认全Chrome的05共享fixture红仍明确，不称全绿。
 
 2026-10-08结项：本票工程可实施路径完成，不是收益研究PASS/G7或真实前向资金起点。21封存日最多1成熟20日标签，目前只元数据支持上界，尚未训练/计算实际标签；19必须真实标签支持/训练/校准，20完整产物/方法冻结，21确认性准入，30/32真实未来预测起点与三自然月硬终点，22独立风险政策证据各自后续。当前非PIT修订历史、未证明独立封存、未知公司行为/状态/费用等局限完整保留；不能用METHOD_CASE或合成账户填正面结论。
+
+2026-10-08 06:50（Asia/Shanghai）统一审阅修复：审阅Spec P1/P2：共同根family累计全部后继与分叉尝试，旧父分叉不能再绕五拟合/一校准预算或漏失败；lineage祖先路径仍保留，manifest加family_protocol_ids。尝试持久宿主PID/创建时钟/实例nonce，活peer不被启动恢复误终结，正常关闭只结束自有实例；真实OS Job终止后一次中断及活peer保持通过。 [修复及分层验证](../evidence/review/fixes.md)。完整回归进行中；没有改变本票Completion或后续资格条件。
+
+2026-10-08 07:09统一审阅结项：所有产品修复在一次完整后端343passed/1439.06s验证；最终默认Chrome15passed/2明确profile skipped、构建通过。pending METHOD外部未完成边界准确性单例1passed另列，未再修改产品。原红保留，520件/53,035,699字节自有停止运行数据SHA/长度0差异且父永久保全完成；[最终证据](../evidence/review/fixes.md)。原真实验收/后续条件与本票Completion边界保持。

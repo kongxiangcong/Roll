@@ -13,14 +13,14 @@
 | `GET /api/research/protocols[/{id}]` | 不可变身份、设计、数据/登记代码/设计指纹、缺口、前序、未授能力；旧版本不会被新访问/失败改写 |
 | `POST /api/research/protocols/{id}/attempts` | 先登记 `category/partition/configuration/basis` 再计算；配置保存候选、特征、期限、阈值、提示词及人工筛选依据。17不执行拟合 |
 | `POST /api/research/attempts/{id}/finish` | SUCCEEDED/FAILED/ABORTED 与原因、产物指纹追加；SQLite短事务并发只允许一次终态，成功执行不等于研究PASS |
-| `GET .../attempts` / `GET .../attempt-manifest` | 本版本尝试 / 全部关联前序尝试。失败、中止和启动后中断保留；manifest不能借后继版本丢弃失败 |
+| `GET .../attempts` / `GET .../attempt-manifest` | 本版本尝试 / 全部共同根家族尝试。lineage保留祖先路径，family_protocol_ids含后继与分叉；失败、中止和中断不能借旧父分叉丢弃 |
 | `POST .../freeze` | `attempt_ids` 必须覆盖完整谱系。漏项、运行中、模型/校准/政策/验证代码缺口拒绝并持久审计；19/20完成真实产物前本实现不会接受完整冻结 |
 | `POST .../sealed-input` | 需要非空访问理由，返回封存分片并先持久记录输入暴露；不计算标签/候选策略结果，不是确认性PASS查看 |
 | `GET .../audit` | 登记、拒绝、失败、中断、暴露、检查点及偏离按顺序持久保存 |
 | `POST .../checkpoints` | OPERATIONS/SAFETY_STOP/USER_STOP只记运行/停止，不改统计结论。EARLY_PASS拒绝并记OPTIONAL_STOPPING_DEVIATION；STATISTICAL_FINAL在完整冻结前拒绝，21后续负责实际判定 |
 | `GET /api/research/deadline-preview?start=...` | 仅预览现代中国标准时间三自然月、月末夹取，含跨年/闰年；不写实际起点。实际首个冻结模型未来预测归30/32 |
 
-每个实际 `PRIMARY_FIT/G5_NEIGHBOR` 计算必须先登记，五次预算包含失败、中止、中断及关联前序；一次校准同理。FEATURE/HORIZON/THRESHOLD/PROMPT/MANUAL_SELECTION 是变更/选择记录，不能以此冒充未登记实际拟合。阈值邻域可重用同一已冻结预测，不额外训练。19负责执行60秒实际拟合限制、实际标签支持/训练/校准与真实产物校验；17不造训练结果。宿主无法证明外部未报告尝试不存在，完整性结论限于登记及执行边界，不接受只提交最佳结果作为全尝试证据。
+每个实际 `PRIMARY_FIT/G5_NEIGHBOR` 计算必须先登记，五次预算包含失败、中止、中断及整个共同根家族（包括旧父分叉的兄弟版本）；一次校准同理。家族预算检查和尝试登记共用短BEGIN IMMEDIATE事务。FEATURE/HORIZON/THRESHOLD/PROMPT/MANUAL_SELECTION 是变更/选择记录，不能以此冒充未登记实际拟合。阈值邻域可重用同一已冻结预测，不额外训练。19负责执行60秒实际拟合限制、实际标签支持/训练/校准与真实产物校验；17不造训练结果。宿主无法证明外部未报告尝试不存在，完整性结论限于登记及执行边界，不接受只提交最佳结果作为全尝试证据。
 
 数据 fingerprint 包含源包SHA、原件/Parquet SHA、源适配版本、明确身份、过滤代码SHA和分片SHA。原 `available_at` 保留；分片返回本次消费知识截止，消费者用自己的截止重新检查，原 request 的 `point_in_time_input_allowed` 只针对原请求。当前修订历史不因此成为当时可得。缺值、未确认状态/公司行为不可评分时必须保留未知/区间，不默认无事件、无费用或训练未知标签。原容器可包含 qfq 和其他组；模型输入只选明确RAW分片，不混复权。
 
@@ -43,3 +43,5 @@ G5预登记时间三段、佣金3/6/30bp、双边滑点5/10/20bp、NEXT_OPEN/NEX
 费用官方原HTML及取得时点/SHA/适用精度在 `backend/src/roll/research/reference/sources.json`；原字节以binary保留。研究佣金3bp含监管/经手费，不重复另加；最低5元，卖方印花5bp、双边过户0.1bp、研究滑点5bp。佣金是场景，实际券商佣金UNKNOWN；印花减半公告明确2023-08-28，2026收费表更新仅月份，不造午夜或连续历史无修订证明。规费包含、印花/过户来自[上交所投资者页](https://one.sse.com.cn/onething/gptz/)，会员经手费见[2026收费表](https://www.sse.com.cn/services/tradingservice/charge/ssecharge/)，生效通知见[税务机关原公告](https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448)。
 
 市场公开快照/查询/重放返回与本研究封存区间重叠的DAILY输入会记暴露，公开原容器下载记可能包含封存的原档暴露。内部源SHA校验与元数据检查不冒充PASS查看；返回的是输入，不证明调用者后续未私算结果。历史已公开、无法证明未见的最终窗始终UNPROVEN；不能靠换名称获得独立最终测试。风险政策22另须规则/数据/资金边界/压力及在线一致性证据，不继承收益模型PASS。
+
+尝试登记持久保存宿主PID、Windows进程创建时钟和实例nonce。同目录新实例仅将已退出宿主或旧版无可核身份的RUNNING记为中断；活跃peer不改变原状态。正常关闭只结束本实例nonce拥有的未完成尝试。终态追加事件保持一次，原尝试及失败不改写。

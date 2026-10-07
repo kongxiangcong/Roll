@@ -19,3 +19,5 @@ HEALTHY只表示本用途所需归档事实可读。DEGRADED保留已知部分�
 `GET /api/data/dependencies?resolution_id=...` 查询失效记录。`POST /api/data/resolutions/{id}/replay` 验证全部原输入归档 SHA/Parquet并持久化 ReplayRun；`GET /api/data/replays/{id}` 查询。ReplayRun返回原事实、观察、原用途状态/新鲜度/缺口/知识截止及当前依赖状态，网络调用0。它重现保存的原结构化解释，不用新代码联网重新覆盖旧输入；更新和再生成须新运行。原07版本档案仍按其保存版本离线验证。
 
 只参考 LangAlpha `941ca4a18f5a364caf481a6f78cdb040086aa38d` 的稳定输入ID、版本与依赖方法（Apache-2.0，见 component-evidence）；未复制其代码、运行时、技能或资格语义，未增加依赖包。
+
+来源解析登记宿主PID、Windows进程创建时钟和实例nonce。第二实例不会把仍活宿主的RUNNING解析改为INTERRUPTED；仅原宿主已停止或旧版缺可验证身份的记录才按中断恢复，原取得结果与历史继续保留。

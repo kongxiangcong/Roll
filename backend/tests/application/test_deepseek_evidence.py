@@ -21,12 +21,15 @@ def request(client):
 
 
 def terminal(client,run_id):
-    end=time.monotonic()+20
+    frozen=client.get('/api/data/runs/'+run_id).json()['limits']['timeout_seconds']
+    # The production worker gets its frozen deadline, then <=5s process wait and
+    # <=1s owned-directory cleanup. A bounded 10s margin includes query scheduling.
+    end=time.monotonic()+frozen+10
     while time.monotonic()<end:
         value=client.get('/api/data/runs/'+run_id).json()
         if value['status']!='RUNNING':return value
         time.sleep(.05)
-    raise AssertionError('task did not reach finite terminal')
+    raise AssertionError(f'task did not reach finite terminal within frozen {frozen}s plus 10s cleanup: {value["status"]}')
 
 
 def test_no_credential_is_queryable_and_retry_preserves_first_record(tmp_path,monkeypatch):

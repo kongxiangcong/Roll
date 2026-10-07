@@ -2,9 +2,9 @@ import {expect, test} from '@playwright/test';
 
 test('initial mirror: form → difference → confirmation → durable receipt → today', async ({page}) => {
   await page.goto('/');
-  await expect(page.getByText('交易判断未启用')).toBeVisible();
+  await expect(page.getByText('交易判断未启用',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'同步账户', exact:true}).click();
-  // This shared browser account precedes the later fixed-date event fixtures.
+  // Preserve an explicit baseline timestamp in this file's isolated account.
   await page.getByLabel('事实截至时点').fill('2026-10-07T10:00');
   await page.getByLabel('账面现金（元）').fill('100000.10');
   await page.getByLabel('券商可用资金（元）').fill('90000.10');

@@ -38,3 +38,5 @@ ONCE/WEEKLY/MONTHLY 检查点保留名义日期和交易日历顺延日期。节
 acquisition_seconds 包含取数/归档/规范化总耗时；network_seconds 使用共用工具 started/finished 边界（含该边界内原件归档，不伪称纯线路时间）；local_seconds 另记剩余处理/发布。缓存API读与真实Chrome全页P95分别记录，名单规模、设备和已缓存/未取得对象一并说明，不能拿MockTransport时延冒充公网承诺。
 
 19/25 概率、25/26 未决意向/动作/翻转、28真实通知、27业务维护、30确认性样本以及32持续影子均待实际消费者联验。本票未接入状态不授技术资格或资金用途，不倒加前置依赖。
+
+疑点请求与14消费共用公开输入契约：reason最多2000字符、fact_id最多100、field最多80；新输入不合规返回422。旧保存命令不兼容时消费返回可行动409，保留原观察知识截止与旧请求供重提，见[独立核验契约](independent-verification-contract.md)。

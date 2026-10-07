@@ -42,3 +42,7 @@ AT19/20/21/23/25/26/48/82自身行为已验：日历/当日未齐/实际截止�
 未接入metrics为NOT_CONNECTED/null，14关键原字段/疑点/knowledge_cutoff已持久PENDING_CONSUMER_14并可公开查询，verification_id仍null；19/25概率/资格、25/26真实未决意向/失效/翻转、28真实通知、27业务维护、30确认性样本、32持续影子保持partial。 checkbox勾选是15职责实现/证据，不是这些后继整条需求关闭。原默认05共享账户E2E基线红保留。
 
 ignored保全[清单](../evidence/15/runtime-retention.json)：6精确目录176文件（含SQLite/WAL、原件、Parquet），两份最终必要运行与较早控制状态分开；源树/原件未删除，父流程后续复制需逐SHA核验。最终源提交由协调报告给精确HEAD。
+
+2026-10-08 06:50（Asia/Shanghai）统一审阅修复：审阅Standards P2：疑点生产与14消费统一reason2000/fact_id100/field80等原消费者限制；原观察对象/事件/知识截止守卫不改，旧保存命令不能形成500或部分关联。真实SQLite原红与新入口拒绝/历史可行动拒绝见统一修复证据。 [修复及分层验证](../evidence/review/fixes.md)。完整回归进行中；没有改变本票Completion或后续资格条件。
+
+2026-10-08 07:09统一审阅结项：所有产品修复在一次完整后端343passed/1439.06s验证；最终默认Chrome15passed/2明确profile skipped、构建通过。pending METHOD外部未完成边界准确性单例1passed另列，未再修改产品。原红保留，520件/53,035,699字节自有停止运行数据SHA/长度0差异且父永久保全完成；[最终证据](../evidence/review/fixes.md)。原真实验收/后续条件与本票Completion边界保持。

@@ -36,3 +36,7 @@
 2026-10-08：源码606645f、合最新integration e5559c9得f949188、定向修复344f198；18/17预组合26passed、父审定向5passed，最终相关56组合55passed/1个12固定SDK方法20s等候红原样保留，该同代码单例复验1passed，未改生产预算或称原组合全绿。最终真实HTTP/重启/原SHA/nosniff/账户0通过，独立安装Chrome2passed、48module构建通过；默认全Chrome05共享fixture红仍保留。原件/SQLite/Parquet绝对保全路径及SHA/bytes、真实/方法分列、输入预期实际和截图/日志见[18验收](../evidence/18/acceptance.md)与[契约](../../../docs/daily-execution-contract.md)。父execution-status未编辑。
 
 2026-10-08结项：18工程完成不代表可真实训练；19须真正消费同一原产物/支持，0样本不得变METHOD训练或伪概率，20完整冻结/21准入仍未执行。已登记旧事件/成本/数据版本不得放松、覆盖或缩域翻正面结论。
+
+2026-10-08 06:50（Asia/Shanghai）统一审阅修复：审阅Spec P2关联修复：执行/复评保存当前宿主身份，启动只结束无法验证活跃的pending；活peer METHOD外部SQLite未完成边界保持原定义/输入和RUNNING。终态+审计只追加一次。源码指纹随实际边界修复更新，原结果不可变，旧引擎门禁保留。另将DeepSeek方法轮询由固定20秒改为公开冻结任务期限+10秒有限收尾，生产限额不变，旧55通过/1轮询红保留。 [修复及分层验证](../evidence/review/fixes.md)。完整回归进行中；没有改变本票Completion或后续资格条件。
+
+2026-10-08 07:09统一审阅结项：所有产品修复在一次完整后端343passed/1439.06s验证；最终默认Chrome15passed/2明确profile skipped、构建通过。pending METHOD外部未完成边界准确性单例1passed另列，未再修改产品。原红保留，520件/53,035,699字节自有停止运行数据SHA/长度0差异且父永久保全完成；[最终证据](../evidence/review/fixes.md)。原真实验收/后续条件与本票Completion边界保持。

@@ -68,7 +68,8 @@ test('paid rights unknown fee split can be completed without paying twice',async
   await expect(page.getByText('配股 browser-rights 费用分拆待核；实际总支付已确认，费用前损益未知')).toBeVisible();
   const paid=await (await request.get('/api/account')).json();
   expect(Number(paid.cash_balance)).toBeCloseTo(Number(before.cash_balance)-500.01,2);
-  expect(paid.positions.find((p:{instrument:string})=>p.instrument==='SSE:600000').acquisition_cost).toBeNull();
+  expect(paid.positions.find((p:{instrument:string})=>p.instrument==='SSE:600001').acquisition_cost).toBe('500.01');
+  expect(paid.share_records.find((r:{record_id:string})=>r.record_id==='browser-rights').gross_subscription_amount).toBeNull();
   await page.getByRole('button',{name:'同步账户',exact:true}).click();
   await page.getByRole('button',{name:'补充费用',exact:true}).click();
   await page.getByRole('combobox',{name:'费用对应成交'}).selectOption('browser-rights');

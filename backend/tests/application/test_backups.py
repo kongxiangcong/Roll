@@ -272,4 +272,3 @@ def test_registered_research_feature_model_forecast_and_source_files_restore_as_
         repeated=client.post('/api/research/datasets',json={'archive_id':'method-execution','basis':'恢复原件本机复验，不创造前向样本'})
         assert repeated.status_code==201,repeated.text
         assert client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
-

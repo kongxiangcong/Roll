@@ -39,3 +39,5 @@
 独立核验四条事实返回路由和新消费/请求查询路由均经17 `research.market_input_exposed` 在实际payload交付边界审计封存日线输入；这是输入暴露，不是确认性结果检验，不改变协议资格。
 
 提交前、提交后与回执后原生进程退出边界均已验证；联合请求/审计还验证提交前后全部原子恢复。具体真实材料、METHOD和Chrome证据见[14验收](../.scratch/roll-p0/evidence/14/acceptance.md)。
+
+14直接命令与15疑点请求共用公开输入模型：reason 1—2000字符、fact_id 1—100、field 1—80、facts 1—10、references 1—6、非负fact_index，未知字段拒绝。新不合规输入在入口422。历史保存的不合规命令仍可查询，显式消费返回409 SAVED_VERIFICATION_INPUT_INCOMPATIBLE并提示按当前限制重提；不改原请求/观察/知识截止，也不会制造500或部分核验关联。

@@ -40,10 +40,14 @@ def process_creation(pid):
     kernel=ctypes.WinDLL('kernel32',use_last_error=True)
     kernel.OpenProcess.restype=wintypes.HANDLE
     kernel.GetProcessTimes.argtypes=[wintypes.HANDLE,*([ctypes.POINTER(wintypes.FILETIME)]*4)]
+    kernel.WaitForSingleObject.argtypes=[wintypes.HANDLE,wintypes.DWORD]
     kernel.CloseHandle.argtypes=[wintypes.HANDLE]
-    handle=kernel.OpenProcess(0x1000,False,pid)
+    handle=kernel.OpenProcess(0x1000|0x100000,False,pid)
     if not handle:return None
     try:
+        # An exited process can retain a kernel object while another handle is
+        # open. Creation time alone identifies it but does not prove liveness.
+        if kernel.WaitForSingleObject(handle,0)!=258:return None
         values=[wintypes.FILETIME() for _ in range(4)]
         if not kernel.GetProcessTimes(handle,*[ctypes.byref(v) for v in values]):return None
         return values[0].dwHighDateTime*2**32+values[0].dwLowDateTime

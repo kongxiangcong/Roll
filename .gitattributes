@@ -42,3 +42,15 @@ backend/src/roll/research/reference/*.html binary
 
 # Ticket22 captured Windows stdout/process bytes.
 .scratch/roll-p0/evidence/22/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+
+# Exact review red/green process output and browser captures, including CRLF.
+.scratch/roll-p0/evidence/review/raw/** binary
+# Root review captures predate these fixes; retain their original Windows bytes.
+.scratch/roll-p0/evidence/review/preservation-before-cleanup.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/review/roll-review-commits.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/review/roll-spec-review-family.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/review/roll-spec-review-family.py -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/review/roll-spec-review-peer.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/review/roll-spec-review-peer.py -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/review/roll-spec-review.md -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/review/roll-standards-reproduction.json -text whitespace=cr-at-eol

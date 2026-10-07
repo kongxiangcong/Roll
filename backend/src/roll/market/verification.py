@@ -7,34 +7,13 @@ from datetime import datetime
 from pathlib import Path
 import platform
 import sqlite3
-from typing import Literal
 from uuid import uuid4
 
 from fastapi import HTTPException
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import ValidationError
+from roll.market.verification_input import VerificationCommand
 
 from roll.accounts.ledger import encode, now
-
-
-class FactReference(BaseModel):
-    model_config=ConfigDict(extra='forbid')
-    snapshot_id:str
-    fact_index:int=Field(ge=0)
-
-
-class DecisiveFact(BaseModel):
-    model_config=ConfigDict(extra='forbid')
-    fact_id:str=Field(min_length=1,max_length=100)
-    field:str=Field(min_length=1,max_length=80)
-    references:list[FactReference]=Field(min_length=1,max_length=6)
-
-
-class VerificationCommand(BaseModel):
-    model_config=ConfigDict(extra='forbid')
-    trigger:Literal['USER_SELECTED','MATERIAL_DOUBT','CRITICAL_CONFLICT']
-    reason:str=Field(min_length=1,max_length=2000)
-    facts:list[DecisiveFact]=Field(min_length=1,max_length=10)
-    knowledge_cutoff:datetime|None=None
 
 
 FIELDS={'open','close','last','high','low','previous_close','reported_limit_up','reported_limit_down',
@@ -111,7 +90,11 @@ class IndependentVerifications:
         request=self.evidence.get('review_verification_requests',request_id)
         if request['verification_id']:return self.get(request['verification_id'])
         origin={k:request[k] for k in ['request_id','task_id','snapshot_id','audit_id']}
-        return self.create(VerificationCommand.model_validate(request['request']),review_origin=origin)
+        try:command=VerificationCommand.model_validate(request['request'])
+        except ValidationError:
+            raise HTTPException(409,{'code':'SAVED_VERIFICATION_INPUT_INCOMPATIBLE',
+                'reason':'已保存关键复盘输入不兼容当前字段长度或类型；保留原记录，请按当前限制重新提交疑点请求'})
+        return self.create(command,review_origin=origin)
 
     def review_request(self,request_id):
         request=self.evidence.get('review_verification_requests',request_id)

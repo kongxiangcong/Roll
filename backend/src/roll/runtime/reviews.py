@@ -14,6 +14,7 @@ from typing import Literal
 from roll.accounts.ledger import encode, now
 from roll.market.rules import SHANGHAI
 from roll.market.evidence import DataRequest
+from roll.market.verification_input import VerificationCommand as VerificationRequest
 from roll.accounts.reconcile import consistency
 from roll.agents.codex_process import process_creation,owner_alive
 
@@ -37,27 +38,6 @@ class MaintenanceCommand(BaseModel):
     kind:Literal['ONCE','WEEKLY','MONTHLY']
     exchange:Literal['SSE','SZSE']='SSE'
     first_due_at:datetime
-
-
-class FactReference(BaseModel):
-    model_config=ConfigDict(extra='forbid')
-    snapshot_id:str
-    fact_index:int=Field(ge=0)
-
-
-class DecisiveFact(BaseModel):
-    model_config=ConfigDict(extra='forbid')
-    fact_id:str=Field(min_length=1)
-    field:str=Field(min_length=1)
-    references:list[FactReference]=Field(min_length=1,max_length=6)
-
-
-class VerificationRequest(BaseModel):
-    model_config=ConfigDict(extra='forbid')
-    trigger:Literal['USER_SELECTED','MATERIAL_DOUBT','CRITICAL_CONFLICT']
-    reason:str=Field(min_length=1)
-    facts:list[DecisiveFact]=Field(min_length=1,max_length=10)
-    knowledge_cutoff:datetime|None=None
 
 
 class Reviews:
