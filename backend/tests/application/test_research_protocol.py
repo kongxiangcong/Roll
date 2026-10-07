@@ -197,22 +197,23 @@ def test_existing_market_query_and_offline_replay_audit_sealed_inputs_without_a_
     dates=engineering_archive(tmp_path);calls=[]
     def provider(request):
         calls.append(str(request.url));mode=request.url.params['param'].split(',')[-1]
-        return httpx.Response(200,json={'code':0,'data':{'sh600519':{('qfqday' if mode else 'day'):[[dates[160],'100','100','100','100','100']]}}})
+        return httpx.Response(200,json={'code':0,'data':{'sh600519':{('qfqday' if mode else 'day'):[[dates[160],'100','100','100','100','100'],[dates[161],'101','101','101','101','100']]}}})
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
         dataset=client.post('/api/research/datasets',json={'archive_id':'method-181','basis':'方法源日期边界'}).json()
         protocol=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'basis':'公开市场路径也须留暴露'}).json();pid=protocol['protocol_id']
         establish(client,['SSE:600519'])
         client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN','instrument_type':'STOCK','basis':'固定方法明确身份','effective_at':'2026-01-05T00:00:00+08:00'})
         request=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH',
-            'start_date':dates[160],'end_date':dates[160],'daily_source':'TENCENT'}).json()
+            'start_date':dates[160],'end_date':dates[161],'daily_source':'TENCENT'}).json()
         run=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
         assert not any(e['action']=='SEALED_MARKET_INPUT_EXPOSED' for e in client.get('/api/research/protocols/'+pid+'/audit').json())  # run metadata contains no delivered facts
         assert client.get('/api/data/snapshots/'+run['snapshot_id']).status_code==200
         assert client.get('/api/data/snapshots').status_code==200
+        assert client.get('/api/data/observations').status_code==200
         before=len(calls);assert client.post('/api/data/runs/'+run['run_id']+'/replay').status_code==200
         assert len(calls)==before
         audit=client.get('/api/research/protocols/'+pid+'/audit').json()
         exposed=[e for e in audit if e['action']=='SEALED_MARKET_INPUT_EXPOSED']
-        assert {e['route'] for e in exposed}=={'snapshot-query','snapshots-query','run-replay'}
-        assert all(e['confirmatory_pass_look'] is False and e['first_date']==dates[160] for e in exposed)
+        assert {e['route'] for e in exposed}=={'snapshot-query','snapshots-query','run-replay','observations-query'}
+        assert all(e['confirmatory_pass_look'] is False and e['first_date']>=dates[160] for e in exposed)
         assert client.get('/api/research/protocols/'+pid).json()==protocol

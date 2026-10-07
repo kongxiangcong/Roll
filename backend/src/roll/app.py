@@ -174,10 +174,10 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get('/api/data/observations')
     def data_observations(instrument:str|None=None):
-        return [{**observation,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id'],
+        return research.market_input_exposed([{**observation,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id'],
             'dependency_status':'INVALIDATED' if resolutions.dependencies(target_id=observation['observation_id']) else 'CURRENT'}
             for snapshot in evidence.snapshots(instrument) for observation in snapshot['observations']
-            if not instrument or observation['instrument']==instrument]
+            if not instrument or observation['instrument']==instrument],'observations-query')
 
     @app.post('/api/data/requests',status_code=201)
     def data_request(command:DataRequest):
