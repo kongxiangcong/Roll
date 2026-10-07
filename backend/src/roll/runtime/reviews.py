@@ -126,6 +126,7 @@ class Reviews:
                     db.execute('UPDATE review_tasks SET value=? WHERE id=?',(encode(task),row['id']))
             db.execute('INSERT OR REPLACE INTO review_worker VALUES(1,?)',(encode({'host_owner':self.owner,'started_at':now(),'heartbeat_at':now()}),))
             db.commit()
+        self.worker_error=None
         self.thread=threading.Thread(target=self.run,name='roll-review-worker',daemon=True)
         self.thread.start()
 

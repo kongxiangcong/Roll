@@ -237,10 +237,15 @@ def test_real_sqlite_lock_worker_failure_is_not_relabelled_as_normal_close(tmp_p
             time.sleep(.02)
         assert health['last_worker_error']['code']=='OperationalError',health
         assert client.get('/api/reviews/coverage').json()['sessions'][-1]['close_reason']=='WORKER_EXCEPTION'
+        recovered=client.post('/api/reviews/recover')
+        assert recovered.status_code==202,recovered.text
+        assert wait_result(client,recovered.json()['task_id'])['result'] is not None
+        assert client.get('/api/reviews/health').json()['worker_state']=='RUNNING'
     with TestClient(create_app(tmp_path)) as client:
         coverage=client.get('/api/reviews/coverage').json()
-        assert coverage['sessions'][-2]['close_reason']=='WORKER_EXCEPTION'
-        assert coverage['gaps'][-1]['reason']=='MODULE_FAILURE_COVERAGE_GAP'
+        assert coverage['sessions'][-3]['close_reason']=='WORKER_EXCEPTION'
+        assert coverage['sessions'][-2]['close_reason']=='NORMAL_CLOSE_NO_ALWAYS_ON_REQUIREMENT'
+        assert any(g['reason']=='MODULE_FAILURE_COVERAGE_GAP' for g in coverage['gaps'])
 
 
 def test_sleep_gap_and_holiday_rolled_weekly_maintenance_keep_actual_checks_and_nominal_week(tmp_path):
