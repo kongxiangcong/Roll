@@ -372,17 +372,17 @@ def tool(host, run, request, state, event, deadline, cancel):
             if state['http_calls'] >= run['limits']['http_calls']:
                 raise ValueError('HTTP_BUDGET_EXHAUSTED')
             domain = httpx.URL(source['url']).host
-            if any(not ipaddress.ip_address(ip[4][0]).is_global for ip in socket.getaddrinfo(domain, 443)):
+            if host.evidence.transport is None and any(not ipaddress.ip_address(ip[4][0]).is_global for ip in socket.getaddrinfo(domain, 443)):
                 raise ValueError('NON_PUBLIC_SOURCE_ADDRESS')
             state['http_calls'] += 1
             content = bytearray()
-            with httpx.Client(follow_redirects=False, timeout=min(8, max(.1, deadline-time.monotonic()))) as client:
+            with httpx.Client(transport=host.evidence.transport,follow_redirects=False, timeout=min(8, max(.1, deadline-time.monotonic()))) as client:
                 with client.stream('GET', source['url'], headers={'Accept': 'text/html', 'Accept-Encoding': 'identity'}) as response:
                     for chunk in response.iter_bytes(4096):
+                        state['bytes']+=len(chunk)
                         if cancel.is_set() or time.monotonic() >= deadline:
                             raise ValueError('TASK_STOPPED')
                         content.extend(chunk)
-                        state['bytes']+=len(chunk)
                         if len(content) > run['limits']['response_bytes'] or state['bytes'] > run['limits']['total_bytes']:
                             raise ValueError('SOURCE_BYTE_LIMIT')
                     response_status=response.status_code

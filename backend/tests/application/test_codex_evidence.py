@@ -68,7 +68,12 @@ def test_api_key_auth_is_never_sent_to_runtime(tmp_path, monkeypatch):
 WORKER = '''import json,sys,time,subprocess
 command=json.loads(sys.stdin.readline())
 def emit(**message):print(json.dumps(message),flush=True)
-if 'READ' in command['prompt']:
+if 'READ_SOURCE' in command['prompt']:
+ for n in range(6):
+  emit(kind='tool',id='method-case-source-'+str(n),name='roll_read_source',arguments={'instrument':'SSE:600519','source_id':'MOUTAI_OFFICIAL'})
+  result=json.loads(sys.stdin.readline())
+ emit(kind='completed',status='completed',output=json.dumps({'candidates':[],'gaps':[]}),error_info=None)
+elif 'READ' in command['prompt']:
  for n in range(6 if 'READ_MANY' in command['prompt'] else 1):
   emit(kind='tool',id='method-case-read-'+str(n),name='roll_read_evidence',arguments={'instrument':'SSE:600519','group':'DAILY' if 'DAILY' in command['prompt'] else 'QUOTE'})
   result=json.loads(sys.stdin.readline())
@@ -237,3 +242,23 @@ def test_required_daily_field_remains_a_gap_in_codex_child_and_snapshot(tmp_path
         assert result['status']=='PARTIAL'
         assert any(g['code']=='REQUIRED_FIELDS_MISSING' for g in result['gaps'])
         assert all(f['model_daily_input_allowed'] is False for f in snapshot['facts'])
+
+
+def test_issuer_failed_stream_also_spends_received_byte_budget(tmp_path, monkeypatch):
+    import httpx
+    monkeypatch.setenv('ROLL_ENV','test')
+    credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+    monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    calls=[]
+    def provider(request):
+        calls.append(str(request.url))
+        return httpx.Response(503,content=b'x'*100000)
+    with TestClient(create_app(tmp_path/'data',codex_worker=worker,market_transport=httpx.MockTransport(provider))) as client:
+        establish(client,['SSE:600519'])
+        run=client.post(f'/api/data/requests/{request_data(client)}/codex',json={'question':'READ_SOURCE'}).json()
+        result=terminal(client,run['run_id'])
+        assert len(calls)==4
+        assert 262144 <= result['acquisition_usage']['received_bytes'] <= 262144+4096
+        assert result['acquisition_usage']['archived_bytes']==0
+        assert result['tools'][4]['error']=='HTTP_BYTE_BUDGET_EXHAUSTED'
