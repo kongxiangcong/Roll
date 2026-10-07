@@ -1,0 +1,17 @@
+[WebServer] INFO:     Started server process [37680]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8038 (Press CTRL+C to quit)
+[WebServer] (node:18512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:13768) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13768) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\executions-live.spec.ts:4:1 › real historical execution support retains120 unknown cases, zero real training and no user account authority (2.4s)
+  ok 2 tests\e2e\executions-live.spec.ts:21:1 › method execution view shows immutable maturity, interval and fee scenarios, saves and offline-replays same inputs (2.3s)
+
+  2 passed (15.1s)

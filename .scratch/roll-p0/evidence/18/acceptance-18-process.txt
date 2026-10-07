@@ -1,0 +1,86 @@
+INFO:     Started server process [24684]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8038 (Press CTRL+C to quit)
+INFO:     127.0.0.1:65437 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "GET /api/research/datasets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "GET /api/research/protocols HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "GET /api/research/datasets/5c3a1560-305a-43ec-bf3f-0a714a7e6701/partitions/DEVELOPMENT HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "POST /api/research/protocols/5ebb599e-dbd3-4479-859d-dd285b497ece/executions HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 416, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\routing.py", line 676, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1281, in handle
+    await super().handle(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\routing.py", line 282, in handle
+    await self.app(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\src\roll\app.py", line 81, in research_execution
+    return executions.create(protocol_id,command)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\18-daily-execution-labels\backend\src\roll\research\execution.py", line 197, in create
+    rule=anchor.get('execution_evidence',{}) if method else self.evidence.market.rules.rule(**identity,on=command.observation_date)
+                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: RuleCalendar.rule() got an unexpected keyword argument 'code'

@@ -46,3 +46,7 @@ npx playwright test --config playwright.research.config.ts
 ```
 
 研究在历史子视图、五个主入口保持；不启动真实资金前向。17独立1passed/构建与公开HTTP原件保全见[票级验收](../.scratch/roll-p0/evidence/17/acceptance.md)。默认全文件05共享fixture红仍保留，不用17结果替代默认suite全绿。
+
+18先运行 `backend/.venv/Scripts/python.exe -X utf8 scripts/daily_execution_acceptance.py --source D:/dsh-proj/Roll/backend/.roll-data/implementation-evidence/17/acceptance-17-final --data-root backend/.roll-data/acceptance-18-final --port 8038`。目标须全新，原目录只读；仅宿主DEV/CAL，真实120未知/0训练与METHOD另列。固定夹具不替真实来源。
+
+从frontend设置 `ROLL_EXECUTION_LIVE=1`、`ROLL_BROWSER_CHANNEL=chrome`、`ROLL_EXECUTION_DATA` 为真实该保全目录，运行 `npx playwright test --config playwright.executions.config.ts`（API8038/web5198）；重跑追加METHOD记录/复评，原结果不改。独立2passed和实际HTTP/55pass1共享SDK轮询红+单例复验、原件保全均见[18验收](../.scratch/roll-p0/evidence/18/acceptance.md)，不称默认共享全Chrome绿。
