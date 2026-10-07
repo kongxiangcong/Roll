@@ -183,12 +183,13 @@ def share_change(payload,account,number,text_value):
         lot.update(transferred_quantity=lot["remaining_quantity"],transferred_cost=lot["remaining_cost"],
                    transfer_child_id=child["lot_id"],remaining_quantity="0",remaining_cost=None if lot["remaining_cost"] is None else "0.00")
     lots.extend(children)
-    position.update(quantity=quantity,sellable_quantity=None)
+    reference_before=position["reference_cost"]
+    position.update(quantity=quantity,sellable_quantity=None,reference_cost=None)
     for field in ["broker_available","broker_frozen","withdrawable"]:
         projection.setdefault(field+"_as_of",account["effective_at"] if account[field] is not None else None)
     update_fee_state(projection)
     record={**payload,"kind":"SHARE_CHANGE","record_id":text_value(payload["record_id"],"record_id"),"instrument":security,
             "new_quantity":quantity,"quantity_before":format(old_quantity,"f"),"basis":text_value(payload["basis"],"basis"),
-            "cost_after":position["acquisition_cost"],"lot_transfers":[{"parent_lot_id":c["parent_lot_id"],"lot_id":c["lot_id"],"quantity":c["original_quantity"],"cost":c["original_cost"]} for c in children]}
+            "cost_after":position["acquisition_cost"],"reference_cost_before":reference_before,"lot_transfers":[{"parent_lot_id":c["parent_lot_id"],"lot_id":c["lot_id"],"quantity":c["original_quantity"],"cost":c["original_cost"]} for c in children]}
     projection.setdefault("share_records",[]).append(record)
     return projection,[{"event_type":"SHARE_CHANGE","payload":record}]

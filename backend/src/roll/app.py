@@ -178,7 +178,10 @@ def create_app(directory: Path | None = None):
             pending.append(f"成交 {record} 费用暂估，现金与净收益待核")
         if ledger.quarantined_drafts():
             account["state"]="RECONCILE_REQUIRED"
-            pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
+            if any(d["command"]["kind"] in {"FILL","FEE_ADJUSTMENT"} for d in ledger.quarantined_drafts()):
+                pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
+            if any(d["command"]["kind"] in {"CASH_IN","CASH_OUT","DIVIDEND","INTEREST","TAX","FEE","PENDING_ITEM","SETTLEMENT","CASH_CORRECTION","SHARE_CHANGE"} for d in ledger.quarantined_drafts()):
+                pending.append("资金或权益输入待核，原始材料已保留，尚未影响账面现金与持仓")
         pending.extend(account.get("latest_fill_facts",[]))
         for item in account.get("pending_items",[]):
             if item["status"] in {"OPEN","PARTIAL"}:

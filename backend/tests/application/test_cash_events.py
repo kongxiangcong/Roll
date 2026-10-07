@@ -228,6 +228,7 @@ def test_cash_failures_unknown_tax_and_over_settlement_preserve_raw_inputs_and_b
         assert after["cash_balance"]=="100040.00"
         assert after["pending_income"]=="60.00"
         assert len(client.get("/api/account/quarantined-drafts").json())==6
+        assert "资金或权益输入待核" in " ".join(client.get("/api/today").json()["pending_items"])
 
 
 def test_cash_confirmation_concurrency_and_stale_draft_use_the_existing_atomic_writer(tmp_path):
@@ -274,6 +275,8 @@ def test_share_reference_cost_at_maximum_input_precision_does_not_claim_known_ac
         account=client.get("/api/account").json()
         assert account["positions"][0]["acquisition_cost"] is None
         assert account["positions"][0]["quantity"]=="999999999999999998.99999999"
+        assert account["positions"][0]["reference_cost"] is None
+        assert client.get("/api/account/versions/1").json()["positions"][0]["reference_cost"]=="999999999999999999.99999999"
         transfer=client.get("/api/account/events").json()[-1]["payload"]["lot_transfers"][0]
         assert transfer["cost"]=="999999999999999999999999980000000000.00"
         assert client.get("/api/account/replay").json()["lots"]==account["lots"]
