@@ -1,4 +1,4 @@
-# 账户应用接口 · 切片 01
+# 账户应用接口 · 切片 01/02
 
 HTTP 入口调用 `roll.accounts.ledger.Ledger` 的同一草稿/确认用例。后续成交和资金事件扩展 `prepare(command, account)` 的事件类型/投影，复用 `confirm` 的事务、幂等、版本、事件、审计和回执；不添加第二套写入。当前无正式动作，因此未预造动作表或失效逻辑。26/27 须把实际动作失效接到同一 SQLite 事务。
 
@@ -47,4 +47,4 @@ SQLite 为唯一正式状态；每次确认使用 `BEGIN IMMEDIATE`，事件、�
 
 已知输入错误为 422，不存在的版本/草稿/回执为 404。`ROLL_ENV=test` 且设置 `ROLL_TEST_CRASH_POINT=before_commit|after_commit` 时允许验收子进程在事务边界 `os._exit(86)`；该控制不是 HTTP 参数，生产默认关闭。回执后崩溃由测试父进程执行操作系统 kill。恢复后通过公开查询及同键重试证明未提交内容不残留、已提交内容不丢失不重复。
 
-首版 schema 由当前实际表 bootstrap 并记录 `user_version=1`；后续新增 schema 由对应票带迁移，不在 01 预建全部对象表。
+首版 schema 由当前实际表 bootstrap 并记录 `user_version=1`；02 的兼容迁移升到2，后续新增 schema 由对应票带迁移，不在 01 预建全部对象表。实际成交/费用命令、隔离草稿、只读重放、快照时点与迁移证据见 [成交接口](fill-contract.md)。

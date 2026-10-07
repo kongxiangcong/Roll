@@ -20,12 +20,14 @@ def free_port():
 
 
 class Server:
-    def __init__(self, directory, fault=None):
+    def __init__(self, directory, fault=None, source_directory=None):
         port = free_port()
         env = {**os.environ,"ROLL_DATA_DIR":str(directory),"ROLL_ENV":"test"}
         env.pop("ROLL_TEST_CRASH_POINT",None)
         if fault:
             env["ROLL_TEST_CRASH_POINT"] = fault
+        if source_directory:
+            env["PYTHONPATH"]=str(source_directory)
         self.log = open(directory.parent/f"server-{port}.log","w",encoding="utf-8")
         self.process = subprocess.Popen([sys.executable,"-m","uvicorn","roll.app:create_app","--factory","--host","127.0.0.1","--port",str(port)],
                                         cwd=Path(__file__).resolve().parents[2],env=env,stdout=self.log,stderr=subprocess.STDOUT)

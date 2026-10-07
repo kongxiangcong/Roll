@@ -109,11 +109,14 @@ def create_app(directory: Path | None = None):
 
     @app.get("/api/health")
     def health():
-        return {"status": "ok"}
+        return {"status": "ok","environment":"test" if os.environ.get("ROLL_ENV")=="test" else "local"}
 
     @app.get("/api/account")
     def account():
-        return ledger.account()
+        account=ledger.account()
+        if ledger.quarantined_drafts():
+            account["state"]="RECONCILE_REQUIRED"
+        return account
 
     @app.get("/api/account/versions/{version}")
     def version(version: int):
@@ -143,6 +146,14 @@ def create_app(directory: Path | None = None):
     def audit():
         return ledger.audit()
 
+    @app.get("/api/account/replay")
+    def replay():
+        return ledger.replay()
+
+    @app.get("/api/account/quarantined-drafts")
+    def quarantined_drafts():
+        return ledger.quarantined_drafts()
+
     @app.get("/api/today")
     def today():
         account = ledger.account()
@@ -155,6 +166,12 @@ def create_app(directory: Path | None = None):
                 pending.append(f"{label}未知")
         if not account["permission_profile"] or any(p["status"] == "UNKNOWN" for p in account["permission_profile"]):
             pending.append("账户部分交易权限未知，未登记范围也按未知处理")
+        for record in account.get("fees_pending",[]):
+            pending.append(f"成交 {record} 费用暂估，现金与净收益待核")
+        if ledger.quarantined_drafts():
+            account["state"]="RECONCILE_REQUIRED"
+            pending.append("成交输入待核，原始材料已保留，尚未影响账面现金与持仓")
+        pending.extend(account.get("latest_fill_facts",[]))
         return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
                 "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health()}
 

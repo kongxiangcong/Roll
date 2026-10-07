@@ -1,6 +1,6 @@
 # Roll
 
-本机 React/FastAPI 应用。当前工程切片支持首次账户基线、账户权限确认、版本历史和可靠确认回执；交易判断未启用。
+本机 React/FastAPI 应用。支持首次账户基线、权限确认、实际成交与费用追加、版本历史和可靠回执；可登记资金授权并分别查看技术资格和运行健康。交易判断未启用。
 
 ## 启动（Windows PowerShell）
 
@@ -43,4 +43,4 @@ npm run test:e2e
 
 手动改变 API 端口时，前端启动终端设置 `ROLL_API_PORT` 到同一个端口。浏览器验收仅使用合成账户，不能证明真实券商同步或投资资格。
 
-接口和精度说明见 [账户接口](docs/account-contract.md)。
+接口和精度说明见 [账户接口](docs/account-contract.md)、[实际成交与费用](docs/fill-contract.md)、[资金与损失口径](docs/funding-contract.md)。

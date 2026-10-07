@@ -158,3 +158,28 @@ def test_unopened_account_transitions_preserve_membership_and_identity_knowledge
         assert conflict.status_code == 409 and conflict.json()['detail']['code'] == 'LIST_VERSION_CONFLICT'
 
 
+def test_unopened_actual_fill_membership_transitions_are_not_retroactive_market_observations(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        establish(client, ['SSE:600519'])
+        for version, instrument, direction, quantity in [(1, 'SSE:600000', 'BUY', '300'), (2, 'SSE:600519', 'SELL', '100')]:
+            draft = client.post('/api/account/drafts', json={'kind': 'FILL', 'expected_account_version': version,
+                'payload': {'effective_at': '2026-10-07T11:00:00+08:00', 'source': '脱敏真实成交回报',
+                    'instrument': instrument, 'direction': direction, 'quantity': quantity, 'price': '10.00',
+                    'record_id': f'membership-{version}', 'fill_id': f'membership-{version}', 'order_id': None,
+                    'behavior_context': 'NO_RECOMMENDATION', 'broker_available_after': None,
+                    'fee': {'status': 'KNOWN', 'amount': '5.00', 'reserve_amount': None, 'basis': '券商回报'}}})
+            assert draft.status_code == 201 and draft.json()['status'] == 'READY', draft.text
+            assert client.post('/api/account/confirm', json={'draft_id': draft.json()['draft_id'],
+                'idempotency_key': f'membership-{version}'}).status_code == 200
+        history = client.get('/api/market/history').json()['account_membership_history']
+        by_version = {h['account_version']: h for h in history}
+        assert [[m['instrument'] for m in by_version[v]['members']] for v in [1, 2, 3]] == [
+            ['SSE:600519'], ['SSE:600000', 'SSE:600519'], ['SSE:600000']]
+        from datetime import datetime
+        assert all(datetime.fromisoformat(h['materialized_at']) >= datetime.fromisoformat(h['confirmed_at']) for h in history)
+        assert all(h['basis'] == 'CONFIRMED_ACCOUNT_VERSION' for h in history)
+        assert all(m['identity'] is None for h in history for m in h['members'])
+        assert all('price' not in h and 'coverage' not in h and 'forecast' not in h for h in history)
+        assert client.get('/api/market/list').json()['members'][0]['holding']['quantity'] == '300'
+
+

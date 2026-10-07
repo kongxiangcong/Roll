@@ -10,10 +10,11 @@ test('finite market page preserves holdings, distinct restrictions, membership v
       permission_profile:[{market:'SSE',board:'MAIN',status:'NOT_OPEN',basis:'broker confirmation'}]}}})).json();
     expect((await page.request.post('/api/account/confirm',{data:{draft_id:draft.draft_id,idempotency_key:'market-browser'}})).ok()).toBeTruthy();
   }
+  const quantity=account.positions.find((p:{instrument:string})=>p.instrument==='SSE:600000')?.quantity??'300';
   await page.goto('/');
   await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
   const holding=page.getByRole('article',{name:'SSE:600000',exact:true});
-  await expect(holding.getByText('实际持仓 300 股 · 可卖 未知')).toBeVisible();
+  await expect(holding.getByText(`实际持仓 ${quantity} 股 · 可卖 未知`)).toBeVisible();
   await expect(holding.getByText('规则：未适配 · 账户权限：未知')).toBeVisible();
   await holding.getByText('核对证券身份与依据',{exact:true}).click();
   await holding.getByLabel('证券名称').fill('浦发银行');
@@ -35,7 +36,7 @@ test('finite market page preserves holdings, distinct restrictions, membership v
   await expect(watched).toHaveCount(0);
   await holding.getByRole('button',{name:'加入关注'}).click();
   await holding.getByRole('button',{name:'取消关注'}).click();
-  await expect(holding.getByText('实际持仓 300 股 · 可卖 未知')).toBeVisible();
+  await expect(holding.getByText(`实际持仓 ${quantity} 股 · 可卖 未知`)).toBeVisible();
   await page.getByRole('button',{name:'查询名单历史'}).click();
   await page.getByRole('button',{name:`查看名单版本 ${original.version}`,exact:true}).click();
   await expect(page.getByRole('listitem').filter({hasText:'SSE:600519 · 关注 · 已关注'})).toBeVisible();

@@ -6,6 +6,8 @@
 
 Windows、Python3.13.12、01已锁定的 FastAPI0.141.1 / Uvicorn0.52.4 / pytest9.0.2 / httpx0.28.1，SQLite为Python自带本地库，WAL与synchronous=FULL。前端React19.2.4 / TypeScript5.9.3 / Vite7.3.1 / Playwright1.58.2，使用实际Chrome。无新增运行依赖、无证券全市场采集框架。
 
+账户/成交样例是隔离合成输入，经真实应用确认后进入测试库ACTUAL命名空间；不代表用户真实券商账户或真实成交。外部交易所来源则是实际官方GET原件。测试样例、原件来源、确定性回放与尚未进行的市场实时观察分别标识。
+
 - FastAPI/真实SQLite完整回归：29 passed（22个01基线/真实进程恢复案例 + 7个06应用案例）。原始输出 [backend-test.txt](backend-test.txt)；httpx与新版Starlette有已知弃用提示，测试实际通过，本票没有为消除提示引入另一套HTTP库。
 - TypeScript与Vite生产构建通过：[frontend-build.txt](frontend-build.txt)。
 - API8026 / Web5186，独立临时ROLL_DATA_DIR，实际Chrome核心流程2 passed（01 + 06），输出 [browser-test.txt](browser-test.txt)、[JSON结果](browser-result.json)、[页面截图](market-watch-history-calendar.png)。
@@ -45,3 +47,7 @@ Windows、Python3.13.12、01已锁定的 FastAPI0.141.1 / Uvicorn0.52.4 / pytest
 ## 集成分支复验
 
 06分支已合入当时集成tip `e981380`（含01/10），只在FastAPI入口及五入口导航发生冲突：保留全部market/funding路由，同时呈现Market和Settings。合并后真实SQLite/已有恢复回归67 passed，[输出](integrated-backend-test.txt)；TypeScript/Vite构建通过，[输出](integrated-frontend-build.txt)；实际Chrome的账户、资金、名单三流程3 passed，[输出](integrated-browser-test.txt)、[JSON](integrated-browser-result.json)、[名单截图](integrated-market-watch-history-calendar.png)。最终身份表单要求显式选择证券类型，不默认将其他证券当作普通A股；浏览器已验证该选择。此时02尚未进入集成tip，02合入后的跨票检查由集成人继续执行，不冒充已完成。
+
+随后合入最新集成tip `225d927`（含01/02/10），Ledger末尾冲突保留只读versions、quarantined_drafts和replay；完整保留02 schema2迁移、prepare/confirm/隔离草稿/原权限确认时点修复。Playwright配置同时保留02测试环境和独立overflow配置。首次02+06组合全后台 **85 passed**（168.07s，77既有 + 8市场），[原输出](account-fills-integrated-backend-test.txt)；生产构建通过，[输出](account-fills-integrated-frontend-build.txt)；账户、成交、资金与名单的四条实际Chrome流程 **4 passed**，[输出](account-fills-integrated-browser-test.txt)、[JSON](account-fills-integrated-browser-result.json)、[成交后名单截图](account-fills-integrated-market.png)。新案例通过公开FILL接口买入再全卖，期间不打开名单：v1/v2/v3成员集合逐次保留，原确认时点与实际整理时点分开，未生成历史行情、预测或覆盖。独立21只Chrome样例前述结果继续有效，本次未改变其范围逻辑。
+
+Git中的8份已登记官方原件逐项SHA与来源清单一致；`.gitattributes`为原HTML/DOCX/PDF关闭文本换行转换，确保后续检出保留原字节及指纹。BSE脱敏阻断页同样关闭转换，其指纹明确是脱敏件。没有同代码重复扩大测试，所有最终代码及实际组合变化已有对应回归。
