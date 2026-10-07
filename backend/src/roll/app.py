@@ -12,10 +12,12 @@ from roll.accounts.reconcile import UseCheck,use_check,consistency
 from roll.accounts.corrections import active_events,fact_command
 from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
+from roll.market.evidence import EvidenceStore, DataRequest
+from roll.market.source_facts import REGISTRY
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
-def create_app(directory: Path | None = None):
+def create_app(directory: Path | None = None, market_transport=None):
     app = FastAPI(title="Roll", version="0.1.0")
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
@@ -54,6 +56,61 @@ def create_app(directory: Path | None = None):
         return Response(imports.file(fingerprint), media_type="application/octet-stream")
     market = MarketDirectory(ledger)
     app.state.market = market
+    evidence=EvidenceStore(ledger,market,market_transport)
+    app.state.evidence=evidence
+
+    @app.get('/api/data/sources')
+    def data_sources():
+        return REGISTRY
+
+    @app.get('/api/data/runs')
+    def data_runs():
+        with ledger.connection() as db:
+            import json
+            return [json.loads(row[0]) for row in db.execute('SELECT value FROM retrieval_runs ORDER BY rowid DESC LIMIT 100')]
+
+    @app.get('/api/data/snapshots')
+    def data_snapshots(instrument:str|None=None,group:str|None=None,available_before:datetime|None=None):
+        return evidence.snapshots(instrument,group,available_before)
+
+    @app.get('/api/data/coverage')
+    def data_coverage(instrument:str|None=None,group:str|None=None):
+        return evidence.coverage(instrument,group)
+
+    @app.get('/api/data/observations')
+    def data_observations(instrument:str|None=None):
+        return [{**observation,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id']}
+            for snapshot in evidence.snapshots(instrument) for observation in snapshot['observations']
+            if not instrument or observation['instrument']==instrument]
+
+    @app.post('/api/data/requests',status_code=201)
+    def data_request(command:DataRequest):
+        return evidence.request(command)
+
+    @app.get('/api/data/requests/{request_id}')
+    def get_data_request(request_id:str):
+        return evidence.get('data_requests',request_id)
+
+    @app.post('/api/data/requests/{request_id}/retrieve')
+    def data_retrieve(request_id:str):
+        return evidence.retrieve(request_id)
+
+    @app.get('/api/data/runs/{run_id}')
+    def data_run(run_id:str):
+        return evidence.get('retrieval_runs',run_id)
+
+    @app.get('/api/data/snapshots/{snapshot_id}')
+    def data_snapshot(snapshot_id:str):
+        return evidence.get('market_evidence_snapshots',snapshot_id)
+
+    @app.get('/api/data/archives/{sha}')
+    def data_archive(sha:str):
+        path=evidence.raw(sha)
+        return FileResponse(path,media_type='application/octet-stream',filename=path.name,headers={'X-Content-Type-Options':'nosniff'})
+
+    @app.post('/api/data/runs/{run_id}/replay')
+    def data_replay(run_id:str):
+        return evidence.replay(run_id)
 
     @app.get('/api/market/list')
     def market_list():
@@ -105,7 +162,7 @@ def create_app(directory: Path | None = None):
     @app.get('/api/market/sources/{source_id}/raw')
     def market_source_raw(source_id: str):
         source = market.rules.source(source_id)
-        return FileResponse(market.rules.directory / source['archive_path'], media_type='application/octet-stream', filename=source['file'])
+        return FileResponse(market.rules.directory / source['archive_path'], media_type='application/octet-stream', filename=source['file'],headers={'X-Content-Type-Options':'nosniff'})
     funding = Funding(ledger)
 
     if os.environ.get("ROLL_ENV") == "test":
@@ -141,8 +198,8 @@ def create_app(directory: Path | None = None):
     @app.get("/api/runtime/health")
     def runtime_health():
         ledger.account()
-        return {"service": "RUNNING", "storage": "READABLE", "market": "NOT_CONNECTED",
-                "backend": "NOT_CONFIGURED", "reason": "本机账户服务在线；市场和模型接入尚未配置"}
+        return {"service": "RUNNING", "storage": "READABLE", "market": "FINITE_REQUEST_ADAPTER_AVAILABLE",
+                "backend": "NOT_CONFIGURED", "reason": "本机账户与有限市场取证接口在线；实际覆盖、缺口及时效逐请求核对，模型接入尚未配置"}
 
     @app.get("/api/health")
     def health():
