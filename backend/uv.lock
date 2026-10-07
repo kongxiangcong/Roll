@@ -984,6 +984,7 @@ dependencies = [
     { name = "openai-codex" },
     { name = "pyarrow" },
     { name = "pypdf" },
+    { name = "pywin32", marker = "sys_platform == 'win32'" },
     { name = "uvicorn" },
 ]
 
@@ -1003,6 +1004,7 @@ requires-dist = [
     { name = "openai-codex", specifier = "==0.161.0" },
     { name = "pyarrow", specifier = "==25.0.1" },
     { name = "pypdf", specifier = "==6.19.0" },
+    { name = "pywin32", marker = "sys_platform == 'win32'", specifier = "==312" },
     { name = "uvicorn", specifier = "==0.52.4" },
 ]
 

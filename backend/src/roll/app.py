@@ -5,7 +5,7 @@ import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Query, HTTPException, Request, Response
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide,VERSION
 
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, EquityHint, Ledger
@@ -25,16 +25,21 @@ from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
+from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None):
     @asynccontextmanager
     async def lifespan(application):
         application.state.reviews.start()
+        application.state.backups.start()
         yield
         await asyncio.to_thread(application.state.reviews.close)
         await asyncio.to_thread(application.state.codex.close)
         await asyncio.to_thread(application.state.deepseek.close)
+        await asyncio.to_thread(application.state.backups.close)
+        if not (application.state.reviews.thread and application.state.reviews.thread.is_alive()):
+            application.state.host_marker.unlink(missing_ok=True)
 
     app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
     ledger = Ledger(directory or data_directory())
@@ -439,11 +444,13 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get("/api/capabilities")
     def current_capabilities():
-        return capabilities()
+        recovery=app.state.backups.recovery()
+        return {**capabilities(),"recovery":recovery,**({"state":"RECOVERY_LOCK","reason":"恢复后当前资格及遗漏撤回未核实，仅可观察。"} if recovery['state']=='RECOVERY_LOCK' else {})}
 
     @app.post("/api/formal/evaluate")
     @app.post("/api/formal/probability")
     def formal_closed():
+        if app.state.backups.recovery()["state"]=="RECOVERY_LOCK":raise HTTPException(403,{"code":"RECOVERY_LOCK","reason":"恢复后账户、当前授权和撤回尚未核实，仅可观察。"})
         raise HTTPException(403, {"code": "TECHNICAL_CAPABILITY_UNGRANTED", "reason": capabilities()["reason"]})
 
     @app.get("/api/runtime/health")
@@ -570,6 +577,64 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         for hint in ledger.equity_hints():
             pending.append(f"外部权益线索待核：{hint['content']}；来源 {hint['source']}，获知于 {hint['learned_at']}，未确认个人账户实际发生")
         return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
-                "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health()}
+                "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health(), "recovery": app.state.backups.recovery()}
+
+    return app
+
+
+
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None):
+    directory=directory or data_directory()
+    backups,marker,previous=bootstrap(directory)
+    if backup_clock:backups.clock=backup_clock
+    try:
+        if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock)
+        if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
+        if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
+        app.state.backups=backups;app.state.host_marker=marker
+        finish_bootstrap(backups)
+    except BaseException:
+        rollback_bootstrap(backups,marker,previous)
+        raise
+
+    @app.middleware('http')
+    async def local_recovery_access(request:Request,call_next):
+        if request.url.path.startswith(('/api/runtime/backups','/api/runtime/restores')):
+            import ipaddress
+            from urllib.parse import urlparse
+            host=request.client.host if request.client else ''
+            local=host=='testclient'
+            if not local:
+                try:local=ipaddress.ip_address(host).is_loopback
+                except ValueError:local=False
+            origin=request.headers.get('origin')
+            if not local or (origin and urlparse(origin).hostname not in {'localhost','127.0.0.1','::1'}):
+                return JSONResponse(status_code=403,content={'detail':{'code':'LOCAL_RECOVERY_ACCESS_ONLY'}})
+        return await call_next(request)
+
+    @app.get('/api/runtime/backups/status')
+    def backup_status():return backups.status()
+
+    @app.get('/api/runtime/backups')
+    def backup_list():return backups.list()
+
+    @app.post('/api/runtime/backups',status_code=201)
+    def create_backup():return backups.create()
+
+    @app.post('/api/runtime/backups/check')
+    def check_backup():return backups.check()
+
+    @app.get('/api/runtime/backups/{identifier}/export')
+    def export_backup(identifier:str):
+        return Response(backups.export(identifier),media_type='application/zip',headers={'Content-Disposition':'attachment; filename="roll-recovery.zip"'})
+
+    @app.post('/api/runtime/restores',status_code=202)
+    async def stage_restore(request:Request):
+        raw=bytearray()
+        async for chunk in request.stream():
+            raw.extend(chunk)
+            if len(raw)>256*1024*1024:raise HTTPException(413,'恢复包压缩大小最多256MiB')
+        return await asyncio.to_thread(backups.stage_restore,bytes(raw))
 
     return app

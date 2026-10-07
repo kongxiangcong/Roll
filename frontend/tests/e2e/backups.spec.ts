@@ -1,0 +1,20 @@
+import {test,expect} from '@playwright/test';
+test('actual Chrome exports original bundle, rejects damage and queues restart without replacing live facts',async({page,request})=>{
+  const draft=await(await request.post('/api/account/drafts',{data:{kind:'BASELINE',expected_account_version:0,payload:{effective_at:'2026-10-07T10:00:00+08:00',source:'合成备份浏览器基线',cash_balance:'10000.10',broker_available:'10000.10',broker_frozen:'0',withdrawable:null,positions:[],permission_profile:[]}}})).json();
+  expect((await request.post('/api/account/confirm',{data:{draft_id:draft.draft_id,idempotency_key:'backup-browser'}})).ok()).toBeTruthy();
+  const original=await(await request.get('/api/account')).json();
+  await page.goto('/');await page.getByRole('button',{name:'设置',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'备份与恢复',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'现在完整备份',exact:true}).click();
+  await expect(page.getByText('备份已完成，数据库与引用附件已校验。',{exact:true})).toBeVisible();
+  await expect(page.getByText(/最近成功备份：.*账户版本 1/)).toBeVisible();
+  const download=page.waitForEvent('download');await page.getByRole('link',{name:'导出已校验恢复包',exact:true}).click();const exported=await download;
+  await exported.saveAs('test-results/roll-recovery.zip');
+  await page.getByText('恢复已有备份',{exact:true}).click();
+  await page.getByLabel('恢复包文件').setInputFiles({name:'damaged.zip',mimeType:'application/zip',buffer:Buffer.from('damaged')});
+  await page.getByRole('button',{name:'校验并排队恢复',exact:true}).click();await expect(page.getByRole('alert').filter({hasText:'INVALID_RECOVERY_BUNDLE'})).toBeVisible();
+  await page.getByLabel('恢复包文件').setInputFiles('test-results/roll-recovery.zip');
+  await page.getByRole('button',{name:'校验并排队恢复',exact:true}).click();await expect(page.getByText('恢复状态：待重启；所有本机服务停止后才应用恢复点。',{exact:true})).toBeVisible();
+  expect(await(await request.get('/api/account')).json()).toEqual(original);
+  await page.screenshot({path:'test-results/backups-settings.png',fullPage:true});
+});

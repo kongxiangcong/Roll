@@ -3,7 +3,7 @@ import {useEffect,useState} from 'react';
 import {Account,Funding,Capability,RuntimeHealth,request} from '../api';
 import {stateLabels} from './sync-reconcile';
 import {FundingStatus} from '../components/funding-status';
-type TodayResult={account:Account;formal_judgment:string;pending_items:string[];funding:Funding;technical_capability:Capability;runtime_health:RuntimeHealth};
+type TodayResult={account:Account;formal_judgment:string;pending_items:string[];funding:Funding;technical_capability:Capability;runtime_health:RuntimeHealth;recovery:{state:string;restore_point?:{account_version:number}}};
 const money=(value:string|null)=>value===null?'未知':`${value} 元`;
 export function Today(){
   const [data,setData]=useState<TodayResult|null>(null),[error,setError]=useState('');
@@ -11,7 +11,7 @@ export function Today(){
   if(error)return <p role="alert">{error}</p>;
   if(!data)return <p>正在读取今天…</p>;
   const a=data.account;
-  return <><h1>今天</h1><div className="capability">交易判断未启用</div><p>账户核对状态：{stateLabels[a.state]??a.state}</p><p className="muted">账户版本 {a.version} · {a.confirmed_at?`确认于 ${new Date(a.confirmed_at).toLocaleString('zh-CN')}`:'尚未建立账户，请前往同步账户'}</p>
+  return <><h1>今天</h1><div className="capability">交易判断未启用</div>{data.recovery?.state==='RECOVERY_LOCK'&&<p role="status">恢复锁生效：恢复到账户版本 {data.recovery.restore_point?.account_version}。请核对当前账户；旧授权、旧通知保持关闭，可以继续观察。未运行期间没有新的分析覆盖。</p>}<p>账户核对状态：{stateLabels[a.state]??a.state}</p><p className="muted">账户版本 {a.version} · {a.confirmed_at?`确认于 ${new Date(a.confirmed_at).toLocaleString('zh-CN')}`:'尚未建立账户，请前往同步账户'}</p>
     {a.effective_at&&<p>最新有效账户事实截至 {new Date(a.effective_at).toLocaleString('zh-CN')}</p>}
     {a.latest_confirmed_input_at&&<p className="muted">最近确认输入的实际时点 {new Date(a.latest_confirmed_input_at).toLocaleString('zh-CN')} · 系统获知于 {new Date(a.system_known_at??a.confirmed_at!).toLocaleString('zh-CN')}</p>}
     {!!a.declarations?.length&&<p>本次声明：{a.declarations.at(-1)!.scope.map(s=>({TRADES:'成交',ORDERS:'委托',CASH:'资金',EQUITY:'权益'}[s])).join('、')}截至 {new Date(a.declarations.at(-1)!.confirmed_as_of).toLocaleString('zh-CN')} · {a.declarations.at(-1)!.changes==='NONE'?'无未记录变化':'账户变化待同步'}</p>}

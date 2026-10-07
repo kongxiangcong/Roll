@@ -1,3 +1,4 @@
+import {BackupPanel} from '../components/backup-panel';
 import {MaintenancePanel} from '../components/review-panel';
 import {useEffect,useState} from 'react';
 import {Funding,request} from '../api';
@@ -22,7 +23,7 @@ export function Settings(){
     }catch(e){setError(`${String(e)}；保留原确认内容与幂等键，可重试找回结果。`);}finally{setBusy(false);}
   }
   if(!funding)return <p role={error?'alert':undefined}>{error||'正在读取资金边界…'}</p>;
-  return <><h1>设置</h1><p>建立账户无需配置取证后端。资金确认不产生技术资格；交易判断未启用。</p><MaintenancePanel/><FundingStatus funding={funding}/><section><h2>确认资金用途与边界</h2><p>填写自己的金额。损失口径从首次授权起保留，跨日、反弹或扩大金额不清除暂停历史。恢复须核对暂停原因和实际事实。</p>
+  return <><h1>设置</h1><p>建立账户无需配置取证后端。资金确认不产生技术资格；交易判断未启用。</p><BackupPanel/><MaintenancePanel/><FundingStatus funding={funding}/><section><h2>确认资金用途与边界</h2><p>填写自己的金额。损失口径从首次授权起保留，跨日、反弹或扩大金额不清除暂停历史。恢复须核对暂停原因和实际事实。</p>
     {error&&<p role="alert">{error}</p>}{!!pending&&<p>正在保留未明确认，可重试原内容。</p>}<form onSubmit={e=>{e.preventDefault();void confirm();}}><fieldset className="funding-fields" disabled={busy||!!pending}>
     <label>资金范围<select aria-label="资金范围" value={scope} disabled={funding.version>0} onChange={e=>{setScope(e.target.value as 'ACCOUNT'|'TRIAL_ACTUAL');setScopeId(e.target.value==='ACCOUNT'?'account-1':'');}}><option value="ACCOUNT">整个真实账户</option><option value="TRIAL_ACTUAL">已界定的真实试验资金</option></select></label>
     {scope==='TRIAL_ACTUAL'&&<label>真实资金范围标识<input required value={scopeId} disabled={funding.version>0} onChange={e=>setScopeId(e.target.value)}/></label>}
