@@ -21,6 +21,9 @@ REFERENCE = Path(__file__).parent / 'reference'
 BACKGROUND_INDICES = [
     {'instrument': 'SSE:000001', 'name': '上证指数', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND', 'trading_capability': 'NONE'},
     {'instrument': 'SZSE:399001', 'name': '深证成指', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND', 'trading_capability': 'NONE'},
+    {'instrument': 'SZSE:399997', 'name': '中证白酒', 'instrument_type': 'INDEX', 'purpose': 'SECTOR_BACKGROUND',
+     'trading_capability': 'NONE','related_instruments': ['SSE:600519'], 'basis_source': 'csi-399997-sector-basis',
+     'basis_date': '2026-08-31', 'basis': '预固定一个相关行业指数；官网事实表成分列含600519，不作动态行业筛选'},
 ]
 HOLIDAYS_2026 = [
     ('2026-01-01', '2026-01-03'), ('2026-02-15', '2026-02-23'),
