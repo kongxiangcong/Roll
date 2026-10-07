@@ -1,0 +1,182 @@
+{
+  "run": {
+    "acquisition_usage": {
+      "archived_bytes": 0,
+      "http_calls": 0,
+      "model_tool_result_bytes": 0
+    },
+    "allowed_operations": [
+      "V8_PURE_COMPUTATION",
+      "FUNCTIONS_EXEC",
+      "FUNCTIONS_WAIT"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source",
+      "clock"
+    ],
+    "archives": [],
+    "backend": "CODEX",
+    "bootstrap_audit": {
+      "auth_mode": "chatgpt",
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "bridge": {
+      "name": "bundled-code-mode-host",
+      "runtime": "Rust/V8, no Node bridge",
+      "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+      "version": "0.161.0"
+    },
+    "candidates": [],
+    "config_fingerprint": "df02a5f23cffac820f0b6beef452f9de2173b2cf51396a4462a53c44bce8567e",
+    "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+    "elapsed_seconds": 9.276,
+    "evidence_kind": "REAL_CODEX_TASK",
+    "finished_at": "2026-10-07T18:06:27.938787+00:00",
+    "formal_judgment": "DISABLED",
+    "gaps": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "35353b833112291e75c7532ca23087f0fee81dc916329d659bcfcae4c521d3d3",
+      "codex_process.py": "a9bd7cea98a5b84527f2e8eec0fff11edb15dbf22f05b9cc0f64dd9cb05c2c3a",
+      "codex_worker.py": "49057eb847d06afa1ee242aa552970b6a2bd358485fdd9ed95f06318d6c027f4"
+    },
+    "instruction_sources": [],
+    "interrupt_requested_at": "2026-10-07T18:06:27.820390+00:00",
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "model": "gpt-6.1-sol",
+    "model_provider": "openai",
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "observed_pids": [
+        26768,
+        18376,
+        14300,
+        33832
+      ],
+      "pids_before_cleanup": [
+        26768,
+        18376,
+        33832
+      ],
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "worker_pid": 26768
+    },
+    "question": "取得一条报价原始依据，明确时间和缺失项。",
+    "request_id": "e41d1c8c-e078-4f00-9f68-e87daa5e5c28",
+    "resolved_model": "gpt-6.1-sol",
+    "run_id": "b55e86ba-2d4a-4259-901d-48ed802a029c",
+    "runtime_audit": {
+      "auth_mode": "chatgpt",
+      "disabled_skills": 38,
+      "effective_config": {
+        "approval_policy": "never",
+        "features": {
+          "api_key_cyber_access_programs": false,
+          "api_key_model_discovery": true,
+          "apps": false,
+          "auth_elicitation": true,
+          "background_paginated_rollout_migration": false,
+          "browser_use": false,
+          "browser_use_external": false,
+          "code_mode": false,
+          "code_mode_host": true,
+          "code_mode_only": false,
+          "codex_apps_mcp_2026_07_28": false,
+          "computer_use": false,
+          "goals": false,
+          "hooks": false,
+          "image_generation": false,
+          "in_app_browser": false,
+          "mcp_2026_07_28": false,
+          "memories": false,
+          "mentions_v2": true,
+          "multi_agent": false,
+          "multi_agent_v2": false,
+          "network_proxy": null,
+          "plugins": false,
+          "remote_control": false,
+          "remote_plugin": false,
+          "shell_snapshot": false,
+          "shell_tool": false,
+          "skill_mcp_dependency_install": false,
+          "tool_suggest": false,
+          "view_image": false,
+          "windows_sandbox_service": false
+        },
+        "layers": [
+          "user",
+          "system"
+        ],
+        "mcp_servers": 0,
+        "sandbox_mode": "read-only",
+        "skills_instructions": false,
+        "web_search": "disabled"
+      },
+      "enabled_skills": 0,
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+    "runtime_thread_id": "01a1178b-99df-7c92-ac50-76ce76ee76bb",
+    "runtime_turn_id": "01a1178b-9a16-7383-a40f-14c2907e9c8a",
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "started_at": "2026-10-07T18:06:18.612974+00:00",
+    "status": "CANCELLED",
+    "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+    "tools": []
+  },
+  "assertions": {
+    "account_unchanged": true,
+    "marker_absent": true,
+    "network_probe_requests": [],
+    "private_sentinel_not_disclosed": true,
+    "elapsed": 9.394
+  }
+}

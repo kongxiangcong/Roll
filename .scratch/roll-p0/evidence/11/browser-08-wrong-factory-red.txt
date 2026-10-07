@@ -1,0 +1,38 @@
+
+> roll-frontend@0.1.0 test:e2e
+> playwright test resolution-method.spec.ts
+
+[WebServer] INFO:     Started server process [39328]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8031 (Press CTRL+C to quit)
+[WebServer] (node:26296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:5996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state (780ms)
+
+
+  1) tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"METHOD_CASE"[39m
+    Received: [31m"REAL_ACQUISITION"[39m
+
+      14 |     purpose:'OBSERVATION',start_date:'2026-09-30',end_date:'2026-09-30',quote_source:'SINA',required_fields:['QUOTE.last'],max_calls:2}})).json();
+      15 |   const run=await (await page.request.post('/api/data/requests/'+request.request_id+'/retrieve')).json();
+    > 16 |   expect(run.evidence_kind).toBe('METHOD_CASE');
+         |                             ^
+      17 |   await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+      18 |   await page.getByRole('button',{name:'市场事实',exact:true}).click();
+      19 |   const resolution=page.getByRole('heading',{name:'用途与换源',exact:true}).locator('..');
+        at D:\dsh-proj\Roll\.scratch\worktrees\11-codex-evidence\frontend\tests\e2e\resolution-method.spec.ts:16:29
+
+  1 failed
+    tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 

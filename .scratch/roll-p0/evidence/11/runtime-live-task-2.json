@@ -1,0 +1,282 @@
+{
+  "run": {
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source",
+      "clock"
+    ],
+    "archives": [],
+    "backend": "CODEX",
+    "candidates": [],
+    "config_fingerprint": "af757e3f2a9284c4fe3645832fa85b3f733dc3933ab1bed4c154916051dd824e",
+    "effective_config_fingerprint": "7c09a9cfd2f1a6e3bf2a430783626851e1a499de34a2aa4953babc5dd4e0d4bb",
+    "elapsed_seconds": 42.492,
+    "error": {
+      "code": "CODEX_HOST_ERROR",
+      "file_kind": "logs_2.sqlite",
+      "type": "PermissionError"
+    },
+    "evidence_kind": "REAL_CODEX_TASK",
+    "finished_at": "2026-10-07T17:46:23.327707+00:00",
+    "formal_judgment": "DISABLED",
+    "gaps": [
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "报价原始依据获取失败：主机工具返回“code-mode host is disabled”，未取得原始数据或 raw_hash。报价时间及其相对请求截止时间的关系无法核实。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "公告原始依据获取失败：主机工具返回“code-mode host is disabled”。公司事项发生时间、公告发布时间及请求日期范围内的事项均无法核实；接收时间不能证明事项时间。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "已尝试读取注册公司官方主页 MOUTAI_OFFICIAL，但主机工具返回“code-mode host is disabled”。未取得公司主营业务的实际原文依据；用户提供的网站登记信息不能替代官网原文。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "未推断交易资格或交易状态。"
+      },
+      {
+        "code": "NO_HOST_VALIDATED_FACT",
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      {
+        "code": "NO_HOST_VALIDATED_FACT",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519"
+      }
+    ],
+    "instruction_sources": [],
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "model": "gpt-6.1-sol",
+    "model_provider": "openai",
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "observed_pids": [
+        12236,
+        36404,
+        10668,
+        33056
+      ],
+      "pids_before_cleanup": [
+        12236,
+        36404,
+        10668,
+        33056
+      ],
+      "remaining_pids": [],
+      "worker_pid": 12236
+    },
+    "question": "先取得报价原始依据，检查报价不能回答的事实，再查公司官方主页。公司主营业务是否有实际原文依据？分开说明报价时间和公司事项时间缺口，不推断交易资格或状态。",
+    "request_id": "4e24b4fa-404d-4add-ba12-5030295f3437",
+    "resolved_model": "gpt-6.1-sol",
+    "run_id": "444d3d0f-4ffe-494a-a176-5249092dc6f0",
+    "runtime_audit": {
+      "auth_mode": "chatgpt",
+      "disabled_skills": 38,
+      "effective_config": {
+        "approval_policy": "never",
+        "features": {
+          "api_key_cyber_access_programs": false,
+          "api_key_model_discovery": true,
+          "apps": false,
+          "auth_elicitation": true,
+          "background_paginated_rollout_migration": false,
+          "browser_use": false,
+          "browser_use_external": false,
+          "code_mode": false,
+          "code_mode_host": false,
+          "code_mode_only": false,
+          "codex_apps_mcp_2026_07_28": false,
+          "computer_use": false,
+          "goals": false,
+          "hooks": false,
+          "image_generation": false,
+          "in_app_browser": false,
+          "mcp_2026_07_28": false,
+          "memories": false,
+          "mentions_v2": true,
+          "multi_agent": false,
+          "multi_agent_v2": false,
+          "network_proxy": null,
+          "plugins": false,
+          "remote_control": false,
+          "remote_plugin": false,
+          "shell_snapshot": false,
+          "shell_tool": false,
+          "skill_mcp_dependency_install": false,
+          "tool_suggest": false,
+          "view_image": false,
+          "windows_sandbox_service": false
+        },
+        "layers": [
+          "user",
+          "system"
+        ],
+        "mcp_servers": 0,
+        "sandbox_mode": "read-only",
+        "skills_instructions": false,
+        "web_search": "disabled"
+      },
+      "enabled_skills": 0,
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      }
+    },
+    "runtime_completion": {
+      "error_info": null,
+      "status": "completed"
+    },
+    "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+    "runtime_items": [
+      {
+        "id": "01a11778-e4ab-7e90-8293-bac0e9815d46",
+        "item_type": "userMessage",
+        "tool": null
+      },
+      {
+        "id": "rs_0b8e41267c3bae9e016ac6855d71e487d08b366a2cab63c430",
+        "item_type": "reasoning",
+        "tool": null
+      },
+      {
+        "id": "msg_0b8e41267c3bae9e016ac68565cb7c87d0bcd088145604b82d",
+        "item_type": "agentMessage",
+        "tool": null
+      }
+    ],
+    "runtime_thread_id": "01a11778-b75d-7401-9f39-2f54b2223e69",
+    "runtime_turn_id": "01a11778-c65a-7e32-ac08-ef0157e5a5d8",
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "snapshot_id": "a7670e7d-e279-4564-8868-d7d56ce172e6",
+    "started_at": "2026-10-07T17:45:40.796444+00:00",
+    "status": "FAILED",
+    "token_usage": {
+      "last": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 2816,
+        "inputTokens": 3034,
+        "outputTokens": 167,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 3201
+      },
+      "modelContextWindow": 258400,
+      "total": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 5504,
+        "inputTokens": 11783,
+        "outputTokens": 299,
+        "reasoningOutputTokens": 25,
+        "totalTokens": 12082
+      }
+    },
+    "tool_schema_fingerprint": "0530479fd2e2fa3a16f3f82ed67500bdc8f7dc142fe33c48c1f3f9eb0d198bf7",
+    "tools": []
+  },
+  "snapshot": {
+    "adapter_version": "11-codex-v1",
+    "archives": [],
+    "candidates": [],
+    "coverage": [],
+    "created_at": "2026-10-07T17:46:23.308667+00:00",
+    "cutoff": "2026-10-07T17:45:40.766231+00:00",
+    "evidence_kind": "REAL_CODEX_TASK",
+    "facts": [],
+    "formal_judgment": "DISABLED",
+    "gaps": [
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "报价原始依据获取失败：主机工具返回“code-mode host is disabled”，未取得原始数据或 raw_hash。报价时间及其相对请求截止时间的关系无法核实。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "公告原始依据获取失败：主机工具返回“code-mode host is disabled”。公司事项发生时间、公告发布时间及请求日期范围内的事项均无法核实；接收时间不能证明事项时间。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "已尝试读取注册公司官方主页 MOUTAI_OFFICIAL，但主机工具返回“code-mode host is disabled”。未取得公司主营业务的实际原文依据；用户提供的网站登记信息不能替代官网原文。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "未推断交易资格或交易状态。"
+      },
+      {
+        "code": "NO_HOST_VALIDATED_FACT",
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      {
+        "code": "NO_HOST_VALIDATED_FACT",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519"
+      }
+    ],
+    "namespace": "ACTUAL",
+    "observations": [],
+    "parquet": {
+      "bytes": 341,
+      "kind": "NORMALIZED_PARQUET",
+      "path": "parquet/4b2211a9361026bbccf87c704945d115d210fe6ea355f60d627696039aedc8a1.parquet",
+      "sha256": "4b2211a9361026bbccf87c704945d115d210fe6ea355f60d627696039aedc8a1"
+    },
+    "request_id": "4e24b4fa-404d-4add-ba12-5030295f3437",
+    "requested_groups": [
+      "QUOTE",
+      "ANNOUNCEMENTS"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "run_id": "444d3d0f-4ffe-494a-a176-5249092dc6f0",
+    "snapshot_id": "a7670e7d-e279-4564-8868-d7d56ce172e6"
+  }
+}

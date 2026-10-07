@@ -1,6 +1,6 @@
 # 09 · 账户估值与现金流调整绩效验收
 
-本票范围完成；AT-50 / ACC-15、17、18 的公开事实、页面、重放与真实进程恢复已验收。基于 `76272df` 开始，最终实际合入 `12c9563` 的08来源解析、07档案与既有账户代码；不是全仓累计测试通过声明。上海日期2026-10-08，日志原始UTC时间保留（UTC2026-10-07）；09最终API开始19:08:42.942Z、结束19:09:19.355Z，另Sina消费案例19:18:55.679Z—19:19:00.824Z。
+本票范围完成；AT-50 / ACC-15、17、18 的公开事实、页面、重放与真实进程恢复已验收。基于 `76272df` 开始，先实际合入 `12c9563` 的08来源解析、07档案与既有账户代码，最后合 `1309387` 的11源及证据入口，保留两组应用路由；不是全仓累计测试通过声明。上海日期2026-10-08，日志原始UTC时间保留（UTC2026-10-07）；09合08 API开始19:08:42.942Z、结束19:09:19.355Z，另Sina消费案例19:18:55.679Z—19:19:00.824Z。最终09/11接口联验19:34:10.958Z—19:35:17.318Z，控制worker/无实际模型调用。
 
 ## 公开事实与口径
 
@@ -39,7 +39,9 @@
 | 真实08 merge消解后09+SourceResolution接口 | 29 passed，63.46s | 当时终端输出；未保存专用log，不冒称有档案 |
 | 合后09公开API最终16案 | 16 passed，34.53s | `post-merge-api.log` / `-metadata.json` |
 | 最后新增Sina消费案，未改变产品代码 | 1 passed / 16 deselected，3.31s | `sina-consumer.log` / `-metadata.json` |
+| 最后实际合11后09全部17案＋11受控公开API | 29 passed，64.26s | `final-union-api.log` / `-metadata.json`；覆盖最新09全部17案，非全仓套件 |
 | TypeScript/Vite合后构建 | passed，46 modules | `build.log` |
+| 最后实际合11后TypeScript/Vite构建 | passed，46 modules | `final-union-build.log` |
 | 09现金流实际Chrome，独立空档案 | 1 passed，11.8s | `post-merge-chrome-cash.{log,json}` / `-metadata.json` |
 | 09保全真实旧价实际Chrome，独立复制档案 | 1 passed，9.6s | `post-merge-chrome-real.{log,json}` / `-metadata.json` |
 | 05已有路径实际Chrome，独立空档案 | 2 passed，13.5s | `reconcile-isolated-chrome.{log,json}` / `-metadata.json` |

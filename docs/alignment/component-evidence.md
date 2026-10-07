@@ -59,3 +59,13 @@ Q7 已明确：用户已有 Codex 和 DeepSeek 订阅，两后端支持切换，
 Q9 已确认用可复现自动验证、模型技术审阅和确定性资格检查替换专业人士独立复核的必备门槛，见 [ADR 0003](../adr/0003-automated-validation-review.md) 与 [实现对齐记录](implementation-alignment.md)。保留 G1—G7、冻结证据、完整 ReviewRecord、阻断事项的证据处理以及用户资金启用。模型不能自签资格；必需项无法自动核实则保持未通过或证据不足。界面与交付如实标注“未经人工独立复核”，不再将等待人工复核作为当前正式准入路径。
 
 本记录保留已有公开文档、静态代码与一次有限探针证据，不把它们升级为适配通过。具体时间窗、效应目标、统计方法、规则、SDK/runtime 版本与后端切换契约，以及真实接口验收，仍由后续开发/研究产出并验证；这些是进入规格的工作，不是需要继续向用户索取的产品选择。
+
+## 2026-10-08：票11实际 Codex 适配
+
+本节是后续实施证据，不覆盖以上2026-10-07静态调查。Python3.13.12实际安装并锁 `openai-codex/openai-codex-cli-bin 0.161.0`，采用发行包和公开同步 `CodexClient`/JSON-RPC；固定源码 [979011409de0a60b52f179721948e65531d26144](https://github.com/openai/codex/tree/979011409de0a60b52f179721948e65531d26144)，[许可证 Apache-2.0](https://github.com/openai/codex/blob/979011409de0a60b52f179721948e65531d26144/LICENSE)。分类为官方 SDK/配套 Runtime 实际接入，Roll 自写有限宿主适配，未摘取参考仓库源码，未引入闲置 Agents SDK。
+
+实际完整模型任务解析 `gpt-6.1-sol/openai`，ChatGPT 最小认证副本在独立 home 有效；目录可见与多轮真实任务分别证明。动态工具需要发行物自带 Rust/V8 `codex-code-mode-host.exe`：关闭时实际工具失败，启用最小host特性后完成多轮获取和结构化结果，无 Node 桥。所有额外SDK/runtime模块随 `uv.lock` 固定，实际EXE/bridge SHA、版本、配置和工具指纹记录于 [11验收](../../.scratch/roll-p0/evidence/11/acceptance.md)。
+
+Windows实际仍发现个人技能元数据，因此只在独立 `CODEX_HOME` 写技能 disabled 配置，再强制重载核验 enabled=0；模型线程 instructionSources为空。未修改个人配置、技能或认证。纯V8实际工具面仅两个宿主取证工具与无副作用clock，fetch/process/require不存在，node:fs import实际拒绝。生产提示对抗未读取私文件、未写哨兵、未发POST，账户不变；该证据与固定源码检查、组件clock探针、方法案例分列。
+
+真实 FastAPI/SQLite/原件/Parquet/Chrome 多轮取证、取消、SDK错误及实际API宿主硬崩后Job归零/精确凭据清理已验；有限接收字节包含失败/丢弃，字段门禁不因模型完成移除。仅补充登记茅台官方主页，其他对象/资料无能力时保留缺口；原文短引核对不等于断言真值或历史可得性。票12/13、技术审阅23及完整市场资料覆盖仍有独立验收，不能从本票推及。具体接口与局限见 [Codex契约](../codex-evidence-contract.md)。

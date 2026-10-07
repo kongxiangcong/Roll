@@ -1,0 +1,56 @@
+{
+  "recorded_at": "2026-10-07T19:14:27.812411+00:00",
+  "python": "3.13.12 (main, Mar 10 2026, 18:14:40) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "win32",
+  "versions": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0",
+    "fastapi": "0.141.1",
+    "uvicorn": "0.52.4",
+    "httpx": "0.28.1",
+    "pyarrow": "25.0.1",
+    "pydantic": "2.13.5"
+  },
+  "model": "gpt-6.1-sol",
+  "source_commit": "979011409de0a60b52f179721948e65531d26144",
+  "roll_source_tip": "653c300a3de7540ddc3d7e25985cc1ecb8f6e571",
+  "integration_tip": "12c95639755ce42d711a7c415eeed98a47d981dc",
+  "node": "25.8.1",
+  "playwright": "1.58.2",
+  "browser": "Chrome installed, actual Playwright channel chrome",
+  "config_fingerprint": "c6044f47269c6d0532f55e289528d92beb0514252d25b6387e89bab0c459df2e",
+  "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+  "host_code_hashes": {
+    "codex_evidence.py": "8febe2b7011d56e7ef68fd3f332b22bdc34565eb5fdf7a15050449eec8cb79aa",
+    "codex_process.py": "a5c27c55c55a41ff29e65866ac15f37ca0a102b87346c899d5e8b37a62a454c3",
+    "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+  },
+  "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+  "bridge": {
+    "name": "bundled-code-mode-host",
+    "runtime": "Rust/V8, no Node bridge",
+    "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+    "version": "0.161.0"
+  },
+  "tool_schema_fingerprint": "0530479fd2e2fa3a16f3f82ed67500bdc8f7dc142fe33c48c1f3f9eb0d198bf7",
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source",
+    "clock__curr_time"
+  ],
+  "allowed_operations": [
+    "V8_PURE_COMPUTATION",
+    "FUNCTIONS_EXEC",
+    "FUNCTIONS_WAIT"
+  ],
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "response_bytes": 65536,
+    "retries": 0,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144
+  }
+}
