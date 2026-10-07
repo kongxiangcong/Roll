@@ -26,4 +26,6 @@ Python3.13.12、`openai-agents==0.23.1`、`openai==3.26.0`、`httpx2==2.13.1`、
 
 ## 当前验收条件
 
-全部工程证据见 [票12验收](../.scratch/roll-p0/evidence/12/acceptance.md)。缺真实凭据时本票 `needs-info / partial`，不解锁13。取得明确DeepSeek API凭据后，需在上述同版本/endpoint/model冻结组合实际完成多轮取数/网页补查、结构化候选、错误/额度表现、任务中取消、页面重载及进程树清理；若提供方不支持，保持真实失败证据并仅适配已发现差异。23仍负责技术审阅专用材料和输出契约，17登记后才接其封存输入审计；无登记时07现行为保持。
+全部工程证据见 [票12验收](../.scratch/roll-p0/evidence/12/acceptance.md)。缺真实凭据时本票 `needs-info / partial`，不解锁13。取得明确DeepSeek API凭据后，需在上述同版本/endpoint/model冻结组合实际完成多轮取数/网页补查、结构化候选、错误/额度表现、任务中取消、页面重载及进程树清理；若提供方不支持，保持真实失败证据并仅适配已发现差异。23仍负责技术审阅专用材料和输出契约。
+
+17实际接口已接入：在 `roll_read_evidence` 返回实际 `facts[:20]` 载荷给SDK worker前调用 `research.market_input_exposed(result,'deepseek-tool-input')`，与11共用同一具体交付点。固定SDK日线任务已证明第二模型HTTP调用收到两行事实前，SEALED_MARKET_INPUT_EXPOSED持久记录已可经API查询且confirmatory_pass_look=false；不包所有HTTP、不读取封存标签，不将输入暴露算PASS查看，无材料登记时保持07既有行为。

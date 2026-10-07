@@ -1,4 +1,5 @@
 import {expect,test} from '@playwright/test';
+import {writeFileSync} from 'node:fs';
 
 test('DeepSeek missing credential record and linked retry survive reload',async({page})=>{
   test.skip(process.env.ROLL_BROWSER_DEEPSEEK_METHOD==='1','separate real SDK fixed-provider path');
@@ -13,6 +14,7 @@ test('DeepSeek missing credential record and linked retry survive reload',async(
   await expect(page.getByText(/关联原运行/)).toBeVisible();
   const runs=await (await page.request.get('/api/data/runs')).json();
   expect(runs[0].retry_of).toBe(first[0].run_id);
+  writeFileSync('test-results/deepseek-no-auth-runs.json',JSON.stringify(runs,null,2));
   await page.reload();await openEvidence(page);
   await expect(page.getByText(/获取状态：UNAVAILABLE/)).toBeVisible();
   await page.getByText('后端与运行配置').click();
@@ -37,6 +39,7 @@ test('actual Agents SDK fixed Responses task displays evidence and cancels indep
   await expect(page.getByText(/roll_read_source · ARCHIVED/)).toBeVisible();
   const first=(await (await page.request.get('/api/data/runs')).json()).find((r:{backend:string})=>r.backend==='DEEPSEEK');
   expect(first.model_requests).toHaveLength(3);expect(first.process.remaining_pids).toEqual([]);
+  writeFileSync('test-results/deepseek-method-run.json',JSON.stringify(first,null,2));
   expect((await page.request.get('/api/data/archives/'+first.candidates[0].raw_hash)).ok()).toBeTruthy();
   await page.screenshot({path:'test-results/deepseek-method-evidence.png',fullPage:true});
   await page.getByLabel('需要补充核对的问题').fill('WAIT_METHOD');

@@ -30,13 +30,14 @@ class DeepSeekQuestion(BaseModel):
 
 
 class DeepSeekEvidence:
-    def __init__(self,evidence,endpoint=None):
+    def __init__(self,evidence,endpoint=None,input_observer=None):
         if endpoint is not None:
             from urllib.parse import urlparse
             parsed=urlparse(endpoint)
             if os.environ.get('ROLL_ENV')!='test' or parsed.scheme!='http' or parsed.hostname!='127.0.0.1' or parsed.path:
                 raise ValueError('DeepSeek method endpoint requires test-only loopback HTTP')
         self.evidence=evidence
+        self.input_observer=input_observer
         self.endpoint=endpoint or ENDPOINT
         self.method=endpoint is not None
         self.active={}
@@ -75,6 +76,7 @@ class DeepSeekEvidence:
             'allowed_tools':TOOLS,'tracing_disabled':True,'skills':False,'plugins':False,
             'mcp':False,'handoffs':[],'store':None,'auto_previous_response_id':False,
             'retries':0,'host_code_hashes':code,'sdk_runtime_version':versions,'limits':limits}
+        settings['research_input_audit_enabled']=self.input_observer is not None
         run={'run_id':str(uuid4()),'request_id':request_id,'backend':'DEEPSEEK','model':MODEL,
             'resolved_model':None,'retry_of':command.retry_of,'question':command.question,
             'status':'RUNNING','started_at':now(),'finished_at':None,'formal_judgment':'DISABLED',

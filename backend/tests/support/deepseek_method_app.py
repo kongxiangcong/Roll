@@ -1,8 +1,10 @@
 """Opt-in fixed provider HTTP replies; the production Agents SDK and Job worker run unchanged."""
 from contextlib import asynccontextmanager
+from datetime import datetime,timezone
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 import json
 import os
+from pathlib import Path
 import threading
 import time
 
@@ -49,6 +51,10 @@ def factory():
         if request.url.host=='hq.sinajs.cn':return httpx.Response(200,content=b'var hq_str_sh600519="";')
         return httpx.Response(200,text='<p>贵州茅台公开材料 METHOD_CASE</p>',headers={'content-type':'text/html'})
     app=create_app(market_transport=httpx.MockTransport(source),deepseek_endpoint='http://127.0.0.1:'+str(server.server_port))
+    location=os.environ.get('ROLL_DEEPSEEK_METHOD_LOCATION_FILE')
+    if location:
+        Path(location).write_text(json.dumps({'data_dir':str(app.state.evidence.directory),
+            'evidence_kind':'METHOD_CASE_DEEPSEEK','created_at_utc':datetime.now(timezone.utc).isoformat()}),encoding='utf-8')
     lifespan=app.router.lifespan_context
     @asynccontextmanager
     async def managed(application):

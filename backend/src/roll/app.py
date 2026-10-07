@@ -166,7 +166,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         return valuations.get(identifier,replay=True)
     codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed)
     app.state.codex = codex
-    deepseek=DeepSeekEvidence(evidence,deepseek_endpoint)
+    deepseek=DeepSeekEvidence(evidence,deepseek_endpoint,input_observer=research.market_input_exposed)
     app.state.deepseek=deepseek
 
     @app.post('/api/data/requests/{request_id}/deepseek',status_code=202)

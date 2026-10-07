@@ -249,3 +249,35 @@ def test_sdk_timeout_is_absolute_and_model_response_byte_limit_finite(tmp_path,m
         audit=result['model_responses'][0]
         assert audit['truncated'] and audit['bytes']==65536
         assert 65536<audit['received_bytes']<=69632
+
+
+def test_actual_sdk_sealed_daily_tool_payload_is_audited_before_model_continuation(tmp_path,monkeypatch):
+    from test_research_protocol import engineering_archive
+    dates=engineering_archive(tmp_path)
+    monkeypatch.setenv('ROLL_ENV','test');monkeypatch.setenv('DEEPSEEK_API_KEY','ROLL_METHOD_CASE_ONLY')
+    observed=[]
+    def source(req):
+        mode=req.url.params['param'].split(',')[-1]
+        return httpx.Response(200,json={'code':0,'data':{'sh600519':{
+            ('qfqday' if mode else 'day'):[[dates[160],'100','100','100','100','100']]}}})
+    client_ref=[];pid=[]
+    def model(body,n):
+        if n==1:return 200,response([call('roll_read_evidence',{'instrument':'SSE:600519','group':'DAILY'},1)])
+        payload=json.loads([v['output'] for v in body['input'] if v.get('type')=='function_call_output'][-1])
+        assert len(payload['facts'])==2
+        # Query via the public API as the external model receives this actual payload.
+        audit=client_ref[0].get('/api/research/protocols/'+pid[0]+'/audit').json()
+        observed.extend(e for e in audit if e['action']=='SEALED_MARKET_INPUT_EXPOSED' and e['route']=='deepseek-tool-input')
+        return 200,response([message(json.dumps({'candidates':[],'gaps':[]}))])
+    with model_server(model) as (endpoint,bodies),TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(source),deepseek_endpoint=endpoint)) as client:
+        client_ref.append(client)
+        dataset=client.post('/api/research/datasets',json={'archive_id':'method-181','basis':'12 fixed SDK input audit'}).json()
+        pid.append(client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'basis':'input exposure before SDK continuation'}).json()['protocol_id'])
+        establish(client,['SSE:600519'])
+        client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN','instrument_type':'STOCK',
+            'basis':'fixed identity','effective_at':'2026-01-05T00:00:00+08:00'})
+        parent=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH',
+            'start_date':dates[160],'end_date':dates[160],'daily_source':'TENCENT'}).json()
+        result=terminal(client,client.post('/api/data/requests/'+parent['request_id']+'/deepseek',json={'question':'READ DAILY METHOD_CASE without labels/results'}).json()['run_id'])
+        assert result['status']=='COMPLETE',result
+        assert any(e['rows']==2 and e['confirmatory_pass_look'] is False for e in observed)

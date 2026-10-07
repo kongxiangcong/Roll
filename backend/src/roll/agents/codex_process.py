@@ -413,7 +413,7 @@ def tool(host, run, request, state, event, deadline, cancel):
         if state['returned_bytes']>run['limits']['total_bytes']:
             raise ValueError('TOOL_TOTAL_BYTE_LIMIT')
         if host.input_observer and event['name']=='roll_read_evidence':
-            host.input_observer(result,'codex-tool-input')
+            host.input_observer(result,'deepseek-tool-input' if run.get('backend')=='DEEPSEEK' else 'codex-tool-input')
         return result
     except Exception as error:
         code = str(error) if isinstance(error, ValueError) else type(error).__name__
