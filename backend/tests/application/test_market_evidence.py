@@ -234,3 +234,37 @@ def test_bad_source_json_is_archived_as_failure_and_corrupt_original_prevents_of
         assert client.get('/api/data/archives/'+archive['sha256']).content==raw
         (tmp_path/archive['path']).write_bytes(b'corrupted artifact')
         assert client.post('/api/data/runs/'+run['run_id']+'/replay').status_code==409
+
+
+def test_eight_hundred_row_provider_window_is_reported_as_partial_history_not_requested_depth(tmp_path):
+    from datetime import date
+    rows=[[(date(2023,1,1)+timedelta(days=i)).isoformat(),'10','10','10','10','0'] for i in range(800)]
+    def provider(request):
+        assert request.url.params['param'].split(',')[4]=='800'
+        return httpx.Response(200,json={'code':0,'data':{'sh600519':{'day':rows,'qfqday':rows}}})
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
+        establish(client,['SSE:600519'])
+        q=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH',
+            'daily_source':'TENCENT','start_date':'2010-01-01','end_date':'2026-09-30'}).json()
+        run=client.post('/api/data/requests/'+q['request_id']+'/retrieve').json()
+        snapshot=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        assert len(snapshot['facts'])==1600
+        assert all(c['returned_rows']==800 and c['first_date']=='2023-01-01' and c['full_history_verified'] is False for c in snapshot['coverage'])
+        assert all('800' in c['truncation'] for c in snapshot['coverage'])
+        assert all(f['amount_yuan'] is None and f['model_daily_input_allowed'] is False for f in snapshot['facts'])
+        assert client.post('/api/data/runs/'+run['run_id']+'/replay').json()['facts']==snapshot['facts']
+
+
+def test_missing_explicit_model_field_keeps_basic_facts_but_blocks_that_daily_input(tmp_path):
+    raw={'rc':0,'data':{'code':'600519','market':1,'klines':['2026-09-30,10,10,10,10,100,100000']}}
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,json=raw)))) as client:
+        establish(client,['SSE:600519'])
+        client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN','instrument_type':'STOCK',
+            'name':'合成普通主板股票','basis':'固定样本身份','effective_at':'2026-10-07T00:00:00+08:00'})
+        q=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH',
+            'start_date':'2026-09-30','end_date':'2026-09-30','required_fields':['DAILY.adjustment_factor']}).json()
+        run=client.post('/api/data/requests/'+q['request_id']+'/retrieve').json()
+        snapshot=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        assert run['status']=='PARTIAL'
+        assert all(g['code']=='REQUIRED_FIELDS_MISSING' for g in run['gaps'])
+        assert all(f['close']=='10' and f['quality']=='BASIC_CHECKED_SINGLE_SOURCE' and f['model_daily_input_allowed'] is False for f in snapshot['facts'])

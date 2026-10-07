@@ -347,6 +347,7 @@ class EvidenceStore:
                 if fact.get(key) is None:missing.append(key)
             if missing:
                 fact['missing_required_fields']=missing
+                if fact['group']=='DAILY':fact['model_daily_input_allowed']=False
                 run['gaps'].append({'instrument':fact['instrument'],'group':fact['group'],'code':'REQUIRED_FIELDS_MISSING','fields':missing})
             if fact.get('errors'):
                 observations.append({'kind':'DATA_QUALITY_ALERT','classification':'DETERMINISTIC_INFERENCE','instrument':fact['instrument'],

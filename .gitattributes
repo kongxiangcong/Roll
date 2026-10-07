@@ -3,3 +3,5 @@ backend/src/roll/market/reference/*.html binary
 backend/src/roll/market/reference/*.docx binary
 backend/src/roll/market/reference/*.pdf binary
 .scratch/roll-p0/evidence/06/bse-gap-*.html binary
+# Preserve ticket07 captured process output, including Windows CRLF bytes.
+.scratch/roll-p0/evidence/07/*.txt -text whitespace=cr-at-eol

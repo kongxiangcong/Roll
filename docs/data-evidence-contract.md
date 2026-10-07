@@ -24,6 +24,8 @@
 
 `available_at` 是本机真实收到原响应的时点，不能回填历史。requested_cutoff早于首次收取时 `point_in_time_input_allowed=false`，同日仅DATE披露为 UNKNOWN_DATE_ONLY_SAME_DAY；历史输入是当前修订的重构材料，缺乏无修订/PIT证明。RESEARCH快照 namespace=HISTORICAL，只记录真实现在获取，不伪造过去RetrievalRun/StageSnapshot/预测/前向覆盖。
 
+`point_in_time_input_allowed` **仅针对原DataRequest.cutoff**，不是事实永久资格。默认请求先记录cutoff再取数，首次available_at晚于它，false是正常结果。08/17/25应以实际消费/预测自己的知识截止重新核验原available_at、对应事件/上游时点与用途必需字段；现在已取得的事实可以在后来的消费截止下被读取，不能被伪装为原请求之前可得。事件截止、原请求截止和消费知识截止分别保存。该核验也不把当前供应商修订自动升级为历史无修订/PIT证明。
+
 原价RAW用于原价事实，与 FORWARD_CURRENT_VERSION 严格区分，以原件SHA标当前复权版本。腾讯缺qfqday不能退day；日线最多800行。腾讯历史成交额一般未返回，只在同档embedded quote的日期/OHLC/成交量均数值相等时取field35绝对元额，其他日保留缺失，不用最新额回填。当前仅实证已确认 SSE MAIN普通股票成交手数转股（×100）并核对成交额/OHLC；STAR、其他身份/市场、指数单位保留UNKNOWN/reported，不按代码前缀猜。零成交保留ZERO_REPORTED，不能据此推定停牌；价格0占位为缺失，amount缺失不补零。日历休市/未知、同日UNCONFIRMED_CURRENT_DAY、OHLC/单位错误分别标记；未完成或缺必需量额的完整日线模型输入受限。没有授予任何量化模型资格。
 
 当前真实股票异常状态 UNKNOWN。旧报价报告的上下限价格有来源时点，不确认当前风险警示/停牌/上市阶段。五种明确固定状态（正常、停牌、风险警示、除权、未知）仅经注入测试传输进入 METHOD_CASE，其模拟时点和依据明示；生产JSON报价不能接受此夹具格式，也不覆盖06实际UNKNOWN或模型资格。

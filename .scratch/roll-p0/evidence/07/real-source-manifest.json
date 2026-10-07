@@ -1,7 +1,7 @@
 [
   {
     "request": {
-      "request_id": "31936547-4185-4dbb-876a-32ace23c72d0",
+      "request_id": "b9412237-ce0e-4ad2-a973-4aff9270fe8f",
       "instruments": [
         "SSE:600519"
       ],
@@ -17,7 +17,7 @@
       "purpose": "OBSERVATION",
       "start_date": "2026-01-01",
       "end_date": "2026-09-30",
-      "cutoff": "2026-10-07T16:40:09.372221+00:00",
+      "cutoff": "2026-10-07T17:11:29.393163+00:00",
       "daily_source": "TENCENT",
       "technical_limits": {
         "max_calls": 30,
@@ -28,10 +28,10 @@
     },
     "run": {
       "backend": "DIRECT_HTTP",
-      "config_fingerprint": "d622cec6215e3a468a018c966782e534f851c17e78cc5d678463491af69e76eb",
-      "elapsed_seconds": 1.653,
+      "config_fingerprint": "a2c1bf795651eaf2bfd474c8bf9001935e7ddaa27320864b6e217b5bd236cecc",
+      "elapsed_seconds": 2.008,
       "evidence_kind": "REAL_ACQUISITION",
-      "finished_at": "2026-10-07T16:40:11.064998+00:00",
+      "finished_at": "2026-10-07T17:11:31.441306+00:00",
       "gaps": [
         {
           "code": "CURRENT_STATUS_UNKNOWN",
@@ -40,135 +40,212 @@
         }
       ],
       "model": null,
-      "request_id": "31936547-4185-4dbb-876a-32ace23c72d0",
-      "run_id": "fc2d58ee-3c7d-44f3-8db6-fade3d421f66",
+      "request_id": "b9412237-ce0e-4ad2-a973-4aff9270fe8f",
+      "run_id": "a77909f8-cf68-41a3-a598-a281f97bed7d",
       "runtime_versions": {
         "httpx": "0.28.1",
         "pyarrow": "25.0.1",
         "pypdf": "6.19.0"
       },
       "sdk_runtime_version": "httpx-0.28.1/07-market-v1",
-      "snapshot_id": "d76428e7-26a5-4ea8-b545-e370c1ef37a7",
-      "started_at": "2026-10-07T16:40:09.404335+00:00",
+      "snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+      "started_at": "2026-10-07T17:11:29.426962+00:00",
       "status": "PARTIAL",
       "tools": [
         {
           "adjustment": "RAW",
+          "finished_at": "2026-10-07T17:11:29.706642+00:00",
           "group": "DAILY",
           "http_status": 200,
           "instrument": "SSE:600519",
-          "raw_hash": "bf64feded08f724f077795b3e26d028ec8481678c645744ffd401175ea2271ea",
+          "method": "GET",
+          "raw_hash": "0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c",
+          "received_bytes": 14573,
           "source_id": "tencent-daily",
-          "started_at": "2026-10-07T16:40:09.551287+00:00",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2C",
+          "started_at": "2026-10-07T17:11:29.555621+00:00",
           "status": "ARCHIVED"
         },
         {
           "adjustment": "FORWARD_CURRENT_VERSION",
+          "finished_at": "2026-10-07T17:11:29.823424+00:00",
           "group": "DAILY",
           "http_status": 200,
           "instrument": "SSE:600519",
-          "raw_hash": "c690cc201e59bdbcef8f02c13825510381cd78dc96b48662820890aff04c3a6e",
+          "method": "GET",
+          "raw_hash": "e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33",
+          "received_bytes": 14608,
           "source_id": "tencent-daily",
-          "started_at": "2026-10-07T16:40:09.732689+00:00",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2Cqfq",
+          "started_at": "2026-10-07T17:11:29.718539+00:00",
           "status": "ARCHIVED"
         },
         {
+          "finished_at": "2026-10-07T17:11:29.933074+00:00",
           "group": "QUOTE",
           "http_status": 200,
           "instrument": "SSE:600519",
+          "method": "GET",
           "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+          "received_bytes": 550,
           "source_id": "tencent-quote",
-          "started_at": "2026-10-07T16:40:09.839803+00:00",
+          "source_url": "https://qt.gtimg.cn/q=sh600519",
+          "started_at": "2026-10-07T17:11:29.828490+00:00",
           "status": "ARCHIVED"
         },
         {
+          "finished_at": "2026-10-07T17:11:30.170702+00:00",
           "group": "ADJUSTMENTS",
           "http_status": 200,
           "instrument": "SSE:600519",
-          "raw_hash": "34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f",
+          "method": "GET",
+          "raw_hash": "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4",
+          "received_bytes": 4771,
           "source_id": "eastmoney-actions",
-          "started_at": "2026-10-07T16:40:09.944936+00:00",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1",
+          "started_at": "2026-10-07T17:11:29.933697+00:00",
           "status": "ARCHIVED"
         },
         {
+          "finished_at": "2026-10-07T17:11:30.231407+00:00",
           "group": "PERFORMANCE",
           "http_status": 200,
           "instrument": "SSE:600519",
+          "method": "GET",
           "raw_hash": "0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693",
+          "received_bytes": 2941,
           "source_id": "eastmoney-performance",
-          "started_at": "2026-10-07T16:40:10.043904+00:00",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1",
+          "started_at": "2026-10-07T17:11:30.171195+00:00",
           "status": "ARCHIVED"
         },
         {
+          "finished_at": "2026-10-07T17:11:30.311761+00:00",
           "group": "ANNOUNCEMENTS",
           "http_status": 200,
           "instrument": "SSE:600519",
-          "raw_hash": "d1c660c3569c0782c87694ef64dc6106659b2e41fb2c5e390012bc1d78b418c9",
+          "method": "GET",
+          "raw_hash": "ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0",
+          "received_bytes": 20334,
           "source_id": "eastmoney-announcements",
-          "started_at": "2026-10-07T16:40:10.129627+00:00",
-          "status": "ARCHIVED"
-        },
-        {
-          "art_code": "AN202607171827064564",
-          "group": "MAJOR_EVENTS",
-          "http_status": 200,
-          "instrument": "SSE:600519",
-          "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
-          "source_id": "eastmoney-original",
-          "started_at": "2026-10-07T16:40:10.307437+00:00",
-          "status": "ARCHIVED"
-        },
-        {
-          "art_code": "AN202607171827064564",
-          "group": "MAJOR_EVENTS",
-          "http_status": 200,
-          "instrument": "SSE:600519",
-          "kind": "PDF",
-          "raw_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
-          "source_id": "eastmoney-original",
-          "started_at": "2026-10-07T16:40:10.434670+00:00",
+          "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519",
+          "started_at": "2026-10-07T17:11:30.231955+00:00",
           "status": "ARCHIVED"
         },
         {
           "art_code": "AN202608141827994407",
+          "finished_at": "2026-10-07T17:11:30.584191+00:00",
           "group": "ANNOUNCEMENTS",
           "http_status": 200,
           "instrument": "SSE:600519",
+          "method": "GET",
           "raw_hash": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
+          "received_bytes": 3874,
           "source_id": "eastmoney-original",
-          "started_at": "2026-10-07T16:40:10.556824+00:00",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994407&page_index=1&client_source=web",
+          "started_at": "2026-10-07T17:11:30.312288+00:00",
           "status": "ARCHIVED"
         },
         {
           "art_code": "AN202608141827994407",
+          "finished_at": "2026-10-07T17:11:30.664748+00:00",
           "group": "ANNOUNCEMENTS",
           "http_status": 200,
           "instrument": "SSE:600519",
           "kind": "PDF",
+          "method": "GET",
           "raw_hash": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
+          "received_bytes": 119987,
           "source_id": "eastmoney-original",
-          "started_at": "2026-10-07T16:40:10.630632+00:00",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994407_1.pdf?1786740155000.pdf",
+          "started_at": "2026-10-07T17:11:30.584891+00:00",
           "status": "ARCHIVED"
         },
         {
           "art_code": "AN202608141827994408",
+          "finished_at": "2026-10-07T17:11:30.880583+00:00",
           "group": "PERFORMANCE",
           "http_status": 200,
           "instrument": "SSE:600519",
+          "method": "GET",
           "raw_hash": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
+          "received_bytes": 10016,
           "source_id": "eastmoney-original",
-          "started_at": "2026-10-07T16:40:10.713437+00:00",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994408&page_index=1&client_source=web",
+          "started_at": "2026-10-07T17:11:30.718879+00:00",
           "status": "ARCHIVED"
         },
         {
           "art_code": "AN202608141827994408",
+          "finished_at": "2026-10-07T17:11:30.960768+00:00",
           "group": "PERFORMANCE",
           "http_status": 200,
           "instrument": "SSE:600519",
           "kind": "PDF",
+          "method": "GET",
           "raw_hash": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
+          "received_bytes": 832321,
           "source_id": "eastmoney-original",
-          "started_at": "2026-10-07T16:40:10.799423+00:00",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994408_1.pdf?1786740127000.pdf",
+          "started_at": "2026-10-07T17:11:30.880934+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202607171827064564",
+          "finished_at": "2026-10-07T17:11:31.116699+00:00",
+          "group": "MAJOR_EVENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+          "received_bytes": 2152,
+          "source_id": "eastmoney-original",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web",
+          "started_at": "2026-10-07T17:11:31.052079+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202607171827064564",
+          "finished_at": "2026-10-07T17:11:31.156379+00:00",
+          "group": "MAJOR_EVENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "kind": "PDF",
+          "method": "GET",
+          "raw_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+          "received_bytes": 67261,
+          "source_id": "eastmoney-original",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf",
+          "started_at": "2026-10-07T17:11:31.116919+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202606211823708334",
+          "finished_at": "2026-10-07T17:11:31.235062+00:00",
+          "group": "ADJUSTMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+          "received_bytes": 6547,
+          "source_id": "eastmoney-original",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202606211823708334&page_index=1&client_source=web",
+          "started_at": "2026-10-07T17:11:31.174042+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202606211823708334",
+          "finished_at": "2026-10-07T17:11:31.285471+00:00",
+          "group": "ADJUSTMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "kind": "PDF",
+          "method": "GET",
+          "raw_hash": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+          "received_bytes": 155250,
+          "source_id": "eastmoney-original",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606211823708334_1.pdf?1782055946000.pdf",
+          "started_at": "2026-10-07T17:11:31.235400+00:00",
           "status": "ARCHIVED"
         }
       ]
@@ -183,7 +260,7 @@
         "instrument": "SSE:600519",
         "last_date": "2026-09-30",
         "model_daily_input_allowed": false,
-        "raw_hash": "bf64feded08f724f077795b3e26d028ec8481678c645744ffd401175ea2271ea",
+        "raw_hash": "0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c",
         "returned_rows": 181,
         "source_id": "tencent-daily",
         "truncation": "REQUEST_BOUNDED_MAXIMUM_800_ROWS; NO_HISTORICAL_AMOUNT",
@@ -198,14 +275,737 @@
         "instrument": "SSE:600519",
         "last_date": "2026-09-30",
         "model_daily_input_allowed": false,
-        "raw_hash": "c690cc201e59bdbcef8f02c13825510381cd78dc96b48662820890aff04c3a6e",
+        "raw_hash": "e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33",
         "returned_rows": 181,
         "source_id": "tencent-daily",
         "truncation": "REQUEST_BOUNDED_MAXIMUM_800_ROWS; NO_HISTORICAL_AMOUNT",
         "volume_unit_verified": true
       },
       {
-        "age_seconds": 635111.919358,
+        "age_seconds": 636991.918272,
+        "full_history_verified": false,
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+        "returned_rows": 1,
+        "upstream_at": "2026-09-30T16:14:58+08:00"
+      },
+      {
+        "full_history_verified": false,
+        "group": "ADJUSTMENTS",
+        "instrument": "SSE:600519",
+        "raw_hash": "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4",
+        "returned_rows": 2,
+        "source_page_rows": 5,
+        "source_pages": 6,
+        "source_total_rows": 28,
+        "truncation": "LATEST_SINGLE_PAGE; DISCLOSURE_DATE_FILTERED; NOT_COMPLETE_HISTORY"
+      },
+      {
+        "full_history_verified": false,
+        "group": "PERFORMANCE",
+        "instrument": "SSE:600519",
+        "raw_hash": "0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693",
+        "returned_rows": 3,
+        "source_page_rows": 3,
+        "source_pages": 35,
+        "source_total_rows": 103,
+        "truncation": "LATEST_SINGLE_PAGE; DISCLOSURE_DATE_FILTERED; NOT_COMPLETE_HISTORY"
+      },
+      {
+        "eligible_metadata_rows": 30,
+        "full_history_verified": false,
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519",
+        "raw_hash": "ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0",
+        "returned_metadata_rows": 30,
+        "source_total_rows": 1074,
+        "truncation": "LATEST_30_METADATA; ONE_ORIGINAL_PER_REQUESTED_GROUP"
+      }
+    ],
+    "archives": [
+      {
+        "bytes": 14573,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c.raw",
+        "received_at": "2026-10-07T17:11:29.668026+00:00",
+        "sha256": "0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2C"
+      },
+      {
+        "bytes": 14608,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33.raw",
+        "received_at": "2026-10-07T17:11:29.790918+00:00",
+        "sha256": "e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2Cqfq"
+      },
+      {
+        "bytes": 550,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695.raw",
+        "received_at": "2026-10-07T17:11:29.918272+00:00",
+        "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+        "source_id": "tencent-quote",
+        "source_url": "https://qt.gtimg.cn/q=sh600519"
+      },
+      {
+        "bytes": 4771,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4.raw",
+        "received_at": "2026-10-07T17:11:30.141296+00:00",
+        "sha256": "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4",
+        "source_id": "eastmoney-actions",
+        "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1"
+      },
+      {
+        "bytes": 2941,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693.raw",
+        "received_at": "2026-10-07T17:11:30.214990+00:00",
+        "sha256": "0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693",
+        "source_id": "eastmoney-performance",
+        "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1"
+      },
+      {
+        "bytes": 20334,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0.raw",
+        "received_at": "2026-10-07T17:11:30.291815+00:00",
+        "sha256": "ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0",
+        "source_id": "eastmoney-announcements",
+        "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519"
+      },
+      {
+        "bytes": 3874,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e.raw",
+        "received_at": "2026-10-07T17:11:30.563682+00:00",
+        "sha256": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
+        "source_id": "eastmoney-original",
+        "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994407&page_index=1&client_source=web"
+      },
+      {
+        "bytes": 119987,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc.raw",
+        "received_at": "2026-10-07T17:11:30.635030+00:00",
+        "sha256": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
+        "source_id": "eastmoney-original",
+        "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994407_1.pdf?1786740155000.pdf"
+      },
+      {
+        "bytes": 10016,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8.raw",
+        "received_at": "2026-10-07T17:11:30.849583+00:00",
+        "sha256": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
+        "source_id": "eastmoney-original",
+        "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994408&page_index=1&client_source=web"
+      },
+      {
+        "bytes": 832321,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6.raw",
+        "received_at": "2026-10-07T17:11:30.926398+00:00",
+        "sha256": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
+        "source_id": "eastmoney-original",
+        "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994408_1.pdf?1786740127000.pdf"
+      },
+      {
+        "bytes": 2152,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476.raw",
+        "received_at": "2026-10-07T17:11:31.100524+00:00",
+        "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+        "source_id": "eastmoney-original",
+        "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web"
+      },
+      {
+        "bytes": 67261,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873.raw",
+        "received_at": "2026-10-07T17:11:31.129465+00:00",
+        "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+        "source_id": "eastmoney-original",
+        "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf"
+      },
+      {
+        "bytes": 6547,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0.raw",
+        "received_at": "2026-10-07T17:11:31.218300+00:00",
+        "sha256": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+        "source_id": "eastmoney-original",
+        "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202606211823708334&page_index=1&client_source=web"
+      },
+      {
+        "bytes": 155250,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e.raw",
+        "received_at": "2026-10-07T17:11:31.252681+00:00",
+        "sha256": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+        "source_id": "eastmoney-original",
+        "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606211823708334_1.pdf?1782055946000.pdf"
+      }
+    ],
+    "parquet": {
+      "adapter_version": "07-market-v1",
+      "bytes": 91828,
+      "kind": "NORMALIZED_PARQUET",
+      "path": "parquet/19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b.parquet",
+      "sha256": "19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b"
+    },
+    "fact_group_counts": {
+      "DAILY": 362,
+      "QUOTE": 1,
+      "STATUS": 1,
+      "ADJUSTMENTS": 3,
+      "PERFORMANCE": 4,
+      "ANNOUNCEMENTS": 1,
+      "MAJOR_EVENTS": 1
+    },
+    "original_documents": [
+      {
+        "group": "ANNOUNCEMENTS",
+        "art_code": "AN202608141827994407",
+        "title": "贵州茅台:贵州茅台关于召开2026年半年度业绩说明会的公告",
+        "disclosure_date": "2026-08-15",
+        "time_precision": "DATE",
+        "provider_display_at": "2026-08-14T20:41:29.275000+08:00",
+        "provider_indexed_at": "2026-08-14T20:42:30+08:00",
+        "raw_hash": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
+        "document_hash": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
+        "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994407_1.pdf?1786740155000.pdf",
+        "document_pages": 2
+      },
+      {
+        "group": "PERFORMANCE",
+        "art_code": "AN202608141827994408",
+        "title": "贵州茅台:贵州茅台2026年半年度报告",
+        "disclosure_date": "2026-08-15",
+        "time_precision": "DATE",
+        "provider_display_at": "2026-08-14T20:41:29.146000+08:00",
+        "provider_indexed_at": "2026-08-14T20:41:57+08:00",
+        "raw_hash": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
+        "document_hash": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
+        "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994408_1.pdf?1786740127000.pdf",
+        "document_pages": 110
+      },
+      {
+        "group": "MAJOR_EVENTS",
+        "art_code": "AN202607171827064564",
+        "title": "贵州茅台:贵州茅台重大事项公告",
+        "disclosure_date": "2026-07-18",
+        "time_precision": "DATE",
+        "provider_display_at": "2026-07-17T21:26:22.243000+08:00",
+        "provider_indexed_at": "2026-07-17T21:27:31+08:00",
+        "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+        "document_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+        "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf",
+        "document_pages": 1
+      },
+      {
+        "group": "ADJUSTMENTS",
+        "art_code": "AN202606211823708334",
+        "title": "贵州茅台:贵州茅台2025年年度权益分派实施公告",
+        "disclosure_date": "2026-06-22",
+        "time_precision": "DATE",
+        "provider_display_at": "2026-06-21T15:31:10.643000+08:00",
+        "provider_indexed_at": "2026-06-21T15:32:01+08:00",
+        "raw_hash": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+        "document_hash": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+        "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202606211823708334_1.pdf?1782055946000.pdf",
+        "document_pages": 4
+      }
+    ],
+    "observations": [
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-04-17",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "ACTION_PLAN_REFERENCE",
+        "list_version": 2,
+        "message": "供应商登记分派预披露/计划；金额、除息日与实际到账未确认",
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "6eac489a-1e12-42c6-a570-25b2367ead4f",
+        "observed_at": "2026-10-07T17:11:31.368482+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": []
+      },
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-04-17",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "PENDING_ACCOUNT_RECONCILIATION",
+        "list_version": 2,
+        "message": "外部权益分派公告已归档；到账、税费和持仓变化待券商事实确认",
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "f8d10665-1a1b-49c0-9a92-9f97b77f736f",
+        "observed_at": "2026-10-07T17:11:31.368526+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": [
+          "ACCOUNT_RECEIPT_NOT_CONFIRMED"
+        ]
+      },
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
+          "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-08-15",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "DISCLOSED_COMPANY_EVENT",
+        "list_version": 2,
+        "message": null,
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "04d0cc8c-a76e-46f6-945b-ad3bae15290a",
+        "observed_at": "2026-10-07T17:11:31.368561+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": []
+      },
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
+          "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-08-15",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "DISCLOSED_COMPANY_EVENT",
+        "list_version": 2,
+        "message": null,
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "91110654-83ef-4981-9e9c-7fca5e302923",
+        "observed_at": "2026-10-07T17:11:31.368592+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": []
+      },
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+          "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-07-18",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "DISCLOSED_COMPANY_EVENT",
+        "list_version": 2,
+        "message": null,
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "1e679922-9332-45f2-9e38-d6dcd0a19bc3",
+        "observed_at": "2026-10-07T17:11:31.368623+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": []
+      },
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-06-22",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "PENDING_ACCOUNT_RECONCILIATION",
+        "list_version": 2,
+        "message": "外部权益分派公告已归档；到账、税费和持仓变化待券商事实确认",
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "448a7aa1-500f-4a32-b606-3ce5e4d533b0",
+        "observed_at": "2026-10-07T17:11:31.368650+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": [
+          "ACCOUNT_RECEIPT_NOT_CONFIRMED"
+        ]
+      },
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+          "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-06-22",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "DISCLOSED_COMPANY_EVENT",
+        "list_version": 2,
+        "message": null,
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "ece63c5e-3049-4d33-8a04-d51e7c8dffdb",
+        "observed_at": "2026-10-07T17:11:31.368680+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": []
+      },
+      {
+        "account_version": 1,
+        "basis_raw_hashes": [
+          "0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c",
+          "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4"
+        ],
+        "classification": "DETERMINISTIC_INFERENCE",
+        "event_date": "2026-06-26",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "EX_RIGHTS_PRICE_CONTEXT",
+        "list_version": 2,
+        "message": "除息日原价变化与已披露现金分派并列核对；不是普通暴跌或账户到账证明",
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "5afa327f-f02f-4b00-8e0e-3890ffb9a221",
+        "observed_at": "2026-10-07T17:11:31.368712+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": []
+      }
+    ],
+    "runtime_path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\07-market-evidence\\backend\\.roll-data\\acceptance-07-browser\\browser-live.json"
+  },
+  {
+    "request": {
+      "request_id": "7dba6482-e970-4b36-bcff-b6bf6ccc88c7",
+      "instruments": [
+        "SSE:600519"
+      ],
+      "groups": [
+        "DAILY",
+        "QUOTE",
+        "ADJUSTMENTS",
+        "ANNOUNCEMENTS",
+        "PERFORMANCE",
+        "MAJOR_EVENTS",
+        "STATUS"
+      ],
+      "purpose": "OBSERVATION",
+      "start_date": "2026-01-01",
+      "end_date": "2026-09-30",
+      "cutoff": "2026-10-07T16:59:26.594889+00:00",
+      "daily_source": "TENCENT",
+      "technical_limits": {
+        "max_calls": 30,
+        "max_response_bytes": 16777216,
+        "retries": 0,
+        "timeout_seconds": 60
+      }
+    },
+    "run": {
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "bf63e95c168fb0ac884338d2a698cce4031e7948c7dd82b80e8f0376dbdedad4",
+      "elapsed_seconds": 1.766,
+      "evidence_kind": "REAL_ACQUISITION",
+      "finished_at": "2026-10-07T16:59:28.402404+00:00",
+      "gaps": [
+        {
+          "code": "CURRENT_STATUS_UNKNOWN",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        }
+      ],
+      "model": null,
+      "request_id": "7dba6482-e970-4b36-bcff-b6bf6ccc88c7",
+      "run_id": "36c14cc7-7c6c-4004-80de-0ad64a14c97f",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/07-market-v1",
+      "snapshot_id": "ae90f68b-4375-474d-aa83-401867350ae0",
+      "started_at": "2026-10-07T16:59:26.629219+00:00",
+      "status": "PARTIAL",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-07T16:59:26.900977+00:00",
+          "group": "DAILY",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "b057f797ff373b14497180bce14738c6ce9da467baa403eb74c63a5231fe076a",
+          "received_bytes": 14573,
+          "source_id": "tencent-daily",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2C",
+          "started_at": "2026-10-07T16:59:26.757517+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "finished_at": "2026-10-07T16:59:27.018149+00:00",
+          "group": "DAILY",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "0c303fe51358d474f766eae15ee262ab95c282f6e8cec33b36b55fa82131f022",
+          "received_bytes": 14608,
+          "source_id": "tencent-daily",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2Cqfq",
+          "started_at": "2026-10-07T16:59:26.912369+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "finished_at": "2026-10-07T16:59:27.124051+00:00",
+          "group": "QUOTE",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+          "received_bytes": 550,
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh600519",
+          "started_at": "2026-10-07T16:59:27.022692+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "finished_at": "2026-10-07T16:59:27.231776+00:00",
+          "group": "ADJUSTMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f",
+          "received_bytes": 4771,
+          "source_id": "eastmoney-actions",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1",
+          "started_at": "2026-10-07T16:59:27.125021+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "finished_at": "2026-10-07T16:59:27.296836+00:00",
+          "group": "PERFORMANCE",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693",
+          "received_bytes": 2941,
+          "source_id": "eastmoney-performance",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1",
+          "started_at": "2026-10-07T16:59:27.232356+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "finished_at": "2026-10-07T16:59:27.401347+00:00",
+          "group": "ANNOUNCEMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "232fae093a03e16428b39975a4d82b1658328078ab350608236b7dce04b820d2",
+          "received_bytes": 20334,
+          "source_id": "eastmoney-announcements",
+          "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519",
+          "started_at": "2026-10-07T16:59:27.297323+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202608141827994407",
+          "finished_at": "2026-10-07T16:59:27.497302+00:00",
+          "group": "ANNOUNCEMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
+          "received_bytes": 3874,
+          "source_id": "eastmoney-original",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994407&page_index=1&client_source=web",
+          "started_at": "2026-10-07T16:59:27.402163+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202608141827994407",
+          "finished_at": "2026-10-07T16:59:27.579460+00:00",
+          "group": "ANNOUNCEMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "kind": "PDF",
+          "method": "GET",
+          "raw_hash": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
+          "received_bytes": 119987,
+          "source_id": "eastmoney-original",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994407_1.pdf?1786740155000.pdf",
+          "started_at": "2026-10-07T16:59:27.497727+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202608141827994408",
+          "finished_at": "2026-10-07T16:59:27.759267+00:00",
+          "group": "PERFORMANCE",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
+          "received_bytes": 10016,
+          "source_id": "eastmoney-original",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994408&page_index=1&client_source=web",
+          "started_at": "2026-10-07T16:59:27.626076+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202608141827994408",
+          "finished_at": "2026-10-07T16:59:27.831805+00:00",
+          "group": "PERFORMANCE",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "kind": "PDF",
+          "method": "GET",
+          "raw_hash": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
+          "received_bytes": 832321,
+          "source_id": "eastmoney-original",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994408_1.pdf?1786740127000.pdf",
+          "started_at": "2026-10-07T16:59:27.759716+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202607171827064564",
+          "finished_at": "2026-10-07T16:59:28.042530+00:00",
+          "group": "MAJOR_EVENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+          "received_bytes": 2152,
+          "source_id": "eastmoney-original",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web",
+          "started_at": "2026-10-07T16:59:27.928946+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202607171827064564",
+          "finished_at": "2026-10-07T16:59:28.090550+00:00",
+          "group": "MAJOR_EVENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "kind": "PDF",
+          "method": "GET",
+          "raw_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+          "received_bytes": 67261,
+          "source_id": "eastmoney-original",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf",
+          "started_at": "2026-10-07T16:59:28.042855+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202606211823708334",
+          "finished_at": "2026-10-07T16:59:28.202939+00:00",
+          "group": "ADJUSTMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+          "received_bytes": 6547,
+          "source_id": "eastmoney-original",
+          "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202606211823708334&page_index=1&client_source=web",
+          "started_at": "2026-10-07T16:59:28.109763+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "art_code": "AN202606211823708334",
+          "finished_at": "2026-10-07T16:59:28.264877+00:00",
+          "group": "ADJUSTMENTS",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "kind": "PDF",
+          "method": "GET",
+          "raw_hash": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+          "received_bytes": 155250,
+          "source_id": "eastmoney-original",
+          "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606211823708334_1.pdf?1782055946000.pdf",
+          "started_at": "2026-10-07T16:59:28.203335+00:00",
+          "status": "ARCHIVED"
+        }
+      ]
+    },
+    "coverage": [
+      {
+        "adjustment": "RAW",
+        "adjustment_fallback_allowed": false,
+        "first_date": "2026-01-05",
+        "full_history_verified": false,
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "last_date": "2026-09-30",
+        "model_daily_input_allowed": false,
+        "raw_hash": "b057f797ff373b14497180bce14738c6ce9da467baa403eb74c63a5231fe076a",
+        "returned_rows": 181,
+        "source_id": "tencent-daily",
+        "truncation": "REQUEST_BOUNDED_MAXIMUM_800_ROWS; NO_HISTORICAL_AMOUNT",
+        "volume_unit_verified": true
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "adjustment_fallback_allowed": false,
+        "first_date": "2026-01-05",
+        "full_history_verified": false,
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "last_date": "2026-09-30",
+        "model_daily_input_allowed": false,
+        "raw_hash": "0c303fe51358d474f766eae15ee262ab95c282f6e8cec33b36b55fa82131f022",
+        "returned_rows": 181,
+        "source_id": "tencent-daily",
+        "truncation": "REQUEST_BOUNDED_MAXIMUM_800_ROWS; NO_HISTORICAL_AMOUNT",
+        "volume_unit_verified": true
+      },
+      {
+        "age_seconds": 636269.108101,
         "full_history_verified": false,
         "group": "QUOTE",
         "instrument": "SSE:600519",
@@ -240,7 +1040,7 @@
         "full_history_verified": false,
         "group": "ANNOUNCEMENTS",
         "instrument": "SSE:600519",
-        "raw_hash": "d1c660c3569c0782c87694ef64dc6106659b2e41fb2c5e390012bc1d78b418c9",
+        "raw_hash": "232fae093a03e16428b39975a4d82b1658328078ab350608236b7dce04b820d2",
         "returned_metadata_rows": 30,
         "source_total_rows": 1074,
         "truncation": "LATEST_30_METADATA; ONE_ORIGINAL_PER_REQUESTED_GROUP"
@@ -252,9 +1052,9 @@
         "evidence_kind": "REAL_ACQUISITION",
         "http_status": 200,
         "kind": "RAW_RESPONSE",
-        "path": "raw/bf64feded08f724f077795b3e26d028ec8481678c645744ffd401175ea2271ea.raw",
-        "received_at": "2026-10-07T16:40:09.695514+00:00",
-        "sha256": "bf64feded08f724f077795b3e26d028ec8481678c645744ffd401175ea2271ea",
+        "path": "raw/b057f797ff373b14497180bce14738c6ce9da467baa403eb74c63a5231fe076a.raw",
+        "received_at": "2026-10-07T16:59:26.878529+00:00",
+        "sha256": "b057f797ff373b14497180bce14738c6ce9da467baa403eb74c63a5231fe076a",
         "source_id": "tencent-daily",
         "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2C"
       },
@@ -263,9 +1063,9 @@
         "evidence_kind": "REAL_ACQUISITION",
         "http_status": 200,
         "kind": "RAW_RESPONSE",
-        "path": "raw/c690cc201e59bdbcef8f02c13825510381cd78dc96b48662820890aff04c3a6e.raw",
-        "received_at": "2026-10-07T16:40:09.808412+00:00",
-        "sha256": "c690cc201e59bdbcef8f02c13825510381cd78dc96b48662820890aff04c3a6e",
+        "path": "raw/0c303fe51358d474f766eae15ee262ab95c282f6e8cec33b36b55fa82131f022.raw",
+        "received_at": "2026-10-07T16:59:26.990774+00:00",
+        "sha256": "0c303fe51358d474f766eae15ee262ab95c282f6e8cec33b36b55fa82131f022",
         "source_id": "tencent-daily",
         "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2Cqfq"
       },
@@ -275,7 +1075,7 @@
         "http_status": 200,
         "kind": "RAW_RESPONSE",
         "path": "raw/6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695.raw",
-        "received_at": "2026-10-07T16:40:09.919358+00:00",
+        "received_at": "2026-10-07T16:59:27.108101+00:00",
         "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
         "source_id": "tencent-quote",
         "source_url": "https://qt.gtimg.cn/q=sh600519"
@@ -286,7 +1086,7 @@
         "http_status": 200,
         "kind": "RAW_RESPONSE",
         "path": "raw/34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f.raw",
-        "received_at": "2026-10-07T16:40:10.028588+00:00",
+        "received_at": "2026-10-07T16:59:27.216258+00:00",
         "sha256": "34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f",
         "source_id": "eastmoney-actions",
         "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1"
@@ -297,7 +1097,7 @@
         "http_status": 200,
         "kind": "RAW_RESPONSE",
         "path": "raw/0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693.raw",
-        "received_at": "2026-10-07T16:40:10.100734+00:00",
+        "received_at": "2026-10-07T16:59:27.273853+00:00",
         "sha256": "0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693",
         "source_id": "eastmoney-performance",
         "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1"
@@ -307,33 +1107,11 @@
         "evidence_kind": "REAL_ACQUISITION",
         "http_status": 200,
         "kind": "RAW_RESPONSE",
-        "path": "raw/d1c660c3569c0782c87694ef64dc6106659b2e41fb2c5e390012bc1d78b418c9.raw",
-        "received_at": "2026-10-07T16:40:10.283687+00:00",
-        "sha256": "d1c660c3569c0782c87694ef64dc6106659b2e41fb2c5e390012bc1d78b418c9",
+        "path": "raw/232fae093a03e16428b39975a4d82b1658328078ab350608236b7dce04b820d2.raw",
+        "received_at": "2026-10-07T16:59:27.375273+00:00",
+        "sha256": "232fae093a03e16428b39975a4d82b1658328078ab350608236b7dce04b820d2",
         "source_id": "eastmoney-announcements",
         "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519"
-      },
-      {
-        "bytes": 2152,
-        "evidence_kind": "REAL_ACQUISITION",
-        "http_status": 200,
-        "kind": "RAW_RESPONSE",
-        "path": "raw/8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476.raw",
-        "received_at": "2026-10-07T16:40:10.417886+00:00",
-        "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
-        "source_id": "eastmoney-original",
-        "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web"
-      },
-      {
-        "bytes": 67261,
-        "evidence_kind": "REAL_ACQUISITION",
-        "http_status": 200,
-        "kind": "RAW_RESPONSE",
-        "path": "raw/24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873.raw",
-        "received_at": "2026-10-07T16:40:10.504240+00:00",
-        "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
-        "source_id": "eastmoney-original",
-        "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf"
       },
       {
         "bytes": 3874,
@@ -341,7 +1119,7 @@
         "http_status": 200,
         "kind": "RAW_RESPONSE",
         "path": "raw/b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e.raw",
-        "received_at": "2026-10-07T16:40:10.613657+00:00",
+        "received_at": "2026-10-07T16:59:27.472991+00:00",
         "sha256": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
         "source_id": "eastmoney-original",
         "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994407&page_index=1&client_source=web"
@@ -352,7 +1130,7 @@
         "http_status": 200,
         "kind": "RAW_RESPONSE",
         "path": "raw/fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc.raw",
-        "received_at": "2026-10-07T16:40:10.649480+00:00",
+        "received_at": "2026-10-07T16:59:27.552449+00:00",
         "sha256": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
         "source_id": "eastmoney-original",
         "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994407_1.pdf?1786740155000.pdf"
@@ -363,7 +1141,7 @@
         "http_status": 200,
         "kind": "RAW_RESPONSE",
         "path": "raw/6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8.raw",
-        "received_at": "2026-10-07T16:40:10.774562+00:00",
+        "received_at": "2026-10-07T16:59:27.729546+00:00",
         "sha256": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
         "source_id": "eastmoney-original",
         "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994408&page_index=1&client_source=web"
@@ -374,23 +1152,67 @@
         "http_status": 200,
         "kind": "RAW_RESPONSE",
         "path": "raw/0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6.raw",
-        "received_at": "2026-10-07T16:40:10.843813+00:00",
+        "received_at": "2026-10-07T16:59:27.800566+00:00",
         "sha256": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
         "source_id": "eastmoney-original",
         "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994408_1.pdf?1786740127000.pdf"
+      },
+      {
+        "bytes": 2152,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476.raw",
+        "received_at": "2026-10-07T16:59:28.027312+00:00",
+        "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+        "source_id": "eastmoney-original",
+        "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web"
+      },
+      {
+        "bytes": 67261,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873.raw",
+        "received_at": "2026-10-07T16:59:28.056816+00:00",
+        "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+        "source_id": "eastmoney-original",
+        "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf"
+      },
+      {
+        "bytes": 6547,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0.raw",
+        "received_at": "2026-10-07T16:59:28.177478+00:00",
+        "sha256": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+        "source_id": "eastmoney-original",
+        "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202606211823708334&page_index=1&client_source=web"
+      },
+      {
+        "bytes": 155250,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e.raw",
+        "received_at": "2026-10-07T16:59:28.236081+00:00",
+        "sha256": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+        "source_id": "eastmoney-original",
+        "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606211823708334_1.pdf?1782055946000.pdf"
       }
     ],
     "parquet": {
       "adapter_version": "07-market-v1",
-      "bytes": 89142,
+      "bytes": 91835,
       "kind": "NORMALIZED_PARQUET",
-      "path": "parquet/fae9f4dad6e22b51eb65b3d831151bbf04f56a7a4cd88fe8cdc1b8bf9d6b5b04.parquet",
-      "sha256": "fae9f4dad6e22b51eb65b3d831151bbf04f56a7a4cd88fe8cdc1b8bf9d6b5b04"
+      "path": "parquet/812fc81cee01b7b57af6d5529a094803467cf88a013f5992393251d704fe29b7.parquet",
+      "sha256": "812fc81cee01b7b57af6d5529a094803467cf88a013f5992393251d704fe29b7"
     },
     "fact_group_counts": {
       "DAILY": 362,
       "QUOTE": 1,
-      "ADJUSTMENTS": 2,
+      "ADJUSTMENTS": 3,
       "ANNOUNCEMENTS": 1,
       "PERFORMANCE": 4,
       "MAJOR_EVENTS": 1,
@@ -398,25 +1220,12 @@
     },
     "original_documents": [
       {
-        "group": "MAJOR_EVENTS",
-        "art_code": "AN202607171827064564",
-        "title": "贵州茅台:贵州茅台重大事项公告",
-        "disclosure_date": "2026-07-18",
-        "time_precision": "DATE",
-        "provider_display_at": "2026-07-17T21:26:22.243000+08:00",
-        "provider_indexed_at": "2026-07-17T21:27:31+08:00",
-        "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
-        "document_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
-        "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf",
-        "document_pages": 1
-      },
-      {
         "group": "ANNOUNCEMENTS",
         "art_code": "AN202608141827994407",
         "title": "贵州茅台:贵州茅台关于召开2026年半年度业绩说明会的公告",
         "disclosure_date": "2026-08-15",
         "time_precision": "DATE",
-        "provider_display_at": "2026-08-14T20:41:29.276000+08:00",
+        "provider_display_at": "2026-08-14T20:41:29.380000+08:00",
         "provider_indexed_at": "2026-08-14T20:42:30+08:00",
         "raw_hash": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
         "document_hash": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
@@ -429,17 +1238,43 @@
         "title": "贵州茅台:贵州茅台2026年半年度报告",
         "disclosure_date": "2026-08-15",
         "time_precision": "DATE",
-        "provider_display_at": "2026-08-14T20:41:29.147000+08:00",
+        "provider_display_at": "2026-08-14T20:41:29.177000+08:00",
         "provider_indexed_at": "2026-08-14T20:41:57+08:00",
         "raw_hash": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
         "document_hash": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
         "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994408_1.pdf?1786740127000.pdf",
         "document_pages": 110
+      },
+      {
+        "group": "MAJOR_EVENTS",
+        "art_code": "AN202607171827064564",
+        "title": "贵州茅台:贵州茅台重大事项公告",
+        "disclosure_date": "2026-07-18",
+        "time_precision": "DATE",
+        "provider_display_at": "2026-07-17T21:26:22.245000+08:00",
+        "provider_indexed_at": "2026-07-17T21:27:31+08:00",
+        "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+        "document_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+        "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf",
+        "document_pages": 1
+      },
+      {
+        "group": "ADJUSTMENTS",
+        "art_code": "AN202606211823708334",
+        "title": "贵州茅台:贵州茅台2025年年度权益分派实施公告",
+        "disclosure_date": "2026-06-22",
+        "time_precision": "DATE",
+        "provider_display_at": "2026-06-21T15:31:10.656000+08:00",
+        "provider_indexed_at": "2026-06-21T15:32:01+08:00",
+        "raw_hash": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+        "document_hash": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+        "document_url": "https://pdf.dfcfw.com/pdf/H2_AN202606211823708334_1.pdf?1782055946000.pdf",
+        "document_pages": 4
       }
     ],
     "observations": [
       {
-        "account_version": 1,
+        "account_version": 11,
         "basis_raw_hashes": [
           "34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f"
         ],
@@ -448,64 +1283,40 @@
         "evidence_kind": "REAL_ACQUISITION",
         "formal_judgment": "DISABLED",
         "instrument": "SSE:600519",
-        "kind": "PENDING_ACCOUNT_RECONCILIATION",
-        "list_version": 2,
-        "message": "外部权益分派公告已归档；到账、税费和持仓变化待券商事实确认",
+        "kind": "ACTION_PLAN_REFERENCE",
+        "list_version": 3,
+        "message": "供应商登记分派预披露/计划；金额、除息日与实际到账未确认",
         "model_qualification": "NOT_GRANTED",
-        "observation_id": "76253cee-19f6-433a-8e55-8c3f229107d6",
-        "observed_at": "2026-10-07T16:40:10.976158+00:00",
+        "observation_id": "fc6e7814-40bc-4d56-868b-d12da0e315af",
+        "observed_at": "2026-10-07T16:59:28.338007+00:00",
         "severity": "INFO",
         "time_precision": "DATE",
-        "unknown_items": [
-          "ACCOUNT_RECEIPT_NOT_CONFIRMED"
-        ]
-      },
-      {
-        "account_version": 1,
-        "basis_raw_hashes": [
-          "34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f"
-        ],
-        "classification": "FACT",
-        "event_date": "2026-04-17",
-        "evidence_kind": "REAL_ACQUISITION",
-        "formal_judgment": "DISABLED",
-        "instrument": "SSE:600519",
-        "kind": "PENDING_ACCOUNT_RECONCILIATION",
-        "list_version": 2,
-        "message": "外部权益分派公告已归档；到账、税费和持仓变化待券商事实确认",
-        "model_qualification": "NOT_GRANTED",
-        "observation_id": "58f6ee09-1aae-4ef3-b14f-9567f322edb9",
-        "observed_at": "2026-10-07T16:40:10.976201+00:00",
-        "severity": "INFO",
-        "time_precision": "DATE",
-        "unknown_items": [
-          "ACCOUNT_RECEIPT_NOT_CONFIRMED"
-        ]
-      },
-      {
-        "account_version": 1,
-        "basis_raw_hashes": [
-          "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
-          "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873"
-        ],
-        "classification": "FACT",
-        "disclosure_date": "2026-07-18",
-        "event_date": "2026-07-18",
-        "evidence_kind": "REAL_ACQUISITION",
-        "formal_judgment": "DISABLED",
-        "instrument": "SSE:600519",
-        "kind": "DISCLOSED_COMPANY_EVENT",
-        "list_version": 2,
-        "model_qualification": "NOT_GRANTED",
-        "observation_id": "cbbfa444-8343-4a4d-9400-426919713fdc",
-        "observed_at": "2026-10-07T16:40:10.976242+00:00",
-        "severity": "INFO",
-        "time_precision": "DATE",
-        "title": "贵州茅台:贵州茅台重大事项公告",
         "unknown_items": []
       },
       {
-        "account_version": 1,
+        "account_version": 11,
+        "basis_raw_hashes": [
+          "34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-04-17",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "PENDING_ACCOUNT_RECONCILIATION",
+        "list_version": 3,
+        "message": "外部权益分派公告已归档；到账、税费和持仓变化待券商事实确认",
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "a9e1adc5-054c-4405-bfb9-98c302e5716b",
+        "observed_at": "2026-10-07T16:59:28.338045+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": [
+          "ACCOUNT_RECEIPT_NOT_CONFIRMED"
+        ]
+      },
+      {
+        "account_version": 11,
         "basis_raw_hashes": [
           "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
           "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc"
@@ -517,17 +1328,17 @@
         "formal_judgment": "DISABLED",
         "instrument": "SSE:600519",
         "kind": "DISCLOSED_COMPANY_EVENT",
-        "list_version": 2,
+        "list_version": 3,
         "model_qualification": "NOT_GRANTED",
-        "observation_id": "03fbfaaa-aa04-44a2-8d9c-7f887a145447",
-        "observed_at": "2026-10-07T16:40:10.976283+00:00",
+        "observation_id": "32f7170b-034b-42cc-babe-5f24c8e1753c",
+        "observed_at": "2026-10-07T16:59:28.338077+00:00",
         "severity": "INFO",
         "time_precision": "DATE",
         "title": "贵州茅台:贵州茅台关于召开2026年半年度业绩说明会的公告",
         "unknown_items": []
       },
       {
-        "account_version": 1,
+        "account_version": 11,
         "basis_raw_hashes": [
           "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
           "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6"
@@ -539,19 +1350,85 @@
         "formal_judgment": "DISABLED",
         "instrument": "SSE:600519",
         "kind": "DISCLOSED_COMPANY_EVENT",
-        "list_version": 2,
+        "list_version": 3,
         "model_qualification": "NOT_GRANTED",
-        "observation_id": "1a48eb94-f444-49a0-956e-276669ba3a93",
-        "observed_at": "2026-10-07T16:40:10.976315+00:00",
+        "observation_id": "3cbf0c5e-50fd-4fca-993e-820458c8f21f",
+        "observed_at": "2026-10-07T16:59:28.338113+00:00",
         "severity": "INFO",
         "time_precision": "DATE",
         "title": "贵州茅台:贵州茅台2026年半年度报告",
         "unknown_items": []
       },
       {
-        "account_version": 1,
+        "account_version": 11,
         "basis_raw_hashes": [
-          "bf64feded08f724f077795b3e26d028ec8481678c645744ffd401175ea2271ea",
+          "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+          "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873"
+        ],
+        "classification": "FACT",
+        "disclosure_date": "2026-07-18",
+        "event_date": "2026-07-18",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "DISCLOSED_COMPANY_EVENT",
+        "list_version": 3,
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "ce95028a-aa56-4346-84a5-c8646569adc8",
+        "observed_at": "2026-10-07T16:59:28.338146+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "title": "贵州茅台:贵州茅台重大事项公告",
+        "unknown_items": []
+      },
+      {
+        "account_version": 11,
+        "basis_raw_hashes": [
+          "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0"
+        ],
+        "classification": "FACT",
+        "event_date": "2026-06-22",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "PENDING_ACCOUNT_RECONCILIATION",
+        "list_version": 3,
+        "message": "外部权益分派公告已归档；到账、税费和持仓变化待券商事实确认",
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "3c580d4c-c6d5-4c15-b4bc-44910270b77d",
+        "observed_at": "2026-10-07T16:59:28.338171+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "unknown_items": [
+          "ACCOUNT_RECEIPT_NOT_CONFIRMED"
+        ]
+      },
+      {
+        "account_version": 11,
+        "basis_raw_hashes": [
+          "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+          "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e"
+        ],
+        "classification": "FACT",
+        "disclosure_date": "2026-06-22",
+        "event_date": "2026-06-22",
+        "evidence_kind": "REAL_ACQUISITION",
+        "formal_judgment": "DISABLED",
+        "instrument": "SSE:600519",
+        "kind": "DISCLOSED_COMPANY_EVENT",
+        "list_version": 3,
+        "model_qualification": "NOT_GRANTED",
+        "observation_id": "f7a15cf7-ca4d-425b-aa59-eb078869c479",
+        "observed_at": "2026-10-07T16:59:28.338201+00:00",
+        "severity": "INFO",
+        "time_precision": "DATE",
+        "title": "贵州茅台:贵州茅台2025年年度权益分派实施公告",
+        "unknown_items": []
+      },
+      {
+        "account_version": 11,
+        "basis_raw_hashes": [
+          "b057f797ff373b14497180bce14738c6ce9da467baa403eb74c63a5231fe076a",
           "34ad02eb9e468d3dc19debd3b3fa80ff40bf2ccbb829c07a6878f7399962240f"
         ],
         "cash_dividend_adjusted_return": "-0.01274298325220691362098836730",
@@ -564,18 +1441,19 @@
         "limitations": [
           "SIMPLE_PRETAX_CASH_DIVIDEND_CONTEXT_NOT_COMPLETE_TOTAL_RETURN"
         ],
-        "list_version": 2,
+        "list_version": 3,
         "message": "除息日原价变化与已披露现金分派并列核对；不是普通暴跌或账户到账证明",
         "model_qualification": "NOT_GRANTED",
-        "observation_id": "2d88c478-b6fd-4d22-bd58-e7981565c984",
-        "observed_at": "2026-10-07T16:40:10.976346+00:00",
+        "observation_id": "3d50183a-80c3-43cd-bfe2-cbb45f775b13",
+        "observed_at": "2026-10-07T16:59:28.338231+00:00",
         "observed_raw_return": "-0.03586337760910815939278937381",
         "severity": "INFO",
         "time_precision": "DATE",
         "unknown_items": []
       }
     ],
-    "runtime_path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\07-market-evidence\\backend\\.roll-data\\acceptance-07-browser\\browser-live.json"
+    "runtime_path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\07-market-evidence\\backend\\.roll-data\\acceptance-07-browser",
+    "metadata_note": "Prior integrated-browser run metadata preserved here; full normalized facts recoverable from retained immutable Parquet, not latest browser-live.json."
   },
   {
     "request": {
