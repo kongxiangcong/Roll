@@ -107,7 +107,18 @@ class IndependentVerifications:
             'primary_value':a,'alternate_value':b,'comparable':not reasons,'reasons':reasons,
             'values':equal_kind if equal else 'DIFFERENT'}
 
-    def create(self,command):
+    def consume_review(self,request_id):
+        request=self.evidence.get('review_verification_requests',request_id)
+        if request['verification_id']:return self.get(request['verification_id'])
+        origin={k:request[k] for k in ['request_id','task_id','snapshot_id','audit_id']}
+        return self.create(VerificationCommand.model_validate(request['request']),review_origin=origin)
+
+    def review_request(self,request_id):
+        request=self.evidence.get('review_verification_requests',request_id)
+        if request['verification_id']:request['verification']=self.get(request['verification_id'])
+        return request
+
+    def create(self,command,*,review_origin=None):
         if not command.reason.strip() or len({f.fact_id for f in command.facts})!=len(command.facts):
             raise HTTPException(422,'疑点理由需非空且决定性事实键唯一')
         cutoff=command.knowledge_cutoff or datetime.fromisoformat(now())
@@ -178,7 +189,7 @@ class IndependentVerifications:
             'status':'COMPLETED','result':outcome,'facts':facts,'dependency_status':'CURRENT',
             'current_result':outcome,'invalidations':[],'input_fingerprint':fingerprint,
             'knowledge_cutoff':cutoff.isoformat(),'knowledge_basis':'ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE',
-            'reuse_of':reused['verification_id'] if reused else None,
+            'reuse_of':reused['verification_id'] if reused else None,'review_origin':review_origin,
             'basis_raw_hashes':sorted({v[k] for f in facts for v in f['evidence'] for k in ['raw_hash','document_hash'] if v.get(k)}),
             'formal_judgment':'DISABLED','account_confirmation':'NOT_GRANTED','network_calls':0,
             'adapter_version':'14-verify-v1','adapter_hash':self.adapter_hash,
@@ -188,7 +199,23 @@ class IndependentVerifications:
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
             try:
+                if review_origin:
+                    request=json.loads(db.execute('SELECT value FROM review_verification_requests WHERE id=?',
+                        (review_origin['request_id'],)).fetchone()[0])
+                    if request['verification_id']:
+                        db.rollback()
+                        return self.get(request['verification_id'])
                 db.execute('INSERT INTO evidence_verifications VALUES(?,?)',(value['verification_id'],encode(value)))
+                if review_origin:
+                    request.update(status='CONSUMED',verification_id=value['verification_id'],consumed_at=now())
+                    db.execute('UPDATE review_verification_requests SET value=? WHERE id=?',
+                        (encode(request),review_origin['request_id']))
+                    audit=json.loads(db.execute('SELECT value FROM review_audits WHERE id=?',(review_origin['audit_id'],)).fetchone()[0])
+                    audit.setdefault('verification_links',[]).append({'request_id':review_origin['request_id'],
+                        'verification_id':value['verification_id'],'linked_at':request['consumed_at']})
+                    if audit['critical_review'].get('request_id')==review_origin['request_id']:
+                        audit['critical_review'].update(status='CONSUMED',verification_id=value['verification_id'])
+                    db.execute('UPDATE review_audits SET value=? WHERE id=?',(encode(audit),review_origin['audit_id']))
                 self.ledger.crash_point('verification_before_commit')
                 db.commit()
                 self.ledger.crash_point('verification_after_commit')

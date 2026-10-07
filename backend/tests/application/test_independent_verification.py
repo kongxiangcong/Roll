@@ -263,8 +263,56 @@ def test_verification_payload_delivery_audits_sealed_fields_without_result_look(
         assert client.get('/api/data/verifications/'+vid).status_code==200
         assert client.get('/api/data/verifications').status_code==200
         assert client.post('/api/data/verifications/'+vid+'/replay').status_code==200
+        from test_reviews import wait_result
+        task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
+        frozen=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=payload).json()
+        review_path='/api/reviews/verification-requests/'+frozen['request_id']
+        assert client.post(review_path+'/verify').status_code==200
+        assert client.get(review_path).status_code==200
         audit=client.get('/api/research/protocols/'+protocol['protocol_id']+'/audit').json()
         exposed=[e for e in audit if e['action']=='SEALED_MARKET_INPUT_EXPOSED' and e['route'].startswith('verification-')]
-        assert {e['route'] for e in exposed}=={'verification-create','verification-query','verification-history','verification-replay'}
+        assert {e['route'] for e in exposed}=={'verification-create','verification-query','verification-history','verification-replay',
+            'verification-review-consume','verification-review-request'}
         assert all(e['confirmatory_pass_look'] is False and e['first_date']==dates[160] for e in exposed)
         assert client.get('/api/research/protocols/'+protocol['protocol_id']).json()==protocol
+
+
+def test_frozen_review_request_consumes_once_and_links_original_audit_without_routine_upgrade(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    from test_reviews import wait_result
+    raw=[original_quote('A:first')]
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+        request=setup_request(client);a=acquire(client)
+        basis=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',json={
+            'usage':'HISTORICAL_RESEARCH','allow_fallback':False}).json()['resolution_id'])
+        raw[0]=original_quote('B:second');b=acquire(client)
+        task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
+        original=task['result'];audit_url='/api/reviews/audits/'+task['audit_id']
+        assert client.get(audit_url).json()['critical_review']['status']=='NOT_REQUIRED'
+        assert client.get('/api/data/verifications').json()==[]
+        frozen=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=command([a,b])).json()
+        consume='/api/reviews/verification-requests/'+frozen['request_id']+'/verify'
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            responses=list(pool.map(lambda _:client.post(consume),range(3)))
+        assert all(r.status_code==200 for r in responses),[r.text for r in responses]
+        identifiers={r.json()['verification_id'] for r in responses}
+        assert len(identifiers)==1
+        linked=client.get('/api/reviews/verification-requests/'+frozen['request_id']).json()
+        vid=identifiers.pop();value=client.get('/api/data/verifications/'+vid).json()
+        assert linked['status']=='CONSUMED' and linked['verification_id']==vid
+        assert value['review_origin']=={k:frozen[k] for k in ['request_id','task_id','snapshot_id','audit_id']}
+        from datetime import datetime
+        assert datetime.fromisoformat(value['command']['knowledge_cutoff'])==datetime.fromisoformat(frozen['request']['knowledge_cutoff'])
+        assert value['result']=='VERIFIED'
+        assert client.get(audit_url).json()['critical_review']['verification_id']==vid
+        assert len(client.get('/api/data/verifications').json())==1
+        assert client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=command([a,b])).json()['verification_id']==vid
+        raw[0]=original_quote('A:revised','101.000')
+        completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',json={
+            'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'use_cache':False,'revision_of':basis['resolution_id']}).json()['resolution_id'])
+        current=client.post(consume).json()
+        assert current['verification_id']==vid and current['dependency_status']=='INVALIDATED'
+        assert current['current_result']=='INSUFFICIENT' and current['result']=='VERIFIED'
+        assert client.get('/api/reviews/verification-requests/'+frozen['request_id']).json()['verification']['dependency_status']=='INVALIDATED'
+        assert client.get('/api/reviews/tasks/'+task['task_id']).json()['result']==original
+        assert client.get(audit_url).json()['critical_review']['verification_id']==vid

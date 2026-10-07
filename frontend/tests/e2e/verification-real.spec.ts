@@ -25,3 +25,30 @@ test('real archived supplier chain remains insufficient and issuer PDF is single
     issuer:await(await page.request.get('/api/data/verifications/'+report.issuer_verification.verification_id)).json()},null,2));
   await page.screenshot({path:'test-results/14-real.png',fullPage:true});
 });
+
+test('real saved observation explicitly consumes the original supplier doubt with audit linkage',async({page})=>{
+  const report=JSON.parse(readFileSync('../.scratch/roll-p0/evidence/14/raw/real-run.json','utf8'));
+  const refs=report.quote_verification.facts[0].evidence.map((e:any)=>e.reference);
+  const pending=await(await page.request.post('/api/reviews/tasks',{data:{mode:'ON_DEMAND'}})).json();let task:any;
+  await expect.poll(async()=>{task=await(await page.request.get('/api/reviews/tasks/'+pending.task_id)).json();return !!task.result;}).toBeTruthy();
+  expect((await(await page.request.get('/api/reviews/audits/'+task.audit_id)).json()).critical_review.status).toBe('NOT_REQUIRED');
+  const account=await(await page.request.get('/api/account')).json();
+  await page.goto('/');await page.getByRole('button',{name:'重点复盘当前观察',exact:true}).click();
+  await page.getByLabel('疑点及其如何影响结论').fill('实际Sina/Tencent旧收盘材料决定复盘归因；只查当时保存版本和原始独立性');
+  for(const ref of refs)await page.getByLabel(new RegExp(ref.snapshot_id.slice(0,8)+' #'+ref.fact_index+'(?: ·|$)')).check();
+  await page.getByRole('button',{name:'核验决定性事实',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'当前核验：证据不足',exact:true})).toBeVisible();
+  await expect(page.getByText('原始依据独立性未证明',{exact:true})).toBeVisible();
+  await expect(page.getByText(new RegExp('已关联原观察 '+task.task_id))).toBeVisible();
+  expect(await page.getByText(/固定方法核验/).count()).toBe(0);
+  const vid=await page.getByLabel('选择已存核验').inputValue();
+  const audit=await(await page.request.get('/api/reviews/audits/'+task.audit_id)).json();
+  const request=await(await page.request.get('/api/reviews/verification-requests/'+audit.critical_review.request_id)).json();
+  expect(audit.critical_review.verification_id).toBe(vid);expect(request.verification_id).toBe(vid);
+  expect(request.verification.evidence_kind).toBe('REAL_ARCHIVED_EVIDENCE');expect(request.verification.result).toBe('INSUFFICIENT');
+  expect(request.request.knowledge_cutoff).toBe(task.result.knowledge_cutoff);
+  expect((await(await page.request.get('/api/reviews/tasks/'+task.task_id)).json()).result).toEqual(task.result);
+  expect(await(await page.request.get('/api/account')).json()).toEqual(account);
+  mkdirSync('test-results',{recursive:true});writeFileSync('test-results/14-real-joint.json',JSON.stringify({evidence_kind:'REAL_ARCHIVED_EVIDENCE',task,request,audit,account_unchanged:true,actual_model_requests:0,external_acquisition_during_review:0},null,2));
+  await page.screenshot({path:'test-results/14-real-joint.png',fullPage:true});
+});

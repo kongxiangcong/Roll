@@ -191,7 +191,11 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get('/api/reviews/verification-requests/{identifier}')
     def get_review_verification_request(identifier:str):
-        return evidence.get('review_verification_requests',identifier)
+        return research.market_input_exposed(verifications.review_request(identifier),'verification-review-request')
+
+    @app.post('/api/reviews/verification-requests/{identifier}/verify')
+    def consume_review_verification_request(identifier:str):
+        return research.market_input_exposed(verifications.consume_review(identifier),'verification-review-consume')
 
     @app.get('/api/reviews/summary')
     def review_summary():

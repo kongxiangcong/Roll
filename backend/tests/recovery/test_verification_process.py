@@ -59,3 +59,40 @@ def test_verification_record_and_original_values_survive_native_crash_and_restar
         replay=restarted.client.post('/api/data/verifications/'+record['verification_id']+'/replay').json()
         assert replay['facts']==record['facts'] and replay['network_calls']==0
     finally:restarted.stop()
+
+
+@pytest.mark.parametrize('fault,consumed',[('verification_before_commit',False),('verification_after_commit',True)])
+def test_review_verification_and_audit_link_commit_together_across_native_crash(tmp_path,fault,consumed):
+    import time
+    directory=tmp_path/'data';raw=[original_quote('A:first')]
+    with TestClient(create_app(directory,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+        listing=client.get('/api/market/list').json()
+        client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600519','expected_list_version':listing['version']})
+        a=acquire(client);raw[0]=original_quote('B:second');b=acquire(client)
+        task=client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()
+        for _ in range(100):
+            task=client.get('/api/reviews/tasks/'+task['task_id']).json()
+            if task.get('result'):break
+            time.sleep(.02)
+        assert task['result']
+        request=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=command([a,b])).json()
+    path='/api/reviews/verification-requests/'+request['request_id']
+    server=Server(directory,fault)
+    try:
+        with pytest.raises(httpx.TransportError):server.client.post(path+'/verify')
+        assert server.process.wait(timeout=10)==86
+    finally:server.stop()
+    restarted=Server(directory)
+    try:
+        saved=restarted.client.get(path).json()
+        audit=restarted.client.get('/api/reviews/audits/'+task['audit_id']).json()
+        assert (saved['status']=='CONSUMED') is consumed
+        assert bool(saved['verification_id']) is consumed
+        assert bool(audit['critical_review']['verification_id']) is consumed
+        assert len(restarted.client.get('/api/data/verifications').json())==int(consumed)
+        value=restarted.client.post(path+'/verify').json()
+        assert value['result']=='VERIFIED'
+        assert restarted.client.post(path+'/verify').json()['verification_id']==value['verification_id']
+        assert len(restarted.client.get('/api/data/verifications').json())==1
+        assert restarted.client.get('/api/reviews/tasks/'+task['task_id']).json()['result']==task['result']
+    finally:restarted.stop()

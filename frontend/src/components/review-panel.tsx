@@ -1,7 +1,8 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
+import {VerificationReview} from '../pages/verification';
 type Fact={instrument:string;group:string;last?:string;close?:string;trade_date?:string;upstream_at?:string;available_at?:string;title?:string;basis?:string;state?:string;status_basis?:string;volume_reported?:string;volume_unit?:string;raw_hash?:string;disclosure_date?:string};
-type Snapshot={source_assessments:unknown[];snapshot_id:string;previous_snapshot_id:string|null;change:string;calendar:{date:string;phase:string;is_trading_day:boolean|null};account_version:number;cutoff:string;knowledge_cutoff:string;knowledge_basis:string;observed_at:string;instruments:{instrument:string;role:string;name?:string;quote:Fact|null;quote_status:string;last_complete_daily:Fact|null;incomplete_daily:Fact|null;company_facts:Fact[]}[];observations:{observation_id:string;kind:string;instrument:string;title?:string;message?:string;basis?:string}[];gaps:{instrument:string;group:string;code:string}[];coverage:{unobserved_trigger_sequence:string}};
+type Snapshot={data_versions:string[];source_assessments:unknown[];snapshot_id:string;previous_snapshot_id:string|null;change:string;calendar:{date:string;phase:string;is_trading_day:boolean|null};account_version:number;cutoff:string;knowledge_cutoff:string;knowledge_basis:string;observed_at:string;instruments:{instrument:string;role:string;name?:string;quote:Fact|null;quote_status:string;last_complete_daily:Fact|null;incomplete_daily:Fact|null;company_facts:Fact[]}[];observations:{observation_id:string;kind:string;instrument:string;title?:string;message?:string;basis?:string}[];gaps:{instrument:string;group:string;code:string}[];coverage:{unobserved_trigger_sequence:string}};
 type Task={task_id:string;status:string;attempts:number;result:Snapshot|null;audit_id?:string;timing:{network_seconds:number;local_seconds:number;acquisition_seconds:number};module_errors:unknown[]};
 type Audit={metrics:Record<string,{status:string;value:number|null;errors?:unknown[];state?:string}>;critical_review:unknown};
 type Summary={calendar:Snapshot['calendar'];latest:Task|null;health:{worker_state:string;backlog:number;last_worker_error:unknown};coverage_gap:unknown};
@@ -9,7 +10,7 @@ const phases:Record<string,string>={AFTER_CLOSE:'盘后',CLOSED:'非交易日',C
 const stamp=(value:string)=>new Date(value).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'});
 const terminal=(task:Task)=>!['QUEUED','RUNNING','RETRY_WAIT'].includes(task.status);
 function SavedFacts({task}: {task:Task}){
-  const [audit,setAudit]=useState<Audit|null>(null);
+  const [audit,setAudit]=useState<Audit|null>(null),[critical,setCritical]=useState(false);
   const r=task.result;
   if(!r)return <p>任务状态：{task.status} · 已尝试 {task.attempts} 次{task.status==='CANCELLED'?'，未发布观察':''}</p>;
   const backgrounds=r.instruments.filter(i=>i.role==='BACKGROUND'),securities=r.instruments.filter(i=>i.role!=='BACKGROUND');
@@ -23,6 +24,7 @@ function SavedFacts({task}: {task:Task}){
     {!!r.observations.length&&<ul>{r.observations.map((o,index)=><li key={`${o.observation_id}:${index}`}>{o.kind==='PENDING_ACCOUNT_RECONCILIATION'?'已归档外部权益事实，个人到账仍待确认。':o.title??o.message??o.kind} {o.basis??''}</li>)}</ul>}
     <h3>固定市场背景</h3>{backgrounds.map(i=><p key={i.instrument}>{i.name??i.instrument} · 最近完整日线 {i.last_complete_daily?.trade_date??'未知'} · 原价 {i.last_complete_daily?.close??'未知'}</p>)}
     <details onToggle={e=>{if(e.currentTarget.open&&task.audit_id&&!audit)void request<Audit>(`/reviews/audits/${task.audit_id}`).then(setAudit);}}><summary>运行审计与覆盖详情</summary><p>未观察到的触发顺序不重建；不补造盘中预测。</p><p>前一观察 {r.previous_snapshot_id??'无'}</p><ul>{r.instruments.flatMap(i=>[i.quote,i.last_complete_daily,...i.company_facts]).filter((f):f is Fact=>!!f).map((f,index)=><li key={`${f.raw_hash}:${index}`}>{f.instrument} · {f.title??f.group} · 披露/事件时点 {f.disclosure_date??f.trade_date??f.upstream_at??'未知'} · 实际获知 {f.available_at?stamp(f.available_at):'原快照查询'} · {f.raw_hash&&<a href={`/api/data/archives/${f.raw_hash}`} target="_blank" rel="noreferrer">查看原证据</a>}</li>)}</ul><p>本地处理 {task.timing.local_seconds} 秒 · 取数 {task.timing.acquisition_seconds} 秒 · 外部调用与归档 {task.timing.network_seconds} 秒</p>{audit&&<><p>重复通知：{audit.metrics.duplicate_notifications.status==='NOT_CONNECTED'?'尚未接入':audit.metrics.duplicate_notifications.value}</p><p>账户核对 {audit.metrics.account_differences.state} · 实际模块错误 {audit.metrics.module_errors.value}</p><pre>{JSON.stringify({audit,gaps:r.gaps,source_assessments:r.source_assessments,originals:r.instruments},null,2)}</pre></>}</details>
+    <button onClick={()=>setCritical(!critical)} aria-expanded={critical}>重点复盘当前观察</button>{critical&&<VerificationReview reviewTask={{task_id:task.task_id,data_versions:r.data_versions,knowledge_cutoff:r.knowledge_cutoff}}/>}
   </section>;
 }
 export function ReviewPanel(){
