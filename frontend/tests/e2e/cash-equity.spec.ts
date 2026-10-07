@@ -16,6 +16,7 @@ test('confirmed receivable and partial settlement stay distinct from cash and la
   await page.getByRole('button',{name:'预览差异',exact:true}).click();
   await expect(page.getByRole('heading',{name:'确认前的差异'})).toBeVisible();
   await expect(page.getByText('之后：100.00',{exact:true})).toBeVisible();
+  await page.screenshot({path:'test-results/cash-preview.png',fullPage:true});
   await page.getByRole('button',{name:'确认入账',exact:true}).click();
   await page.getByRole('button',{name:'查询回执',exact:true}).click();
   await expect(page.getByText('回执查询成功')).toBeVisible();
