@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_independent_policy_registration_without_authorization_keeps_facts_and_no_default_action _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/22-independent-risk-policy/backend/.roll-data/test-22-red1/test_independent_policy_regist0')
+
+    def test_independent_policy_registration_without_authorization_keeps_facts_and_no_default_action(tmp_path):
+        method_archive(tmp_path)
+        with TestClient(create_app(tmp_path)) as client:
+            _,protocol=register(client);pid=protocol['protocol_id']
+            response=client.post('/api/research/protocols/'+pid+'/risk-policies',json={'basis':'独立确定性暴露边界政策，不继承收益模型结论'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+tests\application\test_risk_policy.py:11: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_risk_policy.py::test_independent_policy_registration_without_authorization_keeps_facts_and_no_default_action
+1 failed in 12.29s

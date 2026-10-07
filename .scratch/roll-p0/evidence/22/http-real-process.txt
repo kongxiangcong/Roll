@@ -1,0 +1,25 @@
+INFO:     Started server process [4844]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8042 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53196 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53196 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53196 - "GET /api/research/protocols HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53196 - "GET /api/research/datasets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53196 - "POST /api/research/protocols/5ebb599e-dbd3-4479-859d-dd285b497ece/risk-policies HTTP/1.1" 201 Created
+INFO:     127.0.0.1:53196 - "POST /api/research/risk-policies/2f8e334b-30e0-40d8-8cea-bfd7d7324618/evaluations HTTP/1.1" 201 Created
+INFO:     127.0.0.1:53196 - "POST /api/research/risk-evaluations/27bd730f-809b-4c6e-aa99-326f772a6ee5/replay HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53196 - "GET /api/research/risk-policies/2f8e334b-30e0-40d8-8cea-bfd7d7324618/validation HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53196 - "POST /api/formal/evaluate HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:53196 - "GET /api/data/archives/b09eec9ae7e39ea301e125df4cba9b99e5ac69feccf8664524084fa6702f2a86 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53196 - "GET /api/data/archives/0930bc26a2a098548b9f00b22e26b79d4a28f4599e40321bcc85383d96097e0b HTTP/1.1" 200 OK
+INFO:     Started server process [32200]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8042 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55642 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55642 - "GET /api/research/risk-policies/2f8e334b-30e0-40d8-8cea-bfd7d7324618 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55642 - "GET /api/research/risk-evaluations/27bd730f-809b-4c6e-aa99-326f772a6ee5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55642 - "POST /api/research/risk-evaluations/27bd730f-809b-4c6e-aa99-326f772a6ee5/replay HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55642 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55642 - "GET /api/capabilities HTTP/1.1" 200 OK
