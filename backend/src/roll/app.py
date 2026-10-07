@@ -4,10 +4,12 @@ import os
 
 from fastapi import FastAPI, Query, HTTPException, Request, Response
 from fastapi.responses import FileResponse
-from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide
+from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide,VERSION
 
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, EquityHint, Ledger
 from roll.accounts.cash_events import EVENT_FIELDS
+from roll.accounts.reconcile import UseCheck,use_check,consistency
+from roll.accounts.corrections import active_events,fact_command
 from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
@@ -20,7 +22,7 @@ def create_app(directory: Path | None = None):
     imports = CsvImports(ledger)
 
     @app.get("/api/account/csv/template")
-    def csv_template(version: str = "ROLL-CSV-2"):
+    def csv_template(version: str = VERSION):
         content = template(version)
         return Response(content, media_type="text/csv; charset=utf-8", headers={"Content-Disposition": f'attachment; filename="roll-csv-{version[-1]}.csv"'})
 
@@ -146,16 +148,28 @@ def create_app(directory: Path | None = None):
     def health():
         return {"status": "ok","environment":"test" if os.environ.get("ROLL_ENV")=="test" else "local"}
 
+    @app.post("/api/account/use-check")
+    def account_use(command:UseCheck):
+        from roll.accounts.ledger import timestamp
+        return use_check(ledger.account(),ledger.pending_drafts(),command,timestamp)
+
     @app.get("/api/account")
     def account():
         account=ledger.account()
-        if ledger.quarantined_drafts():
-            account["state"]="RECONCILE_REQUIRED"
+        account["state"],reasons=consistency(account,ledger.pending_drafts())
+        if reasons:account["state_reasons"]=reasons
         return account
 
     @app.get("/api/account/versions/{version}")
     def version(version: int):
         return ledger.account(version)
+
+    @app.get("/api/account/as-of")
+    def as_of(known_by: datetime | None = None, effective_at: datetime | None = None):
+        from roll.accounts.ledger import timestamp,now
+        known=timestamp(known_by.isoformat(),"known_by") if known_by else now()
+        effective=timestamp(effective_at.isoformat()) if effective_at else now()
+        return {"known_by":known,"effective_at":effective,"account":ledger.replay(known_by=known,effective_at=effective),"limitation":"按当时已知与实际发生时点重建；已发布版本仍由原版本查询"}
 
     @app.post("/api/account/drafts", status_code=201)
     def draft(command: DraftCommand):
@@ -179,6 +193,18 @@ def create_app(directory: Path | None = None):
     def events():
         return ledger.events()
 
+    @app.get("/api/account/correction-candidates")
+    def correction_candidates():
+        history=ledger.events()
+        active,chain,heads=active_events(history)
+        candidates=[]
+        for root,head in heads.items():
+            original=next(e for e in history if e["event_id"]==root)
+            if original["event_type"] in {"INITIAL_CASH","INITIAL_POSITION"}:continue
+            fact=next((e for e in active if e.get("root_event_id",e.get("event_id"))==root),original)
+            candidates.append({"root_event_id":root,"target_event_id":head,"reversed":not any(e.get("root_event_id",e.get("event_id"))==root for e in active),"command":fact_command(fact)})
+        return candidates
+
     @app.get("/api/account/audit")
     def audit():
         return ledger.audit()
@@ -191,6 +217,10 @@ def create_app(directory: Path | None = None):
     def quarantined_drafts():
         return ledger.quarantined_drafts()
 
+    @app.get("/api/account/pending-drafts")
+    def pending_drafts():
+        return ledger.pending_drafts()
+
     @app.post("/api/account/equity-hints",status_code=201)
     def equity_hint(command: EquityHint):
         return ledger.equity_hint(command)
@@ -202,7 +232,9 @@ def create_app(directory: Path | None = None):
     @app.get("/api/today")
     def today():
         account = ledger.account()
-        pending = []
+        account["state"],reasons=consistency(account,ledger.pending_drafts())
+        if reasons:account["state_reasons"]=reasons
+        pending = list(reasons)
         for position in account["positions"]:
             if position["sellable_quantity"] is None:
                 pending.append(f"{position['instrument']} 可卖数量未知")
