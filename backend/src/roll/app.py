@@ -208,7 +208,7 @@ def create_app(directory: Path | None = None, market_transport=None):
     @app.post("/api/account/use-check")
     def account_use(command:UseCheck):
         from roll.accounts.ledger import timestamp
-        return use_check(ledger.account(),ledger.pending_drafts(),command,timestamp)
+        return use_check(ledger.account(),ledger.pending_drafts(),command,timestamp,ledger.events())
 
     @app.get("/api/account")
     def account():

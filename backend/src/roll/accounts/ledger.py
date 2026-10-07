@@ -461,6 +461,10 @@ class Ledger:
                     account["declarations"][-1].update(recorded_at=event["recorded_at"],account_version=event["account_version"],receipt_id=event.get("receipt_id"))
             elif event["event_type"]=="INITIAL_CASH":
                 account.update(payload)
+                for field in ["broker_available","broker_frozen","withdrawable"]:
+                    account[field+"_as_of"]=event["effective_at"] if payload[field] is not None else None
+                account.update(broker_available_basis="USER_CONFIRMED" if payload["broker_available"] is not None else "UNKNOWN",
+                               conservative_available=payload["broker_available"],conservative_available_basis="USER_CONFIRMED" if payload["broker_available"] is not None else "券商可用未知")
             elif event["event_type"]=="INITIAL_POSITION":
                 account["positions"].append(payload)
             elif event["event_type"]=="PERMISSION_CONFIRMATION":

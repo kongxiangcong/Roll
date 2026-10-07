@@ -52,13 +52,53 @@ def consistency(account,pending):
     return account["state"],[]
 
 
-def use_check(account,pending,command,timestamp):
+def reduction_facts(account,pending,history):
+    """Quantity/order knowledge needed by a later independently qualified policy."""
+    quantity_types={"INITIAL_POSITION","BUY_FILL","SELL_FILL","SHARE_CHANGE","RIGHTS_SUBSCRIPTION","RECONCILIATION"}
+    relevant={e["event_id"] for e in history if e["event_type"] in quantity_types}
+    known_ids={e["event_id"] for e in history}
+    for event in history:
+        if event["event_type"]=="CORRECTION" and event["payload"]["root_event_id"] in relevant:relevant.add(event["event_id"])
+    blockers=[]
+    if any(p["sellable_quantity"] is None or p["quantity"] is None for p in account["positions"]):blockers.append("减仓所需数量或可卖量未知，先核对可卖数量")
+    if any(d["field"] in {"quantity","sellable_quantity"} for d in account.get("reconciliation",{}).get("unresolved",[])):blockers.append("持仓/可卖核对尚未决")
+    def affects_quantity(value):
+        kind,payload=value["kind"],value["payload"]
+        if kind in {"FILL","SHARE_CHANGE","RIGHTS_SUBSCRIPTION"}:return True
+        if kind=="CORRECTION":return payload.get("target_event_id") in relevant or payload.get("target_event_id") not in known_ids
+        if kind=="RECONCILIATION":
+            if "differences" in value:return any(d["field"] in {"quantity","sellable_quantity"} and d["status"]!="MATCH" for d in value["differences"])
+            rows=payload.get("snapshot",{}).get("positions") if isinstance(payload.get("snapshot"),dict) else None
+            if not isinstance(rows,list):return True
+            mirror={p["instrument"]:(p["quantity"],p["sellable_quantity"]) for p in account["positions"]}
+            if any(not isinstance(p,dict) or p.get("quantity") is None or p.get("sellable_quantity") is None for p in rows):return True
+            try:
+                observed={p["instrument"].strip():(Decimal(p["quantity"]),Decimal(p["sellable_quantity"])) for p in rows}
+                return observed!={k:(Decimal(q),Decimal(s)) for k,(q,s) in mirror.items()}
+            except (KeyError,TypeError,AttributeError,ArithmeticError):return True
+        if kind=="CSV_BATCH":
+            return (not payload.get("commands") and bool(payload.get("errors"))) or any(affects_quantity(c) for c in payload.get("commands",[]))
+        return False
+    for draft in pending:
+        value=draft["command"]
+        if "reconciliation_differences" in draft:value={**value,"differences":draft["reconciliation_differences"]}
+        if affects_quantity(value):blockers.append("存在未确认成交、股份或数量相关更正材料")
+    latest={}
+    for declaration in account.get("declarations",[]):
+        for scope in declaration["scope"]:latest[scope]=declaration
+    if any(latest[s]["changes"]!="NONE" for s in ["TRADES","ORDERS","EQUITY"] if s in latest):blockers.append("成交、委托或权益范围仍有未决变化")
+    recorded=max((e["recorded_at"] for e in history if e["event_id"] in relevant or e["event_type"]=="INITIAL_CASH"),default=account.get("latest_fact_recorded_at",""))
+    return blockers,recorded
+
+
+def use_check(account,pending,command,timestamp,history=None):
     required=timestamp(command.required_as_of,"required_as_of")
-    scope=[] if command.purpose=="MARKET_OBSERVATION" else SCOPES if command.purpose in {"NEW_RISK","REDUCTION"} else ["TRADES","CASH","EQUITY"]
+    scope=[] if command.purpose=="MARKET_OBSERVATION" else ["TRADES","ORDERS","EQUITY"] if command.purpose=="REDUCTION" else SCOPES if command.purpose=="NEW_RISK" else ["TRADES","CASH","EQUITY"]
     state,reasons=consistency(account,pending)
+    blockers,required_knowledge=reduction_facts(account,pending,history or []) if command.purpose=="REDUCTION" else ([],account.get("latest_fact_recorded_at",""))
     missing=[]
     for item in scope:
-        matches=[d for d in account.get("declarations",[]) if item in d["scope"] and d["changes"]=="NONE" and datetime.fromisoformat(d["confirmed_as_of"])>=datetime.fromisoformat(required) and datetime.fromisoformat(d["recorded_at"])>=datetime.fromisoformat(account["latest_fact_recorded_at"])]
+        matches=[d for d in account.get("declarations",[]) if item in d["scope"] and d["changes"]=="NONE" and datetime.fromisoformat(d["confirmed_as_of"])>=datetime.fromisoformat(required) and (not required_knowledge or datetime.fromisoformat(d["recorded_at"])>=datetime.fromisoformat(required_knowledge))]
         if not matches:missing.append(item)
     if scope and state not in {"UPDATE_PENDING","RECONCILE_REQUIRED"}:
         if account["cash_balance"] is None or (command.purpose=="NEW_RISK" and (account["broker_available"] is None or account["broker_frozen"] is None)) or (command.purpose=="REDUCTION" and any(p["sellable_quantity"] is None for p in account["positions"])):
@@ -69,9 +109,13 @@ def use_check(account,pending,command,timestamp):
             reasons.append("本次用途缺少所需范围/截至时点的无变化声明，无需补每日记录")
         else:
             state="CONFIRMED_AS_OF"
+    fact_state="RECONCILE_REQUIRED" if blockers else "STALE_DECLARATION" if missing else "CONFIRMED_AS_OF"
+    if command.purpose!="REDUCTION":fact_state="CONFIRMED_AS_OF" if not scope else state
+    allowed=not scope or (fact_state=="CONFIRMED_AS_OF" if command.purpose=="REDUCTION" else state=="CONFIRMED_AS_OF")
+    reasons.extend(blockers)
     return {"purpose":command.purpose,"required_as_of":required,"account_version":account["version"],"state":state,
-            "allowed":not scope or state=="CONFIRMED_AS_OF","required_scope":scope,"missing_scope":missing,"reasons":reasons,
-            "next_step":"先同步事实或核对差异，再对本次所需范围声明" if scope and state!="CONFIRMED_AS_OF" else "仅账户事实检查通过；正式资格仍须独立核验",
+            "allowed":allowed,"fact_scope_state":fact_state,"required_scope":scope,"missing_scope":missing,"reasons":reasons,
+            "next_step":"仅本用途账户事实核对通过；降风险政策资格、授权与实际可行性仍须独立核验，未生成动作" if allowed and command.purpose=="REDUCTION" else "先同步事实或核对差异，再对本次所需范围声明" if scope and not allowed else "仅账户事实检查通过；正式资格仍须独立核验",
             "known_positions":account["positions"],"executable_quantity":None,"independent_market_observation_allowed":True}
 
 

@@ -8,6 +8,8 @@
 
 `GET /api/account/as-of?known_by=<带时区时间>&effective_at=<带时区时间>` 先按系统知悉时间筛选，再按实际时间筛选。缺省为当前时间；版本表示所选知悉范围的确认版本，不意味着那个实际时点已有同号发布快照。`GET /api/account/versions/{version}` 查询原发布快照。当前 `effective_at` / `latest_effective_fact_at` 是所保留有效事实的最新实际时点；`latest_confirmed_input_at` 是最近确认输入的原发生时点；`system_known_at` 是最新系统获知时间。范围声明的截至时点另存 `confirmed_as_of`，不把声明时间冒称为现金事实时间。
 
+初始现金事件按原实际时点固定每个已知券商资金字段的快照日期，未知字段日期为null；权限确认不更新冻结/可取资金日期。
+
 晚补 11 点买入之后，已知的 13 点卖出仍留在当前投影，当前账户事实截至 13 点；11 点券商可用快照不会覆盖已知 13 点的快照。旧 `known_by` 返回原已知状态，新 `known_by` 可重建同一个实际历史时点的修订事实。完整 `GET /api/account/replay` 与当前已确认投影一致；查询时待核材料造成的状态由查询服务另行解释。
 
 ## 追加替代与冲正
@@ -22,7 +24,7 @@
 
 `ACCOUNT_DECLARATION` payload 为 `effective_at,source,record_id,scope,changes,basis`。scope 是 TRADES、ORDERS、CASH、EQUITY 的非空不重复列表；changes 为 NONE、UNRECORDED 或 EXTERNAL_ORDER_PENDING。声明不改变资金/数量/可卖，也不释放外部委托占用。
 
-`POST /api/account/use-check` 接收 purpose 与 required_as_of；MARKET_OBSERVATION 不要求账户声明，ACCOUNT_ANALYSIS 要成交/现金/权益，NEW_RISK 与 REDUCTION 要四项范围。无变化声明必须覆盖本次所需截至时点，且知悉时间不早于最新资产事实确认。缺范围/截至时点为 STALE_DECLARATION；未补录/外部委托待结果为 UPDATE_PENDING；待核材料、未决对账、未知关键资金/可卖为 RECONCILE_REQUIRED；覆盖且已核对为 CONFIRMED_AS_OF。账户权限、资金门禁、技术资格和正式动作资格仍独立检查，不因本服务返回 allowed 就输出交易动作。始终 `executable_quantity=null`，不生成 HOLD。
+`POST /api/account/use-check` 接收 purpose 与 required_as_of；MARKET_OBSERVATION 不要求账户声明，ACCOUNT_ANALYSIS 要成交/现金/权益，NEW_RISK 要四项范围，REDUCTION 核对成交/委托/权益三个与数量相关范围。无变化声明必须覆盖本次所需截至时点，且知悉时间不早于最新资产事实确认。缺范围/截至时点为 STALE_DECLARATION；未补录/外部委托待结果为 UPDATE_PENDING；待核材料、未决对账、未知关键资金/可卖为 RECONCILE_REQUIRED；覆盖且已核对为 CONFIRMED_AS_OF。REDUCTION 同时返回独立的 fact_scope_state：仅现金/费用待核且持仓/可卖及三个范围有依据时，总体 state 可保持 RECONCILE_REQUIRED 或 UPDATE_PENDING，allowed 表示后续合格政策可继续账户事实核对；未决成交/股份、更正、数量差异、未知可卖或所需范围声明不足仍受限。现金与费用事件不自动令已核对的数量范围失效，新的数量知识则必须由后续范围声明覆盖。allowed 不代表降风险动作或政策获准。账户权限、资金门禁、技术资格和正式动作资格仍独立检查，不因本服务返回 allowed 就输出交易动作。始终 `executable_quantity=null`，不生成 HOLD。
 
 声明只在实际依赖账户的用途检查，不要求每日打卡；独立市场观察始终可继续。账户与今天页共用 `consistency` 对当前待核状态解释，声明页展示用途检查的同一状态与下一步。已知持仓始终可见。
 

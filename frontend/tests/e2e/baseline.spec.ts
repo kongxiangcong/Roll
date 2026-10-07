@@ -4,6 +4,8 @@ test('initial mirror: form → difference → confirmation → durable receipt �
   await page.goto('/');
   await expect(page.getByText('交易判断未启用')).toBeVisible();
   await page.getByRole('button',{name:'同步账户', exact:true}).click();
+  // This shared browser account precedes the later fixed-date event fixtures.
+  await page.getByLabel('事实截至时点').fill('2026-10-07T10:00');
   await page.getByLabel('账面现金（元）').fill('100000.10');
   await page.getByLabel('券商可用资金（元）').fill('90000.10');
   await page.getByLabel('冻结资金（元）').fill('10000.00');

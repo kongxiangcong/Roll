@@ -1,0 +1,33 @@
+...........F.                                                            [100%]
+================================== FAILURES ===================================
+_ test_replacing_actual_fill_fee_rebuilds_partial_sale_allocations_and_keeps_original_resolution _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-184/test_replacing_actual_fill_fee0')
+
+    def test_replacing_actual_fill_fee_rebuilds_partial_sale_allocations_and_keeps_original_resolution(tmp_path):
+        from test_fills import fee_adjustment
+        with TestClient(create_app(tmp_path)) as client:
+            establish(client)
+            buy=trade(1,"buy","BUY","10.00","2026-10-07T11:00:00+08:00")
+            buy["payload"]["fee"]={"status":"PROVISIONAL","amount":None,"reserve_amount":"10.00","basis":"有据保守费用预留"}
+            submit(client,buy,"buy").raise_for_status()
+            sell=trade(2,"sale","SELL","12.00","2026-10-07T13:00:00+08:00")
+            sell["payload"]["quantity"]="50"
+            submit(client,sell,"sale").raise_for_status()
+            fee=fee_adjustment(3,"buy","6.00")
+            receipt=submit(client,fee,"actual-fee").json()
+            old=client.get("/api/account/versions/4").json()
+>           assert old["cash_balance"]=="99589.00" and old["realized_gain"]=="92.00"
+                   ^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'cash_balance'
+
+backend\tests\application\test_reconcile.py:358: KeyError
+============================== warnings summary ===============================
+backend\.venv\Lib\site-packages\fastapi\testclient.py:1
+  D:\dsh-proj\Roll\.scratch\worktrees\05-reconcile-account\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_reconcile.py::test_replacing_actual_fill_fee_rebuilds_partial_sale_allocations_and_keeps_original_resolution
+1 failed, 12 passed, 1 warning in 33.73s

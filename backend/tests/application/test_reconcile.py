@@ -294,3 +294,95 @@ def test_changed_declaration_and_unknown_broker_facts_remain_visible_without_blo
         # Outstanding external-order declaration remains an explicit pending fact.
         assert account["state"]=="UPDATE_PENDING"
         assert client.post("/api/account/use-check",json=request).json()["executable_quantity"] is None
+
+
+def test_cash_only_gap_does_not_close_independently_eligible_reduction_fact_path(tmp_path):
+    from test_account import baseline
+    with TestClient(create_app(tmp_path)) as client:
+        base=baseline()
+        base["payload"]["positions"][0]["sellable_quantity"]="100"
+        submit(client,base,"baseline").raise_for_status()
+        submit(client,declaration(1,["TRADES","ORDERS","EQUITY"]),"reduction-scope").raise_for_status()
+        unknown=cash("INTEREST",2,"unknown-interest",None)
+        draft=client.post("/api/account/drafts",json=unknown).json()
+        assert draft["status"]=="QUARANTINED"
+        request={"purpose":"REDUCTION","required_as_of":"2026-10-07T14:00:00+08:00"}
+        facts=client.post("/api/account/use-check",json=request).json()
+        assert facts["state"]=="RECONCILE_REQUIRED"
+        assert facts["allowed"] is True
+        assert facts["required_scope"]==["TRADES","ORDERS","EQUITY"]
+        assert facts["fact_scope_state"]=="CONFIRMED_AS_OF"
+        assert facts["executable_quantity"] is None
+        assert facts["known_positions"][0]["sellable_quantity"]=="100"
+        newrisk=client.post("/api/account/use-check",json={**request,"purpose":"NEW_RISK"}).json()
+        assert not newrisk["allowed"]
+        bad=fill(2,"unrecorded-fill")
+        bad["payload"]["quantity"]="未知"
+        assert client.post("/api/account/drafts",json=bad).json()["status"]=="QUARANTINED"
+        facts=client.post("/api/account/use-check",json=request).json()
+        assert not facts["allowed"] and facts["fact_scope_state"]=="RECONCILE_REQUIRED"
+
+
+def test_unknown_fees_do_not_block_verified_sellable_facts_but_unknown_sellable_does(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        establish(client)
+        submit(client,fill(1,"provisional",fee_status="PROVISIONAL"),"provisional").raise_for_status()
+        snapshot=broker_snapshot("96990.00","0.00","0.00")
+        snapshot.update(positions=[{"instrument":"SSE:600000","quantity":"300","sellable_quantity":"300"}],pending_items=[])
+        submit(client,reconcile(2,"verified-sellable",snapshot),"verified").raise_for_status()
+        submit(client,declaration(3,["TRADES","ORDERS","EQUITY"]),"scope").raise_for_status()
+        request={"purpose":"REDUCTION","required_as_of":"2026-10-07T14:00:00+08:00"}
+        facts=client.post("/api/account/use-check",json=request).json()
+        assert facts["state"]=="RECONCILE_REQUIRED" and facts["allowed"]
+        assert facts["executable_quantity"] is None
+        invalid={**snapshot,"positions":[{"instrument":"SSE:600000","quantity":"unknown","sellable_quantity":"300"}]}
+        raw=client.post("/api/account/drafts",json=reconcile(4,"unresolved-quantity",invalid)).json()
+        assert raw["status"]=="QUARANTINED"
+        assert not client.post("/api/account/use-check",json=request).json()["allowed"]
+        snapshot["positions"][0]["sellable_quantity"]=None
+        submit(client,reconcile(4,"unknown-sellable",snapshot),"unknown").raise_for_status()
+        facts=client.post("/api/account/use-check",json=request).json()
+        assert not facts["allowed"]
+        assert facts["fact_scope_state"]=="RECONCILE_REQUIRED"
+
+
+def test_replacing_actual_fill_fee_rebuilds_partial_sale_allocations_and_keeps_original_resolution(tmp_path):
+    from test_fills import fee_adjustment
+    with TestClient(create_app(tmp_path)) as client:
+        establish(client)
+        buy=trade(1,"buy","BUY","10.00","2026-10-07T11:00:00+08:00")
+        buy["payload"]["fee"]={"status":"PROVISIONAL","amount":None,"reserve_amount":"10.00","basis":"有据保守费用预留"}
+        submit(client,buy,"buy").raise_for_status()
+        sell=trade(2,"sale","SELL","12.00","2026-10-07T13:00:00+08:00")
+        sell["payload"]["quantity"]="50"
+        submit(client,sell,"sale").raise_for_status()
+        fee=fee_adjustment(3,amount="6.00",target="buy")
+        receipt=submit(client,fee,"actual-fee").json()
+        old=client.get("/api/account/versions/4").json()
+        assert old["cash_balance"]=="99589.00" and old["realized_gain"]=="92.00"
+        fee["payload"]["actual_fee_amount"]="2.00"
+        submit(client,correction(4,"correct-actual-fee",receipt["event_ids"][0],{"kind":"FEE_ADJUSTMENT","payload":fee["payload"]}),"fee-correction").raise_for_status()
+        account=client.get("/api/account").json()
+        assert account["cash_balance"]=="99593.00" and account["realized_gain"]=="94.00"
+        assert account["positions"][0]["acquisition_cost"]=="501.00"
+        assert account["fee_resolutions"]["buy"]["actual_fee_amount"]=="2.00"
+        original=next(e for e in client.get("/api/account/events").json() if e["event_id"]==receipt["event_ids"][0])
+        assert original["payload"]["actual_fee_amount"]=="6.00"
+        assert client.get("/api/account/versions/4").json()==old
+        assert client.get("/api/account/replay").json()["realized_gain"]=="94.00"
+
+
+def test_permission_fact_does_not_move_baseline_frozen_and_withdrawable_snapshot_time(tmp_path):
+    from test_account import baseline
+    with TestClient(create_app(tmp_path)) as client:
+        base=baseline()
+        base["payload"].update(positions=[],withdrawable="80000.00")
+        submit(client,base,"baseline").raise_for_status()
+        submit(client,{"kind":"PERMISSIONS","expected_account_version":1,"payload":{"effective_at":"2026-10-07T12:00:00+08:00","source":"仅核对权限","permission_profile":[]}},"permissions").raise_for_status()
+        submit(client,trade(2,"buy","BUY","10.00","2026-10-07T13:00:00+08:00"),"buy").raise_for_status()
+        account=client.get("/api/account").json()
+        assert account["broker_frozen_as_of"]=="2026-10-07T10:00:00+08:00"
+        assert account["withdrawable_as_of"]=="2026-10-07T10:00:00+08:00"
+        assert account["withdrawable"]=="80000.00"
+        assert account["broker_available"] is None and account["broker_available_as_of"] is None
+        assert client.get("/api/account/replay").json()["broker_frozen_as_of"]==account["broker_frozen_as_of"]
