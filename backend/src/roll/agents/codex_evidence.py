@@ -74,11 +74,12 @@ class CodexQuestion(BaseModel):
 
 
 class CodexEvidence:
-    def __init__(self, evidence, worker=None):
+    def __init__(self, evidence, worker=None, input_observer=None):
         if worker is not None and os.environ.get('ROLL_ENV') != 'test':
             raise ValueError('External worker injection requires ROLL_ENV=test')
         self.worker = worker
         self.evidence = evidence
+        self.input_observer = input_observer
         self.active = {}
         self.lock = threading.Lock()
         from roll.agents.codex_process import recover_directory

@@ -412,6 +412,8 @@ def tool(host, run, request, state, event, deadline, cancel):
         state['returned_bytes']+=len(encode(result).encode())
         if state['returned_bytes']>run['limits']['total_bytes']:
             raise ValueError('TOOL_TOTAL_BYTE_LIMIT')
+        if host.input_observer and event['name']=='roll_read_evidence':
+            host.input_observer(result,'codex-tool-input')
         return result
     except Exception as error:
         code = str(error) if isinstance(error, ValueError) else type(error).__name__

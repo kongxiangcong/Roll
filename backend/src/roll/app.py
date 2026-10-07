@@ -20,6 +20,8 @@ from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
+from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
+from roll.research.datasets import DatasetCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
@@ -70,6 +72,72 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport)
     app.state.evidence=evidence
+    research=ExperimentRegistry(ledger,evidence)
+    app.state.research=research
+
+    @app.get('/api/research/deadline-preview')
+    def research_deadline_preview(start:datetime):
+        return deadline_preview(start)
+
+    @app.post('/api/research/datasets',status_code=201)
+    def register_research_dataset(command:DatasetCommand):
+        return research.register_dataset(command)
+
+    @app.get('/api/research/datasets')
+    def research_datasets():
+        return research.datasets()
+
+    @app.get('/api/research/datasets/{dataset_id}')
+    def research_dataset(dataset_id:str):
+        return research.dataset(dataset_id)
+
+    @app.get('/api/research/datasets/{dataset_id}/partitions/{name}')
+    def research_partition(dataset_id:str,name:str):
+        return research.partition(dataset_id,name)
+
+    @app.post('/api/research/protocols',status_code=201)
+    def register_protocol(command:ProtocolCommand):
+        return research.register(command)
+
+    @app.get('/api/research/protocols')
+    def research_protocols():
+        return research.protocols()
+
+    @app.get('/api/research/protocols/{protocol_id}')
+    def research_protocol(protocol_id:str):
+        return research.get(protocol_id)
+
+    @app.post('/api/research/protocols/{protocol_id}/attempts',status_code=201)
+    def research_attempt(protocol_id:str,command:AttemptCommand):
+        return research.start_attempt(protocol_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/attempts')
+    def research_attempts(protocol_id:str):
+        return research.attempts(protocol_id)
+
+    @app.get('/api/research/protocols/{protocol_id}/attempt-manifest')
+    def research_attempt_manifest(protocol_id:str):
+        return research.attempt_manifest(protocol_id)
+
+    @app.post('/api/research/attempts/{attempt_id}/finish')
+    def finish_research_attempt(attempt_id:str,command:FinishCommand):
+        return research.finish_attempt(attempt_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/audit')
+    def research_audit(protocol_id:str):
+        return research.audit(protocol_id)
+
+    @app.post('/api/research/protocols/{protocol_id}/freeze')
+    def research_freeze(protocol_id:str,command:FreezeCommand):
+        return research.freeze(protocol_id,command)
+
+    @app.post('/api/research/protocols/{protocol_id}/sealed-input')
+    def research_sealed(protocol_id:str,command:ReasonCommand):
+        return research.sealed_input(protocol_id,command)
+
+    @app.post('/api/research/protocols/{protocol_id}/checkpoints',status_code=201)
+    def research_checkpoint(protocol_id:str,command:CheckpointCommand):
+        return research.checkpoint(protocol_id,command)
     valuations=Valuations(ledger,evidence)
     app.state.valuations=valuations
 
@@ -96,7 +164,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     @app.post('/api/account/valuations/{identifier}/replay')
     def replay_valuation(identifier:str):
         return valuations.get(identifier,replay=True)
-    codex = CodexEvidence(evidence, codex_worker)
+    codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed)
     app.state.codex = codex
     deepseek=DeepSeekEvidence(evidence,deepseek_endpoint)
     app.state.deepseek=deepseek
@@ -126,7 +194,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get('/api/data/resolutions/{resolution_id}')
     def data_resolution(resolution_id:str):
-        return resolutions.get(resolution_id)
+        return research.market_input_exposed(resolutions.get(resolution_id),'resolution')
 
     @app.get('/api/data/dependencies')
     def data_dependencies(resolution_id:str|None=None):
@@ -134,11 +202,11 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.post('/api/data/resolutions/{resolution_id}/replay')
     def replay_resolution(resolution_id:str):
-        return resolutions.replay(resolution_id)
+        return research.market_input_exposed(resolutions.replay(resolution_id),'resolution-replay')
 
     @app.get('/api/data/replays/{replay_id}')
     def data_resolution_replay(replay_id:str):
-        return evidence.get('source_resolution_replays',replay_id)
+        return research.market_input_exposed(evidence.get('source_resolution_replays',replay_id),'resolution-replay-query')
 
     @app.get('/api/data/sources')
     def data_sources():
@@ -152,7 +220,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get('/api/data/snapshots')
     def data_snapshots(instrument:str|None=None,group:str|None=None,available_before:datetime|None=None):
-        return evidence.snapshots(instrument,group,available_before)
+        return research.market_input_exposed(evidence.snapshots(instrument,group,available_before),'snapshots-query')
 
     @app.get('/api/data/coverage')
     def data_coverage(instrument:str|None=None,group:str|None=None):
@@ -160,10 +228,10 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get('/api/data/observations')
     def data_observations(instrument:str|None=None):
-        return [{**observation,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id'],
+        return research.market_input_exposed([{**observation,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id'],
             'dependency_status':'INVALIDATED' if resolutions.dependencies(target_id=observation['observation_id']) else 'CURRENT'}
             for snapshot in evidence.snapshots(instrument) for observation in snapshot['observations']
-            if not instrument or observation['instrument']==instrument]
+            if not instrument or observation['instrument']==instrument],'observations-query')
 
     @app.post('/api/data/requests',status_code=201)
     def data_request(command:DataRequest):
@@ -175,7 +243,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.post('/api/data/requests/{request_id}/retrieve')
     def data_retrieve(request_id:str):
-        return evidence.retrieve(request_id)
+        return research.market_input_exposed(evidence.retrieve(request_id),'direct-retrieval')
 
     @app.get('/api/data/runs/{run_id}')
     def data_run(run_id:str):
@@ -183,16 +251,17 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get('/api/data/snapshots/{snapshot_id}')
     def data_snapshot(snapshot_id:str):
-        return evidence.get('market_evidence_snapshots',snapshot_id)
+        return research.market_input_exposed(evidence.get('market_evidence_snapshots',snapshot_id),'snapshot-query')
 
     @app.get('/api/data/archives/{sha}')
     def data_archive(sha:str):
         path=evidence.raw(sha)
+        research.archive_exposed(sha)
         return FileResponse(path,media_type='application/octet-stream',filename=path.name,headers={'X-Content-Type-Options':'nosniff'})
 
     @app.post('/api/data/runs/{run_id}/replay')
     def data_replay(run_id:str):
-        return evidence.replay(run_id)
+        return research.market_input_exposed(evidence.replay(run_id),'run-replay')
 
     @app.get('/api/market/list')
     def market_list():

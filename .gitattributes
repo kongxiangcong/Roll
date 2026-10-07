@@ -7,6 +7,10 @@ backend/src/roll/market/reference/*.pdf binary
 .scratch/roll-p0/evidence/07/*.txt -text whitespace=cr-at-eol
 # Preserve ticket08 captured stdout bytes, independently of Git autocrlf.
 .scratch/roll-p0/evidence/08/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+
+# Original research authority pages retain source SHA bytes.
+backend/src/roll/research/reference/*.html binary
+.scratch/roll-p0/evidence/17/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 # Ticket11 immutable public archive bytes and captured Windows stdout.
 .scratch/roll-p0/evidence/11/raw/* binary
 .scratch/roll-p0/evidence/11/*.txt -text whitespace=-blank-at-eol,cr-at-eol
