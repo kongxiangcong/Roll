@@ -65,6 +65,8 @@ def calculate(ledger,inputs,valuation_id,created_at):
         context.prec=80
         rows,assets,net,status,async_quotes=marks(current,inputs['quotes'],command['as_of'])
         _,_,base_net,base_status,_=marks(baseline,inputs['baseline_quotes'],command['origin_at'])
+        if baseline.get('fees_pending'):
+            base_net,base_status=None,'MISSING'
         opening={k:q['last'] for k,q in inputs['baseline_quotes'].items()}
         right_fees={r['record_id']:current.get('fee_resolutions',{}).get(r['record_id'],{}).get('actual_fee_amount',r['fee_amount']) for r in current.get('share_records',[]) if r['kind']=='RIGHTS_SUBSCRIPTION'}
         gross=ledger.price_period(baseline,command['origin_at'],command['as_of'],inputs['events'],opening,right_fees)

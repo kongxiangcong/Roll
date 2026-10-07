@@ -1,0 +1,105 @@
+{
+  "evidence_kind": "METHOD_CASE_PUBLIC_API_REAL_SQLITE",
+  "expected": {
+    "cash": "99992.00",
+    "pending": "0.00",
+    "fees": "8.00",
+    "pnl": "-8.00"
+  },
+  "actual": {
+    "valuation_id": "b86b7ae4-4e18-4ef8-bf02-6173e762efa2",
+    "created_at": "2026-10-07T19:09:09.913881+00:00",
+    "method_version": "account-raw-nav-dietz-v1",
+    "namespace": "ACTUAL",
+    "input_authority": "CONFIRMED_ACCOUNT_AND_ARCHIVED_SOURCE",
+    "scope_kind": "ACCOUNT",
+    "scope_id": "account",
+    "account_version": 5,
+    "known_by": "2026-10-07T19:09:09.903634+00:00",
+    "origin_at": "2026-10-07T10:00:00+08:00",
+    "as_of": "2026-10-07T16:00:00+08:00",
+    "baseline_before_history": "INCOMPLETE",
+    "historical_return_before_baseline": null,
+    "account": {
+      "confirmed_at": "2026-10-07T19:09:09.845084+00:00",
+      "effective_at": "2026-10-07T13:00:00+08:00",
+      "cash_balance": "99992.00",
+      "cash_balance_basis": null,
+      "fees_pending": null,
+      "rights_fee_breakdown_pending": null,
+      "broker_available": null,
+      "broker_available_as_of": null,
+      "broker_frozen": "0.00",
+      "broker_frozen_as_of": "2026-10-07T10:00:00+08:00",
+      "withdrawable": null,
+      "withdrawable_as_of": null
+    },
+    "baseline_quote_status": "COMPLETE",
+    "baseline_quotes": {},
+    "positions": [],
+    "cash_plus_holdings": "99992.00",
+    "cash_estimated": false,
+    "pending_items": [
+      {
+        "source": "方法案例已确认账户原件",
+        "item_type": "TAX",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "basis": "逐项核对到账/待结算金额",
+        "record_id": "tax",
+        "instrument": null,
+        "amount": "10.00",
+        "kind": "PENDING_ITEM",
+        "flow_category": "INVESTMENT_EXPENSE",
+        "applied_amount_at_knowledge": "8.00",
+        "event_id": "d9184a9c-4986-4268-b1d8-f7c5b1478f36",
+        "receipt_id": "29708b26-d74b-4c1c-b0fe-09907e8ffc02",
+        "confirmed_at": "2026-10-07T19:09:09.647750+00:00",
+        "resolved_amount": "8.00",
+        "settled_amount": "8.00",
+        "outstanding_amount": "0.00",
+        "status": "SETTLED",
+        "settlement_ids": [
+          "paid"
+        ]
+      }
+    ],
+    "pending_income": "0.00",
+    "pending_expenses": "0.00",
+    "pending_policy": "CONFIRMED_OUTSTANDING_RECEIVABLES_MINUS_PAYABLES_INCLUDED_IN_NET_ASSETS; NOT_CASH_OR_BROKER_AVAILABLE",
+    "asynchronous_quotes": false,
+    "freshness_policy": "SAME_SHANGHAI_DATE_INDICATIVE; DIFFERENT_DATES_OR_SUSPENDED_OR_ASYNCHRONOUS_STALE; NOT_TRADING_QUALIFICATION",
+    "facts": {
+      "scope_kind": "ACCOUNT",
+      "scope_id": "account",
+      "baseline_account_version": 1,
+      "origin_at": "2026-10-07T10:00:00+08:00",
+      "as_of": "2026-10-07T16:00:00+08:00",
+      "facts_version": "b86b7ae4-4e18-4ef8-bf02-6173e762efa2",
+      "valuation_status": "COMPLETE",
+      "baseline_assets": "100000.00",
+      "net_assets": "99992.00",
+      "external_in": "0.00",
+      "external_out": "0.00",
+      "realized_pnl": "0.00",
+      "unrealized_pnl": "0.00",
+      "income": "0.00",
+      "fees": "8.00",
+      "pending_income_delta": "0.00",
+      "pending_expense_delta": "0.00"
+    },
+    "performance": {
+      "total_pnl": "-8.00",
+      "nav_adjusted_pnl": "-8.00",
+      "conservation": "MATCH",
+      "return_method": "MODIFIED_DIETZ_ACTUAL_EFFECTIVE_TIME_V1",
+      "weighted_capital": "100000.00",
+      "return_percent": "-0.00800000",
+      "estimated": false
+    },
+    "authority": {
+      "technical_capability": "UNGRANTED",
+      "remaining_loss_allowance": null
+    },
+    "input_fingerprint": "76f0926d0a22f180c4180fcb2c35e206b2f8f9b749ccf281f20bee633c550a13"
+  }
+}

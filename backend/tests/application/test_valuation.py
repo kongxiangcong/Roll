@@ -389,6 +389,44 @@ def test_csv_three_preserves_raw_claim_payment_and_two_corrections_in_one_versio
         assert rows_saved[0]['fields']['amount']=='10' and rows_saved[1]['fields']['amount']=='10'
 
 
+def test_opening_provisional_fee_cash_is_not_frozen_as_known_baseline_assets(tmp_path):
+    upstream=(datetime.now(timezone.utc)-timedelta(minutes=1)).isoformat()
+    with TestClient(create_app(tmp_path,market_transport=quote_transport('12',upstream))) as client:
+        establish(client)
+        submit(client,fill(fee_status='PROVISIONAL'),'buy')
+        acquire(client)
+        origin=datetime.now(timezone.utc).isoformat()
+        value=publish(client,baseline_account_version=2,origin_at=origin,as_of=datetime.now(timezone.utc).isoformat())
+        assert value['baseline_quotes']['SSE:600000']['last']=='12'
+        assert value['cash_plus_holdings']=='100590.00'
+        assert value['cash_estimated'] is True
+        assert value['facts']['baseline_assets'] is None and value['facts']['net_assets'] is None
+        assert value['performance']['total_pnl'] is None
+
+
+def test_valuation_consumes_eight_sina_raw_quote_without_rewriting_source_run(tmp_path):
+    import hashlib
+    fields=['']*33
+    for index,value in {0:'合成价格案例',1:'10',2:'10',3:'12',4:'12',5:'10',8:'300',9:'3600',
+                        30:'2026-10-07',31:'15:00:00',32:'00'}.items():fields[index]=value
+    raw=('var hq_str_sh600000="'+','.join(fields)+'";').encode('gbk')
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda request:httpx.Response(200,content=raw)))) as client:
+        establish(client)
+        submit(client,fill(),'buy')
+        request=client.post('/api/data/requests',json={'instruments':['SSE:600000'],'groups':['QUOTE'],
+            'purpose':'OBSERVATION','start_date':'2026-10-07','end_date':'2026-10-07','quote_source':'SINA'}).json()
+        run=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+        assert run['status']=='COMPLETE',run
+        value=publish(client)
+        quote=value['positions'][0]['quote']
+        assert quote['source_id']=='sina-quote' and quote['adjustment']=='RAW'
+        assert quote['raw_hash']==hashlib.sha256(raw).hexdigest()
+        assert value['facts']['net_assets']=='100595.00' and value['performance']['total_pnl']=='595.00'
+        assert client.get('/api/data/runs/'+run['run_id']).json()==run
+        assert client.post('/api/account/valuations/'+value['valuation_id']+'/replay').json()==value
+        save_case('08-sina-raw-consumption',value,{'net_assets':'100595.00','pnl':'595.00','source_id':'sina-quote','adjustment':'RAW'})
+
+
 def publish(client, **values):
     command = {'baseline_account_version': 1, 'origin_at': '2026-10-07T10:00:00+08:00',
                'as_of': '2026-10-07T16:00:00+08:00', **values}
