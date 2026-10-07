@@ -1,0 +1,15 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_actual_sdk_sealed_daily_tool_payload_is_audited_before_model_continuation _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-292/test_actual_sdk_sealed_daily_t0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E632175E00>
+
+    def test_actual_sdk_sealed_daily_tool_payload_is_audited_before_model_continuation(tmp_path,monkeypatch):
+>       from test_research_protocol import engineering_archive
+E       ModuleNotFoundError: No module named 'test_research_protocol'
+
+tests\application\test_deepseek_evidence.py:255: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/application/test_deepseek_evidence.py::test_actual_sdk_sealed_daily_tool_payload_is_audited_before_model_continuation
+1 failed, 10 deselected in 1.54s

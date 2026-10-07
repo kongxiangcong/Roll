@@ -71,7 +71,7 @@ class EvidenceStore:
             for row in db.execute('SELECT id,value FROM retrieval_runs'):
                 run=json.loads(row['value'])
                 if run['status']=='RUNNING':
-                    if run.get('backend')=='CODEX':
+                    if run.get('backend') in {'CODEX','DEEPSEEK'}:
                         from roll.agents.codex_process import owner_alive
                         if owner_alive(run):continue
                     run.update(status='INTERRUPTED',finished_at=now(),recovery_reason='PROCESS_RESTART_BEFORE_SNAPSHOT_COMMIT')
