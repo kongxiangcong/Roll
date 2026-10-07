@@ -4,7 +4,7 @@ type CsvDraft=Draft&{file:{filename:string;encoding:string;sha256:string};rows:{
 const labels:Record<string,string>={cash_balance:'账面现金',positions:'持仓',broker_available:'券商可用资金',permission_profile:'账户交易权限',external_cash_in:'外部投入',external_cash_out:'外部取出',investment_income:'投资收益到账',investment_expenses:'税费与投资支出',pending_income:'待结算应收',pending_expenses:'待结算应付'};
 function summary(field:string,value:unknown):string{
   if(value===undefined||value===null)return '未知';
-  if(field==='positions')return (value as Account['positions']).map(p=>`${p.instrument} ${p.quantity}股`).join('；')||'无持仓';
+  if(field==='positions')return (value as Account['positions']).map(p=>`${p.instrument} ${p.quantity}股，取得成本${p.acquisition_cost??'未知'}元`).join('；')||'无持仓';
   if(field==='permission_profile')return (value as Account['permission_profile']).map(p=>`${p.market}/${p.board} ${p.status}`).join('；')||'未登记';
   return String(value);
 }
@@ -35,6 +35,7 @@ export function SyncCsv({account,onDone}:{account:Account;onDone:()=>void}){
     {!draft?<><label>Roll CSV文件<input type="file" accept=".csv,text/csv" onChange={e=>setFile(e.target.files?.[0]??null)}/></label><button className="primary" disabled={busy||!file} onClick={()=>void upload()}>上传并预览整批</button></>:
     <><h3>{draft.status==='READY'?'整批确认前的差异':'原文件已保留，请修订'}</h3><p>{draft.file.filename} · {draft.rows.length}行 · 编码 {draft.file.encoding}</p>{draft.issues?.map((v,i)=><p role="status" key={i}>{issues(v)}</p>)}{draft.warnings.map((v,i)=><p role="status" key={i}>{issues(v)}</p>)}
       {draft.rows.some(r=>r.fields.fee_status==='PROVISIONAL')&&<p>费用暂估，实际费用仍未知</p>}
+      {Array.isArray(draft.preview.rights_fee_breakdown_pending?.after)&&draft.preview.rights_fee_breakdown_pending.after.length>0&&<p>配股总支付有依据，费用分拆仍待核；确认后只扣一次总支付。</p>}
       <dl>{Object.entries(draft.preview).filter(([f])=>f in labels).map(([f,v])=><div key={f}><dt>{labels[f]}</dt><dd>之前：{summary(f,v.before)}<br/>之后：{summary(f,v.after)}</dd></div>)}</dl>
       <button className="primary" disabled={busy||draft.status!=='READY'} onClick={()=>void confirm()}>确认整批入账</button><button disabled={busy} onClick={()=>void revise()}>按当前版本重新预览原文件</button><button disabled={busy} onClick={()=>{setRevisionOf(draft.draft_id);setDraft(null);sessionStorage.removeItem('roll.pending-csv');}}>选择修订文件</button>
       <details><summary>查看原行与文件身份</summary><p>SHA-256 {draft.file.sha256}</p><a href={`/api/account/csv/files/${draft.file.sha256}`} download={draft.file.filename}>下载保留的原文件</a><table><thead><tr><th>行</th><th>原始材料</th></tr></thead><tbody>{draft.rows.map(r=><tr key={r.row}><td>{r.row}</td><td><pre>{r.raw}</pre></td></tr>)}</tbody></table></details></>}

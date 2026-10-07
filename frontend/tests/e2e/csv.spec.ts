@@ -60,3 +60,28 @@ test('CSV v2 previews external funds separately from actual interest and confirm
   expect(interest.flow_category).toBe('INVESTMENT_INCOME');
   expect(interest.receipt_id).toBe(deposit.receipt_id);
 });
+
+test('CSV v2 paid rights previews cost and unknown fee split before one debit',async({page,request})=>{
+  const before=await (await request.get('/api/account')).json();
+  const template=await (await request.get('/api/account/csv/template')).text();
+  const columns=template.replace(/^\uFEFF/,'').trim().split(',');
+  const fields:Record<string,string>={template_version:'ROLL-CSV-2',kind:'RIGHTS_SUBSCRIPTION',effective_at:'2026-10-07T12:00:00+08:00',source:'合成实际配股文件',basis:'100股实际到账与总支付确认',record_id:'csv-browser-rights',exchange:'SZSE',code:'000003',quantity:'100',amount:'500.01'};
+  const body=template+columns.map(c=>fields[c]??'').join(',')+'\r\n';
+  await page.goto('/');
+  await page.getByRole('button',{name:'同步账户',exact:true}).click();
+  await page.getByRole('button',{name:'Roll CSV导入',exact:true}).click();
+  await page.getByLabel('Roll CSV文件').setInputFiles({name:'配股.csv',mimeType:'text/csv',buffer:Buffer.from(body)});
+  await page.getByRole('button',{name:'上传并预览整批'}).click();
+  await expect(page.getByText('配股总支付有依据，费用分拆仍待核；确认后只扣一次总支付。')).toBeVisible();
+  await expect(page.getByText(/SZSE:000003 100股，取得成本500.01元/)).toBeVisible();
+  expect((await (await request.get('/api/account')).json()).version).toBe(before.version);
+  await page.screenshot({path:'test-results/csv-rights-preview.png',fullPage:true});
+  await page.getByRole('button',{name:'确认整批入账'}).click();
+  await expect(page.getByRole('heading',{name:'CSV整批已确认，回执已保存'})).toBeVisible();
+  const after=await (await request.get('/api/account')).json();
+  expect(after.version).toBe(before.version+1);
+  expect(Number(after.cash_balance)).toBeCloseTo(Number(before.cash_balance)-500.01,2);
+  expect(after.share_records.find((r:{record_id:string})=>r.record_id==='csv-browser-rights').fee_amount).toBeNull();
+  await page.getByRole('button',{name:'回到今天',exact:true}).click();
+  await expect(page.getByText('配股 csv-browser-rights 费用分拆待核；实际总支付已确认，费用前损益未知')).toBeVisible();
+});
