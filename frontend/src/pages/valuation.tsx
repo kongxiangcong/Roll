@@ -1,7 +1,7 @@
 import {FormEvent,useEffect,useState} from 'react';
 import {request} from '../api';
 
-type Basis={baseline_account_version:number;origin_at:string;as_of:string;scope_kind:string;scope_id:string;funding_version:number};
+type Basis={baseline_account_version:number;origin_at:string;as_of:string;scope_kind:string;scope_id:string;funding_version:number;loss_binding:boolean;funding_scope:{scope_kind:string|null;scope_id:string|null}};
 type Quote={upstream_at:string;available_at:string;source_id:string;raw_hash:string;evidence_kind:string};
 type Value={valuation_id:string;method_version:string;account_version:number;known_by:string;origin_at:string;as_of:string;cash_plus_holdings:string|null;cash_estimated:boolean;asynchronous_quotes:boolean;
   account:{confirmed_at:string;effective_at:string;cash_balance:string;cash_balance_basis:string;broker_available:string|null;broker_available_as_of:string|null;broker_frozen:string|null;broker_frozen_as_of:string|null;withdrawable:string|null;withdrawable_as_of:string|null;fees_pending:string[]|null;rights_fee_breakdown_pending:string[]|null};
@@ -25,10 +25,11 @@ export function Valuation(){
   return <section><h1>账户估值与绩效</h1><p>现金账面余额加各持仓原始报价，已确认应收与应付另列。冻结款仍属于现金资产。基线前历史不完整，不推算全历史收益。</p>
     {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
     {basis&&<form onSubmit={publish}>
-      <label>基线账户版本<input type="number" min="1" value={basis.baseline_account_version} readOnly={basis.funding_version>0} onChange={e=>setBasis({...basis,baseline_account_version:Number(e.target.value)})} required/></label>
-      <label>计算起点（含时区）<input value={basis.origin_at} readOnly={basis.funding_version>0} onChange={e=>setBasis({...basis,origin_at:e.target.value})} required/></label>
+      <label>基线账户版本<input type="number" min="1" value={basis.baseline_account_version} readOnly={basis.loss_binding} onChange={e=>setBasis({...basis,baseline_account_version:Number(e.target.value)})} required/></label>
+      <label>计算起点（含时区）<input value={basis.origin_at} readOnly={basis.loss_binding} onChange={e=>setBasis({...basis,origin_at:e.target.value})} required/></label>
       <label>估值截止（含时区）<input value={basis.as_of} onChange={e=>setBasis({...basis,as_of:e.target.value})} required/></label>
-      {basis.funding_version>0&&<p className="muted">沿已确认资金范围保留原基线与损失起点。</p>}
+      {basis.loss_binding&&<p className="muted">沿已确认账户资金范围保留原基线与损失起点。</p>}
+      {basis.funding_scope.scope_kind==='TRIAL_ACTUAL'&&<p className="muted">本页展示完整账户；真实试用逐笔归属未确认，试用范围损失仍未知，试用资金起点保持原确认。</p>}
       <button disabled={busy}>计算并保存估值</button>
     </form>}
     {history.length>0&&<label>查看已保存估值<select aria-label="查看已保存估值" value={value?.valuation_id??''} onChange={e=>{setValue(history.find(v=>v.valuation_id===e.target.value)??null);setMessage('');}}>{history.map(v=><option key={v.valuation_id} value={v.valuation_id}>{v.as_of} · 账户 {v.account_version} · {v.valuation_id.slice(0,8)}</option>)}</select></label>}

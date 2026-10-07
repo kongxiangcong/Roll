@@ -187,7 +187,7 @@ class Ledger:
             event.update(account_version=account["version"]+1,recorded_at=now())
         return self.replay(history+events),events
 
-    def _prepare_fact(self, command, account):
+    def _prepare_fact(self, command, account, cash_restatements=None):
         payload = command["payload"]
         effective_at = timestamp(payload.get("effective_at"))
         source = text_value(payload.get("source"), "source")
@@ -246,7 +246,7 @@ class Ledger:
         elif command["kind"] in EVENT_FIELDS:
             with localcontext() as context:
                 context.prec=80
-                projection,events=actual_cash(command["kind"],payload,account,number,text_value)
+                projection,events=actual_cash(command["kind"],payload,account,number,text_value,cash_restatements)
         else:
             raise HTTPException(422, "尚不支持的草稿类型")
         if command["kind"] in {"BASELINE","PERMISSIONS"}:
@@ -495,6 +495,14 @@ class Ledger:
         materialized,chain,_=active_events(visible)
         selected=[e for e in materialized if effective_at is None or datetime.fromisoformat(e["effective_at"])<=datetime.fromisoformat(effective_at)]
         selected=sorted(enumerate(selected),key=lambda pair:(datetime.fromisoformat(pair[1]["effective_at"]),pair[0]))
+        # Restatements apply final known amounts before linked-settlement guards.
+        # Immutable originals and earlier system-knowledge cutoffs are untouched.
+        cash_restatements={}
+        for _,event in selected:
+            kind=event.get('replacement_command',{}).get('kind',event['event_type'])
+            if kind=='CASH_CORRECTION':
+                p=event.get('replacement_command',{}).get('payload',event['payload'])
+                cash_restatements[text_value(p['target_record_id'],'target_record_id')]=number(p['corrected_amount'],'corrected_amount')
         account=empty_account()
         fill_fields={"effective_at","source","instrument","direction","quantity","price","record_id","fill_id","order_id","behavior_context","fee","broker_available_after"}
         adjustment_fields={"effective_at","source","target_record_id","actual_fee_amount","basis"}
@@ -504,7 +512,7 @@ class Ledger:
             effective_kind=event.get("replacement_command",{}).get("kind",event["event_type"])
             if "replacement_command" in event:
                 command=fact_command(event)
-                account,new=self._prepare_fact(command,account)
+                account,new=self._prepare_fact(command,account,cash_restatements)
                 if command["kind"]=="FILL":
                     account["fills"][-1].update(event_id=event.get("event_id"),receipt_id=event.get("receipt_id"))
                 elif command["kind"] in EVENT_FIELDS:
@@ -543,7 +551,7 @@ class Ledger:
             elif event["event_type"] in EVENT_FIELDS:
                 kind=payload.get("kind",event["event_type"])
                 fields=EVENT_FIELDS[kind]
-                account,_=self._prepare_fact({"kind":kind,"payload":{key:payload[key] for key in fields}},account)
+                account,_=self._prepare_fact({"kind":kind,"payload":{key:payload[key] for key in fields}},account,cash_restatements)
                 stamp_cash(account,payload,event_id=payload.get("event_id"),receipt_id=payload.get("receipt_id"),confirmed_at=event["recorded_at"])
             account.update(version=event["account_version"],confirmed_at=event["recorded_at"],state="CONFIRMED_AS_OF")
             account["effective_at"]=prior_at if effective_kind=="ACCOUNT_DECLARATION" else event["effective_at"]

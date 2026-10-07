@@ -128,10 +128,12 @@ class Valuations:
         funding=Funding(self.ledger).current()
         versions=self.ledger.versions()
         if not versions:raise HTTPException(409,'请先确认账户基线')
-        return {'baseline_account_version':funding.get('baseline_account_version',versions[0]['version']),
-            'origin_at':funding.get('loss_origin_at',versions[0]['effective_at']),
-            'scope_kind':funding.get('scope_kind','ACCOUNT'),'scope_id':funding.get('scope_id','account'),
-            'funding_version':funding['version'],'as_of':now()}
+        bound=funding.get('scope_kind')=='ACCOUNT'
+        return {'baseline_account_version':funding['baseline_account_version'] if bound else versions[0]['version'],
+            'origin_at':funding['loss_origin_at'] if bound else versions[0]['effective_at'],
+            'scope_kind':'ACCOUNT','scope_id':funding['scope_id'] if bound else 'account',
+            'funding_version':funding['version'],'as_of':now(),'loss_binding':bound,
+            'funding_scope':{k:funding.get(k) for k in ['scope_kind','scope_id','baseline_account_version','loss_origin_at']}}
 
     def quotes(self,account,as_of,known_by):
         result={}
@@ -144,11 +146,11 @@ class Valuations:
     def publish(self,command):
         command=command.model_dump()
         basis=self.basis()
-        if command['scope_kind']!='ACCOUNT' or command['scope_id']!=basis['scope_id'] or basis['scope_kind']!='ACCOUNT':raise HTTPException(422,{'code':'UNSUPPORTED_ACTUAL_SCOPE','reason':'真实试用逐事件归属尚未确认，不能用全账户代替；账户范围需匹配现有事实链'})
+        if command['scope_kind']!='ACCOUNT' or command['scope_id'] not in {'account',basis['scope_id']}:raise HTTPException(422,{'code':'UNSUPPORTED_ACTUAL_SCOPE','reason':'真实试用逐事件归属尚未确认，不能用全账户代替；账户范围需匹配现有事实链'})
         for field in ['origin_at','as_of']:
             command[field]=timestamp(command[field],field)
         command['known_by']=timestamp(command['known_by'] or now(),'known_by')
-        if basis['funding_version'] and (command['baseline_account_version']!=basis['baseline_account_version'] or at(command['origin_at'])!=at(basis['origin_at'])):
+        if basis['loss_binding'] and command['scope_id']==basis['scope_id'] and (command['baseline_account_version']!=basis['baseline_account_version'] or at(command['origin_at'])!=at(basis['origin_at'])):
             raise HTTPException(409,'不能更换已确认资金授权链的基线或损失起点')
         baseline=self.ledger.account(command['baseline_account_version'])
         if at(command['origin_at'])<at(baseline['effective_at']) or at(command['as_of'])<at(command['origin_at']):raise HTTPException(422,'基线版本不能含起点后的事实，截止不能早于起点')

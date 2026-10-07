@@ -26,7 +26,7 @@ def instrument(value,text_value):
     return result
 
 
-def actual_cash(kind,payload,account,number,text_value):
+def actual_cash(kind,payload,account,number,text_value,restatements=None):
     if set(payload)!=EVENT_FIELDS[kind]:
         raise HTTPException(422,"现金事件字段缺失或存在未知字段")
     if account["version"]==0:
@@ -45,8 +45,9 @@ def actual_cash(kind,payload,account,number,text_value):
             raise HTTPException(422,"配股标识与已确认成交重复，请核对原记录")
         return rights_subscription(payload,account,number,text_value)
     if kind=="CASH_CORRECTION":
-        return cash_correction(payload,account,number,text_value)
+        return cash_correction(payload,account,number,text_value,restatements)
     amount=number(payload["amount"],"amount")
+    applied_amount=(restatements or {}).get(record,amount)
     if Decimal(amount)<=0:
         raise HTTPException(422,"实际现金流水金额需大于零")
     item_type=kind
@@ -57,18 +58,19 @@ def actual_cash(kind,payload,account,number,text_value):
     elif kind=="SETTLEMENT":
         target=text_value(payload["target_record_id"],"target_record_id")
         pending=next((item for item in account.get("pending_items",[]) if item["record_id"]==target),None)
-        if pending is None or Decimal(amount)>Decimal(pending["outstanding_amount"]):
+        if pending is None or Decimal(applied_amount)>Decimal(pending["outstanding_amount"]):
             raise HTTPException(422,"关联待结算不存在或结算超过剩余余额")
         item_type=pending["item_type"]
     category={"CASH_IN":"EXTERNAL_IN","CASH_OUT":"EXTERNAL_OUT","DIVIDEND":"INVESTMENT_INCOME",
               "INTEREST":"INVESTMENT_INCOME","TAX":"INVESTMENT_EXPENSE","FEE":"INVESTMENT_EXPENSE"}[item_type]
     record_payload={**payload,"record_id":record,"amount":amount,"kind":kind,"flow_category":category,
                     "basis":text_value(payload["basis"],"basis")}
+    if applied_amount!=amount:record_payload['applied_amount_at_knowledge']=applied_amount
     if "instrument" in payload:
         record_payload["instrument"]=instrument(payload["instrument"],text_value)
     projection=copy.deepcopy(account)
     sign=1 if category in {"EXTERNAL_IN","INVESTMENT_INCOME"} else -1
-    projection["cash_balance"]=money(Decimal(account["cash_balance"])+(0 if kind=="PENDING_ITEM" else sign*Decimal(amount)))
+    projection["cash_balance"]=money(Decimal(account["cash_balance"])+(0 if kind=="PENDING_ITEM" else sign*Decimal(applied_amount)))
     if Decimal(projection["cash_balance"])<0:
         raise HTTPException(422,"流水导致负现金，需要核对漏记资金")
     projection.setdefault("cash_records",[]).append(record_payload)
@@ -94,7 +96,7 @@ def refresh_balances(account):
     records=account.get("cash_records",[])
     resolutions=account.get("cash_resolutions",{})
     def resolved(record):
-        return Decimal(resolutions.get(record["record_id"],{}).get("amount",record["amount"]))
+        return Decimal(resolutions.get(record["record_id"],{}).get("amount",record.get('applied_amount_at_knowledge',record["amount"])))
     for record in records:
         if record["kind"]=="PENDING_ITEM":
             settlements=[r for r in records if r["kind"]=="SETTLEMENT" and r["target_record_id"]==record["record_id"]]
@@ -119,16 +121,18 @@ def stamp_cash(account,payload,**metadata):
             record.update(metadata)
 
 
-def cash_correction(payload,account,number,text_value):
+def cash_correction(payload,account,number,text_value,restatements=None):
     target=text_value(payload["target_record_id"],"target_record_id")
     original=next((r for r in account.get("cash_records",[]) if r["record_id"]==target and r["kind"]!="CASH_CORRECTION"),None)
     if original is None:
         raise HTTPException(422,"找不到可更正的已确认现金/待结算记录")
     amount=number(payload["corrected_amount"],"corrected_amount")
+    applied_amount=(restatements or {}).get(target,amount)
     basis=text_value(payload["basis"],"basis")
     previous=account.get("cash_resolutions",{}).get(target,{})
-    old_amount=previous.get("amount",original["amount"])
-    delta=Decimal(amount)-Decimal(old_amount)
+    old_applied=previous.get('amount',original.get('applied_amount_at_knowledge',original['amount']))
+    old_amount=previous.get('raw_amount',original['amount'])
+    delta=Decimal(applied_amount)-Decimal(old_applied)
     projection=copy.deepcopy(account)
     sign=1 if original["flow_category"] in {"EXTERNAL_IN","INVESTMENT_INCOME"} else -1
     cash_delta=Decimal(0) if original["kind"]=="PENDING_ITEM" else sign*delta
@@ -138,8 +142,9 @@ def cash_correction(payload,account,number,text_value):
     record={**payload,"kind":"CASH_CORRECTION","record_id":text_value(payload["record_id"],"record_id"),
             "basis":basis,"corrected_amount":amount,"previous_amount":old_amount,"cash_delta":money(cash_delta),
             "previous_correction_id":previous.get("correction_id"),"flow_category":"ADJUSTMENT"}
+    if restatements is not None:record['applied_corrected_amount_at_knowledge']=applied_amount
     projection.setdefault("cash_records",[]).append(record)
-    projection.setdefault("cash_resolutions",{})[target]={"amount":amount,"correction_id":record["record_id"],"basis":basis,"effective_at":payload["effective_at"]}
+    projection.setdefault("cash_resolutions",{})[target]={"amount":applied_amount,"raw_amount":amount,"correction_id":record["record_id"],"basis":basis,"effective_at":payload["effective_at"]}
     refresh_balances(projection)
     if original["kind"]=="PENDING_ITEM":
         if payload["broker_available_after"] is not None:
