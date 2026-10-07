@@ -1,6 +1,6 @@
 # Roll CSV · 03
 
-`ROLL-CSV-1` 为冻结初版；当前下载 `ROLL-CSV-2` 覆盖已实现04事件。应用 `/api/account/csv/template` 下载UTF-8 BOM CSV；`/api/account/csv/guide` 提供对应字段说明。列定义在 `roll.accounts.csv_import.COLUMNS`，每行版本不可省略；应用只接收该明确格式，没有声称支持任何券商专用格式。`?version=ROLL-CSV-1`可下载原版，原列头/版本仍可解析，不暗改已有版本含义。后续05增加事件时发布后继模板并保留旧版解释。
+`ROLL-CSV-1` 为冻结初版；当前下载 `ROLL-CSV-3` 覆盖已实现04与05事件。应用 `/api/account/csv/template` 下载UTF-8 BOM CSV；`/api/account/csv/guide` 提供对应字段说明。列定义在 `roll.accounts.csv_import.COLUMNS`，每行版本不可省略；应用只接收该明确格式，没有声称支持任何券商专用格式。`?version=ROLL-CSV-1`或`?version=ROLL-CSV-2`可下载冻结原版，原列头/版本仍可解析，不暗改已有版本含义。05新增范围声明、分项对账及完整替代/冲正使用v3，保留v1/v2原头与原种类集合。
 
 初始文件恰有一行BASELINE_CASH、零至多行INITIAL_POSITION/PERMISSION，同一时点与来源，合成一个BASELINE命令。PERMISSION也可独立组成PERMISSIONS命令。初始状态、权限更新与后续事件分别上传，避免合并改变文件时序。FILL/FEE_ADJUSTMENT按原行顺序投影；字段、未知费用、成本与舍入复用[成交契约](fill-contract.md)，不另设财务计算。一次批次确认只产生一个账户版本，所有事件、最终投影、审计、幂等回执共用Ledger.confirm原事务。
 
@@ -20,10 +20,14 @@ GET `/api/account/csv/drafts/{id}` 取得文件、原行、预览、错误、警
 
 POST `/api/account/csv/drafts/{id}/revise` `{expected_account_version,encoding}` 对原字节重新解码/按当前版本预览；上传修订文件可显式给`revision_of`。保留原稿，READY后继原子将原稿标为SUPERSEDED，原稿不可再确认；失败后继不会清除原待核。已确认文件不能修订，要由新增账户更正事件处理。原有文件/账本不被覆盖。旧版本新上传也保留原始预期版本和冲突原因，不自动入账。
 
-schema只创建当前需要的account_csv_imports及文件身份索引；不重置Ledger user_version。运行数据不进入源代码目录，依赖清单/锁文件无需改变。03已合并04实际现金/权益实现并用v2模板联验；每行事件复用04 EVENT_FIELDS精确字段与Ledger.prepare。05对账新增事件仍由对应票扩模板，03未实现对账逻辑。
+schema只创建当前需要的account_csv_imports及文件身份索引；不重置Ledger user_version。运行数据不进入源代码目录，依赖清单/锁文件无需改变。03已合并04实际现金/权益实现并用v2模板联验；每行事件复用04 EVENT_FIELDS精确字段与Ledger.prepare。05已由责任票扩v3，继续复用唯一账户确认链；03自身不复制对账逻辑。
 
 ## v2现金与权益
 
 v2在v1原列后追加amount、item_type、corrected_amount、new_quantity。支持CASH_IN/CASH_OUT/DIVIDEND/INTEREST/TAX/FEE/PENDING_ITEM/SETTLEMENT/CASH_CORRECTION/SHARE_CHANGE/RIGHTS_SUBSCRIPTION；类型原字段复用[现金权益契约](cash-equity-contract.md)。instrument由exchange/code组成（允许空仅在04契约允许时），record_id若空由文件SHA＋行号生成。待结算不变可用现金；到账关联、不重复收益、外部投入不计投资盈利及数量/成本守恒均由04同一投影完成。金额未知仍隔离待核；任何后续行错误使整个批次失败。
 
 RIGHTS_SUBSCRIPTION复用v2既有quantity、amount、fee_amount列：quantity是实际新增股份，amount是包含费用的实际总支付；fee_amount空白解析为null且保留费用分拆待核，已知零必须显式填0。FEE_ADJUSTMENT可以指向该record_id补齐总支付内费用分拆，同批或之后追加均不二次扣款。v1原列/允许kind集合冻结，不能录入配股新事件。实际v2配股＋后补分拆单事务及三个OS故障点验收归04，见[04证据](../.scratch/roll-p0/evidence/04/acceptance.md)。
+
+## v3补录更正与核对
+
+v3新增八个实际使用列和CORRECTION/ACCOUNT_DECLARATION/RECONCILIATION，结构化JSON单元格与当前替代链身份、未知值、逐项快照及材料处理规则见[05契约](reconciliation-contract.md)。已有v1/v2草稿、原件及对应解析保留，默认模板变更不改变旧文件的含义。新事实整批真实API/Chrome与SQLite恢复证据见[05证据](../.scratch/roll-p0/evidence/05/acceptance.md)。

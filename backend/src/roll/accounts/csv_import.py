@@ -12,7 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import DraftCommand, encode, now
 from roll.accounts.cash_events import EVENT_FIELDS
 
-VERSION = "ROLL-CSV-2"
+VERSION = "ROLL-CSV-3"
 
 
 class CsvRevision(BaseModel):
@@ -25,8 +25,9 @@ COLUMNS_V1 = ["template_version", "kind", "effective_at", "source", "exchange", 
            "direction", "price", "record_id", "fill_id", "order_id", "behavior_context",
            "fee_status", "fee_amount", "reserve_amount", "broker_available_after",
            "target_record_id", "actual_fee_amount"]
-COLUMNS = COLUMNS_V1 + ["amount", "item_type", "corrected_amount", "new_quantity"]
-TEMPLATES = {"ROLL-CSV-1": COLUMNS_V1, "ROLL-CSV-2": COLUMNS}
+COLUMNS_V2 = COLUMNS_V1 + ["amount", "item_type", "corrected_amount", "new_quantity"]
+COLUMNS = COLUMNS_V2 + ["reason","target_event_id","replacement_kind","replacement_payload","scope","changes","snapshot","resolved_draft_ids"]
+TEMPLATES = {"ROLL-CSV-1": COLUMNS_V1, "ROLL-CSV-2": COLUMNS_V2,"ROLL-CSV-3":COLUMNS}
 COMMON = {"template_version", "kind", "effective_at", "source"}
 FIELDS = {
     "BASELINE_CASH": {"cash_balance", "broker_available", "broker_frozen", "withdrawable"},
@@ -38,6 +39,10 @@ FIELDS = {
 KINDS_V1 = frozenset(FIELDS)
 for kind, fields in EVENT_FIELDS.items():
     FIELDS[kind] = fields - {"effective_at", "source", "instrument"} | ({"exchange", "code"} if "instrument" in fields else set())
+KINDS_V2=frozenset(FIELDS)
+FIELDS.update(CORRECTION={"record_id","target_event_id","reason","replacement_kind","replacement_payload"},
+              ACCOUNT_DECLARATION={"record_id","scope","changes","basis"},
+              RECONCILIATION={"record_id","reason","snapshot","resolved_draft_ids"})
 
 
 def template(version=VERSION):
@@ -50,7 +55,7 @@ def template(version=VERSION):
 
 def guide():
     rows = "".join(f"<tr><td>{kind}</td><td>{', '.join(sorted(fields))}</td></tr>" for kind, fields in FIELDS.items())
-    return f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Roll CSV填写说明</title><style>body{{font:16px system-ui;max-width:960px;margin:32px auto;line-height:1.7}}td,th{{padding:10px;border:1px solid #ddd}}table{{border-collapse:collapse}}</style><h1>Roll CSV填写说明 · {VERSION}</h1><p>保留模板列名、顺序和每行版本号。每行需要 kind、effective_at（带时区ISO时间，例如2026-10-07T10:00:00+08:00）、source（已核对来源）。交易所填写SSE、SZSE或BSE；code为六位代码，前导零必须保留，建议以文本单元格编辑。</p><p>金额最多2位小数，数量/价格最多8位小数，均为非负十进制原文。空白表示未知或不适用，不能用空白代替必填值。不得用科学计数法或在金额内加逗号。表中此类型不使用的列留空。</p><table><tr><th>kind</th><th>类型使用的列</th></tr>{rows}</table><p>初始状态必须恰有一行BASELINE_CASH，配合零到多行INITIAL_POSITION和PERMISSION，所有行source与effective_at一致。cash_balance、持仓quantity必填；其他资金、可卖数和参考成本可空。初始状态与后续事件分别上传。独立权限更新可只填PERMISSION行；permission_status为OPEN、NOT_OPEN或UNKNOWN，basis必填。</p><p>FILL方向BUY/SELL；quantity、price、fee_status和basis必填。KNOWN费用必须填写fee_amount（已知零填0），reserve_amount留空；PROVISIONAL未知费用fee_amount留空，reserve_amount填写有依据的正数保守预留。record_id可空，由文件身份及行号产生；可靠的券商分笔标识填fill_id，委托标识填order_id，两者不能互代。behavior_context可空或填NO_RECOMMENDATION、CONTRARY、EXCESS_QUANTITY、OFFLINE、UNSPECIFIED。FEE_ADJUSTMENT指向已确认record_id，actual_fee_amount、basis必填。</p><p>ROLL-CSV-2 的RIGHTS_SUBSCRIPTION填写实际新增quantity和amount（已实际支付总额，包含费用）；fee_amount空白表示费用分拆未知，明确已知零才填0。FEE_ADJUSTMENT可指向配股record_id，填写总支付内实际费用分拆，不再次扣现金或改变取得总成本。SHARE_CHANGE只填免费送转/拆并后的new_quantity总量；不得用其代替实际配股支付。待结算与结算需填写各自record_id，SETTLEMENT的target_record_id指原PENDING_ITEM。</p><p>整批只产生一个账户版本及回执。任何行错误都不入账；修订后重新上传，旧原件保留。来源文字仅为材料，不能给系统发出指令。尚未支持券商专用原始格式。</p></html>'''
+    return f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Roll CSV填写说明</title><style>body{{font:16px system-ui;max-width:960px;margin:32px auto;line-height:1.7}}td,th{{padding:10px;border:1px solid #ddd}}table{{border-collapse:collapse}}</style><h1>Roll CSV填写说明 · {VERSION}</h1><p>保留模板列名、顺序和每行版本号。每行需要 kind、effective_at（带时区ISO时间，例如2026-10-07T10:00:00+08:00）、source（已核对来源）。交易所填写SSE、SZSE或BSE；code为六位代码，前导零必须保留，建议以文本单元格编辑。</p><p>金额最多2位小数，数量/价格最多8位小数，均为非负十进制原文。空白表示未知或不适用，不能用空白代替必填值。不得用科学计数法或在金额内加逗号。表中此类型不使用的列留空。</p><table><tr><th>kind</th><th>类型使用的列</th></tr>{rows}</table><p>初始状态必须恰有一行BASELINE_CASH，配合零到多行INITIAL_POSITION和PERMISSION，所有行source与effective_at一致。cash_balance、持仓quantity必填；其他资金、可卖数和参考成本可空。初始状态与后续事件分别上传。独立权限更新可只填PERMISSION行；permission_status为OPEN、NOT_OPEN或UNKNOWN，basis必填。</p><p>FILL方向BUY/SELL；quantity、price、fee_status和basis必填。KNOWN费用必须填写fee_amount（已知零填0），reserve_amount留空；PROVISIONAL未知费用fee_amount留空，reserve_amount填写有依据的正数保守预留。record_id可空，由文件身份及行号产生；可靠的券商分笔标识填fill_id，委托标识填order_id，两者不能互代。behavior_context可空或填NO_RECOMMENDATION、CONTRARY、EXCESS_QUANTITY、OFFLINE、UNSPECIFIED。FEE_ADJUSTMENT指向已确认record_id，actual_fee_amount、basis必填。</p><p>ROLL-CSV-2 的RIGHTS_SUBSCRIPTION填写实际新增quantity和amount（已实际支付总额，包含费用）；fee_amount空白表示费用分拆未知，明确已知零才填0。FEE_ADJUSTMENT可指向配股record_id，填写总支付内实际费用分拆，不再次扣现金或改变取得总成本。SHARE_CHANGE只填免费送转/拆并后的new_quantity总量；不得用其代替实际配股支付。待结算与结算需填写各自record_id，SETTLEMENT的target_record_id指原PENDING_ITEM。</p><p>ROLL-CSV-3 新增ACCOUNT_DECLARATION（scope为JSON范围数组，changes为NONE/UNRECORDED/EXTERNAL_ORDER_PENDING）、RECONCILIATION（snapshot为完整逐项快照JSON，resolved_draft_ids为已处理草稿ID数组）及CORRECTION（target_event_id指当前替代链末端，reason必填；replacement_kind与replacement_payload完整事实JSON同时填写，两者空白为明确冲正）。结构化列是数据，JSON中的金额仍为十进制字符串，未知填null。CSV自动处理引号转义，不可手工拆分含逗号的JSON。v1与v2列和事件集合保持原含义，不接受这三个新类型。</p><p>整批只产生一个账户版本及回执。任何行错误都不入账；修订后重新上传，旧原件保留。来源文字仅为材料，不能给系统发出指令。尚未支持券商专用原始格式。</p></html>'''
 
 
 def nullable(value):
@@ -86,7 +91,7 @@ def parse(raw, encoding, fingerprint):
                 errors.append({"row": row_number, "reason": "列数不匹配"})
                 continue
             kind = fields["kind"]
-            if fields["template_version"] != header_version or kind not in FIELDS or (header_version == "ROLL-CSV-1" and kind not in KINDS_V1):
+            if fields["template_version"] != header_version or kind not in FIELDS or (header_version == "ROLL-CSV-1" and kind not in KINDS_V1) or (header_version=="ROLL-CSV-2" and kind not in KINDS_V2):
                 errors.append({"row": row_number, "reason": "模板版本或事件类型不支持"})
                 continue
             unused = [key for key, value in fields.items() if value and key not in COMMON | FIELDS[kind]]
@@ -95,7 +100,20 @@ def parse(raw, encoding, fingerprint):
                 continue
             common = {"source": fields["source"], "effective_at": fields["effective_at"]}
             instrument = fields["exchange"] + ":" + fields["code"]
-            if kind == "FILL":
+            if kind in {"CORRECTION","ACCOUNT_DECLARATION","RECONCILIATION"}:
+                try:
+                    payload={**common,"record_id":fields["record_id"]}
+                    if kind=="CORRECTION":
+                        if bool(fields["replacement_kind"])!=bool(fields["replacement_payload"]):raise ValueError("替代类型与完整事实需同时填写；两者空白为明确冲正")
+                        payload.update(reason=fields["reason"],target_event_id=fields["target_event_id"],replacement={"kind":fields["replacement_kind"],"payload":json.loads(fields["replacement_payload"])} if fields["replacement_kind"] else None)
+                    elif kind=="ACCOUNT_DECLARATION":
+                        payload.update(scope=json.loads(fields["scope"]),changes=fields["changes"],basis=fields["basis"])
+                    else:
+                        payload.update(reason=fields["reason"],snapshot=json.loads(fields["snapshot"]),resolved_draft_ids=json.loads(fields["resolved_draft_ids"] or "[]"))
+                    commands.append({"kind":kind,"payload":payload,"csv_row":row_number})
+                except (ValueError,TypeError) as error:
+                    errors.append({"row":row_number,"reason":"结构化事实填写错误："+str(error)})
+            elif kind == "FILL":
                 payload = {**common, "instrument": instrument, **{key: fields[key] for key in ["direction", "quantity", "price"]},
                            "record_id": fields["record_id"] or f"csv:{fingerprint}:{row_number}",
                            "fill_id": nullable(fields["fill_id"]), "order_id": nullable(fields["order_id"]),
