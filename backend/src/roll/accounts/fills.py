@@ -178,19 +178,12 @@ def fee_adjustment(payload,account,number,text_value):
     lot=next((l for l in projection.get("lots",[]) if l["lot_id"]==target),None)
     cost_delta=Decimal(0)
     if lot is not None:
-        old_remaining=Decimal(lot["remaining_cost"])
-        old_released=Decimal(lot["original_cost"])-old_remaining
-        original_cost=Decimal(lot["original_cost"])+delta
-        sold=Decimal(lot["original_quantity"])-Decimal(lot["remaining_quantity"])
-        released=Decimal(money(original_cost*sold/Decimal(lot["original_quantity"])))
-        remaining=original_cost-released
-        lot.update(original_cost=money(original_cost),remaining_cost=money(remaining),cost_basis="KNOWN")
-        cost_delta=remaining-old_remaining
+        cost_delta,gain_delta=adjust_lot_fee(lot,projection["lots"],delta)
         position=next((p for p in projection["positions"] if p["instrument"]==fill["instrument"]),None)
         if position and position.get("acquisition_cost") is not None:
             position["acquisition_cost"]=money(Decimal(position["acquisition_cost"])+cost_delta)
-        if sold and projection.get("realized_gain") is not None:
-            projection["realized_gain"]=money(Decimal(projection["realized_gain"])+old_released-released)
+        if projection.get("realized_gain") is not None:
+            projection["realized_gain"]=money(Decimal(projection["realized_gain"])+gain_delta)
     elif projection.get("realized_gain") is not None:
         projection["realized_gain"]=money(Decimal(projection["realized_gain"])-delta)
     projection.setdefault("fee_resolutions",{})[target]={"actual_fee_amount":amount,"basis":basis,"effective_at":payload["effective_at"]}
@@ -202,3 +195,23 @@ def fee_adjustment(payload,account,number,text_value):
     update_fee_state(projection)
     event={**payload,"actual_fee_amount":amount,"previous_charged_fee":prior,"cash_delta":money(-delta),"remaining_cost_delta":money(cost_delta)}
     return projection,[{"event_type":"FEE_ADJUSTMENT","payload":event}]
+
+
+def adjust_lot_fee(lot,lots,delta):
+    """Carry a root buy-fee adjustment through actual share-change transfers."""
+    old_remaining=Decimal(lot["remaining_cost"])
+    old_transfer=Decimal(lot.get("transferred_cost","0.00"))
+    old_released=Decimal(lot["original_cost"])-old_remaining-old_transfer
+    original_cost=Decimal(lot["original_cost"])+delta
+    sold=Decimal(lot["original_quantity"])-Decimal(lot["remaining_quantity"])-Decimal(lot.get("transferred_quantity","0"))
+    released=Decimal(money(original_cost*sold/Decimal(lot["original_quantity"])))
+    remaining=original_cost-released
+    lot.update(original_cost=money(original_cost),cost_basis="KNOWN")
+    gain_delta=old_released-released
+    if "transfer_child_id" in lot:
+        lot["transferred_cost"]=money(remaining)
+        child=next(item for item in lots if item["lot_id"]==lot["transfer_child_id"])
+        cost_delta,child_gain_delta=adjust_lot_fee(child,lots,remaining-old_transfer)
+        return cost_delta,gain_delta+child_gain_delta
+    lot["remaining_cost"]=money(remaining)
+    return remaining-old_remaining,gain_delta
