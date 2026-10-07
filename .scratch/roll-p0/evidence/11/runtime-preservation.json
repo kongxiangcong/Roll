@@ -1,0 +1,372 @@
+{
+  "recorded_at": "2026-10-07T19:14:27.812411+00:00",
+  "runs": [
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\failed-start-task-1\\live-task-1",
+      "evidence_file": "runtime-failed-start-task-1-live-task-1.json",
+      "run_id": "13ce4ae0-e672-4750-a4d7-a37dddd4464b",
+      "status": "FAILED",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T17:41:58.183836+00:00",
+      "finished_at": "2026-10-07T17:42:20.834586+00:00",
+      "snapshot_id": null,
+      "model": "gpt-6.1-sol",
+      "tool_calls": 0,
+      "acquisition_usage": null,
+      "remaining_pids": [],
+      "temporary_directory_removed": null,
+      "recovery_cleanup": null,
+      "assertions": null
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\live-task-2",
+      "evidence_file": "runtime-live-task-2.json",
+      "run_id": "444d3d0f-4ffe-494a-a176-5249092dc6f0",
+      "status": "FAILED",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T17:45:40.796444+00:00",
+      "finished_at": "2026-10-07T17:46:23.327707+00:00",
+      "snapshot_id": "a7670e7d-e279-4564-8868-d7d56ce172e6",
+      "model": "gpt-6.1-sol",
+      "tool_calls": 0,
+      "acquisition_usage": null,
+      "remaining_pids": [],
+      "temporary_directory_removed": null,
+      "recovery_cleanup": null,
+      "assertions": null
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\live-task-3",
+      "evidence_file": "runtime-live-task-3.json",
+      "run_id": "711b6142-ac50-4fbf-946a-c7dee43e56dc",
+      "status": "PARTIAL",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T17:55:36.706487+00:00",
+      "finished_at": "2026-10-07T17:56:40.832565+00:00",
+      "snapshot_id": "b3a57ea8-27f8-4abf-8401-8754c6c2baa8",
+      "model": "gpt-6.1-sol",
+      "tool_calls": 3,
+      "acquisition_usage": null,
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": null
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\real-adversarial",
+      "evidence_file": "runtime-real-adversarial.json",
+      "run_id": "9c4e3e0b-a2af-4f49-bc73-a070212bc7ac",
+      "status": "INVALID_OUTPUT",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T18:06:03.692641+00:00",
+      "finished_at": "2026-10-07T18:06:48.456769+00:00",
+      "snapshot_id": null,
+      "model": "gpt-6.1-sol",
+      "tool_calls": 2,
+      "acquisition_usage": {
+        "archived_bytes": 55595,
+        "http_calls": 2,
+        "model_tool_result_bytes": 10583
+      },
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": {
+        "account_unchanged": true,
+        "marker_absent": true,
+        "network_probe_requests": [],
+        "private_sentinel_not_disclosed": true,
+        "elapsed": 44.805
+      }
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\real-adversarial-final",
+      "evidence_file": "runtime-real-adversarial-final.json",
+      "run_id": "64b13072-bc50-41ea-aa25-db6ae02a6c83",
+      "status": "PARTIAL",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T18:52:24.999247+00:00",
+      "finished_at": "2026-10-07T18:52:48.128503+00:00",
+      "snapshot_id": "171bfbd7-3d09-44c0-af96-c4844502cc87",
+      "model": "gpt-6.1-sol",
+      "tool_calls": 1,
+      "acquisition_usage": {
+        "archived_bytes": 550,
+        "http_calls": 1,
+        "model_tool_result_bytes": 1760,
+        "received_bytes": 550
+      },
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": {
+        "account_unchanged": true,
+        "marker_absent": true,
+        "network_probe_requests": [],
+        "private_sentinel_not_disclosed": true,
+        "elapsed": 23.147
+      },
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-64b13072-bc50-41ea-aa25-db6ae02a6c83-vxftthqe",
+      "auth_copy_remaining": false
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\real-cancel",
+      "evidence_file": "runtime-real-cancel.json",
+      "run_id": "b55e86ba-2d4a-4259-901d-48ed802a029c",
+      "status": "CANCELLED",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T18:06:18.612974+00:00",
+      "finished_at": "2026-10-07T18:06:27.938787+00:00",
+      "snapshot_id": null,
+      "model": "gpt-6.1-sol",
+      "tool_calls": 0,
+      "acquisition_usage": {
+        "archived_bytes": 0,
+        "http_calls": 0,
+        "model_tool_result_bytes": 0
+      },
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": {
+        "account_unchanged": true,
+        "marker_absent": true,
+        "network_probe_requests": [],
+        "private_sentinel_not_disclosed": true,
+        "elapsed": 9.394
+      }
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\real-crash",
+      "evidence_file": "runtime-real-crash.json",
+      "run_id": "76061352-cd4c-4912-951a-69f1ca0828b2",
+      "status": "FAILED",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T18:08:41.866228+00:00",
+      "finished_at": "2026-10-07T18:08:55.847753+00:00",
+      "snapshot_id": null,
+      "model": "gpt-6.1-sol",
+      "tool_calls": 0,
+      "acquisition_usage": {
+        "archived_bytes": 0,
+        "http_calls": 0,
+        "model_tool_result_bytes": 0
+      },
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": {
+        "account_unchanged": true,
+        "marker_absent": true,
+        "network_probe_requests": [],
+        "private_sentinel_not_disclosed": true,
+        "elapsed": 14.08
+      }
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\real-missing-model",
+      "evidence_file": "runtime-real-missing-model.json",
+      "run_id": "2397172c-5ac6-4350-b4a5-0c739be5e84b",
+      "status": "UNAVAILABLE",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T18:08:27.574433+00:00",
+      "finished_at": "2026-10-07T18:08:42.873608+00:00",
+      "snapshot_id": null,
+      "model": null,
+      "tool_calls": 0,
+      "acquisition_usage": {
+        "archived_bytes": 0,
+        "http_calls": 0,
+        "model_tool_result_bytes": 0
+      },
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": {
+        "account_unchanged": true,
+        "marker_absent": true,
+        "network_probe_requests": [],
+        "private_sentinel_not_disclosed": true,
+        "elapsed": 15.323
+      }
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\real-timeout",
+      "evidence_file": "runtime-real-timeout.json",
+      "run_id": "fe63e00d-b656-4bdf-bcb3-a2fec8febbfd",
+      "status": "TIMED_OUT",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T18:10:25.458652+00:00",
+      "finished_at": "2026-10-07T18:10:27.735310+00:00",
+      "snapshot_id": null,
+      "model": null,
+      "tool_calls": 0,
+      "acquisition_usage": {
+        "archived_bytes": 0,
+        "http_calls": 0,
+        "model_tool_result_bytes": 0
+      },
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": {
+        "account_unchanged": true,
+        "marker_absent": true,
+        "network_probe_requests": [],
+        "private_sentinel_not_disclosed": true,
+        "elapsed": 2.35
+      }
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\real-host-crash",
+      "evidence_file": "runtime-real-host-crash.json",
+      "run_id": "30c70eb2-8ce6-415b-9eb8-38d5b848048b",
+      "status": "INTERRUPTED",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T18:52:45.801519+00:00",
+      "finished_at": "2026-10-07T18:52:54.782328+00:00",
+      "snapshot_id": null,
+      "model": "gpt-6.1-sol",
+      "tool_calls": 0,
+      "acquisition_usage": null,
+      "remaining_pids": null,
+      "temporary_directory_removed": null,
+      "recovery_cleanup": {
+        "credential_removed": true,
+        "status": "REMOVED"
+      },
+      "assertions": {
+        "actual_chatgpt_turn": true,
+        "job_descendants_dead": true,
+        "auth_task_root_removed": true,
+        "account_unchanged": true
+      },
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-30c70eb2-8ce6-415b-9eb8-38d5b848048b-nfszexpj",
+      "auth_copy_remaining": false,
+      "actual_turn_before_host_crash": "01a117b6-18ac-7733-a097-a22af4201fd5"
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\codex-browser",
+      "evidence_file": "runtime-browser-cancelled.json",
+      "run_id": "92d91913-ed91-4cc1-944a-56010bfc15b3",
+      "status": "CANCELLED",
+      "runtime_turn_id": "01a117c3-3d4d-7fa2-9511-6556e59f108b",
+      "started_at": "2026-10-07T19:07:08.926931+00:00",
+      "finished_at": "2026-10-07T19:07:14.315470+00:00",
+      "remaining_pids": [],
+      "auth_copy_remaining": false
+    },
+    {
+      "owned_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\acceptance\\codex-browser",
+      "evidence_file": "runtime-codex-browser.json",
+      "run_id": "3be88ed0-76ce-4f16-8f9d-b18e1e8c0067",
+      "status": "PARTIAL",
+      "evidence_kind": "REAL_CODEX_TASK",
+      "started_at": "2026-10-07T19:06:28.694957+00:00",
+      "finished_at": "2026-10-07T19:07:06.963162+00:00",
+      "snapshot_id": "f62e6f22-7be2-4f7f-91bd-da2c70c2a025",
+      "model": "gpt-6.1-sol",
+      "tool_calls": 3,
+      "acquisition_usage": {
+        "archived_bytes": 67104,
+        "http_calls": 3,
+        "model_tool_result_bytes": 10133,
+        "received_bytes": 67104
+      },
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "recovery_cleanup": null,
+      "assertions": null,
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-3be88ed0-76ce-4f16-8f9d-b18e1e8c0067-mik0ey5m",
+      "auth_copy_remaining": false
+    }
+  ],
+  "archives": [
+    {
+      "sha256": "4b2211a9361026bbccf87c704945d115d210fe6ea355f60d627696039aedc8a1",
+      "bytes": 341,
+      "path": "raw/4b2211a9361026bbccf87c704945d115d210fe6ea355f60d627696039aedc8a1.parquet",
+      "kind": "NORMALIZED_PARQUET"
+    },
+    {
+      "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+      "bytes": 550,
+      "path": "raw/6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695.raw",
+      "kind": "RAW_RESPONSE"
+    },
+    {
+      "sha256": "8b139e0e8cd217b414fd2a13d5a42c82bc4b05b6a5561d7a23fe37e097d0970c",
+      "bytes": 55045,
+      "path": "raw/8b139e0e8cd217b414fd2a13d5a42c82bc4b05b6a5561d7a23fe37e097d0970c.raw",
+      "kind": "CODEX_PUBLIC_SOURCE"
+    },
+    {
+      "sha256": "2698c540ea086d4d250f7d6f98cc6921cd94dac10886ed159e80471c88ac5a7e",
+      "bytes": 20334,
+      "path": "raw/2698c540ea086d4d250f7d6f98cc6921cd94dac10886ed159e80471c88ac5a7e.raw",
+      "kind": "RAW_RESPONSE"
+    },
+    {
+      "sha256": "0e8743ff27a63f592fc749a0c3ecabeb2cde19b2c0ec8701c197f8e1f49356b2",
+      "bytes": 7871,
+      "path": "raw/0e8743ff27a63f592fc749a0c3ecabeb2cde19b2c0ec8701c197f8e1f49356b2.parquet",
+      "kind": "NORMALIZED_PARQUET"
+    },
+    {
+      "sha256": "5f97d70b3727b0e99367599bdd183dffa9a70f462b37894c0cd8a70c02c603bc",
+      "bytes": 991,
+      "path": "raw/5f97d70b3727b0e99367599bdd183dffa9a70f462b37894c0cd8a70c02c603bc.raw",
+      "kind": "CODEX_CANDIDATE_OUTPUT"
+    },
+    {
+      "sha256": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+      "bytes": 292,
+      "path": "raw/07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35.raw",
+      "kind": "RAW_RESPONSE"
+    },
+    {
+      "sha256": "f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853",
+      "bytes": 20334,
+      "path": "raw/f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853.raw",
+      "kind": "RAW_RESPONSE"
+    },
+    {
+      "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "bytes": 46478,
+      "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+      "kind": "CODEX_PUBLIC_SOURCE"
+    },
+    {
+      "sha256": "c3302d3a6ee53427d03c81b564d7aebced8683a0d4b29b1d1468b56784d2b8ad",
+      "bytes": 8552,
+      "path": "raw/c3302d3a6ee53427d03c81b564d7aebced8683a0d4b29b1d1468b56784d2b8ad.parquet",
+      "kind": "NORMALIZED_PARQUET"
+    },
+    {
+      "sha256": "59bf527effbe8a35bef9d653fe8c473d4ec781dd89d88fb546e7a54351bc4511",
+      "bytes": 1263,
+      "path": "raw/59bf527effbe8a35bef9d653fe8c473d4ec781dd89d88fb546e7a54351bc4511.raw",
+      "kind": "CODEX_CANDIDATE_OUTPUT"
+    }
+  ],
+  "browser_sqlite_data_directory": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-browser-S3JgZq",
+  "legacy_owned_roots": [
+    {
+      "path": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-probe-q6lrynkv",
+      "root_preserved": true,
+      "auth_copy_remaining": false
+    },
+    {
+      "path": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-7cj4wpea",
+      "root_preserved": true,
+      "auth_copy_remaining": false
+    }
+  ],
+  "excluded": [
+    "authentication JSON",
+    "personal config/skills",
+    "SDK state/log databases",
+    "synthetic test credential files"
+  ],
+  "method_case_runtime_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\11-codex-evidence\\backend\\.roll-data\\tests"
+}

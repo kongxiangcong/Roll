@@ -197,7 +197,7 @@ def test_existing_market_query_and_offline_replay_audit_sealed_inputs_without_a_
     dates=engineering_archive(tmp_path);calls=[]
     def provider(request):
         calls.append(str(request.url));mode=request.url.params['param'].split(',')[-1]
-        return httpx.Response(200,json={'code':0,'data':{'sh600519':{('qfqday' if mode else 'day'):[[dates[160],'100','100','100','100','100'],[dates[161],'101','101','101','101','100']]}}})
+        return httpx.Response(200,json={'code':0,'data':{'sh600519':{('qfqday' if mode else 'day'):[[dates[160],'100','100','100','100','100'],[dates[161],'80','80','80','80','100']]}}})
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
         dataset=client.post('/api/research/datasets',json={'archive_id':'method-181','basis':'方法源日期边界'}).json()
         protocol=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'basis':'公开市场路径也须留暴露'}).json();pid=protocol['protocol_id']
@@ -217,3 +217,25 @@ def test_existing_market_query_and_offline_replay_audit_sealed_inputs_without_a_
         assert {e['route'] for e in exposed}=={'snapshot-query','snapshots-query','run-replay','observations-query'}
         assert all(e['confirmatory_pass_look'] is False and e['first_date']>=dates[160] for e in exposed)
         assert client.get('/api/research/protocols/'+pid).json()==protocol
+
+
+def test_codex_actual_tool_input_delivery_is_audited_before_worker_receives_facts(tmp_path,monkeypatch):
+    from test_codex_evidence import WORKER,terminal
+    directory=tmp_path/'data';dates=engineering_archive(directory)
+    monkeypatch.setenv('ROLL_ENV','test')
+    credential=tmp_path/'method-chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+    monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+    worker=tmp_path/'method-worker.py';worker.write_text(WORKER,encoding='utf-8')
+    def provider(request):
+        mode=request.url.params['param'].split(',')[-1]
+        return httpx.Response(200,json={'code':0,'data':{'sh600519':{('qfqday' if mode else 'day'):[[dates[160],'100','100','100','100','100']]}}})
+    with TestClient(create_app(directory,market_transport=httpx.MockTransport(provider),codex_worker=worker)) as client:
+        dataset=client.post('/api/research/datasets',json={'archive_id':'method-181','basis':'固定模型工具边界'}).json()
+        pid=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'basis':'送模型前审计输入'}).json()['protocol_id']
+        establish(client,['SSE:600519'])
+        client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN','instrument_type':'STOCK','basis':'固定身份','effective_at':'2026-01-05T00:00:00+08:00'})
+        request=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH','start_date':dates[160],'end_date':dates[160],'daily_source':'TENCENT'}).json()
+        run=client.post('/api/data/requests/'+request['request_id']+'/codex',json={'question':'READ DAILY METHOD_CASE; no labels or strategy results'}).json()
+        result=terminal(client,run['run_id']);assert result['status']=='COMPLETE' and result['evidence_kind']=='METHOD_CASE_CODEX',result
+        exposed=[e for e in client.get('/api/research/protocols/'+pid+'/audit').json() if e['action']=='SEALED_MARKET_INPUT_EXPOSED']
+        assert any(e['route']=='codex-tool-input' and e['rows']==2 and e['confirmatory_pass_look'] is False for e in exposed)

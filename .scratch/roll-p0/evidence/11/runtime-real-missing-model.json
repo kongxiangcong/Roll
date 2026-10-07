@@ -1,0 +1,115 @@
+{
+  "run": {
+    "acquisition_usage": {
+      "archived_bytes": 0,
+      "http_calls": 0,
+      "model_tool_result_bytes": 0
+    },
+    "allowed_operations": [
+      "V8_PURE_COMPUTATION",
+      "FUNCTIONS_EXEC",
+      "FUNCTIONS_WAIT"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source",
+      "clock"
+    ],
+    "archives": [],
+    "backend": "CODEX",
+    "bootstrap_audit": {
+      "auth_mode": "chatgpt",
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "candidates": [],
+    "config_fingerprint": "ec15cd33b1108356c697d4bb4a15cbf29ee565e67eb0653d1c09775ac28a1d70",
+    "elapsed_seconds": 15.16,
+    "error": {
+      "code": "MODEL_UNAVAILABLE",
+      "type": null
+    },
+    "evidence_kind": "REAL_CODEX_TASK",
+    "finished_at": "2026-10-07T18:08:42.873608+00:00",
+    "formal_judgment": "DISABLED",
+    "gaps": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "35353b833112291e75c7532ca23087f0fee81dc916329d659bcfcae4c521d3d3",
+      "codex_process.py": "094b7af273e4bdd04820e764a66d06601997a8e911eea8cffee6ff129c8c495b",
+      "codex_worker.py": "49057eb847d06afa1ee242aa552970b6a2bd358485fdd9ed95f06318d6c027f4"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "model": "roll-not-a-real-model",
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "observed_pids": [
+        10944,
+        36588,
+        10264,
+        32096
+      ],
+      "pids_before_cleanup": [
+        10944,
+        36588,
+        10264,
+        32096
+      ],
+      "remaining_pids": [],
+      "temporary_directory_removed": true,
+      "worker_pid": 10944
+    },
+    "question": "取得一条报价原始依据，明确时间和缺失项。",
+    "request_id": "55fd27a4-958a-4f45-96b3-47e2c7d81dbb",
+    "resolved_model": null,
+    "run_id": "2397172c-5ac6-4350-b4a5-0c739be5e84b",
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "started_at": "2026-10-07T18:08:27.574433+00:00",
+    "status": "UNAVAILABLE",
+    "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+    "tools": []
+  },
+  "assertions": {
+    "account_unchanged": true,
+    "marker_absent": true,
+    "network_probe_requests": [],
+    "private_sentinel_not_disclosed": true,
+    "elapsed": 15.323
+  }
+}

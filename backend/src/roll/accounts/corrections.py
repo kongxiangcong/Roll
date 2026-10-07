@@ -50,7 +50,7 @@ def active_events(events):
         payload=event.get("replacement_command",{}).get("payload",event["payload"])
         kind=event.get("replacement_command",{}).get("kind",event["event_type"])
         if kind=="CASH_CORRECTION":
-            target=next((e for e in active.values() if isinstance(e.get("replacement_command",{}).get("payload",e["payload"]),dict) and e.get("replacement_command",{}).get("payload",e["payload"]).get("record_id")==payload["target_record_id"]),None)
+            target=next((e for e in active.values() if isinstance(e.get("replacement_command",{}).get("payload",e["payload"]),dict) and str(e.get("replacement_command",{}).get("payload",e["payload"]).get("record_id",'')).strip()==payload["target_record_id"].strip()),None)
             if target is not None:event["effective_at"]=target["effective_at"]
     return list(active.values()),chain,heads
 

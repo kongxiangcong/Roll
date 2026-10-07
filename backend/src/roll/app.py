@@ -1,6 +1,8 @@
 from pathlib import Path
 from datetime import date, datetime
 import os
+import asyncio
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Query, HTTPException, Request, Response
 from fastapi.responses import FileResponse
@@ -9,19 +11,26 @@ from roll.accounts.csv_import import CsvImports, CsvRevision, template, guide,VE
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, EquityHint, Ledger
 from roll.accounts.cash_events import EVENT_FIELDS
 from roll.accounts.reconcile import UseCheck,use_check,consistency
+from roll.accounts.valuation import Valuations,ValuationRequest
 from roll.accounts.corrections import active_events,fact_command
 from roll.config import data_directory
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
+from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None):
-    app = FastAPI(title="Roll", version="0.1.0")
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None):
+    @asynccontextmanager
+    async def lifespan(application):
+        yield
+        await asyncio.to_thread(application.state.codex.close)
+
+    app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
     imports = CsvImports(ledger)
@@ -127,6 +136,42 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     @app.post('/api/research/protocols/{protocol_id}/checkpoints',status_code=201)
     def research_checkpoint(protocol_id:str,command:CheckpointCommand):
         return research.checkpoint(protocol_id,command)
+    valuations=Valuations(ledger,evidence)
+    app.state.valuations=valuations
+
+    @app.post('/api/account/valuations',status_code=201)
+    def publish_valuation(command:ValuationRequest):
+        return valuations.publish(command)
+
+    @app.get('/api/account/valuation-basis')
+    def valuation_basis():
+        return valuations.basis()
+
+    @app.get('/api/account/valuations')
+    def valuation_history():
+        return valuations.history()
+
+    @app.get('/api/account/valuations/current')
+    def current_valuation():
+        return valuations.get()
+
+    @app.get('/api/account/valuations/{identifier}')
+    def get_valuation(identifier:str):
+        return valuations.get(identifier)
+
+    @app.post('/api/account/valuations/{identifier}/replay')
+    def replay_valuation(identifier:str):
+        return valuations.get(identifier,replay=True)
+    codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed)
+    app.state.codex = codex
+
+    @app.post('/api/data/requests/{request_id}/codex', status_code=202)
+    def codex_start(request_id: str, command: CodexQuestion):
+        return codex.start(request_id, command)
+
+    @app.post('/api/data/runs/{run_id}/cancel')
+    def codex_cancel(run_id: str):
+        return codex.cancel(run_id)
     resolutions=SourceResolutions(evidence,market_clock)
     app.state.resolutions=resolutions
 
