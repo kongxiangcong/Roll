@@ -1,0 +1,44 @@
+[2m[WebServer] [22mINFO:     Started server process [26556]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8028 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:34548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:34884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state (2.0s)
+
+
+  1) tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('.market-member').filter({ hasText: '报价 1258.620' })
+    Expected: visible
+    Error: strict mode violation: locator('.market-member').filter({ hasText: '报价 1258.620' }) resolved to 2 elements:
+        1) <article class="market-member">…</article> aka getByText('SSE:600519 · sina-quote · 报价 1258.620 · 股数 3833098 · 成交额元 4797246636.000报告交易日')
+        2) <article class="market-member">…</article> aka getByText('SSE:600519 · 2026-09-30可得报价')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('.market-member').filter({ hasText: '报价 1258.620' })[22m
+
+
+      21 |   await expect(page.getByText('本次用途：DEGRADED',{exact:true})).toBeVisible();
+      22 |   await expect(page.getByText('固定方法样本，仅证明受控错误/修订/等待路径。')).toBeVisible();
+    > 23 |   await expect(page.locator('.market-member').filter({hasText:'报价 1258.620'})).toBeVisible();
+         |                                                                                ^
+      24 |   const first=await page.getByLabel('选择用途记录').inputValue();
+      25 |   expect((await page.request.post('/__method/price',{data:{value:'1259.620'}})).ok()).toBeTruthy();
+      26 |   await page.getByRole('button',{name:'重新取数形成后继记录'}).click();
+        at D:\dsh-proj\Roll\.scratch\worktrees\08-source-fallback\frontend\tests\e2e\resolution-method.spec.ts:23:80
+
+    Error Context: test-results\resolution-method-method-s-c409d-page-replays-original-state\error-context.md
+
+  1 failed
+    tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 

@@ -444,7 +444,7 @@ def publish(host, run, request, state, output):
                 raise ValueError('CANDIDATE_UNOWNED_ARCHIVE')
             quote = value['evidence_quote']
             raw = host.evidence.raw(value['raw_hash']).read_bytes()
-            encoding='gbk' if archive.get('source_id')=='tencent-quote' else 'utf-8'
+            encoding='gbk' if archive.get('source_id') in {'tencent-quote','sina-quote'} else 'utf-8'
             body = state['source_texts'].get(value['raw_hash']) or raw.decode(encoding, errors='replace')
             if not isinstance(quote, str) or not 1 <= len(quote) <= 500 or quote not in body:
                 raise ValueError('CANDIDATE_QUOTE_NOT_IN_SOURCE')

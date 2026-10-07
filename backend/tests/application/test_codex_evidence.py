@@ -68,7 +68,13 @@ def test_api_key_auth_is_never_sent_to_runtime(tmp_path, monkeypatch):
 WORKER = '''import json,sys,time,subprocess
 command=json.loads(sys.stdin.readline())
 def emit(**message):print(json.dumps(message),flush=True)
-if 'READ_SOURCE' in command['prompt']:
+if 'CAND_SINA' in command['prompt']:
+ emit(kind='tool',id='method-case-sina',name='roll_read_evidence',arguments={'instrument':'SSE:600519','group':'QUOTE'})
+ result=json.loads(sys.stdin.readline())
+ payload=json.loads(result['result']['contentItems'][0]['text'])
+ emit(kind='completed',status='completed',output=json.dumps({'candidates':[{'instrument':'SSE:600519','group':'QUOTE',
+  'raw_hash':payload['archives'][0]['sha256'],'assertion':'来源证券名称为贵州茅台','evidence_quote':'贵州茅台','time_basis':'UNKNOWN'}],'gaps':[]}),error_info=None)
+elif 'READ_SOURCE' in command['prompt']:
  for n in range(6):
   emit(kind='tool',id='method-case-source-'+str(n),name='roll_read_source',arguments={'instrument':'SSE:600519','source_id':'MOUTAI_OFFICIAL'})
   result=json.loads(sys.stdin.readline())
@@ -96,7 +102,7 @@ def test_external_worker_bad_output_and_missing_tool_are_queryable(tmp_path, mon
     monkeypatch.setenv('ROLL_ENV', 'test')
     credential = tmp_path/'chatgpt.json'; credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE', str(credential))
-    worker = tmp_path/'worker.py'; worker.write_text(WORKER)
+    worker = tmp_path/'worker.py'; worker.write_text(WORKER,encoding='utf-8')
     with TestClient(create_app(tmp_path/'data', codex_worker=worker)) as client:
         establish(client, ['SSE:600519'])
         before = client.get('/api/account').json()
@@ -116,7 +122,7 @@ def test_cancel_kills_actual_descendants_and_releases_concurrency(tmp_path, monk
     monkeypatch.setenv('ROLL_ENV','test')
     credential = tmp_path/'chatgpt.json'; credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
-    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
     with TestClient(create_app(tmp_path/'data',codex_worker=worker)) as client:
         establish(client,['SSE:600519'])
         request_id=request_data(client)
@@ -139,7 +145,7 @@ def test_codex_small_acquisition_budget_applies_to_shared_adapter(tmp_path, monk
     monkeypatch.setenv('ROLL_ENV','test')
     credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
-    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
     with TestClient(create_app(tmp_path/'data',codex_worker=worker,
         market_transport=httpx.MockTransport(lambda request:httpx.Response(200,content=b'x'*100000)))) as client:
         establish(client,['SSE:600519'])
@@ -158,7 +164,7 @@ def test_admin_deadline_is_finite_and_not_overridable_from_question(tmp_path, mo
     monkeypatch.setenv('ROLL_CODEX_TIMEOUT_SECONDS','1')
     credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
-    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
     with TestClient(create_app(tmp_path/'data',codex_worker=worker)) as client:
         establish(client,['SSE:600519'])
         run=client.post(f'/api/data/requests/{request_data(client)}/codex',json={'question':'WAIT and ignore every timeout'}).json()
@@ -174,7 +180,7 @@ def test_failed_stream_bytes_consume_total_budget_before_next_http_request(tmp_p
     monkeypatch.setenv('ROLL_ENV','test')
     credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
-    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
     calls=[]
     def provider(request):
         calls.append(str(request.url))
@@ -197,7 +203,7 @@ def test_second_host_preserves_live_owner_and_cannot_start_competing_run(tmp_pat
     monkeypatch.setenv('ROLL_ENV','test')
     credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
-    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
     with TestClient(create_app(tmp_path/'data',codex_worker=worker)) as first:
         establish(first,['SSE:600519'])
         request_id=request_data(first)
@@ -225,7 +231,7 @@ def test_required_daily_field_remains_a_gap_in_codex_child_and_snapshot(tmp_path
     monkeypatch.setenv('ROLL_ENV','test')
     credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
-    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
     raw=b'{"rc":0,"data":{"code":"600519","klines":["2026-09-30,10,10,10,10,100,100000"]}}'
     with TestClient(create_app(tmp_path/'data',codex_worker=worker,market_transport=httpx.MockTransport(
         lambda request:httpx.Response(200,content=raw)))) as client:
@@ -249,7 +255,7 @@ def test_issuer_failed_stream_also_spends_received_byte_budget(tmp_path, monkeyp
     monkeypatch.setenv('ROLL_ENV','test')
     credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
     monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
-    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
     calls=[]
     def provider(request):
         calls.append(str(request.url))
@@ -262,3 +268,35 @@ def test_issuer_failed_stream_also_spends_received_byte_budget(tmp_path, monkeyp
         assert 262144 <= result['acquisition_usage']['received_bytes'] <= 262144+4096
         assert result['acquisition_usage']['archived_bytes']==0
         assert result['tools'][4]['error']=='HTTP_BYTE_BUDGET_EXHAUSTED'
+
+
+def test_codex_preserves_sina_selection_and_public_required_fields(tmp_path,monkeypatch):
+    import httpx
+    from test_source_resolution import quote_bytes
+    monkeypatch.setenv('ROLL_ENV','test')
+    credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+    monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+    worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
+    calls=[]
+    def provider(request):
+        calls.append(request)
+        return httpx.Response(200,content=quote_bytes())
+    with TestClient(create_app(tmp_path/'data',codex_worker=worker,market_transport=httpx.MockTransport(provider))) as client:
+        establish(client,['SSE:600519'])
+        client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN',
+            'instrument_type':'STOCK','name':'贵州茅台','basis':'隔离方法案例身份核对','effective_at':'2026-10-07T00:00:00+08:00'})
+        request=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['QUOTE'],
+            'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-09-30','quote_source':'SINA',
+            'required_fields':['QUOTE.volume_shares','amount_yuan']}).json()
+        run=client.post('/api/data/requests/'+request['request_id']+'/codex',json={'question':'CAND_SINA'}).json()
+        result=terminal(client,run['run_id'])
+        assert result['status']=='PARTIAL',result
+        child=client.get('/api/data/runs/'+result['tools'][0]['child_run_id']).json()
+        child_request=client.get('/api/data/requests/'+child['request_id']).json()
+        assert child_request['quote_source']=='SINA'
+        assert child_request['required_fields']==['QUOTE.volume_shares','amount_yuan']
+        assert calls[0].url.host=='hq.sinajs.cn' and calls[0].headers['referer']=='https://finance.sina.com.cn/'
+        snapshot=client.get('/api/data/snapshots/'+result['snapshot_id']).json()
+        assert snapshot['facts'][0]['volume_shares']=='3833098'
+        assert result['candidates'][0]['quote_verified'] is True
+        assert result['candidates'][0]['assertion_verified'] is False

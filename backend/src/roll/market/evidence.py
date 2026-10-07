@@ -22,7 +22,7 @@ from roll.market.directory import ScopeCommand
 from roll.market.rules import SHANGHAI
 from roll.market import source_facts
 
-ADAPTER_VERSION='07-market-v1'
+ADAPTER_VERSION='08-market-v1'
 GROUPS=['DAILY','QUOTE','ADJUSTMENTS','ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS','STATUS']
 
 
@@ -38,6 +38,7 @@ class DataRequest(BaseModel):
     timeout_seconds:int=Field(default=40,ge=1,le=60)
     max_calls:int=Field(default=20,ge=1,le=30)
     daily_source:Literal['EASTMONEY','TENCENT']|None=None
+    quote_source:Literal['TENCENT','SINA']='TENCENT'
 
 
 def decimal_value(value,price=False):
@@ -205,6 +206,7 @@ class EvidenceStore:
         run={'run_id':str(uuid4()),'request_id':request_id,'backend':'DIRECT_HTTP','model':None,
             'sdk_runtime_version':'httpx-'+self.runtime_versions['httpx']+'/'+ADAPTER_VERSION,'runtime_versions':self.runtime_versions,
             'config_fingerprint':hashlib.sha256(encode({'limits':request['technical_limits'],'daily_source':request.get('daily_source','EASTMONEY'),
+                'quote_source':request.get('quote_source','TENCENT'),
                 'adapter_version':ADAPTER_VERSION,'runtime_versions':self.runtime_versions,
                 'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__]]}).encode()).hexdigest(),
             'evidence_kind':self.evidence_kind,'started_at':now(),'status':'RUNNING','tools':[],'gaps':[]}
@@ -218,7 +220,7 @@ class EvidenceStore:
         max_total_bytes=(acquisition_limits or {}).get('max_total_bytes',30*16*1024*1024)
         total_bytes=0
         with httpx.Client(transport=self.transport,follow_redirects=False) as client:
-            def fetch(source_id,instrument,group,url,params=None,**context):
+            def fetch(source_id,instrument,group,url,params=None,headers=None,**context):
                 nonlocal total_bytes
                 if len(run['tools'])>=request['max_calls'] or time.monotonic()>=deadline or (cancel_event and cancel_event.is_set()) or total_bytes>=max_total_bytes:
                     run['gaps'].append({'instrument':instrument,'group':group,'code':'TECHNICAL_LIMIT',**context});return None
@@ -226,7 +228,7 @@ class EvidenceStore:
                     'method':'GET','source_url':str(httpx.Request('GET',url,params=params).url),**context}
                 run['tools'].append(tool)
                 try:
-                    with client.stream('GET',url,params=params,timeout=min(10,max(.1,deadline-time.monotonic()))) as response:
+                    with client.stream('GET',url,params=params,headers=headers,timeout=min(10,max(.1,deadline-time.monotonic()))) as response:
                         content=bytearray()
                         for chunk in response.iter_bytes(4096):
                             total_bytes+=len(chunk)
@@ -272,9 +274,13 @@ class EvidenceStore:
                             rows,cov=result;facts.extend(rows);coverage.append(cov)
                 if {'QUOTE','STATUS'}&set(request['groups']):
                     symbol=('sh' if instrument.split(':')[0]=='SSE' else 'sz' if instrument.split(':')[0]=='SZSE' else 'bj')+instrument.split(':')[1]
-                    response=fetch('tencent-quote',instrument,'QUOTE','https://qt.gtimg.cn/q='+symbol)
+                    sina=request.get('quote_source')=='SINA'
+                    response=fetch('sina-quote' if sina else 'tencent-quote',instrument,'QUOTE',
+                        'https://hq.sinajs.cn/list='+symbol if sina else 'https://qt.gtimg.cn/q='+symbol,
+                        headers={'Referer':'https://finance.sina.com.cn/'} if sina else None)
                     if response:
-                        fact=parsed('QUOTE',instrument,lambda:source_facts.quote(response[1],response[0],instrument,decimal_value))
+                        fact=parsed('QUOTE',instrument,lambda:source_facts.sina_quote(response[1],response[0],instrument,request,decimal_value)
+                            if sina else source_facts.quote(response[1],response[0],instrument,decimal_value))
                         if fact and datetime.fromisoformat(fact['upstream_at'])<=datetime.fromisoformat(request['cutoff']):
                             if 'QUOTE' in request['groups']:facts.append(fact)
                             if 'STATUS' in request['groups']:

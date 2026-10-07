@@ -23,6 +23,17 @@ for entry in REGISTRY:
         permission_basis='Unauthenticated public request actually tested; no commercial redistribution license asserted',
         historical_revision_proof='NOT_AVAILABLE',retries=0,source_selection='PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK')
 
+SINA_UNIT_BASIS={'url':'https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7',
+    'sha256':'f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee',
+    'checked_at':'2026-10-07T17:33:23.799674+00:00','checked_at_basis':'ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME',
+    'mapping':'supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan',
+    'scope':'Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated'}
+REGISTRY.append({'id':'sina-quote','groups':['QUOTE','STATUS'],'host':'hq.sinajs.cn','adapter_version':'08-market-v1',
+    'authentication':'PUBLIC_NO_CREDENTIAL','permission_basis':'Public supplier page/linked parser and actual quote GET; no commercial redistribution license asserted',
+    'depth':'last reported quote, Referer finance.sina.com.cn; no historic quote/PIT proof',
+    'unit_scope':SINA_UNIT_BASIS,'historical_revision_proof':'NOT_AVAILABLE','retries':0,
+    'source_selection':'EXPLICIT_PRIMARY_OR_BOUNDED_RESOLUTION_ALTERNATE'})
+
 
 def source_json(content):
     value=json.loads(content,parse_float=Decimal)
@@ -76,9 +87,12 @@ def quote(content,archive,instrument,decimal_value):
             'status_basis':sample['basis'],'last':decimal_value(sample.get('last'),True),'volume_reported':decimal_value(sample.get('volume_reported')),
             'amount_yuan':decimal_value(sample.get('amount_yuan')),'reported_limit_up':decimal_value(sample.get('reported_limit_up'),True),
             'reported_limit_down':decimal_value(sample.get('reported_limit_down'),True),'volume_unit':'UNKNOWN',
-            'age_seconds':max(0,(datetime.fromisoformat(archive['received_at'])-upstream).total_seconds()),'formal_judgment':'DISABLED'}
-    text=content.decode('gbk')
-    fields=text.split('="',1)[1].rsplit('"',1)[0].split('~')
+            'age_seconds':max(0,(datetime.fromisoformat(archive['received_at'])-upstream).total_seconds()),
+            'adjustment':'RAW','currency':'CNY','formal_judgment':'DISABLED'}
+    symbol=('sh' if instrument.split(':')[0]=='SSE' else 'sz')+instrument.split(':')[1]
+    match=re.fullmatch(r'v_'+re.escape(symbol)+r'="([^"\r\n]*)";\s*',content.decode('gbk'))
+    if not match:raise ValueError('QUOTE_OBJECT_OR_FIELDS_MISMATCH')
+    fields=match[1].split('~')
     if len(fields)<49 or fields[2]!=instrument.split(':')[1]:raise ValueError('QUOTE_OBJECT_OR_FIELDS_MISMATCH')
     upstream=datetime.strptime(fields[30],'%Y%m%d%H%M%S').replace(tzinfo=SHANGHAI)
     packed=fields[35].split('/')
@@ -89,6 +103,28 @@ def quote(content,archive,instrument,decimal_value):
         'amount_yuan':decimal_value(packed[2]) if len(packed)==3 else None,
         'reported_limit_up':decimal_value(fields[47],True),'reported_limit_down':decimal_value(fields[48],True),
         'state':'REPORTED_QUOTE','current_status':'UNKNOWN','limitations':['QUOTE_DOES_NOT_CONFIRM_SUSPENSION_OR_RISK_WARNING'],
+        'age_seconds':max(0,(datetime.fromisoformat(archive['received_at'])-upstream).total_seconds()),
+        'adjustment':'RAW','currency':'CNY','formal_judgment':'DISABLED'}
+
+
+def sina_quote(content,archive,instrument,request,decimal_value):
+    symbol=('sh' if instrument.split(':')[0]=='SSE' else 'sz')+instrument.split(':')[1]
+    match=re.fullmatch(r'var hq_str_'+re.escape(symbol)+r'="([^"\r\n]*)";\s*',content.decode('gbk'))
+    if not match:raise ValueError('QUOTE_OBJECT_OR_FIELDS_MISMATCH')
+    fields=match[1].split(',')
+    if len(fields)<33:raise ValueError('MISSING_QUOTE_FIELDS')
+    upstream=datetime.strptime(fields[30]+' '+fields[31],'%Y-%m-%d %H:%M:%S').replace(tzinfo=SHANGHAI)
+    identity=request.get('identity_context',{}).get(instrument,{})
+    verified=identity.get('exchange')=='SSE' and identity.get('board')=='MAIN' and identity.get('instrument_type')=='STOCK'
+    return {**authority(archive,instrument,'QUOTE'),'upstream_at':upstream.isoformat(),'time_precision':'SECOND',
+        'trade_date':upstream.date().isoformat(),'last':decimal_value(fields[3],True),'previous_close':decimal_value(fields[2],True),
+        'open':decimal_value(fields[1],True),'high':decimal_value(fields[4],True),'low':decimal_value(fields[5],True),
+        'volume_reported':decimal_value(fields[8]),'volume_shares':decimal_value(fields[8]) if verified else None,
+        'volume_unit':'SHARE' if verified else 'UNKNOWN','source_volume_unit':'SHARE' if verified else 'UNKNOWN',
+        'conversion_basis':SINA_UNIT_BASIS if verified else None,'amount_yuan':decimal_value(fields[9]),
+        'reported_limit_up':None,'reported_limit_down':None,'adjustment':'RAW','currency':'CNY',
+        'state':'REPORTED_QUOTE','current_status':'UNKNOWN','supplier_reported_status':fields[32],
+        'limitations':['QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS']+([] if verified else ['VOLUME_UNIT_UNVERIFIED_FOR_THIS_SCOPE']),
         'age_seconds':max(0,(datetime.fromisoformat(archive['received_at'])-upstream).total_seconds()),'formal_judgment':'DISABLED'}
 
 

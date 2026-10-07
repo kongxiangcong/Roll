@@ -13,6 +13,7 @@ test('real Codex multi-round evidence and cancellation are displayed and archive
   const before=await (await page.request.get('/api/account')).json();
   await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();await page.getByRole('button',{name:'市场事实',exact:true}).click();
   await page.getByLabel('取证方式').selectOption('CODEX');
+  await page.getByLabel('报价来源').selectOption('SINA');
   for(const name of ['日线与复权','调整事件','业绩','重大事项','当前状态'])await page.getByRole('checkbox',{name,exact:true}).uncheck();
   await page.getByLabel('开始日期（上海交易/披露日期）').fill('2026-10-07');
   await page.getByLabel('需要补充核对的问题').fill('先取得报价依据，再检查缺口并查公司官方主页。公司主营业务是否有实际原文？分开保留报价、事项时间和公告原文缺口。仅引用来源原文中逐字连续出现的短句，不能拼接或补标点。');
@@ -21,6 +22,7 @@ test('real Codex multi-round evidence and cancellation are displayed and archive
   await expect(page.getByRole('heading',{name:'补充证据候选'})).toBeVisible({timeout:135000});
   const run=(await (await page.request.get('/api/data/runs')).json()).find((r:{backend:string})=>r.backend==='CODEX');
   expect(run.status).toBe('PARTIAL');expect(run.tools.length).toBeGreaterThanOrEqual(2);
+  expect(run.archives.some((a:{source_id:string})=>a.source_id==='sina-quote')).toBeTruthy();
   expect(run.runtime_audit.enabled_skills).toBe(0);expect(run.instruction_sources).toEqual([]);
   expect(run.process.remaining_pids).toEqual([]);expect(run.sdk_runtime_version['openai-codex']).toBe('0.161.0');
   const snapshot=await (await page.request.get('/api/data/snapshots/'+run.snapshot_id)).json();

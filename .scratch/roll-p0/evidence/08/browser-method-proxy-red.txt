@@ -1,0 +1,35 @@
+[2m[WebServer] [22mINFO:     Started server process [6104]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8028 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:14316) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:6196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state (1.9s)
+
+
+  1) tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      24 |   await expect(resolution.locator('.market-member').filter({hasText:'报价 1258.620'})).toBeVisible();
+      25 |   const first=await page.getByLabel('选择用途记录').inputValue();
+    > 26 |   expect((await page.request.post('/__method/price',{data:{value:'1259.620'}})).ok()).toBeTruthy();
+         |                                                                                       ^
+      27 |   await page.getByRole('button',{name:'重新取数形成后继记录'}).click();
+      28 |   await expect(page.getByText(/后继依据：FACT_VALUE_OR_SEMANTICS_REVISED/)).toBeVisible();
+      29 |   await expect(resolution.locator('.market-member').filter({hasText:'报价 1259.620'})).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\08-source-fallback\frontend\tests\e2e\resolution-method.spec.ts:26:87
+
+    Error Context: test-results\resolution-method-method-s-c409d-page-replays-original-state\error-context.md
+
+  1 failed
+    tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 

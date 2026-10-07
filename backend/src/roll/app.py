@@ -17,10 +17,11 @@ from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
+from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 
 
-def create_app(directory: Path | None = None, market_transport=None, codex_worker: Path | None = None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None):
     @asynccontextmanager
     async def lifespan(application):
         yield
@@ -76,6 +77,32 @@ def create_app(directory: Path | None = None, market_transport=None, codex_worke
     @app.post('/api/data/runs/{run_id}/cancel')
     def codex_cancel(run_id: str):
         return codex.cancel(run_id)
+    resolutions=SourceResolutions(evidence,market_clock)
+    app.state.resolutions=resolutions
+
+    @app.post('/api/data/requests/{request_id}/resolve',status_code=202)
+    def data_resolve(request_id:str,command:ResolutionCommand):
+        return resolutions.start(request_id,command)
+
+    @app.get('/api/data/resolutions')
+    def data_resolutions():
+        return resolutions.history()
+
+    @app.get('/api/data/resolutions/{resolution_id}')
+    def data_resolution(resolution_id:str):
+        return resolutions.get(resolution_id)
+
+    @app.get('/api/data/dependencies')
+    def data_dependencies(resolution_id:str|None=None):
+        return resolutions.dependencies(resolution_id)
+
+    @app.post('/api/data/resolutions/{resolution_id}/replay')
+    def replay_resolution(resolution_id:str):
+        return resolutions.replay(resolution_id)
+
+    @app.get('/api/data/replays/{replay_id}')
+    def data_resolution_replay(replay_id:str):
+        return evidence.get('source_resolution_replays',replay_id)
 
     @app.get('/api/data/sources')
     def data_sources():
@@ -97,7 +124,8 @@ def create_app(directory: Path | None = None, market_transport=None, codex_worke
 
     @app.get('/api/data/observations')
     def data_observations(instrument:str|None=None):
-        return [{**observation,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id']}
+        return [{**observation,'snapshot_id':snapshot['snapshot_id'],'run_id':snapshot['run_id'],
+            'dependency_status':'INVALIDATED' if resolutions.dependencies(target_id=observation['observation_id']) else 'CURRENT'}
             for snapshot in evidence.snapshots(instrument) for observation in snapshot['observations']
             if not instrument or observation['instrument']==instrument]
 
