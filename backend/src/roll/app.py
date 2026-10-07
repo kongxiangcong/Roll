@@ -22,6 +22,7 @@ from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
+from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 
@@ -77,6 +78,29 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     app.state.evidence=evidence
     research=ExperimentRegistry(ledger,evidence)
     app.state.research=research
+    executions=DailyExecutions(research)
+    app.state.executions=executions
+
+    @app.post('/api/research/protocols/{protocol_id}/executions',status_code=201)
+    def research_execution(protocol_id:str,command:ExecutionCommand):
+        return executions.create(protocol_id,command)
+
+    @app.get('/api/research/executions/{execution_id}')
+    def research_execution_get(execution_id:str):
+        return executions.get(execution_id)
+
+    @app.post('/api/research/executions/{execution_id}/replay')
+    def research_execution_replay(execution_id:str):
+        return executions.replay(execution_id)
+
+    @app.post('/api/research/executions/{execution_id}/assessments',status_code=201)
+    def research_execution_assess(execution_id:str,command:AssessmentCommand):
+        return executions.assess(execution_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/execution-support')
+    def research_execution_support(protocol_id:str,partition:str|None=None):
+        if partition is not None and partition not in {'DEVELOPMENT','CALIBRATION'}:raise HTTPException(422,'支持查询仅开发/校准')
+        return executions.support(protocol_id,partition)
 
     @app.get('/api/research/deadline-preview')
     def research_deadline_preview(start:datetime):
