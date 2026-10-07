@@ -1,0 +1,52 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_daily_touch_cannot_choose_exit_on_intermediate_suspended_or_zero_volume_bar[unexecutable0] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/18-daily-execution-labels/backend/.roll-data/t18sr/test_daily_touch_cannot_choose0')
+unexecutable = {'execution_evidence': {'state': 'CONFIRMED_SUSPENDED'}}
+
+    @pytest.mark.parametrize('unexecutable',[{'execution_evidence':{'state':'CONFIRMED_SUSPENDED'}},{'volume_shares':'0'}])
+    def test_daily_touch_cannot_choose_exit_on_intermediate_suspended_or_zero_volume_bar(tmp_path,unexecutable):
+        method_archive(tmp_path,{1:{'low':'97','high':'106'},2:{'low':'97','high':'106',**unexecutable},20:{'close':'110','high':'110'}})
+        with TestClient(create_app(tmp_path)) as client:
+            _,protocol=register(client)
+            response=client.post('/api/research/protocols/'+protocol['protocol_id']+'/executions',json={'partition':'DEVELOPMENT','observation_date':'2026-01-05','quantity':'100',
+                'method_barriers':{'stop_price_yuan':'98','profit_price_yuan':'104'},'path_policy':'CONSERVATIVE','basis':'中间停牌/零成交量触线不得选非法退出'})
+            assert response.status_code==201,response.text
+>           result=response.json()['result'];assert result['exit']['trade_date']=='2026-01-08'
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: assert '2026-01-07' == '2026-01-08'
+E             
+E             - 2026-01-08
+E             ?          ^
+E             + 2026-01-07
+E             ?          ^
+
+tests\application\test_execution_labels.py:221: AssertionError
+_ test_daily_touch_cannot_choose_exit_on_intermediate_suspended_or_zero_volume_bar[unexecutable1] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/18-daily-execution-labels/backend/.roll-data/t18sr/test_daily_touch_cannot_choose1')
+unexecutable = {'volume_shares': '0'}
+
+    @pytest.mark.parametrize('unexecutable',[{'execution_evidence':{'state':'CONFIRMED_SUSPENDED'}},{'volume_shares':'0'}])
+    def test_daily_touch_cannot_choose_exit_on_intermediate_suspended_or_zero_volume_bar(tmp_path,unexecutable):
+        method_archive(tmp_path,{1:{'low':'97','high':'106'},2:{'low':'97','high':'106',**unexecutable},20:{'close':'110','high':'110'}})
+        with TestClient(create_app(tmp_path)) as client:
+            _,protocol=register(client)
+            response=client.post('/api/research/protocols/'+protocol['protocol_id']+'/executions',json={'partition':'DEVELOPMENT','observation_date':'2026-01-05','quantity':'100',
+                'method_barriers':{'stop_price_yuan':'98','profit_price_yuan':'104'},'path_policy':'CONSERVATIVE','basis':'中间停牌/零成交量触线不得选非法退出'})
+            assert response.status_code==201,response.text
+>           result=response.json()['result'];assert result['exit']['trade_date']=='2026-01-08'
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: assert '2026-01-07' == '2026-01-08'
+E             
+E             - 2026-01-08
+E             ?          ^
+E             + 2026-01-07
+E             ?          ^
+
+tests\application\test_execution_labels.py:221: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_execution_labels.py::test_daily_touch_cannot_choose_exit_on_intermediate_suspended_or_zero_volume_bar[unexecutable0]
+FAILED tests/application/test_execution_labels.py::test_daily_touch_cannot_choose_exit_on_intermediate_suspended_or_zero_volume_bar[unexecutable1]
+2 failed, 16 deselected in 6.94s

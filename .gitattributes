@@ -26,3 +26,6 @@ backend/src/roll/research/reference/*.html binary
 .scratch/roll-p0/evidence/11/*.json text eol=lf
 # Ticket12 captured provider/method reports preserve original captured bytes.
 .scratch/roll-p0/evidence/12/raw/* binary
+
+# Ticket18 exact captured stdout/process bytes retain CRLF.
+.scratch/roll-p0/evidence/18/*.txt -text whitespace=-blank-at-eol,cr-at-eol

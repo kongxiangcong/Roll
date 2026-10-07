@@ -1,0 +1,191 @@
+{
+  "started_at": "2026-10-07T20:33:41.467678+00:00",
+  "source": "D:\\dsh-proj\\Roll\\backend\\.roll-data\\implementation-evidence\\17\\acceptance-17-final",
+  "data_root": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18",
+  "code_sha256": {
+    "backend\\src\\roll\\app.py": "85766b1592370ae53e509b1d595021c9f95c27c9a4dbe3095b7a04347e57237b",
+    "backend\\src\\roll\\research\\execution.py": "50e83397b94af767fa03fe1f650ef903aa2343af591f07bdb1d17c9269b4c456",
+    "backend\\uv.lock": "63fd66ea52a9fc341c5fdf3ad36493a7ff7f0afddec568819e27538409c949e5"
+  },
+  "sealed_price_or_result_consumption": false,
+  "real_user_funding_or_forward_origin": false,
+  "process_ids": [
+    30040
+  ],
+  "actual_protocol_id": "5ebb599e-dbd3-4479-859d-dd285b497ece",
+  "full_report": {
+    "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\real-execution.json",
+    "sha256": "ddb95bb163a0a324cff90b3ce7b75aae8ba9e427d54f4a68c45b194f6b05a97d",
+    "bytes": 17212
+  },
+  "request_count": 4,
+  "steps": [
+    {
+      "at": "2026-10-07T20:33:45.003206+00:00",
+      "method": "GET",
+      "path": "/account",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T20:33:45.010819+00:00",
+      "method": "GET",
+      "path": "/research/datasets",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T20:33:45.021482+00:00",
+      "method": "GET",
+      "path": "/research/protocols",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T20:33:45.249946+00:00",
+      "method": "GET",
+      "path": "/research/datasets/5c3a1560-305a-43ec-bf3f-0a714a7e6701/partitions/DEVELOPMENT",
+      "status": 200
+    }
+  ],
+  "source_copy_count": 27,
+  "source_copy_bytes": 2339782,
+  "raw_copy_hashes": [
+    {
+      "sha256": "0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c",
+      "bytes": 14573,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c.raw"
+    },
+    {
+      "sha256": "0dcb0971ac96123f369178ce8f5397d948190d41281175694664de1d1dd4dce5",
+      "bytes": 19302,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\0dcb0971ac96123f369178ce8f5397d948190d41281175694664de1d1dd4dce5.html"
+    },
+    {
+      "sha256": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
+      "bytes": 832321,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6.raw"
+    },
+    {
+      "sha256": "0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693",
+      "bytes": 2941,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693.raw"
+    },
+    {
+      "sha256": "1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e",
+      "bytes": 24946,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e.html"
+    },
+    {
+      "sha256": "1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f",
+      "bytes": 37793,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f.html"
+    },
+    {
+      "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+      "bytes": 67261,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873.raw"
+    },
+    {
+      "sha256": "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4",
+      "bytes": 4771,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4.raw"
+    },
+    {
+      "sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+      "bytes": 34826,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81.html"
+    },
+    {
+      "sha256": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+      "bytes": 155250,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e.raw"
+    },
+    {
+      "sha256": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
+      "bytes": 10016,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8.raw"
+    },
+    {
+      "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+      "bytes": 550,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695.raw"
+    },
+    {
+      "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+      "bytes": 30794,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+    },
+    {
+      "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+      "bytes": 2152,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476.raw"
+    },
+    {
+      "sha256": "9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586",
+      "bytes": 282084,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586.pdf"
+    },
+    {
+      "sha256": "a1277ee1dc70e4a2e71ffdd7410384cda3ba3f90671944639e945f4a7f7985ef",
+      "bytes": 431411,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\a1277ee1dc70e4a2e71ffdd7410384cda3ba3f90671944639e945f4a7f7985ef.pdf"
+    },
+    {
+      "sha256": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+      "bytes": 6547,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0.raw"
+    },
+    {
+      "sha256": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
+      "bytes": 3874,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e.raw"
+    },
+    {
+      "sha256": "ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0",
+      "bytes": 20334,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0.raw"
+    },
+    {
+      "sha256": "e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33",
+      "bytes": 14608,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33.raw"
+    },
+    {
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5",
+      "bytes": 16476,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5.docx"
+    },
+    {
+      "sha256": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
+      "bytes": 119987,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc.raw"
+    },
+    {
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+      "bytes": 65302,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\raw\\fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+    },
+    {
+      "sha256": "19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b",
+      "bytes": 91828,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\parquet\\19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b.parquet"
+    },
+    {
+      "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b",
+      "bytes": 16284,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\parquet\\539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet"
+    },
+    {
+      "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6",
+      "bytes": 19454,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\parquet\\8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet"
+    },
+    {
+      "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee",
+      "bytes": 14097,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\backend\\.roll-data\\acceptance-18\\parquet\\cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet"
+    }
+  ],
+  "actual_record_ids": [],
+  "actual_examples": [],
+  "method_runs": [],
+  "assessment": null
+}
