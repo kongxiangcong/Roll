@@ -1,0 +1,73 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_actual_sdk_sealed_daily_tool_payload_is_audited_before_model_continuation _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-294/test_actual_sdk_sealed_daily_t0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C8378FA9E0>
+
+    def test_actual_sdk_sealed_daily_tool_payload_is_audited_before_model_continuation(tmp_path,monkeypatch):
+        from test_research_protocol import engineering_archive
+        dates=engineering_archive(tmp_path)
+        monkeypatch.setenv('ROLL_ENV','test');monkeypatch.setenv('DEEPSEEK_API_KEY','ROLL_METHOD_CASE_ONLY')
+        observed=[]
+        def source(req):
+            mode=req.url.params['param'].split(',')[-1]
+            return httpx.Response(200,json={'code':0,'data':{'sh600519':{
+                ('qfqday' if mode else 'day'):[[dates[160],'100','100','100','100','100']]}}})
+        client_ref=[];pid=[]
+        def model(body,n):
+            if n==1:return 200,response([call('roll_read_evidence',{'instrument':'SSE:600519','group':'DAILY'},1)])
+            payload=json.loads([v['output'] for v in body['input'] if v.get('type')=='function_call_output'][-1])
+            assert len(payload['facts'])==2
+            # Query via the public API as the external model receives this actual payload.
+            audit=client_ref[0].get('/api/research/protocols/'+pid[0]+'/audit').json()
+            observed.extend(e for e in audit if e['action']=='SEALED_MARKET_INPUT_EXPOSED' and e['route']=='deepseek-tool-input')
+            return 200,response([message(json.dumps({'candidates':[],'gaps':[]}))])
+        with model_server(model) as (endpoint,bodies),TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(source),deepseek_endpoint=endpoint)) as client:
+            client_ref.append(client)
+            dataset=client.post('/api/research/datasets',json={'archive_id':'method-181','basis':'12 fixed SDK input audit'}).json()
+            pid.append(client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'basis':'input exposure before SDK continuation'}).json()['protocol_id'])
+            establish(client,['SSE:600519'])
+            client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN','instrument_type':'STOCK',
+                'basis':'fixed identity','effective_at':'2026-01-05T00:00:00+08:00'})
+            parent=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH',
+                'start_date':dates[160],'end_date':dates[160],'daily_source':'TENCENT'}).json()
+            result=terminal(client,client.post('/api/data/requests/'+parent['request_id']+'/deepseek',json={'question':'READ DAILY METHOD_CASE without labels/results'}).json()['run_id'])
+>           assert result['status']=='COMPLETE',result
+E           AssertionError: {'acquisition_usage': {'archived_bytes': 173, 'http_calls': 2, 'model_tool_result_bytes': 4132, 'received_bytes': 173}...es': 88, 'evidence_kind': 'METHOD_CASE', 'http_status': 200, 'kind': 'RAW_RESPONSE', ...}], 'backend': 'DEEPSEEK', ...}
+E           assert 'FAILED' == 'COMPLETE'
+E             
+E             - COMPLETE
+E             + FAILED
+
+tests\application\test_deepseek_evidence.py:282: AssertionError
+---------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53139)
+Traceback (most recent call last):
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\http\server.py", line 447, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\http\server.py", line 435, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\12-deepseek-evidence\backend\tests\application\test_deepseek_evidence.py", line 85, in do_POST
+    status,payload=responder(body,len(bodies))
+                   ~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\12-deepseek-evidence\backend\tests\application\test_deepseek_evidence.py", line 267, in model
+    assert len(payload['facts'])==2
+               ~~~~~~~^^^^^^^^^
+KeyError: 'facts'
+----------------------------------------
+=========================== short test summary info ===========================
+FAILED tests/application/test_deepseek_evidence.py::test_actual_sdk_sealed_daily_tool_payload_is_audited_before_model_continuation
+1 failed, 10 deselected in 10.85s

@@ -1,0 +1,22 @@
+
+> roll-frontend@0.1.0 test:e2e
+> playwright test deepseek-evidence.spec.ts
+
+[WebServer] INFO:     Started server process [37312]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8032 (Press CTRL+C to quit)
+[WebServer] (node:27620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:2084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\deepseek-evidence.spec.ts:3:1 › DeepSeek missing credential record and linked retry survive reload (2.1s)
+  -  2 tests\e2e\deepseek-evidence.spec.ts:23:1 › actual Agents SDK fixed Responses task displays evidence and cancels independent next run
+
+  1 skipped
+  1 passed (12.0s)
