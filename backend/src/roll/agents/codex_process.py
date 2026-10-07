@@ -15,6 +15,8 @@ import tempfile
 import threading
 import time
 import os
+import re
+import stat
 from uuid import uuid4
 
 import httpx
@@ -32,6 +34,51 @@ SOURCES = {'MOUTAI_OFFICIAL': {'instrument': 'SSE:600519',
     'url': 'https://www.moutaichina.com/mtgf/index/',
     'basis': 'Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.',
     'basis_url': 'https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf'}}
+
+
+def process_creation(pid):
+    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+    kernel.OpenProcess.restype=wintypes.HANDLE
+    kernel.GetProcessTimes.argtypes=[wintypes.HANDLE,*([ctypes.POINTER(wintypes.FILETIME)]*4)]
+    kernel.CloseHandle.argtypes=[wintypes.HANDLE]
+    handle=kernel.OpenProcess(0x1000,False,pid)
+    if not handle:return None
+    try:
+        values=[wintypes.FILETIME() for _ in range(4)]
+        if not kernel.GetProcessTimes(handle,*[ctypes.byref(v) for v in values]):return None
+        return values[0].dwHighDateTime*2**32+values[0].dwLowDateTime
+    finally:kernel.CloseHandle(handle)
+
+
+def owner_alive(run):
+    owner=run.get('host_owner') or {}
+    return bool(owner.get('creation_ticks') and process_creation(owner.get('pid',0))==owner['creation_ticks'])
+
+
+def recover_directory(run):
+    """Only this interrupted run's persisted, marker-bound, non-reparse task directory."""
+    process=run.get('process') or {}
+    if owner_alive(run):return {'status':'REFUSED_ACTIVE_OWNER'}
+    try:
+        registered=Path(process['task_root'])
+        root=registered.resolve()
+        if root!=registered or root.parent!=Path(tempfile.gettempdir()).resolve() or not re.fullmatch(
+            'roll-codex-task-'+re.escape(run['run_id'])+'-[a-z0-9_]+',root.name):
+            raise ValueError('UNSAFE_TASK_ROOT')
+        if not root.exists():return {'status':'ALREADY_ABSENT','credential_removed':True}
+        # lstat checks every child without following reparse/junction targets.
+        for directory,subdirectories,files in os.walk(root,followlinks=False):
+            for path in [Path(directory),*[Path(directory)/n for n in subdirectories+files]]:
+                if path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+                    raise ValueError('TASK_ROOT_REPARSE_POINT')
+        marker=json.loads((root/'.roll-owner.json').read_text(encoding='utf-8'))
+        if marker!={'run_id':run['run_id'],'nonce':process['owner_nonce']}:
+            raise ValueError('OWNER_MARKER_MISMATCH')
+        (root/'home'/'auth.json').unlink(missing_ok=True)
+        shutil.rmtree(root)
+        return {'status':'REMOVED','credential_removed':True}
+    except (ValueError,KeyError,OSError) as error:
+        return {'status':'REFUSED_OR_FAILED','reason':str(error) if isinstance(error,ValueError) else type(error).__name__}
 
 
 class Text(HTMLParser):
@@ -135,8 +182,12 @@ def clean_environment(root):
 def execute(host, run, request, cancel, auth):
     started = time.monotonic(); deadline = started + run['limits']['timeout_seconds']
     state = {'facts': [], 'snapshots': [], 'http_calls': 0, 'bytes': 0, 'returned_bytes': 0, 'source_texts': {}}
-    with tempfile.TemporaryDirectory(prefix='roll-codex-task-', ignore_cleanup_errors=True) as directory:
+    with tempfile.TemporaryDirectory(prefix='roll-codex-task-'+run['run_id']+'-', ignore_cleanup_errors=True) as directory:
         root = Path(directory)
+        nonce=str(uuid4())
+        (root/'.roll-owner.json').write_text(encode({'run_id':run['run_id'],'nonce':nonce}),encoding='utf-8')
+        run['process']={'task_root':str(root.resolve()),'owner_nonce':nonce}
+        host.save(run)  # ownership is durable before any authentication copy is created
         for name in ['home', 'cwd', 'user']:
             (root/name).mkdir()
         # Never copy user config, skills, state, credentials for API billing, or repository files.
@@ -165,8 +216,8 @@ def execute(host, run, request, cancel, auth):
             process.stdin.write(encode(value)+'\n'); process.stdin.flush()
         try:
             job = Job(process.pid)
-            run['process'] = {'worker_pid': process.pid, 'containment': 'WINDOWS_JOB_KILL_ON_CLOSE',
-                              'isolated_cwd': True, 'isolated_home': True, 'environment_keys': sorted(clean_environment(root))}
+            run['process'].update(worker_pid=process.pid,containment='WINDOWS_JOB_KILL_ON_CLOSE',
+                isolated_cwd=True,isolated_home=True,environment_keys=sorted(clean_environment(root)))
             threading.Thread(target=drain, daemon=True).start()
             frozen = command(run, request)
             run['tool_schema_fingerprint'] = hashlib.sha256(encode(frozen['tools']).encode()).hexdigest()
@@ -231,6 +282,10 @@ def execute(host, run, request, cancel, auth):
                     run.setdefault('denied_requests', []).append(event['method'])
                 elif kind == 'usage':
                     run['token_usage'] = event['value']
+                elif kind == 'operation':
+                    run.setdefault('runtime_operations',[]).append(event)
+                    if len(run['runtime_operations'])>run['limits']['tool_calls']:
+                        run.update(status='TOOL_LIMIT',error={'code':'RUNTIME_OPERATION_BUDGET_EXHAUSTED'});break
                 elif kind == 'runtime_error':
                     run.setdefault('runtime_errors', []).append(event)
                 if len(run['tools']) > run['limits']['tool_calls']:
@@ -248,7 +303,8 @@ def execute(host, run, request, cancel, auth):
                 process.kill(); process.wait(timeout=5)
             process.stdout.close(); process.stdin.close()
             run['elapsed_seconds'] = round(time.monotonic()-started, 3)
-            run['acquisition_usage'] = {'http_calls':state['http_calls'],'archived_bytes':state['bytes'],
+            run['acquisition_usage'] = {'http_calls':state['http_calls'],'received_bytes':state['bytes'],
+                'archived_bytes':sum(a['bytes'] for a in run['archives']),
                 'model_tool_result_bytes':state['returned_bytes']}
             (root/'home'/'auth.json').unlink(missing_ok=True)
             for attempt in range(10):
@@ -277,6 +333,8 @@ def tool(host, run, request, state, event, deadline, cancel):
         instrument = arguments['instrument']
         record['arguments']={k:v for k,v in arguments.items() if k in {'instrument','group','source_id'}}
         host.evidence.market.check_scope(ScopeCommand(instruments=[instrument], purpose=request['purpose']))
+        if state['bytes']>=run['limits']['total_bytes']:
+            raise ValueError('HTTP_BYTE_BUDGET_EXHAUSTED')
         if event['name'] == 'roll_read_evidence':
             if set(arguments) != {'instrument', 'group'} or arguments['group'] not in request['groups']:
                 raise ValueError('GROUP_OUTSIDE_REQUEST')
@@ -284,16 +342,20 @@ def tool(host, run, request, state, event, deadline, cancel):
             if remaining < 1:
                 raise ValueError('HTTP_BUDGET_EXHAUSTED')
             values = {k: request[k] for k in ['start_date', 'end_date', 'purpose', 'cutoff', 'daily_source']}
+            if 'quote_source' in request:
+                values['quote_source']=request['quote_source']
+            values['required_fields']=[field for field in request['required_fields']
+                if '.' not in field or field.startswith(arguments['group']+'.')]
             values.update(instruments=[instrument], groups=[arguments['group']], max_calls=remaining,
                           timeout_seconds=max(1, min(8, int(deadline-time.monotonic()))))
             child_request = host.evidence.request(DataRequest(**values))
             child = host.evidence.retrieve(child_request['request_id'], acquisition_limits={
                 'max_response_bytes': run['limits']['response_bytes'],
-                'max_total_bytes': max(1,run['limits']['total_bytes']-state['bytes']),
+                'max_total_bytes': run['limits']['total_bytes']-state['bytes'],
                 'deadline': min(deadline,time.monotonic()+8)}, cancel_event=cancel)
             state['http_calls'] += len(child['tools'])
+            state['bytes'] += child['retrieved_bytes']
             snapshot = host.evidence.get('market_evidence_snapshots', child['snapshot_id'])
-            state['bytes'] += sum(a['bytes'] for a in snapshot['archives'])
             state['snapshots'].append(snapshot)
             state['facts'].extend(snapshot['facts'])
             run['archives'].extend(a for a in snapshot['archives'] if a not in run['archives'])
@@ -320,11 +382,11 @@ def tool(host, run, request, state, event, deadline, cancel):
                         if cancel.is_set() or time.monotonic() >= deadline:
                             raise ValueError('TASK_STOPPED')
                         content.extend(chunk)
-                        if len(content) > run['limits']['response_bytes'] or state['bytes']+len(content) > run['limits']['total_bytes']:
+                        state['bytes']+=len(chunk)
+                        if len(content) > run['limits']['response_bytes'] or state['bytes'] > run['limits']['total_bytes']:
                             raise ValueError('SOURCE_BYTE_LIMIT')
                     response_status=response.status_code
                     response_type=response.headers.get('content-type','')
-            state['bytes'] += len(content)
             received = now()
             archive = host.evidence.archive(bytes(content), 'CODEX_PUBLIC_SOURCE', source_url=source['url'],
                 source_id=arguments['source_id'], instrument=instrument, received_at=received,

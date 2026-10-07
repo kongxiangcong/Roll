@@ -70,6 +70,9 @@ class EvidenceStore:
             for row in db.execute('SELECT id,value FROM retrieval_runs'):
                 run=json.loads(row['value'])
                 if run['status']=='RUNNING':
+                    if run.get('backend')=='CODEX':
+                        from roll.agents.codex_process import owner_alive
+                        if owner_alive(run):continue
                     run.update(status='INTERRUPTED',finished_at=now(),recovery_reason='PROCESS_RESTART_BEFORE_SNAPSHOT_COMMIT')
                     db.execute('UPDATE retrieval_runs SET value=? WHERE id=?',(encode(run),row['id']))
 
@@ -410,6 +413,7 @@ class EvidenceStore:
             'evidence_kind':self.evidence_kind,'formal_judgment':'DISABLED','adapter_version':ADAPTER_VERSION}
         run.update(status='PARTIAL' if run['gaps'] and facts else 'FAILED' if not facts else 'COMPLETE',
             snapshot_id=snapshot['snapshot_id'],finished_at=now(),elapsed_seconds=round(time.monotonic()-started,3))
+        run['retrieved_bytes']=total_bytes
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
             try:

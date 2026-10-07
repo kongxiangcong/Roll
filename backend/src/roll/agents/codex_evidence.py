@@ -17,7 +17,7 @@ MODEL = 'gpt-6.1-sol'
 LIMITS = {'timeout_seconds': 120, 'tool_calls': 8, 'http_calls': 6,
           'response_bytes': 65536, 'total_bytes': 262144, 'concurrency': 1,
           'subtasks': 0, 'retries': 0}
-TOOLS = ['roll_read_evidence', 'roll_read_source', 'clock']
+TOOLS = ['roll_read_evidence', 'roll_read_source', 'clock__curr_time']
 CONFIG = '''approval_policy = "never"
 approvals_reviewer = "user"
 sandbox_mode = "read-only"
@@ -81,6 +81,13 @@ class CodexEvidence:
         self.evidence = evidence
         self.active = {}
         self.lock = threading.Lock()
+        from roll.agents.codex_process import recover_directory
+        with evidence.ledger.connection() as db:
+            for row in db.execute('SELECT value FROM retrieval_runs').fetchall():
+                run=json.loads(row[0])
+                if run.get('backend')=='CODEX' and run.get('status')=='INTERRUPTED' and run.get('process',{}).get('task_root'):
+                    run['recovery_cleanup']=recover_directory(run)
+                    db.execute('UPDATE retrieval_runs SET value=? WHERE id=?',(encode(run),run['run_id']))
 
     def save(self, run):
         snapshot = run.pop('_snapshot', None)
@@ -120,8 +127,16 @@ class CodexEvidence:
                 'evidence_kind': 'METHOD_CASE_CODEX' if self.worker else
                     'REAL_CODEX_METHOD_CASE_SOURCE' if self.evidence.transport is not None else 'REAL_CODEX_TASK',
                 'formal_judgment': 'DISABLED'}
+            from roll.agents.codex_process import process_creation,owner_alive
+            run['host_owner']={'pid':os.getpid(),'creation_ticks':process_creation(os.getpid())}
             with self.evidence.ledger.connection() as db:
+                db.execute('BEGIN IMMEDIATE')
+                for row in db.execute('SELECT value FROM retrieval_runs').fetchall():
+                    prior=json.loads(row[0])
+                    if prior.get('backend')=='CODEX' and prior.get('status')=='RUNNING' and owner_alive(prior):
+                        raise HTTPException(409,{'code':'CODEX_CONCURRENCY_LIMIT'})
                 db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)', (run['run_id'], request_id, encode(run)))
+                db.commit()
             cancel = threading.Event()
             self.active[run['run_id']] = cancel
         threading.Thread(target=self.execute, args=(run, request, cancel), daemon=True).start()
@@ -145,6 +160,9 @@ class CodexEvidence:
             if getattr(error, 'filename', None):
                 run['error']['file_kind'] = Path(error.filename).name
         finally:
+            if cancel.is_set() and run['status'] not in {'CANCELLED','TIMED_OUT'}:
+                run['status']='CANCELLED'
+                run.pop('_snapshot',None);run.pop('snapshot_id',None)
             run['finished_at'] = now()
             with self.lock:
                 self.save(run)

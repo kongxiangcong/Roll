@@ -37,7 +37,7 @@ def test_codex_configuration_is_host_owned_and_run_survives_restart(tmp_path, mo
         assert run['error']['code'] == 'CODEX_AUTH_NOT_CONFIGURED'
         assert run['config_fingerprint']
         assert run['limits']['subtasks'] == 0
-        assert run['allowed_tools'] == ['roll_read_evidence', 'roll_read_source', 'clock']
+        assert run['allowed_tools'] == ['roll_read_evidence', 'roll_read_source', 'clock__curr_time']
         assert 'cash_balance' not in str(run)
     with TestClient(create_app(tmp_path)) as client:
         assert client.get(f'/api/data/runs/{run_id}').json() == run
@@ -69,8 +69,9 @@ WORKER = '''import json,sys,time,subprocess
 command=json.loads(sys.stdin.readline())
 def emit(**message):print(json.dumps(message),flush=True)
 if 'READ' in command['prompt']:
- emit(kind='tool',id='method-case-read',name='roll_read_evidence',arguments={'instrument':'SSE:600519','group':'QUOTE'})
- result=json.loads(sys.stdin.readline())
+ for n in range(6 if 'READ_MANY' in command['prompt'] else 1):
+  emit(kind='tool',id='method-case-read-'+str(n),name='roll_read_evidence',arguments={'instrument':'SSE:600519','group':'DAILY' if 'DAILY' in command['prompt'] else 'QUOTE'})
+  result=json.loads(sys.stdin.readline())
  emit(kind='completed',status='completed',output=json.dumps({'candidates':[],'gaps':[]}),error_info=None)
 elif 'WAIT' in command['prompt']:
  child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(120)'])
@@ -93,13 +94,13 @@ def test_external_worker_bad_output_and_missing_tool_are_queryable(tmp_path, mon
     worker = tmp_path/'worker.py'; worker.write_text(WORKER)
     with TestClient(create_app(tmp_path/'data', codex_worker=worker)) as client:
         establish(client, ['SSE:600519'])
-        before = client.get('/api/account/state').json()
+        before = client.get('/api/account').json()
         run = client.post(f'/api/data/requests/{request_data(client)}/codex', json={'question':question}).json()
         result = terminal(client, run['run_id'])
         assert result['status'] == status, result
         assert result['evidence_kind'] == 'METHOD_CASE_CODEX'
         assert result['process']['remaining_pids'] == []
-        assert client.get('/api/account/state').json() == before
+        assert client.get('/api/account').json() == before
         if question == 'DENIED':
             assert result['tools'][0]['status'] == 'DENIED'
             assert any(g['code'] == 'HOST_TOOL_NOT_ALLOWED' for g in result['gaps'])
@@ -161,3 +162,78 @@ def test_admin_deadline_is_finite_and_not_overridable_from_question(tmp_path, mo
         assert result['limits']['timeout_seconds']==1
         assert result['elapsed_seconds']<3
         assert result['process']['remaining_pids']==[]
+
+
+def test_failed_stream_bytes_consume_total_budget_before_next_http_request(tmp_path, monkeypatch):
+    import httpx
+    monkeypatch.setenv('ROLL_ENV','test')
+    credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+    monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    calls=[]
+    def provider(request):
+        calls.append(str(request.url))
+        return httpx.Response(503,content=b'x'*100000)
+    with TestClient(create_app(tmp_path/'data',codex_worker=worker,market_transport=httpx.MockTransport(provider))) as client:
+        establish(client,['SSE:600519'])
+        run=client.post(f'/api/data/requests/{request_data(client)}/codex',json={'question':'READ_MANY'}).json()
+        result=terminal(client,run['run_id'])
+        assert result['status']=='PARTIAL',result
+        assert len(calls)==4
+        assert 262144 <= result['acquisition_usage']['received_bytes'] <= 262144+4096
+        assert result['acquisition_usage']['archived_bytes']==0
+        assert result['tools'][4]['error']=='HTTP_BYTE_BUDGET_EXHAUSTED'
+        received=sum(client.get('/api/data/runs/'+t['child_run_id']).json()['retrieved_bytes']
+                     for t in result['tools'] if 'child_run_id' in t)
+        assert received==result['acquisition_usage']['received_bytes']
+
+
+def test_second_host_preserves_live_owner_and_cannot_start_competing_run(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV','test')
+    credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+    monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    with TestClient(create_app(tmp_path/'data',codex_worker=worker)) as first:
+        establish(first,['SSE:600519'])
+        request_id=request_data(first)
+        run=first.post(f'/api/data/requests/{request_id}/codex',json={'question':'WAIT'}).json()
+        for _ in range(100):
+            running=first.get('/api/data/runs/'+run['run_id']).json()
+            if running.get('runtime_turn_id'):break
+            time.sleep(.03)
+        assert running.get('runtime_turn_id')
+        task_root=Path(running['process']['task_root'])
+        with TestClient(create_app(tmp_path/'data',codex_worker=worker)) as second:
+            current=second.get('/api/data/runs/'+run['run_id']).json()
+            assert current['status']=='RUNNING' and 'recovery_cleanup' not in current
+            assert (task_root/'home'/'auth.json').is_file()
+            assert second.post(f'/api/data/requests/{request_id}/codex',json={'question':'BAD'}).status_code==409
+        assert first.get('/api/data/runs/'+run['run_id']).json()['status']=='RUNNING'
+        first.post('/api/data/runs/'+run['run_id']+'/cancel',json={})
+        result=terminal(first,run['run_id'])
+        assert result['status']=='CANCELLED' and result['process']['remaining_pids']==[]
+        assert not task_root.exists()
+
+
+def test_required_daily_field_remains_a_gap_in_codex_child_and_snapshot(tmp_path, monkeypatch):
+    import httpx
+    monkeypatch.setenv('ROLL_ENV','test')
+    credential=tmp_path/'chatgpt.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+    monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+    worker=tmp_path/'worker.py';worker.write_text(WORKER)
+    raw=b'{"rc":0,"data":{"code":"600519","klines":["2026-09-30,10,10,10,10,100,100000"]}}'
+    with TestClient(create_app(tmp_path/'data',codex_worker=worker,market_transport=httpx.MockTransport(
+        lambda request:httpx.Response(200,content=raw)))) as client:
+        establish(client,['SSE:600519'])
+        request=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY','QUOTE'],
+            'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-09-30',
+            'required_fields':['DAILY.adjustment_factor','QUOTE.price']}).json()
+        run=client.post('/api/data/requests/'+request['request_id']+'/codex',json={'question':'READ DAILY'}).json()
+        result=terminal(client,run['run_id'])
+        child=client.get('/api/data/runs/'+result['tools'][0]['child_run_id']).json()
+        child_request=client.get('/api/data/requests/'+child['request_id']).json()
+        assert child_request['required_fields']==['DAILY.adjustment_factor']
+        snapshot=client.get('/api/data/snapshots/'+result['snapshot_id']).json()
+        assert result['status']=='PARTIAL'
+        assert any(g['code']=='REQUIRED_FIELDS_MISSING' for g in result['gaps'])
+        assert all(f['model_daily_input_allowed'] is False for f in snapshot['facts'])
