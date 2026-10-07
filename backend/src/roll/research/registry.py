@@ -23,7 +23,7 @@ class ProtocolCommand(BaseModel):
 
 class AttemptCommand(BaseModel):
     model_config=ConfigDict(extra='forbid')
-    category:Literal['PRIMARY_FIT','G5_NEIGHBOR','CALIBRATION','FEATURE','HORIZON','THRESHOLD','PROMPT','MANUAL_SELECTION','ENGINEERING_REPLAY']
+    category:Literal['PRIMARY_FIT','G5_NEIGHBOR','CALIBRATION','FEATURE','HORIZON','THRESHOLD','PROMPT','MANUAL_SELECTION','ENGINEERING_REPLAY','RISK_POLICY_VALIDATION']
     partition:Literal['DEVELOPMENT','CALIBRATION','SEALED']
     configuration:dict
     basis:str=Field(min_length=1,max_length=2000)

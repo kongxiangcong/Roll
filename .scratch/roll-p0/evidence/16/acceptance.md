@@ -71,3 +71,7 @@ env仅选择两阶段验收，不弱化空账户确认、不替换app。恢复/C
 | acceptance-16-process-files | 294 / 23,666,039 | 最终9原生进程/文件，required |
 
 old-source/roll Python是迁移可复现源；源码/SDK只有部署指纹，不冒称runtime附件。未复制模型Temp认证/key。父永久复制并逐SHA校对前保留这三个源；本票不执行清理。[清单脚本](retention_inventory.py) 只盘点这些明确目录、不改原件。
+
+## 最后22实际集成
+
+结项源f109842后，按协调要求合入根真实22 tip c127930。唯一冲突为.gitattributes尾部证据声明，完整保留16与22两组原字节规则；app/risk-policy路由、页面、追踪表自动合并。未重复14API/9OS/Chrome/SDK套件。必要轻量 [merge22-build.txt](merge22-build.txt) tsc/Vite通过53modules/2.00s；[merge22-routes.txt](merge22-routes.txt) 真FastAPI/新SQLite构造、完整backup/export、恢复202排队、停止/重启后pending清除、RECOVERY_LOCK、formal拒绝与22观察read资源404均通过。此404明确证明读路由仍可达，不冒称该空账户已有22政策材料或验证过其实体恢复。348件已停止的原证据目录未改变；临时合并smoke目录生命周期结束后自动清理，不属该保全清单。
