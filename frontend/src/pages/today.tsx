@@ -1,3 +1,4 @@
+import {ReviewPanel} from '../components/review-panel';
 import {useEffect,useState} from 'react';
 import {Account,Funding,Capability,RuntimeHealth,request} from '../api';
 import {stateLabels} from './sync-reconcile';
@@ -19,7 +20,7 @@ export function Today(){
     {a.broker_available_as_of&&<p className="muted">券商可用资金截至 {new Date(a.broker_available_as_of).toLocaleString('zh-CN')}</p>}
     {a.broker_frozen_as_of&&<p className="muted">冻结资金核对时点 {new Date(a.broker_frozen_as_of).toLocaleString('zh-CN')}</p>}
     {a.withdrawable_as_of&&<p className="muted">可取资金核对时点 {new Date(a.withdrawable_as_of).toLocaleString('zh-CN')}</p>}
-    <div className="status-grid"><FundingStatus funding={data.funding} compact/><section><h2>技术资格</h2><p>技术资格未授予</p><p>{data.technical_capability.reason}</p></section><section><h2>运行健康</h2><p>账户服务在线</p><p>{data.runtime_health.reason}</p></section></div>
+<ReviewPanel/>    <div className="status-grid"><FundingStatus funding={data.funding} compact/><section><h2>技术资格</h2><p>技术资格未授予</p><p>{data.technical_capability.reason}</p></section><section><h2>运行健康</h2><p>账户服务在线</p><p>{data.runtime_health.reason}</p></section></div>
     <section className="summary">{[['账面现金',a.cash_balance],['券商可用资金',a.broker_available],['冻结资金',a.broker_frozen],['可取资金',a.withdrawable]].map(([label,value])=><div key={label}><span>{label}</span><strong>{money(value)}</strong></div>)}</section>
     <section><h2>持仓</h2>{a.positions.length?<table><thead><tr><th>证券</th><th>持仓数量</th><th>可卖数量</th><th>参考成本</th></tr></thead><tbody>{a.positions.map(p=><tr key={p.instrument}><td>{p.instrument}</td><td>{p.quantity} 股</td><td>{p.sellable_quantity??'未知'}</td><td>{p.reference_cost??'未知'}</td></tr>)}</tbody></table>:<p>尚无已确认持仓</p>}<p className="muted">历史收益未知 · 不推定买入时间或历史费用</p></section>
     {a.investment_income!==undefined&&<section><h2>已确认现金流</h2><p>实际到账投资收入 {a.investment_income} 元 · 实际扣款税费 {a.investment_expenses} 元</p><p>外部转入 {a.external_cash_in} 元 · 外部转出 {a.external_cash_out} 元</p><p>未结应收 {a.pending_income} 元 · 未结应付 {a.pending_expenses} 元</p><p className="muted">外部转入不计投资收益；未结事项不进入实际现金或券商可用。此处税费是独立现金税费，不含成交费用。</p></section>}

@@ -20,12 +20,15 @@ from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
+from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, review_clock=None):
     @asynccontextmanager
     async def lifespan(application):
+        application.state.reviews.start()
         yield
+        await asyncio.to_thread(application.state.reviews.close)
         await asyncio.to_thread(application.state.codex.close)
 
     app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
@@ -68,6 +71,70 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport)
     app.state.evidence=evidence
+    reviews=Reviews(ledger,market,evidence,review_clock)
+    app.state.reviews=reviews
+
+    @app.post('/api/reviews/tasks',status_code=202)
+    def start_review(command:ReviewCommand):
+        return reviews.submit(command)
+
+    @app.get('/api/reviews/tasks/{identifier}')
+    def get_review(identifier:str):
+        return reviews.get(identifier)
+
+    @app.post('/api/reviews/tasks/{identifier}/cancel')
+    def cancel_review(identifier:str):
+        return reviews.cancel(identifier)
+
+    @app.post('/api/reviews/tasks/{identifier}/replay')
+    def replay_review(identifier:str):
+        return reviews.replay(identifier)
+
+    @app.post('/api/reviews/tasks/{identifier}/verification-request',status_code=201)
+    def review_verification_request(identifier:str,command:VerificationRequest):
+        return reviews.verification_request(identifier,command)
+
+    @app.get('/api/reviews/summary')
+    def review_summary():
+        return reviews.summary()
+
+    @app.get('/api/reviews/history')
+    def review_history():
+        return reviews.history()
+
+    @app.get('/api/reviews/health')
+    def review_health():
+        return reviews.health()
+
+    @app.get('/api/reviews/audits/{identifier}')
+    def review_audit(identifier:str):
+        return reviews.get_audit(identifier)
+
+    @app.post('/api/reviews/recover',status_code=202)
+    def recover_reviews():
+        reviews.start()
+        reviews.check_maintenance()
+        return reviews.submit(ReviewCommand(mode='RECOVERY'))
+
+    @app.get('/api/reviews/coverage')
+    def review_coverage():
+        return reviews.coverage()
+
+    @app.post('/api/reviews/maintenance',status_code=201)
+    def maintenance_register(command:MaintenanceCommand):
+        return reviews.register_maintenance(command)
+
+    @app.get('/api/reviews/maintenance')
+    def maintenance_schedules():
+        return reviews.maintenance()
+
+    @app.get('/api/reviews/maintenance/checks')
+    def maintenance_checks():
+        return reviews.maintenance_checks()
+
+    @app.post('/api/reviews/maintenance/check')
+    def check_due_maintenance():
+        return reviews.check_maintenance()
     valuations=Valuations(ledger,evidence)
     app.state.valuations=valuations
 
@@ -106,6 +173,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         return codex.cancel(run_id)
     resolutions=SourceResolutions(evidence,market_clock)
     app.state.resolutions=resolutions
+    reviews.resolutions=resolutions
 
     @app.post('/api/data/requests/{request_id}/resolve',status_code=202)
     def data_resolve(request_id:str,command:ResolutionCommand):
