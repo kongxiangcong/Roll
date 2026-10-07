@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_equal_reported_volume_with_unknown_unit_is_not_verified _________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/14-sixth-red/test_equal_reported_volume_wit0')
+
+    def test_equal_reported_volume_with_unknown_unit_is_not_verified(tmp_path):
+        raw=[original_quote('A:first',volume_reported='100')]
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            setup_request(client);a=acquire(client)
+            raw[0]=original_quote('B:second',volume_reported='100');b=acquire(client)
+            payload=command([a,b]);payload['facts'][0]['field']='volume_reported'
+            result=client.post('/api/data/verifications',json=payload).json()
+>           assert result['result']=='INSUFFICIENT'
+E           AssertionError: assert 'VERIFIED' == 'INSUFFICIENT'
+E             
+E             - INSUFFICIENT
+E             + VERIFIED
+
+tests\application\test_independent_verification.py:151: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_equal_reported_volume_with_unknown_unit_is_not_verified
+1 failed, 5 deselected in 3.62s

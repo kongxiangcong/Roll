@@ -20,6 +20,7 @@ from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
+from roll.market.verification import IndependentVerifications, VerificationCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
@@ -218,7 +219,11 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.get('/api/reviews/verification-requests/{identifier}')
     def get_review_verification_request(identifier:str):
-        return evidence.get('review_verification_requests',identifier)
+        return research.market_input_exposed(verifications.review_request(identifier),'verification-review-request')
+
+    @app.post('/api/reviews/verification-requests/{identifier}/verify')
+    def consume_review_verification_request(identifier:str):
+        return research.market_input_exposed(verifications.consume_review(identifier),'verification-review-consume')
 
     @app.get('/api/reviews/summary')
     def review_summary():
@@ -344,6 +349,24 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         return deepseek.cancel(run_id) if run['backend']=='DEEPSEEK' else codex.cancel(run_id)
     resolutions=SourceResolutions(evidence,market_clock)
     app.state.resolutions=resolutions
+    verifications=IndependentVerifications(evidence)
+    app.state.verifications=verifications
+
+    @app.post('/api/data/verifications',status_code=201)
+    def verify_review_evidence(command:VerificationCommand):
+        return research.market_input_exposed(verifications.create(command),'verification-create')
+
+    @app.get('/api/data/verifications')
+    def verification_history():
+        return research.market_input_exposed(verifications.history(),'verification-history')
+
+    @app.get('/api/data/verifications/{verification_id}')
+    def verification(verification_id:str):
+        return research.market_input_exposed(verifications.get(verification_id),'verification-query')
+
+    @app.post('/api/data/verifications/{verification_id}/replay')
+    def verification_replay(verification_id:str):
+        return research.market_input_exposed(verifications.replay(verification_id),'verification-replay')
     reviews.resolutions=resolutions
 
     @app.post('/api/data/requests/{request_id}/resolve',status_code=202)

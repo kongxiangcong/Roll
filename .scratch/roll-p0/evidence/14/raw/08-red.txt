@@ -1,0 +1,46 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_same_versions_reuse_but_source_revision_invalidates_current_result_and_replay_keeps_old_values _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/14-eighth-red/test_same_versions_reuse_but_s0')
+
+    def test_same_versions_reuse_but_source_revision_invalidates_current_result_and_replay_keeps_old_values(tmp_path):
+        raw=[original_quote('A:first')]
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            req=setup_request(client)
+            first_run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+            first={'snapshot_id':first_run['snapshot_id'],'fact_index':0}
+            resolution=completed(client,client.post('/api/data/requests/'+req['request_id']+'/resolve',
+                json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'basis_run_id':first_run['run_id']}).json()['resolution_id'])
+            raw[0]=original_quote('B:second','100')
+            other=acquire(client)
+            payload=command([first,other])
+            original=client.post('/api/data/verifications',json=payload).json()
+            reused=client.post('/api/data/verifications',json=payload).json()
+            assert reused['reuse_of']==original['verification_id'] and reused['network_calls']==0
+            raw[0]=original_quote('A:first-revised','101')
+            revised=completed(client,client.post('/api/data/requests/'+req['request_id']+'/resolve',
+                json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'use_cache':False,
+                    'revision_of':resolution['resolution_id']}).json()['resolution_id'])
+            stale=client.get('/api/data/verifications/'+original['verification_id']).json()
+            assert stale['dependency_status']=='INVALIDATED' and stale['current_result']=='INSUFFICIENT'
+            assert stale['result']=='VERIFIED' and stale['facts'][0]['evidence'][0]['value']=='100.000'
+            replay=client.post('/api/data/verifications/'+original['verification_id']+'/replay').json()
+            assert replay['network_calls']==0 and replay['original_result']=='VERIFIED'
+            assert replay['facts']==original['facts'] and replay['current_dependency_status']=='INVALIDATED'
+            new_run=client.get('/api/data/runs/'+revised['attempts'][0]['run_id']).json()
+            new_ref={'snapshot_id':new_run['snapshot_id'],'fact_index':0}
+            changed=client.post('/api/data/verifications',json=command([new_ref,other])).json()
+            assert changed['reuse_of'] is None and changed['result']=='CONFLICT'
+            assert client.get('/api/data/verifications/'+reused['verification_id']).json()['dependency_status']=='INVALIDATED'
+            recreated=client.post('/api/data/verifications',json=payload).json()
+>           assert recreated['dependency_status']=='INVALIDATED' and recreated['current_result']=='INSUFFICIENT'
+E           AssertionError: assert ('CURRENT' == 'INVALIDATED'
+E             
+E             - INVALIDATED
+E             + CURRENT)
+
+tests\application\test_independent_verification.py:125: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_same_versions_reuse_but_source_revision_invalidates_current_result_and_replay_keeps_old_values
+1 failed, 6 deselected in 4.76s
