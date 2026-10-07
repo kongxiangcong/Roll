@@ -29,3 +29,6 @@ backend/src/roll/research/reference/*.html binary
 
 # Ticket18 exact captured stdout/process bytes retain CRLF.
 .scratch/roll-p0/evidence/18/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+
+# Ticket19 captured Windows stdout/process bytes.
+.scratch/roll-p0/evidence/19/*.txt -text whitespace=-blank-at-eol,cr-at-eol

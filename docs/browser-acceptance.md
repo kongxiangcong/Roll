@@ -53,3 +53,5 @@ npx playwright test --config playwright.research.config.ts
 
 
 15方法Chrome单独调用 `ROLL_PLAYWRIGHT_FACTORY=review_method_app:factory`、`ROLL_BROWSER_METHOD=1`，8035/5195与空隔离ROLL_TEST_DATA_DIR；运行 `npx playwright test reviews.spec.ts`。只该测试工厂提供固定方法源/盘后时钟，无生产覆盖端点。真实原件缓存先在backend运行 `python -X utf8 ../scripts/acceptance_15.py`（只读复制根07保全，创建新自身runtime），按输出设置ROLL_TEST_DATA_DIR，移除方法factory/flag，设置ROLL_REVIEW_REAL_CACHE=1，运行 `npx playwright test reviews-real-cache.spec.ts`。方法与真实原件/本地缓存性能分列，均未证明10/8新行情或未来正式动作/通知；[15票级证据](../.scratch/roll-p0/evidence/15/acceptance.md)。
+
+19 独立研究模型验收：先在backend设置 PYTHONPATH=tests/application，运行 .venv/Scripts/python.exe -X utf8 ../scripts/transparent_model_acceptance.py --source D:/dsh-proj/Roll/backend/.roll-data/implementation-evidence/18/acceptance-18-final --data-root .roll-data/acceptance-19-final --port 8039（全新目标、源只读）。从frontend设置 ROLL_MODEL_LIVE=1、ROLL_BROWSER_CHANNEL=chrome、ROLL_MODEL_DATA 指向此目录，运行 npx playwright test --config playwright.models.config.ts，API8039/web5199。实际120不可评分→失败与METHOD40DEV/20CAL工件分列，Chrome2passed/build通过，真实模型/校准未冻，20受阻；[19票级证据](../.scratch/roll-p0/evidence/19/acceptance.md)。默认共享05fixture红及18记录的SDK20秒轮询红不由此转绿。
