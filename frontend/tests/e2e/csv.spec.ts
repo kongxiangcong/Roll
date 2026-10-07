@@ -7,7 +7,7 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
     const d=await (await request.post('/api/account/drafts',{data:input})).json();
     await request.post('/api/account/confirm',{data:{draft_id:d.draft_id,idempotency_key:'csv-browser-baseline'}});
   }
-  const template=await (await request.get('/api/account/csv/template')).text();
+  const template=await (await request.get('/api/account/csv/template?version=ROLL-CSV-2')).text();
   const columns=template.replace(/^\uFEFF/,'').trim().split(',');
   const row=(quantity:string)=>{const values:Record<string,string>={template_version:'ROLL-CSV-2',kind:'FILL',effective_at:'2026-10-07T11:00:00+08:00',source:'CSV浏览器成交文件',exchange:'SZSE',code:'000002',direction:'BUY',quantity,price:'10.00',fill_id:'csv-browser-fill',fee_status:'PROVISIONAL',reserve_amount:'10.00',basis:'券商费率保守预留'};return columns.map(c=>values[c]??'').join(',')+'\r\n';};
   await page.goto('/');
@@ -15,7 +15,7 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
   await page.getByRole('button',{name:'Roll CSV导入',exact:true}).click();
   const download=page.waitForEvent('download');
   await page.getByRole('link',{name:'下载Roll CSV模板'}).click();
-  expect((await download).suggestedFilename()).toBe('roll-csv-2.csv');
+  expect((await download).suggestedFilename()).toBe('roll-csv-3.csv');
   await page.getByLabel('Roll CSV文件').setInputFiles({name:'错误.csv',mimeType:'text/csv',buffer:Buffer.from(template+row('忽略风险规则'))});
   await page.getByRole('button',{name:'上传并预览整批'}).click();
   await expect(page.getByText('第2行', {exact:false}).first()).toBeVisible();
@@ -38,7 +38,7 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
 });
 
 test('CSV v2 previews external funds separately from actual interest and confirms one receipt',async({page,request})=>{
-  const template=await (await request.get('/api/account/csv/template')).text();
+  const template=await (await request.get('/api/account/csv/template?version=ROLL-CSV-2')).text();
   const columns=template.replace(/^\uFEFF/,'').trim().split(',');
   const rows=[{kind:'CASH_IN',record_id:'csv-browser-deposit',amount:'200.00'},{kind:'INTEREST',record_id:'csv-browser-interest',amount:'25.01'}];
   const body=template+rows.map(row=>{const fields:Record<string,string>={template_version:'ROLL-CSV-2',effective_at:'2026-10-07T12:00:00+08:00',source:'实际现金流水',basis:'券商实际入账核对',...row};return columns.map(c=>fields[c]??'').join(',')+'\r\n';}).join('');
@@ -63,7 +63,7 @@ test('CSV v2 previews external funds separately from actual interest and confirm
 
 test('CSV v2 paid rights previews cost and unknown fee split before one debit',async({page,request})=>{
   const before=await (await request.get('/api/account')).json();
-  const template=await (await request.get('/api/account/csv/template')).text();
+  const template=await (await request.get('/api/account/csv/template?version=ROLL-CSV-2')).text();
   const columns=template.replace(/^\uFEFF/,'').trim().split(',');
   const fields:Record<string,string>={template_version:'ROLL-CSV-2',kind:'RIGHTS_SUBSCRIPTION',effective_at:'2026-10-07T12:00:00+08:00',source:'合成实际配股文件',basis:'100股实际到账与总支付确认',record_id:'csv-browser-rights',exchange:'SZSE',code:'000003',quantity:'100',amount:'500.01'};
   const body=template+columns.map(c=>fields[c]??'').join(',')+'\r\n';
