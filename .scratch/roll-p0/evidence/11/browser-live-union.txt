@@ -1,0 +1,20 @@
+
+> roll-frontend@0.1.0 test:e2e
+> playwright test codex-live.spec.ts
+
+[WebServer] INFO:     Started server process [40516]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8031 (Press CTRL+C to quit)
+[WebServer] (node:16828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:31056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\codex-live.spec.ts:6:1 › real Codex multi-round evidence and cancellation are displayed and archived (47.6s)
+
+  1 passed (56.9s)
