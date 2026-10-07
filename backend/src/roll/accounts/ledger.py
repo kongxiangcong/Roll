@@ -336,6 +336,14 @@ class Ledger:
         with self.connection() as db:
             return [json.loads(row[0]) for row in db.execute("SELECT entry FROM account_audit ORDER BY version,rowid")]
 
+    def versions(self, after=0, db=None):
+        """Immutable confirmed facts in order, optionally inside a reader transaction."""
+        if db is None:
+            with self.connection() as connection:
+                return self.versions(after, connection)
+        return [json.loads(row[0]) for row in db.execute(
+            "SELECT snapshot FROM account_versions WHERE version>? ORDER BY version", (after,))]
+
     def quarantined_drafts(self):
         with self.connection() as db:
             ids=[row[0] for row in db.execute("SELECT id FROM account_drafts WHERE status='QUARANTINED' ORDER BY created_at")]

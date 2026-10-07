@@ -9,7 +9,7 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
   }
   const template=await (await request.get('/api/account/csv/template')).text();
   const columns=template.replace(/^\uFEFF/,'').trim().split(',');
-  const row=(quantity:string)=>{const values:Record<string,string>={template_version:'ROLL-CSV-1',kind:'FILL',effective_at:'2026-10-07T11:00:00+08:00',source:'CSV浏览器成交文件',exchange:'SZSE',code:'000001',direction:'BUY',quantity,price:'10.00',fill_id:'csv-browser-fill',fee_status:'PROVISIONAL',reserve_amount:'10.00',basis:'券商费率保守预留'};return columns.map(c=>values[c]??'').join(',')+'\r\n';};
+  const row=(quantity:string)=>{const values:Record<string,string>={template_version:'ROLL-CSV-1',kind:'FILL',effective_at:'2026-10-07T11:00:00+08:00',source:'CSV浏览器成交文件',exchange:'SZSE',code:'000002',direction:'BUY',quantity,price:'10.00',fill_id:'csv-browser-fill',fee_status:'PROVISIONAL',reserve_amount:'10.00',basis:'券商费率保守预留'};return columns.map(c=>values[c]??'').join(',')+'\r\n';};
   await page.goto('/');
   await page.getByRole('button',{name:'同步账户',exact:true}).click();
   await page.getByRole('button',{name:'Roll CSV导入',exact:true}).click();
@@ -23,7 +23,7 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
   await page.getByRole('button',{name:'选择修订文件'}).click();
   await page.getByLabel('Roll CSV文件').setInputFiles({name:'成交.csv',mimeType:'text/csv',buffer:Buffer.from(template+row('100.00000000'))});
   await page.getByRole('button',{name:'上传并预览整批'}).click();
-  await expect(page.getByText('SZSE:000001', {exact:false}).first()).toBeVisible();
+  await expect(page.getByText('SZSE:000002', {exact:false}).first()).toBeVisible();
   await expect(page.getByText('费用暂估，实际费用仍未知')).toBeVisible();
   await page.screenshot({path:'test-results/csv-preview.png',fullPage:true});
   await page.getByRole('button',{name:'确认整批入账'}).click();
@@ -31,4 +31,8 @@ test('Roll CSV download, upload, row errors, whole-batch preview and durable rec
   await page.getByRole('button',{name:'查询CSV回执'}).click();
   await expect(page.getByText('CSV回执查询成功')).toBeVisible();
   await page.screenshot({path:'test-results/csv-receipt.png',fullPage:true});
+  const account=await (await request.get('/api/account')).json();
+  const fill=account.fills.find((f:{fill_id:string})=>f.fill_id==='csv-browser-fill');
+  const adjustment=await (await request.post('/api/account/drafts',{data:{kind:'FEE_ADJUSTMENT',expected_account_version:account.version,payload:{effective_at:'2026-10-07T12:00:00+08:00',source:'CSV浏览器实际费用核对',target_record_id:fill.record_id,actual_fee_amount:'5.00',basis:'实际券商回报'}}})).json();
+  expect((await request.post('/api/account/confirm',{data:{draft_id:adjustment.draft_id,idempotency_key:'csv-browser-fee-adjustment'}})).ok()).toBeTruthy();
 });
