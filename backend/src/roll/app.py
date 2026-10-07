@@ -24,6 +24,7 @@ from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptC
 from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
+from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 
@@ -266,6 +267,40 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         return reviews.check_maintenance()
     valuations=Valuations(ledger,evidence)
     app.state.valuations=valuations
+    risk_policies=IndependentRiskPolicies(research,valuations)
+    app.state.risk_policies=risk_policies
+
+    @app.post('/api/research/protocols/{protocol_id}/risk-policies',status_code=201)
+    def risk_policy_register(protocol_id:str,command:PolicyCommand):
+        return risk_policies.register(protocol_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/risk-policies')
+    def risk_policy_list(protocol_id:str):
+        return risk_policies.list(protocol_id)
+
+    @app.get('/api/research/risk-policies/{policy_id}')
+    def risk_policy_get(policy_id:str):
+        return risk_policies.get(policy_id)
+
+    @app.post('/api/research/risk-policies/{policy_id}/evaluations',status_code=201)
+    def risk_policy_evaluate(policy_id:str,command:PolicyEvaluationCommand):
+        return risk_policies.evaluate(policy_id,command)
+
+    @app.get('/api/research/risk-policies/{policy_id}/evaluations')
+    def risk_policy_evaluations(policy_id:str):
+        return risk_policies.evaluations(policy_id)
+
+    @app.get('/api/research/risk-policies/{policy_id}/validation')
+    def risk_policy_validation(policy_id:str):
+        return risk_policies.validation(policy_id)
+
+    @app.get('/api/research/risk-evaluations/{evaluation_id}')
+    def risk_policy_evaluation_get(evaluation_id:str):
+        return risk_policies.get_evaluation(evaluation_id)
+
+    @app.post('/api/research/risk-evaluations/{evaluation_id}/replay')
+    def risk_policy_evaluation_replay(evaluation_id:str):
+        return risk_policies.replay(evaluation_id)
 
     @app.post('/api/account/valuations',status_code=201)
     def publish_valuation(command:ValuationRequest):
