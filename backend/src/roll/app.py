@@ -20,6 +20,7 @@ from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
+from roll.market.verification import IndependentVerifications, VerificationCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
@@ -183,6 +184,24 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         return deepseek.cancel(run_id) if run['backend']=='DEEPSEEK' else codex.cancel(run_id)
     resolutions=SourceResolutions(evidence,market_clock)
     app.state.resolutions=resolutions
+    verifications=IndependentVerifications(evidence)
+    app.state.verifications=verifications
+
+    @app.post('/api/data/verifications',status_code=201)
+    def verify_review_evidence(command:VerificationCommand):
+        return research.market_input_exposed(verifications.create(command),'verification-create')
+
+    @app.get('/api/data/verifications')
+    def verification_history():
+        return research.market_input_exposed(verifications.history(),'verification-history')
+
+    @app.get('/api/data/verifications/{verification_id}')
+    def verification(verification_id:str):
+        return research.market_input_exposed(verifications.get(verification_id),'verification-query')
+
+    @app.post('/api/data/verifications/{verification_id}/replay')
+    def verification_replay(verification_id:str):
+        return research.market_input_exposed(verifications.replay(verification_id),'verification-replay')
 
     @app.post('/api/data/requests/{request_id}/resolve',status_code=202)
     def data_resolve(request_id:str,command:ResolutionCommand):
