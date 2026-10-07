@@ -1,0 +1,751 @@
+{
+  "evidence_kind": "METHOD_WAIT_AND_FIXED_READ_TIMEOUT",
+  "method_boundary": "MockTransport six-second callback wait and raised ReadTimeout; not a real upstream timing measurement",
+  "runtime_data_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\08-source-fallback\\backend\\.roll-data\\acceptance-08-process-final\\method-wait",
+  "request": {
+    "instruments": [
+      "SSE:600519"
+    ],
+    "groups": [
+      "QUOTE"
+    ],
+    "purpose": "OBSERVATION",
+    "start_date": "2026-09-29",
+    "end_date": "2026-09-30",
+    "cutoff": "2026-10-07T18:32:53.861818+00:00",
+    "required_fields": [
+      "QUOTE.last"
+    ],
+    "timeout_seconds": 10,
+    "max_calls": 1,
+    "daily_source": "EASTMONEY",
+    "quote_source": "TENCENT",
+    "request_id": "bfb93248-74b9-4aef-8d0d-b1ee3ac6c86a",
+    "cutoff_basis": "EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF",
+    "scope": {
+      "allowed": true,
+      "instruments": [
+        "SSE:600519"
+      ],
+      "purpose": "OBSERVATION",
+      "list_version": 2,
+      "account_version": 1,
+      "model_qualification": "NOT_GRANTED",
+      "trading_capability": "NONE"
+    },
+    "identity_context": {
+      "SSE:600519": {
+        "board": "MAIN",
+        "code": "600519",
+        "confirmed_at": "2026-10-07T18:32:53.853812+00:00",
+        "effective_at": "2026-10-07T00:00:00+08:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "贵州茅台",
+        "revision": 1
+      }
+    },
+    "created_at": "2026-10-07T18:32:53.870926+00:00",
+    "technical_limits": {
+      "max_calls": 1,
+      "timeout_seconds": 10,
+      "max_response_bytes": 16777216,
+      "retries": 0
+    }
+  },
+  "resolution": {
+    "acquired_facts": [],
+    "attempts": [
+      {
+        "cached": false,
+        "request_id": "bfb93248-74b9-4aef-8d0d-b1ee3ac6c86a",
+        "role": "PRIMARY",
+        "run_id": "8715a50a-184c-4a3b-8ca9-2dea0767ae71"
+      }
+    ],
+    "capabilities": {
+      "complete_daily_model": "NOT_REQUESTED",
+      "current_monitoring": "HEALTHY",
+      "new_risk": "BLOCKED_NEW_RISK",
+      "observation": "DEGRADED",
+      "required_inputs": "BLOCKED_NEW_RISK"
+    },
+    "command": {
+      "allow_fallback": true,
+      "basis_run_id": null,
+      "knowledge_cutoff": null,
+      "revision_of": null,
+      "usage": "HISTORICAL_RESEARCH",
+      "use_cache": true
+    },
+    "elapsed_seconds": 6.188,
+    "evidence_kind": "METHOD_CASE",
+    "facts": [],
+    "finished_at": "2026-10-07T18:33:00.083007+00:00",
+    "formal_judgment": "DISABLED",
+    "freshness": [
+      {
+        "expected_session": "2026-09-30",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T18:33:00.068686+00:00",
+        "latest_reported_session": null,
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": []
+      }
+    ],
+    "gaps": [
+      {
+        "code": "ReadTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "reason": "08 fixed method read timeout after controlled six-second callback wait",
+        "resolved": false,
+        "run_id": "8715a50a-184c-4a3b-8ca9-2dea0767ae71"
+      },
+      {
+        "code": "NO_REQUIRED_FACT_AT_CONSUMER_CUTOFF",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "resolved": false
+      }
+    ],
+    "knowledge_clock_basis": "ACTUAL_SYSTEM_CLOCK",
+    "knowledge_cutoff": "2026-10-07T18:33:00.068686+00:00",
+    "model_qualification": "NOT_GRANTED",
+    "network_calls": 1,
+    "request_fingerprint": "fae262cc636b700aff032c8840c96d209b650268a0cef05b30322091a8ec5327",
+    "request_id": "bfb93248-74b9-4aef-8d0d-b1ee3ac6c86a",
+    "requested_groups": [
+      "QUOTE"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "resolution_id": "b67b9249-82ed-42ea-8a8c-8c87f2994550",
+    "revision_of": null,
+    "source_checks": [],
+    "started_at": "2026-10-07T18:32:53.887852+00:00",
+    "state": "DEGRADED",
+    "status": "COMPLETED",
+    "stop_reason": "CALL_BUDGET_EXHAUSTED",
+    "technical_limits": {
+      "max_calls": 1,
+      "max_response_bytes": 16777216,
+      "retries": 0,
+      "timeout_seconds": 10
+    },
+    "dependency_status": "CURRENT"
+  },
+  "source_runs": [
+    {
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "8bf97e38a5e2b6f9b0b65bb7c4082c10e51ed478ad6655c4de01d0509e72b8a3",
+      "elapsed_seconds": 6.086,
+      "evidence_kind": "METHOD_CASE",
+      "finished_at": "2026-10-07T18:33:00.012624+00:00",
+      "gaps": [
+        {
+          "code": "ReadTimeout",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "reason": "08 fixed method read timeout after controlled six-second callback wait"
+        }
+      ],
+      "model": null,
+      "request_id": "bfb93248-74b9-4aef-8d0d-b1ee3ac6c86a",
+      "run_id": "8715a50a-184c-4a3b-8ca9-2dea0767ae71",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "2d0a39e7-8658-493b-9b8d-9ba50c350d73",
+      "started_at": "2026-10-07T18:32:53.921394+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "finished_at": "2026-10-07T18:32:59.927750+00:00",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh600519",
+          "started_at": "2026-10-07T18:32:53.927129+00:00",
+          "status": "FAILED"
+        }
+      ]
+    }
+  ],
+  "confirmation_performance": {
+    "measurement": "POST /api/account/confirm HTTP round-trip + JSON decode, warm persistent TCP client",
+    "samples": 100,
+    "warmup": 10,
+    "p95_method": "nearest rank ceil(0.95*n)",
+    "p95_ms": 383.98319997941144,
+    "median_ms": 163.49629999604076,
+    "max_ms": 440.8267000108026,
+    "samples_ms": [
+      45.04939998150803,
+      42.97209999640472,
+      47.585599997546524,
+      27.99649999360554,
+      73.89190001413226,
+      55.02949998481199,
+      67.179000005126,
+      55.359599995426834,
+      34.63650000048801,
+      41.476899990811944,
+      42.915300000458956,
+      52.763799991225824,
+      70.00259999767877,
+      42.60839999187738,
+      71.43079998786561,
+      72.8162000013981,
+      50.78769999090582,
+      49.2484999995213,
+      50.705900008324534,
+      57.58660001447424,
+      88.86400001938455,
+      63.487500010523945,
+      105.85720001836307,
+      95.18760000355542,
+      66.22309997328557,
+      68.43270000535995,
+      97.61309999157675,
+      81.46149999811314,
+      96.51000000303611,
+      83.7945000093896,
+      82.5526999833528,
+      99.61950001888908,
+      95.00570001546293,
+      100.5441999877803,
+      112.31650001718663,
+      108.17120000137947,
+      113.33740002010018,
+      109.86520000733435,
+      104.58339998149313,
+      122.39209999097511,
+      120.23480000789277,
+      119.22009999398142,
+      127.24870000965893,
+      126.66599999647588,
+      135.0942999997642,
+      136.24110000091605,
+      166.91349999746308,
+      149.36220002709888,
+      157.2980000055395,
+      147.23309999681078,
+      160.07909999461845,
+      178.5602000018116,
+      168.80059998948127,
+      186.97069998597726,
+      177.93159998836927,
+      171.0972999862861,
+      184.56890000379644,
+      177.22889999276958,
+      196.4931999973487,
+      198.96549999248236,
+      204.956499976106,
+      215.58760001789778,
+      218.72889998485334,
+      225.0009000126738,
+      226.8593000189867,
+      214.9896000046283,
+      227.91119999601506,
+      256.3312000129372,
+      260.63659999636,
+      276.6410999756772,
+      269.5596000121441,
+      259.2175000172574,
+      288.5373999888543,
+      260.60249999864027,
+      278.8828999910038,
+      296.2019999977201,
+      287.0055999956094,
+      297.6175000076182,
+      301.81699999957345,
+      296.37719999300316,
+      315.36229999619536,
+      302.77700000442564,
+      317.22729999455623,
+      333.46540000638925,
+      324.5259000104852,
+      343.1699000066146,
+      339.92620001663454,
+      355.627100012498,
+      365.5182000075001,
+      359.83410000335425,
+      377.07429999136366,
+      381.15770000149496,
+      367.93440001201816,
+      380.77610000618733,
+      383.98319997941144,
+      410.192300012568,
+      427.89520000224,
+      440.8267000108026,
+      415.28059999109246,
+      430.31860000337474
+    ],
+    "position_count": 2,
+    "event_count": 113,
+    "account_version": 111,
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "python": "3.13.12",
+    "sqlite": "3.50.4",
+    "external_task_integration": "SAME_PROCESS_HTTP_WITH_CONTROLLED_METHOD_WAIT",
+    "accepted_http_ms": 17.415900016203523,
+    "overlap_samples": 30,
+    "overlap_p95_ms": 97.61309999157675,
+    "overlap_observation": "Response completion during polling-observed RUNNING interval; polling can overestimate overlap by one poll interval",
+    "resolution_poll_timeline": [
+      {
+        "at": 215982.2045468,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.2749625,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.326997,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.364072,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.4119119,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.4636401,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.5099668,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.5738742,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.6541983,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.7017534,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.7640813,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.8227152,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.8934092,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215982.940925,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.0252304,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.0913148,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.1337002,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.1861109,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.2438608,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.3321618,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.4156455,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.4694184,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.5440683,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.61057,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.6853447,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.7462611,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.8506478,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.9109176,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215983.9669368,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.0398777,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.1136798,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.1831641,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.2568797,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.3114014,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.3918731,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.4413643,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.53075,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.5938442,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.6749111,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.7178343,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.7853177,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.8230753,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.8816804,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215984.9534549,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.0344742,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.1521787,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.2226043,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.3018179,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.3831427,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.4211949,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.5342193,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.6039573,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.6964015,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.7702093,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.8362972,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215985.9005419,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.0021515,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.0592488,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.1402041,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.1762408,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.2690596,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.3570095,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.4023751,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.4562338,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.5560773,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.6026011,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.7306316,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.773857,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.8506273,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.9395803,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215986.9834316,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.0498339,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.1282932,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.1784714,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.2512628,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.3361382,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.3813603,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.4604246,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.5645991,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.6093284,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.6769625,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.7858844,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.8306115,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215987.9296153,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215988.0002442,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215988.0434278,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215988.1205553,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215988.232222,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215988.2728281,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215988.3163033,
+        "status": "COMPLETED"
+      }
+    ]
+  },
+  "replay": {
+    "replay_id": "729cf8c5-facb-4b68-bd85-599a2d22d461",
+    "resolution_id": "b67b9249-82ed-42ea-8a8c-8c87f2994550",
+    "recorded_at": "2026-10-07T18:33:55.252345+00:00",
+    "network_calls": 0,
+    "replay_kind": "ORIGINAL_IMMUTABLE_INPUT_AND_ASSESSMENT",
+    "original_state": "DEGRADED",
+    "original_knowledge_cutoff": "2026-10-07T18:33:00.068686+00:00",
+    "facts": [],
+    "observations": [],
+    "freshness": [
+      {
+        "expected_session": "2026-09-30",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T18:33:00.068686+00:00",
+        "latest_reported_session": null,
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": []
+      }
+    ],
+    "gaps": [
+      {
+        "code": "ReadTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "reason": "08 fixed method read timeout after controlled six-second callback wait",
+        "resolved": false,
+        "run_id": "8715a50a-184c-4a3b-8ca9-2dea0767ae71"
+      },
+      {
+        "code": "NO_REQUIRED_FACT_AT_CONSUMER_CUTOFF",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "resolved": false
+      }
+    ],
+    "current_dependency_status": "CURRENT",
+    "formal_judgment": "DISABLED"
+  },
+  "actual_process_restart": {
+    "interrupted_resolution": {
+      "attempts": [],
+      "command": {
+        "allow_fallback": true,
+        "basis_run_id": null,
+        "knowledge_cutoff": null,
+        "revision_of": null,
+        "usage": "HISTORICAL_RESEARCH",
+        "use_cache": false
+      },
+      "evidence_kind": "METHOD_CASE",
+      "facts": [],
+      "finished_at": "2026-10-07T18:33:58.744708+00:00",
+      "formal_judgment": "DISABLED",
+      "model_qualification": "NOT_GRANTED",
+      "reason": "PROCESS_RESTART_BEFORE_RESOLUTION_COMMIT",
+      "request_fingerprint": "fae262cc636b700aff032c8840c96d209b650268a0cef05b30322091a8ec5327",
+      "request_id": "bfb93248-74b9-4aef-8d0d-b1ee3ac6c86a",
+      "requested_groups": [
+        "QUOTE"
+      ],
+      "requested_instruments": [
+        "SSE:600519"
+      ],
+      "resolution_id": "1828f84a-79e9-4546-a776-6c25e284ae42",
+      "source_checks": [],
+      "started_at": "2026-10-07T18:33:55.430458+00:00",
+      "status": "INTERRUPTED",
+      "technical_limits": {
+        "max_calls": 1,
+        "max_response_bytes": 16777216,
+        "retries": 0,
+        "timeout_seconds": 10
+      },
+      "dependency_status": "CURRENT"
+    },
+    "account_version_preserved": 111,
+    "prior_replay_preserved": "729cf8c5-facb-4b68-bd85-599a2d22d461",
+    "process_termination": "Owned subprocess terminate during six-second controlled method wait"
+  }
+}
