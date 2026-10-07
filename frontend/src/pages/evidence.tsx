@@ -2,6 +2,7 @@ import {FormEvent,useEffect,useState} from 'react';
 import {request} from '../api';
 import '../styles/market.css';
 import '../styles/evidence.css';
+import {SourceResolution} from './SourceResolution';
 
 type Listing={members:{instrument:string;identity:{name:string|null}}[];over_limit:boolean;background_indices:{instrument:string;name:string;basis?:string}[]};
 type Gap={instrument:string;group:string;code:string;reason?:string;fields?:string[]};
@@ -22,6 +23,7 @@ export function Evidence(){
   const [selectedGroups,setSelectedGroups]=useState(Object.keys(groups));
   const [start,setStart]=useState(localDate(-90));const [end,setEnd]=useState(localDate());
   const [source,setSource]=useState('TENCENT');const [maxCalls,setMaxCalls]=useState(30);
+  const [quoteSource,setQuoteSource]=useState('TENCENT');const [needShares,setNeedShares]=useState(false);
   const [runs,setRuns]=useState<Run[]>([]);const [run,setRun]=useState<Run|null>(null);const [snapshot,setSnapshot]=useState<Snapshot|null>(null);
   const [registry,setRegistry]=useState<Record<string,unknown>[]>([]);
   const [error,setError]=useState('');const [busy,setBusy]=useState(false);const [replay,setReplay]=useState('');
@@ -31,7 +33,8 @@ export function Evidence(){
   }).catch(e=>setError(String(e)));},[]);
   function changePurpose(value:string){setPurpose(value);if(value==='BACKGROUND')setSource('TENCENT');setInstruments(value==='BACKGROUND'?listing?.background_indices.map(i=>i.instrument)??[]:listing?.members.map(m=>m.instrument)??[]);setSelectedGroups(value==='BACKGROUND'?['DAILY','QUOTE']:Object.keys(groups));}
   async function retrieve(e:FormEvent){e.preventDefault();setBusy(true);setError('');try{
-    const command=await request<{request_id:string}>('/data/requests',{instruments,groups:selectedGroups,purpose,start_date:start,end_date:end,daily_source:source,max_calls:maxCalls,timeout_seconds:60});
+    const command=await request<{request_id:string}>('/data/requests',{instruments,groups:selectedGroups,purpose,start_date:start,end_date:end,daily_source:source,
+      quote_source:quoteSource,required_fields:needShares&&selectedGroups.includes('QUOTE')?['QUOTE.volume_shares']:[],max_calls:maxCalls,timeout_seconds:60});
     const value=await request<Run>('/data/requests/'+command.request_id+'/retrieve',{});await view(value);setRuns(await request<Run[]>('/data/runs'));
   }catch(e){setError(String(e));}finally{setBusy(false);}}
   const objects=purpose==='BACKGROUND'?listing?.background_indices:listing?.members.map(m=>({instrument:m.instrument,name:m.identity.name??m.instrument}));
@@ -44,6 +47,8 @@ export function Evidence(){
       <label>开始日期（上海交易/披露日期）<input type="date" required value={start} onChange={e=>setStart(e.target.value)}/></label>
       <label>截止日期<input type="date" required value={end} max={localDate()} onChange={e=>setEnd(e.target.value)}/></label>
       <label>日线来源<select value={source} disabled={purpose==='BACKGROUND'} onChange={e=>setSource(e.target.value)}><option value="TENCENT">腾讯：历史成交额通常缺失</option><option value="EASTMONEY">东方财富：保留实际失败</option></select></label>
+      <label>报价来源<select value={quoteSource} onChange={e=>setQuoteSource(e.target.value)}><option value="TENCENT">腾讯</option><option value="SINA">新浪：已实证主板股票股数口径</option></select></label>
+      <label><input type="checkbox" checked={needShares} onChange={e=>setNeedShares(e.target.checked)}/>报价需要已核对的股数，缺失时限制此用途</label>
       <label>本次最多调用<input type="number" value={maxCalls} min={1} max={30} onChange={e=>setMaxCalls(Number(e.target.value))}/></label>
       <p className="muted">日线原价与当前前复权版本分开。历史取得时间为实际本次时间，不能证明过去已经可得；背景指数不取得个股研究或交易能力。</p>
       <button disabled={busy||!instruments.length||!selectedGroups.length}>{busy?'正在取证并归档（最多60秒）…':'取得并归档事实'}</button>
@@ -54,6 +59,7 @@ export function Evidence(){
       {run.gaps.length>0&&<details open><summary>未取得或受限：{run.gaps.length} 项</summary><ul>{run.gaps.map((g,i)=><li key={i}>{g.instrument} · {groups[g.group]??g.group}：{g.code}{g.reason&&` · ${g.reason}`}{g.fields&&` · ${g.fields.join('、')}`}</li>)}</ul></details>}
       <details><summary>来源与工具记录</summary><ul>{run.tools.map((t,i)=><li key={i}>{t.source_id} · {t.status}{t.raw_hash&&<> · <a href={'/api/data/archives/'+t.raw_hash}>原始响应</a></>}</li>)}</ul></details></>}
     </section>
+    <SourceResolution requestId={run?.request_id} runId={run?.run_id}/>
     {snapshot&&<section><h2>归档事实与客观观察</h2><p>{snapshot.namespace} · {snapshot.requested_instruments.length} 只对象 · {snapshot.facts.length} 条事实 · 归档于 {showTime(snapshot.created_at)}</p>
       <p><a href={'/api/data/archives/'+snapshot.parquet.sha256}>下载规范化 Parquet</a> · <button onClick={()=>void request<{network_calls:number}>('/data/runs/'+run?.run_id+'/replay',{}).then(r=>setReplay(`同版本归档回放完成，网络调用 ${r.network_calls} 次`)).catch(e=>setError(String(e)))}>只读归档回放</button></p>{replay&&<p role="status">{replay}</p>}
       {snapshot.observations.map(o=><article className="market-member" key={o.observation_id}><h3>{o.instrument} · {text(o.title??kinds[o.kind]??o.kind)}</h3><p>{text(o.message??classification[String(o.classification)]??o.classification)} · {o.severity==='ATTENTION'?'需关注':'提示'}</p><p className="muted">{classification[String(o.classification)]??text(o.classification)} · 事件日期 {text(o.event_date)} · 精度 {text(o.time_precision)} · 实际观察 {showTime(o.observed_at)}</p><details><summary>原始依据与未知项</summary>{o.basis_raw_hashes.map((h,i)=><p key={i}><a href={'/api/data/archives/'+h}>依据 {h.slice(0,12)}</a></p>)}<p>未知项：{text(o.unknown_items)} · 正式判断未启用</p></details></article>)}

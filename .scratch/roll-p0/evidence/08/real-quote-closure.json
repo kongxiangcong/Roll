@@ -1,0 +1,1482 @@
+{
+  "request": {
+    "instruments": [
+      "SSE:600519"
+    ],
+    "groups": [
+      "QUOTE"
+    ],
+    "purpose": "OBSERVATION",
+    "start_date": "2026-09-30",
+    "end_date": "2026-10-08",
+    "cutoff": "2026-10-07T18:50:11.680123+00:00",
+    "required_fields": [
+      "QUOTE.volume_shares"
+    ],
+    "timeout_seconds": 40,
+    "max_calls": 4,
+    "daily_source": "EASTMONEY",
+    "quote_source": "TENCENT",
+    "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+    "cutoff_basis": "EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF",
+    "scope": {
+      "allowed": true,
+      "instruments": [
+        "SSE:600519"
+      ],
+      "purpose": "OBSERVATION",
+      "list_version": 10,
+      "account_version": 13,
+      "model_qualification": "NOT_GRANTED",
+      "trading_capability": "NONE"
+    },
+    "identity_context": {
+      "SSE:600519": {
+        "board": "MAIN",
+        "code": "600519",
+        "confirmed_at": "2026-10-07T18:50:11.629600+00:00",
+        "effective_at": "2026-10-07T00:00:00+08:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "贵州茅台",
+        "revision": 3
+      }
+    },
+    "created_at": "2026-10-07T18:50:11.688549+00:00",
+    "technical_limits": {
+      "max_calls": 4,
+      "timeout_seconds": 40,
+      "max_response_bytes": 16777216,
+      "retries": 0
+    }
+  },
+  "first": {
+    "acquired_facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 645313.56004,
+        "amount_yuan": "4797246636.000",
+        "available_at": "2026-10-07T18:50:12.560040+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "conversion_basis": {
+          "checked_at": "2026-10-07T17:33:23.799674+00:00",
+          "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+          "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+          "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+          "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+          "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+        },
+        "currency": "CNY",
+        "current_status": "UNKNOWN",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:50:12.560040+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "1258.620",
+        "limitations": [
+          "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+        ],
+        "low": "1236.050",
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "previous_close": "1235.580",
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "received_at": "2026-10-07T18:50:12.560040+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "source_volume_unit": "SHARE",
+        "state": "REPORTED_QUOTE",
+        "supplier_reported_status": "00",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:34:59+08:00",
+        "volume_reported": "3833098",
+        "volume_shares": "3833098",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "attempts": [
+      {
+        "cached": true,
+        "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+        "role": "PRIMARY",
+        "run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9"
+      },
+      {
+        "request_id": "10e33cab-3451-4380-808a-2809018a4048",
+        "role": "ALTERNATE",
+        "run_id": "35312423-aff4-4422-8b7a-38f1fe9cb133"
+      }
+    ],
+    "capabilities": {
+      "complete_daily_model": "NOT_REQUESTED",
+      "current_monitoring": "HEALTHY",
+      "new_risk": "BLOCKED_NEW_RISK",
+      "observation": "HEALTHY",
+      "required_inputs": "SATISFIED"
+    },
+    "command": {
+      "allow_fallback": true,
+      "basis_run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9",
+      "knowledge_cutoff": null,
+      "revision_of": null,
+      "usage": "HISTORICAL_RESEARCH",
+      "use_cache": true
+    },
+    "elapsed_seconds": 0.341,
+    "evidence_kind": "REAL_ACQUISITION",
+    "facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 645313.56004,
+        "amount_yuan": "4797246636.000",
+        "available_at": "2026-10-07T18:50:12.560040+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "conversion_basis": {
+          "checked_at": "2026-10-07T17:33:23.799674+00:00",
+          "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+          "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+          "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+          "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+          "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+        },
+        "currency": "CNY",
+        "current_status": "UNKNOWN",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:50:12.560040+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "1258.620",
+        "limitations": [
+          "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+        ],
+        "low": "1236.050",
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "previous_close": "1235.580",
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "received_at": "2026-10-07T18:50:12.560040+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "source_volume_unit": "SHARE",
+        "state": "REPORTED_QUOTE",
+        "supplier_reported_status": "00",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:34:59+08:00",
+        "volume_reported": "3833098",
+        "volume_shares": "3833098",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "finished_at": "2026-10-07T18:50:12.680042+00:00",
+    "formal_judgment": "DISABLED",
+    "freshness": [
+      {
+        "expected_session": "2026-10-08",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T18:50:12.672894+00:00",
+        "latest_reported_session": "2026-09-30",
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [
+          "2026-10-07T18:50:12.560040+00:00"
+        ],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": [
+          "2026-09-30T15:34:59+08:00"
+        ]
+      }
+    ],
+    "gaps": [
+      {
+        "code": "REQUIRED_FIELDS_MISSING",
+        "fields": [
+          "volume_shares"
+        ],
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "resolved": true,
+        "run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9"
+      }
+    ],
+    "knowledge_clock_basis": "ACTUAL_SYSTEM_CLOCK",
+    "knowledge_cutoff": "2026-10-07T18:50:12.672894+00:00",
+    "model_qualification": "NOT_GRANTED",
+    "network_calls": 1,
+    "request_fingerprint": "6c6806707dba8e06403c3c4bcfd8080493be435b8d0430b9493257cd3730d6e0",
+    "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+    "requested_groups": [
+      "QUOTE"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "resolution_id": "8646e15b-3c8e-4bc9-970b-c60230c84dc6",
+    "revision_of": null,
+    "source_checks": [
+      {
+        "adjustment": "RAW",
+        "alternate_source": "sina-quote",
+        "basis": "Registered field definitions; source/context/date/required-field checks. No averaging or silent sequence splice.",
+        "decision": "ACCEPTED",
+        "field_checks": [
+          {
+            "alternate": "1239.530",
+            "comparison": "EQUAL",
+            "field": "open",
+            "primary": "1239.53"
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "close",
+            "primary": null
+          },
+          {
+            "alternate": "1258.620",
+            "comparison": "EQUAL",
+            "field": "last",
+            "primary": "1258.62"
+          },
+          {
+            "alternate": "1268.000",
+            "comparison": "EQUAL",
+            "field": "high",
+            "primary": "1268.00"
+          },
+          {
+            "alternate": "1236.050",
+            "comparison": "EQUAL",
+            "field": "low",
+            "primary": "1236.05"
+          },
+          {
+            "alternate": "1235.580",
+            "comparison": "EQUAL",
+            "field": "previous_close",
+            "primary": "1235.58"
+          },
+          {
+            "alternate": "3833098",
+            "comparison": "MISSING_PRIMARY",
+            "field": "volume_shares",
+            "primary": null
+          },
+          {
+            "alternate": "4797246636.000",
+            "comparison": "EQUAL",
+            "field": "amount_yuan",
+            "primary": "4797246636"
+          }
+        ],
+        "group": "QUOTE",
+        "independence": "NOT_ASSESSED; ticket14 owns independent critical verification",
+        "instrument": "SSE:600519",
+        "primary_source": "tencent-quote",
+        "primary_unit": "UNKNOWN",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "reasons": [],
+        "trade_date": "2026-09-30",
+        "unit": "SHARE",
+        "unit_comparison": "UNKNOWN_PRIMARY_VOLUME_NOT_EXTRAPOLATED",
+        "upstream_times": {
+          "alternate": "2026-09-30T15:34:59+08:00",
+          "primary": "2026-09-30T16:14:58+08:00"
+        }
+      }
+    ],
+    "started_at": "2026-10-07T18:50:12.329240+00:00",
+    "state": "HEALTHY",
+    "status": "COMPLETED",
+    "stop_reason": "ALTERNATE_ATTEMPT_EXHAUSTED",
+    "technical_limits": {
+      "max_calls": 4,
+      "max_response_bytes": 16777216,
+      "retries": 0,
+      "timeout_seconds": 40
+    }
+  },
+  "cached": {
+    "acquired_facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 645313.56004,
+        "amount_yuan": "4797246636.000",
+        "available_at": "2026-10-07T18:50:12.560040+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "conversion_basis": {
+          "checked_at": "2026-10-07T17:33:23.799674+00:00",
+          "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+          "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+          "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+          "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+          "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+        },
+        "currency": "CNY",
+        "current_status": "UNKNOWN",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:50:12.560040+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "1258.620",
+        "limitations": [
+          "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+        ],
+        "low": "1236.050",
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "previous_close": "1235.580",
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "received_at": "2026-10-07T18:50:12.560040+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "source_volume_unit": "SHARE",
+        "state": "REPORTED_QUOTE",
+        "supplier_reported_status": "00",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:34:59+08:00",
+        "volume_reported": "3833098",
+        "volume_shares": "3833098",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "attempts": [
+      {
+        "cached": true,
+        "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+        "role": "PRIMARY",
+        "run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9"
+      },
+      {
+        "cached": true,
+        "request_id": "10e33cab-3451-4380-808a-2809018a4048",
+        "role": "ALTERNATE",
+        "run_id": "35312423-aff4-4422-8b7a-38f1fe9cb133"
+      }
+    ],
+    "cache": {
+      "age_basis": "Original fact received_at/available_at/upstream_at, never cache wrapper time",
+      "reused_resolution_id": "8646e15b-3c8e-4bc9-970b-c60230c84dc6",
+      "wrapped_at": "2026-10-07T18:50:13.332170+00:00"
+    },
+    "capabilities": {
+      "complete_daily_model": "NOT_REQUESTED",
+      "current_monitoring": "HEALTHY",
+      "new_risk": "BLOCKED_NEW_RISK",
+      "observation": "HEALTHY",
+      "required_inputs": "SATISFIED"
+    },
+    "command": {
+      "allow_fallback": true,
+      "basis_run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9",
+      "knowledge_cutoff": null,
+      "revision_of": null,
+      "usage": "HISTORICAL_RESEARCH",
+      "use_cache": true
+    },
+    "elapsed_seconds": 0.061,
+    "evidence_kind": "REAL_ACQUISITION",
+    "facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 645313.56004,
+        "amount_yuan": "4797246636.000",
+        "available_at": "2026-10-07T18:50:12.560040+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "conversion_basis": {
+          "checked_at": "2026-10-07T17:33:23.799674+00:00",
+          "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+          "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+          "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+          "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+          "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+        },
+        "currency": "CNY",
+        "current_status": "UNKNOWN",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:50:12.560040+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "1258.620",
+        "limitations": [
+          "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+        ],
+        "low": "1236.050",
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "previous_close": "1235.580",
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "received_at": "2026-10-07T18:50:12.560040+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "source_volume_unit": "SHARE",
+        "state": "REPORTED_QUOTE",
+        "supplier_reported_status": "00",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:34:59+08:00",
+        "volume_reported": "3833098",
+        "volume_shares": "3833098",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "finished_at": "2026-10-07T18:50:13.339473+00:00",
+    "formal_judgment": "DISABLED",
+    "freshness": [
+      {
+        "expected_session": "2026-10-08",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T18:50:13.332204+00:00",
+        "latest_reported_session": "2026-09-30",
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [
+          "2026-10-07T18:50:12.560040+00:00"
+        ],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": [
+          "2026-09-30T15:34:59+08:00"
+        ]
+      }
+    ],
+    "gaps": [
+      {
+        "code": "REQUIRED_FIELDS_MISSING",
+        "fields": [
+          "volume_shares"
+        ],
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "resolved": true,
+        "run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9"
+      }
+    ],
+    "knowledge_clock_basis": "ACTUAL_SYSTEM_CLOCK",
+    "knowledge_cutoff": "2026-10-07T18:50:13.332204+00:00",
+    "model_qualification": "NOT_GRANTED",
+    "network_calls": 0,
+    "request_fingerprint": "6c6806707dba8e06403c3c4bcfd8080493be435b8d0430b9493257cd3730d6e0",
+    "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+    "requested_groups": [
+      "QUOTE"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "resolution_id": "e082ee29-07b5-4db1-8cdf-80ce4daeab52",
+    "source_checks": [
+      {
+        "adjustment": "RAW",
+        "alternate_source": "sina-quote",
+        "basis": "Registered field definitions; source/context/date/required-field checks. No averaging or silent sequence splice.",
+        "decision": "ACCEPTED",
+        "field_checks": [
+          {
+            "alternate": "1239.530",
+            "comparison": "EQUAL",
+            "field": "open",
+            "primary": "1239.53"
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "close",
+            "primary": null
+          },
+          {
+            "alternate": "1258.620",
+            "comparison": "EQUAL",
+            "field": "last",
+            "primary": "1258.62"
+          },
+          {
+            "alternate": "1268.000",
+            "comparison": "EQUAL",
+            "field": "high",
+            "primary": "1268.00"
+          },
+          {
+            "alternate": "1236.050",
+            "comparison": "EQUAL",
+            "field": "low",
+            "primary": "1236.05"
+          },
+          {
+            "alternate": "1235.580",
+            "comparison": "EQUAL",
+            "field": "previous_close",
+            "primary": "1235.58"
+          },
+          {
+            "alternate": "3833098",
+            "comparison": "MISSING_PRIMARY",
+            "field": "volume_shares",
+            "primary": null
+          },
+          {
+            "alternate": "4797246636.000",
+            "comparison": "EQUAL",
+            "field": "amount_yuan",
+            "primary": "4797246636"
+          }
+        ],
+        "group": "QUOTE",
+        "independence": "NOT_ASSESSED; ticket14 owns independent critical verification",
+        "instrument": "SSE:600519",
+        "primary_source": "tencent-quote",
+        "primary_unit": "UNKNOWN",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "reasons": [],
+        "trade_date": "2026-09-30",
+        "unit": "SHARE",
+        "unit_comparison": "UNKNOWN_PRIMARY_VOLUME_NOT_EXTRAPOLATED",
+        "upstream_times": {
+          "alternate": "2026-09-30T15:34:59+08:00",
+          "primary": "2026-09-30T16:14:58+08:00"
+        }
+      }
+    ],
+    "started_at": "2026-10-07T18:50:13.268157+00:00",
+    "state": "HEALTHY",
+    "status": "COMPLETED",
+    "stop_reason": "CACHE_REUSE_END",
+    "technical_limits": {
+      "max_calls": 4,
+      "max_response_bytes": 16777216,
+      "retries": 0,
+      "timeout_seconds": 40
+    }
+  },
+  "revised": {
+    "acquired_facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 645315.179228,
+        "amount_yuan": "4797246636.000",
+        "available_at": "2026-10-07T18:50:14.179228+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "conversion_basis": {
+          "checked_at": "2026-10-07T17:33:23.799674+00:00",
+          "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+          "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+          "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+          "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+          "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+        },
+        "currency": "CNY",
+        "current_status": "UNKNOWN",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:50:14.179228+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "1258.620",
+        "limitations": [
+          "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+        ],
+        "low": "1236.050",
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "previous_close": "1235.580",
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "received_at": "2026-10-07T18:50:14.179228+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "source_volume_unit": "SHARE",
+        "state": "REPORTED_QUOTE",
+        "supplier_reported_status": "00",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:34:59+08:00",
+        "volume_reported": "3833098",
+        "volume_shares": "3833098",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "attempts": [
+      {
+        "cached": false,
+        "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+        "role": "PRIMARY",
+        "run_id": "407d606c-186f-4020-82d2-ab4a0599b57e"
+      },
+      {
+        "request_id": "bd086739-eaf2-44da-aa7a-bc29cfa714a3",
+        "role": "ALTERNATE",
+        "run_id": "7098637e-df6a-4958-84b6-5894721ff995"
+      }
+    ],
+    "capabilities": {
+      "complete_daily_model": "NOT_REQUESTED",
+      "current_monitoring": "HEALTHY",
+      "new_risk": "BLOCKED_NEW_RISK",
+      "observation": "HEALTHY",
+      "required_inputs": "SATISFIED"
+    },
+    "command": {
+      "allow_fallback": true,
+      "basis_run_id": null,
+      "knowledge_cutoff": null,
+      "revision_of": "e082ee29-07b5-4db1-8cdf-80ce4daeab52",
+      "usage": "HISTORICAL_RESEARCH",
+      "use_cache": false
+    },
+    "elapsed_seconds": 0.578,
+    "evidence_kind": "REAL_ACQUISITION",
+    "facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 645315.179228,
+        "amount_yuan": "4797246636.000",
+        "available_at": "2026-10-07T18:50:14.179228+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "conversion_basis": {
+          "checked_at": "2026-10-07T17:33:23.799674+00:00",
+          "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+          "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+          "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+          "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+          "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+        },
+        "currency": "CNY",
+        "current_status": "UNKNOWN",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:50:14.179228+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "1258.620",
+        "limitations": [
+          "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+        ],
+        "low": "1236.050",
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "previous_close": "1235.580",
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "received_at": "2026-10-07T18:50:14.179228+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "source_volume_unit": "SHARE",
+        "state": "REPORTED_QUOTE",
+        "supplier_reported_status": "00",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:34:59+08:00",
+        "volume_reported": "3833098",
+        "volume_shares": "3833098",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "finished_at": "2026-10-07T18:50:14.291614+00:00",
+    "formal_judgment": "DISABLED",
+    "freshness": [
+      {
+        "expected_session": "2026-10-08",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T18:50:14.263670+00:00",
+        "latest_reported_session": "2026-09-30",
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [
+          "2026-10-07T18:50:14.179228+00:00"
+        ],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": [
+          "2026-09-30T15:34:59+08:00"
+        ]
+      }
+    ],
+    "gaps": [
+      {
+        "code": "REQUIRED_FIELDS_MISSING",
+        "fields": [
+          "volume_shares"
+        ],
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "resolved": true,
+        "run_id": "407d606c-186f-4020-82d2-ab4a0599b57e"
+      }
+    ],
+    "knowledge_clock_basis": "ACTUAL_SYSTEM_CLOCK",
+    "knowledge_cutoff": "2026-10-07T18:50:14.263670+00:00",
+    "model_qualification": "NOT_GRANTED",
+    "network_calls": 2,
+    "request_fingerprint": "6c6806707dba8e06403c3c4bcfd8080493be435b8d0430b9493257cd3730d6e0",
+    "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+    "requested_groups": [
+      "QUOTE"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "resolution_id": "70308a92-4b9f-46d5-943d-c3f3e41b7a70",
+    "revision": {
+      "added_fact_keys": [],
+      "available_basis": "NEW_ACTUAL_RECEIPT; NO_RETROACTIVE_KNOWLEDGE",
+      "changed_fact_keys": [],
+      "missing_in_new_run": [],
+      "new_resolution_id": "70308a92-4b9f-46d5-943d-c3f3e41b7a70",
+      "prior_resolution_id": "e082ee29-07b5-4db1-8cdf-80ce4daeab52",
+      "reason": "NEW_RUN_NO_NORMALIZED_FACT_CHANGE",
+      "recorded_at": "2026-10-07T18:50:14.294724+00:00",
+      "revision_id": "bb2f8a2c-e97c-4590-8b25-14cf93be295c",
+      "source_run_ids": [
+        "407d606c-186f-4020-82d2-ab4a0599b57e",
+        "7098637e-df6a-4958-84b6-5894721ff995"
+      ]
+    },
+    "revision_of": "e082ee29-07b5-4db1-8cdf-80ce4daeab52",
+    "source_checks": [
+      {
+        "adjustment": "RAW",
+        "alternate_source": "sina-quote",
+        "basis": "Registered field definitions; source/context/date/required-field checks. No averaging or silent sequence splice.",
+        "decision": "ACCEPTED",
+        "field_checks": [
+          {
+            "alternate": "1239.530",
+            "comparison": "EQUAL",
+            "field": "open",
+            "primary": "1239.53"
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "close",
+            "primary": null
+          },
+          {
+            "alternate": "1258.620",
+            "comparison": "EQUAL",
+            "field": "last",
+            "primary": "1258.62"
+          },
+          {
+            "alternate": "1268.000",
+            "comparison": "EQUAL",
+            "field": "high",
+            "primary": "1268.00"
+          },
+          {
+            "alternate": "1236.050",
+            "comparison": "EQUAL",
+            "field": "low",
+            "primary": "1236.05"
+          },
+          {
+            "alternate": "1235.580",
+            "comparison": "EQUAL",
+            "field": "previous_close",
+            "primary": "1235.58"
+          },
+          {
+            "alternate": "3833098",
+            "comparison": "MISSING_PRIMARY",
+            "field": "volume_shares",
+            "primary": null
+          },
+          {
+            "alternate": "4797246636.000",
+            "comparison": "EQUAL",
+            "field": "amount_yuan",
+            "primary": "4797246636"
+          }
+        ],
+        "group": "QUOTE",
+        "independence": "NOT_ASSESSED; ticket14 owns independent critical verification",
+        "instrument": "SSE:600519",
+        "primary_source": "tencent-quote",
+        "primary_unit": "UNKNOWN",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "reasons": [],
+        "trade_date": "2026-09-30",
+        "unit": "SHARE",
+        "unit_comparison": "UNKNOWN_PRIMARY_VOLUME_NOT_EXTRAPOLATED",
+        "upstream_times": {
+          "alternate": "2026-09-30T15:34:59+08:00",
+          "primary": "2026-09-30T16:14:58+08:00"
+        }
+      }
+    ],
+    "started_at": "2026-10-07T18:50:13.697535+00:00",
+    "state": "HEALTHY",
+    "status": "COMPLETED",
+    "stop_reason": "ALTERNATE_ATTEMPT_EXHAUSTED",
+    "technical_limits": {
+      "max_calls": 4,
+      "max_response_bytes": 16777216,
+      "retries": 0,
+      "timeout_seconds": 40
+    }
+  },
+  "runs": [
+    {
+      "run": {
+        "backend": "DIRECT_HTTP",
+        "config_fingerprint": "24942f7f571f8e76888cb0ff1bc1441b608fafbab0966ac40c51d2462ff20b31",
+        "elapsed_seconds": 0.196,
+        "evidence_kind": "REAL_ACQUISITION",
+        "finished_at": "2026-10-07T18:50:11.915481+00:00",
+        "gaps": [
+          {
+            "code": "REQUIRED_FIELDS_MISSING",
+            "fields": [
+              "volume_shares"
+            ],
+            "group": "QUOTE",
+            "instrument": "SSE:600519"
+          }
+        ],
+        "model": null,
+        "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+        "run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9",
+        "runtime_versions": {
+          "httpx": "0.28.1",
+          "pyarrow": "25.0.1",
+          "pypdf": "6.19.0"
+        },
+        "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+        "snapshot_id": "ac57eb3c-1e8f-4b98-b413-42129f390c40",
+        "started_at": "2026-10-07T18:50:11.712509+00:00",
+        "status": "PARTIAL",
+        "tools": [
+          {
+            "finished_at": "2026-10-07T18:50:11.856278+00:00",
+            "group": "QUOTE",
+            "http_status": 200,
+            "instrument": "SSE:600519",
+            "method": "GET",
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "received_bytes": 550,
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "started_at": "2026-10-07T18:50:11.763613+00:00",
+            "status": "ARCHIVED"
+          }
+        ]
+      },
+      "snapshot": {
+        "adapter_version": "08-market-v1",
+        "archives": [
+          {
+            "bytes": 550,
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "kind": "RAW_RESPONSE",
+            "path": "raw/6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695.raw",
+            "received_at": "2026-10-07T18:50:11.849019+00:00",
+            "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519"
+          }
+        ],
+        "coverage": [
+          {
+            "age_seconds": 642913.849019,
+            "full_history_verified": false,
+            "group": "QUOTE",
+            "instrument": "SSE:600519",
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "returned_rows": 1,
+            "upstream_at": "2026-09-30T16:14:58+08:00"
+          }
+        ],
+        "created_at": "2026-10-07T18:50:11.915448+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "facts": [
+          {
+            "adjustment": "RAW",
+            "age_seconds": 642913.849019,
+            "amount_yuan": "4797246636",
+            "available_at": "2026-10-07T18:50:11.849019+00:00",
+            "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+            "currency": "CNY",
+            "current_status": "UNKNOWN",
+            "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+            "evidence_kind": "REAL_ACQUISITION",
+            "fetched_at": "2026-10-07T18:50:11.849019+00:00",
+            "formal_judgment": "DISABLED",
+            "group": "QUOTE",
+            "high": "1268.00",
+            "historical_limitations": [
+              "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+              "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+            ],
+            "instrument": "SSE:600519",
+            "last": "1258.62",
+            "limitations": [
+              "QUOTE_DOES_NOT_CONFIRM_SUSPENSION_OR_RISK_WARNING"
+            ],
+            "low": "1236.05",
+            "missing_required_fields": [
+              "volume_shares"
+            ],
+            "open": "1239.53",
+            "point_in_time_input_allowed": false,
+            "previous_close": "1235.58",
+            "published_at": null,
+            "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "received_at": "2026-10-07T18:50:11.849019+00:00",
+            "reported_limit_down": "1112.02",
+            "reported_limit_up": "1359.14",
+            "revision_id": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "state": "REPORTED_QUOTE",
+            "time_precision": "SECOND",
+            "trade_date": "2026-09-30",
+            "upstream_at": "2026-09-30T16:14:58+08:00",
+            "volume_reported": "38331",
+            "volume_shares": null,
+            "volume_unit": "UNKNOWN"
+          }
+        ],
+        "formal_judgment": "DISABLED",
+        "gaps": [
+          {
+            "code": "REQUIRED_FIELDS_MISSING",
+            "fields": [
+              "volume_shares"
+            ],
+            "group": "QUOTE",
+            "instrument": "SSE:600519"
+          }
+        ],
+        "namespace": "ACTUAL",
+        "observations": [],
+        "parquet": {
+          "adapter_version": "08-market-v1",
+          "bytes": 10357,
+          "kind": "NORMALIZED_PARQUET",
+          "path": "parquet/2fed10d12d148eaed606d08aefb284ae91f27630916662b91f78f83799a5b0bd.parquet",
+          "sha256": "2fed10d12d148eaed606d08aefb284ae91f27630916662b91f78f83799a5b0bd"
+        },
+        "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+        "requested_cutoff": "2026-10-07T18:50:11.680123+00:00",
+        "requested_groups": [
+          "QUOTE"
+        ],
+        "requested_instruments": [
+          "SSE:600519"
+        ],
+        "run_id": "0dfd5b87-5b1a-46aa-8b12-d52ae547e2c9",
+        "snapshot_id": "ac57eb3c-1e8f-4b98-b413-42129f390c40"
+      }
+    },
+    {
+      "run": {
+        "backend": "DIRECT_HTTP",
+        "config_fingerprint": "b2c29f789c40d4fe2a8370e70f20339ee0ba11f1978da5f965d0ad05d6a583b3",
+        "elapsed_seconds": 0.237,
+        "evidence_kind": "REAL_ACQUISITION",
+        "finished_at": "2026-10-07T18:50:12.652183+00:00",
+        "gaps": [],
+        "model": null,
+        "request_id": "10e33cab-3451-4380-808a-2809018a4048",
+        "run_id": "35312423-aff4-4422-8b7a-38f1fe9cb133",
+        "runtime_versions": {
+          "httpx": "0.28.1",
+          "pyarrow": "25.0.1",
+          "pypdf": "6.19.0"
+        },
+        "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+        "snapshot_id": "7ca81ed5-c881-49e8-b9d3-bc48a89fd207",
+        "started_at": "2026-10-07T18:50:12.407992+00:00",
+        "status": "COMPLETE",
+        "tools": [
+          {
+            "finished_at": "2026-10-07T18:50:12.592666+00:00",
+            "group": "QUOTE",
+            "http_status": 200,
+            "instrument": "SSE:600519",
+            "method": "GET",
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "received_bytes": 292,
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "started_at": "2026-10-07T18:50:12.466883+00:00",
+            "status": "ARCHIVED"
+          }
+        ]
+      },
+      "snapshot": {
+        "adapter_version": "08-market-v1",
+        "archives": [
+          {
+            "bytes": 292,
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "kind": "RAW_RESPONSE",
+            "path": "raw/07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35.raw",
+            "received_at": "2026-10-07T18:50:12.560040+00:00",
+            "sha256": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519"
+          }
+        ],
+        "coverage": [
+          {
+            "age_seconds": 645313.56004,
+            "full_history_verified": false,
+            "group": "QUOTE",
+            "instrument": "SSE:600519",
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "returned_rows": 1,
+            "upstream_at": "2026-09-30T15:34:59+08:00"
+          }
+        ],
+        "created_at": "2026-10-07T18:50:12.652150+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "facts": [
+          {
+            "adjustment": "RAW",
+            "age_seconds": 645313.56004,
+            "amount_yuan": "4797246636.000",
+            "available_at": "2026-10-07T18:50:12.560040+00:00",
+            "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+            "conversion_basis": {
+              "checked_at": "2026-10-07T17:33:23.799674+00:00",
+              "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+              "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+              "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+              "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+              "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+            },
+            "currency": "CNY",
+            "current_status": "UNKNOWN",
+            "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+            "evidence_kind": "REAL_ACQUISITION",
+            "fetched_at": "2026-10-07T18:50:12.560040+00:00",
+            "formal_judgment": "DISABLED",
+            "group": "QUOTE",
+            "high": "1268.000",
+            "historical_limitations": [
+              "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+              "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+            ],
+            "instrument": "SSE:600519",
+            "last": "1258.620",
+            "limitations": [
+              "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+            ],
+            "low": "1236.050",
+            "open": "1239.530",
+            "point_in_time_input_allowed": false,
+            "previous_close": "1235.580",
+            "published_at": null,
+            "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "received_at": "2026-10-07T18:50:12.560040+00:00",
+            "reported_limit_down": null,
+            "reported_limit_up": null,
+            "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "source_volume_unit": "SHARE",
+            "state": "REPORTED_QUOTE",
+            "supplier_reported_status": "00",
+            "time_precision": "SECOND",
+            "trade_date": "2026-09-30",
+            "upstream_at": "2026-09-30T15:34:59+08:00",
+            "volume_reported": "3833098",
+            "volume_shares": "3833098",
+            "volume_unit": "SHARE"
+          }
+        ],
+        "formal_judgment": "DISABLED",
+        "gaps": [],
+        "namespace": "ACTUAL",
+        "observations": [],
+        "parquet": {
+          "adapter_version": "08-market-v1",
+          "bytes": 12853,
+          "kind": "NORMALIZED_PARQUET",
+          "path": "parquet/f8af5385a7354f0a273392006692da47809caa369a55c0d4804d2443456f4e86.parquet",
+          "sha256": "f8af5385a7354f0a273392006692da47809caa369a55c0d4804d2443456f4e86"
+        },
+        "request_id": "10e33cab-3451-4380-808a-2809018a4048",
+        "requested_cutoff": "2026-10-07T18:50:11.680123+00:00",
+        "requested_groups": [
+          "QUOTE"
+        ],
+        "requested_instruments": [
+          "SSE:600519"
+        ],
+        "run_id": "35312423-aff4-4422-8b7a-38f1fe9cb133",
+        "snapshot_id": "7ca81ed5-c881-49e8-b9d3-bc48a89fd207"
+      }
+    },
+    {
+      "run": {
+        "backend": "DIRECT_HTTP",
+        "config_fingerprint": "24942f7f571f8e76888cb0ff1bc1441b608fafbab0966ac40c51d2462ff20b31",
+        "elapsed_seconds": 0.229,
+        "evidence_kind": "REAL_ACQUISITION",
+        "finished_at": "2026-10-07T18:50:13.970290+00:00",
+        "gaps": [
+          {
+            "code": "REQUIRED_FIELDS_MISSING",
+            "fields": [
+              "volume_shares"
+            ],
+            "group": "QUOTE",
+            "instrument": "SSE:600519"
+          }
+        ],
+        "model": null,
+        "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+        "run_id": "407d606c-186f-4020-82d2-ab4a0599b57e",
+        "runtime_versions": {
+          "httpx": "0.28.1",
+          "pyarrow": "25.0.1",
+          "pypdf": "6.19.0"
+        },
+        "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+        "snapshot_id": "0848221a-ab9e-4f56-a345-6b30adddad5e",
+        "started_at": "2026-10-07T18:50:13.735066+00:00",
+        "status": "PARTIAL",
+        "tools": [
+          {
+            "finished_at": "2026-10-07T18:50:13.904517+00:00",
+            "group": "QUOTE",
+            "http_status": 200,
+            "instrument": "SSE:600519",
+            "method": "GET",
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "received_bytes": 550,
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "started_at": "2026-10-07T18:50:13.788408+00:00",
+            "status": "ARCHIVED"
+          }
+        ]
+      },
+      "snapshot": {
+        "adapter_version": "08-market-v1",
+        "archives": [
+          {
+            "bytes": 550,
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "kind": "RAW_RESPONSE",
+            "path": "raw/6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695.raw",
+            "received_at": "2026-10-07T18:50:13.896478+00:00",
+            "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519"
+          }
+        ],
+        "coverage": [
+          {
+            "age_seconds": 642915.896478,
+            "full_history_verified": false,
+            "group": "QUOTE",
+            "instrument": "SSE:600519",
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "returned_rows": 1,
+            "upstream_at": "2026-09-30T16:14:58+08:00"
+          }
+        ],
+        "created_at": "2026-10-07T18:50:13.970270+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "facts": [
+          {
+            "adjustment": "RAW",
+            "age_seconds": 642915.896478,
+            "amount_yuan": "4797246636",
+            "available_at": "2026-10-07T18:50:13.896478+00:00",
+            "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+            "currency": "CNY",
+            "current_status": "UNKNOWN",
+            "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+            "evidence_kind": "REAL_ACQUISITION",
+            "fetched_at": "2026-10-07T18:50:13.896478+00:00",
+            "formal_judgment": "DISABLED",
+            "group": "QUOTE",
+            "high": "1268.00",
+            "historical_limitations": [
+              "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+              "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+            ],
+            "instrument": "SSE:600519",
+            "last": "1258.62",
+            "limitations": [
+              "QUOTE_DOES_NOT_CONFIRM_SUSPENSION_OR_RISK_WARNING"
+            ],
+            "low": "1236.05",
+            "missing_required_fields": [
+              "volume_shares"
+            ],
+            "open": "1239.53",
+            "point_in_time_input_allowed": false,
+            "previous_close": "1235.58",
+            "published_at": null,
+            "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "received_at": "2026-10-07T18:50:13.896478+00:00",
+            "reported_limit_down": "1112.02",
+            "reported_limit_up": "1359.14",
+            "revision_id": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "state": "REPORTED_QUOTE",
+            "time_precision": "SECOND",
+            "trade_date": "2026-09-30",
+            "upstream_at": "2026-09-30T16:14:58+08:00",
+            "volume_reported": "38331",
+            "volume_shares": null,
+            "volume_unit": "UNKNOWN"
+          }
+        ],
+        "formal_judgment": "DISABLED",
+        "gaps": [
+          {
+            "code": "REQUIRED_FIELDS_MISSING",
+            "fields": [
+              "volume_shares"
+            ],
+            "group": "QUOTE",
+            "instrument": "SSE:600519"
+          }
+        ],
+        "namespace": "ACTUAL",
+        "observations": [],
+        "parquet": {
+          "adapter_version": "08-market-v1",
+          "bytes": 10357,
+          "kind": "NORMALIZED_PARQUET",
+          "path": "parquet/55012c52a31799daff9df14a943ad6715b22939dbbdb37f7e6ec1628bb4b1fdc.parquet",
+          "sha256": "55012c52a31799daff9df14a943ad6715b22939dbbdb37f7e6ec1628bb4b1fdc"
+        },
+        "request_id": "ff40c493-1a8f-47db-b7fd-4811be8b21d8",
+        "requested_cutoff": "2026-10-07T18:50:11.680123+00:00",
+        "requested_groups": [
+          "QUOTE"
+        ],
+        "requested_instruments": [
+          "SSE:600519"
+        ],
+        "run_id": "407d606c-186f-4020-82d2-ab4a0599b57e",
+        "snapshot_id": "0848221a-ab9e-4f56-a345-6b30adddad5e"
+      }
+    },
+    {
+      "run": {
+        "backend": "DIRECT_HTTP",
+        "config_fingerprint": "f2db668f059f0fa251554a0b8c42f2225bb318f99ffdbe10c7f4f6fef4770e38",
+        "elapsed_seconds": 0.206,
+        "evidence_kind": "REAL_ACQUISITION",
+        "finished_at": "2026-10-07T18:50:14.243488+00:00",
+        "gaps": [],
+        "model": null,
+        "request_id": "bd086739-eaf2-44da-aa7a-bc29cfa714a3",
+        "run_id": "7098637e-df6a-4958-84b6-5894721ff995",
+        "runtime_versions": {
+          "httpx": "0.28.1",
+          "pyarrow": "25.0.1",
+          "pypdf": "6.19.0"
+        },
+        "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+        "snapshot_id": "26a764ef-38d5-4dd7-a8dc-d6408efa40c8",
+        "started_at": "2026-10-07T18:50:14.029263+00:00",
+        "status": "COMPLETE",
+        "tools": [
+          {
+            "finished_at": "2026-10-07T18:50:14.188150+00:00",
+            "group": "QUOTE",
+            "http_status": 200,
+            "instrument": "SSE:600519",
+            "method": "GET",
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "received_bytes": 292,
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "started_at": "2026-10-07T18:50:14.080177+00:00",
+            "status": "ARCHIVED"
+          }
+        ]
+      },
+      "snapshot": {
+        "adapter_version": "08-market-v1",
+        "archives": [
+          {
+            "bytes": 292,
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "kind": "RAW_RESPONSE",
+            "path": "raw/07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35.raw",
+            "received_at": "2026-10-07T18:50:14.179228+00:00",
+            "sha256": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519"
+          }
+        ],
+        "coverage": [
+          {
+            "age_seconds": 645315.179228,
+            "full_history_verified": false,
+            "group": "QUOTE",
+            "instrument": "SSE:600519",
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "returned_rows": 1,
+            "upstream_at": "2026-09-30T15:34:59+08:00"
+          }
+        ],
+        "created_at": "2026-10-07T18:50:14.243465+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "facts": [
+          {
+            "adjustment": "RAW",
+            "age_seconds": 645315.179228,
+            "amount_yuan": "4797246636.000",
+            "available_at": "2026-10-07T18:50:14.179228+00:00",
+            "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+            "conversion_basis": {
+              "checked_at": "2026-10-07T17:33:23.799674+00:00",
+              "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+              "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+              "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated",
+              "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+              "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
+            },
+            "currency": "CNY",
+            "current_status": "UNKNOWN",
+            "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+            "evidence_kind": "REAL_ACQUISITION",
+            "fetched_at": "2026-10-07T18:50:14.179228+00:00",
+            "formal_judgment": "DISABLED",
+            "group": "QUOTE",
+            "high": "1268.000",
+            "historical_limitations": [
+              "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+              "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+            ],
+            "instrument": "SSE:600519",
+            "last": "1258.620",
+            "limitations": [
+              "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS"
+            ],
+            "low": "1236.050",
+            "open": "1239.530",
+            "point_in_time_input_allowed": false,
+            "previous_close": "1235.580",
+            "published_at": null,
+            "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "received_at": "2026-10-07T18:50:14.179228+00:00",
+            "reported_limit_down": null,
+            "reported_limit_up": null,
+            "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "source_volume_unit": "SHARE",
+            "state": "REPORTED_QUOTE",
+            "supplier_reported_status": "00",
+            "time_precision": "SECOND",
+            "trade_date": "2026-09-30",
+            "upstream_at": "2026-09-30T15:34:59+08:00",
+            "volume_reported": "3833098",
+            "volume_shares": "3833098",
+            "volume_unit": "SHARE"
+          }
+        ],
+        "formal_judgment": "DISABLED",
+        "gaps": [],
+        "namespace": "ACTUAL",
+        "observations": [],
+        "parquet": {
+          "adapter_version": "08-market-v1",
+          "bytes": 12856,
+          "kind": "NORMALIZED_PARQUET",
+          "path": "parquet/e0b9f7ab1d5ba89007a2e41bffc0176422749bf14722a8e2100baeb30a1a2abb.parquet",
+          "sha256": "e0b9f7ab1d5ba89007a2e41bffc0176422749bf14722a8e2100baeb30a1a2abb"
+        },
+        "request_id": "bd086739-eaf2-44da-aa7a-bc29cfa714a3",
+        "requested_cutoff": "2026-10-07T18:50:11.680123+00:00",
+        "requested_groups": [
+          "QUOTE"
+        ],
+        "requested_instruments": [
+          "SSE:600519"
+        ],
+        "run_id": "7098637e-df6a-4958-84b6-5894721ff995",
+        "snapshot_id": "26a764ef-38d5-4dd7-a8dc-d6408efa40c8"
+      }
+    }
+  ]
+}
