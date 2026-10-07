@@ -220,3 +220,17 @@ def test_explicit_current_status_method_cases_never_grant_real_model_or_trade_ca
         assert client.get('/api/market/list').json()['members'][0]['current_status']['state']=='UNKNOWN'
         if state in {'SUSPENDED','RISK_WARNING'}:
             assert any(o['kind']=='STATUS_RISK_ALERT' and o['severity']=='ATTENTION' for o in snapshot['observations'])
+
+
+def test_bad_source_json_is_archived_as_failure_and_corrupt_original_prevents_offline_replay(tmp_path):
+    raw=b'["unexpected provider wrapper"]'
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw)))) as client:
+        establish(client,['SSE:600519'])
+        q=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'OBSERVATION',
+            'start_date':'2026-09-30','end_date':'2026-09-30'}).json()
+        run=client.post('/api/data/requests/'+q['request_id']+'/retrieve').json()
+        assert run['status']=='FAILED' and all(g['code']=='NORMALIZATION_ERROR' for g in run['gaps'])
+        archive=client.get('/api/data/snapshots/'+run['snapshot_id']).json()['archives'][0]
+        assert client.get('/api/data/archives/'+archive['sha256']).content==raw
+        (tmp_path/archive['path']).write_bytes(b'corrupted artifact')
+        assert client.post('/api/data/runs/'+run['run_id']+'/replay').status_code==409

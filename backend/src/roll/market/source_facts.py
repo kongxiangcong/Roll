@@ -25,7 +25,18 @@ for entry in REGISTRY:
 
 
 def source_json(content):
-    return json.loads(content,parse_float=Decimal)
+    value=json.loads(content,parse_float=Decimal)
+    if not isinstance(value,dict):raise ValueError('SOURCE_JSON_OBJECT_REQUIRED')
+    return value
+
+
+def attachment_url(content):
+    data=source_json(content).get('data')
+    if not isinstance(data,dict):raise ValueError('ORIGINAL_DATA_OBJECT_REQUIRED')
+    links=data.get('attach_list',[])
+    if not isinstance(links,list) or not links or not isinstance(links[0],dict):return None
+    value=links[0].get('attach_url')
+    return value if isinstance(value,str) else None
 
 
 def source_date(value):

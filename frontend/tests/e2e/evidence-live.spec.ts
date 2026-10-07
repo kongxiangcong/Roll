@@ -25,10 +25,12 @@ test('real finite-name market request archives all groups and page displays actu
   await expect(page.getByRole('heading',{name:'市场事实',exact:true})).toBeVisible();
   // Request one explicit stock, without accidentally expanding to other acceptance holdings.
   const checkboxes=page.getByRole('group',{name:/请求对象/}).getByRole('checkbox');
+  await expect(page.getByRole('group',{name:/请求对象/}).getByRole('checkbox',{name:/SSE:600519/})).toBeVisible();
   for(let n=0;n<await checkboxes.count();n++){
     const box=checkboxes.nth(n);const label=await box.locator('..').textContent();
     await box.setChecked(label?.includes('SSE:600519')??false);
   }
+  await expect(page.getByRole('group',{name:'请求对象（已选 1 只）'})).toBeVisible();
   await page.getByLabel('开始日期（上海交易/披露日期）').fill('2026-01-01');
   await page.getByLabel('截止日期',{exact:true}).fill('2026-09-30');
   await page.getByLabel('日线来源').selectOption('TENCENT');
@@ -55,6 +57,6 @@ test('real finite-name market request archives all groups and page displays actu
   await expect(page.getByRole('status').filter({hasText:'网络调用 0 次'})).toBeVisible();
   expect(await (await page.request.get('/api/account')).json()).toEqual(before);
   await page.getByText(/^可得报价：/).click();
-  await expect(page.getByText(/可得报价 .*上游/)).toBeVisible();
+  await expect(page.getByText(/可得报价 1258\.62 .*上游/)).toBeVisible();
   await page.screenshot({path:'test-results/07-live-market-facts.png',fullPage:true});
 });

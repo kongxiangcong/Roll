@@ -138,7 +138,7 @@ class EvidenceStore:
         return result
 
     def daily(self,archive,request,instrument,adjustment):
-        raw=json.loads(self.raw(archive['sha256']).read_bytes(),parse_float=Decimal)
+        raw=source_facts.source_json(self.raw(archive['sha256']).read_bytes())
         if raw.get('rc')!=0 or not raw.get('data'):
             raise ValueError('PROVIDER_BUSINESS_ERROR_OR_EMPTY')
         data=raw['data']
@@ -308,11 +308,13 @@ class EvidenceStore:
                                 detail=fetch('eastmoney-original',instrument,group,'https://np-cnotice-stock.eastmoney.com/api/content/ann',
                                     {'art_code':row['art_code'],'page_index':1,'client_source':'web'},art_code=row['art_code'])
                                 if not detail:continue
-                                decoded=parsed(group,instrument,lambda:source_facts.source_json(detail[1]))
-                                links=decoded.get('data',{}).get('attach_list',[]) if decoded else []
-                                url=links[0].get('attach_url') if links else None
+                                url=parsed(group,instrument,lambda:source_facts.attachment_url(detail[1]))
                                 # Raw supplier HTML cannot direct the host to arbitrary local/network addresses.
-                                if not url or httpx.URL(url).scheme!='https' or httpx.URL(url).host!='pdf.dfcfw.com':
+                                try:
+                                    target=httpx.URL(url) if url else None
+                                except httpx.InvalidURL:
+                                    target=None
+                                if not target or target.scheme!='https' or target.host!='pdf.dfcfw.com' or target.username or target.password:
                                     run['gaps'].append({'instrument':instrument,'group':group,'code':'ORIGINAL_PDF_LINK_MISSING_OR_UNAPPROVED'});continue
                                 document=fetch('eastmoney-original',instrument,group,url,art_code=row['art_code'],kind='PDF')
                                 if document:
