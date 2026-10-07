@@ -24,6 +24,7 @@ def method_archive(directory,changes=None,unknown=False):
         values={'open':'100','close':'105' if index==1 else '100','high':'106','low':'99','volume_shares':'10000','volume_unit':'SHARE'}
         rows.append({'instrument':'SSE:600519','group':'DAILY','adjustment':'RAW','trade_date':d,**values,
             'amount_yuan':None,'available_at':'2026-10-07T00:00:00+08:00','completion_state':'COMPLETE_REPORTED_HISTORICAL',
+            'method_completion_available_at':d+'T15:01:00+08:00',
             'evidence_kind':'METHOD_CASE','namespace':'HISTORICAL','errors':[],
             'execution_evidence':{'state':'UNKNOWN' if unknown else 'CONFIRMED_NORMAL','company_actions':'UNKNOWN' if unknown else 'CONFIRMED_NONE',
                 'rule_scope':'METHOD_CASE_ONLY','buy_minimum':'100','buy_increment':'100','price_tick_yuan':'0.01','resale':'NEXT_TRADING_DAY','close_time':'15:00:00','normal_price_limit_percent':'10'}})
@@ -127,7 +128,7 @@ def test_same_day_path_ambiguity_keeps_interval_and_t_plus_one_not_favorable_tou
 
 def test_confirmed_terminal_settlement_uses_archived_time_and_unconfirmed_stays_immature(tmp_path):
     method_archive(tmp_path,{3:{'open':None,'high':None,'low':None,'close':None,'execution_evidence':{'company_actions':'CONFIRMED_TERMINAL_CASH_TREATMENT'},'terminal_settlement':{'state':'CONFIRMED_ALL_SHARES_CASH_SETTLED','cash_per_share_yuan':'90',
-        'effective_at':'2026-01-08T12:00:00+08:00','available_at':'2026-10-07T00:00:00+08:00','exit_fee_treatment':'FINAL_CASH_NO_ADDITIONAL_FEE'}}})
+        'effective_at':'2026-01-08T12:00:00+08:00','available_at':'2026-10-07T00:00:00+08:00','method_settlement_available_at':'2026-01-08T12:01:00+08:00','exit_fee_treatment':'FINAL_CASH_NO_ADDITIONAL_FEE'}}})
     with TestClient(create_app(tmp_path)) as client:
         _,protocol=register(client)
         run=client.post('/api/research/protocols/'+protocol['protocol_id']+'/executions',json={'partition':'DEVELOPMENT','observation_date':'2026-01-05',
@@ -208,3 +209,41 @@ def test_confirmed_suspension_retains_unexecuted_or_unexitable_case(tmp_path,day
         run=client.post('/api/research/protocols/'+protocol['protocol_id']+'/executions',json={'partition':'DEVELOPMENT','observation_date':'2026-01-05','quantity':'100','basis':'停牌/无法退出保留'}).json()
         assert run['result']['execution_status']==expected and run['result']['label'] is None
         assert reason in run['result']['reasons'] and not run['result']['scoreable']
+
+
+@pytest.mark.parametrize('unexecutable',[{'execution_evidence':{'state':'CONFIRMED_SUSPENDED'}},{'volume_shares':'0'}])
+def test_daily_touch_cannot_choose_exit_on_intermediate_suspended_or_zero_volume_bar(tmp_path,unexecutable):
+    method_archive(tmp_path,{1:{'low':'97','high':'106'},2:{'low':'97','high':'106',**unexecutable},20:{'close':'110','high':'110'}})
+    with TestClient(create_app(tmp_path)) as client:
+        _,protocol=register(client)
+        response=client.post('/api/research/protocols/'+protocol['protocol_id']+'/executions',json={'partition':'DEVELOPMENT','observation_date':'2026-01-05','quantity':'100',
+            'method_barriers':{'stop_price_yuan':'98','profit_price_yuan':'104'},'path_policy':'CONSERVATIVE','basis':'中间停牌/零成交量触线不得选非法退出'})
+        assert response.status_code==201,response.text
+        result=response.json()['result'];assert result['exit']['trade_date']=='2026-01-08'
+        assert result['same_day_path']['excluded_unexecutable_touch_dates']==['2026-01-07']
+        assert result['same_day_path']['entry_day_touch_ignored_for_resale']==['2026-01-06'] and result['label']==1
+
+
+def test_completion_availability_and_official_adapted_close_prevent_premature_labels(tmp_path):
+    method_archive(tmp_path,{20:{'method_completion_available_at':'2026-02-03T15:01:00+08:00'}})
+    with TestClient(create_app(tmp_path)) as client:
+        _,protocol=register(client);pid=protocol['protocol_id']
+        run=client.post('/api/research/protocols/'+pid+'/executions',json={'partition':'DEVELOPMENT','observation_date':'2026-01-05','label_as_of':'2026-02-02T16:00:00+08:00','quantity':'100','basis':'最终完成bar延迟可得仍未成熟'}).json()
+        assert run['result']['label_status']=='IMMATURE' and run['result']['label'] is None
+        assert 'COMPLETE_EXIT_BAR_NOT_YET_AVAILABLE_AT_ASSESSMENT' in run['result']['reasons']
+        assert run['definition']['maturity_evidence_clock_kind']=='METHOD_SYNTHETIC_COMPLETION_CLOCK'
+        # This date is in the real06 adapted rule window. Use the public rule API
+        # to verify its provenance separately from the synthetic price source.
+        rule=client.get('/api/market/rules',params={'exchange':'SSE','board':'MAIN','date':'2026-08-03'}).json()
+        assert rule['implementation_status']=='ADAPTED'
+
+
+def test_official_adapted_close_is_frozen_even_without_method_rule_clock(tmp_path):
+    method_archive(tmp_path,{i:{'execution_evidence':{'rule_scope':'UNKNOWN','close_time':None}} for i in range(181)})
+    with TestClient(create_app(tmp_path)) as client:
+        _,protocol=register(client)
+        run=client.post('/api/research/protocols/'+protocol['protocol_id']+'/executions',json={'partition':'CALIBRATION','observation_date':'2026-07-06',
+            'label_as_of':'2026-08-03T08:00:00+08:00','quantity':'100','basis':'实际已适配官方时段，成熟日盘前不能成熟；价格仍METHOD'}).json()
+        assert run['result']['label_status']=='IMMATURE' and run['result']['label'] is None
+        assert run['definition']['label_matures_at']=='2026-08-03T15:00:00+08:00'
+        assert run['definition']['maturity_clock_basis']=='ARCHIVED_RULE_CALENDAR_ADAPTED_DATE'

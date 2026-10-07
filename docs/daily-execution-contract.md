@@ -21,3 +21,5 @@ IMMATURE 返回空标签/净损益，拒绝评分和学习；次日上涨不算2
 `GET /api/research/protocols/{id}/execution-support?partition=DEVELOPMENT|CALIBRATION` 供19读取同一18产物：所有记录数量、唯一对象日期机会数、每个冻结执行族最新复评的成熟/未成熟/未知/未执行数量、逐原因支持缺口、数据/输入/代码及成本指纹和完整结果。旧记录依ID仍可查。重复日期、压力方向和复评均不算独立统计支持，`independent_sample_count=null`。METHOD可机械评分但 `eligible_for_training=false`；实际历史PIT/状态未证也不授真实训练资格。该接口不是拟合、模型冻结、完整协议冻结或准入接口。
 
 历史研究子页查看与保存模拟、复评、下载冻结输入和离线重放；主导航仍为五个入口。默认显示最近12个方向并明确数量，可展开全部；数据库/API不截断机会或隐藏未知。UI与支持量分列REAL_ACQUISITION和METHOD_CASE。真实18验收120个允许窗口机会全UNSCORABLE/真实训练0（其中40期限跨界）；不能用METHOD结果解锁真实19训练、20完整协议或21准入。
+
+完成退出bar的归档可得时点也必须不晚于label_as_of；仅交易日期相同或consumer_knowledge_cutoff=now不足以成熟。实际适配规则日期使用06已核15:00收盘依据，未知时段留MATURITY_TIME_UNKNOWN。METHOD压力原件显式声明method_completion_available_at / method_settlement_available_at等合成完成时钟，和真正归档available_at分列；它只支持方法历史评估，不证明当时现实可得信息。中间停牌/报告零量bar的触价从候选退出路径排除并保留日期；期限日停牌或退出量未知/零仍是无法退出，不选择非法保守价格。

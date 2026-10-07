@@ -76,6 +76,11 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
         result['label_status']='IMMATURE';result['reasons']=['TWENTY_SESSION_EVENT_NOT_MATURE']
         return result
     if maturity is None:result['reasons']=['CALENDAR_HORIZON_UNKNOWN'];return result
+    completion=definition.get('maturity_evidence_available_at')
+    if completion and label_as_of<datetime.fromisoformat(completion):
+        result['label_status']='IMMATURE';result['reasons']=['COMPLETE_EXIT_BAR_NOT_YET_AVAILABLE_AT_ASSESSMENT'];return result
+    if matures_at is None:result['reasons'].append('MATURITY_TIME_UNKNOWN')
+    if completion is None:result['reasons'].append('COMPLETE_EXIT_BAR_AVAILABILITY_UNKNOWN')
     rows={f['trade_date']:f for f in inputs['facts']};sessions=definition['scheduled_sessions'];rule=definition['rule']
     if rule.get('rule_scope')!='METHOD_CASE_ONLY' and rule.get('implementation_status')!='ADAPTED':result['reasons'].append('HISTORICAL_RULE_SCOPE_UNKNOWN')
     if maturity>inputs['partition_last_date']:result['reasons'].append('LABEL_SPANS_PARTITION_BOUNDARY')
@@ -118,13 +123,18 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
     path=None;exit_day=maturity
     barriers=definition.get('method_barriers')
     if barriers and not terminal:
-        stop=Decimal(barriers['stop_price_yuan']);profit=Decimal(barriers['profit_price_yuan']);ignored=[]
+        stop=Decimal(barriers['stop_price_yuan']);profit=Decimal(barriers['profit_price_yuan']);ignored=[];excluded=[]
         for d in sessions:
             if d>maturity:break
             bar=rows[d];touch_stop=Decimal(bar['low'])<=stop;touch_profit=Decimal(bar['high'])>=profit
             if d<plan['earliest_resale_date']:
                 if touch_stop or touch_profit:ignored.append(d)
                 continue
+            if bar.get('execution_evidence',{}).get('state')=='CONFIRMED_SUSPENDED' or number(bar.get('volume_shares'))==0:
+                if touch_stop or touch_profit:excluded.append(d)
+                continue
+            if bar.get('volume_unit')!='SHARE' or number(bar.get('volume_shares')) is None:
+                result['reasons']=['TOUCH_EXIT_VOLUME_UNKNOWN:'+d];return result
             if touch_stop or touch_profit:
                 # Daily touches prove neither ordering nor an actual fill. Include
                 # the missed-touch horizon exit among the declared stress paths.
@@ -132,7 +142,7 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
                 if touch_stop:candidates.append((stop*(1-slip)/tick).quantize(Decimal('1'),rounding=ROUND_HALF_UP)*tick)
                 if touch_profit:candidates.append((profit*(1-slip)/tick).quantize(Decimal('1'),rounding=ROUND_HALF_UP)*tick)
                 path={'ambiguous_trade_date':d,'entry_day_touch_ignored_for_resale':ignored,'touches':{'stop':touch_stop,'profit':touch_profit},
-                    'observed_fill_proven':False,'policy':definition['path_policy'],'missed_touch_horizon_exit_included':True}
+                    'observed_fill_proven':False,'policy':definition['path_policy'],'missed_touch_horizon_exit_included':True,'excluded_unexecutable_touch_dates':excluded}
                 buy=entry_price*filled;buyfees=fees(buy,costs,'BUY')
                 pnls=[p*filled-Decimal(fees(p*filled,costs,'SELL')['total_yuan'])-buy-Decimal(buyfees['total_yuan']) for p in candidates]
                 result['same_day_path']=path;result['net_pnl_interval_yuan']={'lower':money(min(pnls)),'upper':money(max(pnls))}
@@ -142,6 +152,8 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
                 exit_price=min(candidates);exit_day=d if exit_price!=candidates[0] else maturity;path['selected_bound']='LOWER';break
     if rows[maturity].get('execution_evidence',{}).get('state')=='CONFIRMED_SUSPENDED' and not terminal:
         result.update({'execution_status':'BLOCKED_EXIT','reasons':['CONFIRMED_SUSPENSION_ON_EXIT']});return result
+    if not terminal and (rows[maturity].get('volume_unit')!='SHARE' or number(rows[maturity].get('volume_shares')) is None or number(rows[maturity]['volume_shares'])<=0):
+        result.update({'execution_status':'BLOCKED_EXIT','reasons':['EXIT_VOLUME_UNKNOWN_OR_ZERO']});return result
     if terminal:exit_price=Decimal(terminal['cash_per_share_yuan'])
     buy=entry_price*filled;sell=exit_price*filled;buyfees=fees(buy,costs,'BUY');sellfees=fees(sell,costs,'SELL') if not terminal else {k:'0.00' for k in ['commission_yuan','transfer_yuan','stamp_yuan','extra_regulatory_yuan','total_yuan']}
     if buy+Decimal(buyfees['total_yuan'])>Decimal(plan['cash_budget_yuan']):result['reasons']=['CASH_OR_EXPOSURE_LIMIT'];return result
@@ -204,12 +216,17 @@ class DailyExecutions:
             if number(command.method_barriers['stop_price_yuan'])>=number(command.method_barriers['profit_price_yuan']):raise HTTPException(422,'方法止损边界必须低于止盈边界')
         rule=anchor.get('execution_evidence',{}) if method else self.evidence.market.rules.rule(identity['exchange'],identity['board'],identity['instrument_type'],on=command.observation_date)
         close=rule.get('close_time') if method and rule.get('rule_scope')=='METHOD_CASE_ONLY' else None
+        clock_basis='METHOD_CASE_ONLY' if close else 'UNKNOWN'
+        if not close and maturity:
+            exit_rule=self.evidence.market.rules.rule(identity['exchange'],identity['board'],identity['instrument_type'],on=date.fromisoformat(maturity))
+            if exit_rule['implementation_status']=='ADAPTED':close='15:00:00';clock_basis='ARCHIVED_RULE_CALENDAR_ADAPTED_DATE'
         as_of=command.label_as_of or datetime.fromisoformat(now())
         if as_of.tzinfo is None:raise HTTPException(422,'标签评估时点需要时区，不把日期补午夜')
         if as_of>datetime.fromisoformat(now()):raise HTTPException(422,'评估截止不能晚于实际当前知识时间')
         definition={'version':'18-daily-v1','event':protocol['design']['event'],'horizon_sessions':20,
             'observation_date':command.observation_date.isoformat(),'scheduled_sessions':sessions,'maturity_date':maturity,
             'label_matures_at':datetime.fromisoformat(maturity+'T'+close).replace(tzinfo=SHANGHAI).isoformat() if maturity and close else None,
+            'maturity_clock_basis':clock_basis,
             'maturity_rule':'TWENTY_CONFIRMED_TRADING_SESSIONS_AND_COMPLETE_EXIT_BAR_AVAILABLE',
             'execution':protocol['design']['execution'],'costs':protocol['design']['costs'],'rule':rule,
             'engine_sha256':engine_fingerprint(),'engine_fingerprint_basis':'SHA256_EXECUTION_SOURCE_CANONICAL_LF',
@@ -238,6 +255,13 @@ class DailyExecutions:
             if number(settlement.get('cash_per_share_yuan')) is None or number(settlement['cash_per_share_yuan'])<0:continue
             definition.update({'terminal_settlement':{**settlement,'raw_hash':f['raw_hash']},'maturity_date':f['trade_date'],'label_matures_at':effective_time.isoformat()})
             break
+        final_row=next((f for f in facts if f['trade_date']==definition['maturity_date']),None)
+        terminal=definition['terminal_settlement']
+        completion=None
+        if terminal:completion=(terminal.get('method_settlement_available_at') if method else None) or terminal.get('available_at')
+        elif final_row:completion=(final_row.get('method_completion_available_at') if method else None) or final_row.get('available_at')
+        definition['maturity_evidence_available_at']=completion
+        definition['maturity_evidence_clock_kind']='METHOD_SYNTHETIC_COMPLETION_CLOCK' if method and ((terminal and terminal.get('method_settlement_available_at')) or (final_row and final_row.get('method_completion_available_at'))) else 'ARCHIVED_EXTERNAL_AVAILABLE_AT'
         # Order size/window is frozen from the observation, never the later fill/outcome.
         anchor_price=number(anchor.get('close'));limit=number(rule.get('normal_price_limit_percent'))
         budget=Decimal(protocol['design']['execution']['synthetic_initial_cash_yuan'])*Decimal(protocol['design']['primary_objective']['risk_constraints']['maximum_simulated_gross_exposure'])
