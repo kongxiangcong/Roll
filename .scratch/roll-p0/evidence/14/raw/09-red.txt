@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_corrupt_archive_prevents_reuse_but_unrelated_decisive_fact_can_continue _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/14-ninth-red/test_corrupt_archive_prevents_0')
+
+    def test_corrupt_archive_prevents_reuse_but_unrelated_decisive_fact_can_continue(tmp_path):
+        raw=[original_quote('A:first')]
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            setup_request(client);a=acquire(client)
+            raw[0]=original_quote('B:second');b=acquire(client)
+            value=client.post('/api/data/verifications',json=command([a,b])).json()
+            sha=value['facts'][0]['evidence'][0]['raw_hash']
+            (tmp_path/'raw'/(sha+'.raw')).write_bytes(b'METHOD_CASE explicit corrupt storage boundary')
+            assert client.get('/api/data/verifications/'+value['verification_id']).status_code==409
+            assert client.post('/api/data/verifications/'+value['verification_id']+'/replay').status_code==409
+            history=client.get('/api/data/verifications')
+>           assert history.status_code==200,history.text
+E           AssertionError: {"detail":{"code":"ARCHIVE_MISSING_OR_CORRUPT"}}
+E           assert 409 == 200
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+tests\application\test_independent_verification.py:183: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_corrupt_archive_prevents_reuse_but_unrelated_decisive_fact_can_continue
+1 failed, 7 deselected in 3.30s

@@ -77,3 +77,11 @@ Windows实际仍发现个人技能元数据，因此只在独立 `CODEX_HOME` �
 [DeepSeek Responses官方说明](https://api-docs.deepseek.com/zh-cn/guides/responses_api/)与固定SDK源码核查：provider无状态、不支持include，但SDK实际发送空include。唯一兼容适配删除`include=[]`，拒绝非空及有状态字段；不从固定HTTP方法推定真实strict/schema支持。固定`deepseek-flash`及`https://api.deepseek.com/responses`，无OpenAI fallback；全局及运行tracing明确disabled。Roll复用11具体有限工具和07事实归档/门禁，不抽泛化后端框架。
 
 实际SDK三轮固定响应接续、串行受控工具、失败/丢弃接收预算、结构宿主校验、本地脱敏、FastAPI/SQLite/Chrome及OS故障工程通过，17实际模型工具payload发送前封存输入审计通过。仍没有明确DeepSeek API认证，真实服务多轮、模型权限、schema/用量、实际取消/错误未执行，票12保持needs-info/partial、13未解锁；Codex完成与网页订阅不代替本后端验收。条件及分层原输出/精确保全见[12验收](../../.scratch/roll-p0/evidence/12/acceptance.md)、[接入合同](../deepseek-evidence-contract.md)。
+
+## 2026-10-08：票14决定性事实核验
+
+沿用以上已核LangAlpha固定941ca4a证据依赖方法分类，Apache-2.0来源指针保留；本票只参考设计，没有摘取该仓库代码、迁入技能/approved语义或新增SDK。Roll自写具体14模块复用07原件/Parquet、08短SQLite来源修订事务、17实际字段交付审计；不建设多Agent投票/来源认证平台/泛化后端。
+
+实际两原供应商茅台字符串1258.62/1258.620保留，但原始生产链未证且旧metadata/时点不比，输出不足。发行人原公告文件/metadata重复只计一依据，不能由异域网页或自填origin_id签多源。独立生产者一致正例仅固定外部METHOD原件，真实样例仍不足；源自身基本校验失败亦阻止签核。来源仅原字节/原始链变化时即使规范数值相同也使旧核验失效，新UUID引用已知旧原件仍失效。
+
+15冻原观察疑点的显式消费在一短事务写核验、request和audit关联，并发/重试同ID、原生提交前后故障原子恢复；真实原件Chrome与METHOD/OS分层，原观察与账户保持。六条实际payload经17封存输入审计，未把输入查看当结果检验。真实来源取得后精确SHA复放/412文件34,205,250bytes保全、模型请求0/auth0。初实际对照误选指数的原报告完整保留并按证券/组纠正不重取，详见[14验收](../../.scratch/roll-p0/evidence/14/acceptance.md)与[具体接口](../independent-verification-contract.md)。
