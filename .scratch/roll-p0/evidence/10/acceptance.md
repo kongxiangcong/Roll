@@ -2,7 +2,7 @@
 
 日期：2026-10-07。**10 自身切片通过，Completion: complete。** 合成账户/固定方法样例不是用户真实亏损或正式资格证据。
 
-环境：Windows 11、Python 3.13.12 / SQLite 3.50.4、Node 25.8.1 / npm 11.11.0；沿用 01 的实际锁文件 FastAPI/React/Vite/Playwright 依赖，无新增依赖。工作树 `codex/roll-p0-10` 从已验收 17ca07d 开始；最终须合入当时集成分支最新 tip 后再报告。
+环境：Windows 11、Python 3.13.12 / SQLite 3.50.4、Node 25.8.1 / npm 11.11.0；沿用 01 的实际锁文件 FastAPI/React/Vite/Playwright 依赖，无新增依赖。工作树 `codex/roll-p0-10` 从已验收 17ca07d 开始；实施提交84ed421后已合入最新集成tip7caa9a5，合并提交3b37f56无冲突，只带入父代理的执行状态与缓存忽略规则，没有代码/依赖变化，无需重复相同测试。
 
 | 验收层次 | 实际命令 | 结果/证据 |
 |---|---|---|
