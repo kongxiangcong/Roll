@@ -4,7 +4,13 @@ import {Account,Draft,Receipt,request} from '../api';
 const names:Record<string,string>={CASH_IN:'现金转入',CASH_OUT:'现金转出',DIVIDEND:'分红到账',INTEREST:'利息到账',TAX:'税款扣除',FEE:'费用扣除',PENDING_ITEM:'确认应收/应付',SETTLEMENT:'关联实际结算',CASH_CORRECTION:'追加金额更正',SHARE_CHANGE:'实际股份变动'};
 const labels:Record<string,string>={cash_balance:'实际账面现金',positions:'实际持仓与成本',broker_available:'券商可用资金',investment_income:'累计实际到账投资收入',investment_expenses:'累计实际扣款税费',external_cash_in:'累计外部转入',external_cash_out:'累计外部转出',pending_income:'未结应收',pending_expenses:'未结应付',pending_items:'应收/应付状态'};
 const optional=(value:string)=>value.trim()||null;
-const display=(value:unknown)=>value===null||value===undefined?'未知':typeof value==='object'?JSON.stringify(value,null,2):String(value);
+const states:Record<string,string>={OPEN:'未结',PARTIAL:'部分结算',SETTLED:'已结清',CANCELLED:'已追加取消'};
+function display(value:unknown,field:string){
+  if(value===null||value===undefined)return '未知';
+  if(Array.isArray(value)&&field==='positions')return value.length?value.map(p=>`${p.instrument}：${p.quantity} 股，取得成本 ${p.acquisition_cost??'未知'} 元`).join('\n'):'无持仓';
+  if(Array.isArray(value)&&field==='pending_items')return value.length?value.map(p=>`${p.record_id}：${p.flow_category==='INVESTMENT_INCOME'?'应收':'应付'}总额 ${p.resolved_amount} 元，已结 ${p.settled_amount} 元，未结 ${p.outstanding_amount} 元 · ${states[p.status]??p.status}`).join('\n'):'无已确认待结算项';
+  return String(value);
+}
 
 export function SyncCash({account,onDone}:{account:Account;onDone:()=>void}){
   const [kind,setKind]=useState('CASH_IN'),[record,setRecord]=useState<string>(()=>crypto.randomUUID()),[amount,setAmount]=useState(''),[target,setTarget]=useState('');
@@ -38,7 +44,7 @@ export function SyncCash({account,onDone}:{account:Account;onDone:()=>void}){
       {!['PENDING_ITEM','SHARE_CHANGE'].includes(kind)&&<label>核对后的当前券商可用资金（元，可空）<input value={available} inputMode="decimal" onChange={e=>setAvailable(e.target.value)}/></label>}
       {kind==='CASH_CORRECTION'&&<p>填写原事项更正后的总金额，系统只追加差额；更正应收/应付时请保持券商可用资金空白。</p>}
       <button className="primary" disabled={busy}>预览差异</button>
-    </form>:<section><h3>确认前的差异</h3><p>{names[draft.command?.kind??kind]} · 仍为草稿，尚未入账。</p>{draft.issues?.map((issue,i)=><p role="alert" key={i}>{issue}</p>)}{draft.status==='QUARANTINED'?<p>原输入已保存待核，现金与数量保持原值。</p>:<dl className="difference">{Object.entries(draft.preview).filter(([field])=>field in labels).map(([field,value])=><div key={field}><dt>{labels[field]}</dt><dd><span>之前：{display(value.before)}</span><strong>之后：{display(value.after)}</strong></dd></div>)}</dl>}
+    </form>:<section><h3>确认前的差异</h3><p>{names[draft.command?.kind??kind]} · 仍为草稿，尚未入账。</p>{draft.issues?.map((issue,i)=><p role="alert" key={i}>{issue}</p>)}{draft.status==='QUARANTINED'?<p>原输入已保存待核，现金与数量保持原值。</p>:<dl className="difference">{Object.entries(draft.preview).filter(([field])=>field in labels).map(([field,value])=><div key={field}><dt>{labels[field]}</dt><dd><span>之前：{display(value.before,field)}</span><strong>之后：{display(value.after,field)}</strong></dd></div>)}</dl>}
       <button className="primary" disabled={busy||draft.status==='QUARANTINED'} onClick={()=>void confirm()}>确认入账</button><button disabled={busy} onClick={()=>{setDraft(null);sessionStorage.removeItem('roll.pending-CASH_EVENT');}}>返回修改</button></section>}
     <details><summary>保存待核权益线索</summary><p>宣告内容不证明个人到账；保存后不改变实际账户。</p><label>线索来源<input value={hintSource} onChange={e=>setHintSource(e.target.value)}/></label><label>宣告日期或时点（按原文，可空）<input value={declared} onChange={e=>setDeclared(e.target.value)}/></label><label>宣告内容<textarea value={content} onChange={e=>setContent(e.target.value)}/></label><button disabled={!hintSource.trim()||!content.trim()} onClick={()=>void saveHint()}>保存待核材料</button>{hintStatus&&<p role="status">{hintStatus}</p>}</details>
     {error&&<p role="alert">{error}</p>}</section>;

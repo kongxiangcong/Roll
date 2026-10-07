@@ -24,4 +24,4 @@ schema只创建当前需要的account_csv_imports及文件身份索引；不重�
 
 ## v2现金与权益
 
-v2在v1原列后追加amount、item_type、corrected_amount、new_quantity。支持CASH_IN/CASH_OUT/DIVIDEND/INTEREST/TAX/FEE/PENDING_ITEM/SETTLEMENT/CASH_CORRECTION/SHARE_CHANGE；类型原字段复用[现金权益契约](cash-contract.md)。instrument由exchange/code组成（允许空仅在04契约允许时），record_id若空由文件SHA＋行号生成。待结算不变可用现金；到账关联、不重复收益、外部投入不计投资盈利及数量/成本守恒均由04同一投影完成。金额未知仍隔离待核；任何后续行错误使整个批次失败。
+v2在v1原列后追加amount、item_type、corrected_amount、new_quantity。支持CASH_IN/CASH_OUT/DIVIDEND/INTEREST/TAX/FEE/PENDING_ITEM/SETTLEMENT/CASH_CORRECTION/SHARE_CHANGE；类型原字段复用[现金权益契约](cash-equity-contract.md)。instrument由exchange/code组成（允许空仅在04契约允许时），record_id若空由文件SHA＋行号生成。待结算不变可用现金；到账关联、不重复收益、外部投入不计投资盈利及数量/成本守恒均由04同一投影完成。金额未知仍隔离待核；任何后续行错误使整个批次失败。
