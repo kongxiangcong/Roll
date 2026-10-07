@@ -50,3 +50,6 @@ npx playwright test --config playwright.research.config.ts
 18先运行 `backend/.venv/Scripts/python.exe -X utf8 scripts/daily_execution_acceptance.py --source D:/dsh-proj/Roll/backend/.roll-data/implementation-evidence/17/acceptance-17-final --data-root backend/.roll-data/acceptance-18-final --port 8038`。目标须全新，原目录只读；仅宿主DEV/CAL，真实120未知/0训练与METHOD另列。固定夹具不替真实来源。
 
 从frontend设置 `ROLL_EXECUTION_LIVE=1`、`ROLL_BROWSER_CHANNEL=chrome`、`ROLL_EXECUTION_DATA` 为真实该保全目录，运行 `npx playwright test --config playwright.executions.config.ts`（API8038/web5198）；重跑追加METHOD记录/复评，原结果不改。独立2passed和实际HTTP/55pass1共享SDK轮询红+单例复验、原件保全均见[18验收](../.scratch/roll-p0/evidence/18/acceptance.md)，不称默认共享全Chrome绿。
+
+
+15方法Chrome单独调用 `ROLL_PLAYWRIGHT_FACTORY=review_method_app:factory`、`ROLL_BROWSER_METHOD=1`，8035/5195与空隔离ROLL_TEST_DATA_DIR；运行 `npx playwright test reviews.spec.ts`。只该测试工厂提供固定方法源/盘后时钟，无生产覆盖端点。真实原件缓存先在backend运行 `python -X utf8 ../scripts/acceptance_15.py`（只读复制根07保全，创建新自身runtime），按输出设置ROLL_TEST_DATA_DIR，移除方法factory/flag，设置ROLL_REVIEW_REAL_CACHE=1，运行 `npx playwright test reviews-real-cache.spec.ts`。方法与真实原件/本地缓存性能分列，均未证明10/8新行情或未来正式动作/通知；[15票级证据](../.scratch/roll-p0/evidence/15/acceptance.md)。

@@ -71,7 +71,7 @@ class EvidenceStore:
             for row in db.execute('SELECT id,value FROM retrieval_runs'):
                 run=json.loads(row['value'])
                 if run['status']=='RUNNING':
-                    if run.get('backend') in {'CODEX','DEEPSEEK'}:
+                    if run.get('host_owner') or run.get('backend') in {'CODEX','DEEPSEEK'}:
                         from roll.agents.codex_process import owner_alive
                         if owner_alive(run):continue
                     run.update(status='INTERRUPTED',finished_at=now(),recovery_reason='PROCESS_RESTART_BEFORE_SNAPSHOT_COMMIT')
@@ -212,6 +212,7 @@ class EvidenceStore:
             'evidence_kind':self.evidence_kind,'started_at':now(),'status':'RUNNING','tools':[],'gaps':[]}
         if acquisition_limits:
             run['acquisition_limits']={k:acquisition_limits[k] for k in ['max_response_bytes','max_total_bytes']}
+            if acquisition_limits.get('host_owner'):run['host_owner']=acquisition_limits['host_owner']
         with self.ledger.connection() as db:
             db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)',(run['run_id'],request_id,encode(run)))
         started=time.monotonic();facts=[];archives=[];coverage=[];observations=[]
