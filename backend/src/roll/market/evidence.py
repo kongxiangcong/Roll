@@ -35,6 +35,8 @@ class DataRequest(BaseModel):
     end_date:date
     cutoff:datetime|None=None
     required_fields:list[str]=Field(default_factory=list,max_length=30)
+    max_decoded_bytes:int=Field(default=16*1024*1024,ge=1,le=16*1024*1024)
+    max_total_decoded_bytes:int=Field(default=30*16*1024*1024,ge=1,le=30*16*1024*1024)
     timeout_seconds:int=Field(default=40,ge=1,le=60)
     max_calls:int=Field(default=20,ge=1,le=30)
     daily_source:Literal['EASTMONEY','TENCENT','FUYAO','BAOSTOCK']|None=None
@@ -143,7 +145,7 @@ class EvidenceStore:
         result={**command.model_dump(mode='json'),'daily_source':source,'request_id':str(uuid4()),'cutoff':cutoff.isoformat(),
             'cutoff_basis':'EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF',
             'scope':scope,'identity_context':identities,'created_at':now(),'technical_limits':{'max_calls':command.max_calls,
-                'timeout_seconds':command.timeout_seconds,'max_response_bytes':16*1024*1024,'retries':0}}
+                'timeout_seconds':command.timeout_seconds,'max_response_bytes':16*1024*1024,'max_decoded_bytes':command.max_decoded_bytes,'max_total_decoded_bytes':command.max_total_decoded_bytes,'retries':0}}
         with self.ledger.connection() as db:
             db.execute('INSERT INTO data_requests VALUES(?,?)',(result['request_id'],encode(result)))
         return result
@@ -218,7 +220,7 @@ class EvidenceStore:
                 'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__,fuyao.__file__,baostock.__file__,Path(baostock.__file__).with_name('baostock_process.py')]]}).encode()).hexdigest(),
             'evidence_kind':self.evidence_kind,'started_at':now(),'status':'RUNNING','tools':[],'gaps':[]}
         if acquisition_limits:
-            run['acquisition_limits']={k:acquisition_limits[k] for k in ['max_response_bytes','max_total_bytes']}
+            run['acquisition_limits']={k:acquisition_limits[k] for k in ['max_response_bytes','max_total_bytes','max_decoded_bytes','max_total_decoded_bytes'] if k in acquisition_limits}
             if acquisition_limits.get('host_owner'):run['host_owner']=acquisition_limits['host_owner']
         with self.ledger.connection() as db:
             db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)',(run['run_id'],request_id,encode(run)))
@@ -226,7 +228,9 @@ class EvidenceStore:
         deadline=min(started+request['timeout_seconds'],(acquisition_limits or {}).get('deadline',float('inf')))
         max_response_bytes=min(16*1024*1024,(acquisition_limits or {}).get('max_response_bytes',16*1024*1024))
         max_total_bytes=(acquisition_limits or {}).get('max_total_bytes',30*16*1024*1024)
-        total_bytes=0
+        max_decoded_bytes=min(request['technical_limits'].get('max_decoded_bytes',16*1024*1024),(acquisition_limits or {}).get('max_decoded_bytes',max_response_bytes))
+        max_total_decoded_bytes=min(request['technical_limits'].get('max_total_decoded_bytes',30*16*1024*1024),(acquisition_limits or {}).get('max_total_decoded_bytes',max_total_bytes))
+        total_bytes=0;total_decoded_bytes=0
         with httpx.Client(transport=self.transport,follow_redirects=False) as client:
             def fetch(source_id,instrument,group,url,params=None,headers=None,**context):
                 nonlocal total_bytes
@@ -264,34 +268,39 @@ class EvidenceStore:
                         'reason':str(error)[:300],**context});return None
 
             def bao_fetch(instrument,group,**parameters):
-                nonlocal total_bytes
+                nonlocal total_bytes,total_decoded_bytes
                 remaining=request['max_calls']-sum(t.get('network_calls',1) for t in run['tools'])
-                if remaining<2 or time.monotonic()>=deadline or (cancel_event and cancel_event.is_set()) or total_bytes>=max_total_bytes:
+                if remaining<2 or time.monotonic()>=deadline or (cancel_event and cancel_event.is_set()) or total_bytes>=max_total_bytes or total_decoded_bytes>=max_total_decoded_bytes:
                     run['gaps'].append({'instrument':instrument,'group':group,'code':'TECHNICAL_LIMIT'});return None
                 tool={'source_id':'baostock-'+group.lower(),'instrument':instrument,'group':group,'started_at':now(),
                     'method':'SDK_TCP','auth_mode':request.get('baostock_auth_mode','API_KEY'),'source_url':'tcp://'+(baostock.PUBLIC_HOST if request.get('baostock_auth_mode')=='PUBLIC' else baostock.HOST)+':'+str(baostock.PORT),'query':parameters,'network_calls':0}
                 run['tools'].append(tool)
                 try:
-                    wire,payload=baostock.acquire({'auth_mode':tool['auth_mode'],'group':group,'symbol':baostock.symbol(instrument),'start_date':request['start_date'],
+                    wire,payload=baostock.acquire({'max_decoded_bytes':min(max_decoded_bytes,max_total_decoded_bytes-total_decoded_bytes),'auth_mode':tool['auth_mode'],'group':group,'symbol':baostock.symbol(instrument),'start_date':request['start_date'],
                         'end_date':request['end_date'],**parameters},deadline,cancel_event,min(max_response_bytes,max_total_bytes-total_bytes),remaining,self.baostock_worker)
-                    total_bytes+=payload['received_bytes'];tool['network_calls']=payload['calls']
+                    total_bytes+=payload['received_bytes'];total_decoded_bytes+=payload['decoded_bytes'];tool['network_calls']=payload['calls'];tool['decoded_bytes']=payload['decoded_bytes']
                     archive=self.archive(wire,'RAW_SOCKET_RESPONSE',source_id=tool['source_id'],source_url=tool['source_url'],
-                        received_at=payload['received_at'],auth_mode=tool['auth_mode'],evidence_kind=self.evidence_kind,wire_semantics='SDK_QUERY_RECV_BYTES_LOGIN_EXCLUDED')
+                        received_at=payload['received_at'],auth_mode=tool['auth_mode'],decoded_bytes=payload['decoded_bytes'],evidence_kind=self.evidence_kind,wire_semantics='SDK_QUERY_RECV_BYTES_LOGIN_EXCLUDED')
                     archives.append(archive)
                     decoded=self.archive(encode(payload).encode(),'SDK_DECODED_RESPONSE',source_id=tool['source_id'],source_url=tool['source_url'],
-                        received_at=payload['received_at'],auth_mode=tool['auth_mode'],evidence_kind=self.evidence_kind,wire_hash=archive['sha256'])
+                        received_at=payload['received_at'],auth_mode=tool['auth_mode'],decoded_bytes=payload['decoded_bytes'],evidence_kind=self.evidence_kind,wire_hash=archive['sha256'])
                     archives.append(decoded);archive['decoded_hash']=decoded['sha256']
                     tool.update(status='ARCHIVED',raw_hash=archive['sha256'],decoded_hash=decoded['sha256'],sdk_runtime_version=payload.get('sdk_version'),sdk_distribution_version=payload.get('sdk_distribution_version'),pandas_distribution_version=payload.get('pandas_distribution_version'),finished_at=now())
                     return archive,payload
                 except (ValueError,KeyError,TypeError,OSError) as error:
                     tool.update(status='FAILED',network_calls=remaining,network_calls_basis='CONSERVATIVE_FAILURE_UPPER_BOUND',finished_at=now())
-                    run['gaps'].append({'instrument':instrument,'group':group,'code':'BAOSTOCK_ACQUISITION_FAILED','reason':str(error)[:300]});return None
+                    gap={'instrument':instrument,'group':group,'code':'BAOSTOCK_ACQUISITION_FAILED','reason':str(error)[:300]}
+                    if isinstance(error,baostock.AcquisitionFailure):
+                        if error.diagnostic:gap['diagnostic']=error.diagnostic
+                        if error.failure_audit:gap['failure_audit']=error.failure_audit
+                    run['gaps'].append(gap);return None
 
             def parsed(group,instrument,callback):
                 try:return callback()
                 except (ValueError,KeyError,TypeError,IndexError,PyPdfError) as error:
                     run['gaps'].append({'instrument':instrument,'group':group,'code':'NORMALIZATION_ERROR','reason':str(error)[:300]});return None
 
+            quote_or_status='QUOTE' in request['groups'] or ('STATUS' in request['groups'] and request.get('status_source','QUOTE')=='QUOTE')
             for instrument in request['instruments']:
                 if instrument.split(':')[0]=='BSE':
                     run['gaps'].extend({'instrument':instrument,'group':group,'code':'SOURCE_SCOPE_NOT_ADAPTED_BSE'} for group in request['groups']);continue
@@ -347,7 +356,7 @@ class EvidenceStore:
                         result=parsed('DAILY',instrument,lambda:self.daily(response[0],request,instrument,adjustment))
                         if result:
                             rows,cov=result;facts.extend(rows);coverage.append(cov)
-                if ('QUOTE' in request['groups'] or ('STATUS' in request['groups'] and request.get('status_source','QUOTE')=='QUOTE')) and request.get('quote_source')=='FUYAO':
+                if quote_or_status and request.get('quote_source')=='FUYAO':
                     response=fetch('fuyao-quote',instrument,'QUOTE',fuyao.BASE+('/api/a-share-index' if request['purpose']=='BACKGROUND' else '/api/a-share')+'/prices/snapshot',
                         {'thscodes':fuyao.symbol(instrument)})
                     if response:
@@ -363,7 +372,7 @@ class EvidenceStore:
                                 run['gaps'].append({'instrument':instrument,'group':'STATUS','code':'CURRENT_STATUS_UNKNOWN'})
                             coverage.append({'instrument':instrument,'group':'QUOTE','returned_rows':1,'raw_hash':fact['raw_hash'],
                                 'source_snapshot_ready_at':fact['source_snapshot_ready_at'],'upstream_at':None,'full_history_verified':False})
-                if ('QUOTE' in request['groups'] or ('STATUS' in request['groups'] and request.get('status_source','QUOTE')=='QUOTE')) and request.get('quote_source')!='FUYAO':
+                if quote_or_status and request.get('quote_source')!='FUYAO':
                     symbol=('sh' if instrument.split(':')[0]=='SSE' else 'sz' if instrument.split(':')[0]=='SZSE' else 'bj')+instrument.split(':')[1]
                     sina=request.get('quote_source')=='SINA'
                     response=fetch('sina-quote' if sina else 'tencent-quote',instrument,'QUOTE',
@@ -521,6 +530,7 @@ class EvidenceStore:
         run.update(status='PARTIAL' if run['gaps'] and facts else 'FAILED' if not facts else 'COMPLETE',
             snapshot_id=snapshot['snapshot_id'],finished_at=now(),elapsed_seconds=round(time.monotonic()-started,3))
         run['retrieved_bytes']=total_bytes
+        run['retrieved_decoded_bytes']=total_decoded_bytes
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
             try:

@@ -1,4 +1,5 @@
 import json
+import pytest
 from pathlib import Path
 from fastapi.testclient import TestClient
 from roll.app import create_app
@@ -70,3 +71,88 @@ def test_baostock_public_mode_is_explicit_and_child_receives_no_api_key(tmp_path
         assert fact['is_trading_day'] is True and fact['official_exchange_calendar_verified'] is False
         assert fact['source_url']=='tcp://public-api.baostock.com:10030'
         assert all(a['auth_mode']=='PUBLIC' for a in snap['archives'])
+
+def test_baostock_two_compressed_frames_share_one_decoded_budget(tmp_path):
+    import base64,zlib
+    wire=b''.join(b'00.9.40\x0196\x010000000020'+zlib.compress(b'x'*40)+b'<![CDATA[]]>\n' for _ in range(2))
+    worker=tmp_path/'frames.py'
+    worker.write_text('import json,sys\njson.load(sys.stdin)\nprint('+repr(json.dumps({'error_code':'0','calls':2,'received_bytes':len(wire),'wire_b64':base64.b64encode(wire).decode(),'received_at':'2026-10-09T00:00:00+00:00','fields':[],'rows':[]}))+')',encoding='utf-8')
+    with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+        establish(client,['SSE:600519'])
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['CALENDAR'],'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','baostock_auth_mode':'PUBLIC','max_decoded_bytes':64})
+        assert req.status_code==201,req.text
+        run=client.post('/api/data/requests/'+req.json()['request_id']+'/retrieve').json()
+        assert any(g.get('reason')=='BAOSTOCK_DECODED_BYTE_LIMIT' for g in run['gaps']),run
+        assert client.get('/api/data/snapshots/'+run['snapshot_id']).json()['archives']==[]
+
+def production_sdk_worker(tmp_path,query_body):
+    worker=tmp_path/'sdk_boundary.py'
+    implementation=Path(__file__).resolve().parents[2]/'src/roll/market/baostock_process.py'
+    worker.write_text('import sys,types,runpy,zlib\n'
+        'sdk=types.ModuleType("baostock");common=types.ModuleType("baostock.common")\n'
+        'context=types.ModuleType("baostock.common.context");context.default_socket=types.SimpleNamespace(close=lambda:None)\n'
+        'constants=types.ModuleType("baostock.common.contants");constants.BAOSTOCK_CLIENT_VERSION="00.9.40"\n'
+        'sdk.login=lambda:types.SimpleNamespace(error_code="0")\n'
+        'def query(*args,**kwargs):\n'+''.join('    '+line+'\n' for line in query_body.splitlines())+
+        'sdk.query_trade_dates=query\n'
+        'sys.modules.update({"baostock":sdk,"baostock.common":common,"baostock.common.context":context,"baostock.common.contants":constants})\n'
+        'runpy.run_path('+repr(str(implementation))+',run_name="__main__")',encoding='utf-8')
+    return worker
+
+
+def test_baostock_production_sdk_decoder_accumulates_across_pages(tmp_path):
+    worker=production_sdk_worker(tmp_path,'zlib.decompress(zlib.compress(b"x"*40))\nzlib.decompress(zlib.compress(b"y"*40))\nreturn types.SimpleNamespace(error_code="0",fields=[],next=lambda:False)')
+    with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+        establish(client,['SSE:600519'])
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['CALENDAR'],'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','baostock_auth_mode':'PUBLIC','max_decoded_bytes':64}).json()
+        run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+        assert any(g.get('reason')=='BAOSTOCK_DECODED_BYTE_LIMIT' for g in run['gaps']),run
+        assert client.get('/api/data/snapshots/'+run['snapshot_id']).json()['archives']==[]
+
+def test_baostock_request_shares_decoded_budget_across_queries(tmp_path):
+    import base64,zlib
+    wire=b'00.9.40\x0196\x010000000020'+zlib.compress(b'x'*40)+b'<![CDATA[]]>\n'
+    value={'error_code':'0','calls':2,'received_bytes':len(wire),'decoded_bytes':40,'wire_b64':base64.b64encode(wire).decode(),'received_at':'2026-10-09T00:00:00+00:00','fields':['calendar_date','is_trading_day'],'rows':[['2026-09-30','1']]}
+    worker=tmp_path/'queries.py'
+    worker.write_text('import json,sys\nc=json.load(sys.stdin)\nv='+repr(value)+'\nif c["group"]!="CALENDAR":v.update(fields=[],rows=[])\nprint(json.dumps(v))',encoding='utf-8')
+    with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+        establish(client,['SSE:600519'])
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['CALENDAR','ADJUSTMENTS'],'purpose':'RESEARCH','start_date':'2026-09-01','end_date':'2026-09-30','adjustment_source':'BAOSTOCK','baostock_auth_mode':'PUBLIC','max_decoded_bytes':64,'max_total_decoded_bytes':64}).json()
+        run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+        assert any(g.get('reason')=='BAOSTOCK_DECODED_BYTE_LIMIT' for g in run['gaps']),run
+        assert run['retrieved_decoded_bytes']==40
+        assert next(g for g in run['gaps'] if g.get('reason')=='BAOSTOCK_DECODED_BYTE_LIMIT')['failure_audit']['decoded_bytes']==25
+        snap=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        assert len(snap['facts'])==1 and snap['facts'][0]['group']=='CALENDAR'
+        assert all(a['decoded_bytes']==40 for a in snap['archives'])
+
+
+@pytest.mark.parametrize('phase,kind',[('SDK_IMPORT','ModuleNotFoundError'),('ROW_ITERATION','TypeError')])
+def test_baostock_unknown_failure_retains_safe_location_without_values(tmp_path,monkeypatch,phase,kind):
+    monkeypatch.setenv('BAOSTOCK_API_KEY','METHOD_CREDENTIAL')
+    if phase=='ROW_ITERATION':
+        worker=production_sdk_worker(tmp_path,'return types.SimpleNamespace(error_code="0",fields=[],next=lambda:(_ for _ in ()).throw(TypeError("METHOD_CREDENTIAL")))')
+    else:
+        worker=tmp_path/'sdk_import_failure.py'
+        implementation=Path(__file__).resolve().parents[2]/'src/roll/market/baostock_process.py'
+        worker.write_text('import runpy,builtins\noriginal=builtins.__import__\ndef importing(name,*args,**kwargs):\n    if name=="baostock":raise ModuleNotFoundError("METHOD_CREDENTIAL")\n    return original(name,*args,**kwargs)\nbuiltins.__import__=importing\nrunpy.run_path('+repr(str(implementation))+',run_name="__main__")',encoding='utf-8')
+    with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+        establish(client,['SSE:600519'])
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['CALENDAR'],'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','baostock_auth_mode':'PUBLIC'}).json()
+        run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+        gap=next(g for g in run['gaps'] if g['code']=='BAOSTOCK_ACQUISITION_FAILED')
+        assert gap['reason']=='BAOSTOCK_PROCESS_OR_TRANSPORT_FAILURE'
+        assert gap['diagnostic']['phase']==phase and gap['diagnostic']['exception_type']==kind
+        assert gap['diagnostic']['line']>0 and '/' not in gap['diagnostic']['file'] and '\\' not in gap['diagnostic']['file']
+        assert 'METHOD_CREDENTIAL' not in json.dumps(run)
+        assert client.get('/api/data/snapshots/'+run['snapshot_id']).json()['archives']==[]
+
+def test_baostock_unserializable_sdk_row_shape_has_safe_diagnostic(tmp_path):
+    worker=production_sdk_worker(tmp_path,'return types.SimpleNamespace(error_code="0",fields=[object()],next=lambda:False)')
+    with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+        establish(client,['SSE:600519'])
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['CALENDAR'],'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','baostock_auth_mode':'PUBLIC'}).json()
+        run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+        gap=next(g for g in run['gaps'] if g['code']=='BAOSTOCK_ACQUISITION_FAILED')
+        assert gap['reason']=='BAOSTOCK_PROCESS_OR_TRANSPORT_FAILURE',run
+        assert gap['diagnostic']['phase']=='RESULT_ENCODING' and gap['diagnostic']['exception_type']=='TypeError'
