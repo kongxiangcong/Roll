@@ -152,3 +152,29 @@ def test_fuyao_index_does_not_compare_aggregate_turnover_with_index_points(tmp_p
         assert fact['errors']==[] and fact['close']=='3510'
         assert fact['model_daily_input_allowed'] is False
         assert 'INDEX_POINTS_NOT_SHARE_PRICE' in fact['limitations']
+
+
+def test_fuyao_two_added_fixed_backgrounds_use_verified_sh_codes_and_archive(tmp_path,monkeypatch):
+    monkeypatch.setenv('FUYAO_API_KEY','METHOD_SECRET_NOT_REAL')
+    calls=[]
+    def provider(request):
+        assert request.url.path=='/api/a-share-index/prices/historical'
+        assert 'adjust' not in request.url.params
+        calls.append(request.url.params['thscode'])
+        return httpx.Response(200,json={'code':0,'data':{'thscode':request.url.params['thscode'],
+            'item':[{'date_ms':millis('2026-09-30'),'open_price':3500,'close_price':3510,
+                'high_price':3530,'low_price':3490,'volume':1000000,'turnover':15000000}]}})
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
+        before=client.get('/api/account').json()
+        response=client.post('/api/data/requests',json={'instruments':['SSE:000300','SSE:000905'],
+            'groups':['DAILY'],'purpose':'BACKGROUND','start_date':'2026-09-30',
+            'end_date':'2026-09-30','daily_source':'FUYAO'})
+        assert response.status_code==201,response.text
+        run=client.post('/api/data/requests/'+response.json()['request_id']+'/retrieve').json()
+        assert run['status']=='COMPLETE' and calls==['000300.SH','000905.SH'],run
+        snapshot=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        assert {f['instrument'] for f in snapshot['facts']}=={'SSE:000300','SSE:000905'}
+        assert all(not f['model_daily_input_allowed'] for f in snapshot['facts'])
+        replay=client.post('/api/data/runs/'+run['run_id']+'/replay').json()
+        assert replay['facts']==snapshot['facts'] and replay['network_calls']==0 and len(calls)==2
+        assert client.get('/api/account').json()==before
