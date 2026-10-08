@@ -85,10 +85,10 @@ def test_baostock_two_compressed_frames_share_one_decoded_budget(tmp_path):
         assert any(g.get('reason')=='BAOSTOCK_DECODED_BYTE_LIMIT' for g in run['gaps']),run
         assert client.get('/api/data/snapshots/'+run['snapshot_id']).json()['archives']==[]
 
-def production_sdk_worker(tmp_path,query_body):
+def production_sdk_worker(tmp_path,query_body,external_setup=""):
     worker=tmp_path/'sdk_boundary.py'
     implementation=Path(__file__).resolve().parents[2]/'src/roll/market/baostock_process.py'
-    worker.write_text('import sys,types,runpy,zlib\n'
+    worker.write_text('import sys,types,runpy,zlib,socket\n'+external_setup+
         'sdk=types.ModuleType("baostock");common=types.ModuleType("baostock.common")\n'
         'context=types.ModuleType("baostock.common.context");context.default_socket=types.SimpleNamespace(close=lambda:None)\n'
         'constants=types.ModuleType("baostock.common.contants");constants.BAOSTOCK_CLIENT_VERSION="00.9.40"\n'
@@ -156,3 +156,29 @@ def test_baostock_unserializable_sdk_row_shape_has_safe_diagnostic(tmp_path):
         gap=next(g for g in run['gaps'] if g['code']=='BAOSTOCK_ACQUISITION_FAILED')
         assert gap['reason']=='BAOSTOCK_PROCESS_OR_TRANSPORT_FAILURE',run
         assert gap['diagnostic']['phase']=='RESULT_ENCODING' and gap['diagnostic']['exception_type']=='TypeError'
+
+def test_baostock_production_worker_archives_received_compressed_socket_frame(tmp_path):
+    import socket,threading,zlib
+    frame=b'00.9.40\x0196\x010000000020'+zlib.compress(b'x'*40)+b'<![CDATA[]]>\n'
+    with socket.socket() as server:
+        server.bind(('127.0.0.1',0));server.listen(1);server.settimeout(10)
+        port=server.getsockname()[1]
+        def provide():
+            with server.accept()[0] as connection:
+                connection.recv(4096)
+                connection.sendall(frame)
+        thread=threading.Thread(target=provide,daemon=True);thread.start()
+        setup='native_socket=socket.socket\nclass SourceSocket(native_socket):\n    def connect(self,address):return super().connect(("127.0.0.1",'+str(port)+'))\nsocket.socket=SourceSocket\n'
+        query='transport=socket.socket()\ntransport.connect(("public-api.baostock.com",10030))\ntransport.send(b"query")\nwire=b""\nwhile not wire.endswith(b"<![CDATA[]]>\\n"):wire+=transport.recv(8192)\nzlib.decompress(wire[21:-13])\ntransport.close()\nready=iter([True,False])\nreturn types.SimpleNamespace(error_code="0",fields=["calendar_date","is_trading_day"],next=lambda:next(ready),get_row_data=lambda:["2026-09-30","1"])'
+        worker=production_sdk_worker(tmp_path,query,setup)
+        with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+            establish(client,['SSE:600519'])
+            req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['CALENDAR'],'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','baostock_auth_mode':'PUBLIC'}).json()
+            run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+            assert run['status']=='COMPLETE',run
+            assert run['retrieved_decoded_bytes']==40
+            snap=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+            raw=next(a for a in snap['archives'] if a['kind']=='RAW_SOCKET_RESPONSE')
+            assert client.get('/api/data/archives/'+raw['sha256']).content==frame
+            assert raw['decoded_bytes']==40 and snap['facts'][0]['is_trading_day'] is True
+        thread.join(timeout=5)
