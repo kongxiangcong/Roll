@@ -1,0 +1,146 @@
+{
+  "config": {
+    "configFile": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\fuyao-data\\frontend\\playwright.config.ts",
+    "rootDir": "D:/dsh-proj/Roll/.scratch/worktrees/fuyao-data/frontend/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/dsh-proj/Roll/.scratch/worktrees/fuyao-data/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/dsh-proj/Roll/.scratch/worktrees/fuyao-data/frontend/tests/e2e",
+        "testIgnore": [
+          "market-overflow.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "fuyao-live.spec.ts",
+      "file": "fuyao-live.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "user requests Fuyao facts and sees unknown security time with archive replay",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 68519,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: '归档事实与客观观察' })\nExpected: visible\nTimeout: 65000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 65000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: '归档事实与客观观察' })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: '归档事实与客观观察' })\nExpected: visible\nTimeout: 65000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 65000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: '归档事实与客观观察' })\u001b[22m\n\n    at D:\\dsh-proj\\Roll\\.scratch\\worktrees\\fuyao-data\\frontend\\tests\\e2e\\fuyao-live.spec.ts:21:62",
+                    "location": {
+                      "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\fuyao-data\\frontend\\tests\\e2e\\fuyao-live.spec.ts",
+                      "column": 62,
+                      "line": 21
+                    },
+                    "snippet": "  19 |   await page.getByLabel('截止日期',{exact:true}).fill('2026-09-30');\n  20 |   await page.getByRole('button',{name:'取得并归档事实',exact:true}).click();\n> 21 |   await expect(page.getByRole('heading',{name:'归档事实与客观观察'})).toBeVisible({timeout:65000});\n     |                                                              ^\n  22 |   await expect(page.getByText(/QUOTE_PER_INSTRUMENT_TIME_UNKNOWN/).first()).toBeVisible();\n  23 |   const run=(await (await page.request.get('/api/data/runs')).json())[0];\n  24 |   const snapshot=await (await page.request.get('/api/data/snapshots/'+run.snapshot_id)).json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\fuyao-data\\frontend\\tests\\e2e\\fuyao-live.spec.ts",
+                        "column": 62,
+                        "line": 21
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: '归档事实与客观观察' })\nExpected: visible\nTimeout: 65000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 65000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: '归档事实与客观观察' })\u001b[22m\n\n\n  19 |   await page.getByLabel('截止日期',{exact:true}).fill('2026-09-30');\n  20 |   await page.getByRole('button',{name:'取得并归档事实',exact:true}).click();\n> 21 |   await expect(page.getByRole('heading',{name:'归档事实与客观观察'})).toBeVisible({timeout:65000});\n     |                                                              ^\n  22 |   await expect(page.getByText(/QUOTE_PER_INSTRUMENT_TIME_UNKNOWN/).first()).toBeVisible();\n  23 |   const run=(await (await page.request.get('/api/data/runs')).json())[0];\n  24 |   const snapshot=await (await page.request.get('/api/data/snapshots/'+run.snapshot_id)).json();\n    at D:\\dsh-proj\\Roll\\.scratch\\worktrees\\fuyao-data\\frontend\\tests\\e2e\\fuyao-live.spec.ts:21:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T03:49:32.097Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\fuyao-data\\frontend\\test-results\\fuyao-live-user-requests-F-61367-ty-time-with-archive-replay\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\fuyao-data\\frontend\\tests\\e2e\\fuyao-live.spec.ts",
+                    "column": 62,
+                    "line": 21
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "cdbaafba5ad3b6ed96f3-e9c8be3c3b6b7e58528d",
+          "file": "fuyao-live.spec.ts",
+          "line": 5,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-08T03:49:23.397Z",
+    "duration": 79286.825,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

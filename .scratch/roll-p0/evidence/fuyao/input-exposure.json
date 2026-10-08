@@ -1,0 +1,21 @@
+{
+  "event": "MARKET_INPUT_EXPOSED",
+  "date": "2026-10-08",
+  "scope": "SOURCE_ADAPTER_SMOKE_AND_ARCHIVE_REPLAY_ONLY",
+  "instrument": "SSE:600519",
+  "input_start": "2023-01-01",
+  "input_end": "2026-09-30",
+  "background_indices": [
+    "SSE:000001",
+    "SZSE:399001",
+    "SZSE:399997"
+  ],
+  "overlaps_original_sealed_metadata": true,
+  "sealed_independence": "UNPROVEN",
+  "model_training": false,
+  "mature_label_computation": false,
+  "final_strategy_outcome_accessed": false,
+  "knowledge_basis": "Actual current provider revision and actual current receipt; no historical available_at invention",
+  "protocol_action": "No new protocol/fit/threshold/attempt/reset; original protocol, failures and family budget retain original state",
+  "old_protocol_database_access": "No old DB copied/read in this source smoke; empty isolated SQLite namespace only; input overlap documented for17"
+}

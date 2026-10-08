@@ -35,6 +35,15 @@ REGISTRY.append({'id':'sina-quote','groups':['QUOTE','STATUS'],'host':'hq.sinajs
     'source_selection':'EXPLICIT_PRIMARY_OR_BOUNDED_RESOLUTION_ALTERNATE'})
 
 
+for identifier,groups in [('fuyao-daily',['DAILY']),('fuyao-index-daily',['DAILY']),('fuyao-actions',['ADJUSTMENTS']),('fuyao-quote',['QUOTE','STATUS'])]:
+    REGISTRY.append({'id':identifier,'groups':groups,'host':'fuyao.aicubes.cn','adapter_version':'fuyao-rest-v1',
+        'authentication':'HOST_X_API_KEY','permission_basis':'User-provided key; actual scope acceptance recorded separately; no redistribution license asserted',
+        'depth':'Explicit bounded single instrument/window; history may be current revision; no total/completeness certification',
+        'unit_scope':'Official public prices: volume shares, turnover CNY; corporate actions pretax cash per share/date precision',
+        'historical_revision_proof':'NOT_AVAILABLE','historical_status_proof':'NOT_AVAILABLE','retries':0,
+        'source_selection':'EXPLICIT_PRIMARY','documentation':'https://fuyao.aicubes.cn/llms-full.txt'})
+
+
 def source_json(content):
     value=json.loads(content,parse_float=Decimal)
     if not isinstance(value,dict):raise ValueError('SOURCE_JSON_OBJECT_REQUIRED')

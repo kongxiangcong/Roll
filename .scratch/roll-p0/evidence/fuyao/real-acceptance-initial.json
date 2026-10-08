@@ -1,0 +1,381 @@
+{
+  "kind": "REAL_ACQUISITION",
+  "started_at": "2026-10-08T03:42:16.365532+00:00",
+  "runs": [
+    {
+      "run": {
+        "run_id": "5d2d48a6-d11f-444b-9555-452851c0c1b6",
+        "request_id": "6f9b5b83-875f-4240-8352-c803434c8cc4",
+        "backend": "DIRECT_HTTP",
+        "model": null,
+        "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+        "runtime_versions": {
+          "httpx": "0.28.1",
+          "pyarrow": "25.0.1",
+          "pypdf": "6.19.0"
+        },
+        "config_fingerprint": "56832da8e3062e6131ea7bb479bd89772e7c7d16ab93b349f250dae874c83967",
+        "evidence_kind": "REAL_ACQUISITION",
+        "started_at": "2026-10-08T03:42:16.835615+00:00",
+        "status": "PARTIAL",
+        "tools": [
+          {
+            "source_id": "fuyao-daily",
+            "instrument": "SSE:600519",
+            "group": "DAILY",
+            "started_at": "2026-10-08T03:42:16.988510+00:00",
+            "method": "GET",
+            "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/historical?thscode=600519.SH&interval=1d&start=1672502400000&end=1790783999999&adjust=none",
+            "adjustment": "RAW",
+            "raw_hash": "c270c5673525f86a17658ba3cded66627a9c48001d78f7774c9f23baf846263b",
+            "http_status": 200,
+            "status": "ARCHIVED",
+            "finished_at": "2026-10-08T03:42:17.246707+00:00",
+            "received_bytes": 138078
+          },
+          {
+            "source_id": "fuyao-daily",
+            "instrument": "SSE:600519",
+            "group": "DAILY",
+            "started_at": "2026-10-08T03:42:17.282754+00:00",
+            "method": "GET",
+            "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/historical?thscode=600519.SH&interval=1d&start=1672502400000&end=1790783999999&adjust=forward",
+            "adjustment": "FORWARD_CURRENT_VERSION",
+            "raw_hash": "bc090916ea0e22112fcc2b8047ac9cca9a8d7d5118382166fa50f3d2ce77d849",
+            "http_status": 200,
+            "status": "ARCHIVED",
+            "finished_at": "2026-10-08T03:42:17.415873+00:00",
+            "received_bytes": 164433
+          },
+          {
+            "source_id": "fuyao-quote",
+            "instrument": "SSE:600519",
+            "group": "QUOTE",
+            "started_at": "2026-10-08T03:42:17.448320+00:00",
+            "method": "GET",
+            "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/snapshot?thscodes=600519.SH",
+            "raw_hash": "71d441229ab553ae9e590d2c615d0cb1017f093f389675a091c2437ed957e4c2",
+            "http_status": 200,
+            "status": "ARCHIVED",
+            "finished_at": "2026-10-08T03:42:17.500810+00:00",
+            "received_bytes": 363
+          },
+          {
+            "source_id": "fuyao-actions",
+            "instrument": "SSE:600519",
+            "group": "ADJUSTMENTS",
+            "started_at": "2026-10-08T03:42:17.501067+00:00",
+            "method": "GET",
+            "source_url": "https://fuyao.aicubes.cn/api/a-share/corporate-actions/adjustment-factors?thscode=600519.SH&from=2023-01-01&to=2026-09-30",
+            "raw_hash": "78678a108d144af6afa249427b1a692db7018b2d0fb455bb4b73ee4fca6da277",
+            "http_status": 200,
+            "status": "ARCHIVED",
+            "finished_at": "2026-10-08T03:42:17.607679+00:00",
+            "received_bytes": 850
+          }
+        ],
+        "gaps": [
+          {
+            "instrument": "SSE:600519",
+            "group": "QUOTE",
+            "code": "QUOTE_PER_INSTRUMENT_TIME_UNKNOWN"
+          },
+          {
+            "instrument": "SSE:600519",
+            "group": "STATUS",
+            "code": "CURRENT_STATUS_UNKNOWN"
+          }
+        ],
+        "snapshot_id": "617ab1c6-8bd8-486a-af10-47c7c295d7b0",
+        "finished_at": "2026-10-08T03:42:17.753954+00:00",
+        "elapsed_seconds": 0.913,
+        "retrieved_bytes": 303724
+      },
+      "snapshot_id": "617ab1c6-8bd8-486a-af10-47c7c295d7b0",
+      "coverage": [
+        {
+          "adjustment": "RAW",
+          "first_date": "2023-01-03",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "last_date": "2026-09-30",
+          "provider_returned_rows": 908,
+          "raw_hash": "c270c5673525f86a17658ba3cded66627a9c48001d78f7774c9f23baf846263b",
+          "request_end": "2026-09-30",
+          "request_start": "2023-01-01",
+          "returned_rows": 908,
+          "status": "ACQUIRED",
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "first_date": "2023-01-03",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "last_date": "2026-09-30",
+          "provider_returned_rows": 908,
+          "raw_hash": "bc090916ea0e22112fcc2b8047ac9cca9a8d7d5118382166fa50f3d2ce77d849",
+          "request_end": "2026-09-30",
+          "request_start": "2023-01-01",
+          "returned_rows": 908,
+          "status": "ACQUIRED",
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        },
+        {
+          "full_history_verified": false,
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "raw_hash": "71d441229ab553ae9e590d2c615d0cb1017f093f389675a091c2437ed957e4c2",
+          "returned_rows": 1,
+          "source_snapshot_ready_at": "2026-10-08T03:42:13+00:00",
+          "upstream_at": null
+        },
+        {
+          "full_history_verified": false,
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519",
+          "provider_returned_rows": 7,
+          "raw_hash": "78678a108d144af6afa249427b1a692db7018b2d0fb455bb4b73ee4fca6da277",
+          "returned_rows": 7,
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        }
+      ],
+      "archive_checks": [
+        {
+          "sha256": "c270c5673525f86a17658ba3cded66627a9c48001d78f7774c9f23baf846263b",
+          "bytes": 138078,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "bc090916ea0e22112fcc2b8047ac9cca9a8d7d5118382166fa50f3d2ce77d849",
+          "bytes": 164433,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "71d441229ab553ae9e590d2c615d0cb1017f093f389675a091c2437ed957e4c2",
+          "bytes": 363,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "78678a108d144af6afa249427b1a692db7018b2d0fb455bb4b73ee4fca6da277",
+          "bytes": 850,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "e91a26bb8d8166079030eaf126939158c024c2cfff0ed267e6f2e2ddfbc06be2",
+          "bytes": 391486,
+          "kind": "NORMALIZED_PARQUET"
+        }
+      ],
+      "offline_replay_equal": true,
+      "network_calls_replay": 0,
+      "daily_rows": 1816,
+      "daily_allowed": 362,
+      "history_unknown_calendar_rows": 1454,
+      "quote_times": [
+        {
+          "instrument": "SSE:600519",
+          "upstream_at": null,
+          "trade_date": null,
+          "source_snapshot_ready_at": "2026-10-08T03:42:13+00:00"
+        }
+      ],
+      "actions": [
+        {
+          "ex_date": "2026-06-26",
+          "cash_per_share": "28.0242300000",
+          "disclosure_date": null,
+          "historical_complete_actions_verified": false
+        },
+        {
+          "ex_date": "2025-12-19",
+          "cash_per_share": "23.9570000000",
+          "disclosure_date": null,
+          "historical_complete_actions_verified": false
+        },
+        {
+          "ex_date": "2025-06-26",
+          "cash_per_share": "27.6730000000",
+          "disclosure_date": null,
+          "historical_complete_actions_verified": false
+        },
+        {
+          "ex_date": "2024-12-20",
+          "cash_per_share": "23.8820000000",
+          "disclosure_date": null,
+          "historical_complete_actions_verified": false
+        },
+        {
+          "ex_date": "2024-06-19",
+          "cash_per_share": "30.8760000000",
+          "disclosure_date": null,
+          "historical_complete_actions_verified": false
+        },
+        {
+          "ex_date": "2023-12-20",
+          "cash_per_share": "19.1060000000",
+          "disclosure_date": null,
+          "historical_complete_actions_verified": false
+        },
+        {
+          "ex_date": "2023-06-30",
+          "cash_per_share": "25.9110000000",
+          "disclosure_date": null,
+          "historical_complete_actions_verified": false
+        }
+      ]
+    },
+    {
+      "run": {
+        "run_id": "998df392-0a7b-4f43-a984-de2b458cd37e",
+        "request_id": "09bbd6b7-cc7b-42bd-a7a5-04861415841b",
+        "backend": "DIRECT_HTTP",
+        "model": null,
+        "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+        "runtime_versions": {
+          "httpx": "0.28.1",
+          "pyarrow": "25.0.1",
+          "pypdf": "6.19.0"
+        },
+        "config_fingerprint": "baa1d8bdff0bd545903e91bfe988bb43b170bb32c5e63e24134861225f1beff4",
+        "evidence_kind": "REAL_ACQUISITION",
+        "started_at": "2026-10-08T03:42:18.800168+00:00",
+        "status": "COMPLETE",
+        "tools": [
+          {
+            "source_id": "fuyao-index-daily",
+            "instrument": "SSE:000001",
+            "group": "DAILY",
+            "started_at": "2026-10-08T03:42:18.858516+00:00",
+            "method": "GET",
+            "source_url": "https://fuyao.aicubes.cn/api/a-share-index/prices/historical?thscode=000001.SH&interval=1d&start=1767196800000&end=1790783999999",
+            "adjustment": "RAW",
+            "raw_hash": "40ce968ec1cf02eb7dd014b6455c167a7b85838aba6f4006c637f499ada846c7",
+            "http_status": 200,
+            "status": "ARCHIVED",
+            "finished_at": "2026-10-08T03:42:18.957776+00:00",
+            "received_bytes": 28267
+          },
+          {
+            "source_id": "fuyao-index-daily",
+            "instrument": "SZSE:399001",
+            "group": "DAILY",
+            "started_at": "2026-10-08T03:42:18.962284+00:00",
+            "method": "GET",
+            "source_url": "https://fuyao.aicubes.cn/api/a-share-index/prices/historical?thscode=399001.SZ&interval=1d&start=1767196800000&end=1790783999999",
+            "adjustment": "RAW",
+            "raw_hash": "1e40d460e6f1fa27fbbb12868151b5a4de4ee6127cfe088ec77559345253f479",
+            "http_status": 200,
+            "status": "ARCHIVED",
+            "finished_at": "2026-10-08T03:42:19.027876+00:00",
+            "received_bytes": 29608
+          },
+          {
+            "source_id": "fuyao-index-daily",
+            "instrument": "SZSE:399997",
+            "group": "DAILY",
+            "started_at": "2026-10-08T03:42:19.032194+00:00",
+            "method": "GET",
+            "source_url": "https://fuyao.aicubes.cn/api/a-share-index/prices/historical?thscode=399997.SZ&interval=1d&start=1767196800000&end=1790783999999",
+            "adjustment": "RAW",
+            "raw_hash": "412969c87ec703e5501853858f9cd1323c4761458e4cb9f36e358fa2c1c0ef1d",
+            "http_status": 200,
+            "status": "ARCHIVED",
+            "finished_at": "2026-10-08T03:42:19.144845+00:00",
+            "received_bytes": 28111
+          }
+        ],
+        "gaps": [],
+        "snapshot_id": "1d956d88-9709-42dd-8b32-63eb4a0b0952",
+        "finished_at": "2026-10-08T03:42:19.259509+00:00",
+        "elapsed_seconds": 0.451,
+        "retrieved_bytes": 85986
+      },
+      "snapshot_id": "1d956d88-9709-42dd-8b32-63eb4a0b0952",
+      "coverage": [
+        {
+          "adjustment": "RAW",
+          "first_date": "2026-01-05",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:000001",
+          "last_date": "2026-09-30",
+          "provider_returned_rows": 181,
+          "raw_hash": "40ce968ec1cf02eb7dd014b6455c167a7b85838aba6f4006c637f499ada846c7",
+          "request_end": "2026-09-30",
+          "request_start": "2026-01-01",
+          "returned_rows": 181,
+          "status": "ACQUIRED",
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        },
+        {
+          "adjustment": "RAW",
+          "first_date": "2026-01-05",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SZSE:399001",
+          "last_date": "2026-09-30",
+          "provider_returned_rows": 181,
+          "raw_hash": "1e40d460e6f1fa27fbbb12868151b5a4de4ee6127cfe088ec77559345253f479",
+          "request_end": "2026-09-30",
+          "request_start": "2026-01-01",
+          "returned_rows": 181,
+          "status": "ACQUIRED",
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        },
+        {
+          "adjustment": "RAW",
+          "first_date": "2026-01-05",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SZSE:399997",
+          "last_date": "2026-09-30",
+          "provider_returned_rows": 181,
+          "raw_hash": "412969c87ec703e5501853858f9cd1323c4761458e4cb9f36e358fa2c1c0ef1d",
+          "request_end": "2026-09-30",
+          "request_start": "2026-01-01",
+          "returned_rows": 181,
+          "status": "ACQUIRED",
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        }
+      ],
+      "archive_checks": [
+        {
+          "sha256": "40ce968ec1cf02eb7dd014b6455c167a7b85838aba6f4006c637f499ada846c7",
+          "bytes": 28267,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "1e40d460e6f1fa27fbbb12868151b5a4de4ee6127cfe088ec77559345253f479",
+          "bytes": 29608,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "412969c87ec703e5501853858f9cd1323c4761458e4cb9f36e358fa2c1c0ef1d",
+          "bytes": 28111,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "7db630a2393fdc4476692867ccd0f21e6d2811cc0c6981e4474c0f47ef7ff099",
+          "bytes": 139180,
+          "kind": "NORMALIZED_PARQUET"
+        }
+      ],
+      "offline_replay_equal": true,
+      "network_calls_replay": 0,
+      "daily_rows": 543,
+      "daily_allowed": 0,
+      "history_unknown_calendar_rows": 0,
+      "quote_times": [],
+      "actions": []
+    }
+  ],
+  "credential_source": "HOST_ENVIRONMENT_ONLY",
+  "account_written": false,
+  "historical_pit_proven": false,
+  "account_unchanged": true,
+  "restart_original_runs_equal": true,
+  "finished_at": "2026-10-08T03:42:20.653483+00:00"
+}

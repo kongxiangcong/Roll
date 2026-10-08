@@ -26,7 +26,7 @@ export function Evidence(){
   const [start,setStart]=useState(localDate(-90));const [end,setEnd]=useState(localDate());
   const [source,setSource]=useState('TENCENT');const [maxCalls,setMaxCalls]=useState(30);
   const [backend,setBackend]=useState('DIRECT_HTTP');const [settings,setSettings]=useState<BackendSettings|null>(null);const [question,setQuestion]=useState('请核对所请求事实的来源与时点，补充有依据的缺失事实并明确缺口。');
-  const [quoteSource,setQuoteSource]=useState('TENCENT');const [needShares,setNeedShares]=useState(false);
+  const [quoteSource,setQuoteSource]=useState('TENCENT');const [adjustmentSource,setAdjustmentSource]=useState('EASTMONEY');const [needShares,setNeedShares]=useState(false);
   const [runs,setRuns]=useState<Run[]>([]);const [run,setRun]=useState<Run|null>(null);const [snapshot,setSnapshot]=useState<Snapshot|null>(null);
   const [registry,setRegistry]=useState<Record<string,unknown>[]>([]);
   const [error,setError]=useState('');const [busy,setBusy]=useState(false);const [replay,setReplay]=useState('');
@@ -42,7 +42,7 @@ export function Evidence(){
   function changePurpose(value:string){setPurpose(value);if(value==='BACKGROUND')setSource('TENCENT');setInstruments(value==='BACKGROUND'?listing?.background_indices.map(i=>i.instrument)??[]:listing?.members.map(m=>m.instrument)??[]);setSelectedGroups(value==='BACKGROUND'?['DAILY','QUOTE']:Object.keys(groups));}
   async function retrieve(e:FormEvent){e.preventDefault();setBusy(true);setError('');try{
     const command=await request<{request_id:string}>('/data/requests',{instruments,groups:selectedGroups,purpose,start_date:start,end_date:end,daily_source:source,
-      quote_source:quoteSource,required_fields:needShares&&selectedGroups.includes('QUOTE')?['QUOTE.volume_shares']:[],max_calls:maxCalls,timeout_seconds:60});
+      quote_source:quoteSource,adjustment_source:adjustmentSource,required_fields:needShares&&selectedGroups.includes('QUOTE')?['QUOTE.volume_shares']:[],max_calls:maxCalls,timeout_seconds:60});
     const value=await request<Run>('/data/requests/'+command.request_id+(backend==='AGENT'?'/agent':backend==='CODEX'?'/codex':backend==='DEEPSEEK'?'/deepseek':'/retrieve'),backend==='DIRECT_HTTP'?{}:{question});await view(value);setRuns(await request<Run[]>('/data/runs'));
   }catch(e){setError(String(e));}finally{setBusy(false);}}
   const objects=purpose==='BACKGROUND'?listing?.background_indices:listing?.members.map(m=>({instrument:m.instrument,name:m.identity.name??m.instrument}));
@@ -56,8 +56,9 @@ export function Evidence(){
       <fieldset className="evidence-choices"><legend>事实组</legend>{Object.entries(groups).filter(([g])=>purpose!=='BACKGROUND'||['DAILY','QUOTE'].includes(g)).map(([g,label])=><label key={g}><input type="checkbox" checked={selectedGroups.includes(g)} onChange={e=>setSelectedGroups(e.target.checked?[...selectedGroups,g]:selectedGroups.filter(v=>v!==g))}/>{label}</label>)}</fieldset>
       <label>开始日期（上海交易/披露日期）<input type="date" required value={start} onChange={e=>setStart(e.target.value)}/></label>
       <label>截止日期<input type="date" required value={end} max={localDate()} onChange={e=>setEnd(e.target.value)}/></label>
-      <label>日线来源<select value={source} disabled={purpose==='BACKGROUND'} onChange={e=>setSource(e.target.value)}><option value="TENCENT">腾讯：历史成交额通常缺失</option><option value="EASTMONEY">东方财富：保留实际失败</option></select></label>
-      <label>报价来源<select value={quoteSource} onChange={e=>setQuoteSource(e.target.value)}><option value="TENCENT">腾讯</option><option value="SINA">新浪：已实证主板股票股数口径</option></select></label>
+      <label>日线来源<select value={source} onChange={e=>setSource(e.target.value)}><option value="TENCENT">腾讯：历史成交额通常缺失</option>{purpose!=='BACKGROUND'&&<option value="EASTMONEY">东方财富：保留实际失败</option>}<option value="FUYAO">扶摇：同花顺日线</option></select></label>
+      <label>报价来源<select value={quoteSource} onChange={e=>setQuoteSource(e.target.value)}><option value="TENCENT">腾讯</option><option value="SINA">新浪：已实证主板股票股数口径</option><option value="FUYAO">扶摇：逐证券时间未知</option></select></label>
+      {purpose!=='BACKGROUND'&&selectedGroups.includes('ADJUSTMENTS')&&<label>除权事项来源<select value={adjustmentSource} onChange={e=>setAdjustmentSource(e.target.value)}><option value="EASTMONEY">东方财富公告及分派</option><option value="FUYAO">扶摇：原始除权事件</option></select></label>}
       <label><input type="checkbox" checked={needShares} onChange={e=>setNeedShares(e.target.checked)}/>报价需要已核对的股数，缺失时限制此用途</label>
       {backend==='DIRECT_HTTP'&&<label>本次最多调用<input type="number" value={maxCalls} min={1} max={30} onChange={e=>setMaxCalls(Number(e.target.value))}/></label>}
       <p className="muted">日线原价与当前前复权版本分开。历史取得时间为实际本次时间，不能证明过去已经可得；背景指数不取得个股研究或交易能力。</p>

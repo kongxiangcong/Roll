@@ -1,0 +1,21 @@
+{
+  "base_oid": "6842461",
+  "implementer_oid": "0d1385dd42146abc088bda2989b7a5faab2a7991",
+  "integration_product_oid": "0d1385dd42146abc088bda2989b7a5faab2a7991",
+  "merge": "FAST_FORWARD",
+  "conflicts": 0,
+  "reviewed_changed_paths": 42,
+  "credential_matches": 0,
+  "root_env_ignored": true,
+  "diff_check": "PASS",
+  "runtime_preservation": "merge-12-runtime.json",
+  "focused_tests": {"passed": 4, "deselected": 11, "seconds": 21.91, "output": "merge-12-focused.txt"},
+  "frontend_build": {"status": "PASS", "modules": 53, "output": "merge-12-build.txt"},
+  "initial_sandbox_attempt": {"status": "BLOCKED_BEFORE_EXECUTION", "pytest": "WinError 5 temporary directory access", "build": "EPERM esbuild spawn", "logs_retained": true},
+  "base_full_suite_reported_by_root": {"passed": 340, "failed": 3, "seconds": 1551.23, "repeated_by_merger": false},
+  "ticket12_completion_supported": true,
+  "ticket13_backend_switching_included": false,
+  "ticket23_technical_review_included": false,
+  "push_performed": false,
+  "worktree_cleanup_performed": false
+}
