@@ -10,7 +10,7 @@ $env:ROLL_TEST_WEB_PORT='5188'
 
 默认 `npm run test:e2e` 逐文件启动真实服务和空 SQLite；文件之间隔离，同一个文件内顺序用例保留事实链（包括 reconcile 的两例）。有限默认集合是 baseline/cash-equity/codex-evidence/csv/deepseek-evidence/fills/funding/market/market-overflow/reconcile/valuation。默认缺凭据路径不发真实模型请求或取新公网数据。每个文件的输出、报告和退出码见 `frontend/test-results/default/`，任一失败使最终命令失败。
 
-历史08默认11通过/2失败/1跳过原报告保留；修复后的默认结果单列在[审阅修复验收](../.scratch/roll-p0/evidence/review/fixes.md)，不覆盖旧红。运行默认命令前移除外部来源、METHOD工厂、已有数据目录和两阶段恢复变量；runner遇这些profile会明确拒绝混用。11/12真实SDK、07/08实际来源、14/15方法与已有真实原件、17/18/19/22研究保全、16备份两阶段必须显式单独运行。
+历史08默认11通过/2失败/1跳过原报告保留；修复后的默认结果单列在[审阅修复验收](../.scratch/roll-p0/evidence/review/fixes.md)，不覆盖旧红。运行默认命令前移除 `ROLL_ENV_FILE`、外部来源、METHOD工厂、已有数据目录和两阶段恢复变量；runner遇这些profile会明确拒绝混用，清除 DeepSeek/Fuyao/OpenAI/Codex 凭据环境。11/12真实SDK、07/08实际来源、14/15方法与已有真实原件、17/18/19/22研究保全、16备份两阶段必须显式单独运行。
 
 以下实际公开来源profile会联网，不能算默认离线集合：
 

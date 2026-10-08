@@ -1,6 +1,6 @@
 # DeepSeek 受控取证接入
 
-2026-10-08。票12工程接入，真实 DeepSeek API 验收待凭据；固定响应通过不能代表服务实际权限或模型支持。
+2026-10-08。票12真实 DeepSeek 多轮 API 接入已验收；实际资料仍保留 PARTIAL/缺口，固定响应方法与真实提供方事件分列。
 
 沿用 [DataRequest/RetrievalRun](data-evidence-contract.md)。`POST /api/data/requests/{request_id}/deepseek` 仅接受问题和可选 `retry_of`；重试必须引用同一请求的已终结 DeepSeek 运行，保存新 UUID，旧运行与原件不覆盖。`GET /api/data/runs/{run_id}` 查询，`POST /api/data/runs/{run_id}/cancel` 有限取消，原件及快照使用07既有接口。生产固定 `deepseek-flash`、`https://api.deepseek.com/responses`，没有 OpenAI endpoint 或模型回退；页面只选后端，不让普通用户选择模型或放宽预算。
 
@@ -10,7 +10,7 @@ Python3.13.12、`openai-agents==0.23.1`、`openai==3.26.0`、`httpx2==2.13.1`、
 
 实际使用公开 `Agent`、`Runner.run`、`FunctionTool`、`OpenAIResponsesModel`、`AgentOutputSchemaBase` 和 `httpx2.AsyncBaseTransport`。官方 [DeepSeek Responses协议](https://api-docs.deepseek.com/zh-cn/guides/responses_api/) 声明无状态、不支持 `previous_response_id/conversation/store/background/include`，支持 function 工具及 `text.format`，忽略 `parallel_tool_calls/max_tool_calls`。SDK固定源码 [openai_responses.py](https://github.com/openai/openai-agents-python/blob/c4a1d047b22488234b2ba81056e1b9b8db2127a5/src/agents/models/openai_responses.py) 会发送 `include=[]`；本票仅通过公开HTTP transport删除这个已发现的空字段，非空值和不支持的有状态参数拒绝，不猜测其他兼容问题。
 
-显式具体Model/AsyncOpenAI客户端固定提供方，`auto_previous_response_id=False`。每轮完整 input 带此前 `function_call` 与 `function_call_output`。SDK独立轮数限制与HTTP实际请求限制共同计数；固定方法服务器已看到三轮0/1/2个工具结果接续及 `text.format.json_schema`。该证据不证明真实 DeepSeek strict/schema 或模型权限，真实条件待验。
+显式具体Model/AsyncOpenAI客户端固定提供方，`auto_previous_response_id=False`。每轮完整 input 带此前 `function_call` 与 `function_call_output`。SDK独立轮数限制与HTTP实际请求限制共同计数；固定方法服务器与真实提供方均已看到三轮0/1/2个工具结果接续及 `text.format.json_schema`。实际模型三次HTTP200后返回结构化候选并经宿主schema/原件字面核对；这只证明本次固定输入/模型支持，不保证所有请求永远有效。
 
 ## 宿主边界
 
@@ -20,12 +20,14 @@ Python3.13.12、`openai-agents==0.23.1`、`openai==3.26.0`、`httpx2==2.13.1`、
 
 任务在仓库外独立空cwd/home运行，继承环境仅必要Windows系统、TLS及网络环境变量，API密钥不作为环境变量传给worker。私有stdin pipe传一次认证，既非模型上下文也非工具输出；认证不落任务目录。Agents全局及RunConfig均禁用tracing，禁用日志，无OpenAI云trace调用。实际发出的必要请求摘要、模型响应和SDK版本只保留本地；响应/错误出口按实际key脱敏，错误只记录稳定code/type/HTTP status，不记录异常请求对象或头。
 
-认证仅明确 `DEEPSEEK_API_KEY` 或管理员指定纯文本 `ROLL_DEEPSEEK_API_KEY_FILE`（最大4KiB），不扫描个人配置、不新建key、不利用网页订阅推断API权限。缺失为 `UNAVAILABLE / DEEPSEEK_AUTH_NOT_CONFIGURED`；401/403、429及404分别明确权限、额度/限流、模型不可用。测试endpoint只允许 `ROLL_ENV=test` 的127.0.0.1 HTTP并要求合成哨兵key，真实key拒绝发给固定服务器。
+认证仅明确 `DEEPSEEK_API_KEY` 或管理员指定纯文本 `ROLL_DEEPSEEK_API_KEY_FILE`（最大4KiB），不扫描个人配置、不新建key、不利用网页订阅推断API权限。生产运行工厂读取仓库根 `.env` 或显式 `ROLL_ENV_FILE`（最大64KiB、字面值无插值），进程环境优先；显式测试数据目录不读文件，`ROLL_ENV=test` 不自动读根凭据。缺失为 `UNAVAILABLE / DEEPSEEK_AUTH_NOT_CONFIGURED`；401/403、429及404分别明确权限、额度/限流、模型不可用。测试endpoint只允许 `ROLL_ENV=test` 的127.0.0.1 HTTP并要求合成哨兵key，真实key拒绝发给固定服务器。
 
 失败、取消、超时和中断保留已取得原件、子运行与缺口；结构错误保留脱敏provider响应，不发布未经检查的事实。超限模型响应保存有限脱敏前缀与独立实际接收计数。API硬崩由Job关闭子树；启动只中断已死亡PID/creation组合拥有的运行，不中断活跃peer。精确UUID目录/nonce marker及非reparse检查不满足时记录清理拒绝，拒绝前缀扫描或历史PID杀进程。DeepSeek未写认证文件，清理同一已登记目录。
 
 ## 当前验收条件
 
-全部工程证据见 [票12验收](../.scratch/roll-p0/evidence/12/acceptance.md)。缺真实凭据时本票 `needs-info / partial`，不解锁13。取得明确DeepSeek API凭据后，需在上述同版本/endpoint/model冻结组合实际完成多轮取数/网页补查、结构化候选、错误/额度表现、任务中取消、页面重载及进程树清理；若提供方不支持，保持真实失败证据并仅适配已发现差异。23仍负责技术审阅专用材料和输出契约。
+工程历史见 [票12原验收](../.scratch/roll-p0/evidence/12/acceptance.md)，凭据明确后的[实际续验](../.scratch/roll-p0/evidence/12/live-acceptance.md)已关闭12并解锁13。同一冻结组合完成三轮实际工具/官网补查、结构化候选、实际401、任务中取消/宿主硬崩、页面重载、原件与零联网回放。首次实际输出达到2048 token而截断，保留旧错误，新增明确 `DEEPSEEK_OUTPUT_TOKEN_LIMIT / INVALID_OUTPUT`；provider incomplete状态即使返回合法JSON也拒绝发布，不加预算。关联retry采用简短输出，在同预算内完成。
+
+实际429/额度耗尽未人为触发，仍仅固定响应方法验宿主映射；数据volume_shares、事项时点与历史PIT缺口保留，不把接入完成作为事实或正式资格。23仍负责技术审阅专用材料和输出契约。
 
 17实际接口已接入：在 `roll_read_evidence` 返回实际 `facts[:20]` 载荷给SDK worker前调用 `research.market_input_exposed(result,'deepseek-tool-input')`，与11共用同一具体交付点。固定SDK日线任务已证明第二模型HTTP调用收到两行事实前，SEALED_MARKET_INPUT_EXPOSED持久记录已可经API查询且confirmatory_pass_look=false；不包所有HTTP、不读取封存标签，不将输入暴露算PASS查看，无材料登记时保持07既有行为。

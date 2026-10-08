@@ -13,7 +13,7 @@ from roll.accounts.cash_events import EVENT_FIELDS
 from roll.accounts.reconcile import UseCheck,use_check,consistency
 from roll.accounts.valuation import Valuations,ValuationRequest
 from roll.accounts.corrections import active_events,fact_command
-from roll.config import data_directory
+from roll.config import data_directory, load_runtime_environment
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
@@ -670,6 +670,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
 
 def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None):
+    if directory is None:
+        load_runtime_environment()
     directory=directory or data_directory()
     backups,marker,previous=bootstrap(directory)
     if backup_clock:backups.clock=backup_clock

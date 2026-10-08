@@ -1,0 +1,240 @@
+{
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source"
+  ],
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T03:39:45.353598+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    }
+  ],
+  "backend": "DEEPSEEK",
+  "bootstrap_audit": [
+    {
+      "stage": "PYTHON_READY"
+    },
+    {
+      "stage": "SDK_IMPORTED"
+    }
+  ],
+  "candidates": [],
+  "config_fingerprint": "6eedfbe87de2daa6ae29ac55317d7568f13ed6260070e8853892d81299f7d86d",
+  "evidence_kind": "REAL_DEEPSEEK_TASK",
+  "finished_at": "2026-10-08T03:39:48.700349+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    }
+  ],
+  "host_owner": {
+    "creation_ticks": 134359043744180212,
+    "pid": 33340
+  },
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "max_output_tokens": 2048,
+    "model_calls": 5,
+    "model_input_bytes": 131072,
+    "model_response_bytes": 65536,
+    "model_total_response_bytes": 262144,
+    "response_bytes": 65536,
+    "retries": 0,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144
+  },
+  "model": "deepseek-flash",
+  "model_requests": [
+    {
+      "body_bytes": 3655,
+      "input_items": [
+        "message"
+      ],
+      "model": "deepseek-flash",
+      "number": 1,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "361988e966dc0578487530fdd582e895ca7cc0aaedc5139ff376eab7ccbee86f"
+    },
+    {
+      "body_bytes": 7240,
+      "input_items": [
+        "message",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output"
+      ],
+      "model": "deepseek-flash",
+      "number": 2,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "7fd17ad9f429b89a1ffbae706f2feacfd3832b6c007811d0f80ac419aa0ee230"
+    }
+  ],
+  "model_responses": [
+    {
+      "bytes": 4334,
+      "http_status": 200,
+      "number": 1,
+      "received_bytes": 4334,
+      "resolved_model": "deepseek-flash",
+      "sha256": "b2ba6a15a74469e2bf0e12fee9db7a6d1cbd07dbdab5cecb81b65bab0bc5029b"
+    }
+  ],
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "credential_persisted": false,
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      28572,
+      26604,
+      33392
+    ],
+    "owner_nonce": "2312c763-50b6-469e-9053-8515b30e61b5",
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-eb3319b0-2368-4f7c-8c3e-0a360de5f877-9_5k9a7z",
+    "worker_pid": 28572
+  },
+  "question": "先用 roll_read_evidence 获取贵州茅台实际报价，再用 roll_read_source 补取 MOUTAI_OFFICIAL 公开网页。两轮先后调用。最后JSON只输出1条官网字面引用候选，每个字段不超过80字，以及至多3条简短缺口。仅报价解析字段而无原文字面证据不输出报价候选。来源事件时点未知则明确缺口，不作交易建议。",
+  "recovery_cleanup": {
+    "credential_removed": true,
+    "status": "REMOVED"
+  },
+  "recovery_reason": "PROCESS_RESTART_BEFORE_SNAPSHOT_COMMIT",
+  "request_id": "e8819c41-66f8-481b-9fc3-9702c8460cd1",
+  "resolved_model": "deepseek-flash",
+  "retry_of": null,
+  "run_id": "eb3319b0-2368-4f7c-8c3e-0a360de5f877",
+  "runtime_audit": {
+    "agent_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "auto_previous_response_id": false,
+    "builtin_tools": [],
+    "credential_persisted": false,
+    "endpoint": "https://api.deepseek.com",
+    "handoffs": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "6b27c9a9840ae65c28c13b6dad76d4dddce1b2b535fbfbefde39f5a56b8f72d0",
+      "codex_process.py": "99be69251bf7b715566d495e060399e7491d692d6038dc20aa55401cef6d5711",
+      "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "deepseek_evidence.py": "ce2f6b42ecde74e9182906e3d8a83ff7fb0bb04a95916501d4cb84272f69f43e",
+      "deepseek_process.py": "6f688b8e837357f23d5b32033f97b758093635fc15fc0721dc2979993dac1b5a",
+      "deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "mcp": false,
+    "mcp_servers": [],
+    "model": "deepseek-flash",
+    "plugins": false,
+    "protocol": "RESPONSES_STATELESS",
+    "python": "3.13.12",
+    "research_input_audit_enabled": true,
+    "retries": 0,
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "sdk_versions": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "skills": false,
+    "skills_loaded": false,
+    "store": null,
+    "tracing_disabled": true,
+    "transport": "HTTP_RESPONSES_STATELESS"
+  },
+  "sdk_runtime_version": {
+    "httpx2": "2.13.1",
+    "openai": "3.26.0",
+    "openai-agents": "0.23.1"
+  },
+  "started_at": "2026-10-08T03:39:37.985486+00:00",
+  "status": "INTERRUPTED",
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": [
+    {
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "deepseek-1",
+      "child_run_id": "eafc7520-36b0-49ec-8856-bb7e538af601",
+      "received_at": "2026-10-08T03:39:45.048620+00:00",
+      "snapshot_id": "33502e0e-a938-4ade-abaf-f3769faf4952",
+      "source_id": "roll_read_evidence",
+      "status": "ARCHIVED"
+    }
+  ]
+}

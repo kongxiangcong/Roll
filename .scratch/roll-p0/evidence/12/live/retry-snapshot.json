@@ -1,0 +1,169 @@
+{
+  "adapter_version": "12-deepseek-v1",
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T03:36:48.665963+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    },
+    {
+      "available_at": "2026-10-08T03:36:49.941367+00:00",
+      "basis": "Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.",
+      "basis_url": "https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf",
+      "bytes": 46478,
+      "content_type": "text/html; charset=utf-8",
+      "event_time": null,
+      "http_status": 200,
+      "instrument": "SSE:600519",
+      "kind": "DEEPSEEK_PUBLIC_SOURCE",
+      "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+      "received_at": "2026-10-08T03:36:49.941367+00:00",
+      "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_id": "MOUTAI_OFFICIAL",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_precision": "RECEIPT_ONLY"
+    }
+  ],
+  "candidates": [
+    {
+      "assertion": "官网企业概况称公司成立于1999年11月20日，总部位于茅台镇。",
+      "assertion_verified": false,
+      "available_at": "2026-10-08T03:36:49.941367+00:00",
+      "classification": "MODEL_EVIDENCE_CANDIDATE",
+      "cutoff_eligible": false,
+      "event_time": null,
+      "evidence_quote": "贵州茅台酒股份有限公司（以下简称“公司”）成立于1999年11月20日",
+      "group": "QUOTE",
+      "host_limit": "Literal quote verified; receipt cannot establish event time or assertion truth.",
+      "instrument": "SSE:600519",
+      "quote_verified": true,
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_basis": "UNKNOWN"
+    }
+  ],
+  "coverage": [
+    {
+      "age_seconds": 408.665963,
+      "full_history_verified": false,
+      "group": "QUOTE",
+      "instrument": "SSE:600519",
+      "raw_hash": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "returned_rows": 1,
+      "upstream_at": "2026-10-08T11:30:00+08:00"
+    }
+  ],
+  "created_at": "2026-10-08T03:36:53.462836+00:00",
+  "cutoff": "2026-10-08T03:34:08.235992+00:00",
+  "evidence_kind": "REAL_DEEPSEEK_TASK",
+  "facts": [
+    {
+      "adjustment": "RAW",
+      "age_seconds": 408.665963,
+      "amount_yuan": "1808294344.000",
+      "available_at": "2026-10-08T03:36:48.665963+00:00",
+      "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+      "conversion_basis": null,
+      "currency": "CNY",
+      "current_status": "UNKNOWN",
+      "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+      "evidence_kind": "REAL_ACQUISITION",
+      "fetched_at": "2026-10-08T03:36:48.665963+00:00",
+      "formal_judgment": "DISABLED",
+      "group": "QUOTE",
+      "high": "1258.000",
+      "historical_limitations": [
+        "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+        "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+      ],
+      "instrument": "SSE:600519",
+      "last": "1255.000",
+      "limitations": [
+        "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS",
+        "VOLUME_UNIT_UNVERIFIED_FOR_THIS_SCOPE"
+      ],
+      "low": "1242.000",
+      "missing_required_fields": [
+        "volume_shares"
+      ],
+      "open": "1252.900",
+      "point_in_time_input_allowed": false,
+      "previous_close": "1258.620",
+      "published_at": null,
+      "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+      "raw_hash": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "received_at": "2026-10-08T03:36:48.665963+00:00",
+      "reported_limit_down": null,
+      "reported_limit_up": null,
+      "revision_id": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519",
+      "source_volume_unit": "UNKNOWN",
+      "state": "REPORTED_QUOTE",
+      "supplier_reported_status": "00",
+      "time_precision": "SECOND",
+      "trade_date": "2026-10-08",
+      "upstream_at": "2026-10-08T11:30:00+08:00",
+      "volume_reported": "1449551",
+      "volume_shares": null,
+      "volume_unit": "UNKNOWN"
+    }
+  ],
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "MOUTAI_OFFICIAL返回event_time=UNKNOWN，页面无发布时间，文本发布时点不可证明。"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "QUOTE必填字段volume_shares缺失，且无原文字面报价证据，故不输出报价候选。"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "报价仅ACTUAL_RETRIEVAL(2026-10-08T03:36:48Z)可证收到时点，不能证明历史事件时点。"
+    },
+    {
+      "code": "SUPPLEMENTAL_EVENT_TIME_AND_ASSERTION_UNVERIFIED",
+      "group": "TASK",
+      "instrument": ""
+    }
+  ],
+  "namespace": "ACTUAL",
+  "observations": [],
+  "parquet": {
+    "bytes": 8734,
+    "kind": "NORMALIZED_PARQUET",
+    "path": "parquet/9ec240ed7f3cbff4674587d8b6eb77d887b80e25692473386d5de760b254d7ea.parquet",
+    "sha256": "9ec240ed7f3cbff4674587d8b6eb77d887b80e25692473386d5de760b254d7ea"
+  },
+  "request_id": "f83ceff6-4013-4499-84ad-9743f15c8574",
+  "requested_groups": [
+    "QUOTE"
+  ],
+  "requested_instruments": [
+    "SSE:600519"
+  ],
+  "run_id": "728489cf-ff2e-4097-a36c-17720626e85c",
+  "snapshot_id": "c4b5bef8-a71e-4714-aade-317b0ca52d97"
+}

@@ -80,7 +80,7 @@ def execute(host,run,request,cancel,key):
                 publish(host,run,request,state,event['output']);break
             elif kind in {'failure','eof'}:
                 code=event.get('code','DEEPSEEK_WORKER_EXIT')
-                status='UNAVAILABLE' if code in {'DEEPSEEK_AUTH_REJECTED','DEEPSEEK_MODEL_UNAVAILABLE','DEEPSEEK_QUOTA_OR_RATE_LIMIT'} else 'INVALID_OUTPUT' if code=='DEEPSEEK_OUTPUT_SCHEMA_INVALID' else 'TOOL_LIMIT' if code=='DEEPSEEK_MODEL_CALL_LIMIT' else 'FAILED'
+                status='UNAVAILABLE' if code in {'DEEPSEEK_AUTH_REJECTED','DEEPSEEK_MODEL_UNAVAILABLE','DEEPSEEK_QUOTA_OR_RATE_LIMIT'} else 'INVALID_OUTPUT' if code in {'DEEPSEEK_OUTPUT_SCHEMA_INVALID','DEEPSEEK_OUTPUT_TOKEN_LIMIT'} else 'TOOL_LIMIT' if code=='DEEPSEEK_MODEL_CALL_LIMIT' else 'FAILED'
                 run.update(status=status,error={'code':code,'type':event.get('error_type'),'http_status':event.get('http_status')})
                 break
             else:
