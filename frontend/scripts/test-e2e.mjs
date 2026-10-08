@@ -19,7 +19,7 @@ mkdirSync(runtimeParent,{recursive:true});
 const dataRoot=mkdtempSync(join(runtimeParent,'e2e-default-'));
 const profile={...process.env};
 // The default suite proves missing-credential behavior and never sends paid model requests.
-for(const key of ['ROLL_ENV_FILE','ROLL_CODEX_AUTH_FILE','DEEPSEEK_API_KEY','ROLL_DEEPSEEK_API_KEY_FILE','FUYAO_API_KEY','OPENAI_API_KEY'])delete profile[key];
+for(const key of ['ROLL_ENV_FILE','ROLL_CODEX_AUTH_FILE','DEEPSEEK_API_KEY','ROLL_DEEPSEEK_API_KEY_FILE','FUYAO_API_KEY','BAOSTOCK_API_KEY','OPENAI_API_KEY'])delete profile[key];
 const results={started_at:new Date().toISOString(),profile:'DEFAULT_OFFLINE',data_root:dataRoot,report_root:reportRoot,
   database_isolation:'PER_FILE; within-file ordered cases share history',files:[]};
 let failed=false;

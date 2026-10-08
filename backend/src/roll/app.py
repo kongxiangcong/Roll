@@ -32,7 +32,7 @@ from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,Verifi
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None):
     @asynccontextmanager
     async def lifespan(application):
         application.state.reviews.start()
@@ -84,7 +84,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return Response(imports.file(fingerprint), media_type="application/octet-stream")
     market = MarketDirectory(ledger)
     app.state.market = market
-    evidence=EvidenceStore(ledger,market,market_transport)
+    evidence=EvidenceStore(ledger,market,market_transport,baostock_worker)
     app.state.evidence=evidence
     research=ExperimentRegistry(ledger,evidence)
     app.state.research=research
@@ -692,7 +692,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None):
     if directory is None:
         load_runtime_environment()
     directory=directory or data_directory()
@@ -700,7 +700,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     if backup_clock:backups.clock=backup_clock
     try:
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
-        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker
