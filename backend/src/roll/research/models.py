@@ -162,6 +162,12 @@ class TransparentModels:
         calibration_attempt=None
         try:
             dataset=self.registry.dataset(protocol['dataset_id']);run['evidence_kind']=dataset['source_evidence_kind']
+            readiness=dataset.get('training_readiness')
+            if readiness and readiness['state']=='BLOCKED':
+                run['reasons']=readiness['blockers'][:]
+                run['input_archive']=self.evidence.archive(encode({'dataset':dataset,'protocol':protocol,'purpose':command.purpose,
+                    'code_fingerprint':run['code_fingerprint'],'preflight_only':True}).encode(),'RESEARCH_MODEL_INPUT',research_namespace='HISTORICAL')
+                raise ValueError('SOURCE_QUALIFICATION_BLOCKED')
             parts={name:self.registry.partition(dataset['dataset_id'],name) for name in support}
             method=command.purpose=='METHOD_VALIDATION' and dataset['source_evidence_kind']=='METHOD_CASE'
             examples={};excluded={}
