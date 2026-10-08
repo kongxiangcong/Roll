@@ -1,6 +1,7 @@
 """BaoStock 0.9.4 boundary: received wire authority precedes source field mapping."""
 import base64
 import json
+import re
 import os
 from pathlib import Path
 import subprocess
@@ -33,6 +34,22 @@ def reflected(content):
     return any(secret in text for secret in secrets for text in texts)
 
 
+class AcquisitionFailure(ValueError):
+    def __init__(self,code,diagnostic=None,failure_audit=None):
+        super().__init__(code)
+        self.diagnostic=diagnostic
+        self.failure_audit=failure_audit
+
+
+def safe_diagnostic(value):
+    if not isinstance(value,dict):return None
+    result={}
+    for name,pattern in [('phase',r'[A-Z_]{1,50}'),('exception_type',r'[A-Za-z_][A-Za-z0-9_]{0,79}'),('file',r'[A-Za-z0-9_.-]{1,120}')]:
+        if isinstance(value.get(name),str) and re.fullmatch(pattern,value[name]):result[name]=value[name]
+    if type(value.get('line')) is int and value['line']>0:result['line']=value['line']
+    return result or None
+
+
 def acquire(command,deadline,cancel_event,max_bytes,max_calls,worker=None):
     auth_mode=command.get('auth_mode','API_KEY')
     if auth_mode not in {'API_KEY','PUBLIC'}:raise ValueError('BAOSTOCK_AUTH_MODE_INVALID')
@@ -40,7 +57,8 @@ def acquire(command,deadline,cancel_event,max_bytes,max_calls,worker=None):
     if auth_mode=='API_KEY' and not credential:raise ValueError('BAOSTOCK_CREDENTIAL_NOT_CONFIGURED')
     if max_calls<2:raise ValueError('BAOSTOCK_CALL_BUDGET_EXHAUSTED')
     worker=worker or Path(__file__).with_name('baostock_process.py')
-    command={**command,'auth_mode':auth_mode,'max_bytes':max_bytes,'max_calls':max_calls,'timeout_seconds':max(.1,deadline-time.monotonic())}
+    max_decoded_bytes=min(command.get('max_decoded_bytes',max_bytes),16*1024*1024)
+    command={**command,'max_decoded_bytes':max_decoded_bytes,'auth_mode':auth_mode,'max_bytes':max_bytes,'max_calls':max_calls,'timeout_seconds':max(.1,deadline-time.monotonic())}
     # The key is inherited by the isolated SDK child, never placed in argv/stdin/archive metadata.
     environment={k:v for k,v in os.environ.items() if not any(t in k.upper() for t in ('API_KEY','TOKEN','SECRET','PASSWORD'))}
     if credential:environment['BAOSTOCK_API_KEY']=credential
@@ -66,18 +84,32 @@ def acquire(command,deadline,cancel_event,max_bytes,max_calls,worker=None):
     result=json.loads(content)
     if not isinstance(result,dict):raise ValueError('BAOSTOCK_RESULT_INVALID')
     code=str(result.get('error_code','UNKNOWN'))
-    if code!='0':raise ValueError('BAOSTOCK_SOURCE_ERROR_'+(code if code.isdigit() else 'UNKNOWN'))
+    if code!='0':
+        known={'CALL_OR_TIME_LIMIT','BYTE_LIMIT','DECODED_BYTE_LIMIT','SECRET_REFLECTED','PROCESS_OR_TRANSPORT_FAILURE','EOF','DEADLINE','CANCELLED'}
+        reason='BAOSTOCK_SOURCE_ERROR_'+code if code.isdigit() and len(code)<=20 else 'BAOSTOCK_'+code if code in known else 'BAOSTOCK_UNKNOWN_SOURCE_ERROR'
+        audit=result.get('failure_audit',{})
+        audit={k:v for k,v in audit.items() if k=='decoded_bytes' and type(v) is int and v>=0} if isinstance(audit,dict) else {}
+        raise AcquisitionFailure(reason,safe_diagnostic(result.get('diagnostic')),audit or None)
     wire=base64.b64decode(result.pop('wire_b64'),validate=True)
+    decoded_bytes=0
     for frame in wire.split(b'<![CDATA[]]>\n'):
         if not frame:continue
         head=frame[:21].split(b'\x01')
         if len(head)==3 and head[1] in {b'96',b'99',b'9B',b'9D'}:
             decoder=zlib.decompressobj()
-            try:plain=decoder.decompress(frame[21:],max_bytes+1)
+            try:plain=decoder.decompress(frame[21:],max_decoded_bytes-decoded_bytes+1)
             except zlib.error:raise ValueError('BAOSTOCK_COMPRESSED_RESPONSE_INVALID') from None
-            if len(plain)>max_bytes or decoder.unconsumed_tail:raise ValueError('BAOSTOCK_DECODED_BYTE_LIMIT')
+            decoded_bytes+=len(plain)
+            if decoded_bytes>max_decoded_bytes or decoder.unconsumed_tail:raise AcquisitionFailure('BAOSTOCK_DECODED_BYTE_LIMIT',failure_audit={'decoded_bytes':decoded_bytes})
             if reflected(plain):raise ValueError('BAOSTOCK_SECRET_REFLECTED_RESPONSE_REJECTED')
+        else:
+            decoded_bytes+=len(frame)
+            if decoded_bytes>max_decoded_bytes:raise AcquisitionFailure('BAOSTOCK_DECODED_BYTE_LIMIT',failure_audit={'decoded_bytes':decoded_bytes})
         if reflected(frame):raise ValueError('BAOSTOCK_SECRET_REFLECTED_RESPONSE_REJECTED')
+    reported=result.get('decoded_bytes',decoded_bytes)
+    if type(reported) is not int or reported<decoded_bytes:raise ValueError('BAOSTOCK_DECODED_COUNT_INVALID')
+    if reported>max_decoded_bytes:raise AcquisitionFailure('BAOSTOCK_DECODED_BYTE_LIMIT',failure_audit={'decoded_bytes':reported})
+    result['decoded_bytes']=reported
     if len(wire)>max_bytes or result['received_bytes']>max_bytes:raise ValueError('BAOSTOCK_BYTE_BUDGET_EXHAUSTED')
     if not 1<=result['calls']<=max_calls:raise ValueError('BAOSTOCK_CALL_BUDGET_EXHAUSTED')
     return wire,result

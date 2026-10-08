@@ -12,9 +12,9 @@
 
 固定官方 PyPI `baostock==0.9.4`，SDK wheel SHA-256 `0bf71c6069ab5890ff3596632f9c3f8f1fbc6bfcac582c2f9d6a5c11ab2cfaf8`。以 BSD License 包依赖复用，未复制 SDK 源文件入生产代码；其 pandas 与 numpy 等依赖由 uv.lock 固定。SDK 许可证不构成证券数据商业再分发授权。
 
-隔离子进程仅允许所选官方 host/10030，socket 调用包含登录和分页，无 SDK 自动重试；达到调用/接收字节/解压字节/总期限预算即失败。宿主检查取消并终止子进程，避免 SDK 阻塞。SDK 的全局连接不在宿主并发共享。运行记录保留实际 SDK、distribution 与 pandas 版本；实际服务接受性单独留证。
+隔离子进程仅允许所选官方 host/10030，socket 调用包含登录和分页，无 SDK 自动重试；达到调用/接收字节/解压字节/总期限预算即失败。宿主检查取消并终止子进程，避免 SDK 阻塞。SDK 的全局连接不在宿主并发共享。`max_decoded_bytes` 约束每个查询跨全部压缩页的累计展开字节，`max_total_decoded_bytes` 约束一次请求的所有查询；默认上限分别为16 MiB与30×16 MiB，只能收窄，Agent总预算亦可收窄。wire接收字节和decoded展开字节分账，不把同一份raw/decoded档案重复计入总量。子进程、工具、两种原件保留该查询实际decoded_bytes，run的retrieved_decoded_bytes汇总成功查询；失败时已观察的展开量另在failure_audit记录，失败后不重试。运行记录保留实际 SDK、distribution 与 pandas 版本；实际服务接受性单独留证。
 
-查询的实际 socket 接收字节以 `RAW_SOCKET_RESPONSE` 先于事实规范化归档；登录响应不归档，但其调用与接收字节计入预算。SDK 解码字段另存 `SDK_DECODED_RESPONSE`，通过 wire_hash / decoded_hash 关联，不能冒充原始 socket 响应。两份归档和适配代码均参与可追溯引用。接收时间为本次实际查询接收完成时间，不是原交易日的发布时间。任何原文、JSON 解码或压缩解码后的秘密反射在归档前拒绝。失败未能确认已完成的网络调用时，预算保守消耗剩余调用，明确 `CONSERVATIVE_FAILURE_UPPER_BOUND`，不把它当实际调用数。
+查询的实际 socket 接收字节以 `RAW_SOCKET_RESPONSE` 先于事实规范化归档；登录响应不归档，但其调用与接收字节计入预算。SDK 解码字段另存 `SDK_DECODED_RESPONSE`，通过 wire_hash / decoded_hash 关联，不能冒充原始 socket 响应。两份归档和适配代码均参与可追溯引用。接收时间为本次实际查询接收完成时间，不是原交易日的发布时间。任何原文、JSON 解码或压缩解码后的秘密反射在归档前拒绝。失败未能确认已完成的网络调用时，预算保守消耗剩余调用，明确 `CONSERVATIVE_FAILURE_UPPER_BOUND`，不把它当实际调用数。已知预算/取消/反射失败保留白名单原因；未知异常仅保留阶段、异常类名、文件basename和行号，不输出异常消息、变量、绝对路径、登录载荷或密钥，gap保留这些可定位信息。
 
 ## 字段和研究限制
 
