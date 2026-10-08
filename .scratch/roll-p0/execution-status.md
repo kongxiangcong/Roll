@@ -272,3 +272,5 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 | 34 | 33、31；按真实验证与当前资金/部署条件分支 |
 
 19原120条实际DEV0/CAL0、原CAL40最多20成熟且不足每类20、历史PIT/状态/公司行为缺口、封存独立性UNPROVEN及输入暴露仍保留。没有真实模型/校准/概率，没有真实前向起点或自然月倒计时，不创建自动化；正式能力关闭。仅本地集成提交，未推送或创建PR，整个P0规格未完成。
+
+本轮四个实现工作树已清理，分支/提交保留，目前仅集成根工作树。必要实际/受控案例851文件、778,429,430字节清理前源/副本SHA256和长度零差异；根Python与Playwright CLI清理前后SHA相同，仅解除指向根依赖的四个junction本身。清理后按原清单复验目标副本，源目录不再存在，证据明确标DESTINATION_ONLY。凭据未归档/入Git；用户.env与启动时SHA一致、忽略且未跟踪。见[清理核对](evidence/continuation-2026-10-08/worktree-cleanup-final.json)、[清理前保全](evidence/continuation-2026-10-08/final-preservation.json)、[清理后复验](evidence/continuation-2026-10-08/final-preservation-after-cleanup.json)。

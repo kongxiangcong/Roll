@@ -29,4 +29,6 @@
 - 扶摇实取600519的908原价/908当前前复权日线、7除权事件，新增沪深300/中证500使固定背景共5个：[来源验收](../fuyao/acceptance.md)、[背景补充](../fuyao/background-acceptance.md)。批次报价时点不充当证券自身时点，未取得历史PIT/当前特殊状态/完整公司行为或账户权益确认。
 - 19仍needs-info/partial：原120标签实际DEV0/CAL0、校准支持不足、封存独立性UNPROVEN和输入暴露保留。20、21、23—34等待实际依赖；不调低阈值、不生成真实模型/概率、不启用正式能力或真实前向验证。
 
-必要实际/受控案例运行文件851份、778,429,430字节由四份merge-runtime清单保全到根ignored运行目录；[清理前哈希/凭据核验](final-preservation.json)与[核验脚本](verify-preservation.py)逐SHA256/长度检查，.env原样、忽略且未跟踪，凭据零匹配。完整测试临时DB不永久复制，原stdout和必要案例档案保留。工作树最终清理结果在实施记录另列；仅本地提交，无推送/PR。
+必要实际/受控案例运行文件851份、778,429,430字节由四份merge-runtime清单保全到根ignored运行目录；[清理前哈希/凭据核验](final-preservation.json)与[核验脚本](verify-preservation.py)逐SHA256/长度检查，.env原样、忽略且未跟踪，凭据零匹配。完整测试临时DB不永久复制，原stdout和必要案例档案保留。
+
+四个自有干净、已合入的实现工作树已按implement-spec第9步清理，分支/提交全部保留。准确路径/HEAD、四个仅解除本身的依赖junction、根Python与Playwright CLI清理前后相同SHA见[清理核对](worktree-cleanup-final.json)及[执行脚本](cleanup-worktrees.ps1)。Git仅剩集成根工作树；[清理后目标副本复验](final-preservation-after-cleanup.json)依据原清单检查全部851文件，源检出已清理所以该次明确为DESTINATION_ONLY。仅本地提交，无推送/PR。
