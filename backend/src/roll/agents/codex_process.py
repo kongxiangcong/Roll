@@ -361,6 +361,8 @@ def tool(host, run, request, state, event, deadline, cancel):
             values = {k: request[k] for k in ['start_date', 'end_date', 'purpose', 'cutoff', 'daily_source']}
             if 'quote_source' in request:
                 values['quote_source']=request['quote_source']
+            if 'adjustment_source' in request:
+                values['adjustment_source']=request['adjustment_source']
             values['required_fields']=[field for field in request['required_fields']
                 if '.' not in field or field.startswith(arguments['group']+'.')]
             values.update(instruments=[instrument], groups=[arguments['group']], max_calls=remaining,
@@ -466,12 +468,9 @@ def reuse_source(host,run,request,state,event,record):
         if not archive:return None
         archives=[archive]
     hashes={a['sha256'] for a in archives}
-    with host.evidence.ledger.connection() as db:
-        for row in db.execute('SELECT value FROM evidence_dependency_invalidations'):
-            invalidation=json.loads(row[0])
-            if hashes & set(invalidation.get('changed_raw_hashes',[])+invalidation.get('verification_changed_raw_hashes',[])):
-                record['reuse_rejected']='SOURCE_REVISED_RECHECK_REQUIRED'
-                return None
+    if not host.archive_reuse_check(hashes):
+        record['reuse_rejected']='SOURCE_REVISED_RECHECK_REQUIRED'
+        return None
     for archive in archives:host.evidence.raw(archive['sha256'])
     if any(a['bytes']>run['limits']['response_bytes'] for a in archives):
         raise ValueError('REUSED_SOURCE_EXCEEDS_CURRENT_BYTE_LIMIT')

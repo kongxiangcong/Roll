@@ -18,7 +18,8 @@ from roll.market.verification_input import VerificationCommand as VerificationRe
 from roll.accounts.reconcile import consistency
 from roll.agents.codex_process import process_creation,owner_alive
 
-LIMITS={'attempts':3,'backoff_seconds':[1,2],'timeout_seconds':8,'http_calls_per_attempt':4,'recursive_tasks':0}
+# Four fixed broad backgrounds each need DAILY and QUOTE; holdings share this cap.
+LIMITS={'attempts':3,'backoff_seconds':[1,2],'timeout_seconds':8,'http_calls_per_attempt':8,'recursive_tasks':0}
 
 
 class ReviewCancellation:

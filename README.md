@@ -19,6 +19,8 @@ uv run --frozen uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 80
 
 运行工厂启动时读取仓库根目录 `.env`；可使用 `ROLL_ENV_FILE` 明确指定其他文件。支持 `KEY=value`、可选 `export`、单/双引号字面值和行尾注释，不执行变量插值或 shell。进程环境变量优先，文件中的 `DEEPSEEK_API_KEY`、`FUYAO_API_KEY` 只进入宿主环境；不要提交凭据。显式数据目录的测试工厂不读取此文件，`ROLL_ENV=test` 也不自动读取仓库凭据；默认浏览器命令拒绝 `ROLL_ENV_FILE` 与真实验收 profile，并移除凭据环境变量。
 
+使用 Codex 后端时，在启动后端的终端显式指定已有的 ChatGPT 登录文件，例如 `$env:ROLL_CODEX_AUTH_FILE = Join-Path $env:USERPROFILE '.codex\auth.json'`。应用不会自动搜索登录文件；文件只供工作进程认证，不会进入取证归档或备份。
+
 另一个终端，在 `frontend` 目录：
 
 ```powershell

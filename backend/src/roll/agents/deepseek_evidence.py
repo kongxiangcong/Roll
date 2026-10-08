@@ -3,6 +3,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from typing import Callable
 import threading
 import time
 from importlib.metadata import version
@@ -27,7 +28,7 @@ DeepSeekQuestion=AgentQuestion
 
 
 class DeepSeekEvidence:
-    def __init__(self,evidence,endpoint=None,input_observer=None):
+    def __init__(self,evidence,endpoint=None,input_observer=None,*,archive_reuse_check:Callable[[set[str]],bool]):
         if endpoint is not None:
             from urllib.parse import urlparse
             parsed=urlparse(endpoint)
@@ -35,6 +36,7 @@ class DeepSeekEvidence:
                 raise ValueError('DeepSeek method endpoint requires test-only loopback HTTP')
         self.evidence=evidence
         self.input_observer=input_observer
+        self.archive_reuse_check=archive_reuse_check
         self.endpoint=endpoint or ENDPOINT
         self.method=endpoint is not None
         self.active={}

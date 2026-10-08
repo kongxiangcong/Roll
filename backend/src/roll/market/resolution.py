@@ -76,6 +76,18 @@ class SourceResolutions:
             values=[json.loads(row[0]) for row in rows]
         return [v for v in values if not resolution_id or v['prior_resolution_id']==resolution_id]
 
+    def can_reuse_archives(self,raw_hashes:set[str])->bool:
+        """Whether the original source bytes still have current dependencies."""
+        hashes=set(raw_hashes)
+        # Revisions retain the authoritative hashes, including records whose copied
+        # target invalidations predate those fields. Original audit rows stay intact.
+        with self.ledger.connection() as db:
+            for row in db.execute('SELECT value FROM source_revisions'):
+                revision=json.loads(row[0])
+                if hashes & set(revision.get('changed_raw_hashes',[])+revision.get('verification_changed_raw_hashes',[])):
+                    return False
+        return True
+
     def history(self):
         with self.ledger.connection() as db:
             return [json.loads(row[0]) for row in db.execute('SELECT value FROM source_resolutions ORDER BY rowid DESC LIMIT 100')]

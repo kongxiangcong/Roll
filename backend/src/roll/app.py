@@ -337,9 +337,13 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/account/valuations/{identifier}/replay')
     def replay_valuation(identifier:str):
         return valuations.get(identifier,replay=True)
-    codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed)
+    resolutions=SourceResolutions(evidence,market_clock)
+    app.state.resolutions=resolutions
+    codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed,
+        archive_reuse_check=resolutions.can_reuse_archives)
     app.state.codex = codex
-    deepseek=DeepSeekEvidence(evidence,deepseek_endpoint,input_observer=research.market_input_exposed)
+    deepseek=DeepSeekEvidence(evidence,deepseek_endpoint,input_observer=research.market_input_exposed,
+        archive_reuse_check=resolutions.can_reuse_archives)
     app.state.deepseek=deepseek
     agent_settings=AgentSettings(ledger)
     app.state.agent_settings=agent_settings
@@ -374,8 +378,6 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def codex_cancel(run_id: str):
         run=evidence.get('retrieval_runs',run_id)
         return deepseek.cancel(run_id) if run['backend']=='DEEPSEEK' else codex.cancel(run_id)
-    resolutions=SourceResolutions(evidence,market_clock)
-    app.state.resolutions=resolutions
     verifications=IndependentVerifications(evidence)
     app.state.verifications=verifications
 

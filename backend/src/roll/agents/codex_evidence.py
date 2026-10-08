@@ -3,6 +3,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from typing import Callable
 import threading
 import time
 from uuid import uuid4
@@ -71,12 +72,13 @@ CodexQuestion=AgentQuestion
 
 
 class CodexEvidence:
-    def __init__(self, evidence, worker=None, input_observer=None):
+    def __init__(self, evidence, worker=None, input_observer=None, *, archive_reuse_check:Callable[[set[str]],bool]):
         if worker is not None and os.environ.get('ROLL_ENV') != 'test':
             raise ValueError('External worker injection requires ROLL_ENV=test')
         self.worker = worker
         self.evidence = evidence
         self.input_observer = input_observer
+        self.archive_reuse_check = archive_reuse_check
         self.active = {}
         self.lock = threading.Lock()
         from roll.agents.codex_process import recover_directory

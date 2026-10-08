@@ -1,0 +1,43 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_holdings_and_backgrounds_share_finite_refresh_budget_and_keep_unfilled_gaps _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-373/test_holdings_and_backgrounds_0')
+
+    def test_holdings_and_backgrounds_share_finite_refresh_budget_and_keep_unfilled_gaps(tmp_path):
+        calls=[]
+        def source(request):
+            calls.append(str(request.url))
+            if 'param' in request.url.params or 'q=' in request.url.path:
+                return background_response(request)
+            if 'kline' in request.url.path:
+                return httpx.Response(200,json={'rc':0,'data':{'code':'600519','market':1,
+                    'klines':['2026-09-30,10,10,10,10,100,100000']}})
+            return httpx.Response(200,json={'METHOD_UNAVAILABLE_EVENT_FIELDS':True})
+    
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(source))) as client:
+            establish(client,['SSE:600519'])
+            before=client.get('/api/account').json()
+            task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True}).json()['task_id'])
+            assert task['attempts']==1
+            runs=[client.get('/api/data/runs/'+identifier).json() for identifier in task['retrieval_runs']]
+            tools=[tool for run in runs for tool in run['tools']]
+            assert len(calls)==len(tools)==8
+            assert any(tool['instrument']=='SSE:600519' for tool in tools)
+            assert any(tool['instrument'] in {'SSE:000001','SZSE:399001','SSE:000300','SSE:000905'} for tool in tools)
+>           assert all(run['technical_limits']['max_calls']<=8 for run in runs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_reviews.py:360: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = <list_iterator object at 0x0000024042105A20>
+
+>   assert all(run['technical_limits']['max_calls']<=8 for run in runs)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'technical_limits'
+
+tests\application\test_reviews.py:360: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reviews.py::test_holdings_and_backgrounds_share_finite_refresh_budget_and_keep_unfilled_gaps
+1 failed, 1 passed, 15 deselected in 6.96s
