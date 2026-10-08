@@ -83,7 +83,7 @@ def main():
         listing=get('/api/market/list')
         report.update(position_count=len(listing['members']),background_count=len(listing['background_indices']))
         assert report['position_count']==30
-        report['suggested_five_index_baseline']='CURRENT_REGISTRY_HAS_'+str(report['background_count'])+'_ONLY; NO_SCOPE_EXPANSION'
+        report['suggested_five_index_baseline']='VERIFIED_CURRENT_REGISTRY_30_PLUS_'+str(report['background_count'])
         request=post('/api/data/requests',{'instruments':['SSE:600519'],'groups':['QUOTE'],'purpose':'OBSERVATION',
             'start_date':'2026-10-01','end_date':'2026-10-08','quote_source':'SINA','required_fields':['QUOTE.volume_shares']})
         select(args.backend)
