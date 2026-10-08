@@ -11,7 +11,7 @@ type Candidate={instrument:string;group:string;assertion:string;evidence_quote:s
 type Run={run_id:string;request_id:string;status:string;evidence_kind:string;backend?:string;model?:string;resolved_model?:string;config_fingerprint?:string;sdk_runtime_version?:unknown;limits?:unknown;runtime_audit?:unknown;process?:unknown;retry_of?:string;backend_settings?:BackendSettings;question?:string;model_requests?:unknown;model_responses?:{sha256:string;http_status:number}[];error?:{code:string;message?:string};candidates?:Candidate[];started_at:string;finished_at?:string;snapshot_id?:string;gaps:Gap[];tools:{source_id:string;status:string;raw_hash?:string}[]};
 type Fact=Record<string,unknown>&{instrument:string;group:string;raw_hash:string;source_url:string;received_at:string;available_at:string;revision_id:string};
 type Snapshot={snapshot_id:string;request_id:string;requested_instruments:string[];requested_groups:string[];evidence_kind:string;namespace:string;facts:Fact[];observations:(Record<string,unknown>&{observation_id:string;kind:string;instrument:string;severity:string;basis_raw_hashes:string[]})[];coverage:Record<string,unknown>[];gaps:Gap[];parquet:{sha256:string};created_at:string};
-const groups:{[key:string]:string}={DAILY:'日线与复权',QUOTE:'可得报价',ADJUSTMENTS:'调整事件',ANNOUNCEMENTS:'公告原文',PERFORMANCE:'业绩',MAJOR_EVENTS:'重大事项',STATUS:'当前状态'};
+const groups:{[key:string]:string}={DAILY:'日线与复权',QUOTE:'可得报价',ADJUSTMENTS:'调整事件',ANNOUNCEMENTS:'公告原文',PERFORMANCE:'业绩',MAJOR_EVENTS:'重大事项',STATUS:'证券状态',CALENDAR:'交易日历'};
 const kinds:{[key:string]:string}={PENDING_ACCOUNT_RECONCILIATION:'权益到账待核',ACTION_PLAN_REFERENCE:'分派计划参考',DISCLOSED_COMPANY_EVENT:'已披露公司事项',DATA_QUALITY_ALERT:'数据口径待核',EX_RIGHTS_PRICE_CONTEXT:'除息原价变化上下文',PRICE_MOVE_OBSERVATION:'原价显著变化',STATUS_RISK_ALERT:'证券异常状态'};
 const classification:{[key:string]:string}={FACT:'客观事实',DETERMINISTIC_INFERENCE:'确定性结构化推断'};
 const localDate=(delta=0)=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Shanghai'}).format(new Date(Date.now()+delta*86400000));
@@ -22,10 +22,12 @@ export function Evidence(){
   const [listing,setListing]=useState<Listing|null>(null);
   const [instruments,setInstruments]=useState<string[]>([]);
   const [purpose,setPurpose]=useState('OBSERVATION');
-  const [selectedGroups,setSelectedGroups]=useState(Object.keys(groups));
+  const [selectedGroups,setSelectedGroups]=useState(Object.keys(groups).filter(g=>g!=='CALENDAR'));
   const [start,setStart]=useState(localDate(-90));const [end,setEnd]=useState(localDate());
   const [source,setSource]=useState('TENCENT');const [maxCalls,setMaxCalls]=useState(30);
   const [backend,setBackend]=useState('DIRECT_HTTP');const [settings,setSettings]=useState<BackendSettings|null>(null);const [question,setQuestion]=useState('请核对所请求事实的来源与时点，补充有依据的缺失事实并明确缺口。');
+  const [baoAuth,setBaoAuth]=useState('API_KEY');
+  const [statusSource,setStatusSource]=useState('QUOTE');
   const [quoteSource,setQuoteSource]=useState('TENCENT');const [adjustmentSource,setAdjustmentSource]=useState('EASTMONEY');const [needShares,setNeedShares]=useState(false);
   const [runs,setRuns]=useState<Run[]>([]);const [run,setRun]=useState<Run|null>(null);const [snapshot,setSnapshot]=useState<Snapshot|null>(null);
   const [registry,setRegistry]=useState<Record<string,unknown>[]>([]);
@@ -39,10 +41,10 @@ export function Evidence(){
     const timer=setInterval(()=>void request<Run>('/data/runs/'+run.run_id).then(async value=>{await view(value);setRuns(await request<Run[]>('/data/runs'));}).catch(e=>setError(String(e))),1000);
     return ()=>clearInterval(timer);
   },[run?.run_id,run?.status]);
-  function changePurpose(value:string){setPurpose(value);if(value==='BACKGROUND')setSource('TENCENT');setInstruments(value==='BACKGROUND'?listing?.background_indices.map(i=>i.instrument)??[]:listing?.members.map(m=>m.instrument)??[]);setSelectedGroups(value==='BACKGROUND'?['DAILY','QUOTE']:Object.keys(groups));}
+  function changePurpose(value:string){setPurpose(value);if(value==='BACKGROUND')setSource('TENCENT');setInstruments(value==='BACKGROUND'?listing?.background_indices.map(i=>i.instrument)??[]:listing?.members.map(m=>m.instrument)??[]);setSelectedGroups(value==='BACKGROUND'?['DAILY','QUOTE']:Object.keys(groups).filter(g=>g!=='CALENDAR'));}
   async function retrieve(e:FormEvent){e.preventDefault();setBusy(true);setError('');try{
     const command=await request<{request_id:string}>('/data/requests',{instruments,groups:selectedGroups,purpose,start_date:start,end_date:end,daily_source:source,
-      quote_source:quoteSource,adjustment_source:adjustmentSource,required_fields:needShares&&selectedGroups.includes('QUOTE')?['QUOTE.volume_shares']:[],max_calls:maxCalls,timeout_seconds:60});
+      quote_source:quoteSource,adjustment_source:adjustmentSource,status_source:statusSource,calendar_source:'BAOSTOCK',baostock_auth_mode:baoAuth,required_fields:needShares&&selectedGroups.includes('QUOTE')?['QUOTE.volume_shares']:[],max_calls:maxCalls,timeout_seconds:60});
     const value=await request<Run>('/data/requests/'+command.request_id+(backend==='AGENT'?'/agent':backend==='CODEX'?'/codex':backend==='DEEPSEEK'?'/deepseek':'/retrieve'),backend==='DIRECT_HTTP'?{}:{question});await view(value);setRuns(await request<Run[]>('/data/runs'));
   }catch(e){setError(String(e));}finally{setBusy(false);}}
   const objects=purpose==='BACKGROUND'?listing?.background_indices:listing?.members.map(m=>({instrument:m.instrument,name:m.identity.name??m.instrument}));
@@ -56,9 +58,11 @@ export function Evidence(){
       <fieldset className="evidence-choices"><legend>事实组</legend>{Object.entries(groups).filter(([g])=>purpose!=='BACKGROUND'||['DAILY','QUOTE'].includes(g)).map(([g,label])=><label key={g}><input type="checkbox" checked={selectedGroups.includes(g)} onChange={e=>setSelectedGroups(e.target.checked?[...selectedGroups,g]:selectedGroups.filter(v=>v!==g))}/>{label}</label>)}</fieldset>
       <label>开始日期（上海交易/披露日期）<input type="date" required value={start} onChange={e=>setStart(e.target.value)}/></label>
       <label>截止日期<input type="date" required value={end} max={localDate()} onChange={e=>setEnd(e.target.value)}/></label>
-      <label>日线来源<select value={source} onChange={e=>setSource(e.target.value)}><option value="TENCENT">腾讯：历史成交额通常缺失</option>{purpose!=='BACKGROUND'&&<option value="EASTMONEY">东方财富：保留实际失败</option>}<option value="FUYAO">扶摇：同花顺日线</option></select></label>
+      <label>日线来源<select value={source} onChange={e=>setSource(e.target.value)}><option value="TENCENT">腾讯：历史成交额通常缺失</option>{purpose!=='BACKGROUND'&&<option value="EASTMONEY">东方财富：保留实际失败</option>}<option value="FUYAO">扶摇：同花顺日线</option>{purpose!=='BACKGROUND'&&<option value="BAOSTOCK">BaoStock：不复权日线及量额</option>}</select></label>
       <label>报价来源<select value={quoteSource} onChange={e=>setQuoteSource(e.target.value)}><option value="TENCENT">腾讯</option><option value="SINA">新浪：已实证主板股票股数口径</option><option value="FUYAO">扶摇：逐证券时间未知</option></select></label>
-      {purpose!=='BACKGROUND'&&selectedGroups.includes('ADJUSTMENTS')&&<label>除权事项来源<select value={adjustmentSource} onChange={e=>setAdjustmentSource(e.target.value)}><option value="EASTMONEY">东方财富公告及分派</option><option value="FUYAO">扶摇：原始除权事件</option></select></label>}
+      {purpose!=='BACKGROUND'&&selectedGroups.includes('ADJUSTMENTS')&&<label>除权事项来源<select value={adjustmentSource} onChange={e=>setAdjustmentSource(e.target.value)}><option value="EASTMONEY">东方财富公告及分派</option><option value="FUYAO">扶摇：原始除权事件</option><option value="BAOSTOCK">BaoStock：分红实施日期</option></select></label>}
+      {purpose!=='BACKGROUND'&&selectedGroups.includes('STATUS')&&<label>证券状态来源<select value={statusSource} onChange={e=>setStatusSource(e.target.value)}><option value="QUOTE">报价附带状态：可能未知</option><option value="BAOSTOCK">BaoStock：逐日交易与 ST 标记</option></select></label>}
+      {purpose!=='BACKGROUND'&&(source==='BAOSTOCK'||adjustmentSource==='BAOSTOCK'||statusSource==='BAOSTOCK'||selectedGroups.includes('CALENDAR'))&&<label>BaoStock 访问方式<select value={baoAuth} onChange={e=>setBaoAuth(e.target.value)}><option value="API_KEY">已配置 API Key</option><option value="PUBLIC">公共匿名接口</option></select></label>}
       <label><input type="checkbox" checked={needShares} onChange={e=>setNeedShares(e.target.checked)}/>报价需要已核对的股数，缺失时限制此用途</label>
       {backend==='DIRECT_HTTP'&&<label>本次最多调用<input type="number" value={maxCalls} min={1} max={30} onChange={e=>setMaxCalls(Number(e.target.value))}/></label>}
       <p className="muted">日线原价与当前前复权版本分开。历史取得时间为实际本次时间，不能证明过去已经可得；背景指数不取得个股研究或交易能力。</p>

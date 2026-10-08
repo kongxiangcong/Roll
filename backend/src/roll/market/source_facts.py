@@ -248,3 +248,12 @@ def original(content,archive,instrument,group,row,document,document_content):
         'content_excerpt':(data.get('notice_content') or '')[:1200],'pdf_excerpt':text[:1200],
         'extraction_scope':'FIRST_3_PAGES_AND_1200_CHARS; FULL_ORIGINAL_ARCHIVED','category_basis':row.get('columns',[]),
         'intraday_disclosure_eligibility':'UNKNOWN_DATE_ONLY','formal_judgment':'DISABLED'}
+
+
+for identifier,groups in [('baostock-daily',['DAILY','STATUS']),('baostock-calendar',['CALENDAR']),('baostock-adjustments',['ADJUSTMENTS'])]:
+    REGISTRY.append({'id':identifier,'groups':groups,'host':'vip-api.baostock.com:10030','adapter_version':'baostock-sdk-0.9.4-v1',
+        'authentication':'EXPLICIT_API_KEY_VIP_OR_PUBLIC_ANONYMOUS_NO_FALLBACK','allowed_hosts':['vip-api.baostock.com:10030','public-api.baostock.com:10030'],'permission_basis':'User-provided key; actual acceptance recorded separately',
+        'depth':'Explicit single stock/date range or operate year; bounded socket calls including login/pagination; zero retries',
+        'unit_scope':'RAW adjustflag3; shares/CNY; tradestatus/isST only; event date precision; no full special-status proof',
+        'historical_revision_proof':'NOT_AVAILABLE','retries':0,'source_selection':'EXPLICIT_PRIMARY',
+        'documentation':'https://www.baostock.com/mainContent?file=stockKData.md'})
