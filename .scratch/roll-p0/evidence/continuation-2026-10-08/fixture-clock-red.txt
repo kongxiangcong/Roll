@@ -1,0 +1,68 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-356/test_cache_preserves_real_rece0')
+
+    def test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage(tmp_path):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=quote_bytes())),
+            market_clock=lambda:'2026-10-08T08:30:00+08:00')) as client:
+            request=setup_request(client,quote_source='SINA',required_fields=['QUOTE.last'])
+            first=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
+                json={'usage':'PRE_MARKET_RECORD'}).json()['resolution_id'])
+>           assert first['state']=='HEALTHY' and first['facts'][0]['point_in_time_input_allowed'] is False
+E           AssertionError: assert ('DEGRADED' == 'HEALTHY'
+E             
+E             - HEALTHY
+E             + DEGRADED)
+
+tests\application\test_source_resolution.py:155: AssertionError
+_ test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-356/test_old_quote_blocks_current_0')
+
+    def test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record(tmp_path):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=quote_bytes())),
+            market_clock=lambda:'2026-10-08T10:00:00+08:00')) as client:
+            request=setup_request(client,quote_source='SINA',groups=['QUOTE','STATUS'])
+            monitored=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
+                json={'usage':'CURRENT_MONITORING','allow_fallback':False}).json()['resolution_id'])
+            assert monitored['state']=='MONITORING_UNAVAILABLE'
+            assert any(g['code']=='STALE_FOR_CURRENT_SESSION' for g in monitored['gaps'])
+>           assert monitored['capabilities']['observation']=='DEGRADED' and monitored['facts']
+E           AssertionError: assert ('DEGRADED' == 'DEGRADED'
+E             
+E               DEGRADED and [])
+
+tests\application\test_source_resolution.py:177: AssertionError
+_ test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-356/test_intraday_current_bar_cann0')
+
+    def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time(tmp_path):
+        raw=b'{"rc":0,"data":{"code":"600519","market":1,"klines":["2026-09-30,10,10,10,10,100,100000","2026-10-08,10,11,11,10,100,110000"]}}'
+        fields=['']*60
+        for index,value in {2:'600519',3:'12',4:'10',5:'10',6:'100',30:'20260930161458',33:'12',34:'10',35:'12/100/120000',47:'13.2',48:'10.8'}.items():fields[index]=value
+        def provider(request):
+            return httpx.Response(200,content=raw if 'kline' in request.url.path else ('v_sh600519="'+'~'.join(fields)+'";').encode())
+        clock=lambda:datetime.fromisoformat('2026-10-08T10:00:00+08:00')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider),review_clock=clock)) as client:
+            establish(client,['SSE:600519'])
+            client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN','instrument_type':'STOCK',
+                'name':'合成普通股','basis':'合成证券身份','effective_at':'2026-10-07T00:00:00+08:00'})
+            request=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY','QUOTE'],
+                'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-10-08'}).json()
+            run=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+            before=client.get('/api/account').json()
+            task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
+            item=next(i for i in task['result']['instruments'] if i['instrument']=='SSE:600519')
+>           assert item['last_complete_daily']['trade_date']=='2026-09-30'
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: 'NoneType' object is not subscriptable
+
+tests\application\test_reviews.py:60: TypeError
+=========================== short test summary info ===========================
+FAILED tests/application/test_source_resolution.py::test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage
+FAILED tests/application/test_source_resolution.py::test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record
+FAILED tests/application/test_reviews.py::test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time
+3 failed in 18.41s
