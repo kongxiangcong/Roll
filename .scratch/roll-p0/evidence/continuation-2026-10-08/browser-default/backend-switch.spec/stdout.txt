@@ -1,0 +1,18 @@
+[2m[WebServer] [22mINFO:     Started server process [18608]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8490 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:35908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:38940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\backend-switch.spec.ts:3:1 › saved backend survives reload and creates a separate cross-backend retry (2.3s)
+  -  2 tests\e2e\backend-switch.spec.ts:25:1 › actual archived switch identities and reused sources survive reopening
+
+  1 skipped
+  1 passed (11.7s)

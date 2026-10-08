@@ -1,0 +1,18 @@
+[2m[WebServer] [22mINFO:     Started server process [36296]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8490 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:37832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:30808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\deepseek-evidence.spec.ts:4:1 › DeepSeek missing credential record and linked retry survive reload (1.7s)
+  -  2 tests\e2e\deepseek-evidence.spec.ts:27:1 › actual Agents SDK fixed Responses task displays evidence and cancels independent next run
+
+  1 skipped
+  1 passed (11.0s)

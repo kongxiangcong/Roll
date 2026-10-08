@@ -35,3 +35,5 @@
 仍无DEEPSEEK_API_KEY/明确凭据文件配置，既有凭据位置问题待答；真实提供方多轮、strict/schema、权限/额度错误、任务中取消/崩溃及完整真实页面路径未执行。因此本票保持needs-info/partial，未关闭、不解锁13；不能由SDK方法替身、Codex通过或网页订阅推导完成。配置现有DeepSeek API认证后按同版本/model/endpoint重试真实验收，旧运行保留。完整分层结果、精确原件保全71文件/5,034,176bytes/SHA不一致0及认证副本0见[验收](../evidence/12/acceptance.md)、[清单](../evidence/12/runtime-preservation.json)与[接入合同](../../../docs/deepseek-evidence-contract.md)。
 
 2026-10-08 11:45（Asia/Shanghai）：用户明确提供根 `.env` 后，使用同一固定 SDK/model/endpoint 独立完成实际多轮接入。首次三轮真实响应达到2048token预算而截断，原 INVALID_OUTPUT 保存；关联新 retry 三轮实际 HTTP200、顺序两个真实工具、官网字面候选一条，宿主保留 volume_shares/事项时点缺口，状态 PARTIAL、正式判断关闭。实际第二模型调用取消与宿主硬崩分别 CANCELLED/INTERRUPTED、原件保留/子进程全部消失；真实401使用明确无效合成认证，用户真实key仍有效，真实429未人为触发。Chrome重载/原件/零联网回放通过，相关后端15项与53模块构建通过。默认测试工厂不读根凭据，默认浏览器拒绝显式 ROLL_ENV_FILE。按[本轮接入验收](../evidence/12/live-acceptance.md)关闭12、解锁13；23技术审阅与真实研究资格不由本票代替。
+
+2026-10-08 最终集成：13真实依赖联验完成；共享取证子请求继承显式除权来源及市场公开复用查询，由双轴审阅修复并独立复核。根冻结产品单轮后端372通过，默认Chrome16通过/3按profile跳过，54模块构建通过，见[最终集成验收](../evidence/continuation-2026-10-08/final-acceptance.md)。这些工程结果不改变旧实际PARTIAL或研究资格。

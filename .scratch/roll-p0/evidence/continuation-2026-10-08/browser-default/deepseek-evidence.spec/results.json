@@ -1,0 +1,179 @@
+{
+  "config": {
+    "configFile": "D:\\dsh-proj\\Roll\\frontend\\playwright.default.config.ts",
+    "rootDir": "D:/dsh-proj/Roll/frontend/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/dsh-proj/Roll/frontend/test-results/default/run-tFdXg1/deepseek-evidence/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/dsh-proj/Roll/frontend/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "baseline.spec.ts",
+          "backend-switch.spec.ts",
+          "cash-equity.spec.ts",
+          "codex-evidence.spec.ts",
+          "csv.spec.ts",
+          "deepseek-evidence.spec.ts",
+          "fills.spec.ts",
+          "funding.spec.ts",
+          "market.spec.ts",
+          "market-overflow.spec.ts",
+          "reconcile.spec.ts",
+          "valuation.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\dsh-proj\\Roll\\frontend\\test-results\\default\\run-tFdXg1\\deepseek-evidence\\results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "deepseek-evidence.spec.ts",
+      "file": "deepseek-evidence.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "DeepSeek missing credential record and linked retry survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1710,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T05:18:52.407Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3e52b8431d633bd92c22-17eb8e00d2e0faa745ba",
+          "file": "deepseek-evidence.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "actual Agents SDK fixed Responses task displays evidence and cancels independent next run",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "explicit fixed HTTP provider factory required",
+                  "location": {
+                    "file": "D:\\dsh-proj\\Roll\\frontend\\tests\\e2e\\deepseek-evidence.spec.ts",
+                    "line": 28,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 203,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T05:18:54.537Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "explicit fixed HTTP provider factory required",
+                      "location": {
+                        "file": "D:\\dsh-proj\\Roll\\frontend\\tests\\e2e\\deepseek-evidence.spec.ts",
+                        "line": 28,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "3e52b8431d633bd92c22-77d00b7630efd78cfead",
+          "file": "deepseek-evidence.spec.ts",
+          "line": 27,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-08T05:18:45.029Z",
+    "duration": 11034.805,
+    "expected": 1,
+    "skipped": 1,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
