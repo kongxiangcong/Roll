@@ -1,0 +1,270 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 273,
+    "http_calls": 1,
+    "model_tool_result_bytes": 2059,
+    "received_bytes": 273
+  },
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source"
+  ],
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T04:25:35.667746+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    }
+  ],
+  "backend": "DEEPSEEK",
+  "backend_settings": {
+    "backend": "DEEPSEEK",
+    "saved_at": "2026-10-08T04:25:28.217239+00:00",
+    "version": 1
+  },
+  "bootstrap_audit": [
+    {
+      "stage": "PYTHON_READY"
+    },
+    {
+      "stage": "SDK_IMPORTED"
+    }
+  ],
+  "call_usage": {
+    "host_tool_calls": 1,
+    "http_calls": 1,
+    "model_requests": 2,
+    "runtime_operations": 0,
+    "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+    "total": 4
+  },
+  "candidates": [],
+  "config_fingerprint": "51aea5095dfb5c113c95c61375ace281d60370459a5a46764fbffec93d01d5aa",
+  "elapsed_seconds": 8.162,
+  "evidence_kind": "REAL_DEEPSEEK_TASK",
+  "finished_at": "2026-10-08T04:25:36.435090+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    }
+  ],
+  "host_owner": {
+    "creation_ticks": 134359071235303387,
+    "pid": 36836
+  },
+  "interrupt_requested_at": "2026-10-08T04:25:36.319063+00:00",
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "max_output_tokens": 2048,
+    "model_calls": 5,
+    "model_input_bytes": 131072,
+    "model_response_bytes": 65536,
+    "model_total_response_bytes": 262144,
+    "recursive_depth": 0,
+    "response_bytes": 65536,
+    "retries": 0,
+    "subtasks": 0,
+    "timeout_seconds": 8,
+    "tool_calls": 8,
+    "total_bytes": 262144,
+    "total_calls": 19
+  },
+  "model": "deepseek-flash",
+  "model_requests": [
+    {
+      "body_bytes": 3724,
+      "input_items": [
+        "message"
+      ],
+      "model": "deepseek-flash",
+      "number": 1,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "3a7f30c2625f2c90e24fef85c37e9b8fe82168f8973d333bbd877ebb00057f29"
+    },
+    {
+      "body_bytes": 7228,
+      "input_items": [
+        "message",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output"
+      ],
+      "model": "deepseek-flash",
+      "number": 2,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "0a898c3e253069b8db9ec0c9aa740144bdc5aa6ac13657d7fab892258b6d4af2"
+    }
+  ],
+  "model_responses": [
+    {
+      "bytes": 4252,
+      "http_status": 200,
+      "number": 1,
+      "received_bytes": 4252,
+      "resolved_model": "deepseek-flash",
+      "sha256": "814f5ee968aa43a0f971a9fb53a575fc5c9424a0854410a8c6271507fc2d4b5a"
+    }
+  ],
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "credential_persisted": false,
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      5056,
+      35788,
+      8224
+    ],
+    "owner_nonce": "1ea3e4c6-d055-4076-a97b-a65b9d7e0150",
+    "pids_before_cleanup": [
+      5056,
+      35788,
+      8224
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-5c8a23b8-2df7-40f3-93b9-8173e945df5c-awqh9m_j",
+    "temporary_directory_removed": true,
+    "worker_pid": 5056
+  },
+  "question": "依次获取QUOTE、官网原文、QUOTE、官网原文，共8次工具委托；每轮只调用1个工具，不能提前结束。预算内完成时保存明确缺口。先用 roll_read_evidence 获取 SSE:600519 的 QUOTE，再用 roll_read_source 获取 MOUTAI_OFFICIAL 原文。最后JSON仅一条简短官网字面候选，自然语言字段不超过60字，原始哈希完整保留64字符；保留报价和事项时点缺口，不作交易判断。",
+  "request_id": "78726df0-f645-43e6-8110-61c63d1f3588",
+  "resolved_model": "deepseek-flash",
+  "retry_of": null,
+  "run_id": "5c8a23b8-2df7-40f3-93b9-8173e945df5c",
+  "runtime_audit": {
+    "agent_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "auto_previous_response_id": false,
+    "builtin_tools": [],
+    "credential_persisted": false,
+    "endpoint": "https://api.deepseek.com",
+    "handoffs": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "6b14b7fa594207b94ebf5087b5f461a2bb2e18f9959454e4c7d0a6e171a570d3",
+      "codex_process.py": "20f747ff481dad3345df66c353acbefe1890ca722decc39e3fabc3f24116bc52",
+      "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "deepseek_evidence.py": "aa5fca12499df0e0cee6ed7ab8f06093f71d78284f83185e2bcc739a5fec6bfe",
+      "deepseek_process.py": "9c19bc0ccf2f77d034f2b6594d22ffb3f42cff39f2397b6d56fc1d72e2b59032",
+      "deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+      "settings.py": "a9fea3c473b9dff6f232271f65e1bbb25cfaed78ab454b28e5ff64cb92406f12"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "recursive_depth": 0,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 8,
+      "tool_calls": 8,
+      "total_bytes": 262144,
+      "total_calls": 19
+    },
+    "mcp": false,
+    "mcp_servers": [],
+    "model": "deepseek-flash",
+    "plugins": false,
+    "protocol": "RESPONSES_STATELESS",
+    "python": "3.13.12",
+    "research_input_audit_enabled": true,
+    "retries": 0,
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "sdk_versions": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "skills": false,
+    "skills_loaded": false,
+    "store": null,
+    "tracing_disabled": true,
+    "transport": "HTTP_RESPONSES_STATELESS"
+  },
+  "sdk_runtime_version": {
+    "httpx2": "2.13.1",
+    "openai": "3.26.0",
+    "openai-agents": "0.23.1"
+  },
+  "selection_kind": "SAVED_BACKEND",
+  "source_dependency_fingerprint": "dcbe1ea610eaeaaf7b7d3d17ca11a19e91d63ef39bbb6fac239c27def07afe76",
+  "started_at": "2026-10-08T04:25:28.258172+00:00",
+  "status": "TIMED_OUT",
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": [
+    {
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "deepseek-1",
+      "child_run_id": "18865751-5875-49c7-880a-042d69cbd3ba",
+      "received_at": "2026-10-08T04:25:35.188828+00:00",
+      "snapshot_id": "bfa1cbfd-3156-481c-bc3c-10ad18946d62",
+      "source_id": "roll_read_evidence",
+      "status": "ARCHIVED"
+    }
+  ]
+}

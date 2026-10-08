@@ -1,0 +1,72 @@
+{
+  "mode": "switch",
+  "backend": "DEEPSEEK",
+  "started_at": "2026-10-08T04:31:43.639618+00:00",
+  "data_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\13-switch\\backend\\.roll-data\\13-live-switch-deepseek-v4",
+  "position_count": 30,
+  "background_count": 5,
+  "suggested_five_index_baseline": "VERIFIED_CURRENT_REGISTRY_30_PLUS_5",
+  "changed_settings": {
+    "version": 2,
+    "backend": "CODEX",
+    "saved_at": "2026-10-08T04:31:52.902620+00:00"
+  },
+  "concurrency_rejection": {
+    "detail": {
+      "code": "AGENT_CONCURRENCY_LIMIT",
+      "running_backend": "DEEPSEEK",
+      "max_concurrency": 1
+    }
+  },
+  "frozen_fields_unchanged": [
+    "backend",
+    "model",
+    "config_fingerprint",
+    "sdk_runtime_version",
+    "backend_settings",
+    "source_dependency_fingerprint",
+    "limits"
+  ],
+  "performance_p95_ms": 616.9941000116523,
+  "retry_run_id": "c782b18e-c754-469e-980d-e65e56da2f53",
+  "retry_status": "PARTIAL",
+  "reused_tools": [
+    {
+      "age_basis": "ORIGINAL_SOURCE_TIMES_NO_REFRESH",
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "exec-2b3c106c-412e-41af-b14d-43e12c8873a1",
+      "child_run_id": "a777482c-bef9-4c06-8c7f-5864ff96592e",
+      "original_source_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "received_at": "2026-10-08T04:33:49.453676+00:00",
+      "reused_from_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "snapshot_id": "c668cf1a-3e56-4ff8-b725-c253d2a19050",
+      "source_id": "roll_read_evidence",
+      "status": "REUSED_ARCHIVE"
+    },
+    {
+      "age_basis": "ORIGINAL_SOURCE_TIMES_NO_REFRESH",
+      "arguments": {
+        "instrument": "SSE:600519",
+        "source_id": "MOUTAI_OFFICIAL"
+      },
+      "call_id": "exec-4827ebac-e257-448a-9be3-9299ddba4ba7",
+      "original_source_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "received_at": "2026-10-08T04:33:53.280825+00:00",
+      "reused_from_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "source_id": "roll_read_source",
+      "status": "REUSED_ARCHIVE",
+      "url": "https://www.moutaichina.com/mtgf/index/"
+    }
+  ],
+  "authority_unchanged": {
+    "/api/account": "110 intentionally confirmed synthetic fills",
+    "/api/funding": true,
+    "/api/research/protocols": true
+  },
+  "completed_at": "2026-10-08T04:33:59.211458+00:00",
+  "passed": true
+}

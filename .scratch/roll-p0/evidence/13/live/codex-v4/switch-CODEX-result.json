@@ -1,0 +1,57 @@
+{
+  "mode": "switch",
+  "backend": "CODEX",
+  "started_at": "2026-10-08T04:29:25.890213+00:00",
+  "data_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\13-switch\\backend\\.roll-data\\13-live-switch-codex-v4",
+  "position_count": 30,
+  "background_count": 5,
+  "suggested_five_index_baseline": "VERIFIED_CURRENT_REGISTRY_30_PLUS_5",
+  "changed_settings": {
+    "version": 1,
+    "backend": "DEEPSEEK",
+    "saved_at": "2026-10-08T04:29:44.873412+00:00"
+  },
+  "concurrency_rejection": {
+    "detail": {
+      "code": "AGENT_CONCURRENCY_LIMIT",
+      "running_backend": "CODEX",
+      "max_concurrency": 1
+    }
+  },
+  "frozen_fields_unchanged": [
+    "backend",
+    "model",
+    "config_fingerprint",
+    "sdk_runtime_version",
+    "backend_settings",
+    "source_dependency_fingerprint",
+    "limits"
+  ],
+  "performance_p95_ms": 591.444199992111,
+  "retry_run_id": "4d0e2cbb-cffd-4ac2-8f94-3f884393de42",
+  "retry_status": "PARTIAL",
+  "reused_tools": [
+    {
+      "age_basis": "ORIGINAL_SOURCE_TIMES_NO_REFRESH",
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "deepseek-1",
+      "child_run_id": "fde4ba50-0595-4f71-9c34-1a65c955d3b4",
+      "original_source_run_id": "eaf0ce0c-96a2-4058-8f58-3504ca883153",
+      "received_at": "2026-10-08T04:31:27.515707+00:00",
+      "reused_from_run_id": "eaf0ce0c-96a2-4058-8f58-3504ca883153",
+      "snapshot_id": "c0689c2e-e2d4-493f-9b46-8a83a4cfce76",
+      "source_id": "roll_read_evidence",
+      "status": "REUSED_ARCHIVE"
+    }
+  ],
+  "authority_unchanged": {
+    "/api/account": "110 intentionally confirmed synthetic fills",
+    "/api/funding": true,
+    "/api/research/protocols": true
+  },
+  "completed_at": "2026-10-08T04:31:33.474521+00:00",
+  "passed": true
+}

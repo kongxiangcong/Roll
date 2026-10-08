@@ -2,7 +2,7 @@
 
 2026-10-08。票12真实 DeepSeek 多轮 API 接入已验收；实际资料仍保留 PARTIAL/缺口，固定响应方法与真实提供方事件分列。
 
-沿用 [DataRequest/RetrievalRun](data-evidence-contract.md)。`POST /api/data/requests/{request_id}/deepseek` 仅接受问题和可选 `retry_of`；重试必须引用同一请求的已终结 DeepSeek 运行，保存新 UUID，旧运行与原件不覆盖。`GET /api/data/runs/{run_id}` 查询，`POST /api/data/runs/{run_id}/cancel` 有限取消，原件及快照使用07既有接口。生产固定 `deepseek-flash`、`https://api.deepseek.com/responses`，没有 OpenAI endpoint 或模型回退；页面只选后端，不让普通用户选择模型或放宽预算。
+沿用 [DataRequest/RetrievalRun](data-evidence-contract.md)。`POST /api/data/requests/{request_id}/deepseek` 仅接受问题和可选 `retry_of`；重试必须引用同一请求、同一归一化问题的已终结 Codex/DeepSeek 运行，保存新 UUID，旧运行与原件不覆盖。`GET /api/data/runs/{run_id}` 查询，`POST /api/data/runs/{run_id}/cancel` 有限取消，原件及快照使用07既有接口。生产固定 `deepseek-flash`、`https://api.deepseek.com/responses`，没有 OpenAI endpoint 或模型回退；页面只选后端，不让普通用户选择模型或放宽预算。
 
 ## 实际版本与协议
 
@@ -31,3 +31,5 @@ Python3.13.12、`openai-agents==0.23.1`、`openai==3.26.0`、`httpx2==2.13.1`、
 实际429/额度耗尽未人为触发，仍仅固定响应方法验宿主映射；数据volume_shares、事项时点与历史PIT缺口保留，不把接入完成作为事实或正式资格。23仍负责技术审阅专用材料和输出契约。
 
 17实际接口已接入：在 `roll_read_evidence` 返回实际 `facts[:20]` 载荷给SDK worker前调用 `research.market_input_exposed(result,'deepseek-tool-input')`，与11共用同一具体交付点。固定SDK日线任务已证明第二模型HTTP调用收到两行事实前，SEALED_MARKET_INPUT_EXPOSED持久记录已可经API查询且confirmatory_pass_look=false；不包所有HTTP、不读取封存标签，不将输入暴露算PASS查看，无材料登记时保持07既有行为。
+
+13保存后端与两个后端共享并发已接入；新重试可采用当前后端，原运行及原件时点不改，见[取证后端契约](backend-switch-contract.md)。12历史较短问题的旧retry记录保留，当前API不再接受更改问题的关联重试。

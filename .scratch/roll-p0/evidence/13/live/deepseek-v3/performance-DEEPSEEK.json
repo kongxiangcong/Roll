@@ -1,0 +1,1328 @@
+{
+  "measurement": "POST /api/account/confirm HTTP round-trip + JSON decode, warm persistent TCP client",
+  "samples": 100,
+  "warmup": 10,
+  "p95_method": "nearest rank ceil(0.95*n)",
+  "p95_ms": 658.9851999888197,
+  "median_ms": 282.7619499876164,
+  "max_ms": 765.5251000251155,
+  "samples_ms": [
+    80.26319998316467,
+    68.44860001001507,
+    66.19939999654889,
+    76.4043000235688,
+    68.17090002004988,
+    74.42170000285842,
+    70.35799999721348,
+    94.39469999051653,
+    118.73809999087825,
+    101.23979998752475,
+    77.88329999311827,
+    90.3802000102587,
+    94.14790000300854,
+    92.11929998127744,
+    101.6617999994196,
+    109.68389999470674,
+    105.5802000046242,
+    137.18009999138303,
+    135.08269999874756,
+    102.46639998513274,
+    162.61940001277253,
+    150.08940000552684,
+    143.7164999952074,
+    125.65940001513809,
+    134.23759999568574,
+    135.56059999973513,
+    159.50370000791736,
+    154.9927000014577,
+    174.10779997589998,
+    162.87840000586584,
+    166.54499998549,
+    180.1946999912616,
+    173.8774999976158,
+    168.94969998975284,
+    191.23500000569038,
+    226.4329000026919,
+    188.62410000292584,
+    203.55029997881502,
+    197.8870999882929,
+    206.34740000241436,
+    216.63099998841062,
+    228.88150002108887,
+    235.86559999966994,
+    437.0993000047747,
+    234.9975999968592,
+    240.6945000111591,
+    258.2850999897346,
+    271.4587000082247,
+    279.40489997854456,
+    275.8705999876838,
+    286.1189999966882,
+    302.86740002338775,
+    315.62160002067685,
+    308.93090000608936,
+    278.47789999214,
+    317.6885000139009,
+    372.5737999775447,
+    342.9096000036225,
+    345.07889999076724,
+    336.72500000102445,
+    348.0870999919716,
+    349.7464999963995,
+    355.53229998913594,
+    379.0772999927867,
+    384.84990000142716,
+    367.2489000018686,
+    400.22640000097454,
+    414.01069998391904,
+    393.0851999903098,
+    431.8723000178579,
+    445.9029999852646,
+    454.806900001131,
+    443.6042000015732,
+    478.2576000143308,
+    460.17020000726916,
+    468.4329000010621,
+    508.80559999495745,
+    500.7165000133682,
+    550.0447000085842,
+    524.5836999965832,
+    580.7388999965042,
+    519.3879999860656,
+    554.410699987784,
+    566.5274999919347,
+    671.34959998657,
+    554.9582999956328,
+    584.7004000097513,
+    571.0881999984849,
+    564.865499996813,
+    582.22109999042,
+    632.5592999928631,
+    593.8679999962915,
+    634.925899998052,
+    636.5241999737918,
+    637.5573000113945,
+    658.9851999888197,
+    672.3275999829639,
+    683.4452000039164,
+    715.8518999931403,
+    765.5251000251155
+  ],
+  "position_count": 30,
+  "event_count": 142,
+  "account_version": 111,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+  "python": "3.13.12",
+  "sqlite": "3.50.4",
+  "external_task_integration": "ACTUAL_DEEPSEEK",
+  "external_task_observations": [
+    {
+      "sample": 0,
+      "ms": 80.26319998316467,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:00.677115+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:00.831487+00:00"
+      }
+    },
+    {
+      "sample": 1,
+      "ms": 68.44860001001507,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:00.998031+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.081207+00:00"
+      }
+    },
+    {
+      "sample": 2,
+      "ms": 66.19939999654889,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.187300+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.273512+00:00"
+      }
+    },
+    {
+      "sample": 3,
+      "ms": 76.4043000235688,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.378296+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.474329+00:00"
+      }
+    },
+    {
+      "sample": 4,
+      "ms": 68.17090002004988,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.615341+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.710267+00:00"
+      }
+    },
+    {
+      "sample": 5,
+      "ms": 74.42170000285842,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:01.929024+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:02.014584+00:00"
+      }
+    },
+    {
+      "sample": 6,
+      "ms": 70.35799999721348,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:02.173868+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:17:02.261066+00:00"
+      }
+    },
+    {
+      "sample": 7,
+      "ms": 94.39469999051653,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:02.376317+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:02.487519+00:00"
+      }
+    },
+    {
+      "sample": 8,
+      "ms": 118.73809999087825,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:02.716495+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:02.857909+00:00"
+      }
+    },
+    {
+      "sample": 9,
+      "ms": 101.23979998752475,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.028051+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.171162+00:00"
+      }
+    },
+    {
+      "sample": 10,
+      "ms": 77.88329999311827,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.306353+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.414059+00:00"
+      }
+    },
+    {
+      "sample": 11,
+      "ms": 90.3802000102587,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.571057+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.678027+00:00"
+      }
+    },
+    {
+      "sample": 12,
+      "ms": 94.14790000300854,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.841792+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:03.953714+00:00"
+      }
+    },
+    {
+      "sample": 13,
+      "ms": 92.11929998127744,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:04.100188+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:04.212093+00:00"
+      }
+    },
+    {
+      "sample": 14,
+      "ms": 101.6617999994196,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:04.384924+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:04.510771+00:00"
+      }
+    },
+    {
+      "sample": 15,
+      "ms": 109.68389999470674,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:04.674058+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:04.805894+00:00"
+      }
+    },
+    {
+      "sample": 16,
+      "ms": 105.5802000046242,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:05.140985+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:05.277430+00:00"
+      }
+    },
+    {
+      "sample": 17,
+      "ms": 137.18009999138303,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:05.465339+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:05.615822+00:00"
+      }
+    },
+    {
+      "sample": 18,
+      "ms": 135.08269999874756,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:05.793220+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:05.955121+00:00"
+      }
+    },
+    {
+      "sample": 19,
+      "ms": 102.46639998513274,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:06.136312+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:06.258338+00:00"
+      }
+    },
+    {
+      "sample": 20,
+      "ms": 162.61940001277253,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:06.454191+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:06.640144+00:00"
+      }
+    },
+    {
+      "sample": 21,
+      "ms": 150.08940000552684,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:06.873259+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:07.035977+00:00"
+      }
+    },
+    {
+      "sample": 22,
+      "ms": 143.7164999952074,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:07.290439+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:07.454808+00:00"
+      }
+    },
+    {
+      "sample": 23,
+      "ms": 125.65940001513809,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:07.713738+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:07.847729+00:00"
+      }
+    },
+    {
+      "sample": 24,
+      "ms": 134.23759999568574,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:08.077094+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:08.219558+00:00"
+      }
+    },
+    {
+      "sample": 25,
+      "ms": 135.56059999973513,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:08.477408+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:08.630836+00:00"
+      }
+    },
+    {
+      "sample": 26,
+      "ms": 159.50370000791736,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:08.892826+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:09.068954+00:00"
+      }
+    },
+    {
+      "sample": 27,
+      "ms": 154.9927000014577,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:09.345059+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:09.508553+00:00"
+      }
+    },
+    {
+      "sample": 28,
+      "ms": 174.10779997589998,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:09.778620+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:09.962452+00:00"
+      }
+    },
+    {
+      "sample": 29,
+      "ms": 162.87840000586584,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:10.215052+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:10.407887+00:00"
+      }
+    },
+    {
+      "sample": 30,
+      "ms": 166.54499998549,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:10.714628+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:10.891648+00:00"
+      }
+    },
+    {
+      "sample": 31,
+      "ms": 180.1946999912616,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:11.175705+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:11.368286+00:00"
+      }
+    },
+    {
+      "sample": 32,
+      "ms": 173.8774999976158,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:11.702696+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:11.901157+00:00"
+      }
+    },
+    {
+      "sample": 33,
+      "ms": 168.94969998975284,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:12.245454+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:12.436407+00:00"
+      }
+    },
+    {
+      "sample": 34,
+      "ms": 191.23500000569038,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:12.712115+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:12.913024+00:00"
+      }
+    },
+    {
+      "sample": 35,
+      "ms": 226.4329000026919,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:13.232926+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:13.476945+00:00"
+      }
+    },
+    {
+      "sample": 36,
+      "ms": 188.62410000292584,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:13.819010+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:14.027415+00:00"
+      }
+    },
+    {
+      "sample": 37,
+      "ms": 203.55029997881502,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:14.367598+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:14.590344+00:00"
+      }
+    },
+    {
+      "sample": 38,
+      "ms": 197.8870999882929,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:14.945417+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:15.152109+00:00"
+      }
+    },
+    {
+      "sample": 39,
+      "ms": 206.34740000241436,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:15.525489+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:15.749964+00:00"
+      }
+    },
+    {
+      "sample": 40,
+      "ms": 216.63099998841062,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:16.122651+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:16.363288+00:00"
+      }
+    },
+    {
+      "sample": 41,
+      "ms": 228.88150002108887,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:16.802806+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:17.049715+00:00"
+      }
+    },
+    {
+      "sample": 42,
+      "ms": 235.86559999966994,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:17.496142+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:17.758375+00:00"
+      }
+    },
+    {
+      "sample": 43,
+      "ms": 437.0993000047747,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:18.213434+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:18.670460+00:00"
+      }
+    },
+    {
+      "sample": 44,
+      "ms": 234.9975999968592,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:19.056851+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:19.305390+00:00"
+      }
+    },
+    {
+      "sample": 45,
+      "ms": 240.6945000111591,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:19.743223+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:20.006447+00:00"
+      }
+    },
+    {
+      "sample": 46,
+      "ms": 258.2850999897346,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:20.446774+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:20.725060+00:00"
+      }
+    },
+    {
+      "sample": 47,
+      "ms": 271.4587000082247,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:21.204815+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:21.495360+00:00"
+      }
+    },
+    {
+      "sample": 48,
+      "ms": 279.40489997854456,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:22.001382+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:22.294261+00:00"
+      }
+    },
+    {
+      "sample": 49,
+      "ms": 275.8705999876838,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:22.843341+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:23.133001+00:00"
+      }
+    },
+    {
+      "sample": 50,
+      "ms": 286.1189999966882,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:23.682908+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:23.983327+00:00"
+      }
+    },
+    {
+      "sample": 51,
+      "ms": 302.86740002338775,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:24.526318+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:24.856546+00:00"
+      }
+    },
+    {
+      "sample": 52,
+      "ms": 315.62160002067685,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:25.394227+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:25.728083+00:00"
+      }
+    },
+    {
+      "sample": 53,
+      "ms": 308.93090000608936,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:26.350724+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:26.679768+00:00"
+      }
+    },
+    {
+      "sample": 54,
+      "ms": 278.47789999214,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:27.261137+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:27.555760+00:00"
+      }
+    },
+    {
+      "sample": 55,
+      "ms": 317.6885000139009,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:28.098970+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:28.464046+00:00"
+      }
+    },
+    {
+      "sample": 56,
+      "ms": 372.5737999775447,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:29.086876+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:29.474918+00:00"
+      }
+    },
+    {
+      "sample": 57,
+      "ms": 342.9096000036225,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:30.097635+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:30.471039+00:00"
+      }
+    },
+    {
+      "sample": 58,
+      "ms": 345.07889999076724,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:31.080079+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:31.443645+00:00"
+      }
+    },
+    {
+      "sample": 59,
+      "ms": 336.72500000102445,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:32.113033+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:32.471363+00:00"
+      }
+    },
+    {
+      "sample": 60,
+      "ms": 348.0870999919716,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:33.177187+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:33.547972+00:00"
+      }
+    },
+    {
+      "sample": 61,
+      "ms": 349.7464999963995,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:34.263239+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:34.650187+00:00"
+      }
+    },
+    {
+      "sample": 62,
+      "ms": 355.53229998913594,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:35.334074+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:35.706414+00:00"
+      }
+    },
+    {
+      "sample": 63,
+      "ms": 379.0772999927867,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:36.459928+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:36.856278+00:00"
+      }
+    },
+    {
+      "sample": 64,
+      "ms": 384.84990000142716,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:37.582856+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:37.977518+00:00"
+      }
+    },
+    {
+      "sample": 65,
+      "ms": 367.2489000018686,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:38.696736+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:39.085154+00:00"
+      }
+    },
+    {
+      "sample": 66,
+      "ms": 400.22640000097454,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:39.879767+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:40.295385+00:00"
+      }
+    },
+    {
+      "sample": 67,
+      "ms": 414.01069998391904,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:41.107866+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:41.541902+00:00"
+      }
+    },
+    {
+      "sample": 68,
+      "ms": 393.0851999903098,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:42.379922+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:42.798116+00:00"
+      }
+    },
+    {
+      "sample": 69,
+      "ms": 431.8723000178579,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:43.687131+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:44.137782+00:00"
+      }
+    },
+    {
+      "sample": 70,
+      "ms": 445.9029999852646,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:45.077168+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:45.546285+00:00"
+      }
+    },
+    {
+      "sample": 71,
+      "ms": 454.806900001131,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:46.468999+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:46.933373+00:00"
+      }
+    },
+    {
+      "sample": 72,
+      "ms": 443.6042000015732,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:47.859278+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:48.339307+00:00"
+      }
+    },
+    {
+      "sample": 73,
+      "ms": 478.2576000143308,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:49.339892+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:49.836600+00:00"
+      }
+    },
+    {
+      "sample": 74,
+      "ms": 460.17020000726916,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:50.817217+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:51.295534+00:00"
+      }
+    },
+    {
+      "sample": 75,
+      "ms": 468.4329000010621,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:52.316107+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:52.802907+00:00"
+      }
+    },
+    {
+      "sample": 76,
+      "ms": 508.80559999495745,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:53.902892+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:54.425809+00:00"
+      }
+    },
+    {
+      "sample": 77,
+      "ms": 500.7165000133682,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:55.596994+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:56.113723+00:00"
+      }
+    },
+    {
+      "sample": 78,
+      "ms": 550.0447000085842,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:57.227217+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:57.794059+00:00"
+      }
+    },
+    {
+      "sample": 79,
+      "ms": 524.5836999965832,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:58.942544+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:17:59.483517+00:00"
+      }
+    },
+    {
+      "sample": 80,
+      "ms": 580.7388999965042,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:00.752900+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:01.352924+00:00"
+      }
+    },
+    {
+      "sample": 81,
+      "ms": 519.3879999860656,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:02.673625+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:03.210756+00:00"
+      }
+    },
+    {
+      "sample": 82,
+      "ms": 554.410699987784,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:04.460737+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:05.034998+00:00"
+      }
+    },
+    {
+      "sample": 83,
+      "ms": 566.5274999919347,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:06.333025+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:06.918203+00:00"
+      }
+    },
+    {
+      "sample": 84,
+      "ms": 671.34959998657,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:08.254333+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:08.941906+00:00"
+      }
+    },
+    {
+      "sample": 85,
+      "ms": 554.9582999956328,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:10.234874+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:10.811567+00:00"
+      }
+    },
+    {
+      "sample": 86,
+      "ms": 584.7004000097513,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:12.131689+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:12.742047+00:00"
+      }
+    },
+    {
+      "sample": 87,
+      "ms": 571.0881999984849,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:14.141037+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:14.722960+00:00"
+      }
+    },
+    {
+      "sample": 88,
+      "ms": 564.865499996813,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:16.156961+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:16.736542+00:00"
+      }
+    },
+    {
+      "sample": 89,
+      "ms": 582.22109999042,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:18.214026+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:18.832330+00:00"
+      }
+    },
+    {
+      "sample": 90,
+      "ms": 632.5592999928631,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:20.296022+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:20.976330+00:00"
+      }
+    },
+    {
+      "sample": 91,
+      "ms": 593.8679999962915,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:22.540202+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:23.149491+00:00"
+      }
+    },
+    {
+      "sample": 92,
+      "ms": 634.925899998052,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:24.676859+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:25.330508+00:00"
+      }
+    },
+    {
+      "sample": 93,
+      "ms": 636.5241999737918,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:26.884082+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:27.538983+00:00"
+      }
+    },
+    {
+      "sample": 94,
+      "ms": 637.5573000113945,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:29.167488+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:29.825343+00:00"
+      }
+    },
+    {
+      "sample": 95,
+      "ms": 658.9851999888197,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:31.490464+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:32.167416+00:00"
+      }
+    },
+    {
+      "sample": 96,
+      "ms": 672.3275999829639,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:33.792027+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:34.482314+00:00"
+      }
+    },
+    {
+      "sample": 97,
+      "ms": 683.4452000039164,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:36.150659+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:36.845564+00:00"
+      }
+    },
+    {
+      "sample": 98,
+      "ms": 715.8518999931403,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:38.569051+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:39.301960+00:00"
+      }
+    },
+    {
+      "sample": 99,
+      "ms": 765.5251000251155,
+      "before": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:41.291202+00:00"
+      },
+      "after": {
+        "status": "CANCELLED",
+        "observed_at": "2026-10-08T04:18:42.071168+00:00"
+      }
+    }
+  ],
+  "run_id": "690c2259-e4dd-4dfd-8ec8-73ce48f299f5",
+  "measurement_started_at": "2026-10-08T04:16:59.290571+00:00",
+  "measurement_finished_at": "2026-10-08T04:18:43.729473+00:00",
+  "run_status_before": "RUNNING",
+  "run_status_after": "CANCELLED",
+  "fully_overlapping_samples": 7,
+  "overlap_p95_ms": 80.26319998316467
+}

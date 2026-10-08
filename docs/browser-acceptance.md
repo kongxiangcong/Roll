@@ -8,7 +8,7 @@ $env:ROLL_TEST_API_PORT='8028'
 $env:ROLL_TEST_WEB_PORT='5188'
 ```
 
-默认 `npm run test:e2e` 逐文件启动真实服务和空 SQLite；文件之间隔离，同一个文件内顺序用例保留事实链（包括 reconcile 的两例）。有限默认集合是 baseline/cash-equity/codex-evidence/csv/deepseek-evidence/fills/funding/market/market-overflow/reconcile/valuation。默认缺凭据路径不发真实模型请求或取新公网数据。每个文件的输出、报告和退出码见 `frontend/test-results/default/`，任一失败使最终命令失败。
+默认 `npm run test:e2e` 逐文件启动真实服务和空 SQLite；文件之间隔离，同一个文件内顺序用例保留事实链（包括 reconcile 的两例）。有限默认集合是 backend-switch/baseline/cash-equity/codex-evidence/csv/deepseek-evidence/fills/funding/market/market-overflow/reconcile/valuation。默认缺凭据路径不发真实模型请求或取新公网数据。每个文件的输出、报告和退出码见 `frontend/test-results/default/`，任一失败使最终命令失败。
 
 历史08默认11通过/2失败/1跳过原报告保留；修复后的默认结果单列在[审阅修复验收](../.scratch/roll-p0/evidence/review/fixes.md)，不覆盖旧红。运行默认命令前移除 `ROLL_ENV_FILE`、外部来源、METHOD工厂、已有数据目录和两阶段恢复变量；runner遇这些profile会明确拒绝混用，清除 DeepSeek/Fuyao/OpenAI/Codex 凭据环境。11/12真实SDK、07/08实际来源、14/15方法与已有真实原件、17/18/19/22研究保全、16备份两阶段必须显式单独运行。
 
@@ -71,3 +71,5 @@ npx playwright test --config playwright.research.config.ts
 22独立风险政策分实际无授权与隔离METHOD目录。先从根运行`backend/.venv/Scripts/python.exe -X utf8 scripts/risk_policy_acceptance.py --source D:/dsh-proj/Roll/backend/.roll-data/implementation-evidence/19/acceptance-19-final --data-root <全新目录> --port 8042`；METHOD加`--method`，父进程PYTHONPATH指backend/tests/application。frontend设置`ROLL_RISK_LIVE=1`、`ROLL_BROWSER_CHANNEL=chrome`、`ROLL_RISK_DATA`后运行`npx playwright test -c playwright.risk-policies.config.ts`；METHOD加`ROLL_RISK_METHOD=1`。API8042/web5202，各自1passed，原检查历史/压力/未知/重放/403/账户不变保持；实际无授权INCONCLUSIVE、METHOD不升级实际资格。相关17项与52module构建通过，[22验收](../.scratch/roll-p0/evidence/22/acceptance.md)。默认05共享fixture红与18 SDK方法轮询红仍按旧证据保留，不宣称全仓全绿。
 
 审阅修复把DeepSeek方法测试等待改为公开运行记录中冻结的 timeout_seconds 加10秒收尾窗口（进程等待最多5秒、目录清理最多1秒及查询调度）；生产120秒/工具/字节预算未放宽。18旧20秒轮询红保留，新完整后端结果见审阅修复验收。
+
+13真实归档页面单独重开，不发新模型请求：frontend中设置 `ROLL_LIVE_BACKEND_SWITCH=1`、`ROLL_TEST_DATA_DIR` 指向13保全的真实switch目录、`ROLL_ENV=test`、`ROLL_BROWSER_CHANNEL=chrome`、独立API/web端口，运行 `npx playwright test backend-switch.spec.ts --config playwright.config.ts`。共享editable venv的工作树同时显式设置 `PYTHONPATH` 为该工作树 `backend/src`；先前未设置导致旧root源码404的红记录保留。两个真实方向分别保留设置、重试/复用与原取消记录截图。默认runner拒绝此live变量；独立缺凭据页面验收与实际归档页面分列，见[13验收](../.scratch/roll-p0/evidence/13/acceptance.md)。

@@ -1,0 +1,364 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 46751,
+    "http_calls": 0,
+    "model_tool_result_bytes": 9663,
+    "received_bytes": 0
+  },
+  "allowed_operations": [
+    "V8_PURE_COMPUTATION",
+    "FUNCTIONS_EXEC",
+    "FUNCTIONS_WAIT"
+  ],
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source",
+    "clock__curr_time"
+  ],
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T04:31:54.588483+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    },
+    {
+      "available_at": "2026-10-08T04:31:55.050831+00:00",
+      "basis": "Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.",
+      "basis_url": "https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf",
+      "bytes": 46478,
+      "content_type": "text/html; charset=utf-8",
+      "event_time": null,
+      "http_status": 200,
+      "instrument": "SSE:600519",
+      "kind": "DEEPSEEK_PUBLIC_SOURCE",
+      "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+      "received_at": "2026-10-08T04:31:55.050831+00:00",
+      "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_id": "MOUTAI_OFFICIAL",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_precision": "RECEIPT_ONLY"
+    }
+  ],
+  "backend": "CODEX",
+  "backend_settings": {
+    "backend": "CODEX",
+    "saved_at": "2026-10-08T04:31:52.902620+00:00",
+    "version": 2
+  },
+  "bootstrap_audit": {
+    "auth_mode": "chatgpt",
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "bridge": {
+    "name": "bundled-code-mode-host",
+    "runtime": "Rust/V8, no Node bridge",
+    "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+    "version": "0.161.0"
+  },
+  "call_usage": {
+    "host_tool_calls": 2,
+    "http_calls": 0,
+    "model_requests": 0,
+    "runtime_operations": 2,
+    "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+    "total": 4
+  },
+  "candidate_output_hash": "2d8e94eccb40e37cc6c2ecfe8a78298f191589d8c85324253fd0cb9159f9b4a0",
+  "candidates": [
+    {
+      "assertion": "官网列有“股票信息”。",
+      "assertion_verified": false,
+      "available_at": "2026-10-08T04:31:55.050831+00:00",
+      "classification": "MODEL_EVIDENCE_CANDIDATE",
+      "cutoff_eligible": false,
+      "event_time": null,
+      "evidence_quote": "公司公告 财务报告 股票信息",
+      "group": "QUOTE",
+      "host_limit": "Literal quote verified; receipt cannot establish event time or assertion truth.",
+      "instrument": "SSE:600519",
+      "quote_verified": true,
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_basis": "UNKNOWN"
+    }
+  ],
+  "config_fingerprint": "8722c9a98d320f890e9a12714940afcf15e426829f420b2058de46c6828af5cc",
+  "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+  "elapsed_seconds": 29.63,
+  "evidence_kind": "REAL_CODEX_TASK",
+  "finished_at": "2026-10-08T04:33:59.006840+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "报价股数缺失，成交量单位未核实。"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "官网事项时点未知；实际接收晚于截止，不能证明历史可得。"
+    },
+    {
+      "code": "SUPPLEMENTAL_EVENT_TIME_AND_ASSERTION_UNVERIFIED",
+      "group": "TASK",
+      "instrument": ""
+    }
+  ],
+  "host_code_hashes": {
+    "codex_evidence.py": "6b14b7fa594207b94ebf5087b5f461a2bb2e18f9959454e4c7d0a6e171a570d3",
+    "codex_process.py": "20f747ff481dad3345df66c353acbefe1890ca722decc39e3fabc3f24116bc52",
+    "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+  },
+  "host_owner": {
+    "creation_ticks": 134359075035187803,
+    "pid": 6560
+  },
+  "instruction_sources": [],
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "recursive_depth": 0,
+    "response_bytes": 65536,
+    "retries": 0,
+    "runtime_operations": 8,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144,
+    "total_calls": 22
+  },
+  "model": "gpt-6.1-sol",
+  "model_provider": "openai",
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      18076,
+      15676,
+      40688,
+      14496,
+      39108,
+      9428
+    ],
+    "owner_nonce": "d6f91622-99da-42d8-b232-0550dfcaf55b",
+    "pids_before_cleanup": [
+      18076,
+      15676,
+      9428
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-c782b18e-c754-469e-980d-e65e56da2f53-d9cev_xe",
+    "temporary_directory_removed": true,
+    "worker_pid": 18076
+  },
+  "question": "先用 roll_read_evidence 获取 SSE:600519 的 QUOTE，再用 roll_read_source 获取 MOUTAI_OFFICIAL 原文。最后JSON仅一条简短官网字面候选，自然语言字段不超过60字，原始哈希完整保留64字符；保留报价和事项时点缺口，不作交易判断。",
+  "request_id": "75e6c13c-2ca2-4bd6-b388-09fb33564a58",
+  "resolved_model": "gpt-6.1-sol",
+  "retry_of": "d363afac-6702-4b43-8251-a65568f50b8f",
+  "run_id": "c782b18e-c754-469e-980d-e65e56da2f53",
+  "runtime_audit": {
+    "auth_mode": "chatgpt",
+    "disabled_skills": 38,
+    "effective_config": {
+      "approval_policy": "never",
+      "features": {
+        "api_key_cyber_access_programs": false,
+        "api_key_model_discovery": true,
+        "apps": false,
+        "auth_elicitation": true,
+        "background_paginated_rollout_migration": false,
+        "browser_use": false,
+        "browser_use_external": false,
+        "code_mode": false,
+        "code_mode_host": true,
+        "code_mode_only": false,
+        "codex_apps_mcp_2026_07_28": false,
+        "computer_use": false,
+        "goals": false,
+        "hooks": false,
+        "image_generation": false,
+        "in_app_browser": false,
+        "mcp_2026_07_28": false,
+        "memories": false,
+        "mentions_v2": true,
+        "multi_agent": false,
+        "multi_agent_v2": false,
+        "network_proxy": null,
+        "plugins": false,
+        "remote_control": false,
+        "remote_plugin": false,
+        "shell_snapshot": false,
+        "shell_tool": false,
+        "skill_mcp_dependency_install": false,
+        "tool_suggest": false,
+        "view_image": false,
+        "windows_sandbox_service": false
+      },
+      "layers": [
+        "user",
+        "system"
+      ],
+      "mcp_servers": 0,
+      "sandbox_mode": "read-only",
+      "skills_instructions": false,
+      "web_search": "disabled"
+    },
+    "enabled_skills": 0,
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "runtime_completion": {
+    "error_info": null,
+    "status": "completed"
+  },
+  "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+  "runtime_items": [
+    {
+      "id": "01a119c9-e9f2-77a0-9e0f-393824ca87e5",
+      "item_type": "userMessage",
+      "tool": null
+    },
+    {
+      "id": "exec-2b3c106c-412e-41af-b14d-43e12c8873a1",
+      "item_type": "dynamicToolCall",
+      "tool": "roll_read_evidence"
+    },
+    {
+      "id": "exec-4827ebac-e257-448a-9be3-9299ddba4ba7",
+      "item_type": "dynamicToolCall",
+      "tool": "roll_read_source"
+    },
+    {
+      "id": "msg_07034bc09122e8a8016ac71d30a7988191825938fc3ed92a3c",
+      "item_type": "agentMessage",
+      "tool": null
+    }
+  ],
+  "runtime_operations": [
+    {
+      "call_id": "call_77ab5f9671514f82b6fb3347f6ea84db",
+      "name": "exec",
+      "namespace": null,
+      "type": "custom_tool_call"
+    },
+    {
+      "call_id": "call_59eb85781a8c48078d0d82c24bcb09bc",
+      "name": "exec",
+      "namespace": null,
+      "type": "custom_tool_call"
+    }
+  ],
+  "runtime_thread_id": "01a119c9-ce8e-7af3-bfe2-03c276698fff",
+  "runtime_turn_id": "01a119c9-cec2-7c42-a3ba-821228b76377",
+  "sdk_runtime_version": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0"
+  },
+  "selection_kind": "SAVED_BACKEND",
+  "snapshot_id": "6e45a592-3f46-45ec-9b8a-dd0b85bdc9c9",
+  "source_dependency_fingerprint": "a11bfd81ffe2354db13c34c0b70d675843e4dc09e04f2459331f992caca86625",
+  "started_at": "2026-10-08T04:33:29.314316+00:00",
+  "status": "PARTIAL",
+  "token_usage": {
+    "last": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 3456,
+      "inputTokens": 6046,
+      "outputTokens": 135,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 6181
+    },
+    "modelContextWindow": 258400,
+    "total": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 6144,
+      "inputTokens": 12563,
+      "outputTokens": 201,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 12764
+    }
+  },
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": [
+    {
+      "age_basis": "ORIGINAL_SOURCE_TIMES_NO_REFRESH",
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "exec-2b3c106c-412e-41af-b14d-43e12c8873a1",
+      "child_run_id": "a777482c-bef9-4c06-8c7f-5864ff96592e",
+      "original_source_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "received_at": "2026-10-08T04:33:49.453676+00:00",
+      "reused_from_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "snapshot_id": "c668cf1a-3e56-4ff8-b725-c253d2a19050",
+      "source_id": "roll_read_evidence",
+      "status": "REUSED_ARCHIVE"
+    },
+    {
+      "age_basis": "ORIGINAL_SOURCE_TIMES_NO_REFRESH",
+      "arguments": {
+        "instrument": "SSE:600519",
+        "source_id": "MOUTAI_OFFICIAL"
+      },
+      "call_id": "exec-4827ebac-e257-448a-9be3-9299ddba4ba7",
+      "original_source_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "received_at": "2026-10-08T04:33:53.280825+00:00",
+      "reused_from_run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+      "source_id": "roll_read_source",
+      "status": "REUSED_ARCHIVE",
+      "url": "https://www.moutaichina.com/mtgf/index/"
+    }
+  ]
+}

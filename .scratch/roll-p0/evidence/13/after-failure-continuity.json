@@ -1,0 +1,418 @@
+[
+  {
+    "directory": "13-live-switch-codeX",
+    "runs": [
+      {
+        "run_id": "6a78190f-2c2a-4607-b18c-1bf789ed9e4e",
+        "backend": "CODEX",
+        "status": "INTERRUPTED",
+        "process": {
+          "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+          "environment_keys": [
+            "CODEX_HOME",
+            "COMSPEC",
+            "HOME",
+            "HTTPS_PROXY",
+            "HTTP_PROXY",
+            "NO_PROXY",
+            "PATH",
+            "PYTHONUTF8",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "isolated_cwd": true,
+          "isolated_home": true,
+          "observed_pids": [
+            33808,
+            13056,
+            13932,
+            23768
+          ],
+          "owner_nonce": "1d7023f9-fe4f-42cc-8674-8e019dfc63e4",
+          "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-6a78190f-2c2a-4607-b18c-1bf789ed9e4e-x86eflgh",
+          "worker_pid": 33808
+        },
+        "recovery_cleanup": {
+          "credential_removed": true,
+          "status": "REMOVED"
+        }
+      }
+    ],
+    "snapshot_replays": [],
+    "valuation_basis": {
+      "baseline_account_version": 1,
+      "origin_at": "2026-10-08T00:00:00+08:00",
+      "scope_kind": "ACCOUNT",
+      "scope_id": "account",
+      "funding_version": 0,
+      "as_of": "2026-10-08T04:36:54.482601+00:00",
+      "loss_binding": false,
+      "funding_scope": {
+        "scope_kind": null,
+        "scope_id": null,
+        "baseline_account_version": null,
+        "loss_origin_at": null
+      }
+    },
+    "account_unchanged": true,
+    "background_count": 5
+  },
+  {
+    "directory": "13-live-timeout-deepseek-v2",
+    "runs": [
+      {
+        "run_id": "18865751-5875-49c7-880a-042d69cbd3ba",
+        "backend": "DIRECT_HTTP",
+        "status": "PARTIAL",
+        "process": null,
+        "recovery_cleanup": null
+      },
+      {
+        "run_id": "5c8a23b8-2df7-40f3-93b9-8173e945df5c",
+        "backend": "DEEPSEEK",
+        "status": "TIMED_OUT",
+        "process": {
+          "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+          "credential_persisted": false,
+          "environment_keys": [
+            "CODEX_HOME",
+            "COMSPEC",
+            "HOME",
+            "HTTPS_PROXY",
+            "HTTP_PROXY",
+            "NO_PROXY",
+            "PATH",
+            "PYTHONUTF8",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "isolated_cwd": true,
+          "isolated_home": true,
+          "observed_pids": [
+            5056,
+            35788,
+            8224
+          ],
+          "owner_nonce": "1ea3e4c6-d055-4076-a97b-a65b9d7e0150",
+          "pids_before_cleanup": [
+            5056,
+            35788,
+            8224
+          ],
+          "remaining_pids": [],
+          "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-5c8a23b8-2df7-40f3-93b9-8173e945df5c-awqh9m_j",
+          "temporary_directory_removed": true,
+          "worker_pid": 5056
+        },
+        "recovery_cleanup": null
+      }
+    ],
+    "snapshot_replays": [
+      {
+        "snapshot_id": "bfa1cbfd-3156-481c-bc3c-10ad18946d62",
+        "facts": 1,
+        "gap_codes": [
+          "REQUIRED_FIELDS_MISSING"
+        ],
+        "replay_network_calls": 0
+      }
+    ],
+    "valuation_basis": {
+      "baseline_account_version": 1,
+      "origin_at": "2026-10-07T00:00:00+08:00",
+      "scope_kind": "ACCOUNT",
+      "scope_id": "account",
+      "funding_version": 0,
+      "as_of": "2026-10-08T04:36:55.530125+00:00",
+      "loss_binding": false,
+      "funding_scope": {
+        "scope_kind": null,
+        "scope_id": null,
+        "baseline_account_version": null,
+        "loss_origin_at": null
+      }
+    },
+    "account_unchanged": true,
+    "background_count": 5
+  },
+  {
+    "directory": "13-live-switch-codex-v4",
+    "runs": [
+      {
+        "run_id": "4d0e2cbb-cffd-4ac2-8f94-3f884393de42",
+        "backend": "DEEPSEEK",
+        "status": "PARTIAL",
+        "process": {
+          "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+          "credential_persisted": false,
+          "environment_keys": [
+            "CODEX_HOME",
+            "COMSPEC",
+            "HOME",
+            "HTTPS_PROXY",
+            "HTTP_PROXY",
+            "NO_PROXY",
+            "PATH",
+            "PYTHONUTF8",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "isolated_cwd": true,
+          "isolated_home": true,
+          "observed_pids": [
+            13648,
+            24812,
+            6704
+          ],
+          "owner_nonce": "0719902a-f419-4ab7-bf0c-05dc45e56a73",
+          "pids_before_cleanup": [
+            13648,
+            24812,
+            6704
+          ],
+          "remaining_pids": [],
+          "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-4d0e2cbb-cffd-4ac2-8f94-3f884393de42-s1xe18oc",
+          "temporary_directory_removed": true,
+          "worker_pid": 13648
+        },
+        "recovery_cleanup": null
+      },
+      {
+        "run_id": "fde4ba50-0595-4f71-9c34-1a65c955d3b4",
+        "backend": "DIRECT_HTTP",
+        "status": "PARTIAL",
+        "process": null,
+        "recovery_cleanup": null
+      },
+      {
+        "run_id": "eaf0ce0c-96a2-4058-8f58-3504ca883153",
+        "backend": "CODEX",
+        "status": "CANCELLED",
+        "process": {
+          "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+          "environment_keys": [
+            "CODEX_HOME",
+            "COMSPEC",
+            "HOME",
+            "HTTPS_PROXY",
+            "HTTP_PROXY",
+            "NO_PROXY",
+            "PATH",
+            "PYTHONUTF8",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "isolated_cwd": true,
+          "isolated_home": true,
+          "observed_pids": [
+            40104,
+            36096,
+            4976,
+            23324,
+            34936,
+            16996
+          ],
+          "owner_nonce": "a9e6098e-aa4e-42af-adbe-eeb3b7318bbd",
+          "pids_before_cleanup": [
+            40104,
+            36096,
+            16996
+          ],
+          "remaining_pids": [],
+          "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-eaf0ce0c-96a2-4058-8f58-3504ca883153-3srf2ddu",
+          "temporary_directory_removed": true,
+          "worker_pid": 40104
+        },
+        "recovery_cleanup": null
+      }
+    ],
+    "snapshot_replays": [
+      {
+        "snapshot_id": "81751430-2d51-49be-b769-b84ae69402fa",
+        "facts": 1,
+        "gap_codes": [
+          "REQUIRED_FIELDS_MISSING",
+          "MODEL_REPORTED_GAP",
+          "MODEL_REPORTED_GAP",
+          "MODEL_REPORTED_GAP",
+          "MODEL_REPORTED_GAP",
+          "SUPPLEMENTAL_EVENT_TIME_AND_ASSERTION_UNVERIFIED"
+        ],
+        "replay_network_calls": 0
+      },
+      {
+        "snapshot_id": "c0689c2e-e2d4-493f-9b46-8a83a4cfce76",
+        "facts": 1,
+        "gap_codes": [
+          "REQUIRED_FIELDS_MISSING"
+        ],
+        "replay_network_calls": 0
+      }
+    ],
+    "valuation_basis": {
+      "baseline_account_version": 1,
+      "origin_at": "2026-10-07T00:00:00+08:00",
+      "scope_kind": "ACCOUNT",
+      "scope_id": "account",
+      "funding_version": 0,
+      "as_of": "2026-10-08T04:36:57.815390+00:00",
+      "loss_binding": false,
+      "funding_scope": {
+        "scope_kind": null,
+        "scope_id": null,
+        "baseline_account_version": null,
+        "loss_origin_at": null
+      }
+    },
+    "account_unchanged": true,
+    "background_count": 5
+  },
+  {
+    "directory": "13-live-switch-deepseek-v4",
+    "runs": [
+      {
+        "run_id": "c782b18e-c754-469e-980d-e65e56da2f53",
+        "backend": "CODEX",
+        "status": "PARTIAL",
+        "process": {
+          "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+          "environment_keys": [
+            "CODEX_HOME",
+            "COMSPEC",
+            "HOME",
+            "HTTPS_PROXY",
+            "HTTP_PROXY",
+            "NO_PROXY",
+            "PATH",
+            "PYTHONUTF8",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "isolated_cwd": true,
+          "isolated_home": true,
+          "observed_pids": [
+            18076,
+            15676,
+            40688,
+            14496,
+            39108,
+            9428
+          ],
+          "owner_nonce": "d6f91622-99da-42d8-b232-0550dfcaf55b",
+          "pids_before_cleanup": [
+            18076,
+            15676,
+            9428
+          ],
+          "remaining_pids": [],
+          "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-c782b18e-c754-469e-980d-e65e56da2f53-d9cev_xe",
+          "temporary_directory_removed": true,
+          "worker_pid": 18076
+        },
+        "recovery_cleanup": null
+      },
+      {
+        "run_id": "a777482c-bef9-4c06-8c7f-5864ff96592e",
+        "backend": "DIRECT_HTTP",
+        "status": "PARTIAL",
+        "process": null,
+        "recovery_cleanup": null
+      },
+      {
+        "run_id": "d363afac-6702-4b43-8251-a65568f50b8f",
+        "backend": "DEEPSEEK",
+        "status": "CANCELLED",
+        "process": {
+          "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+          "credential_persisted": false,
+          "environment_keys": [
+            "CODEX_HOME",
+            "COMSPEC",
+            "HOME",
+            "HTTPS_PROXY",
+            "HTTP_PROXY",
+            "NO_PROXY",
+            "PATH",
+            "PYTHONUTF8",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "isolated_cwd": true,
+          "isolated_home": true,
+          "observed_pids": [
+            27400,
+            15908,
+            36488
+          ],
+          "owner_nonce": "adbe2948-59cf-419d-b3b3-93105a041ce4",
+          "pids_before_cleanup": [
+            27400,
+            15908,
+            36488
+          ],
+          "remaining_pids": [],
+          "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-d363afac-6702-4b43-8251-a65568f50b8f-o9la_g6i",
+          "temporary_directory_removed": true,
+          "worker_pid": 27400
+        },
+        "recovery_cleanup": null
+      }
+    ],
+    "snapshot_replays": [
+      {
+        "snapshot_id": "6e45a592-3f46-45ec-9b8a-dd0b85bdc9c9",
+        "facts": 1,
+        "gap_codes": [
+          "REQUIRED_FIELDS_MISSING",
+          "MODEL_REPORTED_GAP",
+          "MODEL_REPORTED_GAP",
+          "SUPPLEMENTAL_EVENT_TIME_AND_ASSERTION_UNVERIFIED"
+        ],
+        "replay_network_calls": 0
+      },
+      {
+        "snapshot_id": "c668cf1a-3e56-4ff8-b725-c253d2a19050",
+        "facts": 1,
+        "gap_codes": [
+          "REQUIRED_FIELDS_MISSING"
+        ],
+        "replay_network_calls": 0
+      }
+    ],
+    "valuation_basis": {
+      "baseline_account_version": 1,
+      "origin_at": "2026-10-07T00:00:00+08:00",
+      "scope_kind": "ACCOUNT",
+      "scope_id": "account",
+      "funding_version": 0,
+      "as_of": "2026-10-08T04:37:01.486875+00:00",
+      "loss_binding": false,
+      "funding_scope": {
+        "scope_kind": null,
+        "scope_id": null,
+        "baseline_account_version": null,
+        "loss_origin_at": null
+      }
+    },
+    "account_unchanged": true,
+    "background_count": 5
+  }
+]

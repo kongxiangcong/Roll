@@ -1,0 +1,462 @@
+{
+  "evidence_kind": "METHOD_SOURCE_PUBLIC_API_REAL_SQLITE; NOT_ACTUAL_MARKET_PRICE",
+  "source_run": {
+    "run_id": "8d8f6181-7832-4baf-92d3-27719fd24646",
+    "request_id": "4d952df0-a650-4fc7-8a7d-860bc8d007a7",
+    "backend": "DIRECT_HTTP",
+    "model": null,
+    "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+    "runtime_versions": {
+      "httpx": "0.28.1",
+      "pyarrow": "25.0.1",
+      "pypdf": "6.19.0"
+    },
+    "config_fingerprint": "f171821a9fb59ec1eb240d2710cb3725c9ead8047fab8b3105cc81e187c96e0b",
+    "evidence_kind": "METHOD_CASE",
+    "started_at": "2026-10-08T04:40:03.387297+00:00",
+    "status": "COMPLETE",
+    "tools": [
+      {
+        "source_id": "tencent-quote",
+        "instrument": "SSE:600000",
+        "group": "QUOTE",
+        "started_at": "2026-10-08T04:40:03.394752+00:00",
+        "method": "GET",
+        "source_url": "https://qt.gtimg.cn/q=sh600000",
+        "raw_hash": "6d73189b56cc265218290de8c170520ad19fe7c56ecb8fe73fe13bfb48a68346",
+        "http_status": 200,
+        "status": "ARCHIVED",
+        "finished_at": "2026-10-08T04:40:03.420837+00:00",
+        "received_bytes": 171
+      }
+    ],
+    "gaps": [],
+    "snapshot_id": "208f50eb-460b-42d3-bca6-0bd1c0be1fe1",
+    "finished_at": "2026-10-08T04:40:03.482311+00:00",
+    "elapsed_seconds": 0.088,
+    "retrieved_bytes": 171
+  },
+  "before_valuation": {
+    "valuation_id": "9be5a79c-3210-4a84-845e-1d9ab740b84a",
+    "created_at": "2026-10-08T04:40:03.804079+00:00",
+    "method_version": "account-raw-nav-dietz-v1",
+    "namespace": "ACTUAL",
+    "input_authority": "ACTUAL_ACCOUNT_WITH_METHOD_MARKS",
+    "scope_kind": "ACCOUNT",
+    "scope_id": "account",
+    "account_version": 1,
+    "known_by": "2026-10-08T04:40:03.506736+00:00",
+    "origin_at": "2026-10-07T00:00:00+08:00",
+    "as_of": "2026-10-08T04:40:03.506736+00:00",
+    "baseline_before_history": "INCOMPLETE",
+    "historical_return_before_baseline": null,
+    "account": {
+      "confirmed_at": "2026-10-08T04:40:03.268277+00:00",
+      "effective_at": "2026-10-07T00:00:00+08:00",
+      "cash_balance": "10000.00",
+      "cash_balance_basis": null,
+      "fees_pending": null,
+      "rights_fee_breakdown_pending": null,
+      "broker_available": null,
+      "broker_available_as_of": null,
+      "broker_frozen": null,
+      "broker_frozen_as_of": null,
+      "withdrawable": null,
+      "withdrawable_as_of": null
+    },
+    "baseline_quote_status": "MISSING",
+    "baseline_quotes": {},
+    "positions": [
+      {
+        "instrument": "SSE:600000",
+        "quantity": "300",
+        "price": "12.00",
+        "market_value": "3600.00",
+        "acquisition_cost_including_fees": null,
+        "broker_reference_cost": null,
+        "quote_status": "STALE",
+        "quote": {
+          "adjustment": "RAW",
+          "age_seconds": 78003.395791,
+          "amount_yuan": null,
+          "available_at": "2026-10-08T04:40:03.395791+00:00",
+          "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+          "currency": "CNY",
+          "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+          "evidence_kind": "METHOD_CASE",
+          "fetched_at": "2026-10-08T04:40:03.395791+00:00",
+          "formal_judgment": "DISABLED",
+          "group": "QUOTE",
+          "historical_limitations": [
+            "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+            "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+          ],
+          "instrument": "SSE:600000",
+          "last": "12.00",
+          "method_status": "NORMAL",
+          "point_in_time_input_allowed": false,
+          "published_at": null,
+          "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+          "raw_hash": "6d73189b56cc265218290de8c170520ad19fe7c56ecb8fe73fe13bfb48a68346",
+          "received_at": "2026-10-08T04:40:03.395791+00:00",
+          "reported_limit_down": null,
+          "reported_limit_up": null,
+          "revision_id": "6d73189b56cc265218290de8c170520ad19fe7c56ecb8fe73fe13bfb48a68346",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh600000",
+          "status_basis": "13 METHOD quote for arithmetic continuity only",
+          "time_precision": "SECOND",
+          "trade_date": "2026-10-07",
+          "upstream_at": "2026-10-07T15:00:00+08:00",
+          "volume_reported": null,
+          "volume_unit": "UNKNOWN",
+          "snapshot_id": "208f50eb-460b-42d3-bca6-0bd1c0be1fe1",
+          "run_id": "8d8f6181-7832-4baf-92d3-27719fd24646"
+        }
+      }
+    ],
+    "cash_plus_holdings": "13600.00",
+    "cash_estimated": false,
+    "pending_items": [],
+    "pending_income": "0.00",
+    "pending_expenses": "0.00",
+    "pending_policy": "CONFIRMED_OUTSTANDING_RECEIVABLES_MINUS_PAYABLES_INCLUDED_IN_NET_ASSETS; NOT_CASH_OR_BROKER_AVAILABLE",
+    "asynchronous_quotes": false,
+    "freshness_policy": "SAME_SHANGHAI_DATE_INDICATIVE; DIFFERENT_DATES_OR_SUSPENDED_OR_ASYNCHRONOUS_STALE; NOT_TRADING_QUALIFICATION",
+    "facts": {
+      "scope_kind": "ACCOUNT",
+      "scope_id": "account",
+      "baseline_account_version": 1,
+      "origin_at": "2026-10-07T00:00:00+08:00",
+      "as_of": "2026-10-08T04:40:03.506736+00:00",
+      "facts_version": "9be5a79c-3210-4a84-845e-1d9ab740b84a",
+      "valuation_status": "MISSING",
+      "baseline_assets": null,
+      "net_assets": "13600.00",
+      "external_in": "0.00",
+      "external_out": "0.00",
+      "realized_pnl": "0.00",
+      "unrealized_pnl": null,
+      "income": "0.00",
+      "fees": "0.00",
+      "pending_income_delta": "0.00",
+      "pending_expense_delta": "0.00"
+    },
+    "performance": {
+      "total_pnl": null,
+      "nav_adjusted_pnl": null,
+      "conservation": "UNKNOWN",
+      "return_method": "MODIFIED_DIETZ_ACTUAL_EFFECTIVE_TIME_V1",
+      "weighted_capital": null,
+      "return_percent": null,
+      "estimated": true
+    },
+    "authority": {
+      "technical_capability": "UNGRANTED",
+      "remaining_loss_allowance": null
+    },
+    "input_fingerprint": "c057186ec4d2a69ebdc4285ec05f08b6dd6f5db6f606b1ec37d8e01b11cf3f32"
+  },
+  "after_valuation": {
+    "valuation_id": "3235014a-9c79-4776-bc8d-d9a9a977af17",
+    "created_at": "2026-10-08T04:40:04.277230+00:00",
+    "method_version": "account-raw-nav-dietz-v1",
+    "namespace": "ACTUAL",
+    "input_authority": "ACTUAL_ACCOUNT_WITH_METHOD_MARKS",
+    "scope_kind": "ACCOUNT",
+    "scope_id": "account",
+    "account_version": 1,
+    "known_by": "2026-10-08T04:40:03.506736+00:00",
+    "origin_at": "2026-10-07T00:00:00+08:00",
+    "as_of": "2026-10-08T04:40:03.506736+00:00",
+    "baseline_before_history": "INCOMPLETE",
+    "historical_return_before_baseline": null,
+    "account": {
+      "confirmed_at": "2026-10-08T04:40:03.268277+00:00",
+      "effective_at": "2026-10-07T00:00:00+08:00",
+      "cash_balance": "10000.00",
+      "cash_balance_basis": null,
+      "fees_pending": null,
+      "rights_fee_breakdown_pending": null,
+      "broker_available": null,
+      "broker_available_as_of": null,
+      "broker_frozen": null,
+      "broker_frozen_as_of": null,
+      "withdrawable": null,
+      "withdrawable_as_of": null
+    },
+    "baseline_quote_status": "MISSING",
+    "baseline_quotes": {},
+    "positions": [
+      {
+        "instrument": "SSE:600000",
+        "quantity": "300",
+        "price": "12.00",
+        "market_value": "3600.00",
+        "acquisition_cost_including_fees": null,
+        "broker_reference_cost": null,
+        "quote_status": "STALE",
+        "quote": {
+          "adjustment": "RAW",
+          "age_seconds": 78003.395791,
+          "amount_yuan": null,
+          "available_at": "2026-10-08T04:40:03.395791+00:00",
+          "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+          "currency": "CNY",
+          "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+          "evidence_kind": "METHOD_CASE",
+          "fetched_at": "2026-10-08T04:40:03.395791+00:00",
+          "formal_judgment": "DISABLED",
+          "group": "QUOTE",
+          "historical_limitations": [
+            "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+            "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+          ],
+          "instrument": "SSE:600000",
+          "last": "12.00",
+          "method_status": "NORMAL",
+          "point_in_time_input_allowed": false,
+          "published_at": null,
+          "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+          "raw_hash": "6d73189b56cc265218290de8c170520ad19fe7c56ecb8fe73fe13bfb48a68346",
+          "received_at": "2026-10-08T04:40:03.395791+00:00",
+          "reported_limit_down": null,
+          "reported_limit_up": null,
+          "revision_id": "6d73189b56cc265218290de8c170520ad19fe7c56ecb8fe73fe13bfb48a68346",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh600000",
+          "status_basis": "13 METHOD quote for arithmetic continuity only",
+          "time_precision": "SECOND",
+          "trade_date": "2026-10-07",
+          "upstream_at": "2026-10-07T15:00:00+08:00",
+          "volume_reported": null,
+          "volume_unit": "UNKNOWN",
+          "snapshot_id": "208f50eb-460b-42d3-bca6-0bd1c0be1fe1",
+          "run_id": "8d8f6181-7832-4baf-92d3-27719fd24646"
+        }
+      }
+    ],
+    "cash_plus_holdings": "13600.00",
+    "cash_estimated": false,
+    "pending_items": [],
+    "pending_income": "0.00",
+    "pending_expenses": "0.00",
+    "pending_policy": "CONFIRMED_OUTSTANDING_RECEIVABLES_MINUS_PAYABLES_INCLUDED_IN_NET_ASSETS; NOT_CASH_OR_BROKER_AVAILABLE",
+    "asynchronous_quotes": false,
+    "freshness_policy": "SAME_SHANGHAI_DATE_INDICATIVE; DIFFERENT_DATES_OR_SUSPENDED_OR_ASYNCHRONOUS_STALE; NOT_TRADING_QUALIFICATION",
+    "facts": {
+      "scope_kind": "ACCOUNT",
+      "scope_id": "account",
+      "baseline_account_version": 1,
+      "origin_at": "2026-10-07T00:00:00+08:00",
+      "as_of": "2026-10-08T04:40:03.506736+00:00",
+      "facts_version": "3235014a-9c79-4776-bc8d-d9a9a977af17",
+      "valuation_status": "MISSING",
+      "baseline_assets": null,
+      "net_assets": "13600.00",
+      "external_in": "0.00",
+      "external_out": "0.00",
+      "realized_pnl": "0.00",
+      "unrealized_pnl": null,
+      "income": "0.00",
+      "fees": "0.00",
+      "pending_income_delta": "0.00",
+      "pending_expense_delta": "0.00"
+    },
+    "performance": {
+      "total_pnl": null,
+      "nav_adjusted_pnl": null,
+      "conservation": "UNKNOWN",
+      "return_method": "MODIFIED_DIETZ_ACTUAL_EFFECTIVE_TIME_V1",
+      "weighted_capital": null,
+      "return_percent": null,
+      "estimated": true
+    },
+    "authority": {
+      "technical_capability": "UNGRANTED",
+      "remaining_loss_allowance": null
+    },
+    "input_fingerprint": "c057186ec4d2a69ebdc4285ec05f08b6dd6f5db6f606b1ec37d8e01b11cf3f32"
+  },
+  "agent_failures": [
+    {
+      "allowed_operations": [
+        "V8_PURE_COMPUTATION",
+        "FUNCTIONS_EXEC",
+        "FUNCTIONS_WAIT"
+      ],
+      "allowed_tools": [
+        "roll_read_evidence",
+        "roll_read_source",
+        "clock__curr_time"
+      ],
+      "archives": [],
+      "backend": "CODEX",
+      "backend_settings": {
+        "backend": "CODEX",
+        "saved_at": null,
+        "version": 0
+      },
+      "candidates": [],
+      "config_fingerprint": "8722c9a98d320f890e9a12714940afcf15e426829f420b2058de46c6828af5cc",
+      "error": {
+        "code": "CODEX_AUTH_NOT_CONFIGURED"
+      },
+      "evidence_kind": "REAL_CODEX_METHOD_CASE_SOURCE",
+      "finished_at": "2026-10-08T04:40:03.947997+00:00",
+      "formal_judgment": "DISABLED",
+      "gaps": [],
+      "host_code_hashes": {
+        "codex_evidence.py": "6b14b7fa594207b94ebf5087b5f461a2bb2e18f9959454e4c7d0a6e171a570d3",
+        "codex_process.py": "20f747ff481dad3345df66c353acbefe1890ca722decc39e3fabc3f24116bc52",
+        "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+      },
+      "host_owner": {
+        "creation_ticks": 134359079994381051,
+        "pid": 34064
+      },
+      "limits": {
+        "concurrency": 1,
+        "http_calls": 6,
+        "recursive_depth": 0,
+        "response_bytes": 65536,
+        "retries": 0,
+        "runtime_operations": 8,
+        "subtasks": 0,
+        "timeout_seconds": 120,
+        "tool_calls": 8,
+        "total_bytes": 262144,
+        "total_calls": 22
+      },
+      "model": "gpt-6.1-sol",
+      "question": "No model credential; retain qualified inputs",
+      "request_id": "4d952df0-a650-4fc7-8a7d-860bc8d007a7",
+      "resolved_model": null,
+      "retry_of": null,
+      "run_id": "829043f9-e847-4b53-beb8-204f0a88f5b2",
+      "sdk_runtime_version": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      },
+      "selection_kind": "SAVED_BACKEND",
+      "source_dependency_fingerprint": "a11bfd81ffe2354db13c34c0b70d675843e4dc09e04f2459331f992caca86625",
+      "started_at": "2026-10-08T04:40:03.930224+00:00",
+      "status": "UNAVAILABLE",
+      "tools": []
+    },
+    {
+      "allowed_tools": [
+        "roll_read_evidence",
+        "roll_read_source"
+      ],
+      "archives": [],
+      "backend": "DEEPSEEK",
+      "backend_settings": {
+        "backend": "DEEPSEEK",
+        "saved_at": "2026-10-08T04:40:04.103748+00:00",
+        "version": 1
+      },
+      "candidates": [],
+      "config_fingerprint": "efbcf5432dc1a7a96cea103799937db26f5ff1fa2d685cc9711c082a15ac67a2",
+      "error": {
+        "code": "DEEPSEEK_AUTH_NOT_CONFIGURED",
+        "message": "尚未配置 DeepSeek API 凭据。管理员可设置 DEEPSEEK_API_KEY 或明确的 ROLL_DEEPSEEK_API_KEY_FILE；已有网页订阅不证明 API 权限。"
+      },
+      "evidence_kind": "REAL_DEEPSEEK_METHOD_CASE_SOURCE",
+      "finished_at": "2026-10-08T04:40:04.144898+00:00",
+      "formal_judgment": "DISABLED",
+      "gaps": [],
+      "host_owner": {
+        "creation_ticks": 134359079994381051,
+        "pid": 34064
+      },
+      "limits": {
+        "concurrency": 1,
+        "http_calls": 6,
+        "max_output_tokens": 2048,
+        "model_calls": 5,
+        "model_input_bytes": 131072,
+        "model_response_bytes": 65536,
+        "model_total_response_bytes": 262144,
+        "recursive_depth": 0,
+        "response_bytes": 65536,
+        "retries": 0,
+        "subtasks": 0,
+        "timeout_seconds": 120,
+        "tool_calls": 8,
+        "total_bytes": 262144,
+        "total_calls": 19
+      },
+      "model": "deepseek-flash",
+      "question": "No model credential; retain qualified inputs",
+      "request_id": "4d952df0-a650-4fc7-8a7d-860bc8d007a7",
+      "resolved_model": null,
+      "retry_of": null,
+      "run_id": "ab1b5b17-e093-49b0-b755-9e5b9447ee15",
+      "runtime_audit": {
+        "allowed_tools": [
+          "roll_read_evidence",
+          "roll_read_source"
+        ],
+        "auto_previous_response_id": false,
+        "endpoint": "https://api.deepseek.com",
+        "handoffs": [],
+        "host_code_hashes": {
+          "codex_evidence.py": "6b14b7fa594207b94ebf5087b5f461a2bb2e18f9959454e4c7d0a6e171a570d3",
+          "codex_process.py": "20f747ff481dad3345df66c353acbefe1890ca722decc39e3fabc3f24116bc52",
+          "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+          "deepseek_evidence.py": "aa5fca12499df0e0cee6ed7ab8f06093f71d78284f83185e2bcc739a5fec6bfe",
+          "deepseek_process.py": "9c19bc0ccf2f77d034f2b6594d22ffb3f42cff39f2397b6d56fc1d72e2b59032",
+          "deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+          "settings.py": "a9fea3c473b9dff6f232271f65e1bbb25cfaed78ab454b28e5ff64cb92406f12"
+        },
+        "limits": {
+          "concurrency": 1,
+          "http_calls": 6,
+          "max_output_tokens": 2048,
+          "model_calls": 5,
+          "model_input_bytes": 131072,
+          "model_response_bytes": 65536,
+          "model_total_response_bytes": 262144,
+          "recursive_depth": 0,
+          "response_bytes": 65536,
+          "retries": 0,
+          "subtasks": 0,
+          "timeout_seconds": 120,
+          "tool_calls": 8,
+          "total_bytes": 262144,
+          "total_calls": 19
+        },
+        "mcp": false,
+        "model": "deepseek-flash",
+        "plugins": false,
+        "protocol": "RESPONSES_STATELESS",
+        "research_input_audit_enabled": true,
+        "retries": 0,
+        "sdk_runtime_version": {
+          "httpx2": "2.13.1",
+          "openai": "3.26.0",
+          "openai-agents": "0.23.1"
+        },
+        "skills": false,
+        "store": null,
+        "tracing_disabled": true
+      },
+      "sdk_runtime_version": {
+        "httpx2": "2.13.1",
+        "openai": "3.26.0",
+        "openai-agents": "0.23.1"
+      },
+      "selection_kind": "SAVED_BACKEND",
+      "source_dependency_fingerprint": "a11bfd81ffe2354db13c34c0b70d675843e4dc09e04f2459331f992caca86625",
+      "started_at": "2026-10-08T04:40:04.132762+00:00",
+      "status": "UNAVAILABLE",
+      "tools": []
+    }
+  ],
+  "source_calls": 1,
+  "snapshot_unchanged": true,
+  "replay_network_calls": 0,
+  "account_funding_protocols_unchanged": true,
+  "passed": true
+}

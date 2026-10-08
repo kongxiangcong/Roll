@@ -1,0 +1,274 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 273,
+    "http_calls": 1,
+    "model_tool_result_bytes": 2059,
+    "received_bytes": 273
+  },
+  "allowed_operations": [
+    "V8_PURE_COMPUTATION",
+    "FUNCTIONS_EXEC",
+    "FUNCTIONS_WAIT"
+  ],
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source",
+    "clock__curr_time"
+  ],
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T04:17:09.931101+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    }
+  ],
+  "backend": "CODEX",
+  "backend_settings": {
+    "backend": "CODEX",
+    "saved_at": null,
+    "version": 0
+  },
+  "bootstrap_audit": {
+    "auth_mode": "chatgpt",
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "bridge": {
+    "name": "bundled-code-mode-host",
+    "runtime": "Rust/V8, no Node bridge",
+    "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+    "version": "0.161.0"
+  },
+  "call_usage": {
+    "host_tool_calls": 1,
+    "http_calls": 1,
+    "model_requests": 0,
+    "runtime_operations": 1,
+    "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+    "total": 3
+  },
+  "candidates": [],
+  "config_fingerprint": "8722c9a98d320f890e9a12714940afcf15e426829f420b2058de46c6828af5cc",
+  "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+  "elapsed_seconds": 31.269,
+  "evidence_kind": "REAL_CODEX_TASK",
+  "finished_at": "2026-10-08T04:17:10.641806+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    }
+  ],
+  "host_code_hashes": {
+    "codex_evidence.py": "6b14b7fa594207b94ebf5087b5f461a2bb2e18f9959454e4c7d0a6e171a570d3",
+    "codex_process.py": "20f747ff481dad3345df66c353acbefe1890ca722decc39e3fabc3f24116bc52",
+    "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+  },
+  "host_owner": {
+    "creation_ticks": 134359065951594444,
+    "pid": 27920
+  },
+  "instruction_sources": [],
+  "interrupt_requested_at": "2026-10-08T04:17:10.439057+00:00",
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "recursive_depth": 0,
+    "response_bytes": 65536,
+    "retries": 0,
+    "runtime_operations": 8,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144,
+    "total_calls": 22
+  },
+  "model": "gpt-6.1-sol",
+  "model_provider": "openai",
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      32720,
+      31524,
+      35100,
+      30648,
+      34168,
+      2648
+    ],
+    "owner_nonce": "9df3c42e-8e99-4fcd-8ba4-bbe8437db0c2",
+    "pids_before_cleanup": [
+      32720,
+      31524,
+      2648
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-d7587722-0e98-4e7d-b8a0-41c5aafdfbd4-2ij84ncm",
+    "temporary_directory_removed": true,
+    "worker_pid": 32720
+  },
+  "question": "先用 roll_read_evidence 获取 SSE:600519 的 QUOTE，再用 roll_read_source 获取 MOUTAI_OFFICIAL 原文。最后JSON仅一条简短官网字面候选，各字段不超过60字；保留报价和事项时点缺口，不作交易判断。",
+  "request_id": "9fea6e25-ede5-4f01-8d7a-49d2d7341df3",
+  "resolved_model": "gpt-6.1-sol",
+  "retry_of": null,
+  "run_id": "d7587722-0e98-4e7d-b8a0-41c5aafdfbd4",
+  "runtime_audit": {
+    "auth_mode": "chatgpt",
+    "disabled_skills": 38,
+    "effective_config": {
+      "approval_policy": "never",
+      "features": {
+        "api_key_cyber_access_programs": false,
+        "api_key_model_discovery": true,
+        "apps": false,
+        "auth_elicitation": true,
+        "background_paginated_rollout_migration": false,
+        "browser_use": false,
+        "browser_use_external": false,
+        "code_mode": false,
+        "code_mode_host": true,
+        "code_mode_only": false,
+        "codex_apps_mcp_2026_07_28": false,
+        "computer_use": false,
+        "goals": false,
+        "hooks": false,
+        "image_generation": false,
+        "in_app_browser": false,
+        "mcp_2026_07_28": false,
+        "memories": false,
+        "mentions_v2": true,
+        "multi_agent": false,
+        "multi_agent_v2": false,
+        "network_proxy": null,
+        "plugins": false,
+        "remote_control": false,
+        "remote_plugin": false,
+        "shell_snapshot": false,
+        "shell_tool": false,
+        "skill_mcp_dependency_install": false,
+        "tool_suggest": false,
+        "view_image": false,
+        "windows_sandbox_service": false
+      },
+      "layers": [
+        "user",
+        "system"
+      ],
+      "mcp_servers": 0,
+      "sandbox_mode": "read-only",
+      "skills_instructions": false,
+      "web_search": "disabled"
+    },
+    "enabled_skills": 0,
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+  "runtime_items": [
+    {
+      "id": "01a119ba-ac41-7ea2-b7b3-c857f8c56b08",
+      "item_type": "userMessage",
+      "tool": null
+    },
+    {
+      "id": "exec-c35fffeb-ed0f-4858-a076-109b025bb52f",
+      "item_type": "dynamicToolCall",
+      "tool": "roll_read_evidence"
+    }
+  ],
+  "runtime_operations": [
+    {
+      "call_id": "call_0872e1a765244bd380723ea5b8a533d7",
+      "name": "exec",
+      "namespace": null,
+      "type": "custom_tool_call"
+    }
+  ],
+  "runtime_thread_id": "01a119ba-7c73-71d2-9aa5-a2aedaa09862",
+  "runtime_turn_id": "01a119ba-8e67-7053-8f82-c746a56fe774",
+  "sdk_runtime_version": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0"
+  },
+  "selection_kind": "SAVED_BACKEND",
+  "source_dependency_fingerprint": "85e25779c884bf8e2c49065af4b4a86e20acb4578f291515264d44dd736c7ad5",
+  "started_at": "2026-10-08T04:16:39.263095+00:00",
+  "status": "CANCELLED",
+  "token_usage": {
+    "last": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 0,
+      "inputTokens": 2876,
+      "outputTokens": 31,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 2907
+    },
+    "modelContextWindow": 258400,
+    "total": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 0,
+      "inputTokens": 2876,
+      "outputTokens": 31,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 2907
+    }
+  },
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": [
+    {
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "exec-c35fffeb-ed0f-4858-a076-109b025bb52f",
+      "child_run_id": "7842ad04-5283-4b68-a116-e0eb89e74c71",
+      "received_at": "2026-10-08T04:17:09.371581+00:00",
+      "snapshot_id": "67d052e1-576b-44d9-a451-7666ccbde205",
+      "source_id": "roll_read_evidence",
+      "status": "ARCHIVED"
+    }
+  ]
+}
