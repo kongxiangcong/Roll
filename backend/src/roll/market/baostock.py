@@ -62,10 +62,11 @@ def acquire(command,deadline,cancel_event,max_bytes,max_calls,worker=None):
     # The key is inherited by the isolated SDK child, never placed in argv/stdin/archive metadata.
     environment={k:v for k,v in os.environ.items() if not any(t in k.upper() for t in ('API_KEY','TOKEN','SECRET','PASSWORD'))}
     if credential:environment['BAOSTOCK_API_KEY']=credential
+    environment['PYTHONIOENCODING']='utf-8'  # Fixed JSON protocol, independent of Windows console encoding.
     with tempfile.TemporaryDirectory(prefix='roll-baostock-') as directory:
         output=Path(directory)/'response.json'
         with output.open('wb') as stream:
-            process=subprocess.Popen([sys.executable,'-B',str(worker)],stdin=subprocess.PIPE,stdout=stream,stderr=subprocess.DEVNULL,
+            process=subprocess.Popen([sys.executable,'-B','-X','utf8',str(worker)],stdin=subprocess.PIPE,stdout=stream,stderr=subprocess.DEVNULL,
                 env=environment,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
             try:
                 process.stdin.write(json.dumps(command).encode());process.stdin.close()

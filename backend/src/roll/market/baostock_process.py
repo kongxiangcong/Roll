@@ -116,4 +116,4 @@ if __name__=='__main__':
         rendered=json.dumps(result,ensure_ascii=False)
     # Check decrypted/decoded SDK values too, since compressed wire can hide credential echoes.
     if os.environ.get('BAOSTOCK_API_KEY') and os.environ['BAOSTOCK_API_KEY'] in rendered:rendered=json.dumps({'error_code':'SECRET_REFLECTED'})
-    sys.stdout.write(rendered)
+    sys.stdout.buffer.write(rendered.encode('utf-8'))

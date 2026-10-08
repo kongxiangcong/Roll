@@ -94,7 +94,7 @@ def production_sdk_worker(tmp_path,query_body,external_setup=""):
         'constants=types.ModuleType("baostock.common.contants");constants.BAOSTOCK_CLIENT_VERSION="00.9.40"\n'
         'sdk.login=lambda:types.SimpleNamespace(error_code="0")\n'
         'def query(*args,**kwargs):\n'+''.join('    '+line+'\n' for line in query_body.splitlines())+
-        'sdk.query_trade_dates=query\n'
+        'sdk.query_trade_dates=query\nsdk.query_dividend_data=query\n'
         'sys.modules.update({"baostock":sdk,"baostock.common":common,"baostock.common.context":context,"baostock.common.contants":constants})\n'
         'runpy.run_path('+repr(str(implementation))+',run_name="__main__")',encoding='utf-8')
     return worker
@@ -182,3 +182,24 @@ def test_baostock_production_worker_archives_received_compressed_socket_frame(tm
             assert client.get('/api/data/archives/'+raw['sha256']).content==frame
             assert raw['decoded_bytes']==40 and snap['facts'][0]['is_trading_day'] is True
         thread.join(timeout=5)
+
+
+def test_baostock_non_ascii_dividend_worker_protocol_is_utf8_even_with_gbk_stdio(tmp_path,monkeypatch):
+    monkeypatch.setenv('PYTHONIOENCODING','gbk')
+    worker=production_sdk_worker(tmp_path,
+        'source=socket.socket()\nsource.send(b"query")\nsource.recv(4)\n'
+        'return types.SimpleNamespace(error_code="0",fields=["code","dividOperateDate","dividCashPsBeforeTax","dividPreNotice"],'
+        'next=iter([True,False]).__next__,get_row_data=lambda:["sh.600519","2026-09-30","0.7000","每10股派发现金红利7元（含税）"])',
+        'class SourceSocket:\n    def __init__(self,*a,**k):pass\n    def sendall(self,*a,**k):pass\n    def recv(self,*a,**k):return b"wire"\n    def close(self):pass\nsocket.socket=SourceSocket\n')
+    with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+        establish(client,['SSE:600519'])
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['ADJUSTMENTS'],'purpose':'RESEARCH',
+            'start_date':'2026-09-30','end_date':'2026-09-30','adjustment_source':'BAOSTOCK','baostock_auth_mode':'PUBLIC'}).json()
+        run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+        assert run['status']=='COMPLETE',run
+        snapshot=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        assert snapshot['facts'][0]['dividend_yuan_per_share']=='0.7000'
+        decoded=next(a for a in snapshot['archives'] if a['kind']=='SDK_DECODED_RESPONSE')
+        raw=client.get('/api/data/archives/'+decoded['sha256']).content
+        assert json.loads(raw.decode('utf-8'))['rows'][0][-1]=='每10股派发现金红利7元（含税）'
+        assert client.post('/api/data/runs/'+run['run_id']+'/replay').json()['network_calls']==0
