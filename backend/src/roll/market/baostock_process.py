@@ -85,7 +85,8 @@ def main(command):
     while result.error_code=='0' and result.next():collected.append(result.get_row_data())
     if state['failure']:return {'error_code':state['failure'],'failure_audit':dict(AUDIT)}
     if result.error_code!='0':return {'error_code':result.error_code}
-    for frame in state['query_wire'].split(b'<![CDATA[]]>\n'):
+    query_wire=bytes(state['query_wire'])
+    for frame in query_wire.split(b'<![CDATA[]]>\n'):
         head=frame[:21].split(b'\x01')
         if frame and not (len(head)==3 and head[1] in {b'96',b'99',b'9B',b'9D'}):AUDIT['decoded_bytes']+=len(frame)
     if AUDIT['decoded_bytes']>command.get('max_decoded_bytes',command['max_bytes']):raise BudgetFailure('DECODED_BYTE_LIMIT')
@@ -94,7 +95,7 @@ def main(command):
     # Close transport directly: logout is not needed for authority and must not exceed budget.
     AUDIT['phase']='METADATA'
     context.default_socket.close()
-    return {'error_code':'0','fields':result.fields,'rows':collected,'wire_b64':base64.b64encode(state['query_wire']).decode(),
+    return {'error_code':'0','fields':result.fields,'rows':collected,'wire_b64':base64.b64encode(query_wire).decode(),
         'received_at':received_at,'decoded_bytes':AUDIT['decoded_bytes'],'calls':state['calls'],'received_bytes':state['received_bytes'],'sdk_version':constants.BAOSTOCK_CLIENT_VERSION,'sdk_distribution_version':version('baostock'),'pandas_distribution_version':version('pandas')}
 
 
