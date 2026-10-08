@@ -88,6 +88,29 @@ def test_overflow_never_hides_assets_and_scope_rejects_external_stocks_and_indic
             'instruments': ['SSE:000001'], 'purpose': 'RESEARCH'}).status_code == 403
 
 
+def test_five_preselected_background_indices_remain_outside_watch_and_research(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        before = client.get('/api/account').json()
+        listing = client.get('/api/market/list').json()
+        background = listing['background_indices']
+        assert {item['instrument'] for item in background} == {
+            'SSE:000001', 'SZSE:399001', 'SZSE:399997', 'SSE:000300', 'SSE:000905'}
+        assert all(item['instrument_type'] == 'INDEX' and item['trading_capability'] == 'NONE'
+                   for item in background)
+        for instrument, name in [('SSE:000300', '沪深300'), ('SSE:000905', '中证500')]:
+            item = next(item for item in background if item['instrument'] == instrument)
+            assert item['name'] == name and item['purpose'] == 'BROAD_BACKGROUND'
+            assert client.post('/api/market/scope/check', json={
+                'instruments': [instrument], 'purpose': 'BACKGROUND'}).status_code == 200
+            for purpose in ['RESEARCH', 'OBSERVATION']:
+                assert client.post('/api/market/scope/check', json={
+                    'instruments': [instrument], 'purpose': purpose}).status_code == 403
+            assert client.post('/api/market/watch', json={'operation': 'ADD',
+                'instrument': instrument, 'expected_list_version': listing['version']}).status_code == 422
+        assert client.get('/api/market/list').json() == listing
+        assert client.get('/api/account').json() == before
+
+
 @pytest.mark.parametrize('exchange', ['SSE', 'SZSE'])
 def test_archived_exchange_calendar_handles_holidays_stages_timezones_and_gaps(tmp_path, exchange):
     with TestClient(create_app(tmp_path)) as client:

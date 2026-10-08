@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_fuyao_two_added_fixed_backgrounds_use_verified_sh_codes_and_archive ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/fuyao-data/backend/.roll-data/fuyao-background-source-red/test_fuyao_two_added_fixed_bac0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021FB3FD6EA0>
+
+    def test_fuyao_two_added_fixed_backgrounds_use_verified_sh_codes_and_archive(tmp_path,monkeypatch):
+        monkeypatch.setenv('FUYAO_API_KEY','METHOD_SECRET_NOT_REAL')
+        calls=[]
+        def provider(request):
+            assert request.url.path=='/api/a-share-index/prices/historical'
+            assert 'adjust' not in request.url.params
+            calls.append(request.url.params['thscode'])
+            return httpx.Response(200,json={'code':0,'data':{'thscode':request.url.params['thscode'],
+                'item':[{'date_ms':millis('2026-09-30'),'open_price':3500,'close_price':3510,
+                    'high_price':3530,'low_price':3490,'volume':1000000,'turnover':15000000}]}})
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
+            before=client.get('/api/account').json()
+            response=client.post('/api/data/requests',json={'instruments':['SSE:000300','SSE:000905'],
+                'groups':['DAILY'],'purpose':'BACKGROUND','start_date':'2026-09-30',
+                'end_date':'2026-09-30','daily_source':'FUYAO'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":{"code":"OUTSIDE_FINITE_LIST","instruments":["SSE:000300","SSE:000905"],"message":"只允许当前持仓/关注或明确预定的背景指数，不扩大全市场"}}
+E           assert 403 == 201
+E            +  where 403 = <Response [403 Forbidden]>.status_code
+
+backend\tests\application\test_fuyao_evidence.py:172: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_fuyao_evidence.py::test_fuyao_two_added_fixed_backgrounds_use_verified_sh_codes_and_archive
+1 failed in 3.83s

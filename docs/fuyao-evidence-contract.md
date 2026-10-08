@@ -11,6 +11,8 @@
 
 来源登记、实际范围与权限、版本指纹和环境见[实取验收](../.scratch/roll-p0/evidence/fuyao/acceptance.md)。主契约来源为官方[价格文档](https://fuyao.aicubes.cn/docs/api-reference/prices/)、[公司行为文档](https://fuyao.aicubes.cn/docs/api-reference/corporate-actions/)、[指数文档](https://fuyao.aicubes.cn/docs/api-reference/a-share-index/)及[当次全文](https://fuyao.aicubes.cn/llms-full.txt)。该文档原件SHA留在实取清单中，未把动态文档当固定外部代码依赖。
 
+固定背景名单现为上证指数、深证成指、沪深300、中证500与预选行业中证白酒，共5个。新增两个宽基经官方中证事实表与扶摇完整码精确检索交叉核实：`SSE:000300 → 000300.SH`、`SSE:000905 → 000905.SH`；它们只允许 `BACKGROUND`、交易能力 `NONE`，拒绝关注及个股研究/观察用途。新增两指数各21条2026-09月实际日线仅证明有限背景数据可读，不能进入个股模型或证明PIT/校准资格；见[五背景补充验收](../.scratch/roll-p0/evidence/fuyao/background-acceptance.md)。这补齐票13容量基线的输入范围；票13仍须实际工程基线和其余验收，未变更CAL40、学习/训练/封存协议。
+
 ## 19 与后继协议
 
 实际新增 2023—2026-09-30 的 908 RAW 和 908当前前复权日线、7公司行为；2026股数量额完整的181 RAW日线，三背景各181日线。覆盖长度增加并补齐实际成交额，不能证明历史无修订/PIT、历史交易状态、公司行为全集或以前的交易规则/日历已适配。2023—2025日历规则仍未知；报价逐证券时点仍未知。

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\fuyao-data\backend\.roll-data\fuyao-background-run.py", line 7, in <module>
+    runpy.run_path('backend/tests/adapters/fuyao_background_archive.py',run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "backend/tests/adapters/fuyao_background_archive.py", line 59, in <module>
+    args=parser.parse_args();run(args.directory,args.report)
+                             ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "backend/tests/adapters/fuyao_background_archive.py", line 51, in run
+    print(json.dumps({'status':value['status'],'network_calls':value['network_calls'],
+                                                               ~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'network_calls'

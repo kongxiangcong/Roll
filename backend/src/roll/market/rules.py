@@ -21,6 +21,12 @@ REFERENCE = Path(__file__).parent / 'reference'
 BACKGROUND_INDICES = [
     {'instrument': 'SSE:000001', 'name': '上证指数', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND', 'trading_capability': 'NONE'},
     {'instrument': 'SZSE:399001', 'name': '深证成指', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND', 'trading_capability': 'NONE'},
+    {'instrument': 'SSE:000300', 'name': '沪深300', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND',
+     'trading_capability': 'NONE', 'basis_url': 'https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf',
+     'basis': '预固定中证宽基；官方事实表代码000300，扶摇代码表核实000300.SH/沪深300/SH/指数'},
+    {'instrument': 'SSE:000905', 'name': '中证500', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND',
+     'trading_capability': 'NONE', 'basis_url': 'https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000905factsheet.pdf',
+     'basis': '预固定中证宽基；官方事实表代码000905，扶摇代码表核实000905.SH/中证500/SH/指数'},
     {'instrument': 'SZSE:399997', 'name': '中证白酒', 'instrument_type': 'INDEX', 'purpose': 'SECTOR_BACKGROUND',
      'trading_capability': 'NONE','related_instruments': ['SSE:600519'], 'basis_source': 'csi-399997-sector-basis',
      'basis_date': '2026-08-31', 'basis': '预固定一个相关行业指数；官网事实表成分列含600519，不作动态行业筛选'},
