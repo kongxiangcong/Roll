@@ -1,0 +1,756 @@
+{
+  "started_at": "2026-10-08T17:13:50.112248+00:00",
+  "instrument": "SSE:600362",
+  "requested_range": [
+    "2023-01-01",
+    "2026-10-08"
+  ],
+  "runs": [
+    {
+      "source": "BAOSTOCK",
+      "request_id": "64318df5-8b00-42aa-92b3-d46910bba21b",
+      "run_id": "e5dc9db3-7776-48c2-ab1a-da4102132efc",
+      "status": "COMPLETE",
+      "started_at": "2026-10-08T17:13:50.360979+00:00",
+      "finished_at": "2026-10-08T17:14:21.176986+00:00",
+      "tools": [
+        {
+          "source_id": "baostock-daily",
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "started_at": "2026-10-08T17:13:50.569470+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {
+            "fields": "date,code,open,high,low,close,preclose,volume,amount,adjustflag,tradestatus,isST"
+          },
+          "network_calls": 2,
+          "decoded_bytes": 106712,
+          "status": "ARCHIVED",
+          "raw_hash": "39ba1a0dcd372ddb07d1364847e66dfe8a98d9a34dad1d8829c5fe9bbd6137a2",
+          "decoded_hash": "851fa62149f241701fe08bbf7ee85dd59d82f2602dd693f326bcc01877f97cdc",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:13:55.995952+00:00"
+        },
+        {
+          "source_id": "baostock-calendar",
+          "instrument": "SSE:600362",
+          "group": "CALENDAR",
+          "started_at": "2026-10-08T17:13:56.029700+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {},
+          "network_calls": 2,
+          "decoded_bytes": 26304,
+          "status": "ARCHIVED",
+          "raw_hash": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+          "decoded_hash": "cb01f853dc3c6702d8890a8dd8d7ffc78f87f6c7d9f601c0380abdc0e9704bf1",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:14:02.514154+00:00"
+        },
+        {
+          "source_id": "baostock-adjustments",
+          "instrument": "SSE:600362",
+          "group": "ADJUSTMENTS",
+          "started_at": "2026-10-08T17:14:02.519937+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {
+            "year": 2023
+          },
+          "network_calls": 2,
+          "decoded_bytes": 541,
+          "status": "ARCHIVED",
+          "raw_hash": "467c058330f43c5e571132b8ded1051d68f8e173dd2dcb9d71295b409a21df5e",
+          "decoded_hash": "ae23e501bd222e08671624a9bd93377b8d763a83c79c2d78d066bfeff39e456c",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:14:05.285514+00:00"
+        },
+        {
+          "source_id": "baostock-adjustments",
+          "instrument": "SSE:600362",
+          "group": "ADJUSTMENTS",
+          "started_at": "2026-10-08T17:14:05.285733+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {
+            "year": 2024
+          },
+          "network_calls": 2,
+          "decoded_bytes": 541,
+          "status": "ARCHIVED",
+          "raw_hash": "898a8ae0a3b525c19eccacb5292ac90c230f60a35af3d8138d7e21c91f7f5721",
+          "decoded_hash": "1096b63b6f0d2f908dc3b691b3595d36d229923fb6fa3b730a10fea2a61d77b9",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:14:09.545871+00:00"
+        },
+        {
+          "source_id": "baostock-adjustments",
+          "instrument": "SSE:600362",
+          "group": "ADJUSTMENTS",
+          "started_at": "2026-10-08T17:14:09.546111+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {
+            "year": 2025
+          },
+          "network_calls": 2,
+          "decoded_bytes": 717,
+          "status": "ARCHIVED",
+          "raw_hash": "65e5a6a76bb41ff1ff5d80962fd344d69294abd4e736293714635ac77e07925f",
+          "decoded_hash": "8c7a907c177a886b4bc27f06a5c5b4c255358be30c7441c990573b03e5020ff5",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:14:13.236616+00:00"
+        },
+        {
+          "source_id": "baostock-adjustments",
+          "instrument": "SSE:600362",
+          "group": "ADJUSTMENTS",
+          "started_at": "2026-10-08T17:14:13.236774+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {
+            "year": 2026
+          },
+          "network_calls": 2,
+          "decoded_bytes": 541,
+          "status": "ARCHIVED",
+          "raw_hash": "9af04733242fded51acb53d2132ea9c6aa2e446b5eff76067d71d0bc0ff9eca4",
+          "decoded_hash": "f538c7edf472577cf92fbd5af98bb39fc79ea5ced8656c611180937bb26ef84f",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:14:18.322407+00:00"
+        }
+      ],
+      "snapshot_id": "98486e2d-2f52-401f-a6c6-da7f9742ea03",
+      "fact_counts": {
+        "DAILY": 909,
+        "STATUS": 909,
+        "CALENDAR": 1377,
+        "ADJUSTMENTS": 5
+      },
+      "raw_daily_count": 909,
+      "raw_daily_first": "2023-01-03",
+      "raw_daily_last": "2026-10-08",
+      "missing_amount_rows": 0,
+      "unknown_volume_unit_rows": 0,
+      "basic_error_rows": 0,
+      "source_gaps": [],
+      "source_coverage": [
+        {
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:600362",
+          "raw_hash": "39ba1a0dcd372ddb07d1364847e66dfe8a98d9a34dad1d8829c5fe9bbd6137a2",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 909,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "STATUS",
+          "instrument": "SSE:600362",
+          "raw_hash": "39ba1a0dcd372ddb07d1364847e66dfe8a98d9a34dad1d8829c5fe9bbd6137a2",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 909,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "CALENDAR",
+          "instrument": "SSE:600362",
+          "raw_hash": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 1377,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362",
+          "raw_hash": "467c058330f43c5e571132b8ded1051d68f8e173dd2dcb9d71295b409a21df5e",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 1,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362",
+          "raw_hash": "898a8ae0a3b525c19eccacb5292ac90c230f60a35af3d8138d7e21c91f7f5721",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 1,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362",
+          "raw_hash": "65e5a6a76bb41ff1ff5d80962fd344d69294abd4e736293714635ac77e07925f",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 2,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362",
+          "raw_hash": "9af04733242fded51acb53d2132ea9c6aa2e446b5eff76067d71d0bc0ff9eca4",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 1,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        }
+      ],
+      "verified_archives": [
+        {
+          "sha256": "39ba1a0dcd372ddb07d1364847e66dfe8a98d9a34dad1d8829c5fe9bbd6137a2",
+          "bytes": 30996,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "851fa62149f241701fe08bbf7ee85dd59d82f2602dd693f326bcc01877f97cdc",
+          "bytes": 106875,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "851fa62149f241701fe08bbf7ee85dd59d82f2602dd693f326bcc01877f97cdc",
+          "bytes": 106875,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+          "bytes": 26317,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "cb01f853dc3c6702d8890a8dd8d7ffc78f87f6c7d9f601c0380abdc0e9704bf1",
+          "bytes": 26435,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "cb01f853dc3c6702d8890a8dd8d7ffc78f87f6c7d9f601c0380abdc0e9704bf1",
+          "bytes": 26435,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "467c058330f43c5e571132b8ded1051d68f8e173dd2dcb9d71295b409a21df5e",
+          "bytes": 554,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "ae23e501bd222e08671624a9bd93377b8d763a83c79c2d78d066bfeff39e456c",
+          "bytes": 675,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "ae23e501bd222e08671624a9bd93377b8d763a83c79c2d78d066bfeff39e456c",
+          "bytes": 675,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "898a8ae0a3b525c19eccacb5292ac90c230f60a35af3d8138d7e21c91f7f5721",
+          "bytes": 554,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "1096b63b6f0d2f908dc3b691b3595d36d229923fb6fa3b730a10fea2a61d77b9",
+          "bytes": 675,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "1096b63b6f0d2f908dc3b691b3595d36d229923fb6fa3b730a10fea2a61d77b9",
+          "bytes": 675,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "65e5a6a76bb41ff1ff5d80962fd344d69294abd4e736293714635ac77e07925f",
+          "bytes": 730,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "8c7a907c177a886b4bc27f06a5c5b4c255358be30c7441c990573b03e5020ff5",
+          "bytes": 852,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "8c7a907c177a886b4bc27f06a5c5b4c255358be30c7441c990573b03e5020ff5",
+          "bytes": 852,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "9af04733242fded51acb53d2132ea9c6aa2e446b5eff76067d71d0bc0ff9eca4",
+          "bytes": 554,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "f538c7edf472577cf92fbd5af98bb39fc79ea5ced8656c611180937bb26ef84f",
+          "bytes": 675,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "f538c7edf472577cf92fbd5af98bb39fc79ea5ced8656c611180937bb26ef84f",
+          "bytes": 675,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "2afe72c441db0561901b8ae8a71354fcf4a432b4e0e048f2ab8d87a8e555cb36",
+          "bytes": 392318,
+          "kind": "NORMALIZED_PARQUET"
+        }
+      ],
+      "replay": {
+        "network_calls": 0,
+        "replay_kind": "IMMUTABLE_ARCHIVE_ONLY",
+        "facts_match_original": true,
+        "observations_match_original": true
+      },
+      "dataset_id": "ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+      "dataset_coverage": {
+        "session_count": 909,
+        "first_date": "2023-01-03",
+        "last_date": "2026-10-08",
+        "requested_start": "2023-01-01",
+        "requested_end": "2026-10-08",
+        "missing_amount_rows": 0,
+        "unknown_volume_unit_rows": 0,
+        "basic_error_rows": 0,
+        "incomplete_daily_rows": 0,
+        "daily_sources": [
+          "baostock-daily"
+        ],
+        "status_rows": 909,
+        "status_reported_dates": 909,
+        "calendar_rows": 1377,
+        "company_action_rows": 5,
+        "source_coverage": [
+          {
+            "full_history_verified": false,
+            "group": "DAILY",
+            "instrument": "SSE:600362",
+            "raw_hash": "39ba1a0dcd372ddb07d1364847e66dfe8a98d9a34dad1d8829c5fe9bbd6137a2",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 909,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "STATUS",
+            "instrument": "SSE:600362",
+            "raw_hash": "39ba1a0dcd372ddb07d1364847e66dfe8a98d9a34dad1d8829c5fe9bbd6137a2",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 909,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "CALENDAR",
+            "instrument": "SSE:600362",
+            "raw_hash": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 1377,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362",
+            "raw_hash": "467c058330f43c5e571132b8ded1051d68f8e173dd2dcb9d71295b409a21df5e",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 1,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362",
+            "raw_hash": "898a8ae0a3b525c19eccacb5292ac90c230f60a35af3d8138d7e21c91f7f5721",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 1,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362",
+            "raw_hash": "65e5a6a76bb41ff1ff5d80962fd344d69294abd4e736293714635ac77e07925f",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 2,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362",
+            "raw_hash": "9af04733242fded51acb53d2132ea9c6aa2e446b5eff76067d71d0bc0ff9eca4",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 1,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          }
+        ],
+        "source_gaps": [],
+        "historical_as_of_versions_verified": false,
+        "complete_status_verified": false,
+        "complete_actions_verified": false
+      },
+      "training_readiness": {
+        "state": "BLOCKED",
+        "blockers": [
+          "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+          "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+          "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+          "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+          "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+          "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN"
+        ],
+        "basis": "Host verifies immutable acquisition bytes, not historical observation-time availability. Reported status/calendar/dividend dates are not complete execution or as-of proof."
+      },
+      "partition_states": {
+        "DEVELOPMENT": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        },
+        "CALIBRATION": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        },
+        "SEALED": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        }
+      },
+      "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "protocol_status": "DATA_COVERAGE_REGISTERED",
+      "predecessor_protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "model_preflight": {
+        "model_run_id": "ee0dd6b7-b069-4515-b73a-b79799b8488c",
+        "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+        "status": "FAILED",
+        "reasons": [
+          "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+          "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+          "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+          "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+          "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+          "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN",
+          "SOURCE_QUALIFICATION_BLOCKED"
+        ],
+        "forecast_probability": null,
+        "model_artifact": null,
+        "calibrator_artifact": null,
+        "capability": "NOT_GRANTED",
+        "forward_started_at": null
+      }
+    },
+    {
+      "source": "FUYAO",
+      "request_id": "ddc7c6bd-4a9e-4d02-9080-1b8de0e22194",
+      "run_id": "f1c380b5-3d93-4e0b-b1b3-2ccb273749f8",
+      "status": "COMPLETE",
+      "started_at": "2026-10-08T16:38:18.129248+00:00",
+      "finished_at": "2026-10-08T16:38:18.879326+00:00",
+      "tools": [
+        {
+          "source_id": "fuyao-daily",
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "started_at": "2026-10-08T16:38:18.229446+00:00",
+          "method": "GET",
+          "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/historical?thscode=600362.SH&interval=1d&start=1672502400000&end=1791475199999&adjust=none",
+          "adjustment": "RAW",
+          "raw_hash": "d62e517f82d3afbe99e2eb3256e43b5b1b65e4c81d568e80f36064b457df8954",
+          "http_status": 200,
+          "status": "ARCHIVED",
+          "finished_at": "2026-10-08T16:38:18.466993+00:00",
+          "received_bytes": 131016
+        },
+        {
+          "source_id": "fuyao-daily",
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "started_at": "2026-10-08T16:38:18.504488+00:00",
+          "method": "GET",
+          "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/historical?thscode=600362.SH&interval=1d&start=1672502400000&end=1791475199999&adjust=forward",
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "raw_hash": "61cdeb1dea4e8aaefb45fffc274640ba56ae147e8364ead080f67abbb52a2ce8",
+          "http_status": 200,
+          "status": "ARCHIVED",
+          "finished_at": "2026-10-08T16:38:18.641071+00:00",
+          "received_bytes": 141252
+        },
+        {
+          "source_id": "fuyao-actions",
+          "instrument": "SSE:600362",
+          "group": "ADJUSTMENTS",
+          "started_at": "2026-10-08T16:38:18.679047+00:00",
+          "method": "GET",
+          "source_url": "https://fuyao.aicubes.cn/api/a-share/corporate-actions/adjustment-factors?thscode=600362.SH&from=2023-01-01&to=2026-10-08",
+          "raw_hash": "0495b02be0e238df1aa7adbd7b06d002cef56226d04e0f51902e940c40118312",
+          "http_status": 200,
+          "status": "ARCHIVED",
+          "finished_at": "2026-10-08T16:38:18.743311+00:00",
+          "received_bytes": 641
+        }
+      ],
+      "snapshot_id": "4db7bdde-f298-40a5-b66f-aa4a005e934a",
+      "fact_counts": {
+        "DAILY": 1818,
+        "ADJUSTMENTS": 5
+      },
+      "raw_daily_count": 909,
+      "raw_daily_first": "2023-01-03",
+      "raw_daily_last": "2026-10-08",
+      "missing_amount_rows": 0,
+      "unknown_volume_unit_rows": 0,
+      "basic_error_rows": 0,
+      "source_gaps": [],
+      "source_coverage": [
+        {
+          "adjustment": "RAW",
+          "first_date": "2023-01-03",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:600362",
+          "last_date": "2026-10-08",
+          "provider_returned_rows": 909,
+          "raw_hash": "d62e517f82d3afbe99e2eb3256e43b5b1b65e4c81d568e80f36064b457df8954",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 909,
+          "status": "ACQUIRED",
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "first_date": "2023-01-03",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:600362",
+          "last_date": "2026-10-08",
+          "provider_returned_rows": 909,
+          "raw_hash": "61cdeb1dea4e8aaefb45fffc274640ba56ae147e8364ead080f67abbb52a2ce8",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 909,
+          "status": "ACQUIRED",
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        },
+        {
+          "full_history_verified": false,
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362",
+          "provider_returned_rows": 5,
+          "raw_hash": "0495b02be0e238df1aa7adbd7b06d002cef56226d04e0f51902e940c40118312",
+          "returned_rows": 5,
+          "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+        }
+      ],
+      "verified_archives": [
+        {
+          "sha256": "d62e517f82d3afbe99e2eb3256e43b5b1b65e4c81d568e80f36064b457df8954",
+          "bytes": 131016,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "61cdeb1dea4e8aaefb45fffc274640ba56ae147e8364ead080f67abbb52a2ce8",
+          "bytes": 141252,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "0495b02be0e238df1aa7adbd7b06d002cef56226d04e0f51902e940c40118312",
+          "bytes": 641,
+          "kind": "RAW_RESPONSE"
+        },
+        {
+          "sha256": "7a419f1d3c6fa15ad6bffd52a48c8090364b311c1b06809ea2457bfec4b7250c",
+          "bytes": 374160,
+          "kind": "NORMALIZED_PARQUET"
+        }
+      ],
+      "replay": {
+        "network_calls": 0,
+        "replay_kind": "IMMUTABLE_ARCHIVE_ONLY",
+        "facts_match_original": true,
+        "observations_match_original": true
+      },
+      "dataset_id": "9b09889e-ee72-4c7b-bae3-2398cf4509a3",
+      "dataset_coverage": {
+        "session_count": 909,
+        "first_date": "2023-01-03",
+        "last_date": "2026-10-08",
+        "requested_start": "2023-01-01",
+        "requested_end": "2026-10-08",
+        "missing_amount_rows": 0,
+        "unknown_volume_unit_rows": 0,
+        "basic_error_rows": 0,
+        "incomplete_daily_rows": 0,
+        "daily_sources": [
+          "fuyao-daily"
+        ],
+        "status_rows": 0,
+        "status_reported_dates": 0,
+        "calendar_rows": 0,
+        "company_action_rows": 5,
+        "source_coverage": [
+          {
+            "adjustment": "RAW",
+            "first_date": "2023-01-03",
+            "full_history_verified": false,
+            "group": "DAILY",
+            "instrument": "SSE:600362",
+            "last_date": "2026-10-08",
+            "provider_returned_rows": 909,
+            "raw_hash": "d62e517f82d3afbe99e2eb3256e43b5b1b65e4c81d568e80f36064b457df8954",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 909,
+            "status": "ACQUIRED",
+            "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+          },
+          {
+            "adjustment": "FORWARD_CURRENT_VERSION",
+            "first_date": "2023-01-03",
+            "full_history_verified": false,
+            "group": "DAILY",
+            "instrument": "SSE:600362",
+            "last_date": "2026-10-08",
+            "provider_returned_rows": 909,
+            "raw_hash": "61cdeb1dea4e8aaefb45fffc274640ba56ae147e8364ead080f67abbb52a2ce8",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 909,
+            "status": "ACQUIRED",
+            "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+          },
+          {
+            "full_history_verified": false,
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362",
+            "provider_returned_rows": 5,
+            "raw_hash": "0495b02be0e238df1aa7adbd7b06d002cef56226d04e0f51902e940c40118312",
+            "returned_rows": 5,
+            "truncation": "REQUEST_BOUNDED; NO_SOURCE_TOTAL_OR_COMPLETENESS_PROOF"
+          }
+        ],
+        "source_gaps": [],
+        "historical_as_of_versions_verified": false,
+        "complete_status_verified": false,
+        "complete_actions_verified": false
+      },
+      "training_readiness": {
+        "state": "BLOCKED",
+        "blockers": [
+          "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+          "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+          "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+          "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+          "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+          "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN"
+        ],
+        "basis": "Host verifies immutable acquisition bytes, not historical observation-time availability. Reported status/calendar/dividend dates are not complete execution or as-of proof."
+      },
+      "partition_states": {
+        "DEVELOPMENT": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        },
+        "CALIBRATION": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        },
+        "SEALED": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        }
+      }
+    }
+  ],
+  "baostock_auth_mode": "PUBLIC",
+  "sources_requested": [
+    "BAOSTOCK"
+  ],
+  "sealed_results_read": false,
+  "broker_history_required": false,
+  "account_unchanged": true,
+  "finished_at": "2026-10-08T17:14:24.622002+00:00",
+  "receipt_files": [
+    "baostock-real-acquisition-initial.json",
+    "baostock-real-acquisition-repaired.json"
+  ],
+  "combined_receipts": true,
+  "provider_requests_in_combine": 0,
+  "raw_source_comparison": {
+    "overlap_days": 909,
+    "independent_upstream_verified": false,
+    "fields": {
+      "open": {
+        "comparable_days": 909,
+        "equal_days": 909,
+        "different_days": 0,
+        "first_different_dates": []
+      },
+      "high": {
+        "comparable_days": 909,
+        "equal_days": 909,
+        "different_days": 0,
+        "first_different_dates": []
+      },
+      "low": {
+        "comparable_days": 909,
+        "equal_days": 909,
+        "different_days": 0,
+        "first_different_dates": []
+      },
+      "close": {
+        "comparable_days": 909,
+        "equal_days": 909,
+        "different_days": 0,
+        "first_different_dates": []
+      },
+      "volume_shares": {
+        "comparable_days": 909,
+        "equal_days": 909,
+        "different_days": 0,
+        "first_different_dates": []
+      },
+      "amount_yuan": {
+        "comparable_days": 909,
+        "equal_days": 908,
+        "different_days": 1,
+        "first_different_dates": [
+          "2023-05-08"
+        ]
+      }
+    }
+  }
+}

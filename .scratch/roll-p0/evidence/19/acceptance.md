@@ -4,6 +4,8 @@
 
 **结果 partial / needs-info，不能解锁20。** 原18实际120条全部UNSCORABLE、DEV0/CAL0可训练标签；历史状态/公司行为/历史规则与PIT不足不补已知。另一独立结构缺口：原CAL40最多20成熟标签，不能满足每类20。实际模型/校准器指纹均空，无实际概率、时间外预测或完整冻结。未来需补足真实可审计时点、状态、公司行为/规则及标签，再登记满足原支持条件的有信息增量后继协议/数据，保留旧不足结论与封存独立性UNPROVEN。当前不换窗/缩域翻结论、不启动真实前向起点或要求人类统计参数/费用预算。
 
+2026-10-09 后续仅跟踪江西铜业 `SSE:600362`，已接入 BaoStock 和宿主来源归档登记。新覆盖不替换下文旧样例、不沿用工程分片、不改变账户基点。实际取数、恢复兼容性修复、重启与页面证据，以及尚未满足的真实研究判据，另见 [江西铜业后续验收](baostock-acceptance.md)。
+
 ## 实际与METHOD路径
 
 最终HTTP在上海2026-10-08 05:30:11—05:30:30执行，隔离API8039/web5199。只读复制根18final raw/Parquet并逐文件SHA核对，SQLite只读逻辑backup；从公共execution-support消费同一120执行及原输入版本，生成持久FAILED/PRIMARY_FIT失败。GET重启保持，失败forecast409、完整freeze409、账户0完全不变/forwardnull。原source不修改，opaque复制整容器只作工程保全，不读取封存价格/最终策略结果。[完整HTTP证据](actual-http-final.json)、[过程输出](actual-http-final-process.txt)。

@@ -1,0 +1,169 @@
+{
+  "started_at": "2026-10-08T17:14:18.248493+00:00",
+  "profile": "FULL_BACKEND_FOUR_ISOLATED_PROCESSES",
+  "code_and_test_fingerprint_before": "da23c2796a40c60796cc68d0a3629fdbfc6de71f710c3bf0f3074a67ea4cc8c0",
+  "modules": [
+    "tests/application/test_account.py",
+    "tests/application/test_agent_source_contract.py",
+    "tests/application/test_backend_switch.py",
+    "tests/application/test_backups.py",
+    "tests/application/test_baostock_evidence.py",
+    "tests/application/test_cash_events.py",
+    "tests/application/test_codex_evidence.py",
+    "tests/application/test_csv_import.py",
+    "tests/application/test_deepseek_evidence.py",
+    "tests/application/test_execution_labels.py",
+    "tests/application/test_fills.py",
+    "tests/application/test_funding.py",
+    "tests/application/test_fuyao_evidence.py",
+    "tests/application/test_independent_verification.py",
+    "tests/application/test_market_directory.py",
+    "tests/application/test_market_evidence.py",
+    "tests/application/test_reconcile.py",
+    "tests/application/test_research_acquisition_import.py",
+    "tests/application/test_research_lifecycle.py",
+    "tests/application/test_research_protocol.py",
+    "tests/application/test_review_input_contract.py",
+    "tests/application/test_reviews.py",
+    "tests/application/test_risk_policy.py",
+    "tests/application/test_runtime_environment.py",
+    "tests/application/test_source_resolution.py",
+    "tests/application/test_transparent_models.py",
+    "tests/application/test_valuation.py",
+    "tests/recovery/test_account_process.py",
+    "tests/recovery/test_backup_process.py",
+    "tests/recovery/test_cash_process.py",
+    "tests/recovery/test_codex_process.py",
+    "tests/recovery/test_confirmation_performance.py",
+    "tests/recovery/test_csv_process.py",
+    "tests/recovery/test_csv_upgrade.py",
+    "tests/recovery/test_csv_v2_upgrade.py",
+    "tests/recovery/test_deepseek_process.py",
+    "tests/recovery/test_fill_process.py",
+    "tests/recovery/test_reconcile_process.py",
+    "tests/recovery/test_research_owner_process.py",
+    "tests/recovery/test_review_process.py",
+    "tests/recovery/test_tax_restatement_process.py",
+    "tests/recovery/test_upgrade_from_01.py",
+    "tests/recovery/test_valuation_process.py",
+    "tests/recovery/test_verification_process.py"
+  ],
+  "shards": [
+    {
+      "shard": 0,
+      "modules": [
+        "tests/application/test_account.py",
+        "tests/application/test_baostock_evidence.py",
+        "tests/application/test_deepseek_evidence.py",
+        "tests/application/test_fuyao_evidence.py",
+        "tests/application/test_reconcile.py",
+        "tests/application/test_review_input_contract.py",
+        "tests/application/test_source_resolution.py",
+        "tests/recovery/test_backup_process.py",
+        "tests/recovery/test_csv_process.py",
+        "tests/recovery/test_fill_process.py",
+        "tests/recovery/test_tax_restatement_process.py"
+      ],
+      "log": "baostock-backend-shard-0.txt",
+      "status": "FINISHED",
+      "exit_code": 0,
+      "stats": {
+        "passed": 111,
+        "failed": 0,
+        "skipped": 0,
+        "errors": 0
+      },
+      "summary": "111 passed in 579.81s (0:09:39)"
+    },
+    {
+      "shard": 1,
+      "modules": [
+        "tests/application/test_agent_source_contract.py",
+        "tests/application/test_cash_events.py",
+        "tests/application/test_execution_labels.py",
+        "tests/application/test_independent_verification.py",
+        "tests/application/test_research_acquisition_import.py",
+        "tests/application/test_reviews.py",
+        "tests/application/test_transparent_models.py",
+        "tests/recovery/test_cash_process.py",
+        "tests/recovery/test_csv_upgrade.py",
+        "tests/recovery/test_reconcile_process.py",
+        "tests/recovery/test_upgrade_from_01.py"
+      ],
+      "log": "baostock-backend-shard-1.txt",
+      "status": "FINISHED",
+      "exit_code": 0,
+      "stats": {
+        "passed": 87,
+        "failed": 0,
+        "skipped": 0,
+        "errors": 0
+      },
+      "summary": "87 passed in 409.75s (0:06:49)"
+    },
+    {
+      "shard": 2,
+      "modules": [
+        "tests/application/test_backend_switch.py",
+        "tests/application/test_codex_evidence.py",
+        "tests/application/test_fills.py",
+        "tests/application/test_market_directory.py",
+        "tests/application/test_research_lifecycle.py",
+        "tests/application/test_risk_policy.py",
+        "tests/application/test_valuation.py",
+        "tests/recovery/test_codex_process.py",
+        "tests/recovery/test_csv_v2_upgrade.py",
+        "tests/recovery/test_research_owner_process.py",
+        "tests/recovery/test_valuation_process.py"
+      ],
+      "log": "baostock-backend-shard-2.txt",
+      "status": "FINISHED",
+      "exit_code": 0,
+      "stats": {
+        "passed": 79,
+        "failed": 0,
+        "skipped": 0,
+        "errors": 0
+      },
+      "summary": "79 passed in 323.99s (0:05:23)"
+    },
+    {
+      "shard": 3,
+      "modules": [
+        "tests/application/test_backups.py",
+        "tests/application/test_csv_import.py",
+        "tests/application/test_funding.py",
+        "tests/application/test_market_evidence.py",
+        "tests/application/test_research_protocol.py",
+        "tests/application/test_runtime_environment.py",
+        "tests/recovery/test_account_process.py",
+        "tests/recovery/test_confirmation_performance.py",
+        "tests/recovery/test_deepseek_process.py",
+        "tests/recovery/test_review_process.py",
+        "tests/recovery/test_verification_process.py"
+      ],
+      "log": "baostock-backend-shard-3.txt",
+      "status": "FINISHED",
+      "exit_code": 0,
+      "stats": {
+        "passed": 115,
+        "failed": 0,
+        "skipped": 0,
+        "errors": 0
+      },
+      "summary": "115 passed in 664.92s (0:11:04)"
+    }
+  ],
+  "collected_tests": 392,
+  "finished_at": "2026-10-08T17:25:33.330313+00:00",
+  "code_and_test_fingerprint_after": "da23c2796a40c60796cc68d0a3629fdbfc6de71f710c3bf0f3074a67ea4cc8c0",
+  "code_unchanged": true,
+  "totals": {
+    "passed": 392,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "complete_collection_covered": true,
+  "exit_code": 0
+}

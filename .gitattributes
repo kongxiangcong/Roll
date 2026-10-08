@@ -1,4 +1,11 @@
 # Original market authority bytes are fingerprinted; never normalize line endings.
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.raw binary
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/baostock-research/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19/baostock-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19/baostock-*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19/baseline-backend-1945d194.txt -text whitespace=-blank-at-eol,cr-at-eol
 backend/src/roll/market/reference/*.html binary
 backend/src/roll/market/reference/*.docx binary
 backend/src/roll/market/reference/*.pdf binary
