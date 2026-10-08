@@ -63,3 +63,7 @@ backend/src/roll/research/reference/*.html binary
 .scratch/roll-p0/evidence/continuation-2026-10-08/merge-12-runtime.json -text whitespace=cr-at-eol
 # Captured METHOD clock red/green output retains original Windows bytes.
 .scratch/roll-p0/evidence/continuation-2026-10-08/fixture-clock-*.txt -text whitespace=-blank-at-eol,cr-at-eol
+# Fuyao continuation captured process/API evidence preserves original Windows bytes.
+.scratch/roll-p0/evidence/fuyao/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/fuyao/real-acceptance*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/merge-fuyao*.txt -text whitespace=-blank-at-eol,cr-at-eol
