@@ -20,7 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.market.directory import ScopeCommand
 from roll.market.rules import SHANGHAI
-from roll.market import source_facts
+from roll.market import source_facts, fuyao
 
 ADAPTER_VERSION='08-market-v1'
 GROUPS=['DAILY','QUOTE','ADJUSTMENTS','ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS','STATUS']
@@ -37,8 +37,9 @@ class DataRequest(BaseModel):
     required_fields:list[str]=Field(default_factory=list,max_length=30)
     timeout_seconds:int=Field(default=40,ge=1,le=60)
     max_calls:int=Field(default=20,ge=1,le=30)
-    daily_source:Literal['EASTMONEY','TENCENT']|None=None
-    quote_source:Literal['TENCENT','SINA']='TENCENT'
+    daily_source:Literal['EASTMONEY','TENCENT','FUYAO']|None=None
+    quote_source:Literal['TENCENT','SINA','FUYAO']='TENCENT'
+    adjustment_source:Literal['EASTMONEY','FUYAO']='EASTMONEY'
 
 
 def decimal_value(value,price=False):
@@ -206,9 +207,9 @@ class EvidenceStore:
         run={'run_id':str(uuid4()),'request_id':request_id,'backend':'DIRECT_HTTP','model':None,
             'sdk_runtime_version':'httpx-'+self.runtime_versions['httpx']+'/'+ADAPTER_VERSION,'runtime_versions':self.runtime_versions,
             'config_fingerprint':hashlib.sha256(encode({'limits':request['technical_limits'],'daily_source':request.get('daily_source','EASTMONEY'),
-                'quote_source':request.get('quote_source','TENCENT'),
+                'quote_source':request.get('quote_source','TENCENT'),'adjustment_source':request.get('adjustment_source','EASTMONEY'),
                 'adapter_version':ADAPTER_VERSION,'runtime_versions':self.runtime_versions,
-                'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__]]}).encode()).hexdigest(),
+                'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__,fuyao.__file__]]}).encode()).hexdigest(),
             'evidence_kind':self.evidence_kind,'started_at':now(),'status':'RUNNING','tools':[],'gaps':[]}
         if acquisition_limits:
             run['acquisition_limits']={k:acquisition_limits[k] for k in ['max_response_bytes','max_total_bytes']}
@@ -229,6 +230,10 @@ class EvidenceStore:
                     'method':'GET','source_url':str(httpx.Request('GET',url,params=params).url),**context}
                 run['tools'].append(tool)
                 try:
+                    if source_id.startswith('fuyao-'):
+                        credential=os.environ.get('FUYAO_API_KEY')
+                        if not credential:raise ValueError('FUYAO_CREDENTIAL_NOT_CONFIGURED')
+                        headers={'X-api-key':credential}
                     with client.stream('GET',url,params=params,headers=headers,timeout=min(10,max(.1,deadline-time.monotonic()))) as response:
                         content=bytearray()
                         for chunk in response.iter_bytes(4096):
@@ -236,6 +241,12 @@ class EvidenceStore:
                             if len(content)+len(chunk)>max_response_bytes or total_bytes>max_total_bytes or time.monotonic()>deadline or (cancel_event and cancel_event.is_set()):
                                 raise ValueError('RESPONSE_SIZE_OR_TIME_LIMIT')
                             content.extend(chunk)
+                        if source_id.startswith('fuyao-'):
+                            reflected=credential.encode() in content
+                            if not reflected:
+                                try:reflected=credential in json.dumps(json.loads(content),ensure_ascii=False)
+                                except (ValueError,UnicodeDecodeError):pass
+                            if reflected:raise ValueError('FUYAO_SECRET_REFLECTED_RESPONSE_REJECTED')
                         archive=self.archive(bytes(content),'RAW_RESPONSE',source_id=source_id,source_url=str(response.url),
                             received_at=now(),http_status=response.status_code,evidence_kind=self.evidence_kind)
                     archives.append(archive);tool.update(raw_hash=archive['sha256'],http_status=response.status_code)
@@ -253,7 +264,18 @@ class EvidenceStore:
             for instrument in request['instruments']:
                 if instrument.split(':')[0]=='BSE':
                     run['gaps'].extend({'instrument':instrument,'group':group,'code':'SOURCE_SCOPE_NOT_ADAPTED_BSE'} for group in request['groups']);continue
-                if (request['purpose']=='BACKGROUND' or request.get('daily_source')=='TENCENT') and 'DAILY' in request['groups']:
+                if request.get('daily_source')=='FUYAO' and 'DAILY' in request['groups']:
+                    index=request['purpose']=='BACKGROUND'
+                    for adjustment,mode in [('RAW','none')] if index else [('RAW','none'),('FORWARD_CURRENT_VERSION','forward')]:
+                        params={'thscode':fuyao.symbol(instrument),'interval':'1d','start':fuyao.millis(request['start_date']),'end':fuyao.millis(request['end_date'],True)}
+                        if not index:params['adjust']=mode
+                        response=fetch('fuyao-index-daily' if index else 'fuyao-daily',instrument,'DAILY',
+                            fuyao.BASE+('/api/a-share-index' if index else '/api/a-share')+'/prices/historical',params,adjustment=adjustment)
+                        if response:
+                            result=parsed('DAILY',instrument,lambda:fuyao.daily(response[1],response[0],instrument,request,adjustment,decimal_value))
+                            if result:
+                                rows,cov=result;facts.extend(rows);coverage.append(cov)
+                if ((request['purpose']=='BACKGROUND' and request.get('daily_source')!='FUYAO') or request.get('daily_source')=='TENCENT') and 'DAILY' in request['groups']:
                     symbol=('sh' if instrument.split(':')[0]=='SSE' else 'sz')+instrument.split(':')[1]
                     for adjustment,mode in [('RAW','')] if request['purpose']=='BACKGROUND' else [('RAW',''),('FORWARD_CURRENT_VERSION','qfq')]:
                         response=fetch('tencent-index-daily' if request['purpose']=='BACKGROUND' else 'tencent-daily',instrument,'DAILY',
@@ -273,7 +295,23 @@ class EvidenceStore:
                         result=parsed('DAILY',instrument,lambda:self.daily(response[0],request,instrument,adjustment))
                         if result:
                             rows,cov=result;facts.extend(rows);coverage.append(cov)
-                if {'QUOTE','STATUS'}&set(request['groups']):
+                if {'QUOTE','STATUS'}&set(request['groups']) and request.get('quote_source')=='FUYAO':
+                    response=fetch('fuyao-quote',instrument,'QUOTE',fuyao.BASE+('/api/a-share-index' if request['purpose']=='BACKGROUND' else '/api/a-share')+'/prices/snapshot',
+                        {'thscodes':fuyao.symbol(instrument)})
+                    if response:
+                        fact=parsed('QUOTE',instrument,lambda:fuyao.quote(response[1],response[0],instrument,decimal_value))
+                        if fact:
+                            if 'QUOTE' in request['groups']:
+                                facts.append(fact);run['gaps'].append({'instrument':instrument,'group':'QUOTE','code':'QUOTE_PER_INSTRUMENT_TIME_UNKNOWN'})
+                            if 'STATUS' in request['groups']:
+                                facts.append({**source_facts.authority(response[0],instrument,'STATUS'),'state':'UNKNOWN',
+                                    'reported_quote_as_of':None,'reported_limit_up':None,'reported_limit_down':None,'time_precision':'UNKNOWN',
+                                    'suspension':'UNKNOWN','risk_warning':'UNKNOWN','listing_stage':'UNKNOWN','current_ex_rights':'UNKNOWN',
+                                    'model_input_allowed':False,'reason':'Fuyao公开报价不提供逐证券时点或历史/当前完整状态'})
+                                run['gaps'].append({'instrument':instrument,'group':'STATUS','code':'CURRENT_STATUS_UNKNOWN'})
+                            coverage.append({'instrument':instrument,'group':'QUOTE','returned_rows':1,'raw_hash':fact['raw_hash'],
+                                'source_snapshot_ready_at':fact['source_snapshot_ready_at'],'upstream_at':None,'full_history_verified':False})
+                if {'QUOTE','STATUS'}&set(request['groups']) and request.get('quote_source')!='FUYAO':
                     symbol=('sh' if instrument.split(':')[0]=='SSE' else 'sz' if instrument.split(':')[0]=='SZSE' else 'bj')+instrument.split(':')[1]
                     sina=request.get('quote_source')=='SINA'
                     response=fetch('sina-quote' if sina else 'tencent-quote',instrument,'QUOTE',
@@ -300,8 +338,15 @@ class EvidenceStore:
                             coverage.append({'instrument':instrument,'group':'QUOTE','returned_rows':1,'upstream_at':fact['upstream_at'],
                                 'age_seconds':fact['age_seconds'],'raw_hash':fact['raw_hash'],'full_history_verified':False})
                         elif fact:run['gaps'].append({'instrument':instrument,'group':'QUOTE','code':'UPSTREAM_AFTER_CUTOFF'})
+                if 'ADJUSTMENTS' in request['groups'] and request.get('adjustment_source')=='FUYAO':
+                    response=fetch('fuyao-actions',instrument,'ADJUSTMENTS',fuyao.BASE+'/api/a-share/corporate-actions/adjustment-factors',
+                        {'thscode':fuyao.symbol(instrument),'from':request['start_date'],'to':request['end_date']})
+                    if response:
+                        result=parsed('ADJUSTMENTS',instrument,lambda:fuyao.adjustments(response[1],response[0],instrument,request,decimal_value))
+                        if result:
+                            rows,cov=result;facts.extend(rows);coverage.append(cov)
                 for group,report,size in [('ADJUSTMENTS','RPT_SHAREBONUS_DET',5),('PERFORMANCE','RPT_LICO_FN_CPD',3)]:
-                    if group not in request['groups']:continue
+                    if group not in request['groups'] or (group=='ADJUSTMENTS' and request.get('adjustment_source')=='FUYAO'):continue
                     params={'reportName':report,'columns':'ALL','filter':'(SECURITY_CODE="'+instrument.split(':')[1]+'")',
                         'pageSize':size,'pageNumber':1,'sortColumns':'REPORT_DATE' if group=='ADJUSTMENTS' else 'REPORTDATE','sortTypes':-1}
                     response=fetch('eastmoney-actions' if group=='ADJUSTMENTS' else 'eastmoney-performance',instrument,group,
@@ -311,6 +356,7 @@ class EvidenceStore:
                         if result:
                             rows,cov=result;facts.extend(rows);coverage.append(cov)
                 event_groups={'ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS','ADJUSTMENTS'}&set(request['groups'])
+                if request.get('adjustment_source')=='FUYAO':event_groups.discard('ADJUSTMENTS')
                 if event_groups:
                     response=fetch('eastmoney-announcements',instrument,'ANNOUNCEMENTS','https://np-anotice-stock.eastmoney.com/api/security/ann',
                         {'sr':-1,'page_size':30,'page_index':1,'ann_type':'A','stock_list':instrument.split(':')[1]})
@@ -371,10 +417,12 @@ class EvidenceStore:
                 observations.append({'kind':'DATA_QUALITY_ALERT','classification':'DETERMINISTIC_INFERENCE','instrument':fact['instrument'],
                     'severity':'ATTENTION','basis_raw_hashes':[fact['raw_hash']],'facts':fact['errors'],'formal_judgment':'DISABLED'})
             if fact['group']=='ADJUSTMENTS':
-                pending=fact.get('document_hash') is not None or fact.get('action_state')=='IMPLEMENTATION_ANNOUNCED'
+                pending=fact.get('document_hash') is not None or fact.get('action_state') in {'IMPLEMENTATION_ANNOUNCED','PROVIDER_REPORTED_EX_EVENT'}
                 observations.append({'kind':'PENDING_ACCOUNT_RECONCILIATION' if pending else 'ACTION_PLAN_REFERENCE','classification':'FACT','instrument':fact['instrument'],
                     'severity':'INFO','basis_raw_hashes':[fact['raw_hash']],'message':'外部权益分派公告已归档；到账、税费和持仓变化待券商事实确认',
                     'formal_judgment':'DISABLED'})
+                if fact['source_id']=='fuyao-actions':
+                    observations[-1].update(message='供应商原始除权事项已归档；实际到账、税费和持仓变化待券商事实确认',event_date=fact['ex_date'])
                 if not pending:observations[-1]['message']='供应商登记分派预披露/计划；金额、除息日与实际到账未确认'
             if fact.get('document_hash'):
                 observations.append({'kind':'DISCLOSED_COMPANY_EVENT','classification':'FACT','instrument':fact['instrument'],'severity':'INFO',

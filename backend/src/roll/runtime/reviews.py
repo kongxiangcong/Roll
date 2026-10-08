@@ -438,7 +438,7 @@ class Reviews:
                     session=candidate;break
         for obj in objects:
             own=[f for f in facts if f['instrument']==obj['instrument']]
-            quotes=[f for f in own if f['group']=='QUOTE' and f.get('last') is not None and not f.get('errors')]
+            quotes=[f for f in own if f['group']=='QUOTE' and f.get('last') is not None and f.get('upstream_at') is not None and not f.get('errors')]
             quote=max(quotes,key=lambda f:(f['upstream_at'],f['available_at'])) if quotes else None
             bars=[f for f in own if f['group']=='DAILY' and f.get('adjustment')=='RAW']
             complete=[f for f in bars if f.get('completion_state','').startswith('COMPLETE') and not f.get('errors')]

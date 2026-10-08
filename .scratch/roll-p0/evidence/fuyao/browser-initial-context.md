@@ -1,0 +1,112 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]: Roll 账户镜像
+    - navigation "主导航" [ref=e5]:
+      - button "今天" [ref=e6] [cursor=pointer]
+      - button "持仓与关注" [ref=e7] [cursor=pointer]
+      - button "同步账户" [ref=e8] [cursor=pointer]
+      - button "历史记录" [ref=e9] [cursor=pointer]
+      - button "设置" [ref=e10] [cursor=pointer]
+  - main [ref=e11]:
+    - button "返回持仓与关注" [ref=e12] [cursor=pointer]
+    - generic [ref=e13]:
+      - heading "市场事实" [level=1] [ref=e14]
+      - paragraph [ref=e15]: 为持仓、关注和预定背景取得原始依据。来源缺口与未知状态分别保留，正式交易判断未启用。
+      - alert [ref=e16]: "Error: [{\"type\":\"literal_error\",\"loc\":[\"body\",\"daily_source\"],\"msg\":\"Input should be 'EASTMONEY' or 'TENCENT'\",\"input\":\"FUYAO\",\"ctx\":{\"expected\":\"'EASTMONEY' or 'TENCENT'\"}},{\"type\":\"literal_error\",\"loc\":[\"body\",\"quote_source\"],\"msg\":\"Input should be 'TENCENT' or 'SINA'\",\"input\":\"FUYAO\",\"ctx\":{\"expected\":\"'TENCENT' or 'SINA'\"}},{\"type\":\"extra_forbidden\",\"loc\":[\"body\",\"adjustment_source\"],\"msg\":\"Extra inputs are not permitted\",\"input\":\"FUYAO\"}]"
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - text: 取证方式
+          - combobox "取证方式" [ref=e19]:
+            - option "固定来源获取" [selected]
+            - option "Codex 补充取证"
+            - option "DeepSeek 补充取证"
+        - generic [ref=e20]:
+          - text: 取证用途
+          - combobox "取证用途" [ref=e21]:
+            - option "名单观察" [selected]
+            - option "历史研究输入归档"
+            - option "预定市场背景"
+        - group "请求对象（已选 1 只）" [ref=e22]:
+          - generic [ref=e23]: 请求对象（已选 1 只）
+          - generic [ref=e24]:
+            - checkbox "SSE:600519 · SSE:600519" [checked] [ref=e25]
+            - text: SSE:600519 · SSE:600519
+        - group "事实组" [ref=e26]:
+          - generic [ref=e27]: 事实组
+          - generic [ref=e28]:
+            - checkbox "日线与复权" [checked] [ref=e29]
+            - text: 日线与复权
+          - generic [ref=e30]:
+            - checkbox "可得报价" [checked] [ref=e31]
+            - text: 可得报价
+          - generic [ref=e32]:
+            - checkbox "调整事件" [checked] [ref=e33]
+            - text: 调整事件
+          - generic [ref=e34]:
+            - checkbox "公告原文" [ref=e35]
+            - text: 公告原文
+          - generic [ref=e36]:
+            - checkbox "业绩" [ref=e37]
+            - text: 业绩
+          - generic [ref=e38]:
+            - checkbox "重大事项" [ref=e39]
+            - text: 重大事项
+          - generic [ref=e40]:
+            - checkbox "当前状态" [checked] [ref=e41]
+            - text: 当前状态
+        - generic [ref=e42]:
+          - text: 开始日期（上海交易/披露日期）
+          - textbox "开始日期（上海交易/披露日期）" [ref=e43]: 2026-01-01
+        - generic [ref=e44]:
+          - text: 截止日期
+          - textbox "截止日期" [ref=e45]: 2026-09-30
+        - generic [ref=e46]:
+          - text: 日线来源
+          - combobox "日线来源" [ref=e47]:
+            - option "腾讯：历史成交额通常缺失"
+            - option "东方财富：保留实际失败"
+            - option "扶摇：同花顺日线" [selected]
+        - generic [ref=e48]:
+          - text: 报价来源
+          - combobox "报价来源" [ref=e49]:
+            - option "腾讯"
+            - option "新浪：已实证主板股票股数口径"
+            - option "扶摇：逐证券时间未知" [selected]
+        - generic [ref=e50]:
+          - text: 除权事项来源
+          - combobox "除权事项来源" [ref=e51]:
+            - option "东方财富公告及分派"
+            - option "扶摇：原始除权事件" [selected]
+        - generic [ref=e52]:
+          - checkbox "报价需要已核对的股数，缺失时限制此用途" [ref=e53]
+          - text: 报价需要已核对的股数，缺失时限制此用途
+        - generic [ref=e54]:
+          - text: 本次最多调用
+          - spinbutton "本次最多调用" [ref=e55]: "30"
+        - paragraph [ref=e56]: 日线原价与当前前复权版本分开。历史取得时间为实际本次时间，不能证明过去已经可得；背景指数不取得个股研究或交易能力。
+        - button "取得并归档事实" [ref=e57] [cursor=pointer]
+    - generic [ref=e58]:
+      - heading "取证记录" [level=2] [ref=e59]
+      - paragraph [ref=e60]: 尚无归档记录。
+    - generic [ref=e61]:
+      - heading "用途与换源" [level=2] [ref=e62]
+      - paragraph [ref=e63]: 读取当前选择的归档请求。补查最多尝试一条适配备源，共用原请求的调用与时间预算；等待期间可同步账户。
+      - paragraph [ref=e64]: 先取得事实，再按用途检查原档案。
+      - generic [ref=e65]:
+        - text: 本次读取用途
+        - combobox "本次读取用途" [ref=e66]:
+          - option "盘前读取上一交易日" [selected]
+          - option "盘后记录"
+          - option "当前市场观察"
+          - option "历史材料读取"
+          - option "新风险输入条件检查"
+      - generic [ref=e67]:
+        - checkbox "优先复用仍适用的归档，不刷新原采集时点" [checked] [ref=e68]
+        - text: 优先复用仍适用的归档，不刷新原采集时点
+      - button "按用途检查并补查" [disabled] [ref=e69]
+    - group [ref=e71]:
+      - generic "实际来源登记与权限、深度限制" [ref=e72]
+```

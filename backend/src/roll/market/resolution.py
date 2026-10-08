@@ -90,7 +90,7 @@ class SourceResolutions:
             'evidence_kind':self.evidence.evidence_kind,'model_qualification':'NOT_GRANTED','formal_judgment':'DISABLED',
             'requested_instruments':request['instruments'],'requested_groups':request['groups'],'technical_limits':request['technical_limits']}
         value['request_fingerprint']=hashlib.sha256(encode({k:request.get(k) for k in
-            ['instruments','groups','purpose','start_date','end_date','required_fields','daily_source','quote_source','identity_context']}|
+            ['instruments','groups','purpose','start_date','end_date','required_fields','daily_source','quote_source','adjustment_source','identity_context']}|
             {'evidence_kind':self.evidence.evidence_kind}).encode()).hexdigest()
         if command.revision_of:
             prior=self.get(command.revision_of)
@@ -165,7 +165,7 @@ class SourceResolutions:
         variants=['RAW'] if request['purpose']=='BACKGROUND' else ['RAW','FORWARD_CURRENT_VERSION']
         return all(any(f['instrument']==instrument and f['group']==group and (group!='DAILY' or f.get('adjustment')==variant)
             and not missing(f,request) and not f.get('errors') for f in facts) for variant in variants if group=='DAILY') if group=='DAILY' else any(
-            f['instrument']==instrument and f['group']==group and (group!='QUOTE' or f.get('last') is not None)
+            f['instrument']==instrument and f['group']==group and (group!='QUOTE' or f.get('last') is not None and f.get('upstream_at') is not None)
             and not missing(f,request) and not f.get('errors') for f in facts)
 
     def expected_session(self,instrument,at,usage,group):
@@ -185,7 +185,7 @@ class SourceResolutions:
         cutoff=value['command']['knowledge_cutoff'] or self.clock()
         at=datetime.fromisoformat(cutoff);usage=value['command']['usage']
         selected=[f for f in acquired if datetime.fromisoformat(f['available_at'])<=at and
-            (f['group'] not in {'DAILY','QUOTE'} or request['start_date']<=f.get('trade_date','')<=request['end_date']) and
+            (f['group'] not in {'DAILY','QUOTE'} or request['start_date']<=(f.get('trade_date') or '')<=request['end_date']) and
             (not f.get('upstream_at') or datetime.fromisoformat(f['upstream_at'])<=datetime.fromisoformat(request['cutoff']))]
         gaps=[];freshness=[]
         for attempt in value['attempts']:
@@ -193,7 +193,7 @@ class SourceResolutions:
                 resolved=gap['code']!='CURRENT_STATUS_UNKNOWN' and any(f['instrument']==gap['instrument'] and f['group']==gap['group'] for f in selected)
                 gaps.append({**gap,'run_id':attempt['run_id'],'resolved':resolved})
         for fact in acquired:
-            if fact['group'] in {'DAILY','QUOTE'} and not request['start_date']<=fact.get('trade_date','')<=request['end_date']:
+            if fact['group'] in {'DAILY','QUOTE'} and not request['start_date']<=(fact.get('trade_date') or '')<=request['end_date']:
                 gaps.append({'instrument':fact['instrument'],'group':fact['group'],'code':'REPORTED_SESSION_OUTSIDE_REQUEST',
                     'reported_session':fact.get('trade_date'),'resolved':False})
             if datetime.fromisoformat(fact['available_at'])>at:

@@ -1,0 +1,41 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/fuyao-data/backend/.roll-data/test-fuyao-baseline/test_cache_preserves_real_rece0')
+
+    def test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage(tmp_path):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=quote_bytes())),
+            market_clock=lambda:'2026-10-08T08:30:00+08:00')) as client:
+            request=setup_request(client,quote_source='SINA',required_fields=['QUOTE.last'])
+            first=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
+                json={'usage':'PRE_MARKET_RECORD'}).json()['resolution_id'])
+>           assert first['state']=='HEALTHY' and first['facts'][0]['point_in_time_input_allowed'] is False
+E           AssertionError: assert ('DEGRADED' == 'HEALTHY'
+E             
+E             - HEALTHY
+E             + DEGRADED)
+
+backend\tests\application\test_source_resolution.py:155: AssertionError
+_ test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/fuyao-data/backend/.roll-data/test-fuyao-baseline/test_old_quote_blocks_current_0')
+
+    def test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record(tmp_path):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=quote_bytes())),
+            market_clock=lambda:'2026-10-08T10:00:00+08:00')) as client:
+            request=setup_request(client,quote_source='SINA',groups=['QUOTE','STATUS'])
+            monitored=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
+                json={'usage':'CURRENT_MONITORING','allow_fallback':False}).json()['resolution_id'])
+            assert monitored['state']=='MONITORING_UNAVAILABLE'
+            assert any(g['code']=='STALE_FOR_CURRENT_SESSION' for g in monitored['gaps'])
+>           assert monitored['capabilities']['observation']=='DEGRADED' and monitored['facts']
+E           AssertionError: assert ('DEGRADED' == 'DEGRADED'
+E             
+E               DEGRADED and [])
+
+backend\tests\application\test_source_resolution.py:177: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_source_resolution.py::test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage
+FAILED backend\tests\application\test_source_resolution.py::test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record
+2 failed, 12 deselected in 6.65s
