@@ -1,0 +1,369 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 46751,
+    "http_calls": 2,
+    "model_tool_result_bytes": 9662,
+    "received_bytes": 46751
+  },
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source"
+  ],
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T03:36:48.665963+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    },
+    {
+      "available_at": "2026-10-08T03:36:49.941367+00:00",
+      "basis": "Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.",
+      "basis_url": "https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf",
+      "bytes": 46478,
+      "content_type": "text/html; charset=utf-8",
+      "event_time": null,
+      "http_status": 200,
+      "instrument": "SSE:600519",
+      "kind": "DEEPSEEK_PUBLIC_SOURCE",
+      "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+      "received_at": "2026-10-08T03:36:49.941367+00:00",
+      "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_id": "MOUTAI_OFFICIAL",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_precision": "RECEIPT_ONLY"
+    }
+  ],
+  "backend": "DEEPSEEK",
+  "bootstrap_audit": [
+    {
+      "stage": "PYTHON_READY"
+    },
+    {
+      "stage": "SDK_IMPORTED"
+    }
+  ],
+  "candidate_output_hash": "adaaed473589c39123fa7a8e723882b312943d037baca52389b441841628c03b",
+  "candidates": [
+    {
+      "assertion": "官网企业概况称公司成立于1999年11月20日，总部位于茅台镇。",
+      "assertion_verified": false,
+      "available_at": "2026-10-08T03:36:49.941367+00:00",
+      "classification": "MODEL_EVIDENCE_CANDIDATE",
+      "cutoff_eligible": false,
+      "event_time": null,
+      "evidence_quote": "贵州茅台酒股份有限公司（以下简称“公司”）成立于1999年11月20日",
+      "group": "QUOTE",
+      "host_limit": "Literal quote verified; receipt cannot establish event time or assertion truth.",
+      "instrument": "SSE:600519",
+      "quote_verified": true,
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_basis": "UNKNOWN"
+    }
+  ],
+  "config_fingerprint": "fe8b53771e0dde2c7978e589e3b8a511d15d1d77e0c3605228de8904416ab361",
+  "elapsed_seconds": 12.408,
+  "evidence_kind": "REAL_DEEPSEEK_TASK",
+  "finished_at": "2026-10-08T03:36:53.468802+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "MOUTAI_OFFICIAL返回event_time=UNKNOWN，页面无发布时间，文本发布时点不可证明。"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "QUOTE必填字段volume_shares缺失，且无原文字面报价证据，故不输出报价候选。"
+    },
+    {
+      "code": "MODEL_REPORTED_GAP",
+      "group": "TASK",
+      "instrument": "",
+      "reason": "报价仅ACTUAL_RETRIEVAL(2026-10-08T03:36:48Z)可证收到时点，不能证明历史事件时点。"
+    },
+    {
+      "code": "SUPPLEMENTAL_EVENT_TIME_AND_ASSERTION_UNVERIFIED",
+      "group": "TASK",
+      "instrument": ""
+    }
+  ],
+  "host_owner": {
+    "creation_ticks": 134359041974414269,
+    "pid": 36356
+  },
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "max_output_tokens": 2048,
+    "model_calls": 5,
+    "model_input_bytes": 131072,
+    "model_response_bytes": 65536,
+    "model_total_response_bytes": 262144,
+    "response_bytes": 65536,
+    "retries": 0,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144
+  },
+  "model": "deepseek-flash",
+  "model_requests": [
+    {
+      "body_bytes": 3655,
+      "input_items": [
+        "message"
+      ],
+      "model": "deepseek-flash",
+      "number": 1,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "0096f7481eb13a180f1fdc8b0e728cf65a8b4fdf1119333a126e8ef45ce3cddd"
+    },
+    {
+      "body_bytes": 7305,
+      "input_items": [
+        "message",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output"
+      ],
+      "model": "deepseek-flash",
+      "number": 2,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "29fa55708f75723c72c9d2fc2b6fe877d7b136660b3bdd1681cb3535a22cc2f3"
+    },
+    {
+      "body_bytes": 16096,
+      "input_items": [
+        "message",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output"
+      ],
+      "model": "deepseek-flash",
+      "number": 3,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "06376e81abc52957d9d31b702299d5a9731b7eee09e4a58c57e947577c92c29c"
+    }
+  ],
+  "model_responses": [
+    {
+      "bytes": 4399,
+      "http_status": 200,
+      "number": 1,
+      "received_bytes": 4399,
+      "resolved_model": "deepseek-flash",
+      "sha256": "180e7d7fce76fa771b1e80fa2df081d103de15596a54baac62ed11b2c3621e6a"
+    },
+    {
+      "bytes": 4194,
+      "http_status": 200,
+      "number": 2,
+      "received_bytes": 8593,
+      "resolved_model": "deepseek-flash",
+      "sha256": "c4c981ec55a32eb1218286b374b2e66cb77704f783b5d40a2bdaa8fcf5eac2d1"
+    },
+    {
+      "bytes": 6231,
+      "http_status": 200,
+      "number": 3,
+      "received_bytes": 14824,
+      "resolved_model": "deepseek-flash",
+      "sha256": "4cf0985e59636edaf85832fe19e191d21b7df5b78acef7e4e661da9d12966ccd"
+    }
+  ],
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "credential_persisted": false,
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      40924,
+      27228,
+      40324
+    ],
+    "owner_nonce": "f564dfbb-34ed-423f-8018-24b1b4d9a009",
+    "pids_before_cleanup": [
+      40924,
+      27228,
+      40324
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-728489cf-ff2e-4097-a36c-17720626e85c-0v2qrcg4",
+    "temporary_directory_removed": true,
+    "worker_pid": 40924
+  },
+  "question": "先用 roll_read_evidence 获取贵州茅台实际报价，再用 roll_read_source 补取 MOUTAI_OFFICIAL 公开网页。两轮先后调用。最后JSON只输出1条官网字面引用候选，每个字段不超过80字，以及至多3条简短缺口。仅报价解析字段而无原文字面证据不输出报价候选。来源事件时点未知则明确缺口，不作交易建议。",
+  "request_id": "f83ceff6-4013-4499-84ad-9743f15c8574",
+  "resolved_model": "deepseek-flash",
+  "retry_of": "7bd7ddaf-c440-45b2-862b-fc1124612515",
+  "run_id": "728489cf-ff2e-4097-a36c-17720626e85c",
+  "runtime_audit": {
+    "agent_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "auto_previous_response_id": false,
+    "builtin_tools": [],
+    "credential_persisted": false,
+    "endpoint": "https://api.deepseek.com",
+    "handoffs": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "6b27c9a9840ae65c28c13b6dad76d4dddce1b2b535fbfbefde39f5a56b8f72d0",
+      "codex_process.py": "99be69251bf7b715566d495e060399e7491d692d6038dc20aa55401cef6d5711",
+      "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "deepseek_evidence.py": "ce2f6b42ecde74e9182906e3d8a83ff7fb0bb04a95916501d4cb84272f69f43e",
+      "deepseek_process.py": "ef57425a4da5fe9d062db45b9a7646f59a38386e55c58d17159a24cec8f3ef8b",
+      "deepseek_worker.py": "8892138589a77600373ecc9caa7ae7fffa10a91f6ab296f15ee9ee338f55ce04"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "mcp": false,
+    "mcp_servers": [],
+    "model": "deepseek-flash",
+    "plugins": false,
+    "protocol": "RESPONSES_STATELESS",
+    "python": "3.13.12",
+    "research_input_audit_enabled": true,
+    "retries": 0,
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "sdk_versions": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "skills": false,
+    "skills_loaded": false,
+    "store": null,
+    "tracing_disabled": true,
+    "transport": "HTTP_RESPONSES_STATELESS"
+  },
+  "sdk_runtime_version": {
+    "httpx2": "2.13.1",
+    "openai": "3.26.0",
+    "openai-agents": "0.23.1"
+  },
+  "snapshot_id": "c4b5bef8-a71e-4714-aade-317b0ca52d97",
+  "started_at": "2026-10-08T03:36:41.046626+00:00",
+  "status": "PARTIAL",
+  "token_usage": {
+    "input_tokens": 7588,
+    "output_tokens": 998,
+    "requests": 3,
+    "total_tokens": 8586
+  },
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": [
+    {
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "deepseek-1",
+      "child_run_id": "1710e948-0eb2-4a34-b866-91ddab11215e",
+      "received_at": "2026-10-08T03:36:48.371273+00:00",
+      "snapshot_id": "48d45b8f-aeb8-422b-b6e4-31cdf64b7169",
+      "source_id": "roll_read_evidence",
+      "status": "ARCHIVED"
+    },
+    {
+      "arguments": {
+        "instrument": "SSE:600519",
+        "source_id": "MOUTAI_OFFICIAL"
+      },
+      "call_id": "deepseek-2",
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "received_at": "2026-10-08T03:36:49.736825+00:00",
+      "source_id": "roll_read_source",
+      "status": "ARCHIVED",
+      "url": "https://www.moutaichina.com/mtgf/index/"
+    }
+  ]
+}

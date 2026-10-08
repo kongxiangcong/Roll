@@ -4,8 +4,8 @@ import {spawn} from 'node:child_process';
 
 const files=['baseline','cash-equity','codex-evidence','csv','deepseek-evidence',
   'fills','funding','market','market-overflow','reconcile','valuation'];
-const externalFlags=['ROLL_TEST_DATA_DIR','ROLL_PLAYWRIGHT_FACTORY','ROLL_BROWSER_METHOD',
-  'ROLL_LIVE_MARKET','ROLL_LIVE_FALLBACK','ROLL_LIVE_CODEX','ROLL_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_METHOD',
+const externalFlags=['ROLL_ENV_FILE','ROLL_TEST_DATA_DIR','ROLL_PLAYWRIGHT_FACTORY','ROLL_BROWSER_METHOD',
+  'ROLL_LIVE_MARKET','ROLL_LIVE_FALLBACK','ROLL_LIVE_CODEX','ROLL_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_LIVE',
   'ROLL_RESEARCH_LIVE','ROLL_EXECUTION_LIVE','ROLL_MODEL_LIVE','ROLL_RISK_LIVE',
   'ROLL_BACKUP_BROWSER_PHASE','ROLL_REVIEW_REAL_CACHE','ROLL_REAL_VERIFICATION'];
 if(externalFlags.some(key=>process.env[key])){
@@ -19,7 +19,7 @@ mkdirSync(runtimeParent,{recursive:true});
 const dataRoot=mkdtempSync(join(runtimeParent,'e2e-default-'));
 const profile={...process.env};
 // The default suite proves missing-credential behavior and never sends paid model requests.
-for(const key of ['ROLL_CODEX_AUTH_FILE','DEEPSEEK_API_KEY','ROLL_DEEPSEEK_API_KEY_FILE','OPENAI_API_KEY'])delete profile[key];
+for(const key of ['ROLL_ENV_FILE','ROLL_CODEX_AUTH_FILE','DEEPSEEK_API_KEY','ROLL_DEEPSEEK_API_KEY_FILE','FUYAO_API_KEY','OPENAI_API_KEY'])delete profile[key];
 const results={started_at:new Date().toISOString(),profile:'DEFAULT_OFFLINE',data_root:dataRoot,report_root:reportRoot,
   database_isolation:'PER_FILE; within-file ordered cases share history',files:[]};
 let failed=false;

@@ -2,7 +2,7 @@
 
 本机 React/FastAPI 应用。支持账户与 CSV 全批确认、成交和费用、现金与权益、更正与一致性检查、估值、资金授权、备份与恢复。市场事实、来源选择、独立核验和重点复盘保留原件、取得时点与版本；研究登记、日线事件、透明模型和独立风险政策保留尝试及失败记录。交易判断与真实资金前向未启用。
 
-Codex 受控取证已有真实任务证据；DeepSeek 工程和固定协议方法已实现，真实提供方仍缺凭据验证。实际研究数据不足以完成模型/校准冻结，不能用 METHOD 案例代替实际训练或授予资格。当前完成与条件见 [任务状态](.scratch/roll-p0/execution-status.md)。
+Codex 与 DeepSeek 受控取证已有真实多轮任务证据；实际资料中的缺口、模型失败和取消按原运行保留。实际研究数据不足以完成模型/校准冻结，不能用 METHOD 案例代替实际训练或授予资格。当前完成与条件见 [任务状态](.scratch/roll-p0/execution-status.md)。
 
 ## 启动（Windows PowerShell）
 
@@ -16,6 +16,8 @@ uv sync --frozen
 $env:ROLL_DATA_DIR = Join-Path $env:LOCALAPPDATA 'Roll'
 uv run --frozen uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 8010
 ```
+
+运行工厂启动时读取仓库根目录 `.env`；可使用 `ROLL_ENV_FILE` 明确指定其他文件。支持 `KEY=value`、可选 `export`、单/双引号字面值和行尾注释，不执行变量插值或 shell。进程环境变量优先，文件中的 `DEEPSEEK_API_KEY`、`FUYAO_API_KEY` 只进入宿主环境；不要提交凭据。显式数据目录的测试工厂不读取此文件，`ROLL_ENV=test` 也不自动读取仓库凭据；默认浏览器命令拒绝 `ROLL_ENV_FILE` 与真实验收 profile，并移除凭据环境变量。
 
 另一个终端，在 `frontend` 目录：
 

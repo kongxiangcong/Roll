@@ -1,0 +1,326 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 46751,
+    "http_calls": 2,
+    "model_tool_result_bytes": 9662,
+    "received_bytes": 46751
+  },
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source"
+  ],
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T03:34:15.859016+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    },
+    {
+      "available_at": "2026-10-08T03:34:17.126285+00:00",
+      "basis": "Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.",
+      "basis_url": "https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf",
+      "bytes": 46478,
+      "content_type": "text/html; charset=utf-8",
+      "event_time": null,
+      "http_status": 200,
+      "instrument": "SSE:600519",
+      "kind": "DEEPSEEK_PUBLIC_SOURCE",
+      "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+      "received_at": "2026-10-08T03:34:17.126285+00:00",
+      "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_id": "MOUTAI_OFFICIAL",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_precision": "RECEIPT_ONLY"
+    }
+  ],
+  "backend": "DEEPSEEK",
+  "bootstrap_audit": [
+    {
+      "stage": "PYTHON_READY"
+    },
+    {
+      "stage": "SDK_IMPORTED"
+    }
+  ],
+  "candidates": [],
+  "config_fingerprint": "fe8b53771e0dde2c7978e589e3b8a511d15d1d77e0c3605228de8904416ab361",
+  "elapsed_seconds": 17.311,
+  "error": {
+    "code": "DEEPSEEK_OUTPUT_SCHEMA_INVALID",
+    "http_status": null,
+    "type": null
+  },
+  "evidence_kind": "REAL_DEEPSEEK_TASK",
+  "finished_at": "2026-10-08T03:34:25.612225+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    }
+  ],
+  "host_owner": {
+    "creation_ticks": 134359040424039003,
+    "pid": 24724
+  },
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "max_output_tokens": 2048,
+    "model_calls": 5,
+    "model_input_bytes": 131072,
+    "model_response_bytes": 65536,
+    "model_total_response_bytes": 262144,
+    "response_bytes": 65536,
+    "retries": 0,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144
+  },
+  "model": "deepseek-flash",
+  "model_requests": [
+    {
+      "body_bytes": 3527,
+      "input_items": [
+        "message"
+      ],
+      "model": "deepseek-flash",
+      "number": 1,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "b7996be5c29ba0ab800ca5ac87c906895bda6796d82d43e6f4a0ea3fba1737d9"
+    },
+    {
+      "body_bytes": 7154,
+      "input_items": [
+        "message",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output"
+      ],
+      "model": "deepseek-flash",
+      "number": 2,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "5364935e386ece33fa6db2b1b2582be9fe42040e567a59e640540aa0d3ce4d60"
+    },
+    {
+      "body_bytes": 15839,
+      "input_items": [
+        "message",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output",
+        "reasoning",
+        "message",
+        "function_call",
+        "function_call_output"
+      ],
+      "model": "deepseek-flash",
+      "number": 3,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "dba3aadabad6931abedcf4abb9af5ec630eec3f68aaa3cf4530a3f28bb04254d"
+    }
+  ],
+  "model_responses": [
+    {
+      "bytes": 4374,
+      "http_status": 200,
+      "number": 1,
+      "received_bytes": 4374,
+      "resolved_model": "deepseek-flash",
+      "sha256": "916ce672f68f173a84d05d3eed70fe87caa8299d710a32a1fe9902f7c7a35571"
+    },
+    {
+      "bytes": 4088,
+      "http_status": 200,
+      "number": 2,
+      "received_bytes": 8462,
+      "resolved_model": "deepseek-flash",
+      "sha256": "5e9ad8a8902e744e59ec1b301c8bca849e44ba39c45e8105da5073feba4ab182"
+    },
+    {
+      "bytes": 11008,
+      "http_status": 200,
+      "number": 3,
+      "received_bytes": 19470,
+      "resolved_model": "deepseek-flash",
+      "sha256": "9ed7a9a388246c7b400083dbdc0c950af7f9caade817a9b7c7ed3e5c75c453ba"
+    }
+  ],
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "credential_persisted": false,
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      10464,
+      38276,
+      5712
+    ],
+    "owner_nonce": "f9f5ef29-762a-4522-be28-1dd600625a15",
+    "pids_before_cleanup": [
+      10464,
+      38276,
+      5712
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-7bd7ddaf-c440-45b2-862b-fc1124612515-lenwdego",
+    "temporary_directory_removed": true,
+    "worker_pid": 10464
+  },
+  "question": "先用 roll_read_evidence 获取贵州茅台实际报价，再用 roll_read_source 补取 MOUTAI_OFFICIAL 公开网页。两轮先后调用，核对原件字面引用并输出结构化候选。来源事件时点未知则明确缺口，不作交易建议。",
+  "request_id": "f83ceff6-4013-4499-84ad-9743f15c8574",
+  "resolved_model": "deepseek-flash",
+  "retry_of": null,
+  "run_id": "7bd7ddaf-c440-45b2-862b-fc1124612515",
+  "runtime_audit": {
+    "agent_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "auto_previous_response_id": false,
+    "builtin_tools": [],
+    "credential_persisted": false,
+    "endpoint": "https://api.deepseek.com",
+    "handoffs": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "6b27c9a9840ae65c28c13b6dad76d4dddce1b2b535fbfbefde39f5a56b8f72d0",
+      "codex_process.py": "99be69251bf7b715566d495e060399e7491d692d6038dc20aa55401cef6d5711",
+      "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "deepseek_evidence.py": "ce2f6b42ecde74e9182906e3d8a83ff7fb0bb04a95916501d4cb84272f69f43e",
+      "deepseek_process.py": "ef57425a4da5fe9d062db45b9a7646f59a38386e55c58d17159a24cec8f3ef8b",
+      "deepseek_worker.py": "8892138589a77600373ecc9caa7ae7fffa10a91f6ab296f15ee9ee338f55ce04"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "mcp": false,
+    "mcp_servers": [],
+    "model": "deepseek-flash",
+    "plugins": false,
+    "protocol": "RESPONSES_STATELESS",
+    "python": "3.13.12",
+    "research_input_audit_enabled": true,
+    "retries": 0,
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "sdk_versions": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "skills": false,
+    "skills_loaded": false,
+    "store": null,
+    "tracing_disabled": true,
+    "transport": "HTTP_RESPONSES_STATELESS"
+  },
+  "sdk_runtime_version": {
+    "httpx2": "2.13.1",
+    "openai": "3.26.0",
+    "openai-agents": "0.23.1"
+  },
+  "started_at": "2026-10-08T03:34:08.286841+00:00",
+  "status": "INVALID_OUTPUT",
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": [
+    {
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "deepseek-1",
+      "child_run_id": "f649e76a-8518-4486-997d-5881d7f12c12",
+      "received_at": "2026-10-08T03:34:15.522397+00:00",
+      "snapshot_id": "2d52beaa-5e73-49c6-8326-243120ae8bc8",
+      "source_id": "roll_read_evidence",
+      "status": "ARCHIVED"
+    },
+    {
+      "arguments": {
+        "instrument": "SSE:600519",
+        "source_id": "MOUTAI_OFFICIAL"
+      },
+      "call_id": "deepseek-2",
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "received_at": "2026-10-08T03:34:16.986336+00:00",
+      "source_id": "roll_read_source",
+      "status": "ARCHIVED",
+      "url": "https://www.moutaichina.com/mtgf/index/"
+    }
+  ]
+}

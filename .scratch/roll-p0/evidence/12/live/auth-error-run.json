@@ -1,0 +1,197 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 0,
+    "http_calls": 0,
+    "model_tool_result_bytes": 0,
+    "received_bytes": 0
+  },
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source"
+  ],
+  "archives": [],
+  "backend": "DEEPSEEK",
+  "bootstrap_audit": [
+    {
+      "stage": "PYTHON_READY"
+    },
+    {
+      "stage": "SDK_IMPORTED"
+    }
+  ],
+  "candidates": [],
+  "config_fingerprint": "6eedfbe87de2daa6ae29ac55317d7568f13ed6260070e8853892d81299f7d86d",
+  "elapsed_seconds": 6.129,
+  "error": {
+    "code": "DEEPSEEK_AUTH_REJECTED",
+    "http_status": 401,
+    "type": "AuthenticationError"
+  },
+  "evidence_kind": "REAL_DEEPSEEK_TASK",
+  "finished_at": "2026-10-08T03:38:27.149152+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [],
+  "host_owner": {
+    "creation_ticks": 134359042973828684,
+    "pid": 30772
+  },
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "max_output_tokens": 2048,
+    "model_calls": 5,
+    "model_input_bytes": 131072,
+    "model_response_bytes": 65536,
+    "model_total_response_bytes": 262144,
+    "response_bytes": 65536,
+    "retries": 0,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144
+  },
+  "model": "deepseek-flash",
+  "model_requests": [
+    {
+      "body_bytes": 3655,
+      "input_items": [
+        "message"
+      ],
+      "model": "deepseek-flash",
+      "number": 1,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "a35096e942474d74e13d9239505a80caabc1f3661a9367eb5fb62f8c2c0ae140"
+    }
+  ],
+  "model_responses": [
+    {
+      "bytes": 204,
+      "http_status": 401,
+      "number": 1,
+      "received_bytes": 204,
+      "resolved_model": null,
+      "sha256": "bf0b3e44a189c912b6a7dc131f4ad4406f477bb3e2671336e571e253f6d3e0ff"
+    }
+  ],
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "credential_persisted": false,
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      20084,
+      27780,
+      21084
+    ],
+    "owner_nonce": "25f890f5-e7a0-4221-9550-4f9e124ee7f8",
+    "pids_before_cleanup": [
+      20084,
+      27780,
+      21084
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-59861681-85ad-4f96-a462-8d47ee36d9df-__fih65r",
+    "temporary_directory_removed": true,
+    "worker_pid": 20084
+  },
+  "question": "先用 roll_read_evidence 获取贵州茅台实际报价，再用 roll_read_source 补取 MOUTAI_OFFICIAL 公开网页。两轮先后调用。最后JSON只输出1条官网字面引用候选，每个字段不超过80字，以及至多3条简短缺口。仅报价解析字段而无原文字面证据不输出报价候选。来源事件时点未知则明确缺口，不作交易建议。",
+  "request_id": "be9726e9-0740-4afe-b5ed-c1827f10b952",
+  "resolved_model": null,
+  "retry_of": null,
+  "run_id": "59861681-85ad-4f96-a462-8d47ee36d9df",
+  "runtime_audit": {
+    "agent_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "auto_previous_response_id": false,
+    "builtin_tools": [],
+    "credential_persisted": false,
+    "endpoint": "https://api.deepseek.com",
+    "handoffs": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "6b27c9a9840ae65c28c13b6dad76d4dddce1b2b535fbfbefde39f5a56b8f72d0",
+      "codex_process.py": "99be69251bf7b715566d495e060399e7491d692d6038dc20aa55401cef6d5711",
+      "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "deepseek_evidence.py": "ce2f6b42ecde74e9182906e3d8a83ff7fb0bb04a95916501d4cb84272f69f43e",
+      "deepseek_process.py": "6f688b8e837357f23d5b32033f97b758093635fc15fc0721dc2979993dac1b5a",
+      "deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "mcp": false,
+    "mcp_servers": [],
+    "model": "deepseek-flash",
+    "plugins": false,
+    "protocol": "RESPONSES_STATELESS",
+    "python": "3.13.12",
+    "research_input_audit_enabled": true,
+    "retries": 0,
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "sdk_versions": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "skills": false,
+    "skills_loaded": false,
+    "store": null,
+    "tracing_disabled": true,
+    "transport": "HTTP_RESPONSES_STATELESS"
+  },
+  "sdk_runtime_version": {
+    "httpx2": "2.13.1",
+    "openai": "3.26.0",
+    "openai-agents": "0.23.1"
+  },
+  "started_at": "2026-10-08T03:38:21.003996+00:00",
+  "status": "UNAVAILABLE",
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": []
+}
