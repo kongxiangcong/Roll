@@ -272,3 +272,135 @@ def test_registered_research_feature_model_forecast_and_source_files_restore_as_
         repeated=client.post('/api/research/datasets',json={'archive_id':'method-execution','basis':'恢复原件本机复验，不创造前向样本'})
         assert repeated.status_code==201,repeated.text
         assert client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
+
+
+def test_host_source_dataset_upgrade_backup_and_restore_keep_source_chain(tmp_path,monkeypatch):
+    from test_research_acquisition_import import acquire,provider
+    # Controlled third-party HTTP boundary exercises the production acquisition marker,
+    # without claiming real-provider evidence or injecting a METHOD host transport.
+    empty=[False]
+    def receive(transport,request):
+        return httpx.Response(200,json={'rc':0,'data':{'code':'600362','market':1,'klines':[]}}) if empty[0] else provider(request)
+    monkeypatch.setattr(httpx.HTTPTransport,'handle_request',receive)
+    directory=tmp_path/'source'
+    with TestClient(create_app(directory)) as client:
+        run=acquire(client)
+        snapshot=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        assert snapshot['evidence_kind']=='REAL_ACQUISITION'
+        imported=client.post('/api/research/datasets',json={'source_run_id':run['run_id'],'basis':'Host source backup regression'})
+        assert imported.status_code==201,imported.text
+        dataset=imported.json()
+        empty[0]=True
+        request=client.post('/api/data/requests',json={'instruments':['SSE:600362'],'groups':['DAILY'],'purpose':'RESEARCH',
+            'start_date':'2026-09-28','end_date':'2026-09-30'}).json()
+        failed=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+        assert failed['status']=='FAILED',failed
+        failed_snapshot=client.get('/api/data/snapshots/'+failed['snapshot_id']).json()
+        assert failed_snapshot['facts']==[] and failed_snapshot['evidence_kind']=='REAL_ACQUISITION'
+        account=client.get('/api/account').json();events=client.get('/api/account/events').json()
+    # Reproduce a deployment update: identical-code restarts do not create PRE_UPGRADE.
+    deployment=directory/'backups'/'deployment.json'
+    value=json.loads(deployment.read_text(encoding='utf-8'));value['fingerprint']='previous-deployment'
+    deployment.write_text(json.dumps(value),encoding='utf-8')
+    with TestClient(create_app(directory)) as client:
+        assert client.get('/api/runtime/backups/status').json()['latest_success']['reason']=='PRE_UPGRADE'
+        assert client.get('/api/research/datasets/'+dataset['dataset_id']).json()==dataset
+        response=client.post('/api/runtime/backups')
+        assert response.status_code==201,response.text
+        exported=client.get('/api/runtime/backups/'+response.json()['backup_id']+'/export').content
+        originals=dataset['original_archives']+failed_snapshot['archives']+[failed_snapshot['parquet']]
+        with zipfile.ZipFile(io.BytesIO(exported)) as bundle:
+            manifest=json.loads(bundle.read('manifest.json'))
+            attached={item['path']:item['sha256'] for item in manifest['attachments']}
+            for original in originals:
+                assert attached[original['path']]==original['sha256']
+                assert hashlib.sha256(bundle.read(original['path'])).hexdigest()==original['sha256']
+        for damaged in [None,b'corrupt host-source original']:
+            denied=client.post('/api/runtime/restores',content=zip_edit(exported,
+                lambda name,raw:damaged if name==dataset['original_archives'][0]['path'] else raw))
+            assert denied.status_code==409,denied.text
+            assert client.get('/api/account').json()==account
+    target=tmp_path/'restored'
+    with TestClient(create_app(target)) as client:
+        staged=client.post('/api/runtime/restores',content=exported)
+        assert staged.status_code==202,staged.text
+    with TestClient(create_app(target)) as client:
+        assert client.get('/api/account').json()==account
+        assert client.get('/api/account/events').json()==events
+        assert client.get('/api/research/datasets/'+dataset['dataset_id']).json()==dataset
+        assert client.get('/api/data/snapshots/'+run['snapshot_id']).json()==snapshot
+        assert client.get('/api/data/snapshots/'+failed['snapshot_id']).json()==failed_snapshot
+        for original in originals:
+            response=client.get('/api/data/archives/'+original['sha256'])
+            assert response.status_code==200,response.text
+            assert hashlib.sha256(response.content).hexdigest()==original['sha256']
+        for retrieved in [run,failed]:
+            assert client.post('/api/data/runs/'+retrieved['run_id']+'/replay').json()['network_calls']==0
+        assert client.post('/api/research/datasets',json={'source_run_id':run['run_id'],'basis':'Restored source chain remains importable'}).status_code==201
+
+
+@pytest.mark.parametrize('damage',['source_run_id','source_bundle_sha256','original_path'])
+def test_host_dataset_provenance_damage_refuses_backup(tmp_path,damage):
+    import sqlite3
+    from test_research_acquisition_import import acquire,provider
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as client:
+        run=acquire(client)
+        dataset=client.post('/api/research/datasets',json={'source_run_id':run['run_id'],'basis':'Provenance damage regression'}).json()
+        complete=client.post('/api/runtime/backups')
+        assert complete.status_code==201,complete.text
+        account=client.get('/api/account').json()
+        # Native SQLite damage is setup; rejection and recovery evidence use public routes.
+        if damage=='original_path':dataset['original_archives'][0]['path']='raw/not-the-registered-original'
+        else:dataset[damage]='invalid-source-reference'
+        with sqlite3.connect(tmp_path/'roll.sqlite3') as db:
+            db.execute('UPDATE research_datasets SET value=? WHERE id=?',(json.dumps(dataset),dataset['dataset_id']))
+        denied=client.post('/api/runtime/backups')
+        assert denied.status_code==409,denied.text
+        assert denied.json()['detail']['code']=='RESEARCH_SOURCE_PROVENANCE_MISMATCH'
+        assert client.get('/api/account').json()==account
+        assert client.get('/api/runtime/backups/'+complete.json()['backup_id']+'/export').status_code==200
+
+
+def test_host_baostock_shared_wire_decoded_pairs_backup_restore_and_corruption(tmp_path):
+    import sqlite3
+    from roll.runtime.backups import encode,sha
+    worker=tmp_path/'source.py'
+    worker.write_text('import sys,json,base64\nc=json.load(sys.stdin)\nv={"error_code":"0","calls":2,"received_bytes":10,"wire_b64":base64.b64encode(b"empty-wire" if c["group"]=="ADJUSTMENTS" else b"daily-wire").decode(),"received_at":"2026-10-09T00:00:"+str(c.get("year",2000)%60).zfill(2)+"+00:00","fields":[],"rows":[]}\nif c["group"]=="DAILY":v.update(fields=["date","code","open","high","low","close","preclose","volume","amount","adjustflag","tradestatus","isST"],rows=[["2026-09-30","sh.600362","10.0000","12.0000","9.0000","11.0000","10.0000","1000","11000.0000","3","1","0"]])\nprint(json.dumps(v))',encoding='utf-8')
+    directory=tmp_path/'source'
+    with TestClient(create_app(directory,baostock_worker=worker)) as client:
+        establish(client,['SSE:600362'])
+        client.post('/api/market/identities',json={'instrument':'SSE:600362','exchange':'SSE','board':'MAIN','instrument_type':'STOCK',
+            'name':'江西铜业','basis':'Controlled shared-wire regression','effective_at':'2026-10-07T00:00:00+08:00'})
+        request=client.post('/api/data/requests',json={'instruments':['SSE:600362'],'groups':['DAILY','ADJUSTMENTS'],'purpose':'RESEARCH',
+            'start_date':'2025-01-01','end_date':'2026-09-30','daily_source':'BAOSTOCK','adjustment_source':'BAOSTOCK','baostock_auth_mode':'PUBLIC'}).json()
+        run=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+        assert run['status'] in {'COMPLETE','PARTIAL'},run
+        snapshot=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        wires=[a for a in snapshot['archives'] if a['kind']=='RAW_SOCKET_RESPONSE' and a['sha256']==sha(b'empty-wire')]
+        assert len(wires)==2 and wires[0]['decoded_hash']!=wires[1]['decoded_hash']
+        response=client.post('/api/research/datasets',json={'source_run_id':run['run_id'],'basis':'Shared wire pairs are retained'})
+        assert response.status_code==201,response.text
+        dataset=response.json()
+        backup=client.post('/api/runtime/backups')
+        assert backup.status_code==201,backup.text
+        exported=client.get('/api/runtime/backups/'+backup.json()['backup_id']+'/export').content
+        # Corrupt the pair while keeping canonical source hash/list consistent: registry linkage must still reject.
+        altered=json.loads(json.dumps(snapshot))
+        next(a for a in altered['archives'] if a.get('wire_hash')==sha(b'empty-wire'))['wire_hash']=sha(b'daily-wire')
+        dataset['original_archives']=altered['archives']+[altered['parquet']]
+        dataset['source_bundle_sha256']=sha(encode({'request':request,'run':run,'snapshot':altered}).encode())
+        with sqlite3.connect(directory/'roll.sqlite3') as db:
+            db.execute('UPDATE market_evidence_snapshots SET value=? WHERE id=?',(encode(altered),altered['snapshot_id']))
+            db.execute('UPDATE research_datasets SET value=? WHERE id=?',(encode(dataset),dataset['dataset_id']))
+        denied=client.post('/api/runtime/backups')
+        assert denied.status_code==409 and denied.json()['detail']['code']=='RESEARCH_SOURCE_PROVENANCE_MISMATCH',denied.text
+    target=tmp_path/'restored'
+    with TestClient(create_app(target)) as client:
+        response=client.post('/api/runtime/restores',content=exported)
+        assert response.status_code==202,response.text
+    with TestClient(create_app(target)) as client:
+        assert client.get('/api/data/snapshots/'+run['snapshot_id']).json()==snapshot
+        for original in snapshot['archives']+[snapshot['parquet']]:
+            response=client.get('/api/data/archives/'+original['sha256'])
+            assert response.status_code==200 and sha(response.content)==original['sha256']
+        assert client.post('/api/data/runs/'+run['run_id']+'/replay').json()['network_calls']==0

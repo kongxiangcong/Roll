@@ -48,3 +48,6 @@ create_app 的 bootstrap 在 Ledger（包括真实 v1→v2 ALTER）及所有模�
 Windows目录DACL仅当前用户与SYSTEM，子文件继承；非Windows目录0700。Windows扩展文件路径支持隔离研究源目录的深层原件。备份API仅本机地址访问，外部Origin拒绝；生产启动脚本仍绑定127.0.0.1，不在本票引入远程服务。模型认证/key文件和交易凭据不在恢复包或日志中。下载文件离开服务管理范围后，由用户保存在受限目录。
 
 实际验收分列 API/SQLite/文件、原生进程和 Chrome；见 [16证据](../.scratch/roll-p0/evidence/16/acceptance.md)。
+
+
+通过 `source_run_id` 登记的 `HOST_DATA_REQUEST` 研究数据集不产生 `browser-live.json`。备份从 SQLite 的固定 request/run/snapshot 重建规范来源包并校验 `source_bundle_sha256`、关联 ID、原始归档及 Parquet 的已登记路径和哈希；压缩来源还校验 decoded/wire 双向关联。这些附件由 `evidence_archives` 统一收集。来源链不匹配时拒绝备份或恢复，代码升级前的 `PRE_UPGRADE` 使用相同校验。旧版 `archive_id` 研究目录及 METHOD 恢复规则保持兼容。
