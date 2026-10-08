@@ -69,3 +69,7 @@ backend/src/roll/research/reference/*.html binary
 .scratch/roll-p0/evidence/continuation-2026-10-08/merge-fuyao*.txt -text whitespace=-blank-at-eol,cr-at-eol
 .scratch/roll-p0/evidence/fuyao/background-*.json -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/fuyao/runtime-preservation-background.json -text whitespace=cr-at-eol
+# Ticket13 immutable captured Windows API/runtime reports and stdout.
+.scratch/roll-p0/evidence/13/**/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/13/**/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/merge-13*.txt -text whitespace=-blank-at-eol,cr-at-eol
