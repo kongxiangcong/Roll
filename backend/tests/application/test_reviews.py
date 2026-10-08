@@ -40,12 +40,13 @@ def test_closed_exchange_on_demand_is_a_complete_fact_flow_without_model_or_dail
         assert client.get('/api/reviews/tasks/'+task['task_id']).json()==task
 
 
-def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time(tmp_path):
+def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time(tmp_path, method_market_timeline):
     raw=b'{"rc":0,"data":{"code":"600519","market":1,"klines":["2026-09-30,10,10,10,10,100,100000","2026-10-08,10,11,11,10,100,110000"]}}'
     fields=['']*60
     for index,value in {2:'600519',3:'12',4:'10',5:'10',6:'100',30:'20260930161458',33:'12',34:'10',35:'12/100/120000',47:'13.2',48:'10.8'}.items():fields[index]=value
     def provider(request):
         return httpx.Response(200,content=raw if 'kline' in request.url.path else ('v_sh600519="'+'~'.join(fields)+'";').encode())
+    consume=method_market_timeline('2026-10-08T10:00:00+08:00')
     clock=lambda:datetime.fromisoformat('2026-10-08T10:00:00+08:00')
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider),review_clock=clock)) as client:
         establish(client,['SSE:600519'])
@@ -55,6 +56,7 @@ def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_
             'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-10-08'}).json()
         run=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
         before=client.get('/api/account').json()
+        consume()  # Advance the recording clock only after the fixed-source acquisition.
         task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
         item=next(i for i in task['result']['instruments'] if i['instrument']=='SSE:600519')
         assert item['last_complete_daily']['trade_date']=='2026-09-30'
@@ -62,6 +64,8 @@ def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_
         assert item['incomplete_daily']['model_daily_input_allowed'] is False
         assert item['quote']['upstream_at']=='2026-09-30T16:14:58+08:00'
         assert item['quote_status']=='STALE_PREVIOUS_SESSION'
+        assert datetime.fromisoformat(before['confirmed_at']) < datetime.fromisoformat(request['created_at'])
+        assert datetime.fromisoformat(request['created_at']) < datetime.fromisoformat(item['quote']['available_at']) < datetime.fromisoformat(task['result']['knowledge_cutoff'])
         assert task['result']['calendar']['phase']=='CONTINUOUS'
         assert task['result']['data_versions']==[run['snapshot_id']]
         assert task['result']['forecast'] is None
