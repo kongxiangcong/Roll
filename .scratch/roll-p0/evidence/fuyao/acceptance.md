@@ -30,3 +30,6 @@ TDD公开切片：daily_source拒绝422→RAW/qfq/股数/CNY与原档案回放�
 
 
 最终边界专项[12passed](backend-final12.txt)26.09s；原24项/64+2及Chrome/构建证据分别留存，不相加为一个HEAD完整suite。
+
+
+合最新integration23e6556（12真实接入及rootbaseline记录）得3916c0f，新增来源12项与环境加载3项合计[15passed](backend-merged15.txt)38.10s。使用ROLL_ENV=test和隔离真实SQLite，确认测试宿主不隐式读取root凭据；工作树不新增个人.env副本。已提交源31f5f12；此证据只更新merge后结果，不重写原运行指纹。
