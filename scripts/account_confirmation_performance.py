@@ -15,11 +15,12 @@ from uuid import uuid4
 import httpx
 
 
-def measure_confirmations(client,samples=100,warmup=10):
+def measure_confirmations(client,samples=100,warmup=10,observe_task=None):
     if client.get("/api/health").json().get("environment")!="test":
         raise ValueError("确认性能测量仅可连接 ROLL_ENV=test 的隔离账户服务")
     run_id=str(uuid4())
     measurements=[]
+    task_observations=[]
     for i in range(samples+warmup):
         account=client.get("/api/account").json()
         if account["version"]==0:
@@ -32,15 +33,18 @@ def measure_confirmations(client,samples=100,warmup=10):
             "fee":{"status":"KNOWN","amount":"5.00","reserve_amount":None,"basis":"合成固定费用5元"}}}
         draft=client.post("/api/account/drafts",json=command)
         draft.raise_for_status()
+        task_before=observe_task() if observe_task else None
         start=time.perf_counter()
         receipt=client.post("/api/account/confirm",json={"draft_id":draft.json()["draft_id"],"idempotency_key":record})
         receipt.raise_for_status()
         result=receipt.json()
         elapsed=(time.perf_counter()-start)*1000
+        task_after=observe_task() if observe_task else None
         if result["account_version"]!=account["version"]+1:
             raise AssertionError("确认未推进一次版本")
         if i>=warmup:
             measurements.append(elapsed)
+            if observe_task:task_observations.append({'sample':i-warmup,'ms':elapsed,'before':task_before,'after':task_after})
     account=client.get("/api/account").json()
     return {"measurement":"POST /api/account/confirm HTTP round-trip + JSON decode, warm persistent TCP client",
             "samples":samples,"warmup":warmup,"p95_method":"nearest rank ceil(0.95*n)",
@@ -48,7 +52,8 @@ def measure_confirmations(client,samples=100,warmup=10):
             "max_ms":max(measurements),"samples_ms":measurements,"position_count":len(account["positions"]),
             "event_count":len(client.get("/api/account/events").json()),"account_version":account["version"],
             "platform":platform.platform(),"processor":platform.processor(),"python":platform.python_version(),
-            "sqlite":sqlite3.sqlite_version,"external_task_integration":"pending actual 08/13 execution"}
+            "sqlite":sqlite3.sqlite_version,"external_task_integration":"pending actual 08/13 execution",
+            "external_task_observations":task_observations}
 
 
 if __name__=="__main__":

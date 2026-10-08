@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** in-progress（2026-10-08；11/12已完成，独立工作树实施，真实验收分别记录）
 
 **Primary acceptance:** AT-43、AT-47、AT-83、AT-89、AT-90。
 

@@ -19,6 +19,7 @@ from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
+from roll.agents.settings import AgentSettings, BackendSelection, AgentQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.market.verification import IndependentVerifications, VerificationCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
@@ -340,6 +341,26 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.codex = codex
     deepseek=DeepSeekEvidence(evidence,deepseek_endpoint,input_observer=research.market_input_exposed)
     app.state.deepseek=deepseek
+    agent_settings=AgentSettings(ledger)
+    app.state.agent_settings=agent_settings
+
+    @app.get('/api/agents/settings')
+    def backend_settings():
+        return agent_settings.get()
+
+    @app.get('/api/agents/settings/history')
+    def backend_settings_history():
+        return agent_settings.history()
+
+    @app.post('/api/agents/settings')
+    def select_backend(command:BackendSelection):
+        return agent_settings.select(command)
+
+    @app.post('/api/data/requests/{request_id}/agent',status_code=202)
+    def agent_start(request_id:str,command:AgentQuestion):
+        selection=agent_settings.get()
+        backend=codex if selection['backend']=='CODEX' else deepseek
+        return backend.start(request_id,command,selection)
 
     @app.post('/api/data/requests/{request_id}/deepseek',status_code=202)
     def deepseek_start(request_id:str,command:DeepSeekQuestion):

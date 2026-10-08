@@ -2,10 +2,10 @@ import {mkdirSync,mkdtempSync,readFileSync,writeFileSync} from 'node:fs';
 import {resolve,join} from 'node:path';
 import {spawn} from 'node:child_process';
 
-const files=['baseline','cash-equity','codex-evidence','csv','deepseek-evidence',
+const files=['baseline','backend-switch','cash-equity','codex-evidence','csv','deepseek-evidence',
   'fills','funding','market','market-overflow','reconcile','valuation'];
 const externalFlags=['ROLL_ENV_FILE','ROLL_TEST_DATA_DIR','ROLL_PLAYWRIGHT_FACTORY','ROLL_BROWSER_METHOD',
-  'ROLL_LIVE_MARKET','ROLL_LIVE_FALLBACK','ROLL_LIVE_CODEX','ROLL_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_LIVE',
+  'ROLL_LIVE_MARKET','ROLL_LIVE_FALLBACK','ROLL_LIVE_CODEX','ROLL_LIVE_BACKEND_SWITCH','ROLL_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_LIVE',
   'ROLL_RESEARCH_LIVE','ROLL_EXECUTION_LIVE','ROLL_MODEL_LIVE','ROLL_RISK_LIVE',
   'ROLL_BACKUP_BROWSER_PHASE','ROLL_REVIEW_REAL_CACHE','ROLL_REAL_VERIFICATION'];
 if(externalFlags.some(key=>process.env[key])){

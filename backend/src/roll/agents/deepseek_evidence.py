@@ -12,21 +12,18 @@ from fastapi import HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
 from roll.accounts.ledger import encode, now
+from roll.agents.settings import AgentQuestion, check_retry, insert_run, HOST_LIMITS
 from roll.agents.codex_process import owner_alive, process_creation, recover_directory
 
 MODEL='deepseek-flash'
 ENDPOINT='https://api.deepseek.com'
 TOOLS=['roll_read_evidence','roll_read_source']
-LIMITS={'timeout_seconds':120,'tool_calls':8,'http_calls':6,'response_bytes':65536,
-        'total_bytes':262144,'concurrency':1,'subtasks':0,'retries':0,
+LIMITS={**HOST_LIMITS,'total_calls':19,
         'model_calls':5,'max_output_tokens':2048,'model_input_bytes':131072,
         'model_response_bytes':65536,'model_total_response_bytes':262144}
 
 
-class DeepSeekQuestion(BaseModel):
-    model_config=ConfigDict(extra='forbid')
-    question:str=Field(min_length=1,max_length=2000)
-    retry_of:str|None=None
+DeepSeekQuestion=AgentQuestion
 
 
 class DeepSeekEvidence:
@@ -58,12 +55,9 @@ class DeepSeekEvidence:
             db.execute('UPDATE retrieval_runs SET value=? WHERE id=?',(encode(run),run['run_id']))
             db.commit()
 
-    def start(self,request_id,command):
+    def start(self,request_id,command,selection=None):
         request=self.evidence.get('data_requests',request_id)
-        if command.retry_of:
-            prior=self.evidence.get('retrieval_runs',command.retry_of)
-            if prior['backend']!='DEEPSEEK' or prior['request_id']!=request_id or prior['status']=='RUNNING':
-                raise HTTPException(409,{'code':'INVALID_DEEPSEEK_RETRY'})
+        check_retry(self.evidence,request_id,command)
         try:
             timeout=int(os.environ.get('ROLL_DEEPSEEK_TIMEOUT_SECONDS',120))
             if not 1<=timeout<=120:raise ValueError()
@@ -90,25 +84,24 @@ class DeepSeekEvidence:
             if self.active:raise HTTPException(409,{'code':'DEEPSEEK_CONCURRENCY_LIMIT'})
             with self.evidence.ledger.connection() as db:
                 db.execute('BEGIN IMMEDIATE')
-                for row in db.execute('SELECT value FROM retrieval_runs').fetchall():
-                    prior=json.loads(row[0])
-                    if prior.get('backend')=='DEEPSEEK' and prior['status']=='RUNNING' and owner_alive(prior):
-                        raise HTTPException(409,{'code':'DEEPSEEK_CONCURRENCY_LIMIT'})
-                db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)',(run['run_id'],request_id,encode(run)))
+                insert_run(self.evidence,db,run,selection)
                 db.commit()
             cancel=threading.Event()
             self.active[run['run_id']]=cancel
-        threading.Thread(target=self.execute,args=(run,request,cancel),daemon=True).start()
-        return json.loads(encode(run))
-
-    def execute(self,run,request,cancel):
+        key=os.environ.get('DEEPSEEK_API_KEY');credential_error=None
         try:
-            key=os.environ.get('DEEPSEEK_API_KEY')
             configured=os.environ.get('ROLL_DEEPSEEK_API_KEY_FILE')
             if not key and configured:
                 path=Path(configured)
                 if path.stat().st_size>4096:raise ValueError('DEEPSEEK_AUTH_FILE_TOO_LARGE')
                 key=path.read_text(encoding='utf-8').strip()
+        except Exception:credential_error='DEEPSEEK_AUTH_INVALID'
+        threading.Thread(target=self.execute,args=(run,request,cancel,key,credential_error),daemon=True).start()
+        return json.loads(encode(run))
+
+    def execute(self,run,request,cancel,key,credential_error):
+        try:
+            if credential_error:raise ValueError(credential_error)
             if not key:
                 run.update(status='UNAVAILABLE',error={'code':'DEEPSEEK_AUTH_NOT_CONFIGURED',
                     'message':'尚未配置 DeepSeek API 凭据。管理员可设置 DEEPSEEK_API_KEY 或明确的 ROLL_DEEPSEEK_API_KEY_FILE；已有网页订阅不证明 API 权限。'})
