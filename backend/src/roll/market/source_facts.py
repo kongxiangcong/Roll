@@ -10,6 +10,7 @@ from roll.market.rules import SHANGHAI
 
 REGISTRY=[
     {'id':'eastmoney-daily','groups':['DAILY'],'host':'push2his.eastmoney.com','depth':'explicit bounded day interval; fqt=0/1 separate versions','unit_scope':'HAND conversion currently evidenced only confirmed SSE MAIN ordinary STOCK; remaining scopes UNKNOWN'},
+    {'id':'sohu-daily','groups':['DAILY'],'host':'q.stock.sohu.com','depth':'explicit single bounded day query; RAW only; actual rows recorded, no total/completeness proof','unit_scope':'Supplier historical table: HAND, amount TEN_THOUSAND_CNY; shares conversion confirmed SSE MAIN ordinary STOCK only; no status/calendar/actions/PIT proof','documentation':'https://q.stock.sohu.com/cn/600362/lshq.shtml'},
     {'id':'tencent-quote','groups':['QUOTE','STATUS'],'host':'qt.gtimg.cn','depth':'last reported quote; upstream timestamp can be stale','unit_scope':'reported volume retained; packed amount field35 yuan; no volume conversion outside evidenced scope'},
     {'id':'tencent-index-daily','groups':['DAILY'],'host':'web.ifzq.gtimg.cn','depth':'fixed background indices only; bounded maximum 800 bars; historical amount generally absent','unit_scope':'index aggregate volume unit UNKNOWN'},
     {'id':'tencent-daily','groups':['DAILY'],'host':'web.ifzq.gtimg.cn','depth':'explicit request selection; maximum 800 bars; raw/day and qfqday strictly distinct; historical amount generally absent','unit_scope':'currently verified only confirmed SSE MAIN STOCK; other scopes UNKNOWN'},
