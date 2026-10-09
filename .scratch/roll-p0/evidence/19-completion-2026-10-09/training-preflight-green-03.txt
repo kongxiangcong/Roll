@@ -1,0 +1,56 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_blocked_host_acquisition_preflight_reads_metadata_without_sources_labels_or_fits _
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/worktrees/ticket19-training-preflight/Roll/.scratch/t19-final-preflight-g03/test_blocked_host_acquisition_0')
+
+    def test_blocked_host_acquisition_preflight_reads_metadata_without_sources_labels_or_fits(tmp_path):
+        calls = []
+    
+        def fixed_source(request):
+            calls.append(str(request.url))
+            return provider(request)
+    
+        # Public source format uses a fixed external response, not an actual qualified research sample.
+        with TestClient(create_app(tmp_path, market_transport=httpx.MockTransport(fixed_source))) as client:
+            run = acquire(client)
+            response = client.post('/api/research/datasets', json={
+                'source_run_id': run['run_id'], 'basis': 'Host format fixture; coverage is not historical PIT'})
+            assert response.status_code == 201, response.text
+            dataset = response.json()
+            pid = protocol(client, dataset=dataset['dataset_id'])
+            before = public_state(client, [pid])
+            source_calls = list(calls)
+            # Damage only this test's archived source and Parquet. A metadata GET cannot validate or decode them.
+            for original in dataset['original_archives']:
+                (tmp_path / original['path']).write_bytes(b'Unreadable source fixture for metadata-only preflight')
+            for purpose in ['RESEARCH', 'METHOD_VALIDATION']:
+                response = client.get('/api/research/protocols/' + pid + '/training-preflight',
+                                      params={'purpose': purpose})
+                assert response.status_code == 200, response.text
+                result = response.json()
+                assert result['source']['evidence_kind'] == dataset['source_evidence_kind']
+                assert result['source']['registered_training_readiness'] == 'BLOCKED'
+                assert result['checks']['historical_point_in_time'] == 'NOT_PROVEN_IN_REGISTRATION'
+                assert result['checks']['source_artifact_integrity'] == 'NOT_CHECKED'
+                assert result['checks']['training_inputs_labels_and_support'] == 'NOT_CHECKED'
+                assert result['checks']['real_training_path'] == 'NOT_IMPLEMENTED'
+                assert result['registered_windows'] == {
+                    'DEVELOPMENT': {'state': 'NOT_PREREGISTERED', 'rows': 0},
+                    'CALIBRATION': {'state': 'NOT_PREREGISTERED', 'rows': 0}}
+                for blocker in ['HISTORICAL_POINT_IN_TIME_NOT_PROVEN',
+                                'COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN',
+                                'COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN',
+                                'HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION',
+                                'RESEARCH_WINDOWS_NOT_PREREGISTERED', 'REAL_TRAINING_PATH_NOT_IMPLEMENTED']:
+                    assert blocker in result['blockers']
+                assert 'HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN' not in result['blockers']
+                assert 'REAL_MODEL_AND_CALIBRATOR_NOT_FROZEN' not in result['blockers']
+                if purpose == 'METHOD_VALIDATION':
+>                   assert 'METHOD_VALIDATION_REQUIRES_METHOD_CASE' in result['blockers']
+E                   AssertionError: assert 'METHOD_VALIDATION_REQUIRES_METHOD_CASE' in ['HISTORICAL_POINT_IN_TIME_NOT_PROVEN', 'COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN', 'COMPLETE_HISTORICAL_EXECUTI...TORICAL_RULE_COVERAGE_REQUIRES_VALIDATION', 'RESEARCH_WINDOWS_NOT_PREREGISTERED', 'FEATURE_LOOKBACK_INSUFFICIENT', ...]
+
+backend\tests\application\test_training_preflight.py:127: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_training_preflight.py::test_blocked_host_acquisition_preflight_reads_metadata_without_sources_labels_or_fits
+1 failed in 7.46s

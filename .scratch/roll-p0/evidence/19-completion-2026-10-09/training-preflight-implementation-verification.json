@@ -1,0 +1,158 @@
+{
+  "base_commit": "81abcb961dd2b628b7466b8ecb08eb249c992a26",
+  "integration_commit": "81abcb961dd2b628b7466b8ecb08eb249c992a26",
+  "models_py_git_blob_at_base": "672aee8ab755d092627f9c7c3a08ff2116ffeda4",
+  "models_py_git_blob_now": "672aee8ab755d092627f9c7c3a08ff2116ffeda4",
+  "models_py_unchanged": true,
+  "source_sha256_canonical_lf": {
+    "backend/src/roll/app.py": "87f096871d8ec8fabbd020d48e6d79a6bfb0e770d8419f80b34618f6aa75ffff",
+    "backend/src/roll/research/training_preflight.py": "7dfc584cff45ce54f85ca9b0f1f92d1610a3ca6401037b915ebef0d473c1dbb6",
+    "backend/src/roll/research/models.py": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+    "backend/tests/application/test_training_preflight.py": "59de26e5807a6fccb9518469c60e1a2dbdea11e3310e25d22ce3d8b2e40a63e7"
+  },
+  "related_backend": {
+    "passed": 21,
+    "failed": 0,
+    "seconds": 117.73,
+    "modules": [
+      "test_training_preflight",
+      "test_transparent_models",
+      "test_research_protocol",
+      "test_research_acquisition_import"
+    ]
+  },
+  "real_source_or_label_assessment_performed": false,
+  "fit_or_calibration_performed_for_actual_research": false,
+  "tracked_stdout": [
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-green-01.txt",
+      "bytes": 100,
+      "sha256": "4f5be0768ed5519504c14d32995d4f1aacc9b86a047f021c15d5957f083190f2"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-green-02.txt",
+      "bytes": 100,
+      "sha256": "990e1a35a458bd0eb98461b61a8823d0164ba474e013634b527d5ab949b8eca7"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-green-03-corrected.txt",
+      "bytes": 9583,
+      "sha256": "479a809bbddc6c92726d05e40142b8b208ee8150964eac9efb8e650ecd3a36e2"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-green-03-final.txt",
+      "bytes": 100,
+      "sha256": "3cf5a3415d1007ae66fae5e8255dd0fcc876ff57484ebe689f731291f8f9110d"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-green-03.txt",
+      "bytes": 4217,
+      "sha256": "c3a973585705ae16670b1640f07a43dd8c579f5eafd9ab66e0a53b549e60a52a"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-green-04.txt",
+      "bytes": 100,
+      "sha256": "fb81de4dd7c9d8e913e530fbac3fbe9250ab2aba73bc2859184a47fdc26b2b5a"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-red-01.txt",
+      "bytes": 1587,
+      "sha256": "60dcdc13fd635a2c2d34f5cb3455b3ffd0d34f5afff328a675bbebdcd5dbcab7"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-red-02.txt",
+      "bytes": 2700,
+      "sha256": "cae62124dd91188d0afe9e9855a9caebbbfc683d9b96cc464166c3c1aace47fc"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-red-03.txt",
+      "bytes": 2478,
+      "sha256": "e5cd7107badec262d31f837390266c46b55e41a13facccb87dda310d7b1e9dfa"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-red-04.txt",
+      "bytes": 8964,
+      "sha256": "b458bdcaca874c6cb3980740334d2f6aa4f5967aecb50c6888a46cefc6e12383"
+    },
+    {
+      "path": ".scratch/roll-p0/evidence/19-completion-2026-10-09/training-preflight-related-backend.txt",
+      "bytes": 113,
+      "sha256": "700f1299f793c470174f9882d852af4da0a5c80d1511d34e03d5f140fb89ed4f"
+    }
+  ],
+  "ignored_fixture_preservation": {
+    "workspace": "C:\\Users\\72449\\.codex\\worktrees\\ticket19-training-preflight\\Roll",
+    "file_count": 1228,
+    "bytes": 84947992,
+    "action": "Reproducible isolated METHOD/test fixtures only; no actual research originals. Necessary code/tests/raw stdout and acceptance are tracked. No fixture cleanup performed; main process may choose optional additional preservation.",
+    "directories": [
+      {
+        "path": ".scratch/t19-final-p3",
+        "file_count": 34,
+        "bytes": 2674770,
+        "sorted_file_metadata_sha256": "6e85a4a601193a80e022586dad52cda5938a929d9c8adad3260a8b58b5788083"
+      },
+      {
+        "path": ".scratch/t19-final-pf",
+        "file_count": 898,
+        "bytes": 59886765,
+        "sorted_file_metadata_sha256": "8f62fd2e3b641fd3612878c30c05bcdd37be539f1a6b14e6f111a14a184a9ce7"
+      },
+      {
+        "path": ".scratch/t19-final-pg4",
+        "file_count": 33,
+        "bytes": 2601887,
+        "sorted_file_metadata_sha256": "069d9dc279e688e80a6faf8080735d5d5c1e16d75cfb9dfcb9fa5261da9f4d01"
+      },
+      {
+        "path": ".scratch/t19-final-pr4",
+        "file_count": 33,
+        "bytes": 2601887,
+        "sorted_file_metadata_sha256": "a315f4164127a3d672e3e7e087f2bb38be4939f1b947b02afe9c92f2331b7d48"
+      },
+      {
+        "path": ".scratch/t19-final-preflight-g01",
+        "file_count": 33,
+        "bytes": 2601887,
+        "sorted_file_metadata_sha256": "5c1809f0dce7b79051b2ed3200ee3bab3ffb72542f54a819786857a8c93363b2"
+      },
+      {
+        "path": ".scratch/t19-final-preflight-g02",
+        "file_count": 35,
+        "bytes": 3049286,
+        "sorted_file_metadata_sha256": "caf6ca6205f951118bd4c01f7ae65a69388f83bd9f8c67628a9bf70d74adbf93"
+      },
+      {
+        "path": ".scratch/t19-final-preflight-g03",
+        "file_count": 33,
+        "bytes": 2240610,
+        "sorted_file_metadata_sha256": "f0bd3ecfec337d22b7e0f00710469b1cf282a35fdbef31c2b0023708a9f8d66f"
+      },
+      {
+        "path": ".scratch/t19-final-preflight-g03-corrected",
+        "file_count": 32,
+        "bytes": 2211995,
+        "sorted_file_metadata_sha256": "61d06961129bec6b47952ad574c12a0aefe986a9cbb4fceeaf00e51e4ce1ad6c"
+      },
+      {
+        "path": ".scratch/t19-final-preflight-r01",
+        "file_count": 31,
+        "bytes": 2203640,
+        "sorted_file_metadata_sha256": "50fce8841f9a7afdf282946fff9cbc33f1c6490f0015e1836d857ec5ae3172f5"
+      },
+      {
+        "path": ".scratch/t19-final-preflight-r02",
+        "file_count": 33,
+        "bytes": 2634655,
+        "sorted_file_metadata_sha256": "702dd8d0b601ff174182a8897458b644f447bb15be477e40f9e7b1e1b65d7d94"
+      },
+      {
+        "path": ".scratch/t19-final-preflight-r03",
+        "file_count": 33,
+        "bytes": 2240610,
+        "sorted_file_metadata_sha256": "e9297feef67ce7ea1b0f4422c0292bcd20862e1b9253452e5a9f5ddbb571ab95"
+      }
+    ],
+    "required_for_archive": false
+  }
+}
