@@ -45,6 +45,7 @@ def daily(content,archive,instrument,request,decimal_value):
             o,c,l,h=(Decimal(values[k]) for k in ['open','close','low','high'])
             if not l<=min(o,c)<=max(o,c)<=h:errors.append('INVALID_OHLC_RANGE')
             if Decimal(volume)>0 and Decimal(amount)==0:errors.append('AMOUNT_PLACEHOLDER_OR_INCONSISTENT')
+            if Decimal(volume)==0 and Decimal(amount)>0:errors.append('ZERO_VOLUME_POSITIVE_AMOUNT_CONFLICT')
             # Amount is rounded to 0.01万元; preserve that 100 CNY supplier precision.
             if shares is not None and Decimal(shares)>0 and Decimal(amount)>0:
                 tolerance=Decimal('100')/Decimal(shares)+Decimal('.01')

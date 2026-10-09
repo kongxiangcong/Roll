@@ -70,20 +70,27 @@ uvicorn.run(app, host='127.0.0.1', port=int(os.environ['ROLL_ACCEPTANCE_PORT']))
             '-c', child],
             cwd=source / 'backend', env=environment, stdout=log, stderr=subprocess.STDOUT)
         report['process_ids'].append(instance.pid)
-        for _ in range(200):
-            if instance.poll() is not None:
-                raise RuntimeError('Local host failed; inspect http-process.log')
-            try:
-                response = client.get('/api/_acceptance/identity')
-                if response.status_code == 200 and response.json().get('token') == token and response.json().get('directory') == str(directory) and instance.poll() is None:
-                    report.setdefault('listener_ownership', []).append(response.json())
-                    return instance
-            except httpx.TransportError:
-                pass
-            time.sleep(.1)
-        instance.terminate()
-        instance.wait(timeout=10)
-        raise RuntimeError('Local host startup deadline')
+        try:
+            for _ in range(200):
+                if instance.poll() is not None:
+                    raise RuntimeError('Local host failed; inspect http-process.log')
+                try:
+                    response = client.get('/api/_acceptance/identity')
+                    identity = response.json() if response.status_code == 200 else None
+                    if (isinstance(identity, dict) and identity.get('token') == token
+                            and identity.get('directory') == str(directory) and identity.get('pid') == instance.pid
+                            and instance.poll() is None):
+                        report.setdefault('listener_ownership', []).append(identity)
+                        return instance
+                except httpx.TransportError:
+                    pass
+                time.sleep(.1)
+            raise RuntimeError('Local host startup deadline')
+        except BaseException:
+            if instance.poll() is None:
+                instance.terminate()
+                instance.wait(timeout=10)
+            raise
     try:
         process = start()
         account = call('GET', '/account')

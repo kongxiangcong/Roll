@@ -110,3 +110,21 @@ def test_sohu_rejects_instruction_text_in_numeric_cell_as_untrusted_source_data(
         assert snapshot['facts']==[]
         archive=next(a for a in snapshot['archives'] if a['kind']=='RAW_RESPONSE')
         assert client.get('/api/data/archives/'+archive['sha256']).content==raw
+
+
+def test_sohu_zero_volume_positive_amount_is_a_quality_conflict(tmp_path):
+    raw=json.dumps([{'status':0,'code':'cn_600519','hq':[
+        ['2026-09-30','10','10','0','0%','9','11','0','10','0%']]}]).encode()
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw)))) as client:
+        establish(client,['SSE:600519'])
+        client.post('/api/market/identities',json={'instrument':'SSE:600519','exchange':'SSE','board':'MAIN',
+            'instrument_type':'STOCK','name':'合成证券','basis':'合成主板身份','effective_at':'2026-10-07T00:00:00+08:00'})
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'RESEARCH',
+            'start_date':'2026-09-30','end_date':'2026-09-30','daily_source':'SOHU'}).json()
+        run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+        snapshot=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+        bar=snapshot['facts'][0]
+        assert 'ZERO_VOLUME_POSITIVE_AMOUNT_CONFLICT' in bar['errors']
+        assert not bar['model_daily_input_allowed'] and bar['quality']=='INVALID'
+        assert (bar['volume_shares'],bar['amount_yuan'],bar['volume_state'])==('0','100000','ZERO_REPORTED')
+        assert any(o['kind']=='DATA_QUALITY_ALERT' for o in snapshot['observations'])
