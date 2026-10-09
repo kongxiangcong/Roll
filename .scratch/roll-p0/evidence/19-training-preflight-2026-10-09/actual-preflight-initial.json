@@ -1,0 +1,221 @@
+{
+  "captured_at": "2026-10-09T05:08:29.514474+00:00",
+  "base_url": "http://127.0.0.1:8010",
+  "instrument": "SSE:600362",
+  "requests": [
+    {
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "body_sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "status": 200,
+      "body_sha256": "13751712a0a615c1dd3acada1f8fc3744595ac4f9258e39c61e454aa7d8846a5",
+      "bytes": 14575
+    },
+    {
+      "path": "/api/research/datasets/ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+      "status": 200,
+      "body_sha256": "9299e6d0c2dc866bb0c9fff7f2eead8f95b8a8e825123b8db7e24fa552baa990",
+      "bytes": 11980
+    },
+    {
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "body_sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "status": 200,
+      "body_sha256": "13751712a0a615c1dd3acada1f8fc3744595ac4f9258e39c61e454aa7d8846a5",
+      "bytes": 14575
+    },
+    {
+      "path": "/api/research/datasets/ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+      "status": 200,
+      "body_sha256": "9299e6d0c2dc866bb0c9fff7f2eead8f95b8a8e825123b8db7e24fa552baa990",
+      "bytes": 11980
+    },
+    {
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "body_sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "body_sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "path": "/api/research/protocols/bab919f3-14b5-4d28-8df6-f0f0979755db/attempt-manifest",
+      "status": 200,
+      "body_sha256": "0dfb031eb227a0ce82c100339c6fe5a58458e9eca53840cea929f706879db3a2",
+      "bytes": 3259
+    }
+  ],
+  "families": [
+    {
+      "root_protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "queried_protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "lineage": [
+        "bab919f3-14b5-4d28-8df6-f0f0979755db",
+        "a9792e33-98e1-464e-85ba-046623fb4bd1"
+      ],
+      "family_protocol_ids": [
+        "bab919f3-14b5-4d28-8df6-f0f0979755db",
+        "a9792e33-98e1-464e-85ba-046623fb4bd1"
+      ],
+      "attempts": [
+        {
+          "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+          "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "category": "PRIMARY_FIT",
+          "partition": "DEVELOPMENT",
+          "status": "FAILED",
+          "started_at": "2026-10-08T17:08:18.766352+00:00",
+          "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c"
+        },
+        {
+          "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+          "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "category": "PRIMARY_FIT",
+          "partition": "DEVELOPMENT",
+          "status": "FAILED",
+          "started_at": "2026-10-08T17:14:24.413994+00:00",
+          "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c"
+        }
+      ],
+      "fits_limit": 5,
+      "fits_used": 2,
+      "fits_remaining": 3,
+      "calibration_limit": 1,
+      "calibration_used": 0,
+      "calibration_remaining": 1,
+      "basis": "All registered family failures, aborts and interruptions count. Host metadata does not prove absence of unreported external work.",
+      "preflight_transport": "LOCAL_FUNCTION_WITH_HTTP_METADATA_ADAPTER",
+      "preflight": {
+        "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+        "purpose": "RESEARCH",
+        "assessment": "METADATA_ONLY",
+        "ready_to_fit": false,
+        "dataset_id": "ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+        "readiness_scope": "ACTUAL_RESEARCH_TRAINING; METHOD_VALIDATION never upgrades real readiness",
+        "source": {
+          "origin": "HOST_DATA_REQUEST",
+          "evidence_kind": "REAL_ACQUISITION",
+          "run_id": "e5dc9db3-7776-48c2-ab1a-da4102132efc",
+          "snapshot_id": "98486e2d-2f52-401f-a6c6-da7f9742ea03",
+          "data_fingerprint": "fd93fee32106b53e81d284dbe734ea58fc427cfb06d54fc6e390bb7e65b9cd89",
+          "registered_training_readiness": "BLOCKED"
+        },
+        "registered_windows": {
+          "DEVELOPMENT": {
+            "state": "NOT_PREREGISTERED",
+            "rows": 0
+          },
+          "CALIBRATION": {
+            "state": "NOT_PREREGISTERED",
+            "rows": 0
+          }
+        },
+        "blockers": [
+          "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+          "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+          "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+          "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+          "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+          "REAL_TRAINING_PATH_NOT_IMPLEMENTED",
+          "TRAINING_INPUTS_LABELS_AND_SUPPORT_NOT_CHECKED"
+        ],
+        "checks": {
+          "source_artifact_integrity": "NOT_CHECKED",
+          "training_inputs_labels_and_support": "NOT_CHECKED",
+          "historical_point_in_time": "NOT_PROVEN_IN_REGISTRATION",
+          "real_training_path": "NOT_IMPLEMENTED"
+        },
+        "budget": {
+          "primary_and_neighbors": {
+            "categories": [
+              "PRIMARY_FIT",
+              "G5_NEIGHBOR"
+            ],
+            "limit": 5,
+            "used": 2,
+            "remaining": 3,
+            "exhausted": false
+          },
+          "calibration": {
+            "categories": [
+              "CALIBRATION"
+            ],
+            "limit": 1,
+            "used": 0,
+            "remaining": 1,
+            "exhausted": false
+          }
+        },
+        "budget_basis": "All registered family attempts count, regardless of terminal status. This read is not a reservation; attempt start rechecks the budget transactionally.",
+        "attempt_manifest": {
+          "lineage": [
+            "bab919f3-14b5-4d28-8df6-f0f0979755db",
+            "a9792e33-98e1-464e-85ba-046623fb4bd1"
+          ],
+          "family_protocol_ids": [
+            "bab919f3-14b5-4d28-8df6-f0f0979755db",
+            "a9792e33-98e1-464e-85ba-046623fb4bd1"
+          ],
+          "attempt_ids": [
+            "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+            "e648f20e-99da-4544-a59d-75a2c383bc00"
+          ],
+          "basis": "All linked family predecessors and sibling failures, aborts and interruptions remain required; this is not proof of unreported out-of-host work",
+          "attempts": [
+            {
+              "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+              "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+              "category": "PRIMARY_FIT",
+              "partition": "DEVELOPMENT",
+              "status": "FAILED",
+              "started_at": "2026-10-08T17:08:18.766352+00:00",
+              "host_owner": {
+                "creation_ticks": 134359528622286991,
+                "nonce": "f090adf7-c866-4314-98c3-e101717ea1ea",
+                "pid": 34324
+              },
+              "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c",
+              "completion_recorded_at": "2026-10-08T17:08:18.941510+00:00"
+            },
+            {
+              "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+              "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+              "category": "PRIMARY_FIT",
+              "partition": "DEVELOPMENT",
+              "status": "FAILED",
+              "started_at": "2026-10-08T17:14:24.413994+00:00",
+              "host_owner": {
+                "creation_ticks": 134359532206248511,
+                "nonce": "218e340b-eb98-421d-bda8-5f2a176a2a73",
+                "pid": 34636
+              },
+              "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c",
+              "completion_recorded_at": "2026-10-08T17:14:24.517554+00:00"
+            }
+          ]
+        }
+      },
+      "repeated_preflight_equal": true,
+      "manifest_unchanged": true
+    }
+  ],
+  "source_calls": 0,
+  "fits": 0,
+  "labels_read_or_computed": false,
+  "sealed_read": false,
+  "method": "New local preflight function evaluated against live host metadata GETs; this does not assert the live host already serves the new route.",
+  "local_function_sha256": "7dfc584cff45ce54f85ca9b0f1f92d1610a3ca6401037b915ebef0d473c1dbb6"
+}
