@@ -1,0 +1,56 @@
+{
+  "started_at": "2026-10-09T00:53:31.759397+00:00",
+  "instrument": "SSE:600362",
+  "data_directory": "C:\\Users\\72449\\.codex\\worktrees\\ticket19-public-evidence\\Roll\\.roll-data\\lifecycle-receipt-v3-final",
+  "source_checkout": "D:\\dsh-proj\\Roll",
+  "steps": [
+    {
+      "method": "GET",
+      "path": "/account",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/account",
+      "status": 200
+    }
+  ],
+  "process_ids": [
+    45416,
+    42028
+  ],
+  "real_market_acquisition": false,
+  "credentials_used": false,
+  "sealed_results_read": false,
+  "labels_computed": false,
+  "models_fitted": false,
+  "listener_ownership": [
+    {
+      "token": "44bc1850d31b46f7bbf66f039d03ac92",
+      "directory": "C:\\Users\\72449\\.codex\\worktrees\\ticket19-public-evidence\\Roll\\.roll-data\\lifecycle-receipt-v3-final",
+      "pid": 41916
+    },
+    {
+      "token": "204b1b5680a24d9bb0a3aa43ce3b3914",
+      "directory": "C:\\Users\\72449\\.codex\\worktrees\\ticket19-public-evidence\\Roll\\.roll-data\\lifecycle-receipt-v3-final",
+      "pid": 34136
+    }
+  ],
+  "shutdowns": [
+    {
+      "launcher_pid": 45416,
+      "actual_pid": 41916,
+      "graceful": true,
+      "listener_closed": true
+    },
+    {
+      "launcher_pid": 42028,
+      "actual_pid": 34136,
+      "graceful": true,
+      "listener_closed": true
+    }
+  ],
+  "passed": true,
+  "account_unchanged": true,
+  "finished_at": "2026-10-09T00:53:44.561090+00:00"
+}
