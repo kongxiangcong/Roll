@@ -11,7 +11,9 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import socket
 import time
+import uuid
 
 import httpx
 
@@ -20,21 +22,31 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--directory', type=Path, required=True)
     parser.add_argument('--report', type=Path, required=True)
-    parser.add_argument('--port', type=int, default=8191)
+    parser.add_argument('--port', type=int, default=0)
+    parser.add_argument('--source', type=Path, help='Managed implementation checkout to validate before integration')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
+    source = args.source.resolve() if args.source else root
+    if not (source / 'backend/src/roll/app.py').is_file():
+        raise ValueError('Roll source checkout required')
     directory = args.directory.resolve()
     directory.mkdir(parents=True, exist_ok=False)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     log = (directory / 'http-process.log').open('ab')
-    environment = {**os.environ, 'ROLL_ENV': 'test', 'ROLL_DATA_DIR': str(directory)}
+    environment = {**os.environ, 'ROLL_ENV': 'test', 'ROLL_DATA_DIR': str(directory),
+                   'PYTHONPATH': str(source / 'backend/src')}
     environment.pop('ROLL_ENV_FILE', None)
+    token = uuid.uuid4().hex
+    environment['ROLL_ACCEPTANCE_TOKEN'] = token
+    with socket.socket() as probe:
+        probe.bind(('127.0.0.1', args.port))
+        port = probe.getsockname()[1]
     report = {'started_at': datetime.now(timezone.utc).isoformat(), 'instrument': 'SSE:600362',
-              'data_directory': str(directory), 'steps': [], 'process_ids': [],
+              'data_directory': str(directory), 'source_checkout': str(source), 'steps': [], 'process_ids': [],
               'real_market_acquisition': True, 'credentials_used': False,
               'sealed_results_read': False, 'labels_computed': False, 'models_fitted': False}
     process = None
-    base = f'http://127.0.0.1:{args.port}'
+    base = f'http://127.0.0.1:{port}'
     client = httpx.Client(base_url=base, timeout=70, trust_env=False)
     def call(method, path, value=None, expected=200):
         response = client.request(method, '/api' + path, json=value)
@@ -43,18 +55,31 @@ def main():
         report['steps'].append({'method': method, 'path': path, 'status': response.status_code})
         return response.json()
     def start():
+        child = '''import os
+from pathlib import Path
+import uvicorn
+from roll.app import create_app
+app = create_app()
+@app.get('/api/_acceptance/identity')
+def acceptance_identity():
+    return {'token': os.environ['ROLL_ACCEPTANCE_TOKEN'], 'directory': str(Path(os.environ['ROLL_DATA_DIR']).resolve()), 'pid': os.getpid()}
+uvicorn.run(app, host='127.0.0.1', port=int(os.environ['ROLL_ACCEPTANCE_PORT']))
+'''
+        environment['ROLL_ACCEPTANCE_PORT'] = str(port)
         instance = subprocess.Popen([str(root / 'backend/.venv/Scripts/python.exe'), '-B', '-X', 'utf8',
-            '-m', 'uvicorn', 'roll.app:create_app', '--factory', '--host', '127.0.0.1', '--port', str(args.port)],
-            cwd=root / 'backend', env=environment, stdout=log, stderr=subprocess.STDOUT)
+            '-c', child],
+            cwd=source / 'backend', env=environment, stdout=log, stderr=subprocess.STDOUT)
         report['process_ids'].append(instance.pid)
         for _ in range(200):
+            if instance.poll() is not None:
+                raise RuntimeError('Local host failed; inspect http-process.log')
             try:
-                if client.get('/api/health').status_code == 200:
+                response = client.get('/api/_acceptance/identity')
+                if response.status_code == 200 and response.json().get('token') == token and response.json().get('directory') == str(directory) and instance.poll() is None:
+                    report.setdefault('listener_ownership', []).append(response.json())
                     return instance
             except httpx.TransportError:
                 pass
-            if instance.poll() is not None:
-                raise RuntimeError('Local host failed; inspect http-process.log')
             time.sleep(.1)
         instance.terminate()
         instance.wait(timeout=10)
