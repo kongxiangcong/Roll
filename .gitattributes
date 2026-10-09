@@ -1,4 +1,7 @@
 # Original market authority bytes are fingerprinted; never normalize line endings.
+# Preserve captured ticket19 collection and verification receipt bytes.
+.scratch/roll-p0/evidence/19-completion-2026-10-09/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19-completion-2026-10-09/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 # Public-gap research receipts retain exact Windows bytes; allow CRLF metadata.
 .scratch/roll-p0/evidence/continuation-2026-10-09/annual-report-*-*.json -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/continuation-2026-10-09/dividend-tax-research-*.json -text whitespace=cr-at-eol

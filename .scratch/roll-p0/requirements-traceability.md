@@ -239,3 +239,8 @@
 [32]: issues/32-first-real-forward-archive.md#comments
 [33]: issues/33-real-validation-delivery.md#comments
 [34]: issues/34-conditional-formal-activation.md#comments
+
+
+### 2026-10-09 Ticket 19公开原件与历史费用续推
+
+DAT-11、MOD-02、MOD-05的真实验收仍为部分。新增逐年权益/14次现金实施和40业务日历史quote原件，实际历史版本连续日覆盖最长1日；未以当前K线、盘中quote或报纸成交笔数代替所需21行回看。18执行费用改为逐边生效版本与原件/代码指纹，不再把当前费用无条件回填旧年。最终相关47项应用检查通过，真实模型/校准冻结、可比基线、完整输入处理及实现缺口保留；没有提前查看SEALED或解锁20/21。详见[本轮验收](evidence/19-completion-2026-10-09/acceptance.md)、[真实训练路径审计](evidence/19-completion-2026-10-09/real-training-audit.md)。

@@ -1,0 +1,157 @@
+{
+  "snapshot_kind": "COMPACT_PUBLIC_COLLECTION_METADATA_NOT_ORIGINAL_DOCUMENT",
+  "source_metadata_path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\.roll-data\\pit-status-public\\assessment.json",
+  "source_metadata_sha256": "eafbe449da00c0cdf89793424fd51de0dfa65dcc7e500e009ae9eb68a1e50cd3",
+  "source_metadata_bytes": 5849,
+  "source_metadata_received_clock": "Not substituted for SOURCE received_at",
+  "collection": {
+    "instrument": "SSE:600362",
+    "scope": "Public response acquisition only; no labels, training, eligibility grant or account writes",
+    "official_daily_example": {
+      "source": {
+        "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2025-12-31&TX_DATE_MON=&TX_DATE_YEAR=",
+        "received_at": "2026-10-09T02:54:16.837153+00:00",
+        "http_status": 200,
+        "bytes": 1160,
+        "sha256": "a51334316a941c30047614138f201d3dd3d988a453fa754b8673ae1fd74bb113",
+        "path": "a51334316a941c30047614138f201d3dd3d988a453fa754b8673ae1fd74bb113.raw"
+      },
+      "row": {
+        "CLOSE_PRICE": "54.92",
+        "LOW_VOL_DATE": "20251231",
+        "LOW_AMT": "700504.14",
+        "SEC_CODE": "600362",
+        "HIGH_PRICE": "55.28",
+        "HIGH_AMT": "700504.14",
+        "HIGH_PRICE_DATE": "20251231",
+        "HIGH_VOL_DATE": "20251231",
+        "HIGH_VOL": "12884.52",
+        "TOTAL_VALUE": "11397258.75",
+        "SWING_RATE": "10.03185",
+        "LOW_AMT_DATE": "20251231",
+        "TX_DATE": "20251231",
+        "SEC_NAME": "江西铜业",
+        "LOW_PRICE_DATE": "20251231",
+        "TO_RATE": "6.21",
+        "CHANGE_PRICE": "4.67",
+        "ACCU_TRADE_DAYS": "0",
+        "TRADE_AMT": "700504.14",
+        "LOW_PRICE": "50.24",
+        "DATE_TYPE": "D",
+        "TRADE_VOL": "12884.52",
+        "LOW_VOL": "12884.52",
+        "CHANGE_RATE": "9.29353",
+        "NEGO_VALUE": "11397258.75",
+        "HIGH_AMT_DATE": "20251231",
+        "OPEN_PRICE": "50.25",
+        "PE_RATE": "27.31509"
+      },
+      "units": {
+        "price": "CNY",
+        "TRADE_VOL": "10000 shares",
+        "TRADE_AMT": "10000 CNY"
+      },
+      "unit_source": {
+        "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js",
+        "received_at": "2026-10-09T02:53:32.816585+00:00",
+        "http_status": 200,
+        "bytes": 277193,
+        "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+        "path": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw"
+      },
+      "original_publication_at": null,
+      "revision_chain": null,
+      "pit_qualified": false
+    },
+    "early_daily_query": {
+      "source": {
+        "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2013-01-04&TX_DATE_MON=&TX_DATE_YEAR=",
+        "received_at": "2026-10-09T02:54:16.749535+00:00",
+        "http_status": 200,
+        "bytes": 509,
+        "sha256": "87c53c172a0a97189c5f1860a4bb8640699a4f194918a5be408f5ef742c61328",
+        "path": "87c53c172a0a97189c5f1860a4bb8640699a4f194918a5be408f5ef742c61328.raw"
+      },
+      "row_count": 0,
+      "meaning": "Endpoint returned no rows; not proof of no trade or suspension"
+    },
+    "official_known_suspension": {
+      "source": {
+        "url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_XXPL_JYTS_TFPXX_L&SEARCH_DATE=2016-02-16&isPagination=true&pageHelp.pageSize=100&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1",
+        "received_at": "2026-10-09T02:54:43.186871+00:00",
+        "http_status": 200,
+        "bytes": 41529,
+        "sha256": "2511be0a1a618edfd7576563bdbffcc35c697b9e5ebeb9edc81ff9efa2aa01a8",
+        "path": "2511be0a1a618edfd7576563bdbffcc35c697b9e5ebeb9edc81ff9efa2aa01a8.raw"
+      },
+      "all_market_result_count": 78,
+      "all_market_total": 78,
+      "rows": [
+        {
+          "STOP_REASON": "重要事项未公告",
+          "CONTROLTYPE": "TR",
+          "STOP_DATE": "-",
+          "NUM": "21",
+          "PRODUCT_NAME": "江西铜业",
+          "SHOW_START_DATE": "2016-02-16",
+          "BULLETIN_TYPE": "3",
+          "PRODUCT_CODE": "600362",
+          "STOP_TIME": "自2016-02-16起连续停牌",
+          "SHOW_END_DATE": "2016-02-26"
+        }
+      ],
+      "complete_2013_2025_status": false,
+      "original_publication_at": null
+    },
+    "new_suspension_query": {
+      "source": {
+        "url": "https://query.sse.com.cn/commonSoaQuery.do?sqlId=GW_PL_JYTS_TFPXX&productCode=600362&startStopDate=20130101&endStopDate=20251231&isPagination=true&pageHelp.pageSize=100&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1",
+        "received_at": "2026-10-09T02:54:16.888229+00:00",
+        "http_status": 200,
+        "bytes": 483,
+        "sha256": "15a1180483592fa133cc4da6907ad84428fe0bb56ffd672241c456d14a715066",
+        "path": "15a1180483592fa133cc4da6907ad84428fe0bb56ffd672241c456d14a715066.raw"
+      },
+      "result_count": 0,
+      "declared_total": 10,
+      "meaning": "Metadata/result inconsistency; not no-events proof"
+    },
+    "crosscheck": {
+      "source_sohu": {
+        "path": ".scratch\\roll-p0\\evidence\\continuation-2026-10-09\\.roll-data\\public-dossier-v1\\raw\\6d05337bb417e4c5ea88856b9e58604721c28310da48bad28a05f48fdadf47e1.raw",
+        "sha256": "6d05337bb417e4c5ea88856b9e58604721c28310da48bad28a05f48fdadf47e1"
+      },
+      "sohu_raw_row": [
+        "2025-12-31",
+        "50.25",
+        "54.92",
+        "4.67",
+        "9.29%",
+        "50.24",
+        "55.28",
+        "1288452",
+        "700504.19",
+        "6.21%"
+      ],
+      "four_prices_agree": true,
+      "volume_agrees_after_documented_conversion": true,
+      "sse_amount_10000_cny": "700504.14",
+      "sohu_amount_10000_cny": "700504.19",
+      "amount_delta_10000_cny": "0.05",
+      "disposition": "UNRESOLVED_CONFLICT; preserve both, no averaging or favorable selection",
+      "independent_origins_proven": false
+    },
+    "acquisition": {
+      "request_count": 12,
+      "bytes": 727155,
+      "sha256_unique": 12,
+      "hash_length_mismatches": []
+    },
+    "gates": {
+      "historical_raw_vintages_proven": false,
+      "all_corrections_proven": false,
+      "complete_status_proven": false,
+      "training_eligibility": "NOT_GRANTED"
+    }
+  }
+}
