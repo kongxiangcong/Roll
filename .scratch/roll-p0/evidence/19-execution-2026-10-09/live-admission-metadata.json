@@ -1,0 +1,127 @@
+{
+  "checked_at": "2026-10-09T06:23:43.255404+00:00",
+  "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+  "transport": "LOCAL_ADMISSION_FUNCTION_WITH_LIVE_HOST_METADATA_GET_ADAPTER",
+  "production_route_deployed_or_posted": false,
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "status": 200,
+      "sha256": "13751712a0a615c1dd3acada1f8fc3744595ac4f9258e39c61e454aa7d8846a5",
+      "bytes": 14575
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "status": 200,
+      "sha256": "13751712a0a615c1dd3acada1f8fc3744595ac4f9258e39c61e454aa7d8846a5",
+      "bytes": 14575
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/datasets/ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+      "status": 200,
+      "sha256": "9299e6d0c2dc866bb0c9fff7f2eead8f95b8a8e825123b8db7e24fa552baa990",
+      "bytes": 11980
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "status": 200,
+      "sha256": "13751712a0a615c1dd3acada1f8fc3744595ac4f9258e39c61e454aa7d8846a5",
+      "bytes": 14575
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "status": 200,
+      "sha256": "13751712a0a615c1dd3acada1f8fc3744595ac4f9258e39c61e454aa7d8846a5",
+      "bytes": 14575
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/datasets/ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+      "status": 200,
+      "sha256": "9299e6d0c2dc866bb0c9fff7f2eead8f95b8a8e825123b8db7e24fa552baa990",
+      "bytes": 11980
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "method": "GET",
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    }
+  ],
+  "admission": {
+    "code": "TRAINING_ADMISSION_BLOCKED",
+    "blockers": [
+      "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+      "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+      "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+      "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+      "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+      "REAL_TRAINING_PATH_NOT_IMPLEMENTED",
+      "TRAINING_INPUTS_LABELS_AND_SUPPORT_NOT_CHECKED"
+    ],
+    "checks": {
+      "source_artifact_integrity": "NOT_CHECKED",
+      "training_inputs_labels_and_support": "NOT_CHECKED",
+      "historical_point_in_time": "NOT_PROVEN_IN_REGISTRATION",
+      "real_training_path": "NOT_IMPLEMENTED"
+    },
+    "budget": {
+      "primary_and_neighbors": {
+        "categories": [
+          "PRIMARY_FIT",
+          "G5_NEIGHBOR"
+        ],
+        "limit": 5,
+        "used": 2,
+        "remaining": 3,
+        "exhausted": false
+      },
+      "calibration": {
+        "categories": [
+          "CALIBRATION"
+        ],
+        "limit": 1,
+        "used": 0,
+        "remaining": 1,
+        "exhausted": false
+      }
+    },
+    "attempt_started": false,
+    "assessment": "METADATA_ONLY"
+  },
+  "repeated_equal": true,
+  "attempt_manifest_unchanged": true,
+  "unchanged_since_initial_snapshot": true,
+  "actual_source_integrity_checked": false,
+  "sealed_read": false,
+  "labels_read_or_computed": false,
+  "fits": 0,
+  "function_sha256": "bf5e5994254c57936c6896887ec5db6e6254dabd19274842700798b2aa92083c"
+}

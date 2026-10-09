@@ -1,0 +1,53 @@
+{
+  "before_sha": "30062964d78cbdeafc8fbc5cd747910440e4b281",
+  "merged_tip": "e57cdf8776880ce2c5439831ae07a9ff25d46670",
+  "after_sha": "7eae269a74d5fe87a62cda3b38ed28c99933be65",
+  "parents": [
+    "30062964d78cbdeafc8fbc5cd747910440e4b281",
+    "e57cdf8776880ce2c5439831ae07a9ff25d46670"
+  ],
+  "changed_paths": [
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/acceptance.md",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/admission-green.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/admission-red.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/backend-merge-final.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/backend-regression-final.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/backend-review-final.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/calibration-budget-green.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/calibration-budget-red.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/purpose-green.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/purpose-red.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/replay-compatibility-green.txt",
+    ".scratch/roll-p0/evidence/19-real-path-2026-10-09/replay-compatibility-red.txt",
+    "backend/src/roll/app.py",
+    "backend/src/roll/research/training_preflight.py",
+    "backend/tests/application/test_research_acquisition_import.py",
+    "backend/tests/application/test_training_preflight.py",
+    "backend/tests/application/test_transparent_models.py"
+  ],
+  "preservation": [
+    {
+      "path": "docs/transparent-model-contract.md",
+      "before_sha256": "70faf827cb7a81274223f39bccc7bd392d8c580abfafbd5627923150d16aab53",
+      "after_sha256": "70faf827cb7a81274223f39bccc7bd392d8c580abfafbd5627923150d16aab53",
+      "unchanged": true
+    },
+    {
+      "path": ".gitattributes",
+      "before_sha256": "943bb193eadd1a5d5c8e38e56938bbb7688e04b2bc17fe57cdcf8ac646689a0f",
+      "after_sha256": "943bb193eadd1a5d5c8e38e56938bbb7688e04b2bc17fe57cdcf8ac646689a0f",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/models.py",
+      "before_sha256": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+      "after_sha256": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+      "unchanged": true
+    }
+  ],
+  "numeric_file_blob": "672aee8ab755d092627f9c7c3a08ff2116ffeda4",
+  "tracked_status": [
+    " M .gitattributes",
+    " M docs/transparent-model-contract.md"
+  ]
+}
