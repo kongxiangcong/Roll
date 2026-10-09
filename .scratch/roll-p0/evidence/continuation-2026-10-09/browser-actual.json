@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "profile": "ACTUAL_ARCHIVED_SO_HU_READ_ONLY",
+  "account_unchanged": true,
+  "capability": "UNGRANTED",
+  "dataset_id": "35b43a1f-c5c6-4778-a6ef-148e51942bbf",
+  "rows": 3126,
+  "historical_calendar": {
+    "exchange": "SSE",
+    "date": "2019-05-06",
+    "timezone": "Asia/Shanghai",
+    "is_trading_day": true,
+    "phase": "UNKNOWN",
+    "coverage": "VERIFIED_ANNUAL_CALENDAR",
+    "calendar_version": "SSE-2019",
+    "source": {
+      "id": "sse-calendar-2019",
+      "url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20181220_4696473.shtml",
+      "fetched_at": "2026-10-09T00:18:11.680195+00:00",
+      "published_date": "2018-12-20",
+      "sha256": "db0af9294621c73cbae7e55703d6e801da4aa5f1ac273e955e0622f254983950",
+      "file": "sse-calendar-2019.html",
+      "bytes": 28940,
+      "attachments": [],
+      "title": "关于上海证券交易所2019年全年休市安排的通知 | 上海证券交易所",
+      "purpose": "ANNUAL_EXCHANGE_CALENDAR",
+      "archive_path": "raw/db0af9294621c73cbae7e55703d6e801da4aa5f1ac273e955e0622f254983950.html"
+    },
+    "rules_source": null,
+    "reason": "日历已取得，但该日期的时段规则未适配",
+    "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市",
+    "correction_sources": [
+      {
+        "id": "sse-calendar-2019-labor-revision",
+        "url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20190418_4771364.shtml",
+        "fetched_at": "2026-10-09T00:18:12.801141+00:00",
+        "published_date": "2019-04-18",
+        "sha256": "c5af509538194130b7917e88b52b8218be898003118a68d477721c1a4600beb2",
+        "file": "sse-calendar-2019-labor-revision.html",
+        "bytes": 27898,
+        "attachments": [],
+        "title": "关于调整2019年劳动节休市安排的公告 | 上海证券交易所",
+        "purpose": "EXCHANGE_CALENDAR_CORRECTION",
+        "archive_path": "raw/c5af509538194130b7917e88b52b8218be898003118a68d477721c1a4600beb2.html"
+      }
+    ],
+    "historical_knowledge": "CURRENT_RECONSTRUCTION_NOT_POINT_IN_TIME",
+    "next_trading_day": "2019-05-07"
+  },
+  "sealed_read": false,
+  "model_fit": false,
+  "paid_backend_call": false
+}

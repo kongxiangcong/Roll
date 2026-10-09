@@ -1,0 +1,171 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]: Roll 账户镜像
+    - navigation "主导航" [ref=e5]:
+      - button "今天" [ref=e6] [cursor=pointer]
+      - button "持仓与关注" [ref=e7] [cursor=pointer]
+      - button "同步账户" [ref=e8] [cursor=pointer]
+      - button "历史记录" [ref=e9] [cursor=pointer]
+      - button "设置" [ref=e10] [cursor=pointer]
+  - main [ref=e11]:
+    - button "返回持仓与关注" [active] [ref=e12] [cursor=pointer]
+    - generic [ref=e13]:
+      - heading "市场事实" [level=1] [ref=e14]
+      - paragraph [ref=e15]: 为持仓、关注和预定背景取得原始依据。来源缺口与未知状态分别保留，正式交易判断未启用。
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - text: 取证方式
+          - combobox "取证方式" [ref=e18]:
+            - option "固定来源获取" [selected]
+            - option "设置后端补充取证（Codex）"
+            - option "Codex 补充取证"
+            - option "DeepSeek 补充取证"
+        - generic [ref=e19]:
+          - text: 取证用途
+          - combobox "取证用途" [ref=e20]:
+            - option "名单观察" [selected]
+            - option "历史研究输入归档"
+            - option "预定市场背景"
+        - group "请求对象（已选 1 只）" [ref=e21]:
+          - generic [ref=e22]: 请求对象（已选 1 只）
+          - generic [ref=e23]:
+            - checkbox "江西铜业 · SSE:600362" [checked] [ref=e24]
+            - text: 江西铜业 · SSE:600362
+        - group "事实组" [ref=e25]:
+          - generic [ref=e26]: 事实组
+          - generic [ref=e27]:
+            - checkbox "日线与复权" [checked] [ref=e28]
+            - text: 日线与复权
+          - generic [ref=e29]:
+            - checkbox "可得报价" [checked] [ref=e30]
+            - text: 可得报价
+          - generic [ref=e31]:
+            - checkbox "调整事件" [checked] [ref=e32]
+            - text: 调整事件
+          - generic [ref=e33]:
+            - checkbox "公告原文" [checked] [ref=e34]
+            - text: 公告原文
+          - generic [ref=e35]:
+            - checkbox "业绩" [checked] [ref=e36]
+            - text: 业绩
+          - generic [ref=e37]:
+            - checkbox "重大事项" [checked] [ref=e38]
+            - text: 重大事项
+          - generic [ref=e39]:
+            - checkbox "证券状态" [checked] [ref=e40]
+            - text: 证券状态
+          - generic [ref=e41]:
+            - checkbox "交易日历" [ref=e42]
+            - text: 交易日历
+        - generic [ref=e43]:
+          - text: 开始日期（上海交易/披露日期）
+          - textbox "开始日期（上海交易/披露日期）" [ref=e44]: 2026-07-11
+        - generic [ref=e45]:
+          - text: 截止日期
+          - textbox "截止日期" [ref=e46]: 2026-10-09
+        - generic [ref=e47]:
+          - text: 日线来源
+          - combobox "日线来源" [ref=e48]:
+            - option "腾讯：历史成交额通常缺失" [selected]
+            - option "东方财富：保留实际失败"
+            - option "扶摇：同花顺日线"
+            - option "BaoStock：不复权日线及量额"
+            - option "搜狐：不复权长日线及量额"
+        - generic [ref=e49]:
+          - text: 报价来源
+          - combobox "报价来源" [ref=e50]:
+            - option "腾讯" [selected]
+            - option "新浪：已实证主板股票股数口径"
+            - option "扶摇：逐证券时间未知"
+        - generic [ref=e51]:
+          - text: 除权事项来源
+          - combobox "除权事项来源" [ref=e52]:
+            - option "东方财富公告及分派" [selected]
+            - option "扶摇：原始除权事件"
+            - option "BaoStock：分红实施日期"
+        - generic [ref=e53]:
+          - text: 证券状态来源
+          - combobox "证券状态来源" [ref=e54]:
+            - option "报价附带状态：可能未知" [selected]
+            - option "BaoStock：逐日交易与 ST 标记"
+        - generic [ref=e55]:
+          - checkbox "报价需要已核对的股数，缺失时限制此用途" [ref=e56]
+          - text: 报价需要已核对的股数，缺失时限制此用途
+        - generic [ref=e57]:
+          - text: 本次最多调用
+          - spinbutton "本次最多调用" [ref=e58]: "30"
+        - paragraph [ref=e59]: 日线原价与当前前复权版本分开。历史取得时间为实际本次时间，不能证明过去已经可得；背景指数不取得个股研究或交易能力。
+        - button "取得并归档事实" [ref=e60] [cursor=pointer]
+    - generic [ref=e61]:
+      - heading "取证记录" [level=2] [ref=e62]
+      - generic [ref=e63]:
+        - text: 选择归档运行
+        - combobox "选择归档运行" [ref=e64]:
+          - option "2026/10/9 08:57:36 · COMPLETE · REAL_ACQUISITION" [selected]
+      - paragraph [ref=e65]: 获取状态：COMPLETE · 来源种类：REAL_ACQUISITION · 上海时间 2026/10/9 08:57:36
+      - paragraph [ref=e66]: 获取完成只表示请求已处理；必需字段、单位、当前状态和模型资格仍分别检查。
+      - group [ref=e67]:
+        - generic "来源与工具记录" [ref=e68]
+    - generic [ref=e69]:
+      - heading "用途与换源" [level=2] [ref=e70]
+      - paragraph [ref=e71]: 读取当前选择的归档请求。补查最多尝试一条适配备源，共用原请求的调用与时间预算；等待期间可同步账户。
+      - generic [ref=e72]:
+        - text: 本次读取用途
+        - combobox "本次读取用途" [ref=e73]:
+          - option "盘前读取上一交易日" [selected]
+          - option "盘后记录"
+          - option "当前市场观察"
+          - option "历史材料读取"
+          - option "新风险输入条件检查"
+      - generic [ref=e74]:
+        - checkbox "优先复用仍适用的归档，不刷新原采集时点" [checked] [ref=e75]
+        - text: 优先复用仍适用的归档，不刷新原采集时点
+      - button "按用途检查并补查" [ref=e76] [cursor=pointer]
+    - generic [ref=e77]:
+      - heading "归档事实与客观观察" [level=2] [ref=e78]
+      - paragraph [ref=e79]: HISTORICAL · 1 只对象 · 3126 条事实 · 归档于 2026/10/9 08:57:37
+      - paragraph [ref=e80]:
+        - link "下载规范化 Parquet" [ref=e81] [cursor=pointer]:
+          - /url: /api/data/archives/3c7f4caf06f7cb9c940c3ad0a7f24fb57bd224929550e79db5402d22a97132fd
+        - text: ·
+        - button "只读归档回放" [ref=e82] [cursor=pointer]
+      - article [ref=e83]:
+        - heading "SSE:600362 · 原价显著变化" [level=3] [ref=e84]
+        - paragraph [ref=e85]: 原价显著变化；公司行为与当前状态仍需核对 · 需关注
+        - paragraph [ref=e86]: 确定性结构化推断 · 事件日期 2015-07-02 · 精度 DATE · 实际观察 2026/10/9 08:57:36
+        - group [ref=e87]:
+          - generic "原始依据与未知项" [ref=e88] [cursor=pointer]
+      - article [ref=e89]:
+        - heading "SSE:600362 · 原价显著变化" [level=3] [ref=e90]
+        - paragraph [ref=e91]: 原价显著变化；公司行为与当前状态仍需核对 · 需关注
+        - paragraph [ref=e92]: 确定性结构化推断 · 事件日期 2015-07-15 · 精度 DATE · 实际观察 2026/10/9 08:57:36
+        - group [ref=e93]:
+          - generic "原始依据与未知项" [ref=e94] [cursor=pointer]
+      - article [ref=e95]:
+        - heading "SSE:600362 · 原价显著变化" [level=3] [ref=e96]
+        - paragraph [ref=e97]: 原价显著变化；公司行为与当前状态仍需核对 · 需关注
+        - paragraph [ref=e98]: 确定性结构化推断 · 事件日期 2015-07-27 · 精度 DATE · 实际观察 2026/10/9 08:57:36
+        - group [ref=e99]:
+          - generic "原始依据与未知项" [ref=e100] [cursor=pointer]
+      - article [ref=e101]:
+        - heading "SSE:600362 · 原价显著变化" [level=3] [ref=e102]
+        - paragraph [ref=e103]: 原价显著变化；公司行为与当前状态仍需核对 · 需关注
+        - paragraph [ref=e104]: 确定性结构化推断 · 事件日期 2015-08-25 · 精度 DATE · 实际观察 2026/10/9 08:57:36
+        - group [ref=e105]:
+          - generic "原始依据与未知项" [ref=e106] [cursor=pointer]
+      - article [ref=e107]:
+        - heading "SSE:600362 · 原价显著变化" [level=3] [ref=e108]
+        - paragraph [ref=e109]: 原价显著变化；公司行为与当前状态仍需核对 · 需关注
+        - paragraph [ref=e110]: 确定性结构化推断 · 事件日期 2020-12-22 · 精度 DATE · 实际观察 2026/10/9 08:57:36
+        - group [ref=e111]:
+          - generic "原始依据与未知项" [ref=e112] [cursor=pointer]
+      - group [ref=e113]:
+        - generic "覆盖与限制（1 组记录）" [ref=e114]
+      - group [ref=e115]:
+        - generic "日线与复权：3126 条归档事实" [ref=e116]
+    - group [ref=e118]:
+      - generic "实际来源登记与权限、深度限制" [ref=e119]
+```

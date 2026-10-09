@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [32016]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8191 (Press CTRL+C to quit)
+[WebServer] (node:3836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:33652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:33652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 .scratch\roll-p0\evidence\continuation-2026-10-09\public-history.browser.mjs:7:1 › actual archived SOHU input and corrected SSE calendar remain visibly restricted (1.5m)
+
+
+  1) .scratch\roll-p0\evidence\continuation-2026-10-09\public-history.browser.mjs:7:1 › actual archived SOHU input and corrected SSE calendar remain visibly restricted 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for getByLabel('日线来源', { exact: true })[22m
+
+
+      27 |   await page.screenshot({path:resolve(evidence,'browser-calendar.png'),fullPage:true});
+      28 |   await page.getByRole('button',{name:'市场事实',exact:true}).click();
+    > 29 |   await page.getByLabel('日线来源',{exact:true}).selectOption('SOHU');
+         |                                              ^
+      30 |   await expect(page.getByLabel('日线来源',{exact:true})).toHaveValue('SOHU');
+      31 |   await expect(page.getByText(/历史取得时间为实际本次时间/)).toBeVisible();
+      32 |   await expect(page.getByRole('heading',{name:'归档事实与客观观察',exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\roll-p0\evidence\continuation-2026-10-09\public-history.browser.mjs:29:46
+
+    Error Context: .scratch\roll-p0\evidence\continuation-2026-10-09\.roll-data\browser-output\public-history.browser.mjs-df09e-r-remain-visibly-restricted\error-context.md
+
+  1 failed
+    .scratch\roll-p0\evidence\continuation-2026-10-09\public-history.browser.mjs:7:1 › actual archived SOHU input and corrected SSE calendar remain visibly restricted 

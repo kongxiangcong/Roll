@@ -1,0 +1,35 @@
+{
+  "started_at": "2026-10-09T00:22:43.359706+00:00",
+  "instrument": "SSE:600362",
+  "data_directory": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-09\\.roll-data\\public-host-v1",
+  "steps": [
+    {
+      "method": "GET",
+      "path": "/account",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/market/list",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/market/watch",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/market/identities",
+      "status": 200
+    }
+  ],
+  "process_ids": [
+    43376
+  ],
+  "real_market_acquisition": true,
+  "credentials_used": false,
+  "sealed_results_read": false,
+  "labels_computed": false,
+  "models_fitted": false
+}

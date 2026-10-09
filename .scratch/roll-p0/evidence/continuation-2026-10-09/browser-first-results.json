@@ -1,0 +1,136 @@
+{
+  "config": {
+    "configFile": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-09\\browser.config.mjs",
+    "rootDir": "D:/dsh-proj/Roll/.scratch/roll-p0/evidence/continuation-2026-10-09",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/dsh-proj/Roll/.scratch/roll-p0/evidence/continuation-2026-10-09/.roll-data/browser-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/dsh-proj/Roll/.scratch/roll-p0/evidence/continuation-2026-10-09",
+        "testIgnore": [],
+        "testMatch": [
+          "public-history.browser.mjs"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-09\\browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "public-history.browser.mjs",
+      "file": "public-history.browser.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual archived SOHU input and corrected SSE calendar remain visibly restricted",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 91177,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 90000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 90000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 90000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-09\\public-history.browser.mjs",
+                        "column": 46,
+                        "line": 29
+                      },
+                      "message": "Error: locator.selectOption: Test timeout of 90000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('日线来源', { exact: true })\u001b[22m\n\n\n  27 |   await page.screenshot({path:resolve(evidence,'browser-calendar.png'),fullPage:true});\n  28 |   await page.getByRole('button',{name:'市场事实',exact:true}).click();\n> 29 |   await page.getByLabel('日线来源',{exact:true}).selectOption('SOHU');\n     |                                              ^\n  30 |   await expect(page.getByLabel('日线来源',{exact:true})).toHaveValue('SOHU');\n  31 |   await expect(page.getByText(/历史取得时间为实际本次时间/)).toBeVisible();\n  32 |   await expect(page.getByRole('heading',{name:'归档事实与客观观察',exact:true})).toBeVisible();\n    at D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-09\\public-history.browser.mjs:29:46"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T00:58:31.630Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-09\\.roll-data\\browser-output\\public-history.browser.mjs-df09e-r-remain-visibly-restricted\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "3be2a5885f4942f7c46d-a24804d00a83ca4bdf3e",
+          "file": "public-history.browser.mjs",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-09T00:58:26.066Z",
+    "duration": 99026.4,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
