@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_preflight_counts_neighbors_abort_and_interruption_at_shared_budget_boundary _
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/worktrees/ticket19-training-preflight/Roll/.scratch/t19-final-preflight-r02/test_preflight_counts_neighbor0')
+
+    def test_preflight_counts_neighbors_abort_and_interruption_at_shared_budget_boundary(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            root = protocol(client)
+            attempt(client, root)
+            attempt(client, root, category='G5_NEIGHBOR')
+            successor = protocol(client, root)
+            sibling = protocol(client, root)
+            attempt(client, successor, status='ABORTED')
+            attempt(client, successor, status='SUCCEEDED')
+            interrupted = attempt(client, sibling, status=None)
+            attempt(client, successor, category='CALIBRATION', status='ABORTED')
+            pending = client.get('/api/research/protocols/' + root + '/attempt-manifest').json()
+            assert next(a for a in pending['attempts'] if a['attempt_id'] == interrupted)['status'] == 'RUNNING'
+        # Existing lifecycle records an unfinished attempt on close. GET itself never ends it.
+        with TestClient(create_app(tmp_path)) as client:
+            pids = [root, successor, sibling]
+            before = public_state(client, pids)
+            for pid in pids:
+                response = client.get('/api/research/protocols/' + pid + '/training-preflight')
+                assert response.status_code == 200, response.text
+                result = response.json()
+                assert result['budget']['primary_and_neighbors'] == {
+                    'categories': ['PRIMARY_FIT', 'G5_NEIGHBOR'], 'limit': 5,
+                    'used': 5, 'remaining': 0, 'exhausted': True}
+                assert result['budget']['calibration'] == {
+                    'categories': ['CALIBRATION'], 'limit': 1,
+                    'used': 1, 'remaining': 0, 'exhausted': True}
+>               assert 'PRIMARY_FIT_BUDGET_EXHAUSTED' in result['blockers']
+E               AssertionError: assert 'PRIMARY_FIT_BUDGET_EXHAUSTED' in ['DATASET_NOT_REGISTERED', 'REAL_TRAINING_PATH_NOT_IMPLEMENTED']
+
+backend\tests\application\test_training_preflight.py:109: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_training_preflight.py::test_preflight_counts_neighbors_abort_and_interruption_at_shared_budget_boundary
+1 failed in 7.89s

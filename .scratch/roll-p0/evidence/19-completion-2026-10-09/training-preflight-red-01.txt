@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_preflight_preserves_two_old_failures_and_shares_family_budget_without_writes _
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/worktrees/ticket19-training-preflight/Roll/.scratch/t19-final-preflight-r01/test_preflight_preserves_two_o0')
+
+    def test_preflight_preserves_two_old_failures_and_shares_family_budget_without_writes(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            root = protocol(client)
+            first = attempt(client, root)
+            second = attempt(client, root)
+            successor = protocol(client, root)
+            sibling = protocol(client, root)
+            pids = [root, successor, sibling]
+            before = public_state(client, pids)
+            replies = []
+            for pid in pids:
+                response = client.get('/api/research/protocols/' + pid + '/training-preflight')
+>               assert response.status_code == 200, response.text
+E               AssertionError: {"detail":"Not Found"}
+E               assert 404 == 200
+E                +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_training_preflight.py:54: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_training_preflight.py::test_preflight_preserves_two_old_failures_and_shares_family_budget_without_writes
+1 failed in 10.51s
