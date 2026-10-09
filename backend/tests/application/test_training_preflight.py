@@ -240,3 +240,68 @@ def test_exhausted_calibration_prevents_starting_another_method_primary_fit(tmp_
         assert response.json()['detail']['code'] == 'CALIBRATION_BUDGET_EXHAUSTED'
         assert response.json()['detail']['attempt_started'] is False
         assert public_state(client, [pid]) == before
+
+
+def test_competing_calibration_after_admission_cannot_spend_transparent_primary_budget(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Event, Lock
+    from test_execution_labels import method_archive, register
+    from roll.research import registry
+
+    method_archive(tmp_path, unknown=True)
+    with TestClient(create_app(tmp_path)) as client:
+        _, registered = register(client)
+        pid = registered['protocol_id']
+        assert client.get('/api/research/protocols/' + pid + '/training-preflight').json()['budget']['calibration']['used'] == 0
+        reached = Event()
+        release = Event()
+        clock_lock = Lock()
+        held = False
+        actual_clock = registry.now
+
+        def registration_clock():
+            # Clock is the system boundary: hold the first attempt timestamp after HTTP admission.
+            nonlocal held
+            with clock_lock:
+                pause = not held
+                held = True
+            if pause:
+                reached.set()
+                assert release.wait(20), 'Competing calibration did not release primary registration'
+            return actual_clock()
+
+        monkeypatch.setattr(registry, 'now', registration_clock)
+        with ThreadPoolExecutor(1) as pool:
+            pending = pool.submit(client.post, '/api/research/protocols/' + pid + '/models', json={
+                'purpose': 'METHOD_VALIDATION', 'basis': 'Concurrent prerequisite must be checked atomically'})
+            try:
+                assert reached.wait(20), 'Primary registration clock was not reached'
+                competitor = attempt(client, pid, category='CALIBRATION', status='ABORTED')
+            finally:
+                release.set()
+            response = pending.result(timeout=20)
+        assert response.status_code == 409, response.text
+        assert response.json()['detail']['code'] == 'CALIBRATION_BUDGET_EXHAUSTED'
+        assert response.json()['detail']['attempt_started'] is False
+        manifest = client.get('/api/research/protocols/' + pid + '/attempt-manifest').json()
+        assert manifest['attempt_ids'] == [competitor]
+        assert manifest['attempts'][0]['category'] == 'CALIBRATION'
+        assert client.get('/api/research/protocols/' + pid + '/models').json() == []
+        assert client.get('/api/research/protocols/' + pid + '/training-preflight').json()['budget']['primary_and_neighbors']['remaining'] == 5
+        assert any(e['action'] == 'ATTEMPT_BUDGET_REFUSED' for e in
+                   client.get('/api/research/protocols/' + pid + '/audit').json())
+
+
+def test_generic_manual_primary_keeps_its_original_budget_policy_without_transparent_purpose(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        pid = protocol(client)
+        attempt(client, pid, category='CALIBRATION', status='ABORTED')
+        for configuration in [{'candidate': 'PRICE_VOLUME_LOGIT_V1'},
+                              {'candidate': 'PRICE_VOLUME_LOGIT_V1', 'purpose': {'manual_note': 'metadata'}}]:
+            response = client.post('/api/research/protocols/' + pid + '/attempts', json={
+                'category': 'PRIMARY_FIT', 'partition': 'DEVELOPMENT',
+                'configuration': configuration, 'basis': 'Generic manual metadata is not the transparent executor'})
+            assert response.status_code == 201, response.text
+        budget = client.get('/api/research/protocols/' + pid + '/training-preflight').json()['budget']
+        assert budget['primary_and_neighbors']['remaining'] == 3
+        assert budget['calibration']['remaining'] == 0

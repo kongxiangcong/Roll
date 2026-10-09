@@ -145,6 +145,16 @@ class ExperimentRegistry:
             db.execute('BEGIN IMMEDIATE')
             family=self.family(protocol_id,db)
             prior=[json.loads(r[0]) for pid in family for r in db.execute('SELECT value FROM research_attempts WHERE protocol_id=?',(pid,))]
+            # The transparent executor needs its one calibration slot after PRIMARY.
+            # Admission is advisory: another family member may consume CAL before this lock.
+            transparent_primary=(command.category=='PRIMARY_FIT'
+                and command.configuration.get('candidate')=='PRICE_VOLUME_LOGIT_V1'
+                and command.configuration.get('purpose') in ('RESEARCH','METHOD_VALIDATION'))
+            if transparent_primary and any(a['category']=='CALIBRATION' for a in prior):
+                self.event(protocol_id,'ATTEMPT_BUDGET_REFUSED',db=db,configuration=command.model_dump(),
+                    reason='透明模型主拟合需要剩余校准额度；事务内核验已耗尽，未登记主拟合')
+                db.commit()
+                raise HTTPException(409,{'code':'CALIBRATION_BUDGET_EXHAUSTED','attempt_started':False})
             over=(command.category in fits and sum(a['category'] in fits for a in prior)>=5) or (command.category=='CALIBRATION' and any(a['category']=='CALIBRATION' for a in prior))
             if over:
                 self.event(protocol_id,'ATTEMPT_BUDGET_REFUSED',db=db,configuration=command.model_dump(),reason='五次拟合及一次校准预算包括失败和中止；不得选择性丢弃')
