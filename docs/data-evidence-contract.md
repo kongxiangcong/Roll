@@ -48,3 +48,5 @@
 DSA固定 `ce364e457aab288863a5707e7b3df79786ad07f2` 的 [tencent_fetcher.py](https://github.com/ZhuLinsen/daily_stock_analysis/blob/ce364e457aab288863a5707e7b3df79786ad07f2/data_provider/tencent_fetcher.py)、efinance_fetcher.py与base.py，分类为**仅参考请求/字段设计，未复制Python实现**。原许可 [MIT](https://raw.githubusercontent.com/ZhuLinsen/daily_stock_analysis/ce364e457aab288863a5707e7b3df79786ad07f2/LICENSE)，Copyright (c) 2026 ZhuLinsen；不继承补OHLC/零额、全市场报价、qfq缺失退day或科创板代码单位假设。Roll独立使用实际响应验收映射，不引入DSA配置/补丁、pandas、numpy、efinance、tenacity、exchange-calendars。新增实际依赖仅 httpx0.28.1、pyarrow25.0.1、pypdf6.19.0，uv.lock锁定；无泛化采集、插件、供应商平台或新审批流程。
 
 2026-10-08 用户新增凭据：可显式选择扶摇，接口、时点/量额/公司行为边界见[扶摇来源契约](fuyao-evidence-contract.md)；原记录和默认来源保持，不能以新来源连通宣称历史PIT或真实19模型通过。
+
+2026-10-09 真实公共历史补充：显式 `daily_source=SOHU` 的单请求RAW长日线、供应商手数/万元映射、覆盖及PIT限制见[搜狐来源契约](sohu-evidence-contract.md)。不需要扶摇/BaoStock接口；不补推正常状态、公司行为或过去可得时点。

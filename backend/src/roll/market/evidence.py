@@ -20,7 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.market.directory import ScopeCommand
 from roll.market.rules import SHANGHAI
-from roll.market import source_facts, fuyao, baostock
+from roll.market import source_facts, fuyao, baostock, sohu
 
 ADAPTER_VERSION='08-market-v1'
 GROUPS=['DAILY','QUOTE','ADJUSTMENTS','ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS','STATUS','CALENDAR']
@@ -39,7 +39,7 @@ class DataRequest(BaseModel):
     max_total_decoded_bytes:int=Field(default=30*16*1024*1024,ge=1,le=30*16*1024*1024)
     timeout_seconds:int=Field(default=40,ge=1,le=60)
     max_calls:int=Field(default=20,ge=1,le=30)
-    daily_source:Literal['EASTMONEY','TENCENT','FUYAO','BAOSTOCK']|None=None
+    daily_source:Literal['EASTMONEY','TENCENT','FUYAO','BAOSTOCK','SOHU']|None=None
     quote_source:Literal['TENCENT','SINA','FUYAO']='TENCENT'
     adjustment_source:Literal['EASTMONEY','FUYAO','BAOSTOCK']='EASTMONEY'
     status_source:Literal['QUOTE','BAOSTOCK']='QUOTE'
@@ -128,7 +128,7 @@ class EvidenceStore:
             raise HTTPException(422,'请求数据日期不能晚于事件截止')
         if command.purpose=='BACKGROUND' and set(command.groups)-{'DAILY','QUOTE'}:
             raise HTTPException(422,'背景指数只请求量价与报价，不作公司事项/个股研究')
-        if command.purpose=='BACKGROUND' and command.daily_source in {'EASTMONEY','BAOSTOCK'}:
+        if command.purpose=='BACKGROUND' and command.daily_source in {'EASTMONEY','BAOSTOCK','SOHU'}:
             raise HTTPException(422,'本票背景日线仅预先适配腾讯；不能将明确选择的来源静默换源')
         if command.purpose!='BACKGROUND' and any([command.daily_source=='BAOSTOCK',command.status_source=='BAOSTOCK',command.adjustment_source=='BAOSTOCK','CALENDAR' in command.groups]):
             if any(i.split(':')[0] not in {'SSE','SZSE'} for i in command.instruments):raise HTTPException(422,'BaoStock 本次仅支持沪深普通股票')
@@ -217,7 +217,7 @@ class EvidenceStore:
             'config_fingerprint':hashlib.sha256(encode({'limits':request['technical_limits'],'daily_source':request.get('daily_source','EASTMONEY'),
                 'quote_source':request.get('quote_source','TENCENT'),'adjustment_source':request.get('adjustment_source','EASTMONEY'),
                 'baostock_auth_mode':request.get('baostock_auth_mode','API_KEY'),'adapter_version':ADAPTER_VERSION,'runtime_versions':self.runtime_versions,
-                'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__,fuyao.__file__,baostock.__file__,Path(baostock.__file__).with_name('baostock_process.py')]]}).encode()).hexdigest(),
+                'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__,fuyao.__file__,baostock.__file__,sohu.__file__,Path(baostock.__file__).with_name('baostock_process.py')]]}).encode()).hexdigest(),
             'evidence_kind':self.evidence_kind,'started_at':now(),'status':'RUNNING','tools':[],'gaps':[]}
         if acquisition_limits:
             run['acquisition_limits']={k:acquisition_limits[k] for k in ['max_response_bytes','max_total_bytes','max_decoded_bytes','max_total_decoded_bytes'] if k in acquisition_limits}
@@ -304,6 +304,13 @@ class EvidenceStore:
             for instrument in request['instruments']:
                 if instrument.split(':')[0]=='BSE':
                     run['gaps'].extend({'instrument':instrument,'group':group,'code':'SOURCE_SCOPE_NOT_ADAPTED_BSE'} for group in request['groups']);continue
+                if request.get('daily_source')=='SOHU' and 'DAILY' in request['groups']:
+                    response=fetch('sohu-daily',instrument,'DAILY',sohu.BASE,{'code':'cn_'+instrument.split(':')[1],
+                        'start':request['start_date'].replace('-',''),'end':request['end_date'].replace('-',''),'stat':'1','order':'D','period':'d'},adjustment='RAW')
+                    if response:
+                        result=parsed('DAILY',instrument,lambda:sohu.daily(response[1],response[0],instrument,request,decimal_value))
+                        if result:
+                            rows,cov=result;facts.extend(rows);coverage.append(cov)
                 bao_daily='DAILY' in request['groups'] and request.get('daily_source')=='BAOSTOCK'
                 bao_status='STATUS' in request['groups'] and request.get('status_source')=='BAOSTOCK'
                 if bao_daily or bao_status:
