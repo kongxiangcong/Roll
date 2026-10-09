@@ -210,7 +210,8 @@ def test_all_archived_sse_years_makeup_weekends_and_known_year_transition(tmp_pa
             assert result['source']['id'] == 'sse-calendar-' + closed[:4]
             assert result['historical_knowledge'] == 'CURRENT_RECONSTRUCTION_NOT_POINT_IN_TIME'
             assert result['rules_source'] is None
-            assert client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': reopening}).json()['is_trading_day'] is True
+            opened = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': reopening}).json()
+            assert opened['is_trading_day'] is True and opened['phase'] == 'UNKNOWN'
             assert client.get('/api/market/calendar', params={'exchange': 'SZSE', 'date': reopening}).json()['is_trading_day'] is None
         for makeup_weekend in ['2013-01-05', '2015-09-06', '2019-04-28', '2020-01-19', '2025-02-08']:
             result = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': makeup_weekend}).json()

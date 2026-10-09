@@ -160,6 +160,9 @@ class RuleCalendar:
                   'reason': 'HOLIDAY' if holiday else ('WEEKEND' if not trading else None),
                   'special_closure_check': '未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市'}
         if historical:
+            if trading:
+                result['phase'] = 'UNKNOWN'
+                result['reason'] = '日历已取得，但该日期的时段规则未适配'
             result['correction_sources'] = [self.source(source_id) for _, _, source_id in corrections]
             result['historical_knowledge'] = 'CURRENT_RECONSTRUCTION_NOT_POINT_IN_TIME'
         if trading and at is not None:
