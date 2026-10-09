@@ -1,4 +1,8 @@
 # Original market authority bytes are fingerprinted; never normalize line endings.
+# Public-gap research receipts retain exact Windows bytes; allow CRLF metadata.
+.scratch/roll-p0/evidence/continuation-2026-10-09/annual-report-*-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-09/dividend-tax-research-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-09/research-originals-verification.json -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.raw binary
 .scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.json -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/baostock-research/*.json -text whitespace=cr-at-eol
