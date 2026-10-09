@@ -47,14 +47,16 @@ def test_host_acquisition_import_is_source_backed_and_never_invents_historical_w
         protocol=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],'basis':'覆盖登记不等于可拟合协议'}).json()
         assert protocol['status']=='DATA_COVERAGE_REGISTERED'
         assert 'RESEARCH_WINDOWS_NOT_PREREGISTERED' in protocol['freeze_gaps']
-        fit=client.post('/api/research/protocols/'+protocol['protocol_id']+'/models',json={'basis':'公开入口拒绝不可时点训练'}).json()
-        assert fit['status']=='FAILED' and fit['forecast_probability'] is None
-        assert 'RESEARCH_WINDOWS_NOT_PREREGISTERED' in fit['reasons']
-        assert 'HISTORICAL_POINT_IN_TIME_NOT_PROVEN' in fit['reasons']
-        assert client.get('/api/research/protocols/'+protocol['protocol_id']+'/attempts').json()[-1]['status']=='FAILED'
+        response=client.post('/api/research/protocols/'+protocol['protocol_id']+'/models',json={'basis':'公开入口拒绝不可时点训练'})
+        assert response.status_code==409,response.text
+        detail=response.json()['detail']
+        assert detail['code']=='TRAINING_ADMISSION_BLOCKED' and detail['attempt_started'] is False
+        assert 'RESEARCH_WINDOWS_NOT_PREREGISTERED' in detail['blockers']
+        assert 'HISTORICAL_POINT_IN_TIME_NOT_PROVEN' in detail['blockers']
+        assert client.get('/api/research/protocols/'+protocol['protocol_id']+'/attempts').json()==[]
     with TestClient(create_app(tmp_path)) as client:
         assert client.get('/api/research/datasets').json()[0]==dataset
-        assert client.get('/api/research/models/'+fit['model_run_id']).json()==fit
+        assert client.get('/api/research/protocols/'+protocol['protocol_id']+'/models').json()==[]
 
 
 def test_import_refuses_corrupt_original_before_registering_dataset(tmp_path):

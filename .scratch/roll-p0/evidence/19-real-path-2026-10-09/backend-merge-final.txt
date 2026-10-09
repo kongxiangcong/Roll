@@ -1,0 +1,26 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.6.0 -- D:\dsh-proj\Roll\backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\72449\.codex\worktrees\ticket19-real-path\Roll\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 16 items
+
+tests/application/test_training_preflight.py::test_preflight_preserves_two_old_failures_and_shares_family_budget_without_writes PASSED [  6%]
+tests/application/test_training_preflight.py::test_blocked_host_acquisition_preflight_reads_metadata_without_sources_labels_or_fits PASSED [ 12%]
+tests/application/test_training_preflight.py::test_preflight_counts_neighbors_abort_and_interruption_at_shared_budget_boundary PASSED [ 18%]
+tests/application/test_training_preflight.py::test_preflight_reads_legacy_ownerless_attempt_without_rewriting_it PASSED [ 25%]
+tests/application/test_training_preflight.py::test_research_model_admission_preserves_budget_and_old_failures_without_reading_inputs PASSED [ 31%]
+tests/application/test_training_preflight.py::test_exhausted_calibration_prevents_starting_another_method_primary_fit PASSED [ 37%]
+tests/application/test_cash_rights.py::test_registered_cash_dividend_is_receivable_before_payment_not_account_cash PASSED [ 43%]
+tests/application/test_cash_rights.py::test_record_close_entitlement_does_not_use_ex_reference_deduction PASSED [ 50%]
+tests/application/test_cash_rights.py::test_natural_month_and_year_include_anniversary_exit_and_pre2015_long_tax PASSED [ 56%]
+tests/application/test_cash_rights.py::test_unresolved_calendar_anniversary_and_same_day_payment_are_not_silently_filled PASSED [ 62%]
+tests/application/test_cash_rights.py::test_cutoff_and_scope_do_not_certify_past_available_or_complete_no_action PASSED [ 68%]
+tests/application/test_cash_rights.py::test_changed_original_is_rejected_and_restart_replays_same_reference PASSED [ 75%]
+tests/application/test_cash_rights.py::test_missing_manifest_returns_actionable_integrity_failure PASSED [ 81%]
+tests/application/test_cash_rights.py::test_cutoff_day_uses_exchange_timezone_not_request_timezone PASSED [ 87%]
+tests/application/test_cash_rights.py::test_cent_rounding_conserves_final_tax_and_payment_withholding PASSED [ 93%]
+tests/application/test_cash_rights.py::test_pre2015_registration_retains_old_tax_after2015_policy_change PASSED [100%]
+
+======================== 16 passed in 73.24s (0:01:13) ========================

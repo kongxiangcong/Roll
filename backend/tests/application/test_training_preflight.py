@@ -197,3 +197,46 @@ def test_preflight_reads_legacy_ownerless_attempt_without_rewriting_it(tmp_path)
         assert result['budget']['primary_and_neighbors']['used'] == 1
         assert result['budget']['primary_and_neighbors']['remaining'] == 4
         assert public_state(client, [pid]) == before
+
+
+def test_research_model_admission_preserves_budget_and_old_failures_without_reading_inputs(tmp_path):
+    with TestClient(create_app(tmp_path, market_transport=httpx.MockTransport(provider))) as client:
+        run = acquire(client)
+        dataset = client.post('/api/research/datasets', json={
+            'source_run_id': run['run_id'], 'basis': 'Unqualified archived source; no historical proof'}).json()
+        pid = protocol(client, dataset=dataset['dataset_id'])
+        attempt(client, pid)
+        attempt(client, pid)
+        before = public_state(client, [pid])
+        # Admission must not try to decode even DEV/CAL when metadata already forbids training.
+        for original in dataset['original_archives']:
+            (tmp_path / original['path']).write_bytes(b'Unreadable archived source for admission test')
+        response = client.post('/api/research/protocols/' + pid + '/models', json={
+            'purpose': 'RESEARCH', 'basis': 'Do not consume a third fit to rediscover known gaps'})
+        assert response.status_code == 409, response.text
+        detail = response.json()['detail']
+        assert detail['code'] == 'TRAINING_ADMISSION_BLOCKED'
+        assert 'HISTORICAL_POINT_IN_TIME_NOT_PROVEN' in detail['blockers']
+        assert 'RESEARCH_WINDOWS_NOT_PREREGISTERED' in detail['blockers']
+        assert detail['budget']['primary_and_neighbors']['remaining'] == 3
+        assert detail['budget']['calibration']['remaining'] == 1
+        assert detail['attempt_started'] is False
+        assert public_state(client, [pid]) == before
+    with TestClient(create_app(tmp_path)) as client:
+        assert public_state(client, [pid]) == before
+
+
+def test_exhausted_calibration_prevents_starting_another_method_primary_fit(tmp_path):
+    from test_execution_labels import method_archive, register
+    method_archive(tmp_path, unknown=True)
+    with TestClient(create_app(tmp_path)) as client:
+        _, registered = register(client)
+        pid = registered['protocol_id']
+        attempt(client, pid, category='CALIBRATION', status='ABORTED')
+        before = public_state(client, [pid])
+        response = client.post('/api/research/protocols/' + pid + '/models', json={
+            'purpose': 'METHOD_VALIDATION', 'basis': 'Calibration cannot be retried under a new primary'})
+        assert response.status_code == 409, response.text
+        assert response.json()['detail']['code'] == 'CALIBRATION_BUDGET_EXHAUSTED'
+        assert response.json()['detail']['attempt_started'] is False
+        assert public_state(client, [pid]) == before

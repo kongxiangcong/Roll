@@ -26,7 +26,7 @@ from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptC
 from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
-from roll.research.training_preflight import training_preflight,TrainingPurpose
+from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
@@ -101,6 +101,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/protocols/{protocol_id}/models',status_code=201)
     def research_model_create(protocol_id:str,command:ModelCommand):
+        admit_model_training(research,protocol_id,command.purpose)
         return models.create(protocol_id,command)
 
     @app.get('/api/research/protocols/{protocol_id}/models')

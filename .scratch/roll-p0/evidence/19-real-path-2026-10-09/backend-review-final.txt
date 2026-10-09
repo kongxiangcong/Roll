@@ -1,0 +1,34 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.6.0 -- D:\dsh-proj\Roll\backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\72449\.codex\worktrees\ticket19-real-path\Roll\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 24 items
+
+tests/application/test_training_preflight.py::test_preflight_preserves_two_old_failures_and_shares_family_budget_without_writes PASSED [  4%]
+tests/application/test_training_preflight.py::test_blocked_host_acquisition_preflight_reads_metadata_without_sources_labels_or_fits PASSED [  8%]
+tests/application/test_training_preflight.py::test_preflight_counts_neighbors_abort_and_interruption_at_shared_budget_boundary PASSED [ 12%]
+tests/application/test_training_preflight.py::test_preflight_reads_legacy_ownerless_attempt_without_rewriting_it PASSED [ 16%]
+tests/application/test_training_preflight.py::test_research_model_admission_preserves_budget_and_old_failures_without_reading_inputs PASSED [ 20%]
+tests/application/test_training_preflight.py::test_exhausted_calibration_prevents_starting_another_method_primary_fit PASSED [ 25%]
+tests/application/test_transparent_models.py::test_method_artifacts_time_isolation_forecast_and_offline_replay PASSED [ 29%]
+tests/application/test_transparent_models.py::test_unsupported_fit_is_a_persisted_failed_attempt_without_probability PASSED [ 33%]
+tests/application/test_transparent_models.py::test_failed_attempts_consume_fixed_fit_budget_and_never_accept_llm_probability PASSED [ 37%]
+tests/application/test_transparent_models.py::test_model_purpose_cannot_turn_public_source_into_method_case_or_method_case_into_research PASSED [ 41%]
+tests/application/test_transparent_models.py::test_missing_feature_day_and_unavailable_input_do_not_generate_forecast PASSED [ 45%]
+tests/application/test_research_acquisition_import.py::test_host_acquisition_import_is_source_backed_and_never_invents_historical_windows_or_account_authority PASSED [ 50%]
+tests/application/test_research_acquisition_import.py::test_import_refuses_corrupt_original_before_registering_dataset PASSED [ 54%]
+tests/application/test_research_acquisition_import.py::test_client_cannot_grant_as_of_eligibility_or_select_ambiguous_sources PASSED [ 58%]
+tests/application/test_research_protocol.py::test_actual_archive_import_registers_coverage_and_only_exposes_allowed_training_and_calibration_slices PASSED [ 62%]
+tests/application/test_research_protocol.py::test_protocol_registration_is_durable_draft_with_explicit_freeze_gaps_and_no_forward_start PASSED [ 66%]
+tests/application/test_research_protocol.py::test_metadata_grounded_design_registers_one_candidate_dependencies_costs_support_and_single_final_point PASSED [ 70%]
+tests/application/test_research_protocol.py::test_all_attempts_include_failure_abort_restart_and_omitted_manifest_refuses_freeze PASSED [ 75%]
+tests/application/test_research_protocol.py::test_sealed_input_download_and_reuse_are_audited_without_creating_a_pass_look PASSED [ 79%]
+tests/application/test_research_protocol.py::test_optional_stopping_and_result_access_cannot_manufacture_pass_or_forward_start PASSED [ 83%]
+tests/application/test_research_protocol.py::test_attempt_budget_and_concurrent_completion_preserve_exactly_one_terminal_record PASSED [ 87%]
+tests/application/test_research_protocol.py::test_corrupt_original_is_refused_without_registering_research_data PASSED [ 91%]
+tests/application/test_research_protocol.py::test_existing_market_query_and_offline_replay_audit_sealed_inputs_without_a_result_look PASSED [ 95%]
+tests/application/test_research_protocol.py::test_codex_actual_tool_input_delivery_is_audited_before_worker_receives_facts PASSED [100%]
+
+======================= 24 passed in 121.66s (0:02:01) ========================

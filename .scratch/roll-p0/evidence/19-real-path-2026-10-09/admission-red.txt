@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_research_model_admission_preserves_budget_and_old_failures_without_reading_inputs _
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/worktrees/ticket19-real-path/Roll/backend/.pytest-ticket19-red-log/test_research_model_admission_0')
+
+    def test_research_model_admission_preserves_budget_and_old_failures_without_reading_inputs(tmp_path):
+        with TestClient(create_app(tmp_path, market_transport=httpx.MockTransport(provider))) as client:
+            run = acquire(client)
+            dataset = client.post('/api/research/datasets', json={
+                'source_run_id': run['run_id'], 'basis': 'Unqualified archived source; no historical proof'}).json()
+            pid = protocol(client, dataset=dataset['dataset_id'])
+            attempt(client, pid)
+            attempt(client, pid)
+            before = public_state(client, [pid])
+            # Admission must not try to decode even DEV/CAL when metadata already forbids training.
+            for original in dataset['original_archives']:
+                (tmp_path / original['path']).write_bytes(b'Unreadable archived source for admission test')
+            response = client.post('/api/research/protocols/' + pid + '/models', json={
+                'purpose': 'RESEARCH', 'basis': 'Do not consume a third fit to rediscover known gaps'})
+>           assert response.status_code == 409, response.text
+E           AssertionError: {"model_run_id":"ddfa3fb6-6751-4585-bf23-4aeb5fb54078","protocol_id":"fedb4347-fc7b-4a77-98a0-3143fd12841d","attempt_id":"c9232de5-36f9-44e3-be0d-8b832b46a569","registered_at":"2026-10-09T06:03:35.184855+00:00","purpose":"RESEARCH","basis":"Do not consume a third fit to rediscover known gaps","namespace":"HISTORICAL","capability":"NOT_GRANTED","protocol_fingerprint":"1ca37e344adde54d200719d3d4796c0faa06e42f5e8d65552d118f340ca8dbf8","data_fingerprint":"e18a5da9ef87aee7e6c17dbafb908f15a0cb94ff53e730d50e8953e84a7a2a12","code_fingerprint":"a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49","status":"FAILED","reasons":["HISTORICAL_POINT_IN_TIME_NOT_PROVEN","COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN","COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN","HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION","RESEARCH_WINDOWS_NOT_PREREGISTERED","HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN","FEATURE_LOOKBACK_INSUFFICIENT","SOURCE_QUALIFICATION_BLOCKED"],"support":{"DEVELOPMENT":{"protocol_id":"fedb4347-fc7b-4a77-98a0-3143fd12841d","record_count":0,"opportunity_count":0,"latest_assessment_counts":{},"eligible_for_training_count":0,"method_case_count":0,"reasons":{},"records":[],"independent_sample_count":null,"basis":"Latest assessment per frozen execution family; repeated dates/scenarios are not independent support. METHOD is not real training. No PIT/qualification grant."},"CALIBRATION":{"protocol_id":"fedb4347-fc7b-4a77-98a0-3143fd12841d","record_count":0,"opportunity_count":0,"latest_assessment_counts":{},"eligible_for_training_count":0,"method_case_count":0,"reasons":{},"records":[],"independent_sample_count":null,"basis":"Latest assessment per frozen execution family; repeated dates/scenarios are not independent support. METHOD is not real training. No PIT/qualification grant."}},"model_artifact":null,"calibrator_artifact":null,"forecast_probability":null,"complete_experiment_frozen":false,"validation_verdict":null,"forward_started_at":null,"evidence_kind":"METHOD_CASE","input_archive":{"sha256":"f6337711834b35f39bd5b22b4f3711b1208523923818d85928d3295e41018931","path":"raw/f6337711834b35f39bd5b22b4f3711b1208523923818d85928d3295e41018931.raw","bytes":20082,"kind":"RESEARCH_MODEL_INPUT","research_namespace":"HISTORICAL"}}
+E           assert 201 == 409
+E            +  where 201 = <Response [201 Created]>.status_code
+
+tests\application\test_training_preflight.py:216: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_training_preflight.py::test_research_model_admission_preserves_budget_and_old_failures_without_reading_inputs
+1 failed, 4 deselected in 7.77s
