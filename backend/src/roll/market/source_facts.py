@@ -20,7 +20,7 @@ REGISTRY=[
     {'id':'eastmoney-original','groups':['ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS','ADJUSTMENTS'],'host':'np-cnotice-stock.eastmoney.com','depth':'client_source=web; article JSON and linked PDF; bounded first 3 pages of text','unit_scope':'disclosure date separate from provider display/index time'},
 ]
 for entry in REGISTRY:
-    entry.update(adapter_version='07-market-v1',authentication='PUBLIC_NO_CREDENTIAL',
+    entry.update(adapter_version='sohu-raw-v1' if entry['id']=='sohu-daily' else '07-market-v1',authentication='PUBLIC_NO_CREDENTIAL',
         permission_basis='Unauthenticated public request actually tested; no commercial redistribution license asserted',
         historical_revision_proof='NOT_AVAILABLE',retries=0,source_selection='PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK')
 
