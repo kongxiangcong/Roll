@@ -1,11 +1,34 @@
 """Read registered metadata without consuming inputs or a model-fit attempt."""
 import hashlib
 from typing import Literal
+from fastapi import HTTPException
 
 from roll.accounts.ledger import encode
 
 
 TrainingPurpose = Literal['RESEARCH', 'METHOD_VALIDATION']
+
+
+def admit_model_training(registry, protocol_id, purpose: TrainingPurpose):
+    """HTTP command admission; keep existing numerical code/artifact fingerprints intact."""
+    protocol = registry.get(protocol_id)
+    if purpose == 'RESEARCH':
+        # Metadata only: never decode source, partitions, or labels to rediscover known gaps.
+        preflight = training_preflight(registry, protocol_id, purpose)
+        if not preflight['ready_to_fit']:
+            raise HTTPException(409, {'code': 'TRAINING_ADMISSION_BLOCKED',
+                'blockers': preflight['blockers'], 'checks': preflight['checks'],
+                'budget': preflight['budget'], 'attempt_started': False,
+                'assessment': preflight['assessment']})
+    else:
+        dataset = registry.dataset(protocol['dataset_id']) if protocol['dataset_id'] else None
+        if dataset is None or dataset['source_evidence_kind'] != 'METHOD_CASE':
+            raise HTTPException(409, {'code': 'METHOD_VALIDATION_REQUIRES_METHOD_CASE',
+                'attempt_started': False})
+        preflight = training_preflight(registry, protocol_id, purpose)
+        if preflight['budget']['calibration']['exhausted']:
+            raise HTTPException(409, {'code': 'CALIBRATION_BUDGET_EXHAUSTED',
+                'budget': preflight['budget'], 'attempt_started': False})
 
 
 def training_preflight(registry, protocol_id, purpose: TrainingPurpose = 'RESEARCH'):

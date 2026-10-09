@@ -12,7 +12,6 @@ from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field
 from roll.accounts.ledger import encode,now
 from roll.research.registry import AttemptCommand,FinishCommand
-from roll.research.training_preflight import training_preflight
 
 
 class ModelCommand(BaseModel):
@@ -151,24 +150,6 @@ class TransparentModels:
 
     def create(self,protocol_id,command):
         protocol=self.registry.get(protocol_id)
-        if command.purpose=='RESEARCH':
-            # Known missing provenance/windows are admission gaps, not a fit attempt.
-            # This metadata read never opens partitions or labels, including SEALED.
-            preflight=training_preflight(self.registry,protocol_id,command.purpose)
-            if not preflight['ready_to_fit']:
-                raise HTTPException(409,{'code':'TRAINING_ADMISSION_BLOCKED',
-                    'blockers':preflight['blockers'],'checks':preflight['checks'],
-                    'budget':preflight['budget'],'attempt_started':False,
-                    'assessment':preflight['assessment']})
-        else:
-            dataset=self.registry.dataset(protocol['dataset_id']) if protocol['dataset_id'] else None
-            if dataset is None or dataset['source_evidence_kind']!='METHOD_CASE':
-                raise HTTPException(409,{'code':'METHOD_VALIDATION_REQUIRES_METHOD_CASE',
-                    'attempt_started':False})
-            preflight=training_preflight(self.registry,protocol_id,command.purpose)
-            if preflight['budget']['calibration']['exhausted']:
-                raise HTTPException(409,{'code':'CALIBRATION_BUDGET_EXHAUSTED',
-                    'budget':preflight['budget'],'attempt_started':False})
         attempt=self.registry.start_attempt(protocol_id,AttemptCommand(category='PRIMARY_FIT',partition='DEVELOPMENT',
             configuration={'candidate':'PRICE_VOLUME_LOGIT_V1','purpose':command.purpose,'lambda':'1','code_fingerprint':code_fingerprint()},basis=command.basis))
         support={name:self.executions.support(protocol_id,name) for name in ['DEVELOPMENT','CALIBRATION']}

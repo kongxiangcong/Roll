@@ -32,6 +32,8 @@ def test_method_artifacts_time_isolation_forecast_and_offline_replay(tmp_path):
         response=client.post('/api/research/protocols/'+pid+'/models',json={'purpose':'METHOD_VALIDATION','basis':'固定数学与工件工程验证'})
         assert response.status_code==201,response.text
         model=response.json();assert model['status']=='METHOD_ARTIFACT_ONLY'
+        # Historical numerical implementation stays identical when adding admission at HTTP boundary.
+        assert model['code_fingerprint']=='a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49'
         assert model['evidence_kind']=='METHOD_CASE' and model['complete_experiment_frozen'] is False
         assert model['statistical_support']['calibration_total']==20
         assert 'CALIBRATION_PER_CLASS_SUPPORT_BELOW_20' in model['reasons']
