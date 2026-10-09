@@ -3,6 +3,7 @@ from roll.app import create_app
 from test_execution_labels import method_archive,register
 import math
 import hashlib
+import json
 
 
 def known_method(client,directory,predecessor=None):
@@ -81,13 +82,46 @@ def test_failed_attempts_consume_fixed_fit_budget_and_never_accept_llm_probabili
     with TestClient(create_app(tmp_path)) as client:
         _,protocol=register(client);pid=protocol['protocol_id']
         for i in range(5):
-            response=client.post('/api/research/protocols/'+pid+'/models',json={'basis':'失败也计预算 '+str(i)})
+            response=client.post('/api/research/protocols/'+pid+'/models',json={'purpose':'METHOD_VALIDATION','basis':'失败也计预算 '+str(i)})
             assert response.status_code==201 and response.json()['status']=='FAILED'
-        assert client.post('/api/research/protocols/'+pid+'/models',json={'basis':'超限不能丢弃失败'}).status_code==409
+        assert client.post('/api/research/protocols/'+pid+'/models',json={'purpose':'METHOD_VALIDATION','basis':'超限不能丢弃失败'}).status_code==409
         assert client.post('/api/research/protocols/'+pid+'/models',json={'basis':'LLM概率不可输入','probability':.99}).status_code==422
         attempts=client.get('/api/research/protocols/'+pid+'/attempt-manifest').json()['attempts']
         assert len(attempts)==5 and all(a['status']=='FAILED' for a in attempts)
         assert any(e['action']=='ATTEMPT_BUDGET_REFUSED' for e in client.get('/api/research/protocols/'+pid+'/audit').json())
+
+
+def test_model_purpose_cannot_turn_public_source_into_method_case_or_method_case_into_research(tmp_path):
+    # Public-engineering source envelope remains an explicit fixture, never real evidence.
+    method_archive(tmp_path, unknown=True)
+    source=tmp_path/'research-inputs/method-execution/browser-live.json'
+    bundle=json.loads(source.read_text(encoding='utf-8'))
+    bundle['snapshot']['evidence_kind']='PUBLIC'
+    source.write_text(json.dumps(bundle),encoding='utf-8')
+    with TestClient(create_app(tmp_path)) as client:
+        _,protocol=register(client);pid=protocol['protocol_id']
+        before=client.get('/api/research/protocols/'+pid+'/attempt-manifest').json()
+        response=client.post('/api/research/protocols/'+pid+'/models',json={
+            'purpose':'METHOD_VALIDATION','basis':'Purpose cannot relabel public inputs'})
+        assert response.status_code==409,response.text
+        assert response.json()['detail']['code']=='METHOD_VALIDATION_REQUIRES_METHOD_CASE'
+        assert response.json()['detail']['attempt_started'] is False
+        assert client.get('/api/research/protocols/'+pid+'/attempt-manifest').json()==before
+        assert client.get('/api/research/protocols/'+pid+'/models').json()==[]
+    bundle['snapshot']['evidence_kind']='METHOD_CASE'
+    source.write_text(json.dumps(bundle),encoding='utf-8')
+    with TestClient(create_app(tmp_path)) as client:
+        dataset=client.post('/api/research/datasets',json={'archive_id':'method-execution',
+            'basis':'Synthetic method source remains explicitly separate'}).json()
+        response=client.post('/api/research/protocols',json={'dataset_id':dataset['dataset_id'],
+            'predecessor_id':pid,'basis':'Preserve source history and family linkage'})
+        assert response.status_code==201,response.text
+        pid=response.json()['protocol_id']
+        response=client.post('/api/research/protocols/'+pid+'/models',json={
+            'purpose':'RESEARCH','basis':'Synthetic method case cannot become research'})
+        assert response.status_code==409,response.text
+        assert 'METHOD_CASE_NOT_REAL_RESEARCH_DATA' in response.json()['detail']['blockers']
+        assert client.get('/api/research/protocols/'+pid+'/attempt-manifest').json()['attempts']==[]
 
 
 def test_missing_feature_day_and_unavailable_input_do_not_generate_forecast(tmp_path):
