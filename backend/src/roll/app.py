@@ -27,6 +27,7 @@ from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose
+from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
@@ -51,6 +52,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
     imports = CsvImports(ledger)
+
+    @app.post('/api/research/cash-rights/assess')
+    def research_cash_rights(command: CashRightsCommand):
+        return assess_cash_rights(command)
 
     @app.get("/api/account/csv/template")
     def csv_template(version: str = VERSION):
