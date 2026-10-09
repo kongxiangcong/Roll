@@ -12,7 +12,7 @@ def test_baostock_raw_status_are_archived_and_offline_replayed(tmp_path, monkeyp
     worker.write_text('import sys,json,base64\nc=json.load(sys.stdin)\nprint(json.dumps({"error_code":"0","calls":3,"received_bytes":10,"wire_b64":base64.b64encode(b"source-wire").decode(),"received_at":"2026-10-09T00:00:00+00:00","fields":["date","code","open","high","low","close","preclose","volume","amount","adjustflag","tradestatus","isST"],"rows":[["2026-09-30","sh.600519","10.0000","12.0000","9.0000","11.0000","10.0000","1000","11000.0000","3","1","0"]]}))',encoding='utf-8')
     with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
         establish(client,['SSE:600519'])
-        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY','STATUS'], 'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','daily_source':'BAOSTOCK','status_source':'BAOSTOCK'})
+        req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY','STATUS'], 'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','cutoff':'2026-09-30T16:00:00+08:00','daily_source':'BAOSTOCK','status_source':'BAOSTOCK'})
         assert req.status_code==201,req.text
         run=client.post('/api/data/requests/'+req.json()['request_id']+'/retrieve').json()
         assert run['status']=='COMPLETE',run
