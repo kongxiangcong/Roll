@@ -140,7 +140,7 @@ class Valuations:
     def quotes(self,account,as_of,known_by):
         result={}
         for position in account['positions']:
-            candidates=[{**f,'snapshot_id':s['snapshot_id'],'run_id':s['run_id']} for s in self.evidence.snapshots(position['instrument'],'QUOTE',at(known_by)) for f in s['facts'] if at(f['upstream_at'])<=at(as_of)]
+            candidates=[{**f,'snapshot_id':s['snapshot_id'],'run_id':s['run_id']} for s in self.evidence.snapshots(position['instrument'],'QUOTE',at(known_by)) for f in s['facts'] if f.get('upstream_at') and at(f['upstream_at'])<=at(as_of)]
             if candidates:
                 result[position['instrument']]=max(candidates,key=lambda f:(at(f['upstream_at']),at(f['available_at'])))
         return result

@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_five_preselected_background_indices_remain_outside_watch_and_research __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/fuyao-data/backend/.roll-data/fuyao-background-red/test_five_preselected_backgrou0')
+
+    def test_five_preselected_background_indices_remain_outside_watch_and_research(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            before = client.get('/api/account').json()
+            listing = client.get('/api/market/list').json()
+            background = listing['background_indices']
+>           assert {item['instrument'] for item in background} == {
+                'SSE:000001', 'SZSE:399001', 'SZSE:399997', 'SSE:000300', 'SSE:000905'}
+E           AssertionError: assert {'SSE:000001'...'SZSE:399997'} == {'SSE:000001'...'SZSE:399997'}
+E             
+E             Extra items in the right set:
+E             'SSE:000300'
+E             'SSE:000905'
+E             Use -v to get more diff
+
+backend\tests\application\test_market_directory.py:96: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_market_directory.py::test_five_preselected_background_indices_remain_outside_watch_and_research
+1 failed in 3.40s

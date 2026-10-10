@@ -1,0 +1,10 @@
+Tool-returned traceback transcript; saved with normalized line endings.
+
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\roll-p0\evidence\19-training-preflight-2026-10-09\verify-final-evidence.py", line 82, in <module>
+    main()
+    ~~~~^^
+  File "D:\dsh-proj\Roll\.scratch\roll-p0\evidence\19-training-preflight-2026-10-09\verify-final-evidence.py", line 30, in main
+    assert all(r['path'] in allowed and r['status'] == 200 for r in final['requests'])
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

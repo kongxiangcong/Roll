@@ -1,0 +1,48 @@
+{
+  "snapshot_kind": "COMPACT_PUBLIC_COLLECTION_METADATA_NOT_ORIGINAL_DOCUMENT",
+  "source_metadata_path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\.roll-data\\archive-series-v2\\manifest.json",
+  "source_metadata_sha256": "bd9773233866f0b988fbd88a526d1c63332bea199c2be026c647252821057381",
+  "source_metadata_bytes": 1667,
+  "source_metadata_received_clock": "Not substituted for SOURCE received_at",
+  "collection": {
+    "indexes": [
+      {
+        "requested_at": "2026-10-09T03:18:30.218454+00:00",
+        "kind": "INDEX",
+        "max_bytes": 2097152,
+        "status": "FAILED",
+        "error": "[WinError 10054] 远程主机强迫关闭了一个现有的连接。"
+      },
+      {
+        "requested_at": "2026-10-09T03:18:30.218998+00:00",
+        "kind": "INDEX",
+        "max_bytes": 2097152,
+        "url": "https://web.archive.org/cdx/search/cdx?url=vip.stock.finance.sina.com.cn%2Fquotes_service%2Fapi%2Fjson_v2.php%2FCN_MarketData.getKLineData%2A&output=json&from=2013&to=2025&filter=statuscode%3A200&filter=original%3A.%2Ash600362.%2A&limit=2000&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "http_status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "received_at": "2026-10-09T03:18:55.313564+00:00",
+        "bytes": 3,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\.roll-data\\archive-series-v2\\37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570.raw",
+        "status": "RESPONSE_ARCHIVED",
+        "index_rows": 0
+      },
+      {
+        "requested_at": "2026-10-09T03:18:30.219433+00:00",
+        "kind": "INDEX",
+        "max_bytes": 2097152,
+        "status": "FAILED",
+        "error": "The read operation timed out"
+      }
+    ],
+    "captures": [],
+    "maximum_http_requests": 5,
+    "sealed_read": false,
+    "models_fitted": false,
+    "labels_computed": false,
+    "live_source_fallback": false,
+    "qualification": "NONE"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "captured_at": "2026-10-09T04:54:06.828585+00:00",
+  "base_url": "http://127.0.0.1:8010",
+  "instrument": "SSE:600362",
+  "requests": [
+    {
+      "path": "/api/research/protocols/a9792e33-98e1-464e-85ba-046623fb4bd1/attempt-manifest",
+      "status": 200,
+      "body_sha256": "a3bfadc39f7d9fc5e363febf6db8ec15556637a5b216befdb16c435c0edf8df2",
+      "bytes": 3298
+    },
+    {
+      "path": "/api/research/protocols/bab919f3-14b5-4d28-8df6-f0f0979755db/attempt-manifest",
+      "status": 200,
+      "body_sha256": "0dfb031eb227a0ce82c100339c6fe5a58458e9eca53840cea929f706879db3a2",
+      "bytes": 3259
+    }
+  ],
+  "families": [
+    {
+      "root_protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "queried_protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "lineage": [
+        "bab919f3-14b5-4d28-8df6-f0f0979755db",
+        "a9792e33-98e1-464e-85ba-046623fb4bd1"
+      ],
+      "family_protocol_ids": [
+        "bab919f3-14b5-4d28-8df6-f0f0979755db",
+        "a9792e33-98e1-464e-85ba-046623fb4bd1"
+      ],
+      "attempts": [
+        {
+          "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+          "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "category": "PRIMARY_FIT",
+          "partition": "DEVELOPMENT",
+          "status": "FAILED",
+          "started_at": "2026-10-08T17:08:18.766352+00:00",
+          "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c"
+        },
+        {
+          "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+          "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "category": "PRIMARY_FIT",
+          "partition": "DEVELOPMENT",
+          "status": "FAILED",
+          "started_at": "2026-10-08T17:14:24.413994+00:00",
+          "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c"
+        }
+      ],
+      "fits_limit": 5,
+      "fits_used": 2,
+      "fits_remaining": 3,
+      "calibration_limit": 1,
+      "calibration_used": 0,
+      "calibration_remaining": 1,
+      "basis": "All registered family failures, aborts and interruptions count. Host metadata does not prove absence of unreported external work."
+    }
+  ],
+  "source_calls": 0,
+  "fits": 0,
+  "labels_read_or_computed": false,
+  "sealed_read": false,
+  "method": "GET existing family attempt metadata only"
+}

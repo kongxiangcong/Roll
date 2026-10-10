@@ -1,0 +1,318 @@
+{
+  "started_at": "2026-10-08T17:07:57.053349+00:00",
+  "instrument": "SSE:600362",
+  "requested_range": [
+    "2023-01-01",
+    "2026-10-08"
+  ],
+  "runs": [
+    {
+      "source": "BAOSTOCK",
+      "request_id": "67664126-0e34-4282-8230-1aa93a835c36",
+      "run_id": "0c10c148-c690-40f7-9bd2-86ae49fc029f",
+      "status": "PARTIAL",
+      "started_at": "2026-10-08T17:07:57.316361+00:00",
+      "finished_at": "2026-10-08T17:08:16.345870+00:00",
+      "tools": [
+        {
+          "source_id": "baostock-daily",
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "started_at": "2026-10-08T17:07:57.507884+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {
+            "fields": "date,code,open,high,low,close,preclose,volume,amount,adjustflag,tradestatus,isST"
+          },
+          "network_calls": 2,
+          "decoded_bytes": 106712,
+          "status": "ARCHIVED",
+          "raw_hash": "a24f417dcf0110e769e8f5d939a22070ab637c82d6687520cd149ad02855044a",
+          "decoded_hash": "dbdc935529db98888396218dd3eb9362ee5b2833a20478dcc4587403ad068247",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:08:04.652964+00:00"
+        },
+        {
+          "source_id": "baostock-calendar",
+          "instrument": "SSE:600362",
+          "group": "CALENDAR",
+          "started_at": "2026-10-08T17:08:04.680558+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {},
+          "network_calls": 2,
+          "decoded_bytes": 26304,
+          "status": "ARCHIVED",
+          "raw_hash": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+          "decoded_hash": "ff843d2aaa1467cf2143cab7bb6d02f4ee51b41e1d3360bf4874d8cfbbe95c91",
+          "sdk_runtime_version": "00.9.40",
+          "sdk_distribution_version": "0.9.4",
+          "pandas_distribution_version": "3.0.6",
+          "finished_at": "2026-10-08T17:08:09.722696+00:00"
+        },
+        {
+          "source_id": "baostock-adjustments",
+          "instrument": "SSE:600362",
+          "group": "ADJUSTMENTS",
+          "started_at": "2026-10-08T17:08:09.731039+00:00",
+          "method": "SDK_TCP",
+          "auth_mode": "PUBLIC",
+          "source_url": "tcp://public-api.baostock.com:10030",
+          "query": {
+            "year": 2023
+          },
+          "network_calls": 26,
+          "status": "FAILED",
+          "network_calls_basis": "CONSERVATIVE_FAILURE_UPPER_BOUND",
+          "finished_at": "2026-10-08T17:08:13.590093+00:00"
+        }
+      ],
+      "snapshot_id": "fe836e1a-bbb5-48c4-a9e4-e4b9904030fd",
+      "fact_counts": {
+        "DAILY": 909,
+        "STATUS": 909,
+        "CALENDAR": 1377
+      },
+      "raw_daily_count": 909,
+      "raw_daily_first": "2023-01-03",
+      "raw_daily_last": "2026-10-08",
+      "missing_amount_rows": 0,
+      "unknown_volume_unit_rows": 0,
+      "basic_error_rows": 0,
+      "source_gaps": [
+        {
+          "code": "BAOSTOCK_ACQUISITION_FAILED",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362",
+          "reason": "'utf-8' codec can't decode byte 0xbb in position 436: invalid start byte"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600362"
+        }
+      ],
+      "source_coverage": [
+        {
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:600362",
+          "raw_hash": "a24f417dcf0110e769e8f5d939a22070ab637c82d6687520cd149ad02855044a",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 909,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "STATUS",
+          "instrument": "SSE:600362",
+          "raw_hash": "a24f417dcf0110e769e8f5d939a22070ab637c82d6687520cd149ad02855044a",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 909,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        },
+        {
+          "full_history_verified": false,
+          "group": "CALENDAR",
+          "instrument": "SSE:600362",
+          "raw_hash": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+          "request_end": "2026-10-08",
+          "request_start": "2023-01-01",
+          "returned_rows": 1377,
+          "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+        }
+      ],
+      "verified_archives": [
+        {
+          "sha256": "a24f417dcf0110e769e8f5d939a22070ab637c82d6687520cd149ad02855044a",
+          "bytes": 30995,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "dbdc935529db98888396218dd3eb9362ee5b2833a20478dcc4587403ad068247",
+          "bytes": 106875,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "dbdc935529db98888396218dd3eb9362ee5b2833a20478dcc4587403ad068247",
+          "bytes": 106875,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+          "bytes": 26317,
+          "kind": "RAW_SOCKET_RESPONSE"
+        },
+        {
+          "sha256": "ff843d2aaa1467cf2143cab7bb6d02f4ee51b41e1d3360bf4874d8cfbbe95c91",
+          "bytes": 26435,
+          "kind": "SDK_DECODED"
+        },
+        {
+          "sha256": "ff843d2aaa1467cf2143cab7bb6d02f4ee51b41e1d3360bf4874d8cfbbe95c91",
+          "bytes": 26435,
+          "kind": "SDK_DECODED_RESPONSE"
+        },
+        {
+          "sha256": "d8e009280d866f800f0d8483a672fd7485b1f98110f9a0cfc4f97b723d82a5f0",
+          "bytes": 390487,
+          "kind": "NORMALIZED_PARQUET"
+        }
+      ],
+      "replay": {
+        "network_calls": 0,
+        "replay_kind": "IMMUTABLE_ARCHIVE_ONLY",
+        "facts_match_original": true,
+        "observations_match_original": true
+      },
+      "dataset_id": "9c0ca50c-f3e0-4028-a575-aa6d0fad18e5",
+      "dataset_coverage": {
+        "session_count": 909,
+        "first_date": "2023-01-03",
+        "last_date": "2026-10-08",
+        "requested_start": "2023-01-01",
+        "requested_end": "2026-10-08",
+        "missing_amount_rows": 0,
+        "unknown_volume_unit_rows": 0,
+        "basic_error_rows": 0,
+        "incomplete_daily_rows": 0,
+        "daily_sources": [
+          "baostock-daily"
+        ],
+        "status_rows": 909,
+        "status_reported_dates": 909,
+        "calendar_rows": 1377,
+        "company_action_rows": 0,
+        "source_coverage": [
+          {
+            "full_history_verified": false,
+            "group": "DAILY",
+            "instrument": "SSE:600362",
+            "raw_hash": "a24f417dcf0110e769e8f5d939a22070ab637c82d6687520cd149ad02855044a",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 909,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "STATUS",
+            "instrument": "SSE:600362",
+            "raw_hash": "a24f417dcf0110e769e8f5d939a22070ab637c82d6687520cd149ad02855044a",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 909,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          },
+          {
+            "full_history_verified": false,
+            "group": "CALENDAR",
+            "instrument": "SSE:600362",
+            "raw_hash": "4c7731388ab6cbaf7d43cb7498ffd262b7b863f6cd9967ec8ca6c3805804d81b",
+            "request_end": "2026-10-08",
+            "request_start": "2023-01-01",
+            "returned_rows": 1377,
+            "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+          }
+        ],
+        "source_gaps": [
+          {
+            "code": "BAOSTOCK_ACQUISITION_FAILED",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362",
+            "reason": "'utf-8' codec can't decode byte 0xbb in position 436: invalid start byte"
+          },
+          {
+            "code": "TECHNICAL_LIMIT",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362"
+          },
+          {
+            "code": "TECHNICAL_LIMIT",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362"
+          },
+          {
+            "code": "TECHNICAL_LIMIT",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600362"
+          }
+        ],
+        "historical_as_of_versions_verified": false,
+        "complete_status_verified": false,
+        "complete_actions_verified": false
+      },
+      "training_readiness": {
+        "state": "BLOCKED",
+        "blockers": [
+          "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+          "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+          "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+          "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+          "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+          "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN"
+        ],
+        "basis": "Host verifies immutable acquisition bytes, not historical observation-time availability. Reported status/calendar/dividend dates are not complete execution or as-of proof."
+      },
+      "partition_states": {
+        "DEVELOPMENT": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        },
+        "CALIBRATION": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        },
+        "SEALED": {
+          "state": "NOT_PREREGISTERED",
+          "rows": 0
+        }
+      },
+      "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "protocol_status": "DATA_COVERAGE_REGISTERED",
+      "model_preflight": {
+        "model_run_id": "fa1fc6f2-df6c-4ff0-99a3-c34cb0a16d2b",
+        "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+        "status": "FAILED",
+        "reasons": [
+          "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+          "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+          "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+          "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+          "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+          "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN",
+          "SOURCE_QUALIFICATION_BLOCKED"
+        ],
+        "forecast_probability": null,
+        "model_artifact": null,
+        "calibrator_artifact": null,
+        "capability": "NOT_GRANTED",
+        "forward_started_at": null
+      }
+    }
+  ],
+  "baostock_auth_mode": "PUBLIC",
+  "sources_requested": [
+    "BAOSTOCK"
+  ],
+  "sealed_results_read": false,
+  "broker_history_required": false,
+  "account_unchanged": true,
+  "finished_at": "2026-10-08T17:08:19.034185+00:00"
+}

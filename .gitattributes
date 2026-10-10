@@ -1,5 +1,23 @@
 # Original market authority bytes are fingerprinted; never normalize line endings.
+# Preserve captured ticket19 collection and verification receipt bytes.
+.scratch/roll-p0/evidence/19-completion-2026-10-09/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19-completion-2026-10-09/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+# Read-only preflight metadata and verification receipts retain original bytes.
+.scratch/roll-p0/evidence/19-training-preflight-2026-10-09/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19-training-preflight-2026-10-09/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+# Public-gap research receipts retain exact Windows bytes; allow CRLF metadata.
+.scratch/roll-p0/evidence/continuation-2026-10-09/annual-report-*-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-09/dividend-tax-research-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-09/research-originals-verification.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.raw binary
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/baostock-research/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19/free-source-probe-2026-10-08/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19/baostock-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19/baostock-*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19/baseline-backend-1945d194.txt -text whitespace=-blank-at-eol,cr-at-eol
 backend/src/roll/market/reference/*.html binary
+.scratch/roll-p0/evidence/19/calendar/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 backend/src/roll/market/reference/*.docx binary
 backend/src/roll/market/reference/*.pdf binary
 backend/src/roll/market/reference/*-2026.txt binary
@@ -19,6 +37,17 @@ backend/src/roll/market/reference/*-2026.txt binary
 
 # Original research authority pages retain source SHA bytes.
 backend/src/roll/research/reference/*.html binary
+# Source-bound cash rights originals and fingerprinted manifest retain exact bytes.
+backend/src/roll/research/reference/cash-rights/*.html binary
+backend/src/roll/research/reference/cash-rights/*.pdf binary
+backend/src/roll/research/reference/cash-rights/sources.json -text
+.scratch/roll-p0/evidence/19-execution-2026-10-09/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19-execution-2026-10-09/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-real-path-2026-10-09/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19-real-path-2026-10-09/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-rights-treatment-2026-10-09/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19-rights-treatment-2026-10-09/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-completion-2026-10-09/historical-costs-backend-final.txt -text whitespace=-blank-at-eol,cr-at-eol
 .scratch/roll-p0/evidence/17/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 # Ticket11 immutable public archive bytes and captured Windows stdout.
 .scratch/roll-p0/evidence/11/raw/* binary
@@ -26,6 +55,10 @@ backend/src/roll/research/reference/*.html binary
 .scratch/roll-p0/evidence/11/*.json text eol=lf
 # Ticket12 captured provider/method reports preserve original captured bytes.
 .scratch/roll-p0/evidence/12/raw/* binary
+# Ticket12 live captured metadata/process reports retain Windows bytes.
+.scratch/roll-p0/evidence/12/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/12/live/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/12/live/*.txt -text whitespace=-blank-at-eol,cr-at-eol
 # Ticket14 captured original public reports, screenshots and Windows stdout.
 .scratch/roll-p0/evidence/14/raw/* binary
 .scratch/roll-p0/evidence/14/*.json text eol=lf
@@ -54,3 +87,31 @@ backend/src/roll/research/reference/*.html binary
 .scratch/roll-p0/evidence/review/roll-spec-review-peer.py -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/review/roll-spec-review.md -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/review/roll-standards-reproduction.json -text whitespace=cr-at-eol
+# Continuation ticket12 merger captures retain exact Windows output and metadata bytes.
+.scratch/roll-p0/evidence/continuation-2026-10-08/merge-12*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/merge-12-runtime.json -text whitespace=cr-at-eol
+# Captured METHOD clock red/green output retains original Windows bytes.
+.scratch/roll-p0/evidence/continuation-2026-10-08/fixture-clock-*.txt -text whitespace=-blank-at-eol,cr-at-eol
+# Fuyao continuation captured process/API evidence preserves original Windows bytes.
+.scratch/roll-p0/evidence/fuyao/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/fuyao/real-acceptance*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/merge-fuyao*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/fuyao/background-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/fuyao/runtime-preservation-background.json -text whitespace=cr-at-eol
+# Ticket13 immutable captured Windows API/runtime reports and stdout.
+.scratch/roll-p0/evidence/13/**/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/13/**/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/merge-13*.txt -text whitespace=-blank-at-eol,cr-at-eol
+# Review-fix red/green captures retain exact Windows output.
+.scratch/roll-p0/evidence/continuation-2026-10-08/review-*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/merge-review-fixes*.txt -text whitespace=-blank-at-eol,cr-at-eol
+# Root continuation suite captures preserve exact Windows stdout bytes.
+.scratch/roll-p0/evidence/continuation-2026-10-08/final-*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/browser-default/**/*.txt -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/browser-default/**/*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/final-*.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/worktree-cleanup-final.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/review-*-followup.md -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/review-spec.md -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-08/session-start.json -text whitespace=cr-at-eol
+.scratch/roll-p0/evidence/19-execution-2026-10-09/actual-public-original-receipt.py -text whitespace=cr-at-eol

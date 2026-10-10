@@ -1,0 +1,149 @@
+{
+  "snapshot_kind": "COMPACT_PUBLIC_COLLECTION_METADATA_NOT_ORIGINAL_DOCUMENT",
+  "source_metadata_path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\sina-kline-index-receipts.json",
+  "source_metadata_sha256": "db8d53cf67fd7ac865dbe2c2e5a5c1d2de3ec007d0f270eb18d452094d08e67c",
+  "source_metadata_bytes": 10869,
+  "source_metadata_received_clock": "Not substituted for SOURCE received_at",
+  "collection": {
+    "first_party_path_evidence": "sina-kline-discovery-receipts.json",
+    "index_budget": 8,
+    "index_requests": 8,
+    "sources": [
+      {
+        "target": "finance.sina.com.cn/realstock/company/sh600362/hisdata/klc_kl.js",
+        "url": "https://web.archive.org/cdx/search/cdx?url=finance.sina.com.cn%2Frealstock%2Fcompany%2Fsh600362%2Fhisdata%2Fklc_kl.js&matchType=prefix&output=json&from=2013&to=2025&filter=statuscode%3A200&collapse=timestamp%3A4&limit=80&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "match_type": "prefix",
+        "limit": 80,
+        "requested_at": "2026-10-09T03:30:07.844998+00:00",
+        "live_fallback": false,
+        "http_status": 200,
+        "received_at": "2026-10-09T03:30:10.924833+00:00",
+        "headers": {
+          "Date": "Fri, 09 Oct 2026 03:30:10 GMT",
+          "Content-Type": "application/json"
+        },
+        "bytes": 3,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\.roll-data\\sina-kline-discovery-v3\\37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570.raw",
+        "rows": 0,
+        "indexed_captures": []
+      },
+      {
+        "target": "hq.sinajs.cn/?list=sh600362",
+        "url": "https://web.archive.org/cdx/search/cdx?url=hq.sinajs.cn%2F%3Flist%3Dsh600362&matchType=exact&output=json&from=2013&to=2025&filter=statuscode%3A200&collapse=timestamp%3A6&limit=160&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "match_type": "exact",
+        "limit": 160,
+        "requested_at": "2026-10-09T03:30:07.845862+00:00",
+        "live_fallback": false,
+        "http_status": 200,
+        "received_at": "2026-10-09T03:30:16.837773+00:00",
+        "headers": {
+          "Date": "Fri, 09 Oct 2026 03:30:15 GMT",
+          "Content-Type": "application/json"
+        },
+        "bytes": 329,
+        "sha256": "6c8ef60a47ac1fd90cd9f5160f9c278f4ea6acc97361bea938ee6d30a54b130f",
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\.roll-data\\sina-kline-discovery-v3\\6c8ef60a47ac1fd90cd9f5160f9c278f4ea6acc97361bea938ee6d30a54b130f.raw",
+        "rows": 2,
+        "indexed_captures": [
+          {
+            "timestamp": "20170322095445",
+            "original": "http://hq.sinajs.cn/?list=sh600362",
+            "mimetype": "application/x-javascript",
+            "statuscode": "200",
+            "digest": "JKVWFF5M4BJ2LLHO6DBXTXFH4JQ5UXRF",
+            "length": "502"
+          },
+          {
+            "timestamp": "20180117113055",
+            "original": "http://hq.sinajs.cn/?list=sh600362",
+            "mimetype": "application/javascript",
+            "statuscode": "200",
+            "digest": "7NOALJOWDN3CSD43F5RS4JNZIWSVVHLC",
+            "length": "494"
+          }
+        ]
+      },
+      {
+        "target": "money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600362&scale=240&ma=no&datalen=1023",
+        "url": "https://web.archive.org/cdx/search/cdx?url=money.finance.sina.com.cn%2Fquotes_service%2Fapi%2Fjson_v2.php%2FCN_MarketData.getKLineData%3Fsymbol%3Dsh600362%26scale%3D240%26ma%3Dno%26datalen%3D1023&output=json&from=2013&to=2025&filter=statuscode%3A200&collapse=timestamp%3A6&limit=100&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "requested_at": "2026-10-09T03:36:28.517353+00:00",
+        "live_fallback": false,
+        "match_type": "exact",
+        "error": "TimeoutError: The read operation timed out"
+      },
+      {
+        "target": "vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600362&scale=240&ma=no&datalen=1023",
+        "url": "https://web.archive.org/cdx/search/cdx?url=vip.stock.finance.sina.com.cn%2Fquotes_service%2Fapi%2Fjson_v2.php%2FCN_MarketData.getKLineData%3Fsymbol%3Dsh600362%26scale%3D240%26ma%3Dno%26datalen%3D1023&output=json&from=2013&to=2025&filter=statuscode%3A200&collapse=timestamp%3A6&limit=100&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "requested_at": "2026-10-09T03:36:28.518185+00:00",
+        "live_fallback": false,
+        "match_type": "exact",
+        "error": "URLError: <urlopen error [WinError 10054] 远程主机强迫关闭了一个现有的连接。>"
+      },
+      {
+        "target": "money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600362&scale=240&ma=no&datalen=1023",
+        "url": "https://web.archive.org/cdx/search/cdx?url=money.finance.sina.com.cn%2Fquotes_service%2Fapi%2Fjson_v2.php%2FCN_MarketData.getKLineData%3Fsymbol%3Dsh600362%26scale%3D240%26ma%3Dno%26datalen%3D1023&output=json&from=2013&to=2019&filter=statuscode%3A200&limit=20&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "requested_at": "2026-10-09T03:38:20.385617+00:00",
+        "live_fallback": false,
+        "match_type": "exact",
+        "from": "2013",
+        "to": "2019",
+        "limit": 20,
+        "parent_reason": "split_failed_exact_index_no_absence_inference",
+        "error": "TimeoutError: The read operation timed out"
+      },
+      {
+        "target": "money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600362&scale=240&ma=no&datalen=1023",
+        "url": "https://web.archive.org/cdx/search/cdx?url=money.finance.sina.com.cn%2Fquotes_service%2Fapi%2Fjson_v2.php%2FCN_MarketData.getKLineData%3Fsymbol%3Dsh600362%26scale%3D240%26ma%3Dno%26datalen%3D1023&output=json&from=2020&to=2025&filter=statuscode%3A200&limit=20&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "requested_at": "2026-10-09T03:38:20.386171+00:00",
+        "live_fallback": false,
+        "match_type": "exact",
+        "from": "2020",
+        "to": "2025",
+        "limit": 20,
+        "parent_reason": "split_failed_exact_index_no_absence_inference",
+        "http_status": 503,
+        "bytes": 11832,
+        "sha256": "e084d527921708642a79724e9f0210da659bbc0905c6ce9a3a1f416e4628091c",
+        "path": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\.roll-data\\sina-kline-discovery-v3\\e084d527921708642a79724e9f0210da659bbc0905c6ce9a3a1f416e4628091c.raw",
+        "headers": {
+          "Date": "Fri, 09 Oct 2026 03:38:27 GMT",
+          "Content-Type": "text/html"
+        },
+        "received_at": "2026-10-09T03:38:28.649442+00:00"
+      },
+      {
+        "target": "vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600362&scale=240&ma=no&datalen=1023",
+        "url": "https://web.archive.org/cdx/search/cdx?url=vip.stock.finance.sina.com.cn%2Fquotes_service%2Fapi%2Fjson_v2.php%2FCN_MarketData.getKLineData%3Fsymbol%3Dsh600362%26scale%3D240%26ma%3Dno%26datalen%3D1023&output=json&from=2013&to=2019&filter=statuscode%3A200&limit=20&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "requested_at": "2026-10-09T03:38:20.386691+00:00",
+        "live_fallback": false,
+        "match_type": "exact",
+        "from": "2013",
+        "to": "2019",
+        "limit": 20,
+        "parent_reason": "split_failed_exact_index_no_absence_inference",
+        "error": "TimeoutError: The read operation timed out"
+      },
+      {
+        "target": "vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600362&scale=240&ma=no&datalen=1023",
+        "url": "https://web.archive.org/cdx/search/cdx?url=vip.stock.finance.sina.com.cn%2Fquotes_service%2Fapi%2Fjson_v2.php%2FCN_MarketData.getKLineData%3Fsymbol%3Dsh600362%26scale%3D240%26ma%3Dno%26datalen%3D1023&output=json&from=2020&to=2025&filter=statuscode%3A200&limit=20&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength",
+        "requested_at": "2026-10-09T03:38:20.387117+00:00",
+        "live_fallback": false,
+        "match_type": "exact",
+        "from": "2020",
+        "to": "2025",
+        "limit": 20,
+        "parent_reason": "split_failed_exact_index_no_absence_inference",
+        "http_status": 503,
+        "bytes": 11832,
+        "sha256": "e084d527921708642a79724e9f0210da659bbc0905c6ce9a3a1f416e4628091c",
+        "path": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\.roll-data\\sina-kline-discovery-v3\\e084d527921708642a79724e9f0210da659bbc0905c6ce9a3a1f416e4628091c.raw",
+        "headers": {
+          "Date": "Fri, 09 Oct 2026 03:38:26 GMT",
+          "Content-Type": "text/html"
+        },
+        "received_at": "2026-10-09T03:38:28.099426+00:00"
+      }
+    ]
+  }
+}

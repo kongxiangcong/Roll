@@ -1,0 +1,93 @@
+{
+  "run": {
+    "backend": "DIRECT_HTTP",
+    "config_fingerprint": "4862ad7e44bec3da1b4ceeddaee00397bd0ea67c2f30e7ffb69e4e29f2caa362",
+    "elapsed_seconds": 0.637,
+    "evidence_kind": "REAL_ACQUISITION",
+    "finished_at": "2026-10-08T03:57:27.236023+00:00",
+    "gaps": [
+      {
+        "code": "QUOTE_PER_INSTRUMENT_TIME_UNKNOWN",
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      {
+        "code": "CURRENT_STATUS_UNKNOWN",
+        "group": "STATUS",
+        "instrument": "SSE:600519"
+      }
+    ],
+    "model": null,
+    "request_id": "a3a2f13d-b030-4367-ae60-316112aae39f",
+    "retrieved_bytes": 57683,
+    "run_id": "df947db0-1925-4898-baa5-08475b88344a",
+    "runtime_versions": {
+      "httpx": "0.28.1",
+      "pyarrow": "25.0.1",
+      "pypdf": "6.19.0"
+    },
+    "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+    "snapshot_id": "b9894638-0b02-497c-8283-a788eb025814",
+    "started_at": "2026-10-08T03:57:26.561636+00:00",
+    "status": "PARTIAL",
+    "tools": [
+      {
+        "adjustment": "RAW",
+        "finished_at": "2026-10-08T03:57:26.865809+00:00",
+        "group": "DAILY",
+        "http_status": 200,
+        "instrument": "SSE:600519",
+        "method": "GET",
+        "raw_hash": "2fa2300b75dab1c5c78bbb7cdb6e6940a6bb14df3a03f603dde2d0f82b85bee3",
+        "received_bytes": 27680,
+        "source_id": "fuyao-daily",
+        "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/historical?thscode=600519.SH&interval=1d&start=1767196800000&end=1790783999999&adjust=none",
+        "started_at": "2026-10-08T03:57:26.735719+00:00",
+        "status": "ARCHIVED"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "finished_at": "2026-10-08T03:57:26.942924+00:00",
+        "group": "DAILY",
+        "http_status": 200,
+        "instrument": "SSE:600519",
+        "method": "GET",
+        "raw_hash": "b66babfb4b2294297a06a30c7fc799282350fe2af3dfba837aa26a32e30a792d",
+        "received_bytes": 29402,
+        "source_id": "fuyao-daily",
+        "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/historical?thscode=600519.SH&interval=1d&start=1767196800000&end=1790783999999&adjust=forward",
+        "started_at": "2026-10-08T03:57:26.871603+00:00",
+        "status": "ARCHIVED"
+      },
+      {
+        "finished_at": "2026-10-08T03:57:27.058592+00:00",
+        "group": "QUOTE",
+        "http_status": 200,
+        "instrument": "SSE:600519",
+        "method": "GET",
+        "raw_hash": "0caeb8c7ae21a650fbf4b3689917d2e8b86e9e32347902db0b33b74ccd7ca729",
+        "received_bytes": 363,
+        "source_id": "fuyao-quote",
+        "source_url": "https://fuyao.aicubes.cn/api/a-share/prices/snapshot?thscodes=600519.SH",
+        "started_at": "2026-10-08T03:57:26.949440+00:00",
+        "status": "ARCHIVED"
+      },
+      {
+        "finished_at": "2026-10-08T03:57:27.149238+00:00",
+        "group": "ADJUSTMENTS",
+        "http_status": 200,
+        "instrument": "SSE:600519",
+        "method": "GET",
+        "raw_hash": "e5da7b35ccd0484e206859dfe887644fc0aff3c00b2c717f233657e21b813f94",
+        "received_bytes": 238,
+        "source_id": "fuyao-actions",
+        "source_url": "https://fuyao.aicubes.cn/api/a-share/corporate-actions/adjustment-factors?thscode=600519.SH&from=2026-01-01&to=2026-09-30",
+        "started_at": "2026-10-08T03:57:27.058823+00:00",
+        "status": "ARCHIVED"
+      }
+    ]
+  },
+  "snapshot_id": "b9894638-0b02-497c-8283-a788eb025814",
+  "quote_upstream_at": null,
+  "account_unchanged": true
+}

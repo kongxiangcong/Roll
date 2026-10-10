@@ -1,0 +1,42 @@
+{
+  "reason": "Sandbox basetemp permissions caused fixture ERRORs and an exit-cleanup exception. Some fixture-independent cases progressed; complete pass/error statistics were not captured. Original logs and manifest are preserved unchanged.",
+  "records": [
+    {
+      "source": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-final-manifest.json",
+      "preserved": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-sandbox-manifest.json",
+      "sha256": "c878f69e7e1cd9dc2f635beee37273b190a0656d9817281fe7c62545077228b3",
+      "bytes": 6363
+    },
+    {
+      "source": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-final-collection.txt",
+      "preserved": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-sandbox-collection.txt",
+      "sha256": "081185ace23335b07759f7fa9faadcc35aa690848ebc03f9c3e92823c7b919f0",
+      "bytes": 50742
+    },
+    {
+      "source": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-final-group-1.txt",
+      "preserved": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-sandbox-group-1.txt",
+      "sha256": "74fd2e558d3423574b83ac25ed045897136b42ec3cc5eafbb23b882b0c16d6cd",
+      "bytes": 4518
+    },
+    {
+      "source": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-final-group-2.txt",
+      "preserved": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-sandbox-group-2.txt",
+      "sha256": "68ebd57f32f041f6d69edad55cfb06911403730e6ebb7213c44196a725043c59",
+      "bytes": 4518
+    },
+    {
+      "source": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-final-group-3.txt",
+      "preserved": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-sandbox-group-3.txt",
+      "sha256": "4a7484fd1c79b31c714f46022901417a82647273be15e9bfbb9ea336b2d63495",
+      "bytes": 4518
+    },
+    {
+      "source": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-final-group-4.txt",
+      "preserved": ".scratch\\roll-p0\\evidence\\19-completion-2026-10-09\\backend-sandbox-group-4.txt",
+      "sha256": "1c080356a3bbcd507feb35eae3915e0845d722e645de18b0bfe6ae85189f8438",
+      "bytes": 4518
+    }
+  ],
+  "reason_original_inference": "Windows sandbox process identity could not access task-specific pytest basetemp; no tests started"
+}

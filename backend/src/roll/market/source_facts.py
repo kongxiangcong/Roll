@@ -10,6 +10,7 @@ from roll.market.rules import SHANGHAI
 
 REGISTRY=[
     {'id':'eastmoney-daily','groups':['DAILY'],'host':'push2his.eastmoney.com','depth':'explicit bounded day interval; fqt=0/1 separate versions','unit_scope':'HAND conversion currently evidenced only confirmed SSE MAIN ordinary STOCK; remaining scopes UNKNOWN'},
+    {'id':'sohu-daily','groups':['DAILY'],'host':'q.stock.sohu.com','depth':'explicit single bounded day query; RAW only; actual rows recorded, no total/completeness proof','unit_scope':'Supplier historical table: HAND, amount TEN_THOUSAND_CNY; shares conversion confirmed SSE MAIN ordinary STOCK only; no status/calendar/actions/PIT proof','documentation':'https://q.stock.sohu.com/cn/600362/lshq.shtml'},
     {'id':'tencent-quote','groups':['QUOTE','STATUS'],'host':'qt.gtimg.cn','depth':'last reported quote; upstream timestamp can be stale','unit_scope':'reported volume retained; packed amount field35 yuan; no volume conversion outside evidenced scope'},
     {'id':'tencent-index-daily','groups':['DAILY'],'host':'web.ifzq.gtimg.cn','depth':'fixed background indices only; bounded maximum 800 bars; historical amount generally absent','unit_scope':'index aggregate volume unit UNKNOWN'},
     {'id':'tencent-daily','groups':['DAILY'],'host':'web.ifzq.gtimg.cn','depth':'explicit request selection; maximum 800 bars; raw/day and qfqday strictly distinct; historical amount generally absent','unit_scope':'currently verified only confirmed SSE MAIN STOCK; other scopes UNKNOWN'},
@@ -19,7 +20,7 @@ REGISTRY=[
     {'id':'eastmoney-original','groups':['ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS','ADJUSTMENTS'],'host':'np-cnotice-stock.eastmoney.com','depth':'client_source=web; article JSON and linked PDF; bounded first 3 pages of text','unit_scope':'disclosure date separate from provider display/index time'},
 ]
 for entry in REGISTRY:
-    entry.update(adapter_version='07-market-v1',authentication='PUBLIC_NO_CREDENTIAL',
+    entry.update(adapter_version='sohu-raw-v1' if entry['id']=='sohu-daily' else '07-market-v1',authentication='PUBLIC_NO_CREDENTIAL',
         permission_basis='Unauthenticated public request actually tested; no commercial redistribution license asserted',
         historical_revision_proof='NOT_AVAILABLE',retries=0,source_selection='PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK')
 
@@ -33,6 +34,15 @@ REGISTRY.append({'id':'sina-quote','groups':['QUOTE','STATUS'],'host':'hq.sinajs
     'depth':'last reported quote, Referer finance.sina.com.cn; no historic quote/PIT proof',
     'unit_scope':SINA_UNIT_BASIS,'historical_revision_proof':'NOT_AVAILABLE','retries':0,
     'source_selection':'EXPLICIT_PRIMARY_OR_BOUNDED_RESOLUTION_ALTERNATE'})
+
+
+for identifier,groups in [('fuyao-daily',['DAILY']),('fuyao-index-daily',['DAILY']),('fuyao-actions',['ADJUSTMENTS']),('fuyao-quote',['QUOTE','STATUS'])]:
+    REGISTRY.append({'id':identifier,'groups':groups,'host':'fuyao.aicubes.cn','adapter_version':'fuyao-rest-v1',
+        'authentication':'HOST_X_API_KEY','permission_basis':'User-provided key; actual scope acceptance recorded separately; no redistribution license asserted',
+        'depth':'Explicit bounded single instrument/window; history may be current revision; no total/completeness certification',
+        'unit_scope':'Official public prices: volume shares, turnover CNY; corporate actions pretax cash per share/date precision',
+        'historical_revision_proof':'NOT_AVAILABLE','historical_status_proof':'NOT_AVAILABLE','retries':0,
+        'source_selection':'EXPLICIT_PRIMARY','documentation':'https://fuyao.aicubes.cn/llms-full.txt'})
 
 
 def source_json(content):
@@ -239,3 +249,12 @@ def original(content,archive,instrument,group,row,document,document_content):
         'content_excerpt':(data.get('notice_content') or '')[:1200],'pdf_excerpt':text[:1200],
         'extraction_scope':'FIRST_3_PAGES_AND_1200_CHARS; FULL_ORIGINAL_ARCHIVED','category_basis':row.get('columns',[]),
         'intraday_disclosure_eligibility':'UNKNOWN_DATE_ONLY','formal_judgment':'DISABLED'}
+
+
+for identifier,groups in [('baostock-daily',['DAILY','STATUS']),('baostock-calendar',['CALENDAR']),('baostock-adjustments',['ADJUSTMENTS'])]:
+    REGISTRY.append({'id':identifier,'groups':groups,'host':'vip-api.baostock.com:10030','adapter_version':'baostock-sdk-0.9.4-v1',
+        'authentication':'EXPLICIT_API_KEY_VIP_OR_PUBLIC_ANONYMOUS_NO_FALLBACK','allowed_hosts':['vip-api.baostock.com:10030','public-api.baostock.com:10030'],'permission_basis':'User-provided key; actual acceptance recorded separately',
+        'depth':'Explicit single stock/date range or operate year; bounded socket calls including login/pagination; zero retries',
+        'unit_scope':'RAW adjustflag3; shares/CNY; tradestatus/isST only; event date precision; no full special-status proof',
+        'historical_revision_proof':'NOT_AVAILABLE','retries':0,'source_selection':'EXPLICIT_PRIMARY',
+        'documentation':'https://www.baostock.com/mainContent?file=stockKData.md'})

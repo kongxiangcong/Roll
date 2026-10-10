@@ -1,0 +1,80 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_____ test_agent_child_preserves_explicit_fuyao_adjustment_source[CODEX] ______
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-364/test_agent_child_preserves_exp0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020893F0BE10>
+backend = 'CODEX'
+
+    @pytest.mark.parametrize('backend', ['CODEX', 'DEEPSEEK'])
+    def test_agent_child_preserves_explicit_fuyao_adjustment_source(tmp_path, monkeypatch, backend):
+        monkeypatch.setenv('FUYAO_API_KEY', 'METHOD_SECRET_NOT_REAL')
+        calls = []
+    
+        def source(request):
+            calls.append(str(request.url))
+            if request.url.host != 'fuyao.aicubes.cn':
+                return httpx.Response(503, content=b'METHOD denies unintended provider')
+            return httpx.Response(200, json={'code':0,'data':{'thscode':'600519.SH','ticker':'600519',
+                'item':[{'ticker':'600519','ex_date_ms':millis('2026-06-26'),'dividend_per_share':'28.02423','per_share_bonus':0}]}})
+    
+        with method_agent_client(tmp_path, monkeypatch, source, 'ADJUSTMENTS') as client:
+            parent = client.post('/api/data/requests', json={'instruments':['SSE:600519'],'groups':['ADJUSTMENTS'],
+                'purpose':'OBSERVATION','start_date':'2026-01-01','end_date':'2026-09-30',
+                'daily_source':'FUYAO','quote_source':'FUYAO','adjustment_source':'FUYAO','required_fields':['ADJUSTMENTS.cash_per_share']}).json()
+            account = client.get('/api/account').json()
+            client.post('/api/agents/settings', json={'expected_version':0,'backend':backend}).raise_for_status()
+            launched = client.post(f'/api/data/requests/{parent["request_id"]}/agent', json={'question':'method explicit adjustment source'})
+            assert launched.status_code == 202, launched.text
+            run = terminal(client, launched.json()['run_id'])
+            child = client.get('/api/data/runs/' + run['tools'][0]['child_run_id']).json()
+            child_request = client.get('/api/data/requests/' + child['request_id']).json()
+            for field in ['daily_source','quote_source','adjustment_source','required_fields']:
+>               assert child_request[field] == parent[field]
+E               AssertionError: assert 'EASTMONEY' == 'FUYAO'
+E                 
+E                 - FUYAO
+E                 + EASTMONEY
+
+tests\application\test_agent_source_contract.py:64: AssertionError
+____ test_agent_child_preserves_explicit_fuyao_adjustment_source[DEEPSEEK] ____
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-364/test_agent_child_preserves_exp1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002088EE72520>
+backend = 'DEEPSEEK'
+
+    @pytest.mark.parametrize('backend', ['CODEX', 'DEEPSEEK'])
+    def test_agent_child_preserves_explicit_fuyao_adjustment_source(tmp_path, monkeypatch, backend):
+        monkeypatch.setenv('FUYAO_API_KEY', 'METHOD_SECRET_NOT_REAL')
+        calls = []
+    
+        def source(request):
+            calls.append(str(request.url))
+            if request.url.host != 'fuyao.aicubes.cn':
+                return httpx.Response(503, content=b'METHOD denies unintended provider')
+            return httpx.Response(200, json={'code':0,'data':{'thscode':'600519.SH','ticker':'600519',
+                'item':[{'ticker':'600519','ex_date_ms':millis('2026-06-26'),'dividend_per_share':'28.02423','per_share_bonus':0}]}})
+    
+        with method_agent_client(tmp_path, monkeypatch, source, 'ADJUSTMENTS') as client:
+            parent = client.post('/api/data/requests', json={'instruments':['SSE:600519'],'groups':['ADJUSTMENTS'],
+                'purpose':'OBSERVATION','start_date':'2026-01-01','end_date':'2026-09-30',
+                'daily_source':'FUYAO','quote_source':'FUYAO','adjustment_source':'FUYAO','required_fields':['ADJUSTMENTS.cash_per_share']}).json()
+            account = client.get('/api/account').json()
+            client.post('/api/agents/settings', json={'expected_version':0,'backend':backend}).raise_for_status()
+            launched = client.post(f'/api/data/requests/{parent["request_id"]}/agent', json={'question':'method explicit adjustment source'})
+            assert launched.status_code == 202, launched.text
+            run = terminal(client, launched.json()['run_id'])
+            child = client.get('/api/data/runs/' + run['tools'][0]['child_run_id']).json()
+            child_request = client.get('/api/data/requests/' + child['request_id']).json()
+            for field in ['daily_source','quote_source','adjustment_source','required_fields']:
+>               assert child_request[field] == parent[field]
+E               AssertionError: assert 'EASTMONEY' == 'FUYAO'
+E                 
+E                 - FUYAO
+E                 + EASTMONEY
+
+tests\application\test_agent_source_contract.py:64: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_agent_source_contract.py::test_agent_child_preserves_explicit_fuyao_adjustment_source[CODEX]
+FAILED tests/application/test_agent_source_contract.py::test_agent_child_preserves_explicit_fuyao_adjustment_source[DEEPSEEK]
+2 failed in 31.25s

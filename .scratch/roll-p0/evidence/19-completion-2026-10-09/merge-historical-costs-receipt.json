@@ -1,0 +1,64 @@
+{
+  "head": "40b23e09b4d44a2f932d241d595f813ff4f27fdd",
+  "parents": "40b23e09b4d44a2f932d241d595f813ff4f27fdd d16ad7bef373d6330984b4529d3a99dd4b3a0b1a 4a8223b33c8f7ff5c33be4d41b6f347a4a8dd5e7",
+  "branch": "codex/roll-p0-integration",
+  "implementation_tip": "4a8223b33c8f7ff5c33be4d41b6f347a4a8dd5e7",
+  "sources": [
+    {
+      "id": "2015-fee-change",
+      "sha256": "68d86fbded6d151eac74501ed285ce7c24a0746cd09a791ea927d81172266796",
+      "bytes": 28071,
+      "manifest_matches": true,
+      "git_blob_matches": true
+    },
+    {
+      "id": "stamp-2008",
+      "sha256": "4edaa053cbc7c2727e183a27f2e974aabb3534e4485522e3675f40ca7a6d8263",
+      "bytes": 20049,
+      "manifest_matches": true,
+      "git_blob_matches": true
+    },
+    {
+      "id": "stamp-2023",
+      "sha256": "64783f48ef9b4a0650d058cec330268431f28b7ffad527add1a047a1b0184b36",
+      "bytes": 14404,
+      "manifest_matches": true,
+      "git_blob_matches": true
+    },
+    {
+      "id": "current-sse-charge-2026",
+      "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+      "bytes": 41658,
+      "manifest_matches": true,
+      "git_blob_matches": true
+    },
+    {
+      "id": "transfer-2022",
+      "sha256": "40cd7a2ddc9e1608cb4820171cb165fc716005b2b3f5aef29c2c97c994d1dc51",
+      "bytes": 10098,
+      "manifest_matches": true,
+      "git_blob_matches": true
+    }
+  ],
+  "started_at": "2026-10-09T03:44:50.359029+00:00",
+  "finished_at": "2026-10-09T03:48:48.088066+00:00",
+  "command": [
+    "D:\\dsh-proj\\Roll\\backend\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/application/test_execution_labels.py",
+    "tests/application/test_transparent_models.py",
+    "tests/application/test_research_protocol.py",
+    "tests/application/test_research_lifecycle.py",
+    "tests/application/test_research_acquisition_import.py",
+    "tests/application/test_historical_execution_costs.py",
+    "--basetemp=D:\\dsh-proj\\Roll\\.scratch\\t19-merge-hfee"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "8307d6cf4e963d18748fa029b1839d1761276f56a5ee45a60c68d78e1824303e",
+  "scope": "SYNTHETIC_API_ENGINEERING_ONLY; no actual DB, sealed samples, real fit, or qualification"
+}

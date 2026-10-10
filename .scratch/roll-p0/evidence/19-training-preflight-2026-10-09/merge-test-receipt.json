@@ -1,0 +1,36 @@
+{
+  "head": "f953d71c5d74c740a14fdeb389b52ad110a21709",
+  "head_after": "f953d71c5d74c740a14fdeb389b52ad110a21709",
+  "command": [
+    "D:\\dsh-proj\\Roll\\backend\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/application/test_training_preflight.py",
+    "tests/application/test_transparent_models.py::test_method_artifacts_time_isolation_forecast_and_offline_replay",
+    "--basetemp=D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-training-preflight-2026-10-09\\.roll-data\\merge-tests\\pytest"
+  ],
+  "started_at": "2026-10-09T05:23:53.007751+00:00",
+  "finished_at": "2026-10-09T05:24:34.148466+00:00",
+  "exit_code": 0,
+  "before": {
+    "backend/src/roll/app.py": "87f096871d8ec8fabbd020d48e6d79a6bfb0e770d8419f80b34618f6aa75ffff",
+    "backend/src/roll/research/training_preflight.py": "7dfc584cff45ce54f85ca9b0f1f92d1610a3ca6401037b915ebef0d473c1dbb6",
+    "backend/src/roll/research/models.py": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+    "backend/tests/application/test_training_preflight.py": "59de26e5807a6fccb9518469c60e1a2dbdea11e3310e25d22ce3d8b2e40a63e7",
+    "backend/tests/application/test_transparent_models.py": "2189c984a03613cce58a878d4595326af8f0b7aad4651d76c306c811bd8caee3"
+  },
+  "after": {
+    "backend/src/roll/app.py": "87f096871d8ec8fabbd020d48e6d79a6bfb0e770d8419f80b34618f6aa75ffff",
+    "backend/src/roll/research/training_preflight.py": "7dfc584cff45ce54f85ca9b0f1f92d1610a3ca6401037b915ebef0d473c1dbb6",
+    "backend/src/roll/research/models.py": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+    "backend/tests/application/test_training_preflight.py": "59de26e5807a6fccb9518469c60e1a2dbdea11e3310e25d22ce3d8b2e40a63e7",
+    "backend/tests/application/test_transparent_models.py": "2189c984a03613cce58a878d4595326af8f0b7aad4651d76c306c811bd8caee3"
+  },
+  "watched_bytes_unchanged": true,
+  "stdout_sha256": "d84773d35f302c94fd4a2baab43b5da3468f8a1370f2b30b2bc51c26dd7ec6bd",
+  "scope": "SYNTHETIC_APPLICATION_ONLY; no actual private DB, sealed reads, fits or qualification"
+}

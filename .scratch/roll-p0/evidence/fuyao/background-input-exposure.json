@@ -1,0 +1,16 @@
+{
+  "event": "MARKET_INPUT_EXPOSED",
+  "date": "2026-10-08",
+  "scope": "FIXED_BACKGROUND_SOURCE_SMOKE_ONLY",
+  "instruments": ["SSE:000300", "SSE:000905"],
+  "input_start": "2026-09-01",
+  "input_end": "2026-09-30",
+  "purpose": "BACKGROUND",
+  "sealed_independence": "UNPROVEN_RETAINED",
+  "model_training": false,
+  "mature_label_computation": false,
+  "final_strategy_outcome_accessed": false,
+  "old_protocol_database_access": false,
+  "protocol_action": "No CAL40, protocol, threshold, fit, registry or budget change; current source background input only",
+  "knowledge_basis": "Actual current provider revision and actual receipt in two empty isolated SQLite namespaces; no historical PIT inference"
+}

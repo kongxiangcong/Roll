@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_method_artifacts_time_isolation_forecast_and_offline_replay _______
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/worktrees/ticket19-real-path/Roll/backend/.pytest-ticket19-replay-red/test_method_artifacts_time_iso0')
+
+    def test_method_artifacts_time_isolation_forecast_and_offline_replay(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            dataset,protocol,dates=known_method(client,tmp_path);pid=protocol['protocol_id']
+            response=client.post('/api/research/protocols/'+pid+'/models',json={'purpose':'METHOD_VALIDATION','basis':'固定数学与工件工程验证'})
+            assert response.status_code==201,response.text
+            model=response.json();assert model['status']=='METHOD_ARTIFACT_ONLY'
+            # Historical numerical implementation stays identical when adding admission at HTTP boundary.
+>           assert model['code_fingerprint']=='a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49'
+E           AssertionError: assert 'b59a39a0840d...4bfa12afb99e6' == 'a4672de83a34...9e13d9287fa49'
+E             
+E             - a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49
+E             + b59a39a0840da1647e7cfcb045259a4d315f15aeb3e525fc9fe4bfa12afb99e6
+
+tests\application\test_transparent_models.py:36: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_transparent_models.py::test_method_artifacts_time_isolation_forecast_and_offline_replay
+1 failed, 4 deselected in 13.83s

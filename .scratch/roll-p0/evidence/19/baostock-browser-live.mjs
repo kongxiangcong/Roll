@@ -1,0 +1,51 @@
+// Actual archived UI only: no new provider request, model fit, or sealed read.
+import {readFileSync,writeFileSync} from 'node:fs';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+import {resolve,dirname} from 'node:path';
+import assert from 'node:assert/strict';
+const folder=dirname(fileURLToPath(import.meta.url));
+const root=resolve(folder,'../../../..');
+const {chromium}=await import(pathToFileURL(resolve(root,'frontend/node_modules/playwright-core/index.mjs')).href);
+const input=JSON.parse(readFileSync(resolve(folder,'baostock-real-acquisition.json'),'utf8'));
+const bao=input.runs.find(r=>r.source==='BAOSTOCK');
+assert(bao?.protocol_id&&bao?.raw_daily_count>0);
+const report={started_at:new Date().toISOString(),profile:'ACTUAL_ARCHIVE_UI',page_errors:[],writes:[]};
+const browser=await chromium.launch({channel:'chrome',headless:true});
+try{
+  const page=await browser.newPage({viewport:{width:1280,height:900}});
+  page.on('pageerror',e=>report.page_errors.push(e.message));
+  page.on('request',r=>{if(r.method()==='POST')report.writes.push(new URL(r.url()).pathname);});
+  await page.goto('http://127.0.0.1:5173/');
+  await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+  await page.getByRole('button',{name:'市场事实',exact:true}).click();
+  await page.getByLabel('日线来源').selectOption('BAOSTOCK');
+  await page.getByLabel('BaoStock 访问方式').selectOption('PUBLIC');
+  await page.getByLabel('选择归档运行',{exact:true}).selectOption(bao.run_id);
+  await page.getByRole('button',{name:'只读归档回放',exact:true}).click();
+  await page.getByText('同版本归档回放完成，网络调用 0 次',{exact:true}).waitFor();
+  report.archived_run_replay_zero_network=true;
+  report.explicit_public_selector=await page.getByLabel('BaoStock 访问方式').inputValue()==='PUBLIC';
+  await page.getByRole('button',{name:'历史记录',exact:true}).click();
+  await page.getByRole('button',{name:'研究登记',exact:true}).click();
+  const research=page.getByRole('region',{name:'研究登记',exact:true});
+  await research.getByText(`${bao.raw_daily_count} 个交易日`,{exact:false}).first().waitFor();
+  await research.getByRole('button',{name:`查看协议 ${bao.protocol_id.slice(0,8)}`,exact:true}).click();
+  const models=page.getByRole('region',{name:'透明模型与研究预测',exact:true});
+  await models.getByRole('heading',{name:'FAILED · RESEARCH',exact:true}).waitFor();
+  assert((await models.innerText()).includes('HISTORICAL_POINT_IN_TIME_NOT_PROVEN'));
+  assert((await models.innerText()).includes('RESEARCH_WINDOWS_NOT_PREREGISTERED'));
+  assert((await research.innerText()).includes('NOT_GRANTED'));
+  assert.equal(await page.getByRole('heading',{name:'METHOD ForecastBundle',exact:true}).count(),0);
+  await research.screenshot({path:resolve(folder,'baostock-actual-research.png')});
+  report.actual_coverage_visible=true;
+  report.failed_preflight_visible=true;
+  report.formal_capability_not_granted=true;
+  assert.equal(report.page_errors.length,0);
+  assert.deepEqual(report.writes,[`/api/data/runs/${bao.run_id}/replay`]);
+  report.finished_at=new Date().toISOString();
+  report.status='PASSED';
+}finally{
+  await browser.close();
+  writeFileSync(resolve(folder,'baostock-browser-results.json'),JSON.stringify(report,null,2)+'\n');
+}
+console.log(JSON.stringify(report));

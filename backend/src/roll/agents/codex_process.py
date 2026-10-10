@@ -20,6 +20,7 @@ import stat
 from uuid import uuid4
 
 import httpx
+from fastapi import HTTPException
 import pyarrow as pa
 import pyarrow.parquet as pq
 from io import BytesIO
@@ -195,7 +196,7 @@ def execute(host, run, request, cancel, auth):
         for name in ['home', 'cwd', 'user']:
             (root/name).mkdir()
         # Never copy user config, skills, state, credentials for API billing, or repository files.
-        personal_auth=json.loads(auth.read_text(encoding='utf-8'))
+        personal_auth=auth
         task_auth={'auth_mode':'chatgpt','tokens':{k:v for k,v in personal_auth['tokens'].items()
             if k in {'access_token','id_token','refresh_token','account_id'}},
             'last_refresh':personal_auth.get('last_refresh')}
@@ -288,7 +289,7 @@ def execute(host, run, request, cancel, auth):
                     run['token_usage'] = event['value']
                 elif kind == 'operation':
                     run.setdefault('runtime_operations',[]).append(event)
-                    if len(run['runtime_operations'])>run['limits']['tool_calls']:
+                    if len(run['runtime_operations'])>run['limits']['runtime_operations']:
                         run.update(status='TOOL_LIMIT',error={'code':'RUNTIME_OPERATION_BUDGET_EXHAUSTED'});break
                 elif kind == 'runtime_error':
                     run.setdefault('runtime_errors', []).append(event)
@@ -310,6 +311,7 @@ def execute(host, run, request, cancel, auth):
             run['acquisition_usage'] = {'http_calls':state['http_calls'],'received_bytes':state['bytes'],
                 'archived_bytes':sum(a['bytes'] for a in run['archives']),
                 'model_tool_result_bytes':state['returned_bytes']}
+            run['call_usage']=call_usage(run,state)
             (root/'home'/'auth.json').unlink(missing_ok=True)
             for attempt in range(10):
                 try:
@@ -331,23 +333,36 @@ def tool(host, run, request, state, event, deadline, cancel):
             raise ValueError('TASK_STOPPED')
         if len(run['tools']) > run['limits']['tool_calls']:
             raise ValueError('TOOL_BUDGET_EXHAUSTED')
+        if call_usage(run,state)['total']>run['limits']['total_calls']:
+            raise ValueError('TOTAL_CALL_BUDGET_EXHAUSTED')
         arguments = event['arguments']
         if not isinstance(arguments, dict) or arguments.get('instrument') not in request['instruments']:
             raise ValueError('OBJECT_OUTSIDE_REQUEST')
         instrument = arguments['instrument']
         record['arguments']={k:v for k,v in arguments.items() if k in {'instrument','group','source_id'}}
         host.evidence.market.check_scope(ScopeCommand(instruments=[instrument], purpose=request['purpose']))
+        reused=reuse_source(host,run,request,state,event,record)
+        if reused is not None:
+            size=len(encode(reused).encode())
+            if size>run['limits']['response_bytes'] or state['returned_bytes']+size>run['limits']['total_bytes']:
+                raise ValueError('TOOL_RESPONSE_BYTE_LIMIT')
+            state['returned_bytes']+=size
+            if host.input_observer and event['name']=='roll_read_evidence':
+                host.input_observer(reused,'deepseek-tool-input' if run.get('backend')=='DEEPSEEK' else 'codex-tool-input')
+            return reused
         if state['bytes']>=run['limits']['total_bytes']:
             raise ValueError('HTTP_BYTE_BUDGET_EXHAUSTED')
         if event['name'] == 'roll_read_evidence':
             if set(arguments) != {'instrument', 'group'} or arguments['group'] not in request['groups']:
                 raise ValueError('GROUP_OUTSIDE_REQUEST')
-            remaining = run['limits']['http_calls']-state['http_calls']
+            remaining = min(run['limits']['http_calls']-state['http_calls'],run['limits']['total_calls']-call_usage(run,state)['total'])
             if remaining < 1:
                 raise ValueError('HTTP_BUDGET_EXHAUSTED')
             values = {k: request[k] for k in ['start_date', 'end_date', 'purpose', 'cutoff', 'daily_source']}
             if 'quote_source' in request:
                 values['quote_source']=request['quote_source']
+            if 'adjustment_source' in request:
+                values['adjustment_source']=request['adjustment_source']
             values['required_fields']=[field for field in request['required_fields']
                 if '.' not in field or field.startswith(arguments['group']+'.')]
             values.update(instruments=[instrument], groups=[arguments['group']], max_calls=remaining,
@@ -373,7 +388,7 @@ def tool(host, run, request, state, event, deadline, cancel):
             source = SOURCES.get(arguments['source_id'])
             if not source or source['instrument'] != instrument:
                 raise ValueError('SOURCE_NOT_REGISTERED')
-            if state['http_calls'] >= run['limits']['http_calls']:
+            if state['http_calls'] >= run['limits']['http_calls'] or call_usage(run,state)['total']>=run['limits']['total_calls']:
                 raise ValueError('HTTP_BUDGET_EXHAUSTED')
             domain = httpx.URL(source['url']).host
             if host.evidence.transport is None and any(not ipaddress.ip_address(ip[4][0]).is_global for ip in socket.getaddrinfo(domain, 443)):
@@ -420,11 +435,62 @@ def tool(host, run, request, state, event, deadline, cancel):
             host.input_observer(result,'deepseek-tool-input' if run.get('backend')=='DEEPSEEK' else 'codex-tool-input')
         return result
     except Exception as error:
-        code = str(error) if isinstance(error, ValueError) else type(error).__name__
+        code = str(error) if isinstance(error, ValueError) else error.detail.get('code','ARCHIVE_CHECK_FAILED') if isinstance(error,HTTPException) and isinstance(error.detail,dict) else type(error).__name__
         record.update(status='FAILED' if event['name'] in {'roll_read_evidence', 'roll_read_source'} else 'DENIED', error=code)
         arguments=event.get('arguments') if isinstance(event.get('arguments'),dict) else {}
         run['gaps'].append({'instrument':arguments.get('instrument',''),'group':'TASK','code':code})
         return {'error': code, 'retry': False}
+
+
+def reuse_source(host,run,request,state,event,record):
+    """Retry the same question with original host evidence, never previous model output."""
+    if not run.get('retry_of') or event['name'] not in {'roll_read_evidence','roll_read_source'}:return None
+    prior=host.evidence.get('retrieval_runs',run['retry_of'])
+    if prior.get('source_dependency_fingerprint')!=run['source_dependency_fingerprint']:
+        record['reuse_rejected']='SOURCE_DEPENDENCIES_CHANGED_RECHECK_REQUIRED'
+        return None
+    arguments=event['arguments']
+    expected={'instrument','group'} if event['name']=='roll_read_evidence' else {'instrument','source_id'}
+    if set(arguments)!=expected:return None
+    if 'group' in arguments and arguments['group'] not in request['groups']:return None
+    basis=next((t for t in prior['tools'] if t['source_id']==event['name']
+        and t.get('arguments')==arguments and t['status'] in {'ARCHIVED','REUSED_ARCHIVE'}),None)
+    if not basis:return None
+    if event['name']=='roll_read_evidence':
+        snapshot=host.evidence.get('market_evidence_snapshots',basis['snapshot_id'])
+        host.evidence.replay(snapshot['run_id'])
+        archives=snapshot['archives']
+    else:
+        source=SOURCES.get(arguments['source_id'])
+        if not source or source['instrument']!=arguments['instrument']:return None
+        archive=next((a for a in prior['archives'] if a['sha256']==basis['raw_hash'] and a.get('source_url')==source['url']
+            and a.get('instrument')==arguments['instrument'] and a.get('http_status')==200),None)
+        if not archive:return None
+        archives=[archive]
+    hashes={a['sha256'] for a in archives}
+    if not host.archive_reuse_check(hashes):
+        record['reuse_rejected']='SOURCE_REVISED_RECHECK_REQUIRED'
+        return None
+    for archive in archives:host.evidence.raw(archive['sha256'])
+    if any(a['bytes']>run['limits']['response_bytes'] for a in archives):
+        raise ValueError('REUSED_SOURCE_EXCEEDS_CURRENT_BYTE_LIMIT')
+    run['archives'].extend(a for a in archives if a not in run['archives'])
+    record.update(status='REUSED_ARCHIVE',reused_from_run_id=prior['run_id'],original_source_run_id=basis.get('original_source_run_id',prior['run_id']),
+        age_basis='ORIGINAL_SOURCE_TIMES_NO_REFRESH')
+    if event['name']=='roll_read_evidence':
+        state['snapshots'].append(snapshot);state['facts'].extend(snapshot['facts']);run['gaps'].extend(snapshot['gaps'])
+        record.update(snapshot_id=snapshot['snapshot_id'],child_run_id=snapshot['run_id'])
+        return {'facts':snapshot['facts'][:20],'gaps':snapshot['gaps'],'archives':archives,'omitted_facts':max(0,len(snapshot['facts'])-20)}
+    body=source_text(host.evidence.raw(archive['sha256']).read_bytes())
+    state['source_texts'][archive['sha256']]=body
+    record.update(raw_hash=archive['sha256'],url=archive['source_url'])
+    return {'archive':archive,'text':body[:12000],'event_time':'UNKNOWN','truncated_text':len(body)>12000}
+
+
+def call_usage(run,state):
+    counts={'model_requests':len(run.get('model_requests',[])), 'runtime_operations':len(run.get('runtime_operations',[])),
+        'host_tool_calls':len(run['tools']),'http_calls':state['http_calls']}
+    return {**counts,'total':sum(counts.values()),'scope':'PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN'}
 
 
 def publish(host, run, request, state, output):

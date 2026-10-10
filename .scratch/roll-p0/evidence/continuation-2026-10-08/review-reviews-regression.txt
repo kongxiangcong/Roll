@@ -1,0 +1,36 @@
+..F......................                                                [100%]
+================================== FAILURES ===================================
+_ test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-374/test_persistent_worker_retries0')
+
+    def test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts(tmp_path):
+        def unavailable(request):raise httpx.ConnectTimeout('controlled source timeout')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(unavailable))) as client:
+            establish(client,['SSE:600519'])
+            response=client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True})
+            assert response.status_code==202,response.text
+            identifier=response.json()['task_id']
+            health=client.get('/api/reviews/health').json()
+            assert health['worker_limit']==1
+            assert health['technical_limits']['attempts']==3
+            for _ in range(200):
+                task=client.get('/api/reviews/tasks/'+identifier).json()
+                if task['status']=='RETRY_WAIT':break
+                time.sleep(.01)
+            assert task['status']=='RETRY_WAIT',task
+            assert task['attempts']==1 and task['retry_at']>task['last_attempt_at']
+            assert task['result'] is None
+            task=wait_result(client,identifier)
+            assert task['status']=='PARTIAL' and task['attempts']==3
+            assert task['result']['forecast'] is None and task['result']['gaps']
+            assert task['timing']['network_seconds']>=0
+            assert task['timing']['local_seconds']>=0
+>           assert len(task['retrieval_runs'])==3
+E           AssertionError: assert 6 == 3
+E            +  where 6 = len(['c63851f2-aefa-4e0c-99ff-2282de1f2336', '290c81ce-68ed-47f4-a771-0d9a0feffb83', 'b76912e2-2266-4d23-a783-6e4658a03e0c', '5c672e13-a890-4f09-a79b-f7c3177ee49c', 'ce9d8fd2-fa17-4a3e-9898-3591666ac2f4', '9d317ae4-93c4-475f-8556-95d41d2e8a86'])
+
+tests\application\test_reviews.py:98: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reviews.py::test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts
+1 failed, 24 passed in 109.73s (0:01:49)

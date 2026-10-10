@@ -4,6 +4,8 @@ import {writeFileSync} from 'node:fs';
 test('DeepSeek missing credential record and linked retry survive reload',async({page})=>{
   test.skip(process.env.ROLL_BROWSER_DEEPSEEK_METHOD==='1','separate real SDK fixed-provider path');
   await establish(page);
+  const selection=await (await page.request.get('/api/agents/settings')).json();
+  await page.request.post('/api/agents/settings',{data:{expected_version:selection.version,backend:'DEEPSEEK'}});
   await page.getByLabel('取证方式').selectOption('DEEPSEEK');
   await page.getByLabel('需要补充核对的问题').fill('核对报价来源');
   await page.getByRole('button',{name:'启动 DeepSeek 取证',exact:true}).click();

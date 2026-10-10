@@ -182,6 +182,20 @@ def test_sdk_invalid_structured_output_preserves_raw_without_fact(tmp_path,monke
         assert 'not-an-array' in client.get('/api/data/archives/'+result['model_responses'][0]['sha256']).text
 
 
+def test_incomplete_provider_output_cannot_publish_even_if_prefix_is_valid_json(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    monkeypatch.setenv('DEEPSEEK_API_KEY', 'ROLL_METHOD_CASE_ONLY')
+    payload = response([message('{"candidates":[],"gaps":[]}')])
+    payload.update(status='incomplete', incomplete_details={'reason': 'max_output_tokens'})
+    with model_server(lambda body, n: (200, payload)) as (endpoint, bodies), TestClient(create_app(tmp_path, deepseek_endpoint=endpoint)) as client:
+        parent = request(client)
+        result = terminal(client, client.post(f'/api/data/requests/{parent}/deepseek', json={'question': '核对来源'}).json()['run_id'])
+        assert result['status'] == 'INVALID_OUTPUT'
+        assert result['error']['code'] == 'DEEPSEEK_OUTPUT_TOKEN_LIMIT'
+        assert 'snapshot_id' not in result
+        assert client.get('/api/data/archives/' + result['model_responses'][0]['sha256']).status_code == 200
+
+
 def test_cancel_sdk_during_second_model_call_retains_partial_and_closes_job(tmp_path,monkeypatch):
     monkeypatch.setenv('ROLL_ENV','test');monkeypatch.setenv('DEEPSEEK_API_KEY','ROLL_METHOD_CASE_ONLY')
     waiting=threading.Event()

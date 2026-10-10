@@ -1,0 +1,42 @@
+import {expect,test} from '@playwright/test';
+import {mkdirSync,writeFileSync} from 'node:fs';
+
+test.skip(process.env.ROLL_FUYAO_LIVE!=='1','Opt-in actual Fuyao API; no credentials in browser');
+test('user requests Fuyao facts and sees unknown security time with archive replay',async({page})=>{
+  test.setTimeout(90000);
+  const before=await (await page.request.get('/api/account')).json();
+  const listing=await (await page.request.get('/api/market/list')).json();
+  if(!listing.members.some((m:{instrument:string})=>m.instrument==='SSE:600519'))
+    expect((await page.request.post('/api/market/watch',{data:{operation:'ADD',instrument:'SSE:600519',expected_list_version:listing.version}})).ok()).toBeTruthy();
+  await page.goto('/');
+  await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+  await page.getByRole('button',{name:'市场事实',exact:true}).click();
+  await page.getByLabel('日线来源').selectOption('FUYAO');
+  await page.getByLabel('报价来源').selectOption('FUYAO');
+  await page.getByLabel('除权事项来源').selectOption('FUYAO');
+  for(const label of ['公告原文','业绩','重大事项'])await page.getByRole('group',{name:'事实组'}).getByLabel(label,{exact:true}).uncheck();
+  await page.getByLabel('开始日期（上海交易/披露日期）').fill('2026-01-01');
+  await page.getByLabel('截止日期',{exact:true}).fill('2026-09-30');
+  await page.getByRole('button',{name:'取得并归档事实',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'归档事实与客观观察'})).toBeVisible({timeout:65000});
+  await expect(page.getByText(/QUOTE_PER_INSTRUMENT_TIME_UNKNOWN/).first()).toBeVisible();
+  const run=(await (await page.request.get('/api/data/runs')).json())[0];
+  const snapshot=await (await page.request.get('/api/data/snapshots/'+run.snapshot_id)).json();
+  expect(run.evidence_kind).toBe('REAL_ACQUISITION');
+  expect(run.status).toBe('PARTIAL');
+  expect(run.tools.every((t:{source_id:string})=>t.source_id.startsWith('fuyao-'))).toBeTruthy();
+  const quote=snapshot.facts.find((f:{group:string})=>f.group==='QUOTE');
+  expect(quote.upstream_at).toBeNull();expect(quote.trade_date).toBeNull();expect(quote.age_seconds).toBeNull();
+  await page.getByText(/^日线与复权：/).click();
+  await expect(page.getByText(/成交量 .* \(SHARE\)/).first()).toBeVisible();
+  await page.getByText(/^日线与复权：/).click();
+  await expect(page.getByText(/供应商原始除权事项已归档/)).toBeVisible();
+  await page.getByText(/^可得报价：/).click();
+  await expect(page.getByText(/可得报价 .*上游 未证实/)).toBeVisible();
+  await page.getByRole('button',{name:'只读归档回放',exact:true}).click();
+  await expect(page.getByRole('status').filter({hasText:'网络调用 0 次'})).toBeVisible();
+  expect(await (await page.request.get('/api/account')).json()).toEqual(before);
+  mkdirSync('test-results',{recursive:true});
+  writeFileSync('test-results/fuyao-browser.json',JSON.stringify({run,snapshot_id:snapshot.snapshot_id,quote_upstream_at:quote.upstream_at,account_unchanged:true},null,2));
+  await page.screenshot({path:'test-results/fuyao-live.png',fullPage:true});
+});

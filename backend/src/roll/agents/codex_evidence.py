@@ -3,6 +3,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from typing import Callable
 import threading
 import time
 from uuid import uuid4
@@ -11,12 +12,11 @@ from fastapi import HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
 from roll.accounts.ledger import encode, now
+from roll.agents.settings import AgentQuestion, check_retry, insert_run, HOST_LIMITS
 
 SDK_VERSION = '0.161.0'
 MODEL = 'gpt-6.1-sol'
-LIMITS = {'timeout_seconds': 120, 'tool_calls': 8, 'http_calls': 6,
-          'response_bytes': 65536, 'total_bytes': 262144, 'concurrency': 1,
-          'subtasks': 0, 'retries': 0}
+LIMITS = {**HOST_LIMITS,'runtime_operations':8,'total_calls':22}
 TOOLS = ['roll_read_evidence', 'roll_read_source', 'clock__curr_time']
 CONFIG = '''approval_policy = "never"
 approvals_reviewer = "user"
@@ -68,18 +68,17 @@ log_user_prompt = false
 '''
 
 
-class CodexQuestion(BaseModel):
-    model_config = ConfigDict(extra='forbid')
-    question: str = Field(min_length=1, max_length=2000)
+CodexQuestion=AgentQuestion
 
 
 class CodexEvidence:
-    def __init__(self, evidence, worker=None, input_observer=None):
+    def __init__(self, evidence, worker=None, input_observer=None, *, archive_reuse_check:Callable[[set[str]],bool]):
         if worker is not None and os.environ.get('ROLL_ENV') != 'test':
             raise ValueError('External worker injection requires ROLL_ENV=test')
         self.worker = worker
         self.evidence = evidence
         self.input_observer = input_observer
+        self.archive_reuse_check = archive_reuse_check
         self.active = {}
         self.lock = threading.Lock()
         from roll.agents.codex_process import recover_directory
@@ -100,8 +99,9 @@ class CodexEvidence:
             db.execute('UPDATE retrieval_runs SET value=? WHERE id=?', (encode(run), run['run_id']))
             db.commit()
 
-    def start(self, request_id, command):
+    def start(self, request_id, command, selection=None):
         request = self.evidence.get('data_requests', request_id)
+        check_retry(self.evidence,request_id,command)
         with self.lock:
             if self.active:
                 raise HTTPException(409, {'code': 'CODEX_CONCURRENCY_LIMIT'})
@@ -123,7 +123,7 @@ class CodexEvidence:
                 'sdk_runtime_version': {'openai-codex': SDK_VERSION, 'openai-codex-cli-bin': SDK_VERSION},
                 'allowed_tools': TOOLS, 'allowed_operations': ['V8_PURE_COMPUTATION', 'FUNCTIONS_EXEC', 'FUNCTIONS_WAIT'],
                 'host_code_hashes': code_hashes, 'limits': limits, 'status': 'RUNNING',
-                'question': command.question, 'started_at': now(), 'finished_at': None,
+                'question': command.question, 'retry_of':command.retry_of, 'started_at': now(), 'finished_at': None,
                 'tools': [], 'archives': [], 'gaps': [], 'candidates': [],
                 'evidence_kind': 'METHOD_CASE_CODEX' if self.worker else
                     'REAL_CODEX_METHOD_CASE_SOURCE' if self.evidence.transport is not None else 'REAL_CODEX_TASK',
@@ -132,30 +132,32 @@ class CodexEvidence:
             run['host_owner']={'pid':os.getpid(),'creation_ticks':process_creation(os.getpid())}
             with self.evidence.ledger.connection() as db:
                 db.execute('BEGIN IMMEDIATE')
-                for row in db.execute('SELECT value FROM retrieval_runs').fetchall():
-                    prior=json.loads(row[0])
-                    if prior.get('backend')=='CODEX' and prior.get('status')=='RUNNING' and owner_alive(prior):
-                        raise HTTPException(409,{'code':'CODEX_CONCURRENCY_LIMIT'})
-                db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)', (run['run_id'], request_id, encode(run)))
+                insert_run(self.evidence,db,run,selection)
                 db.commit()
             cancel = threading.Event()
             self.active[run['run_id']] = cancel
-        threading.Thread(target=self.execute, args=(run, request, cancel), daemon=True).start()
+        # Capture only the explicit credential's necessary fields in private memory.
+        # Neither credentials nor their hashes are part of the public task record.
+        credential=None;credential_error=None
+        try:
+            configured=os.environ.get('ROLL_CODEX_AUTH_FILE')
+            if not configured or not Path(configured).is_file():credential_error='CODEX_AUTH_NOT_CONFIGURED'
+            else:
+                content=json.loads(Path(configured).read_text(encoding='utf-8'))
+                if content.get('auth_mode')!='chatgpt' or not content.get('tokens'):credential_error='CHATGPT_AUTH_REQUIRED'
+                else:credential={'auth_mode':'chatgpt','tokens':{k:v for k,v in content['tokens'].items()
+                    if k in {'access_token','id_token','refresh_token','account_id'}},'last_refresh':content.get('last_refresh')}
+        except Exception:credential_error='CODEX_AUTH_INVALID'
+        threading.Thread(target=self.execute, args=(run, request, cancel,credential,credential_error), daemon=True).start()
         return json.loads(encode(run))
 
-    def execute(self, run, request, cancel):
+    def execute(self, run, request, cancel,credential,credential_error):
         try:
-            auth = os.environ.get('ROLL_CODEX_AUTH_FILE')
-            if not auth or not Path(auth).is_file():
-                run.update(status='UNAVAILABLE', error={'code': 'CODEX_AUTH_NOT_CONFIGURED',
-                    'message': '配置独立 ChatGPT 认证文件 ROLL_CODEX_AUTH_FILE；不接受 API key 或 API 计费。'})
-                return
-            content = json.loads(Path(auth).read_text(encoding='utf-8'))
-            if content.get('auth_mode') != 'chatgpt' or not content.get('tokens'):
-                run.update(status='UNAVAILABLE', error={'code': 'CHATGPT_AUTH_REQUIRED'})
+            if credential_error:
+                run.update(status='UNAVAILABLE',error={'code':credential_error})
                 return
             from roll.agents.codex_process import execute
-            execute(self, run, request, cancel, Path(auth))
+            execute(self, run, request, cancel, credential)
         except Exception as error:
             run.update(status='FAILED', error={'code': 'CODEX_HOST_ERROR', 'type': type(error).__name__})
             if getattr(error, 'filename', None):

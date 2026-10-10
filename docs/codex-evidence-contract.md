@@ -45,7 +45,7 @@ POST /api/data/runs/{id}/replay                      -> 固定事实回放、网
 | 控制 | 固定上限 |
 |---|---|
 | 端到端任务时限 | 120秒（管理员仅能缩小）；HTTP不超过剩余时限及8秒 |
-| 并发 | 同一 SQLite 数据目录1个 Codex 任务；不同活跃宿主也受门禁 |
+| 并发 | 同一 SQLite 数据目录两个后端合计1个取证任务；不同活跃宿主也受门禁 |
 | 宿主工具委托 / Runtime 外层操作 | 各8次；超过停止，不无限重试 |
 | 实际 HTTP 获取 | 6次与 DataRequest.max_calls 中较小值 |
 | 单响应 / 总接收字节 | 64KiB / 256KiB；4096字节解码块，最多一个块边界超限仍记账 |
@@ -67,3 +67,5 @@ Codex 最终 schema 仅允许 candidates/gaps。宿主核查对象/事实组、�
 宿主核验的07 facts/coverage 保留原单位、必需字段、完成度及知识时点规则；模型候选另标 `MODEL_EVIDENCE_CANDIDATE`、`quote_verified=true`、`assertion_verified=false`、`event_time=null`、`cutoff_eligible=false`。实际获取时点不证明事项时间、断言真值或过去可得性。当前旧报价仍陈旧，官方主页主营资料不成为历史事项的PIT证据；候选产生明确未核实缺口并保持 PARTIAL。
 
 真实SQLite按单事务发布运行终态和快照，原件按内容哈希落盘、Parquet归档经API下载核验。回放只读固定归档并验证其 facts 与SQLite一致，网络0次；它补充确定性验证，不能替代真实多轮SDK任务、实际取消和权限检查。审计不含认证值或私人账户上下文，不启用自动云 trace。
+
+13已实现保存后端、统一并发与跨后端关联重试，具体版本、同问题校验和归档依赖边界见[取证后端契约](backend-switch-contract.md)。

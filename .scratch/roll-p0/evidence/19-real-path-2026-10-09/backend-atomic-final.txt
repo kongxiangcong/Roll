@@ -1,0 +1,33 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.6.0 -- D:\dsh-proj\Roll\backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\72449\.codex\worktrees\ticket19-real-path\Roll\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 23 items
+
+tests/application/test_training_preflight.py::test_preflight_preserves_two_old_failures_and_shares_family_budget_without_writes PASSED [  4%]
+tests/application/test_training_preflight.py::test_blocked_host_acquisition_preflight_reads_metadata_without_sources_labels_or_fits PASSED [  8%]
+tests/application/test_training_preflight.py::test_preflight_counts_neighbors_abort_and_interruption_at_shared_budget_boundary PASSED [ 13%]
+tests/application/test_training_preflight.py::test_preflight_reads_legacy_ownerless_attempt_without_rewriting_it PASSED [ 17%]
+tests/application/test_training_preflight.py::test_research_model_admission_preserves_budget_and_old_failures_without_reading_inputs PASSED [ 21%]
+tests/application/test_training_preflight.py::test_exhausted_calibration_prevents_starting_another_method_primary_fit PASSED [ 26%]
+tests/application/test_training_preflight.py::test_competing_calibration_after_admission_cannot_spend_transparent_primary_budget PASSED [ 30%]
+tests/application/test_training_preflight.py::test_generic_manual_primary_keeps_its_original_budget_policy_without_transparent_purpose PASSED [ 34%]
+tests/application/test_transparent_models.py::test_method_artifacts_time_isolation_forecast_and_offline_replay PASSED [ 39%]
+tests/application/test_transparent_models.py::test_unsupported_fit_is_a_persisted_failed_attempt_without_probability PASSED [ 43%]
+tests/application/test_transparent_models.py::test_failed_attempts_consume_fixed_fit_budget_and_never_accept_llm_probability PASSED [ 47%]
+tests/application/test_transparent_models.py::test_model_purpose_cannot_turn_public_source_into_method_case_or_method_case_into_research PASSED [ 52%]
+tests/application/test_transparent_models.py::test_missing_feature_day_and_unavailable_input_do_not_generate_forecast PASSED [ 56%]
+tests/application/test_research_protocol.py::test_actual_archive_import_registers_coverage_and_only_exposes_allowed_training_and_calibration_slices PASSED [ 60%]
+tests/application/test_research_protocol.py::test_protocol_registration_is_durable_draft_with_explicit_freeze_gaps_and_no_forward_start PASSED [ 65%]
+tests/application/test_research_protocol.py::test_metadata_grounded_design_registers_one_candidate_dependencies_costs_support_and_single_final_point PASSED [ 69%]
+tests/application/test_research_protocol.py::test_all_attempts_include_failure_abort_restart_and_omitted_manifest_refuses_freeze PASSED [ 73%]
+tests/application/test_research_protocol.py::test_sealed_input_download_and_reuse_are_audited_without_creating_a_pass_look PASSED [ 78%]
+tests/application/test_research_protocol.py::test_optional_stopping_and_result_access_cannot_manufacture_pass_or_forward_start PASSED [ 82%]
+tests/application/test_research_protocol.py::test_attempt_budget_and_concurrent_completion_preserve_exactly_one_terminal_record PASSED [ 86%]
+tests/application/test_research_protocol.py::test_corrupt_original_is_refused_without_registering_research_data PASSED [ 91%]
+tests/application/test_research_protocol.py::test_existing_market_query_and_offline_replay_audit_sealed_inputs_without_a_result_look PASSED [ 95%]
+tests/application/test_research_protocol.py::test_codex_actual_tool_input_delivery_is_audited_before_worker_receives_facts PASSED [100%]
+
+======================= 23 passed in 134.52s (0:02:14) ========================

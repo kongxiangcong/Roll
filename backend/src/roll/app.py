@@ -13,25 +13,28 @@ from roll.accounts.cash_events import EVENT_FIELDS
 from roll.accounts.reconcile import UseCheck,use_check,consistency
 from roll.accounts.valuation import Valuations,ValuationRequest
 from roll.accounts.corrections import active_events,fact_command
-from roll.config import data_directory
+from roll.config import data_directory, load_runtime_environment
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
+from roll.agents.settings import AgentSettings, BackendSelection, AgentQuestion
 from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.market.verification import IndependentVerifications, VerificationCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
+from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
+from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None):
     @asynccontextmanager
     async def lifespan(application):
         application.state.reviews.start()
@@ -49,6 +52,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
     imports = CsvImports(ledger)
+
+    @app.post('/api/research/cash-rights/assess')
+    def research_cash_rights(command: CashRightsCommand):
+        return assess_cash_rights(command)
 
     @app.get("/api/account/csv/template")
     def csv_template(version: str = VERSION):
@@ -83,7 +90,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return Response(imports.file(fingerprint), media_type="application/octet-stream")
     market = MarketDirectory(ledger)
     app.state.market = market
-    evidence=EvidenceStore(ledger,market,market_transport)
+    evidence=EvidenceStore(ledger,market,market_transport,baostock_worker)
     app.state.evidence=evidence
     research=ExperimentRegistry(ledger,evidence)
     app.state.research=research
@@ -94,11 +101,16 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/protocols/{protocol_id}/models',status_code=201)
     def research_model_create(protocol_id:str,command:ModelCommand):
+        admit_model_training(research,protocol_id,command.purpose)
         return models.create(protocol_id,command)
 
     @app.get('/api/research/protocols/{protocol_id}/models')
     def research_models(protocol_id:str):
         return models.list(protocol_id)
+
+    @app.get('/api/research/protocols/{protocol_id}/training-preflight')
+    def research_training_preflight(protocol_id:str,purpose:TrainingPurpose='RESEARCH'):
+        return training_preflight(research,protocol_id,purpose)
 
     @app.get('/api/research/models/{model_id}')
     def research_model_get(model_id:str):
@@ -336,10 +348,34 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/account/valuations/{identifier}/replay')
     def replay_valuation(identifier:str):
         return valuations.get(identifier,replay=True)
-    codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed)
+    resolutions=SourceResolutions(evidence,market_clock)
+    app.state.resolutions=resolutions
+    codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed,
+        archive_reuse_check=resolutions.can_reuse_archives)
     app.state.codex = codex
-    deepseek=DeepSeekEvidence(evidence,deepseek_endpoint,input_observer=research.market_input_exposed)
+    deepseek=DeepSeekEvidence(evidence,deepseek_endpoint,input_observer=research.market_input_exposed,
+        archive_reuse_check=resolutions.can_reuse_archives)
     app.state.deepseek=deepseek
+    agent_settings=AgentSettings(ledger)
+    app.state.agent_settings=agent_settings
+
+    @app.get('/api/agents/settings')
+    def backend_settings():
+        return agent_settings.get()
+
+    @app.get('/api/agents/settings/history')
+    def backend_settings_history():
+        return agent_settings.history()
+
+    @app.post('/api/agents/settings')
+    def select_backend(command:BackendSelection):
+        return agent_settings.select(command)
+
+    @app.post('/api/data/requests/{request_id}/agent',status_code=202)
+    def agent_start(request_id:str,command:AgentQuestion):
+        selection=agent_settings.get()
+        backend=codex if selection['backend']=='CODEX' else deepseek
+        return backend.start(request_id,command,selection)
 
     @app.post('/api/data/requests/{request_id}/deepseek',status_code=202)
     def deepseek_start(request_id:str,command:DeepSeekQuestion):
@@ -353,8 +389,6 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def codex_cancel(run_id: str):
         run=evidence.get('retrieval_runs',run_id)
         return deepseek.cancel(run_id) if run['backend']=='DEEPSEEK' else codex.cancel(run_id)
-    resolutions=SourceResolutions(evidence,market_clock)
-    app.state.resolutions=resolutions
     verifications=IndependentVerifications(evidence)
     app.state.verifications=verifications
 
@@ -669,13 +703,15 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None):
+    if directory is None:
+        load_runtime_environment()
     directory=directory or data_directory()
     backups,marker,previous=bootstrap(directory)
     if backup_clock:backups.clock=backup_clock
     try:
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
-        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker

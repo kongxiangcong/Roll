@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_empty_account_can_refresh_fixed_backgrounds_with_shared_budget_and_no_account_write _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-371/test_empty_account_can_refresh0')
+
+    def test_empty_account_can_refresh_fixed_backgrounds_with_shared_budget_and_no_account_write(tmp_path):
+        calls=[]
+        def background(request):
+            calls.append(str(request.url))
+            if 'param' in request.url.params:
+                symbol=request.url.params['param'].split(',')[0]
+                return httpx.Response(200,json={'code':0,'data':{symbol:{'day':[['2026-09-30','3800','3830','3840','3790','400000000']]}}})
+            symbol=request.url.path.split('q=',1)[1]
+            fields=['']*55
+            for index,value in {1:'METHOD background',2:symbol[2:],3:'3830',4:'3800',5:'3800',6:'400000000',
+                30:'20260930161458',33:'3840',34:'3790',35:'3830/400000000/1000000000'}.items():fields[index]=value
+            return httpx.Response(200,content=('v_'+symbol+'="'+'~'.join(fields)+'";').encode())
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(background))) as client:
+            before=client.get('/api/account').json()
+            task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True}).json()['task_id'])
+            assert task['retrieval_runs'],task
+            broad={'SSE:000001','SZSE:399001','SSE:000300','SSE:000905'}
+            assert {i['instrument'] for i in task['result']['instruments']}==broad
+>           assert all(i['last_complete_daily'] and i['last_complete_daily']['trade_date']=='2026-09-30' for i in task['result']['instruments'])
+E           assert False
+E            +  where False = all(<generator object test_empty_account_can_refresh_fixed_backgrounds_with_shared_budget_and_no_account_write.<locals>.<genexpr> at 0x0000021347A7B9F0>)
+
+tests\application\test_reviews.py:323: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reviews.py::test_empty_account_can_refresh_fixed_backgrounds_with_shared_budget_and_no_account_write
+1 failed, 15 deselected in 5.41s

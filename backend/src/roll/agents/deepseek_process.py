@@ -13,7 +13,7 @@ import time
 from uuid import uuid4
 
 from roll.accounts.ledger import encode, now
-from roll.agents.codex_process import Job,clean_environment,command,tool,publish
+from roll.agents.codex_process import Job,clean_environment,command,tool,publish,call_usage
 
 
 def execute(host,run,request,cancel,key):
@@ -80,7 +80,7 @@ def execute(host,run,request,cancel,key):
                 publish(host,run,request,state,event['output']);break
             elif kind in {'failure','eof'}:
                 code=event.get('code','DEEPSEEK_WORKER_EXIT')
-                status='UNAVAILABLE' if code in {'DEEPSEEK_AUTH_REJECTED','DEEPSEEK_MODEL_UNAVAILABLE','DEEPSEEK_QUOTA_OR_RATE_LIMIT'} else 'INVALID_OUTPUT' if code=='DEEPSEEK_OUTPUT_SCHEMA_INVALID' else 'TOOL_LIMIT' if code=='DEEPSEEK_MODEL_CALL_LIMIT' else 'FAILED'
+                status='UNAVAILABLE' if code in {'DEEPSEEK_AUTH_REJECTED','DEEPSEEK_MODEL_UNAVAILABLE','DEEPSEEK_QUOTA_OR_RATE_LIMIT'} else 'INVALID_OUTPUT' if code in {'DEEPSEEK_OUTPUT_SCHEMA_INVALID','DEEPSEEK_OUTPUT_TOKEN_LIMIT'} else 'TOOL_LIMIT' if code=='DEEPSEEK_MODEL_CALL_LIMIT' else 'FAILED'
                 run.update(status=status,error={'code':code,'type':event.get('error_type'),'http_status':event.get('http_status')})
                 break
             else:
@@ -98,6 +98,7 @@ def execute(host,run,request,cancel,key):
         run['elapsed_seconds']=round(time.monotonic()-started,3)
         run['acquisition_usage']={'http_calls':state['http_calls'],'received_bytes':state['bytes'],
             'archived_bytes':sum(a['bytes'] for a in run['archives']),'model_tool_result_bytes':state['returned_bytes']}
+        run['call_usage']=call_usage(run,state)
         # Only the exact directory created above, no credentials were written into it.
         for attempt in range(10):
             try:

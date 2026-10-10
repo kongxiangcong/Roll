@@ -146,13 +146,16 @@ def test_failed_primary_gets_bounded_alternate_and_preserves_same_daily_fact_for
         assert any(c['decision']=='ACCEPTED' for c in result['source_checks'])
 
 
-def test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage(tmp_path):
+def test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_session_usage(tmp_path, method_market_timeline):
+    clock = method_market_timeline('2026-10-08T08:30:00+08:00')
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=quote_bytes())),
-        market_clock=lambda:'2026-10-08T08:30:00+08:00')) as client:
+        market_clock=lambda:clock().isoformat())) as client:
         request=setup_request(client,quote_source='SINA',required_fields=['QUOTE.last'])
         first=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
             json={'usage':'PRE_MARKET_RECORD'}).json()['resolution_id'])
         assert first['state']=='HEALTHY' and first['facts'][0]['point_in_time_input_allowed'] is False
+        assert datetime.fromisoformat(client.get('/api/account').json()['confirmed_at']) < datetime.fromisoformat(request['created_at'])
+        assert datetime.fromisoformat(request['created_at']) < datetime.fromisoformat(first['facts'][0]['received_at']) < datetime.fromisoformat(first['knowledge_cutoff'])
         cached=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
             json={'usage':'PRE_MARKET_RECORD'}).json()['resolution_id'])
         assert cached['network_calls']==0 and cached['cache']['reused_resolution_id']==first['resolution_id']
@@ -166,15 +169,17 @@ def test_cache_preserves_real_receipt_and_rechecks_own_knowledge_cutoff_and_sess
         assert any(g['code']=='NOT_AVAILABLE_AT_CONSUMER_CUTOFF' for g in past['gaps'])
 
 
-def test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record(tmp_path):
+def test_old_quote_blocks_current_monitoring_but_optional_status_gap_only_degrades_record(tmp_path, method_market_timeline):
+    clock = method_market_timeline('2026-10-08T10:00:00+08:00')
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=quote_bytes())),
-        market_clock=lambda:'2026-10-08T10:00:00+08:00')) as client:
+        market_clock=lambda:clock().isoformat())) as client:
         request=setup_request(client,quote_source='SINA',groups=['QUOTE','STATUS'])
         monitored=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
             json={'usage':'CURRENT_MONITORING','allow_fallback':False}).json()['resolution_id'])
         assert monitored['state']=='MONITORING_UNAVAILABLE'
         assert any(g['code']=='STALE_FOR_CURRENT_SESSION' for g in monitored['gaps'])
         assert monitored['capabilities']['observation']=='DEGRADED' and monitored['facts']
+        assert all(datetime.fromisoformat(request['created_at']) < datetime.fromisoformat(f['available_at']) < datetime.fromisoformat(monitored['knowledge_cutoff']) for f in monitored['facts'])
         historical=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',
             json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False}).json()['resolution_id'])
         assert historical['state']=='DEGRADED'

@@ -1,0 +1,54 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_competing_calibration_after_admission_cannot_spend_transparent_primary_budget _
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/worktrees/ticket19-real-path/Roll/backend/.pytest-ticket19-race-red/test_competing_calibration_aft0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017E71D809D0>
+
+    def test_competing_calibration_after_admission_cannot_spend_transparent_primary_budget(tmp_path, monkeypatch):
+        from concurrent.futures import ThreadPoolExecutor
+        from threading import Event, Lock
+        from test_execution_labels import method_archive, register
+        from roll.research import registry
+    
+        method_archive(tmp_path, unknown=True)
+        with TestClient(create_app(tmp_path)) as client:
+            _, registered = register(client)
+            pid = registered['protocol_id']
+            assert client.get('/api/research/protocols/' + pid + '/training-preflight').json()['budget']['calibration']['used'] == 0
+            reached = Event()
+            release = Event()
+            clock_lock = Lock()
+            held = False
+            actual_clock = registry.now
+    
+            def registration_clock():
+                # Clock is the system boundary: hold the first attempt timestamp after HTTP admission.
+                nonlocal held
+                with clock_lock:
+                    pause = not held
+                    held = True
+                if pause:
+                    reached.set()
+                    assert release.wait(20), 'Competing calibration did not release primary registration'
+                return actual_clock()
+    
+            monkeypatch.setattr(registry, 'now', registration_clock)
+            with ThreadPoolExecutor(1) as pool:
+                pending = pool.submit(client.post, '/api/research/protocols/' + pid + '/models', json={
+                    'purpose': 'METHOD_VALIDATION', 'basis': 'Concurrent prerequisite must be checked atomically'})
+                try:
+                    assert reached.wait(20), 'Primary registration clock was not reached'
+                    competitor = attempt(client, pid, category='CALIBRATION', status='ABORTED')
+                finally:
+                    release.set()
+                response = pending.result(timeout=20)
+>           assert response.status_code == 409, response.text
+E           AssertionError: {"model_run_id":"fb35c11c-7a4b-4f3f-9081-2559939b38e1","protocol_id":"f345770b-21e8-4ece-b488-badb098454fb","attempt_id":"729f8714-ed6f-4918-9906-9c543f802cba","registered_at":"2026-10-09T06:30:32.827122+00:00","purpose":"METHOD_VALIDATION","basis":"Concurrent prerequisite must be checked atomically","namespace":"HISTORICAL","capability":"NOT_GRANTED","protocol_fingerprint":"17618578227f98dc3887a25f90967d96a89ed796532541c8f0339530e32d1cff","data_fingerprint":"47b575db40fb9ada0ed9584bf2dea9bf31b212e2af32d635fabd9e8b4f166e4b","code_fingerprint":"a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49","status":"FAILED","reasons":["INSUFFICIENT_SCORABLE_SUPPORT","CALIBRATION_PER_CLASS_SUPPORT_BELOW_20","REGISTERED_CALIBRATION_WINDOW_CANNOT_SUPPORT_BOTH_CLASSES"],"support":{"DEVELOPMENT":{"protocol_id":"f345770b-21e8-4ece-b488-badb098454fb","record_count":0,"opportunity_count":0,"latest_assessment_counts":{},"eligible_for_training_count":0,"method_case_count":0,"reasons":{},"records":[],"independent_sample_count":null,"basis":"Latest assessment per frozen execution family; repeated dates/scenarios are not independent support. METHOD is not real training. No PIT/qualification grant."},"CALIBRATION":{"protocol_id":"f345770b-21e8-4ece-b488-badb098454fb","record_count":0,"opportunity_count":0,"latest_assessment_counts":{},"eligible_for_training_count":0,"method_case_count":0,"reasons":{},"records":[],"independent_sample_count":null,"basis":"Latest assessment per frozen execution family; repeated dates/scenarios are not independent support. METHOD is not real training. No PIT/qualification grant."}},"model_artifact":null,"calibrator_artifact":null,"forecast_probability":null,"complete_experiment_frozen":false,"validation_verdict":null,"forward_started_at":null,"evidence_kind":"METHOD_CASE","input_archive":{"sha256":"d07069802f73688447e50bbd50c2966e235f814d1bb9a2009adc7904a3fd0c19","path":"raw/d07069802f73688447e50bbd50c2966e235f814d1bb9a2009adc7904a3fd0c19.raw","bytes":123866,"kind":"RESEARCH_MODEL_INPUT","research_namespace":"HISTORICAL"},"excluded":{"DEVELOPMENT":[],"CALIBRATION":[]},"statistical_support":{"development_total":0,"calibration_total":0,"calibration_per_class":{"0":0,"1":0},"minimum_per_class":20,"calibration_metadata_mature_upper_bound":20}}
+E           assert 201 == 409
+E            +  where 201 = <Response [201 Created]>.status_code
+
+tests\application\test_training_preflight.py:283: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_training_preflight.py::test_competing_calibration_after_admission_cannot_spend_transparent_primary_budget
+1 failed, 6 deselected in 8.65s

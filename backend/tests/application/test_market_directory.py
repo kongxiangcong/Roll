@@ -88,6 +88,29 @@ def test_overflow_never_hides_assets_and_scope_rejects_external_stocks_and_indic
             'instruments': ['SSE:000001'], 'purpose': 'RESEARCH'}).status_code == 403
 
 
+def test_five_preselected_background_indices_remain_outside_watch_and_research(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        before = client.get('/api/account').json()
+        listing = client.get('/api/market/list').json()
+        background = listing['background_indices']
+        assert {item['instrument'] for item in background} == {
+            'SSE:000001', 'SZSE:399001', 'SZSE:399997', 'SSE:000300', 'SSE:000905'}
+        assert all(item['instrument_type'] == 'INDEX' and item['trading_capability'] == 'NONE'
+                   for item in background)
+        for instrument, name in [('SSE:000300', '沪深300'), ('SSE:000905', '中证500')]:
+            item = next(item for item in background if item['instrument'] == instrument)
+            assert item['name'] == name and item['purpose'] == 'BROAD_BACKGROUND'
+            assert client.post('/api/market/scope/check', json={
+                'instruments': [instrument], 'purpose': 'BACKGROUND'}).status_code == 200
+            for purpose in ['RESEARCH', 'OBSERVATION']:
+                assert client.post('/api/market/scope/check', json={
+                    'instruments': [instrument], 'purpose': purpose}).status_code == 403
+            assert client.post('/api/market/watch', json={'operation': 'ADD',
+                'instrument': instrument, 'expected_list_version': listing['version']}).status_code == 422
+        assert client.get('/api/market/list').json() == listing
+        assert client.get('/api/account').json() == before
+
+
 @pytest.mark.parametrize('exchange', ['SSE', 'SZSE'])
 def test_archived_exchange_calendar_handles_holidays_stages_timezones_and_gaps(tmp_path, exchange):
     with TestClient(create_app(tmp_path)) as client:
@@ -130,6 +153,77 @@ def test_rule_versions_remainder_limits_and_resale_follow_only_known_calendar(tm
         missing = client.get('/api/market/resale-date', params={
             'exchange': 'SSE', 'board': 'MAIN', 'buy_date': '2026-12-31'}).json()
         assert missing['earliest_sell_date'] is None
+
+
+def test_official_2013_calendar_supports_first_session_without_old_execution_rules(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        holiday = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': '2013-01-03'}).json()
+        assert holiday['is_trading_day'] is False
+        assert holiday['next_trading_day'] == '2013-01-04'
+        first = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': '2013-01-04',
+            'at': '2013-01-04T10:00:00+08:00'}).json()
+        assert first['is_trading_day'] is True
+        assert first['coverage'] == 'VERIFIED_ANNUAL_CALENDAR'
+        assert first['phase'] == 'UNKNOWN' and first['rules_source'] is None
+        assert first['source']['id'] == 'sse-calendar-2013'
+        old_rule = client.get('/api/market/rules', params={'exchange': 'SSE', 'board': 'MAIN', 'date': '2013-01-04'}).json()
+        assert old_rule['implementation_status'] == 'UNSUPPORTED'
+        assert client.get('/api/market/calendar', params={'exchange': 'SZSE', 'date': '2013-01-04'}).json()['coverage'] == 'UNKNOWN'
+
+
+def test_historical_calendar_preserves_later_official_corrections_and_raw_provenance(tmp_path):
+    import hashlib
+    with TestClient(create_app(tmp_path)) as client:
+        for closed, reopening, correction_id, annual_text, corrected_text in [
+            ('2015-09-03', '2015-09-07', 'sse-calendar-2015-memorial', '9月27日', '9月3日'),
+            ('2019-05-02', '2019-05-06', 'sse-calendar-2019-labor-revision', '5月2日', '5月6日'),
+            ('2019-05-03', '2019-05-06', 'sse-calendar-2019-labor-revision', '5月2日', '5月6日'),
+            ('2020-01-31', '2020-02-03', 'sse-calendar-2020-spring-extension', '1月31日', '2月3日'),
+        ]:
+            result = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': closed}).json()
+            assert result['is_trading_day'] is False and result['next_trading_day'] == reopening
+            assert result['correction_sources'][0]['id'] == correction_id
+            annual = client.get(f"/api/market/sources/{result['source']['id']}/raw")
+            assert annual_text in annual.content.decode('utf-8')
+            correction = result['correction_sources'][0]
+            raw = client.get(f"/api/market/sources/{correction['id']}/raw")
+            assert hashlib.sha256(raw.content).hexdigest() == correction['sha256']
+            assert corrected_text in raw.content.decode('utf-8')
+            opening = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': reopening,
+                'at': reopening + 'T15:00:00+08:00'}).json()
+            assert opening['is_trading_day'] is True and opening['phase'] == 'UNKNOWN'
+            assert opening['correction_sources'][0]['id'] == correction_id
+
+
+def test_all_archived_sse_years_makeup_weekends_and_known_year_transition(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        # Literal closure/reopening pairs independently read from annual notices.
+        for closed, reopening in [
+            ('2014-02-06', '2014-02-07'), ('2016-02-13', '2016-02-15'),
+            ('2017-02-02', '2017-02-03'), ('2018-02-21', '2018-02-22'),
+            ('2021-02-17', '2021-02-18'), ('2022-02-06', '2022-02-07'),
+            ('2023-01-27', '2023-01-30'), ('2024-02-17', '2024-02-19'),
+            ('2025-02-04', '2025-02-05'),
+        ]:
+            result = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': closed}).json()
+            assert result['is_trading_day'] is False and result['next_trading_day'] == reopening
+            assert result['source']['id'] == 'sse-calendar-' + closed[:4]
+            assert result['historical_knowledge'] == 'CURRENT_RECONSTRUCTION_NOT_POINT_IN_TIME'
+            assert result['rules_source'] is None
+            opened = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': reopening}).json()
+            assert opened['is_trading_day'] is True and opened['phase'] == 'UNKNOWN'
+            assert client.get('/api/market/calendar', params={'exchange': 'SZSE', 'date': reopening}).json()['is_trading_day'] is None
+        for makeup_weekend in ['2013-01-05', '2015-09-06', '2019-04-28', '2020-01-19', '2025-02-08']:
+            result = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': makeup_weekend}).json()
+            assert result['is_trading_day'] is False and result['reason'] == 'WEEKEND'
+        transition = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': '2025-12-31'}).json()
+        assert transition['is_trading_day'] is True and transition['next_trading_day'] == '2026-01-05'
+        earlier_transition = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': '2018-12-28'}).json()
+        assert earlier_transition['next_trading_day'] == '2019-01-02'
+        cross_year_closure = client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': '2018-12-31'}).json()
+        assert cross_year_closure['is_trading_day'] is False
+        assert cross_year_closure['correction_sources'][0]['id'] == 'sse-calendar-2019'
+        assert client.get('/api/market/calendar', params={'exchange': 'SSE', 'date': '2012-12-31'}).json()['coverage'] == 'UNKNOWN'
 
 
 def test_unopened_account_transitions_preserve_membership_and_identity_knowledge_time(tmp_path):

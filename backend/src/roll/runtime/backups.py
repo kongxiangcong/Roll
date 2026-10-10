@@ -76,6 +76,39 @@ def tables(db):
     return {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
 
 
+def host_source_references(db,value):
+    """Validate the persisted request/run/snapshot bundle instead of inventing a file."""
+    def invalid():
+        raise HTTPException(409,{'code':'RESEARCH_SOURCE_PROVENANCE_MISMATCH'})
+    if not {'data_requests','retrieval_runs','market_evidence_snapshots','evidence_archives'}<=tables(db):invalid()
+    run_row=db.execute('SELECT request_id,value FROM retrieval_runs WHERE id=?',(value.get('source_run_id'),)).fetchone()
+    snapshot_row=db.execute('SELECT run_id,value FROM market_evidence_snapshots WHERE id=?',(value.get('source_snapshot_id'),)).fetchone()
+    if run_row is None or snapshot_row is None:invalid()
+    run=json.loads(run_row[1]);snapshot=json.loads(snapshot_row[1])
+    request_row=db.execute('SELECT value FROM data_requests WHERE id=?',(run_row[0],)).fetchone()
+    if request_row is None:invalid()
+    request=json.loads(request_row[0])
+    if (run.get('run_id')!=value.get('source_run_id') or run.get('status') not in {'COMPLETE','PARTIAL'}
+        or run.get('snapshot_id')!=value.get('source_snapshot_id') or snapshot.get('snapshot_id')!=value.get('source_snapshot_id')
+        or snapshot_row[0]!=run.get('run_id') or snapshot.get('run_id')!=run.get('run_id')
+        or run.get('request_id')!=run_row[0] or snapshot.get('request_id')!=run_row[0]
+        or request.get('request_id')!=run_row[0] or request.get('purpose')!='RESEARCH'
+        or sha(encode({'request':request,'run':run,'snapshot':snapshot}).encode())!=value.get('source_bundle_sha256')):invalid()
+    originals=snapshot.get('archives',[])+([snapshot['parquet']] if snapshot.get('parquet') else [])
+    if not originals or originals!=value.get('original_archives'):invalid()
+    pairs={(item['sha256'],item['decoded_hash']) for item in originals if item.get('decoded_hash')}
+    for original in originals:
+        registered=db.execute('SELECT value FROM evidence_archives WHERE sha256=?',(original['sha256'],)).fetchone()
+        if registered is None:invalid()
+        archive=json.loads(registered[0])
+        if (archive.get('sha256')!=original['sha256'] or archive.get('path')!=original['path']
+            or archive.get('wire_hash')!=original.get('wire_hash')):invalid()
+        if original.get('decoded_hash'):
+            if not any(item['sha256']==original['decoded_hash'] and item.get('wire_hash')==original['sha256'] for item in originals):invalid()
+        if original.get('wire_hash'):
+            if (original['wire_hash'],original['sha256']) not in pairs:invalid()
+
+
 def references(db,directory):
     names=tables(db);result={}
     if 'evidence_archives' in names:
@@ -86,7 +119,13 @@ def references(db,directory):
             path='raw/account-csv/'+row[0];result[path]={'path':path,'sha256':row[0],'kind':'ACCOUNT_CSV_ORIGINAL'}
     if 'research_datasets' in names:
         for row in db.execute('SELECT value FROM research_datasets'):
-            value=json.loads(row[0]);path='research-inputs/'+value['archive_id']+'/browser-live.json'
+            value=json.loads(row[0])
+            if value.get('source_origin')=='HOST_DATA_REQUEST':
+                host_source_references(db,value)
+                continue  # Its verified originals are already in evidence_archives.
+            if not isinstance(value.get('archive_id'),str):
+                raise HTTPException(409,{'code':'RESEARCH_SOURCE_PROVENANCE_MISMATCH'})
+            path='research-inputs/'+value['archive_id']+'/browser-live.json'
             result[path]={'path':path,'sha256':value['source_bundle_sha256'],'kind':'RESEARCH_SOURCE_BUNDLE'}
             for original in value['original_archives']:
                 path='research-inputs/'+value['archive_id']+'/'+original['sha256']+('.parquet' if original['path'].endswith('.parquet') else '.raw')

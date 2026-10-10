@@ -1,0 +1,62 @@
+{
+  "allowed_operations": [
+    "V8_PURE_COMPUTATION",
+    "FUNCTIONS_EXEC",
+    "FUNCTIONS_WAIT"
+  ],
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source",
+    "clock__curr_time"
+  ],
+  "archives": [],
+  "backend": "CODEX",
+  "backend_settings": {
+    "backend": "CODEX",
+    "saved_at": null,
+    "version": 0
+  },
+  "candidates": [],
+  "config_fingerprint": "8722c9a98d320f890e9a12714940afcf15e426829f420b2058de46c6828af5cc",
+  "evidence_kind": "REAL_CODEX_TASK",
+  "finished_at": null,
+  "formal_judgment": "DISABLED",
+  "gaps": [],
+  "host_code_hashes": {
+    "codex_evidence.py": "6b14b7fa594207b94ebf5087b5f461a2bb2e18f9959454e4c7d0a6e171a570d3",
+    "codex_process.py": "20f747ff481dad3345df66c353acbefe1890ca722decc39e3fabc3f24116bc52",
+    "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+  },
+  "host_owner": {
+    "creation_ticks": 134359062137784321,
+    "pid": 16356
+  },
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "recursive_depth": 0,
+    "response_bytes": 65536,
+    "retries": 0,
+    "runtime_operations": 8,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144,
+    "total_calls": 22
+  },
+  "model": "gpt-6.1-sol",
+  "question": "先用 roll_read_evidence 获取 SSE:600519 的 QUOTE，再用 roll_read_source 获取 MOUTAI_OFFICIAL 原文。最后JSON仅一条简短官网字面候选，各字段不超过60字；保留报价和事项时点缺口，不作交易判断。",
+  "request_id": "9577988a-d7d6-418e-a62b-01f6689d03a9",
+  "resolved_model": null,
+  "retry_of": null,
+  "run_id": "6a78190f-2c2a-4607-b18c-1bf789ed9e4e",
+  "sdk_runtime_version": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0"
+  },
+  "selection_kind": "SAVED_BACKEND",
+  "source_dependency_fingerprint": "85e25779c884bf8e2c49065af4b4a86e20acb4578f291515264d44dd736c7ad5",
+  "started_at": "2026-10-08T04:10:16.841074+00:00",
+  "status": "RUNNING",
+  "tools": []
+}

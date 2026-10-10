@@ -145,6 +145,16 @@ class ExperimentRegistry:
             db.execute('BEGIN IMMEDIATE')
             family=self.family(protocol_id,db)
             prior=[json.loads(r[0]) for pid in family for r in db.execute('SELECT value FROM research_attempts WHERE protocol_id=?',(pid,))]
+            # The transparent executor needs its one calibration slot after PRIMARY.
+            # Admission is advisory: another family member may consume CAL before this lock.
+            transparent_primary=(command.category=='PRIMARY_FIT'
+                and command.configuration.get('candidate')=='PRICE_VOLUME_LOGIT_V1'
+                and command.configuration.get('purpose') in ('RESEARCH','METHOD_VALIDATION'))
+            if transparent_primary and any(a['category']=='CALIBRATION' for a in prior):
+                self.event(protocol_id,'ATTEMPT_BUDGET_REFUSED',db=db,configuration=command.model_dump(),
+                    reason='透明模型主拟合需要剩余校准额度；事务内核验已耗尽，未登记主拟合')
+                db.commit()
+                raise HTTPException(409,{'code':'CALIBRATION_BUDGET_EXHAUSTED','attempt_started':False})
             over=(command.category in fits and sum(a['category'] in fits for a in prior)>=5) or (command.category=='CALIBRATION' and any(a['category']=='CALIBRATION' for a in prior))
             if over:
                 self.event(protocol_id,'ATTEMPT_BUDGET_REFUSED',db=db,configuration=command.model_dump(),reason='五次拟合及一次校准预算包括失败和中止；不得选择性丢弃')
@@ -277,9 +287,10 @@ class ExperimentRegistry:
             'registration_code_fingerprint':hashlib.sha256(encode({p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                 for p in [Path(__file__),Path(__file__).with_name('datasets.py'),Path(__file__).with_name('design.py')]}).encode()).hexdigest()}
         if dataset:
-            value.update(status='DESIGN_REGISTERED',data_fingerprint=dataset['data_fingerprint'],scope=dataset['scope'],
+            value.update(status='DATA_COVERAGE_REGISTERED' if dataset.get('source_origin')=='HOST_DATA_REQUEST' else 'DESIGN_REGISTERED',data_fingerprint=dataset['data_fingerprint'],scope=dataset['scope'],
                 design=proposal(dataset),freeze_gaps=[g for g in value['freeze_gaps'] if g!='DATA_FINGERPRINT_MISSING']+
-                    ['SEALED_INDEPENDENCE_UNPROVEN','CURRENT_REVISION_NOT_HISTORICAL_PIT','COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS'])
+                    ['SEALED_INDEPENDENCE_UNPROVEN','CURRENT_REVISION_NOT_HISTORICAL_PIT','COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS']+
+                    dataset.get('training_readiness',{}).get('blockers',[]))
         value['protocol_fingerprint']=hashlib.sha256(encode(value).encode()).hexdigest()
         with self.ledger.connection() as db:db.execute('INSERT INTO research_protocols VALUES(?,?)',(value['protocol_id'],encode(value)))
         self.event(value['protocol_id'],'PROTOCOL_REGISTERED',protocol_fingerprint=value['protocol_fingerprint'],predecessor_id=command.predecessor_id,

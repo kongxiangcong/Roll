@@ -1,0 +1,348 @@
+{
+  "started_at": "2026-10-09T00:23:07.885707+00:00",
+  "instrument": "SSE:600362",
+  "data_directory": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-09\\.roll-data\\public-host-v2",
+  "source_checkout": "C:\\Users\\72449\\.codex\\worktrees\\ticket19-public-evidence\\Roll",
+  "steps": [
+    {
+      "method": "GET",
+      "path": "/account",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/market/list",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/market/watch",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/market/identities",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/data/requests",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/data/requests/06819861-a367-406b-80d4-4f0f71c7fda2/retrieve",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/data/snapshots/9d679708-2044-422a-90c8-42df9abf465c",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/research/datasets",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/research/datasets/1aadc02b-c687-4b3e-adfe-f2b48038a27f/partitions/DEVELOPMENT",
+      "status": 409
+    },
+    {
+      "method": "GET",
+      "path": "/research/datasets/1aadc02b-c687-4b3e-adfe-f2b48038a27f/partitions/SEALED",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/data/runs/2f8d16a1-abc4-4b4c-96f1-5e27a3ab68c4/replay",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/research/datasets/1aadc02b-c687-4b3e-adfe-f2b48038a27f",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/data/runs/2f8d16a1-abc4-4b4c-96f1-5e27a3ab68c4/replay",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/account",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/capabilities",
+      "status": 200
+    }
+  ],
+  "process_ids": [
+    42680,
+    39832
+  ],
+  "real_market_acquisition": true,
+  "credentials_used": false,
+  "sealed_results_read": false,
+  "labels_computed": false,
+  "models_fitted": false,
+  "request": {
+    "instruments": [
+      "SSE:600362"
+    ],
+    "groups": [
+      "DAILY"
+    ],
+    "purpose": "RESEARCH",
+    "start_date": "2013-01-01",
+    "end_date": "2025-12-31",
+    "cutoff": "2026-10-09T00:23:12.921826+00:00",
+    "required_fields": [],
+    "max_decoded_bytes": 16777216,
+    "max_total_decoded_bytes": 503316480,
+    "timeout_seconds": 60,
+    "max_calls": 2,
+    "daily_source": "SOHU",
+    "quote_source": "TENCENT",
+    "adjustment_source": "EASTMONEY",
+    "status_source": "QUOTE",
+    "calendar_source": "BAOSTOCK",
+    "baostock_auth_mode": "API_KEY",
+    "request_id": "06819861-a367-406b-80d4-4f0f71c7fda2",
+    "cutoff_basis": "EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF",
+    "scope": {
+      "allowed": true,
+      "instruments": [
+        "SSE:600362"
+      ],
+      "purpose": "RESEARCH",
+      "list_version": 3,
+      "account_version": 0,
+      "model_qualification": "NOT_GRANTED",
+      "trading_capability": "NONE"
+    },
+    "identity_context": {
+      "SSE:600362": {
+        "board": "MAIN",
+        "code": "600362",
+        "confirmed_at": "2026-10-09T00:23:12.912640+00:00",
+        "effective_at": "2026-10-09T00:23:12.905694+00:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "江西铜业",
+        "revision": 1
+      }
+    },
+    "created_at": "2026-10-09T00:23:12.930380+00:00",
+    "technical_limits": {
+      "max_calls": 2,
+      "timeout_seconds": 60,
+      "max_response_bytes": 16777216,
+      "max_decoded_bytes": 16777216,
+      "max_total_decoded_bytes": 503316480,
+      "retries": 0
+    }
+  },
+  "run": {
+    "run_id": "2f8d16a1-abc4-4b4c-96f1-5e27a3ab68c4",
+    "request_id": "06819861-a367-406b-80d4-4f0f71c7fda2",
+    "backend": "DIRECT_HTTP",
+    "model": null,
+    "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+    "runtime_versions": {
+      "httpx": "0.28.1",
+      "pyarrow": "25.0.1",
+      "pypdf": "6.19.0"
+    },
+    "config_fingerprint": "82f15297c78e43087cc0966f2c28b831432c38e72d8b7d778a233e81d9cd6244",
+    "evidence_kind": "REAL_ACQUISITION",
+    "started_at": "2026-10-09T00:23:12.981545+00:00",
+    "status": "COMPLETE",
+    "tools": [
+      {
+        "source_id": "sohu-daily",
+        "instrument": "SSE:600362",
+        "group": "DAILY",
+        "started_at": "2026-10-09T00:23:13.153221+00:00",
+        "method": "GET",
+        "source_url": "https://q.stock.sohu.com/hisHq?code=cn_600362&start=20130101&end=20251231&stat=1&order=D&period=d",
+        "adjustment": "RAW",
+        "raw_hash": "6d05337bb417e4c5ea88856b9e58604721c28310da48bad28a05f48fdadf47e1",
+        "http_status": 200,
+        "status": "ARCHIVED",
+        "finished_at": "2026-10-09T00:23:13.366057+00:00",
+        "received_bytes": 284398
+      }
+    ],
+    "gaps": [],
+    "snapshot_id": "9d679708-2044-422a-90c8-42df9abf465c",
+    "finished_at": "2026-10-09T00:23:14.321797+00:00",
+    "elapsed_seconds": 1.324,
+    "retrieved_bytes": 284398,
+    "retrieved_decoded_bytes": 0
+  },
+  "archives_verified": [
+    {
+      "sha256": "6d05337bb417e4c5ea88856b9e58604721c28310da48bad28a05f48fdadf47e1",
+      "bytes": 284398
+    },
+    {
+      "sha256": "e613a44cb919ee9c41b8560c4dba84572648b627e1ba186ba19215173f7e3b92",
+      "bytes": 754326
+    }
+  ],
+  "dataset": {
+    "dataset_id": "1aadc02b-c687-4b3e-adfe-f2b48038a27f",
+    "registered_at": "2026-10-09T00:23:15.554418+00:00",
+    "basis": "Actual SOHU RAW source coverage only; current retrospective history is not historical availability proof",
+    "archive_id": null,
+    "source_origin": "HOST_DATA_REQUEST",
+    "source_run_id": "2f8d16a1-abc4-4b4c-96f1-5e27a3ab68c4",
+    "source_snapshot_id": "9d679708-2044-422a-90c8-42df9abf465c",
+    "source_bundle_sha256": "68638518442f0935796a23c45c56e4ce3ba6045142082187a41cfe2b25258056",
+    "source_adapter_version": "08-market-v1",
+    "source_evidence_kind": "REAL_ACQUISITION",
+    "data_fingerprint": "c3a6d1f88f808e406cd0112591768d81763dd37511b041197a9774763b1e25c3",
+    "scope": {
+      "namespace": "HISTORICAL",
+      "instruments": [
+        "SSE:600362"
+      ],
+      "identity_context": {
+        "SSE:600362": {
+          "board": "MAIN",
+          "code": "600362",
+          "confirmed_at": "2026-10-09T00:23:12.912640+00:00",
+          "effective_at": "2026-10-09T00:23:12.905694+00:00",
+          "exchange": "SSE",
+          "instrument_type": "STOCK",
+          "name": "江西铜业",
+          "revision": 1
+        }
+      },
+      "selection": "CURRENT_FINITE_LIST_CONDITIONAL_RESEARCH",
+      "historical_point_in_time_proven": false,
+      "historical_membership_reconstructed": false,
+      "source_account_authority": "NONE; MARKET_DATA_ONLY"
+    },
+    "coverage": {
+      "session_count": 3126,
+      "first_date": "2013-01-04",
+      "last_date": "2025-12-31",
+      "requested_start": "2013-01-01",
+      "requested_end": "2025-12-31",
+      "missing_amount_rows": 0,
+      "unknown_volume_unit_rows": 0,
+      "basic_error_rows": 0,
+      "incomplete_daily_rows": 0,
+      "daily_sources": [
+        "sohu-daily"
+      ],
+      "status_rows": 0,
+      "status_reported_dates": 0,
+      "calendar_rows": 0,
+      "company_action_rows": 0,
+      "source_coverage": [
+        {
+          "adjustment": "RAW",
+          "first_date": "2013-01-04",
+          "full_history_verified": false,
+          "group": "DAILY",
+          "instrument": "SSE:600362",
+          "last_date": "2025-12-31",
+          "provider_returned_rows": 3126,
+          "raw_hash": "6d05337bb417e4c5ea88856b9e58604721c28310da48bad28a05f48fdadf47e1",
+          "request_end": "2025-12-31",
+          "request_start": "2013-01-01",
+          "returned_rows": 3126,
+          "source_id": "sohu-daily",
+          "status": "ACQUIRED",
+          "truncation": "SINGLE_BOUNDED_QUERY; NO_TOTAL_OR_CALENDAR_COMPLETENESS_PROOF"
+        }
+      ],
+      "source_gaps": [],
+      "historical_as_of_versions_verified": false,
+      "complete_status_verified": false,
+      "complete_actions_verified": false
+    },
+    "partitions": {
+      "DEVELOPMENT": {
+        "state": "NOT_PREREGISTERED",
+        "rows": 0
+      },
+      "CALIBRATION": {
+        "state": "NOT_PREREGISTERED",
+        "rows": 0
+      },
+      "SEALED": {
+        "state": "NOT_PREREGISTERED",
+        "rows": 0
+      }
+    },
+    "original_archives": [
+      {
+        "bytes": 284398,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/6d05337bb417e4c5ea88856b9e58604721c28310da48bad28a05f48fdadf47e1.raw",
+        "received_at": "2026-10-09T00:23:13.342749+00:00",
+        "sha256": "6d05337bb417e4c5ea88856b9e58604721c28310da48bad28a05f48fdadf47e1",
+        "source_id": "sohu-daily",
+        "source_url": "https://q.stock.sohu.com/hisHq?code=cn_600362&start=20130101&end=20251231&stat=1&order=D&period=d"
+      },
+      {
+        "adapter_version": "08-market-v1",
+        "bytes": 754326,
+        "kind": "NORMALIZED_PARQUET",
+        "path": "parquet/e613a44cb919ee9c41b8560c4dba84572648b627e1ba186ba19215173f7e3b92.parquet",
+        "sha256": "e613a44cb919ee9c41b8560c4dba84572648b627e1ba186ba19215173f7e3b92"
+      }
+    ],
+    "training_readiness": {
+      "state": "BLOCKED",
+      "blockers": [
+        "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+        "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+        "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+        "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+        "RESEARCH_WINDOWS_NOT_PREREGISTERED",
+        "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN"
+      ],
+      "basis": "Host verifies immutable acquisition bytes, not historical observation-time availability. Reported status/calendar/dividend dates are not complete execution or as-of proof."
+    },
+    "prior_seal_independence": "UNPROVEN",
+    "prior_exposure": "SOURCE_ACQUISITION_VISIBLE; NO_UNUSED_FINAL_WINDOW_REGISTERED",
+    "engineering_exposure": null,
+    "limitations": [
+      "CALENDAR_COVERAGE_UNKNOWN",
+      "COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN",
+      "COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN",
+      "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF",
+      "HISTORICAL_POINT_IN_TIME_NOT_PROVEN",
+      "HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION",
+      "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN",
+      "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+      "RESEARCH_WINDOWS_NOT_PREREGISTERED"
+    ],
+    "partition_basis": "Coverage registration only. Old engineering80/40/21 layout is not silently reused for this actual acquisition.",
+    "label_results_computed": false,
+    "validation_verdict": null,
+    "capability": "NOT_GRANTED"
+  },
+  "daily_summary": {
+    "rows": 3126,
+    "first_date": "2013-01-04",
+    "last_date": "2025-12-31",
+    "error_counts": {},
+    "unknown_amount_rows": 0
+  },
+  "passed": true,
+  "replay_network_calls": 0,
+  "account_unchanged": true,
+  "capability_state": "UNGRANTED",
+  "finished_at": "2026-10-09T00:23:21.033927+00:00"
+}

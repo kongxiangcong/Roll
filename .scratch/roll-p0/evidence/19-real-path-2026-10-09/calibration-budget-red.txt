@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_exhausted_calibration_prevents_starting_another_method_primary_fit ___
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/worktrees/ticket19-real-path/Roll/backend/.pytest-ticket19-cal-red/test_exhausted_calibration_pre0')
+
+    def test_exhausted_calibration_prevents_starting_another_method_primary_fit(tmp_path):
+        from test_execution_labels import method_archive, register
+        method_archive(tmp_path, unknown=True)
+        with TestClient(create_app(tmp_path)) as client:
+            _, registered = register(client)
+            pid = registered['protocol_id']
+            attempt(client, pid, category='CALIBRATION', status='ABORTED')
+            before = public_state(client, [pid])
+            response = client.post('/api/research/protocols/' + pid + '/models', json={
+                'purpose': 'METHOD_VALIDATION', 'basis': 'Calibration cannot be retried under a new primary'})
+>           assert response.status_code == 409, response.text
+E           AssertionError: {"model_run_id":"71535740-ed17-459a-bf89-b5a8a4da4a8b","protocol_id":"451644fc-5800-48da-9af3-8e07fbe48bbd","attempt_id":"45a96f82-7c5f-4926-aa8f-e6b8dbf7de93","registered_at":"2026-10-09T06:08:05.460919+00:00","purpose":"METHOD_VALIDATION","basis":"Calibration cannot be retried under a new primary","namespace":"HISTORICAL","capability":"NOT_GRANTED","protocol_fingerprint":"b78b121335aa9dc83a649b28a64af6e0f08aee1cba128842be655b585d39eafc","data_fingerprint":"47b575db40fb9ada0ed9584bf2dea9bf31b212e2af32d635fabd9e8b4f166e4b","code_fingerprint":"8df9a723f936a88bef6531260b4995afdc0b49790e7a3bd3f19202b005454791","status":"FAILED","reasons":["INSUFFICIENT_SCORABLE_SUPPORT","CALIBRATION_PER_CLASS_SUPPORT_BELOW_20","REGISTERED_CALIBRATION_WINDOW_CANNOT_SUPPORT_BOTH_CLASSES"],"support":{"DEVELOPMENT":{"protocol_id":"451644fc-5800-48da-9af3-8e07fbe48bbd","record_count":0,"opportunity_count":0,"latest_assessment_counts":{},"eligible_for_training_count":0,"method_case_count":0,"reasons":{},"records":[],"independent_sample_count":null,"basis":"Latest assessment per frozen execution family; repeated dates/scenarios are not independent support. METHOD is not real training. No PIT/qualification grant."},"CALIBRATION":{"protocol_id":"451644fc-5800-48da-9af3-8e07fbe48bbd","record_count":0,"opportunity_count":0,"latest_assessment_counts":{},"eligible_for_training_count":0,"method_case_count":0,"reasons":{},"records":[],"independent_sample_count":null,"basis":"Latest assessment per frozen execution family; repeated dates/scenarios are not independent support. METHOD is not real training. No PIT/qualification grant."}},"model_artifact":null,"calibrator_artifact":null,"forecast_probability":null,"complete_experiment_frozen":false,"validation_verdict":null,"forward_started_at":null,"evidence_kind":"METHOD_CASE","input_archive":{"sha256":"0013b0914df3ccd4f18db86738d0b747f51bb5b8e2ea5db9a30e97790ddef452","path":"raw/0013b0914df3ccd4f18db86738d0b747f51bb5b8e2ea5db9a30e97790ddef452.raw","bytes":123866,"kind":"RESEARCH_MODEL_INPUT","research_namespace":"HISTORICAL"},"excluded":{"DEVELOPMENT":[],"CALIBRATION":[]},"statistical_support":{"development_total":0,"calibration_total":0,"calibration_per_class":{"0":0,"1":0},"minimum_per_class":20,"calibration_metadata_mature_upper_bound":20}}
+E           assert 201 == 409
+E            +  where 201 = <Response [201 Created]>.status_code
+
+tests\application\test_training_preflight.py:239: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_training_preflight.py::test_exhausted_calibration_prevents_starting_another_method_primary_fit
+1 failed, 5 deselected in 7.96s

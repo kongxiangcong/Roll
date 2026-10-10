@@ -1,0 +1,55 @@
+{
+  "classification": "PUBLIC_FEASIBILITY_CLIENT_RESULT_RECONSTRUCTED_FROM_VERIFIED_TOOL_OUTPUT_NOT_RAW_SOCKET_OR_TRAINING_INPUT",
+  "archived_at": "2026-10-08T15:22:18.893901+00:00",
+  "request_started_at": null,
+  "request_finished_at": null,
+  "request_date_local": "2026-10-08",
+  "known_request_completion_upper_bound_utc": "2026-10-08T15:16:55+00:00",
+  "time_limitation": "Exact per-request timestamps were not captured; do not substitute archive time. SDK queries succeeded before tool clock returned this upper bound.",
+  "server": "public-api.baostock.com:10030",
+  "sdk_version": "0.9.4",
+  "sdk_wheel_sha256": "0bf71c6069ab5890ff3596632f9c3f8f1fbc6bfcac582c2f9d6a5c11ab2cfaf8",
+  "raw_socket_bytes_saved": false,
+  "results": [
+    {
+      "file": "daily-client-result.json",
+      "sha256": "d80b9824b87c7e6a54488644a34469bab62e9b3df57ea78cdc4e55aa1c6a2fe7",
+      "bytes": 1705,
+      "request": {
+        "method": "query_history_k_data_plus",
+        "code": "sh.600362",
+        "start_date": "2026-09-21",
+        "end_date": "2026-09-30",
+        "frequency": "d",
+        "adjustflag": "3"
+      }
+    },
+    {
+      "file": "calendar-client-result.json",
+      "sha256": "2ed08580f707385192c89acd359c4bdafb1dde82a44ad9d3b77ce56f8e96515c",
+      "bytes": 445,
+      "request": {
+        "method": "query_trade_dates",
+        "start_date": "2023-01-01",
+        "end_date": "2023-01-08"
+      }
+    },
+    {
+      "file": "dividend-client-result.json",
+      "sha256": "b971aff58208874bd7d0157634eba6c15917c61a0f0919ef9a6789789d05193f",
+      "bytes": 961,
+      "request": {
+        "method": "query_dividend_data",
+        "code": "sh.600362",
+        "year": "2025",
+        "yearType": "operate"
+      }
+    }
+  ],
+  "official_markdown_raw_saved": false,
+  "official_markdown_note": "Original HTTP body bytes were read in a completed process, not saved; partial tool excerpts remain, no request was repeated. Hashes below were calculated during original acquisition, not archive hashes.",
+  "official_markdown_observed_hashes": {
+    "StockBasicInfoAPI.md": "91776c0baa6cb59c1d597f08d46e63c38c2365f2d68b05b63437963e7c6612c3",
+    "modifyRecord.md": "3c6a08854e08356f7c3a7f05a153374c314e300845e21fc2dd516b3f6eca0912"
+  }
+}

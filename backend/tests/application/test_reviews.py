@@ -40,12 +40,13 @@ def test_closed_exchange_on_demand_is_a_complete_fact_flow_without_model_or_dail
         assert client.get('/api/reviews/tasks/'+task['task_id']).json()==task
 
 
-def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time(tmp_path):
+def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time(tmp_path, method_market_timeline):
     raw=b'{"rc":0,"data":{"code":"600519","market":1,"klines":["2026-09-30,10,10,10,10,100,100000","2026-10-08,10,11,11,10,100,110000"]}}'
     fields=['']*60
     for index,value in {2:'600519',3:'12',4:'10',5:'10',6:'100',30:'20260930161458',33:'12',34:'10',35:'12/100/120000',47:'13.2',48:'10.8'}.items():fields[index]=value
     def provider(request):
         return httpx.Response(200,content=raw if 'kline' in request.url.path else ('v_sh600519="'+'~'.join(fields)+'";').encode())
+    consume=method_market_timeline('2026-10-08T10:00:00+08:00')
     clock=lambda:datetime.fromisoformat('2026-10-08T10:00:00+08:00')
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider),review_clock=clock)) as client:
         establish(client,['SSE:600519'])
@@ -55,6 +56,7 @@ def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_
             'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-10-08'}).json()
         run=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
         before=client.get('/api/account').json()
+        consume()  # Advance the recording clock only after the fixed-source acquisition.
         task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
         item=next(i for i in task['result']['instruments'] if i['instrument']=='SSE:600519')
         assert item['last_complete_daily']['trade_date']=='2026-09-30'
@@ -62,6 +64,8 @@ def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_
         assert item['incomplete_daily']['model_daily_input_allowed'] is False
         assert item['quote']['upstream_at']=='2026-09-30T16:14:58+08:00'
         assert item['quote_status']=='STALE_PREVIOUS_SESSION'
+        assert datetime.fromisoformat(before['confirmed_at']) < datetime.fromisoformat(request['created_at'])
+        assert datetime.fromisoformat(request['created_at']) < datetime.fromisoformat(item['quote']['available_at']) < datetime.fromisoformat(task['result']['knowledge_cutoff'])
         assert task['result']['calendar']['phase']=='CONTINUOUS'
         assert task['result']['data_versions']==[run['snapshot_id']]
         assert task['result']['forecast'] is None
@@ -91,7 +95,13 @@ def test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_
         assert task['result']['forecast'] is None and task['result']['gaps']
         assert task['timing']['network_seconds']>=0
         assert task['timing']['local_seconds']>=0
-        assert len(task['retrieval_runs'])==3
+        runs=[client.get('/api/data/runs/'+identifier).json() for identifier in task['retrieval_runs']]
+        assert len(runs)==6  # Each of the three attempts reaches both finite scope requests.
+        for offset in range(0,len(runs),2):
+            attempt=runs[offset:offset+2]
+            purposes={client.get('/api/data/requests/'+run['request_id']).json()['purpose'] for run in attempt}
+            assert purposes=={'OBSERVATION','BACKGROUND'}
+            assert sum(len(run['tools']) for run in attempt)<=8
         assert client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','cutoff':task['inputs']['cutoff'],'refresh_missing':True}).json()['task_id']==identifier
         assert client.get('/api/account').json()['version']==1
         assert client.get('/api/reviews/audits/'+task['audit_id']).json()['metrics']['duplicate_notifications']['value'] is None
@@ -298,18 +308,71 @@ def test_explicit_critical_review_freezes_decisive_original_reference_without_up
         assert client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=wrong).status_code==422
 
 
-def test_empty_account_can_refresh_fixed_backgrounds_with_shared_budget_and_no_account_write(tmp_path):
-    def background(request):
+def background_response(request):
+    if 'param' in request.url.params:
         symbol=request.url.params['param'].split(',')[0]
         return httpx.Response(200,json={'code':0,'data':{symbol:{'day':[['2026-09-30','3800','3830','3840','3790','400000000']]}}})
+    symbol=request.url.path.split('q=',1)[1]
+    fields=['']*55
+    for index,value in {1:'METHOD object',2:symbol[2:],3:'3830',4:'3800',5:'3800',6:'400000000',
+        30:'20260930161458',33:'3840',34:'3790',35:'3830/400000000/1000000000'}.items():fields[index]=value
+    return httpx.Response(200,content=('v_'+symbol+'="'+'~'.join(fields)+'";').encode())
+
+
+def test_empty_account_can_refresh_fixed_backgrounds_with_shared_budget_and_no_account_write(tmp_path):
+    calls=[]
+    def background(request):
+        calls.append(str(request.url))
+        return background_response(request)
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(background))) as client:
         before=client.get('/api/account').json()
         task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True}).json()['task_id'])
         assert task['retrieval_runs'],task
-        assert len(task['result']['instruments'])==2
+        broad={'SSE:000001','SZSE:399001','SSE:000300','SSE:000905'}
+        assert {i['instrument'] for i in task['result']['instruments']}==broad
         assert all(i['last_complete_daily'] and i['last_complete_daily']['trade_date']=='2026-09-30' for i in task['result']['instruments'])
-        run=client.get('/api/data/runs/'+task['retrieval_runs'][0]).json()
-        assert len(run['tools'])<=4
+        assert all(i['quote'] and i['quote']['trade_date']=='2026-09-30' for i in task['result']['instruments'])
+        runs=[client.get('/api/data/runs/'+identifier).json() for identifier in task['retrieval_runs']]
+        tools=[tool for run in runs for tool in run['tools']]
+        assert {(tool['instrument'],tool['group']) for tool in tools}=={(instrument,group) for instrument in broad for group in ['DAILY','QUOTE']}
+        assert task['attempts']==1 and len(calls)==len(tools)==8
+        assert client.get('/api/reviews/health').json()['technical_limits']['http_calls_per_attempt']==8
+        assert all('399997' not in url for url in calls)
+        assert task['result']['formal_judgment']=='DISABLED' and task['result']['forecast'] is None
+        assert client.get('/api/account').json()==before
+
+
+def test_holdings_and_backgrounds_share_finite_refresh_budget_and_keep_unfilled_gaps(tmp_path):
+    calls=[]
+    def source(request):
+        calls.append(str(request.url))
+        if 'param' in request.url.params or 'q=' in request.url.path:
+            return background_response(request)
+        if 'kline' in request.url.path:
+            return httpx.Response(200,json={'rc':0,'data':{'code':'600519','market':1,
+                'klines':['2026-09-30,10,10,10,10,100,100000']}})
+        return httpx.Response(200,json={'METHOD_UNAVAILABLE_EVENT_FIELDS':True})
+
+    with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(source))) as client:
+        establish(client,['SSE:600519'])
+        before=client.get('/api/account').json()
+        task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True}).json()['task_id'])
+        assert task['attempts']==1
+        runs=[client.get('/api/data/runs/'+identifier).json() for identifier in task['retrieval_runs']]
+        tools=[tool for run in runs for tool in run['tools']]
+        assert len(calls)==len(tools)==8
+        assert any(tool['instrument']=='SSE:600519' for tool in tools)
+        assert any(tool['instrument'] in {'SSE:000001','SZSE:399001','SSE:000300','SSE:000905'} for tool in tools)
+        requests=[client.get('/api/data/requests/'+run['request_id']).json() for run in runs]
+        assert all(request['technical_limits']['max_calls']<=8 for request in requests)
+        items=task['result']['instruments']
+        assert len(items)==6  # One holding, four broad backgrounds and its fixed sector.
+        unfilled={item['instrument'] for item in items if not item['last_complete_daily']}
+        assert unfilled
+        assert all(any(gap['instrument']==instrument and gap['code']=='NO_COMPLETE_DAILY'
+            for gap in task['result']['gaps']) for instrument in unfilled)
+        assert any(gap['code']=='TECHNICAL_LIMIT' for run in runs for gap in run['gaps'])
+        assert task['result']['formal_judgment']=='DISABLED' and task['result']['forecast'] is None
         assert client.get('/api/account').json()==before
 
 

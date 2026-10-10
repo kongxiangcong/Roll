@@ -1,0 +1,35 @@
+..............................................F......................... [ 18%]
+........................................................................ [ 36%]
+........................................................................ [ 55%]
+........................................................................ [ 73%]
+........................................................................ [ 91%]
+................................                                         [100%]
+================================== FAILURES ===================================
+_________ test_baostock_raw_status_are_archived_and_offline_replayed __________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/t19-baseline-normal/test_baostock_raw_status_are_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000183702E3070>
+
+    def test_baostock_raw_status_are_archived_and_offline_replayed(tmp_path, monkeypatch):
+        monkeypatch.setenv('BAOSTOCK_API_KEY','METHOD_CREDENTIAL')
+        worker=tmp_path/'source.py'
+        worker.write_text('import sys,json,base64\nc=json.load(sys.stdin)\nprint(json.dumps({"error_code":"0","calls":3,"received_bytes":10,"wire_b64":base64.b64encode(b"source-wire").decode(),"received_at":"2026-10-09T00:00:00+00:00","fields":["date","code","open","high","low","close","preclose","volume","amount","adjustflag","tradestatus","isST"],"rows":[["2026-09-30","sh.600519","10.0000","12.0000","9.0000","11.0000","10.0000","1000","11000.0000","3","1","0"]]}))',encoding='utf-8')
+        with TestClient(create_app(tmp_path/'data',baostock_worker=worker)) as client:
+            establish(client,['SSE:600519'])
+            req=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY','STATUS'], 'purpose':'RESEARCH','start_date':'2026-09-30','end_date':'2026-09-30','daily_source':'BAOSTOCK','status_source':'BAOSTOCK'})
+            assert req.status_code==201,req.text
+            run=client.post('/api/data/requests/'+req.json()['request_id']+'/retrieve').json()
+            assert run['status']=='COMPLETE',run
+            snap=client.get('/api/data/snapshots/'+run['snapshot_id']).json()
+            bar=next(f for f in snap['facts'] if f['group']=='DAILY')
+            assert (bar['close'],bar['volume_shares'],bar['amount_yuan'])==('11.0000','1000','11000.0000')
+            state=next(f for f in snap['facts'] if f['group']=='STATUS')
+            assert state['state']=='NORMAL_REPORTED' and state['reported_tradestatus']=='1' and state['reported_is_st']=='0'
+            assert state['listing_stage']=='UNKNOWN' and not state['historical_complete_status_verified']
+>           assert bar['historical_limitations'] and not bar['point_in_time_input_allowed']
+E           AssertionError: assert (['PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME'] and not True)
+
+tests\application\test_baostock_evidence.py:25: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_baostock_evidence.py::test_baostock_raw_status_are_archived_and_offline_replayed
+1 failed, 391 passed in 1633.24s (0:27:13)

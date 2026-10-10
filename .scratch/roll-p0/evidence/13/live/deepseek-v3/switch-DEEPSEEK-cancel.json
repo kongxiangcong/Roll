@@ -1,0 +1,276 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 46751,
+    "http_calls": 2,
+    "model_tool_result_bytes": 9663,
+    "received_bytes": 46751
+  },
+  "allowed_tools": [
+    "roll_read_evidence",
+    "roll_read_source"
+  ],
+  "archives": [
+    {
+      "bytes": 273,
+      "evidence_kind": "REAL_ACQUISITION",
+      "http_status": 200,
+      "kind": "RAW_RESPONSE",
+      "path": "raw/4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee.raw",
+      "received_at": "2026-10-08T04:17:01.296233+00:00",
+      "sha256": "4be213d7b5a74f14ed6eef23eb707b3ec4742d95d3fba9e2c9854aed48569eee",
+      "source_id": "sina-quote",
+      "source_url": "https://hq.sinajs.cn/list=sh600519"
+    },
+    {
+      "available_at": "2026-10-08T04:17:01.888857+00:00",
+      "basis": "Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.",
+      "basis_url": "https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf",
+      "bytes": 46478,
+      "content_type": "text/html; charset=utf-8",
+      "event_time": null,
+      "http_status": 200,
+      "instrument": "SSE:600519",
+      "kind": "DEEPSEEK_PUBLIC_SOURCE",
+      "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+      "received_at": "2026-10-08T04:17:01.888857+00:00",
+      "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "source_id": "MOUTAI_OFFICIAL",
+      "source_url": "https://www.moutaichina.com/mtgf/index/",
+      "time_precision": "RECEIPT_ONLY"
+    }
+  ],
+  "backend": "DEEPSEEK",
+  "backend_settings": {
+    "backend": "DEEPSEEK",
+    "saved_at": "2026-10-08T04:16:53.753649+00:00",
+    "version": 1
+  },
+  "bootstrap_audit": [
+    {
+      "stage": "PYTHON_READY"
+    },
+    {
+      "stage": "SDK_IMPORTED"
+    }
+  ],
+  "call_usage": {
+    "host_tool_calls": 2,
+    "http_calls": 2,
+    "model_requests": 1,
+    "runtime_operations": 0,
+    "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+    "total": 5
+  },
+  "candidates": [],
+  "config_fingerprint": "efbcf5432dc1a7a96cea103799937db26f5ff1fa2d685cc9711c082a15ac67a2",
+  "elapsed_seconds": 8.376,
+  "evidence_kind": "REAL_DEEPSEEK_TASK",
+  "finished_at": "2026-10-08T04:17:02.180745+00:00",
+  "formal_judgment": "DISABLED",
+  "gaps": [
+    {
+      "code": "REQUIRED_FIELDS_MISSING",
+      "fields": [
+        "volume_shares"
+      ],
+      "group": "QUOTE",
+      "instrument": "SSE:600519"
+    }
+  ],
+  "host_owner": {
+    "creation_ticks": 134359066090706543,
+    "pid": 39460
+  },
+  "interrupt_requested_at": "2026-10-08T04:17:02.069135+00:00",
+  "limits": {
+    "concurrency": 1,
+    "http_calls": 6,
+    "max_output_tokens": 2048,
+    "model_calls": 5,
+    "model_input_bytes": 131072,
+    "model_response_bytes": 65536,
+    "model_total_response_bytes": 262144,
+    "recursive_depth": 0,
+    "response_bytes": 65536,
+    "retries": 0,
+    "subtasks": 0,
+    "timeout_seconds": 120,
+    "tool_calls": 8,
+    "total_bytes": 262144,
+    "total_calls": 19
+  },
+  "model": "deepseek-flash",
+  "model_requests": [
+    {
+      "body_bytes": 3512,
+      "input_items": [
+        "message"
+      ],
+      "model": "deepseek-flash",
+      "number": 1,
+      "parameter_names": [
+        "input",
+        "instructions",
+        "max_output_tokens",
+        "model",
+        "parallel_tool_calls",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "protocol": "RESPONSES_STATELESS",
+      "sha256": "dd6b5889ae4c09db8cad7c1a6be99d9218e5d38615f9c13cc1180c162cd48140"
+    }
+  ],
+  "model_responses": [
+    {
+      "bytes": 4326,
+      "http_status": 200,
+      "number": 1,
+      "received_bytes": 4326,
+      "resolved_model": "deepseek-flash",
+      "sha256": "5e6b93137e560b56f7b4541253e1012e23787cdb6e7d29a7687bdad0cdd73738"
+    }
+  ],
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "credential_persisted": false,
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      20780,
+      5968,
+      34508
+    ],
+    "owner_nonce": "4583c4a6-967b-4370-8b31-a9bcb3861810",
+    "pids_before_cleanup": [
+      20780,
+      5968,
+      34508
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-deepseek-task-690c2259-e4dd-4dfd-8ec8-73ce48f299f5-hdijpbll",
+    "temporary_directory_removed": true,
+    "worker_pid": 20780
+  },
+  "question": "先用 roll_read_evidence 获取 SSE:600519 的 QUOTE，再用 roll_read_source 获取 MOUTAI_OFFICIAL 原文。最后JSON仅一条简短官网字面候选，各字段不超过60字；保留报价和事项时点缺口，不作交易判断。",
+  "request_id": "66e57370-f401-4027-918f-d87b1dd5a117",
+  "resolved_model": "deepseek-flash",
+  "retry_of": null,
+  "run_id": "690c2259-e4dd-4dfd-8ec8-73ce48f299f5",
+  "runtime_audit": {
+    "agent_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "auto_previous_response_id": false,
+    "builtin_tools": [],
+    "credential_persisted": false,
+    "endpoint": "https://api.deepseek.com",
+    "handoffs": [],
+    "host_code_hashes": {
+      "codex_evidence.py": "6b14b7fa594207b94ebf5087b5f461a2bb2e18f9959454e4c7d0a6e171a570d3",
+      "codex_process.py": "20f747ff481dad3345df66c353acbefe1890ca722decc39e3fabc3f24116bc52",
+      "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "deepseek_evidence.py": "aa5fca12499df0e0cee6ed7ab8f06093f71d78284f83185e2bcc739a5fec6bfe",
+      "deepseek_process.py": "9c19bc0ccf2f77d034f2b6594d22ffb3f42cff39f2397b6d56fc1d72e2b59032",
+      "deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+      "settings.py": "a9fea3c473b9dff6f232271f65e1bbb25cfaed78ab454b28e5ff64cb92406f12"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "recursive_depth": 0,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144,
+      "total_calls": 19
+    },
+    "mcp": false,
+    "mcp_servers": [],
+    "model": "deepseek-flash",
+    "plugins": false,
+    "protocol": "RESPONSES_STATELESS",
+    "python": "3.13.12",
+    "research_input_audit_enabled": true,
+    "retries": 0,
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "sdk_versions": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "skills": false,
+    "skills_loaded": false,
+    "store": null,
+    "tracing_disabled": true,
+    "transport": "HTTP_RESPONSES_STATELESS"
+  },
+  "sdk_runtime_version": {
+    "httpx2": "2.13.1",
+    "openai": "3.26.0",
+    "openai-agents": "0.23.1"
+  },
+  "selection_kind": "SAVED_BACKEND",
+  "source_dependency_fingerprint": "85e25779c884bf8e2c49065af4b4a86e20acb4578f291515264d44dd736c7ad5",
+  "started_at": "2026-10-08T04:16:53.785660+00:00",
+  "status": "CANCELLED",
+  "tool_schema_fingerprint": "dcea96d5b4d4ec78a09580ed08e6fca59b5b3cc6b70598ea4db6cc51e8753abc",
+  "tools": [
+    {
+      "arguments": {
+        "group": "QUOTE",
+        "instrument": "SSE:600519"
+      },
+      "call_id": "deepseek-1",
+      "child_run_id": "b38ed745-8ce3-4e61-a4da-434187c89923",
+      "received_at": "2026-10-08T04:17:00.677186+00:00",
+      "snapshot_id": "4aa909c0-8f4a-4053-9936-2fdf80f7f8f1",
+      "source_id": "roll_read_evidence",
+      "status": "ARCHIVED"
+    },
+    {
+      "arguments": {
+        "instrument": "SSE:600519",
+        "source_id": "MOUTAI_OFFICIAL"
+      },
+      "call_id": "deepseek-2",
+      "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+      "received_at": "2026-10-08T04:17:01.710016+00:00",
+      "source_id": "roll_read_source",
+      "status": "ARCHIVED",
+      "url": "https://www.moutaichina.com/mtgf/index/"
+    }
+  ]
+}

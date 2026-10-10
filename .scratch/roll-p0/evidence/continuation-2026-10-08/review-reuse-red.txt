@@ -1,0 +1,114 @@
+..FF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_cross_backend_retry_rejects_revised_archive_and_preserves_original[CODEX-DEEPSEEK] _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-368/test_cross_backend_retry_rejec0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F31FCE3410>
+first_backend = 'CODEX', retry_backend = 'DEEPSEEK'
+
+    @pytest.mark.parametrize('first_backend,retry_backend', [('CODEX','DEEPSEEK'), ('DEEPSEEK','CODEX')])
+    def test_cross_backend_retry_rejects_revised_archive_and_preserves_original(tmp_path, monkeypatch, first_backend, retry_backend):
+        price = ['1258.620']
+        calls = []
+    
+        def source(request):
+            calls.append(str(request.url))
+            return httpx.Response(200, content=quote_bytes(price[0]))
+    
+        with method_agent_client(tmp_path, monkeypatch, source, 'QUOTE') as client:
+            parent = client.post('/api/data/requests', json={'instruments':['SSE:600519'],'groups':['QUOTE'],
+                'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-09-30',
+                'quote_source':'SINA','required_fields':['QUOTE.last']}).json()
+            account = client.get('/api/account').json()
+            client.post('/api/agents/settings', json={'expected_version':0,'backend':first_backend}).raise_for_status()
+            launched = client.post(f'/api/data/requests/{parent["request_id"]}/agent', json={'question':'method revised source'})
+            assert launched.status_code == 202, launched.text
+            original = terminal(client, launched.json()['run_id'])
+            tool = original['tools'][0]
+            assert tool['status'] == 'ARCHIVED', original
+            old_snapshot = client.get('/api/data/snapshots/' + tool['snapshot_id']).json()
+            original_fact = old_snapshot['facts'][0]
+            child = client.get('/api/data/runs/' + tool['child_run_id']).json()
+            resolution_url = f'/api/data/requests/{child["request_id"]}/resolve'
+            first = completed(client, client.post(resolution_url,
+                json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'basis_run_id':tool['child_run_id']}).json()['resolution_id'])
+            assert first['status'] == 'COMPLETED', first
+            price[0] = '1390.000'
+            revised = completed(client, client.post(resolution_url,
+                json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'use_cache':False,
+                      'revision_of':first['resolution_id']}).json()['resolution_id'])
+            assert original_fact['raw_hash'] in revised['revision']['changed_raw_hashes']
+            assert client.get('/api/data/resolutions/' + first['resolution_id']).json()['dependency_status'] == 'INVALIDATED'
+            calls_before = len(calls)
+            version = client.get('/api/agents/settings').json()['version']
+            client.post('/api/agents/settings', json={'expected_version':version,'backend':retry_backend}).raise_for_status()
+            retry = client.post(f'/api/data/requests/{parent["request_id"]}/agent',
+                json={'question':'method revised source','retry_of':original['run_id']})
+            assert retry.status_code == 202, retry.text
+            actual = terminal(client, retry.json()['run_id'])
+            retry_tool = actual['tools'][0]
+>           assert retry_tool.get('reuse_rejected') == 'SOURCE_REVISED_RECHECK_REQUIRED', actual
+E           AssertionError: {'acquisition_usage': {'archived_bytes': 181, 'http_calls': 0, 'model_tool_result_bytes': 1904, 'received_bytes': 0}, ...s': 181, 'evidence_kind': 'METHOD_CASE', 'http_status': 200, 'kind': 'RAW_RESPONSE', ...}], 'backend': 'DEEPSEEK', ...}
+E           assert None == 'SOURCE_REVISED_RECHECK_REQUIRED'
+E            +  where None = <built-in method get of dict object at 0x000001F31E600880>('reuse_rejected')
+E            +    where <built-in method get of dict object at 0x000001F31E600880> = {'age_basis': 'ORIGINAL_SOURCE_TIMES_NO_REFRESH', 'arguments': {'group': 'QUOTE', 'instrument': 'SSE:600519'}, 'call_id': 'deepseek-1', 'child_run_id': 'ffc78bb0-f88d-4819-acda-890f306ec772', ...}.get
+
+tests\application\test_agent_source_contract.py:114: AssertionError
+_ test_cross_backend_retry_rejects_revised_archive_and_preserves_original[DEEPSEEK-CODEX] _
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-368/test_cross_backend_retry_rejec1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F360458270>
+first_backend = 'DEEPSEEK', retry_backend = 'CODEX'
+
+    @pytest.mark.parametrize('first_backend,retry_backend', [('CODEX','DEEPSEEK'), ('DEEPSEEK','CODEX')])
+    def test_cross_backend_retry_rejects_revised_archive_and_preserves_original(tmp_path, monkeypatch, first_backend, retry_backend):
+        price = ['1258.620']
+        calls = []
+    
+        def source(request):
+            calls.append(str(request.url))
+            return httpx.Response(200, content=quote_bytes(price[0]))
+    
+        with method_agent_client(tmp_path, monkeypatch, source, 'QUOTE') as client:
+            parent = client.post('/api/data/requests', json={'instruments':['SSE:600519'],'groups':['QUOTE'],
+                'purpose':'OBSERVATION','start_date':'2026-09-30','end_date':'2026-09-30',
+                'quote_source':'SINA','required_fields':['QUOTE.last']}).json()
+            account = client.get('/api/account').json()
+            client.post('/api/agents/settings', json={'expected_version':0,'backend':first_backend}).raise_for_status()
+            launched = client.post(f'/api/data/requests/{parent["request_id"]}/agent', json={'question':'method revised source'})
+            assert launched.status_code == 202, launched.text
+            original = terminal(client, launched.json()['run_id'])
+            tool = original['tools'][0]
+            assert tool['status'] == 'ARCHIVED', original
+            old_snapshot = client.get('/api/data/snapshots/' + tool['snapshot_id']).json()
+            original_fact = old_snapshot['facts'][0]
+            child = client.get('/api/data/runs/' + tool['child_run_id']).json()
+            resolution_url = f'/api/data/requests/{child["request_id"]}/resolve'
+            first = completed(client, client.post(resolution_url,
+                json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'basis_run_id':tool['child_run_id']}).json()['resolution_id'])
+            assert first['status'] == 'COMPLETED', first
+            price[0] = '1390.000'
+            revised = completed(client, client.post(resolution_url,
+                json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'use_cache':False,
+                      'revision_of':first['resolution_id']}).json()['resolution_id'])
+            assert original_fact['raw_hash'] in revised['revision']['changed_raw_hashes']
+            assert client.get('/api/data/resolutions/' + first['resolution_id']).json()['dependency_status'] == 'INVALIDATED'
+            calls_before = len(calls)
+            version = client.get('/api/agents/settings').json()['version']
+            client.post('/api/agents/settings', json={'expected_version':version,'backend':retry_backend}).raise_for_status()
+            retry = client.post(f'/api/data/requests/{parent["request_id"]}/agent',
+                json={'question':'method revised source','retry_of':original['run_id']})
+            assert retry.status_code == 202, retry.text
+            actual = terminal(client, retry.json()['run_id'])
+            retry_tool = actual['tools'][0]
+>           assert retry_tool.get('reuse_rejected') == 'SOURCE_REVISED_RECHECK_REQUIRED', actual
+E           AssertionError: {'acquisition_usage': {'archived_bytes': 181, 'http_calls': 0, 'model_tool_result_bytes': 1904, 'received_bytes': 0}, ...'], 'archives': [{'bytes': 181, 'evidence_kind': 'METHOD_CASE', 'http_status': 200, 'kind': 'RAW_RESPONSE', ...}], ...}
+E           assert None == 'SOURCE_REVISED_RECHECK_REQUIRED'
+E            +  where None = <built-in method get of dict object at 0x000001F360555A80>('reuse_rejected')
+E            +    where <built-in method get of dict object at 0x000001F360555A80> = {'age_basis': 'ORIGINAL_SOURCE_TIMES_NO_REFRESH', 'arguments': {'group': 'QUOTE', 'instrument': 'SSE:600519'}, 'call_id': 'method-source', 'child_run_id': '85c46ee9-4c1c-444d-9d2f-b6a26231d3cb', ...}.get
+
+tests\application\test_agent_source_contract.py:114: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_agent_source_contract.py::test_cross_backend_retry_rejects_revised_archive_and_preserves_original[CODEX-DEEPSEEK]
+FAILED tests/application/test_agent_source_contract.py::test_cross_backend_retry_rejects_revised_archive_and_preserves_original[DEEPSEEK-CODEX]
+2 failed, 2 passed in 35.49s

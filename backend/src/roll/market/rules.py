@@ -1,7 +1,7 @@
 """Small supported ordinary-A-share rule subset with archived original authority.
 
-Calendar coverage is explicitly 2026 SSE/SZSE; nothing is inferred for BSE or
-other years. Special stock statuses are separate facts, never name heuristics.
+Calendar coverage follows explicitly archived exchange annual notices. Special
+stock statuses are separate facts, never name heuristics.
 """
 import hashlib
 import json
@@ -14,13 +14,19 @@ from fastapi import HTTPException
 
 from roll.accounts.ledger import encode
 
-# All adapted calendar/stage dates are in 2026, when Shanghai is UTC+08:00.
+# All adapted calendar/stage dates are in 2013–2026, when Shanghai is UTC+08:00.
 # Earlier DST years are outside this adapter rather than guessed with this offset.
 SHANGHAI = timezone(timedelta(hours=8), 'Asia/Shanghai')
 REFERENCE = Path(__file__).parent / 'reference'
 BACKGROUND_INDICES = [
     {'instrument': 'SSE:000001', 'name': '上证指数', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND', 'trading_capability': 'NONE'},
     {'instrument': 'SZSE:399001', 'name': '深证成指', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND', 'trading_capability': 'NONE'},
+    {'instrument': 'SSE:000300', 'name': '沪深300', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND',
+     'trading_capability': 'NONE', 'basis_url': 'https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf',
+     'basis': '预固定中证宽基；官方事实表代码000300，扶摇代码表核实000300.SH/沪深300/SH/指数'},
+    {'instrument': 'SSE:000905', 'name': '中证500', 'instrument_type': 'INDEX', 'purpose': 'BROAD_BACKGROUND',
+     'trading_capability': 'NONE', 'basis_url': 'https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000905factsheet.pdf',
+     'basis': '预固定中证宽基；官方事实表代码000905，扶摇代码表核实000905.SH/中证500/SH/指数'},
     {'instrument': 'SZSE:399997', 'name': '中证白酒', 'instrument_type': 'INDEX', 'purpose': 'SECTOR_BACKGROUND',
      'trading_capability': 'NONE','related_instruments': ['SSE:600519'], 'basis_source': 'csi-399997-sector-basis',
      'basis_date': '2026-08-31', 'basis': '预固定一个相关行业指数；官网事实表成分列含600519，不作动态行业筛选'},
@@ -31,6 +37,45 @@ HOLIDAYS_2026 = [
     ('2026-06-19', '2026-06-21'), ('2026-09-25', '2026-09-27'),
     ('2026-10-01', '2026-10-07'),
 ]
+# Exact annual notice ranges. The exchange also expressly closes on weekends;
+# government makeup working weekends never create an exchange session.
+SSE_HISTORICAL_HOLIDAYS = {
+    2013: [('01-01', '01-03'), ('02-09', '02-15'), ('04-04', '04-06'),
+           ('04-29', '05-01'), ('06-10', '06-12'), ('09-19', '09-21'), ('10-01', '10-07')],
+    2014: [('01-01', '01-01'), ('01-31', '02-06'), ('04-07', '04-07'),
+           ('05-01', '05-03'), ('06-02', '06-02'), ('09-08', '09-08'), ('10-01', '10-07')],
+    2015: [('01-01', '01-03'), ('02-18', '02-24'), ('04-05', '04-06'),
+           ('05-01', '05-03'), ('06-20', '06-22'), ('09-27', '09-27'), ('10-01', '10-07')],
+    2016: [('01-01', '01-03'), ('02-07', '02-13'), ('04-02', '04-04'),
+           ('04-30', '05-02'), ('06-09', '06-11'), ('09-15', '09-17'), ('10-01', '10-07')],
+    2017: [('01-01', '01-02'), ('01-27', '02-02'), ('04-02', '04-04'),
+           ('04-29', '05-01'), ('05-28', '05-30'), ('10-01', '10-08')],
+    2018: [('01-01', '01-01'), ('02-15', '02-21'), ('04-05', '04-07'),
+           ('04-29', '05-01'), ('06-16', '06-18'), ('09-22', '09-24'), ('10-01', '10-07')],
+    2019: [('01-01', '01-01'), ('02-04', '02-10'), ('04-05', '04-07'),
+           ('05-01', '05-01'), ('06-07', '06-09'), ('09-13', '09-15'), ('10-01', '10-07')],
+    2020: [('01-01', '01-01'), ('01-24', '01-30'), ('04-04', '04-06'),
+           ('05-01', '05-05'), ('06-25', '06-27'), ('10-01', '10-08')],
+    2021: [('01-01', '01-03'), ('02-11', '02-17'), ('04-03', '04-05'),
+           ('05-01', '05-05'), ('06-12', '06-14'), ('09-19', '09-21'), ('10-01', '10-07')],
+    2022: [('01-01', '01-03'), ('01-31', '02-06'), ('04-03', '04-05'),
+           ('04-30', '05-04'), ('06-03', '06-05'), ('09-10', '09-12'), ('10-01', '10-07')],
+    2023: [('01-01', '01-02'), ('01-21', '01-27'), ('04-05', '04-05'),
+           ('04-29', '05-03'), ('06-22', '06-24'), ('09-29', '10-06')],
+    2024: [('01-01', '01-01'), ('02-09', '02-17'), ('04-04', '04-06'),
+           ('05-01', '05-05'), ('06-10', '06-10'), ('09-15', '09-17'), ('10-01', '10-07')],
+    2025: [('01-01', '01-01'), ('01-28', '02-04'), ('04-04', '04-06'),
+           ('05-01', '05-05'), ('05-31', '06-02'), ('10-01', '10-08')],
+}
+# Keep the original annual ranges and later changes separately, with both
+# originals exposed. This is current historical reconstruction, not PIT data.
+SSE_CALENDAR_CORRECTIONS = {
+    2015: [('09-03', '09-05', 'sse-calendar-2015-memorial')],
+    # 2019's annual notice explicitly starts its New Year closure in 2018.
+    2018: [('12-30', '12-31', 'sse-calendar-2019')],
+    2019: [('05-01', '05-04', 'sse-calendar-2019-labor-revision')],
+    2020: [('01-31', '02-02', 'sse-calendar-2020-spring-extension')],
+}
 
 
 class RuleCalendar:
@@ -97,19 +142,29 @@ class RuleCalendar:
             at = at.astimezone(SHANGHAI)
             if at.date() != on:
                 raise HTTPException(422, 'at 的上海日期必须与 date 一致')
-        if exchange not in {'SSE', 'SZSE'} or on.year != 2026:
+        historical = exchange == 'SSE' and on.year in SSE_HISTORICAL_HOLIDAYS
+        if exchange not in {'SSE', 'SZSE'} or (on.year != 2026 and not historical):
             return {'exchange': exchange, 'date': on.isoformat(), 'timezone': 'Asia/Shanghai',
                     'is_trading_day': None, 'phase': 'UNKNOWN', 'coverage': 'UNKNOWN', 'source': None,
                     'reason': '该交易所/年份日历尚未取得与适配，不按工作日推测'}
-        holiday = any(date.fromisoformat(start) <= on <= date.fromisoformat(end) for start, end in HOLIDAYS_2026)
+        ranges = [(f'{on.year}-{start}', f'{on.year}-{end}') for start, end in SSE_HISTORICAL_HOLIDAYS[on.year]] if historical else HOLIDAYS_2026
+        corrections = SSE_CALENDAR_CORRECTIONS.get(on.year, []) if historical else []
+        ranges += [(f'{on.year}-{start}', f'{on.year}-{end}') for start, end, _ in corrections]
+        holiday = any(date.fromisoformat(start) <= on <= date.fromisoformat(end) for start, end in ranges)
         trading = on.weekday() < 5 and not holiday  # both conditions are backed by exchange documents
         result = {'exchange': exchange, 'date': on.isoformat(), 'timezone': 'Asia/Shanghai',
                   'is_trading_day': trading, 'phase': 'TRADING_DAY' if trading else 'CLOSED',
-                  'coverage': 'VERIFIED_ANNUAL_CALENDAR', 'calendar_version': f'{exchange}-2026',
-                  'source': self.source(f'{exchange.lower()}-calendar-2026'),
-                  'rules_source': self.source(f'{exchange.lower()}-rules-text-2026'),
+                  'coverage': 'VERIFIED_ANNUAL_CALENDAR', 'calendar_version': f'{exchange}-{on.year}',
+                  'source': self.source(f'{exchange.lower()}-calendar-{on.year}'),
+                  'rules_source': None if historical else self.source(f'{exchange.lower()}-rules-text-2026'),
                   'reason': 'HOLIDAY' if holiday else ('WEEKEND' if not trading else None),
                   'special_closure_check': '未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市'}
+        if historical:
+            if trading:
+                result['phase'] = 'UNKNOWN'
+                result['reason'] = '日历已取得，但该日期的时段规则未适配'
+            result['correction_sources'] = [self.source(source_id) for _, _, source_id in corrections]
+            result['historical_knowledge'] = 'CURRENT_RECONSTRUCTION_NOT_POINT_IN_TIME'
         if trading and at is not None:
             clock = at.time().replace(tzinfo=None)
             boundaries = [(time(9,15), 'PRE_OPEN'), (time(9,25), 'OPENING_AUCTION'),

@@ -1,0 +1,33 @@
+{
+  "mode": "switch",
+  "backend": "CODEX",
+  "started_at": "2026-10-08T04:12:04.991894+00:00",
+  "data_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\13-switch\\backend\\.roll-data\\13-live-switch-codeX-v2",
+  "position_count": 30,
+  "background_count": 3,
+  "suggested_five_index_baseline": "CURRENT_REGISTRY_HAS_3_ONLY; NO_SCOPE_EXPANSION",
+  "changed_settings": {
+    "version": 1,
+    "backend": "DEEPSEEK",
+    "saved_at": "2026-10-08T04:12:26.692073+00:00"
+  },
+  "concurrency_rejection": {
+    "detail": {
+      "code": "AGENT_CONCURRENCY_LIMIT",
+      "running_backend": "CODEX",
+      "max_concurrency": 1
+    }
+  },
+  "frozen_fields_unchanged": [
+    "backend",
+    "model",
+    "config_fingerprint",
+    "sdk_runtime_version",
+    "backend_settings",
+    "source_dependency_fingerprint",
+    "limits"
+  ],
+  "passed": false,
+  "failure_type": "AssertionError",
+  "failure": ""
+}

@@ -1,0 +1,284 @@
+{
+  "measurement": "POST /api/account/confirm HTTP round-trip + JSON decode, warm persistent TCP client",
+  "samples": 20,
+  "warmup": 2,
+  "p95_method": "nearest rank ceil(0.95*n)",
+  "p95_ms": 95.46660000341944,
+  "median_ms": 60.44989998918027,
+  "max_ms": 100.91390000889078,
+  "samples_ms": [
+    24.599600001238286,
+    26.401699986308813,
+    39.500199985923246,
+    37.23010001704097,
+    41.843999992124736,
+    35.843800025759265,
+    36.15110000828281,
+    48.54320001322776,
+    65.98030001623556,
+    55.57950001093559,
+    59.89279999630526,
+    73.23599999654107,
+    63.86699998984113,
+    73.743499990087,
+    61.00699998205528,
+    71.45859999582171,
+    81.98859999538399,
+    95.46660000341944,
+    80.81569999922067,
+    100.91390000889078
+  ],
+  "position_count": 30,
+  "event_count": 54,
+  "account_version": 23,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+  "python": "3.13.12",
+  "sqlite": "3.50.4",
+  "external_task_integration": "ACTUAL_DEEPSEEK_TIMEOUT",
+  "external_task_observations": [
+    {
+      "sample": 0,
+      "ms": 24.599600001238286,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.067536+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.117600+00:00"
+      }
+    },
+    {
+      "sample": 1,
+      "ms": 26.401699986308813,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.226658+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.269998+00:00"
+      }
+    },
+    {
+      "sample": 2,
+      "ms": 39.500199985923246,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.320344+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.399143+00:00"
+      }
+    },
+    {
+      "sample": 3,
+      "ms": 37.23010001704097,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.487904+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.537048+00:00"
+      }
+    },
+    {
+      "sample": 4,
+      "ms": 41.843999992124736,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.597042+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.648074+00:00"
+      }
+    },
+    {
+      "sample": 5,
+      "ms": 35.843800025759265,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.726837+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.772339+00:00"
+      }
+    },
+    {
+      "sample": 6,
+      "ms": 36.15110000828281,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.855416+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:27.922595+00:00"
+      }
+    },
+    {
+      "sample": 7,
+      "ms": 48.54320001322776,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.071085+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.136012+00:00"
+      }
+    },
+    {
+      "sample": 8,
+      "ms": 65.98030001623556,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.271933+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.356550+00:00"
+      }
+    },
+    {
+      "sample": 9,
+      "ms": 55.57950001093559,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.461843+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.529566+00:00"
+      }
+    },
+    {
+      "sample": 10,
+      "ms": 59.89279999630526,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.640395+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.707446+00:00"
+      }
+    },
+    {
+      "sample": 11,
+      "ms": 73.23599999654107,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.817168+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:28.907923+00:00"
+      }
+    },
+    {
+      "sample": 12,
+      "ms": 63.86699998984113,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.048982+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.124426+00:00"
+      }
+    },
+    {
+      "sample": 13,
+      "ms": 73.743499990087,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.236770+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.338514+00:00"
+      }
+    },
+    {
+      "sample": 14,
+      "ms": 61.00699998205528,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.514466+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.619586+00:00"
+      }
+    },
+    {
+      "sample": 15,
+      "ms": 71.45859999582171,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.746134+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.830990+00:00"
+      }
+    },
+    {
+      "sample": 16,
+      "ms": 81.98859999538399,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:29.954721+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:30.068245+00:00"
+      }
+    },
+    {
+      "sample": 17,
+      "ms": 95.46660000341944,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:30.194711+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:30.320719+00:00"
+      }
+    },
+    {
+      "sample": 18,
+      "ms": 80.81569999922067,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:30.439883+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:30.552019+00:00"
+      }
+    },
+    {
+      "sample": 19,
+      "ms": 100.91390000889078,
+      "before": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:30.710487+00:00"
+      },
+      "after": {
+        "status": "RUNNING",
+        "observed_at": "2026-10-08T04:21:30.831823+00:00"
+      }
+    }
+  ],
+  "run_id": "1780c0cd-c50f-4102-87c5-f659b7a71462",
+  "fully_overlapping_samples": 20,
+  "overlap_p95_ms": 95.46660000341944
+}

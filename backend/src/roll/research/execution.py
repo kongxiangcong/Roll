@@ -12,6 +12,7 @@ from pydantic import BaseModel,ConfigDict,Field,field_validator
 from roll.agents.codex_process import owner_alive
 from roll.accounts.ledger import encode,now
 from roll.market.rules import SHANGHAI
+from roll.research import historical_costs
 
 
 class ExecutionCommand(BaseModel):
@@ -47,10 +48,17 @@ class AssessmentCommand(BaseModel):
 def money(value):return str(value.quantize(Decimal('0.01'),rounding=ROUND_HALF_UP))
 
 
-def fees(gross,costs,side):
+def fees(gross,costs,side,statutory=None):
+    if statutory is not None:
+        if statutory.get('status') not in {'VERIFIED_STATUTORY_SCHEDULE','CURRENT_DISPLAY_SCENARIO'} or statutory.get('side')!=side:
+            raise ValueError('HISTORICAL_STATUTORY_COST_UNPROVEN')
+        if Decimal(costs['extra_regulatory_charge'])!=0:
+            raise ValueError('SCENARIO_COMMISSION_ALREADY_INCLUDES_REGULATORY_FEES')
+        transfer=Decimal(statutory['transfer_each_side_rate']);stamp=Decimal(statutory['stamp_applied_rate'])
+    else:transfer=Decimal(costs['transfer_each_side_rate']);stamp=Decimal(costs['stamp_sell_rate']) if side=='SELL' else Decimal('0')
     commission=max(Decimal(costs['minimum_commission_yuan']),gross*Decimal(costs['commission_scenario_rate']))
-    result={'commission_yuan':money(commission),'transfer_yuan':money(gross*Decimal(costs['transfer_each_side_rate'])),
-        'stamp_yuan':money(gross*Decimal(costs['stamp_sell_rate'])) if side=='SELL' else '0.00',
+    result={'commission_yuan':money(commission),'transfer_yuan':money(gross*transfer),
+        'stamp_yuan':money(gross*stamp),
         'extra_regulatory_yuan':money(Decimal(costs['extra_regulatory_charge']))}
     result['total_yuan']=money(sum(Decimal(v) for v in result.values()));return result
 
@@ -64,7 +72,8 @@ def number(value):
 
 def engine_fingerprint():
     # Only source text gets canonical LF hashing; archived provider bytes never do.
-    return hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+    return hashlib.sha256(encode({'execution_source':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
+        'historical_cost_schedule':historical_costs.schedule_fingerprint()}).encode()).hexdigest()
 
 
 def evaluate(inputs,definition,label_as_of,available_at=None):
@@ -82,6 +91,13 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
         result['label_status']='IMMATURE';result['reasons']=['COMPLETE_EXIT_BAR_NOT_YET_AVAILABLE_AT_ASSESSMENT'];return result
     if matures_at is None:result['reasons'].append('MATURITY_TIME_UNKNOWN')
     if completion is None:result['reasons'].append('COMPLETE_EXIT_BAR_AVAILABILITY_UNKNOWN')
+    if inputs['evidence_kind']!='METHOD_CASE':
+        schedule=definition.get('historical_costs')
+        if not schedule:result['reasons'].append('HISTORICAL_COST_SCHEDULE_MISSING')
+        else:
+            for side in ['BUY','SELL']:
+                result['reasons'].extend(schedule[side]['reasons'])
+            result['cost_basis']=schedule
     rows={f['trade_date']:f for f in inputs['facts']};sessions=definition['scheduled_sessions'];rule=definition['rule']
     if rule.get('rule_scope')!='METHOD_CASE_ONLY' and rule.get('implementation_status')!='ADAPTED':result['reasons'].append('HISTORICAL_RULE_SCOPE_UNKNOWN')
     if maturity>inputs['partition_last_date']:result['reasons'].append('LABEL_SPANS_PARTITION_BOUNDARY')
@@ -106,6 +122,8 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
     result['reasons']=list(dict.fromkeys(result['reasons']))
     if result['reasons']:return result
     costs=definition['costs'];plan=definition['order'];quantity=Decimal(plan['quantity']);fraction=Decimal(plan['fill_fraction'])
+    if inputs['evidence_kind']!='METHOD_CASE' and (not costs.get('commission_includes_regulatory_fees') or Decimal(costs['extra_regulatory_charge'])!=0):
+        result['reasons']=['SCENARIO_COMMISSION_ALREADY_INCLUDES_REGULATORY_FEES'];return result
     step=Decimal(rule['buy_increment']);minimum=Decimal(rule['buy_minimum']);filled=(quantity*fraction/step).to_integral_value(rounding=ROUND_DOWN)*step
     result.update({'filled_quantity':str(filled),'unfilled_quantity':str(quantity-filled),'earliest_resale_date':plan['earliest_resale_date']})
     reason='OUTSIDE_FROZEN_PRICE_WINDOW' if plan['delay']=='OUTSIDE_ALLOWED_PRICE_NO_FILL' else ('DECLARED_MISSED_FILL' if fraction==0 else ('PARTIAL_BELOW_MINIMUM_LOT' if filled<minimum else None))
@@ -156,7 +174,10 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
     if not terminal and (rows[maturity].get('volume_unit')!='SHARE' or number(rows[maturity].get('volume_shares')) is None or number(rows[maturity]['volume_shares'])<=0):
         result.update({'execution_status':'BLOCKED_EXIT','reasons':['EXIT_VOLUME_UNKNOWN_OR_ZERO']});return result
     if terminal:exit_price=Decimal(terminal['cash_per_share_yuan'])
-    buy=entry_price*filled;sell=exit_price*filled;buyfees=fees(buy,costs,'BUY');sellfees=fees(sell,costs,'SELL') if not terminal else {k:'0.00' for k in ['commission_yuan','transfer_yuan','stamp_yuan','extra_regulatory_yuan','total_yuan']}
+    schedule=definition.get('historical_costs') if inputs['evidence_kind']!='METHOD_CASE' else None
+    buy=entry_price*filled;sell=exit_price*filled
+    buyfees=fees(buy,costs,'BUY',schedule['BUY'] if schedule else None)
+    sellfees=fees(sell,costs,'SELL',schedule['SELL'] if schedule else None) if not terminal else {k:'0.00' for k in ['commission_yuan','transfer_yuan','stamp_yuan','extra_regulatory_yuan','total_yuan']}
     if buy+Decimal(buyfees['total_yuan'])>Decimal(plan['cash_budget_yuan']):result['reasons']=['CASH_OR_EXPOSURE_LIMIT'];return result
     if maturity<plan['earliest_resale_date']:result['reasons']=['T_PLUS_ONE_EXIT_NOT_ALLOWED'];return result
     pnl=sell-Decimal(sellfees['total_yuan'])-buy-Decimal(buyfees['total_yuan'])
@@ -231,7 +252,7 @@ class DailyExecutions:
             'maturity_clock_basis':clock_basis,
             'maturity_rule':'TWENTY_CONFIRMED_TRADING_SESSIONS_AND_COMPLETE_EXIT_BAR_AVAILABLE',
             'execution':protocol['design']['execution'],'costs':protocol['design']['costs'],'rule':rule,
-            'engine_sha256':engine_fingerprint(),'engine_fingerprint_basis':'SHA256_EXECUTION_SOURCE_CANONICAL_LF',
+            'engine_sha256':engine_fingerprint(),'engine_fingerprint_basis':'SHA256_EXECUTION_AND_HISTORICAL_COST_CODE_MANIFEST_ORIGINALS_CANONICAL_LF',
             'calendar_proof':self.evidence.market.rules.calendar(identity['exchange'],command.observation_date),
             'consumer_knowledge_cutoff':now(),'label_as_of':as_of.isoformat(),'historical_point_in_time_proven':False}
         definition.update({'path_policy':command.path_policy,'method_barriers':command.method_barriers,'terminal_settlement':None})
@@ -269,12 +290,17 @@ class DailyExecutions:
         budget=Decimal(protocol['design']['execution']['synthetic_initial_cash_yuan'])*Decimal(protocol['design']['primary_objective']['risk_constraints']['maximum_simulated_gross_exposure'])
         lower=anchor_price*(1-limit/100) if anchor_price and limit else None;upper=anchor_price*(1+limit/100) if anchor_price and limit else None
         minimum=number(rule.get('buy_minimum'));step=number(rule.get('buy_increment'))
-        quantity=command.quantity
-        if quantity is None:
-            quantity=str((budget/(upper*(1+Decimal(definition['costs']['slippage_each_side_rate']))*(1+Decimal(definition['costs']['commission_scenario_rate'])+Decimal(definition['costs']['transfer_each_side_rate'])))/step).to_integral_value(rounding=ROUND_DOWN)*step) if upper and step else '0'
-        if minimum and step and (Decimal(quantity)<minimum or (Decimal(quantity)-minimum)%step):raise HTTPException(422,'计划股数不符合已冻结最小买入量/增量')
         entry_index=1 if command.delay=='ONE_MORE_SESSION_OPEN' else 0
         entry_date=sessions[entry_index] if len(sessions)>entry_index else None
+        if not method:
+            definition['historical_costs']=historical_costs.freeze(self.evidence,identity,entry_date,definition['maturity_date'],definition['costs'])
+            definition['cost_fingerprint']=hashlib.sha256(encode({'scenario':definition['costs'],
+                'historical_statutory_schedule':definition['historical_costs']}).encode()).hexdigest()
+        transfer=definition['costs']['transfer_each_side_rate'] if method else definition['historical_costs']['BUY']['transfer_each_side_rate']
+        quantity=command.quantity
+        if quantity is None:
+            quantity=str((budget/(upper*(1+Decimal(definition['costs']['slippage_each_side_rate']))*(1+Decimal(definition['costs']['commission_scenario_rate'])+Decimal(transfer)))/step).to_integral_value(rounding=ROUND_DOWN)*step) if upper and step and transfer is not None else '0'
+        if minimum and step and (command.quantity is not None or transfer is not None) and (Decimal(quantity)<minimum or (Decimal(quantity)-minimum)%step):raise HTTPException(422,'计划股数不符合已冻结最小买入量/增量')
         earliest_resale=self.evidence.market.rules.next_trading_day(identity['exchange'],date.fromisoformat(entry_date)) if entry_date else None
         definition['order']={'delay':command.delay,'quantity':quantity,'fill_fraction':command.fill_fraction,'entry_date':entry_date,
             'earliest_resale_date':earliest_resale,'cash_budget_yuan':str(budget),

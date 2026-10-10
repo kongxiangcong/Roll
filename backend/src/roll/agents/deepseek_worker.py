@@ -88,6 +88,8 @@ class DeepSeekTransport(httpx2.AsyncBaseTransport):
             resolved_model=resolved,received_bytes=self.received)
         if response.status_code==200:
             payload=json.loads(text)
+            if payload.get('status') == 'incomplete' and (payload.get('incomplete_details') or {}).get('reason') == 'max_output_tokens':
+                raise ValueError('DEEPSEEK_OUTPUT_TOKEN_LIMIT')
             names={tool['name'] for tool in command['tools']}
             for item in payload.get('output',[]):
                 if item.get('type')=='function_call' and item.get('name') not in names:
@@ -159,5 +161,5 @@ except Exception as error:
     # Do not propagate arbitrary provider/tool text, headers or request objects.
     code=str(error) if isinstance(error,ValueError) and str(error) in {
         'DEEPSEEK_ENDPOINT_DENIED','DEEPSEEK_UNSUPPORTED_STATEFUL_PARAMETER','DEEPSEEK_CONTEXT_BYTE_LIMIT',
-        'DEEPSEEK_MODEL_CALL_LIMIT','DEEPSEEK_MODEL_RESPONSE_BYTE_LIMIT','TOOL_BUDGET_EXHAUSTED'} else 'DEEPSEEK_RUNTIME_ERROR'
+        'DEEPSEEK_MODEL_CALL_LIMIT','DEEPSEEK_MODEL_RESPONSE_BYTE_LIMIT','DEEPSEEK_OUTPUT_TOKEN_LIMIT','TOOL_BUDGET_EXHAUSTED'} else 'DEEPSEEK_RUNTIME_ERROR'
     emit('failure',code=code,error_type=type(error).__name__)
