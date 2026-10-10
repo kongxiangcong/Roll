@@ -1,0 +1,45 @@
+[WebServer] INFO:     Started server process [53768]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8071 (Press CTRL+C to quit)
+[WebServer] (node:55132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:53744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\validation.spec.ts:3:1 › automatic validation shows seven evidence gates and replay without formal action (39.7s)
+
+
+  1) tests\e2e\validation.spec.ts:3:1 › automatic validation shows seven evidence gates and replay without formal action 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('region', { name: '研究政策与连续影子' }).getByRole('article', { name: 'SHADOW 连续影子' })
+    Expected substring: [32m"版本 1"[39m
+    Received string:    [31m"SHADOW · 连续影子版本 0 · 截止 尚未推进现金 100000.00 · 预留 0.00 · 净值 尚无估值持仓 无"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '研究政策与连续影子' }).getByRole('article', { name: 'SHADOW 连续影子' })[22m
+    [2m    9 × locator resolved to <article aria-label="SHADOW 连续影子">…</article>[22m
+    [2m      - unexpected value "SHADOW · 连续影子版本 0 · 截止 尚未推进现金 100000.00 · 预留 0.00 · 净值 尚无估值持仓 无"[22m
+
+
+      16 |   await expect(shadow.getByText(/待推进 1 项/)).toBeVisible();
+      17 |   await shadow.getByRole('button',{name:'推进连续影子',exact:true}).click();
+    > 18 |   await expect(shadow.getByRole('article',{name:'SHADOW 连续影子'})).toContainText('版本 1');
+         |                                                                  ^
+      19 |   const validation=page.getByRole('region',{name:'自动验证与门槛证据'});
+      20 |   await validation.getByRole('button',{name:'检查当前验证证据',exact:true}).click();
+      21 |   await expect(validation.getByText(/初步结论 (FAIL|INCONCLUSIVE) · METHOD_CASE/)).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket21\frontend\tests\e2e\validation.spec.ts:18:66
+
+    Error Context: test-results\validation-automatic-valid-d7878-eplay-without-formal-action\error-context.md
+
+  1 failed
+    tests\e2e\validation.spec.ts:3:1 › automatic validation shows seven evidence gates and replay without formal action 

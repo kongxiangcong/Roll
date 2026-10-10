@@ -101,8 +101,12 @@ def calculate_policy(opportunities, cash, reserved, exposure, nav, occupied, pol
     return decisions
 
 
-def simulate(frozen, inputs, forecasts, through, comparator=None):
+def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scenario=None):
     """Replay only bars on/before each step; never use matured returns to select actions."""
+    scenario=execution_scenario or {'delay':'NEXT_OPEN','fill_fraction':'1'}
+    delay=scenario['delay'];fraction=Decimal(scenario.get('fill_fraction','1'))
+    if delay not in frozen['design'].get('g5',{}).get('delays',['NEXT_OPEN']) or fraction not in {Decimal('0'),Decimal('.50'),Decimal('1')}:
+        raise ValueError('UNREGISTERED_CONTINUOUS_EXECUTION_SCENARIO')
     costs=frozen['design']['costs'];policy=frozen['policy'];cash=Decimal(frozen['baseline']['cash_yuan'])
     positions=[{**p, 'quantity': p['quantity'], 'entry_date': p['acquired_on'], 'exit_date': None,
                 'cost_yuan': p['acquisition_cost_yuan'], 'forecast_id': 'BASELINE'} for p in frozen['baseline']['positions']]
@@ -127,23 +131,30 @@ def simulate(frozen, inputs, forecasts, through, comparator=None):
         for order in list(pending):
             if order['entry_date']>day:continue
             row=bar(order['instrument']);reason=None
-            if not usable(row):reason='MISSING_OR_UNKNOWN_EXECUTION_INPUT'
+            if delay=='OUTSIDE_ALLOWED_PRICE_NO_FILL':reason='OUTSIDE_FROZEN_PRICE_WINDOW'
+            elif fraction==0:reason='MISSED_EXECUTION_SCENARIO'
+            elif not usable(row):reason='MISSING_OR_UNKNOWN_EXECUTION_INPUT'
             elif Decimal(row['volume_shares'])<Decimal(order['quantity']):reason='INSUFFICIENT_REPORTED_VOLUME'
             else:
                 rule=frozen['rules'][order['instrument']];tick=Decimal(rule['price_tick_yuan'])
-                price=(Decimal(row['open'])*(1+Decimal(costs['slippage_each_side_rate']))/tick).quantize(Decimal('1'),rounding=ROUND_HALF_UP)*tick
+                price=(Decimal(row['close' if delay=='NEXT_CLOSE' else 'open'])*(1+Decimal(costs['slippage_each_side_rate']))/tick).quantize(Decimal('1'),rounding=ROUND_HALF_UP)*tick
                 if not Decimal(order['lower_yuan'])<=price<=Decimal(order['upper_yuan']):reason='OUTSIDE_FROZEN_PRICE_WINDOW'
                 elif all(Decimal(row[k])==Decimal(order['upper_yuan']) for k in ['open','high','low','close']):reason='LOCKED_UPPER_LIMIT'
             if reason:
                 order['execution_status']='NO_EXECUTION';order['execution_reasons']=[reason]
                 events.append({'kind':'NO_FILL','date':day,'forecast_id':order['forecast_id'],'reason':reason})
             else:
-                gross=price*Decimal(order['quantity']);paid=gross+fee(gross,'BUY',order['instrument'],day)
+                filled=(Decimal(order['quantity'])*fraction/Decimal(frozen['rules'][order['instrument']].get('buy_increment','100'))).to_integral_value(rounding='ROUND_DOWN')*Decimal(frozen['rules'][order['instrument']].get('buy_increment','100'))
+                if filled<=0:raise ValueError('PARTIAL_SCENARIO_BELOW_TRADABLE_LOT')
+                if execution_scenario is not None:
+                    order.update(ordered_quantity=order['quantity'],filled_quantity=str(filled),unfilled_quantity=str(Decimal(order['quantity'])-filled),
+                        unfilled_policy='RELEASE_RESERVATION_NO_AUTOMATIC_RESUBMISSION',execution_scenario=scenario)
+                gross=price*filled;paid=gross+fee(gross,'BUY',order['instrument'],day)
                 if paid>cash or paid>Decimal(order['required_cash_yuan']):raise ValueError('FROZEN_RESERVATION_CONSERVATION_FAILURE')
                 cash-=paid;order['execution_status']='FILLED'
-                positions.append({'instrument':order['instrument'],'quantity':order['quantity'],'entry_date':day,
+                positions.append({'instrument':order['instrument'],'quantity':str(filled),'entry_date':day,
                     'exit_date':None if comparator=='START_HOLD' else order['maturity_date'],'cost_yuan':money(paid),'forecast_id':order['forecast_id']})
-                events.append({'kind':'BUY_FILL','date':day,'instrument':order['instrument'],'quantity':order['quantity'],
+                events.append({'kind':'BUY_FILL','date':day,'instrument':order['instrument'],'quantity':str(filled),
                     'price_yuan':money(price),'cash_delta_yuan':money(-paid),'forecast_id':order['forecast_id']})
             pending.remove(order)
         # Entitlements follow the frozen record/payment dates independently of actual account cash flows.
@@ -202,7 +213,8 @@ def simulate(frozen, inputs, forecasts, through, comparator=None):
         for candidate in candidates:
             symbol=candidate['instrument'];row=bar(symbol);rule=frozen['rules'][symbol];limit=Decimal(rule['normal_price_limit_percent'])/100
             anchor=Decimal(row['close']) if row and row.get('close') else Decimal('0');qty=policy['quantity'];gaps=[]
-            entry=days[index+1] if index+1<len(days) else None;maturity=days[index+20] if index+20<len(days) else None
+            offset=2 if delay=='ONE_MORE_SESSION_OPEN' else 1
+            entry=days[index+offset] if index+offset<len(days) else None;maturity=days[index+20] if index+20<len(days) else None
             if not entry or not maturity:gaps.append('HORIZON_OUTSIDE_FROZEN_WINDOW')
             if not usable(row):gaps.append('MISSING_OR_UNKNOWN_OBSERVATION_INPUT')
             adjustment=sum(Decimal(e['gross_cash_yuan_per_eligible_share']) for e in inputs.get('cash_events',[]) if e['ex_date']==entry)

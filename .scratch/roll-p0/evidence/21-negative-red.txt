@@ -1,0 +1,62 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_current_validation_manifest_is_persistent_replayable_and_never_a_grant _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket21/.test-tmp-validation-negative-red/test_current_validation_manife0')
+
+    def test_current_validation_manifest_is_persistent_replayable_and_never_a_grant(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            frozen, protocol, model = prepared(client, tmp_path)
+            response = client.post('/api/research/complete-freezes/'+frozen['freeze_id']+'/validations', json={
+                'purpose': 'DIAGNOSTIC', 'expected_complete_protocol_fingerprint': frozen['complete_protocol_fingerprint'],
+                'basis': 'Current METHOD evidence gap review, no actual qualification'})
+            assert response.status_code == 201, response.text
+            manifest = response.json()
+            assert set(manifest['gates']) == {'G1','G2','G3','G4','G5','G6','G7'}
+            assert manifest['validation_verdict'] in ('FAIL','INCONCLUSIVE')
+            assert manifest['capability_status'] == 'NOT_GRANTED'
+            assert manifest['review_status'] == 'PENDING_TECHNICAL_REVIEW'
+            assert manifest['gates']['G7']['status'] == 'INCONCLUSIVE'
+            assert manifest['gates']['G4']['details']['basis'] == 'CONSTRAINED_CONTINUOUS_NAV'
+            assert manifest['gates']['G3']['details']['duplicate_event_count'] == 1
+            assert all(c['status'] != 'INCOMPLETE' for c in manifest['gates']['G5']['details']['delays'])
+            assert manifest['confirmation_pass_look'] is False
+            method = manifest['monitoring_method_validation']
+            assert method['checks_passed'] is True
+            assert method['execution_cases'][1]['actual']['restrict'] is True
+            assert method['maturity_cases'][0]['actual']['review_status'] == 'NOT_AT_REGISTERED_CHECKPOINT'
+            assert method['maturity_cases'][1]['actual']['excluded_unmatured'] == 1
+>           assert manifest['gate_combination_method']['cases'][0]['actual'] == 'FAIL'
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'gate_combination_method'
+
+tests\application\test_validation.py:40: KeyError
+_ test_confirmation_and_tampered_inputs_are_refused_before_test_access_or_new_result _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket21/.test-tmp-validation-negative-red/test_confirmation_and_tampered0')
+
+    def test_confirmation_and_tampered_inputs_are_refused_before_test_access_or_new_result(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            frozen, protocol, model = prepared(client,tmp_path)
+            path='/api/research/complete-freezes/'+frozen['freeze_id']+'/validations'
+            command={'purpose':'CONFIRMATORY','expected_complete_protocol_fingerprint':frozen['complete_protocol_fingerprint'], 'basis':'Pre-admission refuses actual independent deficits'}
+            response=client.post(path,json=command)
+            assert response.status_code==409,response.text
+            admission=response.json()['detail']
+            assert admission['sealed_read'] is False and admission['input_content_consumed'] is False
+            assert 'METHOD_OR_PUBLIC_SOURCE_NOT_REAL_CONFIRMATION' in admission['gaps']
+            assert client.get(path).json()==[]
+            assert not any(e['action']=='SEALED_INPUT_ACCESSED' for e in client.get('/api/research/protocols/'+protocol['protocol_id']+'/audit').json())
+            assert client.post(path,json={**command,'purpose':'DIAGNOSTIC','expected_complete_protocol_fingerprint':'wrong'}).status_code==409
+            (tmp_path/model['calibrator_artifact']['path']).write_bytes(b'corrupted calibrator')
+>           assert client.post(path,json={**command,'purpose':'DIAGNOSTIC'}).status_code==409
+E           AssertionError: assert 201 == 409
+E            +  where 201 = <Response [201 Created]>.status_code
+E            +    where <Response [201 Created]> = post('/api/research/complete-freezes/eed120fa-6626-476d-9ff7-49475573672d/validations', json={'basis': 'Pre-admission refuses actual independent deficits', 'expected_complete_protocol_fingerprint': 'c6979a763e4a18b1569419973489c54ed38213ed4d2dfd59b99c4f944fc1a1fb', 'purpose': 'DIAGNOSTIC'})
+E            +      where post = <starlette.testclient.TestClient object at 0x0000018983070690>.post
+
+tests\application\test_validation.py:63: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_validation.py::test_current_validation_manifest_is_persistent_replayable_and_never_a_grant
+FAILED tests/application/test_validation.py::test_confirmation_and_tampered_inputs_are_refused_before_test_access_or_new_result
+2 failed in 33.36s
