@@ -97,3 +97,25 @@ def test_real_http_concurrent_triggers_keep_one_sample_after_abrupt_stop(tmp_pat
         assert state['samples']==original['samples'] and state['method_deadline']==original['method_deadline']
         assert restarted.client.post(path+'/replay').json()['matches_original'] is True
     finally:restarted.stop()
+
+
+def test_process_interrupted_close_resumes_original_cutoff_without_new_sample(tmp_path):
+    directory=tmp_path/'data';path,clock=prepared(directory)
+    server=ForwardServer(directory,clock)
+    try:
+        original=server.client.post(path+'/check',json={'basis':'Before stop'}).json()
+    finally:server.stop()
+    closing=ForwardServer(directory,clock,'forward_after_close_claim')
+    try:
+        try:closing.client.post(path+'/stop',json={'kind':'USER_STOP','basis':'Recorded before interrupted final settlement'})
+        except httpx.TransportError:pass
+        assert closing.process.wait(timeout=20)==86
+    finally:closing.stop()
+    later=ForwardServer(directory,clock[:11]+'17:00:00+08:00')
+    try:
+        state=later.client.post(path+'/check',json={'basis':'Resume original stop, never sample again'}).json()
+        assert state['status']=='CLOSED' and state['samples']==original['samples']
+        assert state['endpoint']['cutoff']==clock
+        assert state['method_deadline']==original['method_deadline']
+        assert state['endpoint']['stop_reason']=='USER_STOP' and state['forward_started_at'] is None
+    finally:later.stop()

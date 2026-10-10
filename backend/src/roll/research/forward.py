@@ -167,12 +167,14 @@ class ForwardArchive:
         if not daily: gaps.append('CURRENT_COMPLETE_DAILY_MISSING')
         return list(daily.values()),sorted(set(gaps))
 
-    def sessions(self, frozen, first, last):
+    def sessions(self, frozen, first, last, gaps=None):
         exchange = frozen['scope']['identity_context'][frozen['scope']['instruments'][0]]['exchange']
         result = []; day = first
         while day <= last:
             info = self.evidence.market.rules.calendar(exchange,date.fromisoformat(day),datetime.fromisoformat(day+'T16:00:00+08:00'))
-            if info['is_trading_day'] is None: raise HTTPException(409,'FORWARD_CALENDAR_UNSUPPORTED')
+            if info['is_trading_day'] is None:
+                if gaps is None:raise HTTPException(409,'FORWARD_CALENDAR_UNSUPPORTED')
+                gaps.append('FORWARD_CALENDAR_UNSUPPORTED:'+day)
             if info['is_trading_day']: result.append(day)
             day = (date.fromisoformat(day)+timedelta(days=1)).isoformat()
         return result
@@ -188,12 +190,13 @@ class ForwardArchive:
         today = self.clock().astimezone(SHANGHAI).date().isoformat()
         last = min(today, plan['deadline'][:10]) if plan['deadline'] else today
         observed = {s['trading_date'] for s in samples}
+        calendar_gaps=[]
         missing = [{'trading_date':day,'reason':'NO_PERSISTED_FORWARD_PREDICTION_NO_BACKFILL'}
-            for day in self.sessions(frozen,datetime.fromisoformat(plan['registered_at']).astimezone(SHANGHAI).date().isoformat(),last)
+            for day in self.sessions(frozen,datetime.fromisoformat(plan['registered_at']).astimezone(SHANGHAI).date().isoformat(),last,calendar_gaps)
             if day < today and day not in observed]
         return {**plan,'forward_started_at':plan['started_at'] if real else None,'forward_deadline':plan['deadline'] if real else None,
             'method_started_at':plan['started_at'] if not real else None,'method_deadline':plan['deadline'] if not real else None,
-            'samples':samples,'checks':checks,'missing_checkpoints':missing,
+            'samples':samples,'checks':checks,'missing_checkpoints':missing,'calendar_gaps':calendar_gaps,
             'latest_assessment':json.loads(assessment[0]) if assessment else None,
             'shadow':json.loads(assessment[0])['shadow'] if assessment and (json.loads(assessment[0])['shadow'] or {}).get('revision')==len(samples) else samples[-1]['shadow'] if samples else None,
             'validation_status':'NOT_COMPLETED_BY_ARCHIVE','review_status':'PENDING','human_review':'未经人工独立复核'}
@@ -210,6 +213,7 @@ class ForwardArchive:
             if self.shadow.checked_archive(sample['archive']) != {k:v for k,v in sample.items() if k!='archive'}:
                 raise HTTPException(409,'FORWARD_ARCHIVE_BINDING_MISMATCH')
         if plan['status'] == 'CLOSED': return current
+        if plan['status']=='CLOSING':return self.close(plan,frozen,checked)
         if plan['deadline'] and checked >= datetime.fromisoformat(plan['deadline']):
             return self.close(plan,frozen,checked)
         if any(s['trading_date'] == day for s in current['samples']): return current
@@ -266,13 +270,14 @@ class ForwardArchive:
             existing = db.execute('SELECT 1 FROM research_forward_samples WHERE id=?',(identity,)).fetchone()
             if not existing:
                 active = json.loads(db.execute('SELECT value FROM research_forward_plans WHERE freeze_id=?',(freeze_id,)).fetchone()[0])
-                if active['status']=='CLOSED' or (active['deadline'] and checked>datetime.fromisoformat(active['deadline'])):
+                committed_at=self.clock()
+                if active['status'] in {'CLOSED','CLOSING'} or (active['deadline'] and committed_at>=datetime.fromisoformat(active['deadline'])):
                     raise HTTPException(409,'FORWARD_CLOSED_DURING_COMPUTATION')
                 count = db.execute('SELECT COUNT(*) FROM research_forward_samples WHERE protocol_id=?',(plan['protocol_id'],)).fetchone()[0]
                 if count != len(current['samples']): raise HTTPException(409,'FORWARD_REVISION_CHANGED_RETRY')
                 db.execute('INSERT INTO research_forward_samples VALUES(?,?,?,?,?)',(identity,plan['protocol_id'],plan['checkpoint_id'],day,encode(sample)))
                 if active['started_at'] is None:
-                    active.update(started_at=checked.isoformat(),deadline=deadline_preview(checked)['deadline'],status='RUNNING')
+                    active.update(started_at=committed_at.isoformat(),deadline=deadline_preview(committed_at)['deadline'],status='RUNNING')
                     db.execute('UPDATE research_forward_plans SET value=? WHERE freeze_id=?',(encode(active),freeze_id))
                     self.registry.event(plan['protocol_id'],'FORWARD_FIRST_SAMPLE_PERSISTED',db=db,sample_id=identity,namespace=plan['namespace'],actual_forward_start=plan['namespace']=='FORWARD')
                     if plan['namespace'] == 'FORWARD':
@@ -294,8 +299,21 @@ class ForwardArchive:
         return result
 
     def close(self, plan, frozen, checked, stop=None):
-        cutoff = min(checked,datetime.fromisoformat(plan['deadline'])) if stop and plan['deadline'] else checked if stop else datetime.fromisoformat(plan['deadline'])
-        current = self.state(plan['freeze_id'])
+        # Reserve the sampling boundary first. A concurrent forecast cannot commit
+        # after this claim; interrupted closure resumes at its original cutoff.
+        with self.ledger.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            latest=json.loads(db.execute('SELECT value FROM research_forward_plans WHERE freeze_id=?',(plan['freeze_id'],)).fetchone()[0])
+            if latest['status']=='CLOSED':
+                db.commit();return self.state(plan['freeze_id'])
+            if latest['status']!='CLOSING':
+                cutoff = min(checked,datetime.fromisoformat(plan['deadline'])) if stop and plan['deadline'] else checked if stop else datetime.fromisoformat(plan['deadline'])
+                latest.update(status='CLOSING',closing_cutoff=cutoff.isoformat(),closing_stop=stop.model_dump() if stop else None)
+                db.execute('UPDATE research_forward_plans SET value=? WHERE freeze_id=?',(encode(latest),plan['freeze_id']))
+            db.commit()
+        cutoff=datetime.fromisoformat(latest['closing_cutoff'])
+        stop=StopCommand(**latest['closing_stop']) if latest.get('closing_stop') else None
+        self.ledger.crash_point('forward_after_close_claim')
         assessment = self.settle(plan['freeze_id'],CheckCommand(basis='Original endpoint mature-only settlement'),cutoff=cutoff)
         endpoint = {'cutoff':cutoff.isoformat(),'actual_checked_at':checked.isoformat(),'namespace':plan['namespace'],
             'mature':assessment['mature'],'unmatured':assessment['unmatured'],'unscorable':assessment['unscorable'],
@@ -311,6 +329,10 @@ class ForwardArchive:
                 latest.update(status='CLOSED',endpoint=endpoint)
                 db.execute('UPDATE research_forward_plans SET value=? WHERE freeze_id=?',(encode(latest),plan['freeze_id']))
                 self.registry.event(plan['protocol_id'],'FORWARD_SAMPLING_CLOSED',db=db,cutoff=cutoff.isoformat(),namespace=plan['namespace'],confirmatory_pass_look=False)
+                if plan['namespace']=='FORWARD':
+                    protocol=json.loads(db.execute('SELECT value FROM research_protocols WHERE id=?',(plan['protocol_id'],)).fetchone()[0])
+                    protocol.update(experiment_status='ENDED',forward_ended_at=cutoff.isoformat(),forward_endpoint_archive=endpoint['archive'],review_status='PENDING')
+                    db.execute('UPDATE research_protocols SET value=? WHERE id=?',(encode(protocol),plan['protocol_id']))
             db.commit()
         return self.state(plan['freeze_id'])
 
@@ -320,9 +342,10 @@ class ForwardArchive:
         return self.close(plan,self.shadow.get(freeze_id),self.clock(),command)
 
     def simulation_inputs(self, plan, frozen, rows, first, through):
-        sessions = self.sessions(frozen,first,through)+self.horizon(frozen,through)
+        gaps=[]
+        sessions = self.sessions(frozen,first,through,gaps)+self.horizon(frozen,through)
         events = {fingerprint(event):event for row in rows for event in row.get('cash_events_effective',[])}
-        inputs = {'facts':rows,'sessions':sessions,'statutory':{},'cash_events':list(events.values()),'counterfactuals':{}}
+        inputs = {'facts':rows,'sessions':sessions,'statutory':{},'cash_events':list(events.values()),'counterfactuals':{},'calendar_gaps':gaps}
         if plan['namespace']=='FORWARD':
             from roll.research.historical_costs import freeze as cost_schedule
             identity=frozen['scope']['identity_context']
@@ -333,13 +356,17 @@ class ForwardArchive:
 
     def settle(self, freeze_id, command, cutoff=None):
         plan=self.plan(freeze_id); frozen=self.shadow.get(freeze_id)
+        if self.code()!=plan['adapter_code_fingerprint'] or code_fingerprint()!=frozen['fingerprints']['model_code'] or shadow_code()!=frozen['fingerprints']['shadow_code']:
+            raise HTTPException(409,'FORWARD_FROZEN_COMPUTATION_CHANGED_SUCCESSOR_REQUIRED')
         checked=cutoff or self.clock(); through=checked.astimezone(SHANGHAI).date().isoformat()
         state=self.state(freeze_id); samples=state['samples']
         rows,gaps=self.rows(plan,frozen,checked)
         mature,unmatured,unscorable=[],[],[]
         inputs=self.simulation_inputs(plan,frozen,rows,samples[0]['trading_date'],through) if samples else None
+        if inputs:gaps+=inputs['calendar_gaps']
         for sample in samples:
-            self.shadow.checked_archive(sample['archive'])
+            if self.shadow.checked_archive(sample['archive'])!={k:v for k,v in sample.items() if k!='archive'}:
+                raise HTTPException(409,'FORWARD_ARCHIVE_BINDING_MISMATCH')
             maturity=sample['action']['maturity_date']
             result={'sample_id':sample['sample_id'],'maturity_date':maturity,'label':None,'scoreable':False,
                 'diagnostic_only':True,'continuous_return_included':False,'refused':sample['action']['action']=='REFUSE'}
@@ -377,10 +404,15 @@ class ForwardArchive:
 
     def replay(self, freeze_id):
         state = self.state(freeze_id); matches = True
+        frozen=self.shadow.get(freeze_id);model=self.models.get(frozen['model_run_id'])
+        if self.code()!=state['adapter_code_fingerprint'] or code_fingerprint()!=frozen['fingerprints']['model_code'] or shadow_code()!=frozen['fingerprints']['shadow_code']:
+            raise HTTPException(409,'FORWARD_FROZEN_COMPUTATION_CHANGED_SUCCESSOR_REQUIRED')
         for sample in state['samples']:
             original = self.shadow.checked_archive(sample['archive'])
             if original != {k:v for k,v in sample.items() if k!='archive'}: raise HTTPException(409,'FORWARD_ARCHIVE_BINDING_MISMATCH')
             values = sample['replay_inputs']
+            prediction=predict(model['fit'],sample['forecast']['feature_snapshot'],model['calibrator']['intercept_shift'])
+            matches=matches and all(sample['forecast'].get(k)==v for k,v in prediction.items())
             result = simulate(values['frozen'],values['inputs'],values['forecasts'],values['through_date']); result['revision'] = len(values['forecasts'])
             matches = matches and result == sample['shadow']
         if state.get('endpoint'):
@@ -390,6 +422,10 @@ class ForwardArchive:
         for assessment in assessments:
             if self.shadow.checked_archive(assessment['archive'])!={k:v for k,v in assessment.items() if k!='archive'}:
                 raise HTTPException(409,'FORWARD_ASSESSMENT_ARCHIVE_BINDING_MISMATCH')
+            if assessment['shadow']:
+                result=simulate(frozen,assessment['inputs'],[s['forecast'] for s in state['samples'] if datetime.fromisoformat(s['recorded_at'])<=datetime.fromisoformat(assessment['cutoff'])],datetime.fromisoformat(assessment['cutoff']).astimezone(SHANGHAI).date().isoformat())
+                result['revision']=assessment['shadow']['revision']
+                matches=matches and result==assessment['shadow']
         return {'freeze_id':freeze_id,'samples':len(state['samples']),'matches_original':matches,'network_calls':0,'statistical_pass_checks_added':0}
 
     def work(self):
