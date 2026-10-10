@@ -160,3 +160,24 @@ def test_corrupt_complete_protocol_archive_refuses_public_advance_before_mutatio
             'through_date':dates[100],'forecast_ids':[],'expected_revision':0})
         assert response.status_code==409,response.text
         assert response.json()['detail']=={'code':'ARCHIVE_MISSING_OR_CORRUPT'}
+
+
+def test_nonempty_frozen_holdings_preserve_quantity_and_replay_without_cash(tmp_path):
+    with TestClient(create_app(tmp_path),raise_server_exceptions=False) as client:
+        _,protocol,model,dates=setup(client,tmp_path)
+        position={'instrument':protocol['scope']['instruments'][0],'quantity':'200',
+                  'acquisition_cost_yuan':'20000.00','acquired_on':dates[99]}
+        for invalid in ['200.5','0','NaN','Infinity','-1']:
+            response=freeze(client,protocol,model,baseline={'cash_yuan':'0.00','positions':[{**position,'quantity':invalid}]})
+            assert response.status_code==422,response.text
+        response=freeze(client,protocol,model,baseline={'cash_yuan':'0.00','positions':[position]})
+        assert response.status_code==201,response.text
+        frozen=response.json();path='/api/research/shadow/'+frozen['freeze_id']
+        state=client.post(path+'/advance',json={'through_date':dates[101],'forecast_ids':[],'expected_revision':0})
+        assert state.status_code==201,state.text
+        state=state.json()
+        assert state['cash_yuan']=='0.00' and state['positions'][0]['quantity']=='200'
+        assert state['positions'][0]['cost_yuan']=='20000.00' and state['events']==[]
+        assert Decimal(state['nav_yuan'])>0
+        assert client.post(path+'/replay').json()['matches_original'] is True
+        assert client.get('/api/account').json()['version']==0
