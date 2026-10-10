@@ -333,3 +333,11 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 23本地冻结材料/宿主核验/双adapter契约/进度与重试/完整导出/独立状态已实现；最终定向API39项345.47s、浏览器1项56.6s及build58模块2.00s通过。原acquisition进程约束和跨任务并发入场回归通过。METHOD终点FAIL/INCONCLUSIVE与真实SDK合成本地loopback分开，不升级为真实模型或统计证据。ReviewRecord完整不等于异议已处理、实际交付完成或能力资格；实际仍preliminary FAIL/NOT_GRANTED，12个19依赖不变。
 
 Completion partial：此批实际材料分别向CODEX/DeepSeek外发被自动审批审查拒绝，0实际外发，等待用户明确授权且未重试。根[永久审批清单](D:/dsh-proj/Roll/.roll-data/implementation-evidence/23/provider-approval/provider-material-manifest.json)与原预览同SHA，接续脚本从集成根读取固定packet/副本，拒绝自动重复。实际copy、640文件停止后浏览器METHOD资料及审批资料已根目录保全SHA/长度0差异，排除auth；见[23验收](evidence/23/acceptance.md)。未推送。此阻塞不替代其他已解锁可行票的实施；24等仍遵守各自真实审阅/资格证据依赖。
+
+### 2026-10-11 Ticket 30 前向工程与真实输入缺口
+
+30 Completion partial、Status ready-for-agent：已有Reviews单worker/SQLite任务共用当前盘后归档，protocol/checkpoint/day唯一身份、首次样本原子起点、三自然月夹紧、无停机补预测、拒绝成熟诊断隔离、原截止关闭/中断恢复/恢复锁及UI已实现。METHOD从不写真实registry时钟；新增真实当前特征adapter计算能力已验证，但现Host完整状态/公司行为生命周期与源绑定execution producer尚未闭合，外部真实原件也不足，不能把内部欠项统称外部等待。21实际副本metadata只读核前后SHA相同，prospective plans/batches均0，历史完整日线不证明当前完整状态权益。32还需真实合法预登记检查点及当前完整输入/必要后继基线，未执行；33待真实自然月证据。
+
+最终定向单轮22 passed/1夹具失败221.09s；仅新增账户/快照改版用例补齐公共列表身份后1 passed16.47s，生产源码未改；五真实进程fault/race与三共享worker/23入场已通过。Chrome1 passed48.1s、TS/Vite59模块2.05s，raw SQLite及公共协议/模型确认真实起点null/NOT_GRANTED。八停止METHOD runtime逐件SHA/长度根30保全，12原模型依赖及本版23五provider源码不变。20既有分红时序P2由根另行修复，当前收据不冒充修后证据。见[30验收](evidence/30/acceptance.md)，未推送。
+
+30收口修正：等价上海/UTC截止的公共API重放红1项14.85s，ISO字符串过滤改为datetime后最终9项公共API全绿96.84s、新目录Chrome1/48.0s、build59模块1.90s，稳定源 `11df4e3`。最终11文件测试前后SHA/长度完全一致；核心版与修正版分开保留，11停止METHOD目录逐文件保全，旧五进程/三worker/六算法不写成offset修后重跑。Completion仍partial；真实producer/32/33缺口及20财务时序另案修复责任不变。

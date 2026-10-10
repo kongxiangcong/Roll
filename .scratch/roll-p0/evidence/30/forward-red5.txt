@@ -1,0 +1,24 @@
+F....                                                                    [100%]
+================================== FAILURES ===================================
+____ test_registered_user_stop_preserves_history_and_refuses_new_sampling _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30/.scratch/pytest-30-red5/test_registered_user_stop_pres0')
+
+    def test_registered_user_stop_preserves_history_and_refuses_new_sampling(tmp_path):
+        clock=[datetime.fromisoformat('2026-06-10T16:00:00+08:00')]
+        with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+            _,protocol,model,dates=setup(client,tmp_path)
+            clock[0]=datetime.fromisoformat(dates[110]+'T16:00:00+08:00')
+            frozen=freeze(client,protocol,model).json();path='/api/research/complete-freezes/'+frozen['freeze_id']+'/forward'
+            client.post(path,json={'purpose':'METHOD_VALIDATION','basis':'Pre-registered stop METHOD'})
+            first=client.post(path+'/check',json={'basis':'First sample'}).json()
+            stop=client.post(path+'/stop',json={'kind':'USER_STOP','basis':'User stops ability, statistical verdict separately preserved'})
+>           assert stop.status_code==200,stop.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_forward.py:103: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_forward.py::test_registered_user_stop_preserves_history_and_refuses_new_sampling
+1 failed, 4 passed, 3 deselected in 36.86s

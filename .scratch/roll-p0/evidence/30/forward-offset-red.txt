@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_mature_settlement_only_scores_already_archived_opportunities_and_preserves_refusals _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30/.scratch/pytest-30-offset-red/test_mature_settlement_only_sc0')
+
+    def test_mature_settlement_only_scores_already_archived_opportunities_and_preserves_refusals(tmp_path):
+        clock=[datetime.fromisoformat('2026-06-10T16:00:00+08:00')]
+        with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+            _,protocol,model,dates=setup(client,tmp_path)
+            clock[0]=datetime.fromisoformat(dates[110]+'T16:00:00+08:00')
+            frozen=freeze(client,protocol,model,baseline={'cash_yuan':'1.00','positions':[]}).json()
+            path='/api/research/complete-freezes/'+frozen['freeze_id']+'/forward'
+            client.post(path,json={'purpose':'METHOD_VALIDATION','basis':'Refused opportunity METHOD'})
+            first=client.post(path+'/check',json={'basis':'Archive before outcome'}).json()
+            assert first['samples'][0]['action']['action']=='REFUSE'
+            response=client.post(path+'/settle',json={'basis':'Unmatured at observation'})
+            assert response.status_code==201,response.text
+            early=response.json()
+            assert early['unmatured'][0]['label'] is None and early['mature']==[]
+            clock[0]=clock[0].astimezone(timezone.utc)
+            assert client.post(path+'/settle',json={'basis':'Equivalent UTC cutoff, identical persisted sample'}).status_code==201
+>           assert client.post(path+'/replay').json()['matches_original'] is True
+E           assert False is True
+
+backend\tests\application\test_forward.py:98: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_forward.py::test_mature_settlement_only_scores_already_archived_opportunities_and_preserves_refusals
+1 failed in 14.85s
