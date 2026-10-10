@@ -1,0 +1,19 @@
+[WebServer] INFO:     Started server process [50740]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8071 (Press CTRL+C to quit)
+[WebServer] (node:416) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:22524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 01:44:24 [vite] http proxy error: /api/account
+[WebServer] Error: connect ETIMEDOUT 127.0.0.1:8071
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1705:16)
+  ok 1 tests\e2e\validation.spec.ts:3:1 › automatic validation shows seven evidence gates and replay without formal action (40.0s)
+
+  1 passed (53.1s)

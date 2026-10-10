@@ -6,6 +6,8 @@ Numeric method proof and missing real qualification evidence remain separate.
 import copy
 import hashlib
 import json
+import math
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from statistics import fmean
 from typing import Literal
@@ -65,8 +67,8 @@ def continuous_checks(frozen, candidate, comparators):
     design = frozen['design']; limits = design['primary_objective']['risk_constraints']
     summary = continuous_summary(candidate['curve'])
     opportunities = candidate['opportunities']
-    unique = {r['opportunity_key']: r for r in opportunities}
-    selected = sum(r['action'] == 'BUY' for r in unique.values())
+    unique = {r['opportunity_key'] for r in opportunities}
+    selected = len({r['opportunity_key'] for r in opportunities if r['action']=='BUY'})
     coverage = selected / len(unique) if unique else 0
     exposures = [float(r['gross_exposure_fraction']) for r in candidate['curve'] if r.get('gross_exposure_fraction') is not None]
     hard = []
@@ -97,18 +99,20 @@ def continuous_checks(frozen, candidate, comparators):
             'same_baseline_and_constraints': True, 'risk_difference': 'CASH zero exposure is explicit; START_HOLD/MA use frozen50% cap'}
     sells = [e for e in candidate['events'] if e['kind']=='SELL_FILL']
     gains = [float(r['realized_gain_yuan']) for r in candidate['curve']]
-    increments=[b-a for a,b in zip([0,*gains[:-1]],gains)]
+    increments=[b-a for a,b in zip([float(candidate.get('carry_in_realized_gain_yuan',0)),*gains[:-1]],gains)]
     losses=-sum(v for v in increments if v<0);profits=sum(v for v in increments if v>0)
     navs=[float(r['nav_yuan']) if r['nav_yuan'] is not None else None for r in candidate['curve']]
     returns=sorted(b/a-1 for a,b in zip(navs,navs[1:]) if a is not None and b is not None and a>0)
-    entry_dates={e['forecast_id']:e['date'] for e in candidate['events'] if e['kind']=='BUY_FILL'}
-    hold_sessions=[dates.index(e['date'])-dates.index(entry_dates[e['forecast_id']]) for e in sells
-        if e['forecast_id'] in entry_dates and e['date'] in dates and entry_dates[e['forecast_id']] in dates]
+    entry_dates={**candidate.get('carry_in_entry_dates',{}),**{e['forecast_id']:e['date'] for e in candidate['events'] if e['kind']=='BUY_FILL'}}
+    holding_calendar=candidate.get('holding_calendar',dates)
+    hold_sessions=[holding_calendar.index(e['date'])-holding_calendar.index(entry_dates[e['forecast_id']]) for e in sells
+        if e['forecast_id'] in entry_dates and e['date'] in holding_calendar and entry_dates[e['forecast_id']] in holding_calendar]
     return {'basis': 'CONSTRAINED_CONTINUOUS_NAV', 'candidate': summary, 'comparisons': comparisons,
         'decision_coverage': coverage, 'unique_opportunities': len(unique), 'selected': selected,
         'average_gross_exposure': fmean(exposures) if exposures else None,
         'maximum_gross_exposure': max(exposures) if exposures else None,
         'closed_positions': len(sells), 'holding_policy': frozen['policy']['exit'],
+        'carry_in_realized_gain_yuan':candidate.get('carry_in_realized_gain_yuan','0'),'carry_in_entry_dates':candidate.get('carry_in_entry_dates',{}),
         'observed_holding_sessions':hold_sessions,'occupied_session_fraction':sum(v>0 for v in exposures)/len(exposures) if exposures else None,
         'profit_loss_ratio':profits/losses if losses else None,'profit_loss_ratio_limitation':'No finite loss denominator remains unknown; never infinite safety',
         'worst_session_nav_return':returns[0] if returns else None,'empirical_lower5_percent_nav_return':returns[int((len(returns)-1)*.05)] if returns else None,
@@ -165,6 +169,7 @@ def g5_checks(frozen, replay):
         comparators = {n:simulate(changed,facts,[],through,n,execution_scenario=scenario) for n in ['CASH','START_HOLD','MA5_MA20']}
         details = continuous_checks(changed, candidate, comparators)
         return {'component': label, 'status': 'FAIL' if details['hard_failures'] else 'INCONCLUSIVE',
+            'execution_events':candidate['events'],'execution_opportunities':candidate['opportunities'],'scenario':scenario,
             'method_fingerprint': validation_code(), 'input_fingerprint': fingerprint([changed,facts,opportunities,through,scenario]),
             'thresholds': changed['design']['primary_objective'], 'details': details,
             'result_fingerprint': fingerprint(details), 'limitations': ['Dependent support/assumptions remain unverified; no winner selection']}
@@ -174,6 +179,11 @@ def g5_checks(frozen, replay):
         segment = days[len(days)*index//3:len(days)*(index+1)//3]
         full = simulate(frozen,inputs,forecasts,through)
         references = {n:simulate(frozen,inputs,[],through,n) for n in ['CASH','START_HOLD','MA5_MA20']}
+        preceding=[r for r in full['curve'] if segment and r['date']<segment[0]]
+        full['carry_in_realized_gain_yuan']=preceding[-1]['realized_gain_yuan'] if preceding else '0'
+        full['holding_calendar']=[r['date'] for r in full['curve']]
+        full['carry_in_entry_dates']={e['forecast_id']:e['date'] for e in full['events'] if segment and e['kind']=='BUY_FILL' and e['date']<segment[0]}
+        full['events']=[e for e in full['events'] if e['date'] in segment]
         full['curve'] = [r for r in full['curve'] if r['date'] in segment]
         full['opportunities'] = [r for r in full['opportunities'] if r['observation_date'] in segment]
         for reference in references.values(): reference['curve'] = [r for r in reference['curve'] if r['date'] in segment]
@@ -212,7 +222,7 @@ def monitor_frozen(frozen, reference_bounds, observations, executions, results, 
     """
     latest=observations[-20:]; complete=outside=0
     for item in latest:
-        if not item or any(k not in item or item[k] is None for k in reference_bounds): continue
+        if not item or any(k not in item or item[k] is None or not math.isfinite(float(item[k])) for k in reference_bounds): continue
         complete+=1
         outside+=any(float(item[k])<bounds[0] or float(item[k])>bounds[1] for k,bounds in reference_bounds.items())
     reasons=[]
@@ -225,13 +235,22 @@ def monitor_frozen(frozen, reference_bounds, observations, executions, results, 
         for field in ['delay','fill_fraction','commission_scenario_rate','slippage_each_side_rate','price_in_frozen_window']:
             if record.get(field) is None: missing.append(field)
         if record.get('delay') is not None and record['delay'] not in declared['delays']: failures.append('DELAY_OUTSIDE_FROZEN_SCENARIOS')
-        if record.get('fill_fraction') is not None and str(record['fill_fraction']) not in ['0','0.50','1']: failures.append('FILL_OUTSIDE_FROZEN_SCENARIOS')
+        if record.get('fill_fraction') is not None:
+            try:
+                fraction=Decimal(str(record['fill_fraction']))
+                if not fraction.is_finite() or not 0<=fraction<=1:failures.append('FILL_FRACTION_INVALID_OR_OUTSIDE0_TO1')
+            except InvalidOperation:failures.append('FILL_FRACTION_INVALID_OR_OUTSIDE0_TO1')
         for field,key in [('commission_scenario_rate','commission_rates'),('slippage_each_side_rate','slippage_each_side_rates')]:
-            if record.get(field) is not None and float(record[field])>max(float(v) for v in declared[key]): failures.append(field.upper()+'_OUTSIDE_FROZEN_BOUND')
+            if record.get(field) is not None:
+                try:
+                    rate=Decimal(str(record[field]))
+                    if not rate.is_finite() or rate<0 or rate>max(Decimal(v) for v in declared[key]):failures.append(field.upper()+'_OUTSIDE_FROZEN_BOUND')
+                except InvalidOperation:failures.append(field.upper()+'_INVALID')
         if record.get('price_in_frozen_window') is False: failures.append('PRICE_OUTSIDE_FROZEN_WINDOW')
-        execution.append({'restrict':bool(failures or missing),'failures':failures,'missing':missing,'statistical_pass_look':False})
+        execution.append({'restrict':bool(failures or missing),'failures':failures,'missing':missing,'statistical_pass_look':False,
+            'fraction_basis':'0..1 bounded partial/missed/full execution; stress0/.50/1 do not claim measured user behavior'})
     mature=[r for r in results if r.get('mature') and r.get('label') in [0,1]]
-    registered=elapsed_review_sessions>=30 or expiry
+    registered=elapsed_review_sessions==30 or expiry
     maturity={'review_status':'INCONCLUSIVE' if registered else 'NOT_AT_REGISTERED_CHECKPOINT',
         'mature_count':len(mature) if registered else None,'excluded_unmatured':len(results)-len(mature),
         'missing_count':sum(r.get('label') is None for r in results),'statistical_pass_look':False,
@@ -253,12 +272,12 @@ def monitoring_method(frozen):
         {'input':{'outside':0,'available':15},'expected_restrict':True,'actual':drift(0,15)}]
     good={'delay':'NEXT_OPEN','fill_fraction':'0.50','commission_scenario_rate':'0.003','slippage_each_side_rate':'0.002','price_in_frozen_window':True}
     execution_cases=[]
-    for record,expected in [(good,False),({**good,'delay':'TWO_MORE_SESSIONS_OPEN'},True),({**good,'commission_scenario_rate':'0.0031'},True),({**good,'price_in_frozen_window':False},True),({**good,'fill_fraction':None},True)]:
+    for record,expected in [(good,False),({**good,'delay':'TWO_MORE_SESSIONS_OPEN'},True),({**good,'commission_scenario_rate':'0.0031'},True),({**good,'price_in_frozen_window':False},True),({**good,'fill_fraction':None},True),({**good,'fill_fraction':.5},False),({**good,'fill_fraction':'0.60'},False),({**good,'commission_scenario_rate':'NaN'},True)]:
         actual=monitor_frozen(frozen,reference,[{'fixed_feature':.5}]*20,[record],[],0)['execution'][0]
         execution_cases.append({'input':record,'expected_restrict':expected,'actual':actual})
     results=[{'mature':True,'label':1},{'mature':False,'label':None}]
     maturity_cases=[]
-    for sessions,expiry,status in [(29,False,'NOT_AT_REGISTERED_CHECKPOINT'),(30,False,'INCONCLUSIVE'),(0,True,'INCONCLUSIVE')]:
+    for sessions,expiry,status in [(29,False,'NOT_AT_REGISTERED_CHECKPOINT'),(30,False,'INCONCLUSIVE'),(0,True,'INCONCLUSIVE'),(31,False,'NOT_AT_REGISTERED_CHECKPOINT')]:
         actual=monitor_frozen(frozen,reference,[{'fixed_feature':.5}]*20,[],results,sessions,expiry)['maturity']
         maturity_cases.append({'input':{'elapsed_sessions':sessions,'expiry':expiry,'results':results},'expected_status':status,'actual':actual})
     checks=all(r['actual']['restrict']==r['expected_restrict'] for r in examples+execution_cases) and all(r['actual']['review_status']==r['expected_status'] for r in maturity_cases)
@@ -266,23 +285,41 @@ def monitoring_method(frozen):
         'method_fingerprint':validation_code(),'reference_basis':'1st/99th DEVELOPMENT feature percentiles only; worked bounds0..1 are fixed synthetic inputs',
         'reference_bounds':reference,'examples':examples,'execution_cases':execution_cases,'maturity_cases':maturity_cases,'checks_passed':checks,
         'mature_review':{'checkpoint':'REGISTERED30_SESSION_OR_EXPIRY','unmatured_scored':False,'insufficient':'INCONCLUSIVE','extra_pass_look':False},
+        'checkpoint_contract':'elapsed_review_sessions is relative to the last registered review boundary, persisted/uniquely consumed by27;31 is a missed checkpoint gap, no new statistical review',
         'actual_user_execution_evidence':False,'actual_drift_evidence':False,'G7_evidence':False}
 
 
 def evaluate(original):
     frozen=original['frozen']; state=original['state']; probability=probability_checks(frozen,original)
     economics=continuous_checks(frozen,state,state['comparators']); robustness=g5_checks(frozen,original['replay'])
+    robust_hard=[group+'/'+str(item['component'])+'/'+reason for group,items in robustness.items() for item in items
+        for reason in item.get('details',{}).get('hard_failures',[])]
     gates={'G1':gate('INCONCLUSIVE',['STRICT_HISTORICAL_PIT_AND_INDEPENDENCE_UNPROVEN'],{'evidence_kind':frozen['evidence_kind'],'data_use':frozen.get('data_use')}),
-        'G2':gate('PASS' if original['replay_matches'] else 'FAIL',[] if original['replay_matches'] else ['CONTINUOUS_REPLAY_MISMATCH'],{'input_integrity_checked':True,'continuous_replay_matches':original['replay_matches'],'scope':'Current frozen continuous algorithm; account/permission/recovery acceptance remains deployment responsibility'}),
+        'G2':gate('INCONCLUSIVE' if original['replay_matches'] else 'FAIL',['COMPLETE_DEPLOYMENT_ENGINEERING_EVIDENCE_NOT_BOUND'] if original['replay_matches'] else ['CONTINUOUS_REPLAY_MISMATCH'],{'input_integrity_checked':True,'continuous_replay_matches':original['replay_matches'],'replay_subcheck':'PASS' if original['replay_matches'] else 'FAIL','scope':'Current frozen continuous algorithm; account/permission/recovery acceptance remains deployment responsibility'}),
         'G3':gate('INCONCLUSIVE',['INDEPENDENT_CALIBRATION_UNVALIDATED','DEPENDENT_SUPPORT_OR_ASSUMPTIONS_UNVERIFIED'],probability),
         'G4':gate('FAIL' if economics['hard_failures'] else 'INCONCLUSIVE',economics['hard_failures'] or ['DEPENDENT_NAV_SUPPORT_OR_ASSUMPTIONS_UNVERIFIED'],economics),
-        'G5':gate('FAIL' if any(c['status']=='FAIL' for parts in robustness.values() for c in parts) else 'INCONCLUSIVE', ['REQUIRED_COMPONENTS_OR_SUPPORT_INCOMPLETE'],robustness),
+        'G5':gate('FAIL' if robust_hard else 'INCONCLUSIVE', robust_hard or ['REQUIRED_COMPONENTS_OR_SUPPORT_INCOMPLETE'],robustness),
         'G6':gate('INCONCLUSIVE',['REAL_FORWARD_ENGINEERING_CONSISTENCY_NOT_RECORDED'],{'historical_replay_matches':original['replay_matches'],'method_proof_does_not_prove_actual_online':True}),
         'G7':gate('INCONCLUSIVE',['REAL_ARCHIVED_MATURE_FORWARD_RESULTS_MISSING'],{'mature_real_forward_count':0,'forward_started_at':None})}
     return {'gates':gates,'validation_verdict':combine(gates),'monitoring_method_validation':monitoring_method(frozen),
+        'monitoring_dev_reference':development_reference(original['model_input']),
         'gate_combination_method':gate_combination_method(frozen),
         'incomplete_checks':[key+'/'+str(item['component']) for key,items in robustness.items() for item in items if item['status']=='INCOMPLETE'],
         'preliminary':True,'statistical_pass':False}
+
+
+def development_reference(model_input):
+    examples=model_input['examples']['DEVELOPMENT'];bounds={}
+    for feature in examples[0]['feature_snapshot']['features'] if examples else []:
+        values=sorted(float(r['feature_snapshot']['features'][feature]) for r in examples)
+        def quantile(p):
+            offset=(len(values)-1)*p;index=int(offset)
+            return values[index]+(values[min(index+1,len(values)-1)]-values[index])*(offset-index)
+        bounds[feature]=[quantile(.01),quantile(.99)]
+    value={'source':'FROZEN_DEVELOPMENT_ONLY','method':'Linear empirical1st/99th percentile; no incoming-data refit',
+        'bounds':bounds,'observation_dates':[r['observation_date'] for r in examples],
+        'input_fingerprint':fingerprint(examples),'method_fingerprint':validation_code()}
+    return {**value,'reference_fingerprint':fingerprint(value)}
 
 
 class AutomaticValidation:
@@ -331,6 +368,7 @@ class AutomaticValidation:
         for field in ['calibrator_artifact','input_archive','freeze_manifest']:
             self.shadow.checked_archive(model[field])
         original={'frozen':frozen,'state':state,'replay':replay,'model':model,'model_artifact':self.shadow.checked_archive(model['model_artifact']),
+            'model_input':self.shadow.checked_archive(model['input_archive']),
             'replay_matches':self.shadow.replay(freeze_id)['matches_original'],'validation_code_fingerprint':validation_code()}
         input_archive=self.evidence.archive(encode(original).encode(),'AUTOMATIC_VALIDATION_INPUT',research_namespace='HISTORICAL')
         identifier=str(uuid4())
@@ -345,7 +383,7 @@ class AutomaticValidation:
             raise
         attempt.update(status='SUCCEEDED',finished_at=now(),result_fingerprint=fingerprint(result))
         value={'validation_id':identifier,'freeze_id':freeze_id,'protocol_id':frozen['protocol_id'],'recorded_at':now(),'basis':command.basis,
-            'validation_attempt':attempt,'validation_attempt_manifest':self.attempts(freeze_id),
+            'validation_attempt':attempt,'validation_attempt_manifest':[attempt if a['validation_attempt_id']==identifier else a for a in self.attempts(freeze_id)],
             'purpose':command.purpose,'namespace':'HISTORICAL','evidence_kind':frozen['evidence_kind'],'complete_protocol_fingerprint':frozen['complete_protocol_fingerprint'],
             'candidate_fingerprints':frozen['fingerprints'],'primary_objective':frozen['design']['primary_objective'],'baseline':frozen['baseline'],
             'comparators':frozen['design']['baselines'],'windows':frozen['design']['windows'],'attempt_manifest':self.registry.attempt_manifest(frozen['protocol_id']),

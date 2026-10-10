@@ -20,21 +20,32 @@ with TestClient(create_app(directory)) as client:
     manifest=client.get(f'/api/research/protocols/{pid}/attempt-manifest').json()
     model=client.get(f'/api/research/models/{mid}').json()
     assert model['data_use']=='RECONSTRUCTED_RESEARCH' and model['evidence_kind']=='REAL_ACQUISITION'
-    response=client.post(f'/api/research/protocols/{pid}/complete-freezes',json={
+    existing=client.get(f'/api/research/protocols/{pid}/complete-freezes').json()
+    if existing:
+        response=client.get('/api/research/complete-freezes/'+existing[0]['freeze_id'])
+    else:
+        response=client.post(f'/api/research/protocols/{pid}/complete-freezes',json={
         'model_run_id':mid,'attempt_ids':manifest['attempt_ids'],'artifact_fingerprints':model['artifact_fingerprints'],
-        'baseline':{'cash_yuan':'100000.00','positions':[]},'basis':'Actual reconstructed fixed model, isolated current-gap validation; not actual user funds/strict PIT/qualification'})
-    assert response.status_code==201,response.text
+            'baseline':{'cash_yuan':'100000.00','positions':[]},'basis':'Actual reconstructed fixed model, isolated current-gap validation; not actual user funds/strict PIT/qualification'})
+    assert response.status_code in [200,201],response.text
     frozen=response.json()
     forecasts=[]
-    for item in model['calibration_predictions'][:3]:
+    state=client.get(f"/api/research/shadow/{frozen['freeze_id']}").json()
+    for item in [] if state['revision'] else model['calibration_predictions'][:3]:
         r=client.post(f'/api/research/models/{mid}/forecasts',json={'observation_date':item['observation_date'],'basis':'Actual reconstructed current historical diagnostic only'})
         assert r.status_code==201,r.text
         forecasts.append(r.json())
-    last=forecasts[-1]['observation_cutoff'][:10]
-    r=client.post(f"/api/research/shadow/{frozen['freeze_id']}/advance",json={'through_date':last,'forecast_ids':[f['forecast_id'] for f in forecasts],'expected_revision':0})
-    assert r.status_code==201,r.text
+    if not state['revision']:
+        last=forecasts[-1]['observation_cutoff'][:10]
+        r=client.post(f"/api/research/shadow/{frozen['freeze_id']}/advance",json={'through_date':last,'forecast_ids':[f['forecast_id'] for f in forecasts],'expected_revision':0})
+        assert r.status_code==201,r.text
     path=f"/api/research/complete-freezes/{frozen['freeze_id']}/validations"
-    command={'purpose':'DIAGNOSTIC','expected_complete_protocol_fingerprint':frozen['complete_protocol_fingerprint'],'basis':'Actual current frozen19 model limitations; noSEALED/no new fits/no actual forward'})
+    command={'purpose':'DIAGNOSTIC','expected_complete_protocol_fingerprint':frozen['complete_protocol_fingerprint'],'basis':'Actual current frozen19 model limitations; noSEALED/no new fits/no actual forward'}
+    previous=client.get(path).json()
+    prior_replay=None
+    if previous:
+        prior=client.post(f"/api/research/validations/{previous[-1]['validation_id']}/replay")
+        prior_replay={'validation_id':previous[-1]['validation_id'],'http_status':prior.status_code,'response':prior.json()}
     r=client.post(path,json=command)
     assert r.status_code==201,r.text
     result=r.json()
@@ -46,7 +57,7 @@ with TestClient(create_app(directory)) as client:
     assert client.get('/api/account').json()==account
     assert client.get(f'/api/research/protocols/{pid}/attempt-manifest').json()==manifest
     assert client.get(f'/api/research/protocols/{pid}').json()['forward_started_at'] is None
-    record={'runtime_copy':str(directory),'full_freeze':frozen,'validation':result,'replay':replay,'confirmation_refusal':refusal.json(),
+    record={'runtime_copy':str(directory),'full_freeze':frozen,'validation':result,'replay':replay,'prior_method_replay':prior_replay,'confirmation_refusal':refusal.json(),
         'account_unchanged':True,'original_fit_attempts_unchanged':True,'no_new_fit':True,'sealed_consumed':False,'forward_started':False}
     Path(args.output).write_text(json.dumps(record,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'validation_id':result['validation_id'],'verdict':result['validation_verdict'],'sealed_read':False,'replay_matches':True}))
