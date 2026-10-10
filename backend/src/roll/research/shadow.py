@@ -157,19 +157,6 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
                 events.append({'kind':'BUY_FILL','date':day,'instrument':order['instrument'],'quantity':str(filled),
                     'price_yuan':money(price),'cash_delta_yuan':money(-paid),'forecast_id':order['forecast_id']})
             pending.remove(order)
-        # Entitlements follow the frozen record/payment dates independently of actual account cash flows.
-        for event in inputs.get('cash_events',[]):
-            if event['record_date']==day:
-                for position in positions:
-                    if event.get('instrument',position['instrument'])!=position['instrument']:continue
-                    entitlements.append({'instrument':position['instrument'],'forecast_id':position['forecast_id'],
-                        'entry_date':position['entry_date'],'payment_date':event['cash_payment_date'],
-                        'gross':money(Decimal(position['quantity'])*Decimal(event['gross_cash_yuan_per_eligible_share'])),
-                        'paid':False,'tax':None})
-        for entitlement in entitlements:
-            if not entitlement['paid'] and entitlement['payment_date']<=day:
-                cash+=Decimal(entitlement['gross']);entitlement['paid']=True
-                events.append({'kind':'CASH_DISTRIBUTION','date':day,'cash_delta_yuan':entitlement['gross'],'forecast_id':entitlement['forecast_id']})
         for position in list(positions):
             if not position['exit_date'] or position['exit_date']>day:continue
             row=bar(position['instrument'])
@@ -193,6 +180,20 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
             events.append({'kind':'SELL_FILL','date':day,'instrument':position['instrument'],'quantity':position['quantity'],
                 'price_yuan':money(price),'cash_delta_yuan':money(received),'forecast_id':position['forecast_id'],'dividend_tax_yuan':money(tax)})
             positions.remove(position)
+        # Record-close holdings include today's fills and blocked exits, but exclude sold lots.
+        # Previously registered rights survive a later sale until their frozen payment date.
+        for event in inputs.get('cash_events',[]):
+            if event['record_date']==day:
+                for position in positions:
+                    if event.get('instrument',position['instrument'])!=position['instrument']:continue
+                    entitlements.append({'instrument':position['instrument'],'forecast_id':position['forecast_id'],
+                        'entry_date':position['entry_date'],'payment_date':event['cash_payment_date'],
+                        'gross':money(Decimal(position['quantity'])*Decimal(event['gross_cash_yuan_per_eligible_share'])),
+                        'paid':False,'tax':None})
+        for entitlement in entitlements:
+            if not entitlement['paid'] and entitlement['payment_date']<=day:
+                cash+=Decimal(entitlement['gross']);entitlement['paid']=True
+                events.append({'kind':'CASH_DISTRIBUTION','date':day,'cash_delta_yuan':entitlement['gross'],'forecast_id':entitlement['forecast_id']})
         valuation=Decimal('0');valuation_known=True
         for position in positions:
             row=bar(position['instrument'])
