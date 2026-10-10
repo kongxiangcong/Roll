@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** complete (engineering acceptance; no statistical PASS or qualification)
+**Completion:** complete
 
 **Primary acceptance:** AT-39、AT-62、AT-63、AT-74。
 
@@ -32,4 +32,6 @@
 2026-10-08 本轮依赖前沿核查：未启动本票。19真实训练/时间外校准与模型冻结未完成；05已完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
 
 
-2026-10-11：按当前用户继续推进后续票授权完成本票工程与关键网页验收；完整实验协议与19模型工件冻结分别记录，FITTED_UNVALIDATED与实际G1—G7/前向/正式授权保持分离。FastAPI/真实SQLite/隔离归档6项通过；真实React/FastAPI浏览器1项通过；TypeScript/Vite构建通过。AT-39/62/63/74逐场景及后续接口见[20验收记录](../evidence/20/acceptance.md)。METHOD算例不替代真实研究，未读取保护SEALED、未动实际研究家族预算或生产账户/数据，未启动真实前向。
+2026-10-11：按当前用户继续推进后续票授权完成本票工程与关键网页验收；完整实验协议与19模型工件冻结分别记录，FITTED_UNVALIDATED与实际G1—G7/前向/正式授权保持分离。独立合并验收发现非空持仓基线触发数量正则异常，已通过公开入口红绿回归修复：无现金而持有200股的基线可冻结、推进及重放，非法数量返回422。FastAPI/真实SQLite/隔离归档7项通过（88.98秒）；修正源码后真实React/FastAPI浏览器1项通过（59.0秒）；TypeScript/Vite构建通过。AT-39/62/63/74逐场景及后续接口见[20验收记录](../evidence/20/acceptance.md)。METHOD算例不替代真实研究，未读取保护SEALED、未动实际研究家族预算或生产账户/数据，未启动真实前向。
+
+2026-10-11 独立合并验收：修正合入 `b321f40a16bcf7a9ad3d392b7088508f9cce6edb` 后，另建隔离METHOD运行目录，公开API确认非空基线多日持仓守恒、重叠拒绝/成熟诊断、实际账户更新后影子不变、四命名空间分列、重启重放及两类归档损坏拒绝全部通过。12个19模型指纹依赖源码SHA256与长度不变；原版/修正版浏览器运行资料分别保全，各312文件零差异。`Completion: complete` 仅表示本票工程交付，不表示真实统计PASS、前向验证或正式资格。见[独立合并验收](../evidence/continuation-2026-10-11/merge20.md)。

@@ -2,7 +2,7 @@
 import hashlib
 import json
 from datetime import date
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 from pathlib import Path
 from typing import Literal
 from uuid import uuid4
@@ -39,9 +39,11 @@ class Position(BaseModel):
     @field_validator('quantity')
     @classmethod
     def quantity_valid(cls, value):
-        number(value, 'quantity', 0)
-        if Decimal(value) <= 0: raise ValueError('持仓必须为正整数股')
-        return value
+        try:shares=Decimal(value)
+        except InvalidOperation:raise ValueError('持仓必须为正整数股') from None
+        if not shares.is_finite() or shares<=0 or shares>Decimal('999999999999999999') or shares!=shares.to_integral_value():
+            raise ValueError('持仓必须为1至999999999999999999的整数股')
+        return str(int(shares))
 
     @field_validator('acquisition_cost_yuan')
     @classmethod

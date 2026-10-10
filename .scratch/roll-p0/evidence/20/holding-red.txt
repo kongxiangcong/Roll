@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_nonempty_frozen_holdings_preserve_quantity_and_replay_without_cash ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket20/backend/.test-tmp-holding20red/test_nonempty_frozen_holdings_0')
+
+    def test_nonempty_frozen_holdings_preserve_quantity_and_replay_without_cash(tmp_path):
+        with TestClient(create_app(tmp_path),raise_server_exceptions=False) as client:
+            _,protocol,model,dates=setup(client,tmp_path)
+            position={'instrument':protocol['scope']['instruments'][0],'quantity':'200',
+                      'acquisition_cost_yuan':'20000.00','acquired_on':dates[99]}
+            for invalid in ['200.5','0','NaN','Infinity','-1']:
+                response=freeze(client,protocol,model,baseline={'cash_yuan':'0.00','positions':[{**position,'quantity':invalid}]})
+>               assert response.status_code==422,response.text
+E               AssertionError: Internal Server Error
+E               assert 500 == 422
+E                +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\application\test_shadow.py:172: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_shadow.py::test_nonempty_frozen_holdings_preserve_quantity_and_replay_without_cash
+1 failed, 5 deselected in 15.26s
