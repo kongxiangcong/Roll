@@ -1,0 +1,13 @@
+# Spec review
+
+Base `eabc7a3ae3462821bedc80c2d6c8b2a88d04b19c`; initial20/21/23 tip `4646202624c32154d6d6758b9355924eec67909a`;30 tip `d0a88a4061c0225fd47f6e51ae2ee3881b3c6591`. Final reviewed integration tip **`25d9b9ae48b94ea4603cc36ab3dbacc8200be248`**, merging repair `581aa21ff3f78e36d8912a89c72714225ea7af4a`; product bytes match that repair. Read-only review, no profile writes/provider calls/SEALED access.
+
+1. **Resolved [P2]: record-close dividend eligibility.** Original `backend/src/roll/research/shadow.py:160-168` captured entitlements before same-day sales. ID-15 requires “仅按所属实验的模拟成交与现金流政策演化” (spec307). Literal zero-fee100-yuan/200-share case boughtJan2, sold at Jan21 registration close, paidJan23: actual cash/NAV100160, expected100000/no entitlement. Repair captures closing holdings after exits; tests cover sold/blocked lots, record-date purchase and prior unpaid rights. Evidence: `review-fixes/01-record-close-red.txt`, `03-record-close-green.txt` (4 passed), `04-old-freeze-after.json` (old archive unchanged, advance/replay409).
+
+2. **Resolved [P2]: assessment input identity.** Original `research/forward.py:426` replayed against mutable current samples filtered by timestamps. ID-17 requires “同输入的同结构化结果” (spec343). A later same-cutoff sample entered an earlier assessment; the captured diff confirms only the extra opportunity differed. Repair archives ordered `sample_ids` and uses their verified immutable sample bindings. Deterministic public API later-insertion test passes. Evidence: `06-forward-replay-difference.json`, `10-forward-assessment-short-red.txt`, `11-forward-assessment-short-green.txt`.
+
+3. **Resolved [P2]: original endpoint settlement cutoff.** Original `forward.py:361` used current clock after closing. ID-15 requires “截止时只评价已成熟结果…不为了等待其成熟自动续期” (spec315). Repair uses saved `closing_cutoff` or original deadline; early-stop/natural-month endpoint tests preserve immature outcomes after later maturity. Evidence: `11-forward-assessment-short-green.txt`, `13-forward-deadline-corrected-fixture.txt`.
+
+All evidence paths above are under `.scratch/roll-p0/evidence/continuation-2026-10-11/`. Final related suite: **44 passed/458.10s**, including real-process recovery (`14-final-related-with-recovery.txt`). Old forward samples/assessment remain unchanged and replay/settle409 (`15-old-forward-method-refusal.json`). No new actionable Spec defect or scope creep found.
+
+Accurate partial requirements remain:23 real dual-backend review awaits exact external authorization (zero transmissions);30 lacks real host producer/current verified STATUS/company-action/daily packets;32 remains pending. METHOD evidence does not supply real qualification. **Spec totals:3 original P2 findings,3 resolved,0 open code findings.**
