@@ -321,3 +321,9 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 ### 2026-10-11 Ticket 21 自动验证与当前缺口
 
 本票Completion complete，验证能力与当前候选证据不足分别呈现。最终3项API/SQLite/重放通过；Chrome1项及build通过。真实重建候选在一致副本保存完整冻结和当前诊断，旧方法重放409、现方法0联网一致，无新拟合/SEALED/前向起点。所需忽略的最终METHOD浏览器运行件逐件SHA/长度保全到根`.roll-data/implementation-evidence/21/browser-final-method`；实际副本位于同级`actual-current-copy`。本票不授予正式能力，真实确认性与G7按33责任保留。见[21验收](evidence/21/acceptance.md)。
+
+### 2026-10-11 Ticket 21 独立合并验收与当前前沿
+
+授权实现 `aef9b27` 已no-ff合入 `4f24dac6c18071309107a8a03b968395de44a710`；[独立METHOD公开API](evidence/continuation-2026-10-11/independent21-results.json)及[实际一致副本只读/离线重放](evidence/continuation-2026-10-11/independent21-actual-copy-results.json)分别PASS、进程退出0。重复逻辑机会入选1/raw2、时间段平仓总数1；空策略不足与资金不足硬FAIL分开，清单重启/归档损坏拒绝通过。实际当前G4/G5 FAIL、其余INCONCLUSIVE，最终重放一致、旧方法409，账户与原拟合预算不变；没有新拟合、SEALED消费或真实前向起点。
+
+315个浏览器源/根保全原件SHA与长度独立核对一致；独立METHOD运行目录209文件另有清单，12个19模型指纹依赖源码不变。工程完成不表示真实协议统计结项、独立技术复核或正式能力已完成。详见[合并验收](evidence/continuation-2026-10-11/merge21.md)。当前01—22共22票工程完成；23依赖已解除并按顺序推进。30仍可行但不跳过既定21→23顺序，真实G1—G7与自然月前向证据由后续责任取证。未推送。
