@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_risk_policy_review_uses_its_own_five_gates_and_read_only_reproduction __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket23/.scratch/t23-red4-temp/test_risk_policy_review_uses_i0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023655334050>
+method_market_timeline = <function method_market_timeline.<locals>.freeze at 0x0000023654CF80E0>
+
+    def test_risk_policy_review_uses_its_own_five_gates_and_read_only_reproduction(tmp_path,monkeypatch,method_market_timeline):
+        from test_risk_policy import policy_case,transport,ASOF
+        consume=method_market_timeline(ASOF)
+        monkeypatch.setenv('ROLL_ENV','test')
+        credential=tmp_path/'auth.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+        worker=tmp_path/'review.py';worker.write_text(WORKER)
+        directory=tmp_path/'runtime'
+        with TestClient(create_app(directory,market_transport=transport(),codex_worker=worker)) as client:
+            _,policy=policy_case(client,directory);consume()
+            evaluation=client.post('/api/research/risk-policies/'+policy['policy_id']+'/evaluations',json={'required_as_of':ASOF,'basis':'Frozen risk-policy review engineering'}).json()
+            before=client.get('/api/account').json()
+            response=client.post('/api/research/risk-evaluations/'+evaluation['evaluation_id']+'/review-materials',json={})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_technical_review.py:130: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_technical_review.py::test_risk_policy_review_uses_its_own_five_gates_and_read_only_reproduction
+1 failed, 3 deselected in 8.79s

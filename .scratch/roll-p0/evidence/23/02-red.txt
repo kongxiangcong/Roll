@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_model_agreement_cannot_clear_host_registered_validation_deficits ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket23/.scratch/t23-red2-temp/test_model_agreement_cannot_cl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015CC5F042B0>
+
+    def test_model_agreement_cannot_clear_host_registered_validation_deficits(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        credential=tmp_path/'auth.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+        worker=tmp_path/'agree.py';worker.write_text(WORKER.replace("emit(kind='completed',status='completed',output=json.dumps(output),error_info=None)","output['issues']=[]\noutput['limitations']=['I agree this can be used']\nemit(kind='completed',status='completed',output=json.dumps(output),error_info=None)"))
+        directory=tmp_path/'runtime'
+        with TestClient(create_app(directory,codex_worker=worker)) as client:
+            validation=validated(client,directory)
+            material=client.post('/api/research/validations/'+validation['validation_id']+'/review-materials',json={}).json()
+            started=client.post('/api/research/review-materials/'+material['material_id']+'/reviews',json={'expected_material_fingerprint':material['material_fingerprint']})
+            review=terminal(client,started.json()['run_id'])
+            assert review['status']=='COMPLETE',review
+            record=review['review_record']
+>           assert record['blocking_issues_resolved'] is False
+E           assert True is False
+
+backend\tests\application\test_technical_review.py:94: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_technical_review.py::test_model_agreement_cannot_clear_host_registered_validation_deficits
+1 failed, 1 deselected in 22.06s

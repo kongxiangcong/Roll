@@ -277,3 +277,13 @@ DAT-11、MOD-02、MOD-05的真实验收仍为部分。新增逐年权益/14次�
 [21逐场景验收](evidence/21/acceptance.md)提供API/SQLite、Chrome、真实一致副本和方法算例的分层证据。本节更新当前状态，上文旧快照不改写。
 
 2026-10-11独立合并验收补充：源 `aef9b27` 合入 `4f24dac6c18071309107a8a03b968395de44a710`。另一新METHOD公共API案例与实际一致副本已有清单读取/重放分别PASS，原始机会2/唯一1/入选1、分段平仓1、空输入INCONCLUSIVE、已观察资金不足硬FAIL、三清单持久化重放及归档损坏拒绝有独立结构化收据；实际旧方法重放409、最终方法0联网一致。G2整体仍INCONCLUSIVE，重放子检查PASS不扩大成部署证据；G7不足、未授予能力。见[独立21验收](evidence/continuation-2026-10-11/merge21.md)。当前01—22共22票工程完成，23按顺序进入可行前沿；真实统计及生产资格继续保留，不改写旧时点记录。
+
+### 2026-10-11 Ticket 23 当前审阅与交付证据边界
+
+| 范围 | 当前结论 | 证据及责任边界 |
+|---|---|---|
+| AT-51 / ID-08、ID-16、ID-17、ID-21 | partial，本地工程通过 | 最终39项API/SQLite，浏览器和build通过；真实CODEX和DeepSeek此批材料外发自动审批拒绝，0次外发，待明确授权，固定worker/SDK loopback不替代 |
+| ReviewRecord / MOD-06、EVAL-07 | 冻结、引用、宿主复现、拒绝/重试及并发通过 | 模型赞同不能清除宿主未完成检查与非PASS证据；异议处理不接受未经核实的文字；记录完整与阻断已解决独立 |
+| 验证交付 / ID-21 | METHOD终点FAIL/INCONCLUSIVE完整交付路径通过 | 实际endpoint和必需检查仍缺，不因审阅生成成功升级；真实实验由33，正式能力NOT_GRANTED |
+| Risk-policy 审阅接缝 | 固定evaluation/input/code与本协议五门槛绑定通过 | 独立risk材料，不借profit G3/G4/G7审阅；24须消费具体可重放证据及自己的资格条件 |
+| 全量本地export及外发精简材料 | 可追溯归档与边界通过 | 未准入SEALED只保留metadata/原因，不读内容；完整输入不外发。根永久审批packet/实际copy/METHOD保全见[23验收](evidence/23/acceptance.md) |

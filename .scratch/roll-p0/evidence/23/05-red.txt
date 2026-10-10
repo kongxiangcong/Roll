@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_host_method_endpoint_can_deliver_completed_fail_or_inconclusive_without_grant _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket23/.scratch/t23-red5-temp/test_host_method_endpoint_can_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000224A6CA4050>
+
+    def test_host_method_endpoint_can_deliver_completed_fail_or_inconclusive_without_grant(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        credential=tmp_path/'auth.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+        worker=tmp_path/'review.py';worker.write_text(WORKER)
+        fixture=tmp_path/'completed.json'
+        fixture.write_text(json.dumps({'cases':[
+            {'case_id':'completed-hard-failure','gates':{'G1':'PASS','G4':'FAIL','G7':'INCONCLUSIVE'},'checks_complete':True,'endpoint_reached':True,'observed_value':-1},
+            {'case_id':'completed-insufficient-support','gates':{'G1':'PASS','G4':'INCONCLUSIVE','G7':'INCONCLUSIVE'},'checks_complete':True,'endpoint_reached':True,'observed_value':None}]}))
+>       with TestClient(create_app(tmp_path/'runtime',codex_worker=worker,technical_review_method_file=fixture)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: create_app() got an unexpected keyword argument 'technical_review_method_file'
+
+backend\tests\application\test_technical_review.py:150: TypeError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_technical_review.py::test_host_method_endpoint_can_deliver_completed_fail_or_inconclusive_without_grant
+1 failed, 4 deselected in 2.40s
