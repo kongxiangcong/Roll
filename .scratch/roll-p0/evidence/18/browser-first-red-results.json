@@ -1,0 +1,178 @@
+{
+  "config": {
+    "configFile": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\frontend\\playwright.executions.config.ts",
+    "rootDir": "D:/dsh-proj/Roll/.scratch/worktrees/18-daily-execution-labels/frontend/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/dsh-proj/Roll/.scratch/worktrees/18-daily-execution-labels/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/dsh-proj/Roll/.scratch/worktrees/18-daily-execution-labels/frontend/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "executions-live.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/executions-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "executions-live.spec.ts",
+      "file": "executions-live.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real historical execution support retains120 unknown cases, zero real training and no user account authority",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3702,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T20:36:48.724Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34fc55c0cea55d02eaf9-fe3e896a3923e53552e9",
+          "file": "executions-live.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "method execution view shows immutable maturity, interval and fee scenarios, saves and offline-replays same inputs",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1084,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/)\nExpected: visible\nError: strict mode violation: getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/) resolved to 3 elements:\n    1) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').first()\n    2) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').nth(1)\n    3) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').nth(2)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/)\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/)\nExpected: visible\nError: strict mode violation: getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/) resolved to 3 elements:\n    1) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').first()\n    2) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').nth(1)\n    3) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').nth(2)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/)\u001b[22m\n\n    at D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\frontend\\tests\\e2e\\executions-live.spec.ts:30:42",
+                    "location": {
+                      "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\frontend\\tests\\e2e\\executions-live.spec.ts",
+                      "column": 42,
+                      "line": 30
+                    },
+                    "snippet": "  28 |   const panel=page.getByRole('region',{name:'日线执行与成熟标签'});\n  29 |   await expect(panel.getByText(/HISTORICAL · METHOD_CASE/)).toBeVisible();\n> 30 |   await expect(panel.getByText(/净损益区间/)).toBeVisible();\n     |                                          ^\n  31 |   await expect(panel.getByText(/真实训练可用 0/)).toBeVisible();\n  32 |   await panel.getByText('历史评估时点与方法数量',{exact:true}).click();\n  33 |   await panel.getByLabel('标签评估时点（带时区）').fill('2026-01-06T16:00:00+08:00');await panel.getByLabel('计划股数').fill('100');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\frontend\\tests\\e2e\\executions-live.spec.ts",
+                        "column": 42,
+                        "line": 30
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/)\nExpected: visible\nError: strict mode violation: getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/) resolved to 3 elements:\n    1) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').first()\n    2) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').nth(1)\n    3) <p>净损益区间 -442.08 至 1955.98 元</p> aka getByText('净损益区间 -442.08 至 1955.98 元').nth(2)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: '日线执行与成熟标签' }).getByText(/净损益区间/)\u001b[22m\n\n\n  28 |   const panel=page.getByRole('region',{name:'日线执行与成熟标签'});\n  29 |   await expect(panel.getByText(/HISTORICAL · METHOD_CASE/)).toBeVisible();\n> 30 |   await expect(panel.getByText(/净损益区间/)).toBeVisible();\n     |                                          ^\n  31 |   await expect(panel.getByText(/真实训练可用 0/)).toBeVisible();\n  32 |   await panel.getByText('历史评估时点与方法数量',{exact:true}).click();\n  33 |   await panel.getByLabel('标签评估时点（带时区）').fill('2026-01-06T16:00:00+08:00');await panel.getByLabel('计划股数').fill('100');\n    at D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\frontend\\tests\\e2e\\executions-live.spec.ts:30:42"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T20:36:52.946Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\frontend\\test-results\\executions-live-method-exe-e794e-offline-replays-same-inputs\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\18-daily-execution-labels\\frontend\\tests\\e2e\\executions-live.spec.ts",
+                    "column": 42,
+                    "line": 30
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "34fc55c0cea55d02eaf9-1b86ff1acdcc4c94369e",
+          "file": "executions-live.spec.ts",
+          "line": 21,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-07T20:36:42.344Z",
+    "duration": 13075.104,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_current_authorization_shrink_uses_existing_single_exposure_field_and_revoke_is_hard_failure _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/22-independent-risk-policy/backend/.roll-data/test-22-red3/test_current_authorization_shr0')
+
+    def test_current_authorization_shrink_uses_existing_single_exposure_field_and_revoke_is_hard_failure(tmp_path):
+        with TestClient(create_app(tmp_path,market_transport=transport())) as client:
+            _,policy=policy_case(client,tmp_path)
+            command=funding(1,single_exposure='10000.00',effective_at='2026-09-30T10:00:00+08:00')
+            client.post('/api/funding/confirm',json=command).raise_for_status()
+            result=client.post('/api/research/risk-policies/'+policy['policy_id']+'/evaluations',json={'required_as_of':ASOF,'basis':'授权缩小立即收窄，旧政策历史不变'}).json()
+            assert result['positions'][0]['executable_quantity']=='800' and result['positions'][0]['target_quantity']=='250'
+            assert result['authorization']['single_exposure']=='10000.00'
+            assert client.get('/api/research/risk-policies/'+policy['policy_id']).json()==policy
+            command=funding(2,enabled=False,single_exposure='10000.00',effective_at='2026-09-30T10:00:00+08:00')
+            client.post('/api/funding/confirm',json=command).raise_for_status()
+            blocked=client.post('/api/research/risk-policies/'+policy['policy_id']+'/evaluations',json={'required_as_of':ASOF,'basis':'撤回不是自动清仓'}).json()
+>           assert blocked['engineering_verdict']=='FAIL' and blocked['executable_quantities'] is None and blocked['formal_action'] is None
+E           AssertionError: assert ('INCONCLUSIVE' == 'FAIL'
+E             
+E             - FAIL
+E             + INCONCLUSIVE)
+
+tests\application\test_risk_policy.py:70: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_risk_policy.py::test_current_authorization_shrink_uses_existing_single_exposure_field_and_revoke_is_hard_failure
+1 failed in 5.92s

@@ -1,0 +1,1373 @@
+{
+  "evidence_kind": "REAL_ACQUISITION",
+  "method_boundary": null,
+  "runtime_data_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\08-source-fallback\\backend\\.roll-data\\acceptance-08-process-final\\real",
+  "request": {
+    "instruments": [
+      "SSE:600519"
+    ],
+    "groups": [
+      "DAILY"
+    ],
+    "purpose": "OBSERVATION",
+    "start_date": "2026-09-29",
+    "end_date": "2026-09-30",
+    "cutoff": "2026-10-07T18:32:05.443392+00:00",
+    "required_fields": [
+      "DAILY.close"
+    ],
+    "timeout_seconds": 30,
+    "max_calls": 4,
+    "daily_source": "EASTMONEY",
+    "quote_source": "TENCENT",
+    "request_id": "44bd4660-1657-4221-b83e-cbe5f710c44e",
+    "cutoff_basis": "EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF",
+    "scope": {
+      "allowed": true,
+      "instruments": [
+        "SSE:600519"
+      ],
+      "purpose": "OBSERVATION",
+      "list_version": 2,
+      "account_version": 1,
+      "model_qualification": "NOT_GRANTED",
+      "trading_capability": "NONE"
+    },
+    "identity_context": {
+      "SSE:600519": {
+        "board": "MAIN",
+        "code": "600519",
+        "confirmed_at": "2026-10-07T18:32:05.436311+00:00",
+        "effective_at": "2026-10-07T00:00:00+08:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "贵州茅台",
+        "revision": 1
+      }
+    },
+    "created_at": "2026-10-07T18:32:05.449351+00:00",
+    "technical_limits": {
+      "max_calls": 4,
+      "timeout_seconds": 30,
+      "max_response_bytes": 16777216,
+      "retries": 0
+    }
+  },
+  "resolution": {
+    "acquired_facts": [
+      {
+        "adjustment": "RAW",
+        "adjustment_version": null,
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.286701+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1235.580",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.286701+00:00",
+        "group": "DAILY",
+        "high": "1245.870",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1230.880",
+        "model_daily_input_allowed": false,
+        "open": "1244.600",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "received_at": "2026-10-07T18:32:06.286701+00:00",
+        "revision_id": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2C",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-29",
+        "volume_reported": "26366.000",
+        "volume_shares": "2636600.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "RAW",
+        "adjustment_version": null,
+        "amount_basis": "MATCHING_SAME_SESSION_EMBEDDED_QUOTE_FIELD35",
+        "amount_yuan": "4797246636",
+        "available_at": "2026-10-07T18:32:06.286701+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1258.620",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.286701+00:00",
+        "group": "DAILY",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [],
+        "low": "1236.050",
+        "model_daily_input_allowed": true,
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "received_at": "2026-10-07T18:32:06.286701+00:00",
+        "revision_id": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2C",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-30",
+        "volume_reported": "38331.000",
+        "volume_shares": "3833100.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "adjustment_version": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.409082+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1235.580",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.409082+00:00",
+        "group": "DAILY",
+        "high": "1245.870",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1230.880",
+        "model_daily_input_allowed": false,
+        "open": "1244.600",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "received_at": "2026-10-07T18:32:06.409082+00:00",
+        "revision_id": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2Cqfq",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-29",
+        "volume_reported": "26366.000",
+        "volume_shares": "2636600.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "adjustment_version": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.409082+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1258.620",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.409082+00:00",
+        "group": "DAILY",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1236.050",
+        "model_daily_input_allowed": false,
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "received_at": "2026-10-07T18:32:06.409082+00:00",
+        "revision_id": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2Cqfq",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-30",
+        "volume_reported": "38331.000",
+        "volume_shares": "3833100.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "attempts": [
+      {
+        "cached": false,
+        "request_id": "44bd4660-1657-4221-b83e-cbe5f710c44e",
+        "role": "PRIMARY",
+        "run_id": "5ee49abf-b97e-42bc-a07d-9d44de82994c"
+      },
+      {
+        "request_id": "fe7edde0-fdad-473f-a6e9-d738c1d82208",
+        "role": "ALTERNATE",
+        "run_id": "b0da1584-4aed-4faf-beec-fca8ba3b8e49"
+      }
+    ],
+    "capabilities": {
+      "complete_daily_model": "BLOCKED_NEW_RISK",
+      "current_monitoring": "MONITORING_UNAVAILABLE",
+      "new_risk": "BLOCKED_NEW_RISK",
+      "observation": "DEGRADED",
+      "required_inputs": "SATISFIED"
+    },
+    "command": {
+      "allow_fallback": true,
+      "basis_run_id": null,
+      "knowledge_cutoff": null,
+      "revision_of": null,
+      "usage": "HISTORICAL_RESEARCH",
+      "use_cache": true
+    },
+    "elapsed_seconds": 1.158,
+    "evidence_kind": "REAL_ACQUISITION",
+    "facts": [
+      {
+        "adjustment": "RAW",
+        "adjustment_version": null,
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.286701+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1235.580",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.286701+00:00",
+        "group": "DAILY",
+        "high": "1245.870",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1230.880",
+        "model_daily_input_allowed": false,
+        "open": "1244.600",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "received_at": "2026-10-07T18:32:06.286701+00:00",
+        "revision_id": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2C",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-29",
+        "volume_reported": "26366.000",
+        "volume_shares": "2636600.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "RAW",
+        "adjustment_version": null,
+        "amount_basis": "MATCHING_SAME_SESSION_EMBEDDED_QUOTE_FIELD35",
+        "amount_yuan": "4797246636",
+        "available_at": "2026-10-07T18:32:06.286701+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1258.620",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.286701+00:00",
+        "group": "DAILY",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [],
+        "low": "1236.050",
+        "model_daily_input_allowed": true,
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "received_at": "2026-10-07T18:32:06.286701+00:00",
+        "revision_id": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2C",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-30",
+        "volume_reported": "38331.000",
+        "volume_shares": "3833100.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "adjustment_version": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.409082+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1235.580",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.409082+00:00",
+        "group": "DAILY",
+        "high": "1245.870",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1230.880",
+        "model_daily_input_allowed": false,
+        "open": "1244.600",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "received_at": "2026-10-07T18:32:06.409082+00:00",
+        "revision_id": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2Cqfq",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-29",
+        "volume_reported": "26366.000",
+        "volume_shares": "2636600.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "adjustment_version": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.409082+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1258.620",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.409082+00:00",
+        "group": "DAILY",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1236.050",
+        "model_daily_input_allowed": false,
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "received_at": "2026-10-07T18:32:06.409082+00:00",
+        "revision_id": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2Cqfq",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-30",
+        "volume_reported": "38331.000",
+        "volume_shares": "3833100.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "finished_at": "2026-10-07T18:32:06.630457+00:00",
+    "formal_judgment": "DISABLED",
+    "freshness": [
+      {
+        "expected_session": "2026-09-30",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T18:32:06.593456+00:00",
+        "latest_reported_session": "2026-09-30",
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [
+          "2026-10-07T18:32:06.286701+00:00",
+          "2026-10-07T18:32:06.286701+00:00",
+          "2026-10-07T18:32:06.409082+00:00",
+          "2026-10-07T18:32:06.409082+00:00"
+        ],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": []
+      }
+    ],
+    "gaps": [
+      {
+        "adjustment": "RAW",
+        "code": "RemoteProtocolError",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "Server disconnected without sending a response.",
+        "resolved": true,
+        "run_id": "5ee49abf-b97e-42bc-a07d-9d44de82994c"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "code": "RemoteProtocolError",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "Server disconnected without sending a response.",
+        "resolved": true,
+        "run_id": "5ee49abf-b97e-42bc-a07d-9d44de82994c"
+      },
+      {
+        "code": "COMPLETE_DAILY_REQUIRED_INPUTS_NOT_SATISFIED",
+        "group": "DAILY",
+        "instrument": "REQUESTED_SCOPE",
+        "resolved": false
+      }
+    ],
+    "knowledge_clock_basis": "ACTUAL_SYSTEM_CLOCK",
+    "knowledge_cutoff": "2026-10-07T18:32:06.593456+00:00",
+    "model_qualification": "NOT_GRANTED",
+    "network_calls": 4,
+    "request_fingerprint": "6a17e82ce6531f8fc16b9eb7f5f45333d799e35ab4b99298c14ed5b6be55ffd4",
+    "request_id": "44bd4660-1657-4221-b83e-cbe5f710c44e",
+    "requested_groups": [
+      "DAILY"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "resolution_id": "7e74ae24-f0bc-460e-92f4-b99572fde6f7",
+    "revision_of": null,
+    "source_checks": [
+      {
+        "adjustment": "RAW",
+        "alternate_source": "tencent-daily",
+        "basis": "Registered field definitions; source/context/date/required-field checks. No averaging or silent sequence splice.",
+        "decision": "ACCEPTED",
+        "field_checks": [
+          {
+            "alternate": "1244.600",
+            "comparison": "MISSING_PRIMARY",
+            "field": "open",
+            "primary": null
+          },
+          {
+            "alternate": "1235.580",
+            "comparison": "MISSING_PRIMARY",
+            "field": "close",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "last",
+            "primary": null
+          },
+          {
+            "alternate": "1245.870",
+            "comparison": "MISSING_PRIMARY",
+            "field": "high",
+            "primary": null
+          },
+          {
+            "alternate": "1230.880",
+            "comparison": "MISSING_PRIMARY",
+            "field": "low",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "previous_close",
+            "primary": null
+          },
+          {
+            "alternate": "2636600.000",
+            "comparison": "MISSING_PRIMARY",
+            "field": "volume_shares",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "amount_yuan",
+            "primary": null
+          }
+        ],
+        "group": "DAILY",
+        "independence": "NOT_ASSESSED; ticket14 owns independent critical verification",
+        "instrument": "SSE:600519",
+        "primary_source": null,
+        "primary_unit": null,
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "reasons": [],
+        "trade_date": "2026-09-29",
+        "unit": "SHARE",
+        "unit_comparison": "REGISTERED_NORMALIZED_FIELD_UNITS",
+        "upstream_times": {
+          "alternate": null,
+          "primary": null
+        }
+      },
+      {
+        "adjustment": "RAW",
+        "alternate_source": "tencent-daily",
+        "basis": "Registered field definitions; source/context/date/required-field checks. No averaging or silent sequence splice.",
+        "decision": "ACCEPTED",
+        "field_checks": [
+          {
+            "alternate": "1239.530",
+            "comparison": "MISSING_PRIMARY",
+            "field": "open",
+            "primary": null
+          },
+          {
+            "alternate": "1258.620",
+            "comparison": "MISSING_PRIMARY",
+            "field": "close",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "last",
+            "primary": null
+          },
+          {
+            "alternate": "1268.000",
+            "comparison": "MISSING_PRIMARY",
+            "field": "high",
+            "primary": null
+          },
+          {
+            "alternate": "1236.050",
+            "comparison": "MISSING_PRIMARY",
+            "field": "low",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "previous_close",
+            "primary": null
+          },
+          {
+            "alternate": "3833100.000",
+            "comparison": "MISSING_PRIMARY",
+            "field": "volume_shares",
+            "primary": null
+          },
+          {
+            "alternate": "4797246636",
+            "comparison": "MISSING_PRIMARY",
+            "field": "amount_yuan",
+            "primary": null
+          }
+        ],
+        "group": "DAILY",
+        "independence": "NOT_ASSESSED; ticket14 owns independent critical verification",
+        "instrument": "SSE:600519",
+        "primary_source": null,
+        "primary_unit": null,
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "reasons": [],
+        "trade_date": "2026-09-30",
+        "unit": "SHARE",
+        "unit_comparison": "REGISTERED_NORMALIZED_FIELD_UNITS",
+        "upstream_times": {
+          "alternate": null,
+          "primary": null
+        }
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "alternate_source": "tencent-daily",
+        "basis": "Registered field definitions; source/context/date/required-field checks. No averaging or silent sequence splice.",
+        "decision": "ACCEPTED",
+        "field_checks": [
+          {
+            "alternate": "1244.600",
+            "comparison": "MISSING_PRIMARY",
+            "field": "open",
+            "primary": null
+          },
+          {
+            "alternate": "1235.580",
+            "comparison": "MISSING_PRIMARY",
+            "field": "close",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "last",
+            "primary": null
+          },
+          {
+            "alternate": "1245.870",
+            "comparison": "MISSING_PRIMARY",
+            "field": "high",
+            "primary": null
+          },
+          {
+            "alternate": "1230.880",
+            "comparison": "MISSING_PRIMARY",
+            "field": "low",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "previous_close",
+            "primary": null
+          },
+          {
+            "alternate": "2636600.000",
+            "comparison": "MISSING_PRIMARY",
+            "field": "volume_shares",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "amount_yuan",
+            "primary": null
+          }
+        ],
+        "group": "DAILY",
+        "independence": "NOT_ASSESSED; ticket14 owns independent critical verification",
+        "instrument": "SSE:600519",
+        "primary_source": null,
+        "primary_unit": null,
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "reasons": [],
+        "trade_date": "2026-09-29",
+        "unit": "SHARE",
+        "unit_comparison": "REGISTERED_NORMALIZED_FIELD_UNITS",
+        "upstream_times": {
+          "alternate": null,
+          "primary": null
+        }
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "alternate_source": "tencent-daily",
+        "basis": "Registered field definitions; source/context/date/required-field checks. No averaging or silent sequence splice.",
+        "decision": "ACCEPTED",
+        "field_checks": [
+          {
+            "alternate": "1239.530",
+            "comparison": "MISSING_PRIMARY",
+            "field": "open",
+            "primary": null
+          },
+          {
+            "alternate": "1258.620",
+            "comparison": "MISSING_PRIMARY",
+            "field": "close",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "last",
+            "primary": null
+          },
+          {
+            "alternate": "1268.000",
+            "comparison": "MISSING_PRIMARY",
+            "field": "high",
+            "primary": null
+          },
+          {
+            "alternate": "1236.050",
+            "comparison": "MISSING_PRIMARY",
+            "field": "low",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "previous_close",
+            "primary": null
+          },
+          {
+            "alternate": "3833100.000",
+            "comparison": "MISSING_PRIMARY",
+            "field": "volume_shares",
+            "primary": null
+          },
+          {
+            "alternate": null,
+            "comparison": "MISSING_PRIMARY",
+            "field": "amount_yuan",
+            "primary": null
+          }
+        ],
+        "group": "DAILY",
+        "independence": "NOT_ASSESSED; ticket14 owns independent critical verification",
+        "instrument": "SSE:600519",
+        "primary_source": null,
+        "primary_unit": null,
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "reasons": [],
+        "trade_date": "2026-09-30",
+        "unit": "SHARE",
+        "unit_comparison": "REGISTERED_NORMALIZED_FIELD_UNITS",
+        "upstream_times": {
+          "alternate": null,
+          "primary": null
+        }
+      }
+    ],
+    "started_at": "2026-10-07T18:32:05.465073+00:00",
+    "state": "DEGRADED",
+    "status": "COMPLETED",
+    "stop_reason": "CALL_BUDGET_EXHAUSTED",
+    "technical_limits": {
+      "max_calls": 4,
+      "max_response_bytes": 16777216,
+      "retries": 0,
+      "timeout_seconds": 30
+    },
+    "dependency_status": "CURRENT"
+  },
+  "source_runs": [
+    {
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "fa92d3579790a768039ff23bd6348b1c49d6160c2a748a62395427bdb9934dd5",
+      "elapsed_seconds": 0.277,
+      "evidence_kind": "REAL_ACQUISITION",
+      "finished_at": "2026-10-07T18:32:05.775147+00:00",
+      "gaps": [
+        {
+          "adjustment": "RAW",
+          "code": "RemoteProtocolError",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "Server disconnected without sending a response."
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "code": "RemoteProtocolError",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "Server disconnected without sending a response."
+        }
+      ],
+      "model": null,
+      "request_id": "44bd4660-1657-4221-b83e-cbe5f710c44e",
+      "run_id": "5ee49abf-b97e-42bc-a07d-9d44de82994c",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "31453382-585a-480f-a06b-174b133242e8",
+      "started_at": "2026-10-07T18:32:05.493654+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-07T18:32:05.698184+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=0&beg=20260929&end=20260930&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-07T18:32:05.637504+00:00",
+          "status": "FAILED"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "finished_at": "2026-10-07T18:32:05.757915+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=1&beg=20260929&end=20260930&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-07T18:32:05.698503+00:00",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "73c37d9913dc1b7758abda788aac6695f26b0461c2f06c959a18086a72fbd398",
+      "elapsed_seconds": 0.413,
+      "evidence_kind": "REAL_ACQUISITION",
+      "finished_at": "2026-10-07T18:32:06.532958+00:00",
+      "gaps": [],
+      "model": null,
+      "request_id": "fe7edde0-fdad-473f-a6e9-d738c1d82208",
+      "run_id": "b0da1584-4aed-4faf-beec-fca8ba3b8e49",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "335e7d50-27a3-48a7-832d-7825a0fc27c5",
+      "started_at": "2026-10-07T18:32:06.093066+00:00",
+      "status": "COMPLETE",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-07T18:32:06.329891+00:00",
+          "group": "DAILY",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+          "received_bytes": 1755,
+          "source_id": "tencent-daily",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2C",
+          "started_at": "2026-10-07T18:32:06.164855+00:00",
+          "status": "ARCHIVED"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "finished_at": "2026-10-07T18:32:06.434656+00:00",
+          "group": "DAILY",
+          "http_status": 200,
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+          "received_bytes": 1790,
+          "source_id": "tencent-daily",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2Cqfq",
+          "started_at": "2026-10-07T18:32:06.336694+00:00",
+          "status": "ARCHIVED"
+        }
+      ]
+    }
+  ],
+  "confirmation_performance": {
+    "measurement": "POST /api/account/confirm HTTP round-trip + JSON decode, warm persistent TCP client",
+    "samples": 100,
+    "warmup": 0,
+    "p95_method": "nearest rank ceil(0.95*n)",
+    "p95_ms": 323.6604999983683,
+    "median_ms": 113.11360001855064,
+    "max_ms": 439.5459000079427,
+    "samples_ms": [
+      20.46249998966232,
+      32.48390002408996,
+      16.817299998365343,
+      13.363200007006526,
+      30.42940000887029,
+      18.215699994470924,
+      21.71719999751076,
+      83.4430999821052,
+      32.648000022163615,
+      42.0631000015419,
+      59.12530000205152,
+      28.63960000104271,
+      24.664800002938136,
+      27.05410000635311,
+      29.039099987130612,
+      30.987400008598343,
+      34.590299997944385,
+      36.50709998328239,
+      36.01429998525418,
+      38.2654000131879,
+      46.856399974785745,
+      42.94430001755245,
+      47.053500020410866,
+      43.319699994754046,
+      44.712500006426126,
+      47.95310000190511,
+      52.47229998349212,
+      54.56270001013763,
+      59.95749999419786,
+      58.259000012185425,
+      81.20570000028238,
+      66.70730002224445,
+      60.801500017987564,
+      64.10660000983626,
+      75.78450001892634,
+      73.69360001757741,
+      77.45290000457317,
+      79.40129999769852,
+      75.37619999493472,
+      78.99859998724423,
+      83.83550000144169,
+      104.22680000192486,
+      103.37890000664629,
+      99.16370001155883,
+      104.79820001637563,
+      112.02610001782887,
+      104.87689997535199,
+      102.56510000908747,
+      111.37669999152422,
+      112.37790001905523,
+      113.84930001804605,
+      126.37979999999516,
+      117.6876999961678,
+      132.99980000010692,
+      127.21629999577999,
+      145.67250001709908,
+      149.51590000418946,
+      156.8754999898374,
+      146.91599999787286,
+      165.8733000222128,
+      166.586199979065,
+      157.524000009289,
+      161.9784000213258,
+      173.45790000399575,
+      181.36049999156967,
+      184.7453999798745,
+      175.557700014906,
+      193.9589999965392,
+      179.67919999500737,
+      191.64119998458773,
+      213.52910000132397,
+      195.06979998550378,
+      228.94260002067313,
+      226.41249999287538,
+      216.12080000340939,
+      209.14369999081828,
+      214.69819999765605,
+      235.68179999710992,
+      240.142199996626,
+      251.1547000030987,
+      238.92950001754798,
+      247.60729999979958,
+      246.5094999934081,
+      255.35809999564663,
+      270.7442000100855,
+      274.7901999973692,
+      271.5147999988403,
+      282.62549999635667,
+      293.45379999722354,
+      284.30929998285137,
+      289.5098000008147,
+      299.15720000281,
+      319.1651000233833,
+      323.6604999983683,
+      338.7976000085473,
+      314.9893000081647,
+      341.3615000026766,
+      352.6846999884583,
+      345.22560000186786,
+      439.5459000079427
+    ],
+    "position_count": 2,
+    "event_count": 103,
+    "account_version": 101,
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "python": "3.13.12",
+    "sqlite": "3.50.4",
+    "external_task_integration": "SAME_PROCESS_HTTP_WITH_REAL_PROVIDER_ACQUISITION",
+    "accepted_http_ms": 17.486900003859773,
+    "overlap_samples": 11,
+    "overlap_p95_ms": 83.4430999821052,
+    "overlap_observation": "Response completion during polling-observed RUNNING interval; polling can overestimate overlap by one poll interval",
+    "resolution_poll_timeline": [
+      {
+        "at": 215933.7665685,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215933.8161416,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215933.8716334,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215933.9255865,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215933.9862276,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.1734311,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.2401585,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.3198198,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.3873187,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.5057903,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.5789786,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.6302454,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.6972478,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.748562,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.8209588,
+        "status": "RUNNING"
+      },
+      {
+        "at": 215934.9444886,
+        "status": "COMPLETED"
+      }
+    ]
+  },
+  "replay": {
+    "replay_id": "9b7f6bf5-900c-46a3-b148-42841ab82042",
+    "resolution_id": "7e74ae24-f0bc-460e-92f4-b99572fde6f7",
+    "recorded_at": "2026-10-07T18:32:49.972256+00:00",
+    "network_calls": 0,
+    "replay_kind": "ORIGINAL_IMMUTABLE_INPUT_AND_ASSESSMENT",
+    "original_state": "DEGRADED",
+    "original_knowledge_cutoff": "2026-10-07T18:32:06.593456+00:00",
+    "facts": [
+      {
+        "adjustment": "RAW",
+        "adjustment_version": null,
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.286701+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1235.580",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.286701+00:00",
+        "group": "DAILY",
+        "high": "1245.870",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1230.880",
+        "model_daily_input_allowed": false,
+        "open": "1244.600",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "received_at": "2026-10-07T18:32:06.286701+00:00",
+        "revision_id": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2C",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-29",
+        "volume_reported": "26366.000",
+        "volume_shares": "2636600.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "RAW",
+        "adjustment_version": null,
+        "amount_basis": "MATCHING_SAME_SESSION_EMBEDDED_QUOTE_FIELD35",
+        "amount_yuan": "4797246636",
+        "available_at": "2026-10-07T18:32:06.286701+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1258.620",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.286701+00:00",
+        "group": "DAILY",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [],
+        "low": "1236.050",
+        "model_daily_input_allowed": true,
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "received_at": "2026-10-07T18:32:06.286701+00:00",
+        "revision_id": "fd78f690eac94df297cc3ba08b9824369f5637112dfd41b030e51f98f79d47cf",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2C",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-30",
+        "volume_reported": "38331.000",
+        "volume_shares": "3833100.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "adjustment_version": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.409082+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1235.580",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.409082+00:00",
+        "group": "DAILY",
+        "high": "1245.870",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1230.880",
+        "model_daily_input_allowed": false,
+        "open": "1244.600",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "received_at": "2026-10-07T18:32:06.409082+00:00",
+        "revision_id": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2Cqfq",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-29",
+        "volume_reported": "26366.000",
+        "volume_shares": "2636600.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "adjustment_version": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "amount_basis": null,
+        "amount_yuan": null,
+        "available_at": "2026-10-07T18:32:06.409082+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "calendar_source": {
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+        },
+        "close": "1258.620",
+        "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+        "conversion_basis": "SSE MAIN STOCK Tencent reported hands cross-check with same-session quote packed amount and raw OHLC",
+        "errors": [],
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T18:32:06.409082+00:00",
+        "group": "DAILY",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "limitations": [
+          "HISTORICAL_AMOUNT_NOT_RETURNED"
+        ],
+        "low": "1236.050",
+        "model_daily_input_allowed": false,
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "received_at": "2026-10-07T18:32:06.409082+00:00",
+        "revision_id": "98709edbcea22ad4320df9d416d661cd575583b2bc5eeb1040b6847d585674ef",
+        "session_state": "TRADING_DAY",
+        "source_id": "tencent-daily",
+        "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-09-29%2C2026-09-30%2C800%2Cqfq",
+        "source_volume_unit": "HAND",
+        "time_precision": "DATE",
+        "trade_date": "2026-09-30",
+        "volume_reported": "38331.000",
+        "volume_shares": "3833100.000",
+        "volume_state": "REPORTED",
+        "volume_unit": "SHARE"
+      }
+    ],
+    "observations": [],
+    "freshness": [
+      {
+        "expected_session": "2026-09-30",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "knowledge_cutoff": "2026-10-07T18:32:06.593456+00:00",
+        "latest_reported_session": "2026-09-30",
+        "policy": "USE_AND_EXCHANGE_SESSION; NO_UNIVERSAL_MINUTE_THRESHOLD",
+        "received_at": [
+          "2026-10-07T18:32:06.286701+00:00",
+          "2026-10-07T18:32:06.286701+00:00",
+          "2026-10-07T18:32:06.409082+00:00",
+          "2026-10-07T18:32:06.409082+00:00"
+        ],
+        "state": "HISTORICAL_WINDOW",
+        "upstream_at": []
+      }
+    ],
+    "gaps": [
+      {
+        "adjustment": "RAW",
+        "code": "RemoteProtocolError",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "Server disconnected without sending a response.",
+        "resolved": true,
+        "run_id": "5ee49abf-b97e-42bc-a07d-9d44de82994c"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "code": "RemoteProtocolError",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "Server disconnected without sending a response.",
+        "resolved": true,
+        "run_id": "5ee49abf-b97e-42bc-a07d-9d44de82994c"
+      },
+      {
+        "code": "COMPLETE_DAILY_REQUIRED_INPUTS_NOT_SATISFIED",
+        "group": "DAILY",
+        "instrument": "REQUESTED_SCOPE",
+        "resolved": false
+      }
+    ],
+    "current_dependency_status": "CURRENT",
+    "formal_judgment": "DISABLED"
+  }
+}

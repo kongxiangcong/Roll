@@ -1,0 +1,41 @@
+{
+  "captured_at_utc": "2026-10-07T18:04:29.912550+00:00",
+  "timezone": "Asia/Shanghai",
+  "checkout": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\05-reconcile-account",
+  "integration_base": "1159dc71b610d15c17fd7d889f08c98978f0bc40",
+  "python": "3.13.12",
+  "api_port": 8025,
+  "web_port": 5185,
+  "browser_channel": "chrome",
+  "data_isolation": "Each Playwright run mkdtemp OS temp; every API/recovery test owns isolated temp SQLite/archive; production data untouched",
+  "final_api_run": {
+    "started_at_utc": "2026-10-07T17:53:11.3836194Z",
+    "command": "pytest backend/tests/application/test_reconcile.py backend/tests/recovery/test_csv_v2_upgrade.py -q",
+    "completed_at_utc": "2026-10-07T17:53:45.8284616Z",
+    "exit_code": 0
+  },
+  "browser_stats": {
+    "startTime": "2026-10-07T18:02:21.376Z",
+    "duration": 13439.402999999998,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "real_action_invalidation": "PARTIAL: 26/27 real caller does not exist",
+  "valuation_joint": "PARTIAL: 09 not implemented",
+  "final_account_run": {
+    "started_at_utc": "2026-10-07T17:58:20.7764342Z",
+    "command": "pytest account/fills/cash/CSV/reconcile + real v1/v2 upgrades -q",
+    "completed_at_utc": "2026-10-07T18:00:46.7138866Z",
+    "exit_code": 0
+  },
+  "integrated_browser_stats": {
+    "startTime": "2026-10-07T18:00:15.796Z",
+    "duration": 24830.099,
+    "expected": 9,
+    "skipped": 1,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**Completion:** pending
+
 **Primary acceptance:** AT-53、AT-73、AT-75。
 
 **References:** [规格](../spec.md) ID-02、ID-12、ID-16、ID-17；Testing Decisions 的主要边界 1、5、7 及“权限竞态”；[目录与实施约束](../project-layout.md)。
@@ -24,3 +26,5 @@
 ## Comments
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。
+
+2026-10-08 本轮依赖前沿核查：未启动本票。23技术审阅交付未完成；10已完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。

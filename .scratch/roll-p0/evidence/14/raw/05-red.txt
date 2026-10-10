@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_later_acquired_evidence_cannot_be_rewritten_as_known_at_old_review_cutoff _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/14-fifth-red/test_later_acquired_evidence_c0')
+
+    def test_later_acquired_evidence_cannot_be_rewritten_as_known_at_old_review_cutoff(tmp_path):
+        raw=[original_quote('A:first')]
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            setup_request(client)
+            a=acquire(client)
+            raw[0]=original_quote('B:second')
+            b=acquire(client)
+            payload=command([a,b]);payload['knowledge_cutoff']='2026-09-30T16:00:00+08:00'
+            response=client.post('/api/data/verifications',json=payload)
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":[{"type":"extra_forbidden","loc":["body","knowledge_cutoff"],"msg":"Extra inputs are not permitted","input":"2026-09-30T16:00:00+08:00"}]}
+E           assert 422 == 201
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\application\test_independent_verification.py:135: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_later_acquired_evidence_cannot_be_rewritten_as_known_at_old_review_cutoff
+1 failed, 4 deselected in 3.73s

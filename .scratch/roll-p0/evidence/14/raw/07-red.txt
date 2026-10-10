@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_extra_same_origin_and_equivalent_timezone_do_not_create_votes_or_false_conflict _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/14-seventh-red/test_extra_same_origin_and_equ0')
+
+    def test_extra_same_origin_and_equivalent_timezone_do_not_create_votes_or_false_conflict(tmp_path):
+        raw=[original_quote('A:first')]
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            setup_request(client);a=acquire(client);duplicate=acquire(client)
+            raw[0]=original_quote('B:second',upstream_at='2026-09-30T07:00:00+00:00');b=acquire(client)
+            payload=command([a,duplicate,b]);payload['facts'][0]['field']='upstream_at'
+            value=client.post('/api/data/verifications',json=payload).json()
+>           assert value['result']=='VERIFIED'
+E           AssertionError: assert 'CONFLICT' == 'VERIFIED'
+E             
+E             - VERIFIED
+E             + CONFLICT
+
+tests\application\test_independent_verification.py:163: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_extra_same_origin_and_equivalent_timezone_do_not_create_votes_or_false_conflict
+1 failed, 6 deselected in 3.58s

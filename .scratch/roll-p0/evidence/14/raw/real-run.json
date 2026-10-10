@@ -1,0 +1,936 @@
+{
+  "executed_at_utc": "2026-10-07T21:37:11.158331+00:00",
+  "evidence_kind": "REAL_ARCHIVED_EVIDENCE_WITH_ACTUAL_SINA_GET",
+  "data_directory": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\14-independent-verification\\backend\\.roll-data\\14-real",
+  "original_07_inputs": "Copied and SHA verified; original available_at retained",
+  "request": {
+    "instruments": [
+      "SSE:600519"
+    ],
+    "groups": [
+      "QUOTE"
+    ],
+    "purpose": "OBSERVATION",
+    "start_date": "2026-09-30",
+    "end_date": "2026-09-30",
+    "cutoff": "2026-10-07T21:10:55.658889+00:00",
+    "required_fields": [],
+    "timeout_seconds": 20,
+    "max_calls": 1,
+    "daily_source": "EASTMONEY",
+    "quote_source": "SINA",
+    "request_id": "f4cbf9c4-4d31-4737-b41e-be197fe02df2",
+    "cutoff_basis": "EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF",
+    "scope": {
+      "allowed": true,
+      "instruments": [
+        "SSE:600519"
+      ],
+      "purpose": "OBSERVATION",
+      "list_version": 3,
+      "account_version": 1,
+      "model_qualification": "NOT_GRANTED",
+      "trading_capability": "NONE"
+    },
+    "identity_context": {
+      "SSE:600519": {
+        "board": "MAIN",
+        "code": "600519",
+        "confirmed_at": "2026-10-07T16:19:01.022561+00:00",
+        "effective_at": "2026-10-07T00:00:00+08:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "贵州茅台",
+        "revision": 1
+      }
+    },
+    "created_at": "2026-10-07T21:10:55.665952+00:00",
+    "technical_limits": {
+      "max_calls": 1,
+      "timeout_seconds": 20,
+      "max_response_bytes": 16777216,
+      "retries": 0
+    }
+  },
+  "fresh_run": {
+    "run_id": "6d48cd99-44a0-41a0-8523-bf7fec1431c1",
+    "request_id": "f4cbf9c4-4d31-4737-b41e-be197fe02df2",
+    "backend": "DIRECT_HTTP",
+    "model": null,
+    "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+    "runtime_versions": {
+      "httpx": "0.28.1",
+      "pyarrow": "25.0.1",
+      "pypdf": "6.19.0"
+    },
+    "config_fingerprint": "1ab188c30fd74c7b6c70672d5ee6df5bd02d18f71fb67fc88df9bc07e05b6ccb",
+    "evidence_kind": "REAL_ACQUISITION",
+    "started_at": "2026-10-07T21:10:55.686176+00:00",
+    "status": "COMPLETE",
+    "tools": [
+      {
+        "source_id": "sina-quote",
+        "instrument": "SSE:600519",
+        "group": "QUOTE",
+        "started_at": "2026-10-07T21:10:55.834436+00:00",
+        "method": "GET",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "http_status": 200,
+        "status": "ARCHIVED",
+        "finished_at": "2026-10-07T21:10:55.980325+00:00",
+        "received_bytes": 292
+      }
+    ],
+    "gaps": [],
+    "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb",
+    "finished_at": "2026-10-07T21:10:56.054347+00:00",
+    "elapsed_seconds": 0.362,
+    "retrieved_bytes": 292
+  },
+  "quote_verification": {
+    "account_confirmation": "NOT_GRANTED",
+    "adapter_hash": "84b70d38413e4895631f863a4478effccdcbc580d01e969447d6900126525471",
+    "adapter_version": "14-verify-v1",
+    "basis_raw_hashes": [
+      "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+      "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695"
+    ],
+    "command": {
+      "facts": [
+        {
+          "fact_id": "decisive-close",
+          "field": "last",
+          "references": [
+            {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            }
+          ]
+        }
+      ],
+      "knowledge_cutoff": null,
+      "reason": "实际同对象Sina/Tencent旧收盘材料决定复盘归因；独立原始生产链与时点需核",
+      "trigger": "USER_SELECTED"
+    },
+    "created_at": "2026-10-07T21:37:10.405021+00:00",
+    "current_result": "INSUFFICIENT",
+    "dependency_status": "CURRENT",
+    "evidence_kind": "REAL_ARCHIVED_EVIDENCE",
+    "facts": [
+      {
+        "attribution_status": "DEFERRED",
+        "comparisons": [
+          {
+            "alternate_reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "alternate_value": "1258.620",
+            "comparable": false,
+            "primary_reference": {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "primary_value": "1258.62",
+            "reasons": [
+              "UPSTREAM_AT_NOT_COMPARABLE",
+              "CURRENCY_NOT_COMPARABLE",
+              "ADJUSTMENT_NOT_COMPARABLE"
+            ],
+            "values": "EQUAL_DECIMAL"
+          }
+        ],
+        "evidence": [
+          {
+            "available_at": "2026-10-07T16:19:01.517857+00:00",
+            "context": {
+              "adjustment": null,
+              "adjustment_version": null,
+              "currency": null,
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T16:14:58+08:00",
+              "volume_unit": "UNKNOWN"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "CNY",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "reference": {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "revision_id": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "source_errors": [],
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "value": "1258.62"
+          },
+          {
+            "available_at": "2026-10-07T21:10:55.941664+00:00",
+            "context": {
+              "adjustment": "RAW",
+              "adjustment_version": null,
+              "currency": "CNY",
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T15:34:59+08:00",
+              "volume_unit": "SHARE"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "CNY",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_errors": [],
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "value": "1258.620"
+          }
+        ],
+        "fact_id": "decisive-close",
+        "field": "last",
+        "gaps": [
+          "INDEPENDENCE_UNPROVEN",
+          "TWO_INDEPENDENT_ORIGINAL_BASES_NOT_ESTABLISHED",
+          "ADJUSTMENT_NOT_COMPARABLE",
+          "CURRENCY_NOT_COMPARABLE",
+          "UPSTREAM_AT_NOT_COMPARABLE"
+        ],
+        "independent_basis_count": 0,
+        "limitations": [],
+        "result": "INSUFFICIENT"
+      }
+    ],
+    "formal_judgment": "DISABLED",
+    "input_fingerprint": "419640b4598b0535732c0897066434ad158191d821b6efa49832ebdb6e436325",
+    "invalidations": [],
+    "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+    "knowledge_cutoff": "2026-10-07T21:37:10.331035+00:00",
+    "network_calls": 0,
+    "result": "INSUFFICIENT",
+    "reuse_of": null,
+    "review_origin": null,
+    "runtime_versions": {
+      "python": "3.13.12",
+      "sqlite": "3.50.4"
+    },
+    "source_evidence_kinds": [
+      "REAL_ACQUISITION"
+    ],
+    "status": "COMPLETED",
+    "verification_id": "b59443f6-4a2c-4cee-ae63-5241da5baab5"
+  },
+  "same_version_reuse": {
+    "account_confirmation": "NOT_GRANTED",
+    "adapter_hash": "05b671aad3290ac3f5be2255e6ed9a8b9f923d591b3046065aebc182dd20db52",
+    "adapter_version": "14-verify-v1",
+    "basis_raw_hashes": [
+      "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+      "5af070cca59423467903ea617ff4690a20b6efe0e5340e5cd859d0db996c218b"
+    ],
+    "command": {
+      "facts": [
+        {
+          "fact_id": "real-price",
+          "field": "last",
+          "references": [
+            {
+              "fact_index": 7,
+              "snapshot_id": "28304ea7-756d-4580-93f7-4bdef9d9e896"
+            },
+            {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            }
+          ]
+        }
+      ],
+      "knowledge_cutoff": null,
+      "reason": "真实归档收盘报价疑点：供应商一致也不证明独立原始数据链",
+      "trigger": "USER_SELECTED"
+    },
+    "created_at": "2026-10-07T21:10:56.170759+00:00",
+    "current_result": "INSUFFICIENT",
+    "dependency_status": "CURRENT",
+    "evidence_kind": "REAL_ARCHIVED_EVIDENCE",
+    "facts": [
+      {
+        "attribution_status": "DEFERRED",
+        "comparisons": [
+          {
+            "alternate_reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "alternate_value": "1258.620",
+            "comparable": false,
+            "primary_reference": {
+              "fact_index": 7,
+              "snapshot_id": "28304ea7-756d-4580-93f7-4bdef9d9e896"
+            },
+            "primary_value": "3842.19",
+            "reasons": [
+              "FIELD_UNIT_NOT_COMPARABLE",
+              "INSTRUMENT_NOT_COMPARABLE",
+              "UPSTREAM_AT_NOT_COMPARABLE",
+              "CURRENCY_NOT_COMPARABLE",
+              "ADJUSTMENT_NOT_COMPARABLE"
+            ],
+            "values": "DIFFERENT"
+          }
+        ],
+        "evidence": [
+          {
+            "available_at": "2026-10-07T16:25:32.534392+00:00",
+            "context": {
+              "adjustment": null,
+              "adjustment_version": null,
+              "currency": null,
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:000001",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T16:15:00+08:00",
+              "volume_unit": "UNKNOWN"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "INDEX_POINT",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "5af070cca59423467903ea617ff4690a20b6efe0e5340e5cd859d0db996c218b",
+            "reference": {
+              "fact_index": 7,
+              "snapshot_id": "28304ea7-756d-4580-93f7-4bdef9d9e896"
+            },
+            "revision_id": "5af070cca59423467903ea617ff4690a20b6efe0e5340e5cd859d0db996c218b",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh000001",
+            "value": "3842.19"
+          },
+          {
+            "available_at": "2026-10-07T21:10:55.941664+00:00",
+            "context": {
+              "adjustment": "RAW",
+              "adjustment_version": null,
+              "currency": "CNY",
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T15:34:59+08:00",
+              "volume_unit": "SHARE"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "CNY",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "value": "1258.620"
+          }
+        ],
+        "fact_id": "real-price",
+        "field": "last",
+        "gaps": [
+          "INDEPENDENCE_UNPROVEN",
+          "TWO_INDEPENDENT_ORIGINAL_BASES_NOT_ESTABLISHED",
+          "ADJUSTMENT_NOT_COMPARABLE",
+          "CURRENCY_NOT_COMPARABLE",
+          "FIELD_UNIT_NOT_COMPARABLE",
+          "INSTRUMENT_NOT_COMPARABLE",
+          "UPSTREAM_AT_NOT_COMPARABLE"
+        ],
+        "independent_basis_count": 0,
+        "limitations": [],
+        "result": "INSUFFICIENT"
+      }
+    ],
+    "formal_judgment": "DISABLED",
+    "input_fingerprint": "f5a9e9a099136fab7f35e7ee3374edbb8c1b4ac6479f22678f9b89da44860206",
+    "invalidations": [],
+    "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+    "knowledge_cutoff": "2026-10-07T21:10:56.136181+00:00",
+    "network_calls": 0,
+    "result": "INSUFFICIENT",
+    "reuse_of": "44c2ebdf-92ab-440b-b739-68df4c1ac8c0",
+    "runtime_versions": {
+      "python": "3.13.12",
+      "sqlite": "3.50.4"
+    },
+    "source_evidence_kinds": [
+      "REAL_ACQUISITION"
+    ],
+    "status": "COMPLETED",
+    "verification_id": "f1a11361-4d10-45b9-aee1-0d4beacd8b32"
+  },
+  "replay": {
+    "verification_id": "b59443f6-4a2c-4cee-ae63-5241da5baab5",
+    "recorded_at": "2026-10-07T21:37:11.044481+00:00",
+    "original_result": "INSUFFICIENT",
+    "facts": [
+      {
+        "attribution_status": "DEFERRED",
+        "comparisons": [
+          {
+            "alternate_reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "alternate_value": "1258.620",
+            "comparable": false,
+            "primary_reference": {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "primary_value": "1258.62",
+            "reasons": [
+              "UPSTREAM_AT_NOT_COMPARABLE",
+              "CURRENCY_NOT_COMPARABLE",
+              "ADJUSTMENT_NOT_COMPARABLE"
+            ],
+            "values": "EQUAL_DECIMAL"
+          }
+        ],
+        "evidence": [
+          {
+            "available_at": "2026-10-07T16:19:01.517857+00:00",
+            "context": {
+              "adjustment": null,
+              "adjustment_version": null,
+              "currency": null,
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T16:14:58+08:00",
+              "volume_unit": "UNKNOWN"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "CNY",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "reference": {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "revision_id": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "source_errors": [],
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "value": "1258.62"
+          },
+          {
+            "available_at": "2026-10-07T21:10:55.941664+00:00",
+            "context": {
+              "adjustment": "RAW",
+              "adjustment_version": null,
+              "currency": "CNY",
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T15:34:59+08:00",
+              "volume_unit": "SHARE"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "CNY",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_errors": [],
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "value": "1258.620"
+          }
+        ],
+        "fact_id": "decisive-close",
+        "field": "last",
+        "gaps": [
+          "INDEPENDENCE_UNPROVEN",
+          "TWO_INDEPENDENT_ORIGINAL_BASES_NOT_ESTABLISHED",
+          "ADJUSTMENT_NOT_COMPARABLE",
+          "CURRENCY_NOT_COMPARABLE",
+          "UPSTREAM_AT_NOT_COMPARABLE"
+        ],
+        "independent_basis_count": 0,
+        "limitations": [],
+        "result": "INSUFFICIENT"
+      }
+    ],
+    "network_calls": 0,
+    "current_dependency_status": "CURRENT",
+    "formal_judgment": "DISABLED"
+  },
+  "issuer_verification": {
+    "account_confirmation": "NOT_GRANTED",
+    "adapter_hash": "05b671aad3290ac3f5be2255e6ed9a8b9f923d591b3046065aebc182dd20db52",
+    "adapter_version": "14-verify-v1",
+    "basis_raw_hashes": [
+      "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+      "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476"
+    ],
+    "command": {
+      "facts": [
+        {
+          "fact_id": "issuer-date",
+          "field": "disclosure_date",
+          "references": [
+            {
+              "fact_index": 7,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            {
+              "fact_index": 7,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            }
+          ]
+        }
+      ],
+      "knowledge_cutoff": null,
+      "reason": "真实发行人原始文件托管与重复引用不构成两个独立依据",
+      "trigger": "MATERIAL_DOUBT"
+    },
+    "created_at": "2026-10-07T21:10:56.529736+00:00",
+    "current_result": "INSUFFICIENT",
+    "dependency_status": "CURRENT",
+    "evidence_kind": "REAL_ARCHIVED_EVIDENCE",
+    "facts": [
+      {
+        "attribution_status": "DEFERRED",
+        "comparisons": [
+          {
+            "alternate_reference": {
+              "fact_index": 7,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "alternate_value": "2026-07-18",
+            "comparable": true,
+            "primary_reference": {
+              "fact_index": 7,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "primary_value": "2026-07-18",
+            "reasons": [],
+            "values": "EQUAL_LITERAL"
+          }
+        ],
+        "evidence": [
+          {
+            "available_at": "2026-10-07T16:19:02.022038+00:00",
+            "context": {
+              "adjustment": null,
+              "adjustment_version": null,
+              "currency": null,
+              "ex_date": null,
+              "group": "MAJOR_EVENTS",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "DATE",
+              "trade_date": null,
+              "upstream_at": null,
+              "volume_unit": null
+            },
+            "document_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "DATE",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": "SSE:600519:AN202607171827064564",
+              "producer": "ISSUER:SSE:600519",
+              "proof_raw_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+              "reason": "Same issuer announcement and its host/metadata representations count once; no independent production proven",
+              "status": "ISSUER_ORIGINAL_SINGLE_BASIS"
+            },
+            "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+            "reference": {
+              "fact_index": 7,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "revision_id": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+            "source_id": "eastmoney-original",
+            "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web",
+            "value": "2026-07-18"
+          },
+          {
+            "available_at": "2026-10-07T16:19:02.022038+00:00",
+            "context": {
+              "adjustment": null,
+              "adjustment_version": null,
+              "currency": null,
+              "ex_date": null,
+              "group": "MAJOR_EVENTS",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "DATE",
+              "trade_date": null,
+              "upstream_at": null,
+              "volume_unit": null
+            },
+            "document_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "DATE",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": "SSE:600519:AN202607171827064564",
+              "producer": "ISSUER:SSE:600519",
+              "proof_raw_hash": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+              "reason": "Same issuer announcement and its host/metadata representations count once; no independent production proven",
+              "status": "ISSUER_ORIGINAL_SINGLE_BASIS"
+            },
+            "raw_hash": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+            "reference": {
+              "fact_index": 7,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "revision_id": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+            "source_id": "eastmoney-original",
+            "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web",
+            "value": "2026-07-18"
+          }
+        ],
+        "fact_id": "issuer-date",
+        "field": "disclosure_date",
+        "gaps": [
+          "SAME_ORIGINAL_BASIS",
+          "TWO_INDEPENDENT_ORIGINAL_BASES_NOT_ESTABLISHED"
+        ],
+        "independent_basis_count": 1,
+        "limitations": [
+          "SAME_ORIGINAL_BASIS"
+        ],
+        "result": "INSUFFICIENT"
+      }
+    ],
+    "formal_judgment": "DISABLED",
+    "input_fingerprint": "5273f9d5a9bee3ffb85ba1ec99b93ac6ac20b4b60add0d07f99024ec8dbb7b0b",
+    "invalidations": [],
+    "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+    "knowledge_cutoff": "2026-10-07T21:10:56.476935+00:00",
+    "network_calls": 0,
+    "result": "INSUFFICIENT",
+    "reuse_of": null,
+    "runtime_versions": {
+      "python": "3.13.12",
+      "sqlite": "3.50.4"
+    },
+    "source_evidence_kinds": [
+      "REAL_ACQUISITION"
+    ],
+    "status": "COMPLETED",
+    "verification_id": "bf252ddb-e97a-4873-a1b7-9f41e8caae7e"
+  },
+  "document_title": "贵州茅台:贵州茅台重大事项公告",
+  "archive_byte_proof": [
+    {
+      "sha256": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+      "bytes": 292,
+      "verified": true
+    },
+    {
+      "sha256": "5af070cca59423467903ea617ff4690a20b6efe0e5340e5cd859d0db996c218b",
+      "bytes": 465,
+      "verified": true
+    },
+    {
+      "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+      "bytes": 67261,
+      "verified": true
+    },
+    {
+      "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+      "bytes": 2152,
+      "verified": true
+    }
+  ],
+  "account_unchanged": true,
+  "account_hash": "3dbbf36e04186d407b3a2c355b438a1c8acf43c14dc1fc439b6eb465821e71a6",
+  "actual_model_requests": 0,
+  "initial_acquisition_at_utc": "2026-10-07T21:10:56.619824+00:00",
+  "corrected_original_selection": {
+    "initial_verification_id": "44c2ebdf-92ab-440b-b739-68df4c1ac8c0",
+    "initial_case": "INSTRUMENT_NOT_COMPARABLE index versus stock preserved; corrected below by instrument and group"
+  },
+  "reused_verification": {
+    "account_confirmation": "NOT_GRANTED",
+    "adapter_hash": "84b70d38413e4895631f863a4478effccdcbc580d01e969447d6900126525471",
+    "adapter_version": "14-verify-v1",
+    "basis_raw_hashes": [
+      "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+      "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695"
+    ],
+    "command": {
+      "facts": [
+        {
+          "fact_id": "decisive-close",
+          "field": "last",
+          "references": [
+            {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            }
+          ]
+        }
+      ],
+      "knowledge_cutoff": null,
+      "reason": "实际同对象Sina/Tencent旧收盘材料决定复盘归因；独立原始生产链与时点需核",
+      "trigger": "USER_SELECTED"
+    },
+    "created_at": "2026-10-07T21:37:10.635126+00:00",
+    "current_result": "INSUFFICIENT",
+    "dependency_status": "CURRENT",
+    "evidence_kind": "REAL_ARCHIVED_EVIDENCE",
+    "facts": [
+      {
+        "attribution_status": "DEFERRED",
+        "comparisons": [
+          {
+            "alternate_reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "alternate_value": "1258.620",
+            "comparable": false,
+            "primary_reference": {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "primary_value": "1258.62",
+            "reasons": [
+              "UPSTREAM_AT_NOT_COMPARABLE",
+              "CURRENCY_NOT_COMPARABLE",
+              "ADJUSTMENT_NOT_COMPARABLE"
+            ],
+            "values": "EQUAL_DECIMAL"
+          }
+        ],
+        "evidence": [
+          {
+            "available_at": "2026-10-07T16:19:01.517857+00:00",
+            "context": {
+              "adjustment": null,
+              "adjustment_version": null,
+              "currency": null,
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T16:14:58+08:00",
+              "volume_unit": "UNKNOWN"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "CNY",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "reference": {
+              "fact_index": 0,
+              "snapshot_id": "cf2ceab5-0f16-4b33-8e0e-44dd5ab2635a"
+            },
+            "revision_id": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "source_errors": [],
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519",
+            "value": "1258.62"
+          },
+          {
+            "available_at": "2026-10-07T21:10:55.941664+00:00",
+            "context": {
+              "adjustment": "RAW",
+              "adjustment_version": null,
+              "currency": "CNY",
+              "ex_date": null,
+              "group": "QUOTE",
+              "instrument": "SSE:600519",
+              "report_period": null,
+              "time_precision": "SECOND",
+              "trade_date": "2026-09-30",
+              "upstream_at": "2026-09-30T15:34:59+08:00",
+              "volume_unit": "SHARE"
+            },
+            "document_hash": null,
+            "evidence_kind": "REAL_ACQUISITION",
+            "field_definition_basis": "Registered normalized field contract; reported volume requires evidenced native unit",
+            "field_unit": "CNY",
+            "known_at_review_cutoff": true,
+            "provenance": {
+              "basis_id": null,
+              "producer": null,
+              "reason": "Provider/domain/tool identity does not prove independent original production",
+              "status": "INDEPENDENCE_UNPROVEN"
+            },
+            "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "reference": {
+              "fact_index": 0,
+              "snapshot_id": "d90eb9bb-1158-4f68-94e7-ee575697bfcb"
+            },
+            "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+            "source_errors": [],
+            "source_id": "sina-quote",
+            "source_url": "https://hq.sinajs.cn/list=sh600519",
+            "value": "1258.620"
+          }
+        ],
+        "fact_id": "decisive-close",
+        "field": "last",
+        "gaps": [
+          "INDEPENDENCE_UNPROVEN",
+          "TWO_INDEPENDENT_ORIGINAL_BASES_NOT_ESTABLISHED",
+          "ADJUSTMENT_NOT_COMPARABLE",
+          "CURRENCY_NOT_COMPARABLE",
+          "UPSTREAM_AT_NOT_COMPARABLE"
+        ],
+        "independent_basis_count": 0,
+        "limitations": [],
+        "result": "INSUFFICIENT"
+      }
+    ],
+    "formal_judgment": "DISABLED",
+    "input_fingerprint": "419640b4598b0535732c0897066434ad158191d821b6efa49832ebdb6e436325",
+    "invalidations": [],
+    "knowledge_basis": "ACTUAL_CONSUMER_BOUND; NO_RETROACTIVE_SOURCE_KNOWLEDGE",
+    "knowledge_cutoff": "2026-10-07T21:37:10.491096+00:00",
+    "network_calls": 0,
+    "result": "INSUFFICIENT",
+    "reuse_of": "b59443f6-4a2c-4cee-ae63-5241da5baab5",
+    "review_origin": null,
+    "runtime_versions": {
+      "python": "3.13.12",
+      "sqlite": "3.50.4"
+    },
+    "source_evidence_kinds": [
+      "REAL_ACQUISITION"
+    ],
+    "status": "COMPLETED",
+    "verification_id": "cd879f7a-9fb6-439d-821f-e637956360d5"
+  },
+  "archive_checks": [
+    {
+      "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+      "bytes": 550,
+      "verified": true
+    },
+    {
+      "sha256": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+      "bytes": 292,
+      "verified": true
+    },
+    {
+      "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+      "bytes": 2152,
+      "verified": true
+    },
+    {
+      "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+      "bytes": 67261,
+      "verified": true
+    },
+    {
+      "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+      "bytes": 2152,
+      "verified": true
+    },
+    {
+      "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+      "bytes": 67261,
+      "verified": true
+    }
+  ],
+  "additional_external_acquisition": 0
+}

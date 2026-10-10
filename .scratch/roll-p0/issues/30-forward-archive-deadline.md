@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**Completion:** pending
+
 **Primary acceptance:** AT-58、AT-88。
 
 **References:** [规格](../spec.md) ID-09、ID-14、ID-15、ID-16、ID-18；Testing Decisions 的主要边界 1、2、5、6 及“时点与有限研究”；[目录与实施约束](../project-layout.md)。
@@ -24,3 +26,5 @@
 ## Comments
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。
+
+2026-10-08 本轮依赖前沿核查：未启动本票。20冻结模型/政策/连续影子未完成；15已完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。

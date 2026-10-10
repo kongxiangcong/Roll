@@ -1,0 +1,3610 @@
+{
+  "evidence_kind": "REAL_PRESERVED_PUBLIC_SOURCE_AND_REAL_HTTP_SQLITE; METHOD_ATTEMPT_ERRORS",
+  "started_at": "2026-10-07T19:54:32.393966+00:00",
+  "data_root": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\17-research-protocol\\backend\\.roll-data\\acceptance-17-final",
+  "labels_or_candidate_results_computed": false,
+  "steps": [
+    {
+      "at": "2026-10-07T19:54:34.724178+00:00",
+      "method": "GET",
+      "path": "/account",
+      "status": 200,
+      "response": {
+        "version": 0,
+        "currency": "CNY",
+        "account_scope": "普通现金账户",
+        "cash_balance": null,
+        "broker_available": null,
+        "broker_frozen": null,
+        "withdrawable": null,
+        "positions": [],
+        "permission_profile": [],
+        "confirmed_at": null,
+        "effective_at": null,
+        "historical_return": null,
+        "state": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.088134+00:00",
+      "method": "POST",
+      "path": "/research/datasets",
+      "status": 201,
+      "response": {
+        "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+        "registered_at": "2026-10-07T19:54:35.068667+00:00",
+        "basis": "17真实07公开归档SHA核验，基于日期覆盖预登记M0；不读取/计算策略标签结果",
+        "archive_id": "07-browser",
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "source_run_id": "a77909f8-cf68-41a3-a598-a281f97bed7d",
+        "source_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+        "source_bundle_sha256": "66e6fbd52a415aa5de68612a8749ee25a20d037b6f4b899178d5e9b4f3c012bb",
+        "source_adapter_version": "07-market-v1",
+        "source_evidence_kind": "REAL_ACQUISITION",
+        "scope": {
+          "namespace": "HISTORICAL",
+          "instruments": [
+            "SSE:600519"
+          ],
+          "identity_context": {
+            "SSE:600519": {
+              "board": "MAIN",
+              "code": "600519",
+              "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+              "effective_at": "2026-10-07T00:00:00+08:00",
+              "exchange": "SSE",
+              "instrument_type": "STOCK",
+              "name": "贵州茅台",
+              "revision": 1
+            }
+          },
+          "selection": "TODAY_LIST_CONDITIONAL",
+          "historical_point_in_time_proven": false,
+          "historical_membership_reconstructed": false,
+          "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+        },
+        "coverage": {
+          "session_count": 181,
+          "first_date": "2026-01-05",
+          "last_date": "2026-09-30",
+          "missing_amount_rows": 180,
+          "unknown_volume_unit_rows": 0,
+          "basic_error_rows": 0
+        },
+        "partitions": {
+          "DEVELOPMENT": {
+            "state": "HOST_FILTERED",
+            "rows": 80,
+            "context_rows": 0,
+            "first_date": "2026-01-05",
+            "last_date": "2026-05-08",
+            "context_first_date": "2026-01-05",
+            "artifact": {
+              "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6",
+              "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+              "bytes": 19454,
+              "kind": "RESEARCH_PARTITION",
+              "partition": "DEVELOPMENT",
+              "research_namespace": "HISTORICAL",
+              "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9"
+            },
+            "access": "DEVELOPMENT_OR_CALIBRATION_ONLY"
+          },
+          "CALIBRATION": {
+            "state": "HOST_FILTERED",
+            "rows": 40,
+            "context_rows": 20,
+            "first_date": "2026-06-08",
+            "last_date": "2026-08-03",
+            "context_first_date": "2026-05-11",
+            "artifact": {
+              "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b",
+              "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+              "bytes": 16284,
+              "kind": "RESEARCH_PARTITION",
+              "partition": "CALIBRATION",
+              "research_namespace": "HISTORICAL",
+              "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9"
+            },
+            "access": "DEVELOPMENT_OR_CALIBRATION_ONLY"
+          },
+          "SEALED": {
+            "state": "HOST_FILTERED",
+            "rows": 21,
+            "context_rows": 20,
+            "first_date": "2026-09-01",
+            "last_date": "2026-09-30",
+            "context_first_date": "2026-08-04",
+            "artifact": {
+              "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee",
+              "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+              "bytes": 14097,
+              "kind": "RESEARCH_PARTITION",
+              "partition": "SEALED",
+              "research_namespace": "HISTORICAL",
+              "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9"
+            },
+            "access": "EXPLICIT_AUDITED_SEALED_INPUT"
+          }
+        },
+        "original_archives": [
+          {
+            "sha256": "0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c",
+            "path": "raw/0c6ef3aa188dba62088c91e45c39b02a380dfbf6d395552d767ca6a4fd305d9c.raw",
+            "bytes": 14573,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:29.668026+00:00",
+            "source_id": "tencent-daily",
+            "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2C"
+          },
+          {
+            "sha256": "e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33",
+            "path": "raw/e4fbfa3025abb812c58b12fb3cddcfc429e93e11b2d1ed9a17e2e295c453ce33.raw",
+            "bytes": 14608,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:29.790918+00:00",
+            "source_id": "tencent-daily",
+            "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600519%2Cday%2C2026-01-01%2C2026-09-30%2C800%2Cqfq"
+          },
+          {
+            "sha256": "6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695",
+            "path": "raw/6ed41c4189fef3f0c6daa5cccf77084b2920ba95e4df716d284aa74821231695.raw",
+            "bytes": 550,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:29.918272+00:00",
+            "source_id": "tencent-quote",
+            "source_url": "https://qt.gtimg.cn/q=sh600519"
+          },
+          {
+            "sha256": "34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4",
+            "path": "raw/34b3e7f97ed5da64387706add9ddec9b703942e1466638f76cc9378add1a8cf4.raw",
+            "bytes": 4771,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:30.141296+00:00",
+            "source_id": "eastmoney-actions",
+            "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1"
+          },
+          {
+            "sha256": "0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693",
+            "path": "raw/0f5f832a0cf6c81791def6759be774af059839f4255d6e6f48d80a4f99a6c693.raw",
+            "bytes": 2941,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:30.214990+00:00",
+            "source_id": "eastmoney-performance",
+            "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1"
+          },
+          {
+            "sha256": "ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0",
+            "path": "raw/ddb8a6594a5f67b37d998ed23e83e0229488da8ac5a0b06fda4e6ea0407f52b0.raw",
+            "bytes": 20334,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:30.291815+00:00",
+            "source_id": "eastmoney-announcements",
+            "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519"
+          },
+          {
+            "sha256": "b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e",
+            "path": "raw/b96cd9e800b81a0db77ded4453de9494c45eabdfa9f4f052668151fe3df7588e.raw",
+            "bytes": 3874,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:30.563682+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994407&page_index=1&client_source=web"
+          },
+          {
+            "sha256": "fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc",
+            "path": "raw/fc78904a1a1babaea6e31838d5a8c3fc7933c6d1925fd3101942c130d21c66fc.raw",
+            "bytes": 119987,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:30.635030+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994407_1.pdf?1786740155000.pdf"
+          },
+          {
+            "sha256": "6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8",
+            "path": "raw/6c211beb75bd9035cc4abe983728e9194c78df5b65ce4a26d701178c688434c8.raw",
+            "bytes": 10016,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:30.849583+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202608141827994408&page_index=1&client_source=web"
+          },
+          {
+            "sha256": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
+            "path": "raw/0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6.raw",
+            "bytes": 832321,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:30.926398+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827994408_1.pdf?1786740127000.pdf"
+          },
+          {
+            "sha256": "8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476",
+            "path": "raw/8bfe7a9a0f79124547530902b24dca917691e12deecca6bf8d7733a29e611476.raw",
+            "bytes": 2152,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:31.100524+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202607171827064564&page_index=1&client_source=web"
+          },
+          {
+            "sha256": "24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873",
+            "path": "raw/24e51c43dfc6da7d3a19c67b88081715a3a3b4a26c2d83ec51a557e3e5692873.raw",
+            "bytes": 67261,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:31.129465+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827064564_1.pdf?1784323683000.pdf"
+          },
+          {
+            "sha256": "b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0",
+            "path": "raw/b2ec62c78a7a0681ea86dbaff63df4653bff8489c6bb798154bdefc3706a5ea0.raw",
+            "bytes": 6547,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:31.218300+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://np-cnotice-stock.eastmoney.com/api/content/ann?art_code=AN202606211823708334&page_index=1&client_source=web"
+          },
+          {
+            "sha256": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+            "path": "raw/6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e.raw",
+            "bytes": 155250,
+            "kind": "RAW_RESPONSE",
+            "evidence_kind": "REAL_ACQUISITION",
+            "http_status": 200,
+            "received_at": "2026-10-07T17:11:31.252681+00:00",
+            "source_id": "eastmoney-original",
+            "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606211823708334_1.pdf?1782055946000.pdf"
+          },
+          {
+            "sha256": "19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b",
+            "path": "parquet/19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b.parquet",
+            "bytes": 91828,
+            "kind": "NORMALIZED_PARQUET",
+            "adapter_version": "07-market-v1"
+          }
+        ],
+        "prior_seal_independence": "UNPROVEN",
+        "prior_exposure": "PUBLIC_ENGINEERING_ARCHIVE_ALREADY_AVAILABLE; NOT_PROVEN_UNSEEN",
+        "engineering_exposure": {
+          "kind": "PRE_REGISTRATION_ENGINEERING_PRICE_INPUT_EXPOSURE",
+          "source_file": "D:\\dsh-proj\\Roll\\backend\\.roll-data\\implementation-evidence\\07\\acceptance-07\\tencent-daily-live.json",
+          "source_sha256": "dcff390d9cc631aafcb4e17d08deecce60bc392c3c061de4315ce094643436c1",
+          "observed_time_precision": "UNKNOWN_EXACT; this implementation session before protocol registration",
+          "instrument": "SSE:600519",
+          "trade_date_ranges": [
+            [
+              "2026-06-22",
+              "2026-06-30"
+            ],
+            [
+              "2026-09-21",
+              "2026-09-30"
+            ]
+          ],
+          "fields": "original raw/qfq price inputs printed by a metadata inspection error",
+          "labels_or_candidate_results_computed": false,
+          "confirmatory_pass_look": false,
+          "independence": "UNPROVEN; cannot assert unobserved sealed inputs"
+        },
+        "limitations": [
+          "CURRENT_PROVIDER_REVISION_NOT_HISTORICAL_PIT",
+          "HISTORICAL_SPECIAL_STATUS_UNKNOWN",
+          "ENGINEERING_PRICE_INPUT_EXPOSURE_NOT_A_CONFIRMATORY_PASS_LOOK",
+          "UNKNOWN_ACTUAL_BROKER_COMMISSION",
+          "HISTORICAL_AMOUNT_MISSING",
+          "HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN"
+        ],
+        "partition_basis": "181 available sessions:80 development,20 label embargo,40 calibration,20 label embargo,21 sealed; only metadata used to allocate",
+        "label_results_computed": false,
+        "validation_verdict": null,
+        "capability": "NOT_GRANTED"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.165422+00:00",
+      "method": "GET",
+      "path": "/research/protocols",
+      "status": 200,
+      "response": [
+        {
+          "basis": "关联前序的研究政策修正登记，未授新范围资格",
+          "capability": "NOT_GRANTED",
+          "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+          "dataset_id": "cff4c5b2-77f9-453c-b7b4-35644e4b1d19",
+          "design": {
+            "baselines": [
+              {
+                "id": "CASH",
+                "policy": "same synthetic initial capital, no interest assumed; display actual zero exposure separately"
+              },
+              {
+                "id": "START_HOLD",
+                "policy": "same start, budget/lot/rules,50% initial allowed exposure, no resets, comparable fees"
+              },
+              {
+                "id": "MA5_MA20",
+                "policy": "fixed5/20-day moving-average crossover,50% maximum exposure, same execution/cost/rules; no tuning"
+              }
+            ],
+            "candidates": [
+              {
+                "calibration": "Intercept-only held-out probability calibration; no fitting on SEALED; exact implementation and fingerprint ticket19",
+                "calibrator_artifact_fingerprint": null,
+                "candidate_id": "PRICE_VOLUME_LOGIT_V1",
+                "features": [
+                  "raw_return_5",
+                  "raw_return_20",
+                  "raw_return_volatility_20",
+                  "log_volume_to_trailing20_mean"
+                ],
+                "fitting": "L2 logistic regression; standardization fitted only DEVELOPMENT; lambda=1; no prompt or manual stock selection",
+                "model_artifact_fingerprint": null,
+                "status": "DESIGN_ONLY_NOT_MODEL_FROZEN",
+                "threshold": "0.60"
+              }
+            ],
+            "costs": {
+              "broker_actual_commission": "UNKNOWN",
+              "commission_includes_regulatory_fees": true,
+              "commission_scenario_rate": "0.0003",
+              "currency": "CNY",
+              "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+              "evidence": [
+                {
+                  "bytes": 45558,
+                  "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "sse-cost-investor.html",
+                  "http_status": 200,
+                  "id": "sse-cost-investor",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.006335+00:00",
+                  "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+                  "started_at": "2026-10-07T19:14:26.877488+00:00",
+                  "url": "https://one.sse.com.cn/onething/gptz/"
+                },
+                {
+                  "bytes": 41658,
+                  "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "sse-charge-2026.html",
+                  "http_status": 200,
+                  "id": "sse-charge-2026",
+                  "page_update": "2026-01",
+                  "page_update_precision": "MONTH_ONLY",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.323015+00:00",
+                  "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+                  "started_at": "2026-10-07T19:14:28.007071+00:00",
+                  "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/"
+                },
+                {
+                  "bytes": 27791,
+                  "effective_from": "2023-08-28",
+                  "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39",
+                  "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "stamp-tax-2023.html",
+                  "http_status": 200,
+                  "id": "stamp-tax-2023",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.685996+00:00",
+                  "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+                  "started_at": "2026-10-07T19:14:28.323867+00:00",
+                  "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448"
+                }
+              ],
+              "extra_regulatory_charge": "0",
+              "minimum_commission_yuan": "5",
+              "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+              "slippage_each_side_rate": "0.0005",
+              "stamp_sell_rate": "0.0005",
+              "transfer_each_side_rate": "0.00001",
+              "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction.",
+              "version": "17-cost-v1"
+            },
+            "design_fingerprint": "694bfdb1cf889c9e50a383c3aede9a676cc127423e732142099d505c86057922",
+            "design_version": "17-m0-v1",
+            "event": "Positive RAW realized20-session round-trip net return under frozen execution and known company-action treatment; unresolved action/status yields unscorable/interval cases, never zero",
+            "execution": {
+              "base_delay": "NEXT_OPEN",
+              "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast",
+              "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+              "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+              "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+              "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+              "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+              "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+              "synthetic_basis": "Research simulation scale chosen to allow at least one100-share600519 lot under50% exposure at publicly reported1258.62 quote; not user funds/baseline/authorization or research runtime money budget",
+              "synthetic_initial_cash_yuan": "1000000",
+              "synthetic_initial_positions": []
+            },
+            "formal_monitoring": {
+              "checkpoints": {
+                "operations": "Every actual running post-market checkpoint; missing days retained",
+                "statistics": "At registered30-session mature-results review and qualification expiry; no extra confirmation PASS look"
+              },
+              "drift": "Fit feature1st/99th percentiles on DEVELOPMENT only; if >=20% of latest20 eligible observations outside fixed reference or required-input coverage<80%, restrict use pending review. Operational sentinel, not a causal or statistical profitability verdict.",
+              "execution": "Compare actual next-open/next-close delays, missing/partial fills, quote-vs-fill, realized fees with frozen scenarios; outside declared delay/price/cost bounds immediately restrict affected ability without declaring statistical FAIL",
+              "mature_results": "Report fixed mature probability/utility/support checks at registered review; insufficient evidence=>INCONCLUSIVE, no adjusting cutoffs on new losses",
+              "policy_change": "Reason+new fingerprint+successor protocol, preserve previous verdict and visits; no silent threshold changes",
+              "scope": {
+                "historical_membership_reconstructed": false,
+                "historical_point_in_time_proven": false,
+                "identity_context": {
+                  "SSE:600519": {
+                    "board": "MAIN",
+                    "code": "600519",
+                    "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                    "effective_at": "2026-10-07T00:00:00+08:00",
+                    "exchange": "SSE",
+                    "instrument_type": "STOCK",
+                    "name": "贵州茅台",
+                    "revision": 1
+                  }
+                },
+                "instruments": [
+                  "SSE:600519"
+                ],
+                "namespace": "HISTORICAL",
+                "selection": "TODAY_LIST_CONDITIONAL",
+                "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+              },
+              "unmatured_results_scored": false
+            },
+            "g5": {
+              "commission_rates": [
+                "0.0003",
+                "0.0006",
+                "0.003"
+              ],
+              "delays": [
+                "NEXT_OPEN",
+                "NEXT_CLOSE",
+                "ONE_MORE_SESSION_OPEN",
+                "OUTSIDE_ALLOWED_PRICE_NO_FILL"
+              ],
+              "migration_scope": {
+                "historical_membership_reconstructed": false,
+                "historical_point_in_time_proven": false,
+                "identity_context": {
+                  "SSE:600519": {
+                    "board": "MAIN",
+                    "code": "600519",
+                    "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                    "effective_at": "2026-10-07T00:00:00+08:00",
+                    "exchange": "SSE",
+                    "instrument_type": "STOCK",
+                    "name": "贵州茅台",
+                    "revision": 1
+                  }
+                },
+                "instruments": [
+                  "SSE:600519"
+                ],
+                "namespace": "HISTORICAL",
+                "selection": "TODAY_LIST_CONDITIONAL",
+                "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+              },
+              "parameter_neighborhood": {
+                "evaluation": "One-at-a-time neighbors around fixed primary, never choose a neighbor winner; each fit/candidate/threshold attempt persisted",
+                "lookback_sessions": [
+                  15,
+                  20,
+                  25
+                ],
+                "penalty": [
+                  "0.5",
+                  "1",
+                  "2"
+                ],
+                "probability_threshold": [
+                  "0.55",
+                  "0.60",
+                  "0.65"
+                ]
+              },
+              "required": "Base improvement>=25bp NAV with preregistered interval/risk/support; stressed net value must not reverse below comparable baseline, risk bounds hold. Insufficient stress support is INCONCLUSIVE; failure cannot be repaired by shrinking old scope.",
+              "slippage_each_side_rates": [
+                "0.0005",
+                "0.001",
+                "0.002"
+              ],
+              "time_segments": "Report each chronological third of the eligible historical test and forward mature window, same targets; each insufficient segment remains INCONCLUSIVE",
+              "unknown_scope": "Other names/boards/markets are monitoring only; extension needs linked new experiment and unused evidence"
+            },
+            "horizon_sessions": 20,
+            "hypothesis": "A fixed transparent daily price-volume candidate improves fee-after return under matched risk/exposure; not best retrospective stock selection",
+            "label_isolation": {
+              "embargo_sessions": 20,
+              "horizon_sessions": 20,
+              "lookback_sessions": 20,
+              "rule": "A fitted label must mature inside its allowed DEVELOPMENT/CALIBRATION window; boundary-spanning labels purged. Calibration receives preceding20 rows only as past feature context; no random same-day split."
+            },
+            "primary_objective": {
+              "basis": "Research choice before outcome computation. Assumed3bp commission each side +5bp sell stamp +0.1bp transfer each side +5bp slippage each side =21.2bp trade cost; at50% exposure10.6bp NAV. Twice this rounded upward to25bp is a meaningful NAV improvement hurdle, not estimated alpha or actual broker cost.",
+              "confidence_rule": "One-sided95% lower bound >0.0025 at single final point; all required comparisons/gates must hold",
+              "metric": "Paired20-session fee-after NAV return improvement over every preregistered comparable baseline",
+              "minimum_improvement_nav_return": "0.0025",
+              "risk_constraints": {
+                "candidate_drawdown_excess_over_risk_matched_baseline": "0.02",
+                "maximum_drawdown": "0.10",
+                "maximum_simulated_gross_exposure": "0.50",
+                "minimum_decision_coverage": "0.20"
+              }
+            },
+            "risk_policy_evidence": {
+              "inherits_profit_model_pass": false,
+              "owner": "ticket22",
+              "profit_model_required_gates": [
+                "G1",
+                "G2",
+                "G3",
+                "G4",
+                "G5",
+                "G6",
+                "G7"
+              ],
+              "required": [
+                "own frozen deterministic rules/data fingerprints",
+                "authorized risk boundaries",
+                "calculation and stress-execution proof",
+                "online consistency and scope checks"
+              ]
+            },
+            "statistics": {
+              "alpha": "0.05",
+              "dependency_sensitivity_block_sessions": [
+                20,
+                40
+              ],
+              "method": "Paired calendar-date moving-block bootstrap, block length20 sessions; same-day securities jointly resampled; seed1701,2000 replicates",
+              "minimum_calibration_examples_per_class": 20,
+              "minimum_effective_time_blocks": 30,
+              "minimum_selected_mature_examples": 40,
+              "multiple_comparison_policy": "Intersection-union: every preregistered required baseline and gate must pass; no choosing favorable comparison. Sensitivity does not create another PASS look.",
+              "pass_look_count": 1,
+              "probability_checks": [
+                "Brier/log loss against development base rate and transparent rule",
+                "fixed5 equal-width reliability bins,20 mature cases per occupied bin",
+                "ROC discrimination and selected-subset support, no probability reliability claim from lower Brier alone"
+              ],
+              "reference": "Kunsch(1989), The jackknife and the bootstrap for general stationary observations, Ann.Statist.17:1217–1241; author bibliography https://people.math.ethz.ch/~hkuensch/papers/",
+              "validity": "Stationarity/weak-dependence assumptions and finite-sample coverage must be automatically validated and technically reviewed in20.30 blocks is a conservative design eligibility condition, not a universal bootstrap theorem; inadequate support or failed assumptions=>INCONCLUSIVE, never lower cutoff after seeing sealed."
+            },
+            "stopping": {
+              "calendar_month_rule": "Local wall time; month addition clamps to destination month end; inclusive final cutoff, no90-day substitution",
+              "early_stops": [
+                "hard safety/input/version failure",
+                "technical model fit/call/deadline limit",
+                "user stops ability; statistical verdict separately preserved"
+              ],
+              "forward_origin": "First successfully persisted actual frozen-model future prediction in30/32; protocol registration/deployment/historical replay/synthetic account do not start it",
+              "maximum_natural_months": 3,
+              "no_extension": "Absence/backend switching/unfavorable results/maturity deficits never extend original deadline; successor requires new information value",
+              "pass_checkpoint": "ONE_FINAL_CONFIRMATORY_POINT_AT_DEADLINE_OR_PREREGISTERED_HARD_STOP",
+              "technical_limits": {
+                "maximum_calibration_fits": 1,
+                "maximum_fit_seconds": 60,
+                "maximum_model_fits_including_fixed_neighbors": 5,
+                "maximum_primary_candidates": 1,
+                "runtime_money_budget_required": false,
+                "sealed_parameter_tuning_calls": 0
+              },
+              "timezone": "Asia/Shanghai"
+            },
+            "support_projection": {
+              "calibration_mature_label_upper_bound": 20,
+              "historical_final_independence": "UNPROVEN; engineering archive exposure is recorded, no strategy results examined",
+              "metadata_only": true,
+              "sealed_mature_label_upper_bound": 1,
+              "sealed_nonoverlap20_block_upper_bound": 0,
+              "state": "INSUFFICIENT_FOR_CONFIRMATORY_PASS"
+            },
+            "windows": {
+              "CALIBRATION": {
+                "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+                "artifact": {
+                  "bytes": 16284,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "CALIBRATION",
+                  "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b"
+                },
+                "context_first_date": "2026-05-11",
+                "context_rows": 20,
+                "first_date": "2026-06-08",
+                "last_date": "2026-08-03",
+                "rows": 40,
+                "state": "HOST_FILTERED"
+              },
+              "DEVELOPMENT": {
+                "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+                "artifact": {
+                  "bytes": 19454,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "DEVELOPMENT",
+                  "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6"
+                },
+                "context_first_date": "2026-01-05",
+                "context_rows": 0,
+                "first_date": "2026-01-05",
+                "last_date": "2026-05-08",
+                "rows": 80,
+                "state": "HOST_FILTERED"
+              },
+              "SEALED": {
+                "access": "EXPLICIT_AUDITED_SEALED_INPUT",
+                "artifact": {
+                  "bytes": 14097,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "SEALED",
+                  "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee"
+                },
+                "context_first_date": "2026-08-04",
+                "context_rows": 20,
+                "first_date": "2026-09-01",
+                "last_date": "2026-09-30",
+                "rows": 21,
+                "state": "HOST_FILTERED"
+              }
+            }
+          },
+          "forward_deadline": null,
+          "forward_started_at": null,
+          "freeze_gaps": [
+            "MODEL_ARTIFACT_MISSING",
+            "CALIBRATOR_ARTIFACT_MISSING",
+            "POLICY_ARTIFACT_MISSING",
+            "VALIDATION_CODE_FINGERPRINT_MISSING",
+            "METHOD_VALIDATION_PENDING_TICKET20",
+            "SEALED_INDEPENDENCE_UNPROVEN",
+            "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+            "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+          ],
+          "ownership": {
+            "complete_protocol_freeze": "ticket20",
+            "forward_start": "tickets30/32",
+            "model_freeze": "ticket19",
+            "risk_policy": "ticket22"
+          },
+          "predecessor_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+          "protocol_fingerprint": "94f757f7993f0ea309007d439cbd6348b5185fa43e009bfde3f8a335ee2b7bf5",
+          "protocol_id": "a7ac047e-a71b-4970-b5ce-dc4ec0c67339",
+          "registered_at": "2026-10-07T19:51:34.340492+00:00",
+          "registration_code_fingerprint": "2187de726c8b5601c0a5cd754147e158fe8e0e82fdd212ac0873f4c8aaa024a6",
+          "review_status": "PENDING",
+          "scope": {
+            "historical_membership_reconstructed": false,
+            "historical_point_in_time_proven": false,
+            "identity_context": {
+              "SSE:600519": {
+                "board": "MAIN",
+                "code": "600519",
+                "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                "effective_at": "2026-10-07T00:00:00+08:00",
+                "exchange": "SSE",
+                "instrument_type": "STOCK",
+                "name": "贵州茅台",
+                "revision": 1
+              }
+            },
+            "instruments": [
+              "SSE:600519"
+            ],
+            "namespace": "HISTORICAL",
+            "selection": "TODAY_LIST_CONDITIONAL",
+            "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+          },
+          "sealed_independence": "UNPROVEN",
+          "status": "DESIGN_REGISTERED",
+          "validation_verdict": null
+        },
+        {
+          "basis": "METHOD_CASE关联修正，原结论和区间暴露不重置",
+          "capability": "NOT_GRANTED",
+          "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+          "dataset_id": "cff4c5b2-77f9-453c-b7b4-35644e4b1d19",
+          "design": {
+            "baselines": [
+              {
+                "id": "CASH",
+                "policy": "same synthetic initial capital, no interest assumed; display actual zero exposure separately"
+              },
+              {
+                "id": "START_HOLD",
+                "policy": "same start, budget/lot/rules,50% initial allowed exposure, no resets, comparable fees"
+              },
+              {
+                "id": "MA5_MA20",
+                "policy": "fixed5/20-day moving-average crossover,50% maximum exposure, same execution/cost/rules; no tuning"
+              }
+            ],
+            "candidates": [
+              {
+                "calibration": "Intercept-only held-out probability calibration; no fitting on SEALED; exact implementation and fingerprint ticket19",
+                "calibrator_artifact_fingerprint": null,
+                "candidate_id": "PRICE_VOLUME_LOGIT_V1",
+                "features": [
+                  "raw_return_5",
+                  "raw_return_20",
+                  "raw_return_volatility_20",
+                  "log_volume_to_trailing20_mean"
+                ],
+                "fitting": "L2 logistic regression; standardization fitted only DEVELOPMENT; lambda=1; no prompt or manual stock selection",
+                "model_artifact_fingerprint": null,
+                "status": "DESIGN_ONLY_NOT_MODEL_FROZEN",
+                "threshold": "0.60"
+              }
+            ],
+            "costs": {
+              "broker_actual_commission": "UNKNOWN",
+              "commission_includes_regulatory_fees": true,
+              "commission_scenario_rate": "0.0003",
+              "currency": "CNY",
+              "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+              "evidence": [
+                {
+                  "bytes": 45558,
+                  "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "sse-cost-investor.html",
+                  "http_status": 200,
+                  "id": "sse-cost-investor",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.006335+00:00",
+                  "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+                  "started_at": "2026-10-07T19:14:26.877488+00:00",
+                  "url": "https://one.sse.com.cn/onething/gptz/"
+                },
+                {
+                  "bytes": 41658,
+                  "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "sse-charge-2026.html",
+                  "http_status": 200,
+                  "id": "sse-charge-2026",
+                  "page_update": "2026-01",
+                  "page_update_precision": "MONTH_ONLY",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.323015+00:00",
+                  "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+                  "started_at": "2026-10-07T19:14:28.007071+00:00",
+                  "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/"
+                },
+                {
+                  "bytes": 27791,
+                  "effective_from": "2023-08-28",
+                  "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39",
+                  "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "stamp-tax-2023.html",
+                  "http_status": 200,
+                  "id": "stamp-tax-2023",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.685996+00:00",
+                  "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+                  "started_at": "2026-10-07T19:14:28.323867+00:00",
+                  "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448"
+                }
+              ],
+              "extra_regulatory_charge": "0",
+              "minimum_commission_yuan": "5",
+              "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+              "slippage_each_side_rate": "0.0005",
+              "stamp_sell_rate": "0.0005",
+              "transfer_each_side_rate": "0.00001",
+              "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction.",
+              "version": "17-cost-v1"
+            },
+            "design_fingerprint": "694bfdb1cf889c9e50a383c3aede9a676cc127423e732142099d505c86057922",
+            "design_version": "17-m0-v1",
+            "event": "Positive RAW realized20-session round-trip net return under frozen execution and known company-action treatment; unresolved action/status yields unscorable/interval cases, never zero",
+            "execution": {
+              "base_delay": "NEXT_OPEN",
+              "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast",
+              "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+              "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+              "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+              "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+              "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+              "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+              "synthetic_basis": "Research simulation scale chosen to allow at least one100-share600519 lot under50% exposure at publicly reported1258.62 quote; not user funds/baseline/authorization or research runtime money budget",
+              "synthetic_initial_cash_yuan": "1000000",
+              "synthetic_initial_positions": []
+            },
+            "formal_monitoring": {
+              "checkpoints": {
+                "operations": "Every actual running post-market checkpoint; missing days retained",
+                "statistics": "At registered30-session mature-results review and qualification expiry; no extra confirmation PASS look"
+              },
+              "drift": "Fit feature1st/99th percentiles on DEVELOPMENT only; if >=20% of latest20 eligible observations outside fixed reference or required-input coverage<80%, restrict use pending review. Operational sentinel, not a causal or statistical profitability verdict.",
+              "execution": "Compare actual next-open/next-close delays, missing/partial fills, quote-vs-fill, realized fees with frozen scenarios; outside declared delay/price/cost bounds immediately restrict affected ability without declaring statistical FAIL",
+              "mature_results": "Report fixed mature probability/utility/support checks at registered review; insufficient evidence=>INCONCLUSIVE, no adjusting cutoffs on new losses",
+              "policy_change": "Reason+new fingerprint+successor protocol, preserve previous verdict and visits; no silent threshold changes",
+              "scope": {
+                "historical_membership_reconstructed": false,
+                "historical_point_in_time_proven": false,
+                "identity_context": {
+                  "SSE:600519": {
+                    "board": "MAIN",
+                    "code": "600519",
+                    "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                    "effective_at": "2026-10-07T00:00:00+08:00",
+                    "exchange": "SSE",
+                    "instrument_type": "STOCK",
+                    "name": "贵州茅台",
+                    "revision": 1
+                  }
+                },
+                "instruments": [
+                  "SSE:600519"
+                ],
+                "namespace": "HISTORICAL",
+                "selection": "TODAY_LIST_CONDITIONAL",
+                "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+              },
+              "unmatured_results_scored": false
+            },
+            "g5": {
+              "commission_rates": [
+                "0.0003",
+                "0.0006",
+                "0.003"
+              ],
+              "delays": [
+                "NEXT_OPEN",
+                "NEXT_CLOSE",
+                "ONE_MORE_SESSION_OPEN",
+                "OUTSIDE_ALLOWED_PRICE_NO_FILL"
+              ],
+              "migration_scope": {
+                "historical_membership_reconstructed": false,
+                "historical_point_in_time_proven": false,
+                "identity_context": {
+                  "SSE:600519": {
+                    "board": "MAIN",
+                    "code": "600519",
+                    "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                    "effective_at": "2026-10-07T00:00:00+08:00",
+                    "exchange": "SSE",
+                    "instrument_type": "STOCK",
+                    "name": "贵州茅台",
+                    "revision": 1
+                  }
+                },
+                "instruments": [
+                  "SSE:600519"
+                ],
+                "namespace": "HISTORICAL",
+                "selection": "TODAY_LIST_CONDITIONAL",
+                "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+              },
+              "parameter_neighborhood": {
+                "evaluation": "One-at-a-time neighbors around fixed primary, never choose a neighbor winner; each fit/candidate/threshold attempt persisted",
+                "lookback_sessions": [
+                  15,
+                  20,
+                  25
+                ],
+                "penalty": [
+                  "0.5",
+                  "1",
+                  "2"
+                ],
+                "probability_threshold": [
+                  "0.55",
+                  "0.60",
+                  "0.65"
+                ]
+              },
+              "required": "Base improvement>=25bp NAV with preregistered interval/risk/support; stressed net value must not reverse below comparable baseline, risk bounds hold. Insufficient stress support is INCONCLUSIVE; failure cannot be repaired by shrinking old scope.",
+              "slippage_each_side_rates": [
+                "0.0005",
+                "0.001",
+                "0.002"
+              ],
+              "time_segments": "Report each chronological third of the eligible historical test and forward mature window, same targets; each insufficient segment remains INCONCLUSIVE",
+              "unknown_scope": "Other names/boards/markets are monitoring only; extension needs linked new experiment and unused evidence"
+            },
+            "horizon_sessions": 20,
+            "hypothesis": "A fixed transparent daily price-volume candidate improves fee-after return under matched risk/exposure; not best retrospective stock selection",
+            "label_isolation": {
+              "embargo_sessions": 20,
+              "horizon_sessions": 20,
+              "lookback_sessions": 20,
+              "rule": "A fitted label must mature inside its allowed DEVELOPMENT/CALIBRATION window; boundary-spanning labels purged. Calibration receives preceding20 rows only as past feature context; no random same-day split."
+            },
+            "primary_objective": {
+              "basis": "Research choice before outcome computation. Assumed3bp commission each side +5bp sell stamp +0.1bp transfer each side +5bp slippage each side =21.2bp trade cost; at50% exposure10.6bp NAV. Twice this rounded upward to25bp is a meaningful NAV improvement hurdle, not estimated alpha or actual broker cost.",
+              "confidence_rule": "One-sided95% lower bound >0.0025 at single final point; all required comparisons/gates must hold",
+              "metric": "Paired20-session fee-after NAV return improvement over every preregistered comparable baseline",
+              "minimum_improvement_nav_return": "0.0025",
+              "risk_constraints": {
+                "candidate_drawdown_excess_over_risk_matched_baseline": "0.02",
+                "maximum_drawdown": "0.10",
+                "maximum_simulated_gross_exposure": "0.50",
+                "minimum_decision_coverage": "0.20"
+              }
+            },
+            "risk_policy_evidence": {
+              "inherits_profit_model_pass": false,
+              "owner": "ticket22",
+              "profit_model_required_gates": [
+                "G1",
+                "G2",
+                "G3",
+                "G4",
+                "G5",
+                "G6",
+                "G7"
+              ],
+              "required": [
+                "own frozen deterministic rules/data fingerprints",
+                "authorized risk boundaries",
+                "calculation and stress-execution proof",
+                "online consistency and scope checks"
+              ]
+            },
+            "statistics": {
+              "alpha": "0.05",
+              "dependency_sensitivity_block_sessions": [
+                20,
+                40
+              ],
+              "method": "Paired calendar-date moving-block bootstrap, block length20 sessions; same-day securities jointly resampled; seed1701,2000 replicates",
+              "minimum_calibration_examples_per_class": 20,
+              "minimum_effective_time_blocks": 30,
+              "minimum_selected_mature_examples": 40,
+              "multiple_comparison_policy": "Intersection-union: every preregistered required baseline and gate must pass; no choosing favorable comparison. Sensitivity does not create another PASS look.",
+              "pass_look_count": 1,
+              "probability_checks": [
+                "Brier/log loss against development base rate and transparent rule",
+                "fixed5 equal-width reliability bins,20 mature cases per occupied bin",
+                "ROC discrimination and selected-subset support, no probability reliability claim from lower Brier alone"
+              ],
+              "reference": "Kunsch(1989), The jackknife and the bootstrap for general stationary observations, Ann.Statist.17:1217–1241; author bibliography https://people.math.ethz.ch/~hkuensch/papers/",
+              "validity": "Stationarity/weak-dependence assumptions and finite-sample coverage must be automatically validated and technically reviewed in20.30 blocks is a conservative design eligibility condition, not a universal bootstrap theorem; inadequate support or failed assumptions=>INCONCLUSIVE, never lower cutoff after seeing sealed."
+            },
+            "stopping": {
+              "calendar_month_rule": "Local wall time; month addition clamps to destination month end; inclusive final cutoff, no90-day substitution",
+              "early_stops": [
+                "hard safety/input/version failure",
+                "technical model fit/call/deadline limit",
+                "user stops ability; statistical verdict separately preserved"
+              ],
+              "forward_origin": "First successfully persisted actual frozen-model future prediction in30/32; protocol registration/deployment/historical replay/synthetic account do not start it",
+              "maximum_natural_months": 3,
+              "no_extension": "Absence/backend switching/unfavorable results/maturity deficits never extend original deadline; successor requires new information value",
+              "pass_checkpoint": "ONE_FINAL_CONFIRMATORY_POINT_AT_DEADLINE_OR_PREREGISTERED_HARD_STOP",
+              "technical_limits": {
+                "maximum_calibration_fits": 1,
+                "maximum_fit_seconds": 60,
+                "maximum_model_fits_including_fixed_neighbors": 5,
+                "maximum_primary_candidates": 1,
+                "runtime_money_budget_required": false,
+                "sealed_parameter_tuning_calls": 0
+              },
+              "timezone": "Asia/Shanghai"
+            },
+            "support_projection": {
+              "calibration_mature_label_upper_bound": 20,
+              "historical_final_independence": "UNPROVEN; engineering archive exposure is recorded, no strategy results examined",
+              "metadata_only": true,
+              "sealed_mature_label_upper_bound": 1,
+              "sealed_nonoverlap20_block_upper_bound": 0,
+              "state": "INSUFFICIENT_FOR_CONFIRMATORY_PASS"
+            },
+            "windows": {
+              "CALIBRATION": {
+                "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+                "artifact": {
+                  "bytes": 16284,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "CALIBRATION",
+                  "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b"
+                },
+                "context_first_date": "2026-05-11",
+                "context_rows": 20,
+                "first_date": "2026-06-08",
+                "last_date": "2026-08-03",
+                "rows": 40,
+                "state": "HOST_FILTERED"
+              },
+              "DEVELOPMENT": {
+                "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+                "artifact": {
+                  "bytes": 19454,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "DEVELOPMENT",
+                  "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6"
+                },
+                "context_first_date": "2026-01-05",
+                "context_rows": 0,
+                "first_date": "2026-01-05",
+                "last_date": "2026-05-08",
+                "rows": 80,
+                "state": "HOST_FILTERED"
+              },
+              "SEALED": {
+                "access": "EXPLICIT_AUDITED_SEALED_INPUT",
+                "artifact": {
+                  "bytes": 14097,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "SEALED",
+                  "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee"
+                },
+                "context_first_date": "2026-08-04",
+                "context_rows": 20,
+                "first_date": "2026-09-01",
+                "last_date": "2026-09-30",
+                "rows": 21,
+                "state": "HOST_FILTERED"
+              }
+            }
+          },
+          "forward_deadline": null,
+          "forward_started_at": null,
+          "freeze_gaps": [
+            "MODEL_ARTIFACT_MISSING",
+            "CALIBRATOR_ARTIFACT_MISSING",
+            "POLICY_ARTIFACT_MISSING",
+            "VALIDATION_CODE_FINGERPRINT_MISSING",
+            "METHOD_VALIDATION_PENDING_TICKET20",
+            "SEALED_INDEPENDENCE_UNPROVEN",
+            "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+            "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+          ],
+          "ownership": {
+            "complete_protocol_freeze": "ticket20",
+            "forward_start": "tickets30/32",
+            "model_freeze": "ticket19",
+            "risk_policy": "ticket22"
+          },
+          "predecessor_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+          "protocol_fingerprint": "624eb4c246371b33352306e85ba59e6eb8e3909f8fb94cbde00e6cd97f008742",
+          "protocol_id": "c4283cb0-43a0-42dc-b23e-c0d125be399e",
+          "registered_at": "2026-10-07T19:50:21.471317+00:00",
+          "registration_code_fingerprint": "2187de726c8b5601c0a5cd754147e158fe8e0e82fdd212ac0873f4c8aaa024a6",
+          "review_status": "PENDING",
+          "scope": {
+            "historical_membership_reconstructed": false,
+            "historical_point_in_time_proven": false,
+            "identity_context": {
+              "SSE:600519": {
+                "board": "MAIN",
+                "code": "600519",
+                "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                "effective_at": "2026-10-07T00:00:00+08:00",
+                "exchange": "SSE",
+                "instrument_type": "STOCK",
+                "name": "贵州茅台",
+                "revision": 1
+              }
+            },
+            "instruments": [
+              "SSE:600519"
+            ],
+            "namespace": "HISTORICAL",
+            "selection": "TODAY_LIST_CONDITIONAL",
+            "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+          },
+          "sealed_independence": "UNPROVEN",
+          "status": "DESIGN_REGISTERED",
+          "validation_verdict": null
+        },
+        {
+          "basis": "实际181条覆盖登记，封存独立性未证明且不具历史PIT，不授模型/正式使用资格",
+          "capability": "NOT_GRANTED",
+          "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+          "dataset_id": "cff4c5b2-77f9-453c-b7b4-35644e4b1d19",
+          "design": {
+            "baselines": [
+              {
+                "id": "CASH",
+                "policy": "same synthetic initial capital, no interest assumed; display actual zero exposure separately"
+              },
+              {
+                "id": "START_HOLD",
+                "policy": "same start, budget/lot/rules,50% initial allowed exposure, no resets, comparable fees"
+              },
+              {
+                "id": "MA5_MA20",
+                "policy": "fixed5/20-day moving-average crossover,50% maximum exposure, same execution/cost/rules; no tuning"
+              }
+            ],
+            "candidates": [
+              {
+                "calibration": "Intercept-only held-out probability calibration; no fitting on SEALED; exact implementation and fingerprint ticket19",
+                "calibrator_artifact_fingerprint": null,
+                "candidate_id": "PRICE_VOLUME_LOGIT_V1",
+                "features": [
+                  "raw_return_5",
+                  "raw_return_20",
+                  "raw_return_volatility_20",
+                  "log_volume_to_trailing20_mean"
+                ],
+                "fitting": "L2 logistic regression; standardization fitted only DEVELOPMENT; lambda=1; no prompt or manual stock selection",
+                "model_artifact_fingerprint": null,
+                "status": "DESIGN_ONLY_NOT_MODEL_FROZEN",
+                "threshold": "0.60"
+              }
+            ],
+            "costs": {
+              "broker_actual_commission": "UNKNOWN",
+              "commission_includes_regulatory_fees": true,
+              "commission_scenario_rate": "0.0003",
+              "currency": "CNY",
+              "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+              "evidence": [
+                {
+                  "bytes": 45558,
+                  "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "sse-cost-investor.html",
+                  "http_status": 200,
+                  "id": "sse-cost-investor",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.006335+00:00",
+                  "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+                  "started_at": "2026-10-07T19:14:26.877488+00:00",
+                  "url": "https://one.sse.com.cn/onething/gptz/"
+                },
+                {
+                  "bytes": 41658,
+                  "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "sse-charge-2026.html",
+                  "http_status": 200,
+                  "id": "sse-charge-2026",
+                  "page_update": "2026-01",
+                  "page_update_precision": "MONTH_ONLY",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.323015+00:00",
+                  "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+                  "started_at": "2026-10-07T19:14:28.007071+00:00",
+                  "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/"
+                },
+                {
+                  "bytes": 27791,
+                  "effective_from": "2023-08-28",
+                  "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39",
+                  "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+                  "evidence_kind": "REAL_AUTHORITY_PAGE",
+                  "file": "stamp-tax-2023.html",
+                  "http_status": 200,
+                  "id": "stamp-tax-2023",
+                  "permission": "Public source retrieval; no broker client tariff authority",
+                  "received_at": "2026-10-07T19:14:28.685996+00:00",
+                  "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+                  "started_at": "2026-10-07T19:14:28.323867+00:00",
+                  "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448"
+                }
+              ],
+              "extra_regulatory_charge": "0",
+              "minimum_commission_yuan": "5",
+              "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+              "slippage_each_side_rate": "0.0005",
+              "stamp_sell_rate": "0.0005",
+              "transfer_each_side_rate": "0.00001",
+              "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction.",
+              "version": "17-cost-v1"
+            },
+            "design_fingerprint": "694bfdb1cf889c9e50a383c3aede9a676cc127423e732142099d505c86057922",
+            "design_version": "17-m0-v1",
+            "event": "Positive RAW realized20-session round-trip net return under frozen execution and known company-action treatment; unresolved action/status yields unscorable/interval cases, never zero",
+            "execution": {
+              "base_delay": "NEXT_OPEN",
+              "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast",
+              "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+              "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+              "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+              "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+              "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+              "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+              "synthetic_basis": "Research simulation scale chosen to allow at least one100-share600519 lot under50% exposure at publicly reported1258.62 quote; not user funds/baseline/authorization or research runtime money budget",
+              "synthetic_initial_cash_yuan": "1000000",
+              "synthetic_initial_positions": []
+            },
+            "formal_monitoring": {
+              "checkpoints": {
+                "operations": "Every actual running post-market checkpoint; missing days retained",
+                "statistics": "At registered30-session mature-results review and qualification expiry; no extra confirmation PASS look"
+              },
+              "drift": "Fit feature1st/99th percentiles on DEVELOPMENT only; if >=20% of latest20 eligible observations outside fixed reference or required-input coverage<80%, restrict use pending review. Operational sentinel, not a causal or statistical profitability verdict.",
+              "execution": "Compare actual next-open/next-close delays, missing/partial fills, quote-vs-fill, realized fees with frozen scenarios; outside declared delay/price/cost bounds immediately restrict affected ability without declaring statistical FAIL",
+              "mature_results": "Report fixed mature probability/utility/support checks at registered review; insufficient evidence=>INCONCLUSIVE, no adjusting cutoffs on new losses",
+              "policy_change": "Reason+new fingerprint+successor protocol, preserve previous verdict and visits; no silent threshold changes",
+              "scope": {
+                "historical_membership_reconstructed": false,
+                "historical_point_in_time_proven": false,
+                "identity_context": {
+                  "SSE:600519": {
+                    "board": "MAIN",
+                    "code": "600519",
+                    "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                    "effective_at": "2026-10-07T00:00:00+08:00",
+                    "exchange": "SSE",
+                    "instrument_type": "STOCK",
+                    "name": "贵州茅台",
+                    "revision": 1
+                  }
+                },
+                "instruments": [
+                  "SSE:600519"
+                ],
+                "namespace": "HISTORICAL",
+                "selection": "TODAY_LIST_CONDITIONAL",
+                "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+              },
+              "unmatured_results_scored": false
+            },
+            "g5": {
+              "commission_rates": [
+                "0.0003",
+                "0.0006",
+                "0.003"
+              ],
+              "delays": [
+                "NEXT_OPEN",
+                "NEXT_CLOSE",
+                "ONE_MORE_SESSION_OPEN",
+                "OUTSIDE_ALLOWED_PRICE_NO_FILL"
+              ],
+              "migration_scope": {
+                "historical_membership_reconstructed": false,
+                "historical_point_in_time_proven": false,
+                "identity_context": {
+                  "SSE:600519": {
+                    "board": "MAIN",
+                    "code": "600519",
+                    "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                    "effective_at": "2026-10-07T00:00:00+08:00",
+                    "exchange": "SSE",
+                    "instrument_type": "STOCK",
+                    "name": "贵州茅台",
+                    "revision": 1
+                  }
+                },
+                "instruments": [
+                  "SSE:600519"
+                ],
+                "namespace": "HISTORICAL",
+                "selection": "TODAY_LIST_CONDITIONAL",
+                "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+              },
+              "parameter_neighborhood": {
+                "evaluation": "One-at-a-time neighbors around fixed primary, never choose a neighbor winner; each fit/candidate/threshold attempt persisted",
+                "lookback_sessions": [
+                  15,
+                  20,
+                  25
+                ],
+                "penalty": [
+                  "0.5",
+                  "1",
+                  "2"
+                ],
+                "probability_threshold": [
+                  "0.55",
+                  "0.60",
+                  "0.65"
+                ]
+              },
+              "required": "Base improvement>=25bp NAV with preregistered interval/risk/support; stressed net value must not reverse below comparable baseline, risk bounds hold. Insufficient stress support is INCONCLUSIVE; failure cannot be repaired by shrinking old scope.",
+              "slippage_each_side_rates": [
+                "0.0005",
+                "0.001",
+                "0.002"
+              ],
+              "time_segments": "Report each chronological third of the eligible historical test and forward mature window, same targets; each insufficient segment remains INCONCLUSIVE",
+              "unknown_scope": "Other names/boards/markets are monitoring only; extension needs linked new experiment and unused evidence"
+            },
+            "horizon_sessions": 20,
+            "hypothesis": "A fixed transparent daily price-volume candidate improves fee-after return under matched risk/exposure; not best retrospective stock selection",
+            "label_isolation": {
+              "embargo_sessions": 20,
+              "horizon_sessions": 20,
+              "lookback_sessions": 20,
+              "rule": "A fitted label must mature inside its allowed DEVELOPMENT/CALIBRATION window; boundary-spanning labels purged. Calibration receives preceding20 rows only as past feature context; no random same-day split."
+            },
+            "primary_objective": {
+              "basis": "Research choice before outcome computation. Assumed3bp commission each side +5bp sell stamp +0.1bp transfer each side +5bp slippage each side =21.2bp trade cost; at50% exposure10.6bp NAV. Twice this rounded upward to25bp is a meaningful NAV improvement hurdle, not estimated alpha or actual broker cost.",
+              "confidence_rule": "One-sided95% lower bound >0.0025 at single final point; all required comparisons/gates must hold",
+              "metric": "Paired20-session fee-after NAV return improvement over every preregistered comparable baseline",
+              "minimum_improvement_nav_return": "0.0025",
+              "risk_constraints": {
+                "candidate_drawdown_excess_over_risk_matched_baseline": "0.02",
+                "maximum_drawdown": "0.10",
+                "maximum_simulated_gross_exposure": "0.50",
+                "minimum_decision_coverage": "0.20"
+              }
+            },
+            "risk_policy_evidence": {
+              "inherits_profit_model_pass": false,
+              "owner": "ticket22",
+              "profit_model_required_gates": [
+                "G1",
+                "G2",
+                "G3",
+                "G4",
+                "G5",
+                "G6",
+                "G7"
+              ],
+              "required": [
+                "own frozen deterministic rules/data fingerprints",
+                "authorized risk boundaries",
+                "calculation and stress-execution proof",
+                "online consistency and scope checks"
+              ]
+            },
+            "statistics": {
+              "alpha": "0.05",
+              "dependency_sensitivity_block_sessions": [
+                20,
+                40
+              ],
+              "method": "Paired calendar-date moving-block bootstrap, block length20 sessions; same-day securities jointly resampled; seed1701,2000 replicates",
+              "minimum_calibration_examples_per_class": 20,
+              "minimum_effective_time_blocks": 30,
+              "minimum_selected_mature_examples": 40,
+              "multiple_comparison_policy": "Intersection-union: every preregistered required baseline and gate must pass; no choosing favorable comparison. Sensitivity does not create another PASS look.",
+              "pass_look_count": 1,
+              "probability_checks": [
+                "Brier/log loss against development base rate and transparent rule",
+                "fixed5 equal-width reliability bins,20 mature cases per occupied bin",
+                "ROC discrimination and selected-subset support, no probability reliability claim from lower Brier alone"
+              ],
+              "reference": "Kunsch(1989), The jackknife and the bootstrap for general stationary observations, Ann.Statist.17:1217–1241; author bibliography https://people.math.ethz.ch/~hkuensch/papers/",
+              "validity": "Stationarity/weak-dependence assumptions and finite-sample coverage must be automatically validated and technically reviewed in20.30 blocks is a conservative design eligibility condition, not a universal bootstrap theorem; inadequate support or failed assumptions=>INCONCLUSIVE, never lower cutoff after seeing sealed."
+            },
+            "stopping": {
+              "calendar_month_rule": "Local wall time; month addition clamps to destination month end; inclusive final cutoff, no90-day substitution",
+              "early_stops": [
+                "hard safety/input/version failure",
+                "technical model fit/call/deadline limit",
+                "user stops ability; statistical verdict separately preserved"
+              ],
+              "forward_origin": "First successfully persisted actual frozen-model future prediction in30/32; protocol registration/deployment/historical replay/synthetic account do not start it",
+              "maximum_natural_months": 3,
+              "no_extension": "Absence/backend switching/unfavorable results/maturity deficits never extend original deadline; successor requires new information value",
+              "pass_checkpoint": "ONE_FINAL_CONFIRMATORY_POINT_AT_DEADLINE_OR_PREREGISTERED_HARD_STOP",
+              "technical_limits": {
+                "maximum_calibration_fits": 1,
+                "maximum_fit_seconds": 60,
+                "maximum_model_fits_including_fixed_neighbors": 5,
+                "maximum_primary_candidates": 1,
+                "runtime_money_budget_required": false,
+                "sealed_parameter_tuning_calls": 0
+              },
+              "timezone": "Asia/Shanghai"
+            },
+            "support_projection": {
+              "calibration_mature_label_upper_bound": 20,
+              "historical_final_independence": "UNPROVEN; engineering archive exposure is recorded, no strategy results examined",
+              "metadata_only": true,
+              "sealed_mature_label_upper_bound": 1,
+              "sealed_nonoverlap20_block_upper_bound": 0,
+              "state": "INSUFFICIENT_FOR_CONFIRMATORY_PASS"
+            },
+            "windows": {
+              "CALIBRATION": {
+                "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+                "artifact": {
+                  "bytes": 16284,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "CALIBRATION",
+                  "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b"
+                },
+                "context_first_date": "2026-05-11",
+                "context_rows": 20,
+                "first_date": "2026-06-08",
+                "last_date": "2026-08-03",
+                "rows": 40,
+                "state": "HOST_FILTERED"
+              },
+              "DEVELOPMENT": {
+                "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+                "artifact": {
+                  "bytes": 19454,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "DEVELOPMENT",
+                  "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6"
+                },
+                "context_first_date": "2026-01-05",
+                "context_rows": 0,
+                "first_date": "2026-01-05",
+                "last_date": "2026-05-08",
+                "rows": 80,
+                "state": "HOST_FILTERED"
+              },
+              "SEALED": {
+                "access": "EXPLICIT_AUDITED_SEALED_INPUT",
+                "artifact": {
+                  "bytes": 14097,
+                  "kind": "RESEARCH_PARTITION",
+                  "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                  "partition": "SEALED",
+                  "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+                  "research_namespace": "HISTORICAL",
+                  "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee"
+                },
+                "context_first_date": "2026-08-04",
+                "context_rows": 20,
+                "first_date": "2026-09-01",
+                "last_date": "2026-09-30",
+                "rows": 21,
+                "state": "HOST_FILTERED"
+              }
+            }
+          },
+          "forward_deadline": null,
+          "forward_started_at": null,
+          "freeze_gaps": [
+            "MODEL_ARTIFACT_MISSING",
+            "CALIBRATOR_ARTIFACT_MISSING",
+            "POLICY_ARTIFACT_MISSING",
+            "VALIDATION_CODE_FINGERPRINT_MISSING",
+            "METHOD_VALIDATION_PENDING_TICKET20",
+            "SEALED_INDEPENDENCE_UNPROVEN",
+            "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+            "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+          ],
+          "ownership": {
+            "complete_protocol_freeze": "ticket20",
+            "forward_start": "tickets30/32",
+            "model_freeze": "ticket19",
+            "risk_policy": "ticket22"
+          },
+          "predecessor_id": null,
+          "protocol_fingerprint": "af24d9168ec332c6cad42dfce474e13023e8d9a30f2c10428d5100651a3f12bd",
+          "protocol_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+          "registered_at": "2026-10-07T19:50:18.056414+00:00",
+          "registration_code_fingerprint": "2187de726c8b5601c0a5cd754147e158fe8e0e82fdd212ac0873f4c8aaa024a6",
+          "review_status": "PENDING",
+          "scope": {
+            "historical_membership_reconstructed": false,
+            "historical_point_in_time_proven": false,
+            "identity_context": {
+              "SSE:600519": {
+                "board": "MAIN",
+                "code": "600519",
+                "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                "effective_at": "2026-10-07T00:00:00+08:00",
+                "exchange": "SSE",
+                "instrument_type": "STOCK",
+                "name": "贵州茅台",
+                "revision": 1
+              }
+            },
+            "instruments": [
+              "SSE:600519"
+            ],
+            "namespace": "HISTORICAL",
+            "selection": "TODAY_LIST_CONDITIONAL",
+            "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+          },
+          "sealed_independence": "UNPROVEN",
+          "status": "DESIGN_REGISTERED",
+          "validation_verdict": null
+        }
+      ]
+    },
+    {
+      "at": "2026-10-07T19:54:35.277489+00:00",
+      "method": "POST",
+      "path": "/research/protocols",
+      "status": 201,
+      "response": {
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "registered_at": "2026-10-07T19:54:35.250650+00:00",
+        "status": "DESIGN_REGISTERED",
+        "basis": "实际181条覆盖登记，封存独立性未证明且不具历史PIT，不授模型/正式使用资格",
+        "predecessor_id": "a7ac047e-a71b-4970-b5ce-dc4ec0c67339",
+        "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+        "sealed_independence": "UNPROVEN",
+        "validation_verdict": null,
+        "review_status": "PENDING",
+        "capability": "NOT_GRANTED",
+        "forward_started_at": null,
+        "forward_deadline": null,
+        "scope": {
+          "historical_membership_reconstructed": false,
+          "historical_point_in_time_proven": false,
+          "identity_context": {
+            "SSE:600519": {
+              "board": "MAIN",
+              "code": "600519",
+              "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+              "effective_at": "2026-10-07T00:00:00+08:00",
+              "exchange": "SSE",
+              "instrument_type": "STOCK",
+              "name": "贵州茅台",
+              "revision": 1
+            }
+          },
+          "instruments": [
+            "SSE:600519"
+          ],
+          "namespace": "HISTORICAL",
+          "selection": "TODAY_LIST_CONDITIONAL",
+          "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+        },
+        "freeze_gaps": [
+          "MODEL_ARTIFACT_MISSING",
+          "CALIBRATOR_ARTIFACT_MISSING",
+          "POLICY_ARTIFACT_MISSING",
+          "VALIDATION_CODE_FINGERPRINT_MISSING",
+          "METHOD_VALIDATION_PENDING_TICKET20",
+          "SEALED_INDEPENDENCE_UNPROVEN",
+          "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+          "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+        ],
+        "ownership": {
+          "model_freeze": "ticket19",
+          "complete_protocol_freeze": "ticket20",
+          "forward_start": "tickets30/32",
+          "risk_policy": "ticket22"
+        },
+        "registration_code_fingerprint": "2f013781fcde294b5a95cb8e0753e19cf30fb217f92027684ae2839ce2d582c8",
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "design": {
+          "design_version": "17-m0-v1",
+          "hypothesis": "A fixed transparent daily price-volume candidate improves fee-after return under matched risk/exposure; not best retrospective stock selection",
+          "horizon_sessions": 20,
+          "event": "Positive RAW realized20-session round-trip net return under frozen execution and known company-action treatment; unresolved action/status yields unscorable/interval cases, never zero",
+          "candidates": [
+            {
+              "candidate_id": "PRICE_VOLUME_LOGIT_V1",
+              "status": "DESIGN_ONLY_NOT_MODEL_FROZEN",
+              "features": [
+                "raw_return_5",
+                "raw_return_20",
+                "raw_return_volatility_20",
+                "log_volume_to_trailing20_mean"
+              ],
+              "fitting": "L2 logistic regression; standardization fitted only DEVELOPMENT; lambda=1; no prompt or manual stock selection",
+              "calibration": "Intercept-only held-out probability calibration; no fitting on SEALED; exact implementation and fingerprint ticket19",
+              "threshold": "0.60",
+              "model_artifact_fingerprint": null,
+              "calibrator_artifact_fingerprint": null
+            }
+          ],
+          "primary_objective": {
+            "metric": "Paired20-session fee-after NAV return improvement over every preregistered comparable baseline",
+            "minimum_improvement_nav_return": "0.0025",
+            "confidence_rule": "One-sided95% lower bound >0.0025 at single final point; all required comparisons/gates must hold",
+            "risk_constraints": {
+              "maximum_simulated_gross_exposure": "0.50",
+              "maximum_drawdown": "0.10",
+              "candidate_drawdown_excess_over_risk_matched_baseline": "0.02",
+              "minimum_decision_coverage": "0.20"
+            },
+            "basis": "Research choice before outcome computation. Assumed3bp commission each side +5bp sell stamp +0.1bp transfer each side +5bp slippage each side =21.2bp trade cost; at50% exposure10.6bp NAV. Twice this rounded upward to25bp is a meaningful NAV improvement hurdle, not estimated alpha or actual broker cost."
+          },
+          "baselines": [
+            {
+              "id": "CASH",
+              "policy": "same synthetic initial capital, no interest assumed; display actual zero exposure separately"
+            },
+            {
+              "id": "START_HOLD",
+              "policy": "same start, budget/lot/rules,50% initial allowed exposure, no resets, comparable fees"
+            },
+            {
+              "id": "MA5_MA20",
+              "policy": "fixed5/20-day moving-average crossover,50% maximum exposure, same execution/cost/rules; no tuning"
+            }
+          ],
+          "windows": {
+            "CALIBRATION": {
+              "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+              "artifact": {
+                "bytes": 16284,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "CALIBRATION",
+                "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b"
+              },
+              "context_first_date": "2026-05-11",
+              "context_rows": 20,
+              "first_date": "2026-06-08",
+              "last_date": "2026-08-03",
+              "rows": 40,
+              "state": "HOST_FILTERED"
+            },
+            "DEVELOPMENT": {
+              "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+              "artifact": {
+                "bytes": 19454,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "DEVELOPMENT",
+                "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6"
+              },
+              "context_first_date": "2026-01-05",
+              "context_rows": 0,
+              "first_date": "2026-01-05",
+              "last_date": "2026-05-08",
+              "rows": 80,
+              "state": "HOST_FILTERED"
+            },
+            "SEALED": {
+              "access": "EXPLICIT_AUDITED_SEALED_INPUT",
+              "artifact": {
+                "bytes": 14097,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "SEALED",
+                "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee"
+              },
+              "context_first_date": "2026-08-04",
+              "context_rows": 20,
+              "first_date": "2026-09-01",
+              "last_date": "2026-09-30",
+              "rows": 21,
+              "state": "HOST_FILTERED"
+            }
+          },
+          "label_isolation": {
+            "lookback_sessions": 20,
+            "horizon_sessions": 20,
+            "embargo_sessions": 20,
+            "rule": "A fitted label must mature inside its allowed DEVELOPMENT/CALIBRATION window; boundary-spanning labels purged. Calibration receives preceding20 rows only as past feature context; no random same-day split."
+          },
+          "statistics": {
+            "method": "Paired calendar-date moving-block bootstrap, block length20 sessions; same-day securities jointly resampled; seed1701,2000 replicates",
+            "dependency_sensitivity_block_sessions": [
+              20,
+              40
+            ],
+            "minimum_effective_time_blocks": 30,
+            "minimum_calibration_examples_per_class": 20,
+            "minimum_selected_mature_examples": 40,
+            "probability_checks": [
+              "Brier/log loss against development base rate and transparent rule",
+              "fixed5 equal-width reliability bins,20 mature cases per occupied bin",
+              "ROC discrimination and selected-subset support, no probability reliability claim from lower Brier alone"
+            ],
+            "pass_look_count": 1,
+            "alpha": "0.05",
+            "multiple_comparison_policy": "Intersection-union: every preregistered required baseline and gate must pass; no choosing favorable comparison. Sensitivity does not create another PASS look.",
+            "validity": "Stationarity/weak-dependence assumptions and finite-sample coverage must be automatically validated and technically reviewed in20.30 blocks is a conservative design eligibility condition, not a universal bootstrap theorem; inadequate support or failed assumptions=>INCONCLUSIVE, never lower cutoff after seeing sealed.",
+            "reference": "Kunsch(1989), The jackknife and the bootstrap for general stationary observations, Ann.Statist.17:1217–1241; author bibliography https://people.math.ethz.ch/~hkuensch/papers/"
+          },
+          "support_projection": {
+            "metadata_only": true,
+            "sealed_mature_label_upper_bound": 1,
+            "calibration_mature_label_upper_bound": 20,
+            "sealed_nonoverlap20_block_upper_bound": 0,
+            "state": "INSUFFICIENT_FOR_CONFIRMATORY_PASS",
+            "historical_final_independence": "UNPROVEN; engineering archive exposure is recorded, no strategy results examined"
+          },
+          "costs": {
+            "version": "17-cost-v1",
+            "currency": "CNY",
+            "broker_actual_commission": "UNKNOWN",
+            "commission_scenario_rate": "0.0003",
+            "minimum_commission_yuan": "5",
+            "commission_includes_regulatory_fees": true,
+            "extra_regulatory_charge": "0",
+            "stamp_sell_rate": "0.0005",
+            "transfer_each_side_rate": "0.00001",
+            "slippage_each_side_rate": "0.0005",
+            "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+            "evidence": [
+              {
+                "id": "sse-cost-investor",
+                "url": "https://one.sse.com.cn/onething/gptz/",
+                "started_at": "2026-10-07T19:14:26.877488+00:00",
+                "received_at": "2026-10-07T19:14:28.006335+00:00",
+                "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+                "bytes": 45558,
+                "http_status": 200,
+                "file": "sse-cost-investor.html",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+                "permission": "Public source retrieval; no broker client tariff authority"
+              },
+              {
+                "id": "sse-charge-2026",
+                "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/",
+                "started_at": "2026-10-07T19:14:28.007071+00:00",
+                "received_at": "2026-10-07T19:14:28.323015+00:00",
+                "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+                "bytes": 41658,
+                "http_status": 200,
+                "file": "sse-charge-2026.html",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+                "permission": "Public source retrieval; no broker client tariff authority",
+                "page_update": "2026-01",
+                "page_update_precision": "MONTH_ONLY"
+              },
+              {
+                "id": "stamp-tax-2023",
+                "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448",
+                "started_at": "2026-10-07T19:14:28.323867+00:00",
+                "received_at": "2026-10-07T19:14:28.685996+00:00",
+                "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+                "bytes": 27791,
+                "http_status": 200,
+                "file": "stamp-tax-2023.html",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+                "permission": "Public source retrieval; no broker client tariff authority",
+                "effective_from": "2023-08-28",
+                "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39"
+              }
+            ],
+            "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+            "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction."
+          },
+          "execution": {
+            "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+            "base_delay": "NEXT_OPEN",
+            "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+            "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+            "synthetic_initial_cash_yuan": "1000000",
+            "synthetic_initial_positions": [],
+            "synthetic_basis": "Research simulation scale chosen to allow at least one100-share600519 lot under50% exposure at publicly reported1258.62 quote; not user funds/baseline/authorization or research runtime money budget",
+            "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+            "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+            "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+            "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast"
+          },
+          "g5": {
+            "time_segments": "Report each chronological third of the eligible historical test and forward mature window, same targets; each insufficient segment remains INCONCLUSIVE",
+            "commission_rates": [
+              "0.0003",
+              "0.0006",
+              "0.003"
+            ],
+            "slippage_each_side_rates": [
+              "0.0005",
+              "0.001",
+              "0.002"
+            ],
+            "delays": [
+              "NEXT_OPEN",
+              "NEXT_CLOSE",
+              "ONE_MORE_SESSION_OPEN",
+              "OUTSIDE_ALLOWED_PRICE_NO_FILL"
+            ],
+            "parameter_neighborhood": {
+              "penalty": [
+                "0.5",
+                "1",
+                "2"
+              ],
+              "lookback_sessions": [
+                15,
+                20,
+                25
+              ],
+              "probability_threshold": [
+                "0.55",
+                "0.60",
+                "0.65"
+              ],
+              "evaluation": "One-at-a-time neighbors around fixed primary, never choose a neighbor winner; each fit/candidate/threshold attempt persisted"
+            },
+            "required": "Base improvement>=25bp NAV with preregistered interval/risk/support; stressed net value must not reverse below comparable baseline, risk bounds hold. Insufficient stress support is INCONCLUSIVE; failure cannot be repaired by shrinking old scope.",
+            "migration_scope": {
+              "historical_membership_reconstructed": false,
+              "historical_point_in_time_proven": false,
+              "identity_context": {
+                "SSE:600519": {
+                  "board": "MAIN",
+                  "code": "600519",
+                  "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                  "effective_at": "2026-10-07T00:00:00+08:00",
+                  "exchange": "SSE",
+                  "instrument_type": "STOCK",
+                  "name": "贵州茅台",
+                  "revision": 1
+                }
+              },
+              "instruments": [
+                "SSE:600519"
+              ],
+              "namespace": "HISTORICAL",
+              "selection": "TODAY_LIST_CONDITIONAL",
+              "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+            },
+            "unknown_scope": "Other names/boards/markets are monitoring only; extension needs linked new experiment and unused evidence"
+          },
+          "formal_monitoring": {
+            "scope": {
+              "historical_membership_reconstructed": false,
+              "historical_point_in_time_proven": false,
+              "identity_context": {
+                "SSE:600519": {
+                  "board": "MAIN",
+                  "code": "600519",
+                  "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                  "effective_at": "2026-10-07T00:00:00+08:00",
+                  "exchange": "SSE",
+                  "instrument_type": "STOCK",
+                  "name": "贵州茅台",
+                  "revision": 1
+                }
+              },
+              "instruments": [
+                "SSE:600519"
+              ],
+              "namespace": "HISTORICAL",
+              "selection": "TODAY_LIST_CONDITIONAL",
+              "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+            },
+            "checkpoints": {
+              "operations": "Every actual running post-market checkpoint; missing days retained",
+              "statistics": "At registered30-session mature-results review and qualification expiry; no extra confirmation PASS look"
+            },
+            "execution": "Compare actual next-open/next-close delays, missing/partial fills, quote-vs-fill, realized fees with frozen scenarios; outside declared delay/price/cost bounds immediately restrict affected ability without declaring statistical FAIL",
+            "drift": "Fit feature1st/99th percentiles on DEVELOPMENT only; if >=20% of latest20 eligible observations outside fixed reference or required-input coverage<80%, restrict use pending review. Operational sentinel, not a causal or statistical profitability verdict.",
+            "mature_results": "Report fixed mature probability/utility/support checks at registered review; insufficient evidence=>INCONCLUSIVE, no adjusting cutoffs on new losses",
+            "unmatured_results_scored": false,
+            "policy_change": "Reason+new fingerprint+successor protocol, preserve previous verdict and visits; no silent threshold changes"
+          },
+          "stopping": {
+            "timezone": "Asia/Shanghai",
+            "maximum_natural_months": 3,
+            "calendar_month_rule": "Local wall time; month addition clamps to destination month end; inclusive final cutoff, no90-day substitution",
+            "forward_origin": "First successfully persisted actual frozen-model future prediction in30/32; protocol registration/deployment/historical replay/synthetic account do not start it",
+            "pass_checkpoint": "ONE_FINAL_CONFIRMATORY_POINT_AT_DEADLINE_OR_PREREGISTERED_HARD_STOP",
+            "early_stops": [
+              "hard safety/input/version failure",
+              "technical model fit/call/deadline limit",
+              "user stops ability; statistical verdict separately preserved"
+            ],
+            "no_extension": "Absence/backend switching/unfavorable results/maturity deficits never extend original deadline; successor requires new information value",
+            "technical_limits": {
+              "maximum_primary_candidates": 1,
+              "maximum_model_fits_including_fixed_neighbors": 5,
+              "maximum_fit_seconds": 60,
+              "maximum_calibration_fits": 1,
+              "sealed_parameter_tuning_calls": 0,
+              "runtime_money_budget_required": false
+            }
+          },
+          "risk_policy_evidence": {
+            "owner": "ticket22",
+            "inherits_profit_model_pass": false,
+            "required": [
+              "own frozen deterministic rules/data fingerprints",
+              "authorized risk boundaries",
+              "calculation and stress-execution proof",
+              "online consistency and scope checks"
+            ],
+            "profit_model_required_gates": [
+              "G1",
+              "G2",
+              "G3",
+              "G4",
+              "G5",
+              "G6",
+              "G7"
+            ]
+          },
+          "design_fingerprint": "694bfdb1cf889c9e50a383c3aede9a676cc127423e732142099d505c86057922"
+        },
+        "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.344719+00:00",
+      "method": "GET",
+      "path": "/research/datasets/5c3a1560-305a-43ec-bf3f-0a714a7e6701/partitions/DEVELOPMENT",
+      "status": 200,
+      "response": {
+        "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+        "namespace": "HISTORICAL",
+        "partition": "DEVELOPMENT",
+        "metadata": {
+          "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+          "artifact": {
+            "bytes": 19454,
+            "kind": "RESEARCH_PARTITION",
+            "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+            "partition": "DEVELOPMENT",
+            "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+            "research_namespace": "HISTORICAL",
+            "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6"
+          },
+          "context_first_date": "2026-01-05",
+          "context_rows": 0,
+          "first_date": "2026-01-05",
+          "last_date": "2026-05-08",
+          "rows": 80,
+          "state": "HOST_FILTERED"
+        },
+        "context_policy": "Leading20 calibration rows are feature context only; never fitted labels",
+        "historical_point_in_time_proven": false,
+        "capability": "NOT_GRANTED",
+        "consumer_knowledge_cutoff": "2026-10-07T19:54:35.332586+00:00",
+        "availability_basis": "Consumers must compare original available_at with their own knowledge cutoff; request flag is not permanent",
+        "all_available_to_this_consumer": true
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.418398+00:00",
+      "method": "GET",
+      "path": "/research/datasets/5c3a1560-305a-43ec-bf3f-0a714a7e6701/partitions/CALIBRATION",
+      "status": 200,
+      "response": {
+        "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+        "namespace": "HISTORICAL",
+        "partition": "CALIBRATION",
+        "metadata": {
+          "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+          "artifact": {
+            "bytes": 16284,
+            "kind": "RESEARCH_PARTITION",
+            "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+            "partition": "CALIBRATION",
+            "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+            "research_namespace": "HISTORICAL",
+            "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b"
+          },
+          "context_first_date": "2026-05-11",
+          "context_rows": 20,
+          "first_date": "2026-06-08",
+          "last_date": "2026-08-03",
+          "rows": 40,
+          "state": "HOST_FILTERED"
+        },
+        "context_policy": "Leading20 calibration rows are feature context only; never fitted labels",
+        "historical_point_in_time_proven": false,
+        "capability": "NOT_GRANTED",
+        "consumer_knowledge_cutoff": "2026-10-07T19:54:35.410509+00:00",
+        "availability_basis": "Consumers must compare original available_at with their own knowledge cutoff; request flag is not permanent",
+        "all_available_to_this_consumer": true
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.496934+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/attempts",
+      "status": 201,
+      "response": {
+        "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "started_at": "2026-10-07T19:54:35.476678+00:00",
+        "status": "RUNNING",
+        "category": "ENGINEERING_REPLAY",
+        "partition": "DEVELOPMENT",
+        "configuration": {
+          "method_case": true,
+          "fit_executed": false,
+          "prompt": null,
+          "basis": "fixed error/abort/restart test; no real trained result"
+        },
+        "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+        "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.586801+00:00",
+      "method": "POST",
+      "path": "/research/attempts/cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2/finish",
+      "status": 200,
+      "response": {
+        "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+        "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+        "category": "ENGINEERING_REPLAY",
+        "configuration": {
+          "basis": "fixed error/abort/restart test; no real trained result",
+          "fit_executed": false,
+          "method_case": true,
+          "prompt": null
+        },
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "partition": "DEVELOPMENT",
+        "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-07T19:54:35.476678+00:00",
+        "status": "FAILED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+          "event_id": "e7719bc6-fa7d-461f-85f2-93d6788f72e7",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "固定方法错误/主动中止；未进行拟合",
+          "recorded_at": "2026-10-07T19:54:35.561981+00:00",
+          "status": "FAILED"
+        }
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.677346+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/attempts",
+      "status": 201,
+      "response": {
+        "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "started_at": "2026-10-07T19:54:35.641310+00:00",
+        "status": "RUNNING",
+        "category": "ENGINEERING_REPLAY",
+        "partition": "DEVELOPMENT",
+        "configuration": {
+          "method_case": true,
+          "fit_executed": false,
+          "prompt": null,
+          "basis": "fixed error/abort/restart test; no real trained result"
+        },
+        "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+        "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.773575+00:00",
+      "method": "POST",
+      "path": "/research/attempts/f1b0349c-1e23-4257-9241-4bb3fbe6b0e4/finish",
+      "status": 200,
+      "response": {
+        "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+        "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+        "category": "ENGINEERING_REPLAY",
+        "configuration": {
+          "basis": "fixed error/abort/restart test; no real trained result",
+          "fit_executed": false,
+          "method_case": true,
+          "prompt": null
+        },
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "partition": "DEVELOPMENT",
+        "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-07T19:54:35.641310+00:00",
+        "status": "ABORTED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+          "event_id": "73766ae5-d6c1-462e-9dee-e6118265ddd1",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "固定方法错误/主动中止；未进行拟合",
+          "recorded_at": "2026-10-07T19:54:35.748626+00:00",
+          "status": "ABORTED"
+        }
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.871131+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/attempts",
+      "status": 201,
+      "response": {
+        "attempt_id": "461e7e62-a952-4fba-a8b5-6a2e359033ff",
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "started_at": "2026-10-07T19:54:35.852196+00:00",
+        "status": "RUNNING",
+        "category": "ENGINEERING_REPLAY",
+        "partition": "DEVELOPMENT",
+        "configuration": {
+          "method_case": true,
+          "fit_executed": false,
+          "prompt": null,
+          "basis": "fixed error/abort/restart test; no real trained result"
+        },
+        "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+        "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:35.977003+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/freeze",
+      "status": 409,
+      "response": {
+        "detail": {
+          "gaps": [
+            "MODEL_ARTIFACT_MISSING",
+            "CALIBRATOR_ARTIFACT_MISSING",
+            "POLICY_ARTIFACT_MISSING",
+            "VALIDATION_CODE_FINGERPRINT_MISSING",
+            "METHOD_VALIDATION_PENDING_TICKET20",
+            "SEALED_INDEPENDENCE_UNPROVEN",
+            "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+            "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS",
+            "ATTEMPT_MANIFEST_INCOMPLETE",
+            "ATTEMPT_STILL_RUNNING"
+          ],
+          "audit_event_id": "e6a4fb84-a0f0-4dc4-9880-11016df932c1"
+        }
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:36.047506+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/checkpoints",
+      "status": 409,
+      "response": {
+        "detail": {
+          "reason": "未登记额外可判PASS查看；不能临时停止改判",
+          "audit_event_id": "662d6a83-c0a9-4866-8ac3-04364c7daac6"
+        }
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:36.156835+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/checkpoints",
+      "status": 201,
+      "response": {
+        "event_id": "4b7f687b-6194-41c1-9684-0c3e67751295",
+        "recorded_at": "2026-10-07T19:54:36.147146+00:00",
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "action": "OPERATIONAL_CHECKPOINT",
+        "reason": "只记录工程运行检查，不做统计PASS",
+        "kind": "OPERATIONS",
+        "confirmatory_pass_look": false,
+        "accepted": true,
+        "validation_verdict": null,
+        "capability": "NOT_GRANTED"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:36.245116+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/sealed-input",
+      "status": 200,
+      "response": {
+        "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+        "namespace": "HISTORICAL",
+        "partition": "SEALED",
+        "metadata": {
+          "access": "EXPLICIT_AUDITED_SEALED_INPUT",
+          "artifact": {
+            "bytes": 14097,
+            "kind": "RESEARCH_PARTITION",
+            "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+            "partition": "SEALED",
+            "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+            "research_namespace": "HISTORICAL",
+            "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee"
+          },
+          "context_first_date": "2026-08-04",
+          "context_rows": 20,
+          "first_date": "2026-09-01",
+          "last_date": "2026-09-30",
+          "rows": 21,
+          "state": "HOST_FILTERED"
+        },
+        "context_policy": "Leading20 calibration rows are feature context only; never fitted labels",
+        "historical_point_in_time_proven": false,
+        "capability": "NOT_GRANTED",
+        "consumer_knowledge_cutoff": "2026-10-07T19:54:36.232615+00:00",
+        "availability_basis": "Consumers must compare original available_at with their own knowledge cutoff; request flag is not permanent",
+        "all_available_to_this_consumer": true,
+        "audit_event_id": "1afc1efd-9a8a-4bb3-b214-0f970f8f2923",
+        "confirmatory_pass_look": false
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:38.668396+00:00",
+      "method": "GET",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/attempts",
+      "status": 200,
+      "response": [
+        {
+          "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+          "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+          "category": "ENGINEERING_REPLAY",
+          "configuration": {
+            "basis": "fixed error/abort/restart test; no real trained result",
+            "fit_executed": false,
+            "method_case": true,
+            "prompt": null
+          },
+          "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+          "partition": "DEVELOPMENT",
+          "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "qualification": "NONE; 成功执行不等于模型或研究PASS",
+          "started_at": "2026-10-07T19:54:35.476678+00:00",
+          "status": "FAILED",
+          "completion": {
+            "action": "ATTEMPT_FINISHED",
+            "artifact_fingerprints": {},
+            "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+            "event_id": "e7719bc6-fa7d-461f-85f2-93d6788f72e7",
+            "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+            "reason": "固定方法错误/主动中止；未进行拟合",
+            "recorded_at": "2026-10-07T19:54:35.561981+00:00",
+            "status": "FAILED"
+          }
+        },
+        {
+          "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+          "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+          "category": "ENGINEERING_REPLAY",
+          "configuration": {
+            "basis": "fixed error/abort/restart test; no real trained result",
+            "fit_executed": false,
+            "method_case": true,
+            "prompt": null
+          },
+          "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+          "partition": "DEVELOPMENT",
+          "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "qualification": "NONE; 成功执行不等于模型或研究PASS",
+          "started_at": "2026-10-07T19:54:35.641310+00:00",
+          "status": "ABORTED",
+          "completion": {
+            "action": "ATTEMPT_FINISHED",
+            "artifact_fingerprints": {},
+            "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+            "event_id": "73766ae5-d6c1-462e-9dee-e6118265ddd1",
+            "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+            "reason": "固定方法错误/主动中止；未进行拟合",
+            "recorded_at": "2026-10-07T19:54:35.748626+00:00",
+            "status": "ABORTED"
+          }
+        },
+        {
+          "attempt_id": "461e7e62-a952-4fba-a8b5-6a2e359033ff",
+          "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+          "category": "ENGINEERING_REPLAY",
+          "configuration": {
+            "basis": "fixed error/abort/restart test; no real trained result",
+            "fit_executed": false,
+            "method_case": true,
+            "prompt": null
+          },
+          "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+          "partition": "DEVELOPMENT",
+          "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "qualification": "NONE; 成功执行不等于模型或研究PASS",
+          "started_at": "2026-10-07T19:54:35.852196+00:00",
+          "status": "INTERRUPTED",
+          "completion": {
+            "action": "ATTEMPT_INTERRUPTED",
+            "attempt_id": "461e7e62-a952-4fba-a8b5-6a2e359033ff",
+            "event_id": "5d07da71-38ac-4fb6-92b2-9c2b84e93b3e",
+            "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+            "reason": "宿主重启，未完成尝试保留为中断",
+            "recorded_at": "2026-10-07T19:54:38.378093+00:00"
+          }
+        }
+      ]
+    },
+    {
+      "at": "2026-10-07T19:54:38.726994+00:00",
+      "method": "GET",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+      "status": 200,
+      "response": {
+        "basis": "实际181条覆盖登记，封存独立性未证明且不具历史PIT，不授模型/正式使用资格",
+        "capability": "NOT_GRANTED",
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+        "design": {
+          "baselines": [
+            {
+              "id": "CASH",
+              "policy": "same synthetic initial capital, no interest assumed; display actual zero exposure separately"
+            },
+            {
+              "id": "START_HOLD",
+              "policy": "same start, budget/lot/rules,50% initial allowed exposure, no resets, comparable fees"
+            },
+            {
+              "id": "MA5_MA20",
+              "policy": "fixed5/20-day moving-average crossover,50% maximum exposure, same execution/cost/rules; no tuning"
+            }
+          ],
+          "candidates": [
+            {
+              "calibration": "Intercept-only held-out probability calibration; no fitting on SEALED; exact implementation and fingerprint ticket19",
+              "calibrator_artifact_fingerprint": null,
+              "candidate_id": "PRICE_VOLUME_LOGIT_V1",
+              "features": [
+                "raw_return_5",
+                "raw_return_20",
+                "raw_return_volatility_20",
+                "log_volume_to_trailing20_mean"
+              ],
+              "fitting": "L2 logistic regression; standardization fitted only DEVELOPMENT; lambda=1; no prompt or manual stock selection",
+              "model_artifact_fingerprint": null,
+              "status": "DESIGN_ONLY_NOT_MODEL_FROZEN",
+              "threshold": "0.60"
+            }
+          ],
+          "costs": {
+            "broker_actual_commission": "UNKNOWN",
+            "commission_includes_regulatory_fees": true,
+            "commission_scenario_rate": "0.0003",
+            "currency": "CNY",
+            "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+            "evidence": [
+              {
+                "bytes": 45558,
+                "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "file": "sse-cost-investor.html",
+                "http_status": 200,
+                "id": "sse-cost-investor",
+                "permission": "Public source retrieval; no broker client tariff authority",
+                "received_at": "2026-10-07T19:14:28.006335+00:00",
+                "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+                "started_at": "2026-10-07T19:14:26.877488+00:00",
+                "url": "https://one.sse.com.cn/onething/gptz/"
+              },
+              {
+                "bytes": 41658,
+                "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "file": "sse-charge-2026.html",
+                "http_status": 200,
+                "id": "sse-charge-2026",
+                "page_update": "2026-01",
+                "page_update_precision": "MONTH_ONLY",
+                "permission": "Public source retrieval; no broker client tariff authority",
+                "received_at": "2026-10-07T19:14:28.323015+00:00",
+                "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+                "started_at": "2026-10-07T19:14:28.007071+00:00",
+                "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/"
+              },
+              {
+                "bytes": 27791,
+                "effective_from": "2023-08-28",
+                "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39",
+                "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "file": "stamp-tax-2023.html",
+                "http_status": 200,
+                "id": "stamp-tax-2023",
+                "permission": "Public source retrieval; no broker client tariff authority",
+                "received_at": "2026-10-07T19:14:28.685996+00:00",
+                "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+                "started_at": "2026-10-07T19:14:28.323867+00:00",
+                "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448"
+              }
+            ],
+            "extra_regulatory_charge": "0",
+            "minimum_commission_yuan": "5",
+            "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+            "slippage_each_side_rate": "0.0005",
+            "stamp_sell_rate": "0.0005",
+            "transfer_each_side_rate": "0.00001",
+            "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction.",
+            "version": "17-cost-v1"
+          },
+          "design_fingerprint": "694bfdb1cf889c9e50a383c3aede9a676cc127423e732142099d505c86057922",
+          "design_version": "17-m0-v1",
+          "event": "Positive RAW realized20-session round-trip net return under frozen execution and known company-action treatment; unresolved action/status yields unscorable/interval cases, never zero",
+          "execution": {
+            "base_delay": "NEXT_OPEN",
+            "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast",
+            "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+            "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+            "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+            "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+            "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+            "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+            "synthetic_basis": "Research simulation scale chosen to allow at least one100-share600519 lot under50% exposure at publicly reported1258.62 quote; not user funds/baseline/authorization or research runtime money budget",
+            "synthetic_initial_cash_yuan": "1000000",
+            "synthetic_initial_positions": []
+          },
+          "formal_monitoring": {
+            "checkpoints": {
+              "operations": "Every actual running post-market checkpoint; missing days retained",
+              "statistics": "At registered30-session mature-results review and qualification expiry; no extra confirmation PASS look"
+            },
+            "drift": "Fit feature1st/99th percentiles on DEVELOPMENT only; if >=20% of latest20 eligible observations outside fixed reference or required-input coverage<80%, restrict use pending review. Operational sentinel, not a causal or statistical profitability verdict.",
+            "execution": "Compare actual next-open/next-close delays, missing/partial fills, quote-vs-fill, realized fees with frozen scenarios; outside declared delay/price/cost bounds immediately restrict affected ability without declaring statistical FAIL",
+            "mature_results": "Report fixed mature probability/utility/support checks at registered review; insufficient evidence=>INCONCLUSIVE, no adjusting cutoffs on new losses",
+            "policy_change": "Reason+new fingerprint+successor protocol, preserve previous verdict and visits; no silent threshold changes",
+            "scope": {
+              "historical_membership_reconstructed": false,
+              "historical_point_in_time_proven": false,
+              "identity_context": {
+                "SSE:600519": {
+                  "board": "MAIN",
+                  "code": "600519",
+                  "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                  "effective_at": "2026-10-07T00:00:00+08:00",
+                  "exchange": "SSE",
+                  "instrument_type": "STOCK",
+                  "name": "贵州茅台",
+                  "revision": 1
+                }
+              },
+              "instruments": [
+                "SSE:600519"
+              ],
+              "namespace": "HISTORICAL",
+              "selection": "TODAY_LIST_CONDITIONAL",
+              "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+            },
+            "unmatured_results_scored": false
+          },
+          "g5": {
+            "commission_rates": [
+              "0.0003",
+              "0.0006",
+              "0.003"
+            ],
+            "delays": [
+              "NEXT_OPEN",
+              "NEXT_CLOSE",
+              "ONE_MORE_SESSION_OPEN",
+              "OUTSIDE_ALLOWED_PRICE_NO_FILL"
+            ],
+            "migration_scope": {
+              "historical_membership_reconstructed": false,
+              "historical_point_in_time_proven": false,
+              "identity_context": {
+                "SSE:600519": {
+                  "board": "MAIN",
+                  "code": "600519",
+                  "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                  "effective_at": "2026-10-07T00:00:00+08:00",
+                  "exchange": "SSE",
+                  "instrument_type": "STOCK",
+                  "name": "贵州茅台",
+                  "revision": 1
+                }
+              },
+              "instruments": [
+                "SSE:600519"
+              ],
+              "namespace": "HISTORICAL",
+              "selection": "TODAY_LIST_CONDITIONAL",
+              "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+            },
+            "parameter_neighborhood": {
+              "evaluation": "One-at-a-time neighbors around fixed primary, never choose a neighbor winner; each fit/candidate/threshold attempt persisted",
+              "lookback_sessions": [
+                15,
+                20,
+                25
+              ],
+              "penalty": [
+                "0.5",
+                "1",
+                "2"
+              ],
+              "probability_threshold": [
+                "0.55",
+                "0.60",
+                "0.65"
+              ]
+            },
+            "required": "Base improvement>=25bp NAV with preregistered interval/risk/support; stressed net value must not reverse below comparable baseline, risk bounds hold. Insufficient stress support is INCONCLUSIVE; failure cannot be repaired by shrinking old scope.",
+            "slippage_each_side_rates": [
+              "0.0005",
+              "0.001",
+              "0.002"
+            ],
+            "time_segments": "Report each chronological third of the eligible historical test and forward mature window, same targets; each insufficient segment remains INCONCLUSIVE",
+            "unknown_scope": "Other names/boards/markets are monitoring only; extension needs linked new experiment and unused evidence"
+          },
+          "horizon_sessions": 20,
+          "hypothesis": "A fixed transparent daily price-volume candidate improves fee-after return under matched risk/exposure; not best retrospective stock selection",
+          "label_isolation": {
+            "embargo_sessions": 20,
+            "horizon_sessions": 20,
+            "lookback_sessions": 20,
+            "rule": "A fitted label must mature inside its allowed DEVELOPMENT/CALIBRATION window; boundary-spanning labels purged. Calibration receives preceding20 rows only as past feature context; no random same-day split."
+          },
+          "primary_objective": {
+            "basis": "Research choice before outcome computation. Assumed3bp commission each side +5bp sell stamp +0.1bp transfer each side +5bp slippage each side =21.2bp trade cost; at50% exposure10.6bp NAV. Twice this rounded upward to25bp is a meaningful NAV improvement hurdle, not estimated alpha or actual broker cost.",
+            "confidence_rule": "One-sided95% lower bound >0.0025 at single final point; all required comparisons/gates must hold",
+            "metric": "Paired20-session fee-after NAV return improvement over every preregistered comparable baseline",
+            "minimum_improvement_nav_return": "0.0025",
+            "risk_constraints": {
+              "candidate_drawdown_excess_over_risk_matched_baseline": "0.02",
+              "maximum_drawdown": "0.10",
+              "maximum_simulated_gross_exposure": "0.50",
+              "minimum_decision_coverage": "0.20"
+            }
+          },
+          "risk_policy_evidence": {
+            "inherits_profit_model_pass": false,
+            "owner": "ticket22",
+            "profit_model_required_gates": [
+              "G1",
+              "G2",
+              "G3",
+              "G4",
+              "G5",
+              "G6",
+              "G7"
+            ],
+            "required": [
+              "own frozen deterministic rules/data fingerprints",
+              "authorized risk boundaries",
+              "calculation and stress-execution proof",
+              "online consistency and scope checks"
+            ]
+          },
+          "statistics": {
+            "alpha": "0.05",
+            "dependency_sensitivity_block_sessions": [
+              20,
+              40
+            ],
+            "method": "Paired calendar-date moving-block bootstrap, block length20 sessions; same-day securities jointly resampled; seed1701,2000 replicates",
+            "minimum_calibration_examples_per_class": 20,
+            "minimum_effective_time_blocks": 30,
+            "minimum_selected_mature_examples": 40,
+            "multiple_comparison_policy": "Intersection-union: every preregistered required baseline and gate must pass; no choosing favorable comparison. Sensitivity does not create another PASS look.",
+            "pass_look_count": 1,
+            "probability_checks": [
+              "Brier/log loss against development base rate and transparent rule",
+              "fixed5 equal-width reliability bins,20 mature cases per occupied bin",
+              "ROC discrimination and selected-subset support, no probability reliability claim from lower Brier alone"
+            ],
+            "reference": "Kunsch(1989), The jackknife and the bootstrap for general stationary observations, Ann.Statist.17:1217–1241; author bibliography https://people.math.ethz.ch/~hkuensch/papers/",
+            "validity": "Stationarity/weak-dependence assumptions and finite-sample coverage must be automatically validated and technically reviewed in20.30 blocks is a conservative design eligibility condition, not a universal bootstrap theorem; inadequate support or failed assumptions=>INCONCLUSIVE, never lower cutoff after seeing sealed."
+          },
+          "stopping": {
+            "calendar_month_rule": "Local wall time; month addition clamps to destination month end; inclusive final cutoff, no90-day substitution",
+            "early_stops": [
+              "hard safety/input/version failure",
+              "technical model fit/call/deadline limit",
+              "user stops ability; statistical verdict separately preserved"
+            ],
+            "forward_origin": "First successfully persisted actual frozen-model future prediction in30/32; protocol registration/deployment/historical replay/synthetic account do not start it",
+            "maximum_natural_months": 3,
+            "no_extension": "Absence/backend switching/unfavorable results/maturity deficits never extend original deadline; successor requires new information value",
+            "pass_checkpoint": "ONE_FINAL_CONFIRMATORY_POINT_AT_DEADLINE_OR_PREREGISTERED_HARD_STOP",
+            "technical_limits": {
+              "maximum_calibration_fits": 1,
+              "maximum_fit_seconds": 60,
+              "maximum_model_fits_including_fixed_neighbors": 5,
+              "maximum_primary_candidates": 1,
+              "runtime_money_budget_required": false,
+              "sealed_parameter_tuning_calls": 0
+            },
+            "timezone": "Asia/Shanghai"
+          },
+          "support_projection": {
+            "calibration_mature_label_upper_bound": 20,
+            "historical_final_independence": "UNPROVEN; engineering archive exposure is recorded, no strategy results examined",
+            "metadata_only": true,
+            "sealed_mature_label_upper_bound": 1,
+            "sealed_nonoverlap20_block_upper_bound": 0,
+            "state": "INSUFFICIENT_FOR_CONFIRMATORY_PASS"
+          },
+          "windows": {
+            "CALIBRATION": {
+              "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+              "artifact": {
+                "bytes": 16284,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "CALIBRATION",
+                "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b"
+              },
+              "context_first_date": "2026-05-11",
+              "context_rows": 20,
+              "first_date": "2026-06-08",
+              "last_date": "2026-08-03",
+              "rows": 40,
+              "state": "HOST_FILTERED"
+            },
+            "DEVELOPMENT": {
+              "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+              "artifact": {
+                "bytes": 19454,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "DEVELOPMENT",
+                "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6"
+              },
+              "context_first_date": "2026-01-05",
+              "context_rows": 0,
+              "first_date": "2026-01-05",
+              "last_date": "2026-05-08",
+              "rows": 80,
+              "state": "HOST_FILTERED"
+            },
+            "SEALED": {
+              "access": "EXPLICIT_AUDITED_SEALED_INPUT",
+              "artifact": {
+                "bytes": 14097,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "SEALED",
+                "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee"
+              },
+              "context_first_date": "2026-08-04",
+              "context_rows": 20,
+              "first_date": "2026-09-01",
+              "last_date": "2026-09-30",
+              "rows": 21,
+              "state": "HOST_FILTERED"
+            }
+          }
+        },
+        "forward_deadline": null,
+        "forward_started_at": null,
+        "freeze_gaps": [
+          "MODEL_ARTIFACT_MISSING",
+          "CALIBRATOR_ARTIFACT_MISSING",
+          "POLICY_ARTIFACT_MISSING",
+          "VALIDATION_CODE_FINGERPRINT_MISSING",
+          "METHOD_VALIDATION_PENDING_TICKET20",
+          "SEALED_INDEPENDENCE_UNPROVEN",
+          "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+          "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+        ],
+        "ownership": {
+          "complete_protocol_freeze": "ticket20",
+          "forward_start": "tickets30/32",
+          "model_freeze": "ticket19",
+          "risk_policy": "ticket22"
+        },
+        "predecessor_id": "a7ac047e-a71b-4970-b5ce-dc4ec0c67339",
+        "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+        "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "registered_at": "2026-10-07T19:54:35.250650+00:00",
+        "registration_code_fingerprint": "2f013781fcde294b5a95cb8e0753e19cf30fb217f92027684ae2839ce2d582c8",
+        "review_status": "PENDING",
+        "scope": {
+          "historical_membership_reconstructed": false,
+          "historical_point_in_time_proven": false,
+          "identity_context": {
+            "SSE:600519": {
+              "board": "MAIN",
+              "code": "600519",
+              "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+              "effective_at": "2026-10-07T00:00:00+08:00",
+              "exchange": "SSE",
+              "instrument_type": "STOCK",
+              "name": "贵州茅台",
+              "revision": 1
+            }
+          },
+          "instruments": [
+            "SSE:600519"
+          ],
+          "namespace": "HISTORICAL",
+          "selection": "TODAY_LIST_CONDITIONAL",
+          "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+        },
+        "sealed_independence": "UNPROVEN",
+        "status": "DESIGN_REGISTERED",
+        "validation_verdict": null
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:38.776608+00:00",
+      "method": "GET",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/audit",
+      "status": 200,
+      "response": [
+        {
+          "action": "PROTOCOL_REGISTERED",
+          "confirmatory_pass_look": false,
+          "event_id": "e17792d9-85fb-40a0-9f41-4802ff67bc9f",
+          "predecessor_id": "a7ac047e-a71b-4970-b5ce-dc4ec0c67339",
+          "prior_engineering_exposure": {
+            "confirmatory_pass_look": false,
+            "fields": "original raw/qfq price inputs printed by a metadata inspection error",
+            "independence": "UNPROVEN; cannot assert unobserved sealed inputs",
+            "instrument": "SSE:600519",
+            "kind": "PRE_REGISTRATION_ENGINEERING_PRICE_INPUT_EXPOSURE",
+            "labels_or_candidate_results_computed": false,
+            "observed_time_precision": "UNKNOWN_EXACT; this implementation session before protocol registration",
+            "source_file": "D:\\dsh-proj\\Roll\\backend\\.roll-data\\implementation-evidence\\07\\acceptance-07\\tencent-daily-live.json",
+            "source_sha256": "dcff390d9cc631aafcb4e17d08deecce60bc392c3c061de4315ce094643436c1",
+            "trade_date_ranges": [
+              [
+                "2026-06-22",
+                "2026-06-30"
+              ],
+              [
+                "2026-09-21",
+                "2026-09-30"
+              ]
+            ]
+          },
+          "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "recorded_at": "2026-10-07T19:54:35.261186+00:00"
+        },
+        {
+          "action": "ATTEMPT_STARTED",
+          "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+          "configuration": {
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "partition": "DEVELOPMENT"
+          },
+          "event_id": "e3881b4d-1cbd-4405-b826-772bf76c8046",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "recorded_at": "2026-10-07T19:54:35.486477+00:00"
+        },
+        {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+          "event_id": "e7719bc6-fa7d-461f-85f2-93d6788f72e7",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "固定方法错误/主动中止；未进行拟合",
+          "recorded_at": "2026-10-07T19:54:35.561981+00:00",
+          "status": "FAILED"
+        },
+        {
+          "action": "ATTEMPT_STARTED",
+          "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+          "configuration": {
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "partition": "DEVELOPMENT"
+          },
+          "event_id": "2f4244ae-5d52-447b-b880-8a3caf04fe50",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "recorded_at": "2026-10-07T19:54:35.650064+00:00"
+        },
+        {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+          "event_id": "73766ae5-d6c1-462e-9dee-e6118265ddd1",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "固定方法错误/主动中止；未进行拟合",
+          "recorded_at": "2026-10-07T19:54:35.748626+00:00",
+          "status": "ABORTED"
+        },
+        {
+          "action": "ATTEMPT_STARTED",
+          "attempt_id": "461e7e62-a952-4fba-a8b5-6a2e359033ff",
+          "configuration": {
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "partition": "DEVELOPMENT"
+          },
+          "event_id": "90c3ccec-db3a-496b-b3d1-588c79910962",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "recorded_at": "2026-10-07T19:54:35.862770+00:00"
+        },
+        {
+          "action": "FREEZE_REFUSED",
+          "event_id": "e6a4fb84-a0f0-4dc4-9880-11016df932c1",
+          "expected_attempt_ids": [
+            "5dd1ba8d-f290-46f1-854c-22750187e1b5",
+            "d1e5baeb-e3ac-441f-8f12-9611f44d7a37",
+            "38e3e8be-c10b-4f8b-bbce-5cea4e7456e6",
+            "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+            "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+            "461e7e62-a952-4fba-a8b5-6a2e359033ff"
+          ],
+          "gaps": [
+            "MODEL_ARTIFACT_MISSING",
+            "CALIBRATOR_ARTIFACT_MISSING",
+            "POLICY_ARTIFACT_MISSING",
+            "VALIDATION_CODE_FINGERPRINT_MISSING",
+            "METHOD_VALIDATION_PENDING_TICKET20",
+            "SEALED_INDEPENDENCE_UNPROVEN",
+            "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+            "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS",
+            "ATTEMPT_MANIFEST_INCOMPLETE",
+            "ATTEMPT_STILL_RUNNING"
+          ],
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "19/20实际模型、校准、政策及方法验收尚未完成，登记不会授予资格",
+          "recorded_at": "2026-10-07T19:54:35.963074+00:00",
+          "submitted_attempt_ids": [
+            "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+            "461e7e62-a952-4fba-a8b5-6a2e359033ff"
+          ]
+        },
+        {
+          "accepted": false,
+          "action": "OPTIONAL_STOPPING_DEVIATION",
+          "confirmatory_pass_look": false,
+          "event_id": "662d6a83-c0a9-4866-8ac3-04364c7daac6",
+          "kind": "EARLY_PASS",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "METHOD_CASE:未登记可选停止必须拒绝并保留",
+          "recorded_at": "2026-10-07T19:54:36.037420+00:00"
+        },
+        {
+          "accepted": true,
+          "action": "OPERATIONAL_CHECKPOINT",
+          "capability": "NOT_GRANTED",
+          "confirmatory_pass_look": false,
+          "event_id": "4b7f687b-6194-41c1-9684-0c3e67751295",
+          "kind": "OPERATIONS",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "只记录工程运行检查，不做统计PASS",
+          "recorded_at": "2026-10-07T19:54:36.147146+00:00",
+          "validation_verdict": null
+        },
+        {
+          "action": "SEALED_INPUT_ACCESSED",
+          "confirmatory_pass_look": false,
+          "context_first_date": "2026-08-04",
+          "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+          "event_id": "1afc1efd-9a8a-4bb3-b214-0f970f8f2923",
+          "first_date": "2026-09-01",
+          "independence": "UNPROVEN; 输入可见不等于正式结果查看，重复区间不得重命名成独立封存",
+          "labels_or_candidate_results_computed": false,
+          "last_date": "2026-09-30",
+          "partition": "SEALED",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "17公开边界核验实际输入访问；不计算标签或候选策略结果；同窗独立性UNPROVEN",
+          "recorded_at": "2026-10-07T19:54:36.232695+00:00"
+        },
+        {
+          "action": "ORIGINAL_ARCHIVE_EXPOSED",
+          "confirmatory_pass_look": false,
+          "event_id": "a74b15f9-9cd7-4cac-89fd-4db05ab8a4d0",
+          "exposure_scope": "WHOLE_SOURCE_CONTAINER_OR_SEALED_PARTITION",
+          "labels_or_candidate_results_computed": false,
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "公开下载原容器，可能包含封存输入；工程哈希校验不是PASS查看",
+          "recorded_at": "2026-10-07T19:54:36.309309+00:00",
+          "sha256": "19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b"
+        },
+        {
+          "action": "ATTEMPT_INTERRUPTED",
+          "attempt_id": "461e7e62-a952-4fba-a8b5-6a2e359033ff",
+          "event_id": "5d07da71-38ac-4fb6-92b2-9c2b84e93b3e",
+          "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+          "reason": "宿主重启，未完成尝试保留为中断",
+          "recorded_at": "2026-10-07T19:54:38.378093+00:00"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-07T19:54:38.864706+00:00",
+      "method": "GET",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/attempt-manifest",
+      "status": 200,
+      "response": {
+        "lineage": [
+          "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+          "a7ac047e-a71b-4970-b5ce-dc4ec0c67339",
+          "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3"
+        ],
+        "attempts": [
+          {
+            "attempt_id": "5dd1ba8d-f290-46f1-854c-22750187e1b5",
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+            "partition": "DEVELOPMENT",
+            "protocol_fingerprint": "af24d9168ec332c6cad42dfce474e13023e8d9a30f2c10428d5100651a3f12bd",
+            "protocol_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+            "qualification": "NONE; 成功执行不等于模型或研究PASS",
+            "started_at": "2026-10-07T19:50:18.292455+00:00",
+            "status": "FAILED",
+            "completion": {
+              "action": "ATTEMPT_FINISHED",
+              "artifact_fingerprints": {},
+              "attempt_id": "5dd1ba8d-f290-46f1-854c-22750187e1b5",
+              "event_id": "538700c1-cc4b-4574-9e62-2c95a544a43e",
+              "protocol_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+              "reason": "固定方法错误/主动中止；未进行拟合",
+              "recorded_at": "2026-10-07T19:50:18.356699+00:00",
+              "status": "FAILED"
+            }
+          },
+          {
+            "attempt_id": "d1e5baeb-e3ac-441f-8f12-9611f44d7a37",
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+            "partition": "DEVELOPMENT",
+            "protocol_fingerprint": "af24d9168ec332c6cad42dfce474e13023e8d9a30f2c10428d5100651a3f12bd",
+            "protocol_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+            "qualification": "NONE; 成功执行不等于模型或研究PASS",
+            "started_at": "2026-10-07T19:50:18.425716+00:00",
+            "status": "ABORTED",
+            "completion": {
+              "action": "ATTEMPT_FINISHED",
+              "artifact_fingerprints": {},
+              "attempt_id": "d1e5baeb-e3ac-441f-8f12-9611f44d7a37",
+              "event_id": "979fe67b-2442-46f0-b923-430be1aafa4f",
+              "protocol_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+              "reason": "固定方法错误/主动中止；未进行拟合",
+              "recorded_at": "2026-10-07T19:50:18.510325+00:00",
+              "status": "ABORTED"
+            }
+          },
+          {
+            "attempt_id": "38e3e8be-c10b-4f8b-bbce-5cea4e7456e6",
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+            "partition": "DEVELOPMENT",
+            "protocol_fingerprint": "af24d9168ec332c6cad42dfce474e13023e8d9a30f2c10428d5100651a3f12bd",
+            "protocol_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+            "qualification": "NONE; 成功执行不等于模型或研究PASS",
+            "started_at": "2026-10-07T19:50:18.591703+00:00",
+            "status": "INTERRUPTED",
+            "completion": {
+              "action": "ATTEMPT_INTERRUPTED",
+              "attempt_id": "38e3e8be-c10b-4f8b-bbce-5cea4e7456e6",
+              "event_id": "e8395ac8-8d73-44b7-869d-0ed494a4bc14",
+              "protocol_id": "70f1b1f8-cce6-46c6-9aca-a9c7ce6210e3",
+              "reason": "宿主重启，未完成尝试保留为中断",
+              "recorded_at": "2026-10-07T19:50:20.833597+00:00"
+            }
+          },
+          {
+            "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+            "partition": "DEVELOPMENT",
+            "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+            "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+            "qualification": "NONE; 成功执行不等于模型或研究PASS",
+            "started_at": "2026-10-07T19:54:35.476678+00:00",
+            "status": "FAILED",
+            "completion": {
+              "action": "ATTEMPT_FINISHED",
+              "artifact_fingerprints": {},
+              "attempt_id": "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+              "event_id": "e7719bc6-fa7d-461f-85f2-93d6788f72e7",
+              "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+              "reason": "固定方法错误/主动中止；未进行拟合",
+              "recorded_at": "2026-10-07T19:54:35.561981+00:00",
+              "status": "FAILED"
+            }
+          },
+          {
+            "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+            "partition": "DEVELOPMENT",
+            "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+            "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+            "qualification": "NONE; 成功执行不等于模型或研究PASS",
+            "started_at": "2026-10-07T19:54:35.641310+00:00",
+            "status": "ABORTED",
+            "completion": {
+              "action": "ATTEMPT_FINISHED",
+              "artifact_fingerprints": {},
+              "attempt_id": "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+              "event_id": "73766ae5-d6c1-462e-9dee-e6118265ddd1",
+              "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+              "reason": "固定方法错误/主动中止；未进行拟合",
+              "recorded_at": "2026-10-07T19:54:35.748626+00:00",
+              "status": "ABORTED"
+            }
+          },
+          {
+            "attempt_id": "461e7e62-a952-4fba-a8b5-6a2e359033ff",
+            "basis": "公开HTTP失败/中止/重启留痕机制，不冒充实际模型训练",
+            "category": "ENGINEERING_REPLAY",
+            "configuration": {
+              "basis": "fixed error/abort/restart test; no real trained result",
+              "fit_executed": false,
+              "method_case": true,
+              "prompt": null
+            },
+            "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+            "partition": "DEVELOPMENT",
+            "protocol_fingerprint": "ca572f36261b4e602006ddc5376ce20156d8a6746aab2f9b302b8488f2d999af",
+            "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+            "qualification": "NONE; 成功执行不等于模型或研究PASS",
+            "started_at": "2026-10-07T19:54:35.852196+00:00",
+            "status": "INTERRUPTED",
+            "completion": {
+              "action": "ATTEMPT_INTERRUPTED",
+              "attempt_id": "461e7e62-a952-4fba-a8b5-6a2e359033ff",
+              "event_id": "5d07da71-38ac-4fb6-92b2-9c2b84e93b3e",
+              "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+              "reason": "宿主重启，未完成尝试保留为中断",
+              "recorded_at": "2026-10-07T19:54:38.378093+00:00"
+            }
+          }
+        ],
+        "attempt_ids": [
+          "5dd1ba8d-f290-46f1-854c-22750187e1b5",
+          "d1e5baeb-e3ac-441f-8f12-9611f44d7a37",
+          "38e3e8be-c10b-4f8b-bbce-5cea4e7456e6",
+          "cbab27fd-1c2c-4b1a-9dd2-c0c02c408bc2",
+          "f1b0349c-1e23-4257-9241-4bb3fbe6b0e4",
+          "461e7e62-a952-4fba-a8b5-6a2e359033ff"
+        ],
+        "basis": "All linked predecessor failures, aborts and interruptions remain required; this is not proof of unreported out-of-host work"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:38.980954+00:00",
+      "method": "POST",
+      "path": "/research/protocols/a629fbb9-2b64-45e6-bcb9-2a4532cc3af3/freeze",
+      "status": 409,
+      "response": {
+        "detail": {
+          "gaps": [
+            "MODEL_ARTIFACT_MISSING",
+            "CALIBRATOR_ARTIFACT_MISSING",
+            "POLICY_ARTIFACT_MISSING",
+            "VALIDATION_CODE_FINGERPRINT_MISSING",
+            "METHOD_VALIDATION_PENDING_TICKET20",
+            "SEALED_INDEPENDENCE_UNPROVEN",
+            "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+            "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+          ],
+          "audit_event_id": "4e2c7e4f-9c72-4444-85f1-17e79257cddd"
+        }
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:39.097819+00:00",
+      "method": "POST",
+      "path": "/research/protocols",
+      "status": 201,
+      "response": {
+        "protocol_id": "5ebb599e-dbd3-4479-859d-dd285b497ece",
+        "registered_at": "2026-10-07T19:54:39.068795+00:00",
+        "status": "DESIGN_REGISTERED",
+        "basis": "METHOD_CASE关联修正，原结论和区间暴露不重置",
+        "predecessor_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+        "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+        "sealed_independence": "UNPROVEN",
+        "validation_verdict": null,
+        "review_status": "PENDING",
+        "capability": "NOT_GRANTED",
+        "forward_started_at": null,
+        "forward_deadline": null,
+        "scope": {
+          "historical_membership_reconstructed": false,
+          "historical_point_in_time_proven": false,
+          "identity_context": {
+            "SSE:600519": {
+              "board": "MAIN",
+              "code": "600519",
+              "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+              "effective_at": "2026-10-07T00:00:00+08:00",
+              "exchange": "SSE",
+              "instrument_type": "STOCK",
+              "name": "贵州茅台",
+              "revision": 1
+            }
+          },
+          "instruments": [
+            "SSE:600519"
+          ],
+          "namespace": "HISTORICAL",
+          "selection": "TODAY_LIST_CONDITIONAL",
+          "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+        },
+        "freeze_gaps": [
+          "MODEL_ARTIFACT_MISSING",
+          "CALIBRATOR_ARTIFACT_MISSING",
+          "POLICY_ARTIFACT_MISSING",
+          "VALIDATION_CODE_FINGERPRINT_MISSING",
+          "METHOD_VALIDATION_PENDING_TICKET20",
+          "SEALED_INDEPENDENCE_UNPROVEN",
+          "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+          "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+        ],
+        "ownership": {
+          "model_freeze": "ticket19",
+          "complete_protocol_freeze": "ticket20",
+          "forward_start": "tickets30/32",
+          "risk_policy": "ticket22"
+        },
+        "registration_code_fingerprint": "2f013781fcde294b5a95cb8e0753e19cf30fb217f92027684ae2839ce2d582c8",
+        "data_fingerprint": "ccc122422718c1cc4241133b9314f2873898f9d954ada2572bf8206a68484947",
+        "design": {
+          "design_version": "17-m0-v1",
+          "hypothesis": "A fixed transparent daily price-volume candidate improves fee-after return under matched risk/exposure; not best retrospective stock selection",
+          "horizon_sessions": 20,
+          "event": "Positive RAW realized20-session round-trip net return under frozen execution and known company-action treatment; unresolved action/status yields unscorable/interval cases, never zero",
+          "candidates": [
+            {
+              "candidate_id": "PRICE_VOLUME_LOGIT_V1",
+              "status": "DESIGN_ONLY_NOT_MODEL_FROZEN",
+              "features": [
+                "raw_return_5",
+                "raw_return_20",
+                "raw_return_volatility_20",
+                "log_volume_to_trailing20_mean"
+              ],
+              "fitting": "L2 logistic regression; standardization fitted only DEVELOPMENT; lambda=1; no prompt or manual stock selection",
+              "calibration": "Intercept-only held-out probability calibration; no fitting on SEALED; exact implementation and fingerprint ticket19",
+              "threshold": "0.60",
+              "model_artifact_fingerprint": null,
+              "calibrator_artifact_fingerprint": null
+            }
+          ],
+          "primary_objective": {
+            "metric": "Paired20-session fee-after NAV return improvement over every preregistered comparable baseline",
+            "minimum_improvement_nav_return": "0.0025",
+            "confidence_rule": "One-sided95% lower bound >0.0025 at single final point; all required comparisons/gates must hold",
+            "risk_constraints": {
+              "maximum_simulated_gross_exposure": "0.50",
+              "maximum_drawdown": "0.10",
+              "candidate_drawdown_excess_over_risk_matched_baseline": "0.02",
+              "minimum_decision_coverage": "0.20"
+            },
+            "basis": "Research choice before outcome computation. Assumed3bp commission each side +5bp sell stamp +0.1bp transfer each side +5bp slippage each side =21.2bp trade cost; at50% exposure10.6bp NAV. Twice this rounded upward to25bp is a meaningful NAV improvement hurdle, not estimated alpha or actual broker cost."
+          },
+          "baselines": [
+            {
+              "id": "CASH",
+              "policy": "same synthetic initial capital, no interest assumed; display actual zero exposure separately"
+            },
+            {
+              "id": "START_HOLD",
+              "policy": "same start, budget/lot/rules,50% initial allowed exposure, no resets, comparable fees"
+            },
+            {
+              "id": "MA5_MA20",
+              "policy": "fixed5/20-day moving-average crossover,50% maximum exposure, same execution/cost/rules; no tuning"
+            }
+          ],
+          "windows": {
+            "CALIBRATION": {
+              "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+              "artifact": {
+                "bytes": 16284,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "CALIBRATION",
+                "path": "parquet/539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "539046eefb3b77e9c6f8c9696a1798bdea70b59a194cbbf8e77a6abf6d63e24b"
+              },
+              "context_first_date": "2026-05-11",
+              "context_rows": 20,
+              "first_date": "2026-06-08",
+              "last_date": "2026-08-03",
+              "rows": 40,
+              "state": "HOST_FILTERED"
+            },
+            "DEVELOPMENT": {
+              "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+              "artifact": {
+                "bytes": 19454,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "DEVELOPMENT",
+                "path": "parquet/8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "8f9aec6c8877b42641499aca16c01218fbc67569ffc523498f61629cbb1ff4a6"
+              },
+              "context_first_date": "2026-01-05",
+              "context_rows": 0,
+              "first_date": "2026-01-05",
+              "last_date": "2026-05-08",
+              "rows": 80,
+              "state": "HOST_FILTERED"
+            },
+            "SEALED": {
+              "access": "EXPLICIT_AUDITED_SEALED_INPUT",
+              "artifact": {
+                "bytes": 14097,
+                "kind": "RESEARCH_PARTITION",
+                "original_snapshot_id": "7539cdf1-7856-4060-afb1-ee35a22755b9",
+                "partition": "SEALED",
+                "path": "parquet/cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee.parquet",
+                "research_namespace": "HISTORICAL",
+                "sha256": "cb122ab09eaf8fbd86ee8499b747544af2a685956acc6481a87b045457007eee"
+              },
+              "context_first_date": "2026-08-04",
+              "context_rows": 20,
+              "first_date": "2026-09-01",
+              "last_date": "2026-09-30",
+              "rows": 21,
+              "state": "HOST_FILTERED"
+            }
+          },
+          "label_isolation": {
+            "lookback_sessions": 20,
+            "horizon_sessions": 20,
+            "embargo_sessions": 20,
+            "rule": "A fitted label must mature inside its allowed DEVELOPMENT/CALIBRATION window; boundary-spanning labels purged. Calibration receives preceding20 rows only as past feature context; no random same-day split."
+          },
+          "statistics": {
+            "method": "Paired calendar-date moving-block bootstrap, block length20 sessions; same-day securities jointly resampled; seed1701,2000 replicates",
+            "dependency_sensitivity_block_sessions": [
+              20,
+              40
+            ],
+            "minimum_effective_time_blocks": 30,
+            "minimum_calibration_examples_per_class": 20,
+            "minimum_selected_mature_examples": 40,
+            "probability_checks": [
+              "Brier/log loss against development base rate and transparent rule",
+              "fixed5 equal-width reliability bins,20 mature cases per occupied bin",
+              "ROC discrimination and selected-subset support, no probability reliability claim from lower Brier alone"
+            ],
+            "pass_look_count": 1,
+            "alpha": "0.05",
+            "multiple_comparison_policy": "Intersection-union: every preregistered required baseline and gate must pass; no choosing favorable comparison. Sensitivity does not create another PASS look.",
+            "validity": "Stationarity/weak-dependence assumptions and finite-sample coverage must be automatically validated and technically reviewed in20.30 blocks is a conservative design eligibility condition, not a universal bootstrap theorem; inadequate support or failed assumptions=>INCONCLUSIVE, never lower cutoff after seeing sealed.",
+            "reference": "Kunsch(1989), The jackknife and the bootstrap for general stationary observations, Ann.Statist.17:1217–1241; author bibliography https://people.math.ethz.ch/~hkuensch/papers/"
+          },
+          "support_projection": {
+            "metadata_only": true,
+            "sealed_mature_label_upper_bound": 1,
+            "calibration_mature_label_upper_bound": 20,
+            "sealed_nonoverlap20_block_upper_bound": 0,
+            "state": "INSUFFICIENT_FOR_CONFIRMATORY_PASS",
+            "historical_final_independence": "UNPROVEN; engineering archive exposure is recorded, no strategy results examined"
+          },
+          "costs": {
+            "version": "17-cost-v1",
+            "currency": "CNY",
+            "broker_actual_commission": "UNKNOWN",
+            "commission_scenario_rate": "0.0003",
+            "minimum_commission_yuan": "5",
+            "commission_includes_regulatory_fees": true,
+            "extra_regulatory_charge": "0",
+            "stamp_sell_rate": "0.0005",
+            "transfer_each_side_rate": "0.00001",
+            "slippage_each_side_rate": "0.0005",
+            "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+            "evidence": [
+              {
+                "id": "sse-cost-investor",
+                "url": "https://one.sse.com.cn/onething/gptz/",
+                "started_at": "2026-10-07T19:14:26.877488+00:00",
+                "received_at": "2026-10-07T19:14:28.006335+00:00",
+                "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+                "bytes": 45558,
+                "http_status": 200,
+                "file": "sse-cost-investor.html",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+                "permission": "Public source retrieval; no broker client tariff authority"
+              },
+              {
+                "id": "sse-charge-2026",
+                "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/",
+                "started_at": "2026-10-07T19:14:28.007071+00:00",
+                "received_at": "2026-10-07T19:14:28.323015+00:00",
+                "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+                "bytes": 41658,
+                "http_status": 200,
+                "file": "sse-charge-2026.html",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+                "permission": "Public source retrieval; no broker client tariff authority",
+                "page_update": "2026-01",
+                "page_update_precision": "MONTH_ONLY"
+              },
+              {
+                "id": "stamp-tax-2023",
+                "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448",
+                "started_at": "2026-10-07T19:14:28.323867+00:00",
+                "received_at": "2026-10-07T19:14:28.685996+00:00",
+                "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+                "bytes": 27791,
+                "http_status": 200,
+                "file": "stamp-tax-2023.html",
+                "evidence_kind": "REAL_AUTHORITY_PAGE",
+                "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+                "permission": "Public source retrieval; no broker client tariff authority",
+                "effective_from": "2023-08-28",
+                "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39"
+              }
+            ],
+            "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+            "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction."
+          },
+          "execution": {
+            "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+            "base_delay": "NEXT_OPEN",
+            "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+            "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+            "synthetic_initial_cash_yuan": "1000000",
+            "synthetic_initial_positions": [],
+            "synthetic_basis": "Research simulation scale chosen to allow at least one100-share600519 lot under50% exposure at publicly reported1258.62 quote; not user funds/baseline/authorization or research runtime money budget",
+            "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+            "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+            "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+            "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast"
+          },
+          "g5": {
+            "time_segments": "Report each chronological third of the eligible historical test and forward mature window, same targets; each insufficient segment remains INCONCLUSIVE",
+            "commission_rates": [
+              "0.0003",
+              "0.0006",
+              "0.003"
+            ],
+            "slippage_each_side_rates": [
+              "0.0005",
+              "0.001",
+              "0.002"
+            ],
+            "delays": [
+              "NEXT_OPEN",
+              "NEXT_CLOSE",
+              "ONE_MORE_SESSION_OPEN",
+              "OUTSIDE_ALLOWED_PRICE_NO_FILL"
+            ],
+            "parameter_neighborhood": {
+              "penalty": [
+                "0.5",
+                "1",
+                "2"
+              ],
+              "lookback_sessions": [
+                15,
+                20,
+                25
+              ],
+              "probability_threshold": [
+                "0.55",
+                "0.60",
+                "0.65"
+              ],
+              "evaluation": "One-at-a-time neighbors around fixed primary, never choose a neighbor winner; each fit/candidate/threshold attempt persisted"
+            },
+            "required": "Base improvement>=25bp NAV with preregistered interval/risk/support; stressed net value must not reverse below comparable baseline, risk bounds hold. Insufficient stress support is INCONCLUSIVE; failure cannot be repaired by shrinking old scope.",
+            "migration_scope": {
+              "historical_membership_reconstructed": false,
+              "historical_point_in_time_proven": false,
+              "identity_context": {
+                "SSE:600519": {
+                  "board": "MAIN",
+                  "code": "600519",
+                  "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                  "effective_at": "2026-10-07T00:00:00+08:00",
+                  "exchange": "SSE",
+                  "instrument_type": "STOCK",
+                  "name": "贵州茅台",
+                  "revision": 1
+                }
+              },
+              "instruments": [
+                "SSE:600519"
+              ],
+              "namespace": "HISTORICAL",
+              "selection": "TODAY_LIST_CONDITIONAL",
+              "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+            },
+            "unknown_scope": "Other names/boards/markets are monitoring only; extension needs linked new experiment and unused evidence"
+          },
+          "formal_monitoring": {
+            "scope": {
+              "historical_membership_reconstructed": false,
+              "historical_point_in_time_proven": false,
+              "identity_context": {
+                "SSE:600519": {
+                  "board": "MAIN",
+                  "code": "600519",
+                  "confirmed_at": "2026-10-07T17:11:28.896333+00:00",
+                  "effective_at": "2026-10-07T00:00:00+08:00",
+                  "exchange": "SSE",
+                  "instrument_type": "STOCK",
+                  "name": "贵州茅台",
+                  "revision": 1
+                }
+              },
+              "instruments": [
+                "SSE:600519"
+              ],
+              "namespace": "HISTORICAL",
+              "selection": "TODAY_LIST_CONDITIONAL",
+              "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+            },
+            "checkpoints": {
+              "operations": "Every actual running post-market checkpoint; missing days retained",
+              "statistics": "At registered30-session mature-results review and qualification expiry; no extra confirmation PASS look"
+            },
+            "execution": "Compare actual next-open/next-close delays, missing/partial fills, quote-vs-fill, realized fees with frozen scenarios; outside declared delay/price/cost bounds immediately restrict affected ability without declaring statistical FAIL",
+            "drift": "Fit feature1st/99th percentiles on DEVELOPMENT only; if >=20% of latest20 eligible observations outside fixed reference or required-input coverage<80%, restrict use pending review. Operational sentinel, not a causal or statistical profitability verdict.",
+            "mature_results": "Report fixed mature probability/utility/support checks at registered review; insufficient evidence=>INCONCLUSIVE, no adjusting cutoffs on new losses",
+            "unmatured_results_scored": false,
+            "policy_change": "Reason+new fingerprint+successor protocol, preserve previous verdict and visits; no silent threshold changes"
+          },
+          "stopping": {
+            "timezone": "Asia/Shanghai",
+            "maximum_natural_months": 3,
+            "calendar_month_rule": "Local wall time; month addition clamps to destination month end; inclusive final cutoff, no90-day substitution",
+            "forward_origin": "First successfully persisted actual frozen-model future prediction in30/32; protocol registration/deployment/historical replay/synthetic account do not start it",
+            "pass_checkpoint": "ONE_FINAL_CONFIRMATORY_POINT_AT_DEADLINE_OR_PREREGISTERED_HARD_STOP",
+            "early_stops": [
+              "hard safety/input/version failure",
+              "technical model fit/call/deadline limit",
+              "user stops ability; statistical verdict separately preserved"
+            ],
+            "no_extension": "Absence/backend switching/unfavorable results/maturity deficits never extend original deadline; successor requires new information value",
+            "technical_limits": {
+              "maximum_primary_candidates": 1,
+              "maximum_model_fits_including_fixed_neighbors": 5,
+              "maximum_fit_seconds": 60,
+              "maximum_calibration_fits": 1,
+              "sealed_parameter_tuning_calls": 0,
+              "runtime_money_budget_required": false
+            }
+          },
+          "risk_policy_evidence": {
+            "owner": "ticket22",
+            "inherits_profit_model_pass": false,
+            "required": [
+              "own frozen deterministic rules/data fingerprints",
+              "authorized risk boundaries",
+              "calculation and stress-execution proof",
+              "online consistency and scope checks"
+            ],
+            "profit_model_required_gates": [
+              "G1",
+              "G2",
+              "G3",
+              "G4",
+              "G5",
+              "G6",
+              "G7"
+            ]
+          },
+          "design_fingerprint": "694bfdb1cf889c9e50a383c3aede9a676cc127423e732142099d505c86057922"
+        },
+        "protocol_fingerprint": "3b864aab309cb8916fb590ec0208151c497b2649cf189df48b7ae1e20c9e95e1"
+      }
+    },
+    {
+      "at": "2026-10-07T19:54:39.177417+00:00",
+      "method": "GET",
+      "path": "/account",
+      "status": 200,
+      "response": {
+        "version": 0,
+        "currency": "CNY",
+        "account_scope": "普通现金账户",
+        "cash_balance": null,
+        "broker_available": null,
+        "broker_frozen": null,
+        "withdrawable": null,
+        "positions": [],
+        "permission_profile": [],
+        "confirmed_at": null,
+        "effective_at": null,
+        "historical_return": null,
+        "state": "NOT_ESTABLISHED"
+      }
+    }
+  ],
+  "code_sha256": {
+    "backend\\src\\roll\\app.py": "e5439b0bd99d1237d47ae743535fef24aeeacba9f80051ac045f2f5063b63132",
+    "backend\\src\\roll\\research\\datasets.py": "575c1b6adc57a82b4d608916291c0132ca229ae61d041a8973f9dd2e5e2833f1",
+    "backend\\src\\roll\\research\\design.py": "a43b59bb3b51043983a628f5db2378fccd640d8f2411e4e7b3490edf83feded9",
+    "backend\\src\\roll\\research\\registry.py": "0fac2cc90d055aae8cd725ea0b727caf5db7412e17489c6e44059d9b050a0762",
+    "backend\\uv.lock": "63fd66ea52a9fc341c5fdf3ad36493a7ff7f0afddec568819e27538409c949e5"
+  },
+  "process_ids": [
+    40768,
+    424
+  ],
+  "archive_download": {
+    "sha256": "19ceab5e960af0e39cef4d59fc6ef7a35a2f6e0c089dcd87d9bf07063888624b",
+    "bytes": 91828,
+    "hash_matches": true,
+    "purpose": "ENGINEERING_HASH_CHECK; NOT_CONFIRMATORY_RESULT_LOOK"
+  },
+  "finished_at": "2026-10-07T19:54:39.177445+00:00",
+  "account_unchanged": true,
+  "protocol_id": "a629fbb9-2b64-45e6-bcb9-2a4532cc3af3",
+  "dataset_id": "5c3a1560-305a-43ec-bf3f-0a714a7e6701",
+  "passed": true
+}

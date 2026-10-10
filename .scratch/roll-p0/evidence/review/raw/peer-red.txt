@@ -1,0 +1,44 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_______ test_peer_host_keeps_live_attempt_and_original_host_can_finish ________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/pR/test_peer_host_keeps_live_atte0')
+
+    def test_peer_host_keeps_live_attempt_and_original_host_can_finish(tmp_path):
+        with TestClient(create_app(tmp_path)) as first:
+            protocol=first.post('/api/research/protocols',json={'basis':'live peer host test'}).json()
+            pid=protocol['protocol_id'];attempt=first.post('/api/research/protocols/'+pid+'/attempts',json=ATTEMPT).json()
+            with TestClient(create_app(tmp_path)) as peer:
+>               assert peer.get('/api/research/protocols/'+pid+'/attempts').json()[0]['status']=='RUNNING'
+E               AssertionError: assert 'INTERRUPTED' == 'RUNNING'
+E                 
+E                 - RUNNING
+E                 + INTERRUPTED
+
+backend\tests\application\test_research_lifecycle.py:19: AssertionError
+_ test_peer_host_keeps_active_source_resolution_while_original_provider_waits _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/pR/test_peer_host_keeps_active_so0')
+
+    def test_peer_host_keeps_active_source_resolution_while_original_provider_waits(tmp_path):
+        entered=threading.Event();release=threading.Event()
+        def provider(request):
+            entered.set();assert release.wait(10)
+            return httpx.Response(200,content=quote_bytes())
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider))) as first:
+            request=setup_request(first,quote_source='SINA')
+            resolution=first.post('/api/data/requests/'+request['request_id']+'/resolve',json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False}).json()
+            try:
+                assert entered.wait(5)
+                with TestClient(create_app(tmp_path)) as peer:
+>                   assert peer.get('/api/data/resolutions/'+resolution['resolution_id']).json()['status']=='RUNNING'
+E                   AssertionError: assert 'INTERRUPTED' == 'RUNNING'
+E                     
+E                     - RUNNING
+E                     + INTERRUPTED
+
+backend\tests\application\test_research_lifecycle.py:37: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_research_lifecycle.py::test_peer_host_keeps_live_attempt_and_original_host_can_finish
+FAILED backend\tests\application\test_research_lifecycle.py::test_peer_host_keeps_active_source_resolution_while_original_provider_waits
+2 failed, 1 deselected in 6.84s

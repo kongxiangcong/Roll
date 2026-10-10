@@ -1,0 +1,568 @@
+{
+  "run": {
+    "acquisition_usage": {
+      "archived_bytes": 67104,
+      "http_calls": 3,
+      "model_tool_result_bytes": 10133,
+      "received_bytes": 67104
+    },
+    "allowed_operations": [
+      "V8_PURE_COMPUTATION",
+      "FUNCTIONS_EXEC",
+      "FUNCTIONS_WAIT"
+    ],
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source",
+      "clock__curr_time"
+    ],
+    "archives": [
+      {
+        "bytes": 292,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35.raw",
+        "received_at": "2026-10-07T19:06:45.727517+00:00",
+        "sha256": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519"
+      },
+      {
+        "bytes": 20334,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853.raw",
+        "received_at": "2026-10-07T19:06:53.667910+00:00",
+        "sha256": "f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853",
+        "source_id": "eastmoney-announcements",
+        "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519"
+      },
+      {
+        "available_at": "2026-10-07T19:06:53.925218+00:00",
+        "basis": "Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.",
+        "basis_url": "https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf",
+        "bytes": 46478,
+        "content_type": "text/html; charset=utf-8",
+        "event_time": null,
+        "http_status": 200,
+        "instrument": "SSE:600519",
+        "kind": "CODEX_PUBLIC_SOURCE",
+        "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+        "received_at": "2026-10-07T19:06:53.925218+00:00",
+        "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+        "source_id": "MOUTAI_OFFICIAL",
+        "source_url": "https://www.moutaichina.com/mtgf/index/",
+        "time_precision": "RECEIPT_ONLY"
+      }
+    ],
+    "backend": "CODEX",
+    "bootstrap_audit": {
+      "auth_mode": "chatgpt",
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "bridge": {
+      "name": "bundled-code-mode-host",
+      "runtime": "Rust/V8, no Node bridge",
+      "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+      "version": "0.161.0"
+    },
+    "candidate_output_hash": "59bf527effbe8a35bef9d653fe8c473d4ec781dd89d88fb546e7a54351bc4511",
+    "candidates": [
+      {
+        "assertion": "公司官方主页有主营业务实际原文：主营茅台酒及茅台系列酒的生产与销售。此为主页检索所得，不是请求期间公告原文，也不能证明截止时点已可获得。",
+        "assertion_verified": false,
+        "available_at": "2026-10-07T19:06:53.925218+00:00",
+        "classification": "MODEL_EVIDENCE_CANDIDATE",
+        "cutoff_eligible": false,
+        "event_time": null,
+        "evidence_quote": "主营茅台酒及茅台系列酒的生产与销售",
+        "group": "ANNOUNCEMENTS",
+        "host_limit": "Literal quote verified; receipt cannot establish event time or assertion truth.",
+        "instrument": "SSE:600519",
+        "quote_verified": true,
+        "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+        "source_url": "https://www.moutaichina.com/mtgf/index/",
+        "time_basis": "ACTUAL_RETRIEVAL"
+      }
+    ],
+    "config_fingerprint": "c6044f47269c6d0532f55e289528d92beb0514252d25b6387e89bab0c459df2e",
+    "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+    "elapsed_seconds": 38.248,
+    "evidence_kind": "REAL_CODEX_TASK",
+    "finished_at": "2026-10-07T19:07:06.963162+00:00",
+    "formal_judgment": "DISABLED",
+    "gaps": [
+      {
+        "code": "NO_ORIGINAL_IN_BOUNDED_METADATA_PAGE",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "报价缺口：已取得新浪报价依据，raw_hash=07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35；但工具未返回可逐字引用的报价原始文本，故不生成报价引用候选。报价对应2026-09-30，不能充当2026-10-07至2026-10-08期间报价；当前交易状态及成交量单位未确认。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "事项时间缺口：官方主页event_time为UNKNOWN，仅有实际接收时间2026-10-07T19:06:53.925218+00:00，晚于请求截止时间；接收时间不能证明主营业务事项发生时间或历史可得时间。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "公告原文缺口：公告接口返回NO_ORIGINAL_IN_BOUNDED_METADATA_PAGE，raw_hash=f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853；官方主页主营业务原文不能替代请求期间公告原文。"
+      },
+      {
+        "code": "SUPPLEMENTAL_EVENT_TIME_AND_ASSERTION_UNVERIFIED",
+        "group": "TASK",
+        "instrument": ""
+      },
+      {
+        "code": "NO_HOST_VALIDATED_FACT",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519"
+      }
+    ],
+    "host_code_hashes": {
+      "codex_evidence.py": "8febe2b7011d56e7ef68fd3f332b22bdc34565eb5fdf7a15050449eec8cb79aa",
+      "codex_process.py": "a5c27c55c55a41ff29e65866ac15f37ca0a102b87346c899d5e8b37a62a454c3",
+      "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+    },
+    "host_owner": {
+      "creation_ticks": 134358735797294560,
+      "pid": 40516
+    },
+    "instruction_sources": [],
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "model": "gpt-6.1-sol",
+    "model_provider": "openai",
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "observed_pids": [
+        33728,
+        31256,
+        29616,
+        5660,
+        40068,
+        20452
+      ],
+      "owner_nonce": "eff3250e-a840-4325-ab44-64dcd5b9b0b7",
+      "pids_before_cleanup": [
+        33728,
+        31256,
+        29616,
+        20452
+      ],
+      "remaining_pids": [],
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-3be88ed0-76ce-4f16-8f9d-b18e1e8c0067-mik0ey5m",
+      "temporary_directory_removed": true,
+      "worker_pid": 33728
+    },
+    "question": "先取得报价依据，再检查缺口并查公司官方主页。公司主营业务是否有实际原文？分开保留报价、事项时间和公告原文缺口。仅引用来源原文中逐字连续出现的短句，不能拼接或补标点。",
+    "request_id": "8a13b638-95d7-412f-a95d-0a57340dd0f1",
+    "resolved_model": "gpt-6.1-sol",
+    "run_id": "3be88ed0-76ce-4f16-8f9d-b18e1e8c0067",
+    "runtime_audit": {
+      "auth_mode": "chatgpt",
+      "disabled_skills": 38,
+      "effective_config": {
+        "approval_policy": "never",
+        "features": {
+          "api_key_cyber_access_programs": false,
+          "api_key_model_discovery": true,
+          "apps": false,
+          "auth_elicitation": true,
+          "background_paginated_rollout_migration": false,
+          "browser_use": false,
+          "browser_use_external": false,
+          "code_mode": false,
+          "code_mode_host": true,
+          "code_mode_only": false,
+          "codex_apps_mcp_2026_07_28": false,
+          "computer_use": false,
+          "goals": false,
+          "hooks": false,
+          "image_generation": false,
+          "in_app_browser": false,
+          "mcp_2026_07_28": false,
+          "memories": false,
+          "mentions_v2": true,
+          "multi_agent": false,
+          "multi_agent_v2": false,
+          "network_proxy": null,
+          "plugins": false,
+          "remote_control": false,
+          "remote_plugin": false,
+          "shell_snapshot": false,
+          "shell_tool": false,
+          "skill_mcp_dependency_install": false,
+          "tool_suggest": false,
+          "view_image": false,
+          "windows_sandbox_service": false
+        },
+        "layers": [
+          "user",
+          "system"
+        ],
+        "mcp_servers": 0,
+        "sandbox_mode": "read-only",
+        "skills_instructions": false,
+        "web_search": "disabled"
+      },
+      "enabled_skills": 0,
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "runtime_completion": {
+      "error_info": null,
+      "status": "completed"
+    },
+    "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+    "runtime_items": [
+      {
+        "id": "01a117c2-b68c-7ef0-bd8f-6d742e83b1ab",
+        "item_type": "userMessage",
+        "tool": null
+      },
+      {
+        "id": "exec-52c571b9-4699-4115-89d7-f88131518031",
+        "item_type": "dynamicToolCall",
+        "tool": "roll_read_evidence"
+      },
+      {
+        "id": "exec-f3e4fdd4-c28b-4c26-b9fc-f9c86644491c",
+        "item_type": "dynamicToolCall",
+        "tool": "roll_read_evidence"
+      },
+      {
+        "id": "exec-32c96da3-ba11-43a7-9293-b5c355ee2d22",
+        "item_type": "dynamicToolCall",
+        "tool": "roll_read_source"
+      },
+      {
+        "id": "msg_03b9f0bddfe49bf9016ac69853197081918b1d8825ffb66db9",
+        "item_type": "agentMessage",
+        "tool": null
+      }
+    ],
+    "runtime_operations": [
+      {
+        "call_id": "call_311e9e7c9110459592e60cb01c9872b3",
+        "name": "exec",
+        "namespace": null,
+        "type": "custom_tool_call"
+      },
+      {
+        "call_id": "call_5a3a060db018488ca368252fd3a9e2c9",
+        "name": "exec",
+        "namespace": null,
+        "type": "custom_tool_call"
+      }
+    ],
+    "runtime_thread_id": "01a117c2-a42d-7a52-a503-46b1fbd1edee",
+    "runtime_turn_id": "01a117c2-a446-7e01-a851-0b7a1f8becb1",
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "snapshot_id": "f62e6f22-7be2-4f7f-91bd-da2c70c2a025",
+    "started_at": "2026-10-07T19:06:28.694957+00:00",
+    "status": "PARTIAL",
+    "token_usage": {
+      "last": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 3456,
+        "inputTokens": 6255,
+        "outputTokens": 407,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 6662
+      },
+      "modelContextWindow": 258400,
+      "total": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 6144,
+        "inputTokens": 12729,
+        "outputTokens": 497,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 13226
+      }
+    },
+    "tool_schema_fingerprint": "0530479fd2e2fa3a16f3f82ed67500bdc8f7dc142fe33c48c1f3f9eb0d198bf7",
+    "tools": [
+      {
+        "arguments": {
+          "group": "QUOTE",
+          "instrument": "SSE:600519"
+        },
+        "call_id": "exec-52c571b9-4699-4115-89d7-f88131518031",
+        "child_run_id": "8c4f1a27-17d9-4c51-b529-d1e2b4ef75b8",
+        "received_at": "2026-10-07T19:06:45.443465+00:00",
+        "snapshot_id": "7cd82354-7262-4c29-942c-1fca8f50b61f",
+        "source_id": "roll_read_evidence",
+        "status": "ARCHIVED"
+      },
+      {
+        "arguments": {
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519"
+        },
+        "call_id": "exec-f3e4fdd4-c28b-4c26-b9fc-f9c86644491c",
+        "child_run_id": "9f82ea4d-de40-4d1f-9324-b54cf7723510",
+        "received_at": "2026-10-07T19:06:53.511398+00:00",
+        "snapshot_id": "25385f48-10c1-4111-a680-5fde0a20a79b",
+        "source_id": "roll_read_evidence",
+        "status": "ARCHIVED"
+      },
+      {
+        "arguments": {
+          "instrument": "SSE:600519",
+          "source_id": "MOUTAI_OFFICIAL"
+        },
+        "call_id": "exec-32c96da3-ba11-43a7-9293-b5c355ee2d22",
+        "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+        "received_at": "2026-10-07T19:06:53.790302+00:00",
+        "source_id": "roll_read_source",
+        "status": "ARCHIVED",
+        "url": "https://www.moutaichina.com/mtgf/index/"
+      }
+    ]
+  },
+  "snapshot": {
+    "adapter_version": "11-codex-v1",
+    "archives": [
+      {
+        "bytes": 292,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35.raw",
+        "received_at": "2026-10-07T19:06:45.727517+00:00",
+        "sha256": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519"
+      },
+      {
+        "bytes": 20334,
+        "evidence_kind": "REAL_ACQUISITION",
+        "http_status": 200,
+        "kind": "RAW_RESPONSE",
+        "path": "raw/f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853.raw",
+        "received_at": "2026-10-07T19:06:53.667910+00:00",
+        "sha256": "f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853",
+        "source_id": "eastmoney-announcements",
+        "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519"
+      },
+      {
+        "available_at": "2026-10-07T19:06:53.925218+00:00",
+        "basis": "Issuer official website, company profile and disclosure links; 2025 interim report lists moutaichina.com as issuer website.",
+        "basis_url": "https://www.moutai.com.cn/mtgf/articleFileDir/2025-08/18/a5327efacb974a98aea62d0a95998f12.pdf",
+        "bytes": 46478,
+        "content_type": "text/html; charset=utf-8",
+        "event_time": null,
+        "http_status": 200,
+        "instrument": "SSE:600519",
+        "kind": "CODEX_PUBLIC_SOURCE",
+        "path": "raw/51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722.raw",
+        "received_at": "2026-10-07T19:06:53.925218+00:00",
+        "sha256": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+        "source_id": "MOUTAI_OFFICIAL",
+        "source_url": "https://www.moutaichina.com/mtgf/index/",
+        "time_precision": "RECEIPT_ONLY"
+      }
+    ],
+    "candidates": [
+      {
+        "assertion": "公司官方主页有主营业务实际原文：主营茅台酒及茅台系列酒的生产与销售。此为主页检索所得，不是请求期间公告原文，也不能证明截止时点已可获得。",
+        "assertion_verified": false,
+        "available_at": "2026-10-07T19:06:53.925218+00:00",
+        "classification": "MODEL_EVIDENCE_CANDIDATE",
+        "cutoff_eligible": false,
+        "event_time": null,
+        "evidence_quote": "主营茅台酒及茅台系列酒的生产与销售",
+        "group": "ANNOUNCEMENTS",
+        "host_limit": "Literal quote verified; receipt cannot establish event time or assertion truth.",
+        "instrument": "SSE:600519",
+        "quote_verified": true,
+        "raw_hash": "51fe5ee5a35093d15e4174e74eb93a9bf630d18efda81d22d77bcca918c8e722",
+        "source_url": "https://www.moutaichina.com/mtgf/index/",
+        "time_basis": "ACTUAL_RETRIEVAL"
+      }
+    ],
+    "coverage": [
+      {
+        "age_seconds": 646306.727517,
+        "full_history_verified": false,
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "returned_rows": 1,
+        "upstream_at": "2026-09-30T15:34:59+08:00"
+      },
+      {
+        "eligible_metadata_rows": 0,
+        "full_history_verified": false,
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519",
+        "raw_hash": "f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853",
+        "returned_metadata_rows": 30,
+        "source_total_rows": 1074,
+        "truncation": "LATEST_30_METADATA; ONE_ORIGINAL_PER_REQUESTED_GROUP"
+      }
+    ],
+    "created_at": "2026-10-07T19:07:06.949138+00:00",
+    "cutoff": "2026-10-07T19:06:28.665870+00:00",
+    "evidence_kind": "REAL_CODEX_TASK",
+    "facts": [
+      {
+        "adjustment": "RAW",
+        "age_seconds": 646306.727517,
+        "amount_yuan": "4797246636.000",
+        "available_at": "2026-10-07T19:06:45.727517+00:00",
+        "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+        "conversion_basis": null,
+        "currency": "CNY",
+        "current_status": "UNKNOWN",
+        "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+        "evidence_kind": "REAL_ACQUISITION",
+        "fetched_at": "2026-10-07T19:06:45.727517+00:00",
+        "formal_judgment": "DISABLED",
+        "group": "QUOTE",
+        "high": "1268.000",
+        "historical_limitations": [
+          "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+          "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+        ],
+        "instrument": "SSE:600519",
+        "last": "1258.620",
+        "limitations": [
+          "QUOTE_DOES_NOT_CONFIRM_CURRENT_STATUS",
+          "VOLUME_UNIT_UNVERIFIED_FOR_THIS_SCOPE"
+        ],
+        "low": "1236.050",
+        "open": "1239.530",
+        "point_in_time_input_allowed": false,
+        "previous_close": "1235.580",
+        "published_at": null,
+        "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+        "raw_hash": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "received_at": "2026-10-07T19:06:45.727517+00:00",
+        "reported_limit_down": null,
+        "reported_limit_up": null,
+        "revision_id": "07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35",
+        "source_id": "sina-quote",
+        "source_url": "https://hq.sinajs.cn/list=sh600519",
+        "source_volume_unit": "UNKNOWN",
+        "state": "REPORTED_QUOTE",
+        "supplier_reported_status": "00",
+        "time_precision": "SECOND",
+        "trade_date": "2026-09-30",
+        "upstream_at": "2026-09-30T15:34:59+08:00",
+        "volume_reported": "3833098",
+        "volume_shares": null,
+        "volume_unit": "UNKNOWN"
+      }
+    ],
+    "formal_judgment": "DISABLED",
+    "gaps": [
+      {
+        "code": "NO_ORIGINAL_IN_BOUNDED_METADATA_PAGE",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "报价缺口：已取得新浪报价依据，raw_hash=07779b650f4dcab0bc74a55cfbbeddd56a6bcfe0e28a6504e7ae89d12850ed35；但工具未返回可逐字引用的报价原始文本，故不生成报价引用候选。报价对应2026-09-30，不能充当2026-10-07至2026-10-08期间报价；当前交易状态及成交量单位未确认。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "事项时间缺口：官方主页event_time为UNKNOWN，仅有实际接收时间2026-10-07T19:06:53.925218+00:00，晚于请求截止时间；接收时间不能证明主营业务事项发生时间或历史可得时间。"
+      },
+      {
+        "code": "MODEL_REPORTED_GAP",
+        "group": "TASK",
+        "instrument": "",
+        "reason": "公告原文缺口：公告接口返回NO_ORIGINAL_IN_BOUNDED_METADATA_PAGE，raw_hash=f30d1aef9d78f2248d9924d1a8f358c14e355e306e3286178377fd00650b5853；官方主页主营业务原文不能替代请求期间公告原文。"
+      },
+      {
+        "code": "SUPPLEMENTAL_EVENT_TIME_AND_ASSERTION_UNVERIFIED",
+        "group": "TASK",
+        "instrument": ""
+      },
+      {
+        "code": "NO_HOST_VALIDATED_FACT",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519"
+      }
+    ],
+    "namespace": "ACTUAL",
+    "observations": [],
+    "parquet": {
+      "bytes": 8552,
+      "kind": "NORMALIZED_PARQUET",
+      "path": "parquet/c3302d3a6ee53427d03c81b564d7aebced8683a0d4b29b1d1468b56784d2b8ad.parquet",
+      "sha256": "c3302d3a6ee53427d03c81b564d7aebced8683a0d4b29b1d1468b56784d2b8ad"
+    },
+    "request_id": "8a13b638-95d7-412f-a95d-0a57340dd0f1",
+    "requested_groups": [
+      "QUOTE",
+      "ANNOUNCEMENTS"
+    ],
+    "requested_instruments": [
+      "SSE:600519"
+    ],
+    "run_id": "3be88ed0-76ce-4f16-8f9d-b18e1e8c0067",
+    "snapshot_id": "f62e6f22-7be2-4f7f-91bd-da2c70c2a025"
+  }
+}

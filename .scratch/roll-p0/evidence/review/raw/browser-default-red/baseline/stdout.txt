@@ -1,0 +1,44 @@
+[2m[WebServer] [22mINFO:     Started server process [15688]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:35184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:32000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today (4.7s)
+
+
+  1) tests\e2e\baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('交易判断未启用')
+    Expected: visible
+    Error: strict mode violation: getByText('交易判断未启用') resolved to 2 elements:
+        1) <div class="capability">交易判断未启用</div> aka getByText('交易判断未启用', { exact: true })
+        2) <p>普通事实观察可用；交易判断未启用。</p> aka getByText('普通事实观察可用；交易判断未启用。')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('交易判断未启用')[22m
+
+
+      3 | test('initial mirror: form → difference → confirmation → durable receipt → today', async ({page}) => {
+      4 |   await page.goto('/');
+    > 5 |   await expect(page.getByText('交易判断未启用')).toBeVisible();
+        |                                           ^
+      6 |   await page.getByRole('button',{name:'同步账户', exact:true}).click();
+      7 |   // This shared browser account precedes the later fixed-date event fixtures.
+      8 |   await page.getByLabel('事实截至时点').fill('2026-10-07T10:00');
+        at D:\dsh-proj\Roll\.scratch\worktrees\review-fixes\frontend\tests\e2e\baseline.spec.ts:5:43
+
+    Error Context: test-results\default\baseline\artifacts\baseline-initial-mirror-fo-bf8f8-n-→-durable-receipt-→-today\error-context.md
+
+  1 failed
+    tests\e2e\baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today 

@@ -1,0 +1,196 @@
+[
+  {
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "archives": [],
+    "backend": "DEEPSEEK",
+    "candidates": [],
+    "config_fingerprint": "fe8b53771e0dde2c7978e589e3b8a511d15d1d77e0c3605228de8904416ab361",
+    "error": {
+      "code": "DEEPSEEK_AUTH_NOT_CONFIGURED",
+      "message": "尚未配置 DeepSeek API 凭据。管理员可设置 DEEPSEEK_API_KEY 或明确的 ROLL_DEEPSEEK_API_KEY_FILE；已有网页订阅不证明 API 权限。"
+    },
+    "evidence_kind": "REAL_DEEPSEEK_TASK",
+    "finished_at": "2026-10-07T22:50:32.728152+00:00",
+    "formal_judgment": "DISABLED",
+    "gaps": [],
+    "host_owner": {
+      "creation_ticks": 134358870229585580,
+      "pid": 27444
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "model": "deepseek-flash",
+    "question": "核对报价来源",
+    "request_id": "1fe13799-8891-47b1-9e7b-23d641f9dd8b",
+    "resolved_model": null,
+    "retry_of": "652ecd1b-3472-479f-8862-42f43af15e91",
+    "run_id": "12fa1cb5-8d47-4889-a2c0-b95a7c078197",
+    "runtime_audit": {
+      "allowed_tools": [
+        "roll_read_evidence",
+        "roll_read_source"
+      ],
+      "auto_previous_response_id": false,
+      "endpoint": "https://api.deepseek.com",
+      "handoffs": [],
+      "host_code_hashes": {
+        "codex_evidence.py": "6b27c9a9840ae65c28c13b6dad76d4dddce1b2b535fbfbefde39f5a56b8f72d0",
+        "codex_process.py": "99be69251bf7b715566d495e060399e7491d692d6038dc20aa55401cef6d5711",
+        "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+        "deepseek_evidence.py": "ce2f6b42ecde74e9182906e3d8a83ff7fb0bb04a95916501d4cb84272f69f43e",
+        "deepseek_process.py": "ef57425a4da5fe9d062db45b9a7646f59a38386e55c58d17159a24cec8f3ef8b",
+        "deepseek_worker.py": "8892138589a77600373ecc9caa7ae7fffa10a91f6ab296f15ee9ee338f55ce04"
+      },
+      "limits": {
+        "concurrency": 1,
+        "http_calls": 6,
+        "max_output_tokens": 2048,
+        "model_calls": 5,
+        "model_input_bytes": 131072,
+        "model_response_bytes": 65536,
+        "model_total_response_bytes": 262144,
+        "response_bytes": 65536,
+        "retries": 0,
+        "subtasks": 0,
+        "timeout_seconds": 120,
+        "tool_calls": 8,
+        "total_bytes": 262144
+      },
+      "mcp": false,
+      "model": "deepseek-flash",
+      "plugins": false,
+      "protocol": "RESPONSES_STATELESS",
+      "research_input_audit_enabled": true,
+      "retries": 0,
+      "sdk_runtime_version": {
+        "httpx2": "2.13.1",
+        "openai": "3.26.0",
+        "openai-agents": "0.23.1"
+      },
+      "skills": false,
+      "store": null,
+      "tracing_disabled": true
+    },
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "started_at": "2026-10-07T22:50:32.721684+00:00",
+    "status": "UNAVAILABLE",
+    "tools": []
+  },
+  {
+    "allowed_tools": [
+      "roll_read_evidence",
+      "roll_read_source"
+    ],
+    "archives": [],
+    "backend": "DEEPSEEK",
+    "candidates": [],
+    "config_fingerprint": "fe8b53771e0dde2c7978e589e3b8a511d15d1d77e0c3605228de8904416ab361",
+    "error": {
+      "code": "DEEPSEEK_AUTH_NOT_CONFIGURED",
+      "message": "尚未配置 DeepSeek API 凭据。管理员可设置 DEEPSEEK_API_KEY 或明确的 ROLL_DEEPSEEK_API_KEY_FILE；已有网页订阅不证明 API 权限。"
+    },
+    "evidence_kind": "REAL_DEEPSEEK_TASK",
+    "finished_at": "2026-10-07T22:50:32.605970+00:00",
+    "formal_judgment": "DISABLED",
+    "gaps": [],
+    "host_owner": {
+      "creation_ticks": 134358870229585580,
+      "pid": 27444
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 2048,
+      "model_calls": 5,
+      "model_input_bytes": 131072,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "response_bytes": 65536,
+      "retries": 0,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144
+    },
+    "model": "deepseek-flash",
+    "question": "核对报价来源",
+    "request_id": "1fe13799-8891-47b1-9e7b-23d641f9dd8b",
+    "resolved_model": null,
+    "retry_of": null,
+    "run_id": "652ecd1b-3472-479f-8862-42f43af15e91",
+    "runtime_audit": {
+      "allowed_tools": [
+        "roll_read_evidence",
+        "roll_read_source"
+      ],
+      "auto_previous_response_id": false,
+      "endpoint": "https://api.deepseek.com",
+      "handoffs": [],
+      "host_code_hashes": {
+        "codex_evidence.py": "6b27c9a9840ae65c28c13b6dad76d4dddce1b2b535fbfbefde39f5a56b8f72d0",
+        "codex_process.py": "99be69251bf7b715566d495e060399e7491d692d6038dc20aa55401cef6d5711",
+        "codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+        "deepseek_evidence.py": "ce2f6b42ecde74e9182906e3d8a83ff7fb0bb04a95916501d4cb84272f69f43e",
+        "deepseek_process.py": "ef57425a4da5fe9d062db45b9a7646f59a38386e55c58d17159a24cec8f3ef8b",
+        "deepseek_worker.py": "8892138589a77600373ecc9caa7ae7fffa10a91f6ab296f15ee9ee338f55ce04"
+      },
+      "limits": {
+        "concurrency": 1,
+        "http_calls": 6,
+        "max_output_tokens": 2048,
+        "model_calls": 5,
+        "model_input_bytes": 131072,
+        "model_response_bytes": 65536,
+        "model_total_response_bytes": 262144,
+        "response_bytes": 65536,
+        "retries": 0,
+        "subtasks": 0,
+        "timeout_seconds": 120,
+        "tool_calls": 8,
+        "total_bytes": 262144
+      },
+      "mcp": false,
+      "model": "deepseek-flash",
+      "plugins": false,
+      "protocol": "RESPONSES_STATELESS",
+      "research_input_audit_enabled": true,
+      "retries": 0,
+      "sdk_runtime_version": {
+        "httpx2": "2.13.1",
+        "openai": "3.26.0",
+        "openai-agents": "0.23.1"
+      },
+      "skills": false,
+      "store": null,
+      "tracing_disabled": true
+    },
+    "sdk_runtime_version": {
+      "httpx2": "2.13.1",
+      "openai": "3.26.0",
+      "openai-agents": "0.23.1"
+    },
+    "started_at": "2026-10-07T22:50:32.598755+00:00",
+    "status": "UNAVAILABLE",
+    "tools": []
+  }
+]

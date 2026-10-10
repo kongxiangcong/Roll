@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**Completion:** pending
+
 **Primary acceptance:** 无新增 AT；本票负责实际协议终点、成熟前向与验证交付证据。
 
 **References:** [规格](../spec.md) ID-14、ID-15、ID-16、ID-21；Testing Decisions 的主要边界 4—7；[目录与实施约束](../project-layout.md)。
@@ -26,3 +28,5 @@
 ## Comments
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。
+
+2026-10-08 本轮依赖前沿核查：未启动本票。32启运和23审阅未完成；尚无实际起止日期，预登记真实终点未到。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。

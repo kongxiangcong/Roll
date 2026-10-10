@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_same_versions_reuse_but_source_revision_invalidates_current_result_and_replay_keeps_old_values _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/14-fourth-red/test_same_versions_reuse_but_s0')
+
+    def test_same_versions_reuse_but_source_revision_invalidates_current_result_and_replay_keeps_old_values(tmp_path):
+        raw=[original_quote('A:first')]
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            req=setup_request(client)
+            first_run=client.post('/api/data/requests/'+req['request_id']+'/retrieve').json()
+            first={'snapshot_id':first_run['snapshot_id'],'fact_index':0}
+            resolution=completed(client,client.post('/api/data/requests/'+req['request_id']+'/resolve',
+                json={'usage':'HISTORICAL_RESEARCH','allow_fallback':False,'basis_run_id':first_run['run_id']}).json()['resolution_id'])
+            raw[0]=original_quote('B:second','100')
+            other=acquire(client)
+            payload=command([first,other])
+            original=client.post('/api/data/verifications',json=payload).json()
+            reused=client.post('/api/data/verifications',json=payload).json()
+>           assert reused['reuse_of']==original['verification_id'] and reused['network_calls']==0
+                   ^^^^^^^^^^^^^^^^^^
+E           KeyError: 'reuse_of'
+
+tests\application\test_independent_verification.py:108: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_independent_verification.py::test_same_versions_reuse_but_source_revision_invalidates_current_result_and_replay_keeps_old_values
+1 failed, 3 deselected in 4.79s

@@ -1,0 +1,89 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_review_creation_rejects_consumer_length_limits_before_persisting[reason-2001] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iR/test_review_creation_rejects_c0')
+name = 'reason', size = 2001
+
+    @pytest.mark.parametrize('name,size',[('reason',2001),('fact_id',101),('field',81)])
+    def test_review_creation_rejects_consumer_length_limits_before_persisting(tmp_path,name,size):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=original_quote('A:first'))))) as client:
+            task,payload=frozen_observation(client)
+            if name=='reason':payload[name]='x'*size
+            else:payload['facts'][0][name]='x'*size
+            response=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=payload)
+>           assert response.status_code==422,response.text
+E           AssertionError: {"audit_id":"bfe455b1-6c96-4504-a518-72bf9bf76e37","created_at":"2026-10-07T22:28:10.984343+00:00","original_fact_values":[{"available_at":"2026-10-07T22:28:10.664802+00:00","fact_id":"decisive-close","field":"last","instrument":"SSE:600519","raw_hash":"c2889090d0a79f0fbc82795ed2d3b1326906986a20b3f89acfd2585df2d8c634","reference":{"fact_index":0,"snapshot_id":"bab694cd-35f5-4632-8928-223652a02ea1"},"value":"100.000"}],"request":{"facts":[{"fact_id":"decisive-close","field":"last","references":[{"fact_index":0,"snapshot_id":"bab694cd-35f5-4632-8928-223652a02ea1"}]}],"knowledge_cutoff":"2026-10-07T22:28:10.801282+00:00","reason":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","trigger":"USER_SELECTED"},"request_id":"f3adc90c380718a30d1bd02a40fbcd681aff7a569bbc4f4f975862165e0f90a1","snapshot_id":"67269003-ea64-4360-9b8e-811c7573c0fa","status":"PENDING_CONSUMER_14","task_id":"dc4c0f8a-72f9-45d1-8bf3-23e47ec06dc0","verification_id":null}
+E           assert 201 == 422
+E            +  where 201 = <Response [201 Created]>.status_code
+
+backend\tests\application\test_review_input_contract.py:27: AssertionError
+_ test_review_creation_rejects_consumer_length_limits_before_persisting[fact_id-101] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iR/test_review_creation_rejects_c1')
+name = 'fact_id', size = 101
+
+    @pytest.mark.parametrize('name,size',[('reason',2001),('fact_id',101),('field',81)])
+    def test_review_creation_rejects_consumer_length_limits_before_persisting(tmp_path,name,size):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=original_quote('A:first'))))) as client:
+            task,payload=frozen_observation(client)
+            if name=='reason':payload[name]='x'*size
+            else:payload['facts'][0][name]='x'*size
+            response=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=payload)
+>           assert response.status_code==422,response.text
+E           AssertionError: {"audit_id":"c8445dd7-247a-4b0c-b30f-7a8ffad581a4","created_at":"2026-10-07T22:28:13.827659+00:00","original_fact_values":[{"available_at":"2026-10-07T22:28:13.460865+00:00","fact_id":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","field":"last","instrument":"SSE:600519","raw_hash":"c2889090d0a79f0fbc82795ed2d3b1326906986a20b3f89acfd2585df2d8c634","reference":{"fact_index":0,"snapshot_id":"50da27ce-d18d-4fe1-8b69-044339131319"},"value":"100.000"}],"request":{"facts":[{"fact_id":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","field":"last","references":[{"fact_index":0,"snapshot_id":"50da27ce-d18d-4fe1-8b69-044339131319"}]}],"knowledge_cutoff":"2026-10-07T22:28:13.605044+00:00","reason":"收盘价格影响重大盈亏归因，核对决定性价格","trigger":"USER_SELECTED"},"request_id":"a69fbb17a110f1244a7d1324fdcb5cd4e8ebac1e3ab300875b6629a484eca2df","snapshot_id":"77d5bb39-0543-4b2a-bd9b-682f8248dc61","status":"PENDING_CONSUMER_14","task_id":"2c1e2611-a0e6-413b-9b9c-c01e38d396ce","verification_id":null}
+E           assert 201 == 422
+E            +  where 201 = <Response [201 Created]>.status_code
+
+backend\tests\application\test_review_input_contract.py:27: AssertionError
+_ test_review_creation_rejects_consumer_length_limits_before_persisting[field-81] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iR/test_review_creation_rejects_c2')
+name = 'field', size = 81
+
+    @pytest.mark.parametrize('name,size',[('reason',2001),('fact_id',101),('field',81)])
+    def test_review_creation_rejects_consumer_length_limits_before_persisting(tmp_path,name,size):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=original_quote('A:first'))))) as client:
+            task,payload=frozen_observation(client)
+            if name=='reason':payload[name]='x'*size
+            else:payload['facts'][0][name]='x'*size
+            response=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=payload)
+            assert response.status_code==422,response.text
+>           assert any(error['type']=='string_too_long' and error['loc'][-1]==name for error in response.json()['detail'])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_review_input_contract.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = <str_iterator object at 0x0000013DCB01D450>
+
+>   assert any(error['type']=='string_too_long' and error['loc'][-1]==name for error in response.json()['detail'])
+               ^^^^^^^^^^^^^
+E   TypeError: string indices must be integers, not 'str'
+
+backend\tests\application\test_review_input_contract.py:28: TypeError
+_ test_old_incompatible_saved_request_is_actionably_refused_without_rewriting_history _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iR/test_old_incompatible_saved_re0')
+
+    def test_old_incompatible_saved_request_is_actionably_refused_without_rewriting_history(tmp_path):
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=original_quote('A:first')))),raise_server_exceptions=False) as client:
+            task,payload=frozen_observation(client)
+            saved=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=payload).json()
+            # External persisted state from the old producer version; not a new API bypass.
+            old={**saved,'request':{**saved['request'],'reason':'x'*2001}}
+            with sqlite3.connect(tmp_path/'roll.sqlite3') as db:
+                db.execute('UPDATE review_verification_requests SET value=? WHERE id=?',(json.dumps(old),saved['request_id']))
+            response=client.post('/api/reviews/verification-requests/'+saved['request_id']+'/verify')
+>           assert response.status_code==409,response.text
+E           AssertionError: Internal Server Error
+E           assert 500 == 409
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+backend\tests\application\test_review_input_contract.py:41: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_review_input_contract.py::test_review_creation_rejects_consumer_length_limits_before_persisting[reason-2001]
+FAILED backend\tests\application\test_review_input_contract.py::test_review_creation_rejects_consumer_length_limits_before_persisting[fact_id-101]
+FAILED backend\tests\application\test_review_input_contract.py::test_review_creation_rejects_consumer_length_limits_before_persisting[field-81]
+FAILED backend\tests\application\test_review_input_contract.py::test_old_incompatible_saved_request_is_actionably_refused_without_rewriting_history
+4 failed in 12.36s

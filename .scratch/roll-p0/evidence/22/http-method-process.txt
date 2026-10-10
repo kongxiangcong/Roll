@@ -1,0 +1,36 @@
+INFO:     Started server process [5840]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8042 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52212 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/account/drafts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/account/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/funding/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/market/identities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/account/drafts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/account/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/data/requests HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/data/requests/dc9dda0c-7ec5-40e4-8318-21c58fc0814d/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/research/datasets HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/research/protocols HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/research/protocols/3e777043-8465-4087-86a8-4c26d679860b/risk-policies HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/account/drafts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/evaluations HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/research/risk-evaluations/5eabd039-959e-42f5-a307-f5339534af69/replay HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "GET /api/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/validation HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/formal/evaluate HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:52212 - "POST /api/funding/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "POST /api/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/evaluations HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/account/drafts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "POST /api/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/evaluations HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52212 - "GET /api/data/archives/d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52212 - "GET /api/data/archives/477b35c474722ebf860746c2564feda8cbe0a90aa13dc06f48e53d800dfc2ffc HTTP/1.1" 200 OK
+INFO:     Started server process [32120]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8042 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54257 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "GET /api/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "GET /api/research/risk-evaluations/5eabd039-959e-42f5-a307-f5339534af69 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "POST /api/research/risk-evaluations/5eabd039-959e-42f5-a307-f5339534af69/replay HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "GET /api/capabilities HTTP/1.1" 200 OK

@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]: Roll 账户镜像
+    - navigation "主导航" [ref=e5]:
+      - button "今天" [ref=e6] [cursor=pointer]
+      - button "持仓与关注" [ref=e7] [cursor=pointer]
+      - button "同步账户" [ref=e8] [cursor=pointer]
+      - button "历史记录" [ref=e9] [cursor=pointer]
+      - button "设置" [ref=e10] [cursor=pointer]
+  - main [ref=e11]:
+    - heading "今天" [level=1] [ref=e12]
+    - generic [ref=e13]: 交易判断未启用
+    - paragraph [ref=e14]: 账户核对状态：账户差异待核对
+    - paragraph [ref=e15]: 账户版本 5 · 确认于 2026/10/8 06:46:41
+    - paragraph [ref=e16]: 最新有效账户事实截至 2026/10/8 06:46:00
+    - paragraph [ref=e17]: 最近确认输入的实际时点 2026/10/8 06:46:00 · 系统获知于 2026/10/8 06:46:41
+    - paragraph [ref=e18]: 保守可用资金：未知 · 当前可用资金未知，尚未重新核对
+    - paragraph [ref=e19]: 冻结资金核对时点 2026/10/8 06:45:37
+    - generic [ref=e20]:
+      - heading "今天的事实观察" [level=2] [ref=e21]
+      - paragraph [ref=e22]: 普通事实观察可用；交易判断未启用。
+      - button "按需观察" [disabled] [ref=e23]
+      - button "盘后复盘" [disabled] [ref=e24]
+      - generic [ref=e25]:
+        - checkbox "补查缺失事实" [ref=e26]
+        - text: 补查缺失事实
+      - group [ref=e27]:
+        - generic "回看指定历史时点" [ref=e28]
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - heading "资金授权" [level=2] [ref=e31]
+        - paragraph [ref=e32]: 资金边界尚未确认
+        - paragraph [ref=e33]: 损失与剩余额度待核：实际估值及现金流尚未接入
+      - generic [ref=e34]:
+        - heading "技术资格" [level=2] [ref=e35]
+        - paragraph [ref=e36]: 技术资格未授予
+        - paragraph [ref=e37]: 尚无通过验证及受控登记的技术能力
+      - generic [ref=e38]:
+        - heading "运行健康" [level=2] [ref=e39]
+        - paragraph [ref=e40]: 账户服务在线
+        - paragraph [ref=e41]: 本机账户与有限市场取证接口在线；实际覆盖、缺口及时效逐请求核对，模型接入尚未配置
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]: 账面现金
+        - strong [ref=e45]: 99539.99 元
+      - generic [ref=e46]:
+        - generic [ref=e47]: 券商可用资金
+        - strong [ref=e48]: 未知
+      - generic [ref=e49]:
+        - generic [ref=e50]: 冻结资金
+        - strong [ref=e51]: 0.00 元
+      - generic [ref=e52]:
+        - generic [ref=e53]: 可取资金
+        - strong [ref=e54]: 未知
+    - generic [ref=e55]:
+      - heading "持仓" [level=2] [ref=e56]
+      - table [ref=e57]:
+        - rowgroup [ref=e58]:
+          - row "证券 持仓数量 可卖数量 参考成本" [ref=e59]:
+            - columnheader "证券" [ref=e60]
+            - columnheader "持仓数量" [ref=e61]
+            - columnheader "可卖数量" [ref=e62]
+            - columnheader "参考成本" [ref=e63]
+        - rowgroup [ref=e64]:
+          - row "SSE:600001 100.00000001 股 未知 未知" [ref=e65]:
+            - cell "SSE:600001" [ref=e66]
+            - cell "100.00000001 股" [ref=e67]
+            - cell "未知" [ref=e68]
+            - cell "未知" [ref=e69]
+      - paragraph [ref=e70]: 历史收益未知 · 不推定买入时间或历史费用
+    - generic [ref=e71]:
+      - heading "已确认现金流" [level=2] [ref=e72]
+      - paragraph [ref=e73]: 实际到账投资收入 40.00 元 · 实际扣款税费 0.00 元
+      - paragraph [ref=e74]: 外部转入 0.00 元 · 外部转出 0.00 元
+      - paragraph [ref=e75]: 未结应收 50.00 元 · 未结应付 0.00 元
+      - paragraph [ref=e76]: 外部转入不计投资收益；未结事项不进入实际现金或券商可用。此处税费是独立现金税费，不含成交费用。
+    - generic [ref=e77]:
+      - heading "待核事项" [level=2] [ref=e78]
+      - list [ref=e79]:
+        - listitem [ref=e80]: 费用或配股费用分拆仍待核，不输出确定净结果
+        - listitem [ref=e81]: SSE:600001 可卖数量未知
+        - listitem [ref=e82]: 券商可用资金未知
+        - listitem [ref=e83]: 账户部分交易权限未知，未登记范围也按未知处理
+        - listitem [ref=e84]: 配股 browser-rights 费用分拆待核；实际总支付已确认，费用前损益未知
+        - listitem [ref=e85]: browser-dividend-due 应收待结算 50.00 元
+```

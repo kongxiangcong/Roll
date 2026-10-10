@@ -1,0 +1,79 @@
+EEEEE                                                                    [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_review_creation_rejects_consumer_length_limits_before_persisting[reason-2001] _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iG')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\backend\\.roll-data\\iG'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_review_creation_rejects_consumer_length_limits_before_persisting[fact_id-101] _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iG')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\backend\\.roll-data\\iG'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_review_creation_rejects_consumer_length_limits_before_persisting[field-81] _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iG')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\backend\\.roll-data\\iG'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_old_incompatible_saved_request_is_actionably_refused_without_rewriting_history _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iG')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\backend\\.roll-data\\iG'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_frozen_review_request_consumes_once_and_links_original_audit_without_routine_upgrade _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/backend/.roll-data/iG')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\backend\\.roll-data\\iG'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+=========================== short test summary info ===========================
+ERROR backend\tests\application\test_review_input_contract.py::test_review_creation_rejects_consumer_length_limits_before_persisting[reason-2001]
+ERROR backend\tests\application\test_review_input_contract.py::test_review_creation_rejects_consumer_length_limits_before_persisting[fact_id-101]
+ERROR backend\tests\application\test_review_input_contract.py::test_review_creation_rejects_consumer_length_limits_before_persisting[field-81]
+ERROR backend\tests\application\test_review_input_contract.py::test_old_incompatible_saved_request_is_actionably_refused_without_rewriting_history
+ERROR backend\tests\application\test_independent_verification.py::test_frozen_review_request_consumes_once_and_links_original_audit_without_routine_upgrade
+13 deselected, 5 errors in 1.60s

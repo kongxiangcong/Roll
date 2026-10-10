@@ -1,0 +1,39 @@
+
+> roll-frontend@0.1.0 test:e2e
+> playwright test resolution-method.spec.ts codex-evidence.spec.ts
+
+[WebServer] INFO:     Started server process [12472]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8031 (Press CTRL+C to quit)
+[WebServer] (node:6456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:31180) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31180) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\codex-evidence.spec.ts:3:1 › Codex host configuration and missing login are visible without losing the run (1.3s)
+  x  2 tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state (252ms)
+
+
+  1) tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+       8 |     effective_at:'2026-10-07T00:00:00+08:00',source:'08 METHOD_CASE synthetic account',cash_balance:'10000',
+       9 |     broker_available:null,broker_frozen:null,withdrawable:null,permission_profile:[],positions:[{instrument:'SSE:600519',quantity:'100',sellable_quantity:null,reference_cost:null}]}}})).json();
+    > 10 |   expect((await page.request.post('/api/account/confirm',{data:{draft_id:draft.draft_id,idempotency_key:'method08-baseline'}})).ok()).toBeTruthy();
+         |                                                                                                                                       ^
+      11 |   expect((await page.request.post('/api/market/identities',{data:{instrument:'SSE:600519',exchange:'SSE',board:'MAIN',instrument_type:'STOCK',
+      12 |     name:'贵州茅台',basis:'Explicit method identity',effective_at:'2026-10-07T00:00:00+08:00'}})).ok()).toBeTruthy();
+      13 |   const request=await (await page.request.post('/api/data/requests',{data:{instruments:['SSE:600519'],groups:['QUOTE','STATUS'],
+        at D:\dsh-proj\Roll\.scratch\worktrees\11-codex-evidence\frontend\tests\e2e\resolution-method.spec.ts:10:135
+
+  1 failed
+    tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state 
+  1 passed (10.9s)

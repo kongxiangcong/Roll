@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\review-fixes\.scratch\roll-p0\evidence\review\preserve-runtime.py", line 22, in <module>
+    assert not path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
+               ~~~~~~~~~~^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py", line 437, in lstat
+    return self.stat(follow_symlinks=False)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\backend\\.roll-data\\lifecycle-final\\test_peer_leaves_method_pendin0\\backups\\a1cf4c6b-799d-4e25-a5dd-918f99c76006\\research-inputs\\method-execution\\44c2a66bcfd14824b15c8084e62d107ef4c456b60a176e29142d4269d3010032.parquet'

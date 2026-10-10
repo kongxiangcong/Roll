@@ -1,0 +1,504 @@
+{
+  "evidence_kind": "PUBLIC_APPLICATION_FIXED_REPLAY_OF_ARCHIVED_OFFICIAL_SOURCES",
+  "samples": [
+    {
+      "request": {
+        "path": "/api/market/calendar",
+        "params": {
+          "exchange": "SSE",
+          "date": "2026-10-07"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "exchange": "SSE",
+        "date": "2026-10-07",
+        "timezone": "Asia/Shanghai",
+        "is_trading_day": false,
+        "phase": "CLOSED",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "calendar_version": "SSE-2026",
+        "source": {
+          "id": "sse-calendar-2026",
+          "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+          "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+          "file": "sse-calendar-2026.html",
+          "bytes": 30794,
+          "attachments": [],
+          "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+        },
+        "rules_source": {
+          "id": "sse-rules-text-2026",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "file": "sse-rules-text-2026.docx",
+          "bytes": 65302,
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+        },
+        "reason": "HOLIDAY",
+        "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市",
+        "next_trading_day": "2026-10-08"
+      }
+    },
+    {
+      "request": {
+        "path": "/api/market/calendar",
+        "params": {
+          "exchange": "SZSE",
+          "date": "2026-10-10"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "exchange": "SZSE",
+        "date": "2026-10-10",
+        "timezone": "Asia/Shanghai",
+        "is_trading_day": false,
+        "phase": "CLOSED",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "calendar_version": "SZSE-2026",
+        "source": {
+          "id": "szse-calendar-2026",
+          "url": "https://www.szse.cn/disclosure/notice/general/t20251222_618087.html",
+          "fetched_at": "2026-10-07T14:54:37.862879+00:00",
+          "sha256": "1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e",
+          "file": "szse-calendar-2026.html",
+          "bytes": 24946,
+          "attachments": [],
+          "archive_path": "raw/1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e.html"
+        },
+        "rules_source": {
+          "id": "szse-rules-text-2026",
+          "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/W020260424690713155663.pdf",
+          "fetched_at": "2026-10-07T14:55:49.588276+00:00",
+          "sha256": "9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586",
+          "file": "szse-rules-text-2026.pdf",
+          "bytes": 282084,
+          "archive_path": "raw/9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586.pdf"
+        },
+        "reason": "WEEKEND",
+        "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市",
+        "next_trading_day": "2026-10-12"
+      }
+    },
+    {
+      "request": {
+        "path": "/api/market/calendar",
+        "params": {
+          "exchange": "BSE",
+          "date": "2026-10-08"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "exchange": "BSE",
+        "date": "2026-10-08",
+        "timezone": "Asia/Shanghai",
+        "is_trading_day": null,
+        "phase": "UNKNOWN",
+        "coverage": "UNKNOWN",
+        "source": null,
+        "reason": "该交易所/年份日历尚未取得与适配，不按工作日推测",
+        "next_trading_day": null
+      }
+    },
+    {
+      "request": {
+        "path": "/api/market/calendar",
+        "params": {
+          "exchange": "SSE",
+          "date": "2026-10-08",
+          "at": "2026-10-08T15:10:00+08:00"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "exchange": "SSE",
+        "date": "2026-10-08",
+        "timezone": "Asia/Shanghai",
+        "is_trading_day": true,
+        "phase": "FIXED_PRICE",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "calendar_version": "SSE-2026",
+        "source": {
+          "id": "sse-calendar-2026",
+          "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+          "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+          "file": "sse-calendar-2026.html",
+          "bytes": 30794,
+          "attachments": [],
+          "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+        },
+        "rules_source": {
+          "id": "sse-rules-text-2026",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "file": "sse-rules-text-2026.docx",
+          "bytes": 65302,
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+        },
+        "reason": null,
+        "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市",
+        "next_trading_day": "2026-10-09"
+      }
+    },
+    {
+      "request": {
+        "path": "/api/market/rules",
+        "params": {
+          "exchange": "SSE",
+          "board": "STAR",
+          "date": "2026-10-08"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "rule_id": "SSE-STAR-A-2026-07-06",
+        "exchange": "SSE",
+        "board": "STAR",
+        "instrument_type": "STOCK",
+        "implementation_status": "ADAPTED",
+        "effective_from": "2026-07-06",
+        "effective_to": null,
+        "adapted_date_range": [
+          "2026-07-06",
+          "2026-12-31"
+        ],
+        "source": {
+          "id": "sse-rules-text-2026",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "file": "sse-rules-text-2026.docx",
+          "bytes": 65302,
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+        },
+        "provisions": [
+          "3.1.4",
+          "3.3.8",
+          "3.3.9",
+          "3.3.11",
+          "3.3.13",
+          "6.6",
+          "6.7"
+        ],
+        "buy_minimum": "200",
+        "buy_increment": "1",
+        "limit_order_maximum": "100000",
+        "market_order_maximum": "50000",
+        "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+        "price_tick_yuan": "0.01",
+        "normal_price_limit_percent": "20",
+        "risk_warning_price_limit_percent": "20",
+        "resale": "NEXT_TRADING_DAY",
+        "price_limit_rounding": "ROUND_HALF_UP",
+        "required_status_evidence": [
+          "suspension",
+          "risk_warning",
+          "listing_stage",
+          "ex_rights"
+        ],
+        "unsupported_uses": [
+          "SPECIAL_STOCK_EXECUTION",
+          "AUCTION_DETAIL_REPLAY",
+          "FEE_ESTIMATION"
+        ],
+        "fees": {
+          "state": "UNKNOWN",
+          "reason": "费用须来自实际券商/税费依据，未知不作零费"
+        },
+        "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+      }
+    },
+    {
+      "request": {
+        "path": "/api/market/rules",
+        "params": {
+          "exchange": "SZSE",
+          "board": "CHINEXT",
+          "date": "2026-10-08"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "rule_id": "SZSE-CHINEXT-A-2026-07-06",
+        "exchange": "SZSE",
+        "board": "CHINEXT",
+        "instrument_type": "STOCK",
+        "implementation_status": "ADAPTED",
+        "effective_from": "2026-07-06",
+        "effective_to": null,
+        "adapted_date_range": [
+          "2026-07-06",
+          "2026-12-31"
+        ],
+        "source": {
+          "id": "szse-rules-text-2026",
+          "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/W020260424690713155663.pdf",
+          "fetched_at": "2026-10-07T14:55:49.588276+00:00",
+          "sha256": "9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586",
+          "file": "szse-rules-text-2026.pdf",
+          "bytes": 282084,
+          "archive_path": "raw/9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586.pdf"
+        },
+        "provisions": [
+          "3.1.4",
+          "3.3.8",
+          "3.3.9",
+          "3.3.11",
+          "3.3.13"
+        ],
+        "buy_minimum": "100",
+        "buy_increment": "100",
+        "limit_order_maximum": "300000",
+        "market_order_maximum": "150000",
+        "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+        "price_tick_yuan": "0.01",
+        "normal_price_limit_percent": "20",
+        "risk_warning_price_limit_percent": "20",
+        "resale": "NEXT_TRADING_DAY",
+        "price_limit_rounding": "ROUND_HALF_UP",
+        "required_status_evidence": [
+          "suspension",
+          "risk_warning",
+          "listing_stage",
+          "ex_rights"
+        ],
+        "unsupported_uses": [
+          "SPECIAL_STOCK_EXECUTION",
+          "AUCTION_DETAIL_REPLAY",
+          "FEE_ESTIMATION"
+        ],
+        "fees": {
+          "state": "UNKNOWN",
+          "reason": "费用须来自实际券商/税费依据，未知不作零费"
+        },
+        "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+      }
+    },
+    {
+      "request": {
+        "path": "/api/market/resale-date",
+        "params": {
+          "exchange": "SSE",
+          "board": "MAIN",
+          "buy_date": "2026-09-30"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "buy_date": "2026-09-30",
+        "earliest_sell_date": "2026-10-08",
+        "rule": {
+          "rule_id": "SSE-MAIN-A-2026-07-06",
+          "exchange": "SSE",
+          "board": "MAIN",
+          "instrument_type": "STOCK",
+          "implementation_status": "ADAPTED",
+          "effective_from": "2026-07-06",
+          "effective_to": null,
+          "adapted_date_range": [
+            "2026-07-06",
+            "2026-12-31"
+          ],
+          "source": {
+            "id": "sse-rules-text-2026",
+            "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+            "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+            "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+            "file": "sse-rules-text-2026.docx",
+            "bytes": 65302,
+            "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+          },
+          "provisions": [
+            "3.1.4",
+            "3.3.8",
+            "3.3.9",
+            "3.3.11",
+            "3.3.13"
+          ],
+          "buy_minimum": "100",
+          "buy_increment": "100",
+          "limit_order_maximum": "1000000",
+          "market_order_maximum": "1000000",
+          "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+          "price_tick_yuan": "0.01",
+          "normal_price_limit_percent": "10",
+          "risk_warning_price_limit_percent": "10",
+          "resale": "NEXT_TRADING_DAY",
+          "price_limit_rounding": "ROUND_HALF_UP",
+          "required_status_evidence": [
+            "suspension",
+            "risk_warning",
+            "listing_stage",
+            "ex_rights"
+          ],
+          "unsupported_uses": [
+            "SPECIAL_STOCK_EXECUTION",
+            "AUCTION_DETAIL_REPLAY",
+            "FEE_ESTIMATION"
+          ],
+          "fees": {
+            "state": "UNKNOWN",
+            "reason": "费用须来自实际券商/税费依据，未知不作零费"
+          },
+          "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+        },
+        "calendar": {
+          "exchange": "SSE",
+          "date": "2026-09-30",
+          "timezone": "Asia/Shanghai",
+          "is_trading_day": true,
+          "phase": "TRADING_DAY",
+          "coverage": "VERIFIED_ANNUAL_CALENDAR",
+          "calendar_version": "SSE-2026",
+          "source": {
+            "id": "sse-calendar-2026",
+            "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+            "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+            "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+            "file": "sse-calendar-2026.html",
+            "bytes": 30794,
+            "attachments": [],
+            "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+          },
+          "rules_source": {
+            "id": "sse-rules-text-2026",
+            "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+            "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+            "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+            "file": "sse-rules-text-2026.docx",
+            "bytes": 65302,
+            "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+          },
+          "reason": null,
+          "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市"
+        },
+        "resale_source": {
+          "id": "szse-a-share-resale",
+          "url": "https://investor.szse.cn/warning/activities/fundIntroduction/t20210108_584159.html",
+          "fetched_at": "2026-10-07T15:06:57.638418+00:00",
+          "sha256": "1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f",
+          "file": "szse-a-share-resale.html",
+          "bytes": 37793,
+          "archive_path": "raw/1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f.html"
+        },
+        "limitation": "最早日期不代表实际可卖数量或可成交，停牌/当前状态与账户事实须另核对"
+      }
+    },
+    {
+      "request": {
+        "path": "/api/market/resale-date",
+        "params": {
+          "exchange": "SSE",
+          "board": "MAIN",
+          "buy_date": "2026-12-31"
+        }
+      },
+      "status": 200,
+      "actual": {
+        "buy_date": "2026-12-31",
+        "earliest_sell_date": null,
+        "rule": {
+          "rule_id": "SSE-MAIN-A-2026-07-06",
+          "exchange": "SSE",
+          "board": "MAIN",
+          "instrument_type": "STOCK",
+          "implementation_status": "ADAPTED",
+          "effective_from": "2026-07-06",
+          "effective_to": null,
+          "adapted_date_range": [
+            "2026-07-06",
+            "2026-12-31"
+          ],
+          "source": {
+            "id": "sse-rules-text-2026",
+            "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+            "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+            "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+            "file": "sse-rules-text-2026.docx",
+            "bytes": 65302,
+            "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+          },
+          "provisions": [
+            "3.1.4",
+            "3.3.8",
+            "3.3.9",
+            "3.3.11",
+            "3.3.13"
+          ],
+          "buy_minimum": "100",
+          "buy_increment": "100",
+          "limit_order_maximum": "1000000",
+          "market_order_maximum": "1000000",
+          "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+          "price_tick_yuan": "0.01",
+          "normal_price_limit_percent": "10",
+          "risk_warning_price_limit_percent": "10",
+          "resale": "NEXT_TRADING_DAY",
+          "price_limit_rounding": "ROUND_HALF_UP",
+          "required_status_evidence": [
+            "suspension",
+            "risk_warning",
+            "listing_stage",
+            "ex_rights"
+          ],
+          "unsupported_uses": [
+            "SPECIAL_STOCK_EXECUTION",
+            "AUCTION_DETAIL_REPLAY",
+            "FEE_ESTIMATION"
+          ],
+          "fees": {
+            "state": "UNKNOWN",
+            "reason": "费用须来自实际券商/税费依据，未知不作零费"
+          },
+          "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+        },
+        "calendar": {
+          "exchange": "SSE",
+          "date": "2026-12-31",
+          "timezone": "Asia/Shanghai",
+          "is_trading_day": true,
+          "phase": "TRADING_DAY",
+          "coverage": "VERIFIED_ANNUAL_CALENDAR",
+          "calendar_version": "SSE-2026",
+          "source": {
+            "id": "sse-calendar-2026",
+            "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+            "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+            "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+            "file": "sse-calendar-2026.html",
+            "bytes": 30794,
+            "attachments": [],
+            "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+          },
+          "rules_source": {
+            "id": "sse-rules-text-2026",
+            "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+            "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+            "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+            "file": "sse-rules-text-2026.docx",
+            "bytes": 65302,
+            "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+          },
+          "reason": null,
+          "special_closure_check": "未接入盘中临时停市实时源；证券停牌另作事实，不等同交易所休市"
+        },
+        "resale_source": {
+          "id": "szse-a-share-resale",
+          "url": "https://investor.szse.cn/warning/activities/fundIntroduction/t20210108_584159.html",
+          "fetched_at": "2026-10-07T15:06:57.638418+00:00",
+          "sha256": "1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f",
+          "file": "szse-a-share-resale.html",
+          "bytes": 37793,
+          "archive_path": "raw/1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f.html"
+        },
+        "limitation": "最早日期不代表实际可卖数量或可成交，停牌/当前状态与账户事实须另核对"
+      }
+    }
+  ]
+}

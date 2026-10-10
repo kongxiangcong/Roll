@@ -1,0 +1,28 @@
+[WebServer] INFO:     Started server process [14160]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8039 (Press CTRL+C to quit)
+[WebServer] (node:37564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+
+(node:30976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today (2.5s)
+  ok  2 tests\e2e\cash-equity.spec.ts:3:1 › confirmed receivable and partial settlement stay distinct from cash and later corrections (2.5s)
+  ok  3 tests\e2e\cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice (1.7s)
+  ok  4 tests\e2e\csv.spec.ts:3:1 › Roll CSV download, upload, row errors, whole-batch preview and durable receipt (1.4s)
+  ok  5 tests\e2e\csv.spec.ts:40:1 › CSV v2 previews external funds separately from actual interest and confirms one receipt (869ms)
+  ok  6 tests\e2e\csv.spec.ts:64:1 › CSV v2 paid rights previews cost and unknown fee split before one debit (1.1s)
+  -   7 tests\e2e\evidence-live.spec.ts:7:1 › real finite-name market request archives all groups and page displays actual sources, gaps and offline replay
+  ok  8 tests\e2e\fills.spec.ts:3:1 › actual fill with provisional fees can be confirmed and later adjusted without inventing an action (2.0s)
+  ok  9 tests\e2e\funding.spec.ts:3:1 › user confirms funds and sees independent funding, technical and runtime states (1.7s)
+  ok 10 tests\e2e\market.spec.ts:3:1 › finite market page preserves holdings, distinct restrictions, membership versions and exchange calendar gaps (1.9s)
+  -  11 tests\e2e\resolution-live.spec.ts:7:1 › archived Tencent unit gap automatically obtains comparable Sina quote, caches true time, and replays original run
+  -  12 tests\e2e\resolution-method.spec.ts:6:1 › method source status gap keeps known quote, revision invalidates old basis and page replays original state
+
+  3 skipped
+  9 passed (25.8s)

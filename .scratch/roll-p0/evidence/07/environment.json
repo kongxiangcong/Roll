@@ -1,0 +1,29 @@
+{
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.12 (main, Mar 10 2026, 18:14:40) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_versions": {
+    "fastapi": "0.141.1",
+    "uvicorn": "0.52.4",
+    "httpx": "0.28.1",
+    "pyarrow": "25.0.1",
+    "pypdf": "6.19.0",
+    "pytest": "9.0.2"
+  },
+  "node": "v25.8.1",
+  "head": "fcca1d8c1c691d2d09e828c815ad4d9dc685e558",
+  "integration": "7d153f4a94bb8a9ca520d4c47a3de579c37cde33",
+  "backend_ports": [
+    "8027"
+  ],
+  "web_ports": [
+    "5187"
+  ],
+  "browser_channel": "chrome",
+  "live_authority": "public source responses, runtime raw/Parquet; account baseline synthetic isolated; no private/billed credentials",
+  "runtime_archive_locations": {
+    "actual_collection_roll_data_dir": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\07-market-evidence\\backend\\.roll-data\\acceptance-07",
+    "browser_full_fact_raw_parquet_export": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\07-market-evidence\\backend\\.roll-data\\acceptance-07-browser",
+    "browser_original_roll_data_dir": "Ephemeral OS temp roll-browser-*; retained export is the stable archive location for this acceptance."
+  },
+  "retention": "Keep both archive directories until explicit downstream offline reuse or relocation; do not archive/remove the worktree with only JSON/hash manifests preserved."
+}

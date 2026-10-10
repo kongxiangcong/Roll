@@ -1,0 +1,188 @@
+{
+  "config": {
+    "configFile": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\playwright.default.config.ts",
+    "rootDir": "D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/frontend/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/frontend/test-results/default/cash-equity/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/dsh-proj/Roll/.scratch/worktrees/review-fixes/frontend/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "baseline.spec.ts",
+          "cash-equity.spec.ts",
+          "codex-evidence.spec.ts",
+          "csv.spec.ts",
+          "deepseek-evidence.spec.ts",
+          "fills.spec.ts",
+          "funding.spec.ts",
+          "market.spec.ts",
+          "market-overflow.spec.ts",
+          "reconcile.spec.ts",
+          "valuation.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\test-results\\default\\cash-equity\\results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cash-equity.spec.ts",
+      "file": "cash-equity.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "confirmed receivable and partial settlement stay distinct from cash and later corrections",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2734,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T22:42:40.267Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3cfaae91440137488da8-4f714258d2fc8faa1972",
+          "file": "cash-equity.spec.ts",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "paid rights unknown fee split can be completed without paying twice",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1103,
+                  "error": {
+                    "message": "TypeError: Cannot read properties of undefined (reading 'acquisition_cost')",
+                    "stack": "TypeError: Cannot read properties of undefined (reading 'acquisition_cost')\n    at D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\tests\\e2e\\cash-equity.spec.ts:71:83",
+                    "location": {
+                      "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\tests\\e2e\\cash-equity.spec.ts",
+                      "column": 83,
+                      "line": 71
+                    },
+                    "snippet": "  69 |   const paid=await (await request.get('/api/account')).json();\n  70 |   expect(Number(paid.cash_balance)).toBeCloseTo(Number(before.cash_balance)-500.01,2);\n> 71 |   expect(paid.positions.find((p:{instrument:string})=>p.instrument==='SSE:600000').acquisition_cost).toBeNull();\n     |                                                                                   ^\n  72 |   await page.getByRole('button',{name:'同步账户',exact:true}).click();\n  73 |   await page.getByRole('button',{name:'补充费用',exact:true}).click();\n  74 |   await page.getByRole('combobox',{name:'费用对应成交'}).selectOption('browser-rights');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\tests\\e2e\\cash-equity.spec.ts",
+                        "column": 83,
+                        "line": 71
+                      },
+                      "message": "TypeError: Cannot read properties of undefined (reading 'acquisition_cost')\n\n  69 |   const paid=await (await request.get('/api/account')).json();\n  70 |   expect(Number(paid.cash_balance)).toBeCloseTo(Number(before.cash_balance)-500.01,2);\n> 71 |   expect(paid.positions.find((p:{instrument:string})=>p.instrument==='SSE:600000').acquisition_cost).toBeNull();\n     |                                                                                   ^\n  72 |   await page.getByRole('button',{name:'同步账户',exact:true}).click();\n  73 |   await page.getByRole('button',{name:'补充费用',exact:true}).click();\n  74 |   await page.getByRole('combobox',{name:'费用对应成交'}).selectOption('browser-rights');\n    at D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\tests\\e2e\\cash-equity.spec.ts:71:83"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T22:42:43.429Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\test-results\\default\\cash-equity\\artifacts\\cash-equity-paid-rights-un-a28b1-pleted-without-paying-twice\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\frontend\\tests\\e2e\\cash-equity.spec.ts",
+                    "column": 83,
+                    "line": 71
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "3cfaae91440137488da8-feb4b1a1da7873821901",
+          "file": "cash-equity.spec.ts",
+          "line": 51,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-07T22:42:32.804Z",
+    "duration": 12881.379,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

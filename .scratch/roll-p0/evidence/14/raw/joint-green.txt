@@ -1,0 +1,42 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_frozen_review_request_consumes_once_and_links_original_audit_without_routine_upgrade _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/14-independent-verification/backend/.roll-data/jG/test_frozen_review_request_con0')
+
+    def test_frozen_review_request_consumes_once_and_links_original_audit_without_routine_upgrade(tmp_path):
+        from concurrent.futures import ThreadPoolExecutor
+        from test_reviews import wait_result
+        raw=[original_quote('A:first')]
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,content=raw[0])))) as client:
+            request=setup_request(client);a=acquire(client)
+            basis=completed(client,client.post('/api/data/requests/'+request['request_id']+'/resolve',json={
+                'usage':'HISTORICAL_RESEARCH','allow_fallback':False}).json()['resolution_id'])
+            raw[0]=original_quote('B:second');b=acquire(client)
+            task=wait_result(client,client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND'}).json()['task_id'])
+            original=task['result'];audit_url='/api/reviews/audits/'+task['audit_id']
+            assert client.get(audit_url).json()['critical_review']['status']=='NOT_REQUIRED'
+            assert client.get('/api/data/verifications').json()==[]
+            frozen=client.post('/api/reviews/tasks/'+task['task_id']+'/verification-request',json=command([a,b])).json()
+            consume='/api/reviews/verification-requests/'+frozen['request_id']+'/verify'
+            with ThreadPoolExecutor(max_workers=3) as pool:
+                responses=list(pool.map(lambda _:client.post(consume),range(3)))
+            assert all(r.status_code==200 for r in responses),[r.text for r in responses]
+            identifiers={r.json()['verification_id'] for r in responses}
+            assert len(identifiers)==1
+            linked=client.get('/api/reviews/verification-requests/'+frozen['request_id']).json()
+            vid=identifiers.pop();value=client.get('/api/data/verifications/'+vid).json()
+            assert linked['status']=='CONSUMED' and linked['verification_id']==vid
+            assert value['review_origin']=={k:frozen[k] for k in ['request_id','task_id','snapshot_id','audit_id']}
+>           assert value['command']['knowledge_cutoff']==frozen['request']['knowledge_cutoff']
+E           AssertionError: assert '2026-10-07T21:29:12.901544Z' == '2026-10-07T2....901544+00:00'
+E             
+E             - 2026-10-07T21:29:12.901544+00:00
+E             ?                           ^^^^^^
+E             + 2026-10-07T21:29:12.901544Z
+E             ?                           ^
+
+backend\tests\application\test_independent_verification.py:297: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_independent_verification.py::test_frozen_review_request_consumes_once_and_links_original_audit_without_routine_upgrade
+1 failed, 13 deselected in 4.45s

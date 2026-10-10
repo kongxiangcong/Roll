@@ -1,0 +1,208 @@
+
+> roll-frontend@0.1.0 test:e2e
+> node scripts/test-e2e.mjs
+
+[2m[WebServer] [22mINFO:     Started server process [29972]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:34392) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:33960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:33960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today (2.7s)
+
+  1 passed (12.9s)
+[2m[WebServer] [22mINFO:     Started server process [34404]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:3412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:32516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\cash-equity.spec.ts:3:1 › confirmed receivable and partial settlement stay distinct from cash and later corrections (2.8s)
+  x  2 tests\e2e\cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice (1.2s)
+
+
+  1) tests\e2e\cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeNull[2m()[22m
+
+    Received: [31m"500.01"[39m
+
+      69 |   const paid=await (await request.get('/api/account')).json();
+      70 |   expect(Number(paid.cash_balance)).toBeCloseTo(Number(before.cash_balance)-500.01,2);
+    > 71 |   expect(paid.positions.find((p:{instrument:string})=>p.instrument==='SSE:600001').acquisition_cost).toBeNull();
+         |                                                                                                      ^
+      72 |   await page.getByRole('button',{name:'同步账户',exact:true}).click();
+      73 |   await page.getByRole('button',{name:'补充费用',exact:true}).click();
+      74 |   await page.getByRole('combobox',{name:'费用对应成交'}).selectOption('browser-rights');
+        at D:\dsh-proj\Roll\.scratch\worktrees\review-fixes\frontend\tests\e2e\cash-equity.spec.ts:71:102
+
+    Error Context: test-results\default\cash-equity\artifacts\cash-equity-paid-rights-un-a28b1-pleted-without-paying-twice\error-context.md
+
+  1 failed
+    tests\e2e\cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice 
+  1 passed (14.3s)
+[2m[WebServer] [22mINFO:     Started server process [14884]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:21836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:11472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\codex-evidence.spec.ts:3:1 › Codex host configuration and missing login are visible without losing the run (1.5s)
+
+  1 passed (11.6s)
+[2m[WebServer] [22mINFO:     Started server process [32340]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:35660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:18900) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18900) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\csv.spec.ts:3:1 › Roll CSV download, upload, row errors, whole-batch preview and durable receipt (1.7s)
+  ok 2 tests\e2e\csv.spec.ts:40:1 › CSV v2 previews external funds separately from actual interest and confirms one receipt (903ms)
+  ok 3 tests\e2e\csv.spec.ts:64:1 › CSV v2 paid rights previews cost and unknown fee split before one debit (1.1s)
+
+  3 passed (12.9s)
+[2m[WebServer] [22mINFO:     Started server process [33564]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:40908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:20016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\deepseek-evidence.spec.ts:4:1 › DeepSeek missing credential record and linked retry survive reload (1.8s)
+  -  2 tests\e2e\deepseek-evidence.spec.ts:25:1 › actual Agents SDK fixed Responses task displays evidence and cancels independent next run
+
+  1 skipped
+  1 passed (11.1s)
+[2m[WebServer] [22mINFO:     Started server process [23936]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:16972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:22584) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22584) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\fills.spec.ts:3:1 › actual fill with provisional fees can be confirmed and later adjusted without inventing an action (2.2s)
+
+  1 passed (11.4s)
+[2m[WebServer] [22mINFO:     Started server process [26548]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:37796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:39652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\funding.spec.ts:3:1 › user confirms funds and sees independent funding, technical and runtime states (2.0s)
+
+  1 passed (11.0s)
+[2m[WebServer] [22mINFO:     Started server process [1424]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:26828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:34804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\market.spec.ts:3:1 › finite market page preserves holdings, distinct restrictions, membership versions and exchange calendar gaps (2.0s)
+
+  1 passed (11.0s)
+[2m[WebServer] [22mINFO:     Started server process [40944]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:21804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:35608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\market-overflow.spec.ts:3:1 › 21 actual holdings remain visible while new watch admission is limited (1.3s)
+
+  1 passed (11.4s)
+[2m[WebServer] [22mINFO:     Started server process [34472]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:28184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:30996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\reconcile.spec.ts:3:1 › scoped declaration, append correction, broker differences and immutable history in real Chrome (3.3s)
+  ok 2 tests\e2e\reconcile.spec.ts:55:1 › CSV v3 confirms replacement, broker snapshot and declaration with a single durable receipt (1.4s)
+
+  2 passed (13.9s)
+[2m[WebServer] [22mINFO:     Started server process [36536]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:37236) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:30348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\valuation.spec.ts:3:1 › saved cash-flow valuation matches API, excludes transfers from profit and replays after reload (1.8s)
+  -  2 tests\e2e\valuation.spec.ts:40:1 › preserved real September quote keeps original time, stale mark and unknown baseline in holdings UI
+
+  1 skipped
+  1 passed (12.0s)

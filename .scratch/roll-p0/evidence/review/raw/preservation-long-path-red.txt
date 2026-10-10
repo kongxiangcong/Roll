@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\review-fixes\.scratch\roll-p0\evidence\review\preserve-runtime.py", line 31, in <module>
+    else:shutil.copyfile(path,target)
+         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\shutil.py", line 262, in copyfile
+    with open(dst, 'wb') as fdst:
+         ~~~~^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\review-fixes\\backend\\.roll-data\\implementation-evidence\\review-fixes\\lifecycle-final\\test_peer_leaves_method_pendin0\\backups\\a1cf4c6b-799d-4e25-a5dd-918f99c76006\\parquet\\0839654da0526da2bfa9d7ef4f6a97b182d248ce106bda3842b0641e4045f6d9.parquet'

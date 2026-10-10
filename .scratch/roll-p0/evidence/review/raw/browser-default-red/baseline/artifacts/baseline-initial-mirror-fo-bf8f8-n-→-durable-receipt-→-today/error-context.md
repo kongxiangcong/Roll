@@ -1,0 +1,64 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]: Roll 账户镜像
+    - navigation "主导航" [ref=e5]:
+      - button "今天" [ref=e6] [cursor=pointer]
+      - button "持仓与关注" [ref=e7] [cursor=pointer]
+      - button "同步账户" [ref=e8] [cursor=pointer]
+      - button "历史记录" [ref=e9] [cursor=pointer]
+      - button "设置" [ref=e10] [cursor=pointer]
+  - main [ref=e11]:
+    - heading "今天" [level=1] [ref=e12]
+    - generic [ref=e13]: 交易判断未启用
+    - paragraph [ref=e14]: 账户核对状态：尚未建立账户
+    - paragraph [ref=e15]: 账户版本 0 · 尚未建立账户，请前往同步账户
+    - generic [ref=e16]:
+      - heading "今天的事实观察" [level=2] [ref=e17]
+      - paragraph [ref=e18]: 普通事实观察可用；交易判断未启用。
+      - button "按需观察" [disabled] [ref=e19]
+      - button "盘后复盘" [disabled] [ref=e20]
+      - generic [ref=e21]:
+        - checkbox "补查缺失事实" [ref=e22]
+        - text: 补查缺失事实
+      - group [ref=e23]:
+        - generic "回看指定历史时点" [ref=e24]
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - heading "资金授权" [level=2] [ref=e27]
+        - paragraph [ref=e28]: 资金边界尚未确认
+        - paragraph [ref=e29]: 损失与剩余额度待核：实际估值及现金流尚未接入
+      - generic [ref=e30]:
+        - heading "技术资格" [level=2] [ref=e31]
+        - paragraph [ref=e32]: 技术资格未授予
+        - paragraph [ref=e33]: 尚无通过验证及受控登记的技术能力
+      - generic [ref=e34]:
+        - heading "运行健康" [level=2] [ref=e35]
+        - paragraph [ref=e36]: 账户服务在线
+        - paragraph [ref=e37]: 本机账户与有限市场取证接口在线；实际覆盖、缺口及时效逐请求核对，模型接入尚未配置
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - generic [ref=e40]: 账面现金
+        - strong [ref=e41]: 未知
+      - generic [ref=e42]:
+        - generic [ref=e43]: 券商可用资金
+        - strong [ref=e44]: 未知
+      - generic [ref=e45]:
+        - generic [ref=e46]: 冻结资金
+        - strong [ref=e47]: 未知
+      - generic [ref=e48]:
+        - generic [ref=e49]: 可取资金
+        - strong [ref=e50]: 未知
+    - generic [ref=e51]:
+      - heading "持仓" [level=2] [ref=e52]
+      - paragraph [ref=e53]: 尚无已确认持仓
+      - paragraph [ref=e54]: 历史收益未知 · 不推定买入时间或历史费用
+    - generic [ref=e55]:
+      - heading "待核事项" [level=2] [ref=e56]
+      - list [ref=e57]:
+        - listitem [ref=e58]: 券商可用资金未知
+        - listitem [ref=e59]: 冻结资金未知
+        - listitem [ref=e60]: 账户部分交易权限未知，未登记范围也按未知处理
+```

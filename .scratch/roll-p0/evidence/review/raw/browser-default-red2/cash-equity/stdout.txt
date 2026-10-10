@@ -1,0 +1,37 @@
+[2m[WebServer] [22mINFO:     Started server process [34404]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:8045 (Press CTRL+C to quit)
+[2m[WebServer] [22m(node:3412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:32516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\cash-equity.spec.ts:3:1 › confirmed receivable and partial settlement stay distinct from cash and later corrections (2.8s)
+  x  2 tests\e2e\cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice (1.2s)
+
+
+  1) tests\e2e\cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeNull[2m()[22m
+
+    Received: [31m"500.01"[39m
+
+      69 |   const paid=await (await request.get('/api/account')).json();
+      70 |   expect(Number(paid.cash_balance)).toBeCloseTo(Number(before.cash_balance)-500.01,2);
+    > 71 |   expect(paid.positions.find((p:{instrument:string})=>p.instrument==='SSE:600001').acquisition_cost).toBeNull();
+         |                                                                                                      ^
+      72 |   await page.getByRole('button',{name:'同步账户',exact:true}).click();
+      73 |   await page.getByRole('button',{name:'补充费用',exact:true}).click();
+      74 |   await page.getByRole('combobox',{name:'费用对应成交'}).selectOption('browser-rights');
+        at D:\dsh-proj\Roll\.scratch\worktrees\review-fixes\frontend\tests\e2e\cash-equity.spec.ts:71:102
+
+    Error Context: test-results\default\cash-equity\artifacts\cash-equity-paid-rights-un-a28b1-pleted-without-paying-twice\error-context.md
+
+  1 failed
+    tests\e2e\cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice 
+  1 passed (14.3s)

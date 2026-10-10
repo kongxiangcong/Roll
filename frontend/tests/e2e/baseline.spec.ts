@@ -1,0 +1,46 @@
+import {expect, test} from '@playwright/test';
+
+test('initial mirror: form → difference → confirmation → durable receipt → today', async ({page}) => {
+  await page.goto('/');
+  await expect(page.getByText('交易判断未启用',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'同步账户', exact:true}).click();
+  // Preserve an explicit baseline timestamp in this file's isolated account.
+  await page.getByLabel('事实截至时点').fill('2026-10-07T10:00');
+  await page.getByLabel('账面现金（元）').fill('100000.10');
+  await page.getByLabel('券商可用资金（元）').fill('90000.10');
+  await page.getByLabel('冻结资金（元）').fill('10000.00');
+  await page.getByLabel('证券代码').fill('600000');
+  await page.getByLabel('持仓数量').fill('300');
+  await page.getByLabel('参考成本（元/股）').fill('10.12345678');
+  await page.getByRole('combobox',{name:'上交所主板权限',exact:true}).selectOption('OPEN');
+  await page.getByRole('combobox',{name:'科创板权限',exact:true}).selectOption('NOT_OPEN');
+  await page.getByRole('button',{name:'预览差异'}).click();
+  await expect(page.getByRole('heading',{name:'确认前的差异'})).toBeVisible();
+  await expect(page.getByText('100000.10',{exact:false}).first()).toBeVisible();
+  await page.getByRole('button',{name:'确认入账'}).click();
+  await expect(page.getByRole('heading',{name:'已确认，回执已保存'})).toBeVisible();
+  await page.getByRole('button',{name:'查询回执'}).click();
+  await expect(page.getByText('回执查询成功')).toBeVisible();
+  await page.getByRole('button',{name:'回到今天'}).click();
+  await expect(page.getByText('100000.10 元',{exact:true})).toBeVisible();
+  await expect(page.getByText('SSE:600000 可卖数量未知')).toBeVisible();
+  await expect(page.getByText('历史收益未知 · 不推定买入时间或历史费用')).toBeVisible();
+  await page.reload();
+  await expect(page.getByText('100000.10 元',{exact:true})).toBeVisible();
+  await page.screenshot({path:'test-results/baseline-today.png',fullPage:true});
+  await page.getByRole('button',{name:'同步账户',exact:true}).click();
+  await page.getByRole('combobox',{name:'上交所主板权限',exact:true}).selectOption('NOT_OPEN');
+  await page.getByLabel('上交所主板权限依据').fill('券商已关闭该权限');
+  await page.getByRole('button',{name:'预览差异'}).click();
+  await page.getByRole('button',{name:'确认入账'}).click();
+  await expect(page.getByText('账户版本 2',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'回到今天'}).click();
+  await page.getByRole('button',{name:'历史记录',exact:true}).click();
+  await page.getByRole('button',{name:'查看账户版本 1'}).click();
+  await expect(page.getByText('SSE/MAIN · 已开通',{exact:false})).toBeVisible();
+  await expect(page.getByText('SSE/STAR · 未开通',{exact:false})).toBeVisible();
+  await expect(page.getByText('SZSE/CHINEXT · 未知',{exact:false})).toBeVisible();
+  await page.getByRole('button',{name:'查看账户版本 2'}).click();
+  await expect(page.getByText('SSE/MAIN · 未开通',{exact:false})).toBeVisible();
+  await page.screenshot({path:'test-results/permission-history.png',fullPage:true});
+});

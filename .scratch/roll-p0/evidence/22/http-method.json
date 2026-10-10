@@ -1,0 +1,1115 @@
+{
+  "started_at": "2026-10-07T22:07:31.107370+00:00",
+  "data_root": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\22-independent-risk-policy\\backend\\.roll-data\\acceptance-22-method-final",
+  "method": true,
+  "source": "D:\\dsh-proj\\Roll\\backend\\.roll-data\\implementation-evidence\\19\\acceptance-19-final",
+  "copies": [],
+  "steps": [
+    {
+      "at": "2026-10-07T22:07:38.221222+00:00",
+      "method": "POST",
+      "path": "/account/drafts",
+      "status": 201
+    },
+    {
+      "at": "2026-10-07T22:07:38.463337+00:00",
+      "method": "POST",
+      "path": "/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/evaluations",
+      "status": 201
+    },
+    {
+      "at": "2026-10-07T22:07:38.509758+00:00",
+      "method": "POST",
+      "path": "/research/risk-evaluations/5eabd039-959e-42f5-a307-f5339534af69/replay",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T22:07:38.532078+00:00",
+      "method": "GET",
+      "path": "/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/validation",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T22:07:38.533895+00:00",
+      "method": "POST",
+      "path": "/formal/evaluate",
+      "status": 403
+    },
+    {
+      "at": "2026-10-07T22:07:38.545149+00:00",
+      "method": "POST",
+      "path": "/funding/confirm",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T22:07:38.734703+00:00",
+      "method": "POST",
+      "path": "/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/evaluations",
+      "status": 201
+    },
+    {
+      "at": "2026-10-07T22:07:38.768335+00:00",
+      "method": "POST",
+      "path": "/account/drafts",
+      "status": 201
+    },
+    {
+      "at": "2026-10-07T22:07:38.915420+00:00",
+      "method": "POST",
+      "path": "/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43/evaluations",
+      "status": 201
+    },
+    {
+      "at": "2026-10-07T22:07:41.689269+00:00",
+      "method": "GET",
+      "path": "/research/risk-policies/dd1542d8-da19-441b-bbe6-b1eaef3bbf43",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T22:07:41.710258+00:00",
+      "method": "GET",
+      "path": "/research/risk-evaluations/5eabd039-959e-42f5-a307-f5339534af69",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T22:07:41.821359+00:00",
+      "method": "POST",
+      "path": "/research/risk-evaluations/5eabd039-959e-42f5-a307-f5339534af69/replay",
+      "status": 200
+    },
+    {
+      "at": "2026-10-07T22:07:41.823377+00:00",
+      "method": "GET",
+      "path": "/capabilities",
+      "status": 200
+    }
+  ],
+  "sealed_consumed": false,
+  "formal_action_published": false,
+  "process_ids": [
+    35152,
+    22232
+  ],
+  "synthetic_funding_not_human_authorization": true,
+  "policy": {
+    "policy_id": "dd1542d8-da19-441b-bbe6-b1eaef3bbf43",
+    "protocol_id": "3e777043-8465-4087-86a8-4c26d679860b",
+    "registered_at": "2026-10-07T22:07:38.181131+00:00",
+    "policy_fingerprint": "d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5",
+    "material_archive": {
+      "sha256": "d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5",
+      "path": "raw/d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5.raw",
+      "bytes": 4809,
+      "kind": "RESEARCH_RISK_POLICY"
+    },
+    "policy_type": "AUTHORIZED_EXPOSURE_CAP_V1",
+    "basis": "固定独立暴露上限规则，不借收益G3/G4/G7豁免",
+    "scope": {
+      "historical_membership_reconstructed": false,
+      "historical_point_in_time_proven": false,
+      "identity_context": {
+        "SSE:600519": {
+          "board": "MAIN",
+          "exchange": "SSE",
+          "instrument_type": "STOCK"
+        }
+      },
+      "instruments": [
+        "SSE:600519"
+      ],
+      "namespace": "HISTORICAL",
+      "selection": "TODAY_LIST_CONDITIONAL",
+      "source_account_authority": "ENGINEERING_SYNTHETIC; NO_REAL_USER_BASELINE_OR_FUNDING"
+    },
+    "authorization": {
+      "baseline_account_version": 1,
+      "basis": "METHOD已确认原参数；非人类真实资金",
+      "capital_amount": "100000.00",
+      "cash_reserve": "40000.00",
+      "confirmed_at": "2026-10-07T22:07:37.375512+00:00",
+      "effective_at": "2026-09-30T02:00:00+00:00",
+      "enabled": true,
+      "formula_version": "cashflow-adjusted-loss-v1",
+      "loss_origin_at": "2026-09-30T02:00:00+00:00",
+      "loss_status": "PENDING_FACTS",
+      "loss_threshold": "5000.00",
+      "pause": false,
+      "pause_latched": false,
+      "purpose": "隔离METHOD账户",
+      "receipt_id": "e6d2dcc2-1494-4192-a322-45b4baeb8edd",
+      "remaining_loss_allowance": null,
+      "scope_id": "account-1",
+      "scope_kind": "ACCOUNT",
+      "single_exposure": "20000.00",
+      "state": "CONFIRMED",
+      "total_exposure": "60000.00",
+      "version": 1
+    },
+    "evidence_kind": "METHOD_CASE",
+    "identities": {
+      "SSE:600519": {
+        "board": "MAIN",
+        "code": "600519",
+        "confirmed_at": "2026-10-07T22:07:37.388059+00:00",
+        "effective_at": "2026-09-30T09:00:00+08:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "METHOD证券",
+        "revision": 1,
+        "source": {
+          "basis": "明确METHOD身份，不按代码猜板块",
+          "kind": "USER_CONFIRMED",
+          "sha256": "5b280c537500d66a2c690c842ecd4ee1593f41d461dddf40a9e609873ca73a81"
+        }
+      }
+    },
+    "rule_ids": {
+      "SSE:600519": "SSE-MAIN-A-2026-07-06"
+    },
+    "rule_sources": {
+      "SSE:600519": {
+        "rule_id": "SSE-MAIN-A-2026-07-06",
+        "exchange": "SSE",
+        "board": "MAIN",
+        "instrument_type": "STOCK",
+        "implementation_status": "ADAPTED",
+        "effective_from": "2026-07-06",
+        "effective_to": null,
+        "adapted_date_range": [
+          "2026-07-06",
+          "2026-12-31"
+        ],
+        "source": {
+          "id": "sse-rules-text-2026",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "file": "sse-rules-text-2026.docx",
+          "bytes": 65302,
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+        },
+        "provisions": [
+          "3.1.4",
+          "3.3.8",
+          "3.3.9",
+          "3.3.11",
+          "3.3.13"
+        ],
+        "buy_minimum": "100",
+        "buy_increment": "100",
+        "limit_order_maximum": "1000000",
+        "market_order_maximum": "1000000",
+        "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+        "price_tick_yuan": "0.01",
+        "normal_price_limit_percent": "10",
+        "risk_warning_price_limit_percent": "10",
+        "resale": "NEXT_TRADING_DAY",
+        "price_limit_rounding": "ROUND_HALF_UP",
+        "required_status_evidence": [
+          "suspension",
+          "risk_warning",
+          "listing_stage",
+          "ex_rights"
+        ],
+        "unsupported_uses": [
+          "SPECIAL_STOCK_EXECUTION",
+          "AUCTION_DETAIL_REPLAY",
+          "FEE_ESTIMATION"
+        ],
+        "fees": {
+          "state": "UNKNOWN",
+          "reason": "费用须来自实际券商/税费依据，未知不作零费"
+        },
+        "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+      }
+    },
+    "profit_model_dependency": false,
+    "required_gates": [
+      "DATA",
+      "RULE_QUANTITY",
+      "AUTHORIZATION",
+      "STRESS_EXECUTION",
+      "ONLINE_CONSISTENCY"
+    ],
+    "rule": "Current and frozen10 single_exposure/total_exposure minimum caps; known excess minimal100-share sell lots, entire odd remainder permitted, intersect fresh confirmed sellable. Missing portfolio value limits total branch only. No new risk/implicit liquidation.",
+    "freshness": "Same actual Shanghai session complete15:00 RAW close <= observation cutoff and original available_at <= consumer knowledge cutoff; research ACCOUNT_CONDITIONAL not current executable order",
+    "sell_scope": "SSE/SZSE MAIN ordinary A, archived2026rule; no extrapolation to STAR/CHINEXT/BSE or special status",
+    "stable_priority": "ascending explicit instrument identifier; current caps applied per position, final joint order plan not published here",
+    "loss_branch": "Only same-scope09 complete loss facts; unknown does not become zero. Independent cap branch does not require cash/fee facts.",
+    "recovery": "No automatic recovery from price rebound or increased authorization; repeat current scoped facts/rules/authorization and later24/27 controlled qualification checks.",
+    "formal_action": null,
+    "capability": "NOT_GRANTED",
+    "code_fingerprint": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+    "dependency_fingerprints": {
+      "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+      "accounts/valuation.py": "7263f2e456e388079914a67520dfd9c7e9d42d7ef75c7165b256686a790524b0",
+      "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+      "market/rules.py": "5a77ff70c6c3565ae8833d6ec94ff3f3e6340a826838984212b1dc2aa93dbe90"
+    },
+    "gaps": []
+  },
+  "evaluation": {
+    "evaluation_id": "5eabd039-959e-42f5-a307-f5339534af69",
+    "policy_id": "dd1542d8-da19-441b-bbe6-b1eaef3bbf43",
+    "protocol_id": "3e777043-8465-4087-86a8-4c26d679860b",
+    "registered_at": "2026-10-07T22:07:38.397459+00:00",
+    "required_as_of": "2026-09-30T15:05:00+08:00",
+    "consumer_knowledge_cutoff": "2026-10-07T22:07:38.337728+00:00",
+    "basis": "独立口径/数量/授权/压力检查；非正式动作",
+    "attempt_id": "5e95864f-eb81-4050-9926-be3ca181c2fc",
+    "policy_fingerprint": "d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5",
+    "code_fingerprint": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+    "input_archive": {
+      "sha256": "477b35c474722ebf860746c2564feda8cbe0a90aa13dc06f48e53d800dfc2ffc",
+      "path": "raw/477b35c474722ebf860746c2564feda8cbe0a90aa13dc06f48e53d800dfc2ffc.raw",
+      "bytes": 18054,
+      "kind": "RESEARCH_RISK_INPUT"
+    },
+    "authorization": {
+      "baseline_account_version": 1,
+      "basis": "METHOD已确认原参数；非人类真实资金",
+      "capital_amount": "100000.00",
+      "cash_reserve": "40000.00",
+      "confirmed_at": "2026-10-07T22:07:37.375512+00:00",
+      "effective_at": "2026-09-30T02:00:00+00:00",
+      "enabled": true,
+      "formula_version": "cashflow-adjusted-loss-v1",
+      "loss_origin_at": "2026-09-30T02:00:00+00:00",
+      "loss_status": "PENDING_FACTS",
+      "loss_threshold": "5000.00",
+      "pause": false,
+      "pause_latched": false,
+      "purpose": "隔离METHOD账户",
+      "receipt_id": "e6d2dcc2-1494-4192-a322-45b4baeb8edd",
+      "remaining_loss_allowance": null,
+      "scope_id": "account-1",
+      "scope_kind": "ACCOUNT",
+      "single_exposure": "20000.00",
+      "state": "CONFIRMED",
+      "total_exposure": "60000.00",
+      "version": 1
+    },
+    "account_version": 2,
+    "positions": [
+      {
+        "instrument": "SSE:600519",
+        "quantity": "1050",
+        "sellable_quantity": "1050",
+        "in_policy_scope": true,
+        "triggered": true,
+        "executable_quantity": "400",
+        "target_quantity": "650",
+        "exposure_yuan": "31500.00",
+        "authorized_single_exposure_yuan": "20000.00",
+        "reasons": [],
+        "rule": {
+          "rule_id": "SSE-MAIN-A-2026-07-06",
+          "exchange": "SSE",
+          "board": "MAIN",
+          "instrument_type": "STOCK",
+          "implementation_status": "ADAPTED",
+          "effective_from": "2026-07-06",
+          "effective_to": null,
+          "adapted_date_range": [
+            "2026-07-06",
+            "2026-12-31"
+          ],
+          "source": {
+            "id": "sse-rules-text-2026",
+            "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+            "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+            "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+            "file": "sse-rules-text-2026.docx",
+            "bytes": 65302,
+            "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+          },
+          "provisions": [
+            "3.1.4",
+            "3.3.8",
+            "3.3.9",
+            "3.3.11",
+            "3.3.13"
+          ],
+          "buy_minimum": "100",
+          "buy_increment": "100",
+          "limit_order_maximum": "1000000",
+          "market_order_maximum": "1000000",
+          "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+          "price_tick_yuan": "0.01",
+          "normal_price_limit_percent": "10",
+          "risk_warning_price_limit_percent": "10",
+          "resale": "NEXT_TRADING_DAY",
+          "price_limit_rounding": "ROUND_HALF_UP",
+          "required_status_evidence": [
+            "suspension",
+            "risk_warning",
+            "listing_stage",
+            "ex_rights"
+          ],
+          "unsupported_uses": [
+            "SPECIAL_STOCK_EXECUTION",
+            "AUCTION_DETAIL_REPLAY",
+            "FEE_ESTIMATION"
+          ],
+          "fees": {
+            "state": "UNKNOWN",
+            "reason": "费用须来自实际券商/税费依据，未知不作零费"
+          },
+          "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+        },
+        "identity": {
+          "board": "MAIN",
+          "code": "600519",
+          "confirmed_at": "2026-10-07T22:07:37.388059+00:00",
+          "effective_at": "2026-09-30T09:00:00+08:00",
+          "exchange": "SSE",
+          "instrument_type": "STOCK",
+          "name": "METHOD证券",
+          "revision": 1,
+          "source": {
+            "basis": "明确METHOD身份，不按代码猜板块",
+            "kind": "USER_CONFIRMED",
+            "sha256": "5b280c537500d66a2c690c842ecd4ee1593f41d461dddf40a9e609873ca73a81"
+          }
+        },
+        "stress": {
+          "gap_up": {
+            "price_yuan": "33.00",
+            "remaining_exposure_yuan": "21450.00",
+            "within_target": false
+          },
+          "gap_down": {
+            "price_yuan": "27.00",
+            "remaining_exposure_yuan": "17550.00",
+            "within_target": true
+          },
+          "limit_down_no_fill": {
+            "filled_quantity": "0",
+            "remaining_quantity": "1050",
+            "remaining_exposure_yuan": "28350.00",
+            "risk_released": false
+          },
+          "one_more_session_delay": {
+            "filled_quantity": "0",
+            "remaining_quantity": "1050",
+            "future_price": null,
+            "future_exposure": null,
+            "risk_released": false
+          },
+          "partial_50_percent": {
+            "filled_quantity": "200",
+            "risk_released": false
+          },
+          "suspended": {
+            "filled_quantity": "0",
+            "remaining_quantity": "1050",
+            "risk_released": false
+          }
+        },
+        "authorized_total_exposure_yuan": "60000.00",
+        "portfolio_exposure_yuan": "31500.00",
+        "target_exposure_yuan": "20000.00",
+        "trigger_basis": "CONFIRMED_AUTHORIZED_EXPOSURE_EXCESS",
+        "authorization_version": 1,
+        "desired_reduction_quantity": "400",
+        "target_reached_at_reference": true,
+        "price_window": {
+          "reference_yuan": "30",
+          "source": "COMPLETE_REPORTED_RAW_CLOSE",
+          "next_price_not_guaranteed": true
+        }
+      }
+    ],
+    "executable_quantities": {
+      "SSE:600519": "400"
+    },
+    "validation_verdict": "INCONCLUSIVE",
+    "engineering_verdict": "PASS",
+    "reasons": [
+      "METHOD_EVIDENCE_NOT_FORMAL_QUALIFICATION"
+    ],
+    "display_state": "RESEARCH_POLICY_QUANTITIES_ONLY",
+    "formal_action": null,
+    "capability": "NOT_GRANTED",
+    "profit_model_dependency": false,
+    "account_use_check": {
+      "purpose": "REDUCTION",
+      "required_as_of": "2026-09-30T15:05:00+08:00",
+      "account_version": 2,
+      "state": "UPDATE_PENDING",
+      "allowed": true,
+      "fact_scope_state": "CONFIRMED_AS_OF",
+      "required_scope": [
+        "TRADES",
+        "ORDERS",
+        "EQUITY"
+      ],
+      "missing_scope": [],
+      "reasons": [
+        "存在未确认草稿、未补录变化或外部委托待结果，先核对实际事实"
+      ],
+      "next_step": "仅本用途账户事实核对通过；降风险政策资格、授权与实际可行性仍须独立核验，未生成动作",
+      "known_positions": [
+        {
+          "baseline_source": "METHOD合成券商快照，非真实资金授权",
+          "buy_time": null,
+          "historical_fees": null,
+          "instrument": "SSE:600519",
+          "quantity": "1050",
+          "reference_cost": null,
+          "sellable_quantity": "1050"
+        }
+      ],
+      "executable_quantity": null,
+      "independent_market_observation_allowed": true
+    },
+    "loss_result": null,
+    "evidence_kind": "METHOD_CASE",
+    "namespace": "ACCOUNT_CONDITIONAL",
+    "gate_results": {
+      "DATA": "INCONCLUSIVE",
+      "RULE_QUANTITY": "PASS",
+      "AUTHORIZATION": "INCONCLUSIVE",
+      "STRESS_EXECUTION": "PASS",
+      "ONLINE_CONSISTENCY": "PENDING_REPLAY"
+    },
+    "qualification_restriction": "22 research validation only;24/25 require own actual evidence/review/grant/current conditions. Profit model G3/G4/G7 unchanged."
+  },
+  "replay": {
+    "evaluation_id": "5eabd039-959e-42f5-a307-f5339534af69",
+    "input_sha256": "477b35c474722ebf860746c2564feda8cbe0a90aa13dc06f48e53d800dfc2ffc",
+    "matches_original": true,
+    "network_calls": 0,
+    "result": {
+      "positions": [
+        {
+          "instrument": "SSE:600519",
+          "quantity": "1050",
+          "sellable_quantity": "1050",
+          "in_policy_scope": true,
+          "triggered": true,
+          "executable_quantity": "400",
+          "target_quantity": "650",
+          "exposure_yuan": "31500.00",
+          "authorized_single_exposure_yuan": "20000.00",
+          "reasons": [],
+          "rule": {
+            "adapted_date_range": [
+              "2026-07-06",
+              "2026-12-31"
+            ],
+            "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行",
+            "board": "MAIN",
+            "buy_increment": "100",
+            "buy_minimum": "100",
+            "effective_from": "2026-07-06",
+            "effective_to": null,
+            "exchange": "SSE",
+            "fees": {
+              "reason": "费用须来自实际券商/税费依据，未知不作零费",
+              "state": "UNKNOWN"
+            },
+            "implementation_status": "ADAPTED",
+            "instrument_type": "STOCK",
+            "limit_order_maximum": "1000000",
+            "market_order_maximum": "1000000",
+            "normal_price_limit_percent": "10",
+            "price_limit_rounding": "ROUND_HALF_UP",
+            "price_tick_yuan": "0.01",
+            "provisions": [
+              "3.1.4",
+              "3.3.8",
+              "3.3.9",
+              "3.3.11",
+              "3.3.13"
+            ],
+            "required_status_evidence": [
+              "suspension",
+              "risk_warning",
+              "listing_stage",
+              "ex_rights"
+            ],
+            "resale": "NEXT_TRADING_DAY",
+            "risk_warning_price_limit_percent": "10",
+            "rule_id": "SSE-MAIN-A-2026-07-06",
+            "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+            "source": {
+              "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+              "bytes": 65302,
+              "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+              "file": "sse-rules-text-2026.docx",
+              "id": "sse-rules-text-2026",
+              "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+              "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+            },
+            "unsupported_uses": [
+              "SPECIAL_STOCK_EXECUTION",
+              "AUCTION_DETAIL_REPLAY",
+              "FEE_ESTIMATION"
+            ]
+          },
+          "identity": {
+            "board": "MAIN",
+            "code": "600519",
+            "confirmed_at": "2026-10-07T22:07:37.388059+00:00",
+            "effective_at": "2026-09-30T09:00:00+08:00",
+            "exchange": "SSE",
+            "instrument_type": "STOCK",
+            "name": "METHOD证券",
+            "revision": 1,
+            "source": {
+              "basis": "明确METHOD身份，不按代码猜板块",
+              "kind": "USER_CONFIRMED",
+              "sha256": "5b280c537500d66a2c690c842ecd4ee1593f41d461dddf40a9e609873ca73a81"
+            }
+          },
+          "stress": {
+            "gap_up": {
+              "price_yuan": "33.00",
+              "remaining_exposure_yuan": "21450.00",
+              "within_target": false
+            },
+            "gap_down": {
+              "price_yuan": "27.00",
+              "remaining_exposure_yuan": "17550.00",
+              "within_target": true
+            },
+            "limit_down_no_fill": {
+              "filled_quantity": "0",
+              "remaining_quantity": "1050",
+              "remaining_exposure_yuan": "28350.00",
+              "risk_released": false
+            },
+            "one_more_session_delay": {
+              "filled_quantity": "0",
+              "remaining_quantity": "1050",
+              "future_price": null,
+              "future_exposure": null,
+              "risk_released": false
+            },
+            "partial_50_percent": {
+              "filled_quantity": "200",
+              "risk_released": false
+            },
+            "suspended": {
+              "filled_quantity": "0",
+              "remaining_quantity": "1050",
+              "risk_released": false
+            }
+          },
+          "authorized_total_exposure_yuan": "60000.00",
+          "portfolio_exposure_yuan": "31500.00",
+          "target_exposure_yuan": "20000.00",
+          "trigger_basis": "CONFIRMED_AUTHORIZED_EXPOSURE_EXCESS",
+          "authorization_version": 1,
+          "desired_reduction_quantity": "400",
+          "target_reached_at_reference": true,
+          "price_window": {
+            "reference_yuan": "30",
+            "source": "COMPLETE_REPORTED_RAW_CLOSE",
+            "next_price_not_guaranteed": true
+          }
+        }
+      ],
+      "executable_quantities": {
+        "SSE:600519": "400"
+      },
+      "validation_verdict": "INCONCLUSIVE",
+      "engineering_verdict": "PASS",
+      "reasons": [
+        "METHOD_EVIDENCE_NOT_FORMAL_QUALIFICATION"
+      ],
+      "display_state": "RESEARCH_POLICY_QUANTITIES_ONLY",
+      "formal_action": null,
+      "capability": "NOT_GRANTED",
+      "profit_model_dependency": false,
+      "account_use_check": {
+        "account_version": 2,
+        "allowed": true,
+        "executable_quantity": null,
+        "fact_scope_state": "CONFIRMED_AS_OF",
+        "independent_market_observation_allowed": true,
+        "known_positions": [
+          {
+            "baseline_source": "METHOD合成券商快照，非真实资金授权",
+            "buy_time": null,
+            "historical_fees": null,
+            "instrument": "SSE:600519",
+            "quantity": "1050",
+            "reference_cost": null,
+            "sellable_quantity": "1050"
+          }
+        ],
+        "missing_scope": [],
+        "next_step": "仅本用途账户事实核对通过；降风险政策资格、授权与实际可行性仍须独立核验，未生成动作",
+        "purpose": "REDUCTION",
+        "reasons": [
+          "存在未确认草稿、未补录变化或外部委托待结果，先核对实际事实"
+        ],
+        "required_as_of": "2026-09-30T15:05:00+08:00",
+        "required_scope": [
+          "TRADES",
+          "ORDERS",
+          "EQUITY"
+        ],
+        "state": "UPDATE_PENDING"
+      },
+      "loss_result": null,
+      "evidence_kind": "METHOD_CASE",
+      "namespace": "ACCOUNT_CONDITIONAL",
+      "gate_results": {
+        "DATA": "INCONCLUSIVE",
+        "RULE_QUANTITY": "PASS",
+        "AUTHORIZATION": "INCONCLUSIVE",
+        "STRESS_EXECUTION": "PASS",
+        "ONLINE_CONSISTENCY": "PENDING_REPLAY"
+      },
+      "qualification_restriction": "22 research validation only;24/25 require own actual evidence/review/grant/current conditions. Profit model G3/G4/G7 unchanged."
+    },
+    "online_consistency": "PASS"
+  },
+  "validation": {
+    "policy_id": "dd1542d8-da19-441b-bbe6-b1eaef3bbf43",
+    "policy_fingerprint": "d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5",
+    "code_fingerprint": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+    "evaluation_id": "5eabd039-959e-42f5-a307-f5339534af69",
+    "input_sha256": "477b35c474722ebf860746c2564feda8cbe0a90aa13dc06f48e53d800dfc2ffc",
+    "gate_results": {
+      "AUTHORIZATION": "INCONCLUSIVE",
+      "DATA": "INCONCLUSIVE",
+      "ONLINE_CONSISTENCY": "PASS",
+      "RULE_QUANTITY": "PASS",
+      "STRESS_EXECUTION": "PASS"
+    },
+    "validation_verdict": "INCONCLUSIVE",
+    "evidence_kind": "METHOD_CASE",
+    "reasons": [
+      "METHOD_EVIDENCE_NOT_FORMAL_QUALIFICATION"
+    ],
+    "evaluated_scope": [
+      "SSE:600519"
+    ],
+    "capability": "NOT_GRANTED",
+    "formal_action": null,
+    "profit_model_dependency": false,
+    "later_authority": "24 technical review/deterministic grant;25 actual action chain, not this record"
+  },
+  "shrunk": {
+    "evaluation_id": "347de243-0498-456d-967c-7fc8b15b851c",
+    "policy_id": "dd1542d8-da19-441b-bbe6-b1eaef3bbf43",
+    "protocol_id": "3e777043-8465-4087-86a8-4c26d679860b",
+    "registered_at": "2026-10-07T22:07:38.692317+00:00",
+    "required_as_of": "2026-09-30T15:05:00+08:00",
+    "consumer_knowledge_cutoff": "2026-10-07T22:07:38.630105+00:00",
+    "basis": "当前缩小授权交集",
+    "attempt_id": "f52ef6f2-5862-4088-adcd-1247b6a7b8d4",
+    "policy_fingerprint": "d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5",
+    "code_fingerprint": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+    "input_archive": {
+      "sha256": "3e065ece0f02ce9f9a25c97afa4afe0cdc6c53f207b82348ab8a95e64a0e26a4",
+      "path": "raw/3e065ece0f02ce9f9a25c97afa4afe0cdc6c53f207b82348ab8a95e64a0e26a4.raw",
+      "bytes": 18018,
+      "kind": "RESEARCH_RISK_INPUT"
+    },
+    "authorization": {
+      "baseline_account_version": 1,
+      "basis": "本人确认",
+      "capital_amount": "100000.00",
+      "cash_reserve": "40000.00",
+      "confirmed_at": "2026-10-07T22:07:38.537602+00:00",
+      "effective_at": "2026-09-30T02:00:00+00:00",
+      "enabled": true,
+      "formula_version": "cashflow-adjusted-loss-v1",
+      "loss_origin_at": "2026-09-30T02:00:00+00:00",
+      "loss_status": "PENDING_FACTS",
+      "loss_threshold": "5000.00",
+      "pause": false,
+      "pause_latched": false,
+      "purpose": "本人普通账户",
+      "receipt_id": "0f613362-13a0-41fe-8b59-133219ded8b3",
+      "remaining_loss_allowance": null,
+      "scope_id": "account-1",
+      "scope_kind": "ACCOUNT",
+      "single_exposure": "10000.00",
+      "state": "CONFIRMED",
+      "total_exposure": "60000.00",
+      "version": 2
+    },
+    "account_version": 2,
+    "positions": [
+      {
+        "instrument": "SSE:600519",
+        "quantity": "1050",
+        "sellable_quantity": "1050",
+        "in_policy_scope": true,
+        "triggered": true,
+        "executable_quantity": "800",
+        "target_quantity": "250",
+        "exposure_yuan": "31500.00",
+        "authorized_single_exposure_yuan": "10000.00",
+        "reasons": [],
+        "rule": {
+          "rule_id": "SSE-MAIN-A-2026-07-06",
+          "exchange": "SSE",
+          "board": "MAIN",
+          "instrument_type": "STOCK",
+          "implementation_status": "ADAPTED",
+          "effective_from": "2026-07-06",
+          "effective_to": null,
+          "adapted_date_range": [
+            "2026-07-06",
+            "2026-12-31"
+          ],
+          "source": {
+            "id": "sse-rules-text-2026",
+            "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+            "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+            "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+            "file": "sse-rules-text-2026.docx",
+            "bytes": 65302,
+            "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+          },
+          "provisions": [
+            "3.1.4",
+            "3.3.8",
+            "3.3.9",
+            "3.3.11",
+            "3.3.13"
+          ],
+          "buy_minimum": "100",
+          "buy_increment": "100",
+          "limit_order_maximum": "1000000",
+          "market_order_maximum": "1000000",
+          "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+          "price_tick_yuan": "0.01",
+          "normal_price_limit_percent": "10",
+          "risk_warning_price_limit_percent": "10",
+          "resale": "NEXT_TRADING_DAY",
+          "price_limit_rounding": "ROUND_HALF_UP",
+          "required_status_evidence": [
+            "suspension",
+            "risk_warning",
+            "listing_stage",
+            "ex_rights"
+          ],
+          "unsupported_uses": [
+            "SPECIAL_STOCK_EXECUTION",
+            "AUCTION_DETAIL_REPLAY",
+            "FEE_ESTIMATION"
+          ],
+          "fees": {
+            "state": "UNKNOWN",
+            "reason": "费用须来自实际券商/税费依据，未知不作零费"
+          },
+          "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+        },
+        "identity": {
+          "board": "MAIN",
+          "code": "600519",
+          "confirmed_at": "2026-10-07T22:07:37.388059+00:00",
+          "effective_at": "2026-09-30T09:00:00+08:00",
+          "exchange": "SSE",
+          "instrument_type": "STOCK",
+          "name": "METHOD证券",
+          "revision": 1,
+          "source": {
+            "basis": "明确METHOD身份，不按代码猜板块",
+            "kind": "USER_CONFIRMED",
+            "sha256": "5b280c537500d66a2c690c842ecd4ee1593f41d461dddf40a9e609873ca73a81"
+          }
+        },
+        "stress": {
+          "gap_up": {
+            "price_yuan": "33.00",
+            "remaining_exposure_yuan": "8250.00",
+            "within_target": true
+          },
+          "gap_down": {
+            "price_yuan": "27.00",
+            "remaining_exposure_yuan": "6750.00",
+            "within_target": true
+          },
+          "limit_down_no_fill": {
+            "filled_quantity": "0",
+            "remaining_quantity": "1050",
+            "remaining_exposure_yuan": "28350.00",
+            "risk_released": false
+          },
+          "one_more_session_delay": {
+            "filled_quantity": "0",
+            "remaining_quantity": "1050",
+            "future_price": null,
+            "future_exposure": null,
+            "risk_released": false
+          },
+          "partial_50_percent": {
+            "filled_quantity": "400",
+            "risk_released": false
+          },
+          "suspended": {
+            "filled_quantity": "0",
+            "remaining_quantity": "1050",
+            "risk_released": false
+          }
+        },
+        "authorized_total_exposure_yuan": "60000.00",
+        "portfolio_exposure_yuan": "31500.00",
+        "target_exposure_yuan": "10000.00",
+        "trigger_basis": "CONFIRMED_AUTHORIZED_EXPOSURE_EXCESS",
+        "authorization_version": 2,
+        "desired_reduction_quantity": "800",
+        "target_reached_at_reference": true,
+        "price_window": {
+          "reference_yuan": "30",
+          "source": "COMPLETE_REPORTED_RAW_CLOSE",
+          "next_price_not_guaranteed": true
+        }
+      }
+    ],
+    "executable_quantities": {
+      "SSE:600519": "800"
+    },
+    "validation_verdict": "INCONCLUSIVE",
+    "engineering_verdict": "PASS",
+    "reasons": [
+      "METHOD_EVIDENCE_NOT_FORMAL_QUALIFICATION"
+    ],
+    "display_state": "RESEARCH_POLICY_QUANTITIES_ONLY",
+    "formal_action": null,
+    "capability": "NOT_GRANTED",
+    "profit_model_dependency": false,
+    "account_use_check": {
+      "purpose": "REDUCTION",
+      "required_as_of": "2026-09-30T15:05:00+08:00",
+      "account_version": 2,
+      "state": "UPDATE_PENDING",
+      "allowed": true,
+      "fact_scope_state": "CONFIRMED_AS_OF",
+      "required_scope": [
+        "TRADES",
+        "ORDERS",
+        "EQUITY"
+      ],
+      "missing_scope": [],
+      "reasons": [
+        "存在未确认草稿、未补录变化或外部委托待结果，先核对实际事实"
+      ],
+      "next_step": "仅本用途账户事实核对通过；降风险政策资格、授权与实际可行性仍须独立核验，未生成动作",
+      "known_positions": [
+        {
+          "baseline_source": "METHOD合成券商快照，非真实资金授权",
+          "buy_time": null,
+          "historical_fees": null,
+          "instrument": "SSE:600519",
+          "quantity": "1050",
+          "reference_cost": null,
+          "sellable_quantity": "1050"
+        }
+      ],
+      "executable_quantity": null,
+      "independent_market_observation_allowed": true
+    },
+    "loss_result": null,
+    "evidence_kind": "METHOD_CASE",
+    "namespace": "ACCOUNT_CONDITIONAL",
+    "gate_results": {
+      "DATA": "INCONCLUSIVE",
+      "RULE_QUANTITY": "PASS",
+      "AUTHORIZATION": "INCONCLUSIVE",
+      "STRESS_EXECUTION": "PASS",
+      "ONLINE_CONSISTENCY": "PENDING_REPLAY"
+    },
+    "qualification_restriction": "22 research validation only;24/25 require own actual evidence/review/grant/current conditions. Profit model G3/G4/G7 unchanged."
+  },
+  "quantity_blocked": {
+    "evaluation_id": "49884afc-61df-49e3-94f1-045e560675e5",
+    "policy_id": "dd1542d8-da19-441b-bbe6-b1eaef3bbf43",
+    "protocol_id": "3e777043-8465-4087-86a8-4c26d679860b",
+    "registered_at": "2026-10-07T22:07:38.878739+00:00",
+    "required_as_of": "2026-09-30T15:05:00+08:00",
+    "consumer_knowledge_cutoff": "2026-10-07T22:07:38.830440+00:00",
+    "basis": "未决数量禁止合成可卖量",
+    "attempt_id": "23d1902c-0aee-41f9-b840-87d2f86f356b",
+    "policy_fingerprint": "d02b1221667a164afeb7210d60137dbd764adfff930abb391097f614e5ceaca5",
+    "code_fingerprint": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+    "input_archive": {
+      "sha256": "5dfb8c4a61c5db3d0edc656cb8c249e5df05d33ed2905880f94c0093a756487c",
+      "path": "raw/5dfb8c4a61c5db3d0edc656cb8c249e5df05d33ed2905880f94c0093a756487c.raw",
+      "bytes": 21674,
+      "kind": "RESEARCH_RISK_INPUT"
+    },
+    "authorization": {
+      "baseline_account_version": 1,
+      "basis": "本人确认",
+      "capital_amount": "100000.00",
+      "cash_reserve": "40000.00",
+      "confirmed_at": "2026-10-07T22:07:38.537602+00:00",
+      "effective_at": "2026-09-30T02:00:00+00:00",
+      "enabled": true,
+      "formula_version": "cashflow-adjusted-loss-v1",
+      "loss_origin_at": "2026-09-30T02:00:00+00:00",
+      "loss_status": "PENDING_FACTS",
+      "loss_threshold": "5000.00",
+      "pause": false,
+      "pause_latched": false,
+      "purpose": "本人普通账户",
+      "receipt_id": "0f613362-13a0-41fe-8b59-133219ded8b3",
+      "remaining_loss_allowance": null,
+      "scope_id": "account-1",
+      "scope_kind": "ACCOUNT",
+      "single_exposure": "10000.00",
+      "state": "CONFIRMED",
+      "total_exposure": "60000.00",
+      "version": 2
+    },
+    "account_version": 2,
+    "positions": [
+      {
+        "instrument": "SSE:600519",
+        "quantity": "1050",
+        "sellable_quantity": "1050",
+        "in_policy_scope": true,
+        "triggered": null,
+        "executable_quantity": null,
+        "target_quantity": null,
+        "exposure_yuan": null,
+        "authorized_single_exposure_yuan": null,
+        "reasons": [
+          "REDUCTION_FACTS_NOT_FRESH_OR_KNOWN",
+          "存在未确认草稿、未补录变化或外部委托待结果，先核对实际事实",
+          "存在未确认成交、股份或数量相关更正材料"
+        ],
+        "rule": {
+          "rule_id": "SSE-MAIN-A-2026-07-06",
+          "exchange": "SSE",
+          "board": "MAIN",
+          "instrument_type": "STOCK",
+          "implementation_status": "ADAPTED",
+          "effective_from": "2026-07-06",
+          "effective_to": null,
+          "adapted_date_range": [
+            "2026-07-06",
+            "2026-12-31"
+          ],
+          "source": {
+            "id": "sse-rules-text-2026",
+            "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+            "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+            "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+            "file": "sse-rules-text-2026.docx",
+            "bytes": 65302,
+            "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+          },
+          "provisions": [
+            "3.1.4",
+            "3.3.8",
+            "3.3.9",
+            "3.3.11",
+            "3.3.13"
+          ],
+          "buy_minimum": "100",
+          "buy_increment": "100",
+          "limit_order_maximum": "1000000",
+          "market_order_maximum": "1000000",
+          "sell_odd_lot": "ENTIRE_REMAINDER_BELOW_MINIMUM",
+          "price_tick_yuan": "0.01",
+          "normal_price_limit_percent": "10",
+          "risk_warning_price_limit_percent": "10",
+          "resale": "NEXT_TRADING_DAY",
+          "price_limit_rounding": "ROUND_HALF_UP",
+          "required_status_evidence": [
+            "suspension",
+            "risk_warning",
+            "listing_stage",
+            "ex_rights"
+          ],
+          "unsupported_uses": [
+            "SPECIAL_STOCK_EXECUTION",
+            "AUCTION_DETAIL_REPLAY",
+            "FEE_ESTIMATION"
+          ],
+          "fees": {
+            "state": "UNKNOWN",
+            "reason": "费用须来自实际券商/税费依据，未知不作零费"
+          },
+          "applicability": "普通人民币现金账户A股基本规则；状态未知不证明该证券当日可执行"
+        },
+        "identity": {
+          "board": "MAIN",
+          "code": "600519",
+          "confirmed_at": "2026-10-07T22:07:37.388059+00:00",
+          "effective_at": "2026-09-30T09:00:00+08:00",
+          "exchange": "SSE",
+          "instrument_type": "STOCK",
+          "name": "METHOD证券",
+          "revision": 1,
+          "source": {
+            "basis": "明确METHOD身份，不按代码猜板块",
+            "kind": "USER_CONFIRMED",
+            "sha256": "5b280c537500d66a2c690c842ecd4ee1593f41d461dddf40a9e609873ca73a81"
+          }
+        },
+        "stress": null
+      }
+    ],
+    "executable_quantities": null,
+    "validation_verdict": "INCONCLUSIVE",
+    "engineering_verdict": "INCONCLUSIVE",
+    "reasons": [
+      "REDUCTION_FACTS_NOT_FRESH_OR_KNOWN",
+      "存在未确认草稿、未补录变化或外部委托待结果，先核对实际事实",
+      "存在未确认成交、股份或数量相关更正材料",
+      "METHOD_EVIDENCE_NOT_FORMAL_QUALIFICATION"
+    ],
+    "display_state": "FACTS_AND_PENDING_ONLY",
+    "formal_action": null,
+    "capability": "NOT_GRANTED",
+    "profit_model_dependency": false,
+    "account_use_check": {
+      "purpose": "REDUCTION",
+      "required_as_of": "2026-09-30T15:05:00+08:00",
+      "account_version": 2,
+      "state": "UPDATE_PENDING",
+      "allowed": false,
+      "fact_scope_state": "RECONCILE_REQUIRED",
+      "required_scope": [
+        "TRADES",
+        "ORDERS",
+        "EQUITY"
+      ],
+      "missing_scope": [],
+      "reasons": [
+        "存在未确认草稿、未补录变化或外部委托待结果，先核对实际事实",
+        "存在未确认成交、股份或数量相关更正材料"
+      ],
+      "next_step": "先同步事实或核对差异，再对本次所需范围声明",
+      "known_positions": [
+        {
+          "baseline_source": "METHOD合成券商快照，非真实资金授权",
+          "buy_time": null,
+          "historical_fees": null,
+          "instrument": "SSE:600519",
+          "quantity": "1050",
+          "reference_cost": null,
+          "sellable_quantity": "1050"
+        }
+      ],
+      "executable_quantity": null,
+      "independent_market_observation_allowed": true
+    },
+    "loss_result": null,
+    "evidence_kind": "METHOD_CASE",
+    "namespace": "ACCOUNT_CONDITIONAL",
+    "gate_results": {
+      "DATA": "INCONCLUSIVE",
+      "RULE_QUANTITY": "INCONCLUSIVE",
+      "AUTHORIZATION": "INCONCLUSIVE",
+      "STRESS_EXECUTION": "INCONCLUSIVE",
+      "ONLINE_CONSISTENCY": "PENDING_REPLAY"
+    },
+    "qualification_restriction": "22 research validation only;24/25 require own actual evidence/review/grant/current conditions. Profit model G3/G4/G7 unchanged."
+  },
+  "passed": true,
+  "finished_at": "2026-10-07T22:07:41.823413+00:00",
+  "real_user_authorization_created": false
+}
