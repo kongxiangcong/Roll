@@ -27,6 +27,7 @@ from roll.research.datasets import DatasetCommand
 from roll.research.reconstruction import ReconstructionCommand,reconstruct
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
+from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
 from roll.research.synthetic import SyntheticDevelopment
@@ -104,6 +105,40 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     models=TransparentModels(research,executions)
     research.models=models
     app.state.models=models
+    shadow=ShadowLab(research,models)
+    app.state.shadow=shadow
+
+    @app.post('/api/research/protocols/{protocol_id}/complete-freezes',status_code=201)
+    def complete_freeze(protocol_id:str,command:CompleteFreezeCommand):
+        return shadow.freeze(protocol_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/complete-freezes')
+    def complete_freezes(protocol_id:str):
+        return shadow.list(protocol_id)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}')
+    def complete_freeze_get(freeze_id:str):
+        return shadow.get(freeze_id)
+
+    @app.post('/api/research/shadow/{freeze_id}/advance',status_code=201)
+    def shadow_advance(freeze_id:str,command:AdvanceCommand):
+        return shadow.advance(freeze_id,command)
+
+    @app.get('/api/research/shadow/{freeze_id}')
+    def shadow_get(freeze_id:str):
+        return shadow.current(freeze_id)
+
+    @app.post('/api/research/shadow/{freeze_id}/replay')
+    def shadow_replay(freeze_id:str):
+        return shadow.replay(freeze_id)
+
+    @app.post('/api/research/shadow/{freeze_id}/account-conditional',status_code=201)
+    def shadow_conditional(freeze_id:str,command:ConditionalCommand):
+        return shadow.conditional(freeze_id,command)
+
+    @app.get('/api/research/results')
+    def shadow_results(freeze_id:str):
+        return shadow.results(freeze_id)
     prospective=ProspectiveEvidence(evidence)
     app.state.prospective=prospective
     app.state.collection_sources=prospective.sources
@@ -165,6 +200,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/protocols/{protocol_id}/models',status_code=201)
     def research_model_create(protocol_id:str,command:ModelCommand):
+        if shadow.list(protocol_id):raise HTTPException(409,'完整实验已冻结；新模型须登记关联后继实验')
         admit_model_training(research,protocol_id,command.purpose)
         return models.create(protocol_id,command)
 
@@ -251,6 +287,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/protocols/{protocol_id}/attempts',status_code=201)
     def research_attempt(protocol_id:str,command:AttemptCommand):
+        if shadow.list(protocol_id):raise HTTPException(409,'完整实验已冻结；修改政策/方法须登记关联后继实验')
         return research.start_attempt(protocol_id,command)
 
     @app.get('/api/research/protocols/{protocol_id}/attempts')
