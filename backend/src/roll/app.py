@@ -29,6 +29,7 @@ from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentC
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
 from roll.research.validation import AutomaticValidation,ValidationCommand
+from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
@@ -41,7 +42,7 @@ from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,Verifi
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None):
     @asynccontextmanager
     async def lifespan(application):
         application.state.reviews.start()
@@ -51,6 +52,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         await asyncio.to_thread(application.state.reviews.close)
         await asyncio.to_thread(application.state.codex.close)
         await asyncio.to_thread(application.state.deepseek.close)
+        await asyncio.to_thread(application.state.technical_reviews.close)
         await asyncio.to_thread(application.state.backups.close)
         if not (application.state.reviews.thread and application.state.reviews.thread.is_alive()):
             application.state.host_marker.unlink(missing_ok=True)
@@ -508,6 +510,56 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.deepseek=deepseek
     agent_settings=AgentSettings(ledger)
     app.state.agent_settings=agent_settings
+    technical_reviews=TechnicalReviews(validation,agent_settings,worker=codex_worker,endpoint=deepseek_endpoint,risk_policies=risk_policies,method_file=technical_review_method_file)
+    app.state.technical_reviews=technical_reviews
+
+    @app.get('/api/research/method-review-materials')
+    def technical_method_materials():
+        return technical_reviews.method_materials()
+
+    @app.post('/api/research/validations/{validation_id}/review-materials',status_code=201)
+    def technical_review_materials(validation_id:str):
+        return technical_reviews.material(validation_id)
+
+    @app.get('/api/research/validations/{validation_id}/review-materials')
+    def validation_review_material_list(validation_id:str):
+        return technical_reviews.basis_materials(validation_id)
+
+    @app.post('/api/research/risk-evaluations/{evaluation_id}/review-materials',status_code=201)
+    def risk_technical_review_materials(evaluation_id:str):
+        return technical_reviews.risk_material(evaluation_id)
+
+    @app.get('/api/research/risk-evaluations/{evaluation_id}/review-materials')
+    def risk_review_material_list(evaluation_id:str):
+        return technical_reviews.basis_materials(evaluation_id)
+
+    @app.get('/api/research/review-materials/{material_id}')
+    def technical_review_material(material_id:str):
+        return technical_reviews.get_material(material_id)
+
+    @app.post('/api/research/review-materials/{material_id}/reviews',status_code=202)
+    def technical_review_start(material_id:str,command:TechnicalReviewCommand):
+        return technical_reviews.start(material_id,command)
+
+    @app.get('/api/research/review-materials/{material_id}/reviews')
+    def technical_review_runs(material_id:str):
+        return technical_reviews.runs(material_id)
+
+    @app.get('/api/research/technical-reviews/{run_id}')
+    def technical_review_get(run_id:str):
+        return technical_reviews.get(run_id)
+
+    @app.post('/api/research/technical-reviews/{run_id}/cancel')
+    def technical_review_cancel(run_id:str):
+        return technical_reviews.cancel(run_id)
+
+    @app.get('/api/research/review-materials/{material_id}/delivery')
+    def validation_delivery(material_id:str):
+        return technical_reviews.delivery(material_id)
+
+    @app.post('/api/research/review-materials/{material_id}/export',status_code=201)
+    def validation_delivery_export(material_id:str):
+        return technical_reviews.export(material_id)
 
     @app.get('/api/agents/settings')
     def backend_settings():
@@ -853,7 +905,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None):
     if directory is None:
         load_runtime_environment()
     directory=directory or data_directory()
@@ -861,7 +913,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     if backup_clock:backups.clock=backup_clock
     try:
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
-        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker

@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_frozen_review_is_checked_persistent_and_does_not_complete_an_unfinished_experiment _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket23/.scratch/t23-red-temp/test_frozen_review_is_checked_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002197BB80B00>
+
+    def test_frozen_review_is_checked_persistent_and_does_not_complete_an_unfinished_experiment(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        credential=tmp_path/'auth.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+        worker=tmp_path/'review_worker.py';worker.write_text(WORKER)
+        directory=tmp_path/'runtime'
+        with TestClient(create_app(directory,codex_worker=worker)) as client:
+            validation=validated(client,directory)
+            response=client.post('/api/research/validations/'+validation['validation_id']+'/review-materials',json={})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_technical_review.py:55: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_technical_review.py::test_frozen_review_is_checked_persistent_and_does_not_complete_an_unfinished_experiment
+1 failed in 27.25s

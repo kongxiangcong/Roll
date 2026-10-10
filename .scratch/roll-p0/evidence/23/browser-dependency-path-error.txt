@@ -1,0 +1,37 @@
+npm warn exec The following package was not found and will be installed: playwright@1.64.0
+Error: Cannot find package '@playwright/test' imported from D:\dsh-proj\Roll\.scratch\worktrees\ticket23\frontend\playwright.config.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:764:81)
+    at moduleResolve (node:internal/modules/esm/resolve:855:18)
+    at defaultResolve (node:internal/modules/esm/resolve:988:11)
+    at ModuleLoader.#cachedDefaultResolve (node:internal/modules/esm/loader:697:20)
+    at ModuleLoader.#resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolve (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\common\index.js:829:19)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolveWithHooks (node:internal/modules/customization_hooks:417:10)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:736:14)
+    at ModuleLoader.#resolve (node:internal/modules/esm/loader:679:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:599:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:160:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:245:17)
+    at new ModuleJob (node:internal/modules/esm/module_job:224:26)
+    at ModuleLoader.#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:568:11)
+    at afterResolve (node:internal/modules/esm/loader:603:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:609:12)
+    at node:internal/modules/esm/loader:628:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:362:14)
+    at ModuleLoader.import (node:internal/modules/esm/loader:624:21)
+    at defaultImportModuleDynamicallyForScript (node:internal/modules/esm/utils:228:31)
+    at importModuleDynamicallyCallback (node:internal/modules/esm/utils:274:12)
+    at eval (eval at esmImport (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\common\index.js:1092:29), <anonymous>:1:1)
+    at esmImport (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\common\index.js:1092:29)
+    at requireOrImport (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\common\index.js:1096:18)
+    at loadUserConfig (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\common\index.js:1283:52)
+    at loadConfig (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\common\index.js:1290:28)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.loadConfigFromFile (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\common\index.js:1508:10)
+    at runTests (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\cli\testActions.js:44:18)
+    at _Command.<anonymous> (C:\Users\72449\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright\lib\program.js:55:7) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}

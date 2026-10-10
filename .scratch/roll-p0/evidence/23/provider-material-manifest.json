@@ -1,0 +1,117 @@
+{
+  "material_id": "c3704f59-213b-4736-b0d6-7c2d9e3eb050",
+  "material_fingerprint": "35e42b0da239e415e2b7e3f3f0c9243d4e32a3e3bc02ceac92a92b17559ac9da",
+  "validation_id": "baf981b6-b2bf-4f6f-b46f-1726f261de8e",
+  "inventory_content_bytes": 181647,
+  "maximum_tool_payload_bytes": 186512,
+  "files": [
+    {
+      "material_id": "protocol-and-attempts",
+      "material_sha256": "1c66f1182f5cb75a7247c570cd4593ba10026df2aeb645d68f898afbac89ef4a",
+      "content_bytes": 20284,
+      "tool_response_bytes": 21728,
+      "tool_response_sha256": "f01abfef86e87dfa42231eb188be0667fb2f01fa1eba708fb2bfca23f6137bd1",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\protocol-and-attempts.json"
+    },
+    {
+      "material_id": "results-and-limitations",
+      "material_sha256": "c085dbe3c4149a542fba5d92e55b7a76c03b887173031badfa023c04636cf73a",
+      "content_bytes": 7745,
+      "tool_response_bytes": 8423,
+      "tool_response_sha256": "473e0157dd1362f9368edc3d1bf4125c7b0a9ae51f2a9e426520d8724f6bb1c4",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\results-and-limitations.json"
+    },
+    {
+      "material_id": "code-models",
+      "material_sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "content_bytes": 32371,
+      "tool_response_bytes": 32852,
+      "tool_response_sha256": "6c3dbb9970b744da44ccca43a8557b5fad2986f533b2b0d0c4010e13c2f0b5d0",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\code-models.json"
+    },
+    {
+      "material_id": "code-execution",
+      "material_sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "content_bytes": 37186,
+      "tool_response_bytes": 37733,
+      "tool_response_sha256": "36298a2d37dfc554f5c26ade04f9fe69f2df67feeef27f332e4478adb6e162ef",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\code-execution.json"
+    },
+    {
+      "material_id": "code-shadow",
+      "material_sha256": "dbccc1d17b5b5d744ed24f36a4ba61efc5b9e56fe664ae5ecb43062de019afba",
+      "content_bytes": 38253,
+      "tool_response_bytes": 38888,
+      "tool_response_sha256": "aafa41eab99394633098f82e1337e664da7f20916795c30afd3aa39860b35a95",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\code-shadow.json"
+    },
+    {
+      "material_id": "code-statistics",
+      "material_sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c",
+      "content_bytes": 10010,
+      "tool_response_bytes": 10335,
+      "tool_response_sha256": "1e4c08fa67444b1b3823640ecc96c6a1486e7979549954bbb7ae197d3f0ce7a7",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\code-statistics.json"
+    },
+    {
+      "material_id": "code-validation",
+      "material_sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79",
+      "content_bytes": 35798,
+      "tool_response_bytes": 36390,
+      "tool_response_sha256": "5b35913fc4784b6e561489071026ab6b0c49f48fb10d1bc3bd90a5b4da474de7",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\code-validation.json"
+    },
+    {
+      "backend": "CODEX",
+      "kind": "INITIAL_COMMAND_WITH_PROMPT_AND_TOOL_SCHEMAS",
+      "bytes": 4824,
+      "sha256": "485415cc236f7a6cde7af825319b8a16ade7892cad2aaf0f8534b65f36a22758",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\codex-command.json"
+    },
+    {
+      "backend": "DEEPSEEK",
+      "kind": "INITIAL_COMMAND_WITH_PROMPT_AND_TOOL_SCHEMAS",
+      "bytes": 4827,
+      "sha256": "7e520db10a0dcfae04ab1063838292cb9b19bdeadaa4d41e9fc18bc5749cd123",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23\\.scratch\\roll-p0\\evidence\\23\\provider-materials\\deepseek-command.json"
+    }
+  ],
+  "source_files": [
+    "backend/src/roll/research/models.py",
+    "backend/src/roll/research/execution.py",
+    "backend/src/roll/research/shadow.py",
+    "backend/src/roll/research/statistics.py",
+    "backend/src/roll/research/validation.py"
+  ],
+  "destinations": [
+    {
+      "backend": "CODEX",
+      "model": "gpt-6.1-sol",
+      "service": "OpenAI Codex runtime using already configured ChatGPT auth; runtime selects OpenAI endpoint, not a custom host URL"
+    },
+    {
+      "backend": "DEEPSEEK",
+      "model": "deepseek-flash",
+      "endpoint": "https://api.deepseek.com/responses"
+    }
+  ],
+  "external_transmissions": 0,
+  "credential_values_in_packet": false,
+  "personal_account_in_packet": false,
+  "sealed_content_in_packet": false,
+  "scope": [
+    "Frozen experiment protocol/objectives/scope/costs/windows/method/stopping/fingerprints",
+    "Complete research and validation attempt metadata",
+    "Gate statuses, reasons, G5 component summaries, incompleteness and limitations",
+    "Five current frozen relevant Python source files",
+    "Host deterministic reproduction ID/result SHA/match and zero network count"
+  ],
+  "excluded": [
+    "Actual account baseline amounts and holdings",
+    "Funding authorization and account identity",
+    "Full model input/raw archives",
+    "Protected SEALED content",
+    "Credentials or personal config",
+    "Whole database or unrelated registered evidence"
+  ]
+}

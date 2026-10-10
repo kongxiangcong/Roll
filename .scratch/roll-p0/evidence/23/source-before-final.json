@@ -1,0 +1,110 @@
+{
+  "sources": {
+    "backend/src/roll/app.py": {
+      "sha256": "803d2da2bf52d2063df3771b6456cea440adbfcc214e0675d7cb5090ae897749",
+      "normalized_sha256": "803d2da2bf52d2063df3771b6456cea440adbfcc214e0675d7cb5090ae897749"
+    },
+    "backend/src/roll/agents/settings.py": {
+      "sha256": "9995209985d68100844a1dc49fce0c7d700613c6508e8c5f5529751cbb1f07d9",
+      "normalized_sha256": "9995209985d68100844a1dc49fce0c7d700613c6508e8c5f5529751cbb1f07d9"
+    },
+    "backend/src/roll/agents/codex_process.py": {
+      "sha256": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+      "normalized_sha256": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f"
+    },
+    "backend/src/roll/agents/deepseek_process.py": {
+      "sha256": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+      "normalized_sha256": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1"
+    },
+    "backend/src/roll/agents/review_runtime.py": {
+      "sha256": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+      "normalized_sha256": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b"
+    },
+    "backend/src/roll/research/technical_review.py": {
+      "sha256": "ed3e77d68b8ae2e5a171f7cff1de856e36373702b48269a7457ecfebdbc7d99d",
+      "normalized_sha256": "ed3e77d68b8ae2e5a171f7cff1de856e36373702b48269a7457ecfebdbc7d99d"
+    },
+    "frontend/src/pages/technical-review.tsx": {
+      "sha256": "db749d79e59c390831c1919dca9af69adda4138c065f384952d3f15dcb49609b",
+      "normalized_sha256": "db749d79e59c390831c1919dca9af69adda4138c065f384952d3f15dcb49609b"
+    },
+    "frontend/src/pages/validation.tsx": {
+      "sha256": "fc10de09851c9e998c0c2a08884b111d297ad8a4df6c724b2899e726d7fe7a67",
+      "normalized_sha256": "7782c28c469fb37945bb6fd0eebdf4d005e671a1b81b0518f5acce8b4a9ad4ea"
+    },
+    "frontend/src/pages/risk-policies.tsx": {
+      "sha256": "7c76b05f293799d1605d20904f82bba1f79d2b27798e99ccab98e95b823826e3",
+      "normalized_sha256": "7c76b05f293799d1605d20904f82bba1f79d2b27798e99ccab98e95b823826e3"
+    },
+    "backend/tests/application/test_technical_review.py": {
+      "sha256": "06ddf717542ec529204b814e8579cbab33033dde7c065c53743abf4166aeb224",
+      "normalized_sha256": "06ddf717542ec529204b814e8579cbab33033dde7c065c53743abf4166aeb224"
+    },
+    "frontend/tests/e2e/technical-review.spec.ts": {
+      "sha256": "694c6c156416eed09168e887e0e1e456fd02260cdf027235cb779979eb88b340",
+      "normalized_sha256": "694c6c156416eed09168e887e0e1e456fd02260cdf027235cb779979eb88b340"
+    }
+  },
+  "protected_original_model_dependencies": {
+    "backend/src/roll/research/models.py": {
+      "original_normalized_sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "current_normalized_sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "unchanged": true
+    },
+    "backend/src/roll/research/execution.py": {
+      "original_normalized_sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "current_normalized_sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "unchanged": true
+    },
+    "backend/src/roll/research/reconstruction.py": {
+      "original_normalized_sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "current_normalized_sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "unchanged": true
+    },
+    "backend/src/roll/research/datasets.py": {
+      "original_normalized_sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "current_normalized_sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "unchanged": true
+    },
+    "backend/src/roll/research/design.py": {
+      "original_normalized_sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "current_normalized_sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "unchanged": true
+    },
+    "backend/src/roll/research/historical_costs.py": {
+      "original_normalized_sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "current_normalized_sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "unchanged": true
+    },
+    "backend/src/roll/research/corporate_actions.py": {
+      "original_normalized_sha256": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+      "current_normalized_sha256": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+      "unchanged": true
+    },
+    "backend/src/roll/research/registry.py": {
+      "original_normalized_sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "current_normalized_sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "unchanged": true
+    },
+    "backend/src/roll/research/training_preflight.py": {
+      "original_normalized_sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "current_normalized_sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "unchanged": true
+    },
+    "backend/src/roll/market/rules.py": {
+      "original_normalized_sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "current_normalized_sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "unchanged": true
+    },
+    "backend/src/roll/research/reference/reconstruction/sources.json": {
+      "original_normalized_sha256": "1226a4b3f21bb671e23a1bffab584e3c1a81d25af7037bfc58d765427b34a6c1",
+      "current_normalized_sha256": "1226a4b3f21bb671e23a1bffab584e3c1a81d25af7037bfc58d765427b34a6c1",
+      "unchanged": true
+    },
+    "backend/src/roll/research/reference/cash-rights/sources.json": {
+      "original_normalized_sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "current_normalized_sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "unchanged": true
+    }
+  }
+}
