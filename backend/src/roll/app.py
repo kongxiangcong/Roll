@@ -28,6 +28,7 @@ from roll.research.reconstruction import ReconstructionCommand,reconstruct
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
+from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
 from roll.research.synthetic import SyntheticDevelopment
@@ -107,6 +108,28 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.models=models
     shadow=ShadowLab(research,models)
     app.state.shadow=shadow
+    validation=AutomaticValidation(shadow)
+    app.state.validation=validation
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/validations',status_code=201)
+    def validation_create(freeze_id:str,command:ValidationCommand):
+        return validation.create(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/validations')
+    def validation_list(freeze_id:str):
+        return validation.list(freeze_id)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/validation-attempts')
+    def validation_attempts(freeze_id:str):
+        return validation.attempts(freeze_id)
+
+    @app.get('/api/research/validations/{validation_id}')
+    def validation_get(validation_id:str):
+        return validation.get(validation_id)
+
+    @app.post('/api/research/validations/{validation_id}/replay')
+    def validation_replay(validation_id:str):
+        return validation.replay(validation_id)
 
     @app.post('/api/research/protocols/{protocol_id}/complete-freezes',status_code=201)
     def complete_freeze(protocol_id:str,command:CompleteFreezeCommand):
