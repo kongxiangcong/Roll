@@ -45,6 +45,7 @@ class Reviews:
     def __init__(self,ledger,market,evidence,clock=None):
         self.ledger,self.market,self.evidence=ledger,market,evidence
         self.resolutions=None
+        self.forward=None
         self.clock=clock or (lambda:datetime.now(timezone.utc))
         self.owner={'pid':os.getpid(),'creation_ticks':process_creation(os.getpid()),'nonce':str(uuid4())}
         self.stop=threading.Event()
@@ -165,6 +166,7 @@ class Reviews:
                 except Exception as error:self.finish_error(identifier,error)
             self.check_maintenance()
             self.check_running_day()
+            if self.forward:self.forward.work()
             self.stop.wait(.05)
 
     def check_running_day(self):
