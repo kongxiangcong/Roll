@@ -1,0 +1,17 @@
+
+> roll-frontend@0.1.0 build
+> tsc --noEmit && vite build
+
+failed to load config from D:\dsh-proj\Roll\frontend\vite.config.ts
+error during build:
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:440:11)
+    at Object.spawn (node:child_process:796:9)
+    at ensureServiceIsRunning (D:\dsh-proj\Roll\frontend\node_modules\esbuild\lib\main.js:2268:29)
+    at build (D:\dsh-proj\Roll\frontend\node_modules\esbuild\lib\main.js:2166:26)
+    at bundleConfigFile (file:///D:/dsh-proj/Roll/frontend/node_modules/vite/dist/node/chunks/config.js:35808:23)
+    at bundleAndLoadConfigFile (file:///D:/dsh-proj/Roll/frontend/node_modules/vite/dist/node/chunks/config.js:35795:24)
+    at loadConfigFromFile (file:///D:/dsh-proj/Roll/frontend/node_modules/vite/dist/node/chunks/config.js:35764:179)
+    at resolveConfig (file:///D:/dsh-proj/Roll/frontend/node_modules/vite/dist/node/chunks/config.js:35413:28)
+    at resolveConfigToBuild (file:///D:/dsh-proj/Roll/frontend/node_modules/vite/dist/node/chunks/config.js:33443:9)
+    at createBuilder (file:///D:/dsh-proj/Roll/frontend/node_modules/vite/dist/node/chunks/config.js:33875:25)

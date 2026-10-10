@@ -1,0 +1,14 @@
+{
+  "selection_head": "eabc7a3ae3462821bedc80c2d6c8b2a88d04b19c",
+  "backend_test_selection": "460 existing tests collected before ticket20 integration",
+  "command": "python -B -X utf8 -m pytest tests -q --basetemp=<this evidence directory>/baseline-elevated",
+  "working_directory": "D:/dsh-proj/Roll/backend",
+  "passed": 460,
+  "failed": 0,
+  "duration_seconds": 3118.15,
+  "exit_code": 0,
+  "output": "baseline-elevated.txt",
+  "environment_retries": ["baseline-backend.txt: sandbox private pytest directory errors", "baseline-frontend.txt: sandbox esbuild spawn EPERM"],
+  "frontend_build": "PASS; baseline-frontend-elevated.txt",
+  "limits": "Initial regression selection only; later tickets have separate focused acceptance and integration checks. Integration source edits occurred while this existing selection ran, so this is not a frozen final delivery suite."
+}
