@@ -33,6 +33,6 @@
 
 [完整实际结果](actual-current-results.json)与[清洁退出日志](actual-current-tests.txt)：重放一致、联网0；账户与原家族拟合尝试一致、无新拟合、无SEALED消费、无前向起点。前版验证 `1e18df81…` 重放409 `VALIDATION_CODE_CHANGED_SUCCESSOR_REQUIRED`，历史结果分别保存在before-coverage-fix/before-segment-fix文件。脚本复跑复用同一不可变冻结/影子，不重复推进或增加实际机会。
 
-当前缺口明确保留：严格历史PIT与独立封存、独立概率有效性、冻结模型参数邻域工件、依赖统计假设、真实G6/G7、人工技术审阅。确认性当前准入拒绝是本票交付行为；真实统计及生产资格仍按33/34责任推进。本票完成不表示这些缺口消失。
+当前缺口明确保留：严格历史PIT与独立封存、独立概率有效性、冻结模型参数邻域工件、依赖统计假设、真实G6/G7、模型技术审阅。确认性当前准入拒绝是本票交付行为；真实统计及生产资格仍按33/34责任推进。本票完成不表示这些缺口消失。
 
 最终METHOD浏览器运行件315文件/17,887,006字节保存到根`.roll-data/implementation-evidence/21/browser-final-method`，源/目标逐件SHA与长度零差异，见[保全清单](browser-runtime-preservation.json)。实际副本保留在同级`actual-current-copy`；旧METHOD测试目录不是最新源码复验凭据。
