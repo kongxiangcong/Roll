@@ -41,3 +41,9 @@ METHOD 与真实前向使用同一存储、身份、截止和结算算法，METH
 ## 保全
 
 [runtime-preservation-manifest.json](runtime-preservation-manifest.json) 保存已停止的核心版与最终offset修正版METHOD浏览器、五真实进程场景、恢复锁、两版账户快照及最终等价时区成熟场景，共11目录到根 `.roll-data/implementation-evidence/30/`；逐文件SHA256/长度相同、mismatches0。[核心8目录清单](runtime-preservation-core-manifest.json)保留原时点。运行DB/raw不入Git，必要资料在清理工作树前已保全。未删除任意根初始未跟踪资料、未reset/stash/clean，未推送。
+
+## 后续三项P2修正关联（2026-10-11）
+
+修正源码 `581aa21ff3f78e36d8912a89c72714225ea7af4a` 以 `25d9b9a` 合入：登记日分红权益取同日实际成交后持仓；成熟评估离线重放使用归档的精确sample_ids；停止/已关闭/到期结算始终保留原closing cutoff或期限，不用后续时间把原未成熟样本计为成熟。单轮联合回归 **44 passed /458.10s /exit0** 见[修复收据](../continuation-2026-10-11/review-fixes/acceptance.md)。独立三个公开API场景和四个DIV数学边界另列，见[独立验收](../continuation-2026-10-11/review-fixes/independent-acceptance.md)，不与旧测试跨运行相加。
+
+12个模型依赖源码指纹未改，旧freeze/forward方法版本拒绝沿用，不改旧档冒充新算法。新的实际历史CAL本地successor诊断保持FAIL/G7 INCONCLUSIVE/NOT_GRANTED，0新拟合/SEALED/真实forward/provider。该修复只关闭代码缺陷；本票完整真实execution_evidence producer、实际STATUS/rights/currentbar等欠项仍未闭合，Completion继续partial，32仍pending。

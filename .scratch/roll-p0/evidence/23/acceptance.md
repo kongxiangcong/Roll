@@ -27,14 +27,24 @@ ReviewRecord 绑定材料指纹、后端/模型/配置/SDK/宿主源码版本、
 
 自动审批审查拒绝了 `actual-review.py` 实际外发，原因是“用户仅授权继续实现 tickets，未明确授权这批敏感材料分别发送到这些具体目的地”。拒绝发生在启动前；**0 actual review runs，0 external transmissions**。根代理已向用户展示这批可审查材料及目的地并请求明确外发授权，当前未收到批准；没有重试，也没有换合成外发绕过。
 
-纯本地材料预览 [provider-material-manifest.json](provider-material-manifest.json) 指纹 `35e42b0da239e415e2b7e3f3f0c9243d4e32a3e3bc02ceac92a92b17559ac9da`，7份内容181647 bytes，8次工具结果最大186512 bytes，初始 CODEX/DeepSeek command 4824/4827 bytes。正文包含冻结协议/全部尝试元数据、验证门槛及局限、models/execution/shadow/statistics/validation五份相关源码、宿主复现结果；排除账户金额/持仓/身份、完整原始输入、SEALED、凭据、整库和无关原件。目的地为 OpenAI Codex ChatGPT-auth runtime（gpt-6.1-sol，endpoint由现有SDK选择）和 `https://api.deepseek.com/responses`（deepseek-flash）。历史上下文重复与模型输出不能被上述正文数字误称为真实最终联网字节；实际外发尚未执行。
+历史纯本地材料预览 [provider-material-manifest.json](provider-material-manifest.json) 指纹 `35e42b0da239e415e2b7e3f3f0c9243d4e32a3e3bc02ceac92a92b17559ac9da`，7份内容181647 bytes，8次工具结果最大186512 bytes，初始 CODEX/DeepSeek command 4824/4827 bytes。正文包含冻结协议/全部尝试元数据、验证门槛及局限、models/execution/shadow/statistics/validation五份相关源码、宿主复现结果；排除账户金额/持仓/身份、完整原始输入、SEALED、凭据、整库和无关原件。目的地为 OpenAI Codex ChatGPT-auth runtime（gpt-6.1-sol，endpoint由现有SDK选择）和 `https://api.deepseek.com/responses`（deepseek-flash）。历史上下文重复与模型输出不能被上述正文数字误称为真实最终联网字节；实际外发尚未执行。该包在后续影子算法修正后已失效，仅保留历史，不得批准执行旧包或旧脚本。
 
-浏览器停止后640文件保全到根 `.roll-data/implementation-evidence/23/browser-method-final`，全部 SHA/长度差异0，明确排除 METHOD synthetic auth.json。审批packet和仅本地完整材料/actual-copy清单13文件保全到同级 `provider-approval`，原预览路径继续保留供待决审批。可长期点击的[根审批清单](D:/dsh-proj/Roll/.roll-data/implementation-evidence/23/provider-approval/provider-material-manifest.json)与当前待审清单字节/SHA一致；packet各文件逐件同SHA。逐件见 [preservation-manifest.json](preservation-manifest.json)。完整实际输入及packet仅保存在运行证据目录，不提交源码仓库；manifest中的路径仍指向原待审预览，根保全副本按文件名在 `provider-approval/provider-materials` 可定位。不得将本地完整 input/export 外发。
+浏览器停止后640文件保全到根 `.roll-data/implementation-evidence/23/browser-method-final`，全部 SHA/长度差异0，明确排除 METHOD synthetic auth.json。审批packet和仅本地完整材料/actual-copy清单13文件保全到同级 `provider-approval`，历史根副本继续保留，原待决审批已失效。可长期点击的[根审批清单](D:/dsh-proj/Roll/.roll-data/implementation-evidence/23/provider-approval/provider-material-manifest.json)与原待审清单字节/SHA一致；packet各文件逐件同SHA。逐件见 [preservation-manifest.json](preservation-manifest.json)。完整实际输入及packet仅保存在运行证据目录，不提交源码仓库；manifest中的路径仍指向原待审预览，根保全副本按文件名在 `provider-approval/provider-materials` 可定位。不得将本地完整 input/export 外发。
 
 [source-before-final.json](source-before-final.json) 与 [source-after-final.json](source-after-final.json) 记录最后校验阶段源码稳定性：除 validation.tsx 外所有列明源码 normalized SHA 相同；validation.tsx 做 CRLF→LF 并删一个末尾空行，向后快照内容加一个换行即精确匹配前快照 normalized SHA，语义未改。12个19 model-code依赖相对19基线内容均不变。源码快照在最后校验阶段采集，不声称之前每项红/绿版本均有完整源码快照。
 
 ## 未完成条件
 
-待用户明确批准此批材料向上述两个目的地发送后，核 packet SHA 不变，在最终代码版本分别执行一次真实 CODEX 和 DeepSeek 审阅并保留结果；不要求二者赞同或把重复调用变成获取期望结论。两后端真实证据不足使 AT-51 与 ticket23 保持 partial。实际终点/必需检查/G1—G7 及正式能力按各后续票承担，当前工程 METHOD 和审阅成功不能解除。
+旧 material `c3704f59-213b-4736-b0d6-7c2d9e3eb050`、指纹 `35e42b0d…59ac9da`、原包和 `actual-review.py` 仅为历史；原外发问题已失效，旧脚本不得执行。真实 CODEX/DeepSeek 接入仍未完成，AT-51 与 ticket23 保持 partial，24继续阻塞。
 
-`actual-review.py` 已改为相对当前 checkout 定位 root `.env`/根23副本/根审批packet，不依赖将被归档的 ticket23 工作树。获批之后从集成根设置 `ROLL_ENV=test`、`PYTHONPATH=D:\dsh-proj\Roll\backend\src`，用根venv执行 `.scratch/roll-p0/evidence/23/actual-review.py`；脚本首先核验上述固定指纹与每个packet SHA/长度，读取已批准material，不再创建不同材料，并拒绝已有review attempts时自动重复。记录写根 `.roll-data/implementation-evidence/23/actual-provider-results`。**本次只编辑及静态编译此接续脚本，没有执行它。**
+## 修正后当前本地 successor（2026-10-11）
+
+三项P2修正源码 `581aa21` 已以 `25d9b9a` 本地合入；44项联合回归和独立三个公共API边界/四个DIV数学边界通过，见 [独立验收](../continuation-2026-10-11/review-fixes/independent-acceptance.md)。原23停止副本只读备份到根 `continuation-review-fixes/actual-corrected-copy`；3841份原归档和旧记录保留，原19/21/23源DB SHA不变。
+
+新增 linked successor `bdc77bbb-c156-4ae3-ab6e-65ff9b4df09c`，完整冻结 `647b6164-e716-42ff-bbd6-177e60ec5759` / `aad0ece6083134c7dd61c30a876c7adbb7f0da32c8bb7da29fea43837ca2fa34`，绑定当前修正影子代码。父协议 `f977645b-200a-4c39-a6de-5e122f4e5101`、旧freeze `42ccd899-ef10-4706-842d-ce71ce62e6d9` 及旧指纹明确写入哈希冻结basis；没有原生 predecessor-freeze 字段。复用原模型和三个既有历史CAL forecast，全部四次拟合/校准尝试继承：fit 3/5、CAL 1/1、CONFIRM look 0，前后相同，没有预算重置。没有新拟合/预测、SEALED或真实前向。
+
+新 DIAGNOSTIC `a28f871f-42cd-4ab0-b358-ced71971a981` 是 **FAIL**：G4/G5 FAIL，G1/G2/G3/G6/G7 INCONCLUSIVE，NOT_GRANTED。影子与诊断重放一致、0联网。当前 material `b27b0047-d0ef-4c39-8d8d-46ad20becc74`，指纹 `95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1`；[新根永久预览清单](D:/dsh-proj/Roll/.roll-data/implementation-evidence/continuation-review-fixes/provider-approval-current/provider-material-manifest.json) SHA `206d2ec53d85af4b28423017da24b5a6030d5078ec5237ee939233245ef84984`。七份正文179889 bytes，八次工具结果最大184619 bytes；目的地仍为上述两个具体后端，各一次。初始命令、历史上下文和模型返回另计，不是实际总联网字节。
+
+七份实际正文包含父协议及全部四次attempt ID；`roll_read_review_material` 的 `protocol-and-attempts` 可读取 attempt_manifest.lineage/attempt_ids/attempts 与 candidate_fingerprints。现有投影省略完整freeze.basis，因此正文**不含旧freeze UUID/旧完整协议指纹/原模型UUID**；模型工件与代码指纹仍在正文，精确UUID继承只在宿主本地完整冻结档。此上下文缺口如实保留，不能声称原字段已结构化或将完整inputs另发；见 [逐正文检查](../continuation-2026-10-11/review-fixes/provider-context-check.json)。
+
+本轮 **0 actual review runs、0 external transmissions**。新接续脚本 [actual-review-corrected.py](../continuation-2026-10-11/review-fixes/actual-review-corrected.py) 仅静态编译，未执行；它核新manifest/material精确SHA、源码与各packet字节，并拒绝已有尝试自动重跑。未来执行必须另获用户对这批新包及两个目的地的明确授权，不得沿用旧批准。真实终点/必需检查/G1—G7/能力仍按后续票承担。
