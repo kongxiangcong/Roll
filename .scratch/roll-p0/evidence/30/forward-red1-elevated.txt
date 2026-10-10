@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_unique_method_sample_and_restart_never_start_actual_clock ________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30/.scratch/pytest-30-red1-elevated/test_unique_method_sample_and_0')
+
+    def test_unique_method_sample_and_restart_never_start_actual_clock(tmp_path):
+        clock = [datetime.fromisoformat('2026-06-10T16:00:00+08:00')]
+        app = create_app(tmp_path, review_clock=lambda: clock[0])
+        with TestClient(app) as client:
+            _, protocol, model, dates = setup(client, tmp_path)
+            day = dates[110]
+            clock[0] = datetime.fromisoformat(day+'T16:00:00+08:00')
+            frozen = freeze(client, protocol, model).json()
+            path = '/api/research/complete-freezes/'+frozen['freeze_id']+'/forward'
+            response = client.post(path, json={'purpose':'METHOD_VALIDATION','basis':'Explicit synthetic engineering only'})
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_forward.py:18: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_forward.py::test_unique_method_sample_and_restart_never_start_actual_clock
+1 failed in 19.19s

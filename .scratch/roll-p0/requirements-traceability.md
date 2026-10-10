@@ -287,3 +287,16 @@ DAT-11、MOD-02、MOD-05的真实验收仍为部分。新增逐年权益/14次�
 | 验证交付 / ID-21 | METHOD终点FAIL/INCONCLUSIVE完整交付路径通过 | 实际endpoint和必需检查仍缺，不因审阅生成成功升级；真实实验由33，正式能力NOT_GRANTED |
 | Risk-policy 审阅接缝 | 固定evaluation/input/code与本协议五门槛绑定通过 | 独立risk材料，不借profit G3/G4/G7审阅；24须消费具体可重放证据及自己的资格条件 |
 | 全量本地export及外发精简材料 | 可追溯归档与边界通过 | 未准入SEALED只保留metadata/原因，不读内容；完整输入不外发。根永久审批packet/实际copy/METHOD保全见[23验收](evidence/23/acceptance.md) |
+
+### 2026-10-11 Ticket 30 当前前向归档边界
+
+| 范围 | 当前结论 | 证据及责任边界 |
+|---|---|---|
+| AT-58 / ID-09、ID-15 / EVAL-12 | partial；工程唯一归档/缺日/拒绝诊断通过 | 公共API真实账户/新快照改版仍同sample；五OS故障/并发重启通过；共享既有worker，无补写历史预测。真实当前完整Host producer欠项明确，32未执行 |
+| AT-88 / ID-14、ID-16 | 三自然月/停止/截止/成熟分类工程通过 | 月末及闰年、恢复锁、关闭claim中断原截止恢复；METHOD仅算法证据，真实起点registry/public均null，期限不延长 |
+| 当前特征/源可得性 | 窄adapter数值及receipt/effective核验通过 | 冻结四特征按重建经济现金链计算；未来日历只开闭日期，同日未确认bar/未知状态权益拒绝。现parser/prospective无法装配完整execution packet，非客户端complete/PASS writer |
+| 终点 / G1—G7 / 审阅 | 不足INCONCLUSIVE、INCOMPLETE/PENDING | 30不增加PASS点、不授予能力；实际材料、独立checkpoint、32首次实存及33成熟终点仍pending；既有20分红时序P2由根修复后关联回归 |
+
+[30逐层验收](evidence/30/acceptance.md)保留最终单轮22绿/1夹具失败及修正版同案1绿、Chrome/build、source SHA、实际metadata只读和八METHOD运行件保全收据；不跨运行改写为单轮全绿，不把完整工程时间算法升级成实际研究证据。30 partial/ready-for-agent，原19/23实际资料未修改，未推送。
+
+30最终等价时区收口：新增公共API red1→datetime比较修正，最终9API/96.84s、Chrome1/48.0s、59模块build/1.90s通过，最终11文件SHA/长度前后相同，11METHOD目录保全。原核心收据保持原版本；30 partial真实输入生产链欠项、32实际首次归档及33自然月终点责任不变。

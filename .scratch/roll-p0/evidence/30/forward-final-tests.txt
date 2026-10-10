@@ -1,0 +1,37 @@
+F......................                                                  [100%]
+================================== FAILURES ===================================
+_______ test_unique_method_sample_and_restart_never_start_actual_clock ________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30/.scratch/pytest-30-final/test_unique_method_sample_and_0')
+
+    def test_unique_method_sample_and_restart_never_start_actual_clock(tmp_path):
+        clock = [datetime.fromisoformat('2026-06-10T16:00:00+08:00')]
+        raw=b'{"rc":0,"data":{"code":"600519","market":1,"klines":["2026-06-10,10,10,10,10,100,100000"]}}'
+        app = create_app(tmp_path, review_clock=lambda: clock[0],market_transport=httpx.MockTransport(lambda request:httpx.Response(200,content=raw)))
+        with TestClient(app) as client:
+            _, protocol, model, dates = setup(client, tmp_path)
+            day = dates[110]
+            clock[0] = datetime.fromisoformat(day+'T16:00:00+08:00')
+            frozen = freeze(client, protocol, model).json()
+            path = '/api/research/complete-freezes/'+frozen['freeze_id']+'/forward'
+            response = client.post(path, json={'purpose':'METHOD_VALIDATION','basis':'Explicit synthetic engineering only'})
+            assert response.status_code == 201, response.text
+            plan = response.json()
+            response = client.post(path+'/check', json={'basis':'Manual trigger'})
+            assert response.status_code == 201, response.text
+            sample = response.json()['samples'][0]
+            assert sample['evidence_kind'] == 'METHOD_CASE'
+            assert sample['forecast']['observation_cutoff'][:10] == day
+            assert sample['forecast']['probability'] > 0
+            assert sample['action']['action'] in {'BUY','REFUSE'}
+            from test_account import submit,baseline
+            assert submit(client,baseline(),'forward-account-revision').status_code==200
+            request=client.post('/api/data/requests',json={'instruments':['SSE:600519'],'groups':['DAILY'],'purpose':'OBSERVATION','start_date':'2026-06-10','end_date':'2026-06-10'}).json()
+>           snapshot=client.post('/api/data/requests/'+request['request_id']+'/retrieve').json()
+                                                       ^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'request_id'
+
+backend\tests\application\test_forward.py:33: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_forward.py::test_unique_method_sample_and_restart_never_start_actual_clock
+1 failed, 22 passed in 221.09s (0:03:41)
