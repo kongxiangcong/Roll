@@ -1,0 +1,70 @@
+{
+  "status": "PASS_HISTORICAL_ROOT_INTACT",
+  "profiles": [
+    {
+      "manifest": "runtime-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\review-fixes-old-method",
+      "historical_root": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\old-method",
+      "historical_files": 270,
+      "current_source_files": 270,
+      "historical_root_unchanged": true,
+      "source_differences": []
+    },
+    {
+      "manifest": "runtime-failed-forward-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\pytest-review-fixes-final\\test_mature_settlement_only_sc0",
+      "historical_root": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\failed-forward",
+      "historical_files": 191,
+      "current_source_files": 275,
+      "historical_root_unchanged": true,
+      "source_differences": [
+        {
+          "path": ".startup.lock",
+          "historical_sha256": "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0",
+          "historical_bytes": 4,
+          "current_sha256": "91b4d142823f7d20c5f08df69122de43f35f057a988d9619f6d3138485c9a203",
+          "current_bytes": 6
+        },
+        {
+          "path": "backups/deployment.json",
+          "historical_sha256": "57efff508e70c3ebbc1ef51b6cc10f925fe88e98e53b6b5abda4c3ba5d18a61a",
+          "historical_bytes": 134,
+          "current_sha256": "806e58f105a38efee3a40c8c6b46dd9b1184a30088ebcc15fe977396636d40df",
+          "current_bytes": 134
+        },
+        {
+          "path": "backups/last-check.json",
+          "historical_sha256": "aacd5c3526e4982d3f8054fa25ea5bce4b18071136221cac527da47205738c67",
+          "historical_bytes": 116,
+          "current_sha256": "cb9146b2246b639b40108216a943037b24b5717c5aae4345609674d73f2efea9",
+          "current_bytes": 116
+        },
+        {
+          "path": "roll.sqlite3",
+          "historical_sha256": "859bb2a9d593b459d90e3b6d74eb831720188ce54f7277e7e45cbcf377a955e2",
+          "historical_bytes": 2187264,
+          "current_sha256": "2f62bddfe54c33c59c1f9639be979ca195de10ffb4782bb4e10135050061e3a7",
+          "current_bytes": 2187264
+        }
+      ]
+    },
+    {
+      "manifest": "runtime-new-method-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\prf\\test_continuous_joint_budget_r0",
+      "historical_root": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\new-method",
+      "historical_files": 193,
+      "current_source_files": 193,
+      "historical_root_unchanged": true,
+      "source_differences": []
+    },
+    {
+      "manifest": "runtime-new-forward-endpoint-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\prf\\test_natural_month_deadline_ke0",
+      "historical_root": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\new-forward-endpoint",
+      "historical_files": 92,
+      "current_source_files": 92,
+      "historical_root_unchanged": true,
+      "source_differences": []
+    }
+  ]
+}

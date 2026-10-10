@@ -1,0 +1,107 @@
+{
+  "status": "PASS",
+  "all_research_tables_opaque_rows_unchanged": false,
+  "all_original_research_rows_unchanged": true,
+  "one_diagnostic_forward_check_appended": true,
+  "table_count": 21,
+  "tables": {
+    "research_attempts": {
+      "rows": 2,
+      "opaque_rows_sha256": "cebb0f206bdb97f395d456ac560ccedbb9ab18e4e766144e2cee01b541c0562e"
+    },
+    "research_complete_freezes": {
+      "rows": 1,
+      "opaque_rows_sha256": "29bdaa8dcafaa10aaed0422d65078e42edd14bddda97948867d8988a1cbc60b3"
+    },
+    "research_conditional_runs": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_datasets": {
+      "rows": 1,
+      "opaque_rows_sha256": "1ee9d819bf4e1e5c6a459ab64f63454144fdb534023699863d86736b8989f148"
+    },
+    "research_development_runs": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_events": {
+      "rows": 130,
+      "opaque_rows_sha256": "30f8a5858107fb985c9ca576ec42cbf37555b1c1bf25d3aeed842f085eaf7fc5"
+    },
+    "research_execution_results": {
+      "rows": 60,
+      "opaque_rows_sha256": "b601a405aaf01b4ba1983ee5c618ebf73e221cb1eebc3d2bdaba9b71604dbd4f"
+    },
+    "research_executions": {
+      "rows": 60,
+      "opaque_rows_sha256": "9189bae9b4e4793d2693d576da8383a507836ebcccd064840d808d553fc34630"
+    },
+    "research_forecasts": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_forward_assessments": {
+      "rows": 3,
+      "opaque_rows_sha256": "095e2e2c95a7a9caa38e16ee13d3d4c614f9e6fa1bcdf37dd246db13119124df"
+    },
+    "research_forward_checks": {
+      "rows": 1,
+      "opaque_rows_sha256": "694336658dae1df0cdd508ea2e1c4dd82e4e91d11531c2c539dd5be0036e0a32"
+    },
+    "research_forward_plans": {
+      "rows": 1,
+      "opaque_rows_sha256": "cb89d809c0acaaae7fd70e3c13c781a417484c8986b3e34a02c747a6b3e8238a"
+    },
+    "research_forward_samples": {
+      "rows": 2,
+      "opaque_rows_sha256": "c8df8d9371df04938e4119b85b488ba1d612450a9b541e6e1476f1d0a289e9da"
+    },
+    "research_models": {
+      "rows": 1,
+      "opaque_rows_sha256": "bbb81938d6134633dcbf1f558513f2e507077b395025c0c1a277e2620098a4fb"
+    },
+    "research_protocols": {
+      "rows": 1,
+      "opaque_rows_sha256": "bf720f27cf758977d77ac45844f9e281e67f0fc510827926a625eff0334393d4"
+    },
+    "research_review_materials": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_risk_evaluations": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_risk_policies": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_shadow_runs": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_validation_attempts": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_validations": {
+      "rows": 0,
+      "opaque_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "changed_DB_scope": "Host startup/backup/session lifecycle and one append-only forward check; all original research row values unchanged",
+  "differences": {
+    "research_forward_checks": {
+      "historical": {
+        "rows": 1,
+        "opaque_rows_sha256": "694336658dae1df0cdd508ea2e1c4dd82e4e91d11531c2c539dd5be0036e0a32"
+      },
+      "final_source": {
+        "rows": 2,
+        "opaque_rows_sha256": "9ae60b834508357eae8d3bb4107ea9118faeae9782f13aa37a07b2d81b8d12e5"
+      }
+    }
+  },
+  "protected_SEALED_or_credentials_read": false
+}
