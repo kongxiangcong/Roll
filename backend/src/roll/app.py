@@ -32,6 +32,7 @@ from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
+from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
@@ -165,6 +166,26 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def shadow_results(freeze_id:str):
         return shadow.results(freeze_id)
     prospective=ProspectiveEvidence(evidence)
+    forward=ForwardArchive(shadow,prospective,review_clock)
+    app.state.forward=forward
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward',status_code=201)
+    def forward_register(freeze_id:str,command:ForwardCommand):return forward.register(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/forward')
+    def forward_get(freeze_id:str):return forward.state(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/check',status_code=201)
+    def forward_check(freeze_id:str,command:CheckCommand):return forward.check(freeze_id,command)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/replay')
+    def forward_replay(freeze_id:str):return forward.replay(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/settle',status_code=201)
+    def forward_settle(freeze_id:str,command:CheckCommand):return forward.settle(freeze_id,command)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/stop')
+    def forward_stop(freeze_id:str,command:StopCommand):return forward.stop(freeze_id,command)
     app.state.prospective=prospective
     app.state.collection_sources=prospective.sources
     development=SyntheticDevelopment(research,executions,models)
@@ -343,6 +364,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def research_checkpoint(protocol_id:str,command:CheckpointCommand):
         return research.checkpoint(protocol_id,command)
     reviews=Reviews(ledger,market,evidence,review_clock)
+    reviews.forward=forward
     app.state.reviews=reviews
 
     @app.post('/api/reviews/tasks',status_code=202)
@@ -895,6 +917,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker
+        app.state.forward.recovery=backups.recovery
         finish_bootstrap(backups)
     except BaseException:
         rollback_bootstrap(backups,marker,previous)
