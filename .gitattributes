@@ -130,3 +130,6 @@ backend/src/roll/research/reference/reconstruction/** -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/negative-real-integrity/raw/** binary
 backend/src/roll/research/reference/reconstruction/*.html binary
 .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+# Preserve this continuation's captured console output and receipt bytes.
+.scratch/roll-p0/evidence/continuation-2026-10-11/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-p0/evidence/continuation-2026-10-11/*.json -text whitespace=cr-at-eol
