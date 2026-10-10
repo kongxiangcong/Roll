@@ -1,0 +1,27 @@
+import {expect,test} from '@playwright/test';
+import {resolve} from 'node:path';
+test('forward archive displays METHOD identity, deadline and unique sample without actual start',async({page})=>{
+  test.setTimeout(180000);
+  const run=await(await page.request.post('/api/research/development-runs',{timeout:120000})).json();
+  expect(run.status).toBe('ENGINEERING_COMPLETE');
+  await page.goto('/');await page.getByRole('button',{name:'历史记录',exact:true}).click();
+  await page.getByRole('button',{name:'研究登记',exact:true}).click();
+  await page.getByRole('button',{name:`查看协议 ${run.protocol_id.slice(0,8)}`,exact:true}).click();
+  const shadow=page.getByRole('region',{name:'研究政策与连续影子'});
+  await shadow.getByRole('button',{name:'冻结完整实验与影子基线',exact:true}).click();
+  await expect(shadow.getByText(/完整实验已冻结 · METHOD_CASE/)).toBeVisible({timeout:30000});
+  const panel=page.getByRole('region',{name:'盘后前向归档'});
+  await panel.getByRole('button',{name:'登记盘后归档',exact:true}).click();
+  await expect(panel.getByText('实际前向起点：尚未启动',{exact:true})).toBeVisible();
+  await panel.getByRole('button',{name:'检查当前盘后归档',exact:true}).click();
+  await expect(panel.getByText('唯一归档：1 项',{exact:true})).toBeVisible({timeout:30000});
+  await expect(panel.getByText(/METHOD 工程期限：2025-03-02/)).toBeVisible();
+  await panel.getByRole('button',{name:'检查当前盘后归档',exact:true}).click();
+  await expect(panel.getByText('唯一归档：1 项',{exact:true})).toBeVisible();
+  await panel.getByRole('button',{name:'重放前向归档',exact:true}).click();
+  await expect(panel.getByRole('status')).toContainText('前向归档重放一致 · 联网 0 次');
+  await expect(panel.getByRole('button',{name:/准备操作|买入|正式启用/})).toHaveCount(0);
+  expect((await(await page.request.get(`/api/research/protocols/${run.protocol_id}`)).json()).forward_started_at).toBeNull();
+  expect((await(await page.request.get('/api/account')).json()).version).toBe(0);
+  await panel.screenshot({path:resolve('../.scratch/roll-p0/evidence/30/forward-method.png')});
+});
