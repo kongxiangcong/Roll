@@ -1,0 +1,42 @@
+{
+  "scope": "all ZIP markdown reference/source text; no code executed",
+  "markdown_file_count": 1971,
+  "patterns": {
+    "PIT_token": "\\bPIT\\b",
+    "asof_token": "\\bas[_-]?of\\b",
+    "point_in_time": "point[ -]in[ -]time",
+    "vintage": "\\bvintage\\b",
+    "db_available": "入库时间|入库日期|首次入库|系统时间|修订时间|修订日期|版本时间|历史版本|availability|knowledge.?time"
+  },
+  "results": {
+    "PIT_token": [
+      {
+        "path": "choice-quantapi-skill/references/indicators/css/102009008004.md",
+        "lines": [
+          {
+            "line": 25,
+            "text": "|单季度.调增减项-支付的利息及所得税费用|PIT|报告期[1]|||REITs基金的单季度财务指标数据：单季度.调增减项-支付的利息及所得税费用<!-- 目录：基金 / REITs全部指标 / 财务指标 / REITs季度财务指标 -->|"
+          }
+        ]
+      }
+    ],
+    "asof_token": [],
+    "point_in_time": [],
+    "vintage": [],
+    "db_available": [
+      {
+        "path": "choice-quantapi-skill/references/indicators/css/101001004011.md",
+        "lines": [
+          {
+            "line": 15,
+            "text": "|独立董事薪酬|DIRECTORPMT|年度(范围)[1]||||董事会秘书所获得的公司年度报酬注：1、公司公布的下列职位会被纳入独立董事的薪酬的计算范围：（1）独立董事   2、只统计当前系统时间在职独立董事获取的年度薪酬<!-- 目录：股票 / 沪深京股票指标 / 董监高指标 / 薪酬指标 -->|"
+          },
+          {
+            "line": 16,
+            "text": "|副总经理薪酬|VICECEO|年度(范围)[1]||||副总经理所获得的公司年度报酬注：1、公司公布的下列职位会被纳入副总经理的薪酬的计算范围：（1）副总裁，（2）副行长，（3）执行副总裁。    2、只统计当前系统时间在职副总经理获取的年度薪酬。<!-- 目录：股票 / 沪深京股票指标 / 董监高指标 / 薪酬指标 -->|"
+          }
+        ]
+      }
+    ]
+  }
+}
