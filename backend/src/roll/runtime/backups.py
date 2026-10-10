@@ -123,6 +123,18 @@ def references(db,directory):
             if value.get('source_origin')=='HOST_DATA_REQUEST':
                 host_source_references(db,value)
                 continue  # Its verified originals are already in evidence_archives.
+            if value.get('source_origin')=='HOST_RECONSTRUCTED_RESEARCH':
+                parent=db.execute('SELECT value FROM research_datasets WHERE id=?',(value.get('parent_dataset_id'),)).fetchone()
+                if parent is None:raise HTTPException(409,{'code':'RESEARCH_SOURCE_PROVENANCE_MISMATCH'})
+                parent=json.loads(parent[0]);host_source_references(db,parent)
+                if any(value.get(k)!=parent.get(k) for k in ['source_run_id','source_snapshot_id','source_bundle_sha256','source_evidence_kind']):
+                    raise HTTPException(409,{'code':'RESEARCH_SOURCE_PROVENANCE_MISMATCH'})
+                for item in [*value['original_archives'],value['clean_archive'],value['assumptions_archive'],value['quality_report_archive'],
+                             *[v['artifact'] for v in value['partitions'].values() if v.get('artifact')]]:
+                    registered=db.execute('SELECT value FROM evidence_archives WHERE sha256=?',(item['sha256'],)).fetchone()
+                    if registered is None or json.loads(registered[0])['path']!=item['path']:
+                        raise HTTPException(409,{'code':'RESEARCH_SOURCE_PROVENANCE_MISMATCH'})
+                continue
             if not isinstance(value.get('archive_id'),str):
                 raise HTTPException(409,{'code':'RESEARCH_SOURCE_PROVENANCE_MISMATCH'})
             path='research-inputs/'+value['archive_id']+'/browser-live.json'

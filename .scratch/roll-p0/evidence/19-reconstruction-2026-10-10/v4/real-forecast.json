@@ -1,0 +1,223 @@
+{
+  "forecast_id": "0276c810-1214-4ef0-9472-8c2016f66dbf",
+  "model_run_id": "8be461f3-af8b-4f0f-a707-13e41cf48249",
+  "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+  "recorded_at": "2026-10-10T08:57:21.668954+00:00",
+  "basis": "Actual historical CAL research prediction; reconstruction not contemporaneous publication or forward start",
+  "evidence_kind": "REAL_ACQUISITION",
+  "data_use": "RECONSTRUCTED_RESEARCH",
+  "purpose": "RESEARCH",
+  "namespace": "HISTORICAL",
+  "capability": "NOT_GRANTED",
+  "instrument": "SSE:600362",
+  "event": "Positive20-session single RAW round-trip economic return after historical statutory costs, frozen broker/slippage scenario and source-bound cash rights/tax; unresolved cases are not losses",
+  "horizon_sessions": 20,
+  "observation_cutoff": "2022-02-08T15:05:00+08:00",
+  "consumer_knowledge_cutoff": "2026-10-10T08:57:21.668984+00:00",
+  "feature_snapshot": {
+    "features": {
+      "economic_return_5": 0.02126631222812953,
+      "economic_return_20": -0.05585344057193923,
+      "economic_return_volatility_20": 0.018874577763760936,
+      "log_volume_to_trailing20_mean": 0.0997717811924627
+    },
+    "values": [
+      0.02126631222812953,
+      -0.05585344057193923,
+      0.018874577763760936,
+      0.0997717811924627
+    ],
+    "input_trade_dates": [
+      "2022-01-04",
+      "2022-01-05",
+      "2022-01-06",
+      "2022-01-07",
+      "2022-01-10",
+      "2022-01-11",
+      "2022-01-12",
+      "2022-01-13",
+      "2022-01-14",
+      "2022-01-17",
+      "2022-01-18",
+      "2022-01-19",
+      "2022-01-20",
+      "2022-01-21",
+      "2022-01-24",
+      "2022-01-25",
+      "2022-01-26",
+      "2022-01-27",
+      "2022-01-28",
+      "2022-02-07",
+      "2022-02-08"
+    ],
+    "latest_input_trade_date": "2022-02-08",
+    "raw_hashes": [
+      "26ff7dc40f9659ffb376c3b10d25798d7d81817f41aab1e23dbc3fbe978d4960"
+    ],
+    "observation_cutoff": "2022-02-08T15:05:00+08:00",
+    "consumer_knowledge_cutoff": "2026-10-10T08:57:05.816004+00:00",
+    "availability_basis": "EXPLICIT_RECONSTRUCTED_DAILY_ASSUMPTION; actual receipt retained; NOT_STRICT_PIT",
+    "effective_cash_source_hashes": []
+  },
+  "uncalibrated_probability": 0.507968576935092,
+  "probability": 0.4897235395677288,
+  "logit": 0.03187700676737132,
+  "artifact_fingerprints": {
+    "calibrator": "85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d",
+    "code": "9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db",
+    "data": "0eaefd09803c54924263181b84f60fe1b028e19b9569ce4f3bd4c335def22ae0",
+    "features_and_inputs": "64deada41e4b3ee1056e56b0c36568f8d783896807982131a73ff10d86bac9d8",
+    "model": "062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50",
+    "protocol": "9c383bc45c9f1627d14cf767066669392e29e69ad59f074af73c2a7a2f972458"
+  },
+  "execution": {
+    "base_delay": "NEXT_OPEN",
+    "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast",
+    "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+    "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+    "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+    "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+    "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+    "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+    "synthetic_basis": "Frozen research lot capital, not actual account funds or continuous NAV",
+    "synthetic_initial_cash_yuan": "1000000",
+    "synthetic_initial_positions": []
+  },
+  "costs": {
+    "broker_actual_commission": "UNKNOWN",
+    "commission_includes_regulatory_fees": true,
+    "commission_scenario_rate": "0.0003",
+    "currency": "CNY",
+    "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+    "evidence": [
+      {
+        "bytes": 45558,
+        "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+        "evidence_kind": "REAL_AUTHORITY_PAGE",
+        "file": "sse-cost-investor.html",
+        "http_status": 200,
+        "id": "sse-cost-investor",
+        "permission": "Public source retrieval; no broker client tariff authority",
+        "received_at": "2026-10-07T19:14:28.006335+00:00",
+        "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+        "started_at": "2026-10-07T19:14:26.877488+00:00",
+        "url": "https://one.sse.com.cn/onething/gptz/"
+      },
+      {
+        "bytes": 41658,
+        "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+        "evidence_kind": "REAL_AUTHORITY_PAGE",
+        "file": "sse-charge-2026.html",
+        "http_status": 200,
+        "id": "sse-charge-2026",
+        "page_update": "2026-01",
+        "page_update_precision": "MONTH_ONLY",
+        "permission": "Public source retrieval; no broker client tariff authority",
+        "received_at": "2026-10-07T19:14:28.323015+00:00",
+        "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+        "started_at": "2026-10-07T19:14:28.007071+00:00",
+        "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/"
+      },
+      {
+        "bytes": 27791,
+        "effective_from": "2023-08-28",
+        "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39",
+        "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+        "evidence_kind": "REAL_AUTHORITY_PAGE",
+        "file": "stamp-tax-2023.html",
+        "http_status": 200,
+        "id": "stamp-tax-2023",
+        "permission": "Public source retrieval; no broker client tariff authority",
+        "received_at": "2026-10-07T19:14:28.685996+00:00",
+        "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+        "started_at": "2026-10-07T19:14:28.323867+00:00",
+        "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448"
+      }
+    ],
+    "extra_regulatory_charge": "0",
+    "minimum_commission_yuan": "5",
+    "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+    "slippage_each_side_rate": "0.0005",
+    "stamp_sell_rate": "0.0005",
+    "transfer_each_side_rate": "0.00001",
+    "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction.",
+    "version": "17-cost-v1"
+  },
+  "scope": {
+    "data_use": "RECONSTRUCTED_RESEARCH",
+    "historical_membership_reconstructed": false,
+    "historical_point_in_time_proven": false,
+    "identity_context": {
+      "SSE:600362": {
+        "board": "MAIN",
+        "code": "600362",
+        "confirmed_at": "2026-10-08T09:32:31.739141+00:00",
+        "effective_at": "2026-10-08T17:00:00+08:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "江西铜业",
+        "revision": 1
+      }
+    },
+    "instruments": [
+      "SSE:600362"
+    ],
+    "namespace": "HISTORICAL",
+    "selection": "CURRENT_FINITE_LIST_CONDITIONAL_RESEARCH",
+    "source_account_authority": "NONE; MARKET_DATA_ONLY"
+  },
+  "statistical_support": {
+    "calibration_metadata_mature_upper_bound": 444,
+    "calibration_per_class": {
+      "0": 238,
+      "1": 206
+    },
+    "calibration_total": 444,
+    "development_total": 1148,
+    "minimum_per_class": 20
+  },
+  "uncertainty": {
+    "qualification": "NONE",
+    "reasons": [
+      "RECONSTRUCTED_NOT_STRICT_PIT",
+      "CALIBRATED_RELIABILITY_HAS_NO_INDEPENDENT_TEST",
+      "COMPLETE_EXPERIMENT_POLICY_NOT_FROZEN_TICKET20"
+    ],
+    "conditional_method_only": false,
+    "historical_point_in_time_proven": false,
+    "calibration_reliability": "FIT_IN_SAMPLE; NO_INDEPENDENT_CALIBRATED_TEST",
+    "formal_forward_prediction": false
+  },
+  "baselines": {
+    "CASH": {
+      "exposure": "0",
+      "return": "0",
+      "event_probability": null
+    },
+    "START_HOLD": {
+      "maximum_exposure": "0.50",
+      "event_probability_base_rate": 0.4547038327526132
+    },
+    "MA5_MA20": {
+      "signal": false,
+      "maximum_exposure": "0.50",
+      "probability": null,
+      "probability_basis": "deterministic signal not calibrated probability"
+    }
+  },
+  "return_scenarios": {
+    "lower": "-0.2762639924245979403228122467",
+    "median": "-0.007717778179073879408629894472",
+    "upper": "0.4500626310956732269143615246",
+    "basis": "DEVELOPMENT empirical per-round-trip economic fee-after return on invested cash; not confidence interval/future wealth/continuous NAV"
+  },
+  "action_published": false,
+  "complete_experiment_frozen": false,
+  "archive": {
+    "sha256": "0273126a2e1906346389a276e22d3a64564d21bd3ba0adbbcb359ed9bc8ee121",
+    "path": "raw/0273126a2e1906346389a276e22d3a64564d21bd3ba0adbbcb359ed9bc8ee121.raw",
+    "bytes": 7961,
+    "kind": "RESEARCH_FORECAST_BUNDLE",
+    "research_namespace": "HISTORICAL"
+  }
+}

@@ -148,7 +148,7 @@ class ExperimentRegistry:
             # The transparent executor needs its one calibration slot after PRIMARY.
             # Admission is advisory: another family member may consume CAL before this lock.
             transparent_primary=(command.category=='PRIMARY_FIT'
-                and command.configuration.get('candidate')=='PRICE_VOLUME_LOGIT_V1'
+                and command.configuration.get('candidate') in {'PRICE_VOLUME_LOGIT_V1','PRICE_VOLUME_LOGIT_RECONSTRUCTED_V2'}
                 and command.configuration.get('purpose') in ('RESEARCH','METHOD_VALIDATION'))
             if transparent_primary and any(a['category']=='CALIBRATION' for a in prior):
                 self.event(protocol_id,'ATTEMPT_BUDGET_REFUSED',db=db,configuration=command.model_dump(),

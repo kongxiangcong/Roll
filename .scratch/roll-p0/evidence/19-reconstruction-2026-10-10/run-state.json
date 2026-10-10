@@ -1,0 +1,92 @@
+{
+  "status_run_id": "0af862d5-0c53-43b4-8485-1d11b718b918",
+  "dataset_id": "0b0a1194-58fd-45ab-9035-a989ad093269",
+  "protocol_id": "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+  "source_dataset_id": "b34112c8-7eea-4367-acbd-73dba0b8f296",
+  "code_fingerprint": "ee6fbe15509e3bc87ace130b26e8162c509e08c1a7a0dd175b59535625371053",
+  "reconstruction_fingerprint": "02cada3e48e86cc516c49f2f64ffa777ecc5c728901042b1bffdecf16ed0cfe5",
+  "strict_pit_rejected": true,
+  "budget_before": {
+    "lineage": [
+      "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "a9792e33-98e1-464e-85ba-046623fb4bd1"
+    ],
+    "family_protocol_ids": [
+      "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "a9792e33-98e1-464e-85ba-046623fb4bd1"
+    ],
+    "attempts": [
+      {
+        "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+        "basis": "票19真实支持预检；不以METHOD或占位概率替代",
+        "category": "PRIMARY_FIT",
+        "configuration": {
+          "candidate": "PRICE_VOLUME_LOGIT_V1",
+          "code_fingerprint": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+          "lambda": "1",
+          "purpose": "RESEARCH"
+        },
+        "data_fingerprint": "9a50206d8b2b46edf16b3f22cb54788b66571ba9b3dbb6192d0309a09f68d1e2",
+        "host_owner": {
+          "creation_ticks": 134359528622286991,
+          "nonce": "f090adf7-c866-4314-98c3-e101717ea1ea",
+          "pid": 34324
+        },
+        "partition": "DEVELOPMENT",
+        "protocol_fingerprint": "cf91fb8981673ea8ee4e43a80a3f5e858713c757224b327d1f78daa010c52416",
+        "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-08T17:08:18.766352+00:00",
+        "status": "FAILED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+          "event_id": "0c4d4cfb-3374-4ff7-acb2-cc26c17830ba",
+          "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "reason": "支持不足/失败：HISTORICAL_POINT_IN_TIME_NOT_PROVEN,COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN,COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN,HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION,RESEARCH_WINDOWS_NOT_PREREGISTERED,HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN,SOURCE_QUALIFICATION_BLOCKED",
+          "recorded_at": "2026-10-08T17:08:18.941510+00:00",
+          "status": "FAILED"
+        }
+      },
+      {
+        "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+        "basis": "票19真实支持预检；不以METHOD或占位概率替代",
+        "category": "PRIMARY_FIT",
+        "configuration": {
+          "candidate": "PRICE_VOLUME_LOGIT_V1",
+          "code_fingerprint": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+          "lambda": "1",
+          "purpose": "RESEARCH"
+        },
+        "data_fingerprint": "fd93fee32106b53e81d284dbe734ea58fc427cfb06d54fc6e390bb7e65b9cd89",
+        "host_owner": {
+          "creation_ticks": 134359532206248511,
+          "nonce": "218e340b-eb98-421d-bda8-5f2a176a2a73",
+          "pid": 34636
+        },
+        "partition": "DEVELOPMENT",
+        "protocol_fingerprint": "8d7ae80324b0ae1e3cfc07316eaa8dd781e03b34b311e8ddc83a7578cb265225",
+        "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-08T17:14:24.413994+00:00",
+        "status": "FAILED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+          "event_id": "433f1dc5-06c2-4c10-800d-bf49cb397f62",
+          "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "reason": "支持不足/失败：HISTORICAL_POINT_IN_TIME_NOT_PROVEN,COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN,COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN,HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION,RESEARCH_WINDOWS_NOT_PREREGISTERED,HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN,SOURCE_QUALIFICATION_BLOCKED",
+          "recorded_at": "2026-10-08T17:14:24.517554+00:00",
+          "status": "FAILED"
+        }
+      }
+    ],
+    "attempt_ids": [
+      "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+      "e648f20e-99da-4544-a59d-75a2c383bc00"
+    ],
+    "basis": "All linked family predecessors and sibling failures, aborts and interruptions remain required; this is not proof of unreported out-of-host work"
+  }
+}

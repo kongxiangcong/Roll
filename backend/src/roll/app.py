@@ -24,9 +24,13 @@ from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.market.verification import IndependentVerifications, VerificationCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
+from roll.research.reconstruction import ReconstructionCommand,reconstruct
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
+from roll.research.prospective import ProspectiveEvidence, CollectionCommand
+from roll.research.synthetic import SyntheticDevelopment
+from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
@@ -95,9 +99,69 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     research=ExperimentRegistry(ledger,evidence)
     app.state.research=research
     executions=DailyExecutions(research)
+    research.executions=executions
     app.state.executions=executions
     models=TransparentModels(research,executions)
+    research.models=models
     app.state.models=models
+    prospective=ProspectiveEvidence(evidence)
+    app.state.prospective=prospective
+    app.state.collection_sources=prospective.sources
+    development=SyntheticDevelopment(research,executions,models)
+    app.state.development=development
+
+    @app.post('/api/research/collections',status_code=201)
+    def collection_start(command:CollectionCommand):
+        return prospective.start(command)
+
+    @app.get('/api/research/collections')
+    def collection_plans():
+        return prospective.plans()
+
+    @app.post('/api/research/collections/{plan_id}/collect',status_code=201)
+    def collection_collect(plan_id:str):
+        return prospective.collect(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/batches')
+    def collection_batches(plan_id:str):
+        return prospective.batches(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/as-of')
+    def collection_asof(plan_id:str,cutoff:datetime):
+        return prospective.as_of(plan_id,cutoff)
+
+    @app.get('/api/research/collections/{plan_id}/readiness')
+    def collection_readiness(plan_id:str):
+        return prospective.readiness(plan_id)
+
+    @app.get('/api/research/collection-sources')
+    def collection_sources():
+        return prospective.sources.listing()
+
+    @app.post('/api/research/collection-sources/{source_id}/policy')
+    def collection_source_policy(source_id:str,command:SourcePolicyCommand):
+        return prospective.sources.change(source_id,command)
+
+    @app.get('/api/research/collection-cleaning')
+    def collection_cleaning():
+        return prospective.sources.reports()
+
+    @app.post('/api/research/collection-integrity')
+    def collection_integrity():
+        return prospective.sources.integrity()
+
+    @app.get('/api/research/collections/{plan_id}/comparisons')
+    def collection_comparisons(plan_id:str):
+        prospective.plan(plan_id)
+        return prospective.sources.comparisons(plan_id)
+
+    @app.post('/api/research/development-runs',status_code=201)
+    def virtual_development():
+        return development.create()
+
+    @app.get('/api/research/development-runs')
+    def virtual_development_runs():
+        return development.runs()
 
     @app.post('/api/research/protocols/{protocol_id}/models',status_code=201)
     def research_model_create(protocol_id:str,command:ModelCommand):
@@ -160,6 +224,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/datasets')
     def research_datasets():
         return research.datasets()
+
+    @app.post('/api/research/datasets/{dataset_id}/reconstruct',status_code=201)
+    def research_reconstruct(dataset_id:str,command:ReconstructionCommand):
+        return reconstruct(research,dataset_id,command)
 
     @app.get('/api/research/datasets/{dataset_id}')
     def research_dataset(dataset_id:str):
@@ -435,7 +503,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.get('/api/data/sources')
     def data_sources():
-        return REGISTRY
+        return REGISTRY+[p for p in prospective.sources.listing() if p['engine']=='CNEQUITY']
 
     @app.get('/api/data/runs')
     def data_runs():

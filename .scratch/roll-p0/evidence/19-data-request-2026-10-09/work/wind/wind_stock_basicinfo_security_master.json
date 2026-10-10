@@ -1,0 +1,41 @@
+{
+  "request": {
+    "tool": "wind:get_stock_basicinfo",
+    "question": "查询江西铜业(600362.SH)的公司档案：是否被实施风险警示（ST/*ST），证券简称历史变更"
+  },
+  "response": {
+    "data": {
+      "data": [
+        {
+          "columns": [
+            {
+              "name": "Wind代码",
+              "type": "string"
+            },
+            {
+              "name": "证券简称",
+              "type": "string"
+            },
+            {
+              "name": "证券简称_支持历史",
+              "type": "string"
+            },
+            {
+              "name": "公司中文名称",
+              "type": "string"
+            }
+          ],
+          "rows": [
+            [
+              "600362.SH",
+              "江西铜业",
+              "江西铜业",
+              "江西铜业股份有限公司"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "note": "证券简称_支持历史 = 江西铜业, i.e. the abbreviation has NEVER changed. An ST/*ST designation would have changed it, so this is a documented negative for ST across the whole listed history."
+}

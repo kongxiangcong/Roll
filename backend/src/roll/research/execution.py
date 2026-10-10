@@ -13,6 +13,7 @@ from roll.agents.codex_process import owner_alive
 from roll.accounts.ledger import encode,now
 from roll.market.rules import SHANGHAI
 from roll.research import historical_costs
+from roll.research import reconstruction
 
 
 class ExecutionCommand(BaseModel):
@@ -73,14 +74,18 @@ def number(value):
 def engine_fingerprint():
     # Only source text gets canonical LF hashing; archived provider bytes never do.
     return hashlib.sha256(encode({'execution_source':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
-        'historical_cost_schedule':historical_costs.schedule_fingerprint()}).encode()).hexdigest()
+        'historical_cost_schedule':historical_costs.schedule_fingerprint(),
+        'reconstruction_cash_rules':reconstruction.fingerprint(),
+        'corporate_action_source':hashlib.sha256(Path(__file__).with_name('corporate_actions.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
+        'cash_source_manifest':hashlib.sha256((Path(__file__).parent/'reference/cash-rights/sources.json').read_bytes()).hexdigest()}).encode()).hexdigest()
 
 
 def evaluate(inputs,definition,label_as_of,available_at=None):
     result={'label_matures_at':definition['label_matures_at'],'maturity_date':definition['maturity_date'],
         'label_status':'UNSCORABLE','label':None,'scoreable':False,'eligible_for_training':False,
         'net_pnl_yuan':None,'label_available_at':None,'execution_status':'UNKNOWN','entry':None,'exit':None,
-        'reasons':[],'training_restrictions':['METHOD_CASE_NOT_REAL_TRAINING_INPUT'] if inputs['evidence_kind']=='METHOD_CASE' else ['HISTORICAL_PIT_AND_SPECIAL_STATUS_NOT_PROVEN']}
+        'reasons':[],'training_restrictions':['METHOD_CASE_NOT_REAL_TRAINING_INPUT'] if inputs['evidence_kind']=='METHOD_CASE' else ['RECONSTRUCTED_NOT_STRICT_PIT_OR_FORMAL_QUALIFICATION'] if inputs.get('data_use')=='RECONSTRUCTED_RESEARCH' else ['HISTORICAL_PIT_AND_SPECIAL_STATUS_NOT_PROVEN']}
+    reconstructed=inputs.get('data_use')=='RECONSTRUCTED_RESEARCH' and inputs['evidence_kind']=='REAL_ACQUISITION'
     maturity=definition['maturity_date'];matures_at=definition['label_matures_at']
     if (matures_at and label_as_of<datetime.fromisoformat(matures_at)) or (maturity and label_as_of.astimezone(SHANGHAI).date().isoformat()<maturity):
         result['label_status']='IMMATURE';result['reasons']=['TWENTY_SESSION_EVENT_NOT_MATURE']
@@ -107,16 +112,18 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
         row=rows.get(day)
         if row is None:result['reasons'].append('MISSING_DAILY:'+day);continue
         if row.get('errors'):result['reasons'].append('INVALID_DAILY:'+day)
-        if row.get('completion_state')!='COMPLETE_REPORTED_HISTORICAL':result['reasons'].append('INCOMPLETE_DAILY:'+day)
+        reconstructed_suspended=reconstructed and row.get('execution_evidence',{}).get('state')=='REPORTED_SUSPENDED_RECONSTRUCTED'
+        if row.get('completion_state')!='COMPLETE_REPORTED_HISTORICAL' and not (reconstructed_suspended and row.get('completion_state')=='SUSPENSION_PLACEHOLDER'):result['reasons'].append('INCOMPLETE_DAILY:'+day)
         available=row.get('available_at')
         if not available or datetime.fromisoformat(available)>datetime.fromisoformat(definition['consumer_knowledge_cutoff']):result['reasons'].append('NOT_AVAILABLE_TO_CONSUMER:'+day)
         state=row.get('execution_evidence',{})
-        if state.get('state') not in {'CONFIRMED_NORMAL','CONFIRMED_SUSPENDED'}:result['reasons'].append('HISTORICAL_STATUS_UNKNOWN')
+        allowed_states={'CONFIRMED_NORMAL','CONFIRMED_SUSPENDED'}|({'REPORTED_NORMAL_RECONSTRUCTED','REPORTED_SUSPENDED_RECONSTRUCTED'} if reconstructed else set())
+        if state.get('state') not in allowed_states:result['reasons'].append('HISTORICAL_STATUS_UNKNOWN')
         terminal_row=bool(terminal and day==maturity and row.get('terminal_settlement') and state.get('company_actions')=='CONFIRMED_TERMINAL_CASH_TREATMENT')
-        if state.get('company_actions')!='CONFIRMED_NONE' and not terminal_row:result['reasons'].append('COMPANY_ACTIONS_UNKNOWN')
+        if state.get('company_actions')!='CONFIRMED_NONE' and not terminal_row and not (reconstructed and state.get('company_actions')=='SOURCE_BOUND_CASH_AND_ANNUAL_SHARE_AUDIT'):result['reasons'].append('COMPANY_ACTIONS_UNKNOWN')
         settlement=row.get('terminal_settlement')
         if settlement and settlement.get('state')!='CONFIRMED_ALL_SHARES_CASH_SETTLED':result['reasons'].append('UNCONFIRMED_TERMINAL_SETTLEMENT')
-        if not terminal_row:
+        if not terminal_row and not reconstructed_suspended:
             if any(number(row.get(field)) is None or number(row.get(field))<=0 for field in ['open','high','low','close']):result['reasons'].append('INVALID_OHLC:'+day)
             elif not number(row['low'])<=min(number(row['open']),number(row['close']))<=max(number(row['open']),number(row['close']))<=number(row['high']):result['reasons'].append('INCONSISTENT_OHLC:'+day)
     result['reasons']=list(dict.fromkeys(result['reasons']))
@@ -128,7 +135,9 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
     result.update({'filled_quantity':str(filled),'unfilled_quantity':str(quantity-filled),'earliest_resale_date':plan['earliest_resale_date']})
     reason='OUTSIDE_FROZEN_PRICE_WINDOW' if plan['delay']=='OUTSIDE_ALLOWED_PRICE_NO_FILL' else ('DECLARED_MISSED_FILL' if fraction==0 else ('PARTIAL_BELOW_MINIMUM_LOT' if filled<minimum else None))
     day=plan['entry_date'];row=rows[day];price=number(row['close' if plan['delay']=='NEXT_CLOSE' else 'open'])
-    if row.get('execution_evidence',{}).get('state')=='CONFIRMED_SUSPENDED':reason='CONFIRMED_SUSPENSION_ON_ENTRY'
+    if row.get('execution_evidence',{}).get('state') in {'CONFIRMED_SUSPENDED','REPORTED_SUSPENDED_RECONSTRUCTED'}:reason='CONFIRMED_SUSPENSION_ON_ENTRY'
+    if reconstructed and reason=='CONFIRMED_SUSPENSION_ON_ENTRY':
+        result.update(label_status='NO_EXECUTION',execution_status='NO_EXECUTION',filled_quantity='0',unfilled_quantity=str(quantity),reasons=[reason]);return result
     if row.get('volume_unit')!='SHARE' or number(row.get('volume_shares')) is None:
         result['reasons']=['EXECUTION_VOLUME_UNKNOWN'];return result
     if number(row['volume_shares'])==0:reason='ZERO_REPORTED_VOLUME'
@@ -136,9 +145,20 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
     if not Decimal(plan['price_window']['lower_yuan'])<=price<=Decimal(plan['price_window']['upper_yuan']):reason='OUTSIDE_FROZEN_PRICE_WINDOW'
     if reason:
         result.update({'label_status':'NO_EXECUTION','execution_status':'NO_EXECUTION','filled_quantity':'0','unfilled_quantity':str(quantity),'net_pnl_yuan':'0.00','reasons':[reason]});return result
+    if reconstructed and rows[maturity].get('execution_evidence',{}).get('state')=='REPORTED_SUSPENDED_RECONSTRUCTED':
+        result.update(execution_status='BLOCKED_EXIT',reasons=['CONFIRMED_SUSPENSION_ON_EXIT']);return result
     tick=Decimal(rule['price_tick_yuan']);slip=Decimal(costs['slippage_each_side_rate'])
     entry_price=(price*(1+slip)/tick).quantize(Decimal('1'),rounding=ROUND_HALF_UP)*tick
     exit_price=Decimal(terminal['cash_per_share_yuan']) if terminal else (number(rows[maturity]['close'])*(1-slip)/tick).quantize(Decimal('1'),rounding=ROUND_HALF_UP)*tick
+    if reconstructed:
+        lower=Decimal(plan['price_window']['lower_yuan']);upper=Decimal(plan['price_window']['upper_yuan'])
+        if all(number(row[k])==upper for k in ['open','high','low','close']) or entry_price>upper:
+            result.update(label_status='NO_EXECUTION',execution_status='NO_EXECUTION',reasons=['LOCKED_UPPER_LIMIT_OR_SLIPPED_ENTRY_OUTSIDE_BAND']);return result
+        exit_band=definition.get('exit_price_window')
+        if not exit_band:result['reasons']=['EXIT_PRICE_BAND_UNKNOWN'];return result
+        floor=Decimal(exit_band['lower_yuan']);ceiling=Decimal(exit_band['upper_yuan'])
+        if all(number(rows[maturity][k])==floor for k in ['open','high','low','close']) or not floor<=exit_price<=ceiling:
+            result.update(execution_status='BLOCKED_EXIT',reasons=['LOCKED_LOWER_LIMIT_OR_SLIPPED_EXIT_OUTSIDE_BAND']);return result
     path=None;exit_day=maturity
     barriers=definition.get('method_barriers')
     if barriers and not terminal:
@@ -169,7 +189,7 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
                 if definition['path_policy']=='INTERVAL':
                     result.update({'label_status':'INTERVAL','execution_status':'SIMULATED_AMBIGUOUS','reasons':['DAILY_TOUCH_PATH_OR_FILL_UNDETERMINABLE']});return result
                 exit_price=min(candidates);exit_day=d if exit_price!=candidates[0] else maturity;path['selected_bound']='LOWER';break
-    if rows[maturity].get('execution_evidence',{}).get('state')=='CONFIRMED_SUSPENDED' and not terminal:
+    if rows[maturity].get('execution_evidence',{}).get('state') in {'CONFIRMED_SUSPENDED','REPORTED_SUSPENDED_RECONSTRUCTED'} and not terminal:
         result.update({'execution_status':'BLOCKED_EXIT','reasons':['CONFIRMED_SUSPENSION_ON_EXIT']});return result
     if not terminal and (rows[maturity].get('volume_unit')!='SHARE' or number(rows[maturity].get('volume_shares')) is None or number(rows[maturity]['volume_shares'])<=0):
         result.update({'execution_status':'BLOCKED_EXIT','reasons':['EXIT_VOLUME_UNKNOWN_OR_ZERO']});return result
@@ -181,12 +201,18 @@ def evaluate(inputs,definition,label_as_of,available_at=None):
     if buy+Decimal(buyfees['total_yuan'])>Decimal(plan['cash_budget_yuan']):result['reasons']=['CASH_OR_EXPOSURE_LIMIT'];return result
     if maturity<plan['earliest_resale_date']:result['reasons']=['T_PLUS_ONE_EXIT_NOT_ALLOWED'];return result
     pnl=sell-Decimal(sellfees['total_yuan'])-buy-Decimal(buyfees['total_yuan'])
+    if reconstructed:
+        try:rights=reconstruction.cash_economics(inputs['research_assumptions']['cash_events'],day,exit_day,filled,definition['consumer_knowledge_cutoff'])
+        except ValueError as error:
+            result['reasons']=[str(error)];return result
+        result['cash_rights']=rights;pnl+=Decimal(rights['net_economic_entitlement_yuan'])
     result.update({'label_status':'MATURE','execution_status':'PARTIAL' if filled<quantity else 'FILLED','label':int(pnl>0),'scoreable':True,
         'net_pnl_yuan':money(pnl),'net_return_on_invested_cash':str(pnl/(buy+Decimal(buyfees['total_yuan']))),
         'entry':{'trade_date':day,'daily_price_field':'close' if plan['delay']=='NEXT_CLOSE' else 'open','price_yuan':money(entry_price),'gross_yuan':money(buy),'fees':buyfees},
         'exit':{'trade_date':exit_day,'daily_price_field':None if terminal or path else 'close','price_yuan':money(exit_price),'gross_yuan':money(sell),'fees':sellfees,
             **({'basis':'CONFIRMED_TERMINAL_CASH_SETTLEMENT'} if terminal else {})},
         'label_available_at':available_at,'execution_basis':'DAILY_SCENARIO_NOT_OBSERVED_BROKER_FILL','cost_basis':'FROZEN_RESEARCH_SCENARIO; UNKNOWN_ACTUAL_BROKER_TARIFF_NOT_ZERO'})
+    result['eligible_for_training']=reconstructed
     return result
 
 
@@ -233,15 +259,16 @@ class DailyExecutions:
             sessions.append(following);current=date.fromisoformat(following)
         maturity=sessions[-1] if len(sessions)==20 else None
         method=dataset['source_evidence_kind']=='METHOD_CASE'
+        reconstructed=dataset.get('data_use')=='RECONSTRUCTED_RESEARCH' and dataset['source_evidence_kind']=='REAL_ACQUISITION'
         if command.method_barriers and not method:raise HTTPException(422,'额外触价路径仅用于明确METHOD压力；不能改写实际M0事件')
         if command.method_barriers:
             if set(command.method_barriers)!={'stop_price_yuan','profit_price_yuan'} or any(number(v) is None or number(v)<=0 for v in command.method_barriers.values()):raise HTTPException(422,'方法路径需要两个正数原价边界')
             if number(command.method_barriers['stop_price_yuan'])>=number(command.method_barriers['profit_price_yuan']):raise HTTPException(422,'方法止损边界必须低于止盈边界')
-        rule=anchor.get('execution_evidence',{}) if method else self.evidence.market.rules.rule(identity['exchange'],identity['board'],identity['instrument_type'],on=command.observation_date)
+        rule=anchor.get('execution_evidence',{}) if method else reconstruction.rule(self.evidence,identity,command.observation_date.isoformat()) if reconstructed else self.evidence.market.rules.rule(identity['exchange'],identity['board'],identity['instrument_type'],on=command.observation_date)
         close=rule.get('close_time') if method and rule.get('rule_scope')=='METHOD_CASE_ONLY' else None
         clock_basis='METHOD_CASE_ONLY' if close else 'UNKNOWN'
         if not close and maturity:
-            exit_rule=self.evidence.market.rules.rule(identity['exchange'],identity['board'],identity['instrument_type'],on=date.fromisoformat(maturity))
+            exit_rule=reconstruction.rule(self.evidence,identity,maturity) if reconstructed and maturity<=part['metadata']['last_date'] else self.evidence.market.rules.rule(identity['exchange'],identity['board'],identity['instrument_type'],on=date.fromisoformat(maturity))
             if exit_rule['implementation_status']=='ADAPTED':close='15:00:00';clock_basis='ARCHIVED_RULE_CALENDAR_ADAPTED_DATE'
         as_of=command.label_as_of or datetime.fromisoformat(now())
         if as_of.tzinfo is None:raise HTTPException(422,'标签评估时点需要时区，不把日期补午夜')
@@ -252,7 +279,7 @@ class DailyExecutions:
             'maturity_clock_basis':clock_basis,
             'maturity_rule':'TWENTY_CONFIRMED_TRADING_SESSIONS_AND_COMPLETE_EXIT_BAR_AVAILABLE',
             'execution':protocol['design']['execution'],'costs':protocol['design']['costs'],'rule':rule,
-            'engine_sha256':engine_fingerprint(),'engine_fingerprint_basis':'SHA256_EXECUTION_AND_HISTORICAL_COST_CODE_MANIFEST_ORIGINALS_CANONICAL_LF',
+            'engine_sha256':engine_fingerprint(),'engine_fingerprint_basis':'SHA256_EXECUTION_COST_CASH_RECONSTRUCTION_CODE_AND_SOURCE_MANIFESTS_CANONICAL_LF',
             'calendar_proof':self.evidence.market.rules.calendar(identity['exchange'],command.observation_date),
             'consumer_knowledge_cutoff':now(),'label_as_of':as_of.isoformat(),'historical_point_in_time_proven':False}
         definition.update({'path_policy':command.path_policy,'method_barriers':command.method_barriers,'terminal_settlement':None})
@@ -305,8 +332,22 @@ class DailyExecutions:
         definition['order']={'delay':command.delay,'quantity':quantity,'fill_fraction':command.fill_fraction,'entry_date':entry_date,
             'earliest_resale_date':earliest_resale,'cash_budget_yuan':str(budget),
             'price_window':{'lower_yuan':money(lower) if lower else None,'upper_yuan':money(upper) if upper else None,'basis':'FROZEN_OBSERVATION_CLOSE_AND_SUPPORTED_NORMAL_RULE; UNKNOWN_STATUS_BLOCKS_EXECUTION'}}
+        if reconstructed:
+            # Ex-right reference belongs to label execution, never to observation features.
+            events=dataset['research_assumptions']['cash_events']
+            entry_reference=anchor_price-sum(Decimal(e['gross_cash_yuan_per_eligible_share']) for e in events if e['ex_date']==entry_date)
+            definition['order']['price_window']={'lower_yuan':money(entry_reference*(1-limit/100)),'upper_yuan':money(entry_reference*(1+limit/100)),
+                'basis':'RAW_OBSERVATION_CLOSE_MINUS_KNOWN_ENTRY_EFFECTIVE_CASH; rounded0.01; labels only'}
+            previous=next((f for f in facts if len(sessions)>=2 and f['trade_date']==sessions[-2]),None)
+            if previous:
+                exit_reference=number(previous['close'])-sum(Decimal(e['gross_cash_yuan_per_eligible_share']) for e in events if e['ex_date']==maturity)
+                definition['exit_price_window']={'lower_yuan':money(exit_reference*(1-limit/100)),'upper_yuan':money(exit_reference*(1+limit/100)),
+                    'basis':'RAW_PREVIOUS_SESSION_MINUS_EFFECTIVE_CASH; no future feature consumption'}
+            definition['version']='19-reconstructed-single-opportunity-v2'
+            definition['research_assumptions_sha256']=dataset['assumptions_archive']['sha256']
         selected=[f for f in facts if f['trade_date'] in [command.observation_date.isoformat(),*sessions]]
         inputs={'namespace':'HISTORICAL','partition':command.partition,'evidence_kind':dataset['source_evidence_kind'],
+            'data_use':dataset.get('data_use'),'research_assumptions':dataset.get('research_assumptions'),
             'data_fingerprint':dataset['data_fingerprint'],'partition_sha256':part['metadata']['artifact']['sha256'],
             'original_archives':dataset['original_archives'],'partition_last_date':part['metadata']['last_date'],'facts':selected,'definition':definition}
         archive=self.evidence.archive(encode(inputs).encode(),'RESEARCH_EXECUTION_INPUT',research_namespace='HISTORICAL')

@@ -1,0 +1,625 @@
+{
+  "run": {
+    "run_id": "3d4a6515-50fb-49cb-aa52-948e1fe4e0ff",
+    "request_id": "5c84ddd2-5590-4307-9854-3fb159af398f",
+    "backend": "CNEQUITY",
+    "status": "COMPLETE",
+    "started_at": "2026-10-10T03:53:21.173919+00:00",
+    "evidence_kind": "REAL_ACQUISITION",
+    "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+    "tools": [],
+    "gaps": [],
+    "source_policy": {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.177670+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-tdx-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 通达信日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "TDX",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-10T03:50:36.972878+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "ec637b49-69c7-4ffc-86bf-b00b29e56234",
+        "last_success_at": "2026-10-10T03:50:36.972878+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    "host_owner": {
+      "pid": 46988,
+      "creation_ticks": 134360779991094911,
+      "nonce": "813944d3-90e9-4050-a288-29b858d6336d"
+    },
+    "config_fingerprint": "54e584c8b08c7f457e070ae6f2e4d6ec47a711fb2177a5bacdcbc405aca36d16",
+    "roll_code_sha256": {
+      "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+      "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+      "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+    },
+    "snapshot_id": "8fe4d6a1-984a-4e86-8da8-292f88652deb",
+    "finished_at": "2026-10-10T03:53:27.579967+00:00",
+    "network_calls": 7,
+    "runtime_provenance": {
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "version": "0.16.0",
+      "package_manifest_sha256": "b5a39c062465caf83379d94a68431b4abf4a5527d87c9dd22fcf7a8f0a3f945f",
+      "dependencies": {
+        "anyio": "4.15.1",
+        "certifi": "2026.7.22",
+        "cnequity": "0.16.0",
+        "h11": "0.16.0",
+        "httpcore": "1.0.9",
+        "httpx": "0.28.1",
+        "idna": "3.20",
+        "pip": "25.3",
+        "polars": "2.0.0",
+        "polars-runtime-32": "2.0.0",
+        "PyYAML": "6.0.3",
+        "typing_extensions": "4.16.0",
+        "tzdata": "2026.5"
+      },
+      "profile": "ROLL_BOUNDED_ADAPTERS_ONLY"
+    },
+    "cleaning_report_hash": "6d39bc44873b0ce1beea920ae1f61e0d61eae5808646cac9c98fbb567b766ed2"
+  },
+  "batch": {
+    "batch_id": "e2bc1153-d980-4856-8b5d-c391cd11b470",
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "run_id": "3d4a6515-50fb-49cb-aa52-948e1fe4e0ff",
+    "snapshot_id": "8fe4d6a1-984a-4e86-8da8-292f88652deb",
+    "recorded_at": "2026-10-10T03:53:27.649383+00:00",
+    "collection_code_sha256": "c28690a8c27694afa0b8dcaa1a9718485cce838a9f54a6340808d8e3f107d566",
+    "source_adapter_version": "prospective-cleaning-v1",
+    "known_at": "2026-10-10T03:53:27.649383+00:00",
+    "status": "COMPLETE",
+    "fact_count": 27,
+    "evidence_kind": "REAL_ACQUISITION",
+    "gaps": [],
+    "capability": "NOT_GRANTED"
+  },
+  "replay": {
+    "network_calls": 0,
+    "fact_count": 27
+  },
+  "comparison": {
+    "comparison_id": "b0071dd7-993c-48cd-8c05-71d3fda599f1",
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "created_at": "2026-10-10T03:53:28.235415+00:00",
+    "comparison_basis": "EXACT_DECIMAL_SOURCE_VALUES; DISPLAY_PRECISION_NOT_SILENTLY_NORMALIZED",
+    "differences": [
+      {
+        "trade_date": "2026-08-26",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "87458500",
+            "right": "87458400"
+          },
+          "amount_yuan": {
+            "left": "4149840300.00",
+            "right": "4149840384.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-08-27",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "6157355600.00",
+            "right": "6157355520.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-08-28",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "70438000",
+            "right": "70437900"
+          },
+          "amount_yuan": {
+            "left": "3452443800.00",
+            "right": "3452443904.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-08-31",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "66524800",
+            "right": "66524700"
+          },
+          "amount_yuan": {
+            "left": "3153487500.00",
+            "right": "3153487616.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-01",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "72918200",
+            "right": "72918100"
+          },
+          "amount_yuan": {
+            "left": "3554781600.00",
+            "right": "3554781440.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-02",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "2973955300.00",
+            "right": "2973955328.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-03",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "1916577500.00",
+            "right": "1916577536.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-04",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "49328000",
+            "right": "49327900"
+          },
+          "amount_yuan": {
+            "left": "2296476100.00",
+            "right": "2296476160.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-07",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "39912800",
+            "right": "39912700"
+          },
+          "amount_yuan": {
+            "left": "1827871100.00",
+            "right": "1827871104.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-08",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "5573843800.00",
+            "right": "5573843968.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-09",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "5343001200.00",
+            "right": "5343001088.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-10",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "79053900",
+            "right": "79053800"
+          },
+          "amount_yuan": {
+            "left": "3936982500.00",
+            "right": "3936982528.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-11",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "114669700",
+            "right": "114669600"
+          },
+          "amount_yuan": {
+            "left": "5211707800.00",
+            "right": "5211707904.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-14",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "50567900",
+            "right": "50567800"
+          },
+          "amount_yuan": {
+            "left": "2262003400.00",
+            "right": "2262003456.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-15",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "2348976600.00",
+            "right": "2348976640.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-16",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "1839529500.00",
+            "right": "1839529472.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-17",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "2013944100.00",
+            "right": "2013944064.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-18",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "1869049400.00",
+            "right": "1869049344.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-21",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "1320910200.00",
+            "right": "1320910208.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-22",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "2602377200.00",
+            "right": "2602377216.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-23",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "35090200",
+            "right": "35090100"
+          },
+          "amount_yuan": {
+            "left": "1570699200.00",
+            "right": "1570699264.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-24",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "1937716700.00",
+            "right": "1937716736.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-28",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "amount_yuan": {
+            "left": "1296365100.00",
+            "right": "1296365056.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-29",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "22563900",
+            "right": "22563800"
+          },
+          "amount_yuan": {
+            "left": "932555300.00",
+            "right": "932555328.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-09-30",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "18649600",
+            "right": "18649500"
+          },
+          "amount_yuan": {
+            "left": "777747700.00",
+            "right": "777747712.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-10-08",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "26203900",
+            "right": "26203800"
+          },
+          "amount_yuan": {
+            "left": "1104213100.00",
+            "right": "1104213120.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      },
+      {
+        "trade_date": "2026-10-09",
+        "left_source": "sohu-daily",
+        "right_source": "cnequity-tdx-daily",
+        "left_raw_hash": "143c1d713a130a5636855e808df9184cdbabd17a2abf94a2b9e7732ed3a0abbf",
+        "right_raw_hash": "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "fields": {
+          "volume_shares": {
+            "left": "31419200",
+            "right": "31419100"
+          },
+          "amount_yuan": {
+            "left": "1314805300.00",
+            "right": "1314805248.0"
+          }
+        },
+        "resolution": "UNRESOLVED; BOTH_SOURCE_VALUES_RETAINED",
+        "independence": "NOT_ASSERTED"
+      }
+    ],
+    "source_winner": null
+  },
+  "integrity": {
+    "checked_at": "2026-10-10T03:53:29.010521+00:00",
+    "sqlite": "ok",
+    "archives_checked": 55,
+    "archive_failures": [],
+    "ok": true,
+    "reference_failures": [],
+    "facts_checked": 231,
+    "network_calls": 0,
+    "system_usable": false,
+    "consistent": true
+  },
+  "readiness": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "state": "COLLECTING",
+    "real_recorded_sessions": 0,
+    "real_context_sessions": 27,
+    "batches": 26,
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "minimum_calibration_examples_per_class": 20,
+    "minimum_effective_time_blocks": 30,
+    "requirements": [
+      "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+      "COMPLETE_STATUS_ACTIONS_AND_RULES",
+      "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+      "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+      "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+      "CONFIRMATORY_AND_FORWARD_VALIDATION",
+      "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+    ],
+    "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+  },
+  "backup": {
+    "backup_id": "bc7151e2-f4e3-4baa-a582-c158617dc258",
+    "status": "COMPLETE",
+    "reason": "CNEQUITY_FINAL_SOURCE_VERIFICATION",
+    "completed_at": "2026-10-10T03:53:29.949383+00:00",
+    "restore_point": {
+      "account_version": 0,
+      "event_count": 0,
+      "account_confirmed_at": null,
+      "capture_finished_at": "2026-10-10T03:53:29.636809+00:00"
+    },
+    "published_at": "2026-10-10T03:53:29.949401+00:00",
+    "attachment_count": 55,
+    "change_fingerprint": "4d617653717df34583b734a845366e0996d0e2c11fa6e2836d19b83ab2a5fae6"
+  }
+}

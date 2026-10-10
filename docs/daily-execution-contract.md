@@ -1,5 +1,13 @@
 # 日线执行与成熟标签（18）
 
+## 2026-10-10 ticket19必要消费补充
+
+依据[ADR0004](adr/0004-reconstructed-price-volume-research.md)，仅宿主已准入的600362有限历史重建数据允许`REPORTED_NORMAL_RECONSTRUCTED`与发行人现金/年度股本审计参与研究单机会标签；来源身份仍REAL_ACQUISITION，严格PIT与正式权限未授。原始接收/可消费时刻保持；历史日线15:05完成假设与本次消费截止分列，未成熟、跨窗、未知、原件或字段冲突不标负例。空价停牌保留日历位置，入口NO_EXECUTION、期末BLOCKED_EXIT；零量、缺行、涨跌停锁定/滑点越限也保留各自原因。
+
+RAW模拟成交及价限，除息参考仅在已生效的执行日期减已知现金；20日单机会经济结果包括登记日资格、支付/应收及自然月年持有税负。历史印花/过户逐边生效版本、佣金3bp/min5元与滑点5bp冻结研究情景、HALF_UP分币处理不冒充实券商费用或实账户收款。复杂权益/无法确认税边界保持不可评分。引擎SHA覆盖执行、历史费用、重建/现金计算代码和原件manifest；旧版本不以新算法重放。仅扩展18已有单机会接口，不实现连续账户/NAV。实际成熟标签与回归见[19本轮验收](../.scratch/roll-p0/evidence/19-reconstruction-2026-10-10/acceptance.md)。以下旧路径/历史验收限制保留。
+
+## 已有单机会接口
+
 `POST /api/research/protocols/{protocol_id}/executions` 消费17已登记数据的宿主过滤 DEVELOPMENT/CALIBRATION 分片。输入为 `partition`、`observation_date`、`basis`；可选 `label_as_of`（带时区、不得晚于实际现在）、`quantity`、预登记 `delay`、`fill_fraction`，及17登记的佣金/滑点邻域。SEALED 返回403并保存拒绝审计；校准前置20行仅特征上下文，不能登记标签。不是未来预测发布入口，不产生前向起点、账户事实、正式能力或G7。
 
 延迟限定 NEXT_OPEN、NEXT_CLOSE、ONE_MORE_SESSION_OPEN、OUTSIDE_ALLOWED_PRICE_NO_FILL；成交压力0/0.50/1。数量在观察日原价价窗及合成预算上冻结，不用未来实际成交价挑选规模；未指定时按冻结上界、手续费和股票整数增量取整。显式数量不能越过现金/50%暴露限制。归档和归一化价格用十进制字符串，费用按人民币分 ROUND_HALF_UP；佣金已含规费，额外规费不重复计。实际券商佣金仍UNKNOWN，费用是17研究情景，绝非官方账面支出或免费成交。

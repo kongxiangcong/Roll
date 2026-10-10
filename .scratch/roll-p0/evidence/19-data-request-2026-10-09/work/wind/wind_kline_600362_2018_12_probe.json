@@ -1,0 +1,23 @@
+{
+  "request": {
+    "tool": "wind:get_stock_kline",
+    "windcode": "600362.SH",
+    "begin_date": "2018-12-24",
+    "end_date": "2019-01-04",
+    "period": "10",
+    "aftype": "2"
+  },
+  "response": {
+    "dates_returned": [
+      "2018-12-24",
+      "2018-12-25",
+      "2018-12-26",
+      "2018-12-27",
+      "2018-12-28",
+      "2019-01-02",
+      "2019-01-03",
+      "2019-01-04"
+    ],
+    "note": "2018-12-31 is ABSENT - it is a genuine exchange holiday. 2019-01-02 IS present, which conflicts with the derived calendar and establishes the calendar derivation was wrong."
+  }
+}

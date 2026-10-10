@@ -115,3 +115,18 @@ backend/src/roll/research/reference/cash-rights/sources.json -text
 .scratch/roll-p0/evidence/continuation-2026-10-08/review-spec.md -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/continuation-2026-10-08/session-start.json -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/19-execution-2026-10-09/actual-public-original-receipt.py -text whitespace=cr-at-eol
+# Ticket19 reconstruction, delivery and prospective collection evidence retain exact bytes.
+.scratch/roll-p0/evidence/19-connectors-2026-10-10/** -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-data-request-2026-10-09/** -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-framework-2026-10-10/** -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-reconstruction-2026-10-10/** -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-workbuddy-sync-2026-10-10/** -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/19-workbuddy-wind-sync-2026-10-10/** -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/cnequity-assessment-2026-10-10/** -text whitespace=-blank-at-eol,cr-at-eol
+.scratch/roll-p0/evidence/cnequity-integration-2026-10-10/** -text whitespace=-blank-at-eol,cr-at-eol
+backend/src/roll/research/reference/reconstruction/** -text whitespace=cr-at-eol
+# Public source responses are originals, including their upstream whitespace.
+.scratch/roll-p0/evidence/19-data-request-2026-10-09/**/raw/** binary
+.scratch/roll-p0/evidence/19-reconstruction-2026-10-10/negative-real-integrity/raw/** binary
+backend/src/roll/research/reference/reconstruction/*.html binary
+.scratch/roll-p0/evidence/19-reconstruction-2026-10-10/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

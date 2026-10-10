@@ -1,0 +1,92 @@
+{
+  "instrument": "SSE:600362",
+  "sources_compared": [
+    "SRC-SOHU",
+    "SRC-WIND"
+  ],
+  "compared_scope": "overlapping OBSERVED dates in the requested range 2016-01-01..2023-12-31",
+  "overlapping_observed_dates": 1916,
+  "exact_agreement_dates": 1914,
+  "mismatch_dates": [
+    "2017-03-31",
+    "2017-04-10"
+  ],
+  "tolerance": {
+    "volume_shares": 100,
+    "amount_yuan": 10000
+  },
+  "tolerance_rationale": "Sohu reports 成交量 in 手 (x100 to shares) and 成交金额 in 万元 (x10000 to yuan); the published rounding of those units alone produces sub-unit noise. A mismatch is only recorded when the derived values differ by more than one source's smallest reported unit.",
+  "mismatch_detail": [
+    {
+      "trade_date": "2017-03-31",
+      "status": "MISMATCH",
+      "fields": {
+        "volume_shares": {
+          "sohu_derived": "16651500",
+          "wind": "16757033"
+        },
+        "amount_yuan": {
+          "sohu_derived": "286951000",
+          "wind": "288770983"
+        }
+      }
+    },
+    {
+      "trade_date": "2017-04-10",
+      "status": "MISMATCH",
+      "fields": {
+        "volume_shares": {
+          "sohu_derived": "20851600",
+          "wind": "21301204"
+        },
+        "amount_yuan": {
+          "sohu_derived": "367960600",
+          "wind": "375882933"
+        }
+      }
+    }
+  ],
+  "agreement_only_note": "OHLC agreed EXACTLY on every compared date, including both mismatch dates. Only volume/amount differ on 2 dates.",
+  "non_overlapping_dates": [
+    "2016-02-16",
+    "2016-02-17",
+    "2016-02-18",
+    "2016-02-19",
+    "2016-02-22",
+    "2016-02-23",
+    "2016-02-24",
+    "2016-02-25",
+    "2018-12-14",
+    "2018-12-25",
+    "2019-01-03",
+    "2019-01-04",
+    "2019-01-07",
+    "2019-01-08",
+    "2019-01-09",
+    "2019-01-10",
+    "2019-01-11",
+    "2019-01-14",
+    "2019-06-17",
+    "2019-06-18",
+    "2019-06-19",
+    "2019-06-20",
+    "2019-06-21",
+    "2019-06-24",
+    "2019-06-25",
+    "2019-06-26",
+    "2019-06-27",
+    "2019-06-28",
+    "2019-07-01"
+  ],
+  "wind_suspension_placeholder_dates": [
+    "2016-02-16",
+    "2016-02-17",
+    "2016-02-18",
+    "2016-02-19",
+    "2016-02-22",
+    "2016-02-23",
+    "2016-02-24",
+    "2016-02-25"
+  ],
+  "interpretation": "This is a cross-source agreement check, NOT a point-in-time check. Both sources are CURRENT_QUERY_ONLY: they prove what each vendor serves TODAY, not what was public at any historical cutoff. Agreement raises confidence in the UNIT CONVERSION and in the raw values; it does NOT upgrade either source's evidence_class."
+}

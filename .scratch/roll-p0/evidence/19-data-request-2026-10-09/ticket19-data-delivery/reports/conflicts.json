@@ -1,0 +1,244 @@
+{
+  "instrument": "SSE:600362",
+  "generated_at": "2026-10-09T16:30:55.576261+00:00",
+  "conflicts": [
+    {
+      "id": "CONF-001",
+      "category": "SOURCE_INDEPENDENCE",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "every delivered daily bar",
+      "affected_fields": [
+        "source_id",
+        "cross_source_conflicts"
+      ],
+      "description": "Sohu redistributes SSE market data. Source independence from the exchange feed is NOT proven, and no second independent continuous bar series was reachable to cross-validate 2016-2022. The 2023-12-29 check shows AGREEMENT with SSE official statistics, which supports (but does not prove) the conversion and values.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-014",
+          "locator": "result[0]"
+        },
+        {
+          "evidence_id": "EV-E-002",
+          "locator": "hq[] row \"2023-12-29\""
+        }
+      ],
+      "methods_attempted": [
+        "SSE official daily statistics (only ~2023+)",
+        "Tencent (0 rows for long ranges)",
+        "Sina (1023 recent rows)"
+      ],
+      "why_unresolved": "No independent continuous source was reachable for the early window.",
+      "next_step": "Add an authorised second bar source for cross-validation of 2016-2022.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-002",
+      "category": "PRECLOSE_SEMANTICS",
+      "severity": "BLOCKS_HISTORICAL_INPUT",
+      "affected_dates_or_scope": "every delivered daily bar",
+      "affected_fields": [
+        "reported_preclose",
+        "preclose_basis"
+      ],
+      "description": "Sohu's history endpoint returns no separate preclose field in the delivered payload; the 'close' column is the day's close and the 'change' column is the day's change. A provider preclose, where it exists, may be an EX-RIGHTS REFERENCE PRICE rather than the prior RAW close. This package therefore sets reported_preclose=null with preclose_basis=null and does NOT compute a preclose from adjacent rows.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-011",
+          "locator": "column labels: no preclose column"
+        }
+      ],
+      "methods_attempted": [
+        "inspected Sohu column labels and payload",
+        "checked SSE daily-statistics fields (has PRE_CLOSE)"
+      ],
+      "why_unresolved": "Sohu does not expose a preclose field; SSE's PRE_CLOSE is available only for ~2023+ and its ex-rights semantics are not documented in the response.",
+      "next_step": "Use a source that documents whether preclose is RAW or ex-rights-adjusted.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-003",
+      "category": "UNIT_CONVERSION_PERIOD",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "volume_shares / amount_yuan 2016-2022",
+      "affected_fields": [
+        "volume_shares",
+        "amount_yuan"
+      ],
+      "description": "The x100 / x10000 conversions are validated on one day (2023-12-29). Prior project work found a 500-CNY-scale amount discrepancy on 2025-12-31 against a different source. Both are recorded; neither is suppressed. The discrepancy is OUTSIDE the requested window and is not extrapolated.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-014",
+          "locator": "result[0] TRADE_AMT"
+        }
+      ],
+      "methods_attempted": [
+        "2023-12-29 exact comparison (agreement)"
+      ],
+      "why_unresolved": "Only one overlapping day is checkable with the reachable official source.",
+      "next_step": "Sample-check additional dates via an authorised source.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-004",
+      "category": "CALENDAR_VS_BARS",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "2016-2023",
+      "affected_fields": [
+        "is_trading_day",
+        "trade_date"
+      ],
+      "description": "The trading calendar is DERIVED (weekday AND not in the transcribed official closure list), not a direct official per-day table. It agrees with the Sohu observed dates with ZERO conflicts, which is corroboration, but the derivation rule and the closure transcription are both single-source. Where the calendar says trading and no bar exists, the row is reported as a missing bar, NOT as a closure.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-002",
+          "locator": "hq[] date set"
+        }
+      ],
+      "methods_attempted": [
+        "compared derived calendar to observed bars (0 dates outside calendar)"
+      ],
+      "why_unresolved": "The official page is a notice list, not a machine-readable per-day table.",
+      "next_step": "Obtain the exchange's official per-day trading-calendar dataset.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-005",
+      "category": "NO_CONFLICT_ON_2023_12_29",
+      "severity": "INFORMATION_ONLY",
+      "affected_dates_or_scope": "2023-12-29",
+      "affected_fields": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume_shares",
+        "amount_yuan"
+      ],
+      "description": "For the single date where two sources could be compared, Sohu and SSE official statistics AGREE exactly (OHLC identical; 124913手 x100 = 1249.13万股; 22208.65万元 identical). This is recorded as an explicit NO-CONFLICT result so the conflict count is not misread as 'nothing was compared'.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-014",
+          "locator": "result[0]"
+        },
+        {
+          "evidence_id": "EV-E-002",
+          "locator": "hq[] row \"2023-12-29\""
+        }
+      ],
+      "methods_attempted": [
+        "direct field-by-field comparison"
+      ],
+      "why_unresolved": "",
+      "next_step": "",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-006",
+      "category": "CROSS_SOURCE_AGREEMENT",
+      "severity": "INFORMATION_ONLY",
+      "affected_dates_or_scope": "1916 overlapping observed dates 2016-2023",
+      "affected_fields": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume_shares",
+        "amount_yuan"
+      ],
+      "description": "A SECOND source (Wind) became available after the initial delivery. Sohu and Wind AGREE on 1914 of 1916 overlapping observed dates (OHLC exactly equal; volume/amount within source-rounding tolerance). This upgrades the unit-conversion evidence from a single-day check to a full-window check.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-WIND-WIND_KLINE_600362_2016_2023_",
+          "locator": "data.rows[]"
+        },
+        {
+          "evidence_id": "EV-E-002",
+          "locator": "hq[]"
+        }
+      ],
+      "methods_attempted": [
+        "field-by-field comparison on every overlapping date"
+      ],
+      "why_unresolved": "",
+      "next_step": "",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-007",
+      "category": "CROSS_SOURCE_VOLUME_MISMATCH",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "2017-03-31 2017-04-10",
+      "affected_fields": [
+        "volume_shares",
+        "amount_yuan"
+      ],
+      "description": "On 2 date(s) OHLC agrees exactly but volume/amount differ between Sohu and Wind 2017-03-31 (fields: volume_shares, amount_yuan); 2017-04-10 (fields: volume_shares, amount_yuan). The differences are sub-3% and consistent with one source including block trades or the closing auction that the other excludes. Both values are preserved; neither is silently preferred.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-WIND-WIND_KLINE_600362_2016_2023_",
+          "locator": "data.rows[]"
+        },
+        {
+          "evidence_id": "EV-E-002",
+          "locator": "hq[]"
+        }
+      ],
+      "methods_attempted": [
+        "derived both to share/yuan units and compared with a tolerance"
+      ],
+      "why_unresolved": "Neither source documents whether block trades / auction volume are included.",
+      "next_step": "Obtain a source that documents its volume scope, or the exchange's own trade summary.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-008",
+      "category": "CALENDAR_DERIVATION_ERROR_FOUND",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "2018-12-31",
+      "affected_fields": [
+        "is_trading_day"
+      ],
+      "description": "The initially derived calendar labelled 2018-12-31 as a trading day. The second source returns no bar for that date and the exchange was closed (元旦). The calendar has been CORRECTED and the correction is recorded in trading_calendar.jsonl and reports/coverage.json. This shows the derived rule was not sufficiently validated against a second source initially.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-WIND-WIND_KLINE_600362_2016_2023_",
+          "locator": "absence of 2018-12-31"
+        }
+      ],
+      "methods_attempted": [
+        "compared derived calendar to Wind session set (Wind is a strict subset)",
+        "re-derived after correction"
+      ],
+      "why_unresolved": "The initial derivation relied on a single transcribed notice set.",
+      "next_step": "Cross-validate the whole derived calendar against a second source for every year.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "CONF-009",
+      "category": "DIVIDEND_DATE_DISAGREEMENT",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "FY2016, FY2017, FY2019, FY2020, FY2021, FY2022",
+      "affected_fields": [
+        "announcement_date",
+        "share_base_date"
+      ],
+      "description": "For the same distributions, cninfo implementation PDFs and Wind disagree by 1 day on several announcement dates (e.g. FY2016: cninfo 2017-07-05 vs Wind 2017-07-06) and Wind additionally supplies a 股本基准日 that cninfo's implementation table does not state. Ex-date and payment-date agree. Both values are kept.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-WIND-WIND_STOCK_EVENTS_DIVIDENDS_",
+          "locator": "内地股票分红实施公告日"
+        },
+        {
+          "evidence_id": "EV-E-023",
+          "locator": "实施公告 date"
+        }
+      ],
+      "methods_attempted": [
+        "compared each delivered dividend row across the two sources"
+      ],
+      "why_unresolved": "cninfo exposes a DATE with no clock; a 1-day difference can come from publication vs effective dating.",
+      "next_step": "Use the issuers' own board-resolution announcements to pin the exact publication dates.",
+      "requires_external_authorization": false
+    }
+  ]
+}

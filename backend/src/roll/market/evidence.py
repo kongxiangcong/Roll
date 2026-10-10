@@ -207,7 +207,7 @@ class EvidenceStore:
             'full_history_verified':False,'truncation':'REQUEST_BOUNDED; SOURCE_TOTAL_IS_NOT_RETURNED_COVERAGE',
             'adjustment':adjustment,'raw_hash':archive['sha256']}
 
-    def retrieve(self,request_id,*,acquisition_limits=None,cancel_event=None):
+    def retrieve(self,request_id,*,acquisition_limits=None,cancel_event=None,collection_source_policy=None):
         import time
         request=self.get('data_requests',request_id)
         # Recheck current membership, so a stale request cannot acquire a removed stock.
@@ -234,6 +234,9 @@ class EvidenceStore:
         with httpx.Client(transport=self.transport,follow_redirects=False) as client:
             def fetch(source_id,instrument,group,url,params=None,headers=None,**context):
                 nonlocal total_bytes
+                blocked=collection_source_policy.access(source_id,instrument) if collection_source_policy else None
+                if blocked:
+                    run['gaps'].append({'instrument':instrument,'group':group,'source_id':source_id,'code':blocked});return None
                 if sum(t.get('network_calls',1) for t in run['tools'])>=request['max_calls'] or time.monotonic()>=deadline or (cancel_event and cancel_event.is_set()) or total_bytes>=max_total_bytes:
                     run['gaps'].append({'instrument':instrument,'group':group,'code':'TECHNICAL_LIMIT',**context});return None
                 tool={'source_id':source_id,'instrument':instrument,'group':group,'started_at':now(),
@@ -262,10 +265,13 @@ class EvidenceStore:
                             received_at=now(),http_status=response.status_code,evidence_kind=self.evidence_kind)
                     archives.append(archive);tool.update(raw_hash=archive['sha256'],http_status=response.status_code)
                     response.raise_for_status();tool.update(status='ARCHIVED',finished_at=now(),received_bytes=len(content))
+                    if collection_source_policy:collection_source_policy.outcome(source_id,True,'HTTP_ACQUIRED',run['run_id'])
                     return archive,bytes(content)
                 except (httpx.HTTPError,ValueError,KeyError,TypeError) as error:
                     tool.update(status='FAILED',finished_at=now());run['gaps'].append({'instrument':instrument,'group':group,'code':type(error).__name__,
-                        'reason':str(error)[:300],**context});return None
+                        'reason':str(error)[:300],**context})
+                    if collection_source_policy:collection_source_policy.outcome(source_id,False,type(error).__name__,run['run_id'])
+                    return None
 
             def bao_fetch(instrument,group,**parameters):
                 nonlocal total_bytes,total_decoded_bytes

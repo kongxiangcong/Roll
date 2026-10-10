@@ -1,5 +1,11 @@
 # 本地Chrome验收的账户隔离
 
+## 2026-10-10 ticket19真实冻结研究单独profile
+
+仅显式`ROLL_RECONSTRUCTED19_LIVE=1`时运行`playwright.reconstructed19.config.ts`，并将`ROLL_TEST_DATA_DIR`指向`.roll-data/reconstructed19-v1`。这是实际历史研究/原账本的隔离副本，非默认合成集合；源账本不写，测试前后比较副本账户与协议前向起点，读取实际非METHOD模型、历史CAL预测与重放，不拟合、不访问SEALED、不授能力。使用独立报告目录，默认runner不消费此profile。最终真实Chrome1 passed及源码版本/HTTP禁止外网重放见[19本轮验收](../.scratch/roll-p0/evidence/19-reconstruction-2026-10-10/acceptance.md)。
+
+## 默认合成账户profile
+
 Playwright启动真实FastAPI、SQLite与Vite；ROLL_ENV=test和临时ROLL_DATA_DIR只包含合成账户，不暴露产品reset接口。`frontend`目录先设置：
 
 ```powershell

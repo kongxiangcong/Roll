@@ -1,0 +1,117 @@
+{
+  "source_tables_unchanged": {
+    "account_versions": true,
+    "account_drafts": true,
+    "account_events": true,
+    "account_receipts": true,
+    "account_audit": true,
+    "account_equity_hints": true,
+    "account_csv_imports": true,
+    "market_sources": true,
+    "market_watch": true,
+    "market_versions": true,
+    "market_watch_events": true,
+    "market_identities": true,
+    "market_account_memberships": true,
+    "data_requests": true,
+    "retrieval_runs": true,
+    "market_evidence_snapshots": true,
+    "evidence_archives": true,
+    "research_protocols": true,
+    "research_datasets": true,
+    "research_attempts": true,
+    "research_events": true,
+    "sqlite_sequence": true,
+    "research_executions": true,
+    "research_execution_results": true,
+    "research_models": true,
+    "research_forecasts": true,
+    "review_tasks": true,
+    "review_worker": false,
+    "review_audits": true,
+    "review_sessions": false,
+    "review_coverage_gaps": true,
+    "review_maintenance": true,
+    "review_maintenance_checks": true,
+    "review_verification_requests": true,
+    "review_running_days": true,
+    "schema_migrations": true,
+    "valuation_versions": true,
+    "valuation_baselines": true,
+    "funding_versions": true,
+    "research_risk_policies": true,
+    "research_risk_evaluations": true,
+    "source_resolutions": true,
+    "source_revisions": true,
+    "evidence_dependency_invalidations": true,
+    "source_resolution_replays": true,
+    "agent_settings": true,
+    "evidence_verifications": true
+  },
+  "isolated_account_and_authority_unchanged": {
+    "account_versions": true,
+    "account_drafts": true,
+    "account_events": true,
+    "account_receipts": true,
+    "account_audit": true,
+    "account_equity_hints": true,
+    "account_csv_imports": true,
+    "valuation_versions": true,
+    "valuation_baselines": true,
+    "funding_versions": true,
+    "research_risk_policies": true,
+    "research_risk_evaluations": true
+  },
+  "old_research_rows": {
+    "research_protocols": {
+      "original_count": 2,
+      "preserved": true
+    },
+    "research_datasets": {
+      "original_count": 6,
+      "preserved": true
+    },
+    "research_attempts": {
+      "original_count": 2,
+      "preserved": true
+    },
+    "research_events": {
+      "original_count": 36,
+      "preserved": true
+    },
+    "research_executions": {
+      "original_count": 0,
+      "preserved": true
+    },
+    "research_execution_results": {
+      "original_count": 0,
+      "preserved": true
+    },
+    "research_models": {
+      "original_count": 2,
+      "preserved": true
+    },
+    "research_forecasts": {
+      "original_count": 0,
+      "preserved": true
+    }
+  },
+  "original_archive_count": 154,
+  "original_archives_and_opaque_copies_unchanged": true,
+  "initial_dirty_file_count": 6494,
+  "intended_changed_paths": [
+    ".scratch/roll-p0/issues/19-transparent-model-freeze.md",
+    ".scratch/roll-p0/spec.md",
+    "backend/src/roll/app.py",
+    "backend/src/roll/research/datasets.py",
+    "frontend/src/pages/research.tsx",
+    "docs/adr/0004-reconstructed-price-volume-research.md"
+  ],
+  "unexpected_changed_paths": [
+    "docs/adr/0004-reconstructed-price-volume-research.md"
+  ],
+  "sealed_payloads_decoded": false,
+  "forward_start_created": false,
+  "later_ticket_implementation": false,
+  "source_database_written_by_this_run": false
+}

@@ -4,6 +4,8 @@
 
 Codex 与 DeepSeek 受控取证已有真实多轮任务证据；实际资料中的缺口、模型失败和取消按原运行保留。实际研究数据不足以完成模型/校准冻结，不能用 METHOD 案例代替实际训练或授予资格。当前完成与条件见 [任务状态](.scratch/roll-p0/execution-status.md)。
 
+2026-10-10 起，ticket19 停止继续寻找旧PIT，改为自建前向数据积累库，并用独立虚拟数据先完成模型工程框架。每日采集与虚拟构建命令、两个数据库目录、时点契约和可用门禁见 [前向数据契约](docs/prospective-data-contract.md)。当前仍为数据积累中、尚不可用。
+
 ## 启动（Windows PowerShell）
 
 需要 Python 3.12+、uv、Node.js 22.12+。已验收环境见 `.scratch/roll-p0/evidence/01/acceptance.md`。
@@ -50,3 +52,7 @@ npm run test:e2e
 默认集合及逐文件退出码保存在 `frontend/test-results/default/manifest.json`；任一文件失败都会让命令失败。外部来源、SDK 方法、已有研究原件和备份两阶段使用 [独立验收命令](docs/browser-acceptance.md)，先移除相应 profile 环境变量再运行默认命令。手动改变 API 端口时，前端启动终端设置 `ROLL_API_PORT` 到同一个端口。浏览器默认集合使用合成账户，不能证明真实券商同步或投资资格。
 
 接口说明见 [账户](docs/account-contract.md)、[成交与费用](docs/fill-contract.md)、[现金与权益](docs/cash-equity-contract.md)、[资金](docs/funding-contract.md)、[证据取得](docs/data-evidence-contract.md)、[来源选择](docs/source-resolution-contract.md) 和 [研究登记](docs/research-protocol-contract.md)。
+
+## CNEquity 补充数据层
+
+先运行 `backend\.venv\Scripts\python.exe -B -X utf8 scripts\setup_cnequity.py` 安装固定版本的隔离适配器环境，再使用现有 `scripts\collect_prospective.py` 持续追加。来源开关、失败退避、异常隔离、修订及源值差异均保存到前向库；完整性通过后生成数据库与原件一致备份。详情见 [数据层维护契约](docs/cnequity-data-contract.md)。系统继续积累中，不因接入或虚拟模型成功而启用。

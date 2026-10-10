@@ -1,0 +1,189 @@
+{
+  "passed": true,
+  "replay": {
+    "forecast_id": "0276c810-1214-4ef0-9472-8c2016f66dbf",
+    "network_calls": 0,
+    "matches_original": true,
+    "prediction": {
+      "uncalibrated_probability": 0.507968576935092,
+      "probability": 0.4897235395677288,
+      "logit": 0.03187700676737132
+    },
+    "input_sha256": "64deada41e4b3ee1056e56b0c36568f8d783896807982131a73ff10d86bac9d8",
+    "forecast_sha256": "0273126a2e1906346389a276e22d3a64564d21bd3ba0adbbcb359ed9bc8ee121"
+  },
+  "precalibration_archive_event_index": 3364,
+  "cal_attempt_event_index": 3365,
+  "attempt_manifest": {
+    "lineage": [
+      "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+      "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+      "f977645b-200a-4c39-a6de-5e122f4e5101"
+    ],
+    "family_protocol_ids": [
+      "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+      "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+      "f977645b-200a-4c39-a6de-5e122f4e5101"
+    ],
+    "attempts": [
+      {
+        "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+        "basis": "票19真实支持预检；不以METHOD或占位概率替代",
+        "category": "PRIMARY_FIT",
+        "configuration": {
+          "candidate": "PRICE_VOLUME_LOGIT_V1",
+          "code_fingerprint": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+          "lambda": "1",
+          "purpose": "RESEARCH"
+        },
+        "data_fingerprint": "9a50206d8b2b46edf16b3f22cb54788b66571ba9b3dbb6192d0309a09f68d1e2",
+        "host_owner": {
+          "creation_ticks": 134359528622286991,
+          "nonce": "f090adf7-c866-4314-98c3-e101717ea1ea",
+          "pid": 34324
+        },
+        "partition": "DEVELOPMENT",
+        "protocol_fingerprint": "cf91fb8981673ea8ee4e43a80a3f5e858713c757224b327d1f78daa010c52416",
+        "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-08T17:08:18.766352+00:00",
+        "status": "FAILED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+          "event_id": "0c4d4cfb-3374-4ff7-acb2-cc26c17830ba",
+          "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "reason": "支持不足/失败：HISTORICAL_POINT_IN_TIME_NOT_PROVEN,COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN,COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN,HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION,RESEARCH_WINDOWS_NOT_PREREGISTERED,HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN,SOURCE_QUALIFICATION_BLOCKED",
+          "recorded_at": "2026-10-08T17:08:18.941510+00:00",
+          "status": "FAILED"
+        }
+      },
+      {
+        "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+        "basis": "票19真实支持预检；不以METHOD或占位概率替代",
+        "category": "PRIMARY_FIT",
+        "configuration": {
+          "candidate": "PRICE_VOLUME_LOGIT_V1",
+          "code_fingerprint": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+          "lambda": "1",
+          "purpose": "RESEARCH"
+        },
+        "data_fingerprint": "fd93fee32106b53e81d284dbe734ea58fc427cfb06d54fc6e390bb7e65b9cd89",
+        "host_owner": {
+          "creation_ticks": 134359532206248511,
+          "nonce": "218e340b-eb98-421d-bda8-5f2a176a2a73",
+          "pid": 34636
+        },
+        "partition": "DEVELOPMENT",
+        "protocol_fingerprint": "8d7ae80324b0ae1e3cfc07316eaa8dd781e03b34b311e8ddc83a7578cb265225",
+        "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-08T17:14:24.413994+00:00",
+        "status": "FAILED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {},
+          "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+          "event_id": "433f1dc5-06c2-4c10-800d-bf49cb397f62",
+          "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "reason": "支持不足/失败：HISTORICAL_POINT_IN_TIME_NOT_PROVEN,COMPLETE_CORPORATE_ACTION_TREATMENT_NOT_PROVEN,COMPLETE_HISTORICAL_EXECUTION_STATUS_NOT_PROVEN,HISTORICAL_RULE_COVERAGE_REQUIRES_VALIDATION,RESEARCH_WINDOWS_NOT_PREREGISTERED,HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN,SOURCE_QUALIFICATION_BLOCKED",
+          "recorded_at": "2026-10-08T17:14:24.517554+00:00",
+          "status": "FAILED"
+        }
+      },
+      {
+        "attempt_id": "fdacb78e-7aa0-4852-bbf5-804f45d18082",
+        "basis": "Single preregistered real reconstructed-price-volume fit lambda1 /20-session NEXT_OPEN; fixed intercept CAL, old family failures/budget retained",
+        "category": "PRIMARY_FIT",
+        "configuration": {
+          "candidate": "PRICE_VOLUME_LOGIT_RECONSTRUCTED_V2",
+          "code_fingerprint": "9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db",
+          "lambda": "1",
+          "purpose": "RESEARCH"
+        },
+        "data_fingerprint": "0eaefd09803c54924263181b84f60fe1b028e19b9569ce4f3bd4c335def22ae0",
+        "host_owner": {
+          "creation_ticks": 134360960164109687,
+          "nonce": "0193e3bd-e782-42c8-8cb2-936bf756a6b9",
+          "pid": 56040
+        },
+        "partition": "DEVELOPMENT",
+        "protocol_fingerprint": "9c383bc45c9f1627d14cf767066669392e29e69ad59f074af73c2a7a2f972458",
+        "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-10T08:56:42.197457+00:00",
+        "status": "SUCCEEDED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {
+            "calibrator": "85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d",
+            "code": "9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db",
+            "data": "0eaefd09803c54924263181b84f60fe1b028e19b9569ce4f3bd4c335def22ae0",
+            "features_and_inputs": "64deada41e4b3ee1056e56b0c36568f8d783896807982131a73ff10d86bac9d8",
+            "model": "062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50",
+            "protocol": "9c383bc45c9f1627d14cf767066669392e29e69ad59f074af73c2a7a2f972458"
+          },
+          "attempt_id": "fdacb78e-7aa0-4852-bbf5-804f45d18082",
+          "event_id": "77aace89-624a-417b-b0c5-364e256a7986",
+          "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+          "reason": "模型与校准数值工件完成，独立有效性未确认，未授资格",
+          "recorded_at": "2026-10-10T08:57:18.268447+00:00",
+          "status": "SUCCEEDED"
+        }
+      },
+      {
+        "attempt_id": "2b4fb2f8-a995-4a37-acf4-1700ff6ab139",
+        "basis": "Single preregistered real reconstructed-price-volume fit lambda1 /20-session NEXT_OPEN; fixed intercept CAL, old family failures/budget retained",
+        "category": "CALIBRATION",
+        "configuration": {
+          "method": "INTERCEPT_ONLY",
+          "model_sha256": "062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50",
+          "purpose": "RESEARCH"
+        },
+        "data_fingerprint": "0eaefd09803c54924263181b84f60fe1b028e19b9569ce4f3bd4c335def22ae0",
+        "host_owner": {
+          "creation_ticks": 134360960164109687,
+          "nonce": "0193e3bd-e782-42c8-8cb2-936bf756a6b9",
+          "pid": 56040
+        },
+        "partition": "CALIBRATION",
+        "protocol_fingerprint": "9c383bc45c9f1627d14cf767066669392e29e69ad59f074af73c2a7a2f972458",
+        "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+        "qualification": "NONE; 成功执行不等于模型或研究PASS",
+        "started_at": "2026-10-10T08:57:16.116598+00:00",
+        "status": "SUCCEEDED",
+        "completion": {
+          "action": "ATTEMPT_FINISHED",
+          "artifact_fingerprints": {
+            "calibrator": "85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d"
+          },
+          "attempt_id": "2b4fb2f8-a995-4a37-acf4-1700ff6ab139",
+          "event_id": "3c1e23eb-d695-4c20-ae91-6d3af5207282",
+          "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+          "reason": "固定截距校准工件拟合完成；独立有效性未确认，非正式资格",
+          "recorded_at": "2026-10-10T08:57:17.226086+00:00",
+          "status": "SUCCEEDED"
+        }
+      }
+    ],
+    "attempt_ids": [
+      "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+      "e648f20e-99da-4544-a59d-75a2c383bc00",
+      "fdacb78e-7aa0-4852-bbf5-804f45d18082",
+      "2b4fb2f8-a995-4a37-acf4-1700ff6ab139"
+    ],
+    "basis": "All linked family predecessors and sibling failures, aborts and interruptions remain required; this is not proof of unreported out-of-host work"
+  },
+  "real_non_method_model": true,
+  "calibrator_fit_status": "FITTED_UNVALIDATED",
+  "full_experiment_frozen": false,
+  "formal_capability": "NOT_GRANTED",
+  "forward_started_at": null,
+  "protected_sealed_consumed": false,
+  "verified_at": "2026-10-10T09:00:39.631122+00:00"
+}

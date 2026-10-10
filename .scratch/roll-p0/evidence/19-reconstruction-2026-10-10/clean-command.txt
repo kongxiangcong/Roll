@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\scripts\reconstructed19_acceptance.py", line 133, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "D:\dsh-proj\Roll\scripts\reconstructed19_acceptance.py", line 59, in main
+    app=create_app(DATA)
+  File "D:\dsh-proj\Roll\backend\src\roll\app.py", line 778, in create_app
+    backups,marker,previous=bootstrap(directory)
+                            ~~~~~~~~~^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\backend\src\roll\runtime\backups.py", line 508, in bootstrap
+    if live_hosts(directory):raise RuntimeError('UPGRADE_REQUIRES_STOP_ALL_LOCAL_HOSTS')
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: UPGRADE_REQUIRES_STOP_ALL_LOCAL_HOSTS

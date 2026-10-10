@@ -1,0 +1,636 @@
+{
+  "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+  "registered_at": "2026-10-10T08:42:38.502494+00:00",
+  "status": "DESIGN_REGISTERED",
+  "basis": "ADR0004 approved reconstruction; v4 checks protected ranges over whole source containers and preserves null-price suspension semantics, HALF_UP tax/dependent engine hashes before any real fit. Identical sources/windows/candidate; retain v2/v3 preflight records and all shared failed fits/exposure/budget; no outcome-based selection, SEALED or formal/forward use",
+  "predecessor_id": "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+  "dataset_id": "86cd98e9-f687-4249-a0e7-ec917f7ab3be",
+  "sealed_independence": "UNPROVEN",
+  "validation_verdict": null,
+  "review_status": "PENDING",
+  "capability": "NOT_GRANTED",
+  "forward_started_at": null,
+  "forward_deadline": null,
+  "scope": {
+    "data_use": "RECONSTRUCTED_RESEARCH",
+    "historical_membership_reconstructed": false,
+    "historical_point_in_time_proven": false,
+    "identity_context": {
+      "SSE:600362": {
+        "board": "MAIN",
+        "code": "600362",
+        "confirmed_at": "2026-10-08T09:32:31.739141+00:00",
+        "effective_at": "2026-10-08T17:00:00+08:00",
+        "exchange": "SSE",
+        "instrument_type": "STOCK",
+        "name": "江西铜业",
+        "revision": 1
+      }
+    },
+    "instruments": [
+      "SSE:600362"
+    ],
+    "namespace": "HISTORICAL",
+    "selection": "CURRENT_FINITE_LIST_CONDITIONAL_RESEARCH",
+    "source_account_authority": "NONE; MARKET_DATA_ONLY"
+  },
+  "freeze_gaps": [
+    "MODEL_ARTIFACT_MISSING",
+    "CALIBRATOR_ARTIFACT_MISSING",
+    "POLICY_ARTIFACT_MISSING",
+    "VALIDATION_CODE_FINGERPRINT_MISSING",
+    "METHOD_VALIDATION_PENDING_TICKET20",
+    "SEALED_INDEPENDENCE_UNPROVEN",
+    "CURRENT_REVISION_NOT_HISTORICAL_PIT",
+    "COMPLETE_DAILY_INPUT_AND_STATUS_LIMITATIONS"
+  ],
+  "ownership": {
+    "model_freeze": "ticket19",
+    "complete_protocol_freeze": "ticket20",
+    "forward_start": "tickets30/32",
+    "risk_policy": "ticket22"
+  },
+  "registration_code_fingerprint": "4441a6c3cc7e3e5df2f705c26a15738a027228f8562c973923ef50ce4a1a48a1",
+  "data_fingerprint": "0eaefd09803c54924263181b84f60fe1b028e19b9569ce4f3bd4c335def22ae0",
+  "design": {
+    "design_version": "19-m0-reconstructed-v2",
+    "hypothesis": "A fixed transparent daily price-volume candidate improves fee-after return under matched risk/exposure; not best retrospective stock selection",
+    "horizon_sessions": 20,
+    "event": "Positive20-session single RAW round-trip economic return after historical statutory costs, frozen broker/slippage scenario and source-bound cash rights/tax; unresolved cases are not losses",
+    "candidates": [
+      {
+        "candidate_id": "PRICE_VOLUME_LOGIT_RECONSTRUCTED_V2",
+        "status": "PREREGISTERED_RECONSTRUCTED_CANDIDATE",
+        "features": [
+          "economic_return_5",
+          "economic_return_20",
+          "economic_return_volatility_20",
+          "log_volume_to_trailing20_mean"
+        ],
+        "fitting": "L2 logistic regression; standardization fitted only DEVELOPMENT; lambda=1; no prompt or manual stock selection",
+        "calibration": "Intercept-only held-out probability calibration; no fitting on SEALED; exact implementation and fingerprint ticket19",
+        "threshold": "0.60",
+        "model_artifact_fingerprint": null,
+        "calibrator_artifact_fingerprint": null,
+        "feature_basis": "Gross cash economic return chain from effective events on/before observation only; not current qfq"
+      }
+    ],
+    "primary_objective": {
+      "metric": "Paired20-session fee-after NAV return improvement over every preregistered comparable baseline",
+      "minimum_improvement_nav_return": "0.0025",
+      "confidence_rule": "One-sided95% lower bound >0.0025 at single final point; all required comparisons/gates must hold",
+      "risk_constraints": {
+        "maximum_simulated_gross_exposure": "0.50",
+        "maximum_drawdown": "0.10",
+        "candidate_drawdown_excess_over_risk_matched_baseline": "0.02",
+        "minimum_decision_coverage": "0.20"
+      },
+      "basis": "Research choice before outcome computation. Assumed3bp commission each side +5bp sell stamp +0.1bp transfer each side +5bp slippage each side =21.2bp trade cost; at50% exposure10.6bp NAV. Twice this rounded upward to25bp is a meaningful NAV improvement hurdle, not estimated alpha or actual broker cost."
+    },
+    "baselines": [
+      {
+        "id": "CASH",
+        "policy": "same synthetic initial capital, no interest assumed; display actual zero exposure separately"
+      },
+      {
+        "id": "START_HOLD",
+        "policy": "same start, budget/lot/rules,50% initial allowed exposure, no resets, comparable fees"
+      },
+      {
+        "id": "MA5_MA20",
+        "policy": "fixed5/20-day moving-average crossover,50% maximum exposure, same execution/cost/rules; no tuning"
+      }
+    ],
+    "windows": {
+      "CALIBRATION": {
+        "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+        "artifact": {
+          "bytes": 184205,
+          "kind": "RESEARCH_PARTITION",
+          "partition": "CALIBRATION",
+          "path": "parquet/aeba9438107737b538a36ab098a7ae04b85d30684ed5c356ad91a680555521b9.parquet",
+          "research_namespace": "HISTORICAL",
+          "sha256": "aeba9438107737b538a36ab098a7ae04b85d30684ed5c356ad91a680555521b9"
+        },
+        "context_first_date": "2022-01-04",
+        "context_rows": 20,
+        "first_date": "2022-02-08",
+        "last_date": "2023-12-29",
+        "rows": 464,
+        "state": "HOST_FILTERED"
+      },
+      "DEVELOPMENT": {
+        "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+        "artifact": {
+          "bytes": 457309,
+          "kind": "RESEARCH_PARTITION",
+          "partition": "DEVELOPMENT",
+          "path": "parquet/dc0ab6cfcf7f955652159a9234932262727ddeaf77ffb4c21286ec983cb08903.parquet",
+          "research_namespace": "HISTORICAL",
+          "sha256": "dc0ab6cfcf7f955652159a9234932262727ddeaf77ffb4c21286ec983cb08903"
+        },
+        "context_first_date": "2016-12-05",
+        "context_rows": 20,
+        "first_date": "2017-01-03",
+        "last_date": "2021-12-31",
+        "rows": 1217,
+        "state": "HOST_FILTERED"
+      },
+      "SEALED": {
+        "reason": "No claim of unused final evidence; prior exposure retained",
+        "rows": 0,
+        "state": "NOT_ALLOCATED"
+      }
+    },
+    "label_isolation": {
+      "lookback_sessions": 20,
+      "horizon_sessions": 20,
+      "embargo_sessions": 20,
+      "rule": "A fitted label must mature inside its allowed DEVELOPMENT/CALIBRATION window; boundary-spanning labels purged. Calibration receives preceding20 rows only as past feature context; no random same-day split."
+    },
+    "statistics": {
+      "method": "Paired calendar-date moving-block bootstrap, block length20 sessions; same-day securities jointly resampled; seed1701,2000 replicates",
+      "dependency_sensitivity_block_sessions": [
+        20,
+        40
+      ],
+      "minimum_effective_time_blocks": 30,
+      "minimum_calibration_examples_per_class": 20,
+      "minimum_selected_mature_examples": 40,
+      "probability_checks": [
+        "Brier/log loss against development base rate and transparent rule",
+        "fixed5 equal-width reliability bins,20 mature cases per occupied bin",
+        "ROC discrimination and selected-subset support, no probability reliability claim from lower Brier alone"
+      ],
+      "pass_look_count": 1,
+      "alpha": "0.05",
+      "multiple_comparison_policy": "Intersection-union: every preregistered required baseline and gate must pass; no choosing favorable comparison. Sensitivity does not create another PASS look.",
+      "validity": "Stationarity/weak-dependence assumptions and finite-sample coverage must be automatically validated and technically reviewed in20.30 blocks is a conservative design eligibility condition, not a universal bootstrap theorem; inadequate support or failed assumptions=>INCONCLUSIVE, never lower cutoff after seeing sealed.",
+      "reference": "Kunsch(1989), The jackknife and the bootstrap for general stationary observations, Ann.Statist.17:1217–1241; author bibliography https://people.math.ethz.ch/~hkuensch/papers/",
+      "fit_support": "Both DEV classes present; CAL at least20 per class. Effective blocks/bins/selected thresholds remain later validation conditions."
+    },
+    "support_projection": {
+      "metadata_only": true,
+      "sealed_mature_label_upper_bound": 0,
+      "calibration_mature_label_upper_bound": 444,
+      "sealed_nonoverlap20_block_upper_bound": 0,
+      "state": "FIT_SUPPORT_TO_BE_COMPUTED; CONFIRMATORY_INDEPENDENCE_NOT_ESTABLISHED",
+      "historical_final_independence": "UNPROVEN; engineering archive exposure is recorded, no strategy results examined"
+    },
+    "costs": {
+      "version": "17-cost-v1",
+      "currency": "CNY",
+      "broker_actual_commission": "UNKNOWN",
+      "commission_scenario_rate": "0.0003",
+      "minimum_commission_yuan": "5",
+      "commission_includes_regulatory_fees": true,
+      "extra_regulatory_charge": "0",
+      "stamp_sell_rate": "0.0005",
+      "transfer_each_side_rate": "0.00001",
+      "slippage_each_side_rate": "0.0005",
+      "rounding": "Decimal to yuan cents at fee boundary; retain underlying raw precision",
+      "evidence": [
+        {
+          "id": "sse-cost-investor",
+          "url": "https://one.sse.com.cn/onething/gptz/",
+          "started_at": "2026-10-07T19:14:26.877488+00:00",
+          "received_at": "2026-10-07T19:14:28.006335+00:00",
+          "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db",
+          "bytes": 45558,
+          "http_status": 200,
+          "file": "sse-cost-investor.html",
+          "evidence_kind": "REAL_AUTHORITY_PAGE",
+          "effective_scope": "Page current display; no invented exact update day or historical stability proof",
+          "permission": "Public source retrieval; no broker client tariff authority"
+        },
+        {
+          "id": "sse-charge-2026",
+          "url": "https://www.sse.com.cn/services/tradingservice/charge/ssecharge/",
+          "started_at": "2026-10-07T19:14:28.007071+00:00",
+          "received_at": "2026-10-07T19:14:28.323015+00:00",
+          "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c",
+          "bytes": 41658,
+          "http_status": 200,
+          "file": "sse-charge-2026.html",
+          "evidence_kind": "REAL_AUTHORITY_PAGE",
+          "effective_scope": "SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge",
+          "permission": "Public source retrieval; no broker client tariff authority",
+          "page_update": "2026-01",
+          "page_update_precision": "MONTH_ONLY"
+        },
+        {
+          "id": "stamp-tax-2023",
+          "url": "https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448",
+          "started_at": "2026-10-07T19:14:28.323867+00:00",
+          "received_at": "2026-10-07T19:14:28.685996+00:00",
+          "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf",
+          "bytes": 27791,
+          "http_status": 200,
+          "file": "stamp-tax-2023.html",
+          "evidence_kind": "REAL_AUTHORITY_PAGE",
+          "effective_scope": "Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page",
+          "permission": "Public source retrieval; no broker client tariff authority",
+          "effective_from": "2023-08-28",
+          "effective_precision": "DAY_EXPLICIT_NOTICE_2023_NO39"
+        }
+      ],
+      "effective_scope": "SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.",
+      "unknown_policy": "Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction."
+    },
+    "execution": {
+      "scale": "DAILY_ONLY_NO_INTRADAY_TOUCH_ORDER_INFERENCE",
+      "base_delay": "NEXT_OPEN",
+      "price_window": "Use next declared daily OHLC and explicit exchange rule limit; orders outside frozen permissible price band do not fill",
+      "quantity": "100-share ordinary SSE MAIN lot, Decimal cash/fees and T+1 available shares; no leverage",
+      "synthetic_initial_cash_yuan": "1000000",
+      "synthetic_initial_positions": [],
+      "synthetic_basis": "Frozen research lot capital, not actual account funds or continuous NAV",
+      "partial_or_missed": "0/50/100% execution stress, retain all rejected opportunities; no fill does not label prediction loss",
+      "missing_or_unknown": "No imputation/no selective deletion: explicit inability-to-trade/unknown-status intervals and missing rows, report sensitivity; uncertain action treatment or label cannot be scored",
+      "maturity": "After20 trading sessions or preregistered deterministic terminal settlement; unconfirmed settlement unresolved. At deadline unmatured labels separately listed, never scored/learned.",
+      "coverage": "Only actually archived checkpoints; later price supplementation cannot backfill an unarchived forecast"
+    },
+    "g5": {
+      "time_segments": "Report each chronological third of the eligible historical test and forward mature window, same targets; each insufficient segment remains INCONCLUSIVE",
+      "commission_rates": [
+        "0.0003",
+        "0.0006",
+        "0.003"
+      ],
+      "slippage_each_side_rates": [
+        "0.0005",
+        "0.001",
+        "0.002"
+      ],
+      "delays": [
+        "NEXT_OPEN",
+        "NEXT_CLOSE",
+        "ONE_MORE_SESSION_OPEN",
+        "OUTSIDE_ALLOWED_PRICE_NO_FILL"
+      ],
+      "parameter_neighborhood": {
+        "penalty": [
+          "0.5",
+          "1",
+          "2"
+        ],
+        "lookback_sessions": [
+          15,
+          20,
+          25
+        ],
+        "probability_threshold": [
+          "0.55",
+          "0.60",
+          "0.65"
+        ],
+        "evaluation": "One-at-a-time neighbors around fixed primary, never choose a neighbor winner; each fit/candidate/threshold attempt persisted"
+      },
+      "required": "Base improvement>=25bp NAV with preregistered interval/risk/support; stressed net value must not reverse below comparable baseline, risk bounds hold. Insufficient stress support is INCONCLUSIVE; failure cannot be repaired by shrinking old scope.",
+      "migration_scope": {
+        "data_use": "RECONSTRUCTED_RESEARCH",
+        "historical_membership_reconstructed": false,
+        "historical_point_in_time_proven": false,
+        "identity_context": {
+          "SSE:600362": {
+            "board": "MAIN",
+            "code": "600362",
+            "confirmed_at": "2026-10-08T09:32:31.739141+00:00",
+            "effective_at": "2026-10-08T17:00:00+08:00",
+            "exchange": "SSE",
+            "instrument_type": "STOCK",
+            "name": "江西铜业",
+            "revision": 1
+          }
+        },
+        "instruments": [
+          "SSE:600362"
+        ],
+        "namespace": "HISTORICAL",
+        "selection": "CURRENT_FINITE_LIST_CONDITIONAL_RESEARCH",
+        "source_account_authority": "NONE; MARKET_DATA_ONLY"
+      },
+      "unknown_scope": "Other names/boards/markets are monitoring only; extension needs linked new experiment and unused evidence"
+    },
+    "formal_monitoring": {
+      "scope": {
+        "data_use": "RECONSTRUCTED_RESEARCH",
+        "historical_membership_reconstructed": false,
+        "historical_point_in_time_proven": false,
+        "identity_context": {
+          "SSE:600362": {
+            "board": "MAIN",
+            "code": "600362",
+            "confirmed_at": "2026-10-08T09:32:31.739141+00:00",
+            "effective_at": "2026-10-08T17:00:00+08:00",
+            "exchange": "SSE",
+            "instrument_type": "STOCK",
+            "name": "江西铜业",
+            "revision": 1
+          }
+        },
+        "instruments": [
+          "SSE:600362"
+        ],
+        "namespace": "HISTORICAL",
+        "selection": "CURRENT_FINITE_LIST_CONDITIONAL_RESEARCH",
+        "source_account_authority": "NONE; MARKET_DATA_ONLY"
+      },
+      "checkpoints": {
+        "operations": "Every actual running post-market checkpoint; missing days retained",
+        "statistics": "At registered30-session mature-results review and qualification expiry; no extra confirmation PASS look"
+      },
+      "execution": "Compare actual next-open/next-close delays, missing/partial fills, quote-vs-fill, realized fees with frozen scenarios; outside declared delay/price/cost bounds immediately restrict affected ability without declaring statistical FAIL",
+      "drift": "Fit feature1st/99th percentiles on DEVELOPMENT only; if >=20% of latest20 eligible observations outside fixed reference or required-input coverage<80%, restrict use pending review. Operational sentinel, not a causal or statistical profitability verdict.",
+      "mature_results": "Report fixed mature probability/utility/support checks at registered review; insufficient evidence=>INCONCLUSIVE, no adjusting cutoffs on new losses",
+      "unmatured_results_scored": false,
+      "policy_change": "Reason+new fingerprint+successor protocol, preserve previous verdict and visits; no silent threshold changes"
+    },
+    "stopping": {
+      "timezone": "Asia/Shanghai",
+      "maximum_natural_months": 3,
+      "calendar_month_rule": "Local wall time; month addition clamps to destination month end; inclusive final cutoff, no90-day substitution",
+      "forward_origin": "First successfully persisted actual frozen-model future prediction in30/32; protocol registration/deployment/historical replay/synthetic account do not start it",
+      "pass_checkpoint": "ONE_FINAL_CONFIRMATORY_POINT_AT_DEADLINE_OR_PREREGISTERED_HARD_STOP",
+      "early_stops": [
+        "hard safety/input/version failure",
+        "technical model fit/call/deadline limit",
+        "user stops ability; statistical verdict separately preserved"
+      ],
+      "no_extension": "Absence/backend switching/unfavorable results/maturity deficits never extend original deadline; successor requires new information value",
+      "technical_limits": {
+        "maximum_primary_candidates": 1,
+        "maximum_model_fits_including_fixed_neighbors": 5,
+        "maximum_fit_seconds": 60,
+        "maximum_calibration_fits": 1,
+        "sealed_parameter_tuning_calls": 0,
+        "runtime_money_budget_required": false
+      }
+    },
+    "risk_policy_evidence": {
+      "owner": "ticket22",
+      "inherits_profit_model_pass": false,
+      "required": [
+        "own frozen deterministic rules/data fingerprints",
+        "authorized risk boundaries",
+        "calculation and stress-execution proof",
+        "online consistency and scope checks"
+      ],
+      "profit_model_required_gates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    "research_assumptions": {
+      "action_coverage": "SOURCE_BOUND_CASH_PLUS_ANNUAL_UNCHANGED_SHARE_AUDIT_WITH_RESIDUAL_REVISION_RISK",
+      "actual_receipt_rewritten": false,
+      "cash_events": [
+        {
+          "cash_payment_date": "2017-07-12",
+          "ex_date": "2017-07-12",
+          "gross_cash_yuan_per_eligible_share": "0.15",
+          "record_date": "2017-07-11",
+          "source": {
+            "bytes": 167951,
+            "fact_pdf_pages": [
+              1,
+              2
+            ],
+            "file": "360915f52d4770c1468be5a70d9a414d38f7c6909b34a2dfdb46db67d738a4a4.pdf",
+            "publication_date": "2017-07-06",
+            "publication_precision": "DATE",
+            "received_at": "2026-10-09T00:09:34.285741+00:00",
+            "sha256": "360915f52d4770c1468be5a70d9a414d38f7c6909b34a2dfdb46db67d738a4a4",
+            "url": "https://static.cninfo.com.cn/finalpage/2017-07-06/1203684386.PDF"
+          }
+        },
+        {
+          "cash_payment_date": "2018-07-25",
+          "ex_date": "2018-07-25",
+          "gross_cash_yuan_per_eligible_share": "0.20",
+          "record_date": "2018-07-24",
+          "source": {
+            "bytes": 206924,
+            "fact_pdf_pages": [
+              1,
+              2
+            ],
+            "file": "f8c59755d58dca82911931d6e632a8c6a7bcc3e9f2e1eecc2c961d93c5e6705a.pdf",
+            "publication_date": "2018-07-19",
+            "publication_precision": "DATE",
+            "received_at": "2026-10-09T00:09:34.490678+00:00",
+            "sha256": "f8c59755d58dca82911931d6e632a8c6a7bcc3e9f2e1eecc2c961d93c5e6705a",
+            "url": "https://static.cninfo.com.cn/finalpage/2018-07-19/1205195306.PDF"
+          }
+        },
+        {
+          "cash_payment_date": "2019-07-26",
+          "ex_date": "2019-07-26",
+          "gross_cash_yuan_per_eligible_share": "0.20",
+          "record_date": "2019-07-25",
+          "source": {
+            "bytes": 619155,
+            "fact_pdf_pages": [
+              1,
+              2
+            ],
+            "file": "945fb4db8341e20b4abe6995c8f01184618a01dac3ea05f33c76edbfc370d181.pdf",
+            "publication_date": "2019-07-22",
+            "publication_precision": "DATE",
+            "received_at": "2026-10-09T00:09:34.609455+00:00",
+            "sha256": "945fb4db8341e20b4abe6995c8f01184618a01dac3ea05f33c76edbfc370d181",
+            "url": "https://static.cninfo.com.cn/finalpage/2019-07-22/1206466159.PDF"
+          }
+        },
+        {
+          "cash_payment_date": "2020-07-16",
+          "ex_date": "2020-07-16",
+          "gross_cash_yuan_per_eligible_share": "0.10",
+          "record_date": "2020-07-15",
+          "source": {
+            "bytes": 493288,
+            "fact_pdf_pages": [
+              1,
+              2
+            ],
+            "file": "963ff2e75122c2c1b46ec66ab2048a21760f6947a12d14c16090d4f626f390e2.pdf",
+            "publication_date": "2020-07-09",
+            "publication_precision": "DATE",
+            "received_at": "2026-10-09T00:09:34.737182+00:00",
+            "sha256": "963ff2e75122c2c1b46ec66ab2048a21760f6947a12d14c16090d4f626f390e2",
+            "url": "https://static.cninfo.com.cn/finalpage/2020-07-09/1208016044.PDF"
+          }
+        },
+        {
+          "cash_payment_date": "2021-07-20",
+          "ex_date": "2021-07-20",
+          "gross_cash_yuan_per_eligible_share": "0.10",
+          "record_date": "2021-07-19",
+          "source": {
+            "bytes": 723948,
+            "fact_pdf_pages": [
+              1,
+              2
+            ],
+            "file": "c88d5d1e0af78867b0422c231d41249c44fb538863a354b5433cc846f20d8a67.pdf",
+            "publication_date": "2021-07-13",
+            "publication_precision": "DATE",
+            "received_at": "2026-10-09T00:09:34.878365+00:00",
+            "sha256": "c88d5d1e0af78867b0422c231d41249c44fb538863a354b5433cc846f20d8a67",
+            "url": "https://static.cninfo.com.cn/finalpage/2021-07-13/1210467038.PDF"
+          }
+        },
+        {
+          "cash_payment_date": "2022-07-25",
+          "ex_date": "2022-07-25",
+          "gross_cash_yuan_per_eligible_share": "0.50",
+          "record_date": "2022-07-22",
+          "source": {
+            "bytes": 739277,
+            "fact_pdf_pages": [
+              1,
+              2
+            ],
+            "file": "b33a976d34ab33f913b3240a9884b534b9e3df9dea763de70d8a8975cd76aad0.pdf",
+            "publication_date": "2022-07-15",
+            "publication_precision": "DATE",
+            "received_at": "2026-10-09T00:09:34.996647+00:00",
+            "sha256": "b33a976d34ab33f913b3240a9884b534b9e3df9dea763de70d8a8975cd76aad0",
+            "url": "https://static.cninfo.com.cn/finalpage/2022-07-15/1214041661.PDF"
+          }
+        },
+        {
+          "cash_payment_date": "2023-07-21",
+          "ex_date": "2023-07-21",
+          "gross_cash_yuan_per_eligible_share": "0.50",
+          "record_date": "2023-07-20",
+          "source": {
+            "bytes": 742423,
+            "fact_pdf_pages": [
+              1,
+              2
+            ],
+            "file": "9d02519195644b524e947c094d3f0513244a9ec74af5e232f606c29c7eef5ff1.pdf",
+            "publication_date": "2023-07-14",
+            "publication_precision": "DATE",
+            "received_at": "2026-10-09T00:09:35.128471+00:00",
+            "sha256": "9d02519195644b524e947c094d3f0513244a9ec74af5e232f606c29c7eef5ff1",
+            "url": "https://static.cninfo.com.cn/finalpage/2023-07-14/1217292605.PDF"
+          }
+        }
+      ],
+      "commission": "UNKNOWN_ACTUAL; frozen3bp research scenario/min5CNY",
+      "daily_clock": "15:05 Asia/Shanghai each historical session, assumed complete for NEXT_OPEN research",
+      "data_use": "RECONSTRUCTED_RESEARCH",
+      "equity_sources": [
+        {
+          "bytes": 3349450,
+          "file": "e42d26d884602532ce6644696796ab29c8c378b6d8bbfc7ae24a2375d8bc40c0.pdf",
+          "pdf_page": 36,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:07:08.738073+00:00",
+          "sha256": "e42d26d884602532ce6644696796ab29c8c378b6d8bbfc7ae24a2375d8bc40c0",
+          "statement": "报告期内，公司普通股股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2017-03-30/1203226934.PDF",
+          "year": 2016
+        },
+        {
+          "bytes": 4939424,
+          "file": "9e0cf9a26a32a49ce51f6b14edfd9598674c8e78248e426abacbb9a7f3638f9f.pdf",
+          "pdf_page": 40,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:07:13.455905+00:00",
+          "sha256": "9e0cf9a26a32a49ce51f6b14edfd9598674c8e78248e426abacbb9a7f3638f9f",
+          "statement": "报告期内，公司普通股股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2018-03-29/1204535533.PDF",
+          "year": 2017
+        },
+        {
+          "bytes": 3496195,
+          "file": "edda61ac639075f0e3bc259b19d8f7b97a4faa38355ea339eacdb8c0ce96c6b0.pdf",
+          "pdf_page": 49,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:07:26.788543+00:00",
+          "sha256": "edda61ac639075f0e3bc259b19d8f7b97a4faa38355ea339eacdb8c0ce96c6b0",
+          "statement": "报告期内，公司普通股股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2019-03-28/1205949976.PDF",
+          "year": 2018
+        },
+        {
+          "bytes": 9832121,
+          "file": "386fc1fd65036c7e582a496d8b30d77cdd224d3ee78f6948759cd8325855f2cc.pdf",
+          "pdf_page": 58,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:07:31.358165+00:00",
+          "sha256": "386fc1fd65036c7e582a496d8b30d77cdd224d3ee78f6948759cd8325855f2cc",
+          "statement": "报告期内，公司普通股股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2020-03-31/1207432718.PDF",
+          "year": 2019
+        },
+        {
+          "bytes": 6005220,
+          "file": "eb25bd381cca3f505397ca117ee19e20ce3782109fb8718818f39725625fe668.pdf",
+          "pdf_page": 59,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:07:35.243559+00:00",
+          "sha256": "eb25bd381cca3f505397ca117ee19e20ce3782109fb8718818f39725625fe668",
+          "statement": "报告期内，公司普通股股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2021-03-30/1209481072.PDF",
+          "year": 2020
+        },
+        {
+          "bytes": 7716951,
+          "file": "04e7500dc3fdd04921ff229db700f403af056e0f74c121be46db953193b2a066.pdf",
+          "pdf_page": 74,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:07:39.276731+00:00",
+          "sha256": "04e7500dc3fdd04921ff229db700f403af056e0f74c121be46db953193b2a066",
+          "statement": "报告期内，公司股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2022-03-26/1212685850.PDF",
+          "year": 2021
+        },
+        {
+          "bytes": 60378646,
+          "file": "51faabf933824107b774a20123d818075848238529ff68a73059d0fa44138fcb.pdf",
+          "pdf_page": 81,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:17:00.613937+00:00",
+          "sha256": "51faabf933824107b774a20123d818075848238529ff68a73059d0fa44138fcb",
+          "statement": "报告期内，公司股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2023-03-25/1216220927.PDF",
+          "year": 2022
+        },
+        {
+          "bytes": 32650511,
+          "file": "fd6efb478f7fea5a190072399a6b996126f69890623892f869c949666f7bd4b1.pdf",
+          "pdf_page": 72,
+          "purpose": "RETROSPECTIVE_SHARE_STRUCTURE_AUDIT_ONLY; NEVER_A_MODEL_FEATURE",
+          "received_at": "2026-10-09T02:08:59.592376+00:00",
+          "sha256": "fd6efb478f7fea5a190072399a6b996126f69890623892f869c949666f7bd4b1",
+          "statement": "报告期内，公司股份总数及股本结构未发生变化",
+          "url": "https://static.cninfo.com.cn/finalpage/2024-03-28/1219426026.PDF",
+          "year": 2023
+        }
+      ],
+      "feature_definition": "Gross cash economic return chain on/before observation; no future effective adjustment or current qfq",
+      "historical_source_publication": "UNKNOWN_RETAINED",
+      "no_financial_news_or_sentiment_inputs": true,
+      "scope": [
+        "SSE:600362",
+        "2016-12-01",
+        "2023-12-29"
+      ],
+      "slippage": "frozen5bp per-side scenario; not observed",
+      "status": "BaoStock actual reported trading/ST flags, limited annual equity and cash audit; not complete intraday state",
+      "version": "19-reconstructed-price-volume-v4"
+    },
+    "data_use": "RECONSTRUCTED_RESEARCH",
+    "design_fingerprint": "13e376a1412d530342142d41e796ec7c1d9ec95e70fcaeeb145d584606ec3ff1"
+  },
+  "protocol_fingerprint": "9c383bc45c9f1627d14cf767066669392e29e69ad59f074af73c2a7a2f972458"
+}
