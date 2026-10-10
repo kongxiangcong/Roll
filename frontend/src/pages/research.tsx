@@ -2,6 +2,7 @@ import {useEffect,useState} from 'react';
 import {request} from '../api';
 import {Executions} from './executions';
 import {Models} from './models';
+import {Shadow} from './shadow';
 import {RiskPolicies} from './risk-policies';
 import {Collections} from './collections';
 type Dataset={dataset_id:string;source_evidence_kind:string;data_use?:string;reconstruction_version?:string;quality_report_archive?:{sha256:string};assumptions_archive?:{sha256:string};coverage:{session_count:number;first_date:string;last_date:string};partitions:Record<string,{rows:number;first_date?:string;last_date?:string}>;limitations:string[]};
@@ -32,6 +33,7 @@ export function Research(){
       {selected.dataset_id&&datasets.find(d=>d.dataset_id===selected.dataset_id)&&<Executions key={selected.protocol_id} protocolId={selected.protocol_id} partitions={datasets.find(d=>d.dataset_id===selected.dataset_id)!.partitions} evidenceKind={datasets.find(d=>d.dataset_id===selected.dataset_id)!.source_evidence_kind}/>}
       {selected.dataset_id&&datasets.find(d=>d.dataset_id===selected.dataset_id)&&<Models key={'model-'+selected.protocol_id} protocolId={selected.protocol_id} evidenceKind={datasets.find(d=>d.dataset_id===selected.dataset_id)!.source_evidence_kind} calibrationFirstDate={datasets.find(d=>d.dataset_id===selected.dataset_id)!.partitions.CALIBRATION?.first_date}/>}
       <RiskPolicies key={'risk-'+selected.protocol_id} protocolId={selected.protocol_id}/>
+      <Shadow key={'shadow-'+selected.protocol_id} protocolId={selected.protocol_id} firstDate={datasets.find(d=>d.dataset_id===selected.dataset_id)?.partitions.CALIBRATION?.first_date}/>
       <h4>持久审计</h4><ul>{audit.map(e=><li key={e.event_id}>{e.action} · {new Date(e.recorded_at).toLocaleString('zh-CN')} · {e.reason??e.gaps?.join('、')} {e.confirmatory_pass_look===false?'· 非确认性PASS查看':''}</li>)}</ul>
     </section>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}</section>;
 }
