@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+_________ ERROR collecting tests/application/test_forward_adapter.py __________
+ImportError while importing test module 'D:\dsh-proj\Roll\.scratch\worktrees\ticket30\backend\tests\application\test_forward_adapter.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\tests\application\test_forward_adapter.py:4: in <module>
+    from roll.research.forward import forward_features
+E   ImportError: cannot import name 'forward_features' from 'roll.research.forward' (D:\dsh-proj\Roll\.scratch\worktrees\ticket30\backend\src\roll\research\forward.py)
+=========================== short test summary info ===========================
+ERROR backend\tests\application\test_forward_adapter.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 1.83s
