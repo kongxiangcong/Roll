@@ -1,0 +1,47 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_natural_month_deadline_keeps_original_unmatured_results_after_later_settlement _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/continuation-review-fixes/.scratch/pdfg/test_natural_month_deadline_ke0')
+
+    def test_natural_month_deadline_keeps_original_unmatured_results_after_later_settlement(tmp_path):
+        clock = [datetime.fromisoformat('2026-01-05T14:00:00+08:00')]
+        with TestClient(create_app(tmp_path, review_clock=lambda: clock[0])) as client:
+>           protocol, model, dates = extended_method(client, tmp_path)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_forward_assessment_binding.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <starlette.testclient.TestClient object at 0x000001DAFFD670E0>
+directory = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/continuation-review-fixes/.scratch/pdfg/test_natural_month_deadline_ke0')
+
+    def extended_method(client, directory):
+        # Source response/time are agreed external seams. These are synthetic OHLC,
+        # never a production evidence packet or a rewritten frozen archive.
+        changes = {}
+        for index in range(221):
+            price = 100 + 12 * math.sin(index / 7)
+            changes[index] = {key: str(round(price, 4)) for key in ['open', 'close']}
+            changes[index].update(high=str(round(price + 1, 4)), low=str(round(price - 1, 4)),
+                                  volume_shares=str(10000 + index * 37))
+        dates = method_archive(directory, changes, count=221)
+        dataset = client.post('/api/research/datasets', json={'archive_id': 'method-execution',
+            'method_windows': {'development': 60, 'calibration': 100, 'sealed': 21},
+            'basis': 'Extended explicit METHOD endpoint fixture; no real G7'}).json()
+        protocol = client.post('/api/research/protocols', json={'dataset_id': dataset['dataset_id'],
+            'basis': 'Registered METHOD windows before labels, no altered deadlines'}).json()
+        for partition, indices in [('DEVELOPMENT', range(20, 40)), ('CALIBRATION', range(100, 120))]:
+            for index in indices:
+                response = client.post('/api/research/protocols/' + protocol['protocol_id'] + '/executions', json={
+                    'partition': partition, 'observation_date': dates[index], 'label_as_of': '2026-12-01T16:00:00+08:00',
+                    'quantity': '200', 'basis': 'Explicit engineering labels, not production research'})
+>               assert response.status_code == 201, response.text
+E               AssertionError: {"detail":"评估截止不能晚于实际当前知识时间"}
+E               assert 422 == 201
+E                +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+backend\tests\application\test_forward_assessment_binding.py:56: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_forward_assessment_binding.py::test_natural_month_deadline_keeps_original_unmatured_results_after_later_settlement
+1 failed in 7.40s

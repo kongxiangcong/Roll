@@ -11,12 +11,12 @@ from fastapi.testclient import TestClient
 from roll.app import create_app
 
 
-def method_archive(directory,changes=None,unknown=False):
+def method_archive(directory,changes=None,unknown=False,count=181):
     source=directory/'research-inputs'/'method-execution';source.mkdir(parents=True)
     holidays=[('2026-01-01','2026-01-04'),('2026-02-15','2026-02-23'),('2026-04-04','2026-04-06'),
         ('2026-05-01','2026-05-05'),('2026-06-19','2026-06-21'),('2026-09-25','2026-09-27'),('2026-10-01','2026-10-07')]
     dates=[];day=date(2026,1,5)
-    while len(dates)<181:
+    while len(dates)<count:
         if day.weekday()<5 and not any(a<=day.isoformat()<=b for a,b in holidays):dates.append(day.isoformat())
         day+=timedelta(days=1)
     rows=[]

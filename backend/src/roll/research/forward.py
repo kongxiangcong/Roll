@@ -358,7 +358,12 @@ class ForwardArchive:
         plan=self.plan(freeze_id); frozen=self.shadow.get(freeze_id)
         if self.code()!=plan['adapter_code_fingerprint'] or code_fingerprint()!=frozen['fingerprints']['model_code'] or shadow_code()!=frozen['fingerprints']['shadow_code']:
             raise HTTPException(409,'FORWARD_FROZEN_COMPUTATION_CHANGED_SUCCESSOR_REQUIRED')
-        checked=cutoff or self.clock(); through=checked.astimezone(SHANGHAI).date().isoformat()
+        checked=cutoff or self.clock()
+        if plan.get('closing_cutoff'):
+            checked=datetime.fromisoformat(plan['closing_cutoff']);cutoff=checked
+        elif plan.get('deadline') and checked>=datetime.fromisoformat(plan['deadline']):
+            checked=datetime.fromisoformat(plan['deadline']);cutoff=checked
+        through=checked.astimezone(SHANGHAI).date().isoformat()
         state=self.state(freeze_id); samples=state['samples']
         rows,gaps=self.rows(plan,frozen,checked)
         mature,unmatured,unscorable=[],[],[]
@@ -391,7 +396,8 @@ class ForwardArchive:
         if shadow:shadow['revision']=len(samples)
         value={'assessment_id':str(uuid4()),'freeze_id':freeze_id,'cutoff':checked.isoformat(),'recorded_at':self.clock().isoformat(),
             'basis':command.basis,'namespace':plan['namespace'],'mature':mature,'unmatured':unmatured,'unscorable':unscorable,
-            'gaps':gaps,'shadow':shadow,'inputs':inputs,'statistical_pass_checks_added':0,'real_qualification':False}
+            'gaps':gaps,'shadow':shadow,'inputs':inputs,'sample_ids':[s['sample_id'] for s in samples],
+            'statistical_pass_checks_added':0,'real_qualification':False}
         value['archive']=self.evidence.archive(encode(value).encode(),'FORWARD_MATURE_ASSESSMENT',research_namespace=plan['namespace'])
         with self.ledger.connection() as db:
             db.execute('INSERT INTO research_forward_assessments VALUES(?,?,?)',(value['assessment_id'],freeze_id,encode(value)))
@@ -423,7 +429,10 @@ class ForwardArchive:
             if self.shadow.checked_archive(assessment['archive'])!={k:v for k,v in assessment.items() if k!='archive'}:
                 raise HTTPException(409,'FORWARD_ASSESSMENT_ARCHIVE_BINDING_MISMATCH')
             if assessment['shadow']:
-                result=simulate(frozen,assessment['inputs'],[s['forecast'] for s in state['samples'] if datetime.fromisoformat(s['recorded_at'])<=datetime.fromisoformat(assessment['cutoff'])],datetime.fromisoformat(assessment['cutoff']).astimezone(SHANGHAI).date().isoformat())
+                sample_by_id={s['sample_id']:s for s in state['samples']}
+                if any(identity not in sample_by_id for identity in assessment['sample_ids']):
+                    raise HTTPException(409,'FORWARD_ASSESSMENT_SAMPLE_BINDING_MISMATCH')
+                result=simulate(frozen,assessment['inputs'],[sample_by_id[identity]['forecast'] for identity in assessment['sample_ids']],datetime.fromisoformat(assessment['cutoff']).astimezone(SHANGHAI).date().isoformat())
                 result['revision']=assessment['shadow']['revision']
                 matches=matches and result==assessment['shadow']
         return {'freeze_id':freeze_id,'samples':len(state['samples']),'matches_original':matches,'network_calls':0,'statistical_pass_checks_added':0}
