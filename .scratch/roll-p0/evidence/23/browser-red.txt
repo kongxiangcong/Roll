@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [54024]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8043 (Press CTRL+C to quit)
+[WebServer] (node:27620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:53024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\technical-review.spec.ts:3:1 › user reviews exact frozen materials and exports a preliminary package with separate current status (3.0m)
+
+
+  1) tests\e2e\technical-review.spec.ts:3:1 › user reviews exact frozen materials and exports a preliminary package with separate current status 
+
+    [31mTest timeout of 180000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 180000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: '模型技术审阅与验证交付' }).getByRole('button', { name: '审阅冻结材料', exact: true })[22m
+
+
+      19 |   await validation.getByRole('button',{name:'检查当前验证证据',exact:true}).click();
+      20 |   const review=page.getByRole('region',{name:'模型技术审阅与验证交付'});
+    > 21 |   await review.getByRole('button',{name:'审阅冻结材料',exact:true}).click();
+         |                                                               ^
+      22 |   await expect(review.getByText('当前技术审阅 COMPLETE',{exact:true})).toBeVisible({timeout:30000});
+      23 |   await expect(review).toContainText('真实验证交付未完成');
+      24 |   await expect(review).toContainText('经自动验证与模型技术审阅，未经人工独立复核');
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket23\frontend\tests\e2e\technical-review.spec.ts:21:63
+
+    Error Context: test-results\technical-review-user-revi-05dc0-ith-separate-current-status\error-context.md
+
+  1 failed
+    tests\e2e\technical-review.spec.ts:3:1 › user reviews exact frozen materials and exports a preliminary package with separate current status 

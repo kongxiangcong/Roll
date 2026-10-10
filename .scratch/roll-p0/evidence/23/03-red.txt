@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_local_delivery_contains_frozen_upstream_code_and_full_inputs_without_reading_sealed _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket23/.scratch/t23-red3-temp/test_local_delivery_contains_f0')
+
+    def test_local_delivery_contains_frozen_upstream_code_and_full_inputs_without_reading_sealed(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            validation=validated(client,tmp_path)
+            material=client.post('/api/research/validations/'+validation['validation_id']+'/review-materials',json={}).json()
+            exported=client.post('/api/research/review-materials/'+material['material_id']+'/export',json={}).json()
+            raw=client.get('/api/data/archives/'+exported['archive']['sha256']).content
+            with zipfile.ZipFile(io.BytesIO(raw)) as package:
+>               assert 'code/research/registry.py' in package.namelist()
+E               AssertionError: assert 'code/research/registry.py' in ['manifest.json', 'archives/7dd461fb9ec443a8c3b1534cfe24c9f0016e028cbb37a771616727a984a683bf', 'archives/fc421519d05c0...f0a54827ec0fd62e87daa09f50959a9c663', 'archives/44456ec633e6189641c959ad929a2eec96c25d986384486f7ffcad158eeb1daf', ...]
+E                +  where ['manifest.json', 'archives/7dd461fb9ec443a8c3b1534cfe24c9f0016e028cbb37a771616727a984a683bf', 'archives/fc421519d05c0...f0a54827ec0fd62e87daa09f50959a9c663', 'archives/44456ec633e6189641c959ad929a2eec96c25d986384486f7ffcad158eeb1daf', ...] = namelist()
+E                +    where namelist = <zipfile.ZipFile file=<_io.BytesIO object at 0x000002058E100860> mode='r'>.namelist
+
+backend\tests\application\test_technical_review.py:108: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_technical_review.py::test_local_delivery_contains_frozen_upstream_code_and_full_inputs_without_reading_sealed
+1 failed, 2 deselected in 19.59s

@@ -1,5 +1,6 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
+import {TechnicalReview} from './technical-review';
 type Policy={policy_id:string;policy_type:string;policy_fingerprint:string;gaps:string[];authorization:{version:number;single_exposure?:string;total_exposure?:string};evidence_kind:string;rule:string;loss_branch:string;recovery:string};
 type Position={instrument:string;quantity:string|null;sellable_quantity:string|null;triggered:boolean|null;executable_quantity:string|null;target_quantity:string|null;reasons:string[];stress:unknown;exposure_yuan:string|null;authorized_single_exposure_yuan:string|null};
 type Evaluation={evaluation_id:string;validation_verdict:string;engineering_verdict:string;evidence_kind:string;display_state:string;account_version:number;authorization:{version:number};positions:Position[];reasons:string[];gate_results:Record<string,string>;loss_result:unknown};
@@ -19,6 +20,7 @@ export function RiskPolicies({protocolId}:{protocolId:string}){
       {latest&&<article><h4>检查 {latest.evaluation_id.slice(0,8)}</h4><p>工程结果 {latest.engineering_verdict} · 实际验证 {latest.validation_verdict} · {latest.evidence_kind} · {latest.display_state}</p><p>账户版本 {latest.account_version} · 当前授权版本 {latest.authorization.version} · 正式能力关闭</p>
         <table><thead><tr><th>证券</th><th>持仓/可卖</th><th>触发</th><th>研究可行减量</th><th>研究剩余数量</th><th>市值/单票边界</th></tr></thead><tbody>{latest.positions.map(p=><tr key={p.instrument}><td>{p.instrument}</td><td>{p.quantity??'未知'} / {p.sellable_quantity??'未知'}</td><td>{p.triggered===null?'未知':p.triggered?'已触发':'无已知超额'}</td><td>{p.executable_quantity??'暂不能计算'}</td><td>{p.target_quantity??'未知'}</td><td>{p.exposure_yuan??'未知'} / {p.authorized_single_exposure_yuan??'未知'}</td></tr>)}</tbody></table>
         <ul>{latest.reasons.map(r=><li key={r}>{r}</li>)}</ul><details><summary>压力、所需事实与门槛</summary><p>跳空、延迟、跌停/停牌或部分成交仍可留下风险；此计算不能保证实际亏损或成交。</p><pre>{JSON.stringify({gate_results:latest.gate_results,positions:latest.positions,loss_result:latest.loss_result},null,2)}</pre></details><button onClick={()=>void replay(latest.evaluation_id)}>原输入风险重放</button>
+        <TechnicalReview key={latest.evaluation_id} basisId={latest.evaluation_id} kind="risk-evaluations"/>
       </article>}<details><summary>全部风险检查</summary><ul>{evaluations.map(e=><li key={e.evaluation_id}><button onClick={()=>setViewed(e)}>查看风险检查 {e.evaluation_id.slice(0,8)}</button> · {e.engineering_verdict} / {e.validation_verdict}</li>)}</ul></details>
     </>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </section>;

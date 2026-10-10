@@ -185,6 +185,10 @@ def clean_environment(root):
 
 
 def execute(host, run, request, cancel, auth):
+    if run.get('task_kind')=='TECHNICAL_REVIEW':
+        from roll.agents.review_runtime import command as task_command,tool as task_tool,publish as task_publish
+    elif run.get('task_kind') is None:task_command,task_tool,task_publish=command,tool,publish
+    else:raise ValueError('TASK_KIND_NOT_ALLOWED')
     started = time.monotonic(); deadline = started + run['limits']['timeout_seconds']
     state = {'facts': [], 'snapshots': [], 'http_calls': 0, 'bytes': 0, 'returned_bytes': 0, 'source_texts': {}}
     with tempfile.TemporaryDirectory(prefix='roll-codex-task-'+run['run_id']+'-', ignore_cleanup_errors=True) as directory:
@@ -224,7 +228,7 @@ def execute(host, run, request, cancel, auth):
             run['process'].update(worker_pid=process.pid,containment='WINDOWS_JOB_KILL_ON_CLOSE',
                 isolated_cwd=True,isolated_home=True,environment_keys=sorted(clean_environment(root)))
             threading.Thread(target=drain, daemon=True).start()
-            frozen = command(run, request)
+            frozen = task_command(run, request)
             run['tool_schema_fingerprint'] = hashlib.sha256(encode(frozen['tools']).encode()).hexdigest()
             send(frozen); host.save(run)
             while True:
@@ -262,7 +266,7 @@ def execute(host, run, request, cancel, auth):
                 elif kind == 'turn':
                     run['runtime_turn_id'] = event['turn_id']
                 elif kind == 'tool':
-                    result = tool(host, run, request, state, event, deadline, cancel)
+                    result = task_tool(host, run, request, state, event, deadline, cancel)
                     send({'kind': 'tool_result', 'id': event['id'], 'result': {
                         'contentItems': [{'type': 'inputText', 'text': encode(result)}], 'success': 'error' not in result}})
                 elif kind == 'completed':
@@ -270,7 +274,7 @@ def execute(host, run, request, cancel, auth):
                     if event['status'] != 'completed':
                         run.update(status='FAILED', error={'code': 'CODEX_TURN_FAILED', 'info': event['error_info']})
                     else:
-                        publish(host, run, request, state, event['output'])
+                        task_publish(host, run, request, state, event['output'])
                     break
                 elif kind in {'failure', 'eof'}:
                     run.update(status='UNAVAILABLE' if event.get('code') in {'MODEL_UNAVAILABLE','CHATGPT_AUTH_REQUIRED','INHERITED_SKILLS_ENABLED','EXTERNAL_MCP_ENABLED','ISOLATION_CONFIG_REJECTED'} else 'FAILED', error={'code': event.get('code', 'WORKER_EXIT'),
