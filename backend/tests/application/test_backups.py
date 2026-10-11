@@ -159,7 +159,10 @@ def test_restored_user_funding_remains_immutable_history_and_current_recovery_gu
     with TestClient(create_app(tmp_path)) as client:
         assert client.get('/api/funding/versions/1').json()==active
         guard=client.get('/api/capabilities').json()
-        assert guard['state']=='RECOVERY_LOCK'
+        assert guard['state']=='UNGRANTED'
+        assert guard['runtime_state']=='RECOVERY_LOCK'
+        assert guard['formal_judgment']=='DISABLED' and guard['allowed_actions']==[]
+        assert guard['grant_statuses']==[]
         assert guard['recovery']['old_active_records']=='HISTORY_ONLY'
         assert guard['recovery']['possibly_missing_revocations']=='UNVERIFIED'
         assert guard['recovery']['formal_actions_allowed'] is False
@@ -271,7 +274,14 @@ def test_registered_research_feature_model_forecast_and_source_files_restore_as_
         # local importer, including its original source raw/Parquet dependencies.
         repeated=client.post('/api/research/datasets',json={'archive_id':'method-execution','basis':'恢复原件本机复验，不创造前向样本'})
         assert repeated.status_code==201,repeated.text
-        assert client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
+        guard=client.get('/api/capabilities').json()
+        assert guard['state']=='UNGRANTED' and guard['runtime_state']=='RECOVERY_LOCK'
+        assert guard['recovery']['state']=='RECOVERY_LOCK'
+        assert guard['recovery']['old_active_records']=='HISTORY_ONLY'
+        assert guard['formal_judgment']=='DISABLED' and guard['allowed_actions']==[]
+        assert guard['grant_statuses']==[]
+        assert client.get('/api/research/forecasts/'+forecast['forecast_id']).json()['capability']=='NOT_GRANTED'
+        assert client.post('/api/formal/evaluate').json()['detail']['code']=='RECOVERY_LOCK'
 
 
 def test_host_source_dataset_upgrade_backup_and_restore_keep_source_chain(tmp_path,monkeypatch):
