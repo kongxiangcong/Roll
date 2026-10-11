@@ -23,7 +23,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.market.evidence import DataRequest
 from roll.market.rules import SHANGHAI
-from roll.market import cninfo_history, known_obligations, sse_suspension
+from roll.market import cninfo_history, known_obligations, sse_suspension, sse_stock_suspension
 from roll.agents.codex_process import owner_alive,process_creation
 
 SSE_URL='http://yunhq.sse.com.cn:32041/v1/sh1/list/exchange/equity'
@@ -50,6 +50,7 @@ def code():
         Path(cninfo_history.__file__).read_bytes().replace(b'\r\n',b'\n')+
         Path(known_obligations.__file__).read_bytes().replace(b'\r\n',b'\n')+
         Path(sse_suspension.__file__).read_bytes().replace(b'\r\n',b'\n')+
+        Path(sse_stock_suspension.__file__).read_bytes().replace(b'\r\n',b'\n')+
         (cninfo_history.REFERENCE/'sources.json').read_bytes()).hexdigest()
 
 
@@ -233,6 +234,7 @@ class PostClosePackets:
     def __init__(self,prospective):
         self.prospective=prospective
         self.evidence,self.ledger=prospective.evidence,prospective.ledger
+        self.stock_suspensions=sse_stock_suspension.StockSuspensions(prospective)
         with self.ledger.connection() as db:
             db.execute('CREATE TABLE IF NOT EXISTS post_close_packets(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS post_close_capture_jobs(plan_id TEXT NOT NULL,day TEXT NOT NULL,value TEXT NOT NULL,PRIMARY KEY(plan_id,day))')
@@ -355,8 +357,9 @@ class PostClosePackets:
         cutoff=datetime.fromisoformat(now())
         audits=self.obligations(plan_id,cutoff)
         suspension=self.suspension_receipts(plan_id,cutoff)
+        stock=self.stock_suspensions.receipts(plan_id,cutoff)
         rows,gaps,_=self.inputs(self.prospective.as_of(plan_id,cutoff)['versions'],plan['instrument'],cutoff,
-            self.acquisitions(plan_id,cutoff),audits,suspension)
+            self.acquisitions(plan_id,cutoff),audits,suspension,stock)
         history=self.history(plan_id,cutoff)
         return {'plan_id':plan_id,'instrument':plan['instrument'],'gaps':gaps,
             'source_gaps':['CURRENT_BOARD_UNIT_SOURCE_UNVERIFIED','CURRENT_STATUS_LISTING_RELISTING_SOURCE_UNADAPTED',
@@ -364,6 +367,8 @@ class PostClosePackets:
             'historical_source_assessments':history,'historical_source_gaps':sorted(set(g for s in history for g in s['gaps'])),
             'known_obligation_audits':audits,'known_obligation_gaps':sorted(set(g for a in audits for g in a['gaps'])),
             'suspension_receipts':suspension,'suspension_source_gaps':sorted(set(g for s in suspension for g in s['gaps'])),
+            'stock_suspension_receipts':stock,'stock_suspension_jobs':self.stock_suspensions.jobs(plan_id),
+            'stock_suspension_source_gaps':sorted(set(g for s in stock for g in s['gaps'])),
             'network_calls':0,
             'forward_admissible':bool(rows) and not gaps,'forward_started_at':None,'capability':'NOT_GRANTED'}
 
@@ -582,10 +587,12 @@ class PostClosePackets:
             db.execute('INSERT INTO post_close_capture_jobs VALUES(?,?,?)',(plan_id,day,encode(job)))
             db.commit()
         try:
+            stock_job=self.stock_suspensions.capture_once(plan_id,basis)
+            job.update(stock_suspension_receipt_id=stock_job.get('receipt_id'),stock_suspension_job_state=stock_job['state'])
             status_job=self.capture_suspension_once(plan_id,basis)
             job.update(suspension_receipt_id=status_job.get('receipt_id'),suspension_job_state=status_job['state'])
             packet=self.capture(plan_id,basis)
-            job.update(state='RECORDED',packet_id=packet['packet_id'],gaps=sorted(set(packet['gaps']+status_job.get('gaps',[]))),finished_at=now())
+            job.update(state='RECORDED',packet_id=packet['packet_id'],gaps=sorted(set(packet['gaps']+status_job.get('gaps',[])+stock_job.get('gaps',[]))),finished_at=now())
         except HTTPException as error:
             job.update(state='REFUSED',gaps=[str(error.detail)],finished_at=now())
         with self.ledger.connection() as db:
@@ -733,7 +740,7 @@ class PostClosePackets:
                 'original_raw_hashes':sorted(set(originals))})
         return result
 
-    def inputs(self,versions,instrument,cutoff,acquisition_attempts=(),obligation_audits=(),suspension_receipts=()):
+    def inputs(self,versions,instrument,cutoff,acquisition_attempts=(),obligation_audits=(),suspension_receipts=(),stock_receipts=()):
         daily,statuses={},{}
         inventory=self.cash_inventory(cutoff)
         gaps=[]
@@ -742,6 +749,11 @@ class PostClosePackets:
         applicable_audits=[a for a in obligation_audits if a['instrument']==instrument and
             a['protocol_effective_window']['start_date']==current_day]
         applicable_suspension=[s for s in suspension_receipts if s['instrument']==instrument and s['query_date']==current_day]
+        applicable_stock=[s for s in stock_receipts if s['instrument']==instrument and s['host_date']==current_day]
+        for receipt in applicable_stock:
+            gaps.extend(receipt['gaps'])
+            for event in receipt['events']:
+                statuses.setdefault(current_day,[]).append({**event,'stock_receipt_id':receipt['receipt_id'],'parser_fingerprint':code()})
         for receipt in applicable_suspension:
             gaps.extend(receipt['gaps'])
             for event in receipt['events']:
@@ -773,7 +785,8 @@ class PostClosePackets:
                 gaps.append('UNRESOLVED_CURRENT_DAILY_CONFLICT:'+day)
             row=max(candidates,key=lambda c:datetime.fromisoformat(c['known_at']))
             row={**row,'known_obligation_audit_ids':[a['audit_id'] for a in applicable_audits],
-                'suspension_receipt_ids':[s['receipt_id'] for s in applicable_suspension]}
+                'suspension_receipt_ids':[s['receipt_id'] for s in applicable_suspension],
+                'stock_suspension_receipt_ids':[s['receipt_id'] for s in applicable_stock]}
             if any(a['resolution_unknown_count'] for a in applicable_audits):
                 gaps.append('KNOWN_OLDER_OBLIGATION_RESOLUTION_UNPROVEN:'+day)
             states=statuses.get(day,[])
@@ -784,6 +797,11 @@ class PostClosePackets:
             if not states:gaps.append('CURRENT_COMPLETE_STATUS_UNPROVEN:'+day)
             for state in states:
                 sources=state.get('field_evidence',{})
+                if state.get('source_id')==sse_stock_suspension.SOURCE:
+                    if state.get('stock_receipt_id') not in [s['receipt_id'] for s in applicable_stock] or state.get('query_js_hash')!=sse_suspension.JS_SHA:
+                        gaps.append('CURRENT_STATUS_FIELD_SOURCE_UNPROVEN:'+day)
+                    gaps.append('CURRENT_STOCK_INTERVAL_ACTUAL_STATUS_UNPROVEN:'+day)
+                    continue
                 if state.get('source_id')==sse_suspension.SOURCE:
                     if (state.get('receipt_id') not in [s['receipt_id'] for s in applicable_suspension] or
                         sources.get('suspension',{}).get('raw_hash')!=state['raw_hash'] or
@@ -855,7 +873,8 @@ class PostClosePackets:
         attempts=self.acquisitions(plan_id,cutoff)
         audits=self.obligations(plan_id,cutoff,checkpoint_day=cutoff.astimezone(SHANGHAI).date().isoformat())
         suspension=self.suspension_receipts(plan_id,cutoff)
-        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff,attempts,audits,suspension)
+        stock=self.stock_suspensions.receipts(plan_id,cutoff)
+        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff,attempts,audits,suspension,stock)
         value={'packet_id':str(uuid4()),'plan_id':plan_id,'instrument':plan['instrument'],
             'created_at':now(),'knowledge_cutoff':cutoff.isoformat(),'basis':basis,'parser_fingerprint':code(),
             'rows':rows,'status_facts':statuses,'gaps':gaps,'versions':versions,'acquisition_attempts':attempts,
@@ -865,6 +884,7 @@ class PostClosePackets:
         value['known_cash_inventory']=inventory
         value['known_obligation_audits']=audits
         value['suspension_receipts']=suspension
+        value['stock_suspension_receipts']=stock
         value['historical_source_assessments']=self.history(plan_id,cutoff)
         value['execution_context']=self.execution_context(plan['instrument'],rows)
         value['archive']=self.evidence.archive(encode(value).encode(),'POST_CLOSE_INPUT_PACKET',evidence_kind=value['evidence_kind'])
@@ -891,8 +911,9 @@ class PostClosePackets:
         audits=self.obligations(packet['plan_id'],cutoff,ids=[a['audit_id'] for a in packet['known_obligation_audits']],
             checkpoint_day=cutoff.astimezone(SHANGHAI).date().isoformat())
         suspension=self.suspension_receipts(packet['plan_id'],cutoff,ids=[s['receipt_id'] for s in packet['suspension_receipts']])
-        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts,audits,suspension)
+        stock=self.stock_suspensions.receipts(packet['plan_id'],cutoff,ids=[s['receipt_id'] for s in packet['stock_suspension_receipts']])
+        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts,audits,suspension,stock)
         inventory=self.cash_inventory(cutoff,verify_archives=True)
         history=self.history(packet['plan_id'],cutoff,[s['assessment_id'] for s in packet['historical_source_assessments']])
-        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'] and history==packet['historical_source_assessments'] and audits==packet['known_obligation_audits'] and suspension==packet['suspension_receipts'],
+        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'] and history==packet['historical_source_assessments'] and audits==packet['known_obligation_audits'] and suspension==packet['suspension_receipts'] and stock==packet['stock_suspension_receipts'],
             'network_calls':0,'forward_admissible':packet['forward_admissible'],'capability':'NOT_GRANTED'}

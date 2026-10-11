@@ -222,12 +222,16 @@ def test_normalized_sqlite_and_parquet_agreement_cannot_override_closing_origina
 
 def test_persisted_post_close_job_is_bounded_and_not_retried_by_repeated_trigger(tmp_path,monkeypatch):
     clock='2026-10-12T15:06:00+08:00'
-    for module in ['roll.research.prospective','roll.market.post_close_packet','roll.market.evidence']:
+    for module in ['roll.research.prospective','roll.market.post_close_packet','roll.market.evidence','roll.market.sse_stock_suspension']:
         monkeypatch.setattr(module+'.now',lambda:clock)
     calls=[]
     raw=json.dumps({'date':20261012,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]},ensure_ascii=False).encode()
     def transport(request):
         calls.append(request.url.host)
+        if request.url.host=='query.sse.com.cn' and request.url.params.get('sqlId','').startswith('GW_PL_JYTS_TFPXX'):
+            from test_sse_stock_suspension import interval
+            return httpx.Response(200,json={'sqlId':'GW_PL_JYTS_TFPXX_TRADEDAY','result':[{'beforeTradeDay':'20261009'}]}
+                if request.url.params['sqlId'].endswith('TRADEDAY') else interval(rows=[],total=0,pages=0))
         if request.url.host=='query.sse.com.cn':
             from test_sse_current_suspension import page
             return httpx.Response(200,json=page(rows=[],total=0,page_count=0))
@@ -242,7 +246,7 @@ def test_persisted_post_close_job_is_bounded_and_not_retried_by_repeated_trigger
         job=response.json()
         assert job['state']=='RECORDED' and job['actual_forward_start'] is False
         assert client.post(path,json={'basis':'repeat same bounded job'}).json()==job
-        assert sorted(calls)==['query.sse.com.cn','yunhq.sse.com.cn']
+        assert sorted(calls)==['query.sse.com.cn']*3+['yunhq.sse.com.cn']
         assert len(client.get('/api/research/collections/'+pid+'/batches').json())==1
         assert len(client.get('/api/research/collections/'+pid+'/sse-suspension-receipts').json())==1
         assert client.get('/api/account').json()==account

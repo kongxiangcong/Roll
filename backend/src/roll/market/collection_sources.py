@@ -15,6 +15,7 @@ CLEANING_VERSION = 'prospective-cleaning-v1'
 SOURCES = [
     {'id': 'sse-closing-board', 'name': '上交所盘后原始快照', 'upstream': 'SSE', 'group': 'DAILY', 'engine': 'ROLL'},
     {'id': 'sse-suspension-date', 'name': '上交所指定日期停牌观察', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
+    {'id': 'sse-stock-suspension-interval', 'name': '上交所证券停牌区间原件', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
     {'id': 'sohu-daily', 'name': '搜狐日线', 'upstream': 'SOHU', 'group': 'DAILY', 'engine': 'ROLL'},
     {'id': 'sina-quote', 'name': '新浪报价与状态线索', 'upstream': 'SINA', 'group': 'QUOTE', 'engine': 'ROLL'},
     {'id': 'eastmoney-actions', 'name': '东财权益线索', 'upstream': 'EASTMONEY', 'group': 'ADJUSTMENTS', 'engine': 'ROLL'},
@@ -69,6 +70,12 @@ class CollectionSources:
                         license='Roll adaptation; upstream data rights separate',
                         historical_revision_proof='RECEIVED_ORIGINAL_ONLY_NOT_HISTORICAL_PIT',
                         unit_scope='Returned suspension schedules only; absence/resumption/full status UNKNOWN')
+                if spec['id']=='sse-stock-suspension-interval':
+                    policy.update(basis='2026-10-11授权新stock SSE有限独立来源评估',max_calls=3,
+                        timeout_seconds=15,adapter_version='source-bound-sse-stock-interval-v1',
+                        license='Roll adaptation; upstream data rights separate',
+                        historical_revision_proof='CURRENT_RECEIVED_ORIGINAL_NOT_HISTORICAL_PIT',
+                        unit_scope='Reported date/interval schedules; latest trade day and actual resumption UNKNOWN')
                 db.execute('INSERT OR IGNORE INTO collection_source_policies VALUES(?,?)', (spec['id'], encode(policy)))
 
     def listing(self):
