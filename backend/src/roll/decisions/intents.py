@@ -90,16 +90,21 @@ class Intents:
             if decision['action'] in {'BUY', 'ADD'} and (listing['pending_attribution'] or any(v['action'] in {'BUY', 'ADD'} for v in active)):
                 raise HTTPException(409, 'ACTIVE_NEW_ENTRY_OR_UNKNOWN_EXTERNAL_ORDER')
             reservation = Decimal(decision['required_cash_yuan'])
-            available = Decimal(boundary['account'].get('conservative_available', boundary['account'].get('broker_available')) or '0') - Decimal(boundary['funding'].get('cash_reserve', '0')) - Decimal(listing['unreflected_reservation_yuan'])
-            if reservation > available: raise HTTPException(409, 'CURRENT_AVAILABLE_AFTER_INTENTS_INSUFFICIENT')
+            if decision['action'] in {'BUY', 'ADD'}:
+                available = boundary['account'].get('conservative_available', boundary['account'].get('broker_available'))
+                if available is None: raise HTTPException(409, 'CURRENT_AVAILABLE_UNKNOWN')
+                available = Decimal(available) - Decimal(boundary['funding'].get('cash_reserve', '0')) - Decimal(listing['unreflected_reservation_yuan'])
+                if reservation > available: raise HTTPException(409, 'CURRENT_AVAILABLE_AFTER_INTENTS_INSUFFICIENT')
             at = now()
             value = {'intent_id': str(uuid4()), 'decision_id': decision['decision_id'], 'evaluation_id': evaluation['evaluation_id'],
                      'decision': decision, 'instrument': decision['instrument'], 'action': decision['action'], 'status': 'PREPARED',
                      'remaining_quantity': decision['quantity'], 'synced_quantity': '0', 'provisional_reservation_yuan': format(reservation, '.2f'),
                      'original_reservation_yuan': format(reservation, '.2f'),
                      'broker_reflection': 'NOT_REFLECTED', 'effective_broker_reflection': 'NOT_REFLECTED', 'broker_reflection_account_version': boundary['account']['version'], 'external_order_id': None, 'resolution': None,
-                     'time_chain': {'decision_issued_at': evaluation['registered_at'], 'sent_at': None, 'delivered_at': None, 'read_at': None,
-                                    'prepared_at': at, 'prepared_source': 'USER_PREPARE', 'occurred_at': None, 'reported_at': None, 'known_at': at},
+                     'time_chain': {'decision_issued_at': evaluation['registered_at'], 'decision_issued_source': 'HOST_PUBLICATION',
+                                    'sent_at': None, 'delivered_at': None, 'read_at': None, 'notification_source': 'UNKNOWN',
+                                    'prepared_at': at, 'prepared_source': 'USER_PREPARE', 'occurred_at': None, 'occurred_source': 'UNKNOWN',
+                                    'reported_at': None, 'reported_source': 'UNKNOWN', 'known_at': at, 'known_source': 'HOST_RECEIPT'},
                      'namespace': evaluation['namespace'], 'system_usable': evaluation['system_usable']}
             db.execute('INSERT INTO execution_intents VALUES(?,?,?,?)', (value['intent_id'], command.idempotency_key, content, encode(value)))
             self.event(db, 'INTENT_PREPARED', value['intent_id'], at)
@@ -137,7 +142,7 @@ class Intents:
             value.update(status=command.state, external_order_id=command.external_order_id or value['external_order_id'],
                          broker_reflection=command.broker_reflection, effective_broker_reflection=command.broker_reflection,
                          broker_reflection_account_version=self.ledger.account(db=db)['version'], resolution=command.reason)
-            value['time_chain'].update(occurred_at=occurred or value['time_chain']['occurred_at'], occurred_source='USER_DECLARED' if occurred or value['time_chain']['occurred_at'] else 'UNKNOWN', reported_at=at, known_at=at)
+            value['time_chain'].update(occurred_at=occurred or value['time_chain']['occurred_at'], occurred_source='USER_DECLARED' if occurred or value['time_chain']['occurred_at'] else 'UNKNOWN', reported_at=at, reported_source='USER_DECLARATION', known_at=at)
             if command.state in {'NOT_EXECUTED', 'RESOLVED'}: value['provisional_reservation_yuan'] = '0.00'
             db.execute('UPDATE execution_intents SET value=? WHERE id=?', (encode(value), identifier))
             db.execute('INSERT INTO execution_intent_receipts VALUES(?,?,?)', (command.idempotency_key, content, encode(value)))

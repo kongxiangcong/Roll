@@ -3,12 +3,13 @@ from roll.app import create_app
 from capability_method_app import save_package
 from test_actions import action_package, prepare
 from test_fills import fill
-from test_account import permission_change, submit
+from test_account import permission_change, submit, baseline
 from concurrent.futures import ThreadPoolExecutor
 import pytest
 from test_funding import funding
 from datetime import datetime, timedelta
 from test_reviews import wait_result
+from test_capabilities import ready, method_command
 
 
 @pytest.mark.parametrize('status', ['NOT_OPEN', 'UNKNOWN'])
@@ -132,6 +133,39 @@ def test_run_audit_consumes_real_intent_count_and_invalid_allocation_rolls_back_
         assert client.get('/api/intents/allocations').json() == []
         assert client.get('/api/intents').json()['intents'][0]['synced_quantity'] == '0'
         assert not any(e['event_type'] == 'ACTION_INVALIDATED' for e in client.get('/api/actions/events').json())
+
+
+@pytest.mark.parametrize('available', ['1000.00', None])
+def test_independent_reduction_prepare_does_not_require_new_risk_reserve_cash_or_purchase_permission(tmp_path, monkeypatch, available):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    import capability_method_app
+    import roll.decisions.actions
+    import roll.decisions.capabilities
+    monkeypatch.setattr(capability_method_app, 'ANCHOR', capability_method_app.ANCHOR)
+    monkeypatch.setattr(roll.decisions.actions, 'now', roll.decisions.actions.now)
+    monkeypatch.setattr(roll.decisions.capabilities, 'now', roll.decisions.capabilities.now)
+    from actions_method_app import risk_package
+    p = risk_package()
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        value = baseline()
+        value['payload'].update(broker_available=available, broker_frozen='99000.10' if available else None,
+            positions=[{'instrument': 'SSE:600000', 'quantity': '300', 'sellable_quantity': '300', 'reference_cost': '100'}])
+        value['payload']['permission_profile'][0]['status'] = 'NOT_OPEN'
+        assert submit(client, value, 'baseline').status_code == 200
+        assert submit(client, {'kind': 'ACCOUNT_DECLARATION', 'expected_account_version': 1, 'payload': {
+            'effective_at': p['required_as_of'], 'source': 'METHOD', 'record_id': 'declaration',
+            'scope': ['TRADES', 'ORDERS', 'CASH', 'EQUITY'], 'changes': 'NONE', 'basis': 'METHOD'}}, 'declaration').status_code == 200
+        assert client.post('/api/funding/confirm', json=funding()).status_code == 200
+        command = {**method_command(), 'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']}
+        granted = client.post('/api/capabilities/grants', json=command)
+        assert granted.status_code == 201, granted.text
+        evaluation = client.post('/api/actions/evaluate', json={}).json()
+        assert [(d['action'], d['quantity']) for d in evaluation['decisions']] == [('REDUCE', '100')], evaluation
+        response = client.post('/api/intents/prepare', json={**intent_command(evaluation), 'price_yuan': '100.00'})
+        assert response.status_code == 201, response.text
+        assert response.json()['provisional_reservation_yuan'] == '0.00'
+        assert client.get('/api/account').json()['positions'][0]['quantity'] == '300'
 
 
 def test_unknown_unlinked_excess_facts_and_multito_multi_allocations_do_not_merge_actual_fills(tmp_path, monkeypatch):
