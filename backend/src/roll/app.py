@@ -211,6 +211,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def assess_sse_history(plan_id: str,command: PacketCommand):
         return prospective.post_close.assess_history(plan_id,command.basis)
 
+    @app.post('/api/research/collections/{plan_id}/cninfo-history-assessments',status_code=201)
+    def cninfo_history_assessment(plan_id:str,command:PacketCommand):
+        return prospective.post_close.assess_cninfo_history(plan_id,command.basis)
+
     @app.get('/api/research/collections/{plan_id}/source-gaps')
     def post_close_source_gaps(plan_id: str):
         return prospective.post_close.source_gaps(plan_id)
