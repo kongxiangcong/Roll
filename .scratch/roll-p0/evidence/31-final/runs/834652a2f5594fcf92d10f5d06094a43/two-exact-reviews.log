@@ -1,0 +1,34 @@
+EE                                                                       [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket31-final/.roll-data/final31-bounded-834652a2f5594fcf92d10f5d06094a43/reviews')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\final31-bounded-834652a2f5594fcf92d10f5d06094a43\\reviews'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket31-final/.roll-data/final31-bounded-834652a2f5594fcf92d10f5d06094a43/reviews')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\final31-bounded-834652a2f5594fcf92d10f5d06094a43\\reviews'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+=========================== short test summary info ===========================
+ERROR tests/application/test_reviews.py::test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time
+ERROR tests/application/test_reviews.py::test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts
+2 errors in 3.01s

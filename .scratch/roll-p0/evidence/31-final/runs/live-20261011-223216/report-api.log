@@ -1,0 +1,52 @@
+INFO:     Started server process [48844]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:49364 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53132 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61585 - "GET /api/research/shadow/76286d80-4c5d-4262-b97d-ecb856f181f4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60430 - "POST /api/data/requests HTTP/1.1" 201 Created
+INFO:     127.0.0.1:60432 - "POST /api/data/requests/b30a8004-a404-4a7b-a857-0b78c933b289/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51429 - "POST /api/account/valuations HTTP/1.1" 201 Created
+INFO:     127.0.0.1:62587 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62588 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62589 - "GET /api/reviews/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51831 - "GET /api/capabilities/monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51829 - "GET /api/account/valuations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51830 - "GET /api/intents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51832 - "GET /api/account/audit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "GET /api/capabilities/monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59937 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61630 - "GET /api/reviews/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51999 - "GET /api/intents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51998 - "GET /api/account/valuations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55156 - "GET /api/account/audit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55157 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65230 - "GET /api/research/reports/76286d80-4c5d-4262-b97d-ecb856f181f4?valuation_id=a26a0944-79f8-4eef-b142-fbf037305dd2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50764 - "GET /api/research/reports/76286d80-4c5d-4262-b97d-ecb856f181f4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59602 - "GET /api/research/reports/76286d80-4c5d-4262-b97d-ecb856f181f4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50865 - "GET /api/research/reports/76286d80-4c5d-4262-b97d-ecb856f181f4/export?valuation_id=a26a0944-79f8-4eef-b142-fbf037305dd2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54086 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53207 - "GET /api/actions/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53209 - "POST /api/formal/evaluate HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:56932 - "GET /api/reviews/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62468 - "GET /api/intents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62467 - "GET /api/account/valuations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50230 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50062 - "GET /api/capabilities/monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50064 - "GET /api/reviews/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50063 - "GET /api/account/audit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50240 - "GET /api/intents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49366 - "GET /api/account/audit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49358 - "GET /api/account/valuations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49363 - "GET /api/capabilities/monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53205 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49359 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56744 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58273 - "GET /api/research/reports/76286d80-4c5d-4262-b97d-ecb856f181f4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56743 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56658 - "GET /api/research/reports/76286d80-4c5d-4262-b97d-ecb856f181f4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56660 - "GET /api/research/shadow/76286d80-4c5d-4262-b97d-ecb856f181f4 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [48844]

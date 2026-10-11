@@ -1,0 +1,58 @@
+{
+  "classification": "CURRENT_SOURCE_STATIC_RECONCILIATION_WITH_HISTORICAL_REAL_RECEIPTS_NOT_NEW_RUNTIME_ACCEPTANCE",
+  "source_base": "e47900228c5d1ace57f0313ad7767cdb3554dd28",
+  "source_rows": [
+    {
+      "path": "backend/src/roll/agents/codex_evidence.py",
+      "bytes": 8501,
+      "sha256": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee"
+    },
+    {
+      "path": "backend/src/roll/agents/codex_worker.py",
+      "bytes": 8545,
+      "sha256": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+    },
+    {
+      "path": "backend/src/roll/agents/codex_process.py",
+      "bytes": 35671,
+      "sha256": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f"
+    },
+    {
+      "path": "backend/src/roll/agents/review_runtime.py",
+      "bytes": 8836,
+      "sha256": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b"
+    },
+    {
+      "path": "backend/src/roll/research/technical_review.py",
+      "bytes": 27456,
+      "sha256": "98308d8a1f9f7ca7e585fba06846999eeba0615a79041630fab70f4029e606c9"
+    },
+    {
+      "path": "backend/src/roll/agents/settings.py",
+      "bytes": 4943,
+      "sha256": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101"
+    },
+    {
+      "path": "backend/src/roll/decisions/capabilities.py",
+      "bytes": 43199,
+      "sha256": "5acfddbb9e9a051a11fd46a2e350406816eae9b940d9b5ca7185d7f46aabc18a"
+    }
+  ],
+  "real_receipts": [
+    ".scratch/roll-p0/evidence/11/acceptance.md",
+    ".scratch/roll-p0/evidence/23/acceptance.md",
+    ".scratch/roll-p0/evidence/continuation-2026-10-11/review-fixes/codex-execution-receipt.md"
+  ],
+  "current_scope_receipts": [
+    ".scratch/roll-p0/provider-scope-2026-10-11.md",
+    ".scratch/roll-p0/evidence/continuation-2026-10-11/codex-runner-scope/acceptance.md"
+  ],
+  "credential_reads": 0,
+  "credential_hashes": 0,
+  "credential_copies": 0,
+  "new_provider_calls": 0,
+  "source_requests": 0,
+  "database_connections": 0,
+  "test_runs": 0,
+  "app_startups": 0
+}

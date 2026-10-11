@@ -1,0 +1,14 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Error: strict mode violation: locator('details').filter({ has: getByText('模型维护与资格核验', { exact: true }) }).locator('summary') resolved to 2 elements:
+    1) <summary>模型维护与资格核验</summary> aka getByText('模型维护与资格核验')
+    2) <summary>实际维护记录</summary> aka getByText('实际维护记录')
+
+Call log:
+[2m  - waiting for locator('details').filter({ has: getByText('模型维护与资格核验', { exact: true }) }).locator('summary')[22m
+
+    at D:\dsh-proj\Roll\.scratch\worktrees\ticket31-final\.scratch\roll-p0\evidence\31-final\prepared\five-entry.mjs:75:32
+
+Node.js v25.8.1

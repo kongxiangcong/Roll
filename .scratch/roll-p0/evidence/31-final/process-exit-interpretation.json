@@ -1,0 +1,62 @@
+{
+  "rows": [
+    {
+      "role": "api",
+      "raw_stop_label": "CTRL_BREAK_NORMAL",
+      "exit_code": 3,
+      "interpretation": "CTRL_BREAK_TEARDOWN_NONZERO",
+      "stop_failure": null
+    },
+    {
+      "role": "worker",
+      "raw_stop_label": "CTRL_BREAK_NORMAL",
+      "exit_code": 0,
+      "interpretation": "WORKER_NORMAL_EXIT0",
+      "stop_failure": null
+    },
+    {
+      "role": "worker-duplicate",
+      "raw_stop_label": null,
+      "exit_code": null,
+      "interpretation": "DUPLICATE_REFUSAL_ALREADY_EXITED",
+      "stop_failure": null
+    },
+    {
+      "role": "ui",
+      "raw_stop_label": "CTRL_BREAK_NORMAL",
+      "exit_code": 3221225786,
+      "interpretation": "CTRL_BREAK_TEARDOWN_NONZERO",
+      "stop_failure": null
+    },
+    {
+      "role": "api-restored",
+      "raw_stop_label": "CTRL_BREAK_NORMAL",
+      "exit_code": 3,
+      "interpretation": "CTRL_BREAK_TEARDOWN_NONZERO",
+      "stop_failure": null
+    },
+    {
+      "role": "worker-restored",
+      "raw_stop_label": "CTRL_BREAK_NORMAL",
+      "exit_code": 0,
+      "interpretation": "WORKER_NORMAL_EXIT0",
+      "stop_failure": null
+    },
+    {
+      "role": "report-api",
+      "raw_stop_label": "CTRL_BREAK_NORMAL",
+      "exit_code": 3,
+      "interpretation": "CTRL_BREAK_TEARDOWN_NONZERO",
+      "stop_failure": null
+    },
+    {
+      "role": "report-ui",
+      "raw_stop_label": "CTRL_BREAK_NORMAL",
+      "exit_code": 3221225786,
+      "interpretation": "CTRL_BREAK_TEARDOWN_NONZERO",
+      "stop_failure": null
+    }
+  ],
+  "all_processes_exit0_claimed": false,
+  "worker_normal_exit0_and_coverage_verified": true
+}

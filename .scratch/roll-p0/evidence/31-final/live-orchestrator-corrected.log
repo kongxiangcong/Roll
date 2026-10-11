@@ -1,0 +1,9 @@
+{"status": "FAIL", "receipt": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.scratch\\roll-p0\\evidence\\31-final\\runs\\live-20261011-223009\\live-receipt.json", "runtime": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\f31-live-20261011-223009"}
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\ticket31-final\.scratch\roll-p0\evidence\31-final\prepared\live-acceptance.py", line 112, in <module>
+    subprocess.run([NODE,str(Path(__file__).with_name('five-entry.mjs'))],cwd=TREE,env=ui_env,stdout=log,stderr=subprocess.STDOUT,check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\Program Files\\nodejs\\node.exe', 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.scratch\\roll-p0\\evidence\\31-final\\prepared\\five-entry.mjs']' returned non-zero exit status 1.
