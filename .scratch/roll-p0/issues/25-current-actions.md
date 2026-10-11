@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** partial
+**Completion:** complete
 
 **Primary acceptance:** AT-15、AT-16、AT-22、AT-30、AT-34、AT-87。
 
@@ -27,6 +27,8 @@
 - [ ] 遵守目录与实施约束；仅引入本票实际需要的模块、接口和校验，保留 PRD 必需控制，不新增假设性兼容层、审批或泛化框架。
 
 ## Comments
+
+2026-10-11 独立接受：最终source759033c8的五状态Spec修复经新增3项FastAPI/真实独立SQLite验收PASS/18.89秒；profit绑定自身BUY grant，风险model NOT_APPLICABLE与自身REDUCE/EXIT grant，METHOD_ONLY、零可卖BLOCKED无伪Decision，GET/replay/重启和生产METHOD拒绝均通过。原4fc2403的31 PASS与held缺口保留历史边界，没有重复或升级旧suite/浏览器/benchmark。新增1201档案2402次来源/目标SHA/长度核0差异，1934/2922保全条目在3135中未改写，15保护及原19 checksum匹配，最终source_inventory与当前benchmark收据一致。工程范围独立接受complete；真实研究仍FITTED_UNVALIDATED/NOT_GRANTED，不提前声明26/27意向/成交、28外部发送或30当前源producer完成。独立记录见[状态修复验收](../evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)。
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。26 接入实际执行意向后，再联合验证占用去重、部分成交和账户入账导致现存动作失效；本票不提前伪造这些实际结果。
 
