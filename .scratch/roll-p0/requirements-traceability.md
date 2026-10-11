@@ -307,3 +307,14 @@ DAT-11、MOD-02、MOD-05的真实验收仍为部分。新增逐年权益/14次�
 ### 2026-10-11 AT-51 当前CODEX-only完成
 
 用户批准新材料95ddbd52…abfbfba1并排除DeepSeek。23的AT-51工程与一次真实CODEX接入完成：实际run ed0d834e-049b-4356-b5a7-1ff5bc853aef，ReviewRecord 2c05d94c-33a0-4353-9078-aed0060d7c6e，7原文读取SHA匹配/1离线宿主复算、独立持久化验收PASS。完整Record不清除四项BLOCKING及两项MAJOR；模型大文件截断、上游材料宿主绑定、实际诊断未结项的限制保留。真实交付INCOMPLETE/NOT_GRANTED，G4/G5 FAIL及其他INCONCLUSIVE不变。上文双后端待批准为旧时点记录；DeepSeek当前EXCLUDED/0 CALLS，不能写为PASS。详见[当前独立收据](evidence/continuation-2026-10-11/review-fixes/actual-codex-continuation-acceptance.json)及[执行记录](execution-status.md)。AT-53/73/75由已解锁24实施，统计真实结项/资金/范围条件未被跳过。
+
+### 2026-10-11 Ticket 24 准入与独立验收
+
+| 条款 | 当前结果 | 实际证据与限制 |
+|---|---|---|
+| AT-53 / EVAL-14、EVAL-15 | 工程通过 | 必需门槛、证据、完整审阅/异议、协议、时效、资金/账户不完整及客户端自签均拒绝；仅显式宿主METHOD正向，不能变为生产PASS。36同源公共API与6独立公共API分别留存，不合并计数 |
+| AT-73 / AUTH-02、EVAL-15 | 工程通过 | 部署/原材料/原件/ReviewRecord/proof源变化拒绝并查询受限；生产载入或恢复METHOD拒绝。12原模型依赖保持原字节，实际旧批准包随已确认缺陷修复成为历史 |
+| AT-75 / AUTH-04 | 确定性资格机制与披露工程通过；正式动作由25接续 | 无人工独立复核不增加额外否决；METHOD已核全部条件后登记精确范围/动作/期限，system_usable=false；Chrome核可读披露。实际G1—G7/资金启用缺项未解决，不能写实际正式建议已启用 |
+| 逐grant用途、资金/账户、短事务 | 工程通过；真实性能未测 | 多范围重启、NOT_OPEN/UNKNOWN下已有可卖量EXIT与新增BUY/ADD分开；未知可卖拒绝。慢数值证明期间资金缩减，writer读最新版本拒绝；保存证明复用仍核原件/源。该受控时延不是实际P95 |
+
+详见[24独立验收](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md)及[同源分阶段记录](evidence/24/acceptance.md)。25/26/27/28/29调用方联验仍各留责任。审阅两项MAJOR实现修复60项相关回归及独立METHOD后继重放完成，原审阅记录和四项真实BLOCKING原样保留；新实现不继承旧包当前资格。[独立修复验收](evidence/continuation-2026-10-11/codex-review-independent/merge-acceptance.md)只证明修复行为，不新增实际统计/前向/模型审阅。
