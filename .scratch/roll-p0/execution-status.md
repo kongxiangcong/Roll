@@ -404,3 +404,11 @@ CODEX-only 宿主和页面实现 c3198e0 已合入 8497fead，独立收据 1c90c
 ### 2026-10-11 默认 CODEX 验收范围独立接受
 
 仅tests/config/scripts/docs的runner修正31f3feb合入d5ef226，独立收据ed936ce；产品源码未修改。默认收集591 selected /594 collected /3历史deselected，三纯历史DeepSeek文件不进入默认验收；显式指定它们仍21 deselected /0 selected /exit5，不计PASS。CODEX slot/retry/timeout、archive retry、旧DeepSeek GET/cancel、新DeepSeek403和显式改存CODEX保留。首次独立4项为3 PASS/1回执shape断言失败，诊断保留；修正测试断言后该单例1 PASS/6.52s。另前端CLI/list2 PASS/5.73s，未重复Chrome/build或执行整套默认suite。[独立验收](evidence/continuation-2026-10-11/codex-runner-independent/acceptance.md)。540运行文件双端1080 SHA/长度核验零差异，15保护及原19checksum不变，DeepSeek SDK/provider调用0。当前后续前沿仍26→27→28内部→29。
+
+### 2026-10-11 Ticket 30 有限 CNINFO 历史候选独立接受
+
+第三批有限parser源e984edb、稳定7c46dc59合入fb0e7ef，独立收据479460f：六份原件17848 bytes、八个原查询、24个唯一候选、原count/请求区间及13个现金公告ID/PDF精确关联已归档与重放；14份原现金inventory独立保留，其中1202538463未返回明确记缺口。totalpages=0语义、索引时间、first-availability及修订取消关联线索保持UNKNOWN，不把2013—2025关键词索引当2026全类别当前覆盖。见[本票实现及具体剩余caller](evidence/30-cninfo-history/acceptance.md)。
+
+固定源码受影响40 passed /222.29s，最终合25/31/runner后4项组合27.25s；独立2项全新公共API14.49s通过，覆盖原查询字段、精确PDF绑定、mixed family原IDs固定及原件损坏拒绝。2657个新保全文件381402022 bytes，双侧5314次SHA/长度检查零差异；六份raw Git blob、15保护源码及原19checksum一致。旧13989/2570保存件未连接SQLite或改写。[独立验收](evidence/continuation-2026-10-11/ticket30-cninfo-independent/acceptance.md)。
+
+30整体仍partial，第一项未关闭：当前状态/上市阶段、yunhq自身单位/完整范围、当前全部行动区间/修订取消链及旧未结义务尚有内部路径与所需原件缺口。下一有限slice已从479460f启动，为已知14份公告建立source-bound义务审计并接入packet消费者；计划付款日期不推定实际履行或到账，known集合不封成全部义务。无新增真实起点、预测、拟合或资格；32—34真实条件仍未成立。
