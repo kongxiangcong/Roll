@@ -1,0 +1,315 @@
+{
+  "status": "ACCEPT_PRESERVATION_ONLY",
+  "root_before": "133278d1f4b31dc9f88b05bedec1cb4642c6bfb5",
+  "root_after": "133278d1f4b31dc9f88b05bedec1cb4642c6bfb5",
+  "source_head": "759033c8bf87af1fecd7dff9021232b33542df0b",
+  "new_files": 10108,
+  "new_bytes": 824294955,
+  "old_union_files": 3135,
+  "old_union_bytes": 264329777,
+  "total_preserved_files": 13243,
+  "total_preserved_bytes": 1088624732,
+  "source_destination_sha_length_checks": 26486,
+  "mismatches": 0,
+  "no_reparse_runtime_or_boundary": true,
+  "uncovered_nonexcluded_runtime_files": 0,
+  "runtime_roots": 58,
+  "new_affected_prefixes": 46,
+  "source_mtimes_unchanged": true,
+  "old_manifests_unchanged": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-all.json",
+      "sha256": "f1ef5b570ab22be9033b9341cc0c94f50fc72480e7e153721ef42b7a865456b8",
+      "bytes": 501663
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-handoff.json",
+      "sha256": "a8dcb0af04d0613f87475c34185f9298ea6b1d88a01573a4058c935f86d3d137",
+      "bytes": 1008939
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-latest.json",
+      "sha256": "04649b4f86888765266915cf0a61077f5e6e99f4a28d8e45dbded638da543980",
+      "bytes": 1647208
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-states.json",
+      "sha256": "4be1cc2b419d1a446dc2615eeae5ccdf725eecabd32c816a9f9d67224002fd91",
+      "bytes": 1535780
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation.json",
+      "sha256": "04a54184998177fd7a1d53d7657cbc33da64185d05701945f58d20037a24ef42",
+      "bytes": 431055
+    }
+  ],
+  "new_manifest_original_hash": {
+    "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-ticket25-cleanup-additional-manifest.json",
+    "sha256": "24b5e32692348db6459ef14f96e546f9ed12373b79bdce012d5a713b49f2472d",
+    "bytes": 8717987
+  },
+  "protected15_root_source": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\models.py",
+      "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "bytes": 32371
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\models.py",
+      "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "bytes": 32371
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\execution.py",
+      "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "bytes": 37186
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\execution.py",
+      "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "bytes": 37186
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\reconstruction.py",
+      "sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "bytes": 18472
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\reconstruction.py",
+      "sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "bytes": 18472
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\datasets.py",
+      "sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "bytes": 15398
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\datasets.py",
+      "sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "bytes": 15398
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\design.py",
+      "sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "bytes": 12909
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\design.py",
+      "sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "bytes": 12909
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\historical_costs.py",
+      "sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "bytes": 5154
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\historical_costs.py",
+      "sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "bytes": 5154
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\corporate_actions.py",
+      "sha256": "ba28137c834140c350fc35634ca38bb218c9e1c7a8b8c047de2a976a3cac3c36",
+      "bytes": 7307
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\corporate_actions.py",
+      "sha256": "ba28137c834140c350fc35634ca38bb218c9e1c7a8b8c047de2a976a3cac3c36",
+      "bytes": 7307
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\registry.py",
+      "sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "bytes": 20337
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\registry.py",
+      "sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "bytes": 20337
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\training_preflight.py",
+      "sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "bytes": 10008
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\training_preflight.py",
+      "sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "bytes": 10008
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\market\\rules.py",
+      "sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "bytes": 13012
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\market\\rules.py",
+      "sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "bytes": 13012
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\reference\\reconstruction\\sources.json",
+      "sha256": "ea7919e633ccc1499da53d848b0581096fd74d3dd17a33a894261ab68bd10004",
+      "bytes": 5396
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\reference\\reconstruction\\sources.json",
+      "sha256": "ea7919e633ccc1499da53d848b0581096fd74d3dd17a33a894261ab68bd10004",
+      "bytes": 5396
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\reference\\cash-rights\\sources.json",
+      "sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "bytes": 85112
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\reference\\cash-rights\\sources.json",
+      "sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "bytes": 85112
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\shadow.py",
+      "sha256": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+      "bytes": 39344
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\shadow.py",
+      "sha256": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+      "bytes": 39344
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\statistics.py",
+      "sha256": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+      "bytes": 11758
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\statistics.py",
+      "sha256": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+      "bytes": 11758
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\validation.py",
+      "sha256": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+      "bytes": 37521
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\src\\roll\\research\\validation.py",
+      "sha256": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+      "bytes": 37521
+    }
+  ],
+  "original19_checksum_only": {
+    "path": "D:\\dsh-proj\\Roll\\.roll-data\\reconstructed19-v1\\roll.sqlite3",
+    "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4",
+    "bytes": 165814272
+  },
+  "allowed3_separate": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-corrected-copy\\raw\\062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50.raw",
+      "sha256": "062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50",
+      "bytes": 16282
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-corrected-copy\\raw\\85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d.raw",
+      "sha256": "85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d",
+      "bytes": 474
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket25-offline-model\\candidate-config.json",
+      "sha256": "ceb23fe9881584f1c2c5955497895a2a9bd6a0806888afe2a749750e22dee9e9",
+      "bytes": 3971
+    }
+  ],
+  "six25_exclusions_metadata_and_fixture": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\t25accepted\\test_explicit_codex_works_with0\\auth.json",
+      "bytes_metadata": 72,
+      "fixture": {
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\tests\\application\\test_codex_only_scope.py",
+        "definition": "test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history",
+        "sha256": "1fb49e579fea06f49663853db0ef9dffdea22f761e541772db50fbc3c8072d60",
+        "provenance_only_not_runtime_contents": true
+      },
+      "contents_read_hashed_copied": false
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\t25compose\\test_explicit_codex_works_with0\\auth.json",
+      "bytes_metadata": 72,
+      "fixture": {
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\tests\\application\\test_codex_only_scope.py",
+        "definition": "test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history",
+        "sha256": "1fb49e579fea06f49663853db0ef9dffdea22f761e541772db50fbc3c8072d60",
+        "provenance_only_not_runtime_contents": true
+      },
+      "contents_read_hashed_copied": false
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\t25final\\test_archived_review_producer_0\\auth.json",
+      "bytes_metadata": 72,
+      "fixture": {
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\tests\\application\\test_capabilities.py",
+        "definition": "test_archived_review_producer_proof_reuse_detects_changed_original_input",
+        "sha256": "016334e4d57eb5be8868026bd37e0a39f99ea67c3d63c4067fd02205d512f8e4",
+        "provenance_only_not_runtime_contents": true
+      },
+      "contents_read_hashed_copied": false
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\t25guard2\\test_explicit_codex_works_with0\\auth.json",
+      "bytes_metadata": 72,
+      "fixture": {
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\tests\\application\\test_codex_only_scope.py",
+        "definition": "test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history",
+        "sha256": "1fb49e579fea06f49663853db0ef9dffdea22f761e541772db50fbc3c8072d60",
+        "provenance_only_not_runtime_contents": true
+      },
+      "contents_read_hashed_copied": false
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\t25handoff-compose\\test_explicit_codex_works_with0\\auth.json",
+      "bytes_metadata": 72,
+      "fixture": {
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\tests\\application\\test_codex_only_scope.py",
+        "definition": "test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history",
+        "sha256": "1fb49e579fea06f49663853db0ef9dffdea22f761e541772db50fbc3c8072d60",
+        "provenance_only_not_runtime_contents": true
+      },
+      "contents_read_hashed_copied": false
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\t25states-compose\\test_explicit_codex_works_with0\\auth.json",
+      "bytes_metadata": 72,
+      "fixture": {
+        "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\backend\\tests\\application\\test_codex_only_scope.py",
+        "definition": "test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history",
+        "sha256": "1fb49e579fea06f49663853db0ef9dffdea22f761e541772db50fbc3c8072d60",
+        "provenance_only_not_runtime_contents": true
+      },
+      "contents_read_hashed_copied": false
+    }
+  ],
+  "single26_exclusion_metadata_and_fixture": {
+    "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26\\t26-final1\\test_archived_review_producer_0\\auth.json",
+    "bytes_metadata": 72,
+    "fixture": {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26\\backend\\tests\\application\\test_capabilities.py",
+      "definition": "test_archived_review_producer_proof_reuse_detects_changed_original_input",
+      "sha256": "016334e4d57eb5be8868026bd37e0a39f99ea67c3d63c4067fd02205d512f8e4",
+      "provenance_only_not_runtime_contents": true
+    },
+    "contents_read_hashed_copied": false
+  },
+  "exact_process_inventory": {
+    "query_succeeded": true,
+    "exact_tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+    "count": 0,
+    "processes": [],
+    "other_trees_untouched": true
+  },
+  "sqlite_connections": 0,
+  "auth_files_read_hashed_copied": 0,
+  "tests_fits_provider_calls_git_mutations_deletions": 0,
+  "elapsed_seconds": 84.44
+}

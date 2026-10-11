@@ -1,0 +1,16 @@
+Failed to find real location of C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\python.exe
+Traceback (most recent call last):
+  File "C:\Users\72449\.codex\visualizations\2026\10\10\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\roll-ticket25-preservation-independent-check.py", line 92, in <module>
+    destination_files=filenames(CAPTURE)
+  File "C:\Users\72449\.codex\visualizations\2026\10\10\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\roll-ticket25-preservation-independent-check.py", line 84, in filenames
+    p=Path(directory)/name;ordinary(p);result.append(p)
+                           ~~~~~~~~^^^
+  File "C:\Users\72449\.codex\visualizations\2026\10\10\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\roll-ticket25-preservation-independent-check.py", line 11, in ordinary
+    info=path.lstat()
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py", line 437, in lstat
+    return self.stat(follow_symlinks=False)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket25-cleanup-additional-2026-10-11\\.scratch\\t25accepted\\test_explicit_codex_works_with0\\data\\backups\\3557a5f0-bb30-446b-aa0b-12d0a0438471\\raw\\2a1872c922f8b61f9016f345dda22ea7b2d2707658b7ad5061f724440b1d6559.raw'
