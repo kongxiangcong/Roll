@@ -32,7 +32,7 @@ from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
-from roll.market.post_close_packet import PacketCommand
+from roll.market.post_close_packet import PacketCommand, ObligationCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
@@ -173,7 +173,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/results')
     def shadow_results(freeze_id:str):
         return shadow.results(freeze_id)
-    prospective=ProspectiveEvidence(evidence)
+    prospective=ProspectiveEvidence(evidence,research)
     forward=ForwardArchive(shadow,prospective,review_clock)
     app.state.forward=forward
 
@@ -215,9 +215,29 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def cninfo_history_assessment(plan_id:str,command:PacketCommand):
         return prospective.post_close.assess_cninfo_history(plan_id,command.basis)
 
+    @app.post('/api/research/collections/{plan_id}/known-obligation-audits',status_code=201)
+    def known_obligation_audit(plan_id:str,command:ObligationCommand):
+        return prospective.post_close.assess_obligations(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/known-obligation-audits')
+    def known_obligation_audits(plan_id:str,protocol_id:str|None=None):
+        return prospective.post_close.obligations(plan_id,protocol_id=protocol_id)
+
     @app.get('/api/research/collections/{plan_id}/source-gaps')
     def post_close_source_gaps(plan_id: str):
         return prospective.post_close.source_gaps(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-suspension',status_code=201)
+    def sse_suspension_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_suspension(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-suspension-receipts')
+    def sse_suspension_receipts(plan_id:str):
+        return prospective.post_close.suspension_receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-suspension/check',status_code=201)
+    def sse_suspension_worker(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_suspension_once(plan_id,command.basis)
 
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):

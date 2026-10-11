@@ -140,7 +140,10 @@ class ForwardArchive:
         if any(v['evidence_kind']!='REAL_ACQUISITION' for v in versions):
             return [], ['SYNTHETIC_PROSPECTIVE_INPUT_CANNOT_START_REAL_CLOCK']
         attempts=self.prospective.post_close.acquisitions(plans[0]['plan_id'],checked)
-        rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked,attempts)
+        audits=self.prospective.post_close.obligations(plans[0]['plan_id'],checked,protocol_id=plan['protocol_id'],
+            checkpoint_day=checked.astimezone(SHANGHAI).date().isoformat())
+        suspension=self.prospective.post_close.suspension_receipts(plans[0]['plan_id'],checked)
+        rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked,attempts,audits,suspension)
         return rows,gaps
 
     def sessions(self, frozen, first, last, gaps=None):

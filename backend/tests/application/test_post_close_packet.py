@@ -226,8 +226,11 @@ def test_persisted_post_close_job_is_bounded_and_not_retried_by_repeated_trigger
         monkeypatch.setattr(module+'.now',lambda:clock)
     calls=[]
     raw=json.dumps({'date':20261012,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]},ensure_ascii=False).encode()
-    def transport(_):
-        calls.append(1)
+    def transport(request):
+        calls.append(request.url.host)
+        if request.url.host=='query.sse.com.cn':
+            from test_sse_current_suspension import page
+            return httpx.Response(200,json=page(rows=[],total=0,page_count=0))
         return httpx.Response(200,content=raw)
     app=create_app(tmp_path,market_transport=httpx.MockTransport(transport))
     with TestClient(app) as client:
@@ -239,7 +242,9 @@ def test_persisted_post_close_job_is_bounded_and_not_retried_by_repeated_trigger
         job=response.json()
         assert job['state']=='RECORDED' and job['actual_forward_start'] is False
         assert client.post(path,json={'basis':'repeat same bounded job'}).json()==job
-        assert calls==[1] and len(client.get('/api/research/collections/'+pid+'/batches').json())==1
+        assert sorted(calls)==['query.sse.com.cn','yunhq.sse.com.cn']
+        assert len(client.get('/api/research/collections/'+pid+'/batches').json())==1
+        assert len(client.get('/api/research/collections/'+pid+'/sse-suspension-receipts').json())==1
         assert client.get('/api/account').json()==account
 
 

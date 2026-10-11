@@ -28,6 +28,8 @@
 
 ## Comments
 
+2026-10-11 历史运行材料追加保全独立接受（仅 preservation）：已接受源759033c8保持干净，新增10108文件824294955字节与旧五份清单去重3135文件264329777字节，共13243文件1088624732字节。独立26486次双端SHA/长度检查零差异，实际13249条运行路径仅六个已由受控测试定义溯源的auth fixture排除；这些文件未读取、哈希或复制。当前15保护源及原19 SQLite仅校验且不变，精确25进程清单0；长路径检查器首次WinError3诊断保留，修检查器后84.44秒exit0。父代理复制15份原始回执并逐文件核对字节，没有新业务测试、资格升级或清理。见[独立保全回执](../evidence/continuation-2026-10-11/ticket25-preservation-additional/roll-ticket25-preservation-independent-report.md)及[复制核对](../evidence/continuation-2026-10-11/ticket25-preservation-additional/root-receipt-copy.json)。源工作树保留，清理另行核对。
+
 2026-10-11 独立接受：最终source759033c8的五状态Spec修复经新增3项FastAPI/真实独立SQLite验收PASS/18.89秒；profit绑定自身BUY grant，风险model NOT_APPLICABLE与自身REDUCE/EXIT grant，METHOD_ONLY、零可卖BLOCKED无伪Decision，GET/replay/重启和生产METHOD拒绝均通过。原4fc2403的31 PASS与held缺口保留历史边界，没有重复或升级旧suite/浏览器/benchmark。新增1201档案2402次来源/目标SHA/长度核0差异，1934/2922保全条目在3135中未改写，15保护及原19 checksum匹配，最终source_inventory与当前benchmark收据一致。工程范围独立接受complete；真实研究仍FITTED_UNVALIDATED/NOT_GRANTED，不提前声明26/27意向/成交、28外部发送或30当前源producer完成。独立记录见[状态修复验收](../evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)。
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。26 接入实际执行意向后，再联合验证占用去重、部分成交和账户入账导致现存动作失效；本票不提前伪造这些实际结果。

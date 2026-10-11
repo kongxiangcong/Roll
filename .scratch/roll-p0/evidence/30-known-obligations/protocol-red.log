@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_query_filters_protocol_and_does_not_reselect_empty_original_packet ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30o-protocol-red/test_query_filters_protocol_an0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000179408010F0>
+
+    def test_query_filters_protocol_and_does_not_reselect_empty_original_packet(tmp_path,monkeypatch):
+        clock='2026-10-12T15:06:00+08:00'
+        monkeypatch.setattr('roll.market.post_close_packet.now',lambda:clock)
+        monkeypatch.setattr('roll.research.prospective.now',lambda:clock)
+        def offline(request):raise AssertionError('Known-notice audit must stay offline')
+        app=create_app(tmp_path,market_transport=httpx.MockTransport(offline))
+        with TestClient(app) as client:
+            pid=setup(client);first=protocol(client,tmp_path)
+            second=client.post('/api/research/protocols',json={'dataset_id':first['dataset_id'],
+                'basis':'Separate METHOD protocol; no real registry clock'}).json()
+            packet=client.post(f'/api/research/collections/{pid}/post-close-packets',
+                json={'basis':'Before any known-obligation audit'}).json()
+            assert packet['known_obligation_audits']==[]
+            url=f'/api/research/collections/{pid}/known-obligation-audits'
+            audits=[]
+            for registered in [first,second]:
+>               response=client.post(url,json={'protocol_id':registered['protocol_id'],'basis':'One protocol reference'})
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E               KeyError: 'protocol_id'
+
+backend\tests\application\test_known_obligation_audit.py:92: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_known_obligation_audit.py::test_query_filters_protocol_and_does_not_reselect_empty_original_packet
+1 failed in 16.76s

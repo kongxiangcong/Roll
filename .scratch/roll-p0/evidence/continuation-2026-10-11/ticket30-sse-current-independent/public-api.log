@@ -1,0 +1,37 @@
+.F.                                                                      [100%]
+================================== FAILURES ===================================
+_________ test_literal_refusals_raw_first_budget_and_source_disabled __________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/r30si/test_literal_refusals_raw_firs0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000137A4A5C2B0>
+
+    def test_literal_refusals_raw_first_budget_and_source_disabled(tmp_path,monkeypatch):
+        clocks(monkeypatch);mode=['date'];calls=[]
+        def supplier(r):
+            n=int(r.url.params['pageHelp.pageNo']);calls.append((mode[0],n))
+            value=page()
+            if mode[0]=='date':value['result'][0]['SHOW_END_DATE']='2026-10-11'
+            elif mode[0]=='security':value['result'][0]['PRODUCT_CODE']='600362?'
+            elif mode[0]=='page':value['pageHelp']['pageNo']=2
+            elif mode[0]=='echo':value['queryDate']='2016-02-16'
+            elif mode[0]=='budget':
+                rows=[{'PRODUCT_CODE':str(600000+i+100*(n-1))} for i in range(100)]
+                if n==2:rows[-1]=page()['result'][0]
+                value=page(rows,total=201,page_no=n,page_count=3)
+            return httpx.Response(200,json=value)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as c:
+            pid=setup(c);base='/api/research/collections/'+pid
+            for fault in ['date','security','page','echo']:
+                mode[0]=fault;r=c.post(base+'/sse-suspension',json={'basis':'Independent explicit refusal '+fault});assert r.status_code==201,r.text
+>               r=r.json();assert r['status']=='REFUSED' and r['events']==[] and r['network_calls']==1
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: assert ('REFUSED' == 'REFUSED'
+E                 
+E                   REFUSED and [] == []
+E                 
+E                 Use -v to get more diff and 0 == 1)
+
+..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-sse-current-independent\test_independent.py:71: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-sse-current-independent\test_independent.py::test_literal_refusals_raw_first_budget_and_source_disabled
+1 failed, 2 passed in 18.05s
