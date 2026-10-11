@@ -530,3 +530,29 @@ def test_repeated_current_reads_after_same_funding_failure_do_not_duplicate_majo
         assert critical[0]['reasons'] == ['FUNDING_VERSION_CHANGE','GRANT_RESTRICTED']
         assert next(n for n in notifications if n['notification_id']==action['notification_id'])['message'] == action['message']
         assert client.get('/api/actions/evaluations/'+evaluation['evaluation_id']).json() == evaluation
+
+
+def test_valid_long_station_message_uses_bounded_external_projection_without_blocking_next_fact(tmp_path,monkeypatch):
+    monkeypatch.setenv('ROLL_ENV','test')
+    import json
+    received=[]
+    def publish(request):
+        received.append(json.loads(request.content))
+        return httpx.Response(200,json={'id':'method-length-'+str(len(received)),'event':'message'})
+    app=create_app(tmp_path/'data',runtime_role='API',notification_transport=httpx.MockTransport(publish))
+    with TestClient(app) as client:
+        reason='界'*1600
+        result=client.post('/api/capabilities/lifecycle',json={'scope':'ALL_MONITOR','state':'SUSPENDED',
+            'reason_code':'USER_PAUSE','reason':reason,'expected_version':0,'idempotency_key':'long'})
+        assert result.status_code == 200,result.text
+        assert client.post('/api/account/drafts',json=baseline()).status_code == 201
+        original=client.get('/api/notifications').json()['notifications']
+        assert len(original)==2
+        client.post('/api/notification-channel',json={'expected_version':0,'enabled':True,'server':'https://ntfy.example.test',
+            'topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+        app.state.notifications.work('owned-test-worker')
+        app.state.notifications.work('owned-test-worker')
+        assert len(received)==2 and all(len(v['message'].encode())<=4096 for v in received)
+        after=client.get('/api/notifications').json()['notifications']
+        assert next(n for n in after if n['source']['kind']=='CAPABILITY_SCOPE_CHANGED')['message']==reason
+        assert all(n['external_status']=='CHANNEL_ACCEPTED' for n in after)

@@ -1,16 +1,21 @@
 """Copy stopped, owned METHOD profiles; never inspect private channel config."""
 from pathlib import Path
-import hashlib, json, shutil
+import hashlib, json, shutil, sys
 from concurrent.futures import ThreadPoolExecutor
 
 root = Path('D:/dsh-proj/Roll').resolve()
 tree = (root/'.scratch/worktrees/ticket28').resolve()
 output = tree/'.scratch/roll-p0/evidence/continuation-2026-10-11/ticket28'
-destination = root/'.roll-data/implementation-evidence/ticket28/final-internal-v2'
+correction = len(sys.argv)>1 and sys.argv[1]=='length-correction'
+assert len(sys.argv)==1 or correction
+suffix='length-correction' if correction else 'final-internal-v2'
+prefix='length-runtime' if correction else 'runtime'
+destination = root/'.roll-data/implementation-evidence/ticket28'/suffix
 assert tree.is_relative_to(root) and destination.is_relative_to(root/'.roll-data/implementation-evidence/ticket28')
 profiles = ['.test-tmp-notifications-final','.test-tmp-notifications-composition',
     '.test-tmp-notifications-root-baseline','.test-tmp-notifications-current-supplement',
     '.test-tmp-notifications-browser-final','.test-tmp-notifications-browser-final-errors']
+if correction: profiles=['.test-tmp-notifications-length-red','.test-tmp-notifications-length-final']
 entries, excluded = [], []
 for name in profiles:
     directory = tree/'backend'/name
@@ -43,12 +48,12 @@ def copy_verified(pair):
     assert before == after == copied, str(source)
     return {'source':source.relative_to(root).as_posix(),'destination':target.relative_to(root).as_posix(),**before}
 with ThreadPoolExecutor(max_workers=8) as pool: manifest = list(pool.map(copy_verified,entries))
-(output/'runtime-preservation-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
-(output/'runtime-private-exclusions.json').write_text(json.dumps(excluded,indent=2)+'\n',encoding='utf-8')
+(output/(prefix+'-preservation-manifest.json')).write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
+(output/(prefix+'-private-exclusions.json')).write_text(json.dumps(excluded,indent=2)+'\n',encoding='utf-8')
 result = {'status':'PASS','source_profile_count':len(profiles),'copied_files':len(manifest),
     'copied_bytes':sum(v['bytes'] for v in manifest),'missing':0,'hash_length_mismatch':0,
     'excluded_private_configuration_files':len(excluded),'private_configuration_opened_hashed_copied':False,
     'sqlite_opened':False,'actual_provider_or_ntfy_calls':0,
-    'manifest_sha256':checksum(output/'runtime-preservation-manifest.json')['sha256']}
-(output/'runtime-preservation-receipt.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    'manifest_sha256':checksum(output/(prefix+'-preservation-manifest.json'))['sha256']}
+(output/(prefix+'-preservation-receipt.json')).write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result))

@@ -372,10 +372,13 @@ class Notifications:
                 return
             body = {'title': notice['title'], 'message': notice['message'], 'priority': 4,
                     'click': configuration['app_base_url'] + '/#notification=' + notice['notification_id']}
-            if len(body['message'].encode('utf-8')) > 4096: return
+            shortened = len(body['message'].encode('utf-8')) > 4096
+            if shortened:
+                body['message'] = notice['title'] + '。请打开查看完整记录与当前条件。'
             attempt = {'attempt_id': str(uuid4()), 'notification_id': notice['notification_id'], 'owner': owner,
                        'configuration_version': configuration['version'], 'claimed_at': now(), 'body': body,
-                       'source': source, 'evidence_kind': notice['evidence_kind']}
+                       'source': source, 'evidence_kind': notice['evidence_kind'],
+                       'message_projection': 'SUMMARY_FOR_CHANNEL_BYTE_LIMIT' if shortened else 'ORIGINAL_NOTIFICATION_MESSAGE'}
             db.execute('INSERT INTO notification_attempts VALUES(?,?,?)', (attempt['attempt_id'], notice['notification_id'], encode(attempt)))
             db.commit()
         self.capabilities.journal.reconcile_committed()
