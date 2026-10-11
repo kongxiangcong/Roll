@@ -18,6 +18,8 @@ def test_shrink_during_computation_does_not_wait_for_a_writer_lock_or_publish_ol
     file = save_package(tmp_path / 'qualification.json', p)
     with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
         prepare(client, p)
+        existing = client.post('/api/actions/evaluate', json={}).json()
+        assert len(existing['decisions']) == 1
         with ThreadPoolExecutor(max_workers=2) as pool:
             computing = pool.submit(client.post, '/api/actions/evaluate', json={})
             time.sleep(.4)
@@ -28,6 +30,8 @@ def test_shrink_during_computation_does_not_wait_for_a_writer_lock_or_publish_ol
             result = computing.result().json()
         assert result['decisions'] == []
         assert result['limitations'] == ['CURRENT_VERSION_CHANGED_BEFORE_PUBLICATION']
+        assert result['evaluation_id'] != existing['evaluation_id']
+        assert client.get(f"/api/actions/evaluations/{existing['evaluation_id']}").json() == existing
         assert client.get('/api/actions/current').json()['decisions'] == []
         assert client.post(f"/api/actions/evaluations/{result['evaluation_id']}/replay").json()['matches_original'] is True
 
@@ -287,6 +291,8 @@ def test_list_change_during_compute_rejects_publication_under_latest_snapshot(tm
     file = save_package(tmp_path / 'qualification.json', p)
     with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
         prepare(client, p)
+        existing = client.post('/api/actions/evaluate', json={}).json()
+        assert len(existing['decisions']) == 1
         with ThreadPoolExecutor(max_workers=2) as pool:
             computing = pool.submit(client.post, '/api/actions/evaluate', json={})
             time.sleep(.4)
@@ -295,4 +301,80 @@ def test_list_change_during_compute_rejects_publication_under_latest_snapshot(tm
             result = computing.result().json()
         assert result['decisions'] == []
         assert result['limitations'] == ['CURRENT_DATA_OR_LIST_CHANGED_BEFORE_PUBLICATION']
+        assert result['evaluation_id'] != existing['evaluation_id']
+        assert client.get(f"/api/actions/evaluations/{existing['evaluation_id']}").json() == existing
         assert client.post(f"/api/actions/evaluations/{result['evaluation_id']}/replay").json()['matches_original'] is True
+
+
+def test_existing_receipt_does_not_bypass_expiry_during_repeated_computation(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    p['action_packet']['method_publish_delay_ms'] = 1500
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        prepare(client, p)
+        existing = client.post('/api/actions/evaluate', json={}).json()
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            computing = pool.submit(client.post, '/api/actions/evaluate', json={})
+            time.sleep(.4)
+            monkeypatch.setattr('roll.decisions.actions.now', lambda: p['expires_at'])
+            result = computing.result().json()
+        assert result['decisions'] == []
+        assert result['limitations'] == ['ACTION_EXPIRED_BEFORE_PUBLICATION']
+        assert result['evaluation_id'] != existing['evaluation_id']
+        assert client.get(f"/api/actions/evaluations/{existing['evaluation_id']}").json() == existing
+        assert client.post(f"/api/actions/evaluations/{result['evaluation_id']}/replay").json()['matches_original'] is True
+
+
+def test_new_public_valuation_invalidates_current_action_even_with_same_account_and_funding(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        prepare(client, p)
+        existing = client.post('/api/actions/evaluate', json={}).json()
+        before = client.get('/api/account').json()
+        response = client.post('/api/account/valuations', json={'as_of': p['required_as_of'], 'origin_at': '2026-10-07T10:00:00+08:00', 'scope_kind': 'ACCOUNT', 'scope_id': 'account-1', 'baseline_account_version': 2})
+        assert response.status_code == 201, response.text
+        assert client.get('/api/account').json() == before
+        assert client.get('/api/funding').json()['version'] == 2
+        current = client.get('/api/actions/current').json()
+        assert current['decisions'] == []
+        assert current['invalidated'][0]['reasons'] == ['DATA_OR_LIST_CHANGE']
+        assert client.get(f"/api/actions/evaluations/{existing['evaluation_id']}").json() == existing
+
+
+def test_persisted_loss_peak_survives_restart_and_funding_expansion(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    # Confirmed cash100000.10 +1 METHOD share originally marked6135 =106135.10;
+    # that share marked135 now gives100135.10 and exactly6000 drawdown.
+    p['loss_facts'] = {**p['loss_facts'], 'baseline_assets': '106135.10', 'net_assets': '100135.10', 'unrealized_pnl': '-6000.00'}
+    p['action_packet']['loss_facts'] = p['loss_facts']
+    file = save_package(tmp_path / 'decline.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        ready(client, positions=[{'instrument': 'SSE:600000', 'quantity': '1', 'sellable_quantity': '1', 'reference_cost': '6135.00'}])
+        listing = client.get('/api/market/list').json()
+        assert client.post('/api/market/watch', json={'instrument': 'SSE:600001', 'operation': 'ADD', 'expected_list_version': listing['version']}).status_code == 200
+        assert client.post('/api/funding/confirm', json=funding(1, single_exposure='40000.00')).status_code == 200
+        decline = client.post('/api/actions/evaluate', json={}).json()
+        assert decline['joint_budget']['loss']['peak_loss'] == '6000.00'
+        assert decline['decisions'] == []
+    # Keep the host packet immutable. Public restart/expansion verifies stored
+    # state; the existing pure loss calculation separately verifies rebound.
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        assert client.post('/api/funding/confirm', json=funding(2, single_exposure='40000.00', loss_threshold='10000.00')).status_code == 200
+        result = client.post('/api/actions/evaluate', json={}).json()
+        assert result['joint_budget']['loss']['peak_loss'] == '6000.00'
+        assert result['joint_budget']['loss']['remaining_loss_allowance'] == '4000.00'
+        assert result['joint_budget']['loss']['triggered'] is True
+        assert result['joint_budget']['loss']['status'] == 'PAUSED'
+        assert result['decisions'] == []
+        assert 'LOSS_BOUNDARY_UNAVAILABLE_OR_PAUSED' in result['limitations']
+        assert client.post(f"/api/actions/evaluations/{result['evaluation_id']}/replay").json()['matches_original'] is True
+        from roll.decisions.funding import LossFacts, evaluate_loss
+        rebound = LossFacts(**{**p['loss_facts'], 'net_assets': '106135.10', 'unrealized_pnl': '0.00'})
+        numeric = evaluate_loss(client.get('/api/funding').json(), rebound, result['joint_budget']['loss'])
+        assert numeric['loss'] == '0.00' and numeric['peak_loss'] == '6000.00'
+        assert numeric['remaining_loss_allowance'] == '4000.00' and numeric['triggered'] is True
+        assert numeric['status'] == 'PAUSED'

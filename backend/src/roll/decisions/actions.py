@@ -51,18 +51,44 @@ class Actions:
         watch = [r[0] for r in db.execute('SELECT instrument FROM market_watch ORDER BY instrument')]
         identities = [r[0] for r in db.execute('SELECT identity FROM market_identities ORDER BY revision')]
         snapshots = [r[0] for r in db.execute('SELECT value FROM market_evidence_snapshots ORDER BY rowid')]
+        valuations = [r[0] for r in db.execute('SELECT result FROM valuation_versions ORDER BY rowid')]
+        forecasts = [r[0] for r in db.execute('SELECT value FROM research_forecasts ORDER BY rowid')]
+        risk = [r[0] for r in db.execute('SELECT value FROM research_risk_evaluations ORDER BY rowid')]
         return {'instruments': sorted(set(watch) | {p['instrument'] for p in account['positions']}),
-                'fingerprint': fingerprint({'watch': watch, 'identities': identities, 'accepted_evidence': snapshots})}
+                'fingerprint': fingerprint({'watch': watch, 'identities': identities, 'accepted_evidence': snapshots,
+                                             'valuations': valuations, 'forecasts': forecasts, 'risk_evaluations': risk})}
+
+    def boundary(self, db):
+        account = self.ledger.account(db=db)
+        funding = self.funding.current(db=db)
+        previous = db.execute('SELECT value FROM action_loss_state WHERE scope=?', (encode([funding.get('scope_kind'), funding.get('scope_id'), funding.get('loss_origin_at')]),)).fetchone()
+        return {'account': account, 'funding': funding, 'loss_state': json.loads(previous[0]) if previous else None,
+                'capabilities': self.capabilities.current(db=db),
+                'data_state': self.data_state(db, account), 'checked_at': now()}
+
+    @staticmethod
+    def publication_refusal(inputs, boundary, result):
+        if boundary['account']['version'] != inputs['account']['version'] or boundary['funding']['version'] != inputs['funding']['version']:
+            return 'CURRENT_VERSION_CHANGED_BEFORE_PUBLICATION'
+        if boundary['capabilities'] != inputs['capabilities']:
+            return 'CURRENT_CAPABILITY_CHANGED_BEFORE_PUBLICATION'
+        if boundary['data_state'] != inputs['data_state']:
+            return 'CURRENT_DATA_OR_LIST_CHANGED_BEFORE_PUBLICATION'
+        loss = (result.get('joint_budget') or {}).get('loss')
+        if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'):
+            return 'CURRENT_LOSS_BOUNDARY_CHANGED_BEFORE_PUBLICATION'
+        if any(datetime.fromisoformat(d['expires_at']) <= datetime.fromisoformat(boundary['checked_at']) for d in result['decisions']):
+            return 'ACTION_EXPIRED_BEFORE_PUBLICATION'
+        return None
 
     def capture(self, command):
         with self.ledger.connection() as db:
             db.execute('BEGIN')
-            account, funding = self.ledger.account(db=db), self.funding.current(db=db)
-            capabilities = self.capabilities.current(db=db)
-            data_state = self.data_state(db, account)
+            boundary = self.boundary(db)
+            account, funding = boundary['account'], boundary['funding']
+            capabilities, data_state = boundary['capabilities'], boundary['data_state']
             pending = [self.ledger.get_draft(r[0], db) for r in db.execute("SELECT d.id FROM account_drafts d WHERE status IN ('READY','QUARANTINED') AND NOT EXISTS(SELECT 1 FROM account_receipts r WHERE json_extract(r.receipt,'$.draft_id')=d.id)")]
             events = self.ledger.events(db=db)
-            previous = db.execute('SELECT value FROM action_loss_state WHERE scope=?', (encode([funding.get('scope_kind'), funding.get('scope_id'), funding.get('loss_origin_at')]),)).fetchone()
             db.rollback()
         bound_cutoffs = [s['grant']['command']['required_as_of'] for s in capabilities['grant_statuses'] if not s['reasons']]
         required = timestamp(command.required_as_of or max(bound_cutoffs, default=account.get('effective_at') or '1970-01-01T00:00:00+00:00'))
@@ -127,7 +153,7 @@ class Actions:
             packet['risk_inputs'] = risk_inputs
             packet['risk_policy_id'] = risk['policy_id']
         return {'command': command.model_dump(), 'account': account, 'funding': funding, 'capabilities': capabilities,
-                'previous_loss': json.loads(previous[0]) if previous else None,
+                'previous_loss': boundary['loss_state'],
                 'required_as_of': required, 'observations': observations,
                 'data_state': data_state,
                 'packet_expired': bool(packet and datetime.fromisoformat(packet['expires_at']) <= datetime.fromisoformat(now())),
@@ -259,8 +285,9 @@ class Actions:
 
     def evaluate(self, command):
         inputs = self.capture(command)
-        key = fingerprint({k: v for k, v in inputs.items() if k != 'previous_loss'})
         result = self.calculate(inputs)
+        input_key = fingerprint({'inputs': {k: v for k, v in inputs.items() if k != 'previous_loss'},
+                                 'loss': (result.get('joint_budget') or {}).get('loss')})
         if self.capabilities.method_package is not None:
             delay = (inputs['packet'] or {}).get('method_publish_delay_ms', 0)
             if type(delay) is not int or not 0 <= delay <= 5000: raise HTTPException(422, 'METHOD_PUBLISH_DELAY_INVALID')
@@ -268,34 +295,35 @@ class Actions:
         archive = self.evidence.archive(encode(inputs).encode(), 'CURRENT_ACTION_INPUT')
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
+            boundary = self.boundary(db)
+            refusal = self.publication_refusal(inputs, boundary, result)
+            publication = {'account_version': boundary['account']['version'], 'funding_version': boundary['funding']['version'],
+                           'capability_fingerprint': fingerprint(boundary['capabilities']),
+                           'data_fingerprint': boundary['data_state']['fingerprint'],
+                           'peak_loss': (boundary['loss_state'] or {}).get('peak_loss'),
+                           'refusal': [refusal] if refusal else None}
+            # A repeated capture still checks the latest writer boundary. Its
+            # refusal is a new immutable revision, never an edited old receipt.
+            key = fingerprint({'input': input_key, 'publication': publication}) if refusal else input_key
+            if refusal: result.update(decisions=[], limitations=[refusal])
             prior = db.execute('SELECT value FROM action_evaluations WHERE fingerprint=?', (key,)).fetchone()
             if prior:
                 db.rollback()
                 return json.loads(prior[0])
-            if self.ledger.account(db=db)['version'] != inputs['account']['version'] or self.funding.current(db=db)['version'] != inputs['funding']['version']:
-                result.update(decisions=[], limitations=['CURRENT_VERSION_CHANGED_BEFORE_PUBLICATION'])
-            else:
-                latest = self.capabilities.current(db=db)
-                if latest != inputs['capabilities']:
-                    result.update(decisions=[], limitations=['CURRENT_CAPABILITY_CHANGED_BEFORE_PUBLICATION'])
-                elif self.data_state(db, self.ledger.account(db=db)) != inputs['data_state']:
-                    result.update(decisions=[], limitations=['CURRENT_DATA_OR_LIST_CHANGED_BEFORE_PUBLICATION'])
-            if any(datetime.fromisoformat(d['expires_at']) <= datetime.fromisoformat(now()) for d in result['decisions']):
-                result.update(decisions=[], limitations=['ACTION_EXPIRED_BEFORE_PUBLICATION'])
             predecessor = db.execute('SELECT id,value FROM action_evaluations ORDER BY rowid DESC LIMIT 1').fetchone()
-            value = {'evaluation_id': str(uuid4()), 'registered_at': now(), 'input_fingerprint': key,
+            value = {'evaluation_id': str(uuid4()), 'registered_at': now(), 'input_fingerprint': input_key,
                      'input_archive': archive, 'code_fingerprint': code(), 'predecessor_id': predecessor[0] if predecessor else None,
                      'account_version': inputs['account']['version'], 'funding_version': inputs['funding']['version'], **result}
-            value['publication_check'] = {'account_version': self.ledger.account(db=db)['version'], 'funding_version': self.funding.current(db=db)['version'],
-                                        'refusal': result['limitations'] if any(r.endswith('BEFORE_PUBLICATION') for r in result['limitations']) else None}
+            value['publication_check'] = {**publication, 'checked_at': boundary['checked_at']}
             db.execute('INSERT INTO action_evaluations VALUES(?,?,?)', (value['evaluation_id'], key, encode(value)))
             loss = (result.get('joint_budget') or {}).get('loss')
-            if loss and loss.get('peak_loss') is not None:
+            if loss and loss.get('peak_loss') is not None and Decimal(loss['peak_loss']) >= Decimal((boundary['loss_state'] or {}).get('peak_loss') or '0'):
                 scope = encode([inputs['funding']['scope_kind'], inputs['funding']['scope_id'], inputs['funding']['loss_origin_at']])
                 db.execute('INSERT OR REPLACE INTO action_loss_state VALUES(?,?)', (scope, encode(loss)))
             event = {'event_id': str(uuid4()), 'event_type': 'ACTION_EVALUATED', 'evaluation_id': value['evaluation_id'],
                      'recorded_at': value['registered_at'], 'input_fingerprint': key, 'limitations': value['limitations'],
                      'account_version': value['account_version'], 'funding_version': value['funding_version']}
+            event['publication_check'] = value['publication_check']
             db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
             if predecessor:
                 for old in json.loads(predecessor[1])['decisions']:
@@ -321,8 +349,9 @@ class Actions:
             db.execute('BEGIN IMMEDIATE')
             row = db.execute('SELECT value FROM action_evaluations ORDER BY rowid DESC LIMIT 1').fetchone()
             value = json.loads(row[0]) if row else None
-            current = self.ledger.account(db=db), self.funding.current(db=db), self.capabilities.current(db=db)
-            current_data = self.data_state(db, current[0])
+            boundary = self.boundary(db)
+            current = boundary['account'], boundary['funding'], boundary['capabilities']
+            current_data = boundary['data_state']
             active, invalidated = [], []
             for decision in value['decisions'] if value else []:
                 if instrument and decision['instrument'] != instrument: continue
@@ -331,9 +360,11 @@ class Actions:
                 if current[1]['version'] != value['funding_version']: reasons.append('FUNDING_VERSION_CHANGE')
                 status = next((s for s in current[2]['grant_statuses'] if s['grant']['grant_id'] == decision['grant_id']), None)
                 if not status or status['reasons'] or decision['action'] not in status['allowed_actions']: reasons.append('GRANT_RESTRICTED')
-                if datetime.fromisoformat(decision['expires_at']) <= datetime.fromisoformat(now()): reasons.append('EXPIRED')
+                if datetime.fromisoformat(decision['expires_at']) <= datetime.fromisoformat(boundary['checked_at']): reasons.append('EXPIRED')
                 if value['code_fingerprint'] != code(): reasons.append('ACTION_CODE_CHANGED')
                 if decision['dependencies']['data_fingerprint'] != current_data['fingerprint']: reasons.append('DATA_OR_LIST_CHANGE')
+                loss = (value.get('joint_budget') or {}).get('loss')
+                if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'): reasons.append('LOSS_BOUNDARY_CHANGE')
                 if reasons:
                     reason_key = fingerprint(reasons)
                     event = {'event_id': str(uuid4()), 'event_type': 'ACTION_INVALIDATED', 'evaluation_id': value['evaluation_id'],
