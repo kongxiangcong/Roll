@@ -30,7 +30,7 @@ for item in reference['artifacts']:
     artifacts.append(json.loads(raw))
 model, calibrator, body = artifacts
 p = action_package()
-directory = Path('.scratch/t25perf8')
+directory = Path('.scratch/t25perf10')
 assert not directory.exists(), 'Use a fresh independent benchmark directory'
 rules = RuleCalendar(Ledger(directory / 'calendar'))
 policy = {'version': '20-policy-v1', 'probability_threshold': '0.60', 'quantity': '200',
