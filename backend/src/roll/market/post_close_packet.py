@@ -12,6 +12,7 @@ from decimal import Decimal, InvalidOperation
 from io import BytesIO
 from pathlib import Path
 from uuid import uuid4
+from urllib.parse import parse_qs, urlparse
 
 import httpx
 import pyarrow as pa
@@ -29,6 +30,8 @@ SSE_PARAMS={'select':'code,name,open,high,low,last,volume,amount,prev_close','be
 SOURCE='sse-closing-board'
 VERSION='source-bound-post-close-v1'
 CASH_REFERENCE=Path(__file__).parents[1]/'research/reference/cash-rights'
+HISTORY_REFERENCE=Path(__file__).parent/'reference/sse-history'
+HISTORY_DAILY_SQL='COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C'
 
 
 class PacketCommand(BaseModel):
@@ -38,7 +41,120 @@ class PacketCommand(BaseModel):
 
 def code():
     return hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')+
-        (CASH_REFERENCE/'sources.json').read_bytes()).hexdigest()
+        (CASH_REFERENCE/'sources.json').read_bytes()+(HISTORY_REFERENCE/'sources.json').read_bytes()).hexdigest()
+
+
+def historical_daily(content,units,source,unit_source,available_at):
+    """Only the pinned commonQuery daily statistic; no yunhq unit substitution."""
+    value=json.loads(content)
+    query=parse_qs(urlparse(source['url']).query)
+    if (value.get('sqlId')!=HISTORY_DAILY_SQL or value.get('actionErrors') or value.get('fieldErrors') or
+        query.get('sqlId')!=[HISTORY_DAILY_SQL] or query.get('SEC_CODE')!=['600362']):
+        raise ValueError('SSE_HISTORY_DAILY_QUERY_INVALID')
+    day=date.fromisoformat(query['TX_DATE'][0]).isoformat()
+    rows=value.get('result')
+    if not isinstance(rows,list) or len(rows)!=1:raise ValueError('SSE_HISTORY_DAILY_ROW_MISSING_OR_DUPLICATED')
+    row=rows[0]
+    if row.get('SEC_CODE')!='600362' or row.get('TX_DATE')!=day.replace('-','') or row.get('DATE_TYPE')!='D':
+        raise ValueError('SSE_HISTORY_DAILY_IDENTITY_DATE_MISMATCH')
+    js=units.decode('utf-8')
+    # Both labels must occur in this statistic's getTurnover branch, not market-wide billion units.
+    block=js.split('getTurnover: function () {',1)[1].split('getTurnover',1)[0]
+    if (f'sqlId: "{HISTORY_DAILY_SQL}"' not in js or 'stockUnit: "万股"' not in js or
+        '成交金额(万元)' not in block or 'renum(data.TRADE_VOL, 2)' not in block or
+        'data.TRADE_AMT' not in block or '_openPriceTitle = "开盘价(元)"' not in block):
+        raise ValueError('SSE_HISTORY_STATISTIC_UNIT_SOURCE_UNPROVEN')
+    vals={k:number(row[field],positive=True) for k,field in [
+        ('open','OPEN_PRICE'),('high','HIGH_PRICE'),('low','LOW_PRICE'),('close','CLOSE_PRICE')]}
+    o,h,l,c=[Decimal(vals[k]) for k in ['open','high','low','close']]
+    if not l<=min(o,c)<=max(o,c)<=h:raise ValueError('SSE_HISTORY_DAILY_OHLC_INVALID')
+    volume,amount=number(row['TRADE_VOL']),number(row['TRADE_AMT'])
+    if (Decimal(volume)==0)!=(Decimal(amount)==0):raise ValueError('SSE_HISTORY_DAILY_ZERO_QUANTITY_CONFLICT')
+    return {'instrument':'SSE:600362','group':'HISTORICAL_DAILY_ASSESSMENT','trade_date':day,**vals,
+        'source_id':'sse-historical-daily-statistic','raw_hash':source['sha256'],
+        'source_url':source['url'],'unit_source_hash':unit_source['sha256'],
+        'basis_raw_hashes':[source['sha256'],unit_source['sha256']],
+        'volume_reported':volume,'amount_reported':amount,'source_volume_unit':'10000_SHARES',
+        'source_amount_unit':'10000_CNY','volume_shares':format(Decimal(volume)*10000,'f'),
+        'amount_yuan':format(Decimal(amount)*10000,'f'),'amount_precision_yuan':'100',
+        'received_at':source['received_at'],'unit_source_received_at':unit_source['received_at'],
+        'available_at':available_at,'published_at':None,'revision_chain':None,
+        'historical_pit_claim':False,'model_daily_input_allowed':False,'current_board_unit_authority':False,
+        'unit_source_locator':'stockUnit + turnoverParams.sqlId + getTurnover A-share branch',
+        'completion_state':'REPORTED_HISTORICAL_STATISTIC_NOT_CURRENT_COMPLETE_INPUT',
+        'turnover_scope':'HISTORICAL_QUERY_STATISTIC_ONLY','parser_fingerprint':code()}
+
+
+def historical_suspension(content,query_js,source,js_source,available_at):
+    value=json.loads(content)
+    query=parse_qs(urlparse(source['url']).query)
+    sql='COMMON_SSE_XXPL_JYTS_TFPXX_L'
+    if (value.get('sqlId')!=sql or query.get('sqlId')!=[sql] or value.get('actionErrors') or
+        value.get('fieldErrors') or sql not in query_js.decode('utf-8')):
+        raise ValueError('SSE_HISTORY_SUSPENSION_QUERY_UNPROVEN')
+    queried=date.fromisoformat(query['SEARCH_DATE'][0])
+    rows=value.get('result');page=value.get('pageHelp',{})
+    total=page.get('total')
+    if not isinstance(rows,list) or type(total) is not int or total<0:raise ValueError('SSE_HISTORY_SUSPENSION_PAGE_INVALID')
+    completed=(value.get('isPagination')=='true' and rows==page.get('data') and len(rows)==total and
+        page.get('pageNo')==1 and page.get('beginPage')==1 and page.get('pageCount')==1)
+    audit={'source_role':'suspension','raw_hash':source['sha256'],'query_js_hash':js_source['sha256'],
+        'source_url':source['url'],'query_date':queried.isoformat(),'returned_count':len(rows),'declared_total':total,
+        'page_no':page.get('pageNo'),'page_count':page.get('pageCount'),'page_size':page.get('pageSize'),
+        'finite_query_completed':completed,'complete_current_status':False,'no_event_authority':False,
+        'scope':'ONE_HISTORICAL_DATE_MARKET_RETURNED_EVENTS_ONLY','received_at':source['received_at'],
+        'available_at':available_at,'gaps':[] if completed else ['SSE_HISTORY_SUSPENSION_TOTAL_RETURNED_MISMATCH']}
+    selected=[r for r in rows if isinstance(r,dict) and r.get('PRODUCT_CODE')=='600362']
+    if len(selected)>1:raise ValueError('SSE_HISTORY_SUSPENSION_SECURITY_DUPLICATED')
+    events=[]
+    for row in selected:
+        start=date.fromisoformat(row['SHOW_START_DATE']);end=date.fromisoformat(row['SHOW_END_DATE'])
+        if start>end or not start<=queried<=end:raise ValueError('SSE_HISTORY_SUSPENSION_DATE_RANGE_INVALID')
+        if row.get('CONTROLTYPE')!='TR' or '停牌' not in row.get('STOP_TIME',''):
+            raise ValueError('SSE_HISTORY_SUSPENSION_KIND_UNSUPPORTED')
+        events.append({'instrument':'SSE:600362','group':'HISTORICAL_SUSPENSION_ASSESSMENT',
+            'source_id':'sse-historical-suspension','raw_hash':source['sha256'],'query_raw_hash':source['sha256'],
+            'query_js_hash':js_source['sha256'],'basis_raw_hashes':[source['sha256'],js_source['sha256']],
+            'reported_start_date':start.isoformat(),'reported_end_date':end.isoformat(),
+            'stop_time_reported':row['STOP_TIME'],'stop_date_reported':row['STOP_DATE'],
+            'control_type_reported':row['CONTROLTYPE'],'bulletin_type_reported':row['BULLETIN_TYPE'],
+            'reason':row['STOP_REASON'],'resume_date':None,'published_at':None,'source_url':source['url'],
+            'received_at':source['received_at'],'available_at':available_at,'date_precision':'DATE',
+            'historical_pit_claim':False,'complete_status_verified':False,'current_status_authority':False,
+            'source_locator':'result[PRODUCT_CODE=600362]','parser_fingerprint':code()})
+    return events,audit
+
+
+def historical_empty_audits(raw,sources,available_at):
+    """Observed empty/error metadata are useful gaps, never ordinary trading proof."""
+    audits=[]
+    for role,sql in [('daily_empty',HISTORY_DAILY_SQL),('suspension_inconsistent','GW_PL_JYTS_TFPXX')]:
+        source=sources[role];value=json.loads(raw[role]);query=parse_qs(urlparse(source['url']).query)
+        rows=value.get('result');page=value.get('pageHelp',{})
+        if (value.get('sqlId')!=sql or query.get('sqlId')!=[sql] or not isinstance(rows,list) or
+            value.get('actionErrors') or value.get('fieldErrors')):raise ValueError('SSE_HISTORY_EMPTY_QUERY_SCHEMA_INVALID')
+        audit={'source_role':role,'source_url':source['url'],'raw_hash':source['sha256'],
+            'received_at':source['received_at'],'available_at':available_at,'returned_count':len(rows),
+            'declared_total':page.get('total'),'finite_query_completed':False,
+            'no_event_authority':False,'complete_current_status':False,'gaps':[]}
+        if role=='daily_empty':
+            if query.get('SEC_CODE')!=['600362'] or rows:raise ValueError('SSE_HISTORY_EMPTY_DAILY_SCOPE_CHANGED')
+            audit['query_date']=date.fromisoformat(query['TX_DATE'][0]).isoformat()
+            audit['gaps']=['SSE_HISTORY_DAILY_NO_ROWS_NOT_NO_TRADE_EVIDENCE']
+        else:
+            if query.get('productCode')!=['600362']:raise ValueError('SSE_HISTORY_EMPTY_SUSPENSION_SCOPE_CHANGED')
+            start=datetime.strptime(query['startStopDate'][0],'%Y%m%d').date()
+            end=datetime.strptime(query['endStopDate'][0],'%Y%m%d').date()
+            if start>end:raise ValueError('SSE_HISTORY_EMPTY_QUERY_DATE_RANGE_INVALID')
+            audit.update(requested_start_date=start.isoformat(),requested_end_date=end.isoformat(),
+                page_no=page.get('pageNo'),page_count=page.get('pageCount'),page_size=page.get('pageSize'),
+                requested_page_size=int(query['pageHelp.pageSize'][0]),data_matches_result=page.get('data')==rows)
+            if type(page.get('total')) is not int or page['total']!=len(rows):
+                audit['gaps'].append('SSE_HISTORY_SUSPENSION_TOTAL_RETURNED_MISMATCH')
+            if audit['page_size']!=audit['requested_page_size']:
+                audit['gaps'].append('SSE_HISTORY_SUSPENSION_REQUEST_RESPONSE_PAGE_SIZE_MISMATCH')
+        audits.append(audit)
+    return audits
 
 
 def number(value,positive=False):
@@ -111,11 +227,85 @@ class PostClosePackets:
         with self.ledger.connection() as db:
             db.execute('CREATE TABLE IF NOT EXISTS post_close_packets(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS post_close_capture_jobs(plan_id TEXT NOT NULL,day TEXT NOT NULL,value TEXT NOT NULL,PRIMARY KEY(plan_id,day))')
+            db.execute('CREATE TABLE IF NOT EXISTS post_close_source_assessments(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,value TEXT NOT NULL)')
             for saved in db.execute('SELECT plan_id,day,value FROM post_close_capture_jobs'):
                 job=json.loads(saved[2])
                 if job['state']=='CLAIMED' and not owner_alive(job):
                     job.update(state='INTERRUPTED',finished_at=now(),gaps=['PROCESS_STOPPED_BEFORE_SOURCE_JOB_COMPLETION'])
                     db.execute('UPDATE post_close_capture_jobs SET value=? WHERE plan_id=? AND day=?',(encode(job),saved[0],saved[1]))
+
+    def history_payload(self,available_at,register=False):
+        body=(HISTORY_REFERENCE/'sources.json').read_bytes()
+        manifest=json.loads(body)
+        sources={s['role']:s for s in manifest['sources']}
+        raw={}
+        for role,source in sources.items():
+            content=(HISTORY_REFERENCE/source['path']).read_bytes() if register else self.evidence.raw(source['sha256']).read_bytes()
+            if len(content)!=source['bytes'] or hashlib.sha256(content).hexdigest()!=source['sha256']:
+                raise HTTPException(409,'SSE_HISTORY_REFERENCE_ORIGINAL_CORRUPT')
+            if datetime.fromisoformat(source['received_at'])>datetime.fromisoformat(available_at):
+                raise HTTPException(409,'SSE_HISTORY_DEPENDENCY_AFTER_NORMALIZATION')
+            if register:self.evidence.archive(content,'SSE_HISTORY_SOURCE_ORIGINAL',source_id='sse-history-assessment',
+                source_url=source['url'],received_at=source['received_at'],evidence_kind='REAL_ARCHIVED_SOURCE_ASSESSMENT')
+            raw[role]=content
+        mapping_hash=hashlib.sha256(body).hexdigest()
+        if register:self.evidence.archive(body,'SSE_HISTORY_SOURCE_MAPPING')
+        else:self.evidence.raw(mapping_hash)
+        try:
+            bar=historical_daily(raw['daily'],raw['daily_units'],sources['daily'],sources['daily_units'],available_at)
+            events,audit=historical_suspension(raw['suspension'],raw['suspension_query_js'],
+                sources['suspension'],sources['suspension_query_js'],available_at)
+            audits=[audit,*historical_empty_audits(raw,sources,available_at)]
+        except (ValueError,KeyError,IndexError,TypeError) as error:raise HTTPException(409,str(error))
+        return {'daily_facts':[bar],'suspension_facts':events,'query_audits':audits,
+            'source_hashes':[s['sha256'] for s in manifest['sources']],'mapping_hash':mapping_hash,
+            'current_coverage_verified':False,'gaps':['HISTORICAL_PUBLICATION_AND_REVISION_CHAIN_UNPROVEN',
+                'HISTORICAL_SOURCES_CANNOT_CERTIFY_CURRENT_BOARD_UNITS_OR_STATUS',
+                *sorted(set(g for audit in audits for g in audit['gaps']))],
+            'evidence_kind':'REAL_ARCHIVED_SOURCE_ASSESSMENT','historical_pit_claim':False,'network_calls':0}
+
+    def assess_history(self,plan_id,basis):
+        plan=self.prospective.plan(plan_id)
+        if plan['instrument']!='SSE:600362':raise HTTPException(403,'SSE历史原件仅适配 SSE:600362')
+        available_at=now()
+        value={'assessment_id':str(uuid4()),'plan_id':plan_id,'instrument':plan['instrument'],
+            'basis':basis,'normalized_known_at':available_at,'parser_fingerprint':code(),
+            **self.history_payload(available_at,register=True)}
+        value['archive']=self.evidence.archive(encode(value).encode(),'SSE_HISTORY_SOURCE_ASSESSMENT',
+            evidence_kind=value['evidence_kind'])
+        with self.ledger.connection() as db:db.execute('INSERT INTO post_close_source_assessments VALUES(?,?,?)',
+            (value['assessment_id'],plan_id,encode(value)))
+        return value
+
+    def history(self,plan_id,cutoff,ids=None):
+        self.prospective.plan(plan_id)
+        with self.ledger.connection() as db:
+            saved=[json.loads(r[0]) for r in db.execute('SELECT value FROM post_close_source_assessments WHERE plan_id=? ORDER BY rowid',(plan_id,))]
+        selected=[s for s in saved if datetime.fromisoformat(s['normalized_known_at'])<=cutoff]
+        if ids is not None:
+            by_id={s['assessment_id']:s for s in selected}
+            if len(set(ids))!=len(ids) or any(i not in by_id for i in ids):raise HTTPException(409,'SSE_HISTORY_ASSESSMENT_MISSING')
+            selected=[by_id[i] for i in ids]
+        for value in selected:
+            original=json.loads(self.evidence.raw(value['archive']['sha256']).read_bytes())
+            if original!={k:v for k,v in value.items() if k!='archive'}:raise HTTPException(409,'SSE_HISTORY_ASSESSMENT_ARCHIVE_MISMATCH')
+            if value['parser_fingerprint']!=code():raise HTTPException(409,'POST_CLOSE_PARSER_CHANGED_SUCCESSOR_REQUIRED')
+            computed=self.history_payload(value['normalized_known_at'])
+            if any(value[k]!=v for k,v in computed.items()):raise HTTPException(409,'SSE_HISTORY_NORMALIZED_ORIGINAL_MISMATCH')
+        return selected
+
+    def source_gaps(self,plan_id):
+        plan=self.prospective.plan(plan_id)
+        cutoff=datetime.fromisoformat(now())
+        rows,gaps,_=self.inputs(self.prospective.as_of(plan_id,cutoff)['versions'],plan['instrument'],cutoff,
+            self.acquisitions(plan_id,cutoff))
+        history=self.history(plan_id,cutoff)
+        return {'plan_id':plan_id,'instrument':plan['instrument'],'gaps':gaps,
+            'source_gaps':['CURRENT_BOARD_UNIT_SOURCE_UNVERIFIED','CURRENT_STATUS_LISTING_RELISTING_SOURCE_UNADAPTED',
+                'CURRENT_RISK_WARNING_SUBTYPE_COMPLETE_SOURCE_UNADAPTED','CURRENT_ACTION_INTERVAL_AND_OLDER_OBLIGATION_AUDIT_UNADAPTED'],
+            'historical_source_assessments':history,'historical_source_gaps':sorted(set(g for s in history for g in s['gaps'])),
+            'network_calls':0,
+            'forward_admissible':bool(rows) and not gaps,'forward_started_at':None,'capability':'NOT_GRANTED'}
 
     def capture_once(self,plan_id,basis='Registered forward plan; existing single worker source acquisition'):
         """One existing worker owns a persisted bounded job; failures are not hidden retries."""
@@ -389,6 +579,7 @@ class PostClosePackets:
             'forward_admissible':bool(rows) and not gaps,'capability':'NOT_GRANTED','forward_started_at':None,
             'historical_pit_claim':False,'account_events_added':0}
         value['known_cash_inventory']=inventory
+        value['historical_source_assessments']=self.history(plan_id,cutoff)
         value['execution_context']=self.execution_context(plan['instrument'],rows)
         value['archive']=self.evidence.archive(encode(value).encode(),'POST_CLOSE_INPUT_PACKET',evidence_kind=value['evidence_kind'])
         with self.ledger.connection() as db:db.execute('INSERT INTO post_close_packets VALUES(?,?,?)',(value['packet_id'],plan_id,encode(value)))
@@ -413,5 +604,6 @@ class PostClosePackets:
         if attempts!=packet['acquisition_attempts']:raise HTTPException(409,'POST_CLOSE_PACKET_ACQUISITION_BINDING_MISMATCH')
         rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts)
         inventory=self.cash_inventory(cutoff,verify_archives=True)
-        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'],
+        history=self.history(packet['plan_id'],cutoff,[s['assessment_id'] for s in packet['historical_source_assessments']])
+        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'] and history==packet['historical_source_assessments'],
             'network_calls':0,'forward_admissible':packet['forward_admissible'],'capability':'NOT_GRANTED'}

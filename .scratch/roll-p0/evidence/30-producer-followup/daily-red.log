@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_official_historical_daily_keeps_its_own_units_and_receipt_without_current_admission _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30h-daily-red/test_official_historical_daily0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000216FFB7C640>
+
+    def test_official_historical_daily_keeps_its_own_units_and_receipt_without_current_admission(tmp_path, monkeypatch):
+        clock='2026-10-12T15:06:00+08:00'
+        monkeypatch.setattr('roll.market.post_close_packet.now',lambda:clock)
+        monkeypatch.setattr('roll.research.prospective.now',lambda:clock)
+        def offline(request):
+            raise AssertionError('Historical originals must not cause a live request')
+        app=create_app(tmp_path,market_transport=httpx.MockTransport(offline))
+        with TestClient(app) as client:
+            pid=setup(client)
+            response=client.post(f'/api/research/collections/{pid}/sse-history-assessments',
+                json={'basis':'Inspect fixed official archived originals, no current coverage claim'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_history_assessment.py:19: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_history_assessment.py::test_official_historical_daily_keeps_its_own_units_and_receipt_without_current_admission
+1 failed in 6.16s
