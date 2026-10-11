@@ -1,0 +1,9 @@
+# Accepted Ticket 24 worktree cleanup
+
+PASS, actual cleanup command exit0. The exact accepted worktree `D:\dsh-proj\Roll\.scratch\worktrees\ticket24` is absent; branch `codex/roll-p0-ticket24` is retained. Source handoff `ffb83af1b0ebbbc5ac322c8d5f8c34840bd24634` was already independently accepted and merged as fe53c5e; Ticket25 starts from the integration branch and does not depend on this checkout.
+
+Before removal, all 1,315 final API/browser files (100,925,613 bytes) were rechecked on both worktree and root preservation copies by SHA-256 and length. After removal, every root preserved file still matched. This is one combined preservation group; the preflight stdout's `profiles 7` is the ordered record's seven-field count, not seven profiles or seven acceptance cases. The unmodified preflight JSON contains the exact group and file count. The source-defined 72-byte METHOD_CASE_ONLY auth fixture is synthetic; actual authentication and private profiles were not copied or inspected.
+
+The worktree was tracked-clean and had no associated runtime processes. Both dependency junctions were verified to point to root `backend/.venv` and `frontend/node_modules`, then unlinked without following their targets. Deletion used a single PowerShell flow with exact absolute boundary checks and no remaining reparse points. Native Git's exit/output and any safe residual removal are recorded in results.json; the final command exited0.
+
+All 12 frozen model source files and 12,999 root non-private dependency files, including the Chrome executable, matched their before/after SHA-256 and byte lengths. Original root untracked work, Ticket25/30/Codex-scope worktrees, real profiles and root dependencies remain intact. No provider, actual funds, fit, SEALED, real forward or push operation occurred. preflight.json, results.json and cleanup.ps1 retain the concrete evidence.
