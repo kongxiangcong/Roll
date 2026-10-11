@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_interval_receipts_enter_packet_gap_query_worker_and_pin_old_empty_ids __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30i-consumer-red/test_interval_receipts_enter_p0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237FF2B8D60>
+
+    def test_interval_receipts_enter_packet_gap_query_worker_and_pin_old_empty_ids(tmp_path,monkeypatch):
+        clock(monkeypatch);calls=[]
+        def supplier(request):
+            calls.append(request.url.params['sqlId'])
+            return httpx.Response(200,json={'sqlId':'GW_PL_JYTS_TFPXX_TRADEDAY','result':[{'beforeTradeDay':'20261009'}]}
+                if request.url.params['sqlId'].endswith('TRADEDAY') else interval())
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            pid=start(client);base=f'/api/research/collections/{pid}'
+            old=client.post(base+'/post-close-packets',json={'basis':'Immutable old packet before interval source'}).json()
+>           assert old['stock_suspension_receipts']==[]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'stock_suspension_receipts'
+
+backend\tests\application\test_sse_stock_suspension.py:71: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_stock_suspension.py::test_interval_receipts_enter_packet_gap_query_worker_and_pin_old_empty_ids
+1 failed, 1 deselected in 6.40s

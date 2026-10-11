@@ -21,7 +21,7 @@ def page(rows=None,total=1,page_no=1,page_count=1):
 
 
 def clocks(monkeypatch,stamp='2026-10-12T15:06:00+08:00'):
-    for module in ['roll.market.post_close_packet','roll.research.prospective','roll.market.evidence']:
+    for module in ['roll.market.post_close_packet','roll.research.prospective','roll.market.evidence','roll.market.sse_stock_suspension']:
         monkeypatch.setattr(module+'.now',lambda:stamp)
 
 
@@ -90,6 +90,10 @@ def test_existing_worker_job_records_one_bounded_suspension_receipt_without_hidd
     suspension=json.dumps(page(rows=[],total=0,page_count=0)).encode()
     def supplier(request):
         calls.append(request.url.host)
+        if request.url.host=='query.sse.com.cn' and request.url.params.get('sqlId','').startswith('GW_PL_JYTS_TFPXX'):
+            from test_sse_stock_suspension import interval
+            return httpx.Response(200,json={'sqlId':'GW_PL_JYTS_TFPXX_TRADEDAY','result':[{'beforeTradeDay':'20261009'}]}
+                if request.url.params['sqlId'].endswith('TRADEDAY') else interval(rows=[],total=0,pages=0))
         return httpx.Response(200,content=closing if request.url.host=='yunhq.sse.com.cn' else suspension)
     with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier))) as client:
         pid=setup(client);base=f'/api/research/collections/{pid}'
@@ -104,7 +108,8 @@ def test_existing_worker_job_records_one_bounded_suspension_receipt_without_hidd
         assert client.post(base+'/post-close/check',json={'basis':'Same checkpoint retry cannot expand source budget'}).json()==job
         bounded=client.post(base+'/sse-suspension/check',json={'basis':'Explicit cached status-source job'}).json()
         assert bounded['state']=='RECORDED' and bounded['receipt_id']==job['suspension_receipt_id']
-        assert sorted(calls)==['query.sse.com.cn','yunhq.sse.com.cn']
+        assert sorted(calls)==['query.sse.com.cn']*3+['yunhq.sse.com.cn']
+        assert job['stock_suspension_receipt_id']
         assert client.get('/api/account').json()==account
 
 

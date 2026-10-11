@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_capture_plan_is_archived_before_raws_and_bound_to_the_new_three_call_budget _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30i-plan-red/test_capture_plan_is_archived_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CF55061350>
+
+    def test_capture_plan_is_archived_before_raws_and_bound_to_the_new_three_call_budget(tmp_path,monkeypatch):
+        clock(monkeypatch)
+        def supplier(request):
+            return httpx.Response(200,json={'sqlId':'GW_PL_JYTS_TFPXX_TRADEDAY','result':[{'beforeTradeDay':'20261009'}]}
+                if request.url.params['sqlId'].endswith('TRADEDAY') else interval(rows=[],total=0,pages=0))
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            pid=start(client);base=f'/api/research/collections/{pid}'
+            receipt=client.post(base+'/sse-stock-suspension',json={'basis':'Independent source-plan audit before HTTP'}).json()
+>           planned=receipt['capture_plan']
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'capture_plan'
+
+backend\tests\application\test_sse_stock_suspension.py:192: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_stock_suspension.py::test_capture_plan_is_archived_before_raws_and_bound_to_the_new_three_call_budget
+1 failed, 16 deselected in 5.87s

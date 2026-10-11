@@ -1,0 +1,211 @@
+{
+  "receipt_id": "798e5acd-344f-47eb-afb7-ff7a33b2e44c",
+  "plan_id": "b3ea23a2-7d0a-4825-b4d5-fdc7ade2b302",
+  "instrument": "SSE:600362",
+  "host_date": "2026-10-11",
+  "basis": "Authorized new independent trade-day1 plus interval2 budget, no fallback",
+  "started_at": "2026-10-11T09:20:35.730578+00:00",
+  "source_id": "sse-stock-suspension-interval",
+  "parser_fingerprint": "075f4cb1f82fafe96d4da833c80b10bafe1893899def0e786ff52ecbd723f7b8",
+  "query_js_hash": "32fc98ea41e599f457609247ba68defb82e6d855aa2551da6923dbf7e44153a7",
+  "schema_mapping_hash": "e65238ba11819bedba3ebab26c2825327c2b5300d25813589f1f427cad48a09e",
+  "reference_empty_audit": {
+    "raw_hash": "15a1180483592fa133cc4da6907ad84428fe0bb56ffd672241c456d14a715066",
+    "query_js_hash": "32fc98ea41e599f457609247ba68defb82e6d855aa2551da6923dbf7e44153a7",
+    "source_url": "https://query.sse.com.cn/commonSoaQuery.do?sqlId=GW_PL_JYTS_TFPXX&productCode=600362&startStopDate=20130101&endStopDate=20251231&isPagination=true&pageHelp.pageSize=100&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1",
+    "received_at": "2026-10-09T02:54:16.888229+00:00",
+    "requested_start": "20130101",
+    "requested_end": "20251231",
+    "declared_total": 10,
+    "returned_count": 0,
+    "request_page_size": 100,
+    "response_page_size": 1000,
+    "no_event_authority": false,
+    "current_coverage_verified": false,
+    "historical_pit_claim": false,
+    "gaps": [
+      "SSE_STOCK_REFERENCE_EMPTY_TOTAL_MISMATCH",
+      "SSE_STOCK_REFERENCE_PAGE_SIZE_MISMATCH"
+    ]
+  },
+  "request_budget_calls": 3,
+  "request_budget_pages": 2,
+  "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+  "network_calls": 2,
+  "trade_day_page": {
+    "parameters": {
+      "sqlId": "GW_PL_JYTS_TFPXX_TRADEDAY",
+      "bizDate": "20261011"
+    },
+    "archive": {
+      "sha256": "f45a2a21a972c1150d69db7a60e8506932974bc1bdd216d3f6d052a5cdc7fc22",
+      "path": "raw/f45a2a21a972c1150d69db7a60e8506932974bc1bdd216d3f6d052a5cdc7fc22.raw",
+      "bytes": 599,
+      "kind": "SSE_STOCK_RAW_RESPONSE",
+      "source_id": "sse-stock-suspension-interval",
+      "source_url": "https://query.sse.com.cn/commonSoaQuery.do?sqlId=GW_PL_JYTS_TFPXX_TRADEDAY&bizDate=20261011",
+      "received_at": "2026-10-11T09:20:36.046535+00:00",
+      "status_code": 200,
+      "parameters": {
+        "sqlId": "GW_PL_JYTS_TFPXX_TRADEDAY",
+        "bizDate": "20261011"
+      },
+      "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+      "original_complete": true,
+      "content_type": "application/json;charset=UTF-8",
+      "stream_error": null
+    },
+    "original_complete": true,
+    "reported_metadata": {
+      "json_object_reported": true,
+      "sql_id_reported": "GW_PL_JYTS_TFPXX_TRADEDAY",
+      "declared_total": 1,
+      "page_no": 1,
+      "page_count": 1,
+      "page_size": 1,
+      "begin_page": 1,
+      "end_page": null,
+      "response_date_reported": "",
+      "page_search_date_reported": null,
+      "returned_count": 1,
+      "action_errors_reported": [],
+      "field_errors_reported": {}
+    }
+  },
+  "pages": [
+    {
+      "parameters": {
+        "sqlId": "GW_PL_JYTS_TFPXX",
+        "isPagination": "true",
+        "productCode": "600362",
+        "keyWords": "",
+        "startStopDate": "20261009",
+        "endStopDate": "20261011",
+        "pageHelp.pageSize": "25",
+        "pageHelp.pageNo": "1"
+      },
+      "archive": {
+        "sha256": "7fd45879b5af75c7e0cb7f4c92ce9ad6fa31ddca8ad472deb83b66f3bbfd1c6f",
+        "path": "raw/7fd45879b5af75c7e0cb7f4c92ce9ad6fa31ddca8ad472deb83b66f3bbfd1c6f.raw",
+        "bytes": 481,
+        "kind": "SSE_STOCK_RAW_RESPONSE",
+        "source_id": "sse-stock-suspension-interval",
+        "source_url": "https://query.sse.com.cn/commonSoaQuery.do?sqlId=GW_PL_JYTS_TFPXX&isPagination=true&productCode=600362&keyWords=&startStopDate=20261009&endStopDate=20261011&pageHelp.pageSize=25&pageHelp.pageNo=1",
+        "received_at": "2026-10-11T09:20:36.092172+00:00",
+        "status_code": 200,
+        "parameters": {
+          "sqlId": "GW_PL_JYTS_TFPXX",
+          "isPagination": "true",
+          "productCode": "600362",
+          "keyWords": "",
+          "startStopDate": "20261009",
+          "endStopDate": "20261011",
+          "pageHelp.pageSize": "25",
+          "pageHelp.pageNo": "1"
+        },
+        "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+        "original_complete": true,
+        "content_type": "application/json;charset=UTF-8",
+        "stream_error": null
+      },
+      "original_complete": true,
+      "reported_metadata": {
+        "json_object_reported": true,
+        "sql_id_reported": "GW_PL_JYTS_TFPXX",
+        "declared_total": 0,
+        "page_no": 1,
+        "page_count": 0,
+        "page_size": 25,
+        "begin_page": 0,
+        "end_page": null,
+        "response_date_reported": "",
+        "page_search_date_reported": null,
+        "returned_count": 0,
+        "action_errors_reported": [],
+        "field_errors_reported": {}
+      }
+    }
+  ],
+  "errors": [],
+  "reported_before_trade_day": "2026-10-09",
+  "latest_trade_day_verified": false,
+  "system_usable": false,
+  "complete_status_verified": false,
+  "no_event_authority": false,
+  "actual_forward_start": false,
+  "forward_started_at": null,
+  "capability": "NOT_GRANTED",
+  "capture_plan": {
+    "capture_id": "798e5acd-344f-47eb-afb7-ff7a33b2e44c",
+    "collection_plan_id": "b3ea23a2-7d0a-4825-b4d5-fdc7ade2b302",
+    "created_at": "2026-10-11T09:20:35.730578+00:00",
+    "host_date": "2026-10-11",
+    "source_id": "sse-stock-suspension-interval",
+    "source_url": "https://query.sse.com.cn/commonSoaQuery.do",
+    "query_js_hash": "32fc98ea41e599f457609247ba68defb82e6d855aa2551da6923dbf7e44153a7",
+    "mapping_hash": "e65238ba11819bedba3ebab26c2825327c2b5300d25813589f1f427cad48a09e",
+    "reference_empty_hash": "15a1180483592fa133cc4da6907ad84428fe0bb56ffd672241c456d14a715066",
+    "parser_fingerprint": "075f4cb1f82fafe96d4da833c80b10bafe1893899def0e786ff52ecbd723f7b8",
+    "request_budget_calls": 3,
+    "interval_page_budget": 2,
+    "trade_day_parameters": {
+      "sqlId": "GW_PL_JYTS_TFPXX_TRADEDAY",
+      "bizDate": "20261011"
+    },
+    "interval_policy": "ONLY_REPORTED_BEFORE_TRADE_DAY_THROUGH_HOST_DATE_MAX_THREE_YEARS",
+    "interval_security": "600362",
+    "interval_page_size": 25,
+    "method": "GET",
+    "timeout_seconds": 15,
+    "max_decoded_bytes_per_response": 8388608,
+    "no_fallback": true,
+    "no_retries": true,
+    "system_usable": false,
+    "actual_forward_start": false
+  },
+  "capture_plan_archive": {
+    "sha256": "bd683675fed06a84d38bf2a86bd32352c0c4b52321e55c830f2965a251a56258",
+    "path": "raw/bd683675fed06a84d38bf2a86bd32352c0c4b52321e55c830f2965a251a56258.raw",
+    "bytes": 1066,
+    "kind": "SSE_STOCK_FINITE_CAPTURE_PLAN",
+    "created_at": "2026-10-11T09:20:35.730578+00:00",
+    "evidence_kind": "REAL_SOURCE_ASSESSMENT"
+  },
+  "requested_interval": {
+    "start_date": "2026-10-09",
+    "end_date": "2026-10-11",
+    "basis": "REPORTED_BEFORE_TRADE_DAY_THROUGH_ACTUAL_HOST_DATE"
+  },
+  "finished_at": "2026-10-11T09:20:36.112711+00:00",
+  "normalized_known_at": "2026-10-11T09:20:36.112711+00:00",
+  "events": [],
+  "page_audits": [
+    {
+      "page_no": 1,
+      "raw_hash": "7fd45879b5af75c7e0cb7f4c92ce9ad6fa31ddca8ad472deb83b66f3bbfd1c6f",
+      "returned_count": 0,
+      "declared_total": 0,
+      "reported_page_count": 0,
+      "reported_page_size": 25
+    }
+  ],
+  "returned_count": 0,
+  "declared_total": 0,
+  "reported_page_count": 0,
+  "returned_count_matches_positive_total": false,
+  "gaps": [
+    "SSE_STOCK_ACTUAL_RESUMPTION_AND_COMPLETE_STATUS_UNPROVEN",
+    "SSE_STOCK_EMPTY_NOT_NORMAL_OR_NO_EVENT_AUTHORITY",
+    "SSE_STOCK_FINITE_RETURNED_SET_UNPROVEN",
+    "SSE_STOCK_LATEST_TRADE_DAY_AUTHORITY_UNPROVEN",
+    "SSE_STOCK_RESPONSE_INTERVAL_ECHO_UNPROVEN"
+  ],
+  "status": "REPORTED_PARTIAL",
+  "archive": {
+    "sha256": "1d400e47b2cc9b4e652fdf3dadd3b9c7f47945b9f69b81ebebda502468ea3e53",
+    "path": "raw/1d400e47b2cc9b4e652fdf3dadd3b9c7f47945b9f69b81ebebda502468ea3e53.raw",
+    "bytes": 6512,
+    "kind": "SSE_STOCK_RECEIPT",
+    "evidence_kind": "REAL_SOURCE_ASSESSMENT"
+  }
+}
