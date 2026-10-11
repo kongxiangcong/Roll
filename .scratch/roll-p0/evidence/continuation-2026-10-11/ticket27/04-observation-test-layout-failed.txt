@@ -1,0 +1,34 @@
+F
+================================== FAILURES ===================================
+_ test_scope_controls_actual_observation_admission_but_not_audits_and_backup[NEW_RISK-202] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r2/test_scope_controls_actual_obs0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E666D75CD0>
+scope = 'NEW_RISK', expected = 202
+
+    @pytest.mark.parametrize('scope,expected', [('NEW_RISK', 202), ('MODEL', 202), ('ALL_MONITOR', 409)])
+    def test_scope_controls_actual_observation_admission_but_not_audits_and_backup(tmp_path, monkeypatch, scope, expected):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        with TestClient(create_app(tmp_path)) as client:
+            response = client.post('/api/capabilities/lifecycle', json={'scope': scope, 'state': 'SUSPENDED',
+                'reason_code': 'USER_PAUSE', 'reason': '仅暂停选定范围', 'expected_version': 0, 'idempotency_key': 'pause'})
+            assert response.status_code == 200, response.text
+            before = client.get('/api/reviews/history').json()
+            observation = client.post('/api/reviews/tasks', json={'refresh_missing': False})
+            assert observation.status_code == expected, observation.text
+            if expected == 409:
+                assert observation.json()['detail'] == 'ALL_MONITOR_SUSPENDED'
+                assert client.get('/api/reviews/history').json() == before
+            else:
+                assert observation.json()['refresh_missing'] is False
+            assert client.get('/api/reviews/audits').status_code == 200
+            assert client.get('/api/runtime/backups/status').status_code == 200
+>           assert client.get('/api/capabilities/grants').json() == original_grants
+                                                                    ^^^^^^^^^^^^^^^
+E           NameError: name 'original_grants' is not defined
+
+tests\application\test_capability_lifecycle.py:60: NameError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_lifecycle.py::test_scope_controls_actual_observation_admission_but_not_audits_and_backup[NEW_RISK-202]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 7.65s

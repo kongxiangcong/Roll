@@ -1,0 +1,5 @@
+First preservation attempt exited1 on Windows destination path length:
+FileNotFoundError while copying .scratch/p27g19/test_imported_active_backup_ha0/imported/backups/.restore-8d4da430-7140-46be-a50f-d7fc3691d69d/raw/8b081ea45876a4b09edb0d3a841b7fa13edadd145ae6b7d9b716a469dde23d7f.raw
+Partial original target remains D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket27-2026-10-11-a8ee5dc, untouched and not claimed complete.
+No SQLite was opened and no source was removed. The new complete destination ticket27-r01 uses native extended Windows paths for byte copy and exact SHA/length verification; source identities and all original names remain unchanged.
+This is preservation environment failure, not a product gate failure or a discarded test failure.

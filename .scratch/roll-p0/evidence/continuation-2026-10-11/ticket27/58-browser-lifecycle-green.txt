@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [52876]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8077 (Press CTRL+C to quit)
+[WebServer] (node:31304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:34656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\lifecycle.spec.ts:2:1 › three pause scopes, evidence-bound recovery and stale cards remain controlled (30.0s)
+
+
+  1) tests\e2e\lifecycle.spec.ts:2:1 › three pause scopes, evidence-bound recovery and stale cards remain controlled 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: '暂停与恢复', exact: true }).getByLabel('暂停范围', { exact: true })[22m
+
+
+      23 |   await expect(panel).toBeVisible();
+      24 |   for(const [scope,label] of [['NEW_RISK','新增风险'],['MODEL','模型建议'],['ALL_MONITOR','全部监控']]){
+    > 25 |     await panel.getByLabel('暂停范围',{exact:true}).selectOption(scope);
+         |                                                 ^
+      26 |     await panel.getByLabel('操作原因',{exact:true}).fill('METHOD 主动暂停 '+label);
+      27 |     await panel.getByRole('button',{name:'暂停所选范围',exact:true}).click();
+      28 |     await expect(panel.getByText(label+'：已暂停',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket27\frontend\tests\e2e\lifecycle.spec.ts:25:49
+
+    Error Context: test-results\lifecycle-three-pause-scop-e0838-ale-cards-remain-controlled\error-context.md
+
+  1 failed
+    tests\e2e\lifecycle.spec.ts:2:1 › three pause scopes, evidence-bound recovery and stale cards remain controlled 

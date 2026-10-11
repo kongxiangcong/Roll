@@ -84,7 +84,7 @@ class EvidenceStore:
                     run.update(status='INTERRUPTED',finished_at=now(),recovery_reason='PROCESS_RESTART_BEFORE_SNAPSHOT_COMMIT')
                     db.execute('UPDATE retrieval_runs SET value=? WHERE id=?',(encode(run),row['id']))
 
-    def archive(self,content,kind,extension='raw',**metadata):
+    def archive(self,content,kind,extension='raw',db=None,**metadata):
         sha=hashlib.sha256(content).hexdigest()
         relative=Path('parquet' if extension=='parquet' else 'raw')/(sha+'.'+extension)
         target=self.directory/relative
@@ -97,7 +97,10 @@ class EvidenceStore:
         if hashlib.sha256(target.read_bytes()).hexdigest()!=sha:
             raise RuntimeError('市场证据归档指纹损坏')
         result={'sha256':sha,'path':relative.as_posix(),'bytes':len(content),'kind':kind,**metadata}
-        with self.ledger.connection() as db:
+        if db is None:
+            with self.ledger.connection() as connection:
+                connection.execute('INSERT OR IGNORE INTO evidence_archives VALUES(?,?)',(sha,encode(result)))
+        else:
             db.execute('INSERT OR IGNORE INTO evidence_archives VALUES(?,?)',(sha,encode(result)))
         return result
 

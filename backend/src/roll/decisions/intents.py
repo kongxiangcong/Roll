@@ -61,6 +61,7 @@ class Intents:
                 'broker_frozen_deducted_again': False}
 
     def prepare(self, command):
+        self.actions.capabilities.refresh_journal()
         content = fingerprint(command.model_dump())
         price = Decimal(number(command.price_yuan, 'price_yuan', 8))
         with self.ledger.connection() as db:

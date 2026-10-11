@@ -1,0 +1,33 @@
+F
+================================== FAILURES ===================================
+_ test_expiry_is_append_only_and_old_actions_close_without_waiting_for_new_samples _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r7/test_expiry_is_append_only_and0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000013603458C30>
+
+    def test_expiry_is_append_only_and_old_actions_close_without_waiting_for_new_samples(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        clock = [package['required_as_of']]
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock[0])
+        monkeypatch.setattr('roll.decisions.actions.now', lambda: clock[0])
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            prepare(client, package)
+            grant = client.get('/api/capabilities/grants').json()[0]
+            old = client.post('/api/actions/evaluate', json={}).json()
+            clock[0] = grant['expires_at']
+            status = client.get('/api/capabilities/grants/' + grant['grant_id'] + '/status').json()
+>           assert status['state'] == 'EXPIRED', status
+E           AssertionError: {'allowed_actions': [], 'formal_judgment': 'DISABLED', 'funding_state': 'CONFIRMED', 'grant': {'account_version': 2, '...bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, 'effective_at': '2026-10-11T06:58:06+00:00', ...}, ...}, ...}
+E           assert 'RESTRICTED' == 'EXPIRED'
+E             
+E             - EXPIRED
+E             + RESTRICTED
+
+tests\application\test_capability_expiry.py:22: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_expiry.py::test_expiry_is_append_only_and_old_actions_close_without_waiting_for_new_samples
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 8.28s

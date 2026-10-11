@@ -1,0 +1,54 @@
+F
+================================== FAILURES ===================================
+_ test_user_pause_scope_survives_restart_and_closes_old_prepare_without_rewriting_history[NEW_RISK-True-True-False] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g1/test_user_pause_scope_survives0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A15171D6E0>
+scope = 'NEW_RISK', observations = True, model = True, new_risk = False
+
+    @pytest.mark.parametrize('scope,observations,model,new_risk', [
+        ('NEW_RISK', True, True, False),
+        ('MODEL', True, False, False),
+        ('ALL_MONITOR', False, False, False),
+    ])
+    def test_user_pause_scope_survives_restart_and_closes_old_prepare_without_rewriting_history(tmp_path, monkeypatch, scope, observations, model, new_risk):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            prepare(client, package)
+            original_grants = client.get('/api/capabilities/grants').json()
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            assert len(evaluation['decisions']) == 1
+            old_prepare = intent_command(evaluation)
+            account = client.get('/api/account').json()
+            command = {'scope': scope, 'state': 'SUSPENDED', 'reason_code': 'USER_PAUSE',
+                       'reason': '用户主动暂停本范围', 'expected_version': 0, 'idempotency_key': 'pause'}
+            response = client.post('/api/capabilities/lifecycle', json=command)
+            assert response.status_code == 200, response.text
+            receipt = response.json()
+            assert receipt['version'] == 1 and receipt['effective_at']
+            assert client.post('/api/capabilities/lifecycle', json=command).json() == receipt
+            control = client.get('/api/capabilities/lifecycle').json()
+            assert (control['observations_allowed'], control['model_judgments_allowed'], control['new_risk_allowed']) == (observations, model, new_risk)
+            assert control['scopes'][scope]['reason_code'] == 'USER_PAUSE'
+            assert client.post('/api/intents/prepare', json=old_prepare).status_code == 409
+            assert client.get('/api/actions/current').json()['decisions'] == []
+            assert client.post('/api/actions/evaluate', json={}).json()['decisions'] == []
+            assert client.get('/api/actions/evaluations/' + evaluation['evaluation_id']).json() == evaluation
+            assert client.get('/api/capabilities/grants').json() == original_grants
+            assert client.get('/api/account').json() == account
+            draft = client.post('/api/account/drafts', json={'kind': 'CASH_IN', 'expected_account_version': account['version'],
+                'payload': {'effective_at': package['required_as_of'], 'source': 'METHOD用户资金凭证', 'record_id': 'cash-after-pause', 'amount': '1.00', 'basis': '事实同步不受暂停控制'}}).json()
+>           assert client.post('/api/account/confirm', json={'draft_id': draft['draft_id'], 'idempotency_key': 'cash'}).status_code == 200
+E           AssertionError: assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+E            +    where <Response [422 Unprocessable Content]> = post('/api/account/confirm', json={'draft_id': '98c93f87-1987-495b-98e5-262f0b3d8fb1', 'idempotency_key': 'cash'})
+E            +      where post = <starlette.testclient.TestClient object at 0x000001A1518301A0>.post
+
+tests\application\test_capability_lifecycle.py:45: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_lifecycle.py::test_user_pause_scope_survives_restart_and_closes_old_prepare_without_rewriting_history[NEW_RISK-True-True-False]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 9.97s

@@ -1,0 +1,39 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_data_drift_resume_requires_a_later_bound_healthy_check_and_new_action __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r26/test_data_drift_resume_require0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020B3B221A70>
+
+    def test_data_drift_resume_requires_a_later_bound_healthy_check_and_new_action(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(20, outside=4)
+        clock = [datetime.fromisoformat(package['required_as_of'])]
+        later = clock[0] + timedelta(seconds=2)
+        # Immutable METHOD observations of the second in-scope stock become known
+        # later. This tests the consumer's cause binding, not actual future evidence.
+        package['monitoring_basis']['observations'] += [{'observation_date': day, 'known_at': later.isoformat(),
+            'instrument': 'SSE:600001', 'features': {'x': 50}, 'source_binding': 'literal-later-' + day}
+            for day in package['monitoring_basis']['eligible_sessions']]
+        monkeypatch.setattr('roll.decisions.monitoring.now', lambda: clock[0].isoformat())
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock[0].isoformat())
+        file = save_package(tmp_path / 'qualification.json', package)
+        client = TestClient(create_app(tmp_path / 'data', capability_method_file=file))
+        try:
+            grant = prepare(client, package)
+            old = client.post('/api/actions/evaluate', json={}).json()
+            first = client.post('/api/capabilities/monitoring/check', json={'grant_id': grant['grant_id'], 'basis': 'initial literal drift'}).json()
+            assert first['status'] == 'RESTRICTED'
+            resume = {'grant_id': grant['grant_id'], 'scope': 'MODEL', 'state': 'ACTIVE', 'reason_code': 'DATA_DRIFT',
+                'resume_event_id': first['restriction_event_id'], 'recovery_check_id': first['check_id'],
+                'reason': '同冻结source后续输入恢复支持，不改历史结论', 'expected_version': 1, 'idempotency_key': 'unhealthy'}
+            rejected = client.post('/api/capabilities/lifecycle', json=resume)
+>           assert rejected.status_code == 409, rejected.text
+E           AssertionError: {"detail":[{"type":"literal_error","loc":["body","reason_code"],"msg":"Input should be 'USER_PAUSE' or 'USER_REVOKE'","input":"DATA_DRIFT","ctx":{"expected":"'USER_PAUSE' or 'USER_REVOKE'"}},{"type":"extra_forbidden","loc":["body","recovery_check_id"],"msg":"Extra inputs are not permitted","input":"860ca25b-4d1a-473e-8004-e2c471b7297a"}]}
+E           assert 422 == 409
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\application\test_monitoring_recovery.py:33: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_monitoring_recovery.py::test_data_drift_resume_requires_a_later_bound_healthy_check_and_new_action
+1 failed in 7.21s

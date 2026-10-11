@@ -341,7 +341,9 @@ class Backups:
 
     def recovery(self):
         path=self.root/'recovery-lock.json'
-        return json.loads(path.read_text(encoding='utf-8')) if path.exists() else {'state':'NOT_RESTORED'}
+        physical=json.loads(path.read_text(encoding='utf-8')) if path.exists() else {'state':'NOT_RESTORED'}
+        checker=getattr(self,'authorization_check',None)
+        return checker() if checker and physical['state']=='RECOVERY_LOCK' else physical
 
     def status(self):
         history=self.list();latest=history[0] if history else None

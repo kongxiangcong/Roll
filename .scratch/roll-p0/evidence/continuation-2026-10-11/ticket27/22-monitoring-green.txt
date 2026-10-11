@@ -1,0 +1,161 @@
+F
+================================== FAILURES ===================================
+_ test_frozen_drift_support_and_normal_warmup_preserve_old_verdict[19-0-0-PENDING-None] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g10/test_frozen_drift_support_and_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002B2A88A5CD0>
+count = 19, outside = 0, missing = 0, expected = 'PENDING', reason = None
+
+    @pytest.mark.parametrize('count,outside,missing,expected,reason', [
+        (19, 0, 0, 'PENDING', None), (20, 3, 0, 'CHECKED', None),
+        (20, 4, 0, 'RESTRICTED', 'FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT'),
+        (20, 0, 5, 'RESTRICTED', 'REQUIRED_FEATURE_COVERAGE_BELOW80_PERCENT'),
+    ])
+    def test_frozen_drift_support_and_normal_warmup_preserve_old_verdict(tmp_path, monkeypatch, count, outside, missing, expected, reason):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(count, outside, missing)
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, package)
+            grant = client.get('/api/capabilities/grants').json()[0]
+            old = client.post('/api/actions/evaluate', json={}).json()
+>           response = client.post('/api/capabilities/monitoring/check', json={'grant_id': grant['grant_id'], 'basis': 'literal frozen monitor'})
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_capability_monitoring.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1204: in post
+    return self.request(
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\testclient.py:463: in request
+    return super().request(
+..\..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:980: in send
+    response = self._send_handling_auth(
+..\..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+..\..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\testclient.py:360: in handle_request
+    raise exc
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\testclient.py:357: in handle_request
+    portal.call(self.app, scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\anyio\from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\..\..\backend\.venv\Lib\site-packages\anyio\from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\applications.py:1163: in __call__
+    await super().__call__(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\base.py:197: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:1090: in local_recovery_access
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\base.py:173: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\base.py:149: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\routing.py:676: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:2734: in app
+    await route.handle(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:1281: in handle
+    await super().handle(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\routing.py:282: in handle
+    await self.app(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:158: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:144: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:706: in app
+    raw_response = await run_endpoint_function(
+..\..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:354: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\anyio\to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+..\..\..\..\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:2706: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+..\..\..\..\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:1100: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:865: in capability_monitoring_check
+    def capability_monitoring_check(command: MonitoringCommand): return monitoring.check(command)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\decisions\monitoring.py:241: in check
+    value = self.apply(prepared, db, command.basis)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\decisions\monitoring.py:226: in apply
+    'input_archive': self.evidence.archive(encode(inputs).encode(), 'CAPABILITY_MONITORING_INPUT'), **result}
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <roll.market.evidence.EvidenceStore object at 0x000002B2A8D89010>
+content = b'{"actual_executions":[],"boundary":{"account_version":2,"data_fingerprint":"e56f24bb2bf19c80d87e4aea37a66176c6cdfb69...-05","2026-10-06","2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11"],"results":[]},"source_error":null}'
+kind = 'CAPABILITY_MONITORING_INPUT', extension = 'raw', metadata = {}
+sha = '4e1af22d0673cc317b8fd2d61b1688b0ec6d0a73ce4947aa58d62d87628fdad5'
+relative = WindowsPath('raw/4e1af22d0673cc317b8fd2d61b1688b0ec6d0a73ce4947aa58d62d87628fdad5.raw')
+target = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g10/test_frozen_drift_support_and_0/data/raw/4e1af22d0673cc317b8fd2d61b1688b0ec6d0a73ce4947aa58d62d87628fdad5.raw')
+temporary = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g10/test_frozen_drift_support_and_0/data/raw/4e1af22d0673cc317b8fd2d61b1688b0ec6d0a73ce4947aa58d62d87628fdad5.raw.e9e0bd14-5118-4a9f-8ed3-695cdc9270bd.tmp')
+stream = <_io.BufferedWriter name='D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27\\.scratch\\p27g10\\test_frozen_drift_suppo...a\\raw\\4e1af22d0673cc317b8fd2d61b1688b0ec6d0a73ce4947aa58d62d87628fdad5.raw.e9e0bd14-5118-4a9f-8ed3-695cdc9270bd.tmp'>
+result = {'bytes': 20331, 'kind': 'CAPABILITY_MONITORING_INPUT', 'path': 'raw/4e1af22d0673cc317b8fd2d61b1688b0ec6d0a73ce4947aa58d62d87628fdad5.raw', 'sha256': '4e1af22d0673cc317b8fd2d61b1688b0ec6d0a73ce4947aa58d62d87628fdad5'}
+db = <sqlite3.Connection object at 0x000002B2A8B83D30>
+
+    def archive(self,content,kind,extension='raw',**metadata):
+        sha=hashlib.sha256(content).hexdigest()
+        relative=Path('parquet' if extension=='parquet' else 'raw')/(sha+'.'+extension)
+        target=self.directory/relative
+        target.parent.mkdir(parents=True,exist_ok=True)
+        if not target.exists():
+            temporary=target.with_name(target.name+'.'+str(uuid4())+'.tmp')
+            with temporary.open('xb') as stream:
+                stream.write(content);stream.flush();os.fsync(stream.fileno())
+            os.replace(temporary,target)
+        if hashlib.sha256(target.read_bytes()).hexdigest()!=sha:
+            raise RuntimeError('市场证据归档指纹损坏')
+        result={'sha256':sha,'path':relative.as_posix(),'bytes':len(content),'kind':kind,**metadata}
+        with self.ledger.connection() as db:
+>           db.execute('INSERT OR IGNORE INTO evidence_archives VALUES(?,?)',(sha,encode(result)))
+E           sqlite3.OperationalError: database is locked
+
+src\roll\market\evidence.py:101: OperationalError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_monitoring.py::test_frozen_drift_support_and_normal_warmup_preserve_old_verdict[19-0-0-PENDING-None]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 18.95s

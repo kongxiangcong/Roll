@@ -10,7 +10,7 @@ const lossStatus=(s:string)=>({WITHIN_BOUNDARY:'未触及损失阈值',PAUSED:'�
 export function ActionPanel({instrument}:{instrument?:string}){
   const [data,setData]=useState<Current|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[revision,setRevision]=useState(0);
   const path='/actions/current'+(instrument?'?instrument='+encodeURIComponent(instrument):'');
-  useEffect(()=>{request<Current>(path).then(setData).catch(e=>setError(String(e)));},[path]);
+  useEffect(()=>{const refresh=()=>void request<Current>(path).then(setData).catch(e=>setError(String(e)));refresh();window.addEventListener('roll-capability-changed',refresh);window.addEventListener('focus',refresh);return()=>{window.removeEventListener('roll-capability-changed',refresh);window.removeEventListener('focus',refresh);};},[path]);
   async function evaluate(){setBusy(true);try{await request('/actions/evaluate',{});setData(await request<Current>(path));setError('');}catch(e){setError(String(e));}finally{setBusy(false);}}
   const e=data?.evaluation;
   return <section aria-label={instrument?'单股当前动作':'当前动作'}><h2>当前动作</h2>{!instrument&&<button onClick={()=>void evaluate()} disabled={busy}>{busy?'正在核验…':'核验当前动作'}</button>}
