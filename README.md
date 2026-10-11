@@ -16,6 +16,7 @@
 uv sync --frozen
 # 可选：指定独立运行数据目录；不配置时 Windows 使用 %LOCALAPPDATA%\Roll。
 $env:ROLL_DATA_DIR = Join-Path $env:LOCALAPPDATA 'Roll'
+$env:ROLL_RUNTIME_ROLE = 'API'
 uv run --frozen uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 8010
 ```
 
@@ -23,14 +24,22 @@ uv run --frozen uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 80
 
 使用 Codex 后端时，在启动后端的终端显式指定已有的 ChatGPT 登录文件，例如 `$env:ROLL_CODEX_AUTH_FILE = Join-Path $env:USERPROFILE '.codex\auth.json'`。应用不会自动搜索登录文件；文件只供工作进程认证，不会进入取证归档或备份。
 
-另一个终端，在 `frontend` 目录：
+API 健康检查成功后，另一个终端在 `backend` 目录启动独立后台进程，使用相同运行目录：
+
+```powershell
+$env:ROLL_DATA_DIR = Join-Path $env:LOCALAPPDATA 'Roll'
+$env:ROLL_RUNTIME_ROLE = 'WORKER'
+uv run --frozen python -m roll.worker
+```
+
+第三个终端，在 `frontend` 目录：
 
 ```powershell
 npm ci
 npm run dev -- --port 5173
 ```
 
-打开 `http://127.0.0.1:5173`，在“同步账户”填写当前真实现金与持仓，先预览，再确认。两个服务默认只绑定本机。`npm run build` 生成已检查的前端构建；上述开发服务器是当前可重复的本地启动路径。
+打开 `http://127.0.0.1:5173`，在“同步账户”填写当前真实现金与持仓，先预览，再确认。API 和前端只绑定本机，worker 没有 HTTP 端口；关闭网页不会停止服务。`npm run build` 生成已检查的前端构建；上述开发服务器是当前可重复的本地启动路径。安装、停止、任务恢复、升级备份和恢复锁见 [本机三进程说明](docs/local-worker-delivery.md)。
 
 `ROLL_DATA_DIR` 控制应用数据目录；默认位于操作系统用户数据目录，Unix 为 `$XDG_DATA_HOME/roll` 或 `~/.local/share/roll`。其中 `roll.sqlite3` 保存账户、证据和任务元数据，运行时可能有 SQLite WAL/SHM；`raw/` 保存账户 CSV 和来源原字节，`parquet/` 保存规范化事实，`research-inputs/` 保存导入的研究依据，`backups/` 保存完整恢复包与校验记录。原件按 SHA256 引用，复制单个数据库不能替代完整备份。不要把真实账户数据、凭据或备份提交到源码。模型工作进程使用独立临时目录并在结束后清理；凭据不属于取证原件或恢复包。
 
