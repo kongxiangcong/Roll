@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_stream_interruption_retains_received_prefix_without_date_fallback ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30i-stream-red/test_stream_interruption_retai0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BFC6149350>
+
+    def test_stream_interruption_retains_received_prefix_without_date_fallback(tmp_path,monkeypatch):
+        clock(monkeypatch);prefix=b'{"sqlId":"GW_PL_JYTS_TFPXX_TRADEDAY","result":'
+        class Interrupted(httpx.SyncByteStream):
+            def __iter__(self):
+                yield prefix
+                raise httpx.ReadTimeout('METHOD interrupted response stream')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,stream=Interrupted())),runtime_role='API')) as client:
+            pid=start(client);base=f'/api/research/collections/{pid}'
+            receipt=client.post(base+'/sse-stock-suspension',json={'basis':'METHOD preserve observed bytes on transport failure'}).json()
+            assert receipt['status']=='REFUSED' and receipt['network_calls']==1 and 'ReadTimeout' in receipt['errors']
+            saved=receipt['trade_day_page']
+>           assert saved['original_complete'] is False
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: 'NoneType' object is not subscriptable
+
+backend\tests\application\test_sse_stock_suspension.py:176: TypeError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_stock_suspension.py::test_stream_interruption_retains_received_prefix_without_date_fallback
+1 failed, 18 deselected in 5.40s

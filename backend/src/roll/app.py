@@ -239,6 +239,18 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def sse_suspension_worker(plan_id:str,command:PacketCommand):
         return prospective.post_close.capture_suspension_once(plan_id,command.basis)
 
+    @app.post('/api/research/collections/{plan_id}/sse-stock-suspension',status_code=201)
+    def sse_stock_suspension_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.stock_suspensions.capture(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-stock-suspension-receipts')
+    def sse_stock_suspension_receipts(plan_id:str):
+        return prospective.post_close.stock_suspensions.receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-stock-suspension/check',status_code=201)
+    def sse_stock_suspension_worker(plan_id:str,command:PacketCommand):
+        return prospective.post_close.stock_suspensions.capture_once(plan_id,command.basis)
+
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
         return prospective.post_close.replay(packet_id)

@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\roll-p0\evidence\continuation-2026-10-11\ticket30-stock-independent\diagnose_worker.py", line 5, in <module>
+    with TestClient(create_app('D:/dsh-proj/Roll/.roll-data/t30si-worker-corrected/test_shared_worker_and_restart0',market_transport=httpx.MockTransport(forbidden),runtime_role='API')) as c:
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\ticket30-producer\backend\src\roll\app.py", line 1115, in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\ticket30-producer\backend\src\roll\app.py", line 69, in _create_app
+    ledger = Ledger(directory or data_directory())
+  File "D:\dsh-proj\Roll\.scratch\worktrees\ticket30-producer\backend\src\roll\accounts\ledger.py", line 116, in __init__
+    directory.mkdir(parents=True, exist_ok=True)
+    ^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'mkdir'

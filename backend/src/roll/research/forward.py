@@ -143,7 +143,8 @@ class ForwardArchive:
         audits=self.prospective.post_close.obligations(plans[0]['plan_id'],checked,protocol_id=plan['protocol_id'],
             checkpoint_day=checked.astimezone(SHANGHAI).date().isoformat())
         suspension=self.prospective.post_close.suspension_receipts(plans[0]['plan_id'],checked)
-        rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked,attempts,audits,suspension)
+        stock=self.prospective.post_close.stock_suspensions.receipts(plans[0]['plan_id'],checked)
+        rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked,attempts,audits,suspension,stock)
         return rows,gaps
 
     def sessions(self, frozen, first, last, gaps=None):

@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_stock_interval_receipt_binds_trade_day_then_fixed_interval_without_resumption_authority _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30i-receipt-red/test_stock_interval_receipt_bi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000011FE2468C30>
+
+    def test_stock_interval_receipt_binds_trade_day_then_fixed_interval_without_resumption_authority(tmp_path,monkeypatch):
+        clock(monkeypatch);calls=[]
+        day=json.dumps({'sqlId':'GW_PL_JYTS_TFPXX_TRADEDAY','result':[{'beforeTradeDay':'20261009'}]}).encode()
+        body=json.dumps(interval()).encode()
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(200,content=day if request.url.params['sqlId'].endswith('TRADEDAY') else body)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            pid=start(client);base=f'/api/research/collections/{pid}'
+            response=client.post(base+'/sse-stock-suspension',json={'basis':'METHOD explicit finite new-stock source receipt'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_stock_suspension.py:38: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_stock_suspension.py::test_stock_interval_receipt_binds_trade_day_then_fixed_interval_without_resumption_authority
+1 failed in 5.17s
