@@ -196,6 +196,9 @@ def test_funding_shrink_invalidates_current_card_but_keeps_original_revision_and
         assert client.get(f"/api/actions/evaluations/{value['evaluation_id']}").json() == value
         client.get('/api/actions/current')
         assert len([e for e in client.get('/api/actions/events').json() if e['event_type'] == 'ACTION_INVALIDATED']) == 1
+        audit = client.get('/api/actions/audit').json()
+        assert audit['invalidated_actions'] == {'status': 'CHECKED', 'value': 1}
+        assert audit['action_flips'] == {'status': 'CHECKED', 'value': 0}
 
 
 def test_ungranted_evaluation_retains_observations_and_immutable_refusal(tmp_path):
