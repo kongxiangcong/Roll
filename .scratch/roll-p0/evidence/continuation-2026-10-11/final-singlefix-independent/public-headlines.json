@@ -1,0 +1,1349 @@
+{
+  "initial": {
+    "state": "UNGRANTED",
+    "formal_judgment": "DISABLED",
+    "allowed_actions": [],
+    "reason": "尚无通过验证及受控登记的技术能力",
+    "funding_state": "UNCONFIRMED",
+    "runtime_state": "NOT_RESTORED",
+    "recovery": {
+      "state": "NOT_RESTORED"
+    },
+    "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+    "reasons": [],
+    "grant_statuses": [],
+    "lifecycle": {
+      "version": 0,
+      "scopes": {
+        "NEW_RISK": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        },
+        "MODEL": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        },
+        "ALL_MONITOR": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        }
+      },
+      "observations_allowed": true,
+      "independent_risk_observations_allowed": true,
+      "model_judgments_allowed": true,
+      "new_risk_allowed": true,
+      "account_facts_allowed": true,
+      "audit_and_backup_allowed": true
+    },
+    "headline": "交易判断未启用",
+    "formal_capabilities": [],
+    "method_capabilities": []
+  },
+  "active": {
+    "state": "METHOD_GRANTED",
+    "formal_judgment": "DISABLED",
+    "allowed_actions": [
+      "BUY"
+    ],
+    "reason": "资格范围与当前条件核验通过",
+    "funding_state": "CONFIRMED",
+    "runtime_state": "NOT_RESTORED",
+    "recovery": {
+      "state": "NOT_RESTORED"
+    },
+    "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+    "reasons": [],
+    "grant_statuses": [
+      {
+        "state": "METHOD_GRANTED",
+        "reason": "资格范围与当前条件核验通过",
+        "reasons": [],
+        "grant": {
+          "account_version": 2,
+          "allowed_actions": [
+            "BUY"
+          ],
+          "candidate_kind": "PROFIT_MODEL",
+          "command": {
+            "allowed_actions": [
+              "BUY"
+            ],
+            "basis": "Explicit independent METHOD qualification; no actual authority",
+            "deployment_fingerprints": {
+              "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "effective_at": "2026-10-10T15:04:40+08:00",
+            "expected_account_version": 2,
+            "expected_funding_version": 1,
+            "expected_material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "expires_at": "2026-10-11T15:05:00+08:00",
+            "idempotency_key": "independent-profit",
+            "material_id": "ordering-profit-material",
+            "predecessor_grant_id": null,
+            "required_as_of": "2026-10-10T15:05:00+08:00",
+            "review_run_id": "ordering-profit-review",
+            "scope": {
+              "board": "MAIN",
+              "frequency": "DAILY",
+              "horizon": 20,
+              "instruments": [
+                "SSE:600000",
+                "SSE:600001",
+                "SSE:600002"
+              ],
+              "market": "SSE"
+            }
+          },
+          "complete_protocol_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "dependency_fingerprints": {
+            "__init__.py": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6",
+            "accounts/__init__.py": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540",
+            "accounts/cash_events.py": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8",
+            "accounts/corrections.py": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93",
+            "accounts/csv_import.py": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8",
+            "accounts/fills.py": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a",
+            "accounts/ledger.py": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2",
+            "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+            "accounts/valuation.py": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e",
+            "agents/codex_evidence.py": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+            "agents/codex_process.py": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+            "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+            "agents/deepseek_evidence.py": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69",
+            "agents/deepseek_process.py": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+            "agents/deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+            "agents/review_runtime.py": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+            "agents/settings.py": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+            "app.py": "30cfc4f54555ac9b24e7d7a0b448309308e0a1753e9681c4c9721ad8c4a5503b",
+            "config.py": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc",
+            "decisions/actions.py": "5a037f14c1c5fb85bd8406290b358e97d9b95e2fa7d06d5376031746b772562e",
+            "decisions/capabilities.py": "dde20db4c2326b6b26fa2c615fa02a88b56a3b262eec2ff7088d6e2684da648e",
+            "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+            "decisions/intents.py": "148bead8251dd813e75377a1d6c4980b07cdd5e8fd91f98b46caff617a2efaf7",
+            "decisions/lifecycle_journal.py": "30c7132d7ccbb132efa36e841eddf6b1301541f8c164531615423b02843448e8",
+            "decisions/monitoring.py": "2b3e989264f3e0340a795647ad18864f4396126fc46202ee1477e5d33147587f",
+            "decisions/notifications.py": "071ba32bec7517079717904131ae92832ba165917006639836bb6c33164a1f1c",
+            "decisions/recovery.py": "541b3546a8d4cc4dc3e941e0bdaa9e85fb0a344f8f181e30bc2e7e63d84b6a83",
+            "market/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "market/baostock.py": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695",
+            "market/baostock_process.py": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3",
+            "market/cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+            "market/cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+            "market/cninfo_history.py": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba",
+            "market/collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d",
+            "market/collection_sources.py": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+            "market/directory.py": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b",
+            "market/evidence.py": "81ba0c4d62d309de96fcfe02b8dbc3e88ac730ce43527371fcc352bc02756c5d",
+            "market/fuyao.py": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d",
+            "market/known_obligations.py": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285",
+            "market/post_close_packet.py": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18",
+            "market/resolution.py": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf",
+            "market/rules.py": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+            "market/sohu.py": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1",
+            "market/source_facts.py": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9",
+            "market/sse_action_assessments.py": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+            "market/sse_company_actions.py": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+            "market/sse_company_contract.py": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035",
+            "market/sse_price_quotes.py": "915869c247276a72894d742db85349cf87bc4bf73f4bee85b8dc31cbffc929db",
+            "market/sse_stock_suspension.py": "689b8dd528eb02ce5ae5c88b12e97de52af675631ea625d000fe223b252fefa7",
+            "market/sse_suspension.py": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed",
+            "market/verification.py": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43",
+            "market/verification_input.py": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788",
+            "research/corporate_actions.py": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+            "research/datasets.py": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+            "research/design.py": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+            "research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+            "research/forward.py": "9581f768f2938023a88c31981817538d493ea9695ac152c250f3ba255546b437",
+            "research/historical_costs.py": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+            "research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+            "research/prospective.py": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+            "research/reconstruction.py": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+            "research/registry.py": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+            "research/reports.py": "f49b23ac9f1122fb397516722a4d1c2d04a98988cd28a3bd0ec909beb12b5701",
+            "research/risk_policy.py": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+            "research/shadow.py": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+            "research/statistics.py": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+            "research/synthetic.py": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94",
+            "research/technical_review.py": "e7a83e5f26330e0b071c0185a5156871cd434be860b3f1439bed8f4c5778ca19",
+            "research/training_preflight.py": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+            "research/validation.py": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+            "runtime/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "runtime/backups.py": "4ba771d938e7a11e3bb48640b95fdb77bcbe87cdb6cda2643f411b92b7b83cf0",
+            "runtime/notification_channel.py": "16e9be0be1ce709624d20c8abd358e44682d08902d3092bd50d5e1a664a3fad5",
+            "runtime/reviews.py": "02406d27d71c0e9cff6d469f84d3c8798f1b3a20f6b3997037bfd67447fcb8d9",
+            "worker.py": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+          },
+          "deployment_fingerprints": {
+            "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "effective_at": "2026-10-10T15:04:40+08:00",
+          "evidence_kind": "METHOD_ENGINEERING",
+          "execution": {
+            "version": "method-daily-v1"
+          },
+          "expires_at": "2026-10-11T15:05:00+08:00",
+          "funding_scope": {
+            "scope_id": "account-1",
+            "scope_kind": "ACCOUNT"
+          },
+          "funding_version": 1,
+          "grant_id": "c5cd61d9-4e09-4f20-854e-1d6909e8d0da",
+          "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+          "material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "material_id": "ordering-profit-material",
+          "predecessor_grant_id": null,
+          "proof_id": "6da91568-5226-46ee-9bb0-e1106ddfe279",
+          "protocol_id": "method-protocol",
+          "recorded_at": "2026-10-10T15:06:00+08:00",
+          "review_run_id": "ordering-profit-review",
+          "revocation_conditions": [
+            "EXPIRY",
+            "DEPLOYMENT_CHANGE",
+            "ACCOUNT_VERSION_CHANGE",
+            "FUNDING_CHANGE",
+            "RECOVERY_LOCK",
+            "DATA_OR_SCOPE_CHANGE"
+          ],
+          "scope": {
+            "board": "MAIN",
+            "frequency": "DAILY",
+            "horizon": 20,
+            "instruments": [
+              "SSE:600000",
+              "SSE:600001",
+              "SSE:600002"
+            ],
+            "market": "SSE"
+          },
+          "system_usable": false,
+          "validation_id": "method-validation",
+          "version": 1
+        },
+        "allowed_actions": [
+          "BUY"
+        ],
+        "lifecycle": {
+          "version": 0,
+          "scopes": {
+            "NEW_RISK": {
+              "state": "ACTIVE",
+              "version": 0,
+              "reason_code": null,
+              "reason": null,
+              "effective_at": null
+            },
+            "MODEL": {
+              "state": "ACTIVE",
+              "version": 0,
+              "reason_code": null,
+              "reason": null,
+              "effective_at": null
+            },
+            "ALL_MONITOR": {
+              "state": "ACTIVE",
+              "version": 0,
+              "reason_code": null,
+              "reason": null,
+              "effective_at": null
+            }
+          },
+          "observations_allowed": true,
+          "independent_risk_observations_allowed": true,
+          "model_judgments_allowed": true,
+          "new_risk_allowed": true,
+          "account_facts_allowed": true,
+          "audit_and_backup_allowed": true
+        }
+      }
+    ],
+    "lifecycle": {
+      "version": 0,
+      "scopes": {
+        "NEW_RISK": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        },
+        "MODEL": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        },
+        "ALL_MONITOR": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        }
+      },
+      "observations_allowed": true,
+      "independent_risk_observations_allowed": true,
+      "model_judgments_allowed": true,
+      "new_risk_allowed": true,
+      "account_facts_allowed": true,
+      "audit_and_backup_allowed": true
+    },
+    "grant": {
+      "account_version": 2,
+      "allowed_actions": [
+        "BUY"
+      ],
+      "candidate_kind": "PROFIT_MODEL",
+      "command": {
+        "allowed_actions": [
+          "BUY"
+        ],
+        "basis": "Explicit independent METHOD qualification; no actual authority",
+        "deployment_fingerprints": {
+          "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "effective_at": "2026-10-10T15:04:40+08:00",
+        "expected_account_version": 2,
+        "expected_funding_version": 1,
+        "expected_material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "expires_at": "2026-10-11T15:05:00+08:00",
+        "idempotency_key": "independent-profit",
+        "material_id": "ordering-profit-material",
+        "predecessor_grant_id": null,
+        "required_as_of": "2026-10-10T15:05:00+08:00",
+        "review_run_id": "ordering-profit-review",
+        "scope": {
+          "board": "MAIN",
+          "frequency": "DAILY",
+          "horizon": 20,
+          "instruments": [
+            "SSE:600000",
+            "SSE:600001",
+            "SSE:600002"
+          ],
+          "market": "SSE"
+        }
+      },
+      "complete_protocol_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "dependency_fingerprints": {
+        "__init__.py": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6",
+        "accounts/__init__.py": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540",
+        "accounts/cash_events.py": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8",
+        "accounts/corrections.py": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93",
+        "accounts/csv_import.py": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8",
+        "accounts/fills.py": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a",
+        "accounts/ledger.py": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2",
+        "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+        "accounts/valuation.py": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e",
+        "agents/codex_evidence.py": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+        "agents/codex_process.py": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+        "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+        "agents/deepseek_evidence.py": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69",
+        "agents/deepseek_process.py": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+        "agents/deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+        "agents/review_runtime.py": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+        "agents/settings.py": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+        "app.py": "30cfc4f54555ac9b24e7d7a0b448309308e0a1753e9681c4c9721ad8c4a5503b",
+        "config.py": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc",
+        "decisions/actions.py": "5a037f14c1c5fb85bd8406290b358e97d9b95e2fa7d06d5376031746b772562e",
+        "decisions/capabilities.py": "dde20db4c2326b6b26fa2c615fa02a88b56a3b262eec2ff7088d6e2684da648e",
+        "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+        "decisions/intents.py": "148bead8251dd813e75377a1d6c4980b07cdd5e8fd91f98b46caff617a2efaf7",
+        "decisions/lifecycle_journal.py": "30c7132d7ccbb132efa36e841eddf6b1301541f8c164531615423b02843448e8",
+        "decisions/monitoring.py": "2b3e989264f3e0340a795647ad18864f4396126fc46202ee1477e5d33147587f",
+        "decisions/notifications.py": "071ba32bec7517079717904131ae92832ba165917006639836bb6c33164a1f1c",
+        "decisions/recovery.py": "541b3546a8d4cc4dc3e941e0bdaa9e85fb0a344f8f181e30bc2e7e63d84b6a83",
+        "market/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "market/baostock.py": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695",
+        "market/baostock_process.py": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3",
+        "market/cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+        "market/cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+        "market/cninfo_history.py": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba",
+        "market/collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d",
+        "market/collection_sources.py": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+        "market/directory.py": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b",
+        "market/evidence.py": "81ba0c4d62d309de96fcfe02b8dbc3e88ac730ce43527371fcc352bc02756c5d",
+        "market/fuyao.py": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d",
+        "market/known_obligations.py": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285",
+        "market/post_close_packet.py": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18",
+        "market/resolution.py": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf",
+        "market/rules.py": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+        "market/sohu.py": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1",
+        "market/source_facts.py": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9",
+        "market/sse_action_assessments.py": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+        "market/sse_company_actions.py": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+        "market/sse_company_contract.py": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035",
+        "market/sse_price_quotes.py": "915869c247276a72894d742db85349cf87bc4bf73f4bee85b8dc31cbffc929db",
+        "market/sse_stock_suspension.py": "689b8dd528eb02ce5ae5c88b12e97de52af675631ea625d000fe223b252fefa7",
+        "market/sse_suspension.py": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed",
+        "market/verification.py": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43",
+        "market/verification_input.py": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788",
+        "research/corporate_actions.py": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+        "research/datasets.py": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+        "research/design.py": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+        "research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+        "research/forward.py": "9581f768f2938023a88c31981817538d493ea9695ac152c250f3ba255546b437",
+        "research/historical_costs.py": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+        "research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+        "research/prospective.py": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "research/reconstruction.py": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+        "research/registry.py": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+        "research/reports.py": "f49b23ac9f1122fb397516722a4d1c2d04a98988cd28a3bd0ec909beb12b5701",
+        "research/risk_policy.py": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+        "research/shadow.py": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+        "research/statistics.py": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+        "research/synthetic.py": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94",
+        "research/technical_review.py": "e7a83e5f26330e0b071c0185a5156871cd434be860b3f1439bed8f4c5778ca19",
+        "research/training_preflight.py": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+        "research/validation.py": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+        "runtime/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/backups.py": "4ba771d938e7a11e3bb48640b95fdb77bcbe87cdb6cda2643f411b92b7b83cf0",
+        "runtime/notification_channel.py": "16e9be0be1ce709624d20c8abd358e44682d08902d3092bd50d5e1a664a3fad5",
+        "runtime/reviews.py": "02406d27d71c0e9cff6d469f84d3c8798f1b3a20f6b3997037bfd67447fcb8d9",
+        "worker.py": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+      },
+      "deployment_fingerprints": {
+        "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "effective_at": "2026-10-10T15:04:40+08:00",
+      "evidence_kind": "METHOD_ENGINEERING",
+      "execution": {
+        "version": "method-daily-v1"
+      },
+      "expires_at": "2026-10-11T15:05:00+08:00",
+      "funding_scope": {
+        "scope_id": "account-1",
+        "scope_kind": "ACCOUNT"
+      },
+      "funding_version": 1,
+      "grant_id": "c5cd61d9-4e09-4f20-854e-1d6909e8d0da",
+      "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+      "material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "material_id": "ordering-profit-material",
+      "predecessor_grant_id": null,
+      "proof_id": "6da91568-5226-46ee-9bb0-e1106ddfe279",
+      "protocol_id": "method-protocol",
+      "recorded_at": "2026-10-10T15:06:00+08:00",
+      "review_run_id": "ordering-profit-review",
+      "revocation_conditions": [
+        "EXPIRY",
+        "DEPLOYMENT_CHANGE",
+        "ACCOUNT_VERSION_CHANGE",
+        "FUNDING_CHANGE",
+        "RECOVERY_LOCK",
+        "DATA_OR_SCOPE_CHANGE"
+      ],
+      "scope": {
+        "board": "MAIN",
+        "frequency": "DAILY",
+        "horizon": 20,
+        "instruments": [
+          "SSE:600000",
+          "SSE:600001",
+          "SSE:600002"
+        ],
+        "market": "SSE"
+      },
+      "system_usable": false,
+      "validation_id": "method-validation",
+      "version": 1
+    },
+    "headline": "METHOD 工程能力有效，实际交易判断未启用",
+    "formal_capabilities": [],
+    "method_capabilities": [
+      {
+        "basis_type": "PROFIT_MODEL",
+        "grant_id": "c5cd61d9-4e09-4f20-854e-1d6909e8d0da",
+        "scope": {
+          "board": "MAIN",
+          "frequency": "DAILY",
+          "horizon": 20,
+          "instruments": [
+            "SSE:600000",
+            "SSE:600001",
+            "SSE:600002"
+          ],
+          "market": "SSE"
+        },
+        "allowed_actions": [
+          "BUY"
+        ],
+        "expires_at": "2026-10-11T15:05:00+08:00",
+        "system_usable": false
+      }
+    ]
+  },
+  "paused": {
+    "state": "RESTRICTED",
+    "formal_judgment": "DISABLED",
+    "allowed_actions": [],
+    "reason": "MODEL_SUSPENDED",
+    "funding_state": "CONFIRMED",
+    "runtime_state": "NOT_RESTORED",
+    "recovery": {
+      "state": "NOT_RESTORED"
+    },
+    "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+    "reasons": [
+      "MODEL_SUSPENDED"
+    ],
+    "grant_statuses": [
+      {
+        "state": "RESTRICTED",
+        "reason": "MODEL_SUSPENDED",
+        "reasons": [
+          "MODEL_SUSPENDED"
+        ],
+        "grant": {
+          "account_version": 2,
+          "allowed_actions": [
+            "BUY"
+          ],
+          "candidate_kind": "PROFIT_MODEL",
+          "command": {
+            "allowed_actions": [
+              "BUY"
+            ],
+            "basis": "Explicit independent METHOD qualification; no actual authority",
+            "deployment_fingerprints": {
+              "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "effective_at": "2026-10-10T15:04:40+08:00",
+            "expected_account_version": 2,
+            "expected_funding_version": 1,
+            "expected_material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "expires_at": "2026-10-11T15:05:00+08:00",
+            "idempotency_key": "independent-profit",
+            "material_id": "ordering-profit-material",
+            "predecessor_grant_id": null,
+            "required_as_of": "2026-10-10T15:05:00+08:00",
+            "review_run_id": "ordering-profit-review",
+            "scope": {
+              "board": "MAIN",
+              "frequency": "DAILY",
+              "horizon": 20,
+              "instruments": [
+                "SSE:600000",
+                "SSE:600001",
+                "SSE:600002"
+              ],
+              "market": "SSE"
+            }
+          },
+          "complete_protocol_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "dependency_fingerprints": {
+            "__init__.py": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6",
+            "accounts/__init__.py": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540",
+            "accounts/cash_events.py": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8",
+            "accounts/corrections.py": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93",
+            "accounts/csv_import.py": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8",
+            "accounts/fills.py": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a",
+            "accounts/ledger.py": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2",
+            "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+            "accounts/valuation.py": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e",
+            "agents/codex_evidence.py": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+            "agents/codex_process.py": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+            "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+            "agents/deepseek_evidence.py": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69",
+            "agents/deepseek_process.py": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+            "agents/deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+            "agents/review_runtime.py": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+            "agents/settings.py": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+            "app.py": "30cfc4f54555ac9b24e7d7a0b448309308e0a1753e9681c4c9721ad8c4a5503b",
+            "config.py": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc",
+            "decisions/actions.py": "5a037f14c1c5fb85bd8406290b358e97d9b95e2fa7d06d5376031746b772562e",
+            "decisions/capabilities.py": "dde20db4c2326b6b26fa2c615fa02a88b56a3b262eec2ff7088d6e2684da648e",
+            "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+            "decisions/intents.py": "148bead8251dd813e75377a1d6c4980b07cdd5e8fd91f98b46caff617a2efaf7",
+            "decisions/lifecycle_journal.py": "30c7132d7ccbb132efa36e841eddf6b1301541f8c164531615423b02843448e8",
+            "decisions/monitoring.py": "2b3e989264f3e0340a795647ad18864f4396126fc46202ee1477e5d33147587f",
+            "decisions/notifications.py": "071ba32bec7517079717904131ae92832ba165917006639836bb6c33164a1f1c",
+            "decisions/recovery.py": "541b3546a8d4cc4dc3e941e0bdaa9e85fb0a344f8f181e30bc2e7e63d84b6a83",
+            "market/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "market/baostock.py": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695",
+            "market/baostock_process.py": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3",
+            "market/cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+            "market/cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+            "market/cninfo_history.py": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba",
+            "market/collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d",
+            "market/collection_sources.py": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+            "market/directory.py": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b",
+            "market/evidence.py": "81ba0c4d62d309de96fcfe02b8dbc3e88ac730ce43527371fcc352bc02756c5d",
+            "market/fuyao.py": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d",
+            "market/known_obligations.py": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285",
+            "market/post_close_packet.py": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18",
+            "market/resolution.py": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf",
+            "market/rules.py": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+            "market/sohu.py": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1",
+            "market/source_facts.py": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9",
+            "market/sse_action_assessments.py": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+            "market/sse_company_actions.py": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+            "market/sse_company_contract.py": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035",
+            "market/sse_price_quotes.py": "915869c247276a72894d742db85349cf87bc4bf73f4bee85b8dc31cbffc929db",
+            "market/sse_stock_suspension.py": "689b8dd528eb02ce5ae5c88b12e97de52af675631ea625d000fe223b252fefa7",
+            "market/sse_suspension.py": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed",
+            "market/verification.py": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43",
+            "market/verification_input.py": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788",
+            "research/corporate_actions.py": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+            "research/datasets.py": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+            "research/design.py": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+            "research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+            "research/forward.py": "9581f768f2938023a88c31981817538d493ea9695ac152c250f3ba255546b437",
+            "research/historical_costs.py": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+            "research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+            "research/prospective.py": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+            "research/reconstruction.py": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+            "research/registry.py": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+            "research/reports.py": "f49b23ac9f1122fb397516722a4d1c2d04a98988cd28a3bd0ec909beb12b5701",
+            "research/risk_policy.py": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+            "research/shadow.py": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+            "research/statistics.py": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+            "research/synthetic.py": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94",
+            "research/technical_review.py": "e7a83e5f26330e0b071c0185a5156871cd434be860b3f1439bed8f4c5778ca19",
+            "research/training_preflight.py": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+            "research/validation.py": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+            "runtime/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "runtime/backups.py": "4ba771d938e7a11e3bb48640b95fdb77bcbe87cdb6cda2643f411b92b7b83cf0",
+            "runtime/notification_channel.py": "16e9be0be1ce709624d20c8abd358e44682d08902d3092bd50d5e1a664a3fad5",
+            "runtime/reviews.py": "02406d27d71c0e9cff6d469f84d3c8798f1b3a20f6b3997037bfd67447fcb8d9",
+            "worker.py": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+          },
+          "deployment_fingerprints": {
+            "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "effective_at": "2026-10-10T15:04:40+08:00",
+          "evidence_kind": "METHOD_ENGINEERING",
+          "execution": {
+            "version": "method-daily-v1"
+          },
+          "expires_at": "2026-10-11T15:05:00+08:00",
+          "funding_scope": {
+            "scope_id": "account-1",
+            "scope_kind": "ACCOUNT"
+          },
+          "funding_version": 1,
+          "grant_id": "c5cd61d9-4e09-4f20-854e-1d6909e8d0da",
+          "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+          "material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "material_id": "ordering-profit-material",
+          "predecessor_grant_id": null,
+          "proof_id": "6da91568-5226-46ee-9bb0-e1106ddfe279",
+          "protocol_id": "method-protocol",
+          "recorded_at": "2026-10-10T15:06:00+08:00",
+          "review_run_id": "ordering-profit-review",
+          "revocation_conditions": [
+            "EXPIRY",
+            "DEPLOYMENT_CHANGE",
+            "ACCOUNT_VERSION_CHANGE",
+            "FUNDING_CHANGE",
+            "RECOVERY_LOCK",
+            "DATA_OR_SCOPE_CHANGE"
+          ],
+          "scope": {
+            "board": "MAIN",
+            "frequency": "DAILY",
+            "horizon": 20,
+            "instruments": [
+              "SSE:600000",
+              "SSE:600001",
+              "SSE:600002"
+            ],
+            "market": "SSE"
+          },
+          "system_usable": false,
+          "validation_id": "method-validation",
+          "version": 1
+        },
+        "allowed_actions": [],
+        "lifecycle": {
+          "version": 1,
+          "scopes": {
+            "NEW_RISK": {
+              "state": "ACTIVE",
+              "version": 0,
+              "reason_code": null,
+              "reason": null,
+              "effective_at": null
+            },
+            "MODEL": {
+              "state": "SUSPENDED",
+              "version": 1,
+              "reason_code": "USER_PAUSE",
+              "reason": "independent METHOD pause",
+              "effective_at": "2026-10-10T15:06:00+08:00",
+              "event_id": "f7d97c13-69fb-49f6-8de0-28ea2fd7290c"
+            },
+            "ALL_MONITOR": {
+              "state": "ACTIVE",
+              "version": 0,
+              "reason_code": null,
+              "reason": null,
+              "effective_at": null
+            }
+          },
+          "observations_allowed": true,
+          "independent_risk_observations_allowed": true,
+          "model_judgments_allowed": false,
+          "new_risk_allowed": false,
+          "account_facts_allowed": true,
+          "audit_and_backup_allowed": true
+        }
+      }
+    ],
+    "lifecycle": {
+      "version": 1,
+      "scopes": {
+        "NEW_RISK": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        },
+        "MODEL": {
+          "state": "SUSPENDED",
+          "version": 1,
+          "reason_code": "USER_PAUSE",
+          "reason": "independent METHOD pause",
+          "effective_at": "2026-10-10T15:06:00+08:00",
+          "event_id": "f7d97c13-69fb-49f6-8de0-28ea2fd7290c"
+        },
+        "ALL_MONITOR": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        }
+      },
+      "observations_allowed": true,
+      "independent_risk_observations_allowed": true,
+      "model_judgments_allowed": false,
+      "new_risk_allowed": false,
+      "account_facts_allowed": true,
+      "audit_and_backup_allowed": true
+    },
+    "grant": {
+      "account_version": 2,
+      "allowed_actions": [
+        "BUY"
+      ],
+      "candidate_kind": "PROFIT_MODEL",
+      "command": {
+        "allowed_actions": [
+          "BUY"
+        ],
+        "basis": "Explicit independent METHOD qualification; no actual authority",
+        "deployment_fingerprints": {
+          "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "effective_at": "2026-10-10T15:04:40+08:00",
+        "expected_account_version": 2,
+        "expected_funding_version": 1,
+        "expected_material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "expires_at": "2026-10-11T15:05:00+08:00",
+        "idempotency_key": "independent-profit",
+        "material_id": "ordering-profit-material",
+        "predecessor_grant_id": null,
+        "required_as_of": "2026-10-10T15:05:00+08:00",
+        "review_run_id": "ordering-profit-review",
+        "scope": {
+          "board": "MAIN",
+          "frequency": "DAILY",
+          "horizon": 20,
+          "instruments": [
+            "SSE:600000",
+            "SSE:600001",
+            "SSE:600002"
+          ],
+          "market": "SSE"
+        }
+      },
+      "complete_protocol_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "dependency_fingerprints": {
+        "__init__.py": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6",
+        "accounts/__init__.py": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540",
+        "accounts/cash_events.py": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8",
+        "accounts/corrections.py": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93",
+        "accounts/csv_import.py": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8",
+        "accounts/fills.py": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a",
+        "accounts/ledger.py": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2",
+        "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+        "accounts/valuation.py": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e",
+        "agents/codex_evidence.py": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+        "agents/codex_process.py": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+        "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+        "agents/deepseek_evidence.py": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69",
+        "agents/deepseek_process.py": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+        "agents/deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+        "agents/review_runtime.py": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+        "agents/settings.py": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+        "app.py": "30cfc4f54555ac9b24e7d7a0b448309308e0a1753e9681c4c9721ad8c4a5503b",
+        "config.py": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc",
+        "decisions/actions.py": "5a037f14c1c5fb85bd8406290b358e97d9b95e2fa7d06d5376031746b772562e",
+        "decisions/capabilities.py": "dde20db4c2326b6b26fa2c615fa02a88b56a3b262eec2ff7088d6e2684da648e",
+        "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+        "decisions/intents.py": "148bead8251dd813e75377a1d6c4980b07cdd5e8fd91f98b46caff617a2efaf7",
+        "decisions/lifecycle_journal.py": "30c7132d7ccbb132efa36e841eddf6b1301541f8c164531615423b02843448e8",
+        "decisions/monitoring.py": "2b3e989264f3e0340a795647ad18864f4396126fc46202ee1477e5d33147587f",
+        "decisions/notifications.py": "071ba32bec7517079717904131ae92832ba165917006639836bb6c33164a1f1c",
+        "decisions/recovery.py": "541b3546a8d4cc4dc3e941e0bdaa9e85fb0a344f8f181e30bc2e7e63d84b6a83",
+        "market/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "market/baostock.py": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695",
+        "market/baostock_process.py": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3",
+        "market/cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+        "market/cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+        "market/cninfo_history.py": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba",
+        "market/collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d",
+        "market/collection_sources.py": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+        "market/directory.py": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b",
+        "market/evidence.py": "81ba0c4d62d309de96fcfe02b8dbc3e88ac730ce43527371fcc352bc02756c5d",
+        "market/fuyao.py": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d",
+        "market/known_obligations.py": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285",
+        "market/post_close_packet.py": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18",
+        "market/resolution.py": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf",
+        "market/rules.py": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+        "market/sohu.py": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1",
+        "market/source_facts.py": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9",
+        "market/sse_action_assessments.py": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+        "market/sse_company_actions.py": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+        "market/sse_company_contract.py": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035",
+        "market/sse_price_quotes.py": "915869c247276a72894d742db85349cf87bc4bf73f4bee85b8dc31cbffc929db",
+        "market/sse_stock_suspension.py": "689b8dd528eb02ce5ae5c88b12e97de52af675631ea625d000fe223b252fefa7",
+        "market/sse_suspension.py": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed",
+        "market/verification.py": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43",
+        "market/verification_input.py": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788",
+        "research/corporate_actions.py": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+        "research/datasets.py": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+        "research/design.py": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+        "research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+        "research/forward.py": "9581f768f2938023a88c31981817538d493ea9695ac152c250f3ba255546b437",
+        "research/historical_costs.py": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+        "research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+        "research/prospective.py": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "research/reconstruction.py": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+        "research/registry.py": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+        "research/reports.py": "f49b23ac9f1122fb397516722a4d1c2d04a98988cd28a3bd0ec909beb12b5701",
+        "research/risk_policy.py": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+        "research/shadow.py": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+        "research/statistics.py": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+        "research/synthetic.py": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94",
+        "research/technical_review.py": "e7a83e5f26330e0b071c0185a5156871cd434be860b3f1439bed8f4c5778ca19",
+        "research/training_preflight.py": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+        "research/validation.py": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+        "runtime/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/backups.py": "4ba771d938e7a11e3bb48640b95fdb77bcbe87cdb6cda2643f411b92b7b83cf0",
+        "runtime/notification_channel.py": "16e9be0be1ce709624d20c8abd358e44682d08902d3092bd50d5e1a664a3fad5",
+        "runtime/reviews.py": "02406d27d71c0e9cff6d469f84d3c8798f1b3a20f6b3997037bfd67447fcb8d9",
+        "worker.py": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+      },
+      "deployment_fingerprints": {
+        "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "effective_at": "2026-10-10T15:04:40+08:00",
+      "evidence_kind": "METHOD_ENGINEERING",
+      "execution": {
+        "version": "method-daily-v1"
+      },
+      "expires_at": "2026-10-11T15:05:00+08:00",
+      "funding_scope": {
+        "scope_id": "account-1",
+        "scope_kind": "ACCOUNT"
+      },
+      "funding_version": 1,
+      "grant_id": "c5cd61d9-4e09-4f20-854e-1d6909e8d0da",
+      "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+      "material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "material_id": "ordering-profit-material",
+      "predecessor_grant_id": null,
+      "proof_id": "6da91568-5226-46ee-9bb0-e1106ddfe279",
+      "protocol_id": "method-protocol",
+      "recorded_at": "2026-10-10T15:06:00+08:00",
+      "review_run_id": "ordering-profit-review",
+      "revocation_conditions": [
+        "EXPIRY",
+        "DEPLOYMENT_CHANGE",
+        "ACCOUNT_VERSION_CHANGE",
+        "FUNDING_CHANGE",
+        "RECOVERY_LOCK",
+        "DATA_OR_SCOPE_CHANGE"
+      ],
+      "scope": {
+        "board": "MAIN",
+        "frequency": "DAILY",
+        "horizon": 20,
+        "instruments": [
+          "SSE:600000",
+          "SSE:600001",
+          "SSE:600002"
+        ],
+        "market": "SSE"
+      },
+      "system_usable": false,
+      "validation_id": "method-validation",
+      "version": 1
+    },
+    "headline": "能力已暂停，交易判断未启用",
+    "formal_capabilities": [],
+    "method_capabilities": []
+  },
+  "restored": {
+    "state": "RESTRICTED",
+    "formal_judgment": "DISABLED",
+    "allowed_actions": [],
+    "reason": "RECOVERY_LOCK；MODEL_SUSPENDED",
+    "funding_state": "CONFIRMED",
+    "runtime_state": "RECOVERY_LOCK",
+    "recovery": {
+      "account_check": "PENDING_CURRENT_BROKER_RECONCILIATION",
+      "analysis_gap": "RESTORED_TO_SUCCESSFUL_BACKUP; OFFLINE_COVERAGE_NOT_PROMISED",
+      "backup_id": "bc300fa1-a420-4474-aaad-d9c8f44a5a81",
+      "current_authorization": "UNVERIFIED",
+      "current_deployment_fingerprint": "7fda2f47fa6993b9cad2799e4652228c3c9964d153119c6f2710921eff931377",
+      "formal_actions_allowed": false,
+      "locked_at": "2026-10-11T13:59:32.992970+00:00",
+      "observation_allowed": true,
+      "old_active_records": "HISTORY_ONLY",
+      "old_notifications_allowed": false,
+      "permission_consumer_27": "NOT_CONNECTED",
+      "possibly_missing_revocations": "UNVERIFIED",
+      "restore_point": {
+        "account_confirmed_at": "2026-10-11T13:59:31.858294+00:00",
+        "account_version": 2,
+        "capture_finished_at": "2026-10-11T13:59:32.714839+00:00",
+        "event_count": 4
+      },
+      "source_deployment_fingerprint": "7fda2f47fa6993b9cad2799e4652228c3c9964d153119c6f2710921eff931377",
+      "state": "RECOVERY_LOCK",
+      "journal_fingerprint": "763fd4da0752e08a1aad608103aeb925ea059ebde5f84ed57e13fd6bda2e188a",
+      "permission_history_known": true,
+      "pending_permission_events": [],
+      "recovery_conditions": "须当前部署、完整验证与CODEX审阅材料、资金与范围、恢复后券商核对及可核最新权限日志；旧动作不可复活"
+    },
+    "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+    "reasons": [
+      "RECOVERY_LOCK",
+      "MODEL_SUSPENDED"
+    ],
+    "grant_statuses": [
+      {
+        "state": "RESTRICTED",
+        "reason": "RECOVERY_LOCK；MODEL_SUSPENDED",
+        "reasons": [
+          "RECOVERY_LOCK",
+          "MODEL_SUSPENDED"
+        ],
+        "grant": {
+          "account_version": 2,
+          "allowed_actions": [
+            "BUY"
+          ],
+          "candidate_kind": "PROFIT_MODEL",
+          "command": {
+            "allowed_actions": [
+              "BUY"
+            ],
+            "basis": "Explicit independent METHOD qualification; no actual authority",
+            "deployment_fingerprints": {
+              "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "effective_at": "2026-10-10T15:04:40+08:00",
+            "expected_account_version": 2,
+            "expected_funding_version": 1,
+            "expected_material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "expires_at": "2026-10-11T15:05:00+08:00",
+            "idempotency_key": "independent-profit",
+            "material_id": "ordering-profit-material",
+            "predecessor_grant_id": null,
+            "required_as_of": "2026-10-10T15:05:00+08:00",
+            "review_run_id": "ordering-profit-review",
+            "scope": {
+              "board": "MAIN",
+              "frequency": "DAILY",
+              "horizon": 20,
+              "instruments": [
+                "SSE:600000",
+                "SSE:600001",
+                "SSE:600002"
+              ],
+              "market": "SSE"
+            }
+          },
+          "complete_protocol_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "dependency_fingerprints": {
+            "__init__.py": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6",
+            "accounts/__init__.py": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540",
+            "accounts/cash_events.py": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8",
+            "accounts/corrections.py": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93",
+            "accounts/csv_import.py": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8",
+            "accounts/fills.py": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a",
+            "accounts/ledger.py": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2",
+            "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+            "accounts/valuation.py": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e",
+            "agents/codex_evidence.py": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+            "agents/codex_process.py": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+            "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+            "agents/deepseek_evidence.py": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69",
+            "agents/deepseek_process.py": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+            "agents/deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+            "agents/review_runtime.py": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+            "agents/settings.py": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+            "app.py": "30cfc4f54555ac9b24e7d7a0b448309308e0a1753e9681c4c9721ad8c4a5503b",
+            "config.py": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc",
+            "decisions/actions.py": "5a037f14c1c5fb85bd8406290b358e97d9b95e2fa7d06d5376031746b772562e",
+            "decisions/capabilities.py": "dde20db4c2326b6b26fa2c615fa02a88b56a3b262eec2ff7088d6e2684da648e",
+            "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+            "decisions/intents.py": "148bead8251dd813e75377a1d6c4980b07cdd5e8fd91f98b46caff617a2efaf7",
+            "decisions/lifecycle_journal.py": "30c7132d7ccbb132efa36e841eddf6b1301541f8c164531615423b02843448e8",
+            "decisions/monitoring.py": "2b3e989264f3e0340a795647ad18864f4396126fc46202ee1477e5d33147587f",
+            "decisions/notifications.py": "071ba32bec7517079717904131ae92832ba165917006639836bb6c33164a1f1c",
+            "decisions/recovery.py": "541b3546a8d4cc4dc3e941e0bdaa9e85fb0a344f8f181e30bc2e7e63d84b6a83",
+            "market/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "market/baostock.py": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695",
+            "market/baostock_process.py": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3",
+            "market/cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+            "market/cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+            "market/cninfo_history.py": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba",
+            "market/collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d",
+            "market/collection_sources.py": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+            "market/directory.py": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b",
+            "market/evidence.py": "81ba0c4d62d309de96fcfe02b8dbc3e88ac730ce43527371fcc352bc02756c5d",
+            "market/fuyao.py": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d",
+            "market/known_obligations.py": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285",
+            "market/post_close_packet.py": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18",
+            "market/resolution.py": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf",
+            "market/rules.py": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+            "market/sohu.py": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1",
+            "market/source_facts.py": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9",
+            "market/sse_action_assessments.py": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+            "market/sse_company_actions.py": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+            "market/sse_company_contract.py": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035",
+            "market/sse_price_quotes.py": "915869c247276a72894d742db85349cf87bc4bf73f4bee85b8dc31cbffc929db",
+            "market/sse_stock_suspension.py": "689b8dd528eb02ce5ae5c88b12e97de52af675631ea625d000fe223b252fefa7",
+            "market/sse_suspension.py": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed",
+            "market/verification.py": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43",
+            "market/verification_input.py": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788",
+            "research/corporate_actions.py": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+            "research/datasets.py": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+            "research/design.py": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+            "research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+            "research/forward.py": "9581f768f2938023a88c31981817538d493ea9695ac152c250f3ba255546b437",
+            "research/historical_costs.py": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+            "research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+            "research/prospective.py": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+            "research/reconstruction.py": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+            "research/registry.py": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+            "research/reports.py": "f49b23ac9f1122fb397516722a4d1c2d04a98988cd28a3bd0ec909beb12b5701",
+            "research/risk_policy.py": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+            "research/shadow.py": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+            "research/statistics.py": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+            "research/synthetic.py": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94",
+            "research/technical_review.py": "e7a83e5f26330e0b071c0185a5156871cd434be860b3f1439bed8f4c5778ca19",
+            "research/training_preflight.py": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+            "research/validation.py": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+            "runtime/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "runtime/backups.py": "4ba771d938e7a11e3bb48640b95fdb77bcbe87cdb6cda2643f411b92b7b83cf0",
+            "runtime/notification_channel.py": "16e9be0be1ce709624d20c8abd358e44682d08902d3092bd50d5e1a664a3fad5",
+            "runtime/reviews.py": "02406d27d71c0e9cff6d469f84d3c8798f1b3a20f6b3997037bfd67447fcb8d9",
+            "worker.py": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+          },
+          "deployment_fingerprints": {
+            "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "effective_at": "2026-10-10T15:04:40+08:00",
+          "evidence_kind": "METHOD_ENGINEERING",
+          "execution": {
+            "version": "method-daily-v1"
+          },
+          "expires_at": "2026-10-11T15:05:00+08:00",
+          "funding_scope": {
+            "scope_id": "account-1",
+            "scope_kind": "ACCOUNT"
+          },
+          "funding_version": 1,
+          "grant_id": "c5cd61d9-4e09-4f20-854e-1d6909e8d0da",
+          "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+          "material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "material_id": "ordering-profit-material",
+          "predecessor_grant_id": null,
+          "proof_id": "6da91568-5226-46ee-9bb0-e1106ddfe279",
+          "protocol_id": "method-protocol",
+          "recorded_at": "2026-10-10T15:06:00+08:00",
+          "review_run_id": "ordering-profit-review",
+          "revocation_conditions": [
+            "EXPIRY",
+            "DEPLOYMENT_CHANGE",
+            "ACCOUNT_VERSION_CHANGE",
+            "FUNDING_CHANGE",
+            "RECOVERY_LOCK",
+            "DATA_OR_SCOPE_CHANGE"
+          ],
+          "scope": {
+            "board": "MAIN",
+            "frequency": "DAILY",
+            "horizon": 20,
+            "instruments": [
+              "SSE:600000",
+              "SSE:600001",
+              "SSE:600002"
+            ],
+            "market": "SSE"
+          },
+          "system_usable": false,
+          "validation_id": "method-validation",
+          "version": 1
+        },
+        "allowed_actions": [],
+        "lifecycle": {
+          "version": 1,
+          "scopes": {
+            "NEW_RISK": {
+              "state": "ACTIVE",
+              "version": 0,
+              "reason_code": null,
+              "reason": null,
+              "effective_at": null
+            },
+            "MODEL": {
+              "state": "SUSPENDED",
+              "version": 1,
+              "reason_code": "USER_PAUSE",
+              "reason": "independent METHOD pause",
+              "effective_at": "2026-10-10T15:06:00+08:00",
+              "event_id": "f7d97c13-69fb-49f6-8de0-28ea2fd7290c"
+            },
+            "ALL_MONITOR": {
+              "state": "ACTIVE",
+              "version": 0,
+              "reason_code": null,
+              "reason": null,
+              "effective_at": null
+            }
+          },
+          "observations_allowed": true,
+          "independent_risk_observations_allowed": true,
+          "model_judgments_allowed": false,
+          "new_risk_allowed": false,
+          "account_facts_allowed": true,
+          "audit_and_backup_allowed": true
+        }
+      }
+    ],
+    "lifecycle": {
+      "version": 1,
+      "scopes": {
+        "NEW_RISK": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        },
+        "MODEL": {
+          "state": "SUSPENDED",
+          "version": 1,
+          "reason_code": "USER_PAUSE",
+          "reason": "independent METHOD pause",
+          "effective_at": "2026-10-10T15:06:00+08:00",
+          "event_id": "f7d97c13-69fb-49f6-8de0-28ea2fd7290c"
+        },
+        "ALL_MONITOR": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        }
+      },
+      "observations_allowed": true,
+      "independent_risk_observations_allowed": true,
+      "model_judgments_allowed": false,
+      "new_risk_allowed": false,
+      "account_facts_allowed": true,
+      "audit_and_backup_allowed": true
+    },
+    "grant": {
+      "account_version": 2,
+      "allowed_actions": [
+        "BUY"
+      ],
+      "candidate_kind": "PROFIT_MODEL",
+      "command": {
+        "allowed_actions": [
+          "BUY"
+        ],
+        "basis": "Explicit independent METHOD qualification; no actual authority",
+        "deployment_fingerprints": {
+          "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "effective_at": "2026-10-10T15:04:40+08:00",
+        "expected_account_version": 2,
+        "expected_funding_version": 1,
+        "expected_material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "expires_at": "2026-10-11T15:05:00+08:00",
+        "idempotency_key": "independent-profit",
+        "material_id": "ordering-profit-material",
+        "predecessor_grant_id": null,
+        "required_as_of": "2026-10-10T15:05:00+08:00",
+        "review_run_id": "ordering-profit-review",
+        "scope": {
+          "board": "MAIN",
+          "frequency": "DAILY",
+          "horizon": 20,
+          "instruments": [
+            "SSE:600000",
+            "SSE:600001",
+            "SSE:600002"
+          ],
+          "market": "SSE"
+        }
+      },
+      "complete_protocol_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "dependency_fingerprints": {
+        "__init__.py": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6",
+        "accounts/__init__.py": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540",
+        "accounts/cash_events.py": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8",
+        "accounts/corrections.py": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93",
+        "accounts/csv_import.py": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8",
+        "accounts/fills.py": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a",
+        "accounts/ledger.py": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2",
+        "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+        "accounts/valuation.py": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e",
+        "agents/codex_evidence.py": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+        "agents/codex_process.py": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+        "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+        "agents/deepseek_evidence.py": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69",
+        "agents/deepseek_process.py": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+        "agents/deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+        "agents/review_runtime.py": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+        "agents/settings.py": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+        "app.py": "30cfc4f54555ac9b24e7d7a0b448309308e0a1753e9681c4c9721ad8c4a5503b",
+        "config.py": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc",
+        "decisions/actions.py": "5a037f14c1c5fb85bd8406290b358e97d9b95e2fa7d06d5376031746b772562e",
+        "decisions/capabilities.py": "dde20db4c2326b6b26fa2c615fa02a88b56a3b262eec2ff7088d6e2684da648e",
+        "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+        "decisions/intents.py": "148bead8251dd813e75377a1d6c4980b07cdd5e8fd91f98b46caff617a2efaf7",
+        "decisions/lifecycle_journal.py": "30c7132d7ccbb132efa36e841eddf6b1301541f8c164531615423b02843448e8",
+        "decisions/monitoring.py": "2b3e989264f3e0340a795647ad18864f4396126fc46202ee1477e5d33147587f",
+        "decisions/notifications.py": "071ba32bec7517079717904131ae92832ba165917006639836bb6c33164a1f1c",
+        "decisions/recovery.py": "541b3546a8d4cc4dc3e941e0bdaa9e85fb0a344f8f181e30bc2e7e63d84b6a83",
+        "market/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "market/baostock.py": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695",
+        "market/baostock_process.py": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3",
+        "market/cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+        "market/cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+        "market/cninfo_history.py": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba",
+        "market/collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d",
+        "market/collection_sources.py": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+        "market/directory.py": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b",
+        "market/evidence.py": "81ba0c4d62d309de96fcfe02b8dbc3e88ac730ce43527371fcc352bc02756c5d",
+        "market/fuyao.py": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d",
+        "market/known_obligations.py": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285",
+        "market/post_close_packet.py": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18",
+        "market/resolution.py": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf",
+        "market/rules.py": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+        "market/sohu.py": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1",
+        "market/source_facts.py": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9",
+        "market/sse_action_assessments.py": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+        "market/sse_company_actions.py": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+        "market/sse_company_contract.py": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035",
+        "market/sse_price_quotes.py": "915869c247276a72894d742db85349cf87bc4bf73f4bee85b8dc31cbffc929db",
+        "market/sse_stock_suspension.py": "689b8dd528eb02ce5ae5c88b12e97de52af675631ea625d000fe223b252fefa7",
+        "market/sse_suspension.py": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed",
+        "market/verification.py": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43",
+        "market/verification_input.py": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788",
+        "research/corporate_actions.py": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+        "research/datasets.py": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+        "research/design.py": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+        "research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+        "research/forward.py": "9581f768f2938023a88c31981817538d493ea9695ac152c250f3ba255546b437",
+        "research/historical_costs.py": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+        "research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+        "research/prospective.py": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "research/reconstruction.py": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+        "research/registry.py": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+        "research/reports.py": "f49b23ac9f1122fb397516722a4d1c2d04a98988cd28a3bd0ec909beb12b5701",
+        "research/risk_policy.py": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+        "research/shadow.py": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+        "research/statistics.py": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+        "research/synthetic.py": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94",
+        "research/technical_review.py": "e7a83e5f26330e0b071c0185a5156871cd434be860b3f1439bed8f4c5778ca19",
+        "research/training_preflight.py": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+        "research/validation.py": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+        "runtime/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/backups.py": "4ba771d938e7a11e3bb48640b95fdb77bcbe87cdb6cda2643f411b92b7b83cf0",
+        "runtime/notification_channel.py": "16e9be0be1ce709624d20c8abd358e44682d08902d3092bd50d5e1a664a3fad5",
+        "runtime/reviews.py": "02406d27d71c0e9cff6d469f84d3c8798f1b3a20f6b3997037bfd67447fcb8d9",
+        "worker.py": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+      },
+      "deployment_fingerprints": {
+        "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "effective_at": "2026-10-10T15:04:40+08:00",
+      "evidence_kind": "METHOD_ENGINEERING",
+      "execution": {
+        "version": "method-daily-v1"
+      },
+      "expires_at": "2026-10-11T15:05:00+08:00",
+      "funding_scope": {
+        "scope_id": "account-1",
+        "scope_kind": "ACCOUNT"
+      },
+      "funding_version": 1,
+      "grant_id": "c5cd61d9-4e09-4f20-854e-1d6909e8d0da",
+      "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+      "material_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "material_id": "ordering-profit-material",
+      "predecessor_grant_id": null,
+      "proof_id": "6da91568-5226-46ee-9bb0-e1106ddfe279",
+      "protocol_id": "method-protocol",
+      "recorded_at": "2026-10-10T15:06:00+08:00",
+      "review_run_id": "ordering-profit-review",
+      "revocation_conditions": [
+        "EXPIRY",
+        "DEPLOYMENT_CHANGE",
+        "ACCOUNT_VERSION_CHANGE",
+        "FUNDING_CHANGE",
+        "RECOVERY_LOCK",
+        "DATA_OR_SCOPE_CHANGE"
+      ],
+      "scope": {
+        "board": "MAIN",
+        "frequency": "DAILY",
+        "horizon": 20,
+        "instruments": [
+          "SSE:600000",
+          "SSE:600001",
+          "SSE:600002"
+        ],
+        "market": "SSE"
+      },
+      "system_usable": false,
+      "validation_id": "method-validation",
+      "version": 1
+    },
+    "headline": "恢复锁生效，交易判断未启用",
+    "formal_capabilities": [],
+    "method_capabilities": []
+  }
+}

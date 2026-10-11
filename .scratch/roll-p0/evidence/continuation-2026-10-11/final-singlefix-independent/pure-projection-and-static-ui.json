@@ -1,0 +1,85 @@
+{
+  "pure_only_no_admission": true,
+  "projections": [
+    {
+      "formal_judgment": "ENABLED",
+      "headline": "独立降风险能力有效，收益判断未启用",
+      "formal_capabilities": [
+        {
+          "basis_type": "RISK_POLICY",
+          "grant_id": "PURE-RISK_POLICY",
+          "scope": {
+            "instruments": [
+              "SSE:600362"
+            ]
+          },
+          "allowed_actions": [
+            "REDUCE"
+          ],
+          "expires_at": "2027-01-01T00:00:00+08:00",
+          "system_usable": true
+        }
+      ],
+      "method_capabilities": []
+    },
+    {
+      "formal_judgment": "ENABLED",
+      "headline": "收益判断能力有效",
+      "formal_capabilities": [
+        {
+          "basis_type": "PROFIT_MODEL",
+          "grant_id": "PURE-PROFIT_MODEL",
+          "scope": {
+            "instruments": [
+              "SSE:600362"
+            ]
+          },
+          "allowed_actions": [
+            "BUY"
+          ],
+          "expires_at": "2027-01-01T00:00:00+08:00",
+          "system_usable": true
+        }
+      ],
+      "method_capabilities": []
+    },
+    {
+      "formal_judgment": "ENABLED",
+      "headline": "收益判断与独立降风险能力有效",
+      "formal_capabilities": [
+        {
+          "basis_type": "RISK_POLICY",
+          "grant_id": "PURE-RISK_POLICY",
+          "scope": {
+            "instruments": [
+              "SSE:600362"
+            ]
+          },
+          "allowed_actions": [
+            "REDUCE"
+          ],
+          "expires_at": "2027-01-01T00:00:00+08:00",
+          "system_usable": true
+        },
+        {
+          "basis_type": "PROFIT_MODEL",
+          "grant_id": "PURE-PROFIT_MODEL",
+          "scope": {
+            "instruments": [
+              "SSE:600362"
+            ]
+          },
+          "allowed_actions": [
+            "BUY"
+          ],
+          "expires_at": "2027-01-01T00:00:00+08:00",
+          "system_usable": true
+        }
+      ],
+      "method_capabilities": []
+    }
+  ],
+  "default_details_open": false,
+  "existing_material_review_selects": true,
+  "browser_run": false
+}
