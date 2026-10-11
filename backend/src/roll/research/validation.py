@@ -97,6 +97,17 @@ def continuous_checks(frozen, candidate, comparators):
         comparisons[name] = {'baseline': baseline, 'paired20_session_nav_intervals': intervals,
             'statistical_status':combine({str(i):gate(interval_decision(v,float(design['primary_objective']['minimum_improvement_nav_return']),design['statistics']['minimum_effective_time_blocks'],False),[]) for i,v in enumerate(intervals)}),
             'same_baseline_and_constraints': True, 'risk_difference': 'CASH zero exposure is explicit; START_HOLD/MA use frozen50% cap'}
+        reference_exposures=[float(r['gross_exposure_fraction']) for r in reference['curve'] if r.get('gross_exposure_fraction') is not None]
+        baseline_exposure={'average_gross_exposure':fmean(reference_exposures) if reference_exposures else None,
+            'maximum_gross_exposure':max(reference_exposures) if reference_exposures else None,
+            'occupied_session_fraction':sum(v>0 for v in reference_exposures)/len(reference_exposures) if reference_exposures else None,
+            'observed_sessions':len(reference_exposures),'unknown_sessions':len(reference['curve'])-len(reference_exposures)}
+        candidate_exposure={'average_gross_exposure':fmean(exposures) if exposures else None,
+            'maximum_gross_exposure':max(exposures) if exposures else None,
+            'occupied_session_fraction':sum(v>0 for v in exposures)/len(exposures) if exposures else None}
+        comparisons[name].update(baseline_exposure=baseline_exposure,
+            position_difference={key:candidate_exposure[key]-baseline_exposure[key] if candidate_exposure[key] is not None and baseline_exposure[key] is not None else None for key in candidate_exposure},
+            risk_matching='COMMON_CONSTRAINTS_DO_NOT_ESTABLISH_REALIZED_RISK_MATCHING')
     sells = [e for e in candidate['events'] if e['kind']=='SELL_FILL']
     gains = [float(r['realized_gain_yuan']) for r in candidate['curve']]
     increments=[b-a for a,b in zip([float(candidate.get('carry_in_realized_gain_yuan',0)),*gains[:-1]],gains)]
@@ -132,26 +143,30 @@ def probability_checks(frozen, original):
             'probability': forecast['probability'], 'baseline_probability': base,
             'label': outcome.get('label'), 'mature': bool(outcome.get('scoreable') and outcome.get('maturity_date') and outcome['maturity_date'] <= original['replay']['through_date'])})
     result = probability_summary(rows, inputs['sessions'], float(frozen['policy']['probability_threshold']))
+    unavailable_days={r['observation_date'] for r in rows if not r['mature'] or r['label'] not in (0,1)}
+    rows=list({r['canonical_key']:r for r in rows}.values())
     date_scores = []
     for day in inputs['sessions']:
         group = {r['canonical_key']: (r['baseline_probability']-r['label'])**2-(r['probability']-r['label'])**2
             for r in rows if r['mature'] and r['label'] in (0,1) and r['observation_date']==day}
-        date_scores.append({'date': day, 'scores': group or {'MISSING_CHECKPOINT':None}})
+        date_scores.append({'date': day, 'scores': group if group and day not in unavailable_days else {'MISSING_CHECKPOINT':None}})
     # Unobserved checkpoint days cannot be silently converted into independent observations.
     result['dependent_brier_improvement_intervals'] = [paired_block_interval(date_scores, block_sessions=b) for b in [20,40]]
     selected_dates=[]
     for day in inputs['sessions']:
         scores={r['canonical_key']:(r['baseline_probability']-r['label'])**2-(r['probability']-r['label'])**2 for r in rows
             if r['mature'] and r['label'] in (0,1) and r['probability']>=float(frozen['policy']['probability_threshold']) and r['observation_date']==day}
-        selected_dates.append({'date':day,'scores':scores or {'MISSING_SELECTED':None}})
-    result['selected_dependent_loss_intervals']=[paired_block_interval(selected_dates,block_sessions=b) for b in [20,40]]
+        observed=not any(v is None for v in date_scores[len(selected_dates)]['scores'].values())
+        selected_dates.append({'date':day,'scores':scores if observed else {'MISSING_CHECKPOINT':None}})
+    result['selected_dependent_loss_intervals']=[paired_block_interval(selected_dates,block_sessions=b,conditional=True) for b in [20,40]]
     for bin_result in result['reliability_bins']:
         scores=[]
         for day in inputs['sessions']:
             group={r['canonical_key']:r['probability']-r['label'] for r in rows if r['mature'] and r['label'] in (0,1)
                 and min(4,int(r['probability']*5))==bin_result['bin'] and r['observation_date']==day}
-            scores.append({'date':day,'scores':group or {'MISSING_BIN':None}})
-        bin_result['dependent_probability_error_intervals']=[paired_block_interval(scores,block_sessions=b) for b in [20,40]]
+            observed=not any(v is None for v in date_scores[len(scores)]['scores'].values())
+            scores.append({'date':day,'scores':group if observed else {'MISSING_CHECKPOINT':None}})
+        bin_result['dependent_probability_error_intervals']=[paired_block_interval(scores,block_sessions=b,conditional=True) for b in [20,40]]
     result['unobserved_checkpoint_sessions'] = sum(any(v is None for v in r['scores'].values()) for r in date_scores)
     result['independent_calibration_test'] = False
     result['simple_rule_comparison'] = {'state':'INCOMPLETE', 'reason':'MA5_MA20 is a decision signal, not a frozen calibrated probability model'}

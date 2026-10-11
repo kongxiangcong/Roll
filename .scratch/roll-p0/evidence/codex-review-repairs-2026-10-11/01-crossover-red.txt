@@ -1,0 +1,20 @@
+Failed to find real location of C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\python.exe
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_already_above_ma_without_an_upcross_never_enters_or_reenters ______
+
+    def test_already_above_ma_without_an_upcross_never_enters_or_reenters():
+        # 20 known preceding observations, then 65 observed slots. Both prior/current
+        # MA5 stay above MA20; there is no crossing inside the observed window.
+        frozen, inputs, days = comparator_case([Decimal('100') + Decimal('.1') * i for i in range(85)])
+        result = simulate(frozen, inputs, [], days[-1], 'MA5_MA20')
+>       assert result['events'] == []
+E       AssertionError: assert [{'cash_delta...-03-02', ...}] == []
+E         
+E         Left contains 6 more items, first extra item: {'cash_delta_yuan': '-20420.00', 'date': '2026-01-22', 'forecast_id': 'MA5_MA20:SSE:600362:2026-01-21', 'instrument': 'SSE:600362', ...}
+E         Use -v to get more diff
+
+backend\tests\application\test_comparator_crossing.py:27: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_comparator_crossing.py::test_already_above_ma_without_an_upcross_never_enters_or_reenters
+1 failed in 5.76s
