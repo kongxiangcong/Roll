@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_method500_packet_cannot_override_the_generic_method200_qualification __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket26/t26-policy-red/test_method500_packet_cannot_o0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002615E4328B0>
+
+    def test_method500_packet_cannot_override_the_generic_method200_qualification(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        p['action_packet']['policy'].update(version='METHOD_EXECUTION_500_V1', quantity='500')
+        for row in p['action_packet']['opportunities']: row.update(price_lower_yuan='9.00', price_upper_yuan='10.00')
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, p)
+            response = client.post('/api/actions/evaluate', json={})
+>           assert response.status_code == 409
+E           assert 201 == 409
+E            +  where 201 = <Response [201 Created]>.status_code
+
+tests\application\test_intents.py:127: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_intents.py::test_method500_packet_cannot_override_the_generic_method200_qualification
+1 failed, 11 deselected in 8.25s

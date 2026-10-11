@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
 **Primary acceptance:** AT-05、AT-06、AT-07、AT-49。
 
@@ -32,3 +32,5 @@
 2026-10-07：补齐实际时间链、偏差依据及 28/29 联验交接，同时落实当前账户交易权限复核和 15 的意向审计；仅完成文档补充，尚未实施或验收。
 
 2026-10-08 本轮依赖前沿核查：未启动本票。25当前正式动作未完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
+
+2026-10-11：基于25独立验收 tip371dd9 完成本票源码，并合入已接受 d2cb60（含30有限历史生产者）。ExecutionIntent/临时占用、同 SQLite 当前依赖核对、外部未决、显式多对多 ActionFillAllocation 与受控账户原子提交、审计和现有浏览器入口已实现。实现与分阶段实际 SQLite/Chrome/OS 故障恢复证据见 [验收回执](../evidence/ticket26/acceptance.md)。真实研究模型/冻结和原真实19数据库均保护；精确500建议/300成交使用完整 host-hashed METHOD_EXECUTION_500_V1 declaration/protocol/grant/packet工程身份绑定，真实20政策仍200。generic200资格暗改500为409。外部发送/送达/已读 UNKNOWN 交28，偏差报告交29，用户实际外发待自己配置渠道。Completion=partial，等待独立 merger 验收，不预先勾选其验收清单或宣称完成通知联验。

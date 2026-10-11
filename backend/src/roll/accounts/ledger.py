@@ -29,10 +29,19 @@ class DraftCommand(BaseModel):
     payload: dict
 
 
+class FillAllocation(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    intent_id: str
+    fill_record_id: str
+    allocated_quantity: str
+    association_status: str
+
+
 class ConfirmCommand(BaseModel):
     model_config = ConfigDict(extra="forbid")
     draft_id: str
     idempotency_key: str = Field(min_length=1, max_length=128)
+    fill_allocations: list[FillAllocation] = Field(default_factory=list, max_length=100)
 
 
 class EquityHint(BaseModel):
@@ -103,6 +112,7 @@ def empty_account():
 
 class Ledger:
     def __init__(self, directory: Path):
+        self.execution_intents = None
         directory.mkdir(parents=True, exist_ok=True)
         self.path = directory / "roll.sqlite3"
         with self.connection() as db:
@@ -308,7 +318,8 @@ class Ledger:
             db.execute("BEGIN IMMEDIATE")
             try:
                 draft = self.get_draft(command.draft_id, db)
-                fingerprint = hashlib.sha256(encode(draft["command"]).encode()).hexdigest()
+                content = draft['command'] if not command.fill_allocations else {'draft': draft['command'], 'fill_allocations': [a.model_dump() for a in command.fill_allocations]}
+                fingerprint = hashlib.sha256(encode(content).encode()).hexdigest()
                 prior = db.execute("SELECT * FROM account_receipts WHERE idempotency_key=?", (command.idempotency_key,)).fetchone()
                 if prior:
                     if prior["content_hash"] != fingerprint:
@@ -368,6 +379,10 @@ class Ledger:
                 entry = {"audit_id": audit_id, "account_version": version, "action": "ACCOUNT_CONFIRMED", "receipt_id": receipt_id,
                          "recorded_at": confirmed_at, "source": draft["command"]["payload"]["source"]}
                 db.execute("INSERT INTO account_audit VALUES(?,?,?)", (audit_id, version, encode(entry)))
+                if self.execution_intents is not None:
+                    self.execution_intents.account_confirmed(db, command, events, receipt)
+                elif command.fill_allocations:
+                    raise HTTPException(409, 'EXECUTION_INTENTS_NOT_CONNECTED')
                 self.crash_point("before_commit")
                 db.commit()
                 self.crash_point("after_commit")

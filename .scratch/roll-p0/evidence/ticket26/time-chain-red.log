@@ -1,0 +1,49 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_partial_fill_is_atomic_with_allocations_remaining_external_order_and_action_invalidation _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket26/t26-time-red/test_partial_fill_is_atomic_wi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FDFC3A28B0>
+
+    def test_partial_fill_is_atomic_with_allocations_remaining_external_order_and_action_invalidation(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, p)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            command = intent_command(evaluation)
+            intent = client.post('/api/intents/prepare', json=command).json()
+            declared = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state': 'OPERATION_PENDING', 'external_order_id': 'broker-order-1', 'broker_reflection': 'CONFIRMED_REFLECTED',
+                'occurred_at': p['required_as_of'], 'reason': None, 'idempotency_key': 'operated-1'})
+            assert declared.status_code == 200, declared.text
+            assert client.get('/api/intents').json()['unreflected_reservation_yuan'] == '0.00'
+            actual = fill(evaluation['account_version'], 'partial-1')
+            actual['payload'].update(quantity='100', price='140.00', effective_at=p['required_as_of'], order_id='broker-order-1', broker_available_after='76000.10')
+            draft = client.post('/api/account/drafts', json=actual).json()
+            confirmation = {'draft_id': draft['draft_id'], 'idempotency_key': 'partial-confirm', 'fill_allocations': [
+                {'intent_id': intent['intent_id'], 'fill_record_id': 'partial-1', 'allocated_quantity': '100', 'association_status': 'USER_CONFIRMED'}]}
+            receipt = client.post('/api/account/confirm', json=confirmation)
+            assert receipt.status_code == 200, receipt.text
+            account = client.get('/api/account').json()
+            assert account['cash_balance'] == '85995.10'
+            assert account['positions'][0]['quantity'] == '100'
+            pending = client.get('/api/intents').json()['intents'][0]
+            assert pending['status'] == 'OPERATION_PENDING'
+            assert pending['synced_quantity'] == '100'
+            assert pending['remaining_quantity'] == '100'
+            assert pending['provisional_reservation_yuan'] == '15002.50'
+            assert pending['time_chain']['read_at'] is None
+            assert client.get('/api/actions/current').json()['decisions'] == []
+            assert any(e['event_type'] == 'ACTION_INVALIDATED' for e in client.get('/api/actions/events').json())
+            assert len(client.get('/api/intents/allocations').json()) == 1
+            allocated = client.get('/api/intents/allocations').json()[0]
+>           assert allocated['reported_at'] == draft['created_at']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'reported_at'
+
+tests\application\test_intents.py:301: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_intents.py::test_partial_fill_is_atomic_with_allocations_remaining_external_order_and_action_invalidation
+1 failed, 11 deselected in 8.61s
