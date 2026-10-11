@@ -341,3 +341,12 @@ Completion partial：此批实际材料分别向CODEX/DeepSeek外发被自动审
 最终定向单轮22 passed/1夹具失败221.09s；仅新增账户/快照改版用例补齐公共列表身份后1 passed16.47s，生产源码未改；五真实进程fault/race与三共享worker/23入场已通过。Chrome1 passed48.1s、TS/Vite59模块2.05s，raw SQLite及公共协议/模型确认真实起点null/NOT_GRANTED。八停止METHOD runtime逐件SHA/长度根30保全，12原模型依赖及本版23五provider源码不变。20既有分红时序P2由根另行修复，当前收据不冒充修后证据。见[30验收](evidence/30/acceptance.md)，未推送。
 
 30收口修正：等价上海/UTC截止的公共API重放红1项14.85s，ISO字符串过滤改为datetime后最终9项公共API全绿96.84s、新目录Chrome1/48.0s、build59模块1.90s，稳定源 `11df4e3`。最终11文件测试前后SHA/长度完全一致；核心版与修正版分开保留，11停止METHOD目录逐文件保全，旧五进程/三worker/六算法不写成offset修后重跑。Completion仍partial；真实producer/32/33缺口及20财务时序另案修复责任不变。
+
+
+### 2026-10-11 CODEX-only 实际审阅完成与 Ticket 24 前沿
+
+本节覆盖上文23实际外发待批准状态，旧拒绝/失败原记录保留。用户批准材料 `95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1`，并明确当前及后续只验收CODEX，DeepSeek排除而非通过。真实CODEX运行 `ed0d834e-049b-4356-b5a7-1ff5bc853aef` COMPLETE：7次已核验原文读取、1次宿主离线复算，固定SDK/CLI 0.161.0，实际模型gpt-6.1-sol，66.392秒；独立持久化验收PASS、原失败记录与批准材料/12个模型源码依赖保持不变。见[实际执行收据](evidence/continuation-2026-10-11/review-fixes/codex-execution-receipt.md)、[独立验收](evidence/continuation-2026-10-11/review-fixes/actual-codex-continuation-acceptance.json)。
+
+首次初始化InternalRpcError发生于模型线程/回合及材料读取之前；独立账户启动探针通过，根因UNKNOWN，保留失败后仅接续一次尚未发生的批准模型审阅。宿主复算0联网不等于SDK认证0网络。模型只获得登记精简材料，部分大文件输出截断、上游依赖及原始数据仍宿主绑定，限制原样保留。
+
+23当前CODEX范围Completion complete，01—23共23票工程完成。实际实验仍RUNNING_DIAGNOSTIC、G4/G5 FAIL、其他INCONCLUSIVE、交付INCOMPLETE及能力NOT_GRANTED；审阅四项BLOCKING及两项MAJOR未清除。两项MAJOR已由独立源码/冻结契约/纯算例核实，另由唯一修复实施者处理，不能因此升级真实统计或授权。Ticket24已依赖解锁并在独立工作树实施，后续按24→25→26→27→28→29推进；30仍partial，31/32及真实自然月33/34依赖保持。未推送、无新拟合/SEALED/真实前向/资金启用/资格签发。
