@@ -1,0 +1,2297 @@
+{
+  "owner": "final31-flow-r02",
+  "source_root": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final",
+  "source_oid": "3dcd7bc59748da89000912b0cd582656d7fcc9ba",
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false,
+  "original_sqlite_connections": 0,
+  "runtime_union_roots": [
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\f31-flow-r02-20261011-230939"
+  ],
+  "processes": [
+    {
+      "role": "api-method-in-process",
+      "launcher_pid": 54692,
+      "argv": [
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "uvicorn",
+        "offline_app:factory",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "52101"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend",
+      "cim_at_start": [
+        {
+          "ProcessId": 54692,
+          "ParentProcessId": 26972,
+          "CreationDate": "/Date(1791731380144)/",
+          "ExecutablePath": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+          "CommandLine": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe -B -X utf8 -m uvicorn offline_app:factory --factory --host 127.0.0.1 --port 52101"
+        },
+        {
+          "ProcessId": 20532,
+          "ParentProcessId": 54692,
+          "CreationDate": "/Date(1791731380162)/",
+          "ExecutablePath": "C:\\WINDOWS\\system32\\conhost.exe",
+          "CommandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+        },
+        {
+          "ProcessId": 1064,
+          "ParentProcessId": 54692,
+          "CreationDate": "/Date(1791731380233)/",
+          "ExecutablePath": "C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+          "CommandLine": "\"C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe\"  -B -X utf8 -m uvicorn offline_app:factory --factory --host 127.0.0.1 --port 52101"
+        }
+      ],
+      "stop": "CTRL_BREAK_NORMAL",
+      "exit_code": 3,
+      "cim_after_stop": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "role": "ui",
+      "launcher_pid": 56184,
+      "argv": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\vite\\bin\\vite.js",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "52102",
+        "--strictPort"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend",
+      "cim_at_start": [
+        {
+          "ProcessId": 56184,
+          "ParentProcessId": 26972,
+          "CreationDate": "/Date(1791731393591)/",
+          "ExecutablePath": "C:\\Program Files\\nodejs\\node.exe",
+          "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\vite\\bin\\vite.js --host 127.0.0.1 --port 52102 --strictPort"
+        },
+        {
+          "ProcessId": 41468,
+          "ParentProcessId": 56184,
+          "CreationDate": "/Date(1791731393635)/",
+          "ExecutablePath": "C:\\WINDOWS\\system32\\conhost.exe",
+          "CommandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+        },
+        {
+          "ProcessId": 42272,
+          "ParentProcessId": 56184,
+          "CreationDate": "/Date(1791731394197)/",
+          "ExecutablePath": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\@esbuild\\win32-x64\\esbuild.exe",
+          "CommandLine": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\@esbuild\\win32-x64\\esbuild.exe --service=0.27.7 --ping"
+        }
+      ],
+      "stop": "CTRL_BREAK_NORMAL",
+      "exit_code": 3221225786,
+      "cim_after_stop": [
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "clock_modified": false,
+  "started_at": "2026-10-11T15:09:40.139272+00:00",
+  "local_started_at": "2026-10-11T23:09:40.139292+08:00",
+  "status": "PASS",
+  "api_health": {
+    "status": "ok",
+    "runtime_role": "IN_PROCESS",
+    "environment": "test"
+  },
+  "initial_summary": {
+    "calendar": {
+      "exchange": "SSE",
+      "date": "2026-10-11",
+      "timezone": "Asia/Shanghai",
+      "is_trading_day": false,
+      "phase": "CLOSED",
+      "coverage": "VERIFIED_ANNUAL_CALENDAR",
+      "calendar_version": "SSE-2026",
+      "source": {
+        "id": "sse-calendar-2026",
+        "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+        "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+        "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+        "file": "sse-calendar-2026.html",
+        "bytes": 30794,
+        "attachments": [],
+        "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+      },
+      "rules_source": {
+        "id": "sse-rules-text-2026",
+        "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+        "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+        "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+        "file": "sse-rules-text-2026.docx",
+        "bytes": 65302,
+        "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+      },
+      "reason": "WEEKEND",
+      "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02"
+    },
+    "latest": null,
+    "health": {
+      "worker_limit": 1,
+      "worker_state": "RUNNING",
+      "last_worker_error": null,
+      "worker": {
+        "heartbeat_at": "2026-10-11T15:09:53.488621+00:00",
+        "host_owner": {
+          "creation_ticks": 134362049802331146,
+          "nonce": "67484871-2eac-448a-ae4f-4dbc932d4042",
+          "pid": 1064
+        }
+      },
+      "technical_limits": {
+        "attempts": 3,
+        "backoff_seconds": [
+          1,
+          2
+        ],
+        "timeout_seconds": 8,
+        "http_calls_per_attempt": 8,
+        "recursive_tasks": 0
+      },
+      "backlog": 0,
+      "running": 0
+    },
+    "coverage_gap": null
+  },
+  "browser": {
+    "namespace": "METHOD_ENGINEERING",
+    "system_usable": false,
+    "clock_modified": false,
+    "checks": {
+      "current_day_four_scope_no_change": true,
+      "on_demand_current_clock": true,
+      "post_close_current_permitted_phase": true,
+      "timeline_no_duplicate_tasks_no_account_mutation": true
+    },
+    "errors": [],
+    "observations": [
+      {
+        "task": {
+          "attempts": 1,
+          "audit_id": "0f466e4e-4f35-4134-a18e-cd769b1b63fa",
+          "created_at": "2026-10-11T15:10:03.914532+00:00",
+          "finished_at": "2026-10-11T15:10:03.994441+00:00",
+          "frozen_account": {
+            "account_scope": "\u666e\u901a\u73b0\u91d1\u8d26\u6237",
+            "broker_available": "10000.00",
+            "broker_available_as_of": "2026-10-11T15:10:00+00:00",
+            "broker_available_basis": "USER_CONFIRMED",
+            "broker_frozen": "0.00",
+            "broker_frozen_as_of": "2026-10-11T15:10:00+00:00",
+            "cash_balance": "10000.00",
+            "confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "conservative_available": "10000.00",
+            "conservative_available_basis": "USER_CONFIRMED",
+            "currency": "CNY",
+            "declarations": [
+              {
+                "account_version": 2,
+                "basis": "METHOD literal: no trades orders cash or equity changes in this fresh account through displayed minute",
+                "changes": "NONE",
+                "confirmed_as_of": "2026-10-11T15:10:00.000Z",
+                "effective_at": "2026-10-11T15:10:00.000Z",
+                "receipt_id": "e4cc6ebd-7ecc-4512-99bb-2be651715971",
+                "record_id": "f9f7b80f-7d16-4749-970d-fc3625f77eb3",
+                "recorded_at": "2026-10-11T15:10:03.429035+00:00",
+                "scope": [
+                  "TRADES",
+                  "ORDERS",
+                  "CASH",
+                  "EQUITY"
+                ],
+                "source": "METHOD engineering current-day scoped no-change"
+              }
+            ],
+            "effective_at": "2026-10-11T15:10:00+00:00",
+            "historical_return": null,
+            "latest_confirmed_input_at": "2026-10-11T15:10:00.000Z",
+            "latest_effective_fact_at": "2026-10-11T15:10:00+00:00",
+            "latest_fact_recorded_at": "2026-10-11T15:10:02.860333+00:00",
+            "permission_profile": [
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "MAIN",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "MAIN",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SZSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "STAR",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "CHINEXT",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SZSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "BSE",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "BSE",
+                "status": "UNKNOWN"
+              }
+            ],
+            "positions": [],
+            "state": "CONFIRMED_AS_OF",
+            "system_known_at": "2026-10-11T15:10:03.429035+00:00",
+            "version": 2,
+            "withdrawable": null,
+            "withdrawable_as_of": null
+          },
+          "frozen_listing": {
+            "account_version": 2,
+            "as_of_date": "2026-10-11",
+            "background_indices": [
+              {
+                "instrument": "SSE:000001",
+                "instrument_type": "INDEX",
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "instrument": "SZSE:399001",
+                "instrument_type": "INDEX",
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "basis": "\u9884\u56fa\u5b9a\u4e2d\u8bc1\u5bbd\u57fa\uff1b\u5b98\u65b9\u4e8b\u5b9e\u8868\u4ee3\u7801000300\uff0c\u6276\u6447\u4ee3\u7801\u8868\u6838\u5b9e000300.SH/\u6caa\u6df1300/SH/\u6307\u6570",
+                "basis_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
+                "instrument": "SSE:000300",
+                "instrument_type": "INDEX",
+                "name": "\u6caa\u6df1300",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "basis": "\u9884\u56fa\u5b9a\u4e2d\u8bc1\u5bbd\u57fa\uff1b\u5b98\u65b9\u4e8b\u5b9e\u8868\u4ee3\u7801000905\uff0c\u6276\u6447\u4ee3\u7801\u8868\u6838\u5b9e000905.SH/\u4e2d\u8bc1500/SH/\u6307\u6570",
+                "basis_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000905factsheet.pdf",
+                "instrument": "SSE:000905",
+                "instrument_type": "INDEX",
+                "name": "\u4e2d\u8bc1500",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "basis": "\u9884\u56fa\u5b9a\u4e00\u4e2a\u76f8\u5173\u884c\u4e1a\u6307\u6570\uff1b\u5b98\u7f51\u4e8b\u5b9e\u8868\u6210\u5206\u5217\u542b600519\uff0c\u4e0d\u4f5c\u52a8\u6001\u884c\u4e1a\u7b5b\u9009",
+                "basis_date": "2026-08-31",
+                "basis_source": "csi-399997-sector-basis",
+                "instrument": "SZSE:399997",
+                "instrument_type": "INDEX",
+                "name": "\u4e2d\u8bc1\u767d\u9152",
+                "purpose": "SECTOR_BACKGROUND",
+                "related_instruments": [
+                  "SSE:600519"
+                ],
+                "trading_capability": "NONE"
+              }
+            ],
+            "formal_judgment": "DISABLED",
+            "limit": 20,
+            "members": [],
+            "over_limit": false,
+            "recorded_at": "2026-10-11T15:10:03.896141+00:00",
+            "version": 2
+          },
+          "frozen_result": {
+            "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+            "account_confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "account_effective_at": "2026-10-11T15:10:00+00:00",
+            "account_version": 2,
+            "calendar": {
+              "calendar_version": "SSE-2026",
+              "coverage": "VERIFIED_ANNUAL_CALENDAR",
+              "date": "2026-10-11",
+              "exchange": "SSE",
+              "is_trading_day": false,
+              "phase": "CLOSED",
+              "reason": "WEEKEND",
+              "rules_source": {
+                "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+                "bytes": 65302,
+                "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+                "file": "sse-rules-text-2026.docx",
+                "id": "sse-rules-text-2026",
+                "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+                "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+              },
+              "source": {
+                "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+                "attachments": [],
+                "bytes": 30794,
+                "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+                "file": "sse-calendar-2026.html",
+                "id": "sse-calendar-2026",
+                "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+                "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+              },
+              "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+              "timezone": "Asia/Shanghai"
+            },
+            "change": "NEW_INFORMATION",
+            "coverage": {
+              "intraday_observed": false,
+              "minute_capture_promised": false,
+              "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+            },
+            "cutoff": "2026-10-11T15:10:03.891614+00:00",
+            "data_versions": [],
+            "forecast": null,
+            "formal_judgment": "DISABLED",
+            "forward_sample_created": false,
+            "gaps": [
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000905"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000905"
+              }
+            ],
+            "instruments": [
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000001",
+                "last_complete_daily": null,
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SZSE:399001",
+                "last_complete_daily": null,
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000300",
+                "last_complete_daily": null,
+                "name": "\u6caa\u6df1300",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000905",
+                "last_complete_daily": null,
+                "name": "\u4e2d\u8bc1500",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              }
+            ],
+            "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+            "knowledge_cutoff": "2026-10-11T15:10:03.891614+00:00",
+            "observations": [],
+            "observed_at": "2026-10-11T15:10:03.891614+00:00",
+            "previous_snapshot_id": null,
+            "snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+            "source_assessments": [],
+            "state_fingerprint": "eb5b3dedb9ef22142884da3360b3e4a1e707f6e0ca93ca6b86abbaa41b2ce389"
+          },
+          "host_owner": {
+            "creation_ticks": 134362049802331150,
+            "nonce": "67484871-2eac-448a-ae4f-4dbc932d4042",
+            "pid": 1064
+          },
+          "inputs": {
+            "account_version": 2,
+            "cutoff": "2026-10-11T15:10:03.891614+00:00",
+            "data_versions": [],
+            "list_version": 2,
+            "mode": "ON_DEMAND",
+            "phase": "CLOSED",
+            "refresh_missing": false,
+            "shadow_version": null,
+            "trading_date": "2026-10-11"
+          },
+          "last_attempt_at": "2026-10-11T15:10:03.978545+00:00",
+          "module_errors": [],
+          "refresh_missing": false,
+          "result": {
+            "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+            "account_confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "account_effective_at": "2026-10-11T15:10:00+00:00",
+            "account_version": 2,
+            "calendar": {
+              "calendar_version": "SSE-2026",
+              "coverage": "VERIFIED_ANNUAL_CALENDAR",
+              "date": "2026-10-11",
+              "exchange": "SSE",
+              "is_trading_day": false,
+              "phase": "CLOSED",
+              "reason": "WEEKEND",
+              "rules_source": {
+                "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+                "bytes": 65302,
+                "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+                "file": "sse-rules-text-2026.docx",
+                "id": "sse-rules-text-2026",
+                "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+                "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+              },
+              "source": {
+                "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+                "attachments": [],
+                "bytes": 30794,
+                "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+                "file": "sse-calendar-2026.html",
+                "id": "sse-calendar-2026",
+                "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+                "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+              },
+              "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+              "timezone": "Asia/Shanghai"
+            },
+            "change": "NEW_INFORMATION",
+            "coverage": {
+              "intraday_observed": false,
+              "minute_capture_promised": false,
+              "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+            },
+            "cutoff": "2026-10-11T15:10:03.891614+00:00",
+            "data_versions": [],
+            "forecast": null,
+            "formal_judgment": "DISABLED",
+            "forward_sample_created": false,
+            "gaps": [
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000905"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000905"
+              }
+            ],
+            "instruments": [
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000001",
+                "last_complete_daily": null,
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SZSE:399001",
+                "last_complete_daily": null,
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000300",
+                "last_complete_daily": null,
+                "name": "\u6caa\u6df1300",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000905",
+                "last_complete_daily": null,
+                "name": "\u4e2d\u8bc1500",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              }
+            ],
+            "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+            "knowledge_cutoff": "2026-10-11T15:10:03.891614+00:00",
+            "observations": [],
+            "observed_at": "2026-10-11T15:10:03.891614+00:00",
+            "previous_snapshot_id": null,
+            "snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+            "source_assessments": [],
+            "state_fingerprint": "eb5b3dedb9ef22142884da3360b3e4a1e707f6e0ca93ca6b86abbaa41b2ce389"
+          },
+          "retrieval_runs": [],
+          "retry_at": "2026-10-11T15:10:03.914524+00:00",
+          "status": "PARTIAL",
+          "task_id": "72d0ed83-c603-42a2-b2f8-04c317a306d5",
+          "task_key": "9ccc6963570d442c3532f913f7d51666c9ee313d473c5f97a4adea14225c715c",
+          "timing": {
+            "acquisition_seconds": 0,
+            "local_seconds": 0.020723,
+            "network_seconds": 0
+          }
+        },
+        "audit": {
+          "account_version": 2,
+          "audit_id": "0f466e4e-4f35-4134-a18e-cd769b1b63fa",
+          "checked_at": "2026-10-11T15:10:04.012252+00:00",
+          "critical_review": {
+            "reason": "\u666e\u901a\u8fd0\u884c\u6458\u8981\u4e0d\u81ea\u52a8\u5347\u7ea7\u4e3a\u591a\u6e90\u6838\u9a8c",
+            "status": "NOT_REQUIRED"
+          },
+          "data_versions": [],
+          "metrics": {
+            "account_differences": {
+              "reasons": [],
+              "state": "CONFIRMED_AS_OF",
+              "status": "CHECKED",
+              "value": 0
+            },
+            "action_flips": {
+              "status": "CHECKED",
+              "value": 0
+            },
+            "data_coverage": {
+              "gaps": [
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SSE:000001"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SSE:000001"
+                },
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SZSE:399001"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SZSE:399001"
+                },
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SSE:000300"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SSE:000300"
+                },
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SSE:000905"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SSE:000905"
+                }
+              ],
+              "status": "CHECKED",
+              "value": 8
+            },
+            "duplicate_notifications": {
+              "business_notifications": 3,
+              "delivery_status": "UNKNOWN",
+              "failed_attempts": 0,
+              "possible_duplicate_attempts": 0,
+              "status": "CHECKED",
+              "transmission_attempts": 0,
+              "unknown_attempts": 0,
+              "value": 0
+            },
+            "invalidated_actions": {
+              "status": "CHECKED",
+              "value": 0
+            },
+            "module_errors": {
+              "errors": [],
+              "status": "CHECKED",
+              "value": 0
+            },
+            "partially_synced_intents": {
+              "status": "CHECKED",
+              "value": 0
+            },
+            "shadow_records": {
+              "account_conditional_records": 0,
+              "records": [],
+              "status": "CHECKED",
+              "value": 0
+            },
+            "unfinished_execution_intents": {
+              "status": "CHECKED",
+              "value": 0
+            }
+          },
+          "phase": "CLOSED",
+          "snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+          "task_id": "72d0ed83-c603-42a2-b2f8-04c317a306d5",
+          "trade_date": "2026-10-11"
+        },
+        "repeat_task_id": "72d0ed83-c603-42a2-b2f8-04c317a306d5",
+        "replay": {
+          "task_id": "72d0ed83-c603-42a2-b2f8-04c317a306d5",
+          "result": {
+            "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+            "account_confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "account_effective_at": "2026-10-11T15:10:00+00:00",
+            "account_version": 2,
+            "calendar": {
+              "calendar_version": "SSE-2026",
+              "coverage": "VERIFIED_ANNUAL_CALENDAR",
+              "date": "2026-10-11",
+              "exchange": "SSE",
+              "is_trading_day": false,
+              "phase": "CLOSED",
+              "reason": "WEEKEND",
+              "rules_source": {
+                "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+                "bytes": 65302,
+                "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+                "file": "sse-rules-text-2026.docx",
+                "id": "sse-rules-text-2026",
+                "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+                "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+              },
+              "source": {
+                "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+                "attachments": [],
+                "bytes": 30794,
+                "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+                "file": "sse-calendar-2026.html",
+                "id": "sse-calendar-2026",
+                "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+                "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+              },
+              "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+              "timezone": "Asia/Shanghai"
+            },
+            "change": "NEW_INFORMATION",
+            "coverage": {
+              "intraday_observed": false,
+              "minute_capture_promised": false,
+              "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+            },
+            "cutoff": "2026-10-11T15:10:03.891614+00:00",
+            "data_versions": [],
+            "forecast": null,
+            "formal_judgment": "DISABLED",
+            "forward_sample_created": false,
+            "gaps": [
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000905"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000905"
+              }
+            ],
+            "instruments": [
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000001",
+                "last_complete_daily": null,
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SZSE:399001",
+                "last_complete_daily": null,
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000300",
+                "last_complete_daily": null,
+                "name": "\u6caa\u6df1300",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000905",
+                "last_complete_daily": null,
+                "name": "\u4e2d\u8bc1500",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              }
+            ],
+            "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+            "knowledge_cutoff": "2026-10-11T15:10:03.891614+00:00",
+            "observations": [],
+            "observed_at": "2026-10-11T15:10:03.891614+00:00",
+            "previous_snapshot_id": null,
+            "snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+            "source_assessments": [],
+            "state_fingerprint": "eb5b3dedb9ef22142884da3360b3e4a1e707f6e0ca93ca6b86abbaa41b2ce389"
+          },
+          "replay_kind": "IMMUTABLE_ARCHIVE_ONLY",
+          "network_calls": 0,
+          "verified_run_ids": []
+        }
+      },
+      {
+        "task": {
+          "attempts": 1,
+          "audit_id": "8a227f50-8b44-4be5-a692-c216e9b4a8f2",
+          "created_at": "2026-10-11T15:10:04.930862+00:00",
+          "finished_at": "2026-10-11T15:10:04.982866+00:00",
+          "frozen_account": {
+            "account_scope": "\u666e\u901a\u73b0\u91d1\u8d26\u6237",
+            "broker_available": "10000.00",
+            "broker_available_as_of": "2026-10-11T15:10:00+00:00",
+            "broker_available_basis": "USER_CONFIRMED",
+            "broker_frozen": "0.00",
+            "broker_frozen_as_of": "2026-10-11T15:10:00+00:00",
+            "cash_balance": "10000.00",
+            "confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "conservative_available": "10000.00",
+            "conservative_available_basis": "USER_CONFIRMED",
+            "currency": "CNY",
+            "declarations": [
+              {
+                "account_version": 2,
+                "basis": "METHOD literal: no trades orders cash or equity changes in this fresh account through displayed minute",
+                "changes": "NONE",
+                "confirmed_as_of": "2026-10-11T15:10:00.000Z",
+                "effective_at": "2026-10-11T15:10:00.000Z",
+                "receipt_id": "e4cc6ebd-7ecc-4512-99bb-2be651715971",
+                "record_id": "f9f7b80f-7d16-4749-970d-fc3625f77eb3",
+                "recorded_at": "2026-10-11T15:10:03.429035+00:00",
+                "scope": [
+                  "TRADES",
+                  "ORDERS",
+                  "CASH",
+                  "EQUITY"
+                ],
+                "source": "METHOD engineering current-day scoped no-change"
+              }
+            ],
+            "effective_at": "2026-10-11T15:10:00+00:00",
+            "historical_return": null,
+            "latest_confirmed_input_at": "2026-10-11T15:10:00.000Z",
+            "latest_effective_fact_at": "2026-10-11T15:10:00+00:00",
+            "latest_fact_recorded_at": "2026-10-11T15:10:02.860333+00:00",
+            "permission_profile": [
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "MAIN",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "MAIN",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SZSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "STAR",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "CHINEXT",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "SZSE",
+                "status": "UNKNOWN"
+              },
+              {
+                "account_version": 1,
+                "basis": "\u672a\u6838\u5bf9",
+                "board": "BSE",
+                "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+                "effective_at": "2026-10-11T15:10:00+00:00",
+                "market": "BSE",
+                "status": "UNKNOWN"
+              }
+            ],
+            "positions": [],
+            "state": "CONFIRMED_AS_OF",
+            "system_known_at": "2026-10-11T15:10:03.429035+00:00",
+            "version": 2,
+            "withdrawable": null,
+            "withdrawable_as_of": null
+          },
+          "frozen_listing": {
+            "account_version": 2,
+            "as_of_date": "2026-10-11",
+            "background_indices": [
+              {
+                "instrument": "SSE:000001",
+                "instrument_type": "INDEX",
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "instrument": "SZSE:399001",
+                "instrument_type": "INDEX",
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "basis": "\u9884\u56fa\u5b9a\u4e2d\u8bc1\u5bbd\u57fa\uff1b\u5b98\u65b9\u4e8b\u5b9e\u8868\u4ee3\u7801000300\uff0c\u6276\u6447\u4ee3\u7801\u8868\u6838\u5b9e000300.SH/\u6caa\u6df1300/SH/\u6307\u6570",
+                "basis_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
+                "instrument": "SSE:000300",
+                "instrument_type": "INDEX",
+                "name": "\u6caa\u6df1300",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "basis": "\u9884\u56fa\u5b9a\u4e2d\u8bc1\u5bbd\u57fa\uff1b\u5b98\u65b9\u4e8b\u5b9e\u8868\u4ee3\u7801000905\uff0c\u6276\u6447\u4ee3\u7801\u8868\u6838\u5b9e000905.SH/\u4e2d\u8bc1500/SH/\u6307\u6570",
+                "basis_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000905factsheet.pdf",
+                "instrument": "SSE:000905",
+                "instrument_type": "INDEX",
+                "name": "\u4e2d\u8bc1500",
+                "purpose": "BROAD_BACKGROUND",
+                "trading_capability": "NONE"
+              },
+              {
+                "basis": "\u9884\u56fa\u5b9a\u4e00\u4e2a\u76f8\u5173\u884c\u4e1a\u6307\u6570\uff1b\u5b98\u7f51\u4e8b\u5b9e\u8868\u6210\u5206\u5217\u542b600519\uff0c\u4e0d\u4f5c\u52a8\u6001\u884c\u4e1a\u7b5b\u9009",
+                "basis_date": "2026-08-31",
+                "basis_source": "csi-399997-sector-basis",
+                "instrument": "SZSE:399997",
+                "instrument_type": "INDEX",
+                "name": "\u4e2d\u8bc1\u767d\u9152",
+                "purpose": "SECTOR_BACKGROUND",
+                "related_instruments": [
+                  "SSE:600519"
+                ],
+                "trading_capability": "NONE"
+              }
+            ],
+            "formal_judgment": "DISABLED",
+            "limit": 20,
+            "members": [],
+            "over_limit": false,
+            "recorded_at": "2026-10-11T15:10:03.896141+00:00",
+            "version": 2
+          },
+          "frozen_result": {
+            "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+            "account_confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "account_effective_at": "2026-10-11T15:10:00+00:00",
+            "account_version": 2,
+            "calendar": {
+              "calendar_version": "SSE-2026",
+              "coverage": "VERIFIED_ANNUAL_CALENDAR",
+              "date": "2026-10-11",
+              "exchange": "SSE",
+              "is_trading_day": false,
+              "phase": "CLOSED",
+              "reason": "WEEKEND",
+              "rules_source": {
+                "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+                "bytes": 65302,
+                "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+                "file": "sse-rules-text-2026.docx",
+                "id": "sse-rules-text-2026",
+                "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+                "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+              },
+              "source": {
+                "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+                "attachments": [],
+                "bytes": 30794,
+                "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+                "file": "sse-calendar-2026.html",
+                "id": "sse-calendar-2026",
+                "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+                "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+              },
+              "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+              "timezone": "Asia/Shanghai"
+            },
+            "change": "NO_SUBSTANTIAL_CHANGE",
+            "coverage": {
+              "intraday_observed": false,
+              "minute_capture_promised": false,
+              "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+            },
+            "cutoff": "2026-10-11T15:10:04.917541+00:00",
+            "data_versions": [],
+            "forecast": null,
+            "formal_judgment": "DISABLED",
+            "forward_sample_created": false,
+            "gaps": [
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000905"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000905"
+              }
+            ],
+            "instruments": [
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000001",
+                "last_complete_daily": null,
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SZSE:399001",
+                "last_complete_daily": null,
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000300",
+                "last_complete_daily": null,
+                "name": "\u6caa\u6df1300",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000905",
+                "last_complete_daily": null,
+                "name": "\u4e2d\u8bc1500",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              }
+            ],
+            "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+            "knowledge_cutoff": "2026-10-11T15:10:04.917541+00:00",
+            "observations": [],
+            "observed_at": "2026-10-11T15:10:04.917541+00:00",
+            "previous_snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+            "snapshot_id": "92e9ee8c-13b6-489c-be95-ba8d2a7239eb",
+            "source_assessments": [],
+            "state_fingerprint": "eb5b3dedb9ef22142884da3360b3e4a1e707f6e0ca93ca6b86abbaa41b2ce389"
+          },
+          "host_owner": {
+            "creation_ticks": 134362049802331150,
+            "nonce": "67484871-2eac-448a-ae4f-4dbc932d4042",
+            "pid": 1064
+          },
+          "inputs": {
+            "account_version": 2,
+            "cutoff": "2026-10-11T15:10:04.917541+00:00",
+            "data_versions": [],
+            "list_version": 2,
+            "mode": "POST_CLOSE",
+            "phase": "CLOSED",
+            "refresh_missing": false,
+            "shadow_version": null,
+            "trading_date": "2026-10-11"
+          },
+          "last_attempt_at": "2026-10-11T15:10:04.963534+00:00",
+          "module_errors": [],
+          "refresh_missing": false,
+          "result": {
+            "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+            "account_confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "account_effective_at": "2026-10-11T15:10:00+00:00",
+            "account_version": 2,
+            "calendar": {
+              "calendar_version": "SSE-2026",
+              "coverage": "VERIFIED_ANNUAL_CALENDAR",
+              "date": "2026-10-11",
+              "exchange": "SSE",
+              "is_trading_day": false,
+              "phase": "CLOSED",
+              "reason": "WEEKEND",
+              "rules_source": {
+                "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+                "bytes": 65302,
+                "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+                "file": "sse-rules-text-2026.docx",
+                "id": "sse-rules-text-2026",
+                "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+                "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+              },
+              "source": {
+                "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+                "attachments": [],
+                "bytes": 30794,
+                "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+                "file": "sse-calendar-2026.html",
+                "id": "sse-calendar-2026",
+                "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+                "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+              },
+              "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+              "timezone": "Asia/Shanghai"
+            },
+            "change": "NO_SUBSTANTIAL_CHANGE",
+            "coverage": {
+              "intraday_observed": false,
+              "minute_capture_promised": false,
+              "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+            },
+            "cutoff": "2026-10-11T15:10:04.917541+00:00",
+            "data_versions": [],
+            "forecast": null,
+            "formal_judgment": "DISABLED",
+            "forward_sample_created": false,
+            "gaps": [
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000905"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000905"
+              }
+            ],
+            "instruments": [
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000001",
+                "last_complete_daily": null,
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SZSE:399001",
+                "last_complete_daily": null,
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000300",
+                "last_complete_daily": null,
+                "name": "\u6caa\u6df1300",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000905",
+                "last_complete_daily": null,
+                "name": "\u4e2d\u8bc1500",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              }
+            ],
+            "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+            "knowledge_cutoff": "2026-10-11T15:10:04.917541+00:00",
+            "observations": [],
+            "observed_at": "2026-10-11T15:10:04.917541+00:00",
+            "previous_snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+            "snapshot_id": "92e9ee8c-13b6-489c-be95-ba8d2a7239eb",
+            "source_assessments": [],
+            "state_fingerprint": "eb5b3dedb9ef22142884da3360b3e4a1e707f6e0ca93ca6b86abbaa41b2ce389"
+          },
+          "retrieval_runs": [],
+          "retry_at": "2026-10-11T15:10:04.930856+00:00",
+          "status": "PARTIAL",
+          "task_id": "2f693048-2e2b-498c-8b93-ebda59cf2a27",
+          "task_key": "d81d5b98645f24d8930508711fc5beabe8a399b824fb7a71b83b4dfa4a7c0376",
+          "timing": {
+            "acquisition_seconds": 0,
+            "local_seconds": 0.019809,
+            "network_seconds": 0
+          }
+        },
+        "audit": {
+          "account_version": 2,
+          "audit_id": "8a227f50-8b44-4be5-a692-c216e9b4a8f2",
+          "checked_at": "2026-10-11T15:10:04.999797+00:00",
+          "critical_review": {
+            "reason": "\u666e\u901a\u8fd0\u884c\u6458\u8981\u4e0d\u81ea\u52a8\u5347\u7ea7\u4e3a\u591a\u6e90\u6838\u9a8c",
+            "status": "NOT_REQUIRED"
+          },
+          "data_versions": [],
+          "metrics": {
+            "account_differences": {
+              "reasons": [],
+              "state": "CONFIRMED_AS_OF",
+              "status": "CHECKED",
+              "value": 0
+            },
+            "action_flips": {
+              "status": "CHECKED",
+              "value": 0
+            },
+            "data_coverage": {
+              "gaps": [
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SSE:000001"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SSE:000001"
+                },
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SZSE:399001"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SZSE:399001"
+                },
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SSE:000300"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SSE:000300"
+                },
+                {
+                  "code": "MISSING",
+                  "group": "QUOTE",
+                  "instrument": "SSE:000905"
+                },
+                {
+                  "code": "NO_COMPLETE_DAILY",
+                  "group": "DAILY",
+                  "instrument": "SSE:000905"
+                }
+              ],
+              "status": "CHECKED",
+              "value": 8
+            },
+            "duplicate_notifications": {
+              "business_notifications": 3,
+              "delivery_status": "UNKNOWN",
+              "failed_attempts": 0,
+              "possible_duplicate_attempts": 0,
+              "status": "CHECKED",
+              "transmission_attempts": 0,
+              "unknown_attempts": 0,
+              "value": 1
+            },
+            "invalidated_actions": {
+              "status": "CHECKED",
+              "value": 0
+            },
+            "module_errors": {
+              "errors": [],
+              "status": "CHECKED",
+              "value": 0
+            },
+            "partially_synced_intents": {
+              "status": "CHECKED",
+              "value": 0
+            },
+            "shadow_records": {
+              "account_conditional_records": 0,
+              "records": [],
+              "status": "CHECKED",
+              "value": 0
+            },
+            "unfinished_execution_intents": {
+              "status": "CHECKED",
+              "value": 0
+            }
+          },
+          "phase": "CLOSED",
+          "snapshot_id": "92e9ee8c-13b6-489c-be95-ba8d2a7239eb",
+          "task_id": "2f693048-2e2b-498c-8b93-ebda59cf2a27",
+          "trade_date": "2026-10-11"
+        },
+        "repeat_task_id": "2f693048-2e2b-498c-8b93-ebda59cf2a27",
+        "replay": {
+          "task_id": "2f693048-2e2b-498c-8b93-ebda59cf2a27",
+          "result": {
+            "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+            "account_confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+            "account_effective_at": "2026-10-11T15:10:00+00:00",
+            "account_version": 2,
+            "calendar": {
+              "calendar_version": "SSE-2026",
+              "coverage": "VERIFIED_ANNUAL_CALENDAR",
+              "date": "2026-10-11",
+              "exchange": "SSE",
+              "is_trading_day": false,
+              "phase": "CLOSED",
+              "reason": "WEEKEND",
+              "rules_source": {
+                "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+                "bytes": 65302,
+                "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+                "file": "sse-rules-text-2026.docx",
+                "id": "sse-rules-text-2026",
+                "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+                "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+              },
+              "source": {
+                "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+                "attachments": [],
+                "bytes": 30794,
+                "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+                "file": "sse-calendar-2026.html",
+                "id": "sse-calendar-2026",
+                "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+                "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+              },
+              "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+              "timezone": "Asia/Shanghai"
+            },
+            "change": "NO_SUBSTANTIAL_CHANGE",
+            "coverage": {
+              "intraday_observed": false,
+              "minute_capture_promised": false,
+              "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+            },
+            "cutoff": "2026-10-11T15:10:04.917541+00:00",
+            "data_versions": [],
+            "forecast": null,
+            "formal_judgment": "DISABLED",
+            "forward_sample_created": false,
+            "gaps": [
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SZSE:399001"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000300"
+              },
+              {
+                "code": "MISSING",
+                "group": "QUOTE",
+                "instrument": "SSE:000905"
+              },
+              {
+                "code": "NO_COMPLETE_DAILY",
+                "group": "DAILY",
+                "instrument": "SSE:000905"
+              }
+            ],
+            "instruments": [
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000001",
+                "last_complete_daily": null,
+                "name": "\u4e0a\u8bc1\u6307\u6570",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SZSE:399001",
+                "last_complete_daily": null,
+                "name": "\u6df1\u8bc1\u6210\u6307",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000300",
+                "last_complete_daily": null,
+                "name": "\u6caa\u6df1300",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              },
+              {
+                "company_facts": [],
+                "incomplete_daily": null,
+                "instrument": "SSE:000905",
+                "last_complete_daily": null,
+                "name": "\u4e2d\u8bc1500",
+                "quote": null,
+                "quote_status": "MISSING",
+                "role": "BACKGROUND"
+              }
+            ],
+            "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+            "knowledge_cutoff": "2026-10-11T15:10:04.917541+00:00",
+            "observations": [],
+            "observed_at": "2026-10-11T15:10:04.917541+00:00",
+            "previous_snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+            "snapshot_id": "92e9ee8c-13b6-489c-be95-ba8d2a7239eb",
+            "source_assessments": [],
+            "state_fingerprint": "eb5b3dedb9ef22142884da3360b3e4a1e707f6e0ca93ca6b86abbaa41b2ce389"
+          },
+          "replay_kind": "IMMUTABLE_ARCHIVE_ONLY",
+          "network_calls": 0,
+          "verified_run_ids": []
+        }
+      }
+    ],
+    "actual_started_at": "2026-10-11T15:10:02.497Z",
+    "actual_shanghai_date": "2026-10-11",
+    "baseline_effective_minute": "2026-10-11T23:10",
+    "before_declaration": {
+      "account_scope": "\u666e\u901a\u73b0\u91d1\u8d26\u6237",
+      "broker_available": "10000.00",
+      "broker_available_as_of": "2026-10-11T15:10:00+00:00",
+      "broker_available_basis": "USER_CONFIRMED",
+      "broker_frozen": "0.00",
+      "broker_frozen_as_of": "2026-10-11T15:10:00+00:00",
+      "cash_balance": "10000.00",
+      "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+      "conservative_available": "10000.00",
+      "conservative_available_basis": "USER_CONFIRMED",
+      "currency": "CNY",
+      "effective_at": "2026-10-11T15:10:00+00:00",
+      "historical_return": null,
+      "latest_confirmed_input_at": "2026-10-11T15:10:00.000Z",
+      "latest_effective_fact_at": "2026-10-11T15:10:00+00:00",
+      "latest_fact_recorded_at": "2026-10-11T15:10:02.860333+00:00",
+      "permission_profile": [
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "MAIN",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "MAIN",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SZSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "STAR",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "CHINEXT",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SZSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "BSE",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "BSE",
+          "status": "UNKNOWN"
+        }
+      ],
+      "positions": [],
+      "state": "CONFIRMED_AS_OF",
+      "system_known_at": "2026-10-11T15:10:02.860333+00:00",
+      "version": 1,
+      "withdrawable": null,
+      "withdrawable_as_of": null
+    },
+    "declaration_effective_minute": "2026-10-11T23:10",
+    "after_declaration": {
+      "account_scope": "\u666e\u901a\u73b0\u91d1\u8d26\u6237",
+      "broker_available": "10000.00",
+      "broker_available_as_of": "2026-10-11T15:10:00+00:00",
+      "broker_available_basis": "USER_CONFIRMED",
+      "broker_frozen": "0.00",
+      "broker_frozen_as_of": "2026-10-11T15:10:00+00:00",
+      "cash_balance": "10000.00",
+      "confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+      "conservative_available": "10000.00",
+      "conservative_available_basis": "USER_CONFIRMED",
+      "currency": "CNY",
+      "declarations": [
+        {
+          "account_version": 2,
+          "basis": "METHOD literal: no trades orders cash or equity changes in this fresh account through displayed minute",
+          "changes": "NONE",
+          "confirmed_as_of": "2026-10-11T15:10:00.000Z",
+          "effective_at": "2026-10-11T15:10:00.000Z",
+          "receipt_id": "e4cc6ebd-7ecc-4512-99bb-2be651715971",
+          "record_id": "f9f7b80f-7d16-4749-970d-fc3625f77eb3",
+          "recorded_at": "2026-10-11T15:10:03.429035+00:00",
+          "scope": [
+            "TRADES",
+            "ORDERS",
+            "CASH",
+            "EQUITY"
+          ],
+          "source": "METHOD engineering current-day scoped no-change"
+        }
+      ],
+      "effective_at": "2026-10-11T15:10:00+00:00",
+      "historical_return": null,
+      "latest_confirmed_input_at": "2026-10-11T15:10:00.000Z",
+      "latest_effective_fact_at": "2026-10-11T15:10:00+00:00",
+      "latest_fact_recorded_at": "2026-10-11T15:10:02.860333+00:00",
+      "permission_profile": [
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "MAIN",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "MAIN",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SZSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "STAR",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "CHINEXT",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SZSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "BSE",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "BSE",
+          "status": "UNKNOWN"
+        }
+      ],
+      "positions": [],
+      "state": "CONFIRMED_AS_OF",
+      "system_known_at": "2026-10-11T15:10:03.429035+00:00",
+      "version": 2,
+      "withdrawable": null,
+      "withdrawable_as_of": null
+    },
+    "use_check_at_declared_minute": {
+      "purpose": "ACCOUNT_ANALYSIS",
+      "required_as_of": "2026-10-11T15:10:00+00:00",
+      "account_version": 2,
+      "state": "CONFIRMED_AS_OF",
+      "allowed": true,
+      "fact_scope_state": "CONFIRMED_AS_OF",
+      "required_scope": [
+        "TRADES",
+        "CASH",
+        "EQUITY"
+      ],
+      "missing_scope": [],
+      "reasons": [],
+      "next_step": "\u4ec5\u8d26\u6237\u4e8b\u5b9e\u68c0\u67e5\u901a\u8fc7\uff1b\u6b63\u5f0f\u8d44\u683c\u4ecd\u987b\u72ec\u7acb\u6838\u9a8c",
+      "known_positions": [],
+      "executable_quantity": null,
+      "independent_market_observation_allowed": true
+    },
+    "calendar_before_post_close": {
+      "calendar": {
+        "exchange": "SSE",
+        "date": "2026-10-11",
+        "timezone": "Asia/Shanghai",
+        "is_trading_day": false,
+        "phase": "CLOSED",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "calendar_version": "SSE-2026",
+        "source": {
+          "id": "sse-calendar-2026",
+          "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+          "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+          "file": "sse-calendar-2026.html",
+          "bytes": 30794,
+          "attachments": [],
+          "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+        },
+        "rules_source": {
+          "id": "sse-rules-text-2026",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "file": "sse-rules-text-2026.docx",
+          "bytes": 65302,
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+        },
+        "reason": "WEEKEND",
+        "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02"
+      },
+      "latest": {
+        "task_id": "72d0ed83-c603-42a2-b2f8-04c317a306d5",
+        "status": "PARTIAL",
+        "attempts": 1,
+        "result": {
+          "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+          "account_confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+          "account_effective_at": "2026-10-11T15:10:00+00:00",
+          "account_version": 2,
+          "calendar": {
+            "calendar_version": "SSE-2026",
+            "coverage": "VERIFIED_ANNUAL_CALENDAR",
+            "date": "2026-10-11",
+            "exchange": "SSE",
+            "is_trading_day": false,
+            "phase": "CLOSED",
+            "reason": "WEEKEND",
+            "rules_source": {
+              "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+              "bytes": 65302,
+              "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+              "file": "sse-rules-text-2026.docx",
+              "id": "sse-rules-text-2026",
+              "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+              "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+            },
+            "source": {
+              "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+              "attachments": [],
+              "bytes": 30794,
+              "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+              "file": "sse-calendar-2026.html",
+              "id": "sse-calendar-2026",
+              "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+              "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+            },
+            "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+            "timezone": "Asia/Shanghai"
+          },
+          "change": "NEW_INFORMATION",
+          "coverage": {
+            "intraday_observed": false,
+            "minute_capture_promised": false,
+            "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+          },
+          "cutoff": "2026-10-11T15:10:03.891614+00:00",
+          "data_versions": [],
+          "forecast": null,
+          "formal_judgment": "DISABLED",
+          "forward_sample_created": false,
+          "gaps": [
+            {
+              "code": "MISSING",
+              "group": "QUOTE",
+              "instrument": "SSE:000001"
+            },
+            {
+              "code": "NO_COMPLETE_DAILY",
+              "group": "DAILY",
+              "instrument": "SSE:000001"
+            },
+            {
+              "code": "MISSING",
+              "group": "QUOTE",
+              "instrument": "SZSE:399001"
+            },
+            {
+              "code": "NO_COMPLETE_DAILY",
+              "group": "DAILY",
+              "instrument": "SZSE:399001"
+            },
+            {
+              "code": "MISSING",
+              "group": "QUOTE",
+              "instrument": "SSE:000300"
+            },
+            {
+              "code": "NO_COMPLETE_DAILY",
+              "group": "DAILY",
+              "instrument": "SSE:000300"
+            },
+            {
+              "code": "MISSING",
+              "group": "QUOTE",
+              "instrument": "SSE:000905"
+            },
+            {
+              "code": "NO_COMPLETE_DAILY",
+              "group": "DAILY",
+              "instrument": "SSE:000905"
+            }
+          ],
+          "instruments": [
+            {
+              "company_facts": [],
+              "incomplete_daily": null,
+              "instrument": "SSE:000001",
+              "last_complete_daily": null,
+              "name": "\u4e0a\u8bc1\u6307\u6570",
+              "quote": null,
+              "quote_status": "MISSING",
+              "role": "BACKGROUND"
+            },
+            {
+              "company_facts": [],
+              "incomplete_daily": null,
+              "instrument": "SZSE:399001",
+              "last_complete_daily": null,
+              "name": "\u6df1\u8bc1\u6210\u6307",
+              "quote": null,
+              "quote_status": "MISSING",
+              "role": "BACKGROUND"
+            },
+            {
+              "company_facts": [],
+              "incomplete_daily": null,
+              "instrument": "SSE:000300",
+              "last_complete_daily": null,
+              "name": "\u6caa\u6df1300",
+              "quote": null,
+              "quote_status": "MISSING",
+              "role": "BACKGROUND"
+            },
+            {
+              "company_facts": [],
+              "incomplete_daily": null,
+              "instrument": "SSE:000905",
+              "last_complete_daily": null,
+              "name": "\u4e2d\u8bc1500",
+              "quote": null,
+              "quote_status": "MISSING",
+              "role": "BACKGROUND"
+            }
+          ],
+          "knowledge_basis": "KNOWN_AT_REQUEST_CUTOFF",
+          "knowledge_cutoff": "2026-10-11T15:10:03.891614+00:00",
+          "observations": [],
+          "observed_at": "2026-10-11T15:10:03.891614+00:00",
+          "previous_snapshot_id": null,
+          "snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+          "source_assessments": [],
+          "state_fingerprint": "eb5b3dedb9ef22142884da3360b3e4a1e707f6e0ca93ca6b86abbaa41b2ce389"
+        },
+        "audit_id": "0f466e4e-4f35-4134-a18e-cd769b1b63fa",
+        "timing": {
+          "acquisition_seconds": 0,
+          "local_seconds": 0.020723,
+          "network_seconds": 0
+        },
+        "module_errors": []
+      },
+      "health": {
+        "worker_limit": 1,
+        "worker_state": "RUNNING",
+        "last_worker_error": null,
+        "worker": {
+          "heartbeat_at": "2026-10-11T15:10:04.791224+00:00",
+          "host_owner": {
+            "creation_ticks": 134362049802331150,
+            "nonce": "67484871-2eac-448a-ae4f-4dbc932d4042",
+            "pid": 1064
+          }
+        },
+        "technical_limits": {
+          "attempts": 3,
+          "backoff_seconds": [
+            1,
+            2
+          ],
+          "timeout_seconds": 8,
+          "http_calls_per_attempt": 8,
+          "recursive_tasks": 0
+        },
+        "backlog": 0,
+        "running": 0
+      },
+      "coverage_gap": null
+    },
+    "after_observations": {
+      "account_scope": "\u666e\u901a\u73b0\u91d1\u8d26\u6237",
+      "broker_available": "10000.00",
+      "broker_available_as_of": "2026-10-11T15:10:00+00:00",
+      "broker_available_basis": "USER_CONFIRMED",
+      "broker_frozen": "0.00",
+      "broker_frozen_as_of": "2026-10-11T15:10:00+00:00",
+      "cash_balance": "10000.00",
+      "confirmed_at": "2026-10-11T15:10:03.429035+00:00",
+      "conservative_available": "10000.00",
+      "conservative_available_basis": "USER_CONFIRMED",
+      "currency": "CNY",
+      "declarations": [
+        {
+          "account_version": 2,
+          "basis": "METHOD literal: no trades orders cash or equity changes in this fresh account through displayed minute",
+          "changes": "NONE",
+          "confirmed_as_of": "2026-10-11T15:10:00.000Z",
+          "effective_at": "2026-10-11T15:10:00.000Z",
+          "receipt_id": "e4cc6ebd-7ecc-4512-99bb-2be651715971",
+          "record_id": "f9f7b80f-7d16-4749-970d-fc3625f77eb3",
+          "recorded_at": "2026-10-11T15:10:03.429035+00:00",
+          "scope": [
+            "TRADES",
+            "ORDERS",
+            "CASH",
+            "EQUITY"
+          ],
+          "source": "METHOD engineering current-day scoped no-change"
+        }
+      ],
+      "effective_at": "2026-10-11T15:10:00+00:00",
+      "historical_return": null,
+      "latest_confirmed_input_at": "2026-10-11T15:10:00.000Z",
+      "latest_effective_fact_at": "2026-10-11T15:10:00+00:00",
+      "latest_fact_recorded_at": "2026-10-11T15:10:02.860333+00:00",
+      "permission_profile": [
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "MAIN",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "MAIN",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SZSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "STAR",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "CHINEXT",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "SZSE",
+          "status": "UNKNOWN"
+        },
+        {
+          "account_version": 1,
+          "basis": "\u672a\u6838\u5bf9",
+          "board": "BSE",
+          "confirmed_at": "2026-10-11T15:10:02.860333+00:00",
+          "effective_at": "2026-10-11T15:10:00+00:00",
+          "market": "BSE",
+          "status": "UNKNOWN"
+        }
+      ],
+      "positions": [],
+      "state": "CONFIRMED_AS_OF",
+      "system_known_at": "2026-10-11T15:10:03.429035+00:00",
+      "version": 2,
+      "withdrawable": null,
+      "withdrawable_as_of": null
+    },
+    "notifications": {
+      "notifications": [
+        {
+          "category": "STAGE_SUMMARY",
+          "evidence_kind": "HOST_OBSERVATION_SUMMARY",
+          "expires_at": "2026-10-11T23:10:03.994441+00:00",
+          "known_at": "2026-10-11T15:10:03.994441+00:00",
+          "message": "\u672c\u9636\u6bb5\u89c2\u5bdf\u5df2\u8bb0\u5f55\uff0c\u8bf7\u6253\u5f00\u67e5\u770b\u4e8b\u5b9e\u3001\u7f3a\u9879\u548c\u9002\u7528\u8fb9\u754c\uff1b\u4e0d\u6784\u6210\u4ea4\u6613\u5efa\u8bae\u3002",
+          "notification_id": "7637d63c-ec41-48bb-9fe1-dfb12e5ad2f3",
+          "occurred_at": "2026-10-11T15:10:03.891614+00:00",
+          "severity": "NORMAL",
+          "source": {
+            "id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+            "kind": "RUN_SUMMARY",
+            "version": "72d0ed83-c603-42a2-b2f8-04c317a306d5"
+          },
+          "title": "\u672c\u9636\u6bb5\u89c2\u5bdf\u5df2\u8bb0\u5f55",
+          "read_at": null,
+          "read_source": "UNKNOWN",
+          "sent_at": null,
+          "sent_source": "UNKNOWN",
+          "dispatch_started_at": null,
+          "dispatch_started_source": "UNKNOWN",
+          "publish_confirmed_at": null,
+          "accepted_known_at": null,
+          "accepted_occurred_at": null,
+          "accepted_occurred_source": "UNKNOWN",
+          "delivered_at": null,
+          "delivery_source": "UNKNOWN",
+          "external_status": "CHANNEL_DISABLED"
+        },
+        {
+          "category": "NEED_SYNC_RECOVERY",
+          "evidence_kind": "HOST_PENDING_ACCOUNT_FACT",
+          "expires_at": "2026-10-12T15:10:03.303670+00:00",
+          "known_at": "2026-10-11T15:10:03.423825+00:00",
+          "message": "\u5df2\u6709\u8d26\u6237\u8349\u7a3f\u7b49\u5f85\u6838\u5bf9\u548c\u660e\u786e\u786e\u8ba4\uff1b\u4e0d\u5f71\u54cd\u4f60\u7ee7\u7eed\u540c\u6b65\u5176\u4ed6\u4e8b\u5b9e\u3002",
+          "notification_id": "6f867765-80c1-4261-b227-74da36f524af",
+          "occurred_at": "2026-10-11T15:10:03.303670+00:00",
+          "severity": "IMPORTANT",
+          "source": {
+            "id": "9c413253-ae2f-4e02-90dd-c0baa569cdc2",
+            "kind": "ACCOUNT_DRAFT",
+            "version": "READY"
+          },
+          "source_known_at": "2026-10-11T15:10:03.303670+00:00",
+          "title": "\u8d26\u6237\u4e8b\u5b9e\u7b49\u5f85\u6838\u5bf9",
+          "read_at": null,
+          "read_source": "UNKNOWN",
+          "sent_at": null,
+          "sent_source": "UNKNOWN",
+          "dispatch_started_at": null,
+          "dispatch_started_source": "UNKNOWN",
+          "publish_confirmed_at": null,
+          "accepted_known_at": null,
+          "accepted_occurred_at": null,
+          "accepted_occurred_source": "UNKNOWN",
+          "delivered_at": null,
+          "delivery_source": "UNKNOWN",
+          "external_status": "CHANNEL_DISABLED"
+        },
+        {
+          "category": "NEED_SYNC_RECOVERY",
+          "evidence_kind": "HOST_PENDING_ACCOUNT_FACT",
+          "expires_at": "2026-10-12T15:10:02.746546+00:00",
+          "known_at": "2026-10-11T15:10:02.802702+00:00",
+          "message": "\u5df2\u6709\u8d26\u6237\u8349\u7a3f\u7b49\u5f85\u6838\u5bf9\u548c\u660e\u786e\u786e\u8ba4\uff1b\u4e0d\u5f71\u54cd\u4f60\u7ee7\u7eed\u540c\u6b65\u5176\u4ed6\u4e8b\u5b9e\u3002",
+          "notification_id": "f1ac517d-a2cf-4077-95eb-d321ead5409a",
+          "occurred_at": "2026-10-11T15:10:02.746546+00:00",
+          "severity": "IMPORTANT",
+          "source": {
+            "id": "0f8c3b22-5a50-4722-a589-bfd40fa00498",
+            "kind": "ACCOUNT_DRAFT",
+            "version": "READY"
+          },
+          "source_known_at": "2026-10-11T15:10:02.746546+00:00",
+          "title": "\u8d26\u6237\u4e8b\u5b9e\u7b49\u5f85\u6838\u5bf9",
+          "read_at": null,
+          "read_source": "UNKNOWN",
+          "sent_at": null,
+          "sent_source": "UNKNOWN",
+          "dispatch_started_at": null,
+          "dispatch_started_source": "UNKNOWN",
+          "publish_confirmed_at": null,
+          "accepted_known_at": null,
+          "accepted_occurred_at": null,
+          "accepted_occurred_source": "UNKNOWN",
+          "delivered_at": null,
+          "delivery_source": "UNKNOWN",
+          "external_status": "CHANNEL_DISABLED"
+        }
+      ]
+    },
+    "notification_audit": {
+      "business_notifications": 3,
+      "transmission_attempts": 0,
+      "merged_sources": 1,
+      "possible_duplicate_attempts": 0,
+      "failed_attempts": 0,
+      "unknown_attempts": 0,
+      "delivered": null,
+      "delivery_status": "UNKNOWN"
+    },
+    "capability": {
+      "state": "UNGRANTED",
+      "formal_judgment": "DISABLED",
+      "allowed_actions": [],
+      "reason": "\u5c1a\u65e0\u901a\u8fc7\u9a8c\u8bc1\u53ca\u53d7\u63a7\u767b\u8bb0\u7684\u6280\u672f\u80fd\u529b",
+      "funding_state": "UNCONFIRMED",
+      "runtime_state": "NOT_RESTORED",
+      "recovery": {
+        "state": "NOT_RESTORED"
+      },
+      "human_review_label": "\u7ecf\u81ea\u52a8\u9a8c\u8bc1\u4e0e\u6a21\u578b\u6280\u672f\u5ba1\u9605\uff0c\u672a\u7ecf\u4eba\u5de5\u72ec\u7acb\u590d\u6838",
+      "reasons": [],
+      "grant_statuses": [],
+      "lifecycle": {
+        "version": 0,
+        "scopes": {
+          "NEW_RISK": {
+            "state": "ACTIVE",
+            "version": 0,
+            "reason_code": null,
+            "reason": null,
+            "effective_at": null
+          },
+          "MODEL": {
+            "state": "ACTIVE",
+            "version": 0,
+            "reason_code": null,
+            "reason": null,
+            "effective_at": null
+          },
+          "ALL_MONITOR": {
+            "state": "ACTIVE",
+            "version": 0,
+            "reason_code": null,
+            "reason": null,
+            "effective_at": null
+          }
+        },
+        "observations_allowed": true,
+        "independent_risk_observations_allowed": true,
+        "model_judgments_allowed": true,
+        "new_risk_allowed": true,
+        "account_facts_allowed": true,
+        "audit_and_backup_allowed": true
+      },
+      "headline": "\u4ea4\u6613\u5224\u65ad\u672a\u542f\u7528",
+      "formal_capabilities": [],
+      "method_capabilities": []
+    },
+    "grants": [],
+    "no_report_or_model_selection": true,
+    "actual_finished_at": "2026-10-11T15:10:06.269Z",
+    "limitations": {
+      "account_declaration_precision": "minute; covers only displayed cutoff, not later request seconds",
+      "source": "No acquisition requested; missing quote/daily retained",
+      "post_close": "CLOSED is permitted ordinary non-trading-day review; not completed trading-day daily, scheduled checkpoint, or forward sample",
+      "independent_research_samples": 0,
+      "external_delivery": "Not configured or attempted"
+    },
+    "status": "PASS",
+    "browser_closed": true
+  },
+  "after_browser_close": {
+    "api": {
+      "status": "ok",
+      "runtime_role": "IN_PROCESS",
+      "environment": "test"
+    },
+    "worker": {
+      "worker_limit": 1,
+      "worker_state": "RUNNING",
+      "last_worker_error": null,
+      "worker": {
+        "heartbeat_at": "2026-10-11T15:10:06.532181+00:00",
+        "host_owner": {
+          "creation_ticks": 134362049802331146,
+          "nonce": "67484871-2eac-448a-ae4f-4dbc932d4042",
+          "pid": 1064
+        }
+      },
+      "technical_limits": {
+        "attempts": 3,
+        "backoff_seconds": [
+          1,
+          2
+        ],
+        "timeout_seconds": 8,
+        "http_calls_per_attempt": 8,
+        "recursive_tasks": 0
+      },
+      "backlog": 0,
+      "running": 0
+    },
+    "ui_alive": true
+  },
+  "external_attempt_log_exists": false,
+  "completed_at": "2026-10-11T15:10:18.538092+00:00",
+  "local_completed_at": "2026-10-11T23:10:18.538112+08:00"
+}

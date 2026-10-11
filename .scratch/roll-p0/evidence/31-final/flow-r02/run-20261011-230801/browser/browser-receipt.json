@@ -1,0 +1,86 @@
+{
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false,
+  "clock_modified": false,
+  "checks": {},
+  "errors": [],
+  "observations": [],
+  "actual_started_at": "2026-10-11T15:08:24.589Z",
+  "actual_shanghai_date": "2026-10-11",
+  "baseline_effective_minute": "2026-10-11T23:08",
+  "before_declaration": {
+    "account_scope": "普通现金账户",
+    "broker_available": "10000.00",
+    "broker_available_as_of": "2026-10-11T15:08:00+00:00",
+    "broker_available_basis": "USER_CONFIRMED",
+    "broker_frozen": "0.00",
+    "broker_frozen_as_of": "2026-10-11T15:08:00+00:00",
+    "cash_balance": "10000.00",
+    "confirmed_at": "2026-10-11T15:08:24.885046+00:00",
+    "conservative_available": "10000.00",
+    "conservative_available_basis": "USER_CONFIRMED",
+    "currency": "CNY",
+    "effective_at": "2026-10-11T15:08:00+00:00",
+    "historical_return": null,
+    "latest_confirmed_input_at": "2026-10-11T15:08:00.000Z",
+    "latest_effective_fact_at": "2026-10-11T15:08:00+00:00",
+    "latest_fact_recorded_at": "2026-10-11T15:08:24.885046+00:00",
+    "permission_profile": [
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "MAIN",
+        "confirmed_at": "2026-10-11T15:08:24.885046+00:00",
+        "effective_at": "2026-10-11T15:08:00+00:00",
+        "market": "SSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "MAIN",
+        "confirmed_at": "2026-10-11T15:08:24.885046+00:00",
+        "effective_at": "2026-10-11T15:08:00+00:00",
+        "market": "SZSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "STAR",
+        "confirmed_at": "2026-10-11T15:08:24.885046+00:00",
+        "effective_at": "2026-10-11T15:08:00+00:00",
+        "market": "SSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "CHINEXT",
+        "confirmed_at": "2026-10-11T15:08:24.885046+00:00",
+        "effective_at": "2026-10-11T15:08:00+00:00",
+        "market": "SZSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "BSE",
+        "confirmed_at": "2026-10-11T15:08:24.885046+00:00",
+        "effective_at": "2026-10-11T15:08:00+00:00",
+        "market": "BSE",
+        "status": "UNKNOWN"
+      }
+    ],
+    "positions": [],
+    "state": "CONFIRMED_AS_OF",
+    "system_known_at": "2026-10-11T15:08:24.885046+00:00",
+    "version": 1,
+    "withdrawable": null,
+    "withdrawable_as_of": null
+  },
+  "declaration_effective_minute": "2026-10-11T23:08",
+  "status": "FAIL",
+  "failure": "TimeoutError: locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('本次用途', { exact: true })\u001b[22m\n",
+  "browser_closed": true
+}
