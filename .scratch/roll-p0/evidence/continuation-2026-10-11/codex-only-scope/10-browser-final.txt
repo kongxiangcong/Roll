@@ -1,0 +1,45 @@
+[WebServer] INFO:     Started server process [34948]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:18013 (Press CTRL+C to quit)
+[WebServer] (node:13984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:5816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\codex-only-scope.spec.ts:2:1 › new selectors are Codex only while legacy settings and archived identity remain visible (13.4s)
+
+
+  1) tests\e2e\codex-only-scope.spec.ts:2:1 › new selectors are Codex only while legacy settings and archived identity remain visible 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeDisabled[2m([22m[2m)[22m failed
+
+    Locator:  getByLabel('取证方式').locator('option[value="AGENT"]')
+    Expected: disabled
+    Received: enabled
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeDisabled" with timeout 5000ms[22m
+    [2m  - waiting for getByLabel('取证方式').locator('option[value="AGENT"]')[22m
+    [2m    9 × locator resolved to <option disabled value="AGENT">设置后端补充取证（Codex）</option>[22m
+    [2m      - unexpected value "enabled"[22m
+
+
+      16 |   const choices=page.getByLabel('取证方式');
+      17 |   expect(await choices.locator('option').evaluateAll(options=>options.map(o=>(o as HTMLOptionElement).value))).toEqual(['DIRECT_HTTP','AGENT','CODEX']);
+    > 18 |   await expect(choices.locator('option[value="AGENT"]')).toBeDisabled();
+         |                                                          ^
+      19 |   await choices.selectOption('CODEX');await expect(choices).toHaveValue('CODEX');
+      20 |   await page.getByText('后端与运行配置',{exact:true}).click();
+      21 |   await expect(page.getByText(/DeepSeek · 模型 historical-method/)).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\codex-scope\frontend\tests\e2e\codex-only-scope.spec.ts:18:58
+
+    Error Context: ..\.scratch\roll-p0\evidence\continuation-2026-10-11\codex-only-scope\browser-results\codex-only-scope-new-selec-7ed55-ved-identity-remain-visible\error-context.md
+
+  1 failed
+    tests\e2e\codex-only-scope.spec.ts:2:1 › new selectors are Codex only while legacy settings and archived identity remain visible 
