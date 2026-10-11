@@ -34,6 +34,7 @@ from roll.research.training_preflight import training_preflight,TrainingPurpose,
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
 from roll.market.post_close_packet import PacketCommand, ObligationCommand
 from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand
+from roll.market.sse_company_actions import CompanyActionPages
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
@@ -176,6 +177,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return shadow.results(freeze_id)
     prospective=ProspectiveEvidence(evidence,research)
     price_quotes=PriceQuotes(prospective)
+    company_actions=CompanyActionPages(prospective)
     forward=ForwardArchive(shadow,prospective,review_clock)
     app.state.forward=forward
 
@@ -250,6 +252,14 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/research/collections/{plan_id}/sse-company-contract',status_code=201)
     def sse_company_contract_capture(plan_id:str,command:PacketCommand):
         return prospective.post_close.company_contracts.capture(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/sse-company-actions',status_code=201)
+    def sse_company_action_capture(plan_id:str,command:PacketCommand):
+        return company_actions.capture_once(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-company-action-receipts')
+    def sse_company_action_receipts(plan_id:str):
+        return company_actions.receipts(plan_id)
 
     @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)
     def sse_price_assess(plan_id:str,command:PriceQuoteCommand):
