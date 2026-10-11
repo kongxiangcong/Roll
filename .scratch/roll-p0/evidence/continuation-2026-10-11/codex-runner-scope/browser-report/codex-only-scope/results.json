@@ -1,0 +1,124 @@
+{
+  "config": {
+    "configFile": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\frontend\\playwright.default.config.ts",
+    "rootDir": "D:/dsh-proj/Roll/.scratch/worktrees/codex-runner-scope/frontend/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/dsh-proj/Roll/.scratch/worktrees/codex-runner-scope/frontend/test-results/default/run-KsP1mH/codex-only-scope/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/dsh-proj/Roll/.scratch/worktrees/codex-runner-scope/frontend/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "baseline.spec.ts",
+          "cash-equity.spec.ts",
+          "codex-evidence.spec.ts",
+          "codex-only-scope.spec.ts",
+          "csv.spec.ts",
+          "fills.spec.ts",
+          "funding.spec.ts",
+          "market.spec.ts",
+          "market-overflow.spec.ts",
+          "reconcile.spec.ts",
+          "valuation.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\frontend\\test-results\\default\\run-KsP1mH\\codex-only-scope\\results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "codex-only-scope.spec.ts",
+      "file": "codex-only-scope.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "new selectors are Codex only while legacy settings and archived identity remain visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5174,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:12:38.560Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a32222060ee2fcdafe98-6a1bc2865fa8d0a15dd3",
+          "file": "codex-only-scope.spec.ts",
+          "line": 2,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-11T05:12:25.045Z",
+    "duration": 20766.723,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

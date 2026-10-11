@@ -1,0 +1,70 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_cancel_timeout_retry_and_acquisition_share_the_same_frozen_execution_slot _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/codex-runner-scope/.scratch/crmr/test_cancel_timeout_retry_and_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000204C7DFCC30>
+
+    def test_cancel_timeout_retry_and_acquisition_share_the_same_frozen_execution_slot(tmp_path,monkeypatch):
+        from test_codex_evidence import request_data
+        from test_market_directory import establish
+        monkeypatch.setenv('ROLL_ENV','test');monkeypatch.delenv('DEEPSEEK_API_KEY',raising=False);monkeypatch.delenv('ROLL_DEEPSEEK_API_KEY_FILE',raising=False)
+        credential=tmp_path/'auth.json';credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+        fixture=tmp_path/'case.json';fixture.write_text(json.dumps({'cases':[{'case_id':'bounded','gates':{'G4':'INCONCLUSIVE'},'checks_complete':False,'endpoint_reached':False,'observed_value':None}]}))
+        worker=tmp_path/'waiting.py';worker.write_text("import json,sys,time\njson.loads(sys.stdin.readline())\nprint(json.dumps({'kind':'turn','turn_id':'waiting'}),flush=True)\ntime.sleep(120)\n")
+        with TestClient(create_app(tmp_path/'runtime',codex_worker=worker,technical_review_method_file=fixture)) as client:
+            establish(client,['SSE:600519']);request_id=request_data(client)
+            material=client.get('/api/research/method-review-materials').json()[0]
+            path='/api/research/review-materials/'+material['material_id']+'/reviews'
+            assert client.post(path,json={'expected_material_fingerprint':'forged'}).status_code==409
+            started=client.post(path,json={'expected_material_fingerprint':material['material_fingerprint']}).json()
+>           client.post('/api/agents/settings',json={'expected_version':0,'backend':'DEEPSEEK'}).raise_for_status()
+
+backend\tests\application\test_technical_review.py:240: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Response [403 Forbidden]>
+
+    def raise_for_status(self) -> Response:
+        """
+        Raise the `HTTPStatusError` if one occurred.
+        """
+        request = self._request
+        if request is None:
+            raise RuntimeError(
+                "Cannot call `raise_for_status` as the request instance has not been set on this response."
+            )
+    
+        if self.is_success:
+            return self
+    
+        if self.has_redirect_location:
+            message = (
+                "{error_type} '{0.status_code} {0.reason_phrase}' for url '{0.url}'\n"
+                "Redirect location: '{0.headers[location]}'\n"
+                "For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{0.status_code}"
+            )
+        else:
+            message = (
+                "{error_type} '{0.status_code} {0.reason_phrase}' for url '{0.url}'\n"
+                "For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{0.status_code}"
+            )
+    
+        status_class = self.status_code // 100
+        error_types = {
+            1: "Informational response",
+            3: "Redirect response",
+            4: "Client error",
+            5: "Server error",
+        }
+        error_type = error_types.get(status_class, "Invalid status code")
+        message = message.format(self, error_type=error_type)
+>       raise HTTPStatusError(message, request=request, response=self)
+E       httpx2.HTTPStatusError: Client error '403 Forbidden' for url 'http://testserver/api/agents/settings'
+E       For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+
+..\..\..\backend\.venv\Lib\site-packages\httpx2\_models.py:827: HTTPStatusError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_technical_review.py::test_cancel_timeout_retry_and_acquisition_share_the_same_frozen_execution_slot
+1 failed in 11.01s

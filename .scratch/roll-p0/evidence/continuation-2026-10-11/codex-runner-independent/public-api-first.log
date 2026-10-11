@@ -1,0 +1,43 @@
+.F..                                                                     [100%]
+================================== FAILURES ===================================
+_________ test_fresh_method_legacy_get_cancel_and_current_ds_refusal __________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/rcri/test_fresh_method_legacy_get_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FCA03C8770>
+
+    def test_fresh_method_legacy_get_cancel_and_current_ds_refusal(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        monkeypatch.setenv('ROLL_DATA_DIR', str(tmp_path / 'data'))
+        with TestClient(factory()) as client:
+            original = client.get('/api/data/runs/legacy-deepseek-method').json()
+            history = client.get('/api/agents/settings/history').json()
+            before = client.get('/api/account').json()
+            assert original['backend'] == 'DEEPSEEK' and original['status'] == 'CANCELLED'
+            settings = client.get('/api/agents/settings').json()
+            assert settings['supported_backends'] == ['CODEX'] and settings['resave_required'] is True
+            for url, command in [('/api/agents/settings', {'backend': 'DEEPSEEK', 'expected_version': 1}),
+                ('/api/data/requests/missing/deepseek', {'question': 'method-only'}),
+                ('/api/data/requests/missing/agent', {'question': 'method-only'}),
+                ('/api/research/review-materials/missing/reviews', {'expected_material_fingerprint': 'missing'})]:
+                response = client.post(url, json=command)
+                assert response.status_code == 403, response.text
+                assert response.json()['detail']['code'] == 'BACKEND_OUTSIDE_CURRENT_SCOPE'
+            assert client.get('/api/agents/settings/history').json() == history
+            cancelled = client.post('/api/data/runs/legacy-deepseek-method/cancel', json={})
+>           assert cancelled.status_code == 200 and cancelled.json() == original
+E           AssertionError: assert (200 == 200 and {'cancel_requ...: 'CANCELLED'} == {'backend': '...ARCHIVE', ...}
+E            +  where 200 = <Response [200 OK]>.status_code
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Left contains 1 more item:
+E             {'cancel_requested': False}
+E             Right contains 11 more items:
+E             {'backend': 'DEEPSEEK',
+E              'backend_settings': {'backend': 'DEEPSEEK',...
+E             
+E             ...Full output truncated (12 lines hidden), use '-vv' to show)
+
+..\..\..\roll-p0\evidence\continuation-2026-10-11\codex-runner-independent\test_runner_contract.py:55: AssertionError
+=========================== short test summary info ===========================
+FAILED ::test_fresh_method_legacy_get_cancel_and_current_ds_refusal - Asserti...
+1 failed, 3 passed in 31.10s
