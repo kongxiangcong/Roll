@@ -1,0 +1,25 @@
+Failed to find real location of C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\python.exe
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\roll-p0\evidence\continuation-2026-10-11\ticket30-sse-current-independent\preserve_owned.py", line 25, in <module>
+    with ThreadPoolExecutor(max_workers=8) as pool:rows=list(pool.map(preserve,files))
+                                                        ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\dsh-proj\Roll\.scratch\roll-p0\evidence\continuation-2026-10-11\ticket30-sse-current-independent\preserve_owned.py", line 22, in preserve
+    expected=digest(path);extended(dest.parent).mkdir(parents=True,exist_ok=True)
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-ticket30-sse-independent-runtime\\r30si\\test_saved_real_raw_is_method_0'
