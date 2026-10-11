@@ -1,0 +1,22 @@
+..F.                                                                     [100%]
+================================== FAILURES ===================================
+____________________ test_shared_worker_and_restart_cache _____________________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/t30si-first/test_shared_worker_and_restart0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C618DC31D0>
+
+    def test_shared_worker_and_restart_cache(tmp_path,monkeypatch):
+        worker_case(tmp_path,monkeypatch)
+        def forbidden(r):raise AssertionError('Cached source worker must not refetch')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(forbidden),runtime_role='API')) as c:
+            pid=c.get('/api/research/collections').json()[0]['plan_id'];base=f'/api/research/collections/{pid}'
+            receipt=c.get(base+'/sse-stock-suspension-receipts').json()[0]
+            job=c.post(base+'/sse-stock-suspension/check',json={'basis':'独立重启读取已存once job'}).json()
+            assert job['receipt_id']==receipt['receipt_id'] and job['state']=='RECORDED'
+>           assert c.get('/api/account').json()['version']==0
+E           assert 1 == 0
+
+..\..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-stock-independent\test_public.py:109: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-stock-independent\test_public.py::test_shared_worker_and_restart_cache
+1 failed, 3 passed in 43.08s
