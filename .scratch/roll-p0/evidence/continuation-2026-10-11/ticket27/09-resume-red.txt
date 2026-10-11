@@ -1,0 +1,32 @@
+F
+================================== FAILURES ===================================
+_ test_reason_bound_resume_rechecks_current_evidence_and_requires_a_new_action _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r5/test_reason_bound_resume_reche0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F2FAED9CD0>
+
+    def test_reason_bound_resume_rechecks_current_evidence_and_requires_a_new_action(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, package)
+            original = client.get('/api/capabilities/grants').json()[0]
+            old = client.post('/api/actions/evaluate', json={}).json()
+            paused = client.post('/api/capabilities/lifecycle', json={'grant_id': original['grant_id'], 'scope': 'MODEL', 'state': 'SUSPENDED',
+                'reason_code': 'USER_PAUSE', 'reason': '主动暂停', 'expected_version': 0, 'idempotency_key': 'pause'}).json()
+            resume = {'grant_id': original['grant_id'], 'scope': 'MODEL', 'state': 'ACTIVE', 'reason_code': 'USER_PAUSE',
+                'reason': '恢复当前有效资格范围', 'expected_version': 1, 'resume_event_id': paused['event_id'], 'idempotency_key': 'resume'}
+            wrong = client.post('/api/capabilities/lifecycle', json={**resume, 'resume_event_id': 'other-event', 'idempotency_key': 'wrong'})
+            assert wrong.status_code == 409
+            restored = client.post('/api/capabilities/lifecycle', json=resume)
+>           assert restored.status_code == 200, restored.text
+E           AssertionError: {"detail":"REASON_BOUND_RECOVERY_EVIDENCE_REQUIRED"}
+E           assert 409 == 200
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+tests\application\test_capability_lifecycle.py:114: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_lifecycle.py::test_reason_bound_resume_rechecks_current_evidence_and_requires_a_new_action
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 12.60s

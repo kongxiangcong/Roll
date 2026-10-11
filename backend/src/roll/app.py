@@ -39,7 +39,7 @@ from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
-from roll.decisions.capabilities import Capabilities, GrantCommand
+from roll.decisions.capabilities import Capabilities, GrantCommand, LifecycleCommand
 from roll.decisions.actions import Actions, EvaluationCommand
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
@@ -807,6 +807,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     capability_service = Capabilities(ledger, funding, technical_reviews, valuations, capability_method_file, lambda: app.state.backups.recovery())
     app.state.capabilities = capability_service
+    reviews.capabilities = capability_service
+    capability_service.observation_reviews = reviews
 
     @app.post('/api/capabilities/grants', status_code=201)
     def grant_capability(command: GrantCommand):
@@ -837,6 +839,22 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return capability_service.verify_proof(proof_id)
 
     actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
+    capability_service.actions = actions
+    from roll.decisions.recovery import AuthorizationRecovery, RecoveryCommand
+    authorization_recovery = AuthorizationRecovery(capability_service)
+    app.state.authorization_recovery = authorization_recovery
+
+    @app.get('/api/capabilities/recovery')
+    def capability_recovery(): return authorization_recovery.status()
+
+    @app.post('/api/capabilities/recovery', status_code=201)
+    def capability_recovery_check(command: RecoveryCommand): return authorization_recovery.check(command)
+
+    @app.get('/api/capabilities/lifecycle')
+    def capability_lifecycle(): return capability_service.lifecycle()
+
+    @app.post('/api/capabilities/lifecycle')
+    def capability_lifecycle_change(command: LifecycleCommand): return capability_service.change_lifecycle(command)
     app.state.actions = actions
     reviews.actions = actions
     from roll.decisions.intents import Intents, PrepareIntent, DeclareIntent
@@ -844,6 +862,29 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.intents = intents
     ledger.execution_intents = intents
     actions.execution_intents = intents
+    from roll.decisions.monitoring import Monitoring, MonitoringCommand, CorrectionCommand
+    monitoring = Monitoring(capability_service, validation, forward, intents)
+    capability_service.monitoring = monitoring
+    app.state.monitoring = monitoring
+    reviews.monitoring = monitoring
+
+    @app.get('/api/capabilities/corrections')
+    def capability_corrections(): return monitoring.corrections()
+
+    @app.post('/api/capabilities/corrections', status_code=201)
+    def capability_correction(command: CorrectionCommand): return monitoring.record_correction(command)
+
+    @app.get('/api/capabilities/monitoring')
+    def capability_monitoring_records(): return monitoring.records()
+
+    @app.post('/api/capabilities/monitoring/check', status_code=201)
+    def capability_monitoring_check(command: MonitoringCommand): return monitoring.check(command)
+
+    @app.get('/api/capabilities/monitoring/{check_id}')
+    def capability_monitoring_record(check_id: str): return monitoring.get(check_id)
+
+    @app.post('/api/capabilities/monitoring/{check_id}/replay')
+    def capability_monitoring_replay(check_id: str): return monitoring.replay(check_id)
     reviews.intents = intents
 
     @app.post('/api/intents/prepare', status_code=201)
@@ -1043,6 +1084,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker
+        backups.authorization_check=app.state.authorization_recovery.status
         app.state.forward.recovery=backups.recovery
         finish_bootstrap(backups)
     except BaseException:

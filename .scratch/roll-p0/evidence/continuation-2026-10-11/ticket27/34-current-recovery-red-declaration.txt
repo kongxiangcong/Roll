@@ -1,0 +1,60 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r18/test_recovery_requires_current0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021884281CD0>
+
+    def test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        cutoff = (datetime.fromisoformat(package['required_as_of']) + timedelta(minutes=2)).isoformat()
+        package.update(account_version=4, required_as_of=cutoff)
+        package['current_data']['as_of'] = cutoff
+        package['loss_facts']['as_of'] = cutoff
+        package['action_packet'].update(as_of=cutoff)
+        for item in package['action_packet']['opportunities']:
+            for field in ['quote_at', 'quote_available_at', 'forecast_cutoff']: item[field] = cutoff
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            ready(client)
+            backup = client.post('/api/runtime/backups').json()
+            bundle = client.get('/api/runtime/backups/' + backup['backup_id'] + '/export').content
+            assert client.post('/api/runtime/restores', content=bundle).status_code == 202
+        import roll.decisions.capabilities as capabilities
+        import roll.accounts.ledger as ledger
+        class RecoveryClock(datetime):
+            @classmethod
+            def now(cls, tz=None): return datetime.fromisoformat(cutoff).astimezone(tz)
+        monkeypatch.setattr(ledger, 'datetime', RecoveryClock)
+        monkeypatch.setattr(capabilities, 'now', lambda: cutoff)
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            assert client.get('/api/runtime/backups/status').json()['recovery']['state'] == 'RECOVERY_LOCK'
+            snapshot = broker_snapshot('100000.10', '0.00', '0.00')
+            snapshot['pending_items'] = []
+            command = reconcile(2, 'method-current-broker', snapshot)
+            command['payload'].update(effective_at=cutoff, source='隔离METHOD当前券商快照；非真实账户')
+            submit(client, command, 'reconcile-after-restore')
+            submit(client, {'kind': 'ACCOUNT_DECLARATION', 'expected_account_version': 3, 'payload': {
+                'effective_at': cutoff, 'source': '隔离METHOD恢复后逐范围核对', 'record_id': 'current-declaration',
+                'scope': ['TRADES', 'ORDERS', 'CASH', 'EQUITY'], 'changes': 'NONE', 'basis': '当前快照及未决事项逐项核查'}}, 'current-declaration')
+            request = {**method_command(), 'scope': package['scope'], 'expected_account_version': 4,
+                       'required_as_of': cutoff, 'idempotency_key': 'proof-under-lock'}
+            refused = client.post('/api/capabilities/grants', json=request)
+            assert refused.status_code == 409, refused.text
+            assert refused.json()['detail']['reasons'] == ['RECOVERY_LOCK']
+            proof = client.get('/api/capabilities/proofs').json()[-1]
+            assert proof['status'] == 'VERIFIED'
+            recovery = client.get('/api/capabilities/recovery').json()
+            response = client.post('/api/capabilities/recovery', json={'proof_id': proof['proof_id'],
+                'expected_account_version': 4, 'expected_funding_version': 1,
+>               'expected_journal_fingerprint': recovery['journal_fingerprint'],
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                'basis': '当前source-bound METHOD材料与恢复后券商核对', 'idempotency_key': 'recover'})
+E           KeyError: 'journal_fingerprint'
+
+tests\application\test_lifecycle_recovery.py:86: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_recovery.py::test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation
+1 failed in 7.99s

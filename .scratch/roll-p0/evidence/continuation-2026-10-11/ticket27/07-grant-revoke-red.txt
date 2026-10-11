@@ -1,0 +1,31 @@
+F
+================================== FAILURES ===================================
+_ test_revoke_one_grant_preserves_external_pending_and_original_records_after_restart _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r4/test_revoke_one_grant_preserve0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000223EE1A5CD0>
+
+    def test_revoke_one_grant_preserves_external_pending_and_original_records_after_restart(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            prepare(client, package)
+            original = client.get('/api/capabilities/grants').json()[0]
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+            pending = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state': 'OPERATION_PENDING', 'idempotency_key': 'pending', 'external_order_id': 'METHOD-external-1'}).json()
+            response = client.post('/api/capabilities/lifecycle', json={'grant_id': original['grant_id'], 'scope': 'MODEL', 'state': 'REVOKED',
+                'reason_code': 'USER_REVOKE', 'reason': '用户撤回本项资格', 'expected_version': 0, 'idempotency_key': 'revoke'})
+>           assert response.status_code == 200, response.text
+E           AssertionError: {"detail":[{"type":"literal_error","loc":["body","state"],"msg":"Input should be 'SUSPENDED'","input":"REVOKED","ctx":{"expected":"'SUSPENDED'"}},{"type":"literal_error","loc":["body","reason_code"],"msg":"Input should be 'USER_PAUSE'","input":"USER_REVOKE","ctx":{"expected":"'USER_PAUSE'"}},{"type":"extra_forbidden","loc":["body","grant_id"],"msg":"Extra inputs are not permitted","input":"e57fde6b-c86b-4759-a1ab-4fa4d2b8b1d4"}]}
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\application\test_capability_lifecycle.py:90: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_lifecycle.py::test_revoke_one_grant_preserves_external_pending_and_original_records_after_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 8.42s

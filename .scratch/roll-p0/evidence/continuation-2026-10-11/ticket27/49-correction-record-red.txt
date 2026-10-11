@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_correction_records_source_improvement_modules_and_plan_without_rewriting_pass _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r25/test_correction_records_source0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7B197CB00>
+
+    def test_correction_records_source_improvement_modules_and_plan_without_rewriting_pass(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(20, outside=4)
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            grant = prepare(client, package)
+            check = client.post('/api/capabilities/monitoring/check', json={'grant_id': grant['grant_id'], 'basis': 'frozen data drift'}).json()
+            command = {'monitoring_check_id': check['check_id'], 'category': 'DATA_REPAIR',
+                'error_source': '核对四个归档输入是否存在来源映射错误',
+                'expected_improvement': '恢复原冻结输入口径，不重新拟合DEV界限',
+                'affected_modules': ['market/evidence', 'research/forward_features'],
+                'validation_plan': '原始归档重放、映射回归及同一冻结参考的后续监测',
+                'changes_frozen': False, 'idempotency_key': 'data-correction'}
+            response = client.post('/api/capabilities/corrections', json=command)
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+tests\application\test_lifecycle_corrections.py:23: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_corrections.py::test_correction_records_source_improvement_modules_and_plan_without_rewriting_pass
+1 failed in 7.25s

@@ -1,0 +1,38 @@
+F
+================================== FAILURES ===================================
+_ test_registered_maintenance_consumes_monitoring_and_expiry_without_training_or_extra_pass _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r14/test_registered_maintenance_co0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026AA956CB00>
+
+    def test_registered_maintenance_consumes_monitoring_and_expiry_without_training_or_extra_pass(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(20, outside=4)
+        instant = datetime.fromisoformat(package['required_as_of'])
+        clock = [instant]
+        file = save_package(tmp_path / 'qualification.json', package)
+        # Ordered public request contract; maintenance is explicitly driven here.
+        client = TestClient(create_app(tmp_path / 'data', capability_method_file=file, review_clock=lambda: clock[0]))
+        try:
+            prepare(client, package)
+            grant = client.get('/api/capabilities/grants').json()[0]
+            scheduled = client.post('/api/reviews/maintenance', json={'kind': 'WEEKLY', 'exchange': 'SSE',
+                'first_due_at': '2026-10-09T15:30:00+08:00'})
+            assert scheduled.status_code == 201, scheduled.text
+            checked = client.post('/api/reviews/maintenance/check')
+            assert checked.status_code == 200, checked.text
+            rows = checked.json()
+            assert len(rows) == 1 and rows[0]['status'] == 'OVERDUE_CHECKED'
+            checks = rows[0]['business_checks']
+>           assert checks['mature_labels']['status'] == 'CHECKED', checks
+E           AssertionError: {'mature_labels': {'status': 'NOT_CONNECTED', 'value': None}, 'new_experiment_conditions': {'status': 'NOT_CONNECTED', 'value': None}, 'qualification_expiry': {'status': 'NOT_CONNECTED', 'value': None}}
+E           assert 'NOT_CONNECTED' == 'CHECKED'
+E             
+E             - CHECKED
+E             + NOT_CONNECTED
+
+tests\application\test_lifecycle_maintenance.py:28: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_maintenance.py::test_registered_maintenance_consumes_monitoring_and_expiry_without_training_or_extra_pass
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 6.92s

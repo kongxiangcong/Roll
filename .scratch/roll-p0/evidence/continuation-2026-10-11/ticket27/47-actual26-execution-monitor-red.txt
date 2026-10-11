@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_actual_26_partial_fill_keeps_exact_fee_time_and_unknown_scenario_components _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r24/test_actual_26_partial_fill_ke0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C26BD563F0>
+
+    def test_actual_26_partial_fill_keeps_exact_fee_time_and_unknown_scenario_components(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(20)
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            grant = prepare(client, package)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+            actual = fill(2, 'method-partial-outside-band')
+            actual['payload'].update(quantity='100', price='155.00', effective_at=package['required_as_of'])
+            actual['payload']['fee']['amount'] = '7.00'
+            draft = client.post('/api/account/drafts', json=actual).json()
+            confirmed = client.post('/api/account/confirm', json={'draft_id': draft['draft_id'], 'idempotency_key': 'partial-fill',
+                'fill_allocations': [{'intent_id': intent['intent_id'], 'fill_record_id': 'method-partial-outside-band',
+                    'allocated_quantity': '100', 'association_status': 'USER_CONFIRMED'}]})
+            assert confirmed.status_code == 200, confirmed.text
+            allocations = client.get('/api/intents/allocations').json()
+            result = client.post('/api/capabilities/monitoring/check', json={'grant_id': grant['grant_id'], 'basis': '实际26回报字段与冻结假设比较'})
+            assert result.status_code == 201, result.text
+            value = result.json()
+            assert value['status'] == 'RESTRICTED' and value['actual_execution_count'] == 1
+>           observation = value['actual_execution_observations'][0]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'actual_execution_observations'
+
+tests\application\test_capability_monitoring.py:202: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_monitoring.py::test_actual_26_partial_fill_keeps_exact_fee_time_and_unknown_scenario_components
+1 failed in 7.63s

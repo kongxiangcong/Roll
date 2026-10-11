@@ -1,0 +1,45 @@
+[WebServer] INFO:     Started server process [15984]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8077 (Press CTRL+C to quit)
+[WebServer] (node:37576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:32048) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32048) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\lifecycle.spec.ts:2:1 › three pause scopes, evidence-bound recovery and stale cards remain controlled (6.5s)
+
+
+  1) tests\e2e\lifecycle.spec.ts:2:1 › three pause scopes, evidence-bound recovery and stale cards remain controlled 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('region', { name: '暂停与恢复', exact: true }).getByText('FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT')
+    Expected: visible
+    Error: strict mode violation: getByRole('region', { name: '暂停与恢复', exact: true }).getByText('FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT') resolved to 3 elements:
+        1) <p>FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT …</p> aka getByText('FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT · 2026/10/11 16:40:')
+        2) <p>FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT</p> aka getByText('FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT', { exact: true })
+        3) <p>…</p> aka getByText('模型建议 · 已暂停 · FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT · 版本 7 · 2026/10/')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '暂停与恢复', exact: true }).getByText('FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT')[22m
+
+
+      40 |   await settings.getByLabel('资格范围',{exact:true}).selectOption(grant.grant_id);
+      41 |   await settings.getByRole('button',{name:'核对冻结监测',exact:true}).click();
+    > 42 |   await expect(settings.getByText('FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT',{exact:false})).toBeVisible();
+         |                                                                                                      ^
+      43 |   await settings.getByLabel('暂停范围',{exact:true}).selectOption('MODEL');
+      44 |   await settings.getByLabel('操作原因',{exact:true}).fill('缺少健康监测依据不能恢复');
+      45 |   await settings.getByRole('button',{name:'核对原因并恢复所选范围',exact:true}).click();
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket27\frontend\tests\e2e\lifecycle.spec.ts:42:102
+
+    Error Context: test-results\lifecycle-three-pause-scop-e0838-ale-cards-remain-controlled\error-context.md
+
+  1 failed
+    tests\e2e\lifecycle.spec.ts:2:1 › three pause scopes, evidence-bound recovery and stale cards remain controlled 

@@ -1,10 +1,13 @@
 import {useEffect,useState} from 'react';
 import {Capability,request} from '../api';
 
+export const capabilityLabel=(state:string)=>({METHOD_GRANTED:'隔离工程资格已登记',GRANTED:'技术资格已授予',RESTRICTED:'已登记资格当前受限',SUSPENDED:'当前资格已暂停',REVOKED:'原资格已撤回',EXPIRED:'原资格已到期'} as Record<string,string>)[state]??'技术资格未授予';
+export const capabilityReason=(reason:string)=>reason.replaceAll('CAPABILITY_REVOKED','原资格已撤回，须当前新资格及后继授权').replaceAll('CAPABILITY_EXPIRED','原资格已到期，须当前新资格').replaceAll('ALL_MONITOR_SUSPENDED','全部监控已暂停').replaceAll('MODEL_SUSPENDED','模型建议已暂停').replaceAll('RECOVERY_LOCK','恢复锁生效，最新权限及当前依据仍待核');
+
 export function CapabilityPanel(){
   const [value,setValue]=useState<Capability|null>(null),[material,setMaterial]=useState(''),[review,setReview]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
   async function reload(){setValue(await request<Capability>('/capabilities'));}
-  useEffect(()=>{void reload().catch(e=>setError(String(e)));},[]);
+  useEffect(()=>{const refresh=()=>void reload().catch(e=>setError(String(e)));refresh();window.addEventListener('roll-capability-changed',refresh);window.addEventListener('focus',refresh);return()=>{window.removeEventListener('roll-capability-changed',refresh);window.removeEventListener('focus',refresh);};},[]);
   async function check(){
     setBusy(true);setError('');
     try{
@@ -15,7 +18,7 @@ export function CapabilityPanel(){
       await reload();
     }catch(e){setError(String(e));}finally{setBusy(false);}
   }
-  return <section><h2>技术资格与适用范围</h2>{value&&<><p>{value.state==='METHOD_GRANTED'?'隔离工程资格已登记':value.state==='GRANTED'?'技术资格已授予':value.state==='RESTRICTED'?'已登记资格当前受限':'技术资格未授予'}</p><p>{value.reason}</p><p className="muted">{value.human_review_label}</p>{(value.grant_statuses??[]).map(status=><div key={status.grant.grant_id}><p>{status.grant.scope.instruments.join('、')} · {status.grant.scope.frequency} · {status.grant.scope.horizon} 交易日期限 · {status.grant.allowed_actions.join('、')}</p><p>资格到期：{new Date(status.grant.expires_at).toLocaleString('zh-CN')}</p>{status.state==='RESTRICTED'&&<p>此范围当前受限：{status.reason}</p>}{status.grant.evidence_kind==='METHOD_ENGINEERING'&&<p>METHOD 工程凭证，仅隔离验收，不能用于真实正式建议。</p>}</div>)}</>}
+  return <section><h2>技术资格与适用范围</h2>{value&&<><p>{capabilityLabel(value.state)}</p><p>{capabilityReason(value.reason)}</p><p className="muted">{value.human_review_label}</p>{(value.grant_statuses??[]).map(status=><div key={status.grant.grant_id}><p>{status.grant.scope.instruments.join('、')} · {status.grant.scope.frequency} · {status.grant.scope.horizon} 交易日期限 · 原登记动作 {status.grant.allowed_actions.join('、')}</p><p>当前可用动作：{status.allowed_actions?.join('、')||'暂无'}</p><p>资格到期：{new Date(status.grant.expires_at).toLocaleString('zh-CN')}</p>{!['METHOD_GRANTED','GRANTED'].includes(status.state)&&<p>{capabilityLabel(status.state)}：{capabilityReason(status.reason)}</p>}{status.grant.evidence_kind==='METHOD_ENGINEERING'&&<p>METHOD 工程凭证，仅隔离验收，不能用于真实正式建议。</p>}</div>)}</>}
     <form onSubmit={e=>{e.preventDefault();void check();}}><label>冻结审阅材料编号<input required value={material} onChange={e=>setMaterial(e.target.value)}/></label><label>Codex 审阅记录编号<input required value={review} onChange={e=>setReview(e.target.value)}/></label><button disabled={busy} type="submit">核验并登记资格</button></form>{error&&<p role="alert">{error}</p>}
   </section>;
 }

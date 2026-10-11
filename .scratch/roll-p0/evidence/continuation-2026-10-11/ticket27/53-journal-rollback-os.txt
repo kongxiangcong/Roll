@@ -1,0 +1,80 @@
+..F                                                                      [100%]
+================================== FAILURES ===================================
+_____ test_actual_pre27_code_rollback_still_reads_physical_recovery_lock ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g27/test_actual_pre27_code_rollbac0')
+
+    def test_actual_pre27_code_rollback_still_reads_physical_recovery_lock(tmp_path):
+        directory = tmp_path / 'data'
+        server = IntentServer(directory)
+        try:
+            package = json.loads((tmp_path / 'qualification.json').read_text(encoding='utf-8'))['package']
+            import capability_method_app
+            capability_method_app.ANCHOR = datetime.fromisoformat(package['required_as_of'])
+            original = prepare(server.client, package)
+            account = server.client.get('/api/account').json()
+            backup = server.client.post('/api/runtime/backups').json()
+            bundle = server.client.get('/api/runtime/backups/' + backup['backup_id'] + '/export').content
+            revoked = server.client.post('/api/capabilities/lifecycle', json={'grant_id': original['grant_id'],
+                'scope': 'MODEL', 'state': 'REVOKED', 'reason_code': 'USER_REVOKE', 'reason': 'rollback METHOD撤回',
+                'expected_version': 0, 'idempotency_key': 'rollback-revoke'})
+            assert revoked.status_code == 200
+            assert server.client.post('/api/runtime/restores', content=bundle).status_code == 202
+        finally:
+            server.stop()
+        restored = IntentServer(directory)
+        try:
+            assert restored.client.get('/api/runtime/backups/status').json()['recovery']['state'] == 'RECOVERY_LOCK'
+            assert restored.client.get('/api/capabilities/grants/' + original['grant_id'] + '/status').json()['state'] == 'REVOKED'
+        finally:
+            restored.stop()
+        repo = Path(__file__).resolve().parents[3]
+        old = tmp_path / 'pre27-source'
+        raw = subprocess.run(['git', 'archive', '--format=tar', '0d331791e2ab09d4bb226d3e00f438a6d8995530',
+            'backend/src/roll'], cwd=repo, capture_output=True, check=True).stdout
+        old.mkdir()
+        with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
+            for member in archive.getmembers():
+                assert (old / member.name).resolve().is_relative_to(old.resolve())
+            archive.extractall(old, filter='data')
+>       rollback = Server(directory, source_directory=old / 'backend/src')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\recovery\test_lifecycle_process.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <test_account_process.Server object at 0x000001E2A696D550>
+directory = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g27/test_actual_pre27_code_rollbac0/data')
+fault = None
+source_directory = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g27/test_actual_pre27_code_rollbac0/pre27-source/backend/src')
+
+    def __init__(self, directory, fault=None, source_directory=None):
+        port = free_port()
+        env = {**os.environ,"ROLL_DATA_DIR":str(directory),"ROLL_ENV":"test"}
+        env.pop("ROLL_TEST_CRASH_POINT",None)
+        if fault:
+            env["ROLL_TEST_CRASH_POINT"] = fault
+        if source_directory:
+            env["PYTHONPATH"]=str(source_directory)
+        self.log = open(directory.parent/f"server-{port}.log","w",encoding="utf-8")
+        self.process = subprocess.Popen([sys.executable,"-m","uvicorn","roll.app:create_app","--factory","--host","127.0.0.1","--port",str(port)],
+                                        cwd=Path(__file__).resolve().parents[2],env=env,stdout=self.log,stderr=subprocess.STDOUT)
+        self.client = httpx.Client(base_url=f"http://127.0.0.1:{port}",timeout=10)
+        deadline = time.monotonic()+20
+        while time.monotonic()<deadline:
+            try:
+                if self.client.get("/api/health").status_code==200:
+                    return
+            except httpx.TransportError:
+                pass
+            if self.process.poll() is not None:
+                break
+            time.sleep(.1)
+        self.stop()
+>       raise AssertionError("real server did not start")
+E       AssertionError: real server did not start
+
+tests\recovery\test_account_process.py:46: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/recovery/test_lifecycle_process.py::test_actual_pre27_code_rollback_still_reads_physical_recovery_lock
+1 failed, 2 passed in 45.45s
