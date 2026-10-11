@@ -1,0 +1,24 @@
+F..                                                                      [100%]
+================================== FAILURES ===================================
+________________ test_literals_binding_replay_and_owned_tamper ________________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/r30oi/test_literals_binding_replay_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002CB2406C2B0>
+
+    def test_literals_binding_replay_and_owned_tamper(tmp_path,monkeypatch):
+        fix(monkeypatch)
+        calls=[]
+        raw=json.dumps({'date':20261012,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]}).encode()
+        def supplier(request):
+            calls.append(str(request.url));return httpx.Response(200,content=raw)
+        app=create_app(tmp_path,market_transport=httpx.MockTransport(supplier))
+        with TestClient(app) as c:
+            pid=setup(c);p=protocol(c,tmp_path);account=c.get('/api/account').json()
+>           assert p['state']=='DESIGN_REGISTERED'
+                   ^^^^^^^^^^
+E           KeyError: 'state'
+
+..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-obligations-independent\test_independent.py:26: KeyError
+=========================== short test summary info ===========================
+FAILED ..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-obligations-independent\test_independent.py::test_literals_binding_replay_and_owned_tamper
+1 failed, 2 passed in 20.99s
