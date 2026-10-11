@@ -1,0 +1,73 @@
+{
+  "source_oid": "564e7954e28f715dc758d386a9a27a9b073a244d",
+  "root_before": "097ef72f7b16f74a113485e96badcdb38ed35885",
+  "root_noff_merge_oid": "ac5a1197a6d60adc16cd35d14c78cd0ed204e3da",
+  "production_source_matches_independent_tests": [
+    {
+      "path": "backend/src/roll/app.py",
+      "root_sha256": "c80ccc8180e8ba4fcf3b2eaacfe036b6d4f458430a657713ff27c9c6bb36956b",
+      "source_sha256": "c80ccc8180e8ba4fcf3b2eaacfe036b6d4f458430a657713ff27c9c6bb36956b",
+      "canonical_bytes_match": true
+    },
+    {
+      "path": "backend/src/roll/market/post_close_packet.py",
+      "root_sha256": "67da4e25b28cc074ddaa4720894c8810bef1c79df04b2e4aeafbabdb8cd20c52",
+      "source_sha256": "67da4e25b28cc074ddaa4720894c8810bef1c79df04b2e4aeafbabdb8cd20c52",
+      "canonical_bytes_match": true
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-history/sources.json",
+      "root_sha256": "e65238ba11819bedba3ebab26c2825327c2b5300d25813589f1f427cad48a09e",
+      "source_sha256": "e65238ba11819bedba3ebab26c2825327c2b5300d25813589f1f427cad48a09e",
+      "canonical_bytes_match": true
+    },
+    {
+      "path": "backend/tests/application/test_sse_history_assessment.py",
+      "root_sha256": "3f4992f44d4b3cdabfcff24ff3b6d62573260c00ffc42ff4071de9977042671b",
+      "source_sha256": "3f4992f44d4b3cdabfcff24ff3b6d62573260c00ffc42ff4071de9977042671b",
+      "canonical_bytes_match": true
+    }
+  ],
+  "six_raw_checkout_and_git_blob": [
+    {
+      "path": "backend/src/roll/market/reference/sse-history/a51334316a941c30047614138f201d3dd3d988a453fa754b8673ae1fd74bb113.raw",
+      "sha256": "a51334316a941c30047614138f201d3dd3d988a453fa754b8673ae1fd74bb113",
+      "bytes": 1160,
+      "checkout_and_blob_match": true
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-history/478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "bytes": 277193,
+      "checkout_and_blob_match": true
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-history/87c53c172a0a97189c5f1860a4bb8640699a4f194918a5be408f5ef742c61328.raw",
+      "sha256": "87c53c172a0a97189c5f1860a4bb8640699a4f194918a5be408f5ef742c61328",
+      "bytes": 509,
+      "checkout_and_blob_match": true
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-history/2511be0a1a618edfd7576563bdbffcc35c697b9e5ebeb9edc81ff9efa2aa01a8.raw",
+      "sha256": "2511be0a1a618edfd7576563bdbffcc35c697b9e5ebeb9edc81ff9efa2aa01a8",
+      "bytes": 41529,
+      "checkout_and_blob_match": true
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-history/32fc98ea41e599f457609247ba68defb82e6d855aa2551da6923dbf7e44153a7.raw",
+      "sha256": "32fc98ea41e599f457609247ba68defb82e6d855aa2551da6923dbf7e44153a7",
+      "bytes": 39627,
+      "checkout_and_blob_match": true
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-history/15a1180483592fa133cc4da6907ad84428fe0bb56ffd672241c456d14a715066.raw",
+      "sha256": "15a1180483592fa133cc4da6907ad84428fe0bb56ffd672241c456d14a715066",
+      "bytes": 483,
+      "checkout_and_blob_match": true
+    }
+  ],
+  "protected15_and_original19_postmerge_checksum_match": true,
+  "root_application_started": false,
+  "completion30": "partial",
+  "cleanup": false
+}
