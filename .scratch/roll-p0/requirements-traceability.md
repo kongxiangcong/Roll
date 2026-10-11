@@ -121,10 +121,10 @@
 | UI-08 | 研究跨出口隔离、不追认正式资格 | [29] | [26]、[28] | 待实施 |
 | UI-09 | 资格范围/依据/复核与无人工复核说明 | [24] | [27]、[34] | 24工程通过：资格、范围、期限、资金与证据分列，Chrome显示未经人工独立复核及METHOD边界；当前真实资格NOT_GRANTED。[24截图与验收](evidence/24/acceptance.md) |
 | FLOW-01 | 动作成交显式多对多分配、未知保留 | [26] | [29] | 待实施 |
-| FLOW-02 | 已发历史不可改、实际时间链与未知 | [28] | [25]、[26]、[29] | 待实施 |
+| FLOW-02 | 已发历史不可改、实际时间链与未知 | [28] | [25]、[26]、[29] | 内部工程通过：业务原文/时间链不可覆盖；本地dispatch起点、Host获知接收、站内显式已读与外部sent/delivery/read未知分别记录，29查询/报告消费者正在实施。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | FLOW-03 | 三种暂停范围，保留对应事实提醒 | [27] | [28] | 部分：27三范围及目标ALL_MONITOR/REVOKED、事实与降风险分界已验；28通知消费者待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
-| FLOW-04 | 各动作节点服务端复核、原子失效 | [27] | [24]、[25]、[26]、[28] | 部分：27 current/prepare/worker按当前权限同writer复核，并发读写无假恢复锁已验；28 claim/在途待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
-| FLOW-05 | 在途失效提醒与深链当前状态 | [28] | [27] | 待实施 |
+| FLOW-04 | 各动作节点服务端复核、原子失效 | [27] | [24]、[25]、[26]、[28] | 内部工程通过：27 current/prepare/worker当前权限同writer复核、25首次失效事实门禁、28 claim/发送前及在途失效有限链分别验收；不称可撤回已发送socket或实际外发已验。[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)、[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
+| FLOW-05 | 在途失效提醒与深链当前状态 | [28] | [27] | 内部工程通过：在途失效留事实及旧通知深链服务端重新检查当前状态，过期动作不可准备；实际渠道发送待用户配置。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | FLOW-06 | 按原因暂停/恢复，历史结论不倒改 | [27] | [10]、[21] | 部分：27原因绑定后继复核、历史不改及有限恢复锁已验；LOSS峰值/latch保留，正向恢复缺冻结规则仍拒绝；真实长期监测未成立。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
 | FLOW-07 | 撤权不清持仓、未决或实际成交 | [27] | [22]、[26] | 部分：27撤权保持旧grant/持仓/意向及26实际成交；28在途通知待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
 | EVAL-01 | 冻结全链条协议与可比对照 | [17] | [20]、[21] | 部分：17固定M0登记/指纹缺口与完整manifest拒绝通过；20完整协议冻结、21真实检验待联验，[17证据](evidence/17/acceptance.md) |
@@ -160,7 +160,7 @@
 | OPS-06 | 本地访问、权限、密钥及私人数据脱敏 | [13] | [01]、[16]、[29]、[31] | 待实施 |
 | OPS-07 | 架构和工具证明无交易写能力 | [13] | [03]、[31] | 待实施 |
 | OPS-08 | 网页/上传为数据、受控工具不越权 | [13] | [03]、[11]、[12] | 部分：11实际网页数据化、工具面/Node import拒绝、账户/私文件/写哨兵/POST无副作用；有限允许clock透明登记，12/13另验，[11证据](evidence/11/acceptance.md)；12未知账户写工具拒绝、外部文本不增权与零账户变化方法通过；真实提供方对抗未验，[12工程证据](evidence/12/acceptance.md) |
-| OPS-09 | 各健康状态独立、重启先恢复权限 | [27] | [10]、[15]、[28] | 部分：27各健康边界、当前证明/资金变化再锁、重启先恢复权限已验；28重连检查待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
+| OPS-09 | 各健康状态独立、重启先恢复权限 | [27] | [10]、[15]、[28] | 内部工程有限范围通过：27独立健康/恢复权限及28重启当前依赖、未知结果不自动重发、禁用配置零发送均已验；实际渠道与真实合格长期监测另列未完成。[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)、[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 
 ## 数据不变量
 
