@@ -1,6 +1,7 @@
 """Run only after explicit parent release; one fresh namespace, two exact attempts."""
 import hashlib
 import json
+import atexit
 from datetime import datetime, timezone
 from pathlib import Path
 from fastapi.testclient import TestClient
@@ -25,6 +26,12 @@ for filename,expected in plan['source_inventory'].items():
 directory=repo/plan['runtime_namespace']
 assert not directory.exists(),'One-time attempt namespace already exists; no implicit retry.'
 began=datetime.now(timezone.utc).isoformat()
+budget={'execution_plan_hash':plan_sha,'state':'OPEN_ONCE','started_at':began,
+        'maximum_attempts':2,'actual_attempts':'UNKNOWN_UNTIL_RECEIPT','retry_allowed':False}
+def close_budget():
+    budget.update(state='CLOSED_NO_MORE_ATTEMPTS',closed_at=datetime.now(timezone.utc).isoformat())
+    (folder/'actual-budget-closure.json').write_text(json.dumps(budget,indent=2)+'\n',encoding='utf-8',newline='\n')
+atexit.register(close_budget)
 with TestClient(create_app(directory,runtime_role='API')) as client:
     created=client.post('/api/research/collections',json={'instrument':'SSE:600362',
         'basis':'Ninth released finite two-attempt public action source assessment; no qualification'})
@@ -35,6 +42,7 @@ with TestClient(create_app(directory,runtime_role='API')) as client:
         'Frozen exact first-page FH/SG plan, no retry/fallback/redirect/extra page; raw-first only'})
     assert response.status_code==201,response.text
     receipt=response.json()
+    budget['actual_attempts']=receipt['network_calls']
     assert receipt['evidence_kind']=='REAL_SOURCE_ASSESSMENT' and receipt['network_calls']<=2
     assert receipt['implementation_fingerprint']==plan['implementation_fingerprint']
     assert not receipt['system_usable'] and not receipt['complete_action_coverage']
