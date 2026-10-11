@@ -5,10 +5,11 @@ import hashlib,json,sys
 root=Path('D:/dsh-proj/Roll')
 out=Path(__file__).parent
 correction=len(sys.argv)>1 and sys.argv[1]=='length-correction'
-assert len(sys.argv)==1 or correction
-prefix='length-runtime' if correction else 'runtime'
+current=len(sys.argv)>1 and sys.argv[1]=='current-composition'
+assert len(sys.argv)==1 or (len(sys.argv)==2 and (correction or current))
+prefix='current-runtime' if current else ('length-runtime' if correction else 'runtime')
 manifest=json.loads((out/(prefix+'-preservation-manifest.json')).read_text())
-target=root/'.roll-data/implementation-evidence/ticket28'/('length-correction' if correction else 'final-internal-v2')
+target=root/'.roll-data/implementation-evidence/ticket28'/('current-composition' if current else ('length-correction' if correction else 'final-internal-v2'))
 def proof(path):
     file=Path('\\\\?\\'+str(path))
     with file.open('rb') as stream: digest=hashlib.file_digest(stream,'sha256').hexdigest()

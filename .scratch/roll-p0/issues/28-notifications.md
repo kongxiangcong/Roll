@@ -40,3 +40,5 @@
 2026-10-11 最小调用方组合4PASS/1FAIL：既有动作审计重复失效登记在原accepted root也重现，原失败保留并已交上游修复；本票补验同实质失效反复开卡只一条重大通知1PASS/6.87s。运行件六组1,218公开文件100,247,004bytes源/根双侧2,436逐SHA/长度0差，35个精确私有配置/锁只登记排除metadata，未读取/hash/copy。15保护源和原19checksum unchanged；无模型/fit/forecast/SEALED/真实账户授权/外部ntfy调用。最新上游修复接受后最小caller收据将追加，不改旧日志。
 
 2026-10-11 收口长度修正：合法1600中文暂停原因超过渠道4096UTF8 bytes，红灯证实会挡住后续事实提醒。仅出站正文超过限额时改用短当前链接提示，站内原消息/来源不改；不可变attempt显式记录正文投影原因。新源相关出站5PASS/23.16s，2组198公开运行文件15,686,482bytes双侧396逐SHA/长度0差，10个精确私有配置/锁不读取/hash/copy；旧23项源绑定结果保留为历史，不冒充该修正后全量复跑。整体仍partial/真实外发0。
+
+2026-10-11 最终accepted25/30组合：own no-ff a988c93合eb060fd；唯一失效插入seam冲突保留上游首次事实门禁及本票仅首次insert的通知hook。全109当前源/测试身份固定后fresh公开current/outbox2PASS/10.77s/exit0，原current审计红在新上游源修绿，原红/原23项/OS/Chrome/build/长度5项仍各自保留源码版本，不求和。新增72公开运行件5,682,523bytes保全，新与旧完整manifest共1,488文件双侧2,976逐SHA/长度0missing/extra/mismatch，47精确私有配置/锁仅metadata排除；CIM自身0，15保护/原19checksum unchanged，未打开保存SQLite。当前稳定交接供独立内部验收和29调用方接续；真实ntfy0，Completion仍partial，外部实际验收待用户配置。

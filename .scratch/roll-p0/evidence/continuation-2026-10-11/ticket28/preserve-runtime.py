@@ -7,15 +7,17 @@ root = Path('D:/dsh-proj/Roll').resolve()
 tree = (root/'.scratch/worktrees/ticket28').resolve()
 output = tree/'.scratch/roll-p0/evidence/continuation-2026-10-11/ticket28'
 correction = len(sys.argv)>1 and sys.argv[1]=='length-correction'
-assert len(sys.argv)==1 or correction
-suffix='length-correction' if correction else 'final-internal-v2'
-prefix='length-runtime' if correction else 'runtime'
+current = len(sys.argv)>1 and sys.argv[1]=='current-composition'
+assert len(sys.argv)==1 or (len(sys.argv)==2 and (correction or current))
+suffix='current-composition' if current else ('length-correction' if correction else 'final-internal-v2')
+prefix='current-runtime' if current else ('length-runtime' if correction else 'runtime')
 destination = root/'.roll-data/implementation-evidence/ticket28'/suffix
 assert tree.is_relative_to(root) and destination.is_relative_to(root/'.roll-data/implementation-evidence/ticket28')
 profiles = ['.test-tmp-notifications-final','.test-tmp-notifications-composition',
     '.test-tmp-notifications-root-baseline','.test-tmp-notifications-current-supplement',
     '.test-tmp-notifications-browser-final','.test-tmp-notifications-browser-final-errors']
 if correction: profiles=['.test-tmp-notifications-length-red','.test-tmp-notifications-length-final']
+if current: profiles=['.test-tmp-notifications-current-composition']
 entries, excluded = [], []
 for name in profiles:
     directory = tree/'backend'/name
