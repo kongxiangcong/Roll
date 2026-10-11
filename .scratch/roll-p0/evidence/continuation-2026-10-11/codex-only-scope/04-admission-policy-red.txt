@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_legacy_deepseek_admission_is_refused_before_request_retry_or_material_lookup _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/codex-scope/.scratch/csr3/test_legacy_deepseek_admission0')
+
+    def test_legacy_deepseek_admission_is_refused_before_request_retry_or_material_lookup(tmp_path):
+        legacy=legacy_settings(tmp_path)
+        with TestClient(create_app(tmp_path)) as client:
+            history=client.get('/api/agents/settings/history').json()
+            account=client.get('/api/account').json()
+            # Missing identifiers prove refusal precedes lookup and any credential/runtime dispatch.
+            commands=[('/api/data/requests/missing/deepseek',{'question':'依据？','retry_of':'missing'}),
+                      ('/api/data/requests/missing/agent',{'question':'依据？'}),
+                      ('/api/research/review-materials/missing/reviews',{'expected_material_fingerprint':'missing','retry_of':'missing'})]
+            for url,command in commands:
+                response=client.post(url,json=command)
+>               assert response.status_code==403,response.text
+E               AssertionError: {"detail":"事实请求/运行/快照不存在"}
+E               assert 404 == 403
+E                +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_codex_only_scope.py:41: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_codex_only_scope.py::test_legacy_deepseek_admission_is_refused_before_request_retry_or_material_lookup
+1 failed in 7.60s
