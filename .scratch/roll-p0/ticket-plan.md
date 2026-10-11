@@ -1,5 +1,7 @@
 # Roll P0 已发布任务计划
 
+2026-10-11最新前沿：最终四项P2及prepare并发残差已独立5PASS31.09秒并合入67afeadc/收据076e67d5；29工程Completion=complete，26工程complete保持，25政策/生产输入仍partial。31从已接受根执行五入口、三个P95、两项当前检索预算及三进程有限交付检查。28站内/配置/内部链已接受，实际外发待用户配置；30九个有限来源切片已接受但完整来源仍partial，不继续扩源。32—34真实条件不变。[关闭记录](evidence/continuation-2026-10-11/final-review/resolution.md)。以下旧前沿按原时点保留。
+
 当前后端范围按用户2026-10-11[明确修订](provider-scope-2026-10-11.md)：仅CODEX真实取证/技术审阅，DeepSeek及双后端验收从当前与后续tickets完成门槛移除；12/13历史实现与证据保留。34票及原依赖不变，23仍须当前Codex实际接入证据，统计/真实前向/资格条件不放宽。
 
 2026-10-11最终审阅责任修订：四项P2由一个自有树修复，独立接受后继续31有限交付检查；25因未登记政策及生产费用/有效期契约改为partial，旧有限工程接受不改写。29风险SELL报告P2未关闭前保持partial，26 prepare回执合同须修复后复验。Standards0问题，Spec详见[双轴审阅](evidence/continuation-2026-10-11/final-review/review.md)。当前不新增已批准包之外的实际Codex审阅或外部通知发送。

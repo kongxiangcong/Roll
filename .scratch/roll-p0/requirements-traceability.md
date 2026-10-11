@@ -1,5 +1,7 @@
 # Roll P0 需求与证据追踪
 
+2026-10-11最新对账：四项P2及prepare并发已独立接受于4a975c62/67afeadc，收据076e67d5；能力headline、风险费用UNKNOWN报告、同键原回执及折叠保存选择工程缺口关闭。29工程complete；25未登记政策/生产费用及有效期、27LOSS、28实际发送、30完整来源与32—34真实条件不由此次修复关闭。31最终五入口/三个P95/两项当前检索预算和239条逐项收口正在执行；不从旧快照自动PASS。[审阅关闭](evidence/continuation-2026-10-11/final-review/resolution.md)、[最终独立](evidence/continuation-2026-10-11/final-singlefix-independent/acceptance.md)。下表原证据时点保留，当前逐条修订以最终手工对账为准。
+
 2026-10-11当前补充：BR-10、MON-03、DEC-02的风险优先顺序及重复失效事实去重已由25补充修复并独立接受（源`9332d0cd`，收据`eb060fd8`）。同账户双资格中风险动作在收益动作前，计划减仓不增加可用预算；缺失收益政策/授权仍显示独立风险。独立5项公共API及保存件双端核对通过，见[独立验收](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md)。这关闭对应顺序/去重缺陷，不扩大为所有未登记正式政策、实际资格或LOSS正向恢复已完成；以下旧快照按其原时点保留。
 
 2026-10-11用户[后端范围修订](provider-scope-2026-10-11.md)覆盖本表旧双后端要求：当前及后续仅CODEX，DeepSeek不测试、不计完成缺口；旧证据按原时点保留。AT-51仍由23负责真实Codex技术审阅，不用METHOD或排除DeepSeek替代Codex证据；其余统计、资金、真实前向及资格门槛不变。

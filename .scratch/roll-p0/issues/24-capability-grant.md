@@ -32,3 +32,5 @@
 2026-10-11：工程机制完成；确定性登记、持久范围/事件、逐 grant 当前核验及页面披露已实现。最终同一源码公共 FastAPI/真实 SQLite 矩阵 36 passed / 187.79s，Chrome 1 passed / 15.8s，TypeScript/Vite build 通过；阶段红绿与限制见[本票验收](../evidence/24/acceptance.md)。正向均为显式 METHOD_ENGINEERING 隔离凭证（system_usable=false）；生产拒绝该凭证。当前实际研究材料仍 INCOMPLETE/NOT_GRANTED，本票没有实际资金启用、真实模型资格、Provider 调用或券商能力，后续正式判定由 25 接入。
 
 2026-10-11 最终双轴审阅修复（等待独立复验）：current host facts 投影分别列收益/独立风险/METHOD 的当前范围及 headline，今天与设置读取同一 host 真值；METHOD 永不实际启用。真实 GRANTED 的三个不可依法在 METHOD admission 创建的分支仅为纯无副作用展示契约，未注册实际资格。公开负态/恢复锁与真实 SQLite 红绿、Chrome 折叠/保存材料选择见 [本轮回执](../evidence/final-review-fix/acceptance.md)。原控制宿主 proposal/grant 门禁不放宽。
+
+2026-10-11最终独立接受：当前headline及默认折叠/保存材料选择P2已关闭；公开METHOD/暂停/实际本地恢复锁与纯风险/收益/两者GRANTED投影分别核验，后者未执行准入或创建资格。产品4a975c62合入67afeadc、独立收据076e67d5。METHOD仍不启用正式判断，实际NOT_GRANTED；Completion保留工程complete。[独立回执](../evidence/continuation-2026-10-11/final-singlefix-independent/acceptance.md)。

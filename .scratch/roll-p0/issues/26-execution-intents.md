@@ -38,3 +38,5 @@
 2026-10-11：基于25独立验收 tip371dd9 完成本票源码，并合入已接受 d2cb60（含30有限历史生产者）。ExecutionIntent/临时占用、同 SQLite 当前依赖核对、外部未决、显式多对多 ActionFillAllocation 与受控账户原子提交、审计和现有浏览器入口已实现。实现与分阶段实际 SQLite/Chrome/OS 故障恢复证据见 [验收回执](../evidence/ticket26/acceptance.md)。真实研究模型/冻结和原真实19数据库均保护；精确500建议/300成交使用完整 host-hashed METHOD_EXECUTION_500_V1 declaration/protocol/grant/packet工程身份绑定，真实20政策仍200。generic200资格暗改500为409。外部发送/送达/已读 UNKNOWN 交28，偏差报告交29，用户实际外发待自己配置渠道。Completion=partial，等待独立 merger 验收，不预先勾选其验收清单或宣称完成通知联验。
 
 2026-10-11 最终双轴审阅修复（等待独立复验）：prepare 独立命令回执表与 declare 回执域分离；同键同内容按不可变原回执找回，不重新授权或改写当前 intent/listing。首次 receipt/legacy 两查询同读快照并在 writer 复核；公开真实双连接竞态已红绿。旧资料只有 mutable intent/minimal event，无法证明原 response 时明确 LEGACY_PREPARE_RECEIPT_UNAVAILABLE，不迁移猜值。权限/到期/重启/恢复锁/部分成交与冲突边界见 [本轮回执](../evidence/final-review-fix/acceptance.md)。
+
+2026-10-11最终独立接受：产品4a975c62合入67afeadc、收据076e67d5，真实双请求同键均201且原回执一致/仅一个intent；OPERATION_PENDING、权限变更、partial100/余100时原prepare回执不改当前事实。改内容409、新键旧卡409；新自有库模拟旧原回执缺失明确UNAVAILABLE，不宣称旧生产迁移。四项P2独立5PASS31.09秒含此边界，Completion保留complete，实际正式资格NOT_GRANTED。[独立回执](../evidence/continuation-2026-10-11/final-singlefix-independent/acceptance.md)。

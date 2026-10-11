@@ -58,3 +58,5 @@
 2026-10-11 最终内部规格审阅责任回写：既有独立接受的风险排序、预算、失效去重和五状态工程证据保持；整票 Completion 改为 partial。当前冻结收益政策仅覆盖 BUY/REFUSE，ADD/HOLD/判断型 WAIT、反向、冷却及版本化持仓迁移未登记。生产 capture 仍缺实际费用，且把有效期置为已到的 required 截止，不能发布当前正式动作；安全拒绝不等于生产输入契约已实现。这些缺口分别回 20 的政策责任及本票 production capture，不能以 METHOD 或能力标题修复关闭，不补造金融参数、费用、未来有效期或真实资格。见[最终双轴审阅](../evidence/continuation-2026-10-11/final-review/review.md)第5项；四项 P2 的最小修复另留验证和独立接受收据。
 
 2026-10-11 最终双轴审阅修复（等待独立复验）：修正 host 当前展示真值，已接受 METHOD/action 发布仍保持严格 source binding；缺冻结风险费用在29报告保留 None/UNKNOWN。四项内部工程修复不解决本票既存政策/生产费用与有效期输入 partial，不补金融政策或改变冻结 producer。见 [本轮回执](../evidence/final-review-fix/acceptance.md)。
+
+2026-10-11四项P2已独立接受并合入67afeadc、收据076e67d5；能力投影/风险报告/不可变回执/折叠选择修复不关闭本票未登记政策及生产费用/有效期责任，Completion仍partial。[独立回执](../evidence/continuation-2026-10-11/final-singlefix-independent/acceptance.md)。
