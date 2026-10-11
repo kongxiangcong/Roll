@@ -37,3 +37,5 @@
 
 
 2026-10-11：29实现待独立接受。已合最新accepted integration e479002；最终公共API10PASS/93.41s、Chrome1PASS/18.4s、构建exit0。查询/文字与JSON导出、四分曲线、三分结果、原26/28时间/成交链、原27监测/修正及RUN02实际shadow指标已联验。METHOD工程证据不替代G7/实际外部通知/正式资格；15保护源/原19checksum/193donor零变化。全部现存运行13043文件逐SHA/length保全，exact owned CIM0。完整红绿/环境与边界见[evidence/continuation-2026-10-11/ticket29/acceptance.md](../evidence/continuation-2026-10-11/ticket29/acceptance.md)；独立merger负责最终结票，未自行标complete。
+
+2026-10-11：独立merger已接受固定 db6ffec，并 no-ff 合入 80fbcc23。五项只读公共API语义与新合并组合通过；3PASS/1长路径harness失败→执行链PASS，RUN02 fixture失败→单项PASS，完整谱系保留。owner13043文件双端SHA/length零差异，15保护/原19checksum/193donor不变；新独立3122文件另namespace保全，CIM0，0外网/model/fit/forecast/SEALED/实际grant/通知。有限29工程验收PASS，可释放31；METHOD不代替G7/实际通知。详见[独立回执](../evidence/continuation-2026-10-11/ticket29-independent/acceptance.md)。顶部完成状态及根追踪由协调者更新，本评论不改历史声明。
