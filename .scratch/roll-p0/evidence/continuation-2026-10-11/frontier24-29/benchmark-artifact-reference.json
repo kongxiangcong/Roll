@@ -1,0 +1,60 @@
+{
+  "purpose": "Ticket25 offline full local benchmark with preexisting actual frozen parameters and explicit METHOD inputs, no qualification or persisted forecast",
+  "approved_historical_material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+  "approved_historical_material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+  "read_only_metadata_database_sha256": "61f425b5e7b822c6b1e520f87d610aab2d138e25bacf51ba9c7f24cf029c476a",
+  "artifacts": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-corrected-copy\\raw\\062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50.raw",
+      "sha256": "062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50",
+      "bytes": 16282,
+      "kind": "RESEARCH_MODEL_ARTIFACT",
+      "top_level_fields": [
+        "base_rate",
+        "candidate_id",
+        "code_fingerprint",
+        "data_fingerprint",
+        "data_use",
+        "evidence_kind",
+        "features",
+        "fit",
+        "input_sha256",
+        "protocol_fingerprint",
+        "purpose"
+      ]
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-corrected-copy\\raw\\85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d.raw",
+      "sha256": "85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d",
+      "bytes": 474,
+      "kind": "RESEARCH_CALIBRATOR_ARTIFACT",
+      "top_level_fields": [
+        "code_fingerprint",
+        "evidence_kind",
+        "fit_status",
+        "intercept_shift",
+        "iterations",
+        "model_sha256",
+        "partition",
+        "prediction_sha256",
+        "purpose",
+        "slope",
+        "statistical_validation"
+      ]
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket25-offline-model\\candidate-config.json",
+      "sha256": "ceb23fe9881584f1c2c5955497895a2a9bd6a0806888afe2a749750e22dee9e9",
+      "bytes": 3971,
+      "kind": "LOCAL_MINIMUM_CONFIG_PROJECTION",
+      "origin_sha256": "6a24a167d8dec94394f547c7bb977ca01347e15634b6dd249b5c201232025147"
+    }
+  ],
+  "restrictions": [
+    "Read only the two frozen model/calibrator raw artifacts and this minimum candidate-config projection. Do not open full experiment protocol, actual databases, model training/validation input, SEALED or actual account facts.",
+    "Pure numeric inference on METHOD feature vectors only; no source or artifact modification, fit, forecast creation, forward clock, provider, grant or actual profile startup.",
+    "Calibration remains FITTED_UNVALIDATED; actual model remains unqualified. The reviewed historical packet is not newly eligible after source repairs.",
+    "35-name policy benchmark alone must be reported as policy-only; a full local-path timing must include numeric feature/preprocess/prediction/calibration for its actual admitted scope and declared market data/authority/budget steps.",
+    "Outside real model scope returns explicit refusal; do not claim 30 qualified stocks or G1-G7 evidence."
+  ]
+}
