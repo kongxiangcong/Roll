@@ -1,0 +1,118 @@
+{
+  "execution_plan_hash": "c308f42dc7828c5aa092ff4254291b2b3d8f7ba3f6eb9746bddf3f5bb57d1e3e",
+  "execution_started_at": "2026-10-11T11:59:09.390993+00:00",
+  "execution_finished_at": "2026-10-11T11:59:13.910677+00:00",
+  "collection_plan_id": "15ac6148-f741-4a1b-a9d4-a508e1b6f28c",
+  "receipt_id": "17def10c-f770-4163-9055-cf7076727186",
+  "actual_attempts": 2,
+  "responses": {
+    "dividend": {
+      "archive": {
+        "sha256": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e",
+        "path": "raw/20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e.raw",
+        "bytes": 5548,
+        "kind": "SSE_ACTION_RAW_RESPONSE",
+        "source_id": "sse-company-action-pages",
+        "source_url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L&CONDITION_ZBA=1&CONDITION_ZBB=",
+        "parameters": {
+          "isPagination": "true",
+          "pageHelp.pageSize": "5",
+          "pageHelp.pageNo": "1",
+          "pageHelp.beginPage": "1",
+          "pageHelp.cacheSize": "1",
+          "pageHelp.endPage": "1",
+          "COMPANY_CODE": "600362",
+          "IS_STAR": "0",
+          "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L",
+          "CONDITION_ZBA": "1",
+          "CONDITION_ZBB": ""
+        },
+        "received_at": "2026-10-11T11:59:13.753785+00:00",
+        "status_code": 200,
+        "content_type": "application/json;charset=UTF-8",
+        "original_complete": true,
+        "original_completeness": "COMPLETE_BODY_RECEIVED",
+        "cancelled": false,
+        "stream_error": null,
+        "evidence_kind": "REAL_SOURCE_ASSESSMENT"
+      },
+      "parameters": {
+        "isPagination": "true",
+        "pageHelp.pageSize": "5",
+        "pageHelp.pageNo": "1",
+        "pageHelp.beginPage": "1",
+        "pageHelp.cacheSize": "1",
+        "pageHelp.endPage": "1",
+        "COMPANY_CODE": "600362",
+        "IS_STAR": "0",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L",
+        "CONDITION_ZBA": "1",
+        "CONDITION_ZBB": ""
+      },
+      "original_complete": true,
+      "original_completeness": "COMPLETE_BODY_RECEIVED",
+      "cancelled": false,
+      "error": null
+    },
+    "send_share": {
+      "archive": {
+        "sha256": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52",
+        "path": "raw/b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52.raw",
+        "bytes": 496,
+        "kind": "SSE_ACTION_RAW_RESPONSE",
+        "source_id": "sse-company-action-pages",
+        "source_url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L",
+        "parameters": {
+          "isPagination": "true",
+          "pageHelp.pageSize": "5",
+          "pageHelp.pageNo": "1",
+          "pageHelp.beginPage": "1",
+          "pageHelp.cacheSize": "1",
+          "pageHelp.endPage": "1",
+          "COMPANY_CODE": "600362",
+          "IS_STAR": "0",
+          "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L"
+        },
+        "received_at": "2026-10-11T11:59:13.791117+00:00",
+        "status_code": 200,
+        "content_type": "application/json;charset=UTF-8",
+        "original_complete": true,
+        "original_completeness": "COMPLETE_BODY_RECEIVED",
+        "cancelled": false,
+        "stream_error": null,
+        "evidence_kind": "REAL_SOURCE_ASSESSMENT"
+      },
+      "parameters": {
+        "isPagination": "true",
+        "pageHelp.pageSize": "5",
+        "pageHelp.pageNo": "1",
+        "pageHelp.beginPage": "1",
+        "pageHelp.cacheSize": "1",
+        "pageHelp.endPage": "1",
+        "COMPANY_CODE": "600362",
+        "IS_STAR": "0",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L"
+      },
+      "original_complete": true,
+      "original_completeness": "COMPLETE_BODY_RECEIVED",
+      "cancelled": false,
+      "error": null
+    }
+  },
+  "errors": {},
+  "status": "RAW_RECEIVED_PARTIAL",
+  "source_gaps": [
+    "ACTION_RAW_ONLY_RESPONSE_SCHEMA_NOT_ASSESSED",
+    "ACTION_QUERY_DATE_SCOPE_UNPROVEN",
+    "ACTION_CURRENT_COMPLETE_CATEGORY_VERSION_COVERAGE_UNPROVEN",
+    "ACTION_PAYMENT_AND_OLDER_OBLIGATIONS_UNPROVEN"
+  ],
+  "query_date_scope": "UNKNOWN",
+  "current_or_negative_coverage": false,
+  "system_usable": false,
+  "actual_forward_start": false,
+  "capability": "NOT_GRANTED",
+  "background_worker_started": false,
+  "implicit_retry_or_fallback_or_third_call": false,
+  "provider_model_notification_calls": 0
+}

@@ -1,0 +1,113 @@
+{
+  "protected15_git_blobs": {
+    "backend/src/roll/research/models.py": "5b32f8c532aa11ce22de91fb8910dc25fb218b79",
+    "backend/src/roll/research/execution.py": "4e59b10d4fb4c30d9958ad7fa44f65ea1a435194",
+    "backend/src/roll/research/reconstruction.py": "3964841f9be3767c213a134cab0cce8ccd3def4e",
+    "backend/src/roll/research/datasets.py": "c58280e8fca9f2665c7ef344a1f5c62ca2ef5749",
+    "backend/src/roll/research/design.py": "d53c3db6872a42f24f7b2b2a7225fb54da589d71",
+    "backend/src/roll/research/historical_costs.py": "9f0baf8b622bd9d5e8b0cacb428fbba5b05b521b",
+    "backend/src/roll/research/corporate_actions.py": "c3789e1c1dfba342d7f87c364117714fd21a44e1",
+    "backend/src/roll/research/registry.py": "43c01732fd36dccaaa6c35b6ac557336a80c724a",
+    "backend/src/roll/research/training_preflight.py": "f9b9f4bd38eb332f08b2147ff088c153bb974e6e",
+    "backend/src/roll/market/rules.py": "b04c81e30cea87e8d0f3851aa615caa11e1eeecc",
+    "backend/src/roll/research/reference/reconstruction/sources.json": "8e05192b9a00437282323e12f46874ae7520c5e5",
+    "backend/src/roll/research/reference/cash-rights/sources.json": "9f1f67662cef2793f71394e297f0e63fac623fbe",
+    "backend/src/roll/research/shadow.py": "a83de1d6dec80f91b06bf745b7150b48e4480352",
+    "backend/src/roll/research/statistics.py": "a0764e92b1664ec2623fa550a223fca9b296f678",
+    "backend/src/roll/research/validation.py": "df99d5794f955fb5e362e21cac9ac0a1f372f572"
+  },
+  "old_producer_price_and_old_reference_diff": false,
+  "old_producer_fingerprint": "cae8f942a6f95b138743c54fb24348987bf288b8d960658120acf3a28083a0fc",
+  "price_fingerprint": "11a8063025fe548fb1c996923be6c9f818d5e1dd74f47382ed145ecf73019de1",
+  "collector_fingerprint": "63505424914969f9e1bd65237df93c886e163d01d0facb8cd2ca6754ce2eeb20",
+  "assessment_fingerprint": "c8ea677062d1f4ba711151015fa4162ca21df0b9b1c3c19751ba64020a34d13f",
+  "own_inventory": {
+    "backend/src/roll/app.py": {
+      "sha256_lf": "d7920e9449d2f2e97daa444f8f28f2409f0d7062211b0e4fe83b28efacc487b7",
+      "bytes_lf": 60486
+    },
+    "backend/src/roll/market/collection_sources.py": {
+      "sha256_lf": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+      "bytes_lf": 16033
+    },
+    "backend/src/roll/market/sse_company_actions.py": {
+      "sha256_lf": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+      "bytes_lf": 13270
+    },
+    "backend/src/roll/market/sse_action_assessments.py": {
+      "sha256_lf": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+      "bytes_lf": 16027
+    },
+    "backend/tests/application/test_sse_company_actions.py": {
+      "sha256_lf": "10ff8fc9f437e1d9ea3d5684ad76345a342dbab209cea2f5bb382002fb48a494",
+      "bytes_lf": 19546
+    }
+  },
+  "official_documents": {
+    "company_html": {
+      "url": "https://www.sse.com.cn/assortment/stock/list/info/company/index.shtml?COMPANY_CODE=600362",
+      "received_at": "2026-10-11T09:34:41.501704+00:00",
+      "bytes": 39826,
+      "sha256": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+      "classification": "DOCUMENT_LEAD",
+      "role": "company_html",
+      "path": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b.raw",
+      "publication_time": null,
+      "effective_time": null
+    },
+    "company_js": {
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js?v=ssesite_V3.8.0_20260828",
+      "received_at": "2026-10-11T09:35:06.426492+00:00",
+      "bytes": 277193,
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "classification": "DOCUMENT_LEAD",
+      "role": "company_js",
+      "path": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "publication_time": null,
+      "effective_time": null
+    }
+  },
+  "prepared_plan_id": "2f08295e-4b11-4374-98a1-6eeaf2a5b590",
+  "prepared_plan_hash": "424fe512ec29f76c415beba626c176fed8261d8ebdb22da25d9fac5d922f29cd",
+  "new_observed_sources": {
+    "sources": [
+      {
+        "role": "dividend",
+        "sha256": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e",
+        "bytes": 5548,
+        "path": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e.raw",
+        "url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L&CONDITION_ZBA=1&CONDITION_ZBB=",
+        "received_at": "2026-10-11T11:59:13.753785+00:00",
+        "status_code": 200,
+        "classification": "REAL_SOURCE_ASSESSMENT_FINITE_FIRST_PAGE_NOT_FULL_COVERAGE",
+        "publication_time": null,
+        "effective_time": null
+      },
+      {
+        "role": "send_share",
+        "sha256": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52",
+        "bytes": 496,
+        "path": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52.raw",
+        "url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L",
+        "received_at": "2026-10-11T11:59:13.791117+00:00",
+        "status_code": 200,
+        "classification": "REAL_SOURCE_ASSESSMENT_FINITE_FIRST_PAGE_NOT_FULL_COVERAGE",
+        "publication_time": null,
+        "effective_time": null
+      }
+    ],
+    "actual_receipt_id": "17def10c-f770-4163-9055-cf7076727186",
+    "collector_fingerprint": "63505424914969f9e1bd65237df93c886e163d01d0facb8cd2ca6754ce2eeb20",
+    "complete_action_coverage": false,
+    "pending_older_obligations_complete": false
+  },
+  "original19_bytewise_checksum": {
+    "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4",
+    "bytes": 165814272
+  },
+  "original19_sqlite_opened": false,
+  "private_or_prior_preserved_sqlite_opened": false,
+  "real_http_budget_closed": true,
+  "real_http_attempts": 2,
+  "guard_http_calls": 0
+}

@@ -26,6 +26,7 @@ SOURCES = [
     {'id': 'cnequity-eastmoney-status', 'name': 'CNEquity 东财交易状态', 'upstream': 'EASTMONEY', 'group': 'STATUS', 'engine': 'CNEQUITY'},
     {'id': 'cnequity-eastmoney-actions', 'name': 'CNEquity 东财公司行为', 'upstream': 'EASTMONEY', 'group': 'ADJUSTMENTS', 'engine': 'CNEQUITY'},
     {'id': 'cnequity-cninfo-announcements', 'name': 'CNEquity 巨潮公告索引', 'upstream': 'CNINFO', 'group': 'ANNOUNCEMENTS', 'engine': 'CNEQUITY'},
+    {'id': 'sse-company-action-pages', 'name': '上交所公司行动首分页原件', 'upstream': 'SSE', 'group': 'ADJUSTMENTS', 'engine': 'ROLL'},
 ]
 
 
@@ -71,6 +72,12 @@ class CollectionSources:
                         license='Roll adaptation; upstream data rights separate',
                         historical_revision_proof='RECEIVED_ORIGINAL_NOT_HISTORICAL_PIT',
                         unit_scope='Official client display transforms only; sessions/full listing-risk/effective coverage UNKNOWN')
+                if spec['id']=='sse-company-action-pages':
+                    policy.update(basis='2026-10-11授权具体两公司行动raw-first来源评估',max_calls=2,
+                        timeout_seconds=15,adapter_version='sse-action-raw-first-v1',
+                        license='Roll adaptation; upstream data rights separate',
+                        historical_revision_proof='RECEIVED_ORIGINAL_NOT_HISTORICAL_PIT',
+                        unit_scope='First-page raw originals only; dates/category/version/payment/full coverage UNKNOWN')
                 if spec['id']=='sse-suspension-date':
                     policy.update(basis='2026-10-11授权有限指定日期官方SSE source assessment',max_calls=2,
                         timeout_seconds=15,adapter_version='source-bound-sse-suspension-date-v1',

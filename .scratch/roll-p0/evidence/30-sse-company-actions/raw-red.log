@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_raw_first_two_exact_requests_are_archived_without_claiming_action_semantics _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30a-raw-red/test_raw_first_two_exact_reque0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025BF625A190>
+
+    def test_raw_first_two_exact_requests_are_archived_without_claiming_action_semantics(tmp_path,monkeypatch):
+        method_clock(monkeypatch)
+        calls=[];bodies={FH:b'{"opaque":"fixed supplier, no event schema claim"}',SG:b'[]'}
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(200,content=bodies[request.url.params['sqlId']])
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            base=start(client)
+            response=client.post(base+'/sse-company-actions',json={'basis':'METHOD exact bounded documentary requests'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_company_actions.py:24: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_actions.py::test_raw_first_two_exact_requests_are_archived_without_claiming_action_semantics
+1 failed in 5.93s

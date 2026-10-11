@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_fifteen_second_attempt_deadline_keeps_prefix_and_has_no_retry ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30a-cancel-red/test_fifteen_second_attempt_de0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018A48E963F0>
+
+    def test_fifteen_second_attempt_deadline_keeps_prefix_and_has_no_retry(tmp_path,monkeypatch):
+        method_clock(monkeypatch)
+        calls=[]
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(200,stream=SlowExternalBody()) if request.url.params['sqlId']==FH else httpx.Response(200,content=b'[]')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            base=start(client);began=time.monotonic()
+            receipt=client.post(base+'/sse-company-actions',json={'basis':'Bound a slow external stream by elapsed deadline'}).json()
+            elapsed=time.monotonic()-began
+            assert elapsed<18,elapsed
+            first=receipt['responses']['dividend']
+            assert first['error'] in ['TimeoutError','ReadTimeout'] and not first['original_complete']
+>           assert first['cancelled'] and first['original_completeness']=='UNKNOWN_AFTER_CANCELLATION'
+                   ^^^^^^^^^^^^^^^^^^
+E           KeyError: 'cancelled'
+
+backend\tests\application\test_sse_company_actions.py:83: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_actions.py::test_fifteen_second_attempt_deadline_keeps_prefix_and_has_no_retry
+1 failed in 21.70s

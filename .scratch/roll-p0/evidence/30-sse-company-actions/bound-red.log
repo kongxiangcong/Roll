@@ -1,0 +1,46 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_______ test_error_body_is_complete_raw_but_never_an_action_assessment ________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30a-bound-red/test_error_body_is_complete_ra0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000170FC0762C0>
+
+    def test_error_body_is_complete_raw_but_never_an_action_assessment(tmp_path,monkeypatch):
+        method_clock(monkeypatch)
+        calls=[]
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(503 if request.url.params['sqlId']==FH else 200,content=b'upstream error' if request.url.params['sqlId']==FH else b'[]')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            base=start(client)
+            receipt=client.post(base+'/sse-company-actions',json={'basis':'Retain actual HTTP error bytes'}).json()
+            raw=receipt['responses']['dividend']
+            assert raw['archive']['status_code']==503 and raw['error']=='HTTPStatusError'
+>           assert raw['original_complete'] and raw['archive']['original_complete']
+E           assert (False)
+
+backend\tests\application\test_sse_company_actions.py:59: AssertionError
+_____ test_fifteen_second_attempt_deadline_keeps_prefix_and_has_no_retry ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30a-bound-red/test_fifteen_second_attempt_de0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000170FC45D940>
+
+    def test_fifteen_second_attempt_deadline_keeps_prefix_and_has_no_retry(tmp_path,monkeypatch):
+        method_clock(monkeypatch)
+        calls=[]
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(200,stream=SlowExternalBody()) if request.url.params['sqlId']==FH else httpx.Response(200,content=b'[]')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            base=start(client);began=time.monotonic()
+            receipt=client.post(base+'/sse-company-actions',json={'basis':'Bound a slow external stream by elapsed deadline'}).json()
+            elapsed=time.monotonic()-began
+>           assert elapsed<18,elapsed
+E           AssertionError: 20.492971000028774
+E           assert 20.492971000028774 < 18
+
+backend\tests\application\test_sse_company_actions.py:80: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_actions.py::test_error_body_is_complete_raw_but_never_an_action_assessment
+FAILED backend\tests\application\test_sse_company_actions.py::test_fifteen_second_attempt_deadline_keeps_prefix_and_has_no_retry
+2 failed in 30.54s

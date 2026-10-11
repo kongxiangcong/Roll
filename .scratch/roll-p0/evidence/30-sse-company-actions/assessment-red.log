@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_observed_first_pages_become_explicit_candidates_with_unknown_complete_coverage _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30a-assess-red/test_observed_first_pages_beco0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F85462A9E0>
+
+    def test_observed_first_pages_become_explicit_candidates_with_unknown_complete_coverage(tmp_path,monkeypatch):
+        method_clock(monkeypatch)
+        bodies=actual_bodies();calls=[]
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(200,content=bodies[request.url.params['sqlId']])
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            base=start(client)
+            raw=client.post(base+'/sse-company-actions',json={'basis':'Offline exact newly captured public originals'}).json()
+            response=client.post(base+'/sse-action-assessments',json={'source_receipt_id':raw['receipt_id'],'basis':'Explicit observed response schema assessment'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_company_actions.py:42: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_actions.py::test_observed_first_pages_become_explicit_candidates_with_unknown_complete_coverage
+1 failed in 6.16s

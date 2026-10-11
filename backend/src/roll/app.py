@@ -34,6 +34,8 @@ from roll.research.training_preflight import training_preflight,TrainingPurpose,
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
 from roll.market.post_close_packet import PacketCommand, ObligationCommand
 from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand
+from roll.market.sse_company_actions import CompanyActionPages
+from roll.market.sse_action_assessments import ActionAssessments,ActionAssessmentCommand,ActionPacketCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
@@ -176,6 +178,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return shadow.results(freeze_id)
     prospective=ProspectiveEvidence(evidence,research)
     price_quotes=PriceQuotes(prospective)
+    company_actions=CompanyActionPages(prospective)
+    action_assessments=ActionAssessments(company_actions,price_quotes)
     forward=ForwardArchive(shadow,prospective,review_clock)
     app.state.forward=forward
 
@@ -229,7 +233,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def post_close_source_gaps(plan_id: str):
         return {**prospective.post_close.source_gaps(plan_id),
                 'price_quote_assessments': price_quotes.assessments(plan_id),
-                'price_quote_current': price_quotes.current(plan_id)}
+                'price_quote_current': price_quotes.current(plan_id),
+                'action_source_receipts':company_actions.receipts(plan_id),
+                'action_assessments':action_assessments.assessments(plan_id),
+                'action_current':action_assessments.current(plan_id)}
 
     @app.post('/api/research/collections/{plan_id}/sse-suspension',status_code=201)
     def sse_suspension_capture(plan_id:str,command:PacketCommand):
@@ -250,6 +257,30 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/research/collections/{plan_id}/sse-company-contract',status_code=201)
     def sse_company_contract_capture(plan_id:str,command:PacketCommand):
         return prospective.post_close.company_contracts.capture(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/sse-company-actions',status_code=201)
+    def sse_company_action_capture(plan_id:str,command:PacketCommand):
+        return company_actions.capture_once(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-company-action-receipts')
+    def sse_company_action_receipts(plan_id:str):
+        return company_actions.receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-action-assessments',status_code=201)
+    def sse_action_assess(plan_id:str,command:ActionAssessmentCommand):
+        return action_assessments.assess(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-action-assessments')
+    def sse_action_assessment_query(plan_id:str):return action_assessments.assessments(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/sse-action-assessments/current')
+    def sse_action_current(plan_id:str):return action_assessments.current(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-action-packets',status_code=201)
+    def sse_action_packet(plan_id:str,command:ActionPacketCommand):return action_assessments.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-action-packets/{packet_id}')
+    def sse_action_packet_query(plan_id:str,packet_id:str):return action_assessments.packet(plan_id,packet_id)
 
     @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)
     def sse_price_assess(plan_id:str,command:PriceQuoteCommand):
@@ -289,6 +320,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
+        if action_assessments.saved_packet(packet_id):
+            return action_assessments.replay(packet_id)
         if price_quotes.saved_packet(packet_id):
             return price_quotes.replay(packet_id)
         return prospective.post_close.replay(packet_id)
