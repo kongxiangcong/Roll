@@ -201,6 +201,14 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def post_close_build(plan_id:str,command:PacketCommand):
         return prospective.post_close.build(plan_id,command.basis)
 
+    @app.post('/api/research/collections/{plan_id}/sse-history-assessments',status_code=201)
+    def assess_sse_history(plan_id: str,command: PacketCommand):
+        return prospective.post_close.assess_history(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/source-gaps')
+    def post_close_source_gaps(plan_id: str):
+        return prospective.post_close.source_gaps(plan_id)
+
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
         return prospective.post_close.replay(packet_id)
