@@ -1,0 +1,20 @@
+Failed to find real location of C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\python.exe
+E                                                                        [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_two_host_candidates_register_distinct_public_grants_and_proofs _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.scratch/roll-p0/run-ordering/red-host')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25-ordering\\.scratch\\roll-p0\\run-ordering\\red-host'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: FileNotFoundError
+=========================== short test summary info ===========================
+ERROR backend\tests\application\test_action_risk_priority.py::test_two_host_candidates_register_distinct_public_grants_and_proofs
+1 error in 5.79s

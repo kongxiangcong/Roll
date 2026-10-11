@@ -216,96 +216,6 @@ class Actions:
         if packet.get('loss_facts'):
             try: loss = evaluate_loss(funding, LossFacts(**packet['loss_facts']), inputs.get('previous_loss'))
             except (HTTPException, ValueError, KeyError): pass
-        global_gaps = []
-        bound_times = [s['grant']['command']['required_as_of'] for s in statuses if not s['reasons']]
-        if bound_times and datetime.fromisoformat(inputs['required_as_of']) < max(datetime.fromisoformat(t) for t in bound_times): global_gaps.append('CURRENT_CUTOFF_NOT_BOUND')
-        if funding['state'] != 'CONFIRMED' or not funding.get('enabled') or funding.get('pause_latched'): global_gaps.append('FUNDING_NOT_ENABLED')
-        if not inputs['new_risk_check']['allowed']: global_gaps.extend(['ACCOUNT_FACTS_NOT_RECONCILED', *inputs['new_risk_check']['reasons']])
-        if not loss or loss['status'] != 'WITHIN_BOUNDARY': global_gaps.append('LOSS_BOUNDARY_UNAVAILABLE_OR_PAUSED')
-        if packet.get('as_of') is None or datetime.fromisoformat(packet['as_of']) < datetime.fromisoformat(inputs['required_as_of']): global_gaps.append('PURPOSE_DATA_STALE')
-        holdings = {r['instrument']: r for r in account['positions']}
-        prices = {r['instrument']: r.get('price_lower_yuan') for r in packet.get('opportunities', [])}
-        exposure = Decimal('0')
-        for holding in holdings.values():
-            if prices.get(holding['instrument']) is None or holding['quantity'] is None:
-                global_gaps.append('PORTFOLIO_EXPOSURE_UNKNOWN')
-            else: exposure += Decimal(prices[holding['instrument']]) * Decimal(holding['quantity'])
-        available = account.get('conservative_available', account.get('broker_available'))
-        if available is None: global_gaps.append('BROKER_AVAILABLE_UNKNOWN')
-        intent_state = inputs.get('execution_intents', {'intents': [], 'unreflected_reservation_yuan': '0.00', 'pending_attribution': False})
-        cash = max(Decimal('0'), min(Decimal(available or '0'), Decimal(funding.get('capital_amount', '0'))) - Decimal(funding.get('cash_reserve', '0')) - Decimal(intent_state['unreflected_reservation_yuan']))
-        nav = Decimal(packet['loss_facts']['net_assets']) if loss and loss['status'] == 'WITHIN_BOUNDARY' else None
-        opportunities = []
-        for original in packet.get('opportunities', []):
-            row = dict(original)
-            reasons = [*global_gaps, *row.get('input_gaps', [])]
-            if intent_state['pending_attribution']: reasons.append('EXTERNAL_ORDER_OCCUPANCY_ATTRIBUTION_UNKNOWN')
-            if any(v['action'] in {'BUY', 'ADD'} and v['status'] not in {'NOT_EXECUTED', 'RESOLVED'} for v in intent_state['intents']): reasons.append('ACTIVE_NEW_ENTRY_INTENT')
-            if row['instrument'] not in inputs['data_state']['instruments']: reasons.append('OUTSIDE_CURRENT_FINITE_LIST')
-            grant = grant_for('PROFIT_MODEL', row['instrument'], 'BUY')
-            if grant is None: reasons.append('PROFIT_CAPABILITY_NOT_CURRENT_IN_SCOPE')
-            if not any(p['market'] == row.get('market') and p['board'] == row.get('board') and p['status'] == 'OPEN' for p in account['permission_profile']): reasons.append('MARKET_PERMISSION_NOT_OPEN')
-            if row.get('rule_status') != 'ADAPTED' or not row.get('rule_id'): reasons.append('RULE_UNKNOWN_OR_UNSUPPORTED')
-            if row.get('market_status') != 'CONFIRMED_NORMAL': reasons.append('CURRENT_SPECIAL_STATUS_UNKNOWN_OR_NOT_NORMAL')
-            if row.get('calendar_open') is not True: reasons.append('CALENDAR_CLOSED_OR_UNKNOWN')
-            if row.get('daily_completion') != 'COMPLETE': reasons.append('DAILY_INPUT_INCOMPLETE_INTRADAY_VOLUME_EXCLUDED')
-            if row.get('forecast_horizon') != 20: reasons.append('FORECAST_HORIZON_OUTSIDE_POLICY')
-            if not method and row.get('forecast_namespace') in {'HISTORICAL', 'SHADOW', 'ACCOUNT_CONDITIONAL'}: reasons.append('RESEARCH_FORECAST_NOT_CURRENT_FORMAL_INPUT')
-            if row.get('quote_at') is None or datetime.fromisoformat(row['quote_at']) < datetime.fromisoformat(inputs['required_as_of']): reasons.append('QUOTE_STALE_FOR_PURPOSE')
-            if row.get('fees_yuan') is None or row.get('price_upper_yuan') is None: reasons.append('PRICE_OR_FEES_UNKNOWN')
-            required = Decimal(row.get('price_upper_yuan') or '0') * Decimal(packet['policy']['quantity']) + Decimal(row.get('fees_yuan') or '0')
-            if required > Decimal(funding.get('single_exposure', '0')): reasons.append('AUTHORIZED_SINGLE_EXPOSURE')
-            if exposure + required > Decimal(funding.get('total_exposure', '0')): reasons.append('AUTHORIZED_TOTAL_EXPOSURE')
-            row.update(required_cash_yuan=format(required, '.2f'), input_gaps=list(dict.fromkeys(reasons)), grant_id=grant['grant_id'] if grant else None)
-            opportunities.append(row)
-        if opportunities:
-            policy = packet['policy']
-            supported_quantity = ((policy.get('version'), policy.get('quantity')) == ('20-policy-v1', '200') or
-                                  (method and (policy.get('version'), policy.get('quantity')) == ('METHOD_EXECUTION_500_V1', '500')
-                                   and packet.get('method_policy_binding', {}).get('policy_fingerprint') == fingerprint(policy)
-                                   and packet['method_policy_binding'].get('declaration_fingerprint') == packet.get('complete_protocol_fingerprint')))
-            if not supported_quantity or policy.get('probability_threshold') != '0.60' or policy.get('exit') != 'HORIZON_SESSION20_CLOSE' or policy.get('maximum_gross_exposure') != '0.50':
-                base['limitations'].append('FROZEN_POLICY_NOT_SUPPORTED')
-            else:
-                rows = calculate_policy(opportunities, cash, Decimal('0'), exposure, nav, set(holdings), policy)
-                accepted = 0
-                for row in rows:
-                    if row['action'] == 'BUY' and accepted:
-                        row.update(action='REFUSE', reasons=['ONE_NEW_ENTRY_LIMIT'])
-                    grant = grant_for('PROFIT_MODEL', row['instrument'], 'BUY')
-                    data_reasons = [r for r in row['reasons'] if r in {
-                        'CURRENT_CUTOFF_NOT_BOUND', 'PURPOSE_DATA_STALE', 'PORTFOLIO_EXPOSURE_UNKNOWN',
-                        'RULE_UNKNOWN_OR_UNSUPPORTED', 'CURRENT_SPECIAL_STATUS_UNKNOWN_OR_NOT_NORMAL',
-                        'CALENDAR_CLOSED_OR_UNKNOWN', 'DAILY_INPUT_INCOMPLETE_INTRADAY_VOLUME_EXCLUDED',
-                        'QUOTE_STALE_FOR_PURPOSE', 'PRICE_OR_FEES_UNKNOWN'}]
-                    if not loss or loss['status'] == 'RESTRICTED':
-                        data_reasons.append('LOSS_BOUNDARY_UNAVAILABLE_OR_PAUSED')
-                    model_scope_failed = any(r in row['reasons'] for r in ('FORECAST_HORIZON_OUTSIDE_POLICY', 'RESEARCH_FORECAST_NOT_CURRENT_FORMAL_INPUT'))
-                    row.update(account_status=account_status(inputs['new_risk_check']),
-                        data_status={'state': 'RESTRICTED' if data_reasons else 'COMPLETE_CURRENT',
-                                     'namespace': packet['namespace'], 'reasons': data_reasons},
-                        model_status='UNQUALIFIED' if not grant else 'OUT_OF_SCOPE' if model_scope_failed else 'METHOD_ENGINEERING' if method else 'QUALIFIED',
-                        execution_eligibility=('METHOD_ONLY' if method else 'ELIGIBLE') if row['action'] == 'BUY' else 'BLOCKED',
-                        capability_status=capability_status('PROFIT_MODEL', row['instrument'], grant))
-                    if row['action'] == 'BUY':
-                        accepted += 1
-                        row.update(current_quantity='0', target_quantity=policy['quantity'], quantity=policy['quantity'],
-                            basis_type='PROFIT_MODEL', expires_at=packet['expires_at'], data_cutoff=row['quote_at'],
-                            trigger_conditions=['PRICE_WITHIN_FROZEN_INTERVAL', 'CURRENT_DEPENDENCIES_VALID'],
-                            invalidation_conditions=['ACCOUNT_VERSION_CHANGE', 'FUNDING_CHANGE', 'DATA_CHANGE', 'GRANT_RESTRICTION', 'EXPIRY'],
-                            uncertainty='NEXT_PRICE_AND_FILL_NOT_GUARANTEED; no ledger event until explicit actual confirmation')
-                        base['decisions'].append(row)
-                    else:
-                        if not method and row.get('forecast_namespace') in {'HISTORICAL', 'SHADOW', 'ACCOUNT_CONDITIONAL'}:
-                            row.pop('probability', None)
-                            row['probability_visibility'] = 'RESEARCH_VIEW_ONLY'
-                        base['refusals'].append(row)
-        base['joint_budget'] = {'available_after_user_reserve_yuan': format(cash, '.2f'),
-            'unreflected_intent_reservation_yuan': intent_state['unreflected_reservation_yuan'],
-            'reserved_yuan': format(sum((Decimal(r['required_cash_yuan']) for r in base['decisions']), Decimal('0')), '.2f'),
-            'broker_frozen_deducted_again': False, 'existing_exposure_yuan': format(exposure, '.2f'), 'loss': loss,
-            'account_version': account['version'], 'funding_version': funding['version']}
-        base['limitations'].extend(list(dict.fromkeys(global_gaps)))
         if packet.get('risk_inputs'):
             risk_inputs = {**packet['risk_inputs'], 'account': account, 'authorization': funding,
                            'account_use_check': inputs['reduction_check'], 'loss_result': loss,
@@ -350,6 +260,110 @@ class Actions:
                 'data_status': {'state': 'NOT_EVALUATED', 'namespace': packet['namespace'], 'reasons': ['INDEPENDENT_RISK_POLICY_INPUT_NOT_AVAILABLE']},
                 'model_status': 'NOT_APPLICABLE', 'execution_eligibility': 'BLOCKED',
                 'capability_status': capability_status('RISK_POLICY', p['instrument'], None)} for p in account['positions']]
+        global_gaps = []
+        bound_times = [s['grant']['command']['required_as_of'] for s in statuses if not s['reasons']]
+        if bound_times and datetime.fromisoformat(inputs['required_as_of']) < max(datetime.fromisoformat(t) for t in bound_times): global_gaps.append('CURRENT_CUTOFF_NOT_BOUND')
+        if funding['state'] != 'CONFIRMED' or not funding.get('enabled') or funding.get('pause_latched'): global_gaps.append('FUNDING_NOT_ENABLED')
+        if not inputs['new_risk_check']['allowed']: global_gaps.extend(['ACCOUNT_FACTS_NOT_RECONCILED', *inputs['new_risk_check']['reasons']])
+        if not loss or loss['status'] != 'WITHIN_BOUNDARY': global_gaps.append('LOSS_BOUNDARY_UNAVAILABLE_OR_PAUSED')
+        if packet.get('as_of') is None or datetime.fromisoformat(packet['as_of']) < datetime.fromisoformat(inputs['required_as_of']): global_gaps.append('PURPOSE_DATA_STALE')
+        holdings = {r['instrument']: r for r in account['positions']}
+        prices = {r['instrument']: r.get('price_lower_yuan') for r in packet.get('opportunities', [])}
+        exposure = Decimal('0')
+        for holding in holdings.values():
+            if prices.get(holding['instrument']) is None or holding['quantity'] is None:
+                global_gaps.append('PORTFOLIO_EXPOSURE_UNKNOWN')
+            else: exposure += Decimal(prices[holding['instrument']]) * Decimal(holding['quantity'])
+        available = account.get('conservative_available', account.get('broker_available'))
+        if available is None: global_gaps.append('BROKER_AVAILABLE_UNKNOWN')
+        intent_state = inputs.get('execution_intents', {'intents': [], 'unreflected_reservation_yuan': '0.00', 'pending_attribution': False})
+        cash = max(Decimal('0'), min(Decimal(available or '0'), Decimal(funding.get('capital_amount', '0'))) - Decimal(funding.get('cash_reserve', '0')) - Decimal(intent_state['unreflected_reservation_yuan']))
+        nav = Decimal(packet['loss_facts']['net_assets']) if loss and loss['status'] == 'WITHIN_BOUNDARY' else None
+        policy = packet.get('policy') or {}
+        supported_quantity = ((policy.get('version'), policy.get('quantity')) == ('20-policy-v1', '200') or
+                              (method and (policy.get('version'), policy.get('quantity')) == ('METHOD_EXECUTION_500_V1', '500')
+                               and packet.get('method_policy_binding', {}).get('policy_fingerprint') == fingerprint(policy)
+                               and packet['method_policy_binding'].get('declaration_fingerprint') == packet.get('complete_protocol_fingerprint')))
+        supported_policy = (supported_quantity and policy.get('probability_threshold') == '0.60'
+                            and policy.get('exit') == 'HORIZON_SESSION20_CLOSE' and policy.get('maximum_gross_exposure') == '0.50')
+        if packet.get('opportunities') and not supported_policy:
+            base['limitations'].append('FROZEN_POLICY_NOT_SUPPORTED')
+        opportunities = []
+        for original in packet.get('opportunities', []) if supported_policy else []:
+            row = dict(original)
+            reasons = [*global_gaps, *row.get('input_gaps', [])]
+            if intent_state['pending_attribution']: reasons.append('EXTERNAL_ORDER_OCCUPANCY_ATTRIBUTION_UNKNOWN')
+            if any(v['action'] in {'BUY', 'ADD'} and v['status'] not in {'NOT_EXECUTED', 'RESOLVED'} for v in intent_state['intents']): reasons.append('ACTIVE_NEW_ENTRY_INTENT')
+            if row['instrument'] not in inputs['data_state']['instruments']: reasons.append('OUTSIDE_CURRENT_FINITE_LIST')
+            grant = grant_for('PROFIT_MODEL', row['instrument'], 'BUY')
+            if grant is None: reasons.append('PROFIT_CAPABILITY_NOT_CURRENT_IN_SCOPE')
+            if not any(p['market'] == row.get('market') and p['board'] == row.get('board') and p['status'] == 'OPEN' for p in account['permission_profile']): reasons.append('MARKET_PERMISSION_NOT_OPEN')
+            if row.get('rule_status') != 'ADAPTED' or not row.get('rule_id'): reasons.append('RULE_UNKNOWN_OR_UNSUPPORTED')
+            if row.get('market_status') != 'CONFIRMED_NORMAL': reasons.append('CURRENT_SPECIAL_STATUS_UNKNOWN_OR_NOT_NORMAL')
+            if row.get('calendar_open') is not True: reasons.append('CALENDAR_CLOSED_OR_UNKNOWN')
+            if row.get('daily_completion') != 'COMPLETE': reasons.append('DAILY_INPUT_INCOMPLETE_INTRADAY_VOLUME_EXCLUDED')
+            if row.get('forecast_horizon') != 20: reasons.append('FORECAST_HORIZON_OUTSIDE_POLICY')
+            if not method and row.get('forecast_namespace') in {'HISTORICAL', 'SHADOW', 'ACCOUNT_CONDITIONAL'}: reasons.append('RESEARCH_FORECAST_NOT_CURRENT_FORMAL_INPUT')
+            if row.get('quote_at') is None or datetime.fromisoformat(row['quote_at']) < datetime.fromisoformat(inputs['required_as_of']): reasons.append('QUOTE_STALE_FOR_PURPOSE')
+            if row.get('fees_yuan') is None or row.get('price_upper_yuan') is None: reasons.append('PRICE_OR_FEES_UNKNOWN')
+            required = None
+            if grant:
+                required = Decimal(row.get('price_upper_yuan') or '0') * Decimal(policy['quantity']) + Decimal(row.get('fees_yuan') or '0')
+                if required > Decimal(funding.get('single_exposure', '0')): reasons.append('AUTHORIZED_SINGLE_EXPOSURE')
+                if exposure + required > Decimal(funding.get('total_exposure', '0')): reasons.append('AUTHORIZED_TOTAL_EXPOSURE')
+            row.update(required_cash_yuan=format(required, '.2f') if required is not None else None,
+                       input_gaps=list(dict.fromkeys(reasons)), grant_id=grant['grant_id'] if grant else None)
+            opportunities.append(row)
+        if opportunities:
+            # An ungranted model input is a refusal fact, never a numeric model
+            # opportunity. Its probability need not be a usable prediction.
+            qualified = [row for row in opportunities if row['grant_id'] is not None]
+            rows = calculate_policy(qualified, cash, Decimal('0'), exposure, nav, set(holdings), policy)
+            for row in opportunities:
+                if row['grant_id'] is None:
+                    row = {**row, 'action': 'REFUSE', 'reasons': row['input_gaps'], 'model_loss_from_refusal': False}
+                    row.pop('probability', None)
+                    row['probability_visibility'] = 'UNQUALIFIED_INPUT_NOT_SCORED'
+                    rows.append(row)
+            if rows:
+                accepted = 0
+                for row in rows:
+                    if row['action'] == 'BUY' and accepted:
+                        row.update(action='REFUSE', reasons=['ONE_NEW_ENTRY_LIMIT'])
+                    grant = grant_for('PROFIT_MODEL', row['instrument'], 'BUY')
+                    data_reasons = [r for r in row['reasons'] if r in {
+                        'CURRENT_CUTOFF_NOT_BOUND', 'PURPOSE_DATA_STALE', 'PORTFOLIO_EXPOSURE_UNKNOWN',
+                        'RULE_UNKNOWN_OR_UNSUPPORTED', 'CURRENT_SPECIAL_STATUS_UNKNOWN_OR_NOT_NORMAL',
+                        'CALENDAR_CLOSED_OR_UNKNOWN', 'DAILY_INPUT_INCOMPLETE_INTRADAY_VOLUME_EXCLUDED',
+                        'QUOTE_STALE_FOR_PURPOSE', 'PRICE_OR_FEES_UNKNOWN'}]
+                    if not loss or loss['status'] == 'RESTRICTED':
+                        data_reasons.append('LOSS_BOUNDARY_UNAVAILABLE_OR_PAUSED')
+                    model_scope_failed = any(r in row['reasons'] for r in ('FORECAST_HORIZON_OUTSIDE_POLICY', 'RESEARCH_FORECAST_NOT_CURRENT_FORMAL_INPUT'))
+                    row.update(account_status=account_status(inputs['new_risk_check']),
+                        data_status={'state': 'RESTRICTED' if data_reasons else 'COMPLETE_CURRENT',
+                                     'namespace': packet['namespace'], 'reasons': data_reasons},
+                        model_status='UNQUALIFIED' if not grant else 'OUT_OF_SCOPE' if model_scope_failed else 'METHOD_ENGINEERING' if method else 'QUALIFIED',
+                        execution_eligibility=('METHOD_ONLY' if method else 'ELIGIBLE') if row['action'] == 'BUY' else 'BLOCKED',
+                        capability_status=capability_status('PROFIT_MODEL', row['instrument'], grant))
+                    if row['action'] == 'BUY':
+                        accepted += 1
+                        row.update(current_quantity='0', target_quantity=policy['quantity'], quantity=policy['quantity'],
+                            basis_type='PROFIT_MODEL', expires_at=packet['expires_at'], data_cutoff=row['quote_at'],
+                            trigger_conditions=['PRICE_WITHIN_FROZEN_INTERVAL', 'CURRENT_DEPENDENCIES_VALID'],
+                            invalidation_conditions=['ACCOUNT_VERSION_CHANGE', 'FUNDING_CHANGE', 'DATA_CHANGE', 'GRANT_RESTRICTION', 'EXPIRY'],
+                            uncertainty='NEXT_PRICE_AND_FILL_NOT_GUARANTEED; no ledger event until explicit actual confirmation')
+                        base['decisions'].append(row)
+                    else:
+                        if not method and row.get('forecast_namespace') in {'HISTORICAL', 'SHADOW', 'ACCOUNT_CONDITIONAL'}:
+                            row.pop('probability', None)
+                            row['probability_visibility'] = 'RESEARCH_VIEW_ONLY'
+                        base['refusals'].append(row)
+        base['joint_budget'] = {'available_after_user_reserve_yuan': format(cash, '.2f'),
+            'unreflected_intent_reservation_yuan': intent_state['unreflected_reservation_yuan'],
+            'reserved_yuan': format(sum((Decimal(r['required_cash_yuan']) for r in base['decisions']), Decimal('0')), '.2f'),
+            'broker_frozen_deducted_again': False, 'existing_exposure_yuan': format(exposure, '.2f'), 'loss': loss,
+            'account_version': account['version'], 'funding_version': funding['version']}
+        base['limitations'].extend(list(dict.fromkeys(global_gaps)))
         for row in base['decisions']:
             row['decision_id'] = fingerprint({'input': fingerprint(inputs), 'instrument': row['instrument'], 'basis': row['basis_type']})
             row['dependencies'] = {'account_version': account['version'], 'funding_version': funding['version'],
