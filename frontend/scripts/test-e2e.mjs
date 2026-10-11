@@ -1,9 +1,13 @@
 import {mkdirSync,mkdtempSync,readFileSync,writeFileSync} from 'node:fs';
 import {resolve,join} from 'node:path';
 import {spawn} from 'node:child_process';
+import {defaultFiles} from './default-files.mjs';
 
-const files=['baseline','backend-switch','cash-equity','codex-evidence','csv','deepseek-evidence',
-  'fills','funding','market','market-overflow','reconcile','valuation'];
+const selection=process.argv[2];
+if(selection==='--list'){console.log(JSON.stringify(defaultFiles));process.exit(0);}
+if(process.argv.length>3||(selection&&!selection.startsWith('--file=')))throw new Error('Use --list or --file=<current default file>.');
+const files=selection?[selection.slice('--file='.length)]:defaultFiles;
+if(files.some(file=>!defaultFiles.includes(file)))throw new Error('File is outside current default acceptance scope.');
 const externalFlags=['ROLL_ENV_FILE','ROLL_TEST_DATA_DIR','ROLL_PLAYWRIGHT_FACTORY','ROLL_BROWSER_METHOD',
   'ROLL_LIVE_MARKET','ROLL_LIVE_FALLBACK','ROLL_LIVE_CODEX','ROLL_LIVE_BACKEND_SWITCH','ROLL_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_METHOD','ROLL_BROWSER_DEEPSEEK_LIVE',
   'ROLL_RESEARCH_LIVE','ROLL_EXECUTION_LIVE','ROLL_MODEL_LIVE','ROLL_RISK_LIVE',
@@ -20,7 +24,7 @@ const dataRoot=mkdtempSync(join(runtimeParent,'e2e-default-'));
 const profile={...process.env};
 // The default suite proves missing-credential behavior and never sends paid model requests.
 for(const key of ['ROLL_ENV_FILE','ROLL_CODEX_AUTH_FILE','DEEPSEEK_API_KEY','ROLL_DEEPSEEK_API_KEY_FILE','FUYAO_API_KEY','BAOSTOCK_API_KEY','OPENAI_API_KEY'])delete profile[key];
-const results={started_at:new Date().toISOString(),profile:'DEFAULT_OFFLINE',data_root:dataRoot,report_root:reportRoot,
+const results={started_at:new Date().toISOString(),profile:selection?'DEFAULT_OFFLINE_SUBSET':'DEFAULT_OFFLINE',data_root:dataRoot,report_root:reportRoot,
   database_isolation:'PER_FILE; within-file ordered cases share history',files:[]};
 let failed=false;
 for(const file of files){
@@ -30,7 +34,8 @@ for(const file of files){
   const started=new Date().toISOString();
   const code=await new Promise(resolveExit=>{
     const child=spawn(process.execPath,[resolve('node_modules/@playwright/test/cli.js'),'test',`${file}.spec.ts`,'--config=playwright.default.config.ts'],
-      {cwd:process.cwd(),env:{...profile,ROLL_E2E_FILE_DATA_DIR:dataDir,ROLL_E2E_REPORT_DIR:reportDir},shell:false});
+      {cwd:process.cwd(),env:{...profile,ROLL_E2E_FILE_DATA_DIR:dataDir,ROLL_E2E_REPORT_DIR:reportDir,
+        ...(file==='codex-only-scope'?{ROLL_PLAYWRIGHT_FACTORY:'codex_scope_method_app:factory',ROLL_BROWSER_METHOD:'1'}:{})},shell:false});
     for(const stream of [child.stdout,child.stderr])stream.on('data',chunk=>{stdout.push(chunk);process.stdout.write(chunk);});
     child.on('error',error=>{stdout.push(Buffer.from(String(error)));resolveExit(1);});
     child.on('close',code=>resolveExit(code??1));
