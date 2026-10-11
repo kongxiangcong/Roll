@@ -1,0 +1,84 @@
+{
+  "merge_oid": "4cc5b21bfa3c17d751418bbab452479e9c3c3569",
+  "root_before": "a54782f",
+  "protected_and_old_sources_match_handoff_rawGit": {
+    "backend/src/roll/research/models.py": {
+      "git_raw_sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "bytes": 32371
+    },
+    "backend/src/roll/research/execution.py": {
+      "git_raw_sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "bytes": 37186
+    },
+    "backend/src/roll/research/reconstruction.py": {
+      "git_raw_sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "bytes": 18472
+    },
+    "backend/src/roll/research/datasets.py": {
+      "git_raw_sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "bytes": 15398
+    },
+    "backend/src/roll/research/design.py": {
+      "git_raw_sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "bytes": 12909
+    },
+    "backend/src/roll/research/historical_costs.py": {
+      "git_raw_sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "bytes": 5154
+    },
+    "backend/src/roll/research/corporate_actions.py": {
+      "git_raw_sha256": "ba28137c834140c350fc35634ca38bb218c9e1c7a8b8c047de2a976a3cac3c36",
+      "bytes": 7307
+    },
+    "backend/src/roll/research/registry.py": {
+      "git_raw_sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "bytes": 20337
+    },
+    "backend/src/roll/research/training_preflight.py": {
+      "git_raw_sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "bytes": 10008
+    },
+    "backend/src/roll/market/rules.py": {
+      "git_raw_sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "bytes": 13012
+    },
+    "backend/src/roll/research/reference/reconstruction/sources.json": {
+      "git_raw_sha256": "ea7919e633ccc1499da53d848b0581096fd74d3dd17a33a894261ab68bd10004",
+      "bytes": 5396
+    },
+    "backend/src/roll/research/reference/cash-rights/sources.json": {
+      "git_raw_sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "bytes": 85112
+    },
+    "backend/src/roll/research/shadow.py": {
+      "git_raw_sha256": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+      "bytes": 39344
+    },
+    "backend/src/roll/research/statistics.py": {
+      "git_raw_sha256": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+      "bytes": 11758
+    },
+    "backend/src/roll/research/validation.py": {
+      "git_raw_sha256": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+      "bytes": 37521
+    },
+    "backend/src/roll/market/post_close_packet.py": {
+      "git_raw_sha256": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18",
+      "bytes": 71275
+    },
+    "backend/src/roll/market/sse_company_contract.py": {
+      "git_raw_sha256": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035",
+      "bytes": 20590
+    },
+    "backend/src/roll/market/sse_price_quotes.py": {
+      "git_raw_sha256": "915869c247276a72894d742db85349cf87bc4bf73f4bee85b8dc31cbffc929db",
+      "bytes": 12596
+    }
+  },
+  "old_parser": "cae8f942a6f95b138743c54fb24348987bf288b8d960658120acf3a28083a0fc",
+  "new_parser": "11a8063025fe548fb1c996923be6c9f818d5e1dd74f47382ed145ecf73019de1",
+  "app_root_delta": "diff --git a/backend/src/roll/app.py b/backend/src/roll/app.py\nindex 47ee97f..f680501 100644\n--- a/backend/src/roll/app.py\n+++ b/backend/src/roll/app.py\n@@ -33,6 +33,7 @@ from roll.research.technical_review import TechnicalReviews,ReviewCommand as Tec\n from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training\n from roll.research.prospective import ProspectiveEvidence, CollectionCommand\n from roll.market.post_close_packet import PacketCommand, ObligationCommand\n+from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand\n from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand\n from roll.research.synthetic import SyntheticDevelopment\n from roll.market.collection_sources import SourcePolicyCommand\n@@ -174,6 +175,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo\n     def shadow_results(freeze_id:str):\n         return shadow.results(freeze_id)\n     prospective=ProspectiveEvidence(evidence,research)\n+    price_quotes=PriceQuotes(prospective)\n     forward=ForwardArchive(shadow,prospective,review_clock)\n     app.state.forward=forward\n \n@@ -225,7 +227,9 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo\n \n     @app.get('/api/research/collections/{plan_id}/source-gaps')\n     def post_close_source_gaps(plan_id: str):\n-        return prospective.post_close.source_gaps(plan_id)\n+        return {**prospective.post_close.source_gaps(plan_id),\n+                'price_quote_assessments': price_quotes.assessments(plan_id),\n+                'price_quote_current': price_quotes.current(plan_id)}\n \n     @app.post('/api/research/collections/{plan_id}/sse-suspension',status_code=201)\n     def sse_suspension_capture(plan_id:str,command:PacketCommand):\n@@ -247,6 +251,26 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo\n     def sse_company_contract_capture(plan_id:str,command:PacketCommand):\n         return prospective.post_close.company_contracts.capture(plan_id,command.basis)\n \n+    @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)\n+    def sse_price_assess(plan_id:str,command:PriceQuoteCommand):\n+        return price_quotes.assess(plan_id,command)\n+\n+    @app.get('/api/research/collections/{plan_id}/sse-price-quotes')\n+    def sse_price_assessments(plan_id:str):\n+        return price_quotes.assessments(plan_id)\n+\n+    @app.get('/api/research/collections/{plan_id}/sse-price-quotes/current')\n+    def sse_price_current(plan_id:str):\n+        return price_quotes.current(plan_id)\n+\n+    @app.post('/api/research/collections/{plan_id}/sse-price-packets',status_code=201)\n+    def sse_price_packet(plan_id:str,command:PricePacketCommand):\n+        return price_quotes.build(plan_id,command)\n+\n+    @app.get('/api/research/collections/{plan_id}/sse-price-packets/{packet_id}')\n+    def sse_price_packet_get(plan_id:str,packet_id:str):\n+        return price_quotes.packet(plan_id,packet_id)\n+\n     @app.get('/api/research/collections/{plan_id}/sse-company-contract-receipts')\n     def sse_company_contract_receipts(plan_id:str):\n         return prospective.post_close.company_contracts.receipts(plan_id)\n@@ -265,6 +289,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo\n \n     @app.post('/api/research/post-close-packets/{packet_id}/replay')\n     def post_close_replay(packet_id:str):\n+        if price_quotes.saved_packet(packet_id):\n+            return price_quotes.replay(packet_id)\n         return prospective.post_close.replay(packet_id)\n     app.state.collection_sources=prospective.sources\n     development=SyntheticDevelopment(research,executions,models)\n",
+  "actual_HTTP": 0,
+  "model_calls": 0,
+  "SEALED": 0
+}
