@@ -39,4 +39,6 @@ Stages are separate, not a sum or new full-suite assertion. Own PYTHONPATH, -B/P
 
 ## Remaining internal producer and source frontier
 
+Final new preservation target `continuation-ticket30-sse-company-contract` contains exactly **11 named t30u directories/1577 files/181872574 bytes/0 SHA or length mismatches**. All actual/test/preservation native processes exited. The manifest retains precise source/destination paths, including the failed METHOD/harness stages and one actual API runtime. No old preservation namespace was opened or overwritten, no SQLite connection was used while copying. `git-original-identity.json` proves both actual raw bodies and both new fixed document Git blobs have exact bytes/SHA/length.
+
 See [next-slice.md](next-slice.md). Quote full price/turnover raw fields under this exact select still need a finite current caller/parser beyond this unit/phase slice; full daily completion/session/API unit scope and complete listing/risk/relisting/action lifecycle sources remain unproved. Some are implementable with already fixed official fields, others require precise new authoritative documentation/data. No user configuration is the cause of these internal gaps. The first criterion stays open; complete_action_coverage and pending_older_obligations_complete remain false and no actual forward clock/grant starts.
