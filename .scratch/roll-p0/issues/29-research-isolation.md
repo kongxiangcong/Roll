@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** in-progress
 
 **Primary acceptance:** AT-61。
 
@@ -26,6 +26,8 @@
 - [ ] 遵守目录与实施约束；仅引入本票实际需要的模块、接口和校验，保留 PRD 必需控制，不新增假设性兼容层、审批或泛化框架。复用已有查询契约和页面，不建设新的研究门户或通用报表平台。
 
 ## Comments
+
+2026-10-11：已从独立接受28的 integration `1387bdd282cba92f86ed7ef35f7bcfb9190ee213` 在自有 `ticket29` 工作树认领，按公共FastAPI/真实SQLite/Chrome逐切片TDD实施。193文件已固定20 METHOD donor先逐SHA/length核验并copy，再仅打开新copy；不生成fit/forecast/replay/advance/SEALED，不修改15保护源码或原19库。独立merger负责最终接受；root状态/追踪由协调者维护。
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。20 等既有能力已由 28 的依赖链覆盖，不再列传递冗余的直接阻塞。
 

@@ -1,0 +1,30 @@
+F.                                                                       [100%]
+================================== FAILURES ===================================
+_ test_unexecuted_reason_and_unlinked_actual_trade_are_not_retroactive_research_qualification _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r13/test_unexecuted_reason_and_unl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E066B476F0>
+
+    def test_unexecuted_reason_and_unlinked_actual_trade_are_not_retroactive_research_qualification(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package(); p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', capability_method_file=file)) as client:
+            original = client.get('/api/research/shadow/' + FREEZE).json()
+            evaluation = prepare_copied_actual(client, p)
+            intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+            resolution = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state': 'NOT_EXECUTED', 'reason': 'METHOD user chose not to place this order', 'idempotency_key': 'unexecuted'})
+            assert resolution.status_code == 200, resolution.text
+            trade = fill(3, 'self-directed-after-research', fee_status='PROVISIONAL')
+            trade['payload'].update(quantity='100', price='10.10', effective_at=p['required_as_of'])
+            assert submit(client, trade, 'unlinked').status_code == 200
+            params = {'decision_id': intent['decision_id'], 'evaluation_id': intent['evaluation_id'], 'intent_id': intent['intent_id']}
+            report = client.get('/api/research/reports/' + FREEZE, params=params).json()
+>           assert report['execution_deviations'][0]['unexecuted_reason'] == resolution.json()['resolution']
+E           AssertionError: assert None == 'METHOD user chose not to place this order'
+
+tests\application\test_reports.py:38: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_unexecuted_reason_and_unlinked_actual_trade_are_not_retroactive_research_qualification
+1 failed, 1 passed in 22.20s

@@ -1,0 +1,42 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r10/test_report_projects_real_part0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E39A8335C0>
+
+    def test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', capability_method_file=file)) as client:
+            old_shadow = client.get('/api/research/shadow/' + FREEZE).json()
+            evaluation = prepare_copied_actual(client, p)
+            response = client.post('/api/intents/prepare', json=intent_command(evaluation))
+            assert response.status_code == 201, response.text
+            intent = response.json()
+            later = (datetime.fromisoformat(p['required_as_of']) + timedelta(minutes=7)).isoformat()
+            monkeypatch.setattr('roll.accounts.ledger.now', lambda: later)
+            monkeypatch.setattr('roll.decisions.intents.now', lambda: later)
+            pending = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state': 'OPERATION_PENDING', 'occurred_at': p['required_as_of'], 'external_order_id': 'METHOD-order',
+                'idempotency_key': 'report-pending'})
+            assert pending.status_code == 200, pending.text
+            command = fill(3, 'report-partial')
+            occurred = (datetime.fromisoformat(p['required_as_of']) + timedelta(minutes=2)).isoformat()
+            command['payload'].update(instrument=intent['instrument'], quantity='100', price='140.00', effective_at=occurred)
+            draft = client.post('/api/account/drafts', json=command)
+            assert draft.status_code == 201, draft.text
+            confirmed = client.post('/api/account/confirm', json={'draft_id': draft.json()['draft_id'],
+                'idempotency_key': 'report-partial', 'fill_allocations': [{'intent_id': intent['intent_id'],
+                    'fill_record_id': 'report-partial', 'allocated_quantity': '100', 'association_status': 'USER_CONFIRMED'}]})
+>           assert confirmed.status_code == 200, confirmed.text
+E           AssertionError: {"detail":{"code":"QUARANTINED_DRAFT","issues":["effective_at: 不能确认未来事实"],"draft_id":"978a43c5-36d6-4c23-a06e-a01e07aacb6d"}}
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+tests\application\test_reports.py:119: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim
+1 failed in 11.02s

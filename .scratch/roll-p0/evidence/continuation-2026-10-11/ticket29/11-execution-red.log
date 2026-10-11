@@ -1,0 +1,34 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r7/test_report_projects_real_part0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000235FF017490>
+
+    def test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', capability_method_file=file)) as client:
+            old_shadow = client.get('/api/research/shadow/' + FREEZE).json()
+            evaluation = prepare_copied_actual(client, p)
+            response = client.post('/api/intents/prepare', json=intent_command(evaluation))
+            assert response.status_code == 201, response.text
+            intent = response.json()
+            pending = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state': 'OPERATION_PENDING', 'occurred_at': p['required_as_of'], 'external_order_id': 'METHOD-order',
+                'idempotency_key': 'report-pending'})
+            assert pending.status_code == 200, pending.text
+            command = fill(3, 'report-partial')
+            command['payload'].update(quantity='100', price='140.00', effective_at=p['required_as_of'])
+            draft = client.post('/api/account/drafts', json=command)
+>           assert draft.status_code == 200, draft.text
+E           AssertionError: {"draft_id":"de97e74c-78a3-4f54-bd14-8ad719ea02f1","command":{"kind":"FILL","expected_account_version":3,"payload":{"effective_at":"2026-10-11T11:58:31+00:00","source":"用户核对真实成交回报","instrument":"SSE:600000","direction":"BUY","quantity":"100","price":"140.00","record_id":"report-partial","fill_id":"report-partial","order_id":"order-1","behavior_context":"NO_RECOMMENDATION","fee":{"status":"KNOWN","amount":"5.00","reserve_amount":null,"basis":"券商成交回报"},"broker_available_after":null}},"preview":{"version":{"before":3,"after":4},"cash_balance":{"before":"100000.10","after":"85995.10"},"broker_available":{"before":"100000.10","after":null},"positions":{"before":[{"acquisition_cost":"0.00","baseline_source":"用户核对券商快照","buy_time":null,"cost_basis":"KNOWN","historical_fees":null,"instrument":"SSE:600000","quantity":"0","reference_cost":null,"sellable_quantity":"0"}],"after":[{"baseline_source":"用户核对券商快照","buy_time":null,"historical_fees":null,"instrument":"SSE:600000","quantity":"100","reference_cost":null,"sellable_quantity":"0","acquisition_cost":"14005.00","cost_basis":"KNOWN"}]},"confirmed_at":{"before":"2026-10-11T11:58:39.334555+00:00","after":"2026-10-11T11:58:39.932258+00:00"},"broker_available_as_of":{"before":"2026-10-11T11:58:31+00:00","after":null},"broker_available_basis":{"before":"USER_RECONCILED","after":"UNKNOWN_AFTER_FILL"},"conservative_available":{"before":"100000.10","after":"85995.10"},"conservative_available_basis":{"before":"USER_CONFIRMED","after":"从最近已确认可用资金估计，非当前券商快照"},"lots":{"before":[],"after":[{"lot_id":"baseline:SSE:600000","instrument":"SSE:600000","original_quantity":"0","remaining_quantity":"0","original_cost":null,"remaining_cost":null,"cost_basis":"UNKNOWN","effective_at":"2026-10-11T11:58:31+00:00"},{"lot_id":"report-partial","instrument":"SSE:600000","original_quantity":"100","remaining_quantity":"100","original_cost":"14005.00","remaining_cost":"14005.00","cost_basis":"KNOWN","effective_at":"2026-10-11T11:58:31+00:00"}]},"fills":{"before":null,"after":[{"order_id":"order-1","broker_available_after":null,"quantity":"100","record_id":"report-partial","behavior_context":"NO_RECOMMENDATION","instrument":"SSE:600000","direction":"BUY","price":"140.00","fill_id":"report-partial","fee":{"status":"KNOWN","amount":"5.00","reserve_amount":null,"basis":"券商成交回报"},"effective_at":"2026-10-11T11:58:31+00:00","source":"用户核对真实成交回报","gross_amount":"14000.00","charged_fee":"5.00","action_association":{"status":"UNKNOWN","decision_id":null},"event_id":null,"receipt_id":null}]},"latest_fill_facts":{"before":null,"after":["SSE:600000 实际新增 100 股暴露（没有对应建议，截至 2026-10-11T11:58:31+00:00）"]},"system_known_at":{"before":"2026-10-11T11:58:39.334555+00:00","after":"2026-10-11T11:58:39.932258+00:00"},"latest_fact_recorded_at":{"before":"2026-10-11T11:58:39.293608+00:00","after":"2026-10-11T11:58:39.932258+00:00"}},"created_at":"2026-10-11T11:58:39.932791+00:00","status":"READY","issues":[]}
+E           assert 201 == 200
+E            +  where 201 = <Response [201 Created]>.status_code
+
+tests\application\test_reports.py:64: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim
+1 failed in 11.16s
