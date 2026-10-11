@@ -39,6 +39,7 @@ from roll.research.corporate_actions import CashRightsCommand, assess_cash_right
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.decisions.capabilities import Capabilities, GrantCommand
+from roll.decisions.actions import Actions, EvaluationCommand
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
@@ -801,6 +802,34 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def capability_proof_check(proof_id: str):
         return capability_service.verify_proof(proof_id)
 
+    actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
+    app.state.actions = actions
+    reviews.actions = actions
+
+    @app.post('/api/actions/evaluate', status_code=201)
+    def evaluate_actions(command: EvaluationCommand):
+        return actions.evaluate(command)
+
+    @app.get('/api/actions/current')
+    def current_actions(instrument: str | None = None):
+        return actions.current(instrument)
+
+    @app.get('/api/actions/evaluations/{evaluation_id}')
+    def action_evaluation(evaluation_id: str):
+        return actions.get(evaluation_id)
+
+    @app.post('/api/actions/evaluations/{evaluation_id}/replay')
+    def action_replay(evaluation_id: str):
+        return actions.replay(evaluation_id)
+
+    @app.get('/api/actions/events')
+    def action_events():
+        return actions.events()
+
+    @app.get('/api/actions/audit')
+    def action_audit():
+        return actions.metrics()
+
     @app.post("/api/formal/evaluate")
     @app.post("/api/formal/probability")
     def formal_closed():
@@ -931,7 +960,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         for hint in ledger.equity_hints():
             pending.append(f"外部权益线索待核：{hint['content']}；来源 {hint['source']}，获知于 {hint['learned_at']}，未确认个人账户实际发生")
         return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
-                "funding": funding.current(), "technical_capability": capability_service.current(), "runtime_health": runtime_health(), "recovery": app.state.backups.recovery()}
+                "funding": funding.current(), "technical_capability": capability_service.current(), "runtime_health": runtime_health(), "recovery": app.state.backups.recovery(), "current_actions": actions.current()}
 
     return app
 
