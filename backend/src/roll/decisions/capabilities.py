@@ -22,6 +22,43 @@ RISK_GATES = {'DATA', 'RULE_QUANTITY', 'AUTHORIZATION', 'STRESS_EXECUTION', 'ONL
 ACTIONS = {'BUY', 'ADD', 'HOLD', 'REDUCE', 'EXIT', 'WAIT'}
 
 
+def current_presentation(value):
+    """Present already-checked host facts; this never admits a capability."""
+    current = [s for s in value['grant_statuses'] if not s['reasons'] and s['allowed_actions']]
+    def entry(status):
+        grant = status['grant']
+        return {'basis_type': grant['candidate_kind'], 'grant_id': grant['grant_id'],
+                'scope': grant['scope'], 'allowed_actions': status['allowed_actions'],
+                'expires_at': grant['expires_at'], 'system_usable': grant['system_usable']}
+    actual = [entry(s) for s in current if s['state'] == 'GRANTED' and s['grant']['system_usable']]
+    method = [entry(s) for s in current if s['state'] == 'METHOD_GRANTED']
+    kinds = {s['basis_type'] for s in actual}
+    locked = value['runtime_state'] == 'RECOVERY_LOCK'
+    if locked:
+        actual = []; method = []
+        headline = '恢复锁生效，交易判断未启用'
+    elif kinds == {'PROFIT_MODEL', 'RISK_POLICY'}:
+        headline = '收益判断与独立降风险能力有效'
+    elif 'PROFIT_MODEL' in kinds:
+        headline = '收益判断能力有效'
+    elif 'RISK_POLICY' in kinds:
+        headline = '独立降风险能力有效，收益判断未启用'
+    elif method:
+        headline = 'METHOD 工程能力有效，实际交易判断未启用'
+    elif value['state'] == 'REVOKED':
+        headline = '能力已撤回，交易判断未启用'
+    elif value['state'] == 'EXPIRED':
+        headline = '能力已到期，交易判断未启用'
+    elif any(s['state'] == 'SUSPENDED' for s in value['lifecycle']['scopes'].values()):
+        headline = '能力已暂停，交易判断未启用'
+    elif value['state'] == 'RESTRICTED':
+        headline = '当前资格受限，交易判断未启用'
+    else:
+        headline = '交易判断未启用'
+    return {'formal_judgment': 'ENABLED' if actual else 'DISABLED', 'headline': headline,
+            'formal_capabilities': actual, 'method_capabilities': method}
+
+
 def source_inventory():
     root = Path(__file__).parents[1]
     return {str(p.relative_to(root)).replace('\\', '/'): hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
@@ -364,6 +401,7 @@ class Capabilities:
             if event:
                 reasons = json.loads(event[0]).get('reasons', [])
                 result.update(reasons=reasons, reason='；'.join(reasons) or result['reason'])
+            result.update(current_presentation(result))
             return result
         statuses = []
         for grant in grants:
@@ -389,7 +427,8 @@ class Capabilities:
         result.update(selected, grant_statuses=statuses)
         if grant_id is None:
             result['allowed_actions'] = sorted({action for s in statuses for action in s['allowed_actions']})
-        # Ticket25 owns formal action publication. METHOD authority is never usable in the actual system.
+        result.update(current_presentation({**result, 'grant_statuses': [selected]} if grant_id is not None else result))
+        # The summary reports capability scope, not a published executable action.
         return result
 
     def expire(self, db):

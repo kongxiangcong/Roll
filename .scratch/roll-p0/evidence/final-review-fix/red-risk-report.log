@@ -1,0 +1,68 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_linked_risk_sell_report_exports_keep_unfrozen_proposal_fee_unknown[100-REDUCE-100-130000.10] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/red-risk-report/test_linked_risk_sell_report_e0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000248B5EAB5C0>
+price = '100', action = 'REDUCE', quantity = '100', nav = '130000.10'
+
+    @pytest.mark.parametrize('price,action,quantity,nav', [('100', 'REDUCE', '100', '130000.10'), ('1000', 'EXIT', '300', '400000.10')])
+    def test_linked_risk_sell_report_exports_keep_unfrozen_proposal_fee_unknown(tmp_path, monkeypatch, price, action, quantity, nav):
+        method_clock(monkeypatch)
+        p = risk_package()
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        p['loss_facts'].update(baseline_assets=nav, net_assets=nav)
+        p['action_packet']['risk_inputs']['quotes']['SSE:600000']['last'] = price
+        file = save_package(tmp_path / 'qualification.json', p)
+>       directory = copy_donor(tmp_path / 'data')  # Byte verification before any connection.
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_final_risk_report.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\tests\support\report_method_app.py:31: in copy_donor
+    shutil.copyfile(source, destination)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+src = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/20/independent-api-runtime-fixed/backups/d5bec84c-4b9...ca2d91d4e3b/research-inputs/method-execution/03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet')
+dst = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/red-risk-report/test_linked_risk_sell_report_e0/...ca2d91d4e3b/research-inputs/method-execution/03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.fr\\red-risk-report\\test_linked_risk_sell_report_e0\\data\\backups\\d5bec84c-4b9b-45a3-afe9-bca2d91d4e3b\\research-inputs\\method-execution\\03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\shutil.py:262: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_final_risk_report.py::test_linked_risk_sell_report_exports_keep_unfrozen_proposal_fee_unknown[100-REDUCE-100-130000.10]
+1 failed in 4.86s

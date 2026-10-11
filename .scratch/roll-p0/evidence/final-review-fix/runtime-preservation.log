@@ -1,0 +1,9 @@
+Failed to find real location of C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\python.exe
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\final-review-fix\.scratch\roll-p0\evidence\final-review-fix\preserve.py", line 39, in <module>
+    assert destination.stat().st_size==size and digest(destination)==before
+           ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\final-review-fix\\runtime\\.fr\\affected\\test_json_text_curve_and_resea0\\data\\backups\\b4fcf8ac-abd8-4b0c-abad-ee0d7054c1ad\\research-inputs\\method-execution\\03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet'
