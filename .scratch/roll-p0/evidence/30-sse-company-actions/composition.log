@@ -1,0 +1,43 @@
+F.                                                                       [100%]
+================================== FAILURES ===================================
+_ test_action_successor_consumes_price_predecessor_without_changing_quote_or_ungranted_caller _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30a-composition/test_action_successor_consumes0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002719EE12EA0>
+
+    def test_action_successor_consumes_price_predecessor_without_changing_quote_or_ungranted_caller(tmp_path,monkeypatch):
+        from test_sse_company_contract import snap,company
+        method_clock(monkeypatch)
+        monkeypatch.setattr('roll.market.sse_price_quotes.now',lambda:'2026-10-11T21:00:00+08:00')
+        bodies=actual_bodies();calls=[]
+        def supplier(request):
+            calls.append(request)
+            if request.url.path=='/commonQuery.do':return httpx.Response(200,content=bodies[request.url.params['sqlId']])
+            return httpx.Response(200,json=snap() if request.url.host=='yunhq.sse.com.cn' else company())
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier),runtime_role='API')) as client:
+            base=start(client)
+            source=client.post(base+'/sse-company-contract',json={'basis':'Existing company client METHOD source'}).json()
+            original=client.post(base+'/post-close-packets',json={'basis':'Existing original daily source packet'}).json()
+            quote=client.post(base+'/sse-price-quotes',json={'source_receipt_id':source['receipt_id'],'basis':'Existing explicit quote successor'}).json()
+            price=client.post(base+'/sse-price-packets',json={'source_receipt_id':source['receipt_id'],
+                'assessment_ids':[quote['assessment_id']],'predecessor_packet_id':original['packet_id'],'basis':'Existing fixed price consumer'}).json()
+            raw=client.post(base+'/sse-company-actions',json={'basis':'Offline action source observation'}).json()
+            action=client.post(base+'/sse-action-assessments',json={'source_receipt_id':raw['receipt_id'],'basis':'Explicit finite action observation'}).json()
+            response=client.post(base+'/sse-action-packets',json={'source_receipt_id':raw['receipt_id'],
+                'assessment_ids':[action['assessment_id']],'predecessor_packet_id':price['packet_id'],'basis':'Explicit action successor on saved price packet'})
+            assert response.status_code==201,response.text
+            packet=response.json()
+            assert packet['predecessor']==price and price['predecessor']==original
+            assert not packet['forward_admissible'] and not packet['system_usable']
+            for saved in [original,price,packet]:
+                assert client.post('/api/research/post-close-packets/'+saved['packet_id']+'/replay').json()['matches_original']
+            assert client.get(base+'/sse-price-packets/'+price['packet_id']).json()==price
+            current=client.get('/api/actions/current?instrument=SSE:600362').json()
+>           assert current['decisions']==[] and not current['system_usable']
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'system_usable'
+
+backend\tests\application\test_sse_company_actions.py:170: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_actions.py::test_action_successor_consumes_price_predecessor_without_changing_quote_or_ungranted_caller
+1 failed, 1 passed in 15.72s

@@ -1,0 +1,26 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+___ test_existing_run02_audit_locates_two_shadow_and_one_conditional_record ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/t29i-short/test_existing_run02_audit_loca0')
+
+    def test_existing_run02_audit_locates_two_shadow_and_one_conditional_record(tmp_path):
+        client,calls=offline(clone('test_run_audit_counts_existing0',tmp_path/'audit'))
+        with client:
+            tasks=client.get('/api/reviews/tasks').json()
+>           task=next(t for t in tasks if t.get('audit_id'))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket29-independent\test_public.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = <dict_keyiterator object at 0x000001FEFD331120>
+
+>   task=next(t for t in tasks if t.get('audit_id'))
+                                  ^^^^^
+E   AttributeError: 'str' object has no attribute 'get'
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket29-independent\test_public.py:151: AttributeError
+=========================== short test summary info ===========================
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket29-independent/test_public.py::test_existing_run02_audit_locates_two_shadow_and_one_conditional_record
+1 failed, 1 passed in 38.40s

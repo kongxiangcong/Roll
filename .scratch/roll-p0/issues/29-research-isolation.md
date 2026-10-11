@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
 **Primary acceptance:** AT-61。
 
@@ -27,8 +27,17 @@
 
 ## Comments
 
+2026-10-11：已从独立接受28的 integration `1387bdd282cba92f86ed7ef35f7bcfb9190ee213` 在自有 `ticket29` 工作树认领，按公共FastAPI/真实SQLite/Chrome逐切片TDD实施。193文件已固定20 METHOD donor先逐SHA/length核验并copy，再仅打开新copy；不生成fit/forecast/replay/advance/SEALED，不修改15保护源码或原19库。独立merger负责最终接受；root状态/追踪由协调者维护。
+
 2026-10-07：按已确认拆分发布；尚未实施或验收。20 等既有能力已由 28 的依赖链覆盖，不再列传递冗余的直接阻塞。
 
 2026-10-07：补齐平台策略、实际用户与执行偏差的三分报告及 26/28 联验；仅完成文档修订，尚未实施或形成实际偏差报告。
 
 2026-10-08 本轮依赖前沿核查：未启动本票。28通知/深链出口未完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
+
+
+2026-10-11：29实现待独立接受。已合最新accepted integration e479002；最终公共API10PASS/93.41s、Chrome1PASS/18.4s、构建exit0。查询/文字与JSON导出、四分曲线、三分结果、原26/28时间/成交链、原27监测/修正及RUN02实际shadow指标已联验。METHOD工程证据不替代G7/实际外部通知/正式资格；15保护源/原19checksum/193donor零变化。全部现存运行13043文件逐SHA/length保全，exact owned CIM0。完整红绿/环境与边界见[evidence/continuation-2026-10-11/ticket29/acceptance.md](../evidence/continuation-2026-10-11/ticket29/acceptance.md)；独立merger负责最终结票，未自行标complete。
+
+2026-10-11：独立merger已接受固定 db6ffec，并 no-ff 合入 80fbcc23。五项只读公共API语义与新合并组合通过；3PASS/1长路径harness失败→执行链PASS，RUN02 fixture失败→单项PASS，完整谱系保留。owner13043文件双端SHA/length零差异，15保护/原19checksum/193donor不变；新独立3122文件另namespace保全，CIM0，0外网/model/fit/forecast/SEALED/实际grant/通知。有限29工程验收PASS，可释放31；METHOD不代替G7/实际通知。详见[独立回执](../evidence/continuation-2026-10-11/ticket29-independent/acceptance.md)。顶部完成状态及根追踪由协调者更新，本评论不改历史声明。
+
+2026-10-11：协调者将非约定的in-progress完成字段改为partial。29上述有限工程接受与31安装前沿保留；最终双轴规格审阅新发现reports执行诊断读取fees_yuan，而已保存风险REDUCE/EXIT动作不含该字段，现有独立成交报告样例仅覆盖收益BUY。这是新增调用方缺口，待统一singlefix公开风险成交链红绿及独立接受，不能用此前五项通过关闭。本票原条款保持原文；真实G7/外部渠道/正式资格仍另留状态。

@@ -1,0 +1,154 @@
+{
+  "execution_plan_id": "1387b81a-8e46-4584-bad5-a353ff2d27b6",
+  "frozen_host_at": "2026-10-11T11:56:35.560884+00:00",
+  "classification": "FINITE_ACTION_SOURCE_EXECUTION_SUCCESSOR_WAITING_EXPLICIT_RELEASE",
+  "execution_allowed": false,
+  "actual_network_calls": 0,
+  "accepted_base": "9b6e007",
+  "own_base": "b311916421ba294acfdc72a1e62479113d7c8230",
+  "prepared_plan_hash": "424fe512ec29f76c415beba626c176fed8261d8ebdb22da25d9fac5d922f29cd",
+  "prepared_plan_rewritten": false,
+  "implementation_fingerprint": "63505424914969f9e1bd65237df93c886e163d01d0facb8cd2ca6754ce2eeb20",
+  "source_inventory": {
+    "backend/src/roll/market/sse_company_actions.py": {
+      "sha256_lf": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+      "bytes_lf": 13270
+    },
+    "backend/src/roll/market/collection_sources.py": {
+      "sha256_lf": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+      "bytes_lf": 16033
+    },
+    "backend/src/roll/app.py": {
+      "sha256_lf": "9e20824f54d7ac1fd7472fc5449144e0aecde8235865617023c1f5f704956cad",
+      "bytes_lf": 59009
+    },
+    "backend/tests/application/test_sse_company_actions.py": {
+      "sha256_lf": "80763658df13a4340ac9a46c40b93bb6a052de1c6912940069ba39bbac3d3a93",
+      "bytes_lf": 5417
+    }
+  },
+  "old_post_close_fingerprint": "cae8f942a6f95b138743c54fb24348987bf288b8d960658120acf3a28083a0fc",
+  "old_price_fingerprint": "11a8063025fe548fb1c996923be6c9f818d5e1dd74f47382ed145ecf73019de1",
+  "document_sources": {
+    "company_html": {
+      "url": "https://www.sse.com.cn/assortment/stock/list/info/company/index.shtml?COMPANY_CODE=600362",
+      "received_at": "2026-10-11T09:34:41.501704+00:00",
+      "bytes": 39826,
+      "sha256": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+      "classification": "DOCUMENT_LEAD",
+      "role": "company_html",
+      "path": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b.raw",
+      "publication_time": null,
+      "effective_time": null
+    },
+    "company_js": {
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js?v=ssesite_V3.8.0_20260828",
+      "received_at": "2026-10-11T09:35:06.426492+00:00",
+      "bytes": 277193,
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "classification": "DOCUMENT_LEAD",
+      "role": "company_js",
+      "path": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "publication_time": null,
+      "effective_time": null
+    }
+  },
+  "mapping_hash": "17f077adaf62ab97dcfa1f947ad452d89de56d123f0fed122490a28315e05512",
+  "requests": [
+    {
+      "role": "dividend",
+      "method": "GET",
+      "url": "https://query.sse.com.cn/commonQuery.do",
+      "parameters": {
+        "isPagination": "true",
+        "pageHelp.pageSize": "5",
+        "pageHelp.pageNo": "1",
+        "pageHelp.beginPage": "1",
+        "pageHelp.cacheSize": "1",
+        "pageHelp.endPage": "1",
+        "COMPANY_CODE": "600362",
+        "IS_STAR": "0",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L",
+        "CONDITION_ZBA": "1",
+        "CONDITION_ZBB": ""
+      },
+      "canonical_request_url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L&CONDITION_ZBA=1&CONDITION_ZBB=",
+      "request_date_scope": "UNKNOWN_NOT_DECLARED_BY_FIXED_CLIENT",
+      "max_attempts": 1,
+      "page": 1,
+      "page_size": 5,
+      "further_pages_allowed": false
+    },
+    {
+      "role": "send_share",
+      "method": "GET",
+      "url": "https://query.sse.com.cn/commonQuery.do",
+      "parameters": {
+        "isPagination": "true",
+        "pageHelp.pageSize": "5",
+        "pageHelp.pageNo": "1",
+        "pageHelp.beginPage": "1",
+        "pageHelp.cacheSize": "1",
+        "pageHelp.endPage": "1",
+        "COMPANY_CODE": "600362",
+        "IS_STAR": "0",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L"
+      },
+      "canonical_request_url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L",
+      "request_date_scope": "UNKNOWN_NOT_DECLARED_BY_FIXED_CLIENT",
+      "max_attempts": 1,
+      "page": 1,
+      "page_size": 5,
+      "further_pages_allowed": false
+    }
+  ],
+  "declared_client_variant": "POST_JSONP_CALLBACK",
+  "execution_variant": "GET_JSON_WITHOUT_CALLBACK",
+  "transport_equivalence_claim": false,
+  "root_path": "/commonQuery.do",
+  "historical_alternate_path_rewritten": false,
+  "request_budget_total_attempts": 2,
+  "maximum_attempts_per_role": 1,
+  "page_per_role": 1,
+  "page_size": 5,
+  "attempt_deadline_seconds": 15,
+  "maximum_response_bytes_per_attempt": 8388608,
+  "redirects": false,
+  "retries": 0,
+  "fallbacks": 0,
+  "further_pages": false,
+  "alternate_host_or_path": false,
+  "capture_public_endpoint": "POST /api/research/collections/{plan_id}/sse-company-actions",
+  "request_command_fields": [
+    "basis"
+  ],
+  "runtime_role": "API",
+  "runtime_namespace": ".scratch/t30a-actual",
+  "host_clock_override": false,
+  "external_transport_injection": false,
+  "error_and_prefix_bytes_archived_before_interpretation": true,
+  "cancelled_response_completeness": "UNKNOWN_AFTER_CANCELLATION",
+  "response_schema_assessed": false,
+  "response_parser_after_actual": "SEPARATE_EXPLICIT_ASSESSMENT_MODULE",
+  "collector_will_not_be_modified_after_actual": true,
+  "offline_public_api_validation": {
+    "first_endpoint_red": "1 FAIL / 5.93s",
+    "first_endpoint_green": "1 PASS / 6.00s",
+    "error_completeness_deadline_red": "2 FAIL / 30.54s",
+    "pre_cancellation_metadata_green": "3 PASS / 29.13s",
+    "explicit_cancel_metadata_red": "1 FAIL / 21.70s",
+    "current_final": "3 PASS / 29.94s",
+    "supplier_kind": "METHOD_CASE",
+    "actual_network_calls": 0
+  },
+  "query_date_scope": "UNKNOWN",
+  "complete_action_coverage": false,
+  "pending_older_obligations_complete": false,
+  "system_usable": false,
+  "model_daily_input_allowed": false,
+  "forward_started_at": null,
+  "capability": "NOT_GRANTED",
+  "private_or_original_or_preserved_sqlite_opened": false,
+  "provider_model_notification_requests": 0,
+  "stop_new_source_slices_after_two_sources": true
+}

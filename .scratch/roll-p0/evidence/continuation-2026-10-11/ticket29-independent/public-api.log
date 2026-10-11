@@ -1,0 +1,66 @@
+..F.                                                                     [100%]
+================================== FAILURES ===================================
+_ test_saved_partial_unexecuted_and_outbound_chains_remain_unknown_without_new_actions _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/t29-independent-api/test_saved_partial_unexecuted_0')
+
+    def test_saved_partial_unexecuted_and_outbound_chains_remain_unknown_without_new_actions(tmp_path):
+        rows=[]
+        for name,profile in [('partial-fill-late-report-300-seconds','test_report_projects_real_part0'),
+                             ('unexecuted-unlinked','test_unexecuted_reason_and_unl0'),
+                             ('outbound-original-and-explicit-station-read','test_report_preserves_actual_20')]:
+            evidence=public(name)
+            if name.startswith('outbound'):evidence=evidence['original']
+>           client,calls=offline(clone(profile,tmp_path/profile))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket29-independent\test_public.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket29-independent\test_public.py:30: in clone
+    saved=target/relative;saved.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(original,saved)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+src = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29-final-api/test_report_projects_real_part0/data/...ca2d91d4e3b/research-inputs/method-execution/03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet')
+dst = WindowsPath('D:/dsh-proj/Roll/.scratch/t29-independent-api/test_saved_partial_unexecuted_0/test_report_projects_real_p...ca2d91d4e3b/research-inputs/method-execution/03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\t29-independent-api\\test_saved_partial_unexecuted_0\\test_report_projects_real_part0\\backups\\d5bec84c-4b9b-45a3-afe9-bca2d91d4e3b\\research-inputs\\method-execution\\03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\shutil.py:262: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket29-independent/test_public.py::test_saved_partial_unexecuted_and_outbound_chains_remain_unknown_without_new_actions
+1 failed, 3 passed in 39.22s

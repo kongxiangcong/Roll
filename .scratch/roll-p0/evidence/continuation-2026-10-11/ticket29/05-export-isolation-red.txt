@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_json_text_curve_and_research_link_share_sources_without_any_formal_outlet _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r3/test_json_text_curve_and_resea0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000258D0AF1CD0>
+
+    def test_json_text_curve_and_research_link_share_sources_without_any_formal_outlet(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API')) as client:
+            url = '/api/research/reports/' + FREEZE
+            original = client.get(url).json()
+            response = client.get(url + '/export?format=json')
+>           assert response.status_code == 200, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+tests\application\test_reports.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_json_text_curve_and_research_link_share_sources_without_any_formal_outlet
+1 failed in 9.62s
