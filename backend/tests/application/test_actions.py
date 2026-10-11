@@ -8,6 +8,7 @@ import pytest
 import copy
 from concurrent.futures import ThreadPoolExecutor
 import time
+import httpx
 
 
 def test_shrink_during_computation_does_not_wait_for_a_writer_lock_or_publish_old_boundary(tmp_path, monkeypatch):
@@ -85,7 +86,8 @@ def test_stale_action_valuation_never_assumes_zero_loss_even_if_qualification_is
 
 
 @pytest.mark.parametrize('sellable', ['300', '0'])
-def test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks(tmp_path, monkeypatch, sellable):
+@pytest.mark.parametrize('permission_status', ['NOT_OPEN', 'UNKNOWN'])
+def test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks(tmp_path, monkeypatch, sellable, permission_status):
     monkeypatch.setenv('ROLL_ENV', 'test')
     anchor = (datetime.now(timezone(timedelta(hours=8))) - timedelta(days=1)).replace(hour=15, minute=5, second=0, microsecond=0)
     import capability_method_app
@@ -114,7 +116,7 @@ def test_independently_qualified_reduction_with_purchase_permission_not_open_kee
     # A quantity-unknown unrelated holding would block the grant; retain a known outside-scope holding here.
     positions[1]['sellable_quantity'] = '50'
     with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
-        ready(client, permission_status='NOT_OPEN', positions=positions)
+        ready(client, permission_status=permission_status, positions=positions)
         command = {**method_command(), 'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']}
         granted = client.post('/api/capabilities/grants', json=command)
         assert granted.status_code == 201, granted.text
@@ -147,6 +149,10 @@ def action_package():
 
 def prepare(client, p, positions=None):
     ready(client, positions=positions)
+    for instrument in p['scope']['instruments']:
+        listing = client.get('/api/market/list').json()
+        if instrument not in {m['instrument'] for m in listing['members']}:
+            assert client.post('/api/market/watch', json={'instrument': instrument, 'operation': 'ADD', 'expected_list_version': listing['version']}).status_code == 200
     assert client.post('/api/funding/confirm', json=funding(1, capital_amount='100000.00', total_exposure='60000.00', single_exposure='40000.00')).status_code == 200
     command = {**method_command(), 'scope': p['scope'], 'allowed_actions': ['BUY'], 'expected_funding_version': 2}
     response = client.post('/api/capabilities/grants', json=command)
@@ -203,3 +209,87 @@ def test_ungranted_evaluation_retains_observations_and_immutable_refusal(tmp_pat
         assert client.post('/api/actions/evaluate', json={}).json() == value
         assert client.post(f"/api/actions/evaluations/{value['evaluation_id']}/replay").json()['matches_original'] is True
         assert len(client.get('/api/actions/events').json()) == 1
+
+
+def test_current_list_removal_invalidates_old_card_and_refuses_new_entry_outside_list(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        prepare(client, p)
+        for instrument in p['scope']['instruments']:
+            listing = client.get('/api/market/list').json()
+            assert client.post('/api/market/watch', json={'instrument': instrument, 'operation': 'ADD', 'expected_list_version': listing['version']}).status_code == 200
+        original = client.post('/api/actions/evaluate', json={}).json()
+        assert [(d['instrument'], d['quantity']) for d in original['decisions']] == [('SSE:600000', '200')]
+        listing = client.get('/api/market/list').json()
+        assert client.post('/api/market/watch', json={'instrument': 'SSE:600000', 'operation': 'REMOVE', 'expected_list_version': listing['version']}).status_code == 200
+        current = client.get('/api/actions/current').json()
+        assert current['decisions'] == []
+        assert current['invalidated'][0]['reasons'] == ['DATA_OR_LIST_CHANGE']
+        assert client.get(f"/api/actions/evaluations/{original['evaluation_id']}").json() == original
+        client.get('/api/actions/current')
+        assert len([e for e in client.get('/api/actions/events').json() if e['event_type'] == 'ACTION_INVALIDATED']) == 1
+        successor = client.post('/api/actions/evaluate', json={}).json()
+        refusal = next(r for r in successor['refusals'] if r['instrument'] == 'SSE:600000')
+        assert 'OUTSIDE_CURRENT_FINITE_LIST' in refusal['reasons']
+        assert client.post(f"/api/actions/evaluations/{original['evaluation_id']}/replay").json()['matches_original'] is True
+
+
+def test_current_expiry_keeps_original_conditions_and_replay(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        prepare(client, p)
+        original = client.post('/api/actions/evaluate', json={}).json()
+        monkeypatch.setattr('roll.decisions.actions.now', lambda: p['expires_at'])
+        current = client.get('/api/actions/current').json()
+        assert current['decisions'] == []
+        assert current['invalidated'][0]['reasons'] == ['EXPIRED']
+        assert client.get(f"/api/actions/evaluations/{original['evaluation_id']}").json() == original
+        assert client.post(f"/api/actions/evaluations/{original['evaluation_id']}/replay").json()['matches_original'] is True
+        expired = client.post('/api/actions/evaluate', json={}).json()
+        assert expired['decisions'] == []
+        assert expired['limitations'] == ['ACTION_EXPIRED_BEFORE_PUBLICATION']
+        assert expired['evaluation_id'] != original['evaluation_id']
+        assert client.post('/api/actions/evaluate', json={}).json() == expired
+
+
+def test_new_public_quote_evidence_invalidates_current_card_without_changing_account(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    quote = [''] * 60
+    for i, v in {2: '600000', 3: '136', 4: '135', 5: '135', 6: '100', 30: '20261009103000', 33: '137', 34: '134'}.items(): quote[i] = v
+    transport = httpx.MockTransport(lambda r: httpx.Response(200, content=('v_sh600000="' + '~'.join(quote) + '";').encode('gbk')))
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file, market_transport=transport)) as client:
+        prepare(client, p)
+        original = client.post('/api/actions/evaluate', json={}).json()
+        account = client.get('/api/account').json()
+        request = client.post('/api/data/requests', json={'instruments': ['SSE:600000'], 'groups': ['QUOTE'], 'purpose': 'OBSERVATION', 'start_date': '2026-10-09', 'end_date': '2026-10-09'}).json()
+        retrieved = client.post(f"/api/data/requests/{request['request_id']}/retrieve")
+        assert retrieved.status_code == 200, retrieved.text
+        current = client.get('/api/actions/current').json()
+        assert current['decisions'] == []
+        assert current['invalidated'][0]['reasons'] == ['DATA_OR_LIST_CHANGE']
+        assert client.get('/api/account').json() == account
+        assert client.post(f"/api/actions/evaluations/{original['evaluation_id']}/replay").json()['matches_original'] is True
+
+
+def test_list_change_during_compute_rejects_publication_under_latest_snapshot(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    p['action_packet']['method_publish_delay_ms'] = 1500
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        prepare(client, p)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            computing = pool.submit(client.post, '/api/actions/evaluate', json={})
+            time.sleep(.4)
+            listing = client.get('/api/market/list').json()
+            assert client.post('/api/market/watch', json={'instrument': 'SSE:600000', 'operation': 'REMOVE', 'expected_list_version': listing['version']}).status_code == 200
+            result = computing.result().json()
+        assert result['decisions'] == []
+        assert result['limitations'] == ['CURRENT_DATA_OR_LIST_CHANGED_BEFORE_PUBLICATION']
+        assert client.post(f"/api/actions/evaluations/{result['evaluation_id']}/replay").json()['matches_original'] is True

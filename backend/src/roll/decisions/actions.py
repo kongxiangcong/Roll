@@ -44,11 +44,22 @@ class Actions:
                 CREATE TABLE IF NOT EXISTS action_loss_state(scope TEXT PRIMARY KEY, value TEXT NOT NULL);
             ''')
 
+    @staticmethod
+    def data_state(db, account):
+        # Accepted evidence and finite membership only, using the caller's
+        # snapshot. Collection jobs and directory materialization are not facts.
+        watch = [r[0] for r in db.execute('SELECT instrument FROM market_watch ORDER BY instrument')]
+        identities = [r[0] for r in db.execute('SELECT identity FROM market_identities ORDER BY revision')]
+        snapshots = [r[0] for r in db.execute('SELECT value FROM market_evidence_snapshots ORDER BY rowid')]
+        return {'instruments': sorted(set(watch) | {p['instrument'] for p in account['positions']}),
+                'fingerprint': fingerprint({'watch': watch, 'identities': identities, 'accepted_evidence': snapshots})}
+
     def capture(self, command):
         with self.ledger.connection() as db:
             db.execute('BEGIN')
             account, funding = self.ledger.account(db=db), self.funding.current(db=db)
             capabilities = self.capabilities.current(db=db)
+            data_state = self.data_state(db, account)
             pending = [self.ledger.get_draft(r[0], db) for r in db.execute("SELECT d.id FROM account_drafts d WHERE status IN ('READY','QUARANTINED') AND NOT EXISTS(SELECT 1 FROM account_receipts r WHERE json_extract(r.receipt,'$.draft_id')=d.id)")]
             events = self.ledger.events(db=db)
             previous = db.execute('SELECT value FROM action_loss_state WHERE scope=?', (encode([funding.get('scope_kind'), funding.get('scope_id'), funding.get('loss_origin_at')]),)).fetchone()
@@ -118,6 +129,8 @@ class Actions:
         return {'command': command.model_dump(), 'account': account, 'funding': funding, 'capabilities': capabilities,
                 'previous_loss': json.loads(previous[0]) if previous else None,
                 'required_as_of': required, 'observations': observations,
+                'data_state': data_state,
+                'packet_expired': bool(packet and datetime.fromisoformat(packet['expires_at']) <= datetime.fromisoformat(now())),
                 'new_risk_check': use_check(account, pending, UseCheck(purpose='NEW_RISK', required_as_of=required), timestamp, events),
                 'reduction_check': use_check(account, pending, UseCheck(purpose='REDUCTION', required_as_of=required), timestamp, events),
                 'packet': packet, 'code_fingerprint': code()}
@@ -165,6 +178,7 @@ class Actions:
         for original in packet.get('opportunities', []):
             row = dict(original)
             reasons = [*global_gaps, *row.get('input_gaps', [])]
+            if row['instrument'] not in inputs['data_state']['instruments']: reasons.append('OUTSIDE_CURRENT_FINITE_LIST')
             grant = grant_for('PROFIT_MODEL', row['instrument'], 'BUY')
             if grant is None: reasons.append('PROFIT_CAPABILITY_NOT_CURRENT_IN_SCOPE')
             if not any(p['market'] == row.get('market') and p['board'] == row.get('board') and p['status'] == 'OPEN' for p in account['permission_profile']): reasons.append('MARKET_PERMISSION_NOT_OPEN')
@@ -238,7 +252,7 @@ class Actions:
             row['decision_id'] = fingerprint({'input': fingerprint(inputs), 'instrument': row['instrument'], 'basis': row['basis_type']})
             row['dependencies'] = {'account_version': account['version'], 'funding_version': funding['version'],
                 'grant_id': row['grant_id'], 'policy_fingerprint': fingerprint(packet.get('policy')),
-                'data_fingerprint': fingerprint(inputs['observations']), 'complete_protocol_fingerprint': packet.get('complete_protocol_fingerprint'),
+                'data_fingerprint': inputs['data_state']['fingerprint'], 'complete_protocol_fingerprint': packet.get('complete_protocol_fingerprint'),
                 'code_fingerprint': inputs['code_fingerprint'], 'rule_id': row.get('rule_id')}
         base['system_usable'] = bool(base['decisions']) and not method
         return base
@@ -264,6 +278,8 @@ class Actions:
                 latest = self.capabilities.current(db=db)
                 if latest != inputs['capabilities']:
                     result.update(decisions=[], limitations=['CURRENT_CAPABILITY_CHANGED_BEFORE_PUBLICATION'])
+                elif self.data_state(db, self.ledger.account(db=db)) != inputs['data_state']:
+                    result.update(decisions=[], limitations=['CURRENT_DATA_OR_LIST_CHANGED_BEFORE_PUBLICATION'])
             if any(datetime.fromisoformat(d['expires_at']) <= datetime.fromisoformat(now()) for d in result['decisions']):
                 result.update(decisions=[], limitations=['ACTION_EXPIRED_BEFORE_PUBLICATION'])
             predecessor = db.execute('SELECT id,value FROM action_evaluations ORDER BY rowid DESC LIMIT 1').fetchone()
@@ -306,6 +322,7 @@ class Actions:
             row = db.execute('SELECT value FROM action_evaluations ORDER BY rowid DESC LIMIT 1').fetchone()
             value = json.loads(row[0]) if row else None
             current = self.ledger.account(db=db), self.funding.current(db=db), self.capabilities.current(db=db)
+            current_data = self.data_state(db, current[0])
             active, invalidated = [], []
             for decision in value['decisions'] if value else []:
                 if instrument and decision['instrument'] != instrument: continue
@@ -316,6 +333,7 @@ class Actions:
                 if not status or status['reasons'] or decision['action'] not in status['allowed_actions']: reasons.append('GRANT_RESTRICTED')
                 if datetime.fromisoformat(decision['expires_at']) <= datetime.fromisoformat(now()): reasons.append('EXPIRED')
                 if value['code_fingerprint'] != code(): reasons.append('ACTION_CODE_CHANGED')
+                if decision['dependencies']['data_fingerprint'] != current_data['fingerprint']: reasons.append('DATA_OR_LIST_CHANGE')
                 if reasons:
                     reason_key = fingerprint(reasons)
                     event = {'event_id': str(uuid4()), 'event_type': 'ACTION_INVALIDATED', 'evaluation_id': value['evaluation_id'],
