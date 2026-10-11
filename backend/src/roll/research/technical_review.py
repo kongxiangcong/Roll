@@ -13,7 +13,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel, ConfigDict
 from roll.accounts.ledger import encode, now
 from roll.research.shadow import fingerprint
-from roll.agents.settings import HOST_LIMITS, admit_agent_run
+from roll.agents.settings import HOST_LIMITS, admit_agent_run, require_current_backend
 from roll.agents.codex_process import owner_alive, process_creation, recover_directory
 
 LABEL='经自动验证与模型技术审阅，未经人工独立复核'
@@ -220,12 +220,13 @@ class TechnicalReviews:
         with self.ledger.connection() as db:db.execute('UPDATE technical_review_runs SET value=? WHERE id=?',(encode(run),run['run_id']))
 
     def start(self,material_id,command):
+        selection=self.settings.get();backend=selection['backend']
+        require_current_backend(backend)
         material=self.get_material(material_id)
         if command.expected_material_fingerprint!=material['material_fingerprint']:raise HTTPException(409,'REVIEW_MATERIAL_FINGERPRINT_CHANGED')
         if command.retry_of:
             prior=self.get(command.retry_of)
             if prior['material_id']!=material_id or prior['status']=='RUNNING':raise HTTPException(409,'INVALID_REVIEW_RETRY')
-        selection=self.settings.get();backend=selection['backend']
         from roll.agents.codex_evidence import CONFIG, MODEL as CODEX_MODEL, SDK_VERSION
         from roll.agents.deepseek_evidence import MODEL as DEEPSEEK_MODEL,LIMITS as DEEPSEEK_LIMITS
         from importlib.metadata import version

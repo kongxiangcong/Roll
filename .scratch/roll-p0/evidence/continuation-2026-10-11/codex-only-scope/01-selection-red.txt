@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_new_deepseek_selection_is_refused_without_creating_settings_or_runs ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/codex-scope/.scratch/csr/test_new_deepseek_selection_is0')
+
+    def test_new_deepseek_selection_is_refused_without_creating_settings_or_runs(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            before=client.get('/api/agents/settings/history').json()
+            response=client.post('/api/agents/settings',json={'expected_version':0,'backend':'DEEPSEEK'})
+>           assert response.status_code==403,response.text
+E           AssertionError: {"version":1,"backend":"DEEPSEEK","saved_at":"2026-10-11T02:57:40.758273+00:00"}
+E           assert 200 == 403
+E            +  where 200 = <Response [200 OK]>.status_code
+
+backend\tests\application\test_codex_only_scope.py:24: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_codex_only_scope.py::test_new_deepseek_selection_is_refused_without_creating_settings_or_runs
+1 failed in 11.24s
