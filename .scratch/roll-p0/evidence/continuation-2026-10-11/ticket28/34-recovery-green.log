@@ -1,0 +1,33 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_public_restoration_creates_recovery_notice_without_restoring_grant_or_channel_secret _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-34/test_public_restoration_create0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CA1E974FC0>
+
+    def test_public_restoration_creates_recovery_notice_without_restoring_grant_or_channel_secret(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        with TestClient(create_app(tmp_path / 'source',runtime_role='API')) as client:
+            draft = client.post('/api/account/drafts',json=baseline()).json()
+            assert client.post('/api/account/confirm',json={'draft_id':draft['draft_id'],'idempotency_key':'baseline'}).status_code == 200
+            backup = client.post('/api/runtime/backups').json()
+            bundle = client.get('/api/runtime/backups/' + backup['backup_id'] + '/export').content
+        with TestClient(create_app(tmp_path / 'target',runtime_role='API')) as client:
+            assert client.post('/api/runtime/restores',content=bundle,headers={'content-type':'application/zip'}).status_code == 202
+        with TestClient(create_app(tmp_path / 'target',runtime_role='API')) as client:
+            notices = client.get('/api/notifications').json()['notifications']
+            notice = next(n for n in notices if n['source']['kind'] == 'RECOVERY_LOCK')
+            assert notice['category'] == 'NEED_SYNC_RECOVERY' and notice['severity'] == 'CRITICAL'
+            assert client.get('/api/capabilities').json()['runtime_state'] == 'RECOVERY_LOCK'
+            assert client.get('/api/notification-channel').json()['enabled'] is False
+            assert client.get('/api/notifications/' + notice['notification_id'] + '/current').json()['current_state'] == 'CURRENT'
+>           assert client.post('/api/formal/evaluate',json={}).status_code == 409
+E           AssertionError: assert 403 == 409
+E            +  where 403 = <Response [403 Forbidden]>.status_code
+E            +    where <Response [403 Forbidden]> = post('/api/formal/evaluate', json={})
+E            +      where post = <starlette.testclient.TestClient object at 0x000001CA1F1C4550>.post
+
+backend\tests\application\test_notifications.py:479: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_public_restoration_creates_recovery_notice_without_restoring_grant_or_channel_secret
+1 failed, 20 deselected in 10.04s

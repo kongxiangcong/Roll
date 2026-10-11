@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_same_permission_state_new_reason_words_merge_immutable_sources_but_escalation_is_new _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-19/test_same_permission_state_new0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001442A5A8E90>
+
+    def test_same_permission_state_new_reason_words_merge_immutable_sources_but_escalation_is_new(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        with TestClient(create_app(tmp_path / 'data', runtime_role='API')) as client:
+            first = pause(client).json()
+            original = client.get('/api/notifications').json()['notifications'][0]
+            second = client.post('/api/capabilities/lifecycle', json={'scope':'ALL_MONITOR','state':'SUSPENDED','reason_code':'USER_PAUSE',
+                'reason':'同一暂停，仅说明文字改变','expected_version':1,'idempotency_key':'new-words'}).json()
+            assert second['event_id'] != first['event_id']
+            notices = client.get('/api/notifications').json()['notifications']
+>           assert len(notices) == 1
+E           AssertionError: assert 2 == 1
+E            +  where 2 = len([{'accepted_known_at': None, 'accepted_occurred_at': None, 'accepted_occurred_source': 'UNKNOWN', 'category': 'NEED_SY...at': None, 'accepted_occurred_at': None, 'accepted_occurred_source': 'UNKNOWN', 'category': 'NEED_SYNC_RECOVERY', ...}])
+
+backend\tests\application\test_notifications.py:294: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_same_permission_state_new_reason_words_merge_immutable_sources_but_escalation_is_new
+1 failed, 8 deselected in 6.01s

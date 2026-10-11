@@ -1,0 +1,31 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_new_immutable_evaluation_after_ordinary_quote_merges_notice_but_old_link_cannot_prepare _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-04/test_new_immutable_evaluation_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002727F1D9350>
+
+    def test_new_immutable_evaluation_after_ordinary_quote_merges_notice_but_old_link_cannot_prepare(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        quote = [''] * 60
+        for index, value in {2:'600000',3:'136',4:'135',5:'135',6:'100',30:'20261009103000',33:'137',34:'134'}.items(): quote[index] = value
+        transport = httpx.MockTransport(lambda request: httpx.Response(200, content=('v_sh600000="' + '~'.join(quote) + '";').encode('gbk')))
+        with TestClient(create_app(tmp_path / 'data', runtime_role='API', capability_method_file=qualification, market_transport=transport)) as client:
+            prepare(client, package)
+            first = client.post('/api/actions/evaluate', json={}).json()
+            assert [(d['action'],d['quantity']) for d in first['decisions']] == [('BUY','200')]
+            notices = client.get('/api/notifications').json()['notifications']
+            action = next(n for n in notices if n['category'] == 'NEED_ACTION')
+            original_message = action['message']
+            retrieved = client.post('/api/market/data', json={'instrument':'SSE:600000','kind':'QUOTE','as_of':package['required_as_of']})
+>           assert retrieved.status_code == 200, retrieved.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_notifications.py:61: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_new_immutable_evaluation_after_ordinary_quote_merges_notice_but_old_link_cannot_prepare
+1 failed, 1 passed in 11.05s

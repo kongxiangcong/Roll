@@ -1,0 +1,28 @@
+.........F                                                               [100%]
+================================== FAILURES ===================================
+_ test_pending_account_fact_notice_does_not_need_model_grant_or_monitoring_and_resolves_current_link _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-27/test_pending_account_fact_noti0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002BCE158A430>
+
+    def test_pending_account_fact_notice_does_not_need_model_grant_or_monitoring_and_resolves_current_link(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        with TestClient(create_app(tmp_path / 'data', runtime_role='API')) as client:
+            draft = client.post('/api/account/drafts', json=baseline()).json()
+            notices = client.get('/api/notifications').json()['notifications']
+            notice = next(n for n in notices if n['source']['kind'] == 'ACCOUNT_DRAFT')
+            assert notice['category'] == 'NEED_SYNC_RECOVERY'
+            pause(client)
+            assert client.get('/api/notifications/' + notice['notification_id'] + '/current').json()['current_state'] == 'CURRENT'
+>           assert client.get('/api/capabilities').json()['state'] == 'NOT_GRANTED'
+E           AssertionError: assert 'UNGRANTED' == 'NOT_GRANTED'
+E             
+E             - NOT_GRANTED
+E             ?  ---
+E             + UNGRANTED
+E             ? +
+
+backend\tests\application\test_notifications.py:319: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_pending_account_fact_notice_does_not_need_model_grant_or_monitoring_and_resolves_current_link
+1 failed, 9 passed in 51.76s

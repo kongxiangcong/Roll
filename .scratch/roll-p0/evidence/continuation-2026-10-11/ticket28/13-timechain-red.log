@@ -1,0 +1,64 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_worker_channel_acceptance_not_delivery_or_read_and_single_business_attempt _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-13/test_worker_channel_acceptance0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023C31C88D60>
+
+    def test_worker_channel_acceptance_not_delivery_or_read_and_single_business_attempt(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        received = []
+        def publish(request):
+            import json
+            received.append({'path':request.url.path,'body':json.loads(request.content),'authorization_present':'authorization' in request.headers})
+            return httpx.Response(200, json={'id':'method-accepted-1','event':'message','time':1791700000})
+        with TestClient(create_app(tmp_path / 'data', notification_transport=httpx.MockTransport(publish))) as client:
+            assert pause(client).status_code == 200
+            configured = client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'synthetic-method-only','app_base_url':'http://127.0.0.1:5173','token':'METHOD_CANARY_AUTH'})
+            assert configured.status_code == 200, configured.text
+            for _ in range(200):
+                notices = client.get('/api/notifications').json()['notifications']
+                if notices[0]['external_status'] == 'CHANNEL_ACCEPTED': break
+                time.sleep(.05)
+            else: raise AssertionError(notices)
+            notice = notices[0]
+            assert notice['delivered_at'] is None and notice['read_at'] is None
+>           assert notice['sent_at'] is None
+E           AssertionError: assert '2026-10-11T09:55:08.229445+00:00' is None
+
+backend\tests\application\test_notifications.py:133: AssertionError
+_ test_notification_time_chain_augments_intent_query_without_rewriting_original_unknowns _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-13/test_notification_time_chain_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023C31DFFA80>
+
+    def test_notification_time_chain_augments_intent_query_without_rewriting_original_unknowns(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        transport = httpx.MockTransport(lambda request:httpx.Response(200, json={'id':'method-timechain','event':'message'}))
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=qualification, notification_transport=transport)) as client:
+            prepare(client, package)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+            configured = client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+            assert configured.status_code == 200
+            for _ in range(200):
+                notice = next(n for n in client.get('/api/notifications').json()['notifications'] if n['category'] == 'NEED_ACTION')
+                if notice['external_status'] == 'CHANNEL_ACCEPTED': break
+                time.sleep(.05)
+            else: raise AssertionError(notice)
+            query = '/api/notifications/time-chain?decision_id=' + intent['decision_id'] + '&evaluation_id=' + intent['evaluation_id'] + '&intent_id=' + intent['intent_id']
+            response = client.get(query)
+>           assert response.status_code == 200, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_notifications.py:205: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_worker_channel_acceptance_not_delivery_or_read_and_single_business_attempt
+FAILED backend\tests\application\test_notifications.py::test_notification_time_chain_augments_intent_query_without_rewriting_original_unknowns
+2 failed, 4 deselected in 10.36s
