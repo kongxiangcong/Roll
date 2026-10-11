@@ -21,9 +21,13 @@ New-Item -ItemType Directory -Path $Receipt -Force|Out-Null
 Push-Location $Tree
 try{
  if($Stage -eq 'Reviews'){
+  # Windows archived filenames plus pytest case names need a short owned path.
+  $Runtime=Join-Path $Tree ('.scratch/f31r-'+$Run.Substring(0,8))
+  New-Item -ItemType Directory -Path $Runtime -Force|Out-Null
+  [IO.File]::WriteAllText((Join-Path $Receipt 'runtime-path.txt'),$Runtime,[Text.UTF8Encoding]::new($false))
   Push-Location (Join-Path $Tree 'backend')
   try{
-   & $Python -B -X utf8 -m pytest tests/application/test_reviews.py::test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time tests/application/test_reviews.py::test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts -q --basetemp (Join-Path $Runtime 'reviews') 2>&1|Tee-Object (Join-Path $Receipt 'two-exact-reviews.log')
+   & $Python -B -X utf8 -m pytest tests/application/test_reviews.py::test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time tests/application/test_reviews.py::test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts -q --basetemp $Runtime 2>&1|Tee-Object (Join-Path $Receipt 'two-exact-reviews.log')
    $Result=$LASTEXITCODE
   }finally{Pop-Location}
  }else{

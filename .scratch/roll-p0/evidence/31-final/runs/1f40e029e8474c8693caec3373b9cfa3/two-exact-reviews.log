@@ -1,0 +1,95 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket31-final/.roll-data/final31-bounded-1f40e029e8474c8693caec3373b9cfa3/reviews/test_intraday_current_bar_cann0')
+method_market_timeline = <function method_market_timeline.<locals>.freeze at 0x0000021713BBC680>
+
+    def test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time(tmp_path, method_market_timeline):
+        raw=b'{"rc":0,"data":{"code":"600519","market":1,"klines":["2026-09-30,10,10,10,10,100,100000","2026-10-08,10,11,11,10,100,110000"]}}'
+        fields=['']*60
+        for index,value in {2:'600519',3:'12',4:'10',5:'10',6:'100',30:'20260930161458',33:'12',34:'10',35:'12/100/120000',47:'13.2',48:'10.8'}.items():fields[index]=value
+        def provider(request):
+            return httpx.Response(200,content=raw if 'kline' in request.url.path else ('v_sh600519="'+'~'.join(fields)+'";').encode())
+        consume=method_market_timeline('2026-10-08T10:00:00+08:00')
+        clock=lambda:datetime.fromisoformat('2026-10-08T10:00:00+08:00')
+>       with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(provider),review_clock=clock)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_reviews.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1253: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:111: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket31-final/.roll-data/final31-bounded-1f40e029e8474c8693caec3373b...n0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.165b730c-5f22-4814-89da-6fd16f924aad.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\final31-bounded-1f40e029e8474c8693caec3373b9cfa3\\reviews\\test_intraday_current_bar_cann0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.165b730c-5f22-4814-89da-6fd16f924aad.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+_ test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket31-final/.roll-data/final31-bounded-1f40e029e8474c8693caec3373b9cfa3/reviews/test_persistent_worker_retries0')
+
+    def test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts(tmp_path):
+        def unavailable(request):raise httpx.ConnectTimeout('controlled source timeout')
+>       with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(unavailable))) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_reviews.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1253: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:111: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket31-final/.roll-data/final31-bounded-1f40e029e8474c8693caec3373b...s0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.583810e7-5f87-4554-a462-1eaf9bb14e38.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\final31-bounded-1f40e029e8474c8693caec3373b9cfa3\\reviews\\test_persistent_worker_retries0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.583810e7-5f87-4554-a462-1eaf9bb14e38.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reviews.py::test_intraday_current_bar_cannot_replace_last_complete_daily_or_refresh_old_quote_time
+FAILED tests/application/test_reviews.py::test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts
+2 failed in 3.14s

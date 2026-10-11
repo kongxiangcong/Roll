@@ -1,0 +1,863 @@
+{
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false,
+  "checks": {
+    "baseline_ui_receipt": true,
+    "assets30_indices5_unknown_sellable": true,
+    "actual300_unknown_fee_then5": true,
+    "csv_batch_receipt": true,
+    "scoped_declaration": true,
+    "settings_fold_pause_reason_resume": true
+  },
+  "errors": [],
+  "account": {
+    "account_scope": "普通现金账户",
+    "broker_available": null,
+    "broker_available_as_of": null,
+    "broker_available_basis": "UNKNOWN_AFTER_FEE_ADJUSTMENT",
+    "broker_frozen": "0.00",
+    "broker_frozen_as_of": "2026-10-07T02:00:00+00:00",
+    "cash_balance": "997020.01",
+    "cash_balance_basis": "KNOWN_FEES",
+    "cash_records": [
+      {
+        "amount": "25.01",
+        "basis": "METHOD literal interest",
+        "broker_available_after": null,
+        "confirmed_at": "2026-10-11T14:32:58.735983+00:00",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "event_id": "3bb8165b-4b63-4224-a174-a2ed3713019f",
+        "flow_category": "INVESTMENT_INCOME",
+        "instrument": null,
+        "kind": "INTEREST",
+        "receipt_id": "0a040475-ba90-43dc-bc8c-650d66a8cac5",
+        "record_id": "final31-interest",
+        "source": "METHOD final31 CSV"
+      }
+    ],
+    "confirmed_at": "2026-10-11T14:32:59.199132+00:00",
+    "conservative_available": null,
+    "conservative_available_basis": "从最近已确认可用资金估计，非当前券商快照",
+    "currency": "CNY",
+    "declarations": [
+      {
+        "account_version": 5,
+        "basis": "METHOD all known fills funds and equity checked",
+        "changes": "NONE",
+        "confirmed_as_of": "2026-10-07T06:00:00.000Z",
+        "effective_at": "2026-10-07T06:00:00.000Z",
+        "receipt_id": "de4eb704-b43c-4e3a-9c5c-55b8fbefe502",
+        "record_id": "46ec472f-455a-462a-82d1-ffbef2beeac7",
+        "recorded_at": "2026-10-11T14:32:59.199132+00:00",
+        "scope": [
+          "TRADES",
+          "ORDERS",
+          "CASH",
+          "EQUITY"
+        ],
+        "source": "本人核对券商账户"
+      }
+    ],
+    "effective_at": "2026-10-11T14:32:00+00:00",
+    "external_cash_in": "0.00",
+    "external_cash_out": "0.00",
+    "fee_resolutions": {
+      "e49739c2-ac3d-46db-9d4a-6a6a2892f08f": {
+        "actual_fee_amount": "5.00",
+        "basis": "METHOD literal actual fee",
+        "effective_at": "2026-10-11T14:32:00.000Z"
+      }
+    },
+    "fees_pending": [],
+    "fills": [
+      {
+        "action_association": {
+          "decision_id": null,
+          "status": "UNKNOWN"
+        },
+        "behavior_context": "NO_RECOMMENDATION",
+        "broker_available_after": null,
+        "charged_fee": "10.00",
+        "direction": "BUY",
+        "effective_at": "2026-10-11T14:32:00.000Z",
+        "event_id": "d5ccd95e-d4e8-4ff9-aeae-88e5df89be14",
+        "fee": {
+          "amount": null,
+          "basis": "METHOD fixed conservative fee",
+          "reserve_amount": "10.00",
+          "status": "PROVISIONAL"
+        },
+        "fill_id": "final31-fill",
+        "gross_amount": "3000.00",
+        "instrument": "SSE:600000",
+        "order_id": null,
+        "price": "10.00",
+        "quantity": "300",
+        "receipt_id": "8caced1f-c555-4d6a-9d1c-4877962f5daa",
+        "record_id": "e49739c2-ac3d-46db-9d4a-6a6a2892f08f",
+        "source": "用户核对成交回报"
+      }
+    ],
+    "historical_return": null,
+    "investment_expenses": "0.00",
+    "investment_income": "25.01",
+    "latest_confirmed_input_at": "2026-10-07T06:00:00.000Z",
+    "latest_effective_fact_at": "2026-10-11T14:32:00+00:00",
+    "latest_fact_recorded_at": "2026-10-11T14:32:58.735983+00:00",
+    "latest_fill_facts": [
+      "SSE:600000 实际新增 300 股暴露（没有对应建议，截至 2026-10-11T14:32:00.000Z）"
+    ],
+    "lots": [
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600000",
+        "lot_id": "baseline:SSE:600000",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600001",
+        "lot_id": "baseline:SSE:600001",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600002",
+        "lot_id": "baseline:SSE:600002",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600003",
+        "lot_id": "baseline:SSE:600003",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600004",
+        "lot_id": "baseline:SSE:600004",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600005",
+        "lot_id": "baseline:SSE:600005",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600006",
+        "lot_id": "baseline:SSE:600006",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600007",
+        "lot_id": "baseline:SSE:600007",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600008",
+        "lot_id": "baseline:SSE:600008",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600009",
+        "lot_id": "baseline:SSE:600009",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600010",
+        "lot_id": "baseline:SSE:600010",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600011",
+        "lot_id": "baseline:SSE:600011",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600012",
+        "lot_id": "baseline:SSE:600012",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600013",
+        "lot_id": "baseline:SSE:600013",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600014",
+        "lot_id": "baseline:SSE:600014",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600015",
+        "lot_id": "baseline:SSE:600015",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600016",
+        "lot_id": "baseline:SSE:600016",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600017",
+        "lot_id": "baseline:SSE:600017",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600018",
+        "lot_id": "baseline:SSE:600018",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600019",
+        "lot_id": "baseline:SSE:600019",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600020",
+        "lot_id": "baseline:SSE:600020",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600021",
+        "lot_id": "baseline:SSE:600021",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600022",
+        "lot_id": "baseline:SSE:600022",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600023",
+        "lot_id": "baseline:SSE:600023",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600024",
+        "lot_id": "baseline:SSE:600024",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600025",
+        "lot_id": "baseline:SSE:600025",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600026",
+        "lot_id": "baseline:SSE:600026",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600027",
+        "lot_id": "baseline:SSE:600027",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600028",
+        "lot_id": "baseline:SSE:600028",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "UNKNOWN",
+        "effective_at": "2026-10-07T12:00:00+08:00",
+        "instrument": "SSE:600029",
+        "lot_id": "baseline:SSE:600029",
+        "original_cost": null,
+        "original_quantity": "300",
+        "remaining_cost": null,
+        "remaining_quantity": "300"
+      },
+      {
+        "cost_basis": "KNOWN",
+        "effective_at": "2026-10-11T14:32:00.000Z",
+        "instrument": "SSE:600000",
+        "lot_id": "e49739c2-ac3d-46db-9d4a-6a6a2892f08f",
+        "original_cost": "3005.00",
+        "original_quantity": "300",
+        "remaining_cost": "3005.00",
+        "remaining_quantity": "300"
+      }
+    ],
+    "net_result_state": "KNOWN_FEES",
+    "pending_expenses": "0.00",
+    "pending_income": "0.00",
+    "pending_items": [],
+    "permission_profile": [
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "MAIN",
+        "confirmed_at": "2026-10-11T14:32:56.126256+00:00",
+        "effective_at": "2026-10-07T02:00:00+00:00",
+        "market": "SSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "MAIN",
+        "confirmed_at": "2026-10-11T14:32:56.126256+00:00",
+        "effective_at": "2026-10-07T02:00:00+00:00",
+        "market": "SZSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "STAR",
+        "confirmed_at": "2026-10-11T14:32:56.126256+00:00",
+        "effective_at": "2026-10-07T02:00:00+00:00",
+        "market": "SSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "CHINEXT",
+        "confirmed_at": "2026-10-11T14:32:56.126256+00:00",
+        "effective_at": "2026-10-07T02:00:00+00:00",
+        "market": "SZSE",
+        "status": "UNKNOWN"
+      },
+      {
+        "account_version": 1,
+        "basis": "未核对",
+        "board": "BSE",
+        "confirmed_at": "2026-10-11T14:32:56.126256+00:00",
+        "effective_at": "2026-10-07T02:00:00+00:00",
+        "market": "BSE",
+        "status": "UNKNOWN"
+      }
+    ],
+    "positions": [
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600000",
+        "quantity": "600",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600001",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600002",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600003",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600004",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600005",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600006",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600007",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600008",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600009",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600010",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600011",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600012",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600013",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600014",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600015",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600016",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600017",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600018",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600019",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600020",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600021",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600022",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600023",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600024",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600025",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600026",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600027",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600028",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      },
+      {
+        "acquisition_cost": null,
+        "baseline_source": "用户核对券商快照",
+        "buy_time": null,
+        "cost_basis": "UNKNOWN",
+        "historical_fees": null,
+        "instrument": "SSE:600029",
+        "quantity": "300",
+        "reference_cost": null,
+        "sellable_quantity": null
+      }
+    ],
+    "rights_fee_breakdown_pending": [],
+    "state": "CONFIRMED_AS_OF",
+    "system_known_at": "2026-10-11T14:32:59.199132+00:00",
+    "version": 5,
+    "withdrawable": null,
+    "withdrawable_as_of": null
+  },
+  "capability": {
+    "state": "UNGRANTED",
+    "formal_judgment": "DISABLED",
+    "allowed_actions": [],
+    "reason": "尚无通过验证及受控登记的技术能力",
+    "funding_state": "UNCONFIRMED",
+    "runtime_state": "NOT_RESTORED",
+    "recovery": {
+      "state": "NOT_RESTORED"
+    },
+    "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+    "reasons": [],
+    "grant_statuses": [],
+    "lifecycle": {
+      "version": 2,
+      "scopes": {
+        "NEW_RISK": {
+          "state": "ACTIVE",
+          "version": 2,
+          "reason_code": "USER_PAUSE",
+          "reason": "METHOD final31 deliberate pause",
+          "effective_at": "2026-10-11T14:33:00.311829+00:00",
+          "event_id": "d4f9ecbe-a71e-40c7-a437-9cfc4d86b73d"
+        },
+        "MODEL": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        },
+        "ALL_MONITOR": {
+          "state": "ACTIVE",
+          "version": 0,
+          "reason_code": null,
+          "reason": null,
+          "effective_at": null
+        }
+      },
+      "observations_allowed": true,
+      "independent_risk_observations_allowed": true,
+      "model_judgments_allowed": true,
+      "new_risk_allowed": true,
+      "account_facts_allowed": true,
+      "audit_and_backup_allowed": true
+    },
+    "headline": "交易判断未启用",
+    "formal_capabilities": [],
+    "method_capabilities": []
+  },
+  "status": "PASS"
+}

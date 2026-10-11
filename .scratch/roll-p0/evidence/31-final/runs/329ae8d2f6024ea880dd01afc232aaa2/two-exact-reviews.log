@@ -1,0 +1,44 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket31-final/.scratch/f31r-329ae8d2/test_persistent_worker_retries0')
+
+    def test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts(tmp_path):
+        def unavailable(request):raise httpx.ConnectTimeout('controlled source timeout')
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(unavailable))) as client:
+            establish(client,['SSE:600519'])
+            response=client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','refresh_missing':True})
+            assert response.status_code==202,response.text
+            identifier=response.json()['task_id']
+            health=client.get('/api/reviews/health').json()
+            assert health['worker_limit']==1
+            assert health['technical_limits']['attempts']==3
+            for _ in range(200):
+                task=client.get('/api/reviews/tasks/'+identifier).json()
+                if task['status']=='RETRY_WAIT':break
+                time.sleep(.01)
+            assert task['status']=='RETRY_WAIT',task
+            assert task['attempts']==1 and task['retry_at']>task['last_attempt_at']
+            assert task['result'] is None
+            task=wait_result(client,identifier)
+            assert task['status']=='PARTIAL' and task['attempts']==3
+            assert task['result']['forecast'] is None and task['result']['gaps']
+            assert task['timing']['network_seconds']>=0
+            assert task['timing']['local_seconds']>=0
+            runs=[client.get('/api/data/runs/'+identifier).json() for identifier in task['retrieval_runs']]
+            assert len(runs)==6  # Each of the three attempts reaches both finite scope requests.
+            for offset in range(0,len(runs),2):
+                attempt=runs[offset:offset+2]
+                purposes={client.get('/api/data/requests/'+run['request_id']).json()['purpose'] for run in attempt}
+                assert purposes=={'OBSERVATION','BACKGROUND'}
+                assert sum(len(run['tools']) for run in attempt)<=8
+            assert client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','cutoff':task['inputs']['cutoff'],'refresh_missing':True}).json()['task_id']==identifier
+            assert client.get('/api/account').json()['version']==1
+>           assert client.get('/api/reviews/audits/'+task['audit_id']).json()['metrics']['duplicate_notifications']['value'] is None
+E           assert 0 is None
+
+tests\application\test_reviews.py:107: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reviews.py::test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_partial_facts
+1 failed, 1 passed in 24.83s

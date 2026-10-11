@@ -1,0 +1,209 @@
+{
+  "owner": "final31",
+  "source_root": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final",
+  "source_oid": "d4864a4e29ddcb80462e44250569d652e8cc03cf",
+  "accepted_fix_oid": "076e67d53e4e550d4027b4f76909fb693c952957",
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false,
+  "original_sqlite_connections": 0,
+  "status": "RUNNING",
+  "runtime_union_roots": [
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\f31-live-20261011-223216"
+  ],
+  "processes": [
+    {
+      "role": "api",
+      "launcher_pid": 20124,
+      "argv": [
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "uvicorn",
+        "roll.app:create_app",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "51264"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend",
+      "cim_at_start": [
+        {
+          "ProcessId": 20124,
+          "ParentProcessId": 34572,
+          "CreationDate": "/Date(1791729136557)/",
+          "ExecutablePath": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+          "CommandLine": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe -B -X utf8 -m uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 51264"
+        },
+        {
+          "ProcessId": 17348,
+          "ParentProcessId": 20124,
+          "CreationDate": "/Date(1791729136576)/",
+          "ExecutablePath": "C:\\WINDOWS\\system32\\conhost.exe",
+          "CommandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+        },
+        {
+          "ProcessId": 44080,
+          "ParentProcessId": 20124,
+          "CreationDate": "/Date(1791729136663)/",
+          "ExecutablePath": "C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+          "CommandLine": "\"C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe\"  -B -X utf8 -m uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 51264"
+        }
+      ]
+    },
+    {
+      "role": "worker",
+      "launcher_pid": 47036,
+      "argv": [
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "roll.worker"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend",
+      "cim_at_start": [
+        {
+          "ProcessId": 47036,
+          "ParentProcessId": 34572,
+          "CreationDate": "/Date(1791729149679)/",
+          "ExecutablePath": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+          "CommandLine": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe -B -m roll.worker"
+        },
+        {
+          "ProcessId": 32488,
+          "ParentProcessId": 47036,
+          "CreationDate": "/Date(1791729149698)/",
+          "ExecutablePath": "C:\\WINDOWS\\system32\\conhost.exe",
+          "CommandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+        },
+        {
+          "ProcessId": 7248,
+          "ParentProcessId": 47036,
+          "CreationDate": "/Date(1791729149767)/",
+          "ExecutablePath": "C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+          "CommandLine": "\"C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe\"  -B -m roll.worker"
+        }
+      ]
+    },
+    {
+      "role": "worker-duplicate",
+      "launcher_pid": 17096,
+      "argv": [
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "roll.worker"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend"
+    },
+    {
+      "role": "ui",
+      "launcher_pid": 28332,
+      "argv": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\vite\\bin\\vite.js",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "51265",
+        "--strictPort"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend",
+      "cim_at_start": [
+        {
+          "ProcessId": 28332,
+          "ParentProcessId": 34572,
+          "CreationDate": "/Date(1791729164032)/",
+          "ExecutablePath": "C:\\Program Files\\nodejs\\node.exe",
+          "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\vite\\bin\\vite.js --host 127.0.0.1 --port 51265 --strictPort"
+        },
+        {
+          "ProcessId": 36052,
+          "ParentProcessId": 28332,
+          "CreationDate": "/Date(1791729164055)/",
+          "ExecutablePath": "C:\\WINDOWS\\system32\\conhost.exe",
+          "CommandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+        },
+        {
+          "ProcessId": 43488,
+          "ParentProcessId": 28332,
+          "CreationDate": "/Date(1791729164612)/",
+          "ExecutablePath": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\@esbuild\\win32-x64\\esbuild.exe",
+          "CommandLine": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\@esbuild\\win32-x64\\esbuild.exe --service=0.27.7 --ping"
+        }
+      ]
+    }
+  ],
+  "checks": {},
+  "api_health": {
+    "status": "ok",
+    "runtime_role": "API",
+    "environment": "test"
+  },
+  "worker_health": {
+    "worker_limit": 1,
+    "worker_state": "RUNNING",
+    "last_worker_error": null,
+    "worker": {
+      "heartbeat_at": "2026-10-11T14:32:33.461429+00:00",
+      "host_owner": {
+        "creation_ticks": 134362027497670973,
+        "nonce": "cf668240-c109-49b2-bd24-5d5351bdcb79",
+        "pid": 7248
+      }
+    },
+    "technical_limits": {
+      "attempts": 3,
+      "backoff_seconds": [
+        1,
+        2
+      ],
+      "timeout_seconds": 8,
+      "http_calls_per_attempt": 8,
+      "recursive_tasks": 0
+    },
+    "backlog": 0,
+    "running": 0
+  },
+  "after_browser_close": {
+    "api": {
+      "status": "ok",
+      "runtime_role": "API",
+      "environment": "test"
+    },
+    "worker": {
+      "worker_limit": 1,
+      "worker_state": "RUNNING",
+      "last_worker_error": null,
+      "worker": {
+        "heartbeat_at": "2026-10-11T14:33:01.282363+00:00",
+        "host_owner": {
+          "creation_ticks": 134362027497670973,
+          "nonce": "cf668240-c109-49b2-bd24-5d5351bdcb79",
+          "pid": 7248
+        }
+      },
+      "technical_limits": {
+        "attempts": 3,
+        "backoff_seconds": [
+          1,
+          2
+        ],
+        "timeout_seconds": 8,
+        "http_calls_per_attempt": 8,
+        "recursive_tasks": 0
+      },
+      "backlog": 0,
+      "running": 0
+    },
+    "ui_alive": true
+  },
+  "environment": "test",
+  "api_url": "http://127.0.0.1:51264",
+  "runtime": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\f31-live-20261011-223216\\runtime",
+  "runtime_is_new_owned_copy": true,
+  "process_pid": 44080,
+  "process_creation_time": "/Date(1791729136663)/"
+}

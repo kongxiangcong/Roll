@@ -1,0 +1,14 @@
+{
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false,
+  "checks": {
+    "baseline_ui_receipt": true,
+    "assets30_indices5_unknown_sellable": true,
+    "actual300_unknown_fee_then5": true,
+    "csv_batch_receipt": true,
+    "scoped_declaration": true
+  },
+  "errors": [],
+  "status": "FAIL",
+  "failure": "Error: locator.click: Error: strict mode violation: locator('details').filter({ has: getByText('模型维护与资格核验', { exact: true }) }).locator('summary') resolved to 2 elements:\n    1) <summary>模型维护与资格核验</summary> aka getByText('模型维护与资格核验')\n    2) <summary>实际维护记录</summary> aka getByText('实际维护记录')\n\nCall log:\n\u001b[2m  - waiting for locator('details').filter({ has: getByText('模型维护与资格核验', { exact: true }) }).locator('summary')\u001b[22m\n"
+}
