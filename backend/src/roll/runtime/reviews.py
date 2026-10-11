@@ -42,8 +42,9 @@ class MaintenanceCommand(BaseModel):
 
 
 class Reviews:
-    def __init__(self,ledger,market,evidence,clock=None):
+    def __init__(self,ledger,market,evidence,clock=None,worker_enabled=True):
         self.ledger,self.market,self.evidence=ledger,market,evidence
+        self.worker_enabled=worker_enabled
         self.resolutions=None
         self.forward=None
         self.clock=clock or (lambda:datetime.now(timezone.utc))
@@ -72,7 +73,9 @@ class Reviews:
             db.execute('INSERT OR IGNORE INTO schema_migrations VALUES(?,?)',('15-reviews-v1',now()))
 
     def start(self):
+        if not self.worker_enabled:return False
         with self.start_lock:self.acquire_worker()
+        return bool(self.thread and self.thread.is_alive())
 
     def acquire_worker(self):
         if self.thread and self.thread.is_alive():return

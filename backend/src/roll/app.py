@@ -44,20 +44,25 @@ from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,Verifi
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None):
     @asynccontextmanager
     async def lifespan(application):
-        application.state.reviews.start()
-        application.state.backups.start()
-        yield
-        await asyncio.to_thread(application.state.research.close)
-        await asyncio.to_thread(application.state.reviews.close)
-        await asyncio.to_thread(application.state.codex.close)
-        await asyncio.to_thread(application.state.deepseek.close)
-        await asyncio.to_thread(application.state.technical_reviews.close)
-        await asyncio.to_thread(application.state.backups.close)
-        if not (application.state.reviews.thread and application.state.reviews.thread.is_alive()):
-            application.state.host_marker.unlink(missing_ok=True)
+        try:
+            started=application.state.reviews.start()
+            if runtime_role == 'WORKER' and not started:
+                raise RuntimeError('BACKGROUND_WORKER_ALREADY_RUNNING')
+            if runtime_role != 'API':
+                application.state.backups.start()
+            yield
+        finally:
+            await asyncio.to_thread(application.state.research.close)
+            await asyncio.to_thread(application.state.reviews.close)
+            await asyncio.to_thread(application.state.codex.close)
+            await asyncio.to_thread(application.state.deepseek.close)
+            await asyncio.to_thread(application.state.technical_reviews.close)
+            await asyncio.to_thread(application.state.backups.close)
+            if not (application.state.reviews.thread and application.state.reviews.thread.is_alive()):
+                application.state.host_marker.unlink(missing_ok=True)
 
     app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
     ledger = Ledger(directory or data_directory())
@@ -380,7 +385,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/research/protocols/{protocol_id}/checkpoints',status_code=201)
     def research_checkpoint(protocol_id:str,command:CheckpointCommand):
         return research.checkpoint(protocol_id,command)
-    reviews=Reviews(ledger,market,evidence,review_clock)
+    reviews=Reviews(ledger,market,evidence,review_clock,worker_enabled=runtime_role != "API")
     reviews.forward=forward
     app.state.reviews=reviews
 
@@ -832,7 +837,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.get("/api/health")
     def health():
-        return {"status": "ok","environment":"test" if os.environ.get("ROLL_ENV")=="test" else "local"}
+        return {"status": "ok","runtime_role":runtime_role,"environment":"test" if os.environ.get("ROLL_ENV")=="test" else "local"}
 
     @app.post("/api/account/use-check")
     def account_use(command:UseCheck):
@@ -954,17 +959,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None):
     if capability_method_file is not None and os.environ.get('ROLL_ENV') != 'test':
         raise ValueError('CAPABILITY_METHOD_HOST_TEST_ONLY')
     if directory is None:
         load_runtime_environment()
+    runtime_role=runtime_role or os.environ.get('ROLL_RUNTIME_ROLE') or ('IN_PROCESS' if directory is not None or os.environ.get('ROLL_ENV')=='test' else 'API')
+    if runtime_role not in {'API','WORKER','IN_PROCESS'}:
+        raise ValueError('INVALID_RUNTIME_ROLE')
     directory=directory or data_directory()
     backups,marker,previous=bootstrap(directory)
     if backup_clock:backups.clock=backup_clock
     try:
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
-        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker
