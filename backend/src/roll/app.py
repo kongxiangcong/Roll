@@ -835,6 +835,32 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
     app.state.actions = actions
     reviews.actions = actions
+    from roll.decisions.intents import Intents, PrepareIntent, DeclareIntent
+    intents = Intents(ledger, actions)
+    app.state.intents = intents
+    ledger.execution_intents = intents
+    actions.execution_intents = intents
+    reviews.intents = intents
+
+    @app.post('/api/intents/prepare', status_code=201)
+    def prepare_intent(command: PrepareIntent):
+        return intents.prepare(command)
+
+    @app.get('/api/intents')
+    def execution_intents():
+        return intents.listing()
+
+    @app.post('/api/intents/{intent_id}/declare')
+    def declare_intent(intent_id: str, command: DeclareIntent):
+        return intents.declare(intent_id, command)
+
+    @app.get('/api/intents/allocations')
+    def intent_allocations():
+        return intents.allocations()
+
+    @app.get('/api/intents/audit')
+    def intent_audit():
+        return intents.metrics()
 
     @app.post('/api/actions/evaluate', status_code=201)
     def evaluate_actions(command: EvaluationCommand):

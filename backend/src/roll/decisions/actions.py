@@ -63,6 +63,7 @@ class Actions:
         funding = self.funding.current(db=db)
         previous = db.execute('SELECT value FROM action_loss_state WHERE scope=?', (encode([funding.get('scope_kind'), funding.get('scope_id'), funding.get('loss_origin_at')]),)).fetchone()
         return {'account': account, 'funding': funding, 'loss_state': json.loads(previous[0]) if previous else None,
+                'execution_intents': self.execution_intents.listing(db) if hasattr(self, 'execution_intents') else {'intents': [], 'unreflected_reservation_yuan': '0.00', 'pending_attribution': False},
                 'capabilities': self.capabilities.current(db=db),
                 'data_state': self.data_state(db, account), 'checked_at': now()}
 
@@ -74,6 +75,8 @@ class Actions:
             return 'CURRENT_CAPABILITY_CHANGED_BEFORE_PUBLICATION'
         if boundary['data_state'] != inputs['data_state']:
             return 'CURRENT_DATA_OR_LIST_CHANGED_BEFORE_PUBLICATION'
+        if boundary['execution_intents'] != inputs['execution_intents']:
+            return 'CURRENT_EXECUTION_OCCUPANCY_CHANGED_BEFORE_PUBLICATION'
         loss = (result.get('joint_budget') or {}).get('loss')
         if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'):
             return 'CURRENT_LOSS_BOUNDARY_CHANGED_BEFORE_PUBLICATION'
@@ -89,6 +92,7 @@ class Actions:
             capabilities, data_state = boundary['capabilities'], boundary['data_state']
             pending = [self.ledger.get_draft(r[0], db) for r in db.execute("SELECT d.id FROM account_drafts d WHERE status IN ('READY','QUARANTINED') AND NOT EXISTS(SELECT 1 FROM account_receipts r WHERE json_extract(r.receipt,'$.draft_id')=d.id)")]
             events = self.ledger.events(db=db)
+            intents = self.execution_intents.listing(db) if hasattr(self, 'execution_intents') else {'intents': [], 'unreflected_reservation_yuan': '0.00', 'pending_attribution': False}
             db.rollback()
         bound_cutoffs = [s['grant']['command']['required_as_of'] for s in capabilities['grant_statuses'] if not s['reasons']]
         required = timestamp(command.required_as_of or max(bound_cutoffs, default=account.get('effective_at') or '1970-01-01T00:00:00+00:00'))
@@ -154,6 +158,7 @@ class Actions:
             packet['risk_policy_id'] = risk['policy_id']
         return {'command': command.model_dump(), 'account': account, 'funding': funding, 'capabilities': capabilities,
                 'previous_loss': boundary['loss_state'],
+                'execution_intents': intents,
                 'required_as_of': required, 'observations': observations,
                 'data_state': data_state,
                 'packet_expired': bool(packet and datetime.fromisoformat(packet['expires_at']) <= datetime.fromisoformat(now())),
@@ -208,12 +213,15 @@ class Actions:
             else: exposure += Decimal(prices[holding['instrument']]) * Decimal(holding['quantity'])
         available = account.get('conservative_available', account.get('broker_available'))
         if available is None: global_gaps.append('BROKER_AVAILABLE_UNKNOWN')
-        cash = max(Decimal('0'), min(Decimal(available or '0'), Decimal(funding.get('capital_amount', '0'))) - Decimal(funding.get('cash_reserve', '0')))
+        intent_state = inputs.get('execution_intents', {'intents': [], 'unreflected_reservation_yuan': '0.00', 'pending_attribution': False})
+        cash = max(Decimal('0'), min(Decimal(available or '0'), Decimal(funding.get('capital_amount', '0'))) - Decimal(funding.get('cash_reserve', '0')) - Decimal(intent_state['unreflected_reservation_yuan']))
         nav = Decimal(packet['loss_facts']['net_assets']) if loss and loss['status'] == 'WITHIN_BOUNDARY' else None
         opportunities = []
         for original in packet.get('opportunities', []):
             row = dict(original)
             reasons = [*global_gaps, *row.get('input_gaps', [])]
+            if intent_state['pending_attribution']: reasons.append('EXTERNAL_ORDER_OCCUPANCY_ATTRIBUTION_UNKNOWN')
+            if any(v['action'] in {'BUY', 'ADD'} and v['status'] not in {'NOT_EXECUTED', 'RESOLVED'} for v in intent_state['intents']): reasons.append('ACTIVE_NEW_ENTRY_INTENT')
             if row['instrument'] not in inputs['data_state']['instruments']: reasons.append('OUTSIDE_CURRENT_FINITE_LIST')
             grant = grant_for('PROFIT_MODEL', row['instrument'], 'BUY')
             if grant is None: reasons.append('PROFIT_CAPABILITY_NOT_CURRENT_IN_SCOPE')
@@ -233,7 +241,9 @@ class Actions:
             opportunities.append(row)
         if opportunities:
             policy = packet['policy']
-            if policy.get('version') != '20-policy-v1' or policy.get('quantity') != '200' or policy.get('probability_threshold') != '0.60' or policy.get('exit') != 'HORIZON_SESSION20_CLOSE':
+            supported_quantity = ((policy.get('version'), policy.get('quantity')) == ('20-policy-v1', '200') or
+                                  (method and (policy.get('version'), policy.get('quantity')) == ('METHOD_EXECUTION_500_V1', '500')))
+            if not supported_quantity or policy.get('probability_threshold') != '0.60' or policy.get('exit') != 'HORIZON_SESSION20_CLOSE' or policy.get('maximum_gross_exposure') != '0.50':
                 base['limitations'].append('FROZEN_POLICY_NOT_SUPPORTED')
             else:
                 rows = calculate_policy(opportunities, cash, Decimal('0'), exposure, nav, set(holdings), policy)
@@ -270,6 +280,7 @@ class Actions:
                             row['probability_visibility'] = 'RESEARCH_VIEW_ONLY'
                         base['refusals'].append(row)
         base['joint_budget'] = {'available_after_user_reserve_yuan': format(cash, '.2f'),
+            'unreflected_intent_reservation_yuan': intent_state['unreflected_reservation_yuan'],
             'reserved_yuan': format(sum((Decimal(r['required_cash_yuan']) for r in base['decisions']), Decimal('0')), '.2f'),
             'broker_frozen_deducted_again': False, 'existing_exposure_yuan': format(exposure, '.2f'), 'loss': loss,
             'account_version': account['version'], 'funding_version': funding['version']}
@@ -321,6 +332,7 @@ class Actions:
         for row in base['decisions']:
             row['decision_id'] = fingerprint({'input': fingerprint(inputs), 'instrument': row['instrument'], 'basis': row['basis_type']})
             row['dependencies'] = {'account_version': account['version'], 'funding_version': funding['version'],
+                'grant_version': next(s['grant']['version'] for s in statuses if s['grant']['grant_id'] == row['grant_id']),
                 'grant_id': row['grant_id'], 'policy_fingerprint': fingerprint(packet.get('policy')),
                 'data_fingerprint': inputs['data_state']['fingerprint'], 'complete_protocol_fingerprint': packet.get('complete_protocol_fingerprint'),
                 'code_fingerprint': inputs['code_fingerprint'], 'rule_id': row.get('rule_id')}
@@ -388,37 +400,40 @@ class Actions:
         if not row: raise HTTPException(404, '动作评估不存在')
         return json.loads(row[0])
 
-    def current(self, instrument=None):
-        with self.ledger.connection() as db:
-            db.execute('BEGIN IMMEDIATE')
-            row = db.execute('SELECT value FROM action_evaluations ORDER BY rowid DESC LIMIT 1').fetchone()
-            value = json.loads(row[0]) if row else None
-            boundary = self.boundary(db)
-            current = boundary['account'], boundary['funding'], boundary['capabilities']
-            current_data = boundary['data_state']
-            active, invalidated = [], []
-            for decision in value['decisions'] if value else []:
-                if instrument and decision['instrument'] != instrument: continue
-                reasons = []
-                if current[0]['version'] != value['account_version']: reasons.append('ACCOUNT_VERSION_CHANGE')
-                if current[1]['version'] != value['funding_version']: reasons.append('FUNDING_VERSION_CHANGE')
-                status = next((s for s in current[2]['grant_statuses'] if s['grant']['grant_id'] == decision['grant_id']), None)
-                if not status or status['reasons'] or decision['action'] not in status['allowed_actions']: reasons.append('GRANT_RESTRICTED')
-                if datetime.fromisoformat(decision['expires_at']) <= datetime.fromisoformat(boundary['checked_at']): reasons.append('EXPIRED')
-                if value['code_fingerprint'] != code(): reasons.append('ACTION_CODE_CHANGED')
-                if decision['dependencies']['data_fingerprint'] != current_data['fingerprint']: reasons.append('DATA_OR_LIST_CHANGE')
-                loss = (value.get('joint_budget') or {}).get('loss')
-                if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'): reasons.append('LOSS_BOUNDARY_CHANGE')
-                if reasons:
-                    reason_key = fingerprint(reasons)
-                    event = {'event_id': str(uuid4()), 'event_type': 'ACTION_INVALIDATED', 'evaluation_id': value['evaluation_id'],
-                             'decision_id': decision['decision_id'], 'recorded_at': now(), 'reasons': reasons,
-                             'account_version': current[0]['version'], 'funding_version': current[1]['version']}
-                    inserted = db.execute('INSERT OR IGNORE INTO action_invalidations VALUES(?,?,?)', (decision['decision_id'], reason_key, encode(event))).rowcount
-                    if inserted: db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
-                    invalidated.append({'decision': decision, 'reasons': reasons})
-                else: active.append(decision)
-            db.commit()
+    def current(self, instrument=None, db=None):
+        if db is None:
+            with self.ledger.connection() as connection:
+                connection.execute('BEGIN IMMEDIATE')
+                result = self.current(instrument, connection)
+                connection.commit()
+                return result
+        row = db.execute('SELECT value FROM action_evaluations ORDER BY rowid DESC LIMIT 1').fetchone()
+        value = json.loads(row[0]) if row else None
+        boundary = self.boundary(db)
+        current = boundary['account'], boundary['funding'], boundary['capabilities']
+        current_data = boundary['data_state']
+        active, invalidated = [], []
+        for decision in value['decisions'] if value else []:
+            if instrument and decision['instrument'] != instrument: continue
+            reasons = []
+            if current[0]['version'] != value['account_version']: reasons.append('ACCOUNT_VERSION_CHANGE')
+            if current[1]['version'] != value['funding_version']: reasons.append('FUNDING_VERSION_CHANGE')
+            status = next((s for s in current[2]['grant_statuses'] if s['grant']['grant_id'] == decision['grant_id']), None)
+            if not status or status['reasons'] or decision['action'] not in status['allowed_actions']: reasons.append('GRANT_RESTRICTED')
+            if datetime.fromisoformat(decision['expires_at']) <= datetime.fromisoformat(boundary['checked_at']): reasons.append('EXPIRED')
+            if value['code_fingerprint'] != code(): reasons.append('ACTION_CODE_CHANGED')
+            if decision['dependencies']['data_fingerprint'] != current_data['fingerprint']: reasons.append('DATA_OR_LIST_CHANGE')
+            loss = (value.get('joint_budget') or {}).get('loss')
+            if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'): reasons.append('LOSS_BOUNDARY_CHANGE')
+            if reasons:
+                reason_key = fingerprint(reasons)
+                event = {'event_id': str(uuid4()), 'event_type': 'ACTION_INVALIDATED', 'evaluation_id': value['evaluation_id'],
+                         'decision_id': decision['decision_id'], 'recorded_at': now(), 'reasons': reasons,
+                         'account_version': current[0]['version'], 'funding_version': current[1]['version']}
+                inserted = db.execute('INSERT OR IGNORE INTO action_invalidations VALUES(?,?,?)', (decision['decision_id'], reason_key, encode(event))).rowcount
+                if inserted: db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
+                invalidated.append({'decision': decision, 'reasons': reasons})
+            else: active.append(decision)
         return {'evaluation': value, 'instrument': instrument, 'decisions': active, 'invalidated': invalidated}
 
     def replay(self, identifier):
