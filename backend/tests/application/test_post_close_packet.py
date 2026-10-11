@@ -292,3 +292,26 @@ def test_failed_source_receipt_stays_in_old_packet_after_explicit_successful_cap
             assert replay.status_code==200,replay.text
             assert replay.json()['matches_original'] and replay.json()['network_calls']==0
         assert len(calls)==2 and not new['forward_admissible']
+
+
+def test_historical_failure_remains_a_receipt_without_becoming_current_checkpoint_failure(tmp_path,monkeypatch):
+    clock=['2026-10-12T15:06:00+08:00']
+    for module in ['roll.research.prospective','roll.market.post_close_packet','roll.market.evidence']:
+        monkeypatch.setattr(module+'.now',lambda:clock[0])
+    calls=[]
+    def supplier(_):
+        calls.append(1)
+        return httpx.Response(200,json={'date':20261012,'time':145959,
+            'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]})
+    app=create_app(tmp_path,market_transport=httpx.MockTransport(supplier))
+    with TestClient(app) as client:
+        pid=setup(client)
+        old=client.post('/api/research/collections/'+pid+'/post-close',json={'basis':'METHOD prior checkpoint failure'}).json()
+        clock[0]='2026-10-13T15:06:00+08:00'
+        current=client.post('/api/research/collections/'+pid+'/post-close-packets',json={'basis':'METHOD current packet, no collection'}).json()
+        gap='SOURCE_ACQUISITION_FAILURE:sse-closing-board:SSE_SESSION_NOT_CLOSED'
+        assert gap in old['gaps'] and gap not in current['gaps']
+        assert current['acquisition_attempts']==old['acquisition_attempts']
+        assert 'CURRENT_COMPLETE_DAILY_MISSING' in current['gaps'] and not current['forward_admissible']
+        assert len(calls)==1
+        assert client.post('/api/research/post-close-packets/'+old['packet_id']+'/replay').json()['matches_original']

@@ -284,8 +284,9 @@ class PostClosePackets:
         inventory=self.cash_inventory(cutoff)
         gaps=[]
         latest={}
+        current_day=cutoff.astimezone(SHANGHAI).date().isoformat()
         for attempt in acquisition_attempts:
-            if attempt['source_id']==SOURCE:
+            if attempt['source_id']==SOURCE and attempt['source_day']==current_day:
                 latest[(attempt['source_id'],attempt['source_day'])]=attempt
         # Preserve old failures in the packet without making a later successful correction fail.
         for attempt in latest.values():
