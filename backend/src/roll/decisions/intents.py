@@ -157,6 +157,7 @@ class Intents:
     def account_confirmed(self, db, command, events, receipt):
         """Called only inside Ledger's writer, before the one account commit."""
         fills = {e['payload']['record_id']: e for e in events if e['event_type'] in {'BUY_FILL', 'SELL_FILL'}}
+        draft = self.ledger.get_draft(command.draft_id, db)
         totals = {}
         for allocation in command.fill_allocations:
             quantity = Decimal(number(allocation.allocated_quantity, 'allocated_quantity', 8))
@@ -173,7 +174,9 @@ class Intents:
             value = {'allocation_id': str(uuid4()), 'decision_id': intent['decision_id'], 'intent_id': intent['intent_id'],
                      'fill_event_id': fill['event_id'], 'fill_record_id': allocation.fill_record_id, 'allocated_quantity': format(quantity, 'f'),
                      'association_status': association, 'receipt_id': receipt['receipt_id'], 'account_version': receipt['account_version'],
-                     'occurred_at': fill['effective_at'], 'known_at': fill['recorded_at'], 'reported_source': fill['source'],
+                     'occurred_at': fill['effective_at'], 'occurred_source': fill['source'],
+                     'reported_at': draft['created_at'], 'reported_source': 'USER_ACCOUNT_DRAFT',
+                     'known_at': fill['recorded_at'], 'known_source': 'HOST_ACCOUNT_CONFIRM',
                      'price': payload['price'], 'fee': payload['fee'], 'decision_time_chain': intent['time_chain']}
             db.execute('INSERT INTO action_fill_allocations VALUES(?,?)', (value['allocation_id'], encode(value)))
             if association == 'USER_CONFIRMED':

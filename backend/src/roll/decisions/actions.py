@@ -121,7 +121,25 @@ class Actions:
                                         for i in profit['scope']['instruments']]
                         forecast_ids = [f for f in forecast_ids if f]
         if method is not None:
-            packet = method.get('action_packet')
+            packet = dict(method['action_packet']) if method.get('action_packet') else None
+            if packet and packet.get('policy', {}).get('version') == 'METHOD_EXECUTION_500_V1':
+                declaration = method.get('method_policy_declaration')
+                deployment = method.get('deployment_fingerprints', {})
+                execution = method.get('execution', {})
+                valid = (isinstance(declaration, dict) and declaration.get('namespace') == 'METHOD_ENGINEERING'
+                    and declaration.get('protocol_id') == method.get('protocol_id')
+                    and declaration.get('scope') == method.get('scope')
+                    and declaration.get('policy') == packet.get('policy')
+                    and declaration.get('model_fingerprint') == deployment.get('model')
+                    and declaration.get('calibrator_fingerprint') == deployment.get('calibrator')
+                    and fingerprint(declaration) == method.get('complete_protocol_fingerprint') == packet.get('complete_protocol_fingerprint')
+                    and execution.get('version') == 'METHOD_EXECUTION_500_V1'
+                    and execution.get('policy_fingerprint') == fingerprint(packet['policy']))
+                if not valid:
+                    raise HTTPException(409, 'METHOD_POLICY_BINDING_MISMATCH')
+                packet['method_policy_binding'] = {'protocol_id': declaration['protocol_id'],
+                    'declaration_fingerprint': fingerprint(declaration), 'policy_fingerprint': fingerprint(packet['policy']),
+                    'material_id': method['material_id'], 'material_fingerprint': method['material_fingerprint']}
         elif freeze_id:
             frozen = self.shadow.get(freeze_id)
             forecasts = self.shadow.forecasts(frozen, forecast_ids)
@@ -242,7 +260,9 @@ class Actions:
         if opportunities:
             policy = packet['policy']
             supported_quantity = ((policy.get('version'), policy.get('quantity')) == ('20-policy-v1', '200') or
-                                  (method and (policy.get('version'), policy.get('quantity')) == ('METHOD_EXECUTION_500_V1', '500')))
+                                  (method and (policy.get('version'), policy.get('quantity')) == ('METHOD_EXECUTION_500_V1', '500')
+                                   and packet.get('method_policy_binding', {}).get('policy_fingerprint') == fingerprint(policy)
+                                   and packet['method_policy_binding'].get('declaration_fingerprint') == packet.get('complete_protocol_fingerprint')))
             if not supported_quantity or policy.get('probability_threshold') != '0.60' or policy.get('exit') != 'HORIZON_SESSION20_CLOSE' or policy.get('maximum_gross_exposure') != '0.50':
                 base['limitations'].append('FROZEN_POLICY_NOT_SUPPORTED')
             else:

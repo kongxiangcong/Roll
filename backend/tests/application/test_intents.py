@@ -10,6 +10,10 @@ from test_funding import funding
 from datetime import datetime, timedelta
 from test_reviews import wait_result
 from test_capabilities import ready, method_command
+from roll.decisions.actions import fingerprint
+import json
+import os
+from pathlib import Path
 
 
 @pytest.mark.parametrize('status', ['NOT_OPEN', 'UNKNOWN'])
@@ -62,11 +66,26 @@ def test_exact_500_proposal_300_actual_is_a_declared_method_policy_not_a_changed
     monkeypatch.setenv('ROLL_ENV', 'test')
     p = action_package()
     p['action_packet']['policy'].update(version='METHOD_EXECUTION_500_V1', quantity='500')
+    declaration = {'namespace': 'METHOD_ENGINEERING', 'protocol_id': 'method-execution-500-protocol-v1',
+        'scope': p['scope'], 'policy': p['action_packet']['policy'], 'model_fingerprint': p['deployment_fingerprints']['model'],
+        'calibrator_fingerprint': p['deployment_fingerprints']['calibrator']}
+    p.update(protocol_id=declaration['protocol_id'], complete_protocol_fingerprint=fingerprint(declaration), method_policy_declaration=declaration,
+        execution={'version': 'METHOD_EXECUTION_500_V1', 'policy_fingerprint': fingerprint(declaration['policy'])},
+        material_id='method-execution-500-material', review_run_id='method-execution-500-review', material_fingerprint=fingerprint(declaration))
+    p['review'].update(material_id=p['material_id'], material_fingerprint=p['material_fingerprint'])
+    p['action_packet']['complete_protocol_fingerprint'] = p['complete_protocol_fingerprint']
     for row in p['action_packet']['opportunities']:
         row.update(quantity='500', price_lower_yuan='9.00', price_upper_yuan='10.00')
     file = save_package(tmp_path / 'qualification.json', p)
     with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
-        prepare(client, p)
+        ready(client)
+        for instrument in p['scope']['instruments']:
+            listing = client.get('/api/market/list').json()
+            assert client.post('/api/market/watch', json={'instrument': instrument, 'operation': 'ADD', 'expected_list_version': listing['version']}).status_code == 200
+        assert client.post('/api/funding/confirm', json=funding(1, single_exposure='40000.00')).status_code == 200
+        proposal = client.get('/api/capabilities/proposal', params={'material_id': p['material_id'], 'review_run_id': p['review_run_id']}).json()
+        grant = client.post('/api/capabilities/grants', json={**proposal, 'allowed_actions': ['BUY'], 'idempotency_key': 'method-500-grant', 'basis': 'explicit METHOD 500-share execution fixture'})
+        assert grant.status_code == 201, grant.text
         evaluation = client.post('/api/actions/evaluate', json={}).json()
         assert len(evaluation['decisions']) == 1, evaluation
         assert evaluation['namespace'] == 'METHOD_ENGINEERING'
@@ -85,6 +104,28 @@ def test_exact_500_proposal_300_actual_is_a_declared_method_policy_not_a_changed
         assert pending['provisional_reservation_yuan'] == '2002.00'
         assert pending['remaining_action_state'] == 'REEVALUATION_REQUIRED'
         assert client.get('/api/actions/current').json()['decisions'] == []
+        assert grant.json()['protocol_id'] == declaration['protocol_id']
+        assert grant.json()['complete_protocol_fingerprint'] == fingerprint(declaration)
+        assert grant.json()['execution']['policy_fingerprint'] == fingerprint(declaration['policy'])
+        if output := os.environ.get('ROLL_T26_EVIDENCE_DIR'):
+            Path(output).mkdir(parents=True, exist_ok=True)
+            (Path(output) / 'method-500-policy-bindings.json').write_text(json.dumps({'declaration': declaration,
+                'method_envelope_sha256': json.loads(file.read_text(encoding='utf-8'))['sha256'],
+                'grant': grant.json(), 'host_proofs': client.get('/api/capabilities/proofs').json(), 'evaluation': evaluation,
+                'intent': intent, 'actual_receipt': result.json(), 'remaining_intent': pending}, indent=2) + '\n', encoding='utf-8')
+
+
+def test_method500_packet_cannot_override_the_generic_method200_qualification(tmp_path, monkeypatch):
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    p = action_package()
+    p['action_packet']['policy'].update(version='METHOD_EXECUTION_500_V1', quantity='500')
+    for row in p['action_packet']['opportunities']: row.update(price_lower_yuan='9.00', price_upper_yuan='10.00')
+    file = save_package(tmp_path / 'qualification.json', p)
+    with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+        prepare(client, p)
+        response = client.post('/api/actions/evaluate', json={})
+        assert response.status_code == 409
+        assert response.json()['detail'] == 'METHOD_POLICY_BINDING_MISMATCH'
 
 
 def test_expiry_never_releases_external_unknown_or_turns_it_into_unexecuted(tmp_path, monkeypatch):
@@ -256,6 +297,14 @@ def test_partial_fill_is_atomic_with_allocations_remaining_external_order_and_ac
         assert client.get('/api/actions/current').json()['decisions'] == []
         assert any(e['event_type'] == 'ACTION_INVALIDATED' for e in client.get('/api/actions/events').json())
         assert len(client.get('/api/intents/allocations').json()) == 1
+        allocated = client.get('/api/intents/allocations').json()[0]
+        assert allocated['reported_at'] == draft['created_at']
+        assert allocated['reported_source'] == 'USER_ACCOUNT_DRAFT'
+        assert allocated['known_at'] == receipt.json()['confirmed_at']
+        assert allocated['known_source'] == 'HOST_ACCOUNT_CONFIRM'
+        assert allocated['occurred_at'] == p['required_as_of']
+        assert allocated['occurred_source'] == actual['payload']['source']
+        assert allocated['decision_time_chain']['read_at'] is None
         assert client.post('/api/account/confirm', json=confirmation).json() == receipt.json()
         assert len(client.get('/api/intents/allocations').json()) == 1
     with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
