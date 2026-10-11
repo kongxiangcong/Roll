@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "authorization": "Parent exact two stopped METHOD SHM restoration only",
+  "root_profile_changes": "Only mismatching SHM within two named profiles restored to original manifest bytes; no DB/WAL/raw/profile semantic edits",
+  "repairs": [
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30p-final-4\\test_source_crash_retains_orig0\\data\\roll.sqlite3-shm",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-ticket30-producer\\worktree\\t30p-final-4\\test_source_crash_retains_orig0\\data\\roll.sqlite3-shm",
+      "manifest": {
+        "bytes": 32768,
+        "sha256": "7dec1a3d053e6ef8da11b3f8a3f0b2722ebc533ae0f239fc1542d86c0338a82c"
+      },
+      "source_verified_before": {
+        "sha256": "7dec1a3d053e6ef8da11b3f8a3f0b2722ebc533ae0f239fc1542d86c0338a82c",
+        "bytes": 32768
+      },
+      "destination_before": {
+        "sha256": "e0ac927d58b434ce75fcbd83d0d26f9cc9a15192df5113d99a85434c8466effa",
+        "bytes": 32768
+      },
+      "preserved_changed_bytes": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket30-producer-independent\\diagnostic\\shm-before\\0.sqlite3-shm",
+      "preserved_changed_bytes_info": {
+        "sha256": "e0ac927d58b434ce75fcbd83d0d26f9cc9a15192df5113d99a85434c8466effa",
+        "bytes": 32768
+      },
+      "destination_after": {
+        "sha256": "7dec1a3d053e6ef8da11b3f8a3f0b2722ebc533ae0f239fc1542d86c0338a82c",
+        "bytes": 32768
+      }
+    }
+  ],
+  "historical_manifests_receipts_modified": false,
+  "full_reverification_required": true
+}

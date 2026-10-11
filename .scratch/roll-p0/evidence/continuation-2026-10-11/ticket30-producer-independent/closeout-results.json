@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "source_oid": "c67378800ab35ec791d7d817f66465edab3aaef7",
+  "independent_tests": 4,
+  "pytest_seconds": 38.98,
+  "actual_exit_code": 0,
+  "protected_raw_sources": 15,
+  "protected_model_sources": 12,
+  "owned_source_raw_mismatches": 0,
+  "original19_checksum_only": {
+    "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4",
+    "bytes": 165814272
+  },
+  "actual_SQLite_opened": false,
+  "raw_stdout": {
+    "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket30-producer-independent\\public-api.raw.txt",
+    "sha256": "a1a7ddf4311ff31642265b2e8ba9b35eacd767b6fa401ca6d51205e031d7e0af",
+    "bytes": 101
+  },
+  "committed_stdout_normalization": "CRLF to LF only",
+  "METHOD_profiles": [
+    {
+      "profile": "test_explicit_success_preserve0",
+      "models_forecasts_attempts_forward_counts": {
+        "research_models": 0,
+        "research_forecasts": 0,
+        "research_attempts": 0,
+        "research_forward_plans": 0,
+        "research_forward_samples": 0
+      },
+      "local_fixed_supplier_run_count": 2,
+      "packets": 3,
+      "all_forward_admissible": false
+    },
+    {
+      "profile": "test_official_fixed_raw_partia0",
+      "models_forecasts_attempts_forward_counts": {
+        "research_models": 0,
+        "research_forecasts": 0,
+        "research_attempts": 0,
+        "research_forward_plans": 0,
+        "research_forward_samples": 0
+      },
+      "local_fixed_supplier_run_count": 2,
+      "packets": 2,
+      "all_forward_admissible": false
+    },
+    {
+      "profile": "test_raw_and_agreeing_sql_parq0",
+      "models_forecasts_attempts_forward_counts": {
+        "research_models": 0,
+        "research_forecasts": 0,
+        "research_attempts": 0,
+        "research_forward_plans": 0,
+        "research_forward_samples": 0
+      },
+      "local_fixed_supplier_run_count": 1,
+      "packets": 1,
+      "all_forward_admissible": false
+    },
+    {
+      "profile": "test_shanghai_date_failure_his0",
+      "models_forecasts_attempts_forward_counts": {
+        "research_models": 0,
+        "research_forecasts": 0,
+        "research_attempts": 0,
+        "research_forward_plans": 0,
+        "research_forward_samples": 0
+      },
+      "local_fixed_supplier_run_count": 1,
+      "packets": 3,
+      "all_forward_admissible": false
+    }
+  ],
+  "external_HTTP_calls": 0,
+  "provider_model_calls": 0,
+  "SEALED_read": false,
+  "new_fit_forecast": false,
+  "ticket30_completion": "partial",
+  "tickets31_32_not_closed": true,
+  "actual_forward_clock_started": false,
+  "actual_grant_created": false
+}
