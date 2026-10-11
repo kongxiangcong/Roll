@@ -17,6 +17,17 @@ from test_capability_monitoring import monitored_package
 import pytest
 import httpx
 import time
+import json
+import os
+from pathlib import Path
+
+
+def capture(name, payload):
+    if output := os.environ.get('ROLL_REPORT_EVIDENCE_DIR'):
+        directory = Path(output); directory.mkdir(parents=True, exist_ok=True)
+        (directory / (name + '.json')).write_text(json.dumps({'evidence_kind': 'METHOD_CASE_PUBLIC_API_REAL_SQLITE',
+            'donor': 'PINNED_193_BYTE_COPY_ONLY', 'new_fit_forecast_replay_advance_sealed_calls': 0,
+            'actual_external_provider_calls': 0, 'result': payload}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
 def test_unexecuted_reason_and_unlinked_actual_trade_are_not_retroactive_research_qualification(tmp_path, monkeypatch):
@@ -41,6 +52,7 @@ def test_unexecuted_reason_and_unlinked_actual_trade_are_not_retroactive_researc
         assert report['execution']['unlinked_association'] == 'UNKNOWN'
         assert report['qualification']['capability'] == 'NOT_GRANTED' and report['prepare_allowed'] is False
         assert client.get('/api/research/shadow/' + FREEZE).json() == original
+        capture('unexecuted-unlinked', report)
 
 
 def test_report_preserves_actual_28_worker_attempt_receipt_without_inventing_delivery_or_read(tmp_path, monkeypatch):
@@ -80,6 +92,7 @@ def test_report_preserves_actual_28_worker_attempt_receipt_without_inventing_del
         assert after['execution']['notification_chain']['time_chain']['read_source'] == 'EXPLICIT_STATION_READ'
         assert after['execution']['response_seconds'] is None
         assert client.get('/api/intents').json()['intents'][0]['time_chain'] == intent['time_chain']
+        capture('outbound-original-and-explicit-station-read', {'original': report, 'after_explicit_read': after})
 
 
 def test_report_and_exports_refuse_a_changed_saved_shadow_input_archive_without_replay(tmp_path, monkeypatch):
@@ -139,6 +152,7 @@ def test_report_reads_registered_execution_misfit_and_missing_support_without_ne
         assert expected_reason in client.get(url + '/export', params={**params, 'format': 'text'}).text
         assert client.get(url, params=params).json() == report
         assert {path: client.get(path).json() for path in before} == before
+        capture('monitoring-missing-' + str(missing), report)
 
 
 def prepare_copied_actual(client, p):
@@ -223,6 +237,7 @@ def test_report_projects_real_partial_allocation_and_registered_notification_cha
         assert client.get(url, params={'decision_id': intent['decision_id']}).status_code == 422
         assert client.get(url, params={**params, 'evaluation_id': 'unknown'}).status_code == 404
         assert client.get('/api/research/shadow/' + FREEZE).json() == old_shadow
+        capture('partial-fill-late-report-300-seconds', report)
 
 
 def test_run_audit_counts_existing_shadow_records_and_locates_their_saved_revisions(tmp_path, monkeypatch):
@@ -239,6 +254,7 @@ def test_run_audit_counts_existing_shadow_records_and_locates_their_saved_revisi
         assert all(r['freeze_id'] == FREEZE and r['namespace'] == 'SHADOW' for r in metric['records'])
         assert metric['account_conditional_records'] == 1
         assert client.get('/api/research/reports/' + FREEZE).json()['platform']['state']['revision'] == 2
+        capture('runtime-shadow-records', metric)
 
 
 def test_json_text_curve_and_research_link_share_sources_without_any_formal_outlet(tmp_path, monkeypatch):
@@ -299,6 +315,7 @@ def test_saved_actual_nav_uses_held_shares_and_preserves_the_original_snapshot_a
         assert client.get(selected).json() == report
         assert client.get('/api/research/reports/' + FREEZE + '?valuation_id=' + current['valuation_id']).json()['actual']['net_assets'] == '103785.10'
         assert client.get('/api/research/shadow/' + FREEZE).json() == original
+        capture('actual-saved-nav-late-fees', {'original_report': report, 'pending_fees': pending, 'current_valuation': current})
 
 def test_saved_report_keeps_four_namespaces_and_never_turns_cash_into_actual_nav(tmp_path, monkeypatch):
     monkeypatch.setenv('ROLL_ENV', 'test')

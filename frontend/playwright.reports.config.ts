@@ -8,5 +8,5 @@ export default defineConfig({testDir:'tests/e2e',testMatch:'reports.spec.ts',wor
   use:{baseURL:`http://127.0.0.1:${web}`,headless:true,channel:'chrome'},
   reporter:[['list'],['json',{outputFile:'test-results/reports-results.json'}]],webServer:[
     {command:`"${python}" -B -X utf8 -m uvicorn report_method_app:factory --factory --host 127.0.0.1 --port ${api}`,cwd:resolve('../backend'),url:`http://127.0.0.1:${api}/api/health`,env:{ROLL_DATA_DIR:resolve(profile,'data'),ROLL_ENV:'test',PYTHONDONTWRITEBYTECODE:'1',PYTHONPATH:paths},reuseExistingServer:false},
-    {command:`npm run dev -- --port ${web}`,url:`http://127.0.0.1:${web}`,env:{ROLL_API_PORT:api},reuseExistingServer:false}
+    {command:`npm run dev -- --port ${web} --config vite.reports.config.ts`,url:`http://127.0.0.1:${web}`,env:{ROLL_API_PORT:api},reuseExistingServer:false}
   ]});
