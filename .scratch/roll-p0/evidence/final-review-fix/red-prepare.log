@@ -1,0 +1,39 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_prepare_retry_returns_original_after_pending_permission_expiry_and_restart _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/pr/test_prepare_retry_returns_ori0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000253B74BB360>
+
+    def test_prepare_retry_returns_original_after_pending_permission_expiry_and_restart(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file, runtime_role='API')) as client:
+            prepare(client, p)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            command = intent_command(evaluation)
+            original = client.post('/api/intents/prepare', json=command)
+            assert original.status_code == 201, original.text
+            receipt = original.json()
+            record(tmp_path, 'original-prepare', {'command': command, 'receipt': receipt})
+            pending_command = {'state': 'OPERATION_PENDING', 'idempotency_key': command['idempotency_key']}
+            pending = client.post('/api/intents/' + receipt['intent_id'] + '/declare', json=pending_command)
+            assert pending.status_code == 200, pending.text
+>           assert client.post('/api/intents/prepare', json=command).json() == receipt
+E           AssertionError: assert {'action': 'B...N', ...}, ...} == {'action': 'B...N', ...}, ...}
+E             
+E             Omitting 15 identical items, use -vv to show
+E             Differing items:
+E             {'time_chain': {'decision_issued_at': '2026-10-10T15:06:00+08:00', 'decision_issued_source': 'HOST_PUBLICATION', 'delivered_at': None, 'known_at': '2026-10-11T13:32:24.631122+00:00', ...}} != {'time_chain': {'decision_issued_at': '2026-10-10T15:06:00+08:00', 'decision_issued_source': 'HOST_PUBLICATION', 'delivered_at': None, 'known_at': '2026-10-11T13:32:24.615934+00:00', ...}}
+E             {'broker_reflection': 'UNKNOWN'} != {'broker_reflection': 'NOT_REFLECTED'}
+E             {'status': 'OPERATION_PENDING'} != {'status': 'PREPARED'}
+E             {'eff...
+E             
+E             ...Full output truncated (2 lines hidden), use '-vv' to show
+
+backend\tests\application\test_final_prepare_receipt.py:29: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_final_prepare_receipt.py::test_prepare_retry_returns_original_after_pending_permission_expiry_and_restart
+1 failed in 7.77s

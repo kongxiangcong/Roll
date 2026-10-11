@@ -1,0 +1,64 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_same_key_commit_between_first_receipt_and_legacy_lookup_recovers_original _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/race-red/test_same_key_commit_between_f0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FEF1C46C40>
+
+    def test_same_key_commit_between_first_receipt_and_legacy_lookup_recovers_original(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file, runtime_role='API')) as client:
+            prepare(client, p)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            command = intent_command(evaluation)
+            reached, release = Event(), Event()
+            lock = Lock()
+            armed = [True]
+            real_connect = sqlite3.connect
+    
+            class PausedCursor:
+                def __init__(self, cursor): self.cursor = cursor
+                def fetchone(self):
+                    value = self.cursor.fetchone()
+                    assert value is None  # The real first read found no receipt.
+                    reached.set()
+                    assert release.wait(15), 'Second public caller did not finish'
+                    return value
+    
+            class RealConnection(sqlite3.Connection):
+                def execute(self, sql, parameters=()):
+                    cursor = super().execute(sql, parameters)
+                    if sql == 'SELECT fingerprint,value FROM execution_intent_prepare_receipts WHERE idem=?' and parameters == (command['idempotency_key'],):
+                        with lock:
+                            if armed[0]:
+                                armed[0] = False
+                                return PausedCursor(cursor)
+                    return cursor
+    
+            def connect(database, *args, **kwargs):
+                if str(database) == str(directory / 'roll.sqlite3'): kwargs['factory'] = RealConnection
+                return real_connect(database, *args, **kwargs)
+    
+            monkeypatch.setattr(sqlite3, 'connect', connect)
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                first = executor.submit(client.post, '/api/intents/prepare', json=command)
+                assert reached.wait(10)
+                try:
+                    second = client.post('/api/intents/prepare', json=command)
+                    assert second.status_code == 201, second.text
+                finally:
+                    release.set()
+                response = first.result(timeout=15)
+            record(tmp_path, 'concurrent-responses', {'first_status': response.status_code, 'first': response.json(), 'second_status': second.status_code, 'second': second.json()})
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"detail":"LEGACY_PREPARE_RECEIPT_UNAVAILABLE"}
+E           assert 409 == 201
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+backend\tests\application\test_final_prepare_race.py:61: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_final_prepare_race.py::test_same_key_commit_between_first_receipt_and_legacy_lookup_recovers_original
+1 failed in 7.22s

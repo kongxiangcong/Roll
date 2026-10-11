@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_today_reflects_current_method_scope_without_actual_enablement ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/red-capability/test_today_reflects_current_me0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FF1FE4F100>
+
+    def test_today_reflects_current_method_scope_without_actual_enablement(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        value = paired_package()
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')) as client:
+            setup(client, value)
+            grant = client.post('/api/capabilities/grants', json=grant_command(value, 'profit'))
+            assert grant.status_code == 201, grant.text
+            current = client.get('/api/capabilities').json()
+            record(tmp_path, 'current-capability', current)
+            assert current['state'] == 'METHOD_GRANTED'
+            assert current['formal_judgment'] == 'DISABLED'
+>           assert current.get('headline') == 'METHOD 工程能力有效，实际交易判断未启用'
+E           AssertionError: assert None == 'METHOD 工程能力有效，实际交易判断未启用'
+E            +  where None = <built-in method get of dict object at 0x000001FF1FEBCE40>('headline')
+E            +    where <built-in method get of dict object at 0x000001FF1FEBCE40> = {'allowed_actions': ['BUY'], 'formal_judgment': 'DISABLED', 'funding_state': 'CONFIRMED', 'grant': {'account_version':...bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, 'effective_at': '2026-10-10T15:04:40+08:00', ...}, ...}, ...}.get
+
+backend\tests\application\test_final_capability_status.py:21: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_final_capability_status.py::test_today_reflects_current_method_scope_without_actual_enablement
+1 failed in 11.92s

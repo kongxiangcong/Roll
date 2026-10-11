@@ -212,6 +212,11 @@ class TechnicalReviews:
         self.get_material(material_id)
         with self.ledger.connection() as db:return [json.loads(row[0]) for row in db.execute('SELECT value FROM technical_review_runs WHERE material_id=? ORDER BY rowid',(material_id,))]
 
+    def materials(self):
+        with self.ledger.connection() as db:
+            identifiers = [row[0] for row in db.execute('SELECT id FROM research_review_materials ORDER BY rowid')]
+        return [self.get_material(identifier) for identifier in identifiers]
+
     def basis_materials(self,basis_id):
         with self.ledger.connection() as db:identifiers=[r[0] for r in db.execute('SELECT id FROM research_review_materials WHERE basis_id=? ORDER BY rowid',(basis_id,))]
         return [self.get_material(identifier) for identifier in identifiers]

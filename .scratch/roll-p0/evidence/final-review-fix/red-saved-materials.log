@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_saved_material_listing_reuses_checked_archives_without_grant_or_review _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/sr/test_saved_material_listing_re0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000251FF8C28B0>
+
+    def test_saved_material_listing_reuses_checked_archives_without_grant_or_review(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        fixture = tmp_path / 'cases.json'
+        fixture.write_text(json.dumps({'cases': [{'case_id': 'saved-unknown', 'gates': {'G4': 'INCONCLUSIVE'},
+            'checks_complete': False, 'endpoint_reached': False, 'observed_value': None}]}), encoding='utf-8')
+        with TestClient(create_app(tmp_path / 'data', technical_review_method_file=fixture, runtime_role='API')) as client:
+            original = client.get('/api/research/method-review-materials').json()
+            response = client.get('/api/research/review-materials')
+>           assert response.status_code == 200, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_final_saved_materials.py:15: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_final_saved_materials.py::test_saved_material_listing_reuses_checked_archives_without_grant_or_review
+1 failed in 6.53s

@@ -89,8 +89,10 @@ class ResearchReports:
                 'reported_after_occurrence': self.interval(r, 'occurred_at', 'reported_at'),
                 'known_after_report': self.interval(r, 'reported_at', 'known_at'),
                 'price_in_proposal_window': Decimal(row['decision']['price_lower_yuan']) <= Decimal(r['price']) <= Decimal(row['decision']['price_upper_yuan']),
-                'proposal_fees_yuan': row['decision']['fees_yuan'], 'actual_full_fill_fee': r['fee'],
-                'fee_comparison': 'PARTIAL_FILL_NOT_FULL_PROPOSAL' if Decimal(r['allocated_quantity']) != Decimal(row['decision']['quantity']) else 'FULL_FILL_COMPONENTS_NOT_ASSUMED',
+                'proposal_fees_yuan': row['decision'].get('fees_yuan'),
+                'proposal_fee_status': 'UNKNOWN' if row['decision'].get('fees_yuan') is None else 'FROZEN',
+                'actual_full_fill_fee': r['fee'],
+                'fee_comparison': 'PROPOSAL_FEE_UNKNOWN' if row['decision'].get('fees_yuan') is None else ('PARTIAL_FILL_NOT_FULL_PROPOSAL' if Decimal(r['allocated_quantity']) != Decimal(row['decision']['quantity']) else 'FULL_FILL_COMPONENTS_NOT_ASSUMED'),
                 'causal_pnl': None} for r in linked]
             deviations.append({'intent_id': row['intent_id'], 'decision_id': decision_id,
                 'evaluation_id': evaluation_id, 'proposal': row['decision'], 'status': row['status'],
