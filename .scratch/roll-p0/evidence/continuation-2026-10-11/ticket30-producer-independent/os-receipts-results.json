@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "historical_fixed_suite": "final4:51 passed / 416.38s; not latest full-suite claim",
+  "transaction_methods_AST_unchanged_from_final4": [
+    "__init__",
+    "capture_once",
+    "capture",
+    "verify_snapshot"
+  ],
+  "latest_gap_date_fix_covered_independently": true,
+  "preserved_METHOD_OS_fault_profiles": [
+    {
+      "profile": "test_source_crash_retains_orig0",
+      "job_state": "INTERRUPTED",
+      "batch_status": "INTERRUPTED",
+      "facts": 0,
+      "raw_response_archives": 1,
+      "actual_forward_start": false,
+      "analysis_copy": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket30-producer-independent\\os-receipt-read-copy\\test_source_crash_retains_orig0\\data",
+      "registered_files_copied": 29
+    },
+    {
+      "profile": "test_source_crash_retains_orig1",
+      "job_state": "INTERRUPTED",
+      "batch_status": "INTERRUPTED",
+      "facts": 0,
+      "raw_response_archives": 1,
+      "actual_forward_start": false,
+      "analysis_copy": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket30-producer-independent\\os-receipt-read-copy\\test_source_crash_retains_orig1\\data",
+      "registered_files_copied": 29
+    }
+  ],
+  "reran_OS_fault_tests": false,
+  "actual_profiles_opened": false,
+  "new_external_HTTP_calls": 0,
+  "saved_profiles_SQLite_opened": false,
+  "WAL_backed_analysis_only_in_new_owned_copy": true,
+  "saved_source_SHA_length_mismatches": 0
+}

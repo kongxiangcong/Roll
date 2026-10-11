@@ -561,6 +561,10 @@ class EvidenceStore:
         saved=pq.read_table(self.raw(snapshot['parquet']['sha256'])).to_pylist()
         facts=[json.loads(row['payload']) for row in saved]
         if facts!=snapshot['facts']:raise HTTPException(409,{'code':'PARQUET_SQLITE_FACTS_MISMATCH'})
+        if run.get('backend')=='SSE_POST_CLOSE':
+            from roll.market.post_close_packet import PostClosePackets
+            # The source parser re-checks raw body/date/time, not just two agreeing normalized copies.
+            PostClosePackets.verify_snapshot(self,run,snapshot)
         return {'run_id':run_id,'replay_kind':'IMMUTABLE_ARCHIVE_ONLY','adapter_version':snapshot['adapter_version'],
             'facts':facts,'observations':snapshot['observations'],'network_calls':0}
 
