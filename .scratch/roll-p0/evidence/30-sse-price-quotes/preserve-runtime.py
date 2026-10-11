@@ -3,12 +3,19 @@ import hashlib
 import json
 import os
 import shutil
+import sys
 from pathlib import Path
 repo=Path(__file__).resolve().parents[4]
 target=Path('D:/dsh-proj/Roll/.roll-data/implementation-evidence/continuation-ticket30-sse-price-quotes')
 names=['t30q-assessment-red','t30q-assessment-green','t30q-assessment-green-clock',
  't30q-consumer-red','t30q-consumer-green','t30q-contract','t30q-refused-source-red',
  't30q-refused-source-green','t30q-composition']
+suffix=''
+if sys.argv[1:] == ['accepted25']:
+ names=['t30q-composition25']
+ target=target.with_name(target.name+'-accepted25')
+ suffix='-accepted25'
+elif sys.argv[1:]:raise ValueError('UNKNOWN_PRESERVATION_SCOPE')
 def extended(path):return Path('\\\\?\\'+str(path.resolve()))
 def ordinary(path):return str(path).removeprefix('\\\\?\\')
 def digest(path):
@@ -38,6 +45,6 @@ receipt={'scope':'EIGHTH_OWNED_OFFLINE_METHOD_ONLY_BYTEWISE_APPEND_NEW_NAMESPACE
  'target':str(target),'source_directories':[str(repo/'.scratch'/name) for name in names],
  'previous_preservation_targets_read_or_written':False,'sqlite_opened':False,
  'actual_network_calls':0,'copy_network_calls':0,'own_test_processes_exited':True}
-for filename,value in [('runtime-preservation-manifest.json',records),('runtime-preservation-receipt.json',receipt)]:
+for filename,value in [('runtime-preservation'+suffix+'-manifest.json',records),('runtime-preservation'+suffix+'-receipt.json',receipt)]:
  Path(__file__).with_name(filename).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
 print(json.dumps({k:receipt[k] for k in ['files','bytes','sha_or_length_mismatches']}))

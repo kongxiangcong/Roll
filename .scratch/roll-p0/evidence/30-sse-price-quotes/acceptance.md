@@ -23,6 +23,7 @@ All successors retain `system_usable=false`, `model_daily_input_allowed=false`, 
 | Concrete rejected non-object source valid RED |500:1 failed/5.95s|
 | After repair: affected case,3date cases,unique/cross-source,exact409B,old/newpacket |7 passed/35.62s|
 | Accepted582 composition: new current E/P1 plus existing fixed source-worker IDs and27 ungranted pause caller |4 passed/21.33s|
+| Accepted Ticket25/eb060fd composition: exact public original and fixed old/new quote packet caller |2 passed/12.43s|
 
 Counts are separate historical stages, not a claimed current full24-case rerun. Public application/genuine own SQLite/archive only; controlled MockTransport and clocks are METHOD, including replay of actual public bytes. No real collection was repeated. No OS/browser/build/unrelated fullsuite repeated.
 
@@ -35,3 +36,5 @@ New runtime preservation is separately recorded in `runtime-preservation-receipt
 Remaining **internal** adapter/caller work: precise company dividend/send-share query requests and actual response-backed identity/pagination parser, fixed successor inventory IDs into consumers; revision/cancellation original authority IDs and lifecycle caller; full current status/risk/listing/relisting/exrights fields; session-complete daily quote/turnover scope. Corresponding **source proof gaps**: authoritative response schema/current date bounds/complete category inventory, effective status/enum semantics, first availability/corrections, confirmed cumulative session/closing meaning, all older pending obligations and actual fulfillment. Existing14 schedules and empty/finite past results do not prove these. User notification configuration is unrelated.
 
 Next smallest concrete finite source plan is [next-slice](next-slice.md): only fixed JS action-query leads, offline literal contract then a separately frozen proposed two-attempt raw-first assessment, parser only after actual schema is saved. No request from that proposal executed in this slice; no currentcoverage/payment/entitlement/fulfillment inferred.
+
+Final accepted25 composition changed only its accepted decisions sources; eighth/old parser and all source protection inventories are identical. The first nine runtime namespaces preserve **1670 files/174336481 bytes/0diff**. The new composition25 profile is separately preserved as **92 files/11056228 bytes/0diff**, total **1762 files/185392709 bytes**, without overwriting or rereading the first manifest/target. Explicit source inventory and accepted caller SHA/length receipt are included. Own eighth Python processes are absent at the final native check. Stable handoff includes accepted eb060fd; no further source edits or HTTP.
