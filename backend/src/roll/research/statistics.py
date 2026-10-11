@@ -19,10 +19,12 @@ def rounded(value):
     return round(value, 15) if value is not None else None
 
 
-def paired_block_interval(date_scores, block_sessions=20, replicates=2000, seed=1701):
+def paired_block_interval(date_scores, block_sessions=20, replicates=2000, seed=1701, conditional=False):
     """Resample consecutive calendar-date groups jointly, keeping same-day names together.
 
     Caller supplies one aligned score per security/date, including missing sessions.
+    Conditional subsets use empty scores for observed nonmembership, not None.
+    Member score sums/counts are jointly resampled without compressing calendar time.
     Each endpoint is one-sided 95%; together they form a central 90% range.
     """
     if block_sessions not in (20, 40) or replicates != 2000 or seed != 1701:
@@ -38,12 +40,20 @@ def paired_block_interval(date_scores, block_sessions=20, replicates=2000, seed=
     values = []
     for row in date_scores:
         scores = row['scores']
-        if not scores or any(v is None for v in scores.values()):
+        if (not scores and not conditional) or any(v is None for v in scores.values()):
             return {**result, 'status': 'INCOMPLETE_ALIGNED_CALENDAR_SCORES'}
         group = [float(v) for v in scores.values()]
         if any(not math.isfinite(v) for v in group):
             raise ValueError('NONFINITE_PAIRED_SCORE')
-        values.append(fmean(group))
+        values.append((sum(group),len(group)) if conditional else fmean(group))
+    if conditional:
+        member_days=sum(count>0 for _,count in values)
+        result.update(member_calendar_sessions=member_days, member_count=sum(count for _,count in values),
+            calendar_effective_block_upper_bound=len(dates)//block_sessions,
+            effective_block_upper_bound=member_days//block_sessions,
+            estimand='CONDITIONAL_MEMBER_SCORE_SUM_OVER_MEMBER_COUNT')
+        if not result['member_count']:
+            return {**result, 'status':'INSUFFICIENT_MEMBER_SUPPORT'}
     if len(values) < block_sessions:
         return {**result, 'status': 'INSUFFICIENT_CALENDAR_SUPPORT'}
     rng = random.Random(seed)
@@ -53,9 +63,16 @@ def paired_block_interval(date_scores, block_sessions=20, replicates=2000, seed=
         while len(sampled) < len(values):
             start = rng.randrange(len(values)-block_sessions+1)
             sampled.extend(values[start:start+block_sessions])
-        estimates.append(fmean(sampled[:len(values)]))
+        if conditional:
+            selected=sampled[:len(values)];count=sum(count for _,count in selected)
+            if not count:
+                return {**result,'status':'INSUFFICIENT_RESAMPLED_MEMBER_SUPPORT'}
+            estimates.append(sum(total for total,_ in selected)/count)
+        else:
+            estimates.append(fmean(sampled[:len(values)]))
     estimates.sort()
-    return {**result, 'status': 'CONDITIONAL_NUMERICAL_INTERVAL', 'mean': rounded(fmean(values)),
+    estimate=sum(total for total,_ in values)/result['member_count'] if conditional else fmean(values)
+    return {**result, 'status': 'CONDITIONAL_NUMERICAL_INTERVAL', 'mean': rounded(estimate),
             'lower_95': rounded(estimates[math.floor(.05*(replicates-1))]),
             'upper_95': rounded(estimates[math.ceil(.95*(replicates-1))])}
 
@@ -149,6 +166,8 @@ def method_manifest(design):
                 'label': 0 if i < 20 else 1, 'mature': True} for i, day in enumerate(dates[:40])]
     losses = probability_summary([*records, records[0]], dates)
     constant40 = paired_block_interval([{'date': day, 'scores': {'A': .005}} for day in dates], block_sessions=40)
+    subset=[{'date':day,'scores':{'A':.21} if i%2 else {}} for i,day in enumerate(dates)]
+    conditional=[paired_block_interval(subset,block_sessions=b,conditional=True) for b in [20,40]]
     nav = continuous_summary([{'nav_yuan': '100'}, {'nav_yuan': '90'}, {'nav_yuan': '110'}])
     missing = continuous_summary([{'nav_yuan': '100'}, {'nav_yuan': None}])
     checks = (constant['lower_95'] == .005 and constant40['lower_95'] == .005
@@ -156,12 +175,15 @@ def method_manifest(design):
               and crossing['lower_95'] < 0 < crossing['upper_95']
               and nav['net_return'] == .1 and nav['maximum_drawdown'] == .1
               and missing['net_return'] is None)
+    checks=checks and all(v['lower_95']==v['upper_95']==.21 and v['member_count']==40 for v in conditional)
     if not checks:
         raise ValueError('STATISTICAL_ARITHMETIC_METHOD_CHECK_FAILED')
-    return {'version': '20-statistical-method-v1', 'code_fingerprint': fingerprint(),
+    return {'version': '20-statistical-method-v2', 'code_fingerprint': fingerprint(),
+            'conditional_subset_method':'Joint calendar-date blocks resample member score sums/counts; observed nonmembership has zero weight, actual missing remains unknown; zero denominator is insufficient',
             'algorithm_checks_passed': True, 'configuration': statistics,
             'worked_examples': {'constant_paired_improvement': constant, 'constant40_sensitivity': constant40,
                                 'known_binary_losses': losses, 'boundary_crossing': crossing,
+                                'conditional_observed_nonmembers':conditional,
                                 'continuous_nav': nav, 'missing_valuation': missing},
             'real_sampling_assumptions_verified': False, 'confers_statistical_pass': False,
             'limitations': ['Real stationarity, weak dependence and finite-sample coverage require independent evidence and review.',

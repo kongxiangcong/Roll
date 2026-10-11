@@ -115,6 +115,7 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
     forecasts_by_day={}
     for forecast in forecasts: forecasts_by_day.setdefault(forecast['observation_cutoff'][:10], []).append(forecast)
     days=inputs['sessions'];instruments=frozen['scope']['instruments'];missing=[]
+    history_days=sorted({d for d,_ in rows if days and d<days[0]}|set(days))
     for index, day in enumerate(days):
         if day>through:break
         for symbol in instruments:
@@ -207,8 +208,15 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
         if comparator:
             candidates=[]
             for symbol in instruments:
-                past=[r for (d,i),r in sorted(rows.items()) if d<=day and i==symbol and r.get('close') is not None][-20:]
-                signal=comparator=='START_HOLD' and index==0 or comparator=='MA5_MA20' and len(past)==20 and sum(Decimal(r['close']) for r in past[-5:])/5>sum(Decimal(r['close']) for r in past)/20
+                signal=comparator=='START_HOLD' and index==0
+                if comparator=='MA5_MA20':
+                    slots=[d for d in history_days if d<=day][-21:]
+                    past=[rows.get((d,symbol)) for d in slots]
+                    if len(past)==21 and all(usable(r) and r.get('close') is not None for r in past):
+                        prices=[Decimal(r['close']) for r in past]
+                        previous=sum(prices[-6:-1])/5-sum(prices[:-1])/20
+                        current=sum(prices[-5:])/5-sum(prices[-20:])/20
+                        signal=previous<=0<current
                 if signal:candidates.append({'forecast_id':comparator+':'+symbol+':'+day,'instrument':symbol,'probability':1})
         orders=[]
         for candidate in candidates:
@@ -330,7 +338,12 @@ class ShadowLab:
                  {'forecast_id':'B','instrument':'B','probability':.7,'required_cash_yuan':'30000'}]
         example_result=calculate_policy(example,Decimal('100000'),Decimal('0'),Decimal('0'),Decimal('100000'),set(),policy)
         if [r['action'] for r in example_result]!=['BUY','REFUSE']:raise HTTPException(409,'POLICY_METHOD_VALIDATION_FAILED')
-        method_validation={'version':'20-method-v1','status':'DETERMINISTIC_POLICY_WORKED_EXAMPLE_PASSED',
+        method_validation={'version':'20-method-v2','status':'DETERMINISTIC_POLICY_WORKED_EXAMPLE_PASSED',
+            'comparator_contract':{'MA5_MA20':{'entry':'previous MA5-MA20<=0 and current MA5-MA20>0;21 complete known calendar slots',
+                'exit':policy['exit'],'quantity':policy['quantity'],'execution':design['execution']['base_delay'],
+                'maximum_gross_exposure':policy['maximum_gross_exposure'],'missing_history':'NO_CROSS_SIGNAL; calendar slots never compressed'},
+                'START_HOLD':{'entry':'FIRST_DECLARED_SESSION','quantity':policy['quantity'],'exit':'NO_AUTOMATIC_EXIT',
+                    'maximum_gross_exposure':policy['maximum_gross_exposure'],'sizing':'FIXED_LOT_WITHIN_CAP_NOT_TARGET_EXPOSURE'}},
             'sample_inputs':example,'expected_actions':['BUY','REFUSE'],'actual_actions':[r['action'] for r in example_result],
             'statistical_method':design['statistics'],'statistical_assumptions_validation':'PENDING_TICKET21',
             'method_code_fingerprint':shadow_code(),'statistical_pass':False}

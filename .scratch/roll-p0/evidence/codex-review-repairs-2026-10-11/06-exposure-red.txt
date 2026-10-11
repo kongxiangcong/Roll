@@ -1,0 +1,23 @@
+Failed to find real location of C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\python.exe
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_comparison_reports_measured_exposure_and_occupied_time_differences ___
+
+    def test_comparison_reports_measured_exposure_and_occupied_time_differences():
+        frozen, inputs, days = comparator_case([Decimal('100')] * 85)
+        frozen['policy']['exit'] = 'HORIZON_SESSION20_CLOSE'
+        frozen['design'].update(primary_objective={'risk_constraints': {
+            'maximum_drawdown': '.10', 'maximum_simulated_gross_exposure': '.50',
+            'minimum_decision_coverage': '.20', 'candidate_drawdown_excess_over_risk_matched_baseline': '.02'},
+            'minimum_improvement_nav_return': '.0025'}, statistics={'minimum_effective_time_blocks': 30})
+        candidate = simulate(frozen, inputs, [], days[-1])
+        reference = simulate(frozen, inputs, [], days[-1], 'START_HOLD')
+        result = continuous_checks(frozen, candidate, {'START_HOLD': reference})
+>       baseline = result['comparisons']['START_HOLD']['baseline_exposure']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'baseline_exposure'
+
+backend\tests\application\test_comparator_crossing.py:71: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_comparator_crossing.py::test_comparison_reports_measured_exposure_and_occupied_time_differences
+1 failed in 8.14s
