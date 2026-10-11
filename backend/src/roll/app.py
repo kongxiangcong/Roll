@@ -39,11 +39,12 @@ from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
+from roll.decisions.capabilities import Capabilities, GrantCommand
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None):
     @asynccontextmanager
     async def lifespan(application):
         application.state.reviews.start()
@@ -783,7 +784,38 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get("/api/capabilities")
     def current_capabilities():
         recovery=app.state.backups.recovery()
-        return {**capabilities(),"recovery":recovery,**({"state":"RECOVERY_LOCK","reason":"恢复后当前资格及遗漏撤回未核实，仅可观察。"} if recovery['state']=='RECOVERY_LOCK' else {})}
+        return capability_service.current()
+
+    capability_service = Capabilities(ledger, funding, technical_reviews, valuations, capability_method_file, lambda: app.state.backups.recovery())
+    app.state.capabilities = capability_service
+
+    @app.post('/api/capabilities/grants', status_code=201)
+    def grant_capability(command: GrantCommand):
+        return capability_service.grant(command)
+
+    @app.get('/api/capabilities/proposal')
+    def capability_proposal(material_id: str, review_run_id: str):
+        return capability_service.proposal(material_id, review_run_id)
+
+    @app.get('/api/capabilities/grants')
+    def capability_grants():
+        return capability_service.grants()
+
+    @app.get('/api/capabilities/grants/{grant_id}/status')
+    def capability_grant_status(grant_id: str):
+        return capability_service.current(grant_id=grant_id)
+
+    @app.get('/api/capabilities/events')
+    def capability_events():
+        return capability_service.events()
+
+    @app.get('/api/capabilities/proofs')
+    def capability_proofs():
+        return capability_service.proofs()
+
+    @app.get('/api/capabilities/proofs/{proof_id}/check')
+    def capability_proof_check(proof_id: str):
+        return capability_service.verify_proof(proof_id)
 
     @app.post("/api/formal/evaluate")
     @app.post("/api/formal/probability")
@@ -915,13 +947,15 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         for hint in ledger.equity_hints():
             pending.append(f"外部权益线索待核：{hint['content']}；来源 {hint['source']}，获知于 {hint['learned_at']}，未确认个人账户实际发生")
         return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
-                "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health(), "recovery": app.state.backups.recovery()}
+                "funding": funding.current(), "technical_capability": capability_service.current(), "runtime_health": runtime_health(), "recovery": app.state.backups.recovery()}
 
     return app
 
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None):
+    if capability_method_file is not None and os.environ.get('ROLL_ENV') != 'test':
+        raise ValueError('CAPABILITY_METHOD_HOST_TEST_ONLY')
     if directory is None:
         load_runtime_environment()
     directory=directory or data_directory()
@@ -929,7 +963,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     if backup_clock:backups.clock=backup_clock
     try:
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
-        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker
