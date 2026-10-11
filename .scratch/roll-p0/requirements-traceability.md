@@ -302,3 +302,8 @@ DAT-11、MOD-02、MOD-05的真实验收仍为部分。新增逐年权益/14次�
 [30逐层验收](evidence/30/acceptance.md)保留最终单轮22绿/1夹具失败及修正版同案1绿、Chrome/build、source SHA、实际metadata只读和八METHOD运行件保全收据；不跨运行改写为单轮全绿，不把完整工程时间算法升级成实际研究证据。30 partial/ready-for-agent，原19/23实际资料未修改，未推送。
 
 30最终等价时区收口：新增公共API red1→datetime比较修正，最终9API/96.84s、Chrome1/48.0s、59模块build/1.90s通过，最终11文件SHA/长度前后相同，11METHOD目录保全。原核心收据保持原版本；30 partial真实输入生产链欠项、32实际首次归档及33自然月终点责任不变。
+
+
+### 2026-10-11 AT-51 当前CODEX-only完成
+
+用户批准新材料95ddbd52…abfbfba1并排除DeepSeek。23的AT-51工程与一次真实CODEX接入完成：实际run ed0d834e-049b-4356-b5a7-1ff5bc853aef，ReviewRecord 2c05d94c-33a0-4353-9078-aed0060d7c6e，7原文读取SHA匹配/1离线宿主复算、独立持久化验收PASS。完整Record不清除四项BLOCKING及两项MAJOR；模型大文件截断、上游材料宿主绑定、实际诊断未结项的限制保留。真实交付INCOMPLETE/NOT_GRANTED，G4/G5 FAIL及其他INCONCLUSIVE不变。上文双后端待批准为旧时点记录；DeepSeek当前EXCLUDED/0 CALLS，不能写为PASS。详见[当前独立收据](evidence/continuation-2026-10-11/review-fixes/actual-codex-continuation-acceptance.json)及[执行记录](execution-status.md)。AT-53/73/75由已解锁24实施，统计真实结项/资金/范围条件未被跳过。
