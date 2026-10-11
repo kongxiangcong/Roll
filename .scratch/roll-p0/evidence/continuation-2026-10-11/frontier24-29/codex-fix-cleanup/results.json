@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "target": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-review-fixes",
+  "source_oid": "ddda3effff6655bef090d0af473c960c8fb59482",
+  "absent": true,
+  "native_git_exit": 255,
+  "native_git_output": [
+    "error: failed to delete 'D:/dsh-proj/Roll/.scratch/worktrees/codex-review-fixes': Filename too long"
+  ],
+  "root_tip": "290aabfa0176f2b54cb54670d1449654d17f79b4",
+  "owned_untracked_count": 4998,
+  "owned_entities": 7351,
+  "junction_count": 0,
+  "profiles": [
+    {
+      "label": "old",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-review-fixes\\.scratch\\old-comparator-method",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\codex-review-fixes\\old-method",
+      "files": 275,
+      "bytes": 18821188,
+      "sha_length_mismatches": 0
+    },
+    {
+      "label": "new",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-review-fixes\\.scratch\\crapi\\test_repaired_comparator_and_s0",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\codex-review-fixes\\new-method",
+      "files": 193,
+      "bytes": 13303705,
+      "sha_length_mismatches": 0
+    },
+    {
+      "label": "final",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-review-fixes\\.scratch\\crfinal\\test_repaired_comparator_and_s0",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\codex-review-fixes\\final-method",
+      "files": 193,
+      "bytes": 13303705,
+      "sha_length_mismatches": 0
+    }
+  ],
+  "dependencies": 12999,
+  "dependencies_SHA_length_mismatches": 0,
+  "model_sources_SHA_length_mismatches": 0,
+  "branches_retained": [
+    "  codex/roll-p0-codex-review-fixes"
+  ],
+  "private_files_inventoried": false,
+  "credentials_copied": false,
+  "provider_calls": 0,
+  "original19_started": false,
+  "no_push": true,
+  "worktrees_after": [
+    "worktree D:/dsh-proj/Roll",
+    "HEAD 290aabfa0176f2b54cb54670d1449654d17f79b4",
+    "branch refs/heads/codex/roll-p0-integration",
+    "",
+    "worktree D:/dsh-proj/Roll/.scratch/worktrees/ticket24",
+    "HEAD 290aabfa0176f2b54cb54670d1449654d17f79b4",
+    "branch refs/heads/codex/roll-p0-ticket24",
+    "",
+    "worktree D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer",
+    "HEAD 290aabfa0176f2b54cb54670d1449654d17f79b4",
+    "branch refs/heads/codex/roll-p0-ticket30-producer",
+    ""
+  ]
+}
