@@ -76,7 +76,9 @@ class Intents:
         content = fingerprint(command.model_dump())
         # Receipt recovery is not a new authorization and must precede current checks.
         with self.ledger.connection() as db:
+            db.execute('BEGIN')
             if prior := self.prepare_receipt(db, command.idempotency_key, content): return prior
+            db.rollback()
         self.actions.capabilities.refresh_journal()
         price = Decimal(number(command.price_yuan, 'price_yuan', 8))
         with self.ledger.connection() as db:
