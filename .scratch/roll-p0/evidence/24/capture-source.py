@@ -28,5 +28,5 @@ for suffix in protected:
 sources = [{'path': p, 'normalized_sha256': digest((root / p).read_bytes()), 'bytes': (root / p).stat().st_size} for p in owned]
 result = {'baseline': baseline, 'owned_sources': sources, 'protected_sources': checks, 'protected_all_unchanged': all(c['unchanged'] for c in checks)}
 assert result['protected_all_unchanged']
-(Path(__file__).parent / 'source-receipt.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
+(Path(__file__).parent / 'source-receipt.json').write_bytes(json.dumps(result, ensure_ascii=False, indent=2).encode('utf-8'))
 print('SOURCE_RECEIPT_PASS', len(sources), 'owned;', len(checks), 'protected unchanged')
