@@ -227,6 +227,18 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def post_close_source_gaps(plan_id: str):
         return prospective.post_close.source_gaps(plan_id)
 
+    @app.post('/api/research/collections/{plan_id}/sse-suspension',status_code=201)
+    def sse_suspension_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_suspension(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-suspension-receipts')
+    def sse_suspension_receipts(plan_id:str):
+        return prospective.post_close.suspension_receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-suspension/check',status_code=201)
+    def sse_suspension_worker(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_suspension_once(plan_id,command.basis)
+
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
         return prospective.post_close.replay(packet_id)

@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_packet_consumer_retains_conflicting_sources_and_old_empty_receipt_ids __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30s-consumer-red/test_packet_consumer_retains_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002597FD5CFC0>
+
+    def test_packet_consumer_retains_conflicting_sources_and_old_empty_receipt_ids(tmp_path,monkeypatch):
+        clocks(monkeypatch);calls=[]
+        closing=json.dumps({'date':20261012,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]}).encode()
+        suspension=json.dumps(page(),ensure_ascii=False).encode()
+        def supplier(request):
+            calls.append(str(request.url))
+            return httpx.Response(200,content=closing if request.url.host=='yunhq.sse.com.cn' else suspension)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier))) as client:
+            pid=setup(client);base=f'/api/research/collections/{pid}'
+            response=client.post(base+'/post-close',json={'basis':'Original METHOD closing packet before suspension receipt'})
+            assert response.status_code==201,response.text
+            old=response.json()
+>           assert old['suspension_receipts']==[] and old['rows'][0]['suspension_receipt_ids']==[]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'suspension_receipts'
+
+backend\tests\application\test_sse_current_suspension.py:66: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_current_suspension.py::test_packet_consumer_retains_conflicting_sources_and_old_empty_receipt_ids
+1 failed in 7.65s

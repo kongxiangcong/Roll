@@ -1,0 +1,109 @@
+{
+  "receipt_id": "3ed7b56f-1403-4c46-807b-7094893f3d43",
+  "plan_id": "f1e2202d-b497-4aca-af95-61fed35a8a6a",
+  "instrument": "SSE:600362",
+  "query_date": "2026-10-11",
+  "basis": "Authorized fifth slice single actual anonymous official assessment, max two pages",
+  "started_at": "2026-10-11T08:14:02.157123+00:00",
+  "source_id": "sse-suspension-date",
+  "request_budget_pages": 2,
+  "parser_fingerprint": "495dc6fb8016fa874c0e339d3f0da4802f87ce67c07fc73347db8547e2f01561",
+  "query_js_hash": "32fc98ea41e599f457609247ba68defb82e6d855aa2551da6923dbf7e44153a7",
+  "schema_mapping_hash": "e65238ba11819bedba3ebab26c2825327c2b5300d25813589f1f427cad48a09e",
+  "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+  "network_calls": 1,
+  "pages": [
+    {
+      "parameters": {
+        "sqlId": "COMMON_SSE_XXPL_JYTS_TFPXX_L",
+        "SEARCH_DATE": "2026-10-11",
+        "isPagination": "true",
+        "pageHelp.pageSize": "100",
+        "pageHelp.pageNo": "1",
+        "pageHelp.beginPage": "1",
+        "pageHelp.endPage": "1",
+        "pageHelp.cacheSize": "1"
+      },
+      "archive": {
+        "sha256": "986c403e89bf4aab9f260034f1d301126daa0de9ff62926f90cf798768eeb958",
+        "path": "raw/986c403e89bf4aab9f260034f1d301126daa0de9ff62926f90cf798768eeb958.raw",
+        "bytes": 13367,
+        "kind": "SSE_SUSPENSION_RAW_RESPONSE",
+        "source_id": "sse-suspension-date",
+        "source_url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_XXPL_JYTS_TFPXX_L&SEARCH_DATE=2026-10-11&isPagination=true&pageHelp.pageSize=100&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1",
+        "received_at": "2026-10-11T08:14:05.619772+00:00",
+        "status_code": 200,
+        "content_type": "application/json;charset=UTF-8",
+        "parameters": {
+          "sqlId": "COMMON_SSE_XXPL_JYTS_TFPXX_L",
+          "SEARCH_DATE": "2026-10-11",
+          "isPagination": "true",
+          "pageHelp.pageSize": "100",
+          "pageHelp.pageNo": "1",
+          "pageHelp.beginPage": "1",
+          "pageHelp.endPage": "1",
+          "pageHelp.cacheSize": "1"
+        },
+        "receipt_id": "3ed7b56f-1403-4c46-807b-7094893f3d43",
+        "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+        "original_complete": true
+      },
+      "original_complete": true,
+      "reported_metadata": {
+        "json_object_reported": true,
+        "sql_id_reported": "COMMON_SSE_XXPL_JYTS_TFPXX_L",
+        "declared_total": 26,
+        "page_no": 1,
+        "page_count": 1,
+        "page_size": 100,
+        "begin_page": 1,
+        "end_page": 1,
+        "response_date_reported": "",
+        "page_search_date_reported": null,
+        "returned_count": 26,
+        "action_errors_reported": [],
+        "field_errors_reported": {}
+      }
+    }
+  ],
+  "errors": [],
+  "system_usable": false,
+  "complete_status_verified": false,
+  "no_event_authority": false,
+  "actual_forward_start": false,
+  "forward_started_at": null,
+  "capability": "NOT_GRANTED",
+  "finished_at": "2026-10-11T08:14:05.638633+00:00",
+  "normalized_known_at": "2026-10-11T08:14:05.638633+00:00",
+  "events": [],
+  "page_audits": [
+    {
+      "page_no": 1,
+      "raw_hash": "986c403e89bf4aab9f260034f1d301126daa0de9ff62926f90cf798768eeb958",
+      "returned_count": 26,
+      "declared_total": 26,
+      "page_count_reported": 1,
+      "page_size_reported": 100,
+      "response_date_reported": null,
+      "response_date_verified": false,
+      "source_received_at": "2026-10-11T08:14:05.619772+00:00"
+    }
+  ],
+  "returned_count": 26,
+  "declared_total": 26,
+  "reported_page_count": 1,
+  "returned_count_matches_positive_total": true,
+  "gaps": [
+    "SSE_SUSPENSION_FULL_STATUS_AND_RESUMPTION_UNPROVEN",
+    "SSE_SUSPENSION_RESPONSE_DATE_ECHO_UNPROVEN",
+    "SSE_SUSPENSION_SECURITY_NOT_RETURNED_NOT_NORMAL_AUTHORITY"
+  ],
+  "status": "REPORTED_PARTIAL",
+  "archive": {
+    "sha256": "5a39c5ceec13dc83c2b131fa4a8d47eb756e0be9c145dcae0093a3e075b33d54",
+    "path": "raw/5a39c5ceec13dc83c2b131fa4a8d47eb756e0be9c145dcae0093a3e075b33d54.raw",
+    "bytes": 3124,
+    "kind": "SSE_SUSPENSION_RECEIPT",
+    "evidence_kind": "REAL_SOURCE_ASSESSMENT"
+  }
+}
