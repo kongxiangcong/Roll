@@ -409,6 +409,7 @@ class Capabilities:
             db.execute('INSERT INTO capability_events VALUES(?,?)', (value['event_id'], encode(value)))
             self.journal.stage(value)
             count += 1
+            if hasattr(self, 'notifications'): self.notifications.lifecycle_changed(db, value)
         return count
 
     def lifecycle(self, db=None, grant_id=None):
@@ -484,6 +485,7 @@ class Capabilities:
             self.journal.stage(value)
             if command.grant_id is None and command.scope == 'ALL_MONITOR' and command.state != 'ACTIVE' and self.observation_reviews:
                 self.observation_reviews.restrict_observations(db, value)
+            if hasattr(self, 'notifications'): self.notifications.lifecycle_changed(db, value)
             if self.actions: self.actions.current(db=db)
             db.execute('INSERT INTO capability_lifecycle_receipts VALUES(?,?,?)', (command.idempotency_key, content, encode(value)))
             self.ledger.crash_point('capability_lifecycle_before_commit')
@@ -509,6 +511,7 @@ class Capabilities:
             'monitoring_check_id': monitoring_check_id}
         db.execute('INSERT INTO capability_events VALUES(?,?)', (value['event_id'], encode(value)))
         self.journal.stage(value)
+        if hasattr(self, 'notifications'): self.notifications.lifecycle_changed(db, value)
         return value
 
     def observe_loss(self, db, loss, evaluation_id):
@@ -525,6 +528,8 @@ class Capabilities:
             'peak_loss': loss['peak_loss'], 'facts_version': loss['facts_version']}
         db.execute('INSERT INTO capability_events VALUES(?,?)', (value['event_id'], encode(value)))
         self.journal.stage(value)
+
+        if hasattr(self, 'notifications'): self.notifications.lifecycle_changed(db, value)
 
     def grant(self, command):
         self.refresh_journal()

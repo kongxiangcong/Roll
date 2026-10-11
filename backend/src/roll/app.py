@@ -45,7 +45,7 @@ from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,Verifi
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None,notification_transport=None):
     @asynccontextmanager
     async def lifespan(application):
         try:
@@ -884,6 +884,49 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
     capability_service.actions = actions
+    from roll.decisions.notifications import Notifications, ReadNotice
+    from roll.runtime.notification_channel import NotificationChannel
+    notification_channel = NotificationChannel(Path(ledger.path).parent, notification_transport)
+    app.state.notification_channel = notification_channel
+    notifications = Notifications(ledger, capability_service, notification_channel)
+    app.state.notifications = notifications
+    capability_service.notifications = notifications
+    actions.notifications = notifications
+    reviews.notifications = notifications
+
+    @app.get('/api/notification-channel')
+    def channel_configuration(): return notification_channel.get()
+
+    @app.post('/api/notification-channel')
+    async def channel_configuration_update(request: Request):
+        raw = bytearray()
+        async for chunk in request.stream():
+            raw.extend(chunk)
+            if len(raw) > 16384: raise HTTPException(413, 'CHANNEL_CONFIG_TOO_LARGE')
+        try:
+            import json
+            command = json.loads(raw)
+        except (ValueError, UnicodeError): raise HTTPException(422, 'CHANNEL_CONFIG_INVALID') from None
+        return notification_channel.save(command)
+
+    @app.get('/api/notifications')
+    def notification_list(): return notifications.listing()
+
+    @app.get('/api/notifications/audit')
+    def notification_audit(): return notifications.audit()
+
+    @app.get('/api/notifications/time-chain')
+    def notification_time_chain(decision_id: str, evaluation_id: str, intent_id: str | None = None):
+        return notifications.time_chain(decision_id, evaluation_id, intent_id)
+
+    @app.get('/api/notifications/{identifier}/current')
+    def notification_current(identifier: str): return notifications.current(identifier)
+
+    @app.post('/api/notifications/{identifier}/read')
+    def notification_read(identifier: str, command: ReadNotice): return notifications.read(identifier, command)
+
+    @app.post('/api/notifications/{identifier}/retry')
+    def notification_retry(identifier: str, command: ReadNotice): return notifications.retry(identifier, command)
     from roll.decisions.recovery import AuthorizationRecovery, RecoveryCommand
     authorization_recovery = AuthorizationRecovery(capability_service)
     app.state.authorization_recovery = authorization_recovery
@@ -1111,7 +1154,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None,notification_transport=None):
     if capability_method_file is not None and os.environ.get('ROLL_ENV') != 'test':
         raise ValueError('CAPABILITY_METHOD_HOST_TEST_ONLY')
     if directory is None:
@@ -1124,7 +1167,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
     if backup_clock:backups.clock=backup_clock
     try:
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
-        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker
@@ -1137,7 +1180,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.middleware('http')
     async def local_recovery_access(request:Request,call_next):
-        if request.url.path.startswith(('/api/runtime/backups','/api/runtime/restores')):
+        if request.url.path.startswith(('/api/runtime/backups','/api/runtime/restores','/api/notification-channel')):
             import ipaddress
             from urllib.parse import urlparse
             host=request.client.host if request.client else ''

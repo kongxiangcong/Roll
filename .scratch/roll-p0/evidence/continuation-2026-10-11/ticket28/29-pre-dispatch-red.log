@@ -1,0 +1,116 @@
+.FFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_unexpected_transport_error_is_sanitized_unknown_not_worker_exception_or_auto_retry _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-29/test_unexpected_transport_erro0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D9E3E7D0F0>
+
+    def test_unexpected_transport_error_is_sanitized_unknown_not_worker_exception_or_auto_retry(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        canary, requests = 'SYNTHETIC_TRANSPORT_SECRET_CANARY', []
+        def publish(request):
+            requests.append(request.url.path)
+            raise RuntimeError(canary)
+        app = create_app(tmp_path / 'data', runtime_role='API', notification_transport=httpx.MockTransport(publish))
+        with TestClient(app) as client:
+            pause(client)
+            client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173','token':canary})
+>           app.state.notifications.work('owned-test-worker')
+
+backend\tests\application\test_notifications.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\decisions\notifications.py:347: in work
+    result = self.channel.publish(configuration, body)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\runtime\notification_channel.py:120: in publish
+    with client.stream('POST', configuration['server'] + '/', json=payload, headers=headers) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\httpx\_client.py:868: in stream
+    response = self.send(
+..\..\..\backend\.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+..\..\..\backend\.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+..\..\..\backend\.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\httpx\_transports\mock.py:24: in handle_request
+    response = self.handler(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = <Request('POST', 'https://ntfy.example.test/')>
+
+    def publish(request):
+        requests.append(request.url.path)
+>       raise RuntimeError(canary)
+E       RuntimeError: SYNTHETIC_TRANSPORT_SECRET_CANARY
+
+backend\tests\application\test_notifications.py:103: RuntimeError
+_ test_permission_change_after_claim_before_http_is_not_dispatched_and_short_writer_is_released _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-29/test_permission_change_after_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D9C3415D90>
+
+    def test_permission_change_after_claim_before_http_is_not_dispatched_and_short_writer_is_released(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package, requests = action_package(), []
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        app = create_app(tmp_path / 'data', runtime_role='API', capability_method_file=qualification,
+            notification_transport=httpx.MockTransport(lambda request: requests.append(request.content) or httpx.Response(200,json={'id':'method','event':'message'})))
+        with TestClient(app) as client:
+            prepare(client, package)
+            client.post('/api/actions/evaluate', json={})
+            notice = next(n for n in client.get('/api/notifications').json()['notifications'] if n['category'] == 'NEED_ACTION')
+            client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+            def at_boundary(point):
+                if point == 'notification_after_claim':
+                    response = pause(client)
+                    assert response.status_code == 200, response.text
+            monkeypatch.setattr(app.state.ledger, 'crash_point', at_boundary)
+            app.state.notifications.work('owned-test-worker')
+            current = client.get('/api/notifications/' + notice['notification_id'] + '/current').json()
+>           assert requests == []
+E           assert [b'{"title":"...ethod-only"}'] == []
+E             
+E             Left contains one more item: b'{"title":"\xe5\xbd\x93\xe5\x89\x8d\xe5\x8a\xa8\xe4\xbd\x9c\xe9\x9c\x80\xe8\xa6\x81\xe6\x9f\xa5\xe7\x9c\x8b","message..."priority":4,"click":"http://127.0.0.1:5173/#notification=41eb6da3-711d-4389-b1a7-4d1515b6cc70","topic":"method-only"}'
+E             Use -v to get more diff
+
+backend\tests\application\test_notifications.py:137: AssertionError
+_ test_two_distinct_retry_commands_before_worker_claim_share_one_retry_attempt _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-29/test_two_distinct_retry_comman0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D9E44A4F30>
+
+    def test_two_distinct_retry_commands_before_worker_claim_share_one_retry_attempt(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        app = create_app(tmp_path / 'data', runtime_role='API', notification_transport=httpx.MockTransport(
+            lambda request: (_ for _ in ()).throw(httpx.ReadTimeout('controlled-timeout',request=request))))
+        with TestClient(app) as client:
+            pause(client)
+            client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+            app.state.notifications.work('owned-test-worker')
+            notice = client.get('/api/notifications').json()['notifications'][0]
+            path = '/api/notifications/' + notice['notification_id'] + '/retry'
+            assert client.post(path, json={'idempotency_key':'one'}).status_code == 200
+>           assert client.post(path, json={'idempotency_key':'two'}).status_code == 409
+E           AssertionError: assert 200 == 409
+E            +  where 200 = <Response [200 OK]>.status_code
+E            +    where <Response [200 OK]> = post('/api/notifications/b33c7c5f-0fe1-460f-9f70-00a13398a9ff/retry', json={'idempotency_key': 'two'})
+E            +      where post = <starlette.testclient.TestClient object at 0x000001D9E45543E0>.post
+
+backend\tests\application\test_notifications.py:154: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_unexpected_transport_error_is_sanitized_unknown_not_worker_exception_or_auto_retry
+FAILED backend\tests\application\test_notifications.py::test_permission_change_after_claim_before_http_is_not_dispatched_and_short_writer_is_released
+FAILED backend\tests\application\test_notifications.py::test_two_distinct_retry_commands_before_worker_claim_share_one_retry_attempt
+3 failed, 1 passed, 10 deselected in 18.73s

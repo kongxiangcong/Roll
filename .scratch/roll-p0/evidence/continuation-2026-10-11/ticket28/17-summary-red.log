@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_actual_local_review_stage_summary_is_optional_bounded_and_no_research_action_push _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-17/test_actual_local_review_stage0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C9652B4E90>
+
+    def test_actual_local_review_stage_summary_is_optional_bounded_and_no_research_action_push(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        with TestClient(create_app(tmp_path / 'data')) as client:
+            assert client.get('/api/notifications').json()['notifications'] == []
+            completed = []
+            for _ in range(2):
+                task = client.post('/api/reviews/tasks', json={'refresh_missing':False}).json()
+                for _ in range(200):
+                    result = client.get('/api/reviews/tasks/' + task['task_id']).json()
+                    if result.get('result'): break
+                    time.sleep(.05)
+                else: raise AssertionError(result)
+                completed.append(result)
+            notices = client.get('/api/notifications').json()['notifications']
+            summaries = [n for n in notices if n['category'] == 'STAGE_SUMMARY']
+>           assert len(summaries) == 1
+E           assert 0 == 1
+E            +  where 0 = len([])
+
+backend\tests\application\test_notifications.py:275: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_actual_local_review_stage_summary_is_optional_bounded_and_no_research_action_push
+1 failed, 7 deselected in 6.04s

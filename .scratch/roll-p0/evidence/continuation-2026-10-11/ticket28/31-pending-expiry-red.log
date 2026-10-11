@@ -1,0 +1,62 @@
+.FF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_external_operation_pending_sync_notice_survives_revoke_and_original_intent_is_preserved _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-31/test_external_operation_pendin0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002277F581220>
+
+    def test_external_operation_pending_sync_notice_survives_revoke_and_original_intent_is_preserved(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', runtime_role='API', capability_method_file=qualification)) as client:
+            prepare(client, package)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+            declaration = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state':'OPERATION_PENDING','idempotency_key':'pending'})
+            assert declaration.status_code == 200, declaration.text
+            pending = declaration.json()
+            pause(client)
+            notices = client.get('/api/notifications').json()['notifications']
+>           notice = next(n for n in notices if n['source']['kind'] == 'EXTERNAL_OPERATION_PENDING')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           StopIteration
+
+backend\tests\application\test_notifications.py:432: StopIteration
+_ test_expired_action_is_archived_before_send_without_blocking_live_fact_notice _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-31/test_expired_action_is_archive0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002277F94FE30>
+
+    def test_expired_action_is_archived_before_send_without_blocking_live_fact_notice(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        from datetime import datetime, timedelta
+        package, requests = action_package(), []
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        app = create_app(tmp_path / 'data', runtime_role='API', capability_method_file=qualification,
+            notification_transport=httpx.MockTransport(lambda request: requests.append(request.content) or httpx.Response(200,json={'id':'live-fact','event':'message'})))
+        with TestClient(app) as client:
+            prepare(client, package)
+            client.post('/api/actions/evaluate', json={})
+            notice = next(n for n in client.get('/api/notifications').json()['notifications'] if n['category'] == 'NEED_ACTION')
+            expired_clock = (datetime.fromisoformat(notice['expires_at']) + timedelta(seconds=1)).isoformat()
+            monkeypatch.setattr('roll.decisions.notifications.now', lambda:expired_clock)
+            monkeypatch.setattr('roll.decisions.actions.now', lambda:expired_clock)
+            pause(client)
+            client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+            app.state.notifications.work('owned-test-worker')
+            current = client.get('/api/notifications/' + notice['notification_id'] + '/current').json()
+            assert current['current_state'] == 'EXPIRED' and current['attempts'] == []
+>           assert client.get('/api/notifications').json()['notifications'][-1]['external_status'] == 'OUTBOUND_CLOSED'
+E           AssertionError: assert 'QUEUED' == 'OUTBOUND_CLOSED'
+E             
+E             - OUTBOUND_CLOSED
+E             + QUEUED
+
+backend\tests\application\test_notifications.py:459: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_external_operation_pending_sync_notice_survives_revoke_and_original_intent_is_preserved
+FAILED backend\tests\application\test_notifications.py::test_expired_action_is_archived_before_send_without_blocking_live_fact_notice
+2 failed, 1 passed, 13 deselected in 16.72s

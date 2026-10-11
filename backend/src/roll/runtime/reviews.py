@@ -171,6 +171,7 @@ class Reviews:
                 except Exception as error:self.finish_error(identifier,error)
             self.check_maintenance()
             self.check_running_day()
+            if hasattr(self, 'notifications'): self.notifications.work(self.owner)
             if self.monitoring:
                 try:self.monitoring.check_post_close(self.clock())
                 except HTTPException as error:self.worker_error={'code':'CAPABILITY_MONITORING_RETRY_REQUIRED','message':str(error.detail),'occurred_at':now()}
@@ -367,7 +368,8 @@ class Reviews:
                 result['previous_snapshot_id']=previous['result']['snapshot_id'] if previous else None
                 result['change']='NO_SUBSTANTIAL_CHANGE' if previous and previous['result'].get('state_fingerprint')==fingerprint else 'NEW_INFORMATION'
                 result['coverage']['unobserved_trigger_sequence']='NOT_RECONSTRUCTED'
-                audit=self.audit(task,result)
+                if hasattr(self, 'notifications'): self.notifications.review_completed(db, task, result)
+                audit=self.audit(task,result,db)
                 db.execute('INSERT INTO review_audits VALUES(?,?)',(audit['audit_id'],encode(audit)))
                 task['audit_id']=audit['audit_id']
             task['timing']['network_seconds']+=round(network,6)
@@ -390,11 +392,12 @@ class Reviews:
             db.execute('INSERT INTO review_audits VALUES(?,?)',(audit['audit_id'],encode(audit)))
             db.execute('UPDATE review_tasks SET value=? WHERE id=?',(encode(task),identifier))
 
-    def audit(self,task,result):
+    def audit(self,task,result,db=None):
         state,reasons=consistency(task['frozen_account'],self.ledger.pending_drafts())
         metrics={name:{'status':'NOT_CONNECTED','value':None} for name in ['unfinished_execution_intents','invalidated_actions','duplicate_notifications','action_flips','shadow_records']}
         if hasattr(self, 'actions'): metrics.update(self.actions.metrics())
         if hasattr(self, 'intents'): metrics.update(self.intents.metrics())
+        if hasattr(self, 'notifications'): metrics.update(self.notifications.metrics(db))
         metrics.update(data_coverage={'status':'CHECKED','value':len(result['gaps']),'gaps':result['gaps']},
             account_differences={'status':'CHECKED','value':len(reasons),'state':state,'reasons':reasons},
             module_errors={'status':'CHECKED','value':len(task['module_errors']),'errors':task['module_errors']})
