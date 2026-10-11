@@ -1,0 +1,596 @@
+{
+  "status": "PASS",
+  "stable_oid": "38b64fbc8d4be4ca4aa64c52a60a5df0cda84a86",
+  "owned_source_count": 9,
+  "protected_model_sources": 12,
+  "runtime_files": 1315,
+  "runtime_bytes": 100925613,
+  "runtime_source_root_SHA_length_mismatches": 0,
+  "source_copy": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket24-independent\\source",
+  "copied_source_files": [
+    {
+      "path": "roll/__init__.py",
+      "bytes": 30,
+      "sha256": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6"
+    },
+    {
+      "path": "roll/accounts/__init__.py",
+      "bytes": 53,
+      "sha256": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540"
+    },
+    {
+      "path": "roll/accounts/cash_events.py",
+      "bytes": 18051,
+      "sha256": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8"
+    },
+    {
+      "path": "roll/accounts/corrections.py",
+      "bytes": 6001,
+      "sha256": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93"
+    },
+    {
+      "path": "roll/accounts/csv_import.py",
+      "bytes": 21237,
+      "sha256": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8"
+    },
+    {
+      "path": "roll/accounts/fills.py",
+      "bytes": 16915,
+      "sha256": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a"
+    },
+    {
+      "path": "roll/accounts/ledger.py",
+      "bytes": 35622,
+      "sha256": "69c32092d87b244345f9fe42b43c2a704407aa311e5258859079a42be9caac8e"
+    },
+    {
+      "path": "roll/accounts/reconcile.py",
+      "bytes": 15842,
+      "sha256": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a"
+    },
+    {
+      "path": "roll/accounts/valuation.py",
+      "bytes": 15332,
+      "sha256": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e"
+    },
+    {
+      "path": "roll/agents/codex_evidence.py",
+      "bytes": 8501,
+      "sha256": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee"
+    },
+    {
+      "path": "roll/agents/codex_process.py",
+      "bytes": 35671,
+      "sha256": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f"
+    },
+    {
+      "path": "roll/agents/codex_worker.py",
+      "bytes": 8545,
+      "sha256": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+    },
+    {
+      "path": "roll/agents/deepseek_evidence.py",
+      "bytes": 7677,
+      "sha256": "600bf6f651c1c4e5638210390bc4b2a5440f822b4a62f9204b4d632bb6090c89"
+    },
+    {
+      "path": "roll/agents/deepseek_process.py",
+      "bytes": 6467,
+      "sha256": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1"
+    },
+    {
+      "path": "roll/agents/deepseek_worker.py",
+      "bytes": 9646,
+      "sha256": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd"
+    },
+    {
+      "path": "roll/agents/review_runtime.py",
+      "bytes": 8836,
+      "sha256": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b"
+    },
+    {
+      "path": "roll/agents/settings.py",
+      "bytes": 4492,
+      "sha256": "9995209985d68100844a1dc49fce0c7d700613c6508e8c5f5529751cbb1f07d9"
+    },
+    {
+      "path": "roll/app.py",
+      "bytes": 46007,
+      "sha256": "dd87cc43072acdc22259d0a145280a5fc34ca222527531bdf44fc70274173486"
+    },
+    {
+      "path": "roll/config.py",
+      "bytes": 2161,
+      "sha256": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc"
+    },
+    {
+      "path": "roll/decisions/capabilities.py",
+      "bytes": 27299,
+      "sha256": "71ef85631d7fc79a1c20de40168684cf43a047eab83017947d1dba3c95ec8b8a"
+    },
+    {
+      "path": "roll/decisions/funding.py",
+      "bytes": 13113,
+      "sha256": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d"
+    },
+    {
+      "path": "roll/market/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "roll/market/baostock.py",
+      "bytes": 13301,
+      "sha256": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695"
+    },
+    {
+      "path": "roll/market/baostock_process.py",
+      "bytes": 6424,
+      "sha256": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3"
+    },
+    {
+      "path": "roll/market/cnequity.py",
+      "bytes": 11702,
+      "sha256": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966"
+    },
+    {
+      "path": "roll/market/cnequity_process.py",
+      "bytes": 12863,
+      "sha256": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c"
+    },
+    {
+      "path": "roll/market/collection_cleaning.py",
+      "bytes": 8220,
+      "sha256": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+    },
+    {
+      "path": "roll/market/collection_sources.py",
+      "bytes": 12609,
+      "sha256": "d9701cdd076bef531b7bae4c2ce5aba86c69aad300df86abc0e70105e368abfa"
+    },
+    {
+      "path": "roll/market/directory.py",
+      "bytes": 12595,
+      "sha256": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b"
+    },
+    {
+      "path": "roll/market/evidence.py",
+      "bytes": 49947,
+      "sha256": "e1e4a3108e46f2af530fdb12341ccebb8f87f429ec781790b04e36a139609c73"
+    },
+    {
+      "path": "roll/market/fuyao.py",
+      "bytes": 7312,
+      "sha256": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d"
+    },
+    {
+      "path": "roll/market/reference/csi-399997-basis-2026.pdf",
+      "bytes": 431411,
+      "sha256": "a1277ee1dc70e4a2e71ffdd7410384cda3ba3f90671944639e945f4a7f7985ef"
+    },
+    {
+      "path": "roll/market/reference/sources.json",
+      "bytes": 12807,
+      "sha256": "0740a48cc8e385d3c94c2b249aad048f0bd0a9e815ad1e61a43c737b4db6a700"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2013.html",
+      "bytes": 28998,
+      "sha256": "35fc93671853b08297396868d80cfb335f806753b52130283efd2cb1cb3a0388"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2014.html",
+      "bytes": 28704,
+      "sha256": "1fa6e2d547425b7340bab8bdabcad3a46944c5437a0d4ee7539facf6faf33d7d"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2015-memorial.html",
+      "bytes": 28061,
+      "sha256": "7f673a2e1cd3fa6905045598f23200649f6e8b9bc78b3b78a653d3c0d5d23070"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2015.html",
+      "bytes": 29031,
+      "sha256": "30bafe4c4a5385ac228602383cd687a270957a2e63d861c1f775279d4f1122f0"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2016.html",
+      "bytes": 28970,
+      "sha256": "b6385ed32912deb290835898277d4e6c0ab98402a5cdfe17740c86d0a97aadde"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2017.html",
+      "bytes": 28846,
+      "sha256": "3f18c317a52e9bee47b5be770141f4f86615b9caa5f9b7b0bedf81d7236cec20"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2018.html",
+      "bytes": 28970,
+      "sha256": "495b1e238b478f5d66b6496c5e77a92ab20d1b67a221378a87aa7e68636eda12"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2019-labor-revision.html",
+      "bytes": 27898,
+      "sha256": "c5af509538194130b7917e88b52b8218be898003118a68d477721c1a4600beb2"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2019.html",
+      "bytes": 28940,
+      "sha256": "db0af9294621c73cbae7e55703d6e801da4aa5f1ac273e955e0622f254983950"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2020-spring-extension.html",
+      "bytes": 28944,
+      "sha256": "8113286860fd5b9dc4d87ee626e709324bab5f95a5b11d382885c7230a4584a6"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2020.html",
+      "bytes": 28855,
+      "sha256": "7e886e6f67eef7f3e94f4c5db5453335526a9e67efc2e6205ab43a709c1b7799"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2021.html",
+      "bytes": 29007,
+      "sha256": "c600f2a8a2839921b4c2c375054a7845fbbc9e795d32da8c6ff6ccb63ff6a1cc"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2022.html",
+      "bytes": 29001,
+      "sha256": "9183bd346675fd363b3bb4951eec21dc03ad7e65c25509350a9947b42fc127e1"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2023.html",
+      "bytes": 28864,
+      "sha256": "46b301280c2109b8f632ee2cd7f9da8220a4e1402bb8a105252b2d9e7c8a1bd0"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2024.html",
+      "bytes": 33293,
+      "sha256": "94956b4fc8f27260352be1964fdce2a9d9df3775588e87738cad13e1dd6c8ec3"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2025.html",
+      "bytes": 28511,
+      "sha256": "beb0957353f818f551792774f7a21816714dee7bc7be8da388de482248734378"
+    },
+    {
+      "path": "roll/market/reference/sse-calendar-2026.html",
+      "bytes": 30794,
+      "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+    },
+    {
+      "path": "roll/market/reference/sse-deferred-2026.docx",
+      "bytes": 16476,
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5"
+    },
+    {
+      "path": "roll/market/reference/sse-deferred-2026.txt",
+      "bytes": 2566,
+      "sha256": "6e331f928379567cace65dd78d9e8b77b63067e4fa64f3188de5872cf7c5e21a"
+    },
+    {
+      "path": "roll/market/reference/sse-rules-2026.html",
+      "bytes": 34826,
+      "sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81"
+    },
+    {
+      "path": "roll/market/reference/sse-rules-text-2026.docx",
+      "bytes": 65302,
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888"
+    },
+    {
+      "path": "roll/market/reference/sse-rules-text-2026.txt",
+      "bytes": 56980,
+      "sha256": "60b31468103a6a7f6f12cbfbfdb3beecb461aa8ddce707b2c78d33b25625a2a4"
+    },
+    {
+      "path": "roll/market/reference/szse-a-share-resale.html",
+      "bytes": 37793,
+      "sha256": "1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f"
+    },
+    {
+      "path": "roll/market/reference/szse-calendar-2026.html",
+      "bytes": 24946,
+      "sha256": "1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e"
+    },
+    {
+      "path": "roll/market/reference/szse-rules-2026.html",
+      "bytes": 19302,
+      "sha256": "0dcb0971ac96123f369178ce8f5397d948190d41281175694664de1d1dd4dce5"
+    },
+    {
+      "path": "roll/market/reference/szse-rules-text-2026.pdf",
+      "bytes": 282084,
+      "sha256": "9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586"
+    },
+    {
+      "path": "roll/market/reference/szse-rules-text-2026.txt",
+      "bytes": 52760,
+      "sha256": "dd3a4d9eb95e559e15d449ee499061e9da2321683bc39eaee12c89397878eb34"
+    },
+    {
+      "path": "roll/market/resolution.py",
+      "bytes": 26455,
+      "sha256": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf"
+    },
+    {
+      "path": "roll/market/rules.py",
+      "bytes": 13012,
+      "sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6"
+    },
+    {
+      "path": "roll/market/sohu.py",
+      "bytes": 5550,
+      "sha256": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1"
+    },
+    {
+      "path": "roll/market/source_facts.py",
+      "bytes": 22890,
+      "sha256": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9"
+    },
+    {
+      "path": "roll/market/verification.py",
+      "bytes": 17958,
+      "sha256": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43"
+    },
+    {
+      "path": "roll/market/verification_input.py",
+      "bytes": 867,
+      "sha256": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788"
+    },
+    {
+      "path": "roll/research/corporate_actions.py",
+      "bytes": 7307,
+      "sha256": "ba28137c834140c350fc35634ca38bb218c9e1c7a8b8c047de2a976a3cac3c36"
+    },
+    {
+      "path": "roll/research/datasets.py",
+      "bytes": 15398,
+      "sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad"
+    },
+    {
+      "path": "roll/research/design.py",
+      "bytes": 12909,
+      "sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8"
+    },
+    {
+      "path": "roll/research/execution.py",
+      "bytes": 37186,
+      "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac"
+    },
+    {
+      "path": "roll/research/forward.py",
+      "bytes": 33642,
+      "sha256": "930f375851946501ac887a69a957ba8d0359dcab2b289cb748d4349e2caf4a3a"
+    },
+    {
+      "path": "roll/research/historical_costs.py",
+      "bytes": 5154,
+      "sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd"
+    },
+    {
+      "path": "roll/research/models.py",
+      "bytes": 32371,
+      "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e"
+    },
+    {
+      "path": "roll/research/prospective.py",
+      "bytes": 13809,
+      "sha256": "c28690a8c27694afa0b8dcaa1a9718485cce838a9f54a6340808d8e3f107d566"
+    },
+    {
+      "path": "roll/research/reconstruction.py",
+      "bytes": 18472,
+      "sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/1cb07ee777acc8cc62c3231f0b8839f00695fa9d524c677e153be75d4de8ed3e.pdf",
+      "bytes": 228141,
+      "sha256": "1cb07ee777acc8cc62c3231f0b8839f00695fa9d524c677e153be75d4de8ed3e"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/24a7a6954e617920c3817f1e93b0e9dcc492ada9e6815944541a289bbbe46e64.pdf",
+      "bytes": 228202,
+      "sha256": "24a7a6954e617920c3817f1e93b0e9dcc492ada9e6815944541a289bbbe46e64"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/360915f52d4770c1468be5a70d9a414d38f7c6909b34a2dfdb46db67d738a4a4.pdf",
+      "bytes": 167951,
+      "sha256": "360915f52d4770c1468be5a70d9a414d38f7c6909b34a2dfdb46db67d738a4a4"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/376fe3f19f2f1482101c75336b6f1ae0cc59896dbe36254a570b76d83d53865e.pdf",
+      "bytes": 228067,
+      "sha256": "376fe3f19f2f1482101c75336b6f1ae0cc59896dbe36254a570b76d83d53865e"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/4e192a71c54f931256db070d6675fba947cc8dd021210fc899645a4a99d2f86a.html",
+      "bytes": 22491,
+      "sha256": "4e192a71c54f931256db070d6675fba947cc8dd021210fc899645a4a99d2f86a"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/8344668f84c905e9654240b2ef5584e81bfb4ff35b2fe8abfb05addb40b445d2.pdf",
+      "bytes": 139208,
+      "sha256": "8344668f84c905e9654240b2ef5584e81bfb4ff35b2fe8abfb05addb40b445d2"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/87cc6cb1dc2bd6c4e960ce8448ecebcc2adadd854d4c8627119078572c760188.html",
+      "bytes": 17978,
+      "sha256": "87cc6cb1dc2bd6c4e960ce8448ecebcc2adadd854d4c8627119078572c760188"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/945fb4db8341e20b4abe6995c8f01184618a01dac3ea05f33c76edbfc370d181.pdf",
+      "bytes": 619155,
+      "sha256": "945fb4db8341e20b4abe6995c8f01184618a01dac3ea05f33c76edbfc370d181"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/963ff2e75122c2c1b46ec66ab2048a21760f6947a12d14c16090d4f626f390e2.pdf",
+      "bytes": 493288,
+      "sha256": "963ff2e75122c2c1b46ec66ab2048a21760f6947a12d14c16090d4f626f390e2"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/9d02519195644b524e947c094d3f0513244a9ec74af5e232f606c29c7eef5ff1.pdf",
+      "bytes": 742423,
+      "sha256": "9d02519195644b524e947c094d3f0513244a9ec74af5e232f606c29c7eef5ff1"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/b33a976d34ab33f913b3240a9884b534b9e3df9dea763de70d8a8975cd76aad0.pdf",
+      "bytes": 739277,
+      "sha256": "b33a976d34ab33f913b3240a9884b534b9e3df9dea763de70d8a8975cd76aad0"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/b3fbc94e1cd1744a7fe4a993057df842894aac87c922020f002a044e010894ed.html",
+      "bytes": 5943,
+      "sha256": "b3fbc94e1cd1744a7fe4a993057df842894aac87c922020f002a044e010894ed"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/c2e8625173589d6af8c2e5bf1e5bbfde0deb7668f76d09dca6c20979dc6333b6.pdf",
+      "bytes": 751851,
+      "sha256": "c2e8625173589d6af8c2e5bf1e5bbfde0deb7668f76d09dca6c20979dc6333b6"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/c88d5d1e0af78867b0422c231d41249c44fb538863a354b5433cc846f20d8a67.pdf",
+      "bytes": 723948,
+      "sha256": "c88d5d1e0af78867b0422c231d41249c44fb538863a354b5433cc846f20d8a67"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/dd8f61c32cf67a0fe73762df48751001fdfd4a0c67ded660cf5c4f03c8631a5e.html",
+      "bytes": 34244,
+      "sha256": "dd8f61c32cf67a0fe73762df48751001fdfd4a0c67ded660cf5c4f03c8631a5e"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/e486d0e9a99e5aa0dc77a4aa2037963022a44a1d3f6cd3315290b8e6afe2a28c.pdf",
+      "bytes": 145503,
+      "sha256": "e486d0e9a99e5aa0dc77a4aa2037963022a44a1d3f6cd3315290b8e6afe2a28c"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/f3be87275b7e73ce6cc107f92f2712e172bae9cd4285f5c24804b2b2d071b973.pdf",
+      "bytes": 145491,
+      "sha256": "f3be87275b7e73ce6cc107f92f2712e172bae9cd4285f5c24804b2b2d071b973"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/f8c59755d58dca82911931d6e632a8c6a7bcc3e9f2e1eecc2c961d93c5e6705a.pdf",
+      "bytes": 206924,
+      "sha256": "f8c59755d58dca82911931d6e632a8c6a7bcc3e9f2e1eecc2c961d93c5e6705a"
+    },
+    {
+      "path": "roll/research/reference/cash-rights/sources.json",
+      "bytes": 85112,
+      "sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680"
+    },
+    {
+      "path": "roll/research/reference/historical-2015-fee-change.html",
+      "bytes": 28071,
+      "sha256": "68d86fbded6d151eac74501ed285ce7c24a0746cd09a791ea927d81172266796"
+    },
+    {
+      "path": "roll/research/reference/historical-cost-sources.json",
+      "bytes": 3063,
+      "sha256": "152f04564bd9fc49f5c52fe6b7dc6e2a7ef8fa5b956c9cf7cce6808d3da639fb"
+    },
+    {
+      "path": "roll/research/reference/historical-stamp-2008.html",
+      "bytes": 20049,
+      "sha256": "4edaa053cbc7c2727e183a27f2e974aabb3534e4485522e3675f40ca7a6d8263"
+    },
+    {
+      "path": "roll/research/reference/historical-stamp-2023.html",
+      "bytes": 14404,
+      "sha256": "64783f48ef9b4a0650d058cec330268431f28b7ffad527add1a047a1b0184b36"
+    },
+    {
+      "path": "roll/research/reference/historical-transfer-2022.html",
+      "bytes": 10098,
+      "sha256": "40cd7a2ddc9e1608cb4820171cb165fc716005b2b3f5aef29c2c97c994d1dc51"
+    },
+    {
+      "path": "roll/research/reference/reconstruction/sources.json",
+      "bytes": 5396,
+      "sha256": "ea7919e633ccc1499da53d848b0581096fd74d3dd17a33a894261ab68bd10004"
+    },
+    {
+      "path": "roll/research/reference/reconstruction/sse-rules-2013.html",
+      "bytes": 99433,
+      "sha256": "a29e2114f6b677e7a2d57c494a1bfd526be501ababcd703b22e83bac446d6efc"
+    },
+    {
+      "path": "roll/research/reference/sources.json",
+      "bytes": 2105,
+      "sha256": "40a38f86c92984506632f931d7f8c74f152f383b8de6456a0a6e66cb8c2aaca3"
+    },
+    {
+      "path": "roll/research/reference/sse-charge-2026.html",
+      "bytes": 41658,
+      "sha256": "021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c"
+    },
+    {
+      "path": "roll/research/reference/sse-cost-investor.html",
+      "bytes": 45558,
+      "sha256": "f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db"
+    },
+    {
+      "path": "roll/research/reference/stamp-tax-2023.html",
+      "bytes": 27791,
+      "sha256": "a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf"
+    },
+    {
+      "path": "roll/research/registry.py",
+      "bytes": 20337,
+      "sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c"
+    },
+    {
+      "path": "roll/research/risk_policy.py",
+      "bytes": 22734,
+      "sha256": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0"
+    },
+    {
+      "path": "roll/research/shadow.py",
+      "bytes": 39344,
+      "sha256": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293"
+    },
+    {
+      "path": "roll/research/statistics.py",
+      "bytes": 11758,
+      "sha256": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb"
+    },
+    {
+      "path": "roll/research/synthetic.py",
+      "bytes": 9101,
+      "sha256": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94"
+    },
+    {
+      "path": "roll/research/technical_review.py",
+      "bytes": 27390,
+      "sha256": "ed3e77d68b8ae2e5a171f7cff1de856e36373702b48269a7457ecfebdbc7d99d"
+    },
+    {
+      "path": "roll/research/training_preflight.py",
+      "bytes": 10008,
+      "sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589"
+    },
+    {
+      "path": "roll/research/validation.py",
+      "bytes": 37521,
+      "sha256": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07"
+    },
+    {
+      "path": "roll/runtime/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "roll/runtime/backups.py",
+      "bytes": 34090,
+      "sha256": "1c409fb5e4360e327fce20896efa7c35498c4f065cd9546f025f609535d13cd5"
+    },
+    {
+      "path": "roll/runtime/reviews.py",
+      "bytes": 42278,
+      "sha256": "d69550512afbd13f3aaa80430e15f267803455c91fb091dd7482f368b6ab981f"
+    }
+  ],
+  "actual_profile_started": false,
+  "provider_calls": 0,
+  "synthetic_auth_fixture_not_real_credentials": true,
+  "exit_code": 0
+}

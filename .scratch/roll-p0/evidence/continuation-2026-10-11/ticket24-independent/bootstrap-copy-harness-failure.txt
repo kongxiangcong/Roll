@@ -1,0 +1,284 @@
+FFFFFF                                                                   [100%]
+================================== FAILURES ===================================
+___________ test_multiple_scope_restart_shrink_and_proof_integrity ____________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/pytest/test_multiple_scope_restart_sh0')
+
+    def test_multiple_scope_restart_shrink_and_proof_integrity(tmp_path):
+        p=package();p['scope']['instruments']=['SSE:600000','SSE:600001'];p['current_data']['instruments']=p['scope']['instruments'][:]
+        f=save_package(tmp_path/'qualification.json',p);directory=tmp_path/'data'
+>       with TestClient(app(directory,capability_method_file=f)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:65:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:40: in app
+    return create_app(directory, market_transport=httpx.MockTransport(deny), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\app.py:955: in create_app
+    finish_bootstrap(backups)
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:531: in finish_bootstrap
+    persist(backups.root/'deployment.json',encode({'fingerprint':source_fingerprint(),'initialized_at':now()}).encode())
+                                                                 ^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:200: in source_fingerprint
+    'dependency_lock':sha((Path(__file__).parents[3]/'uv.lock').read_bytes()),'python':sys.version,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/uv.lock')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket24-independent\\uv.lock'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+___ test_independent_exit_scope_respects_disposal_facts[NOT_OPEN-300-True] ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/pytest/test_independent_exit_scope_re0')
+permission = 'NOT_OPEN', sellable = '300', allowed = True
+
+    @pytest.mark.parametrize('permission,sellable,allowed',[('NOT_OPEN','300',True),('UNKNOWN','300',True),('UNKNOWN',None,False)])
+    def test_independent_exit_scope_respects_disposal_facts(tmp_path,permission,sellable,allowed):
+        p=package();p.update(candidate_kind='RISK_POLICY',gates={k:'PASS' for k in ['DATA','RULE_QUANTITY','AUTHORIZATION','STRESS_EXECUTION','ONLINE_CONSISTENCY']},allowed_actions=['REDUCE','EXIT'])
+        f=save_package(tmp_path/'qualification.json',p)
+>       with TestClient(app(tmp_path/'data',capability_method_file=f)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:113:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:40: in app
+    return create_app(directory, market_transport=httpx.MockTransport(deny), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\app.py:955: in create_app
+    finish_bootstrap(backups)
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:531: in finish_bootstrap
+    persist(backups.root/'deployment.json',encode({'fingerprint':source_fingerprint(),'initialized_at':now()}).encode())
+                                                                 ^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:200: in source_fingerprint
+    'dependency_lock':sha((Path(__file__).parents[3]/'uv.lock').read_bytes()),'python':sys.version,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/uv.lock')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket24-independent\\uv.lock'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+____ test_independent_exit_scope_respects_disposal_facts[UNKNOWN-300-True] ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/pytest/test_independent_exit_scope_re1')
+permission = 'UNKNOWN', sellable = '300', allowed = True
+
+    @pytest.mark.parametrize('permission,sellable,allowed',[('NOT_OPEN','300',True),('UNKNOWN','300',True),('UNKNOWN',None,False)])
+    def test_independent_exit_scope_respects_disposal_facts(tmp_path,permission,sellable,allowed):
+        p=package();p.update(candidate_kind='RISK_POLICY',gates={k:'PASS' for k in ['DATA','RULE_QUANTITY','AUTHORIZATION','STRESS_EXECUTION','ONLINE_CONSISTENCY']},allowed_actions=['REDUCE','EXIT'])
+        f=save_package(tmp_path/'qualification.json',p)
+>       with TestClient(app(tmp_path/'data',capability_method_file=f)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:113:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:40: in app
+    return create_app(directory, market_transport=httpx.MockTransport(deny), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\app.py:955: in create_app
+    finish_bootstrap(backups)
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:531: in finish_bootstrap
+    persist(backups.root/'deployment.json',encode({'fingerprint':source_fingerprint(),'initialized_at':now()}).encode())
+                                                                 ^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:200: in source_fingerprint
+    'dependency_lock':sha((Path(__file__).parents[3]/'uv.lock').read_bytes()),'python':sys.version,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/uv.lock')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket24-independent\\uv.lock'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+___ test_independent_exit_scope_respects_disposal_facts[UNKNOWN-None-False] ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/pytest/test_independent_exit_scope_re2')
+permission = 'UNKNOWN', sellable = None, allowed = False
+
+    @pytest.mark.parametrize('permission,sellable,allowed',[('NOT_OPEN','300',True),('UNKNOWN','300',True),('UNKNOWN',None,False)])
+    def test_independent_exit_scope_respects_disposal_facts(tmp_path,permission,sellable,allowed):
+        p=package();p.update(candidate_kind='RISK_POLICY',gates={k:'PASS' for k in ['DATA','RULE_QUANTITY','AUTHORIZATION','STRESS_EXECUTION','ONLINE_CONSISTENCY']},allowed_actions=['REDUCE','EXIT'])
+        f=save_package(tmp_path/'qualification.json',p)
+>       with TestClient(app(tmp_path/'data',capability_method_file=f)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:113:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:40: in app
+    return create_app(directory, market_transport=httpx.MockTransport(deny), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\app.py:955: in create_app
+    finish_bootstrap(backups)
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:531: in finish_bootstrap
+    persist(backups.root/'deployment.json',encode({'fingerprint':source_fingerprint(),'initialized_at':now()}).encode())
+                                                                 ^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:200: in source_fingerprint
+    'dependency_lock':sha((Path(__file__).parents[3]/'uv.lock').read_bytes()),'python':sys.version,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/uv.lock')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket24-independent\\uv.lock'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+________ test_slow_proof_has_short_writer_and_rechecks_enabled_shrink _________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/pytest/test_slow_proof_has_short_writ0')
+
+    def test_slow_proof_has_short_writer_and_rechecks_enabled_shrink(tmp_path):
+        p={**package(),'method_reproduction_delay_ms':1500}
+        f=save_package(tmp_path/'qualification.json',p)
+>       with TestClient(app(tmp_path/'data',capability_method_file=f)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:128:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:40: in app
+    return create_app(directory, market_transport=httpx.MockTransport(deny), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\app.py:955: in create_app
+    finish_bootstrap(backups)
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:531: in finish_bootstrap
+    persist(backups.root/'deployment.json',encode({'fingerprint':source_fingerprint(),'initialized_at':now()}).encode())
+                                                                 ^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:200: in source_fingerprint
+    'dependency_lock':sha((Path(__file__).parents[3]/'uv.lock').read_bytes()),'python':sys.version,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/uv.lock')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket24-independent\\uv.lock'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+_________ test_producer_proof_restart_reuse_and_source_input_refusal __________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/pytest/test_producer_proof_restart_re0')
+
+    def test_producer_proof_restart_reuse_and_source_input_refusal(tmp_path):
+        auth=tmp_path/'method-auth.json';auth.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+        os.environ['ROLL_CODEX_AUTH_FILE']=str(auth)
+        worker=tmp_path/'fixed-local-worker.py';worker.write_text(WORKER)
+        case=tmp_path/'method-review.json';case.write_text(json.dumps({'cases':[{'case_id':'independent24','gates':{'G4':'INCONCLUSIVE'},
+            'checks_complete':True,'endpoint_reached':True,'observed_value':1}]}))
+        directory=tmp_path/'data';reproductions=[]
+>       application=app(directory,codex_worker=worker,technical_review_method_file=case)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:152:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.scratch\roll-p0\evidence\continuation-2026-10-11\ticket24-independent\test_independent24.py:40: in app
+    return create_app(directory, market_transport=httpx.MockTransport(deny), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\app.py:955: in create_app
+    finish_bootstrap(backups)
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:531: in finish_bootstrap
+    persist(backups.root/'deployment.json',encode({'fingerprint':source_fingerprint(),'initialized_at':now()}).encode())
+                                                                 ^^^^^^^^^^^^^^^^^^^^
+.roll-data\implementation-evidence\ticket24-independent\source\roll\runtime\backups.py:200: in source_fingerprint
+    'dependency_lock':sha((Path(__file__).parents[3]/'uv.lock').read_bytes()),'python':sys.version,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket24-independent/uv.lock')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket24-independent\\uv.lock'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket24-independent/test_independent24.py::test_multiple_scope_restart_shrink_and_proof_integrity
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket24-independent/test_independent24.py::test_independent_exit_scope_respects_disposal_facts[NOT_OPEN-300-True]
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket24-independent/test_independent24.py::test_independent_exit_scope_respects_disposal_facts[UNKNOWN-300-True]
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket24-independent/test_independent24.py::test_independent_exit_scope_respects_disposal_facts[UNKNOWN-None-False]
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket24-independent/test_independent24.py::test_slow_proof_has_short_writer_and_rechecks_enabled_shrink
+FAILED .scratch/roll-p0/evidence/continuation-2026-10-11/ticket24-independent/test_independent24.py::test_producer_proof_restart_reuse_and_source_input_refusal
+6 failed in 31.08s
