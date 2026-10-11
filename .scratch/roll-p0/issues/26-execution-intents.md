@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** partial
+**Completion:** complete
 
 **Primary acceptance:** AT-05、AT-06、AT-07、AT-49。
 
@@ -26,6 +26,8 @@
 - [ ] 遵守目录与实施约束；仅引入本票实际需要的模块、接口和校验，保留 PRD 必需控制，不新增假设性兼容层、审批或泛化框架。
 
 ## Comments
+
+2026-10-11 独立接受：稳定sourcee708764a的最小独立检查首轮6 PASS/1 harness状态比较FAIL68.45秒（草稿正确转UPDATE_PENDING，现金/持仓/版本不变）；原红保留，修正同草稿边界后仅该例重跑1 PASS8.53秒，不标首轮全绿。覆盖METHOD500完整declaration/protocol/grant/归档绑定、generic200暗改500拒绝、REDUCE NOT_OPEN及可用1000/UNKNOWN、partial100余量100与15002.50占用/四类时点、caller同SQLite未提交v3与独立reader v2、oldcard失效/latest prepare拒绝及确认幂等。提交前/后实际独立进程崩溃恢复均首轮通过；原5931文件506312244字节双端11862次SHA/长度0差异，15保护与原19checksum相同。工程范围独立接受complete；真实资格仍NOT_GRANTED，28通知/送达/已读及29偏差责任未提前完成。详见[独立验收](../evidence/continuation-2026-10-11/ticket26-independent/acceptance.md)。
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。正式能力正向工程样例只能使用隔离测试凭证，真实资格与资金启用不由本票代签。
 
