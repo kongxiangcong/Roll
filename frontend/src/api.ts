@@ -11,7 +11,8 @@ export type CapabilityGrant = {grant_id:string;evidence_kind:string;expires_at:s
 export type LifecycleScope='NEW_RISK'|'MODEL'|'ALL_MONITOR';
 export type LifecycleState={state:string;version:number;reason_code:string|null;reason:string|null;effective_at:string|null;event_id?:string};
 export type Lifecycle={version:number;scopes:Record<LifecycleScope,LifecycleState>;observations_allowed:boolean;model_judgments_allowed:boolean;new_risk_allowed:boolean};
-export type Capability = {state:string;reason:string;reasons?:string[];human_review_label?:string;grant?:CapabilityGrant;lifecycle?:Lifecycle;grant_statuses?:{state:string;reason:string;grant:CapabilityGrant;allowed_actions?:string[];lifecycle?:Lifecycle}[]};
+export type CurrentCapabilityScope={basis_type:string;grant_id:string;scope:CapabilityGrant['scope'];allowed_actions:string[];expires_at:string;system_usable:boolean};
+export type Capability = {state:string;reason:string;formal_judgment:string;headline:string;formal_capabilities:CurrentCapabilityScope[];method_capabilities:CurrentCapabilityScope[];reasons?:string[];human_review_label?:string;grant?:CapabilityGrant;lifecycle?:Lifecycle;grant_statuses?:{state:string;reason:string;grant:CapabilityGrant;allowed_actions?:string[];lifecycle?:Lifecycle}[]};
 export type RuntimeHealth = {service:string;reason:string};
 export async function request<T>(path:string, body?:unknown):Promise<T> {
   const response = await fetch(`/api${path}`,body===undefined ? undefined : {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});

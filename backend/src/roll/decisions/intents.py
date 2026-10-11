@@ -42,6 +42,7 @@ class Intents:
                 CREATE TABLE IF NOT EXISTS execution_intent_events(id TEXT PRIMARY KEY, value TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS action_fill_allocations(id TEXT PRIMARY KEY, value TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS execution_intent_receipts(idem TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS execution_intent_prepare_receipts(idem TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, value TEXT NOT NULL);
             ''')
 
     def listing(self, db=None):
@@ -60,12 +61,29 @@ class Intents:
                 'pending_attribution': any(v['effective_broker_reflection'] == 'UNKNOWN' for v in values if v['status'] == 'OPERATION_PENDING'),
                 'broker_frozen_deducted_again': False}
 
+    def prepare_receipt(self, db, key, content):
+        prior = db.execute('SELECT fingerprint,value FROM execution_intent_prepare_receipts WHERE idem=?', (key,)).fetchone()
+        if prior:
+            if prior[0] != content: raise HTTPException(409, 'INTENT_IDEMPOTENCY_CONTENT_CONFLICT')
+            return json.loads(prior[1])
+        legacy = db.execute('SELECT fingerprint FROM execution_intents WHERE idem=?', (key,)).fetchone()
+        if legacy:
+            if legacy[0] != content: raise HTTPException(409, 'INTENT_IDEMPOTENCY_CONTENT_CONFLICT')
+            raise HTTPException(409, 'LEGACY_PREPARE_RECEIPT_UNAVAILABLE')
+        return None
+
     def prepare(self, command):
-        self.actions.capabilities.refresh_journal()
         content = fingerprint(command.model_dump())
+        # Receipt recovery is not a new authorization and must precede current checks.
+        with self.ledger.connection() as db:
+            if prior := self.prepare_receipt(db, command.idempotency_key, content): return prior
+        self.actions.capabilities.refresh_journal()
         price = Decimal(number(command.price_yuan, 'price_yuan', 8))
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
+            if prior := self.prepare_receipt(db, command.idempotency_key, content):
+                db.commit()
+                return prior
             current = self.actions.current(db=db)
             decision = next((d for d in current['decisions'] if d['decision_id'] == command.decision_id), None)
             evaluation = current['evaluation']
@@ -81,11 +99,6 @@ class Intents:
                 raise HTTPException(409, 'INTENT_DEPENDENCY_VERSION_CHANGED')
             if not Decimal(decision['price_lower_yuan']) <= price <= Decimal(decision['price_upper_yuan']):
                 raise HTTPException(409, 'PRICE_OUTSIDE_ACTION_CONDITIONS')
-            prior = db.execute('SELECT fingerprint,value FROM execution_intents WHERE idem=?', (command.idempotency_key,)).fetchone()
-            if prior:
-                if prior[0] != content: raise HTTPException(409, 'INTENT_IDEMPOTENCY_CONTENT_CONFLICT')
-                db.commit()
-                return json.loads(prior[1])
             listing = self.listing(db)
             active = [v for v in listing['intents'] if v['status'] not in {'NOT_EXECUTED', 'RESOLVED'}]
             if decision['action'] in {'BUY', 'ADD'} and (listing['pending_attribution'] or any(v['action'] in {'BUY', 'ADD'} for v in active)):
@@ -108,6 +121,7 @@ class Intents:
                                     'reported_at': None, 'reported_source': 'UNKNOWN', 'known_at': at, 'known_source': 'HOST_RECEIPT'},
                      'namespace': evaluation['namespace'], 'system_usable': evaluation['system_usable']}
             db.execute('INSERT INTO execution_intents VALUES(?,?,?,?)', (value['intent_id'], command.idempotency_key, content, encode(value)))
+            db.execute('INSERT INTO execution_intent_prepare_receipts VALUES(?,?,?)', (command.idempotency_key, content, encode(value)))
             self.event(db, 'INTENT_PREPARED', value['intent_id'], at)
             db.commit()
         return value

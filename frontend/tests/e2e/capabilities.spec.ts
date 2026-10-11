@@ -10,13 +10,17 @@ test('qualification shows isolated scope, expiry, disclosure and current funding
   const authorization={scope_kind:'ACCOUNT',scope_id:'account-1',purpose:'METHOD user funds',capital_amount:'100000.00',total_exposure:'60000.00',single_exposure:'20000.00',cash_reserve:'40000.00',loss_threshold:'5000.00',effective_at:'2026-10-07T10:00:00+08:00',basis:'synthetic isolated',enabled:true};
   await page.request.post('/api/funding/confirm',{data:{expected_version:0,idempotency_key:'funding',authorization}});
   await page.getByRole('button',{name:'设置',exact:true}).click();
-  await page.getByLabel('冻结审阅材料编号').fill('unknown');
-  await page.getByLabel('Codex 审阅记录编号').fill('unknown');
-  await page.getByRole('button',{name:'核验并登记资格'}).click();
-  await expect(page.getByRole('alert')).toContainText('冻结审阅材料不存在');
-  await page.getByLabel('冻结审阅材料编号').fill('method-material');
-  await page.getByLabel('Codex 审阅记录编号').fill('method-codex-review');
-  await page.getByRole('button',{name:'核验并登记资格'}).click();
+  await page.getByText('模型维护与资格核验',{exact:true}).click();
+  // This single host qualification fixture has no saved technical-review records.
+  // Its scope viewer is set up through the same public host proposal/admission.
+  const unknown=await page.request.get('/api/capabilities/proposal?material_id=unknown&review_run_id=unknown');
+  expect(unknown.status()).toBe(404);
+  const proposal=await(await page.request.get('/api/capabilities/proposal?material_id=method-material&review_run_id=method-codex-review')).json();
+  const granted=await page.request.post('/api/capabilities/grants',{data:{...proposal,idempotency_key:'browser-method-grant',basis:'isolated METHOD scope viewer'}});
+  expect(granted.status()).toBe(201);
+  await page.getByRole('button',{name:'今天',exact:true}).click();
+  await page.getByRole('button',{name:'设置',exact:true}).click();
+  await page.getByText('模型维护与资格核验',{exact:true}).click();
   await expect(page.getByText('隔离工程资格已登记',{exact:true})).toBeVisible();
   await expect(page.getByText('经自动验证与模型技术审阅，未经人工独立复核',{exact:true})).toBeVisible();
   await expect(page.getByText('METHOD 工程凭证，仅隔离验收，不能用于真实正式建议。')).toBeVisible();

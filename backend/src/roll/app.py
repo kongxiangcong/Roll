@@ -671,6 +671,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def risk_review_material_list(evaluation_id:str):
         return technical_reviews.basis_materials(evaluation_id)
 
+    @app.get('/api/research/review-materials')
+    def saved_technical_review_materials():
+        return technical_reviews.materials()
+
     @app.get('/api/research/review-materials/{material_id}')
     def technical_review_material(material_id:str):
         return technical_reviews.get_material(material_id)
@@ -1225,8 +1229,9 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
                 pending.append(f"{item['record_id']} {'应收' if item['flow_category']=='INVESTMENT_INCOME' else '应付'}待结算 {item['outstanding_amount']} 元")
         for hint in ledger.equity_hints():
             pending.append(f"外部权益线索待核：{hint['content']}；来源 {hint['source']}，获知于 {hint['learned_at']}，未确认个人账户实际发生")
-        return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
-                "funding": funding.current(), "technical_capability": capability_service.current(), "runtime_health": runtime_health(), "recovery": app.state.backups.recovery(), "current_actions": actions.current()}
+        capability = capability_service.current()
+        return {"account": account, "formal_judgment": capability['formal_judgment'], "pending_items": pending,
+                "funding": funding.current(), "technical_capability": capability, "runtime_health": runtime_health(), "recovery": app.state.backups.recovery(), "current_actions": actions.current()}
 
     return app
 

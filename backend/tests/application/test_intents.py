@@ -29,7 +29,8 @@ def test_permission_change_rejects_old_prepare_but_external_pending_survives(tmp
         assert client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
             'state': 'OPERATION_PENDING', 'idempotency_key': 'pending'}).status_code == 200
         assert submit(client, permission_change(evaluation['account_version'], status), 'permissions').status_code == 200
-        assert client.post('/api/intents/prepare', json=command).status_code == 409
+        assert client.post('/api/intents/prepare', json=command).json() == intent
+        assert client.post('/api/intents/prepare', json={**command, 'idempotency_key': 'new-prepare'}).status_code == 409
         pending = client.get('/api/intents').json()
         assert pending['pending_attribution'] is True
         assert pending['intents'][0]['status'] == 'OPERATION_PENDING'
@@ -140,7 +141,8 @@ def test_expiry_never_releases_external_unknown_or_turns_it_into_unexecuted(tmp_
         client.post('/api/intents/' + intent['intent_id'] + '/declare', json={'state': 'OPERATION_PENDING', 'idempotency_key': 'pending'})
         monkeypatch.setattr('roll.decisions.actions.now', lambda: (datetime.fromisoformat(p['expires_at']) + timedelta(seconds=1)).isoformat())
         assert client.get('/api/actions/current').json()['decisions'] == []
-        assert client.post('/api/intents/prepare', json=command).status_code == 409
+        assert client.post('/api/intents/prepare', json=command).json() == intent
+        assert client.post('/api/intents/prepare', json={**command, 'idempotency_key': 'new-prepare'}).status_code == 409
         value = client.get('/api/intents').json()
         assert value['pending_attribution'] is True
         assert value['unreflected_reservation_yuan'] == '30005.00'
