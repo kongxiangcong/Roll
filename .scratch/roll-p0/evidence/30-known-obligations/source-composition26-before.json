@@ -1,0 +1,53 @@
+{
+  "protected_git_blobs": {
+    "backend/src/roll/research/models.py": "5b32f8c532aa11ce22de91fb8910dc25fb218b79",
+    "backend/src/roll/research/execution.py": "4e59b10d4fb4c30d9958ad7fa44f65ea1a435194",
+    "backend/src/roll/research/reconstruction.py": "3964841f9be3767c213a134cab0cce8ccd3def4e",
+    "backend/src/roll/research/datasets.py": "c58280e8fca9f2665c7ef344a1f5c62ca2ef5749",
+    "backend/src/roll/research/design.py": "d53c3db6872a42f24f7b2b2a7225fb54da589d71",
+    "backend/src/roll/research/historical_costs.py": "9f0baf8b622bd9d5e8b0cacb428fbba5b05b521b",
+    "backend/src/roll/research/corporate_actions.py": "c3789e1c1dfba342d7f87c364117714fd21a44e1",
+    "backend/src/roll/research/registry.py": "43c01732fd36dccaaa6c35b6ac557336a80c724a",
+    "backend/src/roll/research/training_preflight.py": "f9b9f4bd38eb332f08b2147ff088c153bb974e6e",
+    "backend/src/roll/market/rules.py": "b04c81e30cea87e8d0f3851aa615caa11e1eeecc",
+    "backend/src/roll/research/reference/reconstruction/sources.json": "8e05192b9a00437282323e12f46874ae7520c5e5",
+    "backend/src/roll/research/reference/cash-rights/sources.json": "9f1f67662cef2793f71394e297f0e63fac623fbe",
+    "backend/src/roll/research/shadow.py": "a83de1d6dec80f91b06bf745b7150b48e4480352",
+    "backend/src/roll/research/statistics.py": "a0764e92b1664ec2623fa550a223fca9b296f678",
+    "backend/src/roll/research/validation.py": "df99d5794f955fb5e362e21cac9ac0a1f372f572"
+  },
+  "protected_and_market_reference_diff_from_accepted_base": false,
+  "own": {
+    "backend/src/roll/app.py": {
+      "sha256": "97c1f6be90d3439c4fbfd601340b27634931f75f15bc742f500e54498e879bf0",
+      "bytes": 50705
+    },
+    "backend/src/roll/research/prospective.py": {
+      "sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+      "bytes": 15274
+    },
+    "backend/src/roll/research/forward.py": {
+      "sha256": "ad492be3edbb7b16dade23d8f95fa012f95e293e95ddd6293c9d582ba1a06b84",
+      "bytes": 32424
+    },
+    "backend/src/roll/market/post_close_packet.py": {
+      "sha256": "9b5432ece6e678ddb8830e0a7b45f4a0cc54b44dee96b6b225896d7859a391ae",
+      "bytes": 54993
+    },
+    "backend/src/roll/market/known_obligations.py": {
+      "sha256": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285",
+      "bytes": 3187
+    },
+    "backend/tests/application/test_known_obligation_audit.py": {
+      "sha256": "f747168b458efe4c6cf271d8ca5187b423eb59d08cf94e95036b4d03cf8a7d60",
+      "bytes": 12925
+    },
+    "backend/tests/support/known_obligation_method_app.py": {
+      "sha256": "ce8973d0192ca6601883683de60229ebe97fed802a7341b3e2c3e325c7a32664",
+      "bytes": 1460
+    }
+  },
+  "actual_root_account_or_sqlite_read": false,
+  "previous_preservation_opened": false,
+  "network_calls": 0
+}

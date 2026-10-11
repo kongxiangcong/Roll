@@ -1,0 +1,30 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+______ test_current_input_consumer_and_old_packet_pin_original_audit_ids ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30o-calendar-corrected-red/test_current_input_consumer_an0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023BA87F9810>
+
+    def test_current_input_consumer_and_old_packet_pin_original_audit_ids(tmp_path,monkeypatch):
+        clock='2026-10-12T15:06:00+08:00'
+        for module in ['roll.market.post_close_packet','roll.research.prospective','roll.market.evidence']:
+            monkeypatch.setattr(module+'.now',lambda:clock)
+        raw=json.dumps({'date':20261012,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]}).encode()
+        app=create_app(tmp_path,market_transport=httpx.MockTransport(lambda request:httpx.Response(200,content=raw)))
+        with TestClient(app) as client:
+            pid=setup(client);registered=protocol(client,tmp_path)
+            url=f'/api/research/collections/{pid}/known-obligation-audits'
+            response=client.post(url,json={'protocol_id':registered['protocol_id'],'basis':'Original scoped audit'})
+            assert response.status_code==201,response.text
+            first=response.json()
+            response=client.post(f'/api/research/collections/{pid}/post-close',json={'basis':'METHOD current source, no authority promotion'})
+            assert response.status_code==201,response.text
+            packet=response.json()
+>           assert packet['known_obligation_audits']==[first]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'known_obligation_audits'
+
+backend\tests\application\test_known_obligation_audit.py:58: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_known_obligation_audit.py::test_current_input_consumer_and_old_packet_pin_original_audit_ids
+1 failed, 1 passed in 14.27s

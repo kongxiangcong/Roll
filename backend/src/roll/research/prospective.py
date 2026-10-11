@@ -22,8 +22,9 @@ class CollectionCommand(BaseModel):
 
 
 class ProspectiveEvidence:
-    def __init__(self, evidence):
+    def __init__(self, evidence, registry):
         self.evidence = evidence
+        self.registry = registry
         self.ledger = evidence.ledger
         self.sources = CollectionSources(evidence)
         from roll.market.post_close_packet import PostClosePackets
