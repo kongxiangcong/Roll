@@ -1,0 +1,27 @@
+{
+  "status": "FAIL",
+  "files": 13989,
+  "bytes": 1286827333,
+  "differences": [
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30p-final-4\\test_source_crash_retains_orig0\\data\\roll.sqlite3-shm",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-ticket30-producer\\worktree\\t30p-final-4\\test_source_crash_retains_orig0\\data\\roll.sqlite3-shm",
+      "expected": {
+        "bytes": 32768,
+        "sha256": "7dec1a3d053e6ef8da11b3f8a3f0b2722ebc533ae0f239fc1542d86c0338a82c"
+      },
+      "actual": {
+        "source": {
+          "sha256": "7dec1a3d053e6ef8da11b3f8a3f0b2722ebc533ae0f239fc1542d86c0338a82c",
+          "bytes": 32768
+        },
+        "destination": {
+          "sha256": "e0ac927d58b434ce75fcbd83d0d26f9cc9a15192df5113d99a85434c8466effa",
+          "bytes": 32768
+        }
+      }
+    }
+  ],
+  "SQL_connections_opened": false,
+  "writes_to_profiles": false
+}

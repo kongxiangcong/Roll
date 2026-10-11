@@ -1,0 +1,26 @@
+{
+  "status": "PARTIAL_VERIFICATION_INTERRUPTED_NOT_PASS",
+  "reason": "Serial small-file I/O; parent authorized full restart using bounded8 streaming SHA",
+  "exact_owned_processes": [
+    {
+      "ProcessId": 35928,
+      "ParentProcessId": 23348,
+      "ReadOperationCount": 0,
+      "ReadTransferCount": 0,
+      "WriteOperationCount": 0,
+      "WriteTransferCount": 0
+    },
+    {
+      "ProcessId": 40212,
+      "ParentProcessId": 35928,
+      "ReadOperationCount": 23928,
+      "ReadTransferCount": 1254790181,
+      "WriteOperationCount": 0,
+      "WriteTransferCount": 0
+    }
+  ],
+  "manifest_total_files": 13989,
+  "product_source_changes": 0,
+  "full_manifest_PASS_claimed": false,
+  "restart_from_full_manifest": true
+}
