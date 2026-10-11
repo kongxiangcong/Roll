@@ -38,3 +38,5 @@
 
 
 2026-10-11 当前默认验收 runner 范围切片：完成 CODEX-only 默认集合、pytest support 路径、保留通用 CODEX 取消/槽/重试/超时和来源契约、每次新隔离 legacy METHOD profile 的当前页面验收。历史 DS-positive 明确 ignore/deselect，不执行能力验证、不计PASS。有限当前行为/集合/构建收据见[runner范围验收](../evidence/continuation-2026-10-11/codex-runner-scope/acceptance.md)。31原验收框及partial状态不变，未运行全suite，不替代五入口/P95/容量/真实通知或剩余责任票证据。
+
+2026-10-11 最终规格审阅回责任票：已将未登记的持有/加仓/判断等待/反向/冷却/迁移政策及生产费用、有效期输入缺口明确回写 20/25，25 Completion 为 partial；31 不接收 METHOD 通过或安全拒绝来代替这些先决实现。最终四项 P2 修复、五入口、三个独立 P95、当前两项15秒行为和239条手工证据核对仍分别记录，不能据安装或静态检查宣称全部规格完成。见[最终双轴审阅](../evidence/continuation-2026-10-11/final-review/review.md)。
