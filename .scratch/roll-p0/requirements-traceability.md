@@ -15,7 +15,7 @@
 
 | 条款 | 验收关注 | 主责任 | 联验 | 当前证据 |
 |---|---|---|---|---|
-| BR-01 | A 股范围、无跨市场扩展 | [06] | [31] | 部分：06有限沪深范围、未知北交所和未适配资产完整保留已验，31安装交付待验；[06证据](evidence/06/acceptance.md) |
+| BR-01 | A 股范围、无跨市场扩展 | [06] | [31] | 部分：06有限沪深范围、未知北交所和未适配资产完整保留已验；31独立本机安装/worker切片已接受，完整五入口及条款交付仍待完成。[06](evidence/06/acceptance.md)、[31独立](evidence/continuation-2026-10-11/ticket31-independent/acceptance.md) |
 | BR-02 | 无券商交易写能力与交易凭据 | [13] | [01]、[31] | 待实施 |
 | BR-03 | 真实账户仅确认事实入账 | [01] | [02]、[04] | 通过：01基线、02成交及04现金/权益均经草稿/明确确认写入，外部线索不自动到账；[01](evidence/01/acceptance.md)、[02](evidence/02/acceptance.md)、[04](evidence/04/acceptance.md)。工程账户样例不代表用户财富 |
 | BR-04 | 意向和触价不推定成交 | [26] | [25] | 工程通过：26 prepare/外部待结果不改现金或持仓，只有原账户确认链写实际成交；部分/超量/无关联不强行推定执行归因。[26独立](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md)、[分阶段](evidence/ticket26/acceptance.md) |
@@ -42,8 +42,8 @@
 | ACC-02 | 手工/文件先草稿再确认原子提交 | [03] | [01]、[04] | 通过：03整批原子确认、04配股CSV2及05更正CSV3后继已联验，三版本语义保留；[03](evidence/03/acceptance.md)、[04](evidence/04/acceptance.md)、[05](evidence/05/acceptance.md) |
 | ACC-03 | 精确金额、数量与舍入守恒 | [01] | [02]、[09] | 通过：字符串精度、费用前FIFO/单扣费用、送转/配股/迟补费及净资产恒等式已联验；[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md) |
 | ACC-04 | 存量基线与历史/可卖未知 | [01] | [09]、[25] | 工程通过：01/09未知保留及25按确认可卖量限制独立风险动作；可卖0或未知不猜数量、不造Decision。正向仅METHOD。[09](evidence/09/acceptance.md)、[25独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
-| ACC-05 | 逆建议成交受理、矛盾输入隔离 | [02] | [26] | 部分：02用户行为事实/关联未知/原材料隔离通过；26实际动作匹配待联验，见[02证据](evidence/02/acceptance.md) |
-| ACC-06 | 已确认成交与暂估费用分开 | [02] | [09]、[26] | 部分：02暂估/追加费用与09费用前估值、未知费用不当零已联验；26实际动作组合待验；[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md) |
+| ACC-05 | 逆建议成交受理、矛盾输入隔离 | [02] | [26] | 工程通过：02实际事实不从建议推定；26明确多对多分配、超量/无关联及UNKNOWN/CONTRARY关联不强行归因，实际成交仍由原确认链受理，过量分配整笔回滚。正向为隔离METHOD。[02](evidence/02/acceptance.md)、[26分阶段](evidence/ticket26/acceptance.md)、[26独立](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md) |
+| ACC-06 | 已确认成交与暂估费用分开 | [02] | [09]、[26] | 工程通过：02暂估/追加费用与09费用前估值、未知费用不当零已联验；26部分成交分配保留原费用对象及实际事件/回执，费用不代替成交关联。29后续偏差报告仍待实际调用方验收。[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md)、[26](evidence/ticket26/acceptance.md) |
 | ACC-07 | 分红、税费、利息、送转确认与对账 | [04] | [05]、[09] | 部分：04现金/权益、05分项对账及09净资产/绩效已联验；09修复应付10/支付10双更正8的实际关联路径，旧知识和原件保持10，CSV/真实崩溃通过；14独立性/原公告单源不足与无账户写门禁已验；真实个人外部权益双源未建立仍不得确认到账，[14](evidence/14/acceptance.md)；[04](evidence/04/acceptance.md)、[05](evidence/05/acceptance.md)、[09](evidence/09/acceptance.md) |
 | ACC-08 | 分笔身份、导入去重与歧义 | [03] | [02] | 通过：文件SHA/原行、可靠分笔去重/原回执、同价同量分笔与无标识跨文件歧义均实测，[03证据](evidence/03/acceptance.md) |
 | ACC-09 | 幂等、版本竞争和原子回执 | [01] | [03]、[26] | 工程通过：26在账户writer同事务写事实/分配/余量/版本/回执/动作失效，独立reader提交前仍见旧版；过量分配整笔回滚，实际before/after_commit恢复及重试唯一。[26独立](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md) |
