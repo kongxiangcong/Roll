@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_current_expiry_keeps_original_conditions_and_replay ___________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25rexpire/test_current_expiry_keeps_orig0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000175B7E43490>
+
+    def test_current_expiry_keeps_original_conditions_and_replay(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, p)
+            original = client.post('/api/actions/evaluate', json={}).json()
+            monkeypatch.setattr('roll.decisions.actions.now', lambda: p['expires_at'])
+            current = client.get('/api/actions/current').json()
+            assert current['decisions'] == []
+            assert current['invalidated'][0]['reasons'] == ['EXPIRED']
+            assert client.get(f"/api/actions/evaluations/{original['evaluation_id']}").json() == original
+            assert client.post(f"/api/actions/evaluations/{original['evaluation_id']}/replay").json()['matches_original'] is True
+            expired = client.post('/api/actions/evaluate', json={}).json()
+>           assert expired['decisions'] == []
+E           AssertionError: assert [{'action': '...': True, ...}] == []
+E             
+E             Left contains one more item: {'action': 'BUY', 'basis_type': 'PROFIT_MODEL', 'board': 'MAIN', 'calendar_open': True, ...}
+E             Use -v to get more diff
+
+backend\tests\application\test_actions.py:253: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_current_expiry_keeps_original_conditions_and_replay
+1 failed in 7.51s

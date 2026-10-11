@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_current_list_removal_invalidates_old_card_and_refuses_new_entry_outside_list _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25rdata/test_current_list_removal_inva0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000217E662CFC0>
+
+    def test_current_list_removal_invalidates_old_card_and_refuses_new_entry_outside_list(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, p)
+            for instrument in p['scope']['instruments']:
+                listing = client.get('/api/market/list').json()
+                assert client.post('/api/market/watch', json={'instrument': instrument, 'operation': 'ADD', 'expected_list_version': listing['version']}).status_code == 200
+            original = client.post('/api/actions/evaluate', json={}).json()
+            assert [(d['instrument'], d['quantity']) for d in original['decisions']] == [('SSE:600000', '200')]
+            listing = client.get('/api/market/list').json()
+            assert client.post('/api/market/watch', json={'instrument': 'SSE:600000', 'operation': 'REMOVE', 'expected_list_version': listing['version']}).status_code == 200
+            current = client.get('/api/actions/current').json()
+>           assert current['decisions'] == []
+E           AssertionError: assert [{'action': '...': True, ...}] == []
+E             
+E             Left contains one more item: {'action': 'BUY', 'basis_type': 'PROFIT_MODEL', 'board': 'MAIN', 'calendar_open': True, ...}
+E             Use -v to get more diff
+
+backend\tests\application\test_actions.py:222: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_current_list_removal_invalidates_old_card_and_refuses_new_entry_outside_list
+1 failed in 7.78s

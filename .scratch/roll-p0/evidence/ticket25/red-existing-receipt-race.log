@@ -1,0 +1,62 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_shrink_during_computation_does_not_wait_for_a_writer_lock_or_publish_old_boundary _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25rprior/test_shrink_during_computation0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D1985F3360>
+
+    def test_shrink_during_computation_does_not_wait_for_a_writer_lock_or_publish_old_boundary(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        p['action_packet']['method_publish_delay_ms'] = 1500
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, p)
+            existing = client.post('/api/actions/evaluate', json={}).json()
+            assert len(existing['decisions']) == 1
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                computing = pool.submit(client.post, '/api/actions/evaluate', json={})
+                time.sleep(.4)
+                started = time.monotonic()
+                shrunk = client.post('/api/funding/confirm', json=funding(2, total_exposure='10000.00', single_exposure='10000.00', cash_reserve='90000.00'))
+                assert shrunk.status_code == 200
+                assert time.monotonic() - started < 1.0
+                result = computing.result().json()
+>           assert result['decisions'] == []
+E           AssertionError: assert [{'action': '...': True, ...}] == []
+E             
+E             Left contains one more item: {'action': 'BUY', 'basis_type': 'PROFIT_MODEL', 'board': 'MAIN', 'calendar_open': True, ...}
+E             Use -v to get more diff
+
+backend\tests\application\test_actions.py:31: AssertionError
+__ test_list_change_during_compute_rejects_publication_under_latest_snapshot __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25rprior/test_list_change_during_comput0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D198A39BA0>
+
+    def test_list_change_during_compute_rejects_publication_under_latest_snapshot(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        p['action_packet']['method_publish_delay_ms'] = 1500
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, p)
+            existing = client.post('/api/actions/evaluate', json={}).json()
+            assert len(existing['decisions']) == 1
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                computing = pool.submit(client.post, '/api/actions/evaluate', json={})
+                time.sleep(.4)
+                listing = client.get('/api/market/list').json()
+                assert client.post('/api/market/watch', json={'instrument': 'SSE:600000', 'operation': 'REMOVE', 'expected_list_version': listing['version']}).status_code == 200
+                result = computing.result().json()
+>           assert result['decisions'] == []
+E           AssertionError: assert [{'action': '...': True, ...}] == []
+E             
+E             Left contains one more item: {'action': 'BUY', 'basis_type': 'PROFIT_MODEL', 'board': 'MAIN', 'calendar_open': True, ...}
+E             Use -v to get more diff
+
+backend\tests\application\test_actions.py:302: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_shrink_during_computation_does_not_wait_for_a_writer_lock_or_publish_old_boundary
+FAILED backend\tests\application\test_actions.py::test_list_change_during_compute_rejects_publication_under_latest_snapshot
+2 failed, 18 deselected in 18.13s

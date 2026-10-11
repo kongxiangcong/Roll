@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_qualified_host_packet_allocates_stable_joint_cash_with_fees_without_double_broker_freeze _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25r2b/test_qualified_host_packet_all0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000022F4DBBC3E0>
+
+    def test_qualified_host_packet_allocates_stable_joint_cash_with_fees_without_double_broker_freeze(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            grant = prepare(client, p)
+            before = client.get('/api/account').json()
+            response = client.post('/api/actions/evaluate', json={})
+            assert response.status_code == 201, response.text
+            value = response.json()
+>           assert [(r['instrument'], r['action'], r['quantity']) for r in value['decisions']] == [('SSE:600000', 'BUY', '200')]
+E           AssertionError: assert [] == [('SSE:600000', 'BUY', '200')]
+E             
+E             Right contains one more item: ('SSE:600000', 'BUY', '200')
+E             Use -v to get more diff
+
+backend\tests\application\test_actions.py:45: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_qualified_host_packet_allocates_stable_joint_cash_with_fees_without_double_broker_freeze
+1 failed, 1 deselected in 7.70s

@@ -1,0 +1,81 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_price_rebound_and_fresh_method_grant_do_not_reset_persisted_loss_peak __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25peak/test_price_rebound_and_fresh_m0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FC04603490>
+
+    def test_price_rebound_and_fresh_method_grant_do_not_reset_persisted_loss_peak(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        # Confirmed cash100000.10 +1 METHOD share originally marked6135 =106135.10;
+        # that share marked135 now gives100135.10 and exactly6000 drawdown.
+        p['loss_facts'] = {**p['loss_facts'], 'baseline_assets': '106135.10', 'net_assets': '100135.10', 'unrealized_pnl': '-6000.00'}
+        p['action_packet']['loss_facts'] = p['loss_facts']
+        file = save_package(tmp_path / 'decline.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            ready(client, positions=[{'instrument': 'SSE:600000', 'quantity': '1', 'sellable_quantity': '1', 'reference_cost': '6135.00'}])
+            listing = client.get('/api/market/list').json()
+            assert client.post('/api/market/watch', json={'instrument': 'SSE:600001', 'operation': 'ADD', 'expected_list_version': listing['version']}).status_code == 200
+            assert client.post('/api/funding/confirm', json=funding(1, single_exposure='40000.00')).status_code == 200
+            decline = client.post('/api/actions/evaluate', json={}).json()
+            assert decline['joint_budget']['loss']['peak_loss'] == '6000.00'
+            assert decline['decisions'] == []
+        rebound = copy.deepcopy(p)
+        rebound['loss_facts'].update(net_assets='106135.10', unrealized_pnl='0.00')
+        rebound['action_packet']['loss_facts'] = rebound['loss_facts']
+        for row in rebound['action_packet']['opportunities']:
+            if row['instrument'] == 'SSE:600000': row.update(price_lower_yuan='6135.00', price_upper_yuan='6140.00')
+        file = save_package(tmp_path / 'rebound.json', rebound)
+>       with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_actions.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:980: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:775: in _create_app
+    capability_service = Capabilities(ledger, funding, technical_reviews, valuations, capability_method_file, lambda: app.state.backups.recovery())
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <roll.decisions.capabilities.Capabilities object at 0x000001FC04BA6850>
+ledger = <roll.accounts.ledger.Ledger object at 0x000001FC04AB82D0>
+funding = <roll.decisions.funding.Funding object at 0x000001FC04A35220>
+reviews = <roll.research.technical_review.TechnicalReviews object at 0x000001FC04B6DD10>
+valuations = <roll.accounts.valuation.Valuations object at 0x000001FC04B6C2D0>
+method_file = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25peak/test_price_rebound_and_fresh_m0/rebound.json')
+recovery = <function _create_app.<locals>.<lambda> at 0x000001FC04B23F60>
+
+    def __init__(self, ledger, funding, reviews, valuations, method_file=None, recovery=None):
+        self.ledger, self.funding, self.reviews, self.valuations = ledger, funding, reviews, valuations
+        self.recovery = recovery
+        self.method_package = None
+        self.method_fingerprint = None
+        if method_file is not None:
+            if os.environ.get('ROLL_ENV') != 'test': raise ValueError('CAPABILITY_METHOD_HOST_TEST_ONLY')
+            envelope = json.loads(Path(method_file).read_text(encoding='utf-8'))
+            raw = encode(envelope['package']).encode()
+            if hashlib.sha256(raw).hexdigest() != envelope['sha256'] or envelope['package']['namespace'] != 'METHOD_ENGINEERING':
+                raise ValueError('CAPABILITY_METHOD_PACKAGE_INVALID')
+            self.method_package = envelope['package']
+            self.method_fingerprint = envelope['sha256']
+        with ledger.connection() as db:
+            db.executescript('''
+                CREATE TABLE IF NOT EXISTS capability_grants(id TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS capability_events(id TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS capability_receipts(key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, status INTEGER NOT NULL, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS capability_method_basis(id INTEGER PRIMARY KEY, fingerprint TEXT NOT NULL, archive TEXT NOT NULL, sources TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS capability_proofs(id TEXT PRIMARY KEY, value TEXT NOT NULL);
+            ''')
+            if self.method_package is not None:
+                prior = db.execute('SELECT fingerprint FROM capability_method_basis WHERE id=1').fetchone()
+>               if prior and prior[0] != self.method_fingerprint: raise ValueError('CAPABILITY_METHOD_BASIS_CHANGED')
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: CAPABILITY_METHOD_BASIS_CHANGED
+
+backend\src\roll\decisions\capabilities.py:93: ValueError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_price_rebound_and_fresh_method_grant_do_not_reset_persisted_loss_peak
+1 failed in 7.04s
