@@ -1,0 +1,187 @@
+{
+  "state": "INDEPENDENT_FINITE_R02_ARTIFACT_AUDIT_PASS",
+  "root_before": "aaf1929e50ee81dea0985e0f49f152422b073593",
+  "owner_head": "25b3e7f0b8918c0aa9e02a3bd740195d8856c87a",
+  "changed_files": [
+    ".scratch/roll-p0/evidence/31-final/flow-r02/acceptance.md",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/guard-before.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/guard-final.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/no-trade.mjs",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/offline_app.py",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/preserve-flow.py",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/previous-r01-byte-check.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230801/api-method-in-process.log",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230801/browser.log",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230801/browser/browser-receipt.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230801/browser/raw-api-responses.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230801/flow-receipt.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230801/ui.log",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/api-method-in-process.log",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/browser.log",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/browser/browser-receipt.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/browser/current-day-declaration-preview.png",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/browser/current-day-history.png",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/browser/on_demand.png",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/browser/post_close.png",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/browser/raw-api-responses.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/flow-receipt.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-20261011-230939/ui.log",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/run-flow.py",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/runtime-preservation-summary.json",
+    ".scratch/roll-p0/evidence/31-final/flow-r02/runtime-union-manifest.json"
+  ],
+  "product_modifications": 0,
+  "product_sources": 197,
+  "raw_git_product_equal": true,
+  "host_date": "2026-10-11",
+  "flow_started": "2026-10-11T23:09:40.139292+08:00",
+  "flow_completed": "2026-10-11T23:10:18.538112+08:00",
+  "declaration": {
+    "account_version": 2,
+    "basis": "METHOD literal: no trades orders cash or equity changes in this fresh account through displayed minute",
+    "changes": "NONE",
+    "confirmed_as_of": "2026-10-11T15:10:00.000Z",
+    "effective_at": "2026-10-11T15:10:00.000Z",
+    "receipt_id": "e4cc6ebd-7ecc-4512-99bb-2be651715971",
+    "record_id": "f9f7b80f-7d16-4749-970d-fc3625f77eb3",
+    "recorded_at": "2026-10-11T15:10:03.429035+00:00",
+    "scope": [
+      "TRADES",
+      "ORDERS",
+      "CASH",
+      "EQUITY"
+    ],
+    "source": "METHOD engineering current-day scoped no-change"
+  },
+  "confirmation_at_displayed_minute": {
+    "purpose": "ACCOUNT_ANALYSIS",
+    "required_as_of": "2026-10-11T15:10:00+00:00",
+    "account_version": 2,
+    "state": "CONFIRMED_AS_OF",
+    "allowed": true,
+    "fact_scope_state": "CONFIRMED_AS_OF",
+    "required_scope": [
+      "TRADES",
+      "CASH",
+      "EQUITY"
+    ],
+    "missing_scope": [],
+    "reasons": [],
+    "next_step": "仅账户事实检查通过；正式资格仍须独立核验",
+    "known_positions": [],
+    "executable_quantity": null,
+    "independent_market_observation_allowed": true
+  },
+  "later_seconds_not_backdated_into_declaration": true,
+  "observations": [
+    {
+      "mode": "ON_DEMAND",
+      "task_id": "72d0ed83-c603-42a2-b2f8-04c317a306d5",
+      "cutoff": "2026-10-11T15:10:03.891614+00:00",
+      "observed_at": "2026-10-11T15:10:03.891614+00:00",
+      "status": "PARTIAL",
+      "gap_count": 8,
+      "phase": "CLOSED",
+      "reason": "WEEKEND",
+      "previous_snapshot_id": null,
+      "change": "NEW_INFORMATION",
+      "replay_network_calls": 0,
+      "account_differences": {
+        "reasons": [],
+        "state": "CONFIRMED_AS_OF",
+        "status": "CHECKED",
+        "value": 0
+      }
+    },
+    {
+      "mode": "POST_CLOSE",
+      "task_id": "2f693048-2e2b-498c-8b93-ebda59cf2a27",
+      "cutoff": "2026-10-11T15:10:04.917541+00:00",
+      "observed_at": "2026-10-11T15:10:04.917541+00:00",
+      "status": "PARTIAL",
+      "gap_count": 8,
+      "phase": "CLOSED",
+      "reason": "WEEKEND",
+      "previous_snapshot_id": "b9f1edc5-ef5b-419e-aab2-f4589585fa1c",
+      "change": "NO_SUBSTANTIAL_CHANGE",
+      "replay_network_calls": 0,
+      "account_differences": {
+        "reasons": [],
+        "state": "CONFIRMED_AS_OF",
+        "status": "CHECKED",
+        "value": 0
+      }
+    }
+  ],
+  "notification_audit": {
+    "business_notifications": 3,
+    "transmission_attempts": 0,
+    "merged_sources": 1,
+    "possible_duplicate_attempts": 0,
+    "failed_attempts": 0,
+    "unknown_attempts": 0,
+    "delivered": null,
+    "delivery_status": "UNKNOWN"
+  },
+  "account_unchanged_by_observations": true,
+  "formal_disabled": true,
+  "grants": [],
+  "external_attempt_log_exists": false,
+  "retained_first_run": "FAIL_CALLER_EXACT_LABEL_TIMEOUT",
+  "owner_process_exits": [
+    {
+      "role": "api-method-in-process",
+      "exit_code": 3,
+      "stop": "CTRL_BREAK_NORMAL"
+    },
+    {
+      "role": "ui",
+      "exit_code": 3221225786,
+      "stop": "CTRL_BREAK_NORMAL"
+    }
+  ],
+  "protected15": 15,
+  "allowed_json": 3,
+  "original19_byte_only": {
+    "bytes": 165814272,
+    "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4"
+  },
+  "manifest": {
+    "bytes": 43831,
+    "sha256": "a5cd19228c96ccdb80e70f00fe41762ced73f9165530aca941c7a5a7ac85b3f6"
+  },
+  "runtime_files_each_side": 64,
+  "runtime_bytes_each_side": 6689112,
+  "runtime_mismatches": 0,
+  "stored_cim_checks": 12,
+  "previous_r01_manifest_proofs": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.scratch\\roll-p0\\evidence\\31-final\\runtime-union-manifest.json",
+      "bytes": 178259,
+      "sha256": "ca3331799dbf8ffcf298e45d0c2fe076ac94a939361a000cf378dfe91252ba7d"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\31-final-r01\\runtime-union-manifest.json",
+      "bytes": 178259,
+      "sha256": "ca3331799dbf8ffcf298e45d0c2fe076ac94a939361a000cf378dfe91252ba7d"
+    }
+  ],
+  "new_business_tests": 0,
+  "new_http": 0,
+  "original_sqlite_connections": 0,
+  "new_provider_calls": 0,
+  "new_grants": 0,
+  "new_fit_forecast_sealed": 0,
+  "independent_business_runtime": null,
+  "limitations": [
+    "Ordinary CLOSED/WEEKEND POST_CLOSE permitted; no complete trading-day or scheduled checkpoint proof.",
+    "Both observed business tasks PARTIAL8 gaps; path PASS does not mean market/source qualification.",
+    "Declaration covers displayed minute only; later request seconds remain explicit.",
+    "r02 IN_PROCESS worker scope distinct from prior r01 three production processes; no new backup restore tested.",
+    "31 Completion/manual239/root status unchanged; actual grants/forward/G7 not upgraded."
+  ],
+  "merge_oid": "3a37325f74a5602fc5f1d6c4cdecaad78c7eb268",
+  "postmerge_raw_git_product_equal": true,
+  "independent_cim_checks": 12,
+  "independent_existing_pids": 0
+}
