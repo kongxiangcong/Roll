@@ -85,6 +85,7 @@ class Actions:
         return None
 
     def capture(self, command):
+        self.capabilities.refresh_journal()
         with self.ledger.connection() as db:
             db.execute('BEGIN')
             boundary = self.boundary(db)
@@ -396,6 +397,7 @@ class Actions:
             if loss and loss.get('peak_loss') is not None and Decimal(loss['peak_loss']) >= Decimal((boundary['loss_state'] or {}).get('peak_loss') or '0'):
                 scope = encode([inputs['funding']['scope_kind'], inputs['funding']['scope_id'], inputs['funding']['loss_origin_at']])
                 db.execute('INSERT OR REPLACE INTO action_loss_state VALUES(?,?)', (scope, encode(loss)))
+                self.capabilities.observe_loss(db, loss, value['evaluation_id'])
             event = {'event_id': str(uuid4()), 'event_type': 'ACTION_EVALUATED', 'evaluation_id': value['evaluation_id'],
                      'recorded_at': value['registered_at'], 'input_fingerprint': key, 'limitations': value['limitations'],
                      'account_version': value['account_version'], 'funding_version': value['funding_version']}
@@ -422,11 +424,14 @@ class Actions:
 
     def current(self, instrument=None, db=None):
         if db is None:
+            self.capabilities.refresh_journal()
             with self.ledger.connection() as connection:
                 connection.execute('BEGIN IMMEDIATE')
                 result = self.current(instrument, connection)
                 connection.commit()
+                self.capabilities.journal.reconcile_committed()
                 return result
+        self.capabilities.expire(db)
         row = db.execute('SELECT value FROM action_evaluations ORDER BY rowid DESC LIMIT 1').fetchone()
         value = json.loads(row[0]) if row else None
         boundary = self.boundary(db)
@@ -436,6 +441,8 @@ class Actions:
         for decision in value['decisions'] if value else []:
             if instrument and decision['instrument'] != instrument: continue
             reasons = []
+            if db.execute('SELECT 1 FROM action_invalidations WHERE decision_id=?', (decision['decision_id'],)).fetchone():
+                reasons.append('PREVIOUSLY_INVALIDATED_REQUIRES_NEW_ACTION')
             if current[0]['version'] != value['account_version']: reasons.append('ACCOUNT_VERSION_CHANGE')
             if current[1]['version'] != value['funding_version']: reasons.append('FUNDING_VERSION_CHANGE')
             status = next((s for s in current[2]['grant_statuses'] if s['grant']['grant_id'] == decision['grant_id']), None)
@@ -449,7 +456,10 @@ class Actions:
                 reason_key = fingerprint(reasons)
                 event = {'event_id': str(uuid4()), 'event_type': 'ACTION_INVALIDATED', 'evaluation_id': value['evaluation_id'],
                          'decision_id': decision['decision_id'], 'recorded_at': now(), 'reasons': reasons,
-                         'account_version': current[0]['version'], 'funding_version': current[1]['version']}
+                         'account_version': current[0]['version'], 'funding_version': current[1]['version'],
+                         'capability_fingerprint': fingerprint(current[2]),
+                         'lifecycle_event_ids': sorted({s.get('event_id') for status in current[2]['grant_statuses']
+                             for s in status['lifecycle']['scopes'].values() if s.get('event_id') and s['state'] != 'ACTIVE'})}
                 inserted = db.execute('INSERT OR IGNORE INTO action_invalidations VALUES(?,?,?)', (decision['decision_id'], reason_key, encode(event))).rowcount
                 if inserted: db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
                 invalidated.append({'decision': decision, 'reasons': reasons})

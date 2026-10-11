@@ -1,0 +1,39 @@
+F
+================================== FAILURES ===================================
+____ test_real_old_active_backup_cannot_hide_a_later_committed_revocation _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r15/test_real_old_active_backup_ca0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C6B8B6CC30>
+
+    def test_real_old_active_backup_cannot_hide_a_later_committed_revocation(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            prepare(client, package)
+            original = client.get('/api/capabilities/grants').json()[0]
+            old = client.post('/api/actions/evaluate', json={}).json()
+            backup = client.post('/api/runtime/backups').json()
+            bundle = client.get('/api/runtime/backups/' + backup['backup_id'] + '/export').content
+            revoked = client.post('/api/capabilities/lifecycle', json={'grant_id': original['grant_id'], 'scope': 'MODEL',
+                'state': 'REVOKED', 'reason_code': 'USER_REVOKE', 'reason': '备份之后撤回',
+                'expected_version': 0, 'idempotency_key': 'revoke'}).json()
+            staged = client.post('/api/runtime/restores', content=bundle, headers={'content-type': 'application/zip'})
+            assert staged.status_code == 202, staged.text
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            recovery = client.get('/api/runtime/backups/status').json()['recovery']
+            assert recovery['state'] == 'RECOVERY_LOCK'
+            status = client.get('/api/capabilities/grants/' + original['grant_id'] + '/status').json()
+>           assert status['state'] == 'REVOKED', status
+E           AssertionError: {'allowed_actions': [], 'formal_judgment': 'DISABLED', 'funding_state': 'CONFIRMED', 'grant': {'account_version': 2, '...bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, 'effective_at': '2026-10-11T07:37:52+00:00', ...}, ...}, ...}
+E           assert 'RESTRICTED' == 'REVOKED'
+E             
+E             - REVOKED
+E             + RESTRICTED
+
+tests\application\test_lifecycle_recovery.py:28: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_recovery.py::test_real_old_active_backup_cannot_hide_a_later_committed_revocation
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 7.49s

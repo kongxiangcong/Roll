@@ -1,0 +1,37 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_registered_review_reports_literal_probability_utility_and_frozen_support_without_pass _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r22/test_registered_review_reports0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000270D363A3F0>
+
+    def test_registered_review_reports_literal_probability_utility_and_frozen_support_without_pass(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(30)
+        basis = package['monitoring_basis']
+        basis['development_base_rate'] = .5
+        basis['qualified_model_run_id'] = 'literal-method-no-fit-model'
+        basis['results'] = [{'known_at': package['required_as_of'], 'mature_at': package['required_as_of'],
+            'mature': True, 'label': i % 2, 'forecast_id': 'literal-' + str(i), 'instrument': 'SSE:600000',
+            'observation_date': day, 'probability': .8} for i, day in enumerate(basis['eligible_sessions'])]
+        def trajectory(last):
+            return {'curve': [{'date': day, 'nav_yuan': '100000' if i < 29 else last,
+                'gross_exposure_fraction': '0.10', 'realized_gain_yuan': '0'} for i, day in enumerate(basis['eligible_sessions'])],
+                'opportunities': [{'opportunity_key': 'literal-opportunity', 'action': 'BUY'}], 'events': [], 'missing': []}
+        basis['utility_basis'] = {'namespace': 'METHOD_ENGINEERING_LITERAL_CASH_CHAIN',
+            'candidate': trajectory('101000'), 'comparators': {'CASH': trajectory('100000'),
+                'START_HOLD': trajectory('100500'), 'MA5_MA20': trajectory('100200')}}
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            grant = prepare(client, package)
+            response = client.post('/api/capabilities/monitoring/check', json={'grant_id': grant['grant_id'], 'basis': 'registered literal financial checks'})
+            assert response.status_code == 201, response.text
+            result = response.json()
+>           report = result['mature_review']
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'mature_review'
+
+tests\application\test_capability_monitoring.py:122: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_monitoring.py::test_registered_review_reports_literal_probability_utility_and_frozen_support_without_pass
+1 failed in 6.97s

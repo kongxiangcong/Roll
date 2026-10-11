@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_imported_active_backup_has_no_proof_of_latest_local_permission_history _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r19/test_imported_active_backup_ha0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002670416E190>
+
+    def test_imported_active_backup_has_no_proof_of_latest_local_permission_history(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'source', capability_method_file=file)) as client:
+            prepare(client, package)
+            backup = client.post('/api/runtime/backups').json()
+            bundle = client.get('/api/runtime/backups/' + backup['backup_id'] + '/export').content
+        with TestClient(create_app(tmp_path / 'imported', capability_method_file=file)) as client:
+            assert client.post('/api/runtime/restores', content=bundle).status_code == 202
+        # The target's local empty history predates import; it cannot certify an
+        # unrelated restored grant's permission history on the original machine.
+        with TestClient(create_app(tmp_path / 'imported', capability_method_file=file)) as client:
+            recovery = client.get('/api/capabilities/recovery').json()
+            assert recovery['state'] == 'RECOVERY_LOCK'
+>           assert recovery['permission_history_known'] is False
+E           assert True is False
+
+tests\application\test_lifecycle_recovery.py:117: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_recovery.py::test_imported_active_backup_has_no_proof_of_latest_local_permission_history
+1 failed in 12.03s

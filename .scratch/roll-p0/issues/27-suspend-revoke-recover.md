@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** in-progress
 
 **Primary acceptance:** AT-64、AT-65、AT-66、AT-67、AT-68、AT-69。
 
@@ -27,6 +27,12 @@
 - [ ] 遵守目录与实施约束；仅引入本票实际需要的模块、接口和校验，保留 PRD 必需控制，不新增假设性兼容层、审批或泛化框架。恢复锁和指定动作节点当前资格复核属于必需正确性，不扩展远程灾备或企业权限平台。
 
 ## Comments
+
+2026-10-11 最终实施源码已合接受的30续项（integration `dd90129`，own merge `a8ee5dc`）。当前公共接口组合7 PASS/47.31s、修复两次journal竞态后的Chrome1 PASS/22.0s、最终构建exit0；15保护源码原始SHA/length不变。先前真实OS恢复/旧代码锁态8 PASS/82.10s另列保留，不机械重复。独立接收仍由merger完成，整体有限工程/partial，LOSS正向解除未登记证据，保持原峰值/latch与原因绑定拒绝；原验收条件不删改。最终保全见自有[回执](../evidence/continuation-2026-10-11/ticket27/acceptance.md)。
+
+2026-10-11 实施回执见 [Ticket27 scoped receipt](../evidence/continuation-2026-10-11/ticket27/acceptance.md)：三scope/当前writer动作失效、原因绑定监测恢复、实际26回报未知保留、成熟登记点、修正分类及真实OS/旧代码锁态切片已验证；最终相关组合、runtime保全与独立验收仍待收口。冻结LOSS OR latch未登记正向解除政策，按原因证据缺口保持拒绝、峰值/旧记录不变，不写成正向LOSS恢复PASS或全场景complete。
+
+2026-10-11：已在独立工作树 `ticket27` 认领，基于已独立接受的26 integration `0d331791e2ab09d4bb226d3e00f438a6d8995530`。按公开FastAPI/真实SQLite、隔离source-bound METHOD、真实进程恢复与浏览器逐切片TDD实施；真实资格仍NOT_GRANTED，不改冻结数学、原19库或旧证据。父任务负责最终独立验收与完成状态。
 
 2026-10-07：按已确认拆分发布；尚未实施或验收。28 负责将本票的最新资格检查接入实际通知出队与在途消息场景，不能用此处尚无外部渠道的工程结果替代它。
 

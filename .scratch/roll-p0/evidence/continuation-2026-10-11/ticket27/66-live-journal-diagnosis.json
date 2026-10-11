@@ -1,0 +1,53 @@
+{
+  "profile": "owned synthetic METHOD browser final2",
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false,
+  "physical_lock": {
+    "formal_actions_allowed": false,
+    "locked_at": "2026-10-11T16:44:48+08:00",
+    "missing_committed_event_ids": [],
+    "observation_allowed": true,
+    "old_active_records": "HISTORY_ONLY",
+    "old_notifications_allowed": false,
+    "pending_permission_events": [
+      {
+        "event_id": "d467600d-d880-437c-bad5-411f9171976d",
+        "pending_event_sha256": "018d704a7ffd8f623f4a5aff9504c4166618b8be820761d3d6bc01498d344e26",
+        "state": "UNCONFIRMED"
+      }
+    ],
+    "permission_consumer_27": "CONNECTED",
+    "possibly_missing_revocations": "UNVERIFIED",
+    "state": "RECOVERY_LOCK"
+  },
+  "pending": {
+    "event": {
+      "effective_at": "2026-10-11T16:44:48+08:00",
+      "event_id": "d467600d-d880-437c-bad5-411f9171976d",
+      "event_type": "CAPABILITY_SCOPE_CHANGED",
+      "grant_id": null,
+      "reason": "已核对主动暂停原因 全部监控",
+      "reason_code": "USER_PAUSE",
+      "recorded_at": "2026-10-11T16:44:48+08:00",
+      "recovery_check_id": null,
+      "resume_event_id": "411b59f9-0474-4b7f-bd0e-eee6db4390cb",
+      "scope": "ALL_MONITOR",
+      "state": "ACTIVE",
+      "version": 6
+    },
+    "event_sha256": "018d704a7ffd8f623f4a5aff9504c4166618b8be820761d3d6bc01498d344e26",
+    "format": "ROLL-CAPABILITY-JOURNAL-1",
+    "prepared_at": "2026-10-11T16:45:02.365661+08:00",
+    "state": "PENDING_COMMIT"
+  },
+  "committed": {
+    "confirmed_from": "MATCHING_COMMITTED_SQLITE_ROW",
+    "event_id": "d467600d-d880-437c-bad5-411f9171976d",
+    "event_sha256": "018d704a7ffd8f623f4a5aff9504c4166618b8be820761d3d6bc01498d344e26",
+    "observed_at": "2026-10-11T16:45:02.486839+08:00",
+    "state": "COMMITTED"
+  },
+  "receipt_matches_pending": true,
+  "receipt_sha256": "D0A03B99A2CDADBFDD0A266D7C0C847632A4370F576400892A97BA2FB709D275",
+  "interpretation": "Live writer pending was observed and persisted as recovery lock; later immutable COMMITTED matching SQLite-row receipt exists. Original profile retained; no unlock/rewrite."
+}

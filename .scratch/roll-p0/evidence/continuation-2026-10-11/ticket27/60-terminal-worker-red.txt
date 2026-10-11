@@ -1,0 +1,56 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_real_maintenance_worker_checks_running_post_close_once_and_keeps_terminal_grant_closed _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r30/test_real_maintenance_worker_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001577AB8A3F0>
+
+    def test_real_maintenance_worker_checks_running_post_close_once_and_keeps_terminal_grant_closed(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        instant = datetime(2026, 10, 9, 15, 31, tzinfo=timezone(timedelta(hours=8)))
+        import capability_method_app
+        monkeypatch.setattr(capability_method_app, 'ANCHOR', instant)
+        clock = [instant]
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock[0].isoformat())
+        monkeypatch.setattr('roll.decisions.monitoring.now', lambda: clock[0].isoformat())
+        package = monitored_package(20)
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, review_clock=lambda: clock[0])) as client:
+            grant = prepare(client, package)
+            deadline = time.monotonic() + 8
+            rows = []
+            while time.monotonic() < deadline:
+                rows = client.get('/api/capabilities/monitoring').json()
+                if rows: break
+                time.sleep(.05)
+            assert len(rows) == 1, rows
+            assert rows[0]['basis'] == 'RUNNING_POST_CLOSE'
+            assert rows[0]['status'] == 'CHECKED'
+            assert rows[0]['confirmation_pass_look'] is False
+            assert rows[0]['maturity']['review_status'] == 'NOT_AT_REGISTERED_CHECKPOINT'
+            assert client.get('/api/capabilities/grants').json() == [grant]
+            assert client.post('/api/formal/evaluate', json={}).status_code == 403
+            revoked = client.post('/api/capabilities/lifecycle', json={'grant_id':grant['grant_id'], 'scope':'MODEL',
+                'state':'REVOKED','reason_code':'USER_REVOKE','reason':'终止原资格，后台不得重启监测',
+                'expected_version':0,'idempotency_key':'revoke'})
+            assert revoked.status_code == 200, revoked.text
+            clock[0] += timedelta(days=3)
+            deadline = time.monotonic() + 5
+            while time.monotonic() < deadline:
+                sessions = client.get('/api/reviews/coverage').json()['sessions']
+                if sessions[-1]['last_seen_at'] == clock[0].isoformat(): break
+                time.sleep(.05)
+            assert sessions[-1]['last_seen_at'] == clock[0].isoformat()
+            # Observe several actual worker heartbeats after the monotone next day.
+            for _ in range(5):
+                time.sleep(.1)
+>               assert client.get('/api/capabilities/monitoring').json() == rows
+E               AssertionError: assert [{'actual_exe...85f4d'}, ...}] == [{'actual_exe...60428'}, ...}]
+E                 
+E                 Left contains one more item: {'actual_execution_count': 0, 'actual_execution_observations': [], 'affected_scope': 'MODEL', 'archive': {'bytes': 828...7b0e4e24942de51d7afe3eaa85f4d.raw', 'sha256': 'e722798b39edf88fbf359c3e234336631617b0e4e24942de51d7afe3eaa85f4d'}, ...}
+E                 Use -v to get more diff
+
+tests\application\test_lifecycle_worker.py:49: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_worker.py::test_real_maintenance_worker_checks_running_post_close_once_and_keeps_terminal_grant_closed
+1 failed in 7.86s

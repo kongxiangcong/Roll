@@ -1,0 +1,8 @@
+{
+  "purpose": "Public reproduction of former invalidation behavior with current resume implementation; not an unchanged historical commit",
+  "original_actions_sha256": "40d1d5404fb1a9547bc2f0fb8a1a4850c59058f1eecf57d7694431dff00acd23",
+  "reproduction_actions_sha256": "a379759ca269b2207a8a6b6564d2885f536c3975f585d16d4143ab4d62c0ee1c",
+  "removed_guard": "            if db.execute('SELECT 1 FROM action_invalidations WHERE decision_id=?', (decision['decision_id'],)).fetchone():\n                reasons.append('PREVIOUSLY_INVALIDATED_REQUIRES_NEW_ACTION')\n",
+  "source_copy": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27\\.scratch\\r27-revival\\backend",
+  "provider_calls": 0
+}
