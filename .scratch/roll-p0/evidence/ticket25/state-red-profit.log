@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_qualified_host_packet_allocates_stable_joint_cash_with_fees_without_double_broker_freeze _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25state-red-profit/test_qualified_host_packet_all0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000215CA61FCE0>
+
+    def test_qualified_host_packet_allocates_stable_joint_cash_with_fees_without_double_broker_freeze(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            grant = prepare(client, p)
+            before = client.get('/api/account').json()
+            response = client.post('/api/actions/evaluate', json={})
+            assert response.status_code == 201, response.text
+            value = response.json()
+            assert [(r['instrument'], r['action'], r['quantity']) for r in value['decisions']] == [('SSE:600000', 'BUY', '200')]
+            assert value['joint_budget']['available_after_user_reserve_yuan'] == '50000.10'
+            assert value['joint_budget']['reserved_yuan'] == '30005.00'
+            assert 'INSUFFICIENT_JOINT_CASH' in value['refusals'][0]['reasons']
+            assert value['decisions'][0]['grant_id'] == grant['grant_id']
+            decision = value['decisions'][0]
+>           assert decision['account_status'] == {'purpose': 'NEW_RISK', 'state': 'CONFIRMED_AS_OF', 'fact_scope_state': 'CONFIRMED_AS_OF', 'allowed': True, 'reasons': []}
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'account_status'
+
+backend\tests\application\test_actions.py:183: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_qualified_host_packet_allocates_stable_joint_cash_with_fees_without_double_broker_freeze
+1 failed, 22 deselected in 7.87s

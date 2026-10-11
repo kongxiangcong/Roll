@@ -1,0 +1,226 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[NOT_OPEN-300] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25state-red-risk/test_independently_qualified_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000268F27E0180>
+sellable = '300', permission_status = 'NOT_OPEN'
+
+    @pytest.mark.parametrize('sellable', ['300', '0'])
+    @pytest.mark.parametrize('permission_status', ['NOT_OPEN', 'UNKNOWN'])
+    def test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks(tmp_path, monkeypatch, sellable, permission_status):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        anchor = (datetime.now(timezone(timedelta(hours=8))) - timedelta(days=1)).replace(hour=15, minute=5, second=0, microsecond=0)
+        import capability_method_app
+        monkeypatch.setattr(capability_method_app, 'ANCHOR', anchor)
+        clock = (anchor + timedelta(minutes=1)).isoformat()
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock)
+        monkeypatch.setattr('roll.decisions.actions.now', lambda: clock)
+        p = package()
+        gates = ['DATA', 'RULE_QUANTITY', 'AUTHORIZATION', 'STRESS_EXECUTION', 'ONLINE_CONSISTENCY']
+        p.update(candidate_kind='RISK_POLICY', gates={g: 'PASS' for g in gates}, required_gates=gates, allowed_actions=['REDUCE', 'EXIT'])
+        p['deployment_fingerprints'] = {'policy': 'e' * 64}
+        rule_id = 'SSE-MAIN-A-2026-07-06'
+        p['action_packet'] = {'namespace': 'METHOD_ENGINEERING', 'as_of': p['required_as_of'], 'expires_at': p['expires_at'],
+            'opportunities': [], 'loss_facts': p['loss_facts'], 'risk_inputs': {
+                'policy': {'policy_id': 'risk-method', 'policy_fingerprint': 'e' * 64, 'authorization': {**funding()['authorization'], 'version': 1, 'loss_origin_at': '2026-10-07T02:00:00+00:00'},
+                           'scope': p['scope'], 'rule_ids': {'SSE:600000': rule_id}},
+                'required_as_of': p['required_as_of'], 'consumer_knowledge_cutoff': clock,
+                'quotes': {'SSE:600000': {'last': '100', 'adjustment': 'RAW', 'currency': 'CNY', 'errors': [], 'upstream_at': p['required_as_of'],
+                        'available_at': p['required_as_of'], 'method_status': 'NORMAL', 'evidence_kind': 'METHOD_CASE'}},
+                'identities': {'SSE:600000': {'exchange': 'SSE', 'board': 'MAIN', 'instrument_type': 'STOCK'}},
+                'rules': {'SSE:600000': {'implementation_status': 'ADAPTED', 'rule_id': rule_id, 'normal_price_limit_percent': '10', 'price_tick_yuan': '.01'}},
+                'calendars': {'SSE:600000': {'is_trading_day': True}}, 'evidence_kind': 'METHOD_CASE'}}
+        file = save_package(tmp_path / 'qualification.json', p)
+        positions = [{'instrument': 'SSE:600000', 'quantity': '300', 'sellable_quantity': sellable, 'reference_cost': '100'},
+                     {'instrument': 'SSE:600099', 'quantity': '50', 'sellable_quantity': None, 'reference_cost': None}]
+        # A quantity-unknown unrelated holding would block the grant; retain a known outside-scope holding here.
+        positions[1]['sellable_quantity'] = '50'
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            ready(client, permission_status=permission_status, positions=positions)
+            command = {**method_command(), 'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']}
+            granted = client.post('/api/capabilities/grants', json=command)
+            assert granted.status_code == 201, granted.text
+            result = client.post('/api/actions/evaluate', json={}).json()
+            assert [(d['action'], d['quantity'], d['target_quantity']) for d in result['decisions']] == ([('REDUCE', '100', '200')] if sellable == '300' else [])
+            if sellable == '300':
+                decision = result['decisions'][0]
+                assert decision['basis_type'] == 'RISK_POLICY'
+>               assert decision['model_status'] == 'NOT_APPLICABLE'
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+E               KeyError: 'model_status'
+
+backend\tests\application\test_actions.py:132: KeyError
+_ test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[NOT_OPEN-0] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25state-red-risk/test_independently_qualified_r1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000268D1A70770>
+sellable = '0', permission_status = 'NOT_OPEN'
+
+    @pytest.mark.parametrize('sellable', ['300', '0'])
+    @pytest.mark.parametrize('permission_status', ['NOT_OPEN', 'UNKNOWN'])
+    def test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks(tmp_path, monkeypatch, sellable, permission_status):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        anchor = (datetime.now(timezone(timedelta(hours=8))) - timedelta(days=1)).replace(hour=15, minute=5, second=0, microsecond=0)
+        import capability_method_app
+        monkeypatch.setattr(capability_method_app, 'ANCHOR', anchor)
+        clock = (anchor + timedelta(minutes=1)).isoformat()
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock)
+        monkeypatch.setattr('roll.decisions.actions.now', lambda: clock)
+        p = package()
+        gates = ['DATA', 'RULE_QUANTITY', 'AUTHORIZATION', 'STRESS_EXECUTION', 'ONLINE_CONSISTENCY']
+        p.update(candidate_kind='RISK_POLICY', gates={g: 'PASS' for g in gates}, required_gates=gates, allowed_actions=['REDUCE', 'EXIT'])
+        p['deployment_fingerprints'] = {'policy': 'e' * 64}
+        rule_id = 'SSE-MAIN-A-2026-07-06'
+        p['action_packet'] = {'namespace': 'METHOD_ENGINEERING', 'as_of': p['required_as_of'], 'expires_at': p['expires_at'],
+            'opportunities': [], 'loss_facts': p['loss_facts'], 'risk_inputs': {
+                'policy': {'policy_id': 'risk-method', 'policy_fingerprint': 'e' * 64, 'authorization': {**funding()['authorization'], 'version': 1, 'loss_origin_at': '2026-10-07T02:00:00+00:00'},
+                           'scope': p['scope'], 'rule_ids': {'SSE:600000': rule_id}},
+                'required_as_of': p['required_as_of'], 'consumer_knowledge_cutoff': clock,
+                'quotes': {'SSE:600000': {'last': '100', 'adjustment': 'RAW', 'currency': 'CNY', 'errors': [], 'upstream_at': p['required_as_of'],
+                        'available_at': p['required_as_of'], 'method_status': 'NORMAL', 'evidence_kind': 'METHOD_CASE'}},
+                'identities': {'SSE:600000': {'exchange': 'SSE', 'board': 'MAIN', 'instrument_type': 'STOCK'}},
+                'rules': {'SSE:600000': {'implementation_status': 'ADAPTED', 'rule_id': rule_id, 'normal_price_limit_percent': '10', 'price_tick_yuan': '.01'}},
+                'calendars': {'SSE:600000': {'is_trading_day': True}}, 'evidence_kind': 'METHOD_CASE'}}
+        file = save_package(tmp_path / 'qualification.json', p)
+        positions = [{'instrument': 'SSE:600000', 'quantity': '300', 'sellable_quantity': sellable, 'reference_cost': '100'},
+                     {'instrument': 'SSE:600099', 'quantity': '50', 'sellable_quantity': None, 'reference_cost': None}]
+        # A quantity-unknown unrelated holding would block the grant; retain a known outside-scope holding here.
+        positions[1]['sellable_quantity'] = '50'
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            ready(client, permission_status=permission_status, positions=positions)
+            command = {**method_command(), 'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']}
+            granted = client.post('/api/capabilities/grants', json=command)
+            assert granted.status_code == 201, granted.text
+            result = client.post('/api/actions/evaluate', json={}).json()
+            assert [(d['action'], d['quantity'], d['target_quantity']) for d in result['decisions']] == ([('REDUCE', '100', '200')] if sellable == '300' else [])
+            if sellable == '300':
+                decision = result['decisions'][0]
+                assert decision['basis_type'] == 'RISK_POLICY'
+                assert decision['model_status'] == 'NOT_APPLICABLE'
+                assert decision['execution_eligibility'] == 'METHOD_ONLY'
+                assert decision['capability_status']['state'] == 'METHOD_GRANTED'
+                assert decision['capability_status']['grant_id'] == granted.json()['grant_id']
+                assert decision['capability_status']['system_usable'] is False
+            else:
+                assert 'NO_CONFIRMED_SELLABLE_LOT' in result['holding_risks'][0]['reasons']
+>               assert result['holding_risks'][0]['execution_eligibility'] == 'BLOCKED'
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               KeyError: 'execution_eligibility'
+
+backend\tests\application\test_actions.py:139: KeyError
+_ test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[UNKNOWN-300] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25state-red-risk/test_independently_qualified_r2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000268F2A4FBF0>
+sellable = '300', permission_status = 'UNKNOWN'
+
+    @pytest.mark.parametrize('sellable', ['300', '0'])
+    @pytest.mark.parametrize('permission_status', ['NOT_OPEN', 'UNKNOWN'])
+    def test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks(tmp_path, monkeypatch, sellable, permission_status):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        anchor = (datetime.now(timezone(timedelta(hours=8))) - timedelta(days=1)).replace(hour=15, minute=5, second=0, microsecond=0)
+        import capability_method_app
+        monkeypatch.setattr(capability_method_app, 'ANCHOR', anchor)
+        clock = (anchor + timedelta(minutes=1)).isoformat()
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock)
+        monkeypatch.setattr('roll.decisions.actions.now', lambda: clock)
+        p = package()
+        gates = ['DATA', 'RULE_QUANTITY', 'AUTHORIZATION', 'STRESS_EXECUTION', 'ONLINE_CONSISTENCY']
+        p.update(candidate_kind='RISK_POLICY', gates={g: 'PASS' for g in gates}, required_gates=gates, allowed_actions=['REDUCE', 'EXIT'])
+        p['deployment_fingerprints'] = {'policy': 'e' * 64}
+        rule_id = 'SSE-MAIN-A-2026-07-06'
+        p['action_packet'] = {'namespace': 'METHOD_ENGINEERING', 'as_of': p['required_as_of'], 'expires_at': p['expires_at'],
+            'opportunities': [], 'loss_facts': p['loss_facts'], 'risk_inputs': {
+                'policy': {'policy_id': 'risk-method', 'policy_fingerprint': 'e' * 64, 'authorization': {**funding()['authorization'], 'version': 1, 'loss_origin_at': '2026-10-07T02:00:00+00:00'},
+                           'scope': p['scope'], 'rule_ids': {'SSE:600000': rule_id}},
+                'required_as_of': p['required_as_of'], 'consumer_knowledge_cutoff': clock,
+                'quotes': {'SSE:600000': {'last': '100', 'adjustment': 'RAW', 'currency': 'CNY', 'errors': [], 'upstream_at': p['required_as_of'],
+                        'available_at': p['required_as_of'], 'method_status': 'NORMAL', 'evidence_kind': 'METHOD_CASE'}},
+                'identities': {'SSE:600000': {'exchange': 'SSE', 'board': 'MAIN', 'instrument_type': 'STOCK'}},
+                'rules': {'SSE:600000': {'implementation_status': 'ADAPTED', 'rule_id': rule_id, 'normal_price_limit_percent': '10', 'price_tick_yuan': '.01'}},
+                'calendars': {'SSE:600000': {'is_trading_day': True}}, 'evidence_kind': 'METHOD_CASE'}}
+        file = save_package(tmp_path / 'qualification.json', p)
+        positions = [{'instrument': 'SSE:600000', 'quantity': '300', 'sellable_quantity': sellable, 'reference_cost': '100'},
+                     {'instrument': 'SSE:600099', 'quantity': '50', 'sellable_quantity': None, 'reference_cost': None}]
+        # A quantity-unknown unrelated holding would block the grant; retain a known outside-scope holding here.
+        positions[1]['sellable_quantity'] = '50'
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            ready(client, permission_status=permission_status, positions=positions)
+            command = {**method_command(), 'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']}
+            granted = client.post('/api/capabilities/grants', json=command)
+            assert granted.status_code == 201, granted.text
+            result = client.post('/api/actions/evaluate', json={}).json()
+            assert [(d['action'], d['quantity'], d['target_quantity']) for d in result['decisions']] == ([('REDUCE', '100', '200')] if sellable == '300' else [])
+            if sellable == '300':
+                decision = result['decisions'][0]
+                assert decision['basis_type'] == 'RISK_POLICY'
+>               assert decision['model_status'] == 'NOT_APPLICABLE'
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+E               KeyError: 'model_status'
+
+backend\tests\application\test_actions.py:132: KeyError
+_ test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[UNKNOWN-0] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25state-red-risk/test_independently_qualified_r3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000268F2C49040>
+sellable = '0', permission_status = 'UNKNOWN'
+
+    @pytest.mark.parametrize('sellable', ['300', '0'])
+    @pytest.mark.parametrize('permission_status', ['NOT_OPEN', 'UNKNOWN'])
+    def test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks(tmp_path, monkeypatch, sellable, permission_status):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        anchor = (datetime.now(timezone(timedelta(hours=8))) - timedelta(days=1)).replace(hour=15, minute=5, second=0, microsecond=0)
+        import capability_method_app
+        monkeypatch.setattr(capability_method_app, 'ANCHOR', anchor)
+        clock = (anchor + timedelta(minutes=1)).isoformat()
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock)
+        monkeypatch.setattr('roll.decisions.actions.now', lambda: clock)
+        p = package()
+        gates = ['DATA', 'RULE_QUANTITY', 'AUTHORIZATION', 'STRESS_EXECUTION', 'ONLINE_CONSISTENCY']
+        p.update(candidate_kind='RISK_POLICY', gates={g: 'PASS' for g in gates}, required_gates=gates, allowed_actions=['REDUCE', 'EXIT'])
+        p['deployment_fingerprints'] = {'policy': 'e' * 64}
+        rule_id = 'SSE-MAIN-A-2026-07-06'
+        p['action_packet'] = {'namespace': 'METHOD_ENGINEERING', 'as_of': p['required_as_of'], 'expires_at': p['expires_at'],
+            'opportunities': [], 'loss_facts': p['loss_facts'], 'risk_inputs': {
+                'policy': {'policy_id': 'risk-method', 'policy_fingerprint': 'e' * 64, 'authorization': {**funding()['authorization'], 'version': 1, 'loss_origin_at': '2026-10-07T02:00:00+00:00'},
+                           'scope': p['scope'], 'rule_ids': {'SSE:600000': rule_id}},
+                'required_as_of': p['required_as_of'], 'consumer_knowledge_cutoff': clock,
+                'quotes': {'SSE:600000': {'last': '100', 'adjustment': 'RAW', 'currency': 'CNY', 'errors': [], 'upstream_at': p['required_as_of'],
+                        'available_at': p['required_as_of'], 'method_status': 'NORMAL', 'evidence_kind': 'METHOD_CASE'}},
+                'identities': {'SSE:600000': {'exchange': 'SSE', 'board': 'MAIN', 'instrument_type': 'STOCK'}},
+                'rules': {'SSE:600000': {'implementation_status': 'ADAPTED', 'rule_id': rule_id, 'normal_price_limit_percent': '10', 'price_tick_yuan': '.01'}},
+                'calendars': {'SSE:600000': {'is_trading_day': True}}, 'evidence_kind': 'METHOD_CASE'}}
+        file = save_package(tmp_path / 'qualification.json', p)
+        positions = [{'instrument': 'SSE:600000', 'quantity': '300', 'sellable_quantity': sellable, 'reference_cost': '100'},
+                     {'instrument': 'SSE:600099', 'quantity': '50', 'sellable_quantity': None, 'reference_cost': None}]
+        # A quantity-unknown unrelated holding would block the grant; retain a known outside-scope holding here.
+        positions[1]['sellable_quantity'] = '50'
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            ready(client, permission_status=permission_status, positions=positions)
+            command = {**method_command(), 'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']}
+            granted = client.post('/api/capabilities/grants', json=command)
+            assert granted.status_code == 201, granted.text
+            result = client.post('/api/actions/evaluate', json={}).json()
+            assert [(d['action'], d['quantity'], d['target_quantity']) for d in result['decisions']] == ([('REDUCE', '100', '200')] if sellable == '300' else [])
+            if sellable == '300':
+                decision = result['decisions'][0]
+                assert decision['basis_type'] == 'RISK_POLICY'
+                assert decision['model_status'] == 'NOT_APPLICABLE'
+                assert decision['execution_eligibility'] == 'METHOD_ONLY'
+                assert decision['capability_status']['state'] == 'METHOD_GRANTED'
+                assert decision['capability_status']['grant_id'] == granted.json()['grant_id']
+                assert decision['capability_status']['system_usable'] is False
+            else:
+                assert 'NO_CONFIRMED_SELLABLE_LOT' in result['holding_risks'][0]['reasons']
+>               assert result['holding_risks'][0]['execution_eligibility'] == 'BLOCKED'
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               KeyError: 'execution_eligibility'
+
+backend\tests\application\test_actions.py:139: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[NOT_OPEN-300]
+FAILED backend\tests\application\test_actions.py::test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[NOT_OPEN-0]
+FAILED backend\tests\application\test_actions.py::test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[UNKNOWN-300]
+FAILED backend\tests\application\test_actions.py::test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks[UNKNOWN-0]
+4 failed, 19 deselected in 26.90s
