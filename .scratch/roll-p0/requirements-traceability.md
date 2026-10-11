@@ -23,7 +23,7 @@
 | BR-04 | 意向和触价不推定成交 | [26] | [25] | 工程通过：26 prepare/外部待结果不改现金或持仓，只有原账户确认链写实际成交；部分/超量/无关联不强行推定执行归因。[26独立](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md)、[分阶段](evidence/ticket26/acceptance.md) |
 | BR-05 | 持仓与有限关注，不做全市场选股 | [06] | [07]、[25] | 工程通过：06/07有限范围及25当前名单复核、超额持仓仍可见、最多一条新增卡片已验；移出名单拒绝旧卡，指数不生成个股动作。正向仅METHOD、实际NOT_GRANTED。[25](evidence/ticket25/acceptance.md) |
 | BR-06 | 按需/盘后与实际影子记录，缺席不补造 | [15] | [30]、[32] | 部分：15按需/盘后、正常关闭/休眠/恢复不补造通过；30/32实际影子未验；[15证据](evidence/15/acceptance.md) |
-| BR-07 | 用户无需选模型或裁决投资观点 | [25] | [15]、[31] | 25工程通过：今天/单股共用宿主当前动作与五项显式状态，不需用户裁决模型观点；实际资格不足明确拒绝。31完整交付联验待完成。[25](evidence/ticket25/acceptance.md)、[五状态独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
+| BR-07 | 用户无需选模型或裁决投资观点 | [25] | [15]、[31] | 部分：25有限BUY/REFUSE及独立风险REDUCE/EXIT与五状态已验；其他持有/加仓/判断等待/反向/冷却/迁移政策未登记，生产费用及有效期输入不闭合，整票partial。当前标题P2及31五入口待修复/验收，不要求用户补投资判断。[25](evidence/ticket25/acceptance.md)、[审阅](evidence/continuation-2026-10-11/final-review/review.md) |
 | BR-08 | 量化验证约束概率与判断 | [21] | [19]、[24] | 工程通过：21验证清单区分概率支持、门槛结果与资格；24公共准入拒绝缺项和客户端自签。真实G4/G5 FAIL、其他INCONCLUSIVE/NOT_GRANTED；[21](evidence/21/acceptance.md)、[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md) |
 | BR-09 | 合格条件下允许有依据的无机会结果 | [25] | [20] | 部分：25在冻结BUY/REFUSE政策内给出可追溯拒绝和不足，不造默认WAIT；ADD/HOLD/判断型WAIT/反向/冷却政策尚未冻结，真实资格仍NOT_GRANTED。[25行为及缺口](evidence/ticket25/acceptance.md) |
 | BR-10 | 当前动作优先、低噪声与少操作 | [15] | [25]、[28] | 部分：15首屏及25今天/单股有限证据保留；25风险优先和重复开卡只记首次失效、28通知实质去重及内部链均独立接受。31最终五入口仍待当前版本联验，实际外发待配置。[15](evidence/15/acceptance.md)、[25补充独立](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md)、[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
@@ -96,7 +96,7 @@
 | MOD-04 | 日线歧义、未成交/部分/未退出结果定义 | [18] | [20] | 18工程通过：保守/区间/T+1/停牌零量/终止现金；真实120不可评分，20联验待执行。[证据](evidence/18/acceptance.md) |
 | MOD-05 | 训练/校准/测试时间隔离及可靠性 | [19] | [21] | 19真实DEV1148/CAL444时间隔离拟合与工件冻结、21验证清单及独立重放工程已验；CAL拟合不等于独立校准有效性，FITTED_UNVALIDATED。实际G4/G5 FAIL、其他INCONCLUSIVE/NOT_GRANTED。[19](evidence/19-reconstruction-2026-10-10/acceptance.md)、[21独立](evidence/continuation-2026-10-11/merge21.md)；旧失败保留 |
 | MOD-06 | 评分、校准、入选子集和支持度 | [21] | [19]、[29] | 待实施 |
-| MOD-07 | 不合格概率隔离与独立回退资格 | [25] | [19]、[22]、[29] | 待实施 |
+| MOD-07 | 不合格概率隔离与独立回退资格 | [25] | [19]、[22]、[29] | 部分：自身风险grant、model NOT_APPLICABLE、METHOD_ONLY与无资格正式拒绝已验；29研究隔离有限接受。当前能力标题恒关闭P2待修复，METHOD不变为真实启用。[25独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)、[审阅](evidence/continuation-2026-10-11/final-review/review.md) |
 | MOD-08 | 收益、尾部、回撤、占用及覆盖联合评价 | [21] | [17]、[20] | 待实施 |
 | MOD-09 | 市场状态与未来收益预测分开 | [25] | [15]、[19] | 待实施 |
 | DEC-01 | 动作与账户/数据/资格状态分别保存 | [25] | [10] | 工程通过：五项状态分别持久化、公开GET/replay及重启一致；风险模型NOT_APPLICABLE，零可卖量BLOCKED且无伪Decision。[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
@@ -110,7 +110,7 @@
 | DEC-09 | 卡片到期不释放外部待结果约束 | [26] | [27] | 待实施 |
 | DEC-10 | 市场/板块规则版本与当前异常限制 | [06] | [18]、[25] | 06完成：沪主板/科创板、深主板/创业板基本规则版本与未知当前状态分离，北/其他日期类型受限；18/25消费实际范围，[证据](evidence/06/acceptance.md) |
 | DEC-11 | 存量风险完整展示与合格回退 | [22] | [25] | 22独立政策工程/事实与未知/数量压力/重放已验；实际授权不足INCONCLUSIVE、未授资格，25正式正向链待实施 |
-| DEC-12 | 同一政策抑制翻转、变更有迁移记录 | [20] | [25]、[27] | 待实施 |
+| DEC-12 | 同一政策抑制翻转、变更有迁移记录 | [20] | [25]、[27] | 部分：冻结BUY/REFUSE与风险REDUCE/EXIT、不可变版本后继已验；持有/反向/冷却及持仓政策迁移契约未登记，回20/25责任，不创造金融参数。[审阅第5项](evidence/continuation-2026-10-11/final-review/review.md) |
 | UI-01 | 五入口、今天优先、诊断折叠 | [15] | [29]、[31] | 部分：15五入口/今天持仓事实优先/原文与诊断折叠，真实Chrome无交易流程与20成员P95通过；29/31最终交付未验；[15证据](evidence/15/acceptance.md) |
 | UI-02 | 单股状态/条件/时间线优先，诊断展开 | [25] | [15]、[29] | 待实施 |
 | UI-03 | 同步四入口、差异预览与持久回执 | [05] | [01]、[02]、[03]、[04]、[26] | 待实施 |
@@ -119,7 +119,7 @@
 | UI-06 | 去重、冷却例外、有效期和不补发 | [28] | [27] | 内部工程通过：实质去重、重大风险例外、当前依赖复核、过期/未知结果不自动重发、显式有限重试、旧通知重新检查；真实外发未执行。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | UI-07 | 站内及一个外部渠道、失败与送达未知 | [28] | [31] | 待实施 |
 | UI-08 | 研究跨出口隔离、不追认正式资格 | [29] | [26]、[28] | 29有限工程通过：JSON/文字/曲线/旧研究深链保持RESEARCH/NOT_GRANTED；服务端拒绝研究prepare/notify，实际自主成交不追认研究资格。[29实现及Chrome](evidence/continuation-2026-10-11/ticket29/acceptance.md)、[独立](evidence/continuation-2026-10-11/ticket29-independent/acceptance.md) |
-| UI-09 | 资格范围/依据/复核与无人工复核说明 | [24] | [27]、[34] | 24工程通过：资格、范围、期限、资金与证据分列，Chrome显示未经人工独立复核及METHOD边界；当前真实资格NOT_GRANTED。[24截图与验收](evidence/24/acceptance.md) |
+| UI-09 | 资格范围/依据/复核与无人工复核说明 | [24] | [27]、[34] | 部分：24/27范围、期限、限制及METHOD和无人工独立复核说明已验；当前能力标题与默认展开的技术UUID表单P2待修复，31当前展示待验。实际NOT_GRANTED。[24](evidence/24/acceptance.md)、[审阅](evidence/continuation-2026-10-11/final-review/review.md) |
 | FLOW-01 | 动作成交显式多对多分配、未知保留 | [26] | [29] | 待实施 |
 | FLOW-02 | 已发历史不可改、实际时间链与未知 | [28] | [25]、[26]、[29] | 内部工程通过：业务原文/时间链不可覆盖；本地dispatch起点、Host获知接收、站内显式已读与外部sent/delivery/read未知分别记录，29查询/报告消费者正在实施。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | FLOW-03 | 三种暂停范围，保留对应事实提醒 | [27] | [28] | 部分：27三范围及目标ALL_MONITOR/REVOKED、事实与降风险分界已验；28通知消费者待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
