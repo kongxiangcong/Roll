@@ -1,0 +1,164 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]: Roll 账户镜像
+    - navigation "主导航" [ref=e5]:
+      - button "今天" [ref=e6] [cursor=pointer]
+      - button "持仓与关注" [ref=e7] [cursor=pointer]
+      - button "同步账户" [ref=e8] [cursor=pointer]
+      - button "历史记录" [ref=e9] [cursor=pointer]
+      - button "设置" [active] [ref=e10] [cursor=pointer]
+  - main [ref=e11]:
+    - heading "设置" [level=1] [ref=e12]
+    - paragraph [ref=e13]: 建立账户无需配置取证后端。资金确认不产生技术资格。
+    - paragraph [ref=e14]: 交易判断未启用
+    - region "通知渠道" [ref=e15]:
+      - heading "通知渠道" [level=2] [ref=e16]
+      - paragraph [ref=e17]: 默认关闭；保存配置不会发送验收消息。
+      - paragraph [ref=e18]: 使用一个ntfy自用目标。启用后后台发送当前有效提醒，真实接入和终端链接验收须配置后另行完成。
+      - group [ref=e20]:
+        - generic [ref=e21]:
+          - checkbox "启用外部渠道" [ref=e22]
+          - text: 启用外部渠道
+        - generic [ref=e23]:
+          - text: 服务器地址
+          - textbox "服务器地址" [ref=e24]:
+            - /placeholder: https://ntfy.sh
+        - generic [ref=e25]:
+          - text: 主题
+          - textbox "主题" [ref=e26]:
+            - /placeholder: 仅字母、数字、短横线或下划线
+        - generic [ref=e27]:
+          - text: 应用地址
+          - textbox "应用地址" [ref=e28]:
+            - /placeholder: 自用终端能够访问的Roll地址
+        - paragraph [ref=e29]: 未配置认证
+        - generic [ref=e30]:
+          - text: 认证令牌
+          - textbox "认证令牌" [ref=e31]
+        - paragraph [ref=e32]: 同一服务器留空保留认证；换服务器须新认证或明确清除。认证仅存本机私有文件，不进入备份或报告。
+        - generic [ref=e33]:
+          - checkbox "清除已保存认证" [ref=e34]
+          - text: 清除已保存认证
+        - button "保存渠道配置" [ref=e35] [cursor=pointer]
+    - generic [ref=e36]:
+      - heading "取证后端" [level=2] [ref=e37]
+      - paragraph [ref=e38]: 当前新任务使用 Codex；历史任务保留原后端与配置。
+      - generic [ref=e39]:
+        - text: 取证后端
+        - combobox "取证后端" [ref=e40]:
+          - option "Codex" [selected]
+      - button "保存取证后端" [disabled] [ref=e41]
+      - paragraph [ref=e42]: 已保存：Codex · 设置版本 0
+    - generic [ref=e43]:
+      - heading "备份与恢复" [level=2] [ref=e44]
+      - paragraph [ref=e45]: 自动备份只在程序实际运行且有变化时进行；停机期间没有新备份，恢复以最近成功备份为界。
+      - paragraph [ref=e46]: 尚无成功备份
+      - paragraph [ref=e47]: 有尚未覆盖的持久化变化
+      - button "现在完整备份" [ref=e48] [cursor=pointer]
+      - button "刷新备份状态" [ref=e49] [cursor=pointer]
+      - paragraph [ref=e50]: 恢复包保留原始账户和材料内容，供原值重建；下载后请保存在自己的受限目录。
+      - group [ref=e51]:
+        - generic "恢复已有备份" [ref=e52]
+    - generic [ref=e53]:
+      - heading "维护检查点" [level=2] [ref=e54]
+      - paragraph [ref=e55]: 程序运行时检查到期事项；停机后记录实际补查时间。统计资格检查尚未接入。
+      - generic [ref=e56]:
+        - text: 频率
+        - combobox "频率" [ref=e57]:
+          - option "一次"
+          - option "每周" [selected]
+          - option "每月"
+      - generic [ref=e58]:
+        - text: 维护检查点（上海时间）
+        - textbox "维护检查点（上海时间）" [ref=e59]
+      - button "登记维护检查点" [disabled] [ref=e60]
+      - list
+      - group [ref=e61]:
+        - generic "实际维护记录" [ref=e62]
+    - generic [ref=e63]:
+      - heading "技术资格与适用范围" [level=2] [ref=e64]
+      - paragraph [ref=e65]: 技术资格未授予
+      - paragraph [ref=e66]: 尚无通过验证及受控登记的技术能力
+      - paragraph [ref=e67]: 经自动验证与模型技术审阅，未经人工独立复核
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - text: 冻结审阅材料编号
+          - textbox "冻结审阅材料编号" [ref=e70]
+        - generic [ref=e71]:
+          - text: Codex 审阅记录编号
+          - textbox "Codex 审阅记录编号" [ref=e72]
+        - button "核验并登记资格" [ref=e73] [cursor=pointer]
+    - region "暂停与恢复" [ref=e74]:
+      - heading "暂停与恢复" [level=2] [ref=e75]
+      - paragraph [ref=e76]: 新增风险暂停只停止买入、加仓及新增风险准备；模型建议暂停保留客观观察及独立风险规则。全部监控暂停仍允许同步事实、对账、审计和备份。
+      - paragraph [ref=e77]: 暂停不会撤单、清仓或解除已存在的风险。恢复后需要重新核验并生成动作。
+      - paragraph [ref=e79]: 新增风险：运行中
+      - paragraph [ref=e81]: 模型建议：运行中
+      - paragraph [ref=e83]: 全部监控：运行中
+      - paragraph [ref=e84]: 权限版本 0
+      - group [ref=e86]:
+        - generic [ref=e87]:
+          - text: 资格范围
+          - combobox "资格范围" [ref=e88]:
+            - option "当前全局范围" [selected]
+        - generic [ref=e89]:
+          - text: 暂停范围
+          - combobox "暂停范围" [ref=e90]:
+            - option "新增风险" [selected]
+            - option "模型建议"
+            - option "全部监控"
+        - generic [ref=e91]:
+          - text: 操作原因
+          - textbox "操作原因" [ref=e92]
+        - button "暂停所选范围" [disabled] [ref=e93]
+        - button "核对原因并恢复所选范围" [disabled] [ref=e94]
+        - button "撤回所选资格" [disabled] [ref=e95]
+      - paragraph [ref=e96]: 主动暂停须核对原原因；自动暂停须较晚的健康监测、同一冻结材料和当前账户、资金、部署及范围。损失暂停不会因反弹或扩容自动解除。撤回和到期须新资格与后继授权。
+      - group [ref=e97]:
+        - generic "查看权限历史" [ref=e98]
+    - generic [ref=e99]:
+      - heading "资金授权" [level=2] [ref=e100]
+      - paragraph [ref=e101]: 资金边界尚未确认
+      - paragraph [ref=e102]: 损失与剩余额度待核：实际估值及现金流尚未接入
+    - generic [ref=e103]:
+      - heading "确认资金用途与边界" [level=2] [ref=e104]
+      - paragraph [ref=e105]: 填写自己的金额。损失口径从首次授权起保留，跨日、反弹或扩大金额不清除暂停历史。恢复须核对暂停原因和实际事实。
+      - generic [ref=e106]:
+        - group [ref=e107]:
+          - generic [ref=e108]:
+            - text: 资金范围
+            - combobox "资金范围" [ref=e109]:
+              - option "整个真实账户" [selected]
+              - option "已界定的真实试验资金"
+          - generic [ref=e110]:
+            - text: 资金用途
+            - textbox "资金用途" [ref=e111]
+          - generic [ref=e112]:
+            - text: 资金金额（元）
+            - textbox "资金金额（元）" [ref=e113]
+          - generic [ref=e114]:
+            - text: 总暴露上限（元）
+            - textbox "总暴露上限（元）" [ref=e115]
+          - generic [ref=e116]:
+            - text: 单票暴露上限（元）
+            - textbox "单票暴露上限（元）" [ref=e117]
+          - generic [ref=e118]:
+            - text: 现金保留额（元）
+            - textbox "现金保留额（元）" [ref=e119]
+          - generic [ref=e120]:
+            - text: 损失暂停阈值（元）
+            - textbox "损失暂停阈值（元）" [ref=e121]
+          - generic [ref=e122]:
+            - text: 确认依据
+            - textbox "确认依据" [ref=e123]
+          - generic [ref=e124]:
+            - checkbox "允许在此资金边界内使用" [ref=e125]
+            - text: 允许在此资金边界内使用
+          - generic [ref=e126]:
+            - checkbox "暂停此资金用途" [ref=e127]
+            - text: 暂停此资金用途
+        - button "确认资金边界" [ref=e128] [cursor=pointer]
+```

@@ -1,0 +1,32 @@
+.F....                                                                   [100%]
+================================== FAILURES ===================================
+_ test_independent_method_risk_remains_visible_when_profit_paused_then_revoke_and_expire _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/green-capability-all/test_independent_method_risk_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D214A0F490>
+
+    def test_independent_method_risk_remains_visible_when_profit_paused_then_revoke_and_expire(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        value = paired_package()
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')) as client:
+            setup(client, value)
+            grants = []
+            for candidate, key in [(value, 'profit'), (value['risk_qualification'], 'risk')]:
+                response = client.post('/api/capabilities/grants', json=grant_command(candidate, key))
+                assert response.status_code == 201, response.text
+                grants.append(response.json())
+            pause = client.post('/api/capabilities/lifecycle', json={'grant_id': grants[0]['grant_id'], 'scope': 'MODEL', 'state': 'SUSPENDED',
+                'reason_code': 'USER_PAUSE', 'reason': 'METHOD profit pause', 'expected_version': 0, 'idempotency_key': 'pause'})
+            assert pause.status_code == 200, pause.text
+            paused = client.get('/api/capabilities/grants/' + grants[0]['grant_id'] + '/status').json()
+>           assert paused['headline'] == '能力已暂停，交易判断未启用'
+E           AssertionError: assert 'METHOD 工程能力有效，实际交易判断未启用' == '能力已暂停，交易判断未启用'
+E             
+E             - 能力已暂停，交易判断未启用
+E             + METHOD 工程能力有效，实际交易判断未启用
+
+backend\tests\application\test_final_capability_status.py:49: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_final_capability_status.py::test_independent_method_risk_remains_visible_when_profit_paused_then_revoke_and_expire
+1 failed, 5 passed in 18.67s

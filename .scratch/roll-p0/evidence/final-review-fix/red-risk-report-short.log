@@ -1,0 +1,60 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_linked_risk_sell_report_exports_keep_unfrozen_proposal_fee_unknown[100-REDUCE-100-130000.10] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/final-review-fix/.fr/rr/test_linked_risk_sell_report_e0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000028A5F7EF5C0>
+price = '100', action = 'REDUCE', quantity = '100', nav = '130000.10'
+
+    @pytest.mark.parametrize('price,action,quantity,nav', [('100', 'REDUCE', '100', '130000.10'), ('1000', 'EXIT', '300', '400000.10')])
+    def test_linked_risk_sell_report_exports_keep_unfrozen_proposal_fee_unknown(tmp_path, monkeypatch, price, action, quantity, nav):
+        method_clock(monkeypatch)
+        p = risk_package()
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        p['loss_facts'].update(baseline_assets=nav, net_assets=nav)
+        p['action_packet']['risk_inputs']['quotes']['SSE:600000']['last'] = price
+        file = save_package(tmp_path / 'qualification.json', p)
+        directory = copy_donor(tmp_path.parent / ('risk-' + action))  # Short owned path; verified before any connection.
+        with TestClient(create_app(directory, runtime_role='API', capability_method_file=file), raise_server_exceptions=False) as client:
+            old_shadow = client.get('/api/research/shadow/' + FREEZE).json()
+            snapshot = broker_snapshot(cash_balance='100000.10', income='0.00', expenses='0.00')
+            snapshot.update(pending_items=[], withdrawable='100000.10', positions=[{'instrument': 'SSE:600000', 'quantity': '300', 'sellable_quantity': '300'}])
+            command = reconcile(1, 'risk-report-alignment', snapshot)
+            command['payload'].update(source='METHOD confirmed broker alignment', effective_at=p['required_as_of'])
+            assert submit(client, command, 'align').status_code == 200
+            assert submit(client, {'kind': 'ACCOUNT_DECLARATION', 'expected_account_version': 2, 'payload': {
+                'effective_at': p['required_as_of'], 'source': 'METHOD confirmed account', 'record_id': 'risk-report-declaration',
+                'scope': ['TRADES', 'ORDERS', 'CASH', 'EQUITY'], 'changes': 'NONE', 'basis': 'isolated facts'}}, 'declare').status_code == 200
+            assert client.post('/api/funding/confirm', json=funding()).status_code == 200
+            grant = client.post('/api/capabilities/grants', json={**method_command(), 'expected_account_version': 3,
+                'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']})
+            assert grant.status_code == 201, grant.text
+            evaluated = client.post('/api/actions/evaluate', json={})
+            assert evaluated.status_code == 201, evaluated.text
+            evaluation = evaluated.json()
+            assert [(d['action'], d['quantity']) for d in evaluation['decisions']] == [(action, quantity)]
+            assert 'fees_yuan' not in evaluation['decisions'][0]
+            prepared = client.post('/api/intents/prepare', json={**intent_command(evaluation), 'price_yuan': price})
+            assert prepared.status_code == 201, prepared.text
+            intent = prepared.json()
+            actual = fill(3, 'risk-sell', direction='SELL')
+            actual['payload'].update(quantity=quantity, price=price, effective_at=p['required_as_of'])
+            actual['payload']['fee']['amount'] = '7.00'
+            drafted = client.post('/api/account/drafts', json=actual)
+            assert drafted.status_code == 201, drafted.text
+            confirmed = client.post('/api/account/confirm', json={'draft_id': drafted.json()['draft_id'], 'idempotency_key': 'risk-sell-confirm',
+                'fill_allocations': [{'intent_id': intent['intent_id'], 'fill_record_id': 'risk-sell', 'allocated_quantity': quantity, 'association_status': 'USER_CONFIRMED'}]})
+            assert confirmed.status_code == 200, confirmed.text
+            params = {'decision_id': intent['decision_id'], 'evaluation_id': evaluation['evaluation_id'], 'intent_id': intent['intent_id']}
+            url = '/api/research/reports/' + FREEZE
+            response = client.get(url, params=params)
+            record(tmp_path, 'risk-sell-report-response', {'status': response.status_code, 'body': response.text})
+>           assert response.status_code == 200, response.text
+E           AssertionError: Internal Server Error
+E           assert 500 == 200
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+backend\tests\application\test_final_risk_report.py:60: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_final_risk_report.py::test_linked_risk_sell_report_exports_keep_unfrozen_proposal_fee_unknown[100-REDUCE-100-130000.10]
+1 failed in 12.77s
