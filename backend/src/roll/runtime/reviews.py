@@ -398,6 +398,7 @@ class Reviews:
         if hasattr(self, 'actions'): metrics.update(self.actions.metrics())
         if hasattr(self, 'intents'): metrics.update(self.intents.metrics())
         if hasattr(self, 'notifications'): metrics.update(self.notifications.metrics(db))
+        if hasattr(self, 'reports'): metrics.update(self.reports.metrics(db))
         metrics.update(data_coverage={'status':'CHECKED','value':len(result['gaps']),'gaps':result['gaps']},
             account_differences={'status':'CHECKED','value':len(reasons),'state':state,'reasons':reasons},
             module_errors={'status':'CHECKED','value':len(task['module_errors']),'errors':task['module_errors']})

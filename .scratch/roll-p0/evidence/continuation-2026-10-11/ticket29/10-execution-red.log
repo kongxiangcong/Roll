@@ -1,0 +1,52 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r6/test_report_projects_real_part0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000230F0C47490>
+
+    def test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', capability_method_file=file)) as client:
+            old_shadow = client.get('/api/research/shadow/' + FREEZE).json()
+>           evaluation = prepare_copied_actual(client, p)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_reports.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <starlette.testclient.TestClient object at 0x00000230F121A3C0>
+p = {'account_version': 3, 'action_packet': {'as_of': '2026-10-11T11:57:54+00:00', 'complete_protocol_fingerprint': 'ddddd......}, ...}, 'allowed_actions': ['BUY', 'ADD', 'HOLD', 'REDUCE', 'EXIT', 'WAIT'], 'candidate_kind': 'PROFIT_MODEL', ...}
+
+    def prepare_copied_actual(client, p):
+        snapshot = broker_snapshot(cash_balance='100000.10', income='0.00', expenses='0.00')
+        snapshot['pending_items'] = []
+        snapshot['withdrawable'] = '100000.10'
+        alignment = reconcile(1, 'METHOD-report-alignment', snapshot)
+        alignment['payload'].update(source='METHOD isolated broker alignment', effective_at=p['required_as_of'])
+        result = submit(client, alignment, 'report-alignment')
+        assert result.status_code == 200, result.text
+        declaration = {'kind': 'ACCOUNT_DECLARATION', 'expected_account_version': 2, 'payload': {
+            'effective_at': p['required_as_of'], 'source': 'METHOD isolated user', 'record_id': 'report-declaration',
+            'scope': ['TRADES', 'ORDERS', 'CASH', 'EQUITY'], 'changes': 'NONE', 'basis': 'isolated current facts'}}
+        assert submit(client, declaration, 'report-declaration').status_code == 200
+        for instrument in p['scope']['instruments']:
+            listing = client.get('/api/market/list').json()
+            if instrument not in {m['instrument'] for m in listing['members']}:
+                assert client.post('/api/market/watch', json={'instrument': instrument, 'operation': 'ADD',
+                    'expected_list_version': listing['version']}).status_code == 200
+        assert client.post('/api/funding/confirm', json=funding(single_exposure='40000.00')).status_code == 200
+        command = {**method_command(), 'scope': p['scope'], 'expected_account_version': 3, 'allowed_actions': ['BUY']}
+        response = client.post('/api/capabilities/grants', json=command)
+>       assert response.status_code == 201, response.text
+E       AssertionError: {"detail":{"code":"CAPABILITY_ADMISSION_REFUSED","reasons":["ACCOUNT_FACTS_NOT_RECONCILED","券商核对尚有未决或未知字段，查看分列差异"]}}
+E       assert 409 == 201
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+tests\application\test_reports.py:38: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim
+1 failed in 10.99s

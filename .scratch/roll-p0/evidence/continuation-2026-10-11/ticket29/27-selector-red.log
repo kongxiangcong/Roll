@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [14728]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8091 (Press CTRL+C to quit)
+[WebServer] (node:34120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:4108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\reports.spec.ts:4:1 › saved METHOD report, isolated four curves, readonly export and legacy research link (30.1s)
+
+
+  1) tests\e2e\reports.spec.ts:4:1 › saved METHOD report, isolated four curves, readonly export and legacy research link 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: '保存的研究报告', exact: true }).getByLabel('已保存实际估值', { exact: true })[22m
+
+
+      15 |   await expect(report).toBeVisible();
+      16 |   await expect(report.getByRole('alert')).toHaveCount(0);
+    > 17 |   await report.getByLabel('已保存实际估值',{exact:true}).selectOption(valuation.valuation_id);
+         |                                                   ^
+      18 |   await expect(report.getByText(/已保存净资产 103600.10/)).toBeVisible();
+      19 |   await expect(report.getByText('NOT_COMPARABLE',{exact:true})).toBeVisible();
+      20 |   for(const label of ['ACTUAL','HISTORICAL','SHADOW','ACCOUNT_CONDITIONAL'])await expect(report.getByRole('heading',{name:label,exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket29\frontend\tests\e2e\reports.spec.ts:17:51
+
+    Error Context: test-results\reports-saved-METHOD-repor-a00a7-rt-and-legacy-research-link\error-context.md
+
+  1 failed
+    tests\e2e\reports.spec.ts:4:1 › saved METHOD report, isolated four curves, readonly export and legacy research link 

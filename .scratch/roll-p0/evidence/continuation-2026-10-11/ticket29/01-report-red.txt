@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_saved_report_keeps_four_namespaces_and_never_turns_cash_into_actual_nav _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r1/test_saved_report_keeps_four_n0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023D7862A190>
+
+    def test_saved_report_keeps_four_namespaces_and_never_turns_cash_into_actual_nav(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        directory = copy_donor(tmp_path / 'data')
+        with TestClient(create_app(directory, runtime_role='API')) as client:
+            shadow = client.get('/api/research/shadow/' + FREEZE)
+            assert shadow.status_code == 200, shadow.text
+            assert shadow.json()['revision'] == 2
+            original = shadow.json()
+            query = client.get('/api/research/reports/' + FREEZE)
+>           assert query.status_code == 200, query.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+tests\application\test_reports.py:15: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_saved_report_keeps_four_namespaces_and_never_turns_cash_into_actual_nav
+1 failed in 18.85s

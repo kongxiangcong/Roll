@@ -1,0 +1,43 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r8/test_report_projects_real_part0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000022BE2307490>
+
+    def test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', capability_method_file=file)) as client:
+            old_shadow = client.get('/api/research/shadow/' + FREEZE).json()
+            evaluation = prepare_copied_actual(client, p)
+            response = client.post('/api/intents/prepare', json=intent_command(evaluation))
+            assert response.status_code == 201, response.text
+            intent = response.json()
+            pending = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state': 'OPERATION_PENDING', 'occurred_at': p['required_as_of'], 'external_order_id': 'METHOD-order',
+                'idempotency_key': 'report-pending'})
+            assert pending.status_code == 200, pending.text
+            command = fill(3, 'report-partial')
+            command['payload'].update(quantity='100', price='140.00', effective_at=p['required_as_of'])
+            draft = client.post('/api/account/drafts', json=command)
+            assert draft.status_code == 201, draft.text
+            confirmed = client.post('/api/account/confirm', json={'draft_id': draft.json()['draft_id'],
+                'idempotency_key': 'report-partial', 'fill_allocations': [{'intent_id': intent['intent_id'],
+                    'fill_record_id': 'report-partial', 'allocated_quantity': '100', 'association_status': 'USER_CONFIRMED'}]})
+            assert confirmed.status_code == 200, confirmed.text
+            params = {'decision_id': intent['decision_id'], 'evaluation_id': evaluation['evaluation_id'], 'intent_id': intent['intent_id']}
+            chain = client.get('/api/notifications/time-chain', params=params)
+            assert chain.status_code == 200, chain.text
+            url = '/api/research/reports/' + FREEZE
+            report = client.get(url, params=params).json()
+>           assert report['execution']['notification_chain'] == chain.json()
+                   ^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'execution'
+
+tests\application\test_reports.py:74: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_report_projects_real_partial_allocation_and_registered_notification_chain_without_causal_claim
+1 failed in 11.77s

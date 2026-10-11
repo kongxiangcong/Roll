@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_saved_actual_nav_uses_held_shares_and_preserves_the_original_snapshot_after_late_fees _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r2/test_saved_actual_nav_uses_hel0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C8FC10DBA0>
+
+    def test_saved_actual_nav_uses_held_shares_and_preserves_the_original_snapshot_after_late_fees(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', market_transport=quote_transport())) as client:
+            original = client.get('/api/research/shadow/' + FREEZE).json()
+            account = client.get('/api/account').json()
+            assert account['version'] == 1 and account['cash_balance'] == '100000.10'
+            assert account['positions'][0]['quantity'] == '300'
+            acquire(client)  # fixed METHOD quote12, no source HTTP/provider
+            valuation = publish(client)
+            assert valuation['facts']['net_assets'] == '103600.10'
+            selected = '/api/research/reports/' + FREEZE + '?valuation_id=' + valuation['valuation_id']
+            response = client.get(selected)
+            assert response.status_code == 200, response.text
+            report = response.json()
+>           assert report['actual']['valuation'] == valuation
+E           AssertionError: assert None == {'account': {'broker_available': '90000.10', 'broker_available_as_of': '2026-10-07T10:00:00+08:00', 'broker_frozen': '...7T10:00:00+08:00', ...}, 'account_version': 1, 'as_of': '2026-10-07T16:00:00+08:00', 'asynchronous_quotes': False, ...}
+
+tests\application\test_reports.py:24: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_saved_actual_nav_uses_held_shares_and_preserves_the_original_snapshot_after_late_fees
+1 failed in 12.04s

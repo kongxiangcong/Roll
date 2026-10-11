@@ -1,0 +1,79 @@
+{
+  "entries": [
+    {
+      "path": "backend/src/roll/research/reports.py",
+      "bytes": 11269,
+      "sha256": "6b42441ff501d1f20f3319dedfb2f2905ed009c4b5092d26f274fbbc7b7db5fd"
+    },
+    {
+      "path": "backend/src/roll/runtime/reviews.py",
+      "bytes": 45108,
+      "sha256": "02406d27d71c0e9cff6d469f84d3c8798f1b3a20f6b3997037bfd67447fcb8d9"
+    },
+    {
+      "path": "backend/src/roll/app.py",
+      "bytes": 60005,
+      "sha256": "e18ee3ee478dc9cb00167f03333b9bb76b62c46f88408210d09818a1bfc57485"
+    },
+    {
+      "path": "frontend/src/app.tsx",
+      "bytes": 2121,
+      "sha256": "f0f8d1aeef6004e4d1059f76a23d746e17cc9be41a21aa950d2a5787cbaa6f75"
+    },
+    {
+      "path": "frontend/src/pages/history.tsx",
+      "bytes": 5760,
+      "sha256": "ce51d2c644800042665126bf298f358b1732042c43d204114b7d65a2aa643ad2"
+    },
+    {
+      "path": "frontend/src/pages/shadow.tsx",
+      "bytes": 7764,
+      "sha256": "9e4f6a7a0004cc0cfab2f2903fdedb157f7e8631ccf5c94d96108d433947a1c6"
+    },
+    {
+      "path": "frontend/src/components/research-report.tsx",
+      "bytes": 8670,
+      "sha256": "ddd2a7509179f2f2a27d910bf8d2c67337534ee80659314019503a8d452624b9"
+    },
+    {
+      "path": "backend/tests/application/test_reports.py",
+      "bytes": 23488,
+      "sha256": "d4c723512bb947b28261fbe28e9b1f1011e564989fd734fb14c7db434a727324"
+    },
+    {
+      "path": "backend/tests/support/report_method_app.py",
+      "bytes": 2187,
+      "sha256": "7916210f91a5ca0f29a43c42a3fcb79ae507cc6b63b77acf708b3faf1d4952e0"
+    },
+    {
+      "path": "frontend/playwright.reports.config.ts",
+      "bytes": 1137,
+      "sha256": "214c9690aa5a58546ab2266e26bed49a2a26cfac876baff9d62459081cc1dd3c"
+    },
+    {
+      "path": "frontend/vite.reports.config.ts",
+      "bytes": 271,
+      "sha256": "18cbf1787864c20c7b90812cff8fd4aa8e3dbd1ccedd7ec2dd3c5c1e8124de91"
+    },
+    {
+      "path": "frontend/tests/e2e/reports.spec.ts",
+      "bytes": 3430,
+      "sha256": "e77bfdb1acdb41a6278f0caa65ce5160f8df0e8b105c198c06d855d57ed37c21"
+    }
+  ],
+  "protected_product_sources": 15,
+  "product_source_inventory": "source-final.json",
+  "runtime_preservation": "runtime-preservation.json",
+  "root_preservation_manifest": "D:/dsh-proj/Roll/.roll-data/implementation-evidence/ticket29-r01/manifest.json",
+  "preserved_own_optimizer_cache": ".scratch/t29-vite-cache",
+  "excluded_dependency_paths": [
+    "frontend/node_modules",
+    "frontend/frontend/node_modules",
+    "backend/.venv"
+  ],
+  "dependency_paths_reason": "existing installed packages only; root interpreter and dependency junctions not copied/traversed",
+  "private_config_exclusions": "four exact metadata-only paths in runtime-preservation.json",
+  "backend_final_run": "31-final-api.log",
+  "frontend_final_run": "36-final-browser.log",
+  "build_final_run": "35-final-build.log"
+}

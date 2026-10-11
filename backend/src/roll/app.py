@@ -1013,6 +1013,25 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     capability_service.monitoring = monitoring
     app.state.monitoring = monitoring
     reviews.monitoring = monitoring
+    from roll.research.reports import ResearchReports
+    reports = ResearchReports(shadow, valuations, intents, notifications, monitoring)
+    app.state.reports = reports
+    reviews.reports = reports
+
+    @app.get('/api/research/reports/{freeze_id}')
+    def research_report(freeze_id: str, valuation_id: str | None = None, decision_id: str | None = None,
+                        evaluation_id: str | None = None, intent_id: str | None = None, monitoring_check_id: str | None = None):
+        return reports.get(freeze_id, valuation_id, decision_id, evaluation_id, intent_id, monitoring_check_id)
+
+    @app.get('/api/research/reports/{freeze_id}/export')
+    def research_report_export(freeze_id: str, valuation_id: str | None = None, decision_id: str | None = None,
+                               evaluation_id: str | None = None, intent_id: str | None = None,
+                               monitoring_check_id: str | None = None,
+                               format: str = Query('json', pattern='^(json|text)$')):
+        value = reports.get(freeze_id, valuation_id, decision_id, evaluation_id, intent_id, monitoring_check_id)
+        content = reports.text(value) if format == 'text' else __import__('json').dumps(value, ensure_ascii=False, sort_keys=True)
+        return Response(content, media_type='text/plain' if format == 'text' else 'application/json',
+                        headers={'Content-Disposition': 'attachment; filename="roll-research-report.' + ('txt' if format == 'text' else 'json') + '"'})
 
     @app.get('/api/capabilities/corrections')
     def capability_corrections(): return monitoring.corrections()
