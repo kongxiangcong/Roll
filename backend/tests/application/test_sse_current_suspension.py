@@ -21,7 +21,7 @@ def page(rows=None,total=1,page_no=1,page_count=1):
 
 
 def clocks(monkeypatch,stamp='2026-10-12T15:06:00+08:00'):
-    for module in ['roll.market.post_close_packet','roll.research.prospective','roll.market.evidence','roll.market.sse_stock_suspension']:
+    for module in ['roll.market.post_close_packet','roll.research.prospective','roll.market.evidence','roll.market.sse_stock_suspension','roll.market.sse_company_contract']:
         monkeypatch.setattr(module+'.now',lambda:stamp)
 
 
@@ -90,6 +90,12 @@ def test_existing_worker_job_records_one_bounded_suspension_receipt_without_hidd
     suspension=json.dumps(page(rows=[],total=0,page_count=0)).encode()
     def supplier(request):
         calls.append(request.url.host)
+        if request.url.path=='/v1/sh1/snap/600362':
+            from test_sse_company_contract import snap
+            return httpx.Response(200,json=snap())
+        if request.url.params.get('sqlId')=='COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C':
+            from test_sse_company_contract import company
+            return httpx.Response(200,json=company())
         if request.url.host=='query.sse.com.cn' and request.url.params.get('sqlId','').startswith('GW_PL_JYTS_TFPXX'):
             from test_sse_stock_suspension import interval
             return httpx.Response(200,json={'sqlId':'GW_PL_JYTS_TFPXX_TRADEDAY','result':[{'beforeTradeDay':'20261009'}]}
@@ -108,7 +114,8 @@ def test_existing_worker_job_records_one_bounded_suspension_receipt_without_hidd
         assert client.post(base+'/post-close/check',json={'basis':'Same checkpoint retry cannot expand source budget'}).json()==job
         bounded=client.post(base+'/sse-suspension/check',json={'basis':'Explicit cached status-source job'}).json()
         assert bounded['state']=='RECORDED' and bounded['receipt_id']==job['suspension_receipt_id']
-        assert sorted(calls)==['query.sse.com.cn']*3+['yunhq.sse.com.cn']
+        assert sorted(calls)==['query.sse.com.cn']*4+['yunhq.sse.com.cn']*2
+        assert job['company_contract_receipt_id'] and job['company_contract_job_state']=='RECORDED'
         assert job['stock_suspension_receipt_id']
         assert client.get('/api/account').json()==account
 

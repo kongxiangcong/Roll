@@ -222,12 +222,18 @@ def test_normalized_sqlite_and_parquet_agreement_cannot_override_closing_origina
 
 def test_persisted_post_close_job_is_bounded_and_not_retried_by_repeated_trigger(tmp_path,monkeypatch):
     clock='2026-10-12T15:06:00+08:00'
-    for module in ['roll.research.prospective','roll.market.post_close_packet','roll.market.evidence','roll.market.sse_stock_suspension']:
+    for module in ['roll.research.prospective','roll.market.post_close_packet','roll.market.evidence','roll.market.sse_stock_suspension','roll.market.sse_company_contract']:
         monkeypatch.setattr(module+'.now',lambda:clock)
     calls=[]
     raw=json.dumps({'date':20261012,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]},ensure_ascii=False).encode()
     def transport(request):
         calls.append(request.url.host)
+        if request.url.path=='/v1/sh1/snap/600362':
+            from test_sse_company_contract import snap
+            return httpx.Response(200,json=snap())
+        if request.url.params.get('sqlId')=='COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C':
+            from test_sse_company_contract import company
+            return httpx.Response(200,json=company())
         if request.url.host=='query.sse.com.cn' and request.url.params.get('sqlId','').startswith('GW_PL_JYTS_TFPXX'):
             from test_sse_stock_suspension import interval
             return httpx.Response(200,json={'sqlId':'GW_PL_JYTS_TFPXX_TRADEDAY','result':[{'beforeTradeDay':'20261009'}]}
@@ -246,7 +252,9 @@ def test_persisted_post_close_job_is_bounded_and_not_retried_by_repeated_trigger
         job=response.json()
         assert job['state']=='RECORDED' and job['actual_forward_start'] is False
         assert client.post(path,json={'basis':'repeat same bounded job'}).json()==job
-        assert sorted(calls)==['query.sse.com.cn']*3+['yunhq.sse.com.cn']
+        assert sorted(calls)==['query.sse.com.cn']*4+['yunhq.sse.com.cn']*2
+        assert job['company_contract_receipt_id'] and job['company_contract_job_state']=='RECORDED'
+        assert len(client.get('/api/research/collections/'+pid+'/sse-company-contract-receipts').json())==1
         assert len(client.get('/api/research/collections/'+pid+'/batches').json())==1
         assert len(client.get('/api/research/collections/'+pid+'/sse-suspension-receipts').json())==1
         assert client.get('/api/account').json()==account

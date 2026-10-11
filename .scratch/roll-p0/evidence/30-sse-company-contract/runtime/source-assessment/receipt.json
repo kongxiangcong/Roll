@@ -1,0 +1,250 @@
+{
+  "actual_forward_start": false,
+  "archive": {
+    "bytes": 9522,
+    "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+    "kind": "SSE_CLIENT_RECEIPT",
+    "path": "raw/50327bb8076a86e01ef68a139f452262920a7e18ae7333e5f010a560b8826192.raw",
+    "sha256": "50327bb8076a86e01ef68a139f452262920a7e18ae7333e5f010a560b8826192"
+  },
+  "basis": "Frozen two-attempt finite plan; no retry, redirect, fallback or production qualification",
+  "capability": "NOT_GRANTED",
+  "capture_plan": {
+    "capture_id": "a78cf1f6-8550-4f67-bac3-1f8f6bcb3491",
+    "client_transport_equivalence_claim": false,
+    "collection_plan_id": "b81b9d08-13ac-472f-933f-a37582c70e8d",
+    "created_at": "2026-10-11T10:17:37.198266+00:00",
+    "declared_client_transport": "POST_JSONP_CALLBACK",
+    "fallbacks": 0,
+    "follow_redirects": false,
+    "host_date": "2026-10-11",
+    "html_hash": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+    "js_hash": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+    "mapping_hash": "17f077adaf62ab97dcfa1f947ad452d89de56d123f0fed122490a28315e05512",
+    "max_decoded_bytes": 8388608,
+    "method": "GET",
+    "parser_fingerprint": "cae8f942a6f95b138743c54fb24348987bf288b8d960658120acf3a28083a0fc",
+    "request_budget_calls": 2,
+    "requests": [
+      {
+        "parameters": {
+          "select": "name,last,chg_rate,change,amount,volume,open,prev_close,ask,bid,high,low,tradephase,turnover_ratio,totalValue,amp_rate,circulating,up_limit,down_limit,fp_volume,fp_amount,cpxxprodusta,cpxxlmttype,fp_phase"
+        },
+        "role": "snap",
+        "url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362"
+      },
+      {
+        "parameters": {
+          "COMPANY_CODE": "600362",
+          "isPagination": "false",
+          "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C"
+        },
+        "role": "company",
+        "url": "https://query.sse.com.cn/sseQuery/commonQuery.do"
+      }
+    ],
+    "response_variant": "JSON_WITHOUT_CALLBACK",
+    "retries": 0,
+    "source_id": "sse-company-client-contract",
+    "system_usable": false,
+    "timeout_seconds": 15
+  },
+  "capture_plan_archive": {
+    "bytes": 1357,
+    "created_at": "2026-10-11T10:17:37.198266+00:00",
+    "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+    "kind": "SSE_CLIENT_FINITE_PLAN",
+    "path": "raw/0a95752f81d78f8bed024dfbd73e518ae443590b981aba8315cf796504ba59e5.raw",
+    "sha256": "0a95752f81d78f8bed024dfbd73e518ae443590b981aba8315cf796504ba59e5"
+  },
+  "company_fact": {
+    "available_at": "2026-10-11T10:17:37.912998+00:00",
+    "basis_raw_hashes": [
+      "4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a",
+      "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+      "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f"
+    ],
+    "company_state_reported": "上市",
+    "complete_status_verified": false,
+    "document_html_hash": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+    "document_js_hash": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+    "effective_at": null,
+    "ex_rights": null,
+    "group": "STATUS",
+    "historical_pit_claim": false,
+    "instrument": "SSE:600362",
+    "known_at": "2026-10-11T10:17:37.934102+00:00",
+    "listing_date_original": "20020111",
+    "listing_date_precision": "DATE",
+    "listing_date_reported": "2002-01-11",
+    "listing_stage": null,
+    "model_daily_input_allowed": false,
+    "negative_coverage_verified": false,
+    "published_at": null,
+    "raw_hash": "4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a",
+    "received_at": "2026-10-11T10:17:37.912998+00:00",
+    "resume_date": null,
+    "risk_warning": null,
+    "sec_type_reported": "主板A",
+    "source_id": "sse-company-client-contract",
+    "source_reported_date": null,
+    "source_reported_date_precision": "UNKNOWN",
+    "source_url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C&COMPANY_CODE=600362&isPagination=false",
+    "st_subtype": null,
+    "state": "REPORTED_COMPANY_DESCRIPTION_FULL_STATUS_UNKNOWN",
+    "status_a_original": "   D  F  N          ",
+    "suspension": null,
+    "system_usable": false,
+    "trade_date": "2026-10-11"
+  },
+  "complete_status_verified": false,
+  "document_sources": {
+    "company_html": {
+      "bytes": 39826,
+      "classification": "DOCUMENT_LEAD",
+      "effective_time": null,
+      "path": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b.raw",
+      "publication_time": null,
+      "received_at": "2026-10-11T09:34:41.501704+00:00",
+      "role": "company_html",
+      "sha256": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+      "url": "https://www.sse.com.cn/assortment/stock/list/info/company/index.shtml?COMPANY_CODE=600362"
+    },
+    "company_js": {
+      "bytes": 277193,
+      "classification": "DOCUMENT_LEAD",
+      "effective_time": null,
+      "path": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "publication_time": null,
+      "received_at": "2026-10-11T09:35:06.426492+00:00",
+      "role": "company_js",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js?v=ssesite_V3.8.0_20260828"
+    }
+  },
+  "errors": {},
+  "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+  "finished_at": "2026-10-11T10:17:37.934667+00:00",
+  "forward_started_at": null,
+  "gaps": [
+    "SSE_CLIENT_PHASE_NOT_COMPLETE_SUSPENSION_OR_RESUMPTION",
+    "SSE_CLIENT_UNITS_DOCUMENT_BOUND_SESSION_COMPLETION_UNPROVEN",
+    "SSE_COMPANY_LISTING_RISK_ENUM_EFFECTIVE_AND_NEGATIVE_COVERAGE_UNPROVEN"
+  ],
+  "host_date": "2026-10-11",
+  "instrument": "SSE:600362",
+  "mapping_hash": "17f077adaf62ab97dcfa1f947ad452d89de56d123f0fed122490a28315e05512",
+  "network_calls": 2,
+  "no_event_authority": false,
+  "normalized_known_at": "2026-10-11T10:17:37.934673+00:00",
+  "parser_fingerprint": "cae8f942a6f95b138743c54fb24348987bf288b8d960658120acf3a28083a0fc",
+  "plan_id": "b81b9d08-13ac-472f-933f-a37582c70e8d",
+  "quote_fact": {
+    "amount_raw": "1314805240",
+    "amount_transform_divisor": 10000,
+    "available_at": "2026-10-11T10:17:37.827298+00:00",
+    "basis_raw_hashes": [
+      "bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403",
+      "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+      "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f"
+    ],
+    "completion_state": "UNKNOWN",
+    "cpxxlmttype_original": "N",
+    "cpxxprodusta_original": "   D  F  N          ",
+    "current_complete_daily_authority": false,
+    "date_original": 20261009,
+    "display_amount_10000_cny_exact": "131480.524",
+    "display_volume_hands_exact": "314191.58",
+    "document_html_hash": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+    "document_js_hash": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+    "effective_at": null,
+    "fp_amount_raw": "1300806.000",
+    "fp_phase_original": "D0      ",
+    "fp_phase_semantics": "UNKNOWN",
+    "fp_volume_raw": "30600",
+    "group": "QUOTE",
+    "historical_pit_claim": false,
+    "instrument": "SSE:600362",
+    "known_at": "2026-10-11T10:17:37.844181+00:00",
+    "model_daily_input_allowed": false,
+    "published_at": null,
+    "raw_hash": "bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403",
+    "received_at": "2026-10-11T10:17:37.827298+00:00",
+    "reported_date_precision": "DATE",
+    "source_id": "sse-company-client-contract",
+    "source_timezone": "UNKNOWN",
+    "source_url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362?select=name%2Clast%2Cchg_rate%2Cchange%2Camount%2Cvolume%2Copen%2Cprev_close%2Cask%2Cbid%2Chigh%2Clow%2Ctradephase%2Cturnover_ratio%2CtotalValue%2Camp_rate%2Ccirculating%2Cup_limit%2Cdown_limit%2Cfp_volume%2Cfp_amount%2Ccpxxprodusta%2Ccpxxlmttype%2Cfp_phase",
+    "system_usable": false,
+    "time_display": "16:29:05",
+    "time_original": 162905,
+    "trade_date": "2026-10-09",
+    "tradephase_compact": "E110",
+    "tradephase_display": "闭市",
+    "tradephase_first": "E",
+    "tradephase_full_semantics": "UNKNOWN",
+    "tradephase_original": "E110    ",
+    "turnover_scope": "UNKNOWN",
+    "unit_basis": "OFFICIAL_CLIENT_TRANSFORM_DOCUMENT_BOUND",
+    "unit_source_locator": "company.getMarketIndex exact select data[4]/10000,data[5]/100",
+    "volume_raw": "31419158",
+    "volume_transform_divisor": 100
+  },
+  "receipt_id": "a78cf1f6-8550-4f67-bac3-1f8f6bcb3491",
+  "request_budget_calls": 2,
+  "responses": {
+    "company": {
+      "archive": {
+        "bytes": 1732,
+        "content_type": "application/json;charset=UTF-8",
+        "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+        "kind": "SSE_CLIENT_RAW_RESPONSE",
+        "original_complete": true,
+        "parameters": {
+          "COMPANY_CODE": "600362",
+          "isPagination": "false",
+          "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C"
+        },
+        "path": "raw/4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a.raw",
+        "received_at": "2026-10-11T10:17:37.912998+00:00",
+        "sha256": "4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a",
+        "source_id": "sse-company-client-contract",
+        "source_url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C&COMPANY_CODE=600362&isPagination=false",
+        "status_code": 200,
+        "stream_error": null
+      },
+      "original_complete": true,
+      "parameters": {
+        "COMPANY_CODE": "600362",
+        "isPagination": "false",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C"
+      }
+    },
+    "snap": {
+      "archive": {
+        "bytes": 409,
+        "content_type": "application/json;charset=UTF-8",
+        "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+        "kind": "SSE_CLIENT_RAW_RESPONSE",
+        "original_complete": true,
+        "parameters": {
+          "select": "name,last,chg_rate,change,amount,volume,open,prev_close,ask,bid,high,low,tradephase,turnover_ratio,totalValue,amp_rate,circulating,up_limit,down_limit,fp_volume,fp_amount,cpxxprodusta,cpxxlmttype,fp_phase"
+        },
+        "path": "raw/bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403.raw",
+        "received_at": "2026-10-11T10:17:37.827298+00:00",
+        "sha256": "bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403",
+        "source_id": "sse-company-client-contract",
+        "source_url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362?select=name%2Clast%2Cchg_rate%2Cchange%2Camount%2Cvolume%2Copen%2Cprev_close%2Cask%2Cbid%2Chigh%2Clow%2Ctradephase%2Cturnover_ratio%2CtotalValue%2Camp_rate%2Ccirculating%2Cup_limit%2Cdown_limit%2Cfp_volume%2Cfp_amount%2Ccpxxprodusta%2Ccpxxlmttype%2Cfp_phase",
+        "status_code": 200,
+        "stream_error": null
+      },
+      "original_complete": true,
+      "parameters": {
+        "select": "name,last,chg_rate,change,amount,volume,open,prev_close,ask,bid,high,low,tradephase,turnover_ratio,totalValue,amp_rate,circulating,up_limit,down_limit,fp_volume,fp_amount,cpxxprodusta,cpxxlmttype,fp_phase"
+      }
+    }
+  },
+  "source_id": "sse-company-client-contract",
+  "started_at": "2026-10-11T10:17:37.198266+00:00",
+  "status": "REPORTED_PARTIAL",
+  "system_usable": false
+}
