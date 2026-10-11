@@ -1,10 +1,10 @@
 # Ticket 25 工程交付与证据
 
-实现与最终源检查完成，等待父代理独立验收及合入；本记录不签发真实技术资格。源码主提交 `343a53a`，当前数据/名单/过期修复 `e8b3a53`，追加浏览器拒绝/audit测试 `2d5aa40`；已合 root `580b801ce25bb4ae13b4335d61d90db64d444a23`（仅 trace 文档，与先前接受 CODEX-only 源相同）。源码指纹见 [source-guard.json](source-guard.json)、[验收seams](verification-support.json)。
+实现与最终源检查完成，等待父代理独立验收及合入；本记录不签发真实技术资格。源码主提交 `343a53a`，数据/名单/过期修复 `e8b3a53`，浏览器/audit测试 `2d5aa40`，重复收据发布及损失峰值复核修复 `8911282`；已合 root `2db3bd1f6ea2fcb89d3c2b00020de7a4742ec881`（30 producer及CODEX-only）形成 source merge `6fa0a951`。最终后端指纹见 [source-guard-handoff.json](source-guard-handoff.json)；此前浏览器源与前端字节记录仍保留在 [source-guard.json](source-guard.json)、[验收seams](verification-support.json)。
 
 ## 交付行为
 
-`POST /api/actions/evaluate` 获取 host 证据与账户/资金/能力快照，调用冻结20政策及22独立风险计算，在短写事务内复核同一 SQLite 中最新账户、资金、资格、已采纳数据及当前有限名单；之后归档不可变 evaluation。`GET /api/actions/current` 同快照复核依赖/到期/代码，失效事件去重；查询原 evaluation 不改其内容，离线 replay 不联网。重复固定输入仍重新 capture/calculate，只有存储返回同一个 ID。过期状态改变输入键，不能返回先前的有效旧卡片。
+`POST /api/actions/evaluate` 获取 host 证据与账户/资金/能力快照，调用冻结20政策及22独立风险计算，在短写事务内使用同一个具体 `boundary(db)` 复核最新账户、资金、持久资格与恢复状态、已采纳数据/估值/forecast/风险评估、当前有限名单、历史损失峰值和到期；之后归档不可变 evaluation。已有幂等收据同样先复核再查找，计算期间边界改变产生新的不可变拒绝修订，不能返回旧活卡。`GET /api/actions/current` 复用这个边界、检查代码并去重失效事件；原 evaluation 不变，离线 replay 不联网。固定输入每次仍重新 capture/calculate，仅存储返回同一个 ID；输入键纳入已算损失状态，低峰值不能覆盖并发已存高峰值。
 
 新增风险逐项限制账户交易权限、资金开关/暂停、损失起点/估值/外部现金流、用途时点、规则/当前状态/完整日线、技术资格范围、当前有限名单、现有持仓及联合 Decimal 预算。券商可用金额已是净可用，不重复扣冻结；费用与用户保留额计入。冻结稳定排序不扩股票池，最多一条新增卡片；所有已有持仓风险仍保留。风险政策可在 NOT_OPEN/UNKNOWN 购买权限下按确认可卖量减仓，不借收益模型资格放行。
 
@@ -14,18 +14,21 @@ Decision 保存依据、grant、账户/资金/数据/政策/完整实验/代码/
 
 | 层 | 当前结果 | 原件 |
 | --- | --- | --- |
-| 公共 API、真实 SQLite/隔离原始归档 | 24 PASS：20 actions +4 CODEX-only composition，132.42秒 | [final-current-api.log](final-current-api.log) |
+| 当前源码公共 API、真实 SQLite/隔离原始归档 | 23 actions PASS，130.29秒，包含已存在收据的缩资/名单/过期并发、同账户/资金版本的新估值及跨重启损失峰值 | [handoff-actions.log](handoff-actions.log) |
+| 当前源码 composition | 5 PASS，28.45秒：4 CODEX-only admission +1 post-close source capture；fresh METHOD绑定当前source | [handoff-composition.log](handoff-composition.log) |
 | 公共审计文字期望 | 1 PASS：一次失效=1、反向变化=0，重复查询不重复计数；未声称已经发生真实反向成交 | [audit-final.log](audit-final.log) |
 | 真实 Edge、uvicorn/vite | 1 PASS，17.9秒：无资金无alert、合格METHOD数量/独立时点/中文不确定性、今天及单股、缩权旧卡片失效 | [browser-presented-final.log](browser-presented-final.log)、[结果](browser-presented-results.json)、[今天](actions-current.png)、[单股](actions-stock.png) |
 | 真实 Edge 拒绝分支 | 分别1 PASS：陈旧估值28.5秒、UNKNOWN购买权限14.1秒、NOT_OPEN购买权限+确认可卖0股14.7秒。后者使用与API相同的显式METHOD资格时钟，不是实际盘后/市场证明 | [估值](browser-stale.log)、[权限](browser-permission.log)、[可卖](browser-sellable-final.log)、对应PNG/结果JSON |
 | TypeScript/Vite | PASS，61 modules、2.12秒 | [build-presented-final.log](build-presented-final.log) |
-| 完整本地性能 | 21个sample，nearest-rank P95 **0.4026603000秒**，30个股+5指数，外部取证0/联网0 | [benchmark-results.json](benchmark-results.json)、[最终日志](benchmark-final-current.log)、[脚本](benchmark.py) |
-| 停止档案保全 | 首批831文件，加三个拒绝浏览器/审计146文件，总计977；来源/目标 SHA256及长度逐一一致，0差异，首批未覆盖 | [初始清单](runtime-preservation.json)、[全量清单](runtime-preservation-all.json)、[追加日志](preservation-additional.log) |
-| 冻结资料保护 | own/root12源原字节及长度不变；原19 SQLite SHA `ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4`/165814272 bytes不变；三allowed artifacts不变 | [source-guard.json](source-guard.json) |
+| 当前源码完整本地性能 | 21个sample，nearest-rank P95 **0.4863553000秒**，30个股+5指数，外部取证0/联网0；此前0.4026603秒明确为receipt-boundary及30producer合入前源 | [benchmark-results.json](benchmark-results.json)、[最终日志](benchmark-handoff.log)、[脚本](benchmark.py)、[旧收据](benchmark-before-receipt-boundary-results.json) |
+| 停止档案保全 | 首批831文件，加拒绝浏览器/审计146，再加最终API/采集组合/benchmark957，总计1934；全部来源/目标SHA256及长度一致，0差异，前977未覆盖且重新核对 | [初始清单](runtime-preservation.json)、[此前977](runtime-preservation-all.json)、[最终1934](runtime-preservation-handoff.json)、[最终日志](preservation-handoff.log)、[进程停止](stopped-handoff-processes.json) |
+| 冻结资料保护 | own/root12源原字节及长度不变；原19 SQLite SHA `ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4`/165814272 bytes不变；三allowed artifacts不变；当前源码fingerprint等于最终benchmark | [source-guard-handoff.json](source-guard-handoff.json) |
+
+四个真实Edge流程及TypeScript/Vite记录验证展示时的后端源码，前端字节与本次交付相同。后续仅后端边界及producer组合变化，按父代理要求使用上述当前源码API/组合检查收口，没有把旧浏览器后端fingerprint升级为最终源。此前24 API及单独audit检查是当时结果，原件保留；不与新增23项相加冒称同一次suite。
 
 ## 性能证据的范围
 
-按父代理 [只读模型指针](../continuation-2026-10-11/frontier24-29/benchmark-artifact-reference.json) 使用实际既有模型16282 bytes、校准器474 bytes、最小配置3971 bytes；没有开真实SQL、fit或持久化 forecast。使用实际冻结 scaler/weights/intercept-only calibrator 和20政策，在21个连续归档 SSE 交易日的 METHOD 特征上重新 features→交易日连续性校验→preprocess/predict/calibrate，每个 sample 随后调用公共 evaluate 的实际数据/资格/预算/发布路径，各阶段时间分别保留。9/25休市已排除。精确 METHOD feature-packet 已按原 cutoff重建并核对同一SHA，保存在 benchmark 档案；没有补算新计时样本。
+按父代理 [只读模型指针](../continuation-2026-10-11/frontier24-29/benchmark-artifact-reference.json) 使用实际既有模型16282 bytes、校准器474 bytes、最小配置3971 bytes；没有开真实SQL、fit或持久化 forecast。使用实际冻结 scaler/weights/intercept-only calibrator 和20政策，在21个连续归档 SSE 交易日的 METHOD 特征上重新 features→交易日连续性校验→preprocess/predict/calibrate，每个 sample 随后调用公共 evaluate 的实际数据/资格/预算/发布路径，包含已有收据的最新writer复核；各阶段时间分别保留。9/25休市已排除。精确 METHOD feature-packet 及SHA保存在 benchmark 档案。最终源码只测这一组21 samples；之前收据均保留历史源区分。
 
 真实冻结候选范围仍只有 SSE:600362。用30个合成且确认的初始持仓保留超额资产，保持关注上限20。1只进入数值路径，29只范围外显式拒绝；1只范围内也因已有持仓/阈值拒绝，5指数仅背景。每次实算后只有1个 evaluation ID是幂等存储，不能理解为缓存跳过计算或30只合格股票。METHOD 零现金权益事件下 raw/economic数值相同；特征/报价/账户/资金/资格均合成，校准仍 FITTED_UNVALIDATED，真实资格仍 NOT_GRANTED，不是G1—G7或历史PIT证明。源码变更后的旧真实freeze继续历史状态。
 
@@ -43,6 +46,8 @@ Decision 保存依据、grant、账户/资金/数据/政策/完整实验/代码/
 | composition-api → composition-guard-retry2 | 17 PASS/2 FAIL，均未设置ROLL_ENV=test导致TEST_ONLY gate；保留原红，正确环境两例2 PASS。第一次retry错文件名收集0例，也保留 |
 | red-data-list → data-list-final | 移出当前名单仍保留旧卡片真实失败；补同SQLite数据/名单复核，16 PASS；新增UNKNOWN权限/quote采集/列表并发7 PASS有重叠，不相加当suite |
 | red-expiry-idempotency → final-current-api | 过期evaluate幂等返回旧活卡真实失败；绑定过期状态，最终当前24 PASS |
+| red-existing-receipt-race → boundary-final-api → final-boundary-api → handoff-actions | 已有receipt时缩资/名单并发2 FAIL/18.13秒；将最新writer复核置于prior查找前，先20 PASS/109.12秒，再22 PASS/124.34秒；最终损失键及30producer组合源23 PASS/130.29秒。各阶段非同一源码，不相加 |
+| loss-peak-final → loss-peak-corrected → handoff-actions | 首1 FAIL/7.04秒为换METHOD包被CAPABILITY_METHOD_BASIS_CHANGED正确拒绝；次1 FAIL/7.41秒是扩容后allowance期望写0，既有公式10000-6000=4000。保持同一immutable包、公共重启/扩容检查peak6000与triggered/PAUSED，纯数值rebound另层验证loss0/peak6000/allowance4000/PAUSED；最终23项包含该例。不改24保护或10公式，4000算术余额不意味着暂停的新风险可以恢复 |
 | browser-data-final | 缺默认Chromium是环境失败，改显式已有Edge；最终展示及单股样例PASS |
 | browser-sellable → browser-sellable-final | 首次fixture昨日15:05包在真实今日资格clock下正确拒绝 CURRENT_DATA_INCOMPLETE；未重标旧包为当前，改用与API风险测试相同的显式受控METHOD资格clock，2.0秒case/14.7秒run PASS。实际研究/forward/系统时钟均未改，不能提升为真实盘后证明 |
 | build-final → build-final-retry | sandbox realpath EPERM环境失败，正常已安装依赖的显式外部构建PASS；展示调整后最终再PASS |
