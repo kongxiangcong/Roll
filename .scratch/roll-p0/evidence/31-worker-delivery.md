@@ -42,3 +42,12 @@
 `D:/dsh-proj/Roll/.roll-data/implementation-evidence/31/worker-delivery/`
 
 其中 `archive-manifest.json` 逐文件记录原路径、目标相对路径、SHA-256、长度与复制核验；`scope.json` 记录测试/真实边界。managed tree 可在独立接受之后用 app archive_worktree 回收。锁定依赖安装环境可由锁文件重新生成；不将 `.venv`/node_modules 当运行证据迁入正式源码。安装结果有独立 receipt，源码版本/哈希与依赖锁保留。
+
+
+## 最新30 producer 集成后的定向组合复验
+
+交接前合入已独立接受的集成 `2db3bd1f6ea2fcb89d3c2b00020de7a4742ec881`（30 producer source `463658b`），无冲突；31 没有修改30 parser、binding 或 gate。既有 Reviews 循环仍调用 forward.work，真实 FORWARD 计划达到既有 admission 条件时才由 forward.check 调用 post_close.capture_once；本轮没有建立任何真实或 METHOD forward 计划来代替缺失资格。
+
+最新组合定向 **6 PASS / 47.63s**：4个角色用例（含新增公开 API/source-job 与显式 WORKER 组合）、1个实际 OS worker死亡重启/正常关闭/restore，以及30已有有界重复触发用例。新增测试使用 MockTransport 精确 METHOD 原件与真实隔离 SQLite：API 盘后手动采集1次后仍无worker lease/session；另启 WORKER 消费同库普通任务；重复采集复用原job、只有1batch与1次受控请求，账户保持一致，forecast=null、forward_sample_created=false。该测试不证明真实源完整性、worker实际联网采集或前向起点。
+
+新增 runtime/日志、最新 source 与15保护 receipt 追加保全在 `D:/dsh-proj/Roll/.roll-data/implementation-evidence/31/worker-delivery/composition30/`，独立 `archive-manifest.json`/`scope.json`；原4057文件/341456922bytes的根清单不覆盖。此次生产合并影响对应检查已复验，docs-only无需重复原干净安装/Chrome验收。31仍 partial，30 producer仍 partial，28实际外发及29/32—34原条款不因此关闭。
