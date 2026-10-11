@@ -169,21 +169,43 @@ class ProspectiveEvidence:
         if cutoff.tzinfo is None or cutoff > datetime.fromisoformat(now()):
             raise HTTPException(422, '查询时点须带时区且不是未来')
         selected = {}
-        origins = {}
         with self.ledger.connection() as db:
-            rows = db.execute('SELECT value,batch_id FROM pit_fact_versions WHERE plan_id=? ORDER BY ordinal', (identifier,))
+            rows = db.execute('SELECT value,batch_id,ordinal FROM pit_fact_versions WHERE plan_id=? ORDER BY ordinal', (identifier,))
             for row in rows:
                 value = json.loads(row[0])
                 previous = selected.get(value['fact_key'])
                 if datetime.fromisoformat(value['known_at']) <= cutoff and (previous is None or
                         datetime.fromisoformat(value['known_at']) >= datetime.fromisoformat(previous['known_at'])):
-                    selected[value['fact_key']] = value
-                    origins[value['fact_key']] = row[1]
+                    selected[value['fact_key']] = {**value, 'batch_id': row[1], 'ordinal': row[2]}
+        self.replay_versions(identifier, list(selected.values()), cutoff)
+        return {'plan_id': identifier, 'started_at': plan['started_at'], 'cutoff': cutoff.isoformat(),
+                'namespace': 'PROSPECTIVE', 'versions': list(selected.values()), 'network_calls': 0,
+                'capability': 'NOT_GRANTED', 'historical_pit_claim': False}
+
+    def replay_versions(self, identifier, versions, cutoff):
+        """Verify the exact append-only versions selected by an archived consumer packet."""
+        self.plan(identifier)
+        if cutoff.tzinfo is None or cutoff > datetime.fromisoformat(now()):
+            raise HTTPException(422, '查询时点须带时区且不是未来')
+        ordinals = set()
+        with self.ledger.connection() as db:
+            for value in versions:
+                ordinal = value.get('ordinal')
+                row = db.execute('SELECT value,batch_id,fact_key,known_at FROM pit_fact_versions WHERE plan_id=? AND ordinal=?',
+                                 (identifier, ordinal)).fetchone()
+                if (row is None or ordinal in ordinals or
+                        value != {**json.loads(row[0]), 'batch_id': row[1], 'ordinal': ordinal} or
+                        value['fact_key'] != row[2] or value['known_at'] != row[3] or
+                        datetime.fromisoformat(value['known_at']) > cutoff):
+                    raise HTTPException(409, 'PIT_PACKET_ORIGINAL_VERSION_BINDING_MISMATCH')
+                ordinals.add(ordinal)
         # Verify archives during offline replay; metadata presence is insufficient.
         replayed = {}
         batches = {b['batch_id']: b for b in self.batches(identifier)}
-        for value in selected.values():
-            batch = batches[origins[value['fact_key']]]
+        for value in versions:
+            batch = batches.get(value['batch_id'])
+            if batch is None:
+                raise HTTPException(409, 'PIT_PACKET_ORIGINAL_BATCH_MISSING')
             if batch['run_id'] not in replayed:
                 replayed[batch['run_id']] = {encode(f) for f in self.evidence.replay(batch['run_id'])['facts']}
             if encode(value['fact']) not in replayed[batch['run_id']] or value['known_at'] != batch['known_at']:
@@ -191,9 +213,7 @@ class ProspectiveEvidence:
             self.evidence.raw(value['raw_hash'])
             for sha in value['fact'].get('basis_raw_hashes', []):
                 self.evidence.raw(sha)
-        return {'plan_id': identifier, 'started_at': plan['started_at'], 'cutoff': cutoff.isoformat(),
-                'namespace': 'PROSPECTIVE', 'versions': list(selected.values()), 'network_calls': 0,
-                'capability': 'NOT_GRANTED', 'historical_pit_claim': False}
+        return versions
 
     def readiness(self, identifier):
         plan = self.plan(identifier)

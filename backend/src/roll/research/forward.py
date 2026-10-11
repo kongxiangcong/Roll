@@ -139,7 +139,8 @@ class ForwardArchive:
         versions = self.prospective.as_of(plans[0]['plan_id'],checked)['versions']
         if any(v['evidence_kind']!='REAL_ACQUISITION' for v in versions):
             return [], ['SYNTHETIC_PROSPECTIVE_INPUT_CANNOT_START_REAL_CLOCK']
-        rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked)
+        attempts=self.prospective.post_close.acquisitions(plans[0]['plan_id'],checked)
+        rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked,attempts)
         return rows,gaps
 
     def sessions(self, frozen, first, last, gaps=None):

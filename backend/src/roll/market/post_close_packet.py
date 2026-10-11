@@ -246,10 +246,51 @@ class PostClosePackets:
             except (ValueError,KeyError,TypeError):raise HTTPException(409,'POST_CLOSE_ORIGINAL_PARSE_FAILED')
             if computed!=snapshot['facts']:raise HTTPException(409,'POST_CLOSE_NORMALIZED_ORIGINAL_MISMATCH')
 
-    def inputs(self,versions,instrument,cutoff):
+    def acquisitions(self,plan_id,cutoff,batch_ids=None):
+        """Original completed batch receipts, including failed zero-fact acquisitions."""
+        plan=self.prospective.plan(plan_id)
+        batches=[b for b in self.prospective.batches(plan_id) if datetime.fromisoformat(b['known_at'])<=cutoff]
+        if batch_ids is not None:
+            available={b['batch_id']:b for b in batches}
+            if len(set(batch_ids))!=len(batch_ids) or any(i not in available for i in batch_ids):
+                raise HTTPException(409,'POST_CLOSE_ORIGINAL_ACQUISITION_MISSING')
+            batches=[available[i] for i in batch_ids]
+        result=[]
+        for batch in batches:
+            run=self.evidence.get('retrieval_runs',batch['run_id'])
+            request=self.evidence.get('data_requests',run['request_id'])
+            if (request['instruments']!=[plan['instrument']] or request['purpose']!='RESEARCH' or
+                batch['snapshot_id']!=run.get('snapshot_id') or batch['status']!=run['status'] or
+                batch['gaps']!=run.get('gaps',[]) or datetime.fromisoformat(run['finished_at'])>datetime.fromisoformat(batch['known_at'])):
+                raise HTTPException(409,'POST_CLOSE_ACQUISITION_RUN_BINDING_MISMATCH')
+            originals=[]
+            if run.get('snapshot_id'):
+                self.evidence.replay(run['run_id'])
+                snapshot=self.evidence.get('market_evidence_snapshots',run['snapshot_id'])
+                if snapshot['run_id']!=run['run_id'] or snapshot['request_id']!=run['request_id']:
+                    raise HTTPException(409,'POST_CLOSE_ACQUISITION_SNAPSHOT_BINDING_MISMATCH')
+                originals=[a['sha256'] for a in snapshot['archives']]
+            for tool in run.get('tools',[]):
+                if tool.get('raw_hash'):
+                    self.evidence.raw(tool['raw_hash'])
+                    originals.append(tool['raw_hash'])
+            result.append({**batch,'request_id':run['request_id'],
+                'source_id':request.get('collection_source_id'),'source_day':request.get('end_date'),
+                'original_raw_hashes':sorted(set(originals))})
+        return result
+
+    def inputs(self,versions,instrument,cutoff,acquisition_attempts=()):
         daily,statuses={},{}
         inventory=self.cash_inventory(cutoff)
         gaps=[]
+        latest={}
+        for attempt in acquisition_attempts:
+            if attempt['source_id']==SOURCE:
+                latest[(attempt['source_id'],attempt['source_day'])]=attempt
+        # Preserve old failures in the packet without making a later successful correction fail.
+        for attempt in latest.values():
+            if attempt['status'] in {'FAILED','INTERRUPTED'}:
+                gaps.extend('SOURCE_ACQUISITION_FAILURE:'+SOURCE+':'+str(g['code']) for g in attempt['gaps'])
         for version in versions:
             fact=version['fact'];day=fact.get('trade_date')
             if fact.get('instrument')!=instrument or not day:continue
@@ -338,10 +379,11 @@ class PostClosePackets:
         cutoff=cutoff or datetime.fromisoformat(now())
         inventory=self.cash_inventory(cutoff,register=True)
         versions=self.prospective.as_of(plan_id,cutoff)['versions']
-        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff)
+        attempts=self.acquisitions(plan_id,cutoff)
+        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff,attempts)
         value={'packet_id':str(uuid4()),'plan_id':plan_id,'instrument':plan['instrument'],
             'created_at':now(),'knowledge_cutoff':cutoff.isoformat(),'basis':basis,'parser_fingerprint':code(),
-            'rows':rows,'status_facts':statuses,'gaps':gaps,'versions':versions,
+            'rows':rows,'status_facts':statuses,'gaps':gaps,'versions':versions,'acquisition_attempts':attempts,
             'evidence_kind':'REAL_ACQUISITION' if versions and all(v['evidence_kind']=='REAL_ACQUISITION' for v in versions) else 'METHOD_CASE' if versions else 'NO_ACQUIRED_INPUT',
             'forward_admissible':bool(rows) and not gaps,'capability':'NOT_GRANTED','forward_started_at':None,
             'historical_pit_claim':False,'account_events_added':0}
@@ -365,9 +407,10 @@ class PostClosePackets:
                 if not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest()!=source['sha256']:
                     raise HTTPException(409,'POST_CLOSE_EXECUTION_RULE_SOURCE_CORRUPT')
         cutoff=datetime.fromisoformat(packet['knowledge_cutoff'])
-        versions=self.prospective.as_of(packet['plan_id'],cutoff)['versions']
-        if versions!=packet['versions']:raise HTTPException(409,'POST_CLOSE_PACKET_VERSION_BINDING_MISMATCH')
-        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff)
+        versions=self.prospective.replay_versions(packet['plan_id'],packet['versions'],cutoff)
+        attempts=self.acquisitions(packet['plan_id'],cutoff,[a['batch_id'] for a in packet['acquisition_attempts']])
+        if attempts!=packet['acquisition_attempts']:raise HTTPException(409,'POST_CLOSE_PACKET_ACQUISITION_BINDING_MISMATCH')
+        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts)
         inventory=self.cash_inventory(cutoff,verify_archives=True)
         return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'],
             'network_calls':0,'forward_admissible':packet['forward_admissible'],'capability':'NOT_GRANTED'}

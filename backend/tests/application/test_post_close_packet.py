@@ -171,6 +171,12 @@ def test_source_failure_is_retained_without_current_complete_bar(tmp_path,monkey
         batches=client.get('/api/research/collections/'+pid+'/batches').json()
         assert len(batches)==1 and batches[0]['status']=='FAILED'
         assert reason in [g['code'] for g in batches[0]['gaps']]
+        attempts=packet['acquisition_attempts']
+        assert attempts[0]['batch_id']==batches[0]['batch_id']
+        assert attempts[0]['run_id']==batches[0]['run_id']
+        assert reason in [g['code'] for g in attempts[0]['gaps']]
+        assert 'SOURCE_ACQUISITION_FAILURE:sse-closing-board:'+reason in packet['gaps']
+        assert client.post('/api/research/post-close-packets/'+packet['packet_id']+'/replay').json()['matches_original']
         run=client.get('/api/data/runs/'+batches[0]['run_id']).json()
         assert len(run['tools'])==1
         assert client.get('/api/data/archives/'+run['tools'][0]['raw_hash']).content==raw
@@ -235,3 +241,54 @@ def test_persisted_post_close_job_is_bounded_and_not_retried_by_repeated_trigger
         assert client.post(path,json={'basis':'repeat same bounded job'}).json()==job
         assert calls==[1] and len(client.get('/api/research/collections/'+pid+'/batches').json())==1
         assert client.get('/api/account').json()==account
+
+
+def test_packet_replay_keeps_exact_old_versions_when_same_cutoff_receives_correction(tmp_path,monkeypatch):
+    clock='2026-10-12T15:06:00+08:00'
+    for module in ['roll.research.prospective','roll.market.post_close_packet']:
+        monkeypatch.setattr(module+'.now',lambda:clock)
+    app=create_app(tmp_path)
+    with TestClient(app) as client:
+        pid=setup(client)
+        fact={'instrument':'SSE:600362','group':'DAILY','trade_date':'2026-10-12','source_id':'method-a',
+            'open':'100','close':'100','high':'101','low':'99','volume_shares':'10','amount_yuan':'1000',
+            'volume_unit':'SHARE','adjustment':'RAW','errors':[],'model_daily_input_allowed':True,
+            'completion_state':'COMPLETE_REPORTED_HISTORICAL'}
+        archived_batch(app,pid,[fact],clock)
+        path='/api/research/collections/'+pid+'/post-close-packets'
+        old=client.post(path,json={'basis':'immutable first input packet'}).json()
+        archived_batch(app,pid,[{**fact,'close':'101','amount_yuan':'1010'}],clock)
+        new=client.post(path,json={'basis':'new correction retains prior input packet'}).json()
+        assert old['rows'][0]['close']=='100' and new['rows'][0]['close']=='101'
+        assert old['versions'][0]['ordinal']!=new['versions'][0]['ordinal']
+        assert old['versions'][0]['batch_id']!=new['versions'][0]['batch_id']
+        replay=client.post('/api/research/post-close-packets/'+old['packet_id']+'/replay')
+        assert replay.status_code==200,replay.text
+        assert replay.json()['matches_original'] and replay.json()['network_calls']==0
+
+
+def test_failed_source_receipt_stays_in_old_packet_after_explicit_successful_capture(tmp_path,monkeypatch):
+    clock='2026-10-12T15:06:00+08:00'
+    for module in ['roll.research.prospective','roll.market.post_close_packet','roll.market.evidence']:
+        monkeypatch.setattr(module+'.now',lambda:clock)
+    times=iter([145959,150005]);calls=[]
+    def supplier(_):
+        calls.append(1)
+        return httpx.Response(200,json={'date':20261012,'time':next(times),
+            'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]})
+    app=create_app(tmp_path,market_transport=httpx.MockTransport(supplier))
+    with TestClient(app) as client:
+        pid=setup(client);path='/api/research/collections/'+pid+'/post-close'
+        old=client.post(path,json={'basis':'METHOD failed explicit capture'}).json()
+        new=client.post(path,json={'basis':'METHOD separately authorized successful capture'}).json()
+        gap='SOURCE_ACQUISITION_FAILURE:sse-closing-board:SSE_SESSION_NOT_CLOSED'
+        assert gap in old['gaps'] and gap not in new['gaps']
+        assert len(old['acquisition_attempts'])==1 and len(new['acquisition_attempts'])==2
+        assert new['acquisition_attempts'][0]==old['acquisition_attempts'][0]
+        assert new['acquisition_attempts'][0]['status']=='FAILED'
+        assert len(calls)==2
+        for packet in [old,new]:
+            replay=client.post('/api/research/post-close-packets/'+packet['packet_id']+'/replay')
+            assert replay.status_code==200,replay.text
+            assert replay.json()['matches_original'] and replay.json()['network_calls']==0
+        assert len(calls)==2 and not new['forward_admissible']
