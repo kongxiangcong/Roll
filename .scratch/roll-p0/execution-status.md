@@ -14,6 +14,8 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 
 ## 当前前沿
 
+2026-10-11最新：**01—25工程范围已独立接受，26正在实施**。25最终源759033c8合入bf555242，独立收据371dd9c补齐五项显式状态并接受；真实资格仍FITTED_UNVALIDATED/NOT_GRANTED。依赖顺序继续26→27→28站内/配置/内部出站链→29；28实际外部发送待用户配置，整体保持partial。30有限来源解析和31安装/worker切片已接受但整体partial；32—34真实起点、自然时间和条件资格尚未成立。以下旧前沿保留其原时点。
+
 2026-10-11本轮：**20与21工程范围完成，按顺序推进23**。21保存G1—G7初步门槛、连续策略/可比基线、概率支持与相关区间、G5必需分项、正式监测固定输入方法、宿主确认性准入及审计、重放/页面。当前真实19一致副本诊断FAIL（G4/G5），G1/G2/G3/G6/G7不足，原账户/家族拟合预算不变，无SEALED消费或真实前向。冻结参数邻域、独立统计/实际G6/G7与技术审阅缺口保留；正式能力NOT_GRANTED。见[21验收](evidence/21/acceptance.md)。以下旧前沿均为历史快照。
 
 2026-10-10本轮：**19基本闭环完成，依赖已具备，后续可另行实施**。ADR0004批准真实历史量价重建用途，严格PIT不足保持限制；实际600362 DEV1148/CAL444完成固定候选训练与独立CAL截距拟合，模型/CAL/输入及依赖工件冻结，校准FITTED_UNVALIDATED、完整实验未冻结、正式能力NOT_GRANTED。460后端/52模块稳定指纹通过，前端build/真实Chrome、两个实际HTTP宿主重启及禁止外网0调用重放、原账户/旧失败预算/154原件保全通过。详见[本轮19验收](evidence/19-reconstruction-2026-10-10/acceptance.md)。仅实施19；没有后续票开发、SEALED消费、真实账户改写或前向起点。以下当天旧路线与取证快照作为历史保留。
@@ -388,3 +390,17 @@ CODEX-only 宿主和页面实现 c3198e0 已合入 8497fead，独立收据 1c90c
 固定源码受影响33 passed /192.57s，合31后最小组合3 passed /21.91s；另9项独立公共API同轮55.31s通过。2570个新增保全文件双侧5140次SHA/长度核验零差异，旧13989文件未连接SQLite或改写。source合入ac5a119，独立收据c3fe7d8；15保护源码及原19checksum不变。见[独立接受](evidence/continuation-2026-10-11/ticket30-history-independent/acceptance.md)。
 
 30仍partial：当前完整状态/上市阶段、当前endpoint单位及公司行动覆盖尚未闭合；已有2013—2025 CNINFO候选/分页schema仍是下一有限内部前沿，不能统称外部等待。32尚无合法真实首次归档，33真实自然月终点和34条件启用保持未执行。25字段补齐与当前默认CODEX-only验收清单收口正在进行；旧DeepSeek正向测试排除而非通过，历史查询/取消与403守卫继续验。
+
+### 2026-10-11 Ticket 25 最终独立接受与 Ticket 26 启动
+
+25 Completion complete：最终源759033c8合入bf555242，独立收据371dd9c。确定性门禁、联合资金/费用/保留额/损失预算、有限名单及不可变动作已交付；当前与重放分别保存账户、数据、模型、执行、资格状态，独立风险动作使用自身grant，收益模型无资格时不借用全局风险资格。发布及已有幂等回执之前复核最新资金、名单、到期与估值；拒绝和失效保存后继，不改真实账本。见[本票分阶段验收](evidence/ticket25/acceptance.md)、[五状态最终独立验收](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)。
+
+最终字段修正后23项动作API通过134.57s、6项CODEX/producer/worker组合34.20s；合最新30历史源后最小3项组合18.90s。另3项全新公共API独立检查18.89s，含重启重放、风险自身资格、零可卖量及生产拒绝METHOD。较早31项独立检查、旧103 PASS/1 heartbeat FAIL、旧浏览器流程及各轮计时保留原源码边界，不改写为最终整套通过。
+
+最终21次完整本地数值/应用/writer采样P95为0.4157914秒：使用实际冻结模型与校准工件、隔离METHOD特征和21个实际归档交易日，覆盖30股与5指数有限名单；不是30个合格机会，不授予真实资格。未执行新训练、实际forecast或provider调用。3135个停止运行文件按最新清单保全，新增1201文件双侧2402次SHA/长度检查零差异；15保护源码及原19数据库checksum不变。真实工件仍FITTED_UNVALIDATED，实际NOT_GRANTED。
+
+26已从371dd9c启动独立工作树，正在完成准备操作、部分成交、显式关联和外部未决；尚未验收或结项。27—29继续按依赖推进，不重复询问已授权内部通知范围。CODEX默认runner修正正在独立验收，DeepSeek正向历史用例排除而非通过。
+
+### 2026-10-11 默认 CODEX 验收范围独立接受
+
+仅tests/config/scripts/docs的runner修正31f3feb合入d5ef226，独立收据ed936ce；产品源码未修改。默认收集591 selected /594 collected /3历史deselected，三纯历史DeepSeek文件不进入默认验收；显式指定它们仍21 deselected /0 selected /exit5，不计PASS。CODEX slot/retry/timeout、archive retry、旧DeepSeek GET/cancel、新DeepSeek403和显式改存CODEX保留。首次独立4项为3 PASS/1回执shape断言失败，诊断保留；修正测试断言后该单例1 PASS/6.52s。另前端CLI/list2 PASS/5.73s，未重复Chrome/build或执行整套默认suite。[独立验收](evidence/continuation-2026-10-11/codex-runner-independent/acceptance.md)。540运行文件双端1080 SHA/长度核验零差异，15保护及原19checksum不变，DeepSeek SDK/provider调用0。当前后续前沿仍26→27→28内部→29。
