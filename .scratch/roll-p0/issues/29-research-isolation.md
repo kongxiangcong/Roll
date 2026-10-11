@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** partial
+**Completion:** complete
 
 **Primary acceptance:** AT-61。
 
@@ -41,5 +41,7 @@
 2026-10-11：独立merger已接受固定 db6ffec，并 no-ff 合入 80fbcc23。五项只读公共API语义与新合并组合通过；3PASS/1长路径harness失败→执行链PASS，RUN02 fixture失败→单项PASS，完整谱系保留。owner13043文件双端SHA/length零差异，15保护/原19checksum/193donor不变；新独立3122文件另namespace保全，CIM0，0外网/model/fit/forecast/SEALED/实际grant/通知。有限29工程验收PASS，可释放31；METHOD不代替G7/实际通知。详见[独立回执](../evidence/continuation-2026-10-11/ticket29-independent/acceptance.md)。顶部完成状态及根追踪由协调者更新，本评论不改历史声明。
 
 2026-10-11：协调者将非约定的in-progress完成字段改为partial。29上述有限工程接受与31安装前沿保留；最终双轴规格审阅新发现reports执行诊断读取fees_yuan，而已保存风险REDUCE/EXIT动作不含该字段，现有独立成交报告样例仅覆盖收益BUY。这是新增调用方缺口，待统一singlefix公开风险成交链红绿及独立接受，不能用此前五项通过关闭。本票原条款保持原文；真实G7/外部渠道/正式资格仍另留状态。
+
+2026-10-11最终修复独立接受：固定产品4a975c62、稳定交接94d87111合入67afeadc，独立收据076e67d5。公共METHOD风险REDUCE/SELL报告及JSON/文字导出保留原方案费用None/UNKNOWN与实际7.00分别记录，旧shadow不改，原风险报告500已修复；owner另有REDUCE/EXIT两例红绿。五项独立检查31.09秒通过（并非整套测试），与此前29四命名空间/BUY/partial/时间链/不可比报告组合关闭本票工程缺口，Completion=complete。真实G7、完整来源、实际外发与资金资格仍分别未完成；不会从工程报告推导因果收益或正式资格。见[最终独立接受](../evidence/continuation-2026-10-11/final-singlefix-independent/acceptance.md)、[审阅关闭记录](../evidence/continuation-2026-10-11/final-review/resolution.md)。
 
 2026-10-11 最终双轴审阅修复（等待独立复验）：独立风险 REDUCE/EXIT→prepare→实际 SELL 关联后的研究报告/JSON/text 保留原 Decision 未冻结 proposal fee 为 None/UNKNOWN，fee_comparison=PROPOSAL_FEE_UNKNOWN，实际成交费用仍独立保存；不填0、不借BUY费用、不回写 shadow/研究原件。公开 SQLite 字面500红→两风险动作绿见 [本轮回执](../evidence/final-review-fix/acceptance.md)。
