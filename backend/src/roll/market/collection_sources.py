@@ -13,6 +13,7 @@ from roll.accounts.ledger import encode, now
 CNE_COMMIT = 'c118038ea82b5bb78783c0c17a1d9251b36de71d'
 CLEANING_VERSION = 'prospective-cleaning-v1'
 SOURCES = [
+    {'id': 'sse-company-client-contract', 'name': '上交所公司行情字段原件', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
     {'id': 'sse-closing-board', 'name': '上交所盘后原始快照', 'upstream': 'SSE', 'group': 'DAILY', 'engine': 'ROLL'},
     {'id': 'sse-suspension-date', 'name': '上交所指定日期停牌观察', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
     {'id': 'sse-stock-suspension-interval', 'name': '上交所证券停牌区间原件', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
@@ -64,6 +65,12 @@ class CollectionSources:
                         timeout_seconds=15,adapter_version='source-bound-post-close-v1',
                         license='Roll adaptation; upstream data rights separate',
                         unit_scope='SSE board original units/session turnover scope UNVERIFIED; not model-admissible')
+                if spec['id']=='sse-company-client-contract':
+                    policy.update(basis='2026-10-11授权同官方company客户端有限两源合同',max_calls=2,
+                        timeout_seconds=15,adapter_version='source-bound-sse-company-client-v1',
+                        license='Roll adaptation; upstream data rights separate',
+                        historical_revision_proof='RECEIVED_ORIGINAL_NOT_HISTORICAL_PIT',
+                        unit_scope='Official client display transforms only; sessions/full listing-risk/effective coverage UNKNOWN')
                 if spec['id']=='sse-suspension-date':
                     policy.update(basis='2026-10-11授权有限指定日期官方SSE source assessment',max_calls=2,
                         timeout_seconds=15,adapter_version='source-bound-sse-suspension-date-v1',
