@@ -1,0 +1,186 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_____ test_exact_actual_bytes_fixed_successor_ids_restart_and_typed_gaps ______
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-independent/runtime/test_exact_actual_bytes_fixed_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C9E6A0C2B0>
+
+    def test_exact_actual_bytes_fixed_successor_ids_restart_and_typed_gaps(tmp_path,monkeypatch):
+        fixed_clock(monkeypatch)
+        raw=(PROOF/(RAW_SHA+'.raw')).read_bytes()
+        assert len(raw)==409 and hashlib.sha256(raw).hexdigest()==RAW_SHA
+        calls=[];fixture=transport(raw,calls)
+>       with TestClient(create_app(tmp_path,market_transport=fixture,runtime_role='API')) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\72449\.codex\visualizations\2026\10\10\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\ticket30-price-independent\test_public.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:1153: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:109: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-indep..._0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.f0731f3a-9c73-4ff5-a5e6-2ce6744bfeb2.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\ticket30-price-independent\\runtime\\test_exact_actual_bytes_fixed_0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.f0731f3a-9c73-4ff5-a5e6-2ce6744bfeb2.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+______ test_precision_current_p1_and_previous_close_are_separate_scopes _______
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-independent/runtime/test_precision_current_p1_and_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C9FF862B10>
+
+    def test_precision_current_p1_and_previous_close_are_separate_scopes(tmp_path,monkeypatch):
+        fixed_clock(monkeypatch,'2026-10-12T19:00:00+08:00')
+        q=snap();q['date']=20261012;q['snap'][7]=100;q['snap'][12]=' P1 '
+        raw=json.dumps(q).replace('44.01','44.010000000000000000000000000001').replace('125,','12345678901234567890.123456,').encode()
+        calls=[]
+>       with TestClient(create_app(tmp_path,market_transport=transport(raw,calls),runtime_role='API')) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\72449\.codex\visualizations\2026\10\10\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\ticket30-price-independent\test_public.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:1153: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:109: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-indep..._0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.86f3591f-30ef-4cef-9906-de2634130d69.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\ticket30-price-independent\\runtime\\test_precision_current_p1_and_0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.86f3591f-30ef-4cef-9906-de2634130d69.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+___________ test_refused_source_and_nonpositive_price_have_typed409 ___________
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-independent/runtime/test_refused_source_and_nonpos0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C9FF7C3890>
+
+    def test_refused_source_and_nonpositive_price_have_typed409(tmp_path,monkeypatch):
+        fixed_clock(monkeypatch)
+        q=snap();q['snap'][1]=0
+        for name,raw in [('nonobject',b'[]'),('zero',json.dumps(q).encode())]:
+            calls=[]
+>           with TestClient(create_app(tmp_path/name,market_transport=transport(raw,calls),runtime_role='API'),raise_server_exceptions=False) as client:
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\72449\.codex\visualizations\2026\10\10\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\ticket30-price-independent\test_public.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:1153: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:109: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-indep...ct/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.4c57a7f5-ce0d-4f02-924f-5bcbad1e1add.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\ticket30-price-independent\\runtime\\test_refused_source_and_nonpos0\\nonobject\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.4c57a7f5-ce0d-4f02-924f-5bcbad1e1add.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+___________ test_each_fixed_dependency_damage_refuses_query_replay ____________
+
+tmp_path = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-independent/runtime/test_each_fixed_dependency_dam0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C9FF6C5480>
+
+    def test_each_fixed_dependency_damage_refuses_query_replay(tmp_path,monkeypatch):
+        fixed_clock(monkeypatch)
+        for role in ['snap','js','source','assessment','packet']:
+>           calls=[];app=create_app(tmp_path/role,market_transport=transport(json.dumps(snap()).encode(),calls),runtime_role='API')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\72449\.codex\visualizations\2026\10\10\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\ticket30-price-independent\test_public.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:1153: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:109: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/72449/.codex/visualizations/2026/10/10/01a126a2-cdcc-7d52-b24a-ad47b49bcc56/ticket30-price-indep...ap/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.04196cbf-e8c8-4d6b-be5b-805f802dbef4.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\ticket30-price-independent\\runtime\\test_each_fixed_dependency_dam0\\snap\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.04196cbf-e8c8-4d6b-be5b-805f802dbef4.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED ::test_exact_actual_bytes_fixed_successor_ids_restart_and_typed_gaps
+FAILED ::test_precision_current_p1_and_previous_close_are_separate_scopes - F...
+FAILED ::test_refused_source_and_nonpositive_price_have_typed409 - FileNotFou...
+FAILED ::test_each_fixed_dependency_damage_refuses_query_replay - FileNotFoun...
+4 failed in 2.42s
