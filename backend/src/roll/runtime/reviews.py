@@ -379,6 +379,7 @@ class Reviews:
     def audit(self,task,result):
         state,reasons=consistency(task['frozen_account'],self.ledger.pending_drafts())
         metrics={name:{'status':'NOT_CONNECTED','value':None} for name in ['unfinished_execution_intents','invalidated_actions','duplicate_notifications','action_flips','shadow_records']}
+        if hasattr(self, 'actions'): metrics.update(self.actions.metrics())
         metrics.update(data_coverage={'status':'CHECKED','value':len(result['gaps']),'gaps':result['gaps']},
             account_differences={'status':'CHECKED','value':len(reasons),'state':state,'reasons':reasons},
             module_errors={'status':'CHECKED','value':len(task['module_errors']),'errors':task['module_errors']})

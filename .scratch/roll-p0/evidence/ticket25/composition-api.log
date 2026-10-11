@@ -1,0 +1,80 @@
+.................FF                                                      [100%]
+================================== FAILURES ===================================
+_ test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25compose/test_explicit_codex_works_with0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E86AC61020>
+
+    def test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history(tmp_path,monkeypatch):
+        directory=tmp_path/'data'
+        legacy=legacy_settings(directory)
+        credential=tmp_path/'auth.json'
+        credential.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_CASE_ONLY'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(credential))
+        worker=tmp_path/'worker.py';worker.write_text(WORKER,encoding='utf-8')
+>       with TestClient(create_app(directory,codex_worker=worker)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_codex_only_scope.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:980: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:507: in _create_app
+    codex = CodexEvidence(evidence, codex_worker, input_observer=research.market_input_exposed,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <roll.agents.codex_evidence.CodexEvidence object at 0x000001E86B05CEF0>
+evidence = <roll.market.evidence.EvidenceStore object at 0x000001E86AF85FD0>
+worker = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25compose/test_explicit_codex_works_with0/worker.py')
+input_observer = <bound method ExperimentRegistry.market_input_exposed of <roll.research.registry.ExperimentRegistry object at 0x000001E86AF86330>>
+
+    def __init__(self, evidence, worker=None, input_observer=None, *, archive_reuse_check:Callable[[set[str]],bool]):
+        if worker is not None and os.environ.get('ROLL_ENV') != 'test':
+>           raise ValueError('External worker injection requires ROLL_ENV=test')
+E           ValueError: External worker injection requires ROLL_ENV=test
+
+backend\src\roll\agents\codex_evidence.py:77: ValueError
+_ test_legacy_selection_cannot_create_a_review_run_for_valid_frozen_material __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25compose/test_legacy_selection_cannot_c0')
+
+    def test_legacy_selection_cannot_create_a_review_run_for_valid_frozen_material(tmp_path):
+        directory=tmp_path/'data';legacy_settings(directory)
+        fixture=tmp_path/'review.json'
+        fixture.write_text(json.dumps({'cases':[{'case_id':'scope-refusal','gates':{'G4':'FAIL'},
+            'checks_complete':True,'endpoint_reached':True,'observed_value':-1}]}))
+>       with TestClient(create_app(directory,technical_review_method_file=fixture)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_codex_only_scope.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:980: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:515: in _create_app
+    technical_reviews=TechnicalReviews(validation,agent_settings,worker=codex_worker,endpoint=deepseek_endpoint,risk_policies=risk_policies,method_file=technical_review_method_file)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <roll.research.technical_review.TechnicalReviews object at 0x000001E86B2F4590>
+validation = <roll.research.validation.AutomaticValidation object at 0x000001E86B018250>
+settings = <roll.agents.settings.AgentSettings object at 0x000001E86B33F7D0>
+
+    def __init__(self,validation,settings,*,worker=None,endpoint=None,risk_policies=None,method_file=None):
+        self.validation=validation;self.shadow=validation.shadow;self.registry=validation.registry
+        self.ledger=validation.ledger;self.evidence=validation.evidence;self.settings=settings
+        self.worker=worker;self.endpoint=endpoint or 'https://api.deepseek.com'
+        self.risk_policies=risk_policies
+        self.method_file=method_file
+        self.method=worker is not None or endpoint is not None
+        self.active={};self.lock=threading.Lock()
+>       if (self.method or method_file is not None) and os.environ.get('ROLL_ENV')!='test':raise ValueError('REVIEW_METHOD_ADAPTER_TEST_ONLY')
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REVIEW_METHOD_ADAPTER_TEST_ONLY
+
+backend\src\roll\research\technical_review.py:38: ValueError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_codex_only_scope.py::test_explicit_codex_works_with_legacy_settings_and_resave_preserves_history
+FAILED backend\tests\application\test_codex_only_scope.py::test_legacy_selection_cannot_create_a_review_run_for_valid_frozen_material
+2 failed, 17 passed in 104.57s (0:01:44)

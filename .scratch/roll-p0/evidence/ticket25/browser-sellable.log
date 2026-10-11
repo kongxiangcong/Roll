@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [43660]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8044 (Press CTRL+C to quit)
+[WebServer] (node:23672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:31264) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31264) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\actions-restrictions.spec.ts:3:1 › current action retains explicit stale, permission or sellable refusal (1.1s)
+
+
+  1) tests\e2e\actions-restrictions.spec.ts:3:1 › current action retains explicit stale, permission or sellable refusal 
+
+    Error: {"detail":{"code":"CAPABILITY_ADMISSION_REFUSED","reasons":["CURRENT_DATA_INCOMPLETE"]}}
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m201[39m
+    Received: [31m409[39m
+
+      20 |     const proposal=await(await page.request.get('/api/capabilities/proposal?material_id=method-material&review_run_id=method-codex-review')).json();
+      21 |     const grant=await page.request.post('/api/capabilities/grants',{data:{...proposal,allowed_actions:scenario==='sellable'?['REDUCE','EXIT']:['BUY'],idempotency_key:'grant',basis:'METHOD'}});
+    > 22 |     expect(grant.status(),await grant.text()).toBe(201);
+         |                                               ^
+      23 |   }
+      24 |   await page.reload();
+      25 |   await page.getByRole('button',{name:'核验当前动作',exact:true}).click();
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket25\frontend\tests\e2e\actions-restrictions.spec.ts:22:47
+
+    Error Context: test-results\actions-restrictions-curre-b46d0-mission-or-sellable-refusal\error-context.md
+
+  1 failed
+    tests\e2e\actions-restrictions.spec.ts:3:1 › current action retains explicit stale, permission or sellable refusal 

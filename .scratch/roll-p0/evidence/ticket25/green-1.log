@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_ungranted_evaluation_retains_observations_and_immutable_refusal _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25g1/test_ungranted_evaluation_reta0')
+
+    def test_ungranted_evaluation_retains_observations_and_immutable_refusal(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            first = client.post('/api/actions/evaluate', json={})
+            assert first.status_code == 201, first.text
+            value = first.json()
+            assert value['decisions'] == []
+            assert 'TECHNICAL_CAPABILITY_UNGRANTED' in value['limitations']
+            assert client.get('/api/actions/current').json()['evaluation']['evaluation_id'] == value['evaluation_id']
+>           assert client.post('/api/actions/evaluate', json={}).json() == value
+E           AssertionError: assert {'account_ver...613a5f1', ...} == {'account_ver...264f64e', ...}
+E             
+E             Omitting 11 identical items, use -vv to show
+E             Differing items:
+E             {'registered_at': '2026-10-11T03:01:41.743890+00:00'} != {'registered_at': '2026-10-11T03:01:41.651253+00:00'}
+E             {'input_fingerprint': 'b805c7345af6f3ed5d70e82c6ccc043339480ccc8ac1c69d0e789299d04ec359'} != {'input_fingerprint': '25d92b6190c24799ecd45a20ffd7939f7cc3104f6b16fdb749bf7d74db59603b'}
+E             {'evaluation_id': '4b4ed06e-6408-4900-852d-1f241613a5f1'} != {'evaluation_id': 'a4558af5-c5bc-471a-b3f4-63fb3264f64e'}
+E             {'input_archive': {'bytes': 2180, 'kind': 'CURRENT_ACTION_INPUT', 'path': 'raw/b805c7345af6f3ed5d70e82c6cc...
+E             
+E             ...Full output truncated (3 lines hidden), use '-vv' to show
+
+backend\tests\application\test_actions.py:13: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_ungranted_evaluation_retains_observations_and_immutable_refusal
+1 failed in 6.71s
