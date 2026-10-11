@@ -33,6 +33,7 @@ from roll.research.technical_review import TechnicalReviews,ReviewCommand as Tec
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
 from roll.market.post_close_packet import PacketCommand, ObligationCommand
+from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
@@ -174,6 +175,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def shadow_results(freeze_id:str):
         return shadow.results(freeze_id)
     prospective=ProspectiveEvidence(evidence,research)
+    price_quotes=PriceQuotes(prospective)
     forward=ForwardArchive(shadow,prospective,review_clock)
     app.state.forward=forward
 
@@ -225,7 +227,9 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.get('/api/research/collections/{plan_id}/source-gaps')
     def post_close_source_gaps(plan_id: str):
-        return prospective.post_close.source_gaps(plan_id)
+        return {**prospective.post_close.source_gaps(plan_id),
+                'price_quote_assessments': price_quotes.assessments(plan_id),
+                'price_quote_current': price_quotes.current(plan_id)}
 
     @app.post('/api/research/collections/{plan_id}/sse-suspension',status_code=201)
     def sse_suspension_capture(plan_id:str,command:PacketCommand):
@@ -247,6 +251,26 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def sse_company_contract_capture(plan_id:str,command:PacketCommand):
         return prospective.post_close.company_contracts.capture(plan_id,command.basis)
 
+    @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)
+    def sse_price_assess(plan_id:str,command:PriceQuoteCommand):
+        return price_quotes.assess(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-price-quotes')
+    def sse_price_assessments(plan_id:str):
+        return price_quotes.assessments(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/sse-price-quotes/current')
+    def sse_price_current(plan_id:str):
+        return price_quotes.current(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-price-packets',status_code=201)
+    def sse_price_packet(plan_id:str,command:PricePacketCommand):
+        return price_quotes.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-price-packets/{packet_id}')
+    def sse_price_packet_get(plan_id:str,packet_id:str):
+        return price_quotes.packet(plan_id,packet_id)
+
     @app.get('/api/research/collections/{plan_id}/sse-company-contract-receipts')
     def sse_company_contract_receipts(plan_id:str):
         return prospective.post_close.company_contracts.receipts(plan_id)
@@ -265,6 +289,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
+        if price_quotes.saved_packet(packet_id):
+            return price_quotes.replay(packet_id)
         return prospective.post_close.replay(packet_id)
     app.state.collection_sources=prospective.sources
     development=SyntheticDevelopment(research,executions,models)
