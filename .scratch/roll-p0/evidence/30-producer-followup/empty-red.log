@@ -1,0 +1,21 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_zero_rows_with_nonzero_total_and_old_empty_daily_stay_named_gaps ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30h-empty-red/test_zero_rows_with_nonzero_to0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F8FED0C510>
+
+    def test_zero_rows_with_nonzero_total_and_old_empty_daily_stay_named_gaps(tmp_path,monkeypatch):
+        monkeypatch.setattr('roll.market.post_close_packet.now',lambda:'2026-10-12T15:06:00+08:00')
+        app=create_app(tmp_path)
+        with TestClient(app) as client:
+            pid=setup(client)
+            value=client.post(f'/api/research/collections/{pid}/sse-history-assessments',json={'basis':'Preserve failed finite query evidence'}).json()
+>           audit=next(a for a in value['query_audits'] if a['source_role']=='suspension_inconsistent')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           StopIteration
+
+backend\tests\application\test_sse_history_assessment.py:71: StopIteration
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_history_assessment.py::test_zero_rows_with_nonzero_total_and_old_empty_daily_stay_named_gaps
+1 failed, 2 deselected in 5.73s

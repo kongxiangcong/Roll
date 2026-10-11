@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_official_suspension_proves_returned_event_and_one_date_query_only ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30h-suspension-red/test_official_suspension_prove0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000235FEF40640>
+
+    def test_official_suspension_proves_returned_event_and_one_date_query_only(tmp_path,monkeypatch):
+        clock='2026-10-12T15:06:00+08:00'
+        monkeypatch.setattr('roll.market.post_close_packet.now',lambda:clock)
+        app=create_app(tmp_path,market_transport=httpx.MockTransport(lambda request: (_ for _ in ()).throw(AssertionError('offline'))))
+        with TestClient(app) as client:
+            pid=setup(client)
+            value=client.post(f'/api/research/collections/{pid}/sse-history-assessments',json={'basis':'Inspect returned halt event'}).json()
+>           assert len(value['suspension_facts'])==1
+E           assert 0 == 1
+E            +  where 0 = len([])
+
+backend\tests\application\test_sse_history_assessment.py:51: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_history_assessment.py::test_official_suspension_proves_returned_event_and_one_date_query_only
+1 failed, 1 deselected in 7.16s
