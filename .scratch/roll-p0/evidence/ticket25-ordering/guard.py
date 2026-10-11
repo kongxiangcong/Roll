@@ -18,8 +18,13 @@ for r in reference:
 old=json.loads((own/'.scratch/roll-p0/evidence/ticket26/protected-source-final.json').read_text(encoding='utf-8'))['actual19_database']
 db=digest(Path(old['path']))
 assert (db['bytes'],db['sha256'])==(old['bytes'],old['sha256'])
+artifacts=[]
+for r in json.loads((own/'.scratch/roll-p0/evidence/ticket25/source-guard-latest.json').read_text(encoding='utf-8'))['allowed_model_artifacts_unchanged']:
+    got=digest(Path(r['path']))
+    assert (got['bytes'],got['sha256'])==(r['bytes'],r['sha256'])
+    artifacts.append(got)
 inventory={str(p.relative_to(own/'backend/src/roll')).replace('\\','/'):hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest() for p in sorted((own/'backend/src/roll').rglob('*.py'))}
-result={'stage':sys.argv[1], 'protected_15_root_own':checks,'original19_checksum_only_no_SQLite_connection':db,'application_sources':inventory,'mismatches':0}
+result={'stage':sys.argv[1], 'protected_15_root_own':checks,'separate_allowed_3_checksum_only':artifacts,'original19_checksum_only_no_SQLite_connection':db,'application_sources':inventory,'mismatches':0}
 path=out/('source-guard-'+sys.argv[1]+'.json')
 if path.exists():raise ValueError('NEW_STAGE_REQUIRED_DO_NOT_OVERWRITE')
 path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
