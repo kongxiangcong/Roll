@@ -1,0 +1,110 @@
+[WebServer] INFO:     Started server process [33068]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8035 (Press CTRL+C to quit)
+[WebServer] (node:33696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:31876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ERROR:    Exception in ASGI application
+[WebServer] Traceback (most recent call last):
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 416, in run_asgi
+[WebServer]     result = await app(  # type: ignore[func-returns-value]
+[WebServer]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]         self.scope, self.receive, self.send
+[WebServer]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]     )
+[WebServer]     ^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+[WebServer]     return await self.app(scope, receive, send)
+[WebServer]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+[WebServer]     await super().__call__(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+[WebServer]     await self.middleware_stack(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+[WebServer]     raise exc
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+[WebServer]     await self.app(scope, receive, _send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 197, in __call__
+[WebServer]     response = await self.dispatch_func(request, call_next)
+[WebServer]                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\src\roll\app.py", line 1002, in local_recovery_access
+[WebServer]     return await call_next(request)
+[WebServer]            ^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 173, in call_next
+[WebServer]     raise app_exc from app_exc.__cause__ or app_exc.__context__
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+[WebServer]     await self.app(scope, receive_or_disconnect, send_no_error)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+[WebServer]     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+[WebServer]     raise exc
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+[WebServer]     await app(scope, receive, sender)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+[WebServer]     await self.app(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\routing.py", line 676, in __call__
+[WebServer]     await self.middleware_stack(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+[WebServer]     await route.handle(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1281, in handle
+[WebServer]     await super().handle(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\routing.py", line 282, in handle
+[WebServer]     await self.app(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+[WebServer]     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+[WebServer]     raise exc
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+[WebServer]     await app(scope, receive, sender)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+[WebServer]     response = await f(request)
+[WebServer]                ^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+[WebServer]     raw_response = await run_endpoint_function(
+[WebServer]                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]     ...<3 lines>...
+[WebServer]     )
+[WebServer]     ^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+[WebServer]     return await run_in_threadpool(dependant.call, **values)
+[WebServer]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+[WebServer]     return await anyio.to_thread.run_sync(func)
+[WebServer]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+[WebServer]     return await get_async_backend().run_sync_in_worker_thread(
+[WebServer]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]         func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+[WebServer]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]     )
+[WebServer]     ^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+[WebServer]     return await future
+[WebServer]            ^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+[WebServer]     result = context.run(func, *args)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\src\roll\app.py", line 811, in evaluate_actions
+[WebServer]     return actions.evaluate(command)
+[WebServer]            ~~~~~~~~~~~~~~~~^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\src\roll\decisions\actions.py", line 249, in evaluate
+[WebServer]     result = self.calculate(inputs)
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\src\roll\decisions\actions.py", line 144, in calculate
+[WebServer]     try: loss = evaluate_loss(funding, LossFacts(**packet['loss_facts']), inputs.get('previous_loss'))
+[WebServer]                 ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\src\roll\decisions\funding.py", line 58, in evaluate_loss
+[WebServer]     if any(value[key] != authorization[key] for key in ["scope_kind", "scope_id", "baseline_account_version"]) or origin != authorization["loss_origin_at"]:
+[WebServer]        ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[WebServer]   File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\src\roll\decisions\funding.py", line 58, in <genexpr>
+[WebServer]     if any(value[key] != authorization[key] for key in ["scope_kind", "scope_id", "baseline_account_version"]) or origin != authorization["loss_origin_at"]:
+[WebServer]                          ~~~~~~~~~~~~~^^^^^
+[WebServer] KeyError: 'scope_kind'
+  ok 1 tests\e2e\actions.spec.ts:2:1 › current action shows bounded quantity, separate times and immediate funding invalidation (2.3s)
+
+  1 passed (16.2s)

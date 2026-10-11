@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+_____________ ERROR collecting tests/application/test_actions.py ______________
+ImportError while importing test module 'D:\dsh-proj\Roll\.scratch\worktrees\ticket25\backend\tests\application\test_actions.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\tests\application\test_actions.py:3: in <module>
+    from capability_method_app import package, save_package
+E   ModuleNotFoundError: No module named 'capability_method_app'
+=========================== short test summary info ===========================
+ERROR backend\tests\application\test_actions.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 2.07s

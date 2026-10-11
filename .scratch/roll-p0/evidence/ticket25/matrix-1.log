@@ -1,0 +1,161 @@
+.......F...                                                              [100%]
+================================== FAILURES ===================================
+_ test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25m1/test_independently_qualified_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F08477DA90>
+
+    def test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        anchor = (datetime.now(timezone(timedelta(hours=8))) - timedelta(days=1)).replace(hour=15, minute=5, second=0, microsecond=0)
+        import capability_method_app
+        monkeypatch.setattr(capability_method_app, 'ANCHOR', anchor)
+        clock = (anchor + timedelta(minutes=1)).isoformat()
+        monkeypatch.setattr('roll.decisions.capabilities.now', lambda: clock)
+        monkeypatch.setattr('roll.decisions.actions.now', lambda: clock)
+        p = package()
+        gates = ['DATA', 'RULE_QUANTITY', 'AUTHORIZATION', 'STRESS_EXECUTION', 'ONLINE_CONSISTENCY']
+        p.update(candidate_kind='RISK_POLICY', gates={g: 'PASS' for g in gates}, required_gates=gates, allowed_actions=['REDUCE', 'EXIT'])
+        p['deployment_fingerprints'] = {'policy': 'e' * 64}
+        rule_id = 'SSE-MAIN-A-2026-07-06'
+        p['action_packet'] = {'namespace': 'METHOD_ENGINEERING', 'as_of': p['required_as_of'], 'expires_at': p['expires_at'],
+            'opportunities': [], 'loss_facts': p['loss_facts'], 'risk_inputs': {
+                'policy': {'policy_id': 'risk-method', 'policy_fingerprint': 'e' * 64, 'authorization': {**funding()['authorization'], 'version': 1, 'loss_origin_at': '2026-10-07T02:00:00+00:00'},
+                           'scope': p['scope'], 'rule_ids': {'SSE:600000': rule_id}},
+                'required_as_of': p['required_as_of'], 'consumer_knowledge_cutoff': clock,
+                'quotes': {'SSE:600000': {'last': '100', 'adjustment': 'RAW', 'currency': 'CNY', 'errors': [], 'upstream_at': p['required_as_of'],
+                        'available_at': p['required_as_of'], 'method_status': 'NORMAL', 'evidence_kind': 'METHOD_CASE'}},
+                'identities': {'SSE:600000': {'exchange': 'SSE', 'board': 'MAIN', 'instrument_type': 'STOCK'}},
+                'rules': {'SSE:600000': {'implementation_status': 'ADAPTED', 'rule_id': rule_id, 'normal_price_limit_percent': '10', 'price_tick_yuan': '.01'}},
+                'calendars': {'SSE:600000': {'is_trading_day': True}}, 'evidence_kind': 'METHOD_CASE'}}
+        file = save_package(tmp_path / 'qualification.json', p)
+        positions = [{'instrument': 'SSE:600000', 'quantity': '300', 'sellable_quantity': '300', 'reference_cost': '100'},
+                     {'instrument': 'SSE:600099', 'quantity': '50', 'sellable_quantity': None, 'reference_cost': None}]
+        # A quantity-unknown unrelated holding would block the grant; retain a known outside-scope holding here.
+        positions[1]['sellable_quantity'] = '50'
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            ready(client, permission_status='NOT_OPEN', positions=positions)
+            command = {**method_command(), 'allowed_actions': ['REDUCE', 'EXIT'], 'deployment_fingerprints': p['deployment_fingerprints']}
+            granted = client.post('/api/capabilities/grants', json=command)
+            assert granted.status_code == 201, granted.text
+>           result = client.post('/api/actions/evaluate', json={}).json()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_actions.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1204: in post
+    return self.request(
+..\..\..\backend\.venv\Lib\site-packages\starlette\testclient.py:463: in request
+    return super().request(
+..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:980: in send
+    response = self._send_handling_auth(
+..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\httpx2\_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\starlette\testclient.py:360: in handle_request
+    raise exc
+..\..\..\backend\.venv\Lib\site-packages\starlette\testclient.py:357: in handle_request
+    portal.call(self.app, scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\anyio\from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\..\backend\.venv\Lib\site-packages\anyio\from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\fastapi\applications.py:1163: in __call__
+    await super().__call__(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\starlette\applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\base.py:197: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:997: in local_recovery_access
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\base.py:173: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\base.py:149: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+..\..\..\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\..\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\starlette\routing.py:676: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:2734: in app
+    await route.handle(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:1281: in handle
+    await super().handle(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\starlette\routing.py:282: in handle
+    await self.app(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:158: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\..\backend\.venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:144: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:706: in app
+    raw_response = await run_endpoint_function(
+..\..\..\backend\.venv\Lib\site-packages\fastapi\routing.py:354: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\starlette\concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\anyio\to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+..\..\..\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:2706: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+..\..\..\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:1100: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:810: in evaluate_actions
+    return actions.evaluate(command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\decisions\actions.py:222: in evaluate
+    result = self.calculate(inputs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\decisions\actions.py:191: in calculate
+    risk = calculate_risk(risk_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+inputs = {'account': {'account_scope': '普通现金账户', 'broker_available': '90000.10', 'broker_available_as_of': '2026-10-07T10:00:00...tal_amount': '100000.00', 'cash_reserve': '40000.00', ...}, 'calendars': {'SSE:600000': {'is_trading_day': True}}, ...}
+
+    def calculate(inputs):
+        policy=inputs['policy'];account=inputs['account'];auth=inputs['authorization'];check=inputs['account_use_check'];when=datetime.fromisoformat(inputs['required_as_of']).astimezone(SHANGHAI)
+        reasons=[];positions=[];loss=inputs['loss_result'];frozen=policy['authorization'];known_quotes={};total=Decimal(0);total_known=True
+        if not frozen['version'] or not auth['version']:reasons.append('FUNDING_AUTHORIZATION_MISSING')
+>       elif auth['scope_kind']!='ACCOUNT' or auth['scope_id']!=frozen['scope_id'] or auth['loss_origin_at']!=frozen['loss_origin_at']:reasons.append('AUTHORIZATION_SCOPE_UNSUPPORTED_OR_CHANGED')
+                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'loss_origin_at'
+
+backend\src\roll\research\risk_policy.py:42: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_independently_qualified_reduction_with_purchase_permission_not_open_keeps_all_holding_risks
+1 failed, 10 passed in 60.75s (0:01:00)

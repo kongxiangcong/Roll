@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
 **Primary acceptance:** AT-15、AT-16、AT-22、AT-30、AT-34、AT-87。
 
@@ -33,3 +33,7 @@
 2026-10-07：补齐账户交易权限、损失口径/剩余额度、陈旧估值和即时缩权的动作检查及运行审计衔接；26/27 接续验证现存动作/意向失效。仅补充文档，新增要求尚未实施或验收。
 
 2026-10-08 本轮依赖前沿核查：未启动本票。24资格签发未完成；09/15/22已完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
+
+2026-10-11：已在独立票25工作树完成当前动作公共入口、冻结20/22复用、联合费用/保留额预算、版本化损失、资格/权限/规则/数据限制、同SQLite发布与查询复核、不可变后继/失效/重放及今天/单股展示。当前partial的语义为implemented-awaiting-independent-acceptance，父代理独立接受后改为complete。实施检查与独立验收分开：24 API cases PASS（20 actions +4 CODEX-only）、审计1 PASS、Edge主流程1 PASS与陈旧估值/UNKNOWN购买权限/可卖0股拒绝分支各1 PASS、TypeScript/Vite PASS。性能使用实际冻结模型/校准参数和当前应用路径，在30 METHOD持仓+5指数上21 samples P95=0.4026603秒；1只冻结范围内数值路径，29只范围外拒绝，不称30只合格。全部原始红/fixture错误及旧性能收据保留，详见[票25验收记录](../evidence/ticket25/acceptance.md)和[已接受实施边界](../evidence/ticket25/plan.md)。
+
+2026-10-11：METHOD工程证据不关闭真实资格；现有研究仍 FITTED_UNVALIDATED/NOT_GRANTED，真实费用/当前状态/完整日线及正式用途未满足时保留具体拒绝。冻结20只覆盖BUY/REFUSE；`POLICY_FOR_ADD_HOLD_WAIT_REVERSAL_COOLDOWN_NOT_FROZEN`为既有政策缺口，不创造ADD/HOLD/判断型WAIT/反向或冷却。独立22/24风险政策覆盖合格REDUCE/EXIT。26/27继续意向竞争/占用/入账，28按用户决定先站内通知和外部配置页，真实外部发送等用户配置。本票等待父代理独立接受；分诊标签保持原词汇，没有将METHOD或未验证的后续结果升级为真实完成。

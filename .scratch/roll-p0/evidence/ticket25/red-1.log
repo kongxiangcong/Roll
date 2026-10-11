@@ -1,0 +1,18 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_ungranted_evaluation_retains_observations_and_immutable_refusal _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25r1e/test_ungranted_evaluation_reta0')
+
+    def test_ungranted_evaluation_retains_observations_and_immutable_refusal(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            first = client.post('/api/actions/evaluate', json={})
+>           assert first.status_code == 201, first.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_actions.py:8: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_actions.py::test_ungranted_evaluation_retains_observations_and_immutable_refusal
+1 failed in 6.82s
