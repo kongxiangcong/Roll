@@ -1,5 +1,7 @@
 # Roll P0 需求与证据追踪
 
+2026-10-11当前补充：BR-10、MON-03、DEC-02的风险优先顺序及重复失效事实去重已由25补充修复并独立接受（源`9332d0cd`，收据`eb060fd8`）。同账户双资格中风险动作在收益动作前，计划减仓不增加可用预算；缺失收益政策/授权仍显示独立风险。独立5项公共API及保存件双端核对通过，见[独立验收](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md)。这关闭对应顺序/去重缺陷，不扩大为所有未登记正式政策、实际资格或LOSS正向恢复已完成；以下旧快照按其原时点保留。
+
 2026-10-11用户[后端范围修订](provider-scope-2026-10-11.md)覆盖本表旧双后端要求：当前及后续仅CODEX，DeepSeek不测试、不计完成缺口；旧证据按原时点保留。AT-51仍由23负责真实Codex技术审阅，不用METHOD或排除DeepSeek替代Codex证据；其余统计、资金、真实前向及资格门槛不变。
 
 日期：2026-10-07。依据：[PRD V1.3](../../ashare_market_decision_prd.md)、[规格 1.1](spec.md)、[34 票计划](ticket-plan.md)。本表补充原有 90 项 AT 主责任映射，覆盖 14 项 BR、125 项编号 P0 要求、10 项数据不变量及无编号的核心正文/附录约束。摘要用于定位，不缩减 PRD 原文。
@@ -24,7 +26,7 @@
 | BR-07 | 用户无需选模型或裁决投资观点 | [25] | [15]、[31] | 25工程通过：今天/单股共用宿主当前动作与五项显式状态，不需用户裁决模型观点；实际资格不足明确拒绝。31完整交付联验待完成。[25](evidence/ticket25/acceptance.md)、[五状态独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
 | BR-08 | 量化验证约束概率与判断 | [21] | [19]、[24] | 工程通过：21验证清单区分概率支持、门槛结果与资格；24公共准入拒绝缺项和客户端自签。真实G4/G5 FAIL、其他INCONCLUSIVE/NOT_GRANTED；[21](evidence/21/acceptance.md)、[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md) |
 | BR-09 | 合格条件下允许有依据的无机会结果 | [25] | [20] | 部分：25在冻结BUY/REFUSE政策内给出可追溯拒绝和不足，不造默认WAIT；ADD/HOLD/判断型WAIT/反向/冷却政策尚未冻结，真实资格仍NOT_GRANTED。[25行为及缺口](evidence/ticket25/acceptance.md) |
-| BR-10 | 当前动作优先、低噪声与少操作 | [15] | [25]、[28] | 部分：15首屏顺序及25今天/单股共用当前卡片已有有限证据；当前资金缩权后重复开卡因派生PREVIOUSLY原因重复记失效的基线缺陷已复现，25正在修复。28同一实质失效提醒去重已定向通过、整票独立验收待完成。[15](evidence/15/acceptance.md)、[25](evidence/ticket25/acceptance.md) |
+| BR-10 | 当前动作优先、低噪声与少操作 | [15] | [25]、[28] | 部分：15首屏及25今天/单股当前卡片有限证据保留；25重复开卡只记首次失效已独立接受。28通知去重及整票内部链等待独立验收，实际外发待配置。[15](evidence/15/acceptance.md)、[25补充独立](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md) |
 | BR-11 | FAIL/INCONCLUSIVE 可验证交付 | [33] | [23]、[34] | 待实施 |
 | BR-12 | 资格、资金、健康分开且可撤回 | [24] | [10]、[27] | 部分：10资金与24确定性资格/健康分列及缩权受限已验；27完整生命周期调用方待验，未启用真实资金。[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md) |
 | BR-13 | 日线范围，不要求分钟路径 | [19] | [07]、[18] | 19工程及限定真实重建通过：固定20交易日日线事件，原价/单位/上下文/已生效现金权益；不引入分钟预测，不代表严格历史PIT或真实前向。[19](evidence/19-reconstruction-2026-10-10/acceptance.md) |
@@ -60,7 +62,7 @@
 | ACC-20 | 账户条件诊断与四类结果隔离 | [29] | [20] | 待实施 |
 | MON-01 | 交易日历、时区、休市与停牌区别 | [06] | [15] | 06完成：沪深2026原件/上海时区/休市阶段及未知范围通过；15消费年度与临时停市区别，[证据](evidence/06/acceptance.md) |
 | MON-02 | 触发不等于数据齐全，补查/缺口显式 | [15] | [08]、[13] | 部分：15/08实际未齐/有限补查、原件/知识截止及局部缺口通过；13最终预算交付未验；[15证据](evidence/15/acceptance.md) |
-| MON-03 | 能力先查、持仓风险与有限新增机会 | [25] | [07]、[15] | 部分：资格独立、超额持仓和一条新增卡的旧有限证据保留；同账户双资格复现旧BUY先于REDUCE，当前排序修复及收益政策缺失不遮风险已红→绿，尚待独立接受。实际正式资格未授予。[25](evidence/ticket25/acceptance.md)、[旧独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
+| MON-03 | 能力先查、持仓风险与有限新增机会 | [25] | [07]、[15] | 工程有限范围通过：同账户双资格REDUCE先于BUY、第二新增机会拒绝、计划减仓不释放预算、缺失收益政策/授权不遮蔽风险均已独立接受；实际正式资格未授予。[25补充独立](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md) |
 | MON-04 | 盘前只用当时可得输入与原预测时点 | [15] | [19]、[25] | 部分：15实际事件/可得截止和原记录不改通过；19/25真实概率时点/资格未验；[15证据](evidence/15/acceptance.md) |
 | MON-05 | 报价、条件观察、预测和训练分开 | [15] | [19]、[25] | 工程通过：15分列输入，25保存报价/累计量时点和完整日线截止，研究概率不当正式当前预测。25性能检查仅用既有冻结模型与METHOD特征，无新拟合。[25](evidence/ticket25/acceptance.md)；真实资格仍NOT_GRANTED |
 | MON-06 | 未完成日线不进模型、概率时点不偷换 | [25] | [07]、[15]、[19] | 工程通过：25未完整日线/用途过期/原forecast依赖不足显式拒绝，报价及盘中累计量不当完整日线；固定输入每次重新捕获/计算，发布前短事务复核。[25分阶段](evidence/ticket25/acceptance.md) |
@@ -98,7 +100,7 @@
 | MOD-08 | 收益、尾部、回撤、占用及覆盖联合评价 | [21] | [17]、[20] | 待实施 |
 | MOD-09 | 市场状态与未来收益预测分开 | [25] | [15]、[19] | 待实施 |
 | DEC-01 | 动作与账户/数据/资格状态分别保存 | [25] | [10] | 工程通过：五项状态分别持久化、公开GET/replay及重启一致；风险模型NOT_APPLICABLE，零可卖量BLOCKED且无伪Decision。[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
-| DEC-02 | 确定性顺序与发布前权限检查 | [25] | [20]、[24]、[27] | 部分：25发布检查及27生命周期同writer复核、旧幂等卡不复活已验；同账户风险优先于收益计算的当前修复待独立接受，28出站调用方待独立验，实际NOT_GRANTED。[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
+| DEC-02 | 确定性顺序与发布前权限检查 | [25] | [20]、[24]、[27] | 工程有限范围通过：25风险优先于收益计算、最新发布检查与单次失效事实及27同writer生命周期/旧卡不复活已独立接受；28出站调用方待独立验，实际NOT_GRANTED。[25补充独立](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md)、[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
 | DEC-03 | 新增风险硬约束与有依据的 WAIT | [25] | [10]、[20] | 部分：冻结BUY/REFUSE及权限、资金、名单、数据硬门禁已验；ADD/HOLD/判断WAIT/反向冷却政策未冻结，明确命名缺口，不造默认WAIT。[25分阶段](evidence/ticket25/acceptance.md) |
 | DEC-04 | 联合数量、损失预算与压力假设 | [25] | [09]、[10]、[18]、[22] | 工程通过：25联合Decimal现金/费用/保留额、损失起点与cashflow、陈旧估值拒绝、并发loss peak及独立风险压力已验；暂停不因反弹或扩容自动恢复。[25分阶段](evidence/ticket25/acceptance.md)、[较早独立固定输入](evidence/continuation-2026-10-11/ticket25-independent/acceptance.md) |
 | DEC-05 | 有限名单稳定排序及联合资金约束 | [20] | [25]、[26] | 部分：20/25冻结排序与最多一新增卡、两机会共同预算、全部已确认持仓风险和列表移除失效已验；26意向竞争/占用联验进行中。[25分阶段](evidence/ticket25/acceptance.md) |
@@ -113,16 +115,16 @@
 | UI-02 | 单股状态/条件/时间线优先，诊断展开 | [25] | [15]、[29] | 待实施 |
 | UI-03 | 同步四入口、差异预览与持久回执 | [05] | [01]、[02]、[03]、[04]、[26] | 待实施 |
 | UI-04 | 用户只设事实/资金/连接等产品设置 | [15] | [10]、[13]、[16] | 部分：15维护时间/频率设置与既有事实/资金路径真实Chrome通过，无统计参数选择；13/16正式连接/安全交付未验；[15证据](evidence/15/acceptance.md) |
-| UI-05 | 通知分类与实质变化，摘要为上限 | [28] | [15] | 待实施 |
-| UI-06 | 去重、冷却例外、有效期和不补发 | [28] | [27] | 待实施 |
+| UI-05 | 通知分类与实质变化，摘要为上限 | [28] | [15] | 内部工程通过：来源绑定分类、实质变化、长中文站内原文与有限出站摘要、失效/核对/重大风险独立提醒；独立4例及同源分阶段API/OS/Chrome证据分列。真实自用渠道发送待用户配置。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
+| UI-06 | 去重、冷却例外、有效期和不补发 | [28] | [27] | 内部工程通过：实质去重、重大风险例外、当前依赖复核、过期/未知结果不自动重发、显式有限重试、旧通知重新检查；真实外发未执行。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | UI-07 | 站内及一个外部渠道、失败与送达未知 | [28] | [31] | 待实施 |
 | UI-08 | 研究跨出口隔离、不追认正式资格 | [29] | [26]、[28] | 待实施 |
 | UI-09 | 资格范围/依据/复核与无人工复核说明 | [24] | [27]、[34] | 24工程通过：资格、范围、期限、资金与证据分列，Chrome显示未经人工独立复核及METHOD边界；当前真实资格NOT_GRANTED。[24截图与验收](evidence/24/acceptance.md) |
 | FLOW-01 | 动作成交显式多对多分配、未知保留 | [26] | [29] | 待实施 |
-| FLOW-02 | 已发历史不可改、实际时间链与未知 | [28] | [25]、[26]、[29] | 待实施 |
+| FLOW-02 | 已发历史不可改、实际时间链与未知 | [28] | [25]、[26]、[29] | 内部工程通过：业务原文/时间链不可覆盖；本地dispatch起点、Host获知接收、站内显式已读与外部sent/delivery/read未知分别记录，29查询/报告消费者正在实施。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | FLOW-03 | 三种暂停范围，保留对应事实提醒 | [27] | [28] | 部分：27三范围及目标ALL_MONITOR/REVOKED、事实与降风险分界已验；28通知消费者待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
-| FLOW-04 | 各动作节点服务端复核、原子失效 | [27] | [24]、[25]、[26]、[28] | 部分：27 current/prepare/worker按当前权限同writer复核，并发读写无假恢复锁已验；28 claim/在途待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
-| FLOW-05 | 在途失效提醒与深链当前状态 | [28] | [27] | 待实施 |
+| FLOW-04 | 各动作节点服务端复核、原子失效 | [27] | [24]、[25]、[26]、[28] | 内部工程通过：27 current/prepare/worker当前权限同writer复核、25首次失效事实门禁、28 claim/发送前及在途失效有限链分别验收；不称可撤回已发送socket或实际外发已验。[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)、[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
+| FLOW-05 | 在途失效提醒与深链当前状态 | [28] | [27] | 内部工程通过：在途失效留事实及旧通知深链服务端重新检查当前状态，过期动作不可准备；实际渠道发送待用户配置。[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | FLOW-06 | 按原因暂停/恢复，历史结论不倒改 | [27] | [10]、[21] | 部分：27原因绑定后继复核、历史不改及有限恢复锁已验；LOSS峰值/latch保留，正向恢复缺冻结规则仍拒绝；真实长期监测未成立。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
 | FLOW-07 | 撤权不清持仓、未决或实际成交 | [27] | [22]、[26] | 部分：27撤权保持旧grant/持仓/意向及26实际成交；28在途通知待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
 | EVAL-01 | 冻结全链条协议与可比对照 | [17] | [20]、[21] | 部分：17固定M0登记/指纹缺口与完整manifest拒绝通过；20完整协议冻结、21真实检验待联验，[17证据](evidence/17/acceptance.md) |
@@ -158,7 +160,7 @@
 | OPS-06 | 本地访问、权限、密钥及私人数据脱敏 | [13] | [01]、[16]、[29]、[31] | 待实施 |
 | OPS-07 | 架构和工具证明无交易写能力 | [13] | [03]、[31] | 待实施 |
 | OPS-08 | 网页/上传为数据、受控工具不越权 | [13] | [03]、[11]、[12] | 部分：11实际网页数据化、工具面/Node import拒绝、账户/私文件/写哨兵/POST无副作用；有限允许clock透明登记，12/13另验，[11证据](evidence/11/acceptance.md)；12未知账户写工具拒绝、外部文本不增权与零账户变化方法通过；真实提供方对抗未验，[12工程证据](evidence/12/acceptance.md) |
-| OPS-09 | 各健康状态独立、重启先恢复权限 | [27] | [10]、[15]、[28] | 部分：27各健康边界、当前证明/资金变化再锁、重启先恢复权限已验；28重连检查待验。 [27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md) |
+| OPS-09 | 各健康状态独立、重启先恢复权限 | [27] | [10]、[15]、[28] | 内部工程有限范围通过：27独立健康/恢复权限及28重启当前依赖、未知结果不自动重发、禁用配置零发送均已验；实际渠道与真实合格长期监测另列未完成。[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)、[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 
 ## 数据不变量
 
