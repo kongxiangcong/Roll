@@ -1,0 +1,233 @@
+{
+  "status": "RECORDED_NONCOMPLETE_REAL_CODEX_ATTEMPT",
+  "backend_scope": "CODEX_ONLY_USER_APPROVED",
+  "run": {
+    "run_id": "88f44e5c-33fd-4e27-a36a-66b9d33c853c",
+    "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+    "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+    "backend": "CODEX",
+    "model": "gpt-6.1-sol",
+    "resolved_model": null,
+    "status": "FAILED",
+    "started_at": "2026-10-11T01:34:52.320629+00:00",
+    "finished_at": "2026-10-11T01:35:11.051850+00:00",
+    "evidence_kind": "REAL_CODEX_TECHNICAL_REVIEW",
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "config_fingerprint": "5b9c4783445dcb8dd6422e9fbf22120c49de0ddddc80b9f98e3f9f88ecedc493",
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 4096,
+      "model_calls": 9,
+      "model_input_bytes": 262144,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "recursive_depth": 0,
+      "response_bytes": 65536,
+      "retries": 0,
+      "runtime_operations": 8,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144,
+      "total_calls": 22
+    },
+    "tools": [],
+    "gaps": [],
+    "call_usage": {
+      "host_tool_calls": 0,
+      "http_calls": 0,
+      "model_requests": 0,
+      "runtime_operations": 0,
+      "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+      "total": 0
+    },
+    "acquisition_usage": {
+      "archived_bytes": 0,
+      "http_calls": 0,
+      "model_tool_result_bytes": 0,
+      "received_bytes": 0
+    },
+    "elapsed_seconds": 18.375,
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "owner_nonce": "a97c030d-857f-4efb-90be-2a11979c6c5b",
+      "pids_before_cleanup": [
+        32200
+      ],
+      "remaining_pids": [],
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-88f44e5c-33fd-4e27-a36a-66b9d33c853c-xp934gsl",
+      "temporary_directory_removed": true,
+      "worker_pid": 32200
+    },
+    "error": {
+      "code": "SDK_RUNTIME_ERROR",
+      "type": "InternalRpcError"
+    }
+  },
+  "delivery": {
+    "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+    "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+    "validation_verdict": "FAIL",
+    "experiment_status": "RUNNING_DIAGNOSTIC",
+    "review_status": "FAILED",
+    "review_id": null,
+    "blocking_issues_resolved": false,
+    "delivery_status": "INCOMPLETE",
+    "preliminary": true,
+    "capability_status": "NOT_GRANTED",
+    "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+    "gaps": [
+      "REGISTERED_EXPERIMENT_ENDPOINT_NOT_REACHED",
+      "parameter_neighborhood/penalty=0.5",
+      "parameter_neighborhood/penalty=1",
+      "parameter_neighborhood/penalty=2",
+      "parameter_neighborhood/lookback_sessions=15",
+      "parameter_neighborhood/lookback_sessions=20",
+      "parameter_neighborhood/lookback_sessions=25",
+      "TECHNICAL_REVIEW_NOT_COMPLETE"
+    ],
+    "evidence_kind": "REAL_ACQUISITION"
+  },
+  "local_export": {
+    "archive": {
+      "sha256": "35f1fd8bd41f8a9ef52bc984d2b5b0ab16b0175a7e0e206c3c2fe6155e01ea6f",
+      "path": "raw/35f1fd8bd41f8a9ef52bc984d2b5b0ab16b0175a7e0e206c3c2fe6155e01ea6f.zip",
+      "bytes": 1539299,
+      "kind": "VALIDATION_DELIVERY_PACKAGE"
+    },
+    "delivery": {
+      "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+      "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+      "validation_verdict": "FAIL",
+      "experiment_status": "RUNNING_DIAGNOSTIC",
+      "review_status": "FAILED",
+      "review_id": null,
+      "blocking_issues_resolved": false,
+      "delivery_status": "INCOMPLETE",
+      "preliminary": true,
+      "capability_status": "NOT_GRANTED",
+      "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+      "gaps": [
+        "REGISTERED_EXPERIMENT_ENDPOINT_NOT_REACHED",
+        "parameter_neighborhood/penalty=0.5",
+        "parameter_neighborhood/penalty=1",
+        "parameter_neighborhood/penalty=2",
+        "parameter_neighborhood/lookback_sessions=15",
+        "parameter_neighborhood/lookback_sessions=20",
+        "parameter_neighborhood/lookback_sessions=25",
+        "TECHNICAL_REVIEW_NOT_COMPLETE"
+      ],
+      "evidence_kind": "REAL_ACQUISITION"
+    },
+    "manifest_fingerprint": "58e7e0814a321a50ae656ad536c538c473de27b844ff31486acae4e7ef79970d"
+  },
+  "same_frozen_approved_material": true,
+  "approved_manifest_sha256": "206d2ec53d85af4b28423017da24b5a6030d5078ec5237ee939233245ef84984",
+  "actual_review_run_count": 1,
+  "deepseek_calls": 0,
+  "automatic_retry_count": 0,
+  "account_model_freeze_attempts_budget_audits_forward_unchanged": true,
+  "all_research_tables_unchanged": true,
+  "protected_files_before_after_unchanged": {
+    "D:\\dsh-proj\\Roll\\.roll-data\\reconstructed19-v1\\roll.sqlite3": {
+      "bytes": 165814272,
+      "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21\\actual-current-copy\\roll.sqlite3": {
+      "bytes": 167727104,
+      "sha256": "c8d2a7f55e69718371e6c697635ad14471649b7fc01b1a6483fb1a11b54577d1"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\actual-current-copy\\roll.sqlite3": {
+      "bytes": 168329216,
+      "sha256": "e4a2d0dbafac0319d4e565c4b77c6b60fdc11855fb9c4ada29265bd4d4ff10e0"
+    },
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\23\\actual-review.py": {
+      "bytes": 4816,
+      "sha256": "1fb33ef13d74fb25f14ca77e4ad4ab56bd1b10072413d748430f2f0d28bec9c7"
+    },
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\review-fixes\\actual-review-corrected.py": {
+      "bytes": 6387,
+      "sha256": "6c3857ea161ec7404bd3a9e89e3d8c4da13bb0127a490ae77ca5e0ab7541eece"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\actual-copy-manifest.json": {
+      "bytes": 818636,
+      "sha256": "f660e4449a6a735aa62dd5503d9179a83f4dca9a1196f22bed2401461f7569a5"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\actual-material.json": {
+      "bytes": 958695,
+      "sha256": "d3e156ce4da0e9f65c46295c1a551b0f62f8d6db16d49a50a45ea66a9266aae3"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-material-manifest.json": {
+      "bytes": 5715,
+      "sha256": "c2cfc640530d008b3aca3e18a32154be43550bd136fa59c129b9009169994204"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-execution.json": {
+      "bytes": 37733,
+      "sha256": "36298a2d37dfc554f5c26ade04f9fe69f2df67feeef27f332e4478adb6e162ef"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-models.json": {
+      "bytes": 32852,
+      "sha256": "6c3dbb9970b744da44ccca43a8557b5fad2986f533b2b0d0c4010e13c2f0b5d0"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-shadow.json": {
+      "bytes": 38888,
+      "sha256": "aafa41eab99394633098f82e1337e664da7f20916795c30afd3aa39860b35a95"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-statistics.json": {
+      "bytes": 10335,
+      "sha256": "1e4c08fa67444b1b3823640ecc96c6a1486e7979549954bbb7ae197d3f0ce7a7"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-validation.json": {
+      "bytes": 36390,
+      "sha256": "5b35913fc4784b6e561489071026ab6b0c49f48fb10d1bc3bd90a5b4da474de7"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\codex-command.json": {
+      "bytes": 4824,
+      "sha256": "485415cc236f7a6cde7af825319b8a16ade7892cad2aaf0f8534b65f36a22758"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\deepseek-command.json": {
+      "bytes": 4827,
+      "sha256": "7e520db10a0dcfae04ab1063838292cb9b19bdeadaa4d41e9fc18bc5749cd123"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\protocol-and-attempts.json": {
+      "bytes": 21728,
+      "sha256": "f01abfef86e87dfa42231eb188be0667fb2f01fa1eba708fb2bfca23f6137bd1"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\reproduction.json": {
+      "bytes": 163,
+      "sha256": "1e0f10d0f4eda1a88b33eded7fd0a6848fb20b5c63e4673fe64adea7fa436aae"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\results-and-limitations.json": {
+      "bytes": 8423,
+      "sha256": "473e0157dd1362f9368edc3d1bf4125c7b0a9ae51f2a9e426520d8724f6bb1c4"
+    }
+  },
+  "sealed_read": false,
+  "real_forward_started": false,
+  "market_network_calls": 0,
+  "capability_status": "NOT_GRANTED",
+  "historical_diagnostic_verdict": "FAIL",
+  "G7": "INCONCLUSIVE",
+  "provider_body_context_limit": "Old freeze UUID/fingerprint and original model UUID omitted by existing projection; exact linkage remains in local archive"
+}

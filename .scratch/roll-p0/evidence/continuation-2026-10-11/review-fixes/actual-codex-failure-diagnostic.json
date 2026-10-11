@@ -1,0 +1,74 @@
+{
+  "status": "RECORDED_FAILED_REAL_CODEX_ATTEMPT",
+  "run_id": "88f44e5c-33fd-4e27-a36a-66b9d33c853c",
+  "backend": "CODEX",
+  "resolved_model": null,
+  "error_code": "SDK_RUNTIME_ERROR",
+  "error_type": "InternalRpcError",
+  "elapsed_seconds": 18.375,
+  "sdk_versions_host_frozen": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0"
+  },
+  "stage_bound": "CodexClient startup/initialize/account_read before bootstrap event; no model_list/thread_start/turn_start observed",
+  "source_sequencing": {
+    "path": "backend/src/roll/agents/codex_worker.py",
+    "normalized_sha256": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+    "early_calls": [
+      "CodexClient context",
+      "initialize",
+      "account_read"
+    ],
+    "bootstrap_after_early_calls": true,
+    "model_thread_and_turn_after_bootstrap": true
+  },
+  "bootstrap_event_recorded": false,
+  "runtime_config_audit": {},
+  "thread_id_present": false,
+  "turn_id_present": false,
+  "model_output_archive_count": 0,
+  "approved_material_tool_read_count": 0,
+  "host_reproduction_calls": 0,
+  "host_accounting": {
+    "host_tool_calls": 0,
+    "http_calls": 0,
+    "model_requests": 0,
+    "runtime_operations": 0,
+    "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+    "total": 0
+  },
+  "network_boundary": "Host counts0 do not audit SDK account/auth/initialize traffic. OpenAI auth/refresh/account network may have occurred; total external network0 is not claimed. Evidence shows no model turn and no7 body tool transmission.",
+  "error_detail_availability": "Worker catch records only genericcode/error_type; stderr suppressed. Original exception message/stack not retained, so exact failingRPC cannot be claimed. No second SDK/ReviewRun attempt performed to retrieve it.",
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "owner_nonce": "a97c030d-857f-4efb-90be-2a11979c6c5b",
+    "pids_before_cleanup": [
+      32200
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-88f44e5c-33fd-4e27-a36a-66b9d33c853c-xp934gsl",
+    "temporary_directory_removed": true,
+    "worker_pid": 32200
+  },
+  "full_ignored_run_path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-codex-results-authorized-auth\\actual-codex.json",
+  "full_ignored_run_sha256": "c602ed3478bd0b9feea23167d2250f45ef30dfe693fc1bbcfafa77a0418e27cf",
+  "deepseek_calls": 0,
+  "automatic_retry_count": 0
+}

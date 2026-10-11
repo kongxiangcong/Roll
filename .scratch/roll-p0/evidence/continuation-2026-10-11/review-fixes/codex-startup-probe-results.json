@@ -1,0 +1,56 @@
+{
+  "model_calls": 0,
+  "review_runs_created": 0,
+  "material_reads": 0,
+  "versions": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0"
+  },
+  "initialize_succeeded": true,
+  "runtime_version": "0.161.0",
+  "account_type": "chatgpt",
+  "account_read_succeeded": true,
+  "verdict": "PASS",
+  "stages": [
+    "client_construct",
+    "client_enter",
+    "initialize",
+    "account_read"
+  ],
+  "elapsed_seconds": 13.365,
+  "runtime_stderr": [
+    "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"C:\\\\Users\\\\72449\\\\AppData\\\\Local\\\\Temp\\\\\" (codex_home: AbsolutePathBuf(\"C:\\\\Users\\\\72449\\\\AppData\\\\Local\\\\Temp\\\\roll-codex-startup-diagnostic-z4dzflqa\\\\home\"))"
+  ],
+  "process_audit": {
+    "purpose": "SDK_INITIALIZE_ACCOUNT_READ_ONLY",
+    "review_runs_created": 0,
+    "model_calls": 0,
+    "material_reads": 0,
+    "deepseek_calls": 0,
+    "network_limitation": "Initialization/account refresh may contact OpenAI; no network-zero claim.",
+    "worker_pid": 32516,
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "child_exit_code": 0,
+    "remaining_job_pids": [],
+    "credential_source_unchanged": true,
+    "temporary_directory_removed": true,
+    "production_sources_unchanged": true
+  }
+}
