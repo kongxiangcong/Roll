@@ -455,7 +455,8 @@ class Actions:
         for decision in value['decisions'] if value else []:
             if instrument and decision['instrument'] != instrument: continue
             reasons = []
-            if db.execute('SELECT 1 FROM action_invalidations WHERE decision_id=?', (decision['decision_id'],)).fetchone():
+            already_invalidated = db.execute('SELECT 1 FROM action_invalidations WHERE decision_id=?', (decision['decision_id'],)).fetchone()
+            if already_invalidated:
                 reasons.append('PREVIOUSLY_INVALIDATED_REQUIRES_NEW_ACTION')
             if current[0]['version'] != value['account_version']: reasons.append('ACCOUNT_VERSION_CHANGE')
             if current[1]['version'] != value['funding_version']: reasons.append('FUNDING_VERSION_CHANGE')
@@ -467,15 +468,18 @@ class Actions:
             loss = (value.get('joint_budget') or {}).get('loss')
             if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'): reasons.append('LOSS_BOUNDARY_CHANGE')
             if reasons:
-                reason_key = fingerprint(reasons)
-                event = {'event_id': str(uuid4()), 'event_type': 'ACTION_INVALIDATED', 'evaluation_id': value['evaluation_id'],
-                         'decision_id': decision['decision_id'], 'recorded_at': now(), 'reasons': reasons,
-                         'account_version': current[0]['version'], 'funding_version': current[1]['version'],
-                         'capability_fingerprint': fingerprint(current[2]),
-                         'lifecycle_event_ids': sorted({s.get('event_id') for status in current[2]['grant_statuses']
-                             for s in status['lifecycle']['scopes'].values() if s.get('event_id') and s['state'] != 'ACTIVE'})}
-                inserted = db.execute('INSERT OR IGNORE INTO action_invalidations VALUES(?,?,?)', (decision['decision_id'], reason_key, encode(event))).rowcount
-                if inserted: db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
+                # The first transition is immutable. Later current causes stay
+                # visible below without creating another invalidation fact.
+                if not already_invalidated:
+                    reason_key = fingerprint(reasons)
+                    event = {'event_id': str(uuid4()), 'event_type': 'ACTION_INVALIDATED', 'evaluation_id': value['evaluation_id'],
+                             'decision_id': decision['decision_id'], 'recorded_at': now(), 'reasons': reasons,
+                             'account_version': current[0]['version'], 'funding_version': current[1]['version'],
+                             'capability_fingerprint': fingerprint(current[2]),
+                             'lifecycle_event_ids': sorted({s.get('event_id') for status in current[2]['grant_statuses']
+                                 for s in status['lifecycle']['scopes'].values() if s.get('event_id') and s['state'] != 'ACTIVE'})}
+                    inserted = db.execute('INSERT OR IGNORE INTO action_invalidations VALUES(?,?,?)', (decision['decision_id'], reason_key, encode(event))).rowcount
+                    if inserted: db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
                 invalidated.append({'decision': decision, 'reasons': reasons})
             else: active.append(decision)
         return {'evaluation': value, 'instrument': instrument, 'decisions': active, 'invalidated': invalidated}
