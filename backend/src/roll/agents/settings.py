@@ -14,6 +14,13 @@ HOST_LIMITS={'timeout_seconds':120,'tool_calls':8,'http_calls':6,'response_bytes
              'total_bytes':262144,'concurrency':1,'subtasks':0,'recursive_depth':0,'retries':0}
 
 
+def require_current_backend(backend):
+    """New agent work is currently authorized only for Codex; history stays readable."""
+    if backend!='CODEX':
+        raise HTTPException(403,{'code':'BACKEND_OUTSIDE_CURRENT_SCOPE','supported_backends':['CODEX'],
+            'message':'当前仅支持 Codex 新任务；历史设置须重新保存为 Codex。'})
+
+
 class BackendSelection(BaseModel):
     model_config=ConfigDict(extra='forbid')
     expected_version:int=Field(ge=0)
@@ -45,6 +52,7 @@ def insert_run(evidence,db,run,selection):
 
 def admit_agent_run(db,run,selection):
     """One transaction-bound finite slot shared by acquisition and technical review."""
+    require_current_backend(run['backend'])
     from roll.agents.codex_process import owner_alive
     current=json.loads(db.execute('SELECT value FROM agent_settings ORDER BY version DESC LIMIT 1').fetchone()[0])
     if selection is not None and current['version']!=selection['version']:
@@ -73,6 +81,7 @@ class AgentSettings:
         return json.loads(db.execute('SELECT value FROM agent_settings ORDER BY version DESC LIMIT 1').fetchone()[0])
 
     def select(self,command):
+        require_current_backend(command.backend)
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
             current=self.get(db)
