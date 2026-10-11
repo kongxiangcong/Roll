@@ -10,3 +10,5 @@
 授权具体材料：新材料 `b27b0047-d0ef-4c39-8d8d-46ad20becc74`，7份正文179889字节；精简正文、复现及命令清单 SHA256 `206d2ec53d85af4b28423017da24b5a6030d5078ec5237ee939233245ef84984`。[根清单](D:/dsh-proj/Roll/.roll-data/implementation-evidence/continuation-review-fixes/provider-approval-current/provider-material-manifest.json)。目的地为 OpenAI Codex runtime 的 SDK endpoint，模型 `gpt-6.1-sol`；DeepSeek不获此执行授权。旧35e42…材料及旧双后端helper保留历史，不能误用本次批准。
 
 此次范围变更不改数据/统计/资金/账户/恢复门槛，不读SEALED、不拟合、不创建真实前向起点，不授予正式能力。批准包中的五份源码和本文档变更分离，执行前仍核精确材料及源码指纹。完整原始输入、账户资料、数据库、SEALED、凭据及无关文件不得外发。
+
+当前宿主及界面范围检查已合入 `8497fead9faa908dfa831a89d042f6aa3b35dfb4`，独立收据提交 `1c90c6edf2671b5095a649680ca04038dd0f26d0`。新设置、取证及技术审阅在查询凭据或材料、创建运行之前拒绝 DeepSeek；旧设置如实显示并要求用户显式保存 CODEX，历史运行读取与取消继续可用。独立三项公共 METHOD 场景实际退出0，包括旧版本幂等/冲突、历史活 owner 查询/取消，以及新部署拒绝旧 METHOD 资格证明。没有 DeepSeek runtime 调用、模型拟合或实际资格签发；历史真实 ReviewRecord 不变。详见[独立验收](evidence/continuation-2026-10-11/codex-only-independent/acceptance.md)。
