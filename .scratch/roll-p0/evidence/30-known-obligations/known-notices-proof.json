@@ -1,0 +1,788 @@
+{
+  "scope": "OWN_METHOD_FINAL_TEST_ARCHIVE_ONLY_NO_SQLITE_OPEN",
+  "raw_audit_path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30o-final\\test_known_notice_audit_binds_0\\raw\\ca4b94122fd2ffbbebd59902caff41de3d0f6498074c0e01b57aa75b5047334b.raw",
+  "raw_audit_hash": "ca4b94122fd2ffbbebd59902caff41de3d0f6498074c0e01b57aa75b5047334b",
+  "bytes": 23914,
+  "protocol_context": {
+    "design_hash": "6caede4e10e5ce2df2e6001b8309d88b32324ce8055332a00b9c3af99b590774",
+    "horizon_sessions": 20,
+    "instrument": "SSE:600362",
+    "protocol_evidence_kind": "METHOD_CASE",
+    "protocol_fingerprint": "120cba11ff02bf0f7973411e31ed6a5197b12f791da7247aac2d13190fce60b9",
+    "protocol_id": "e9a1ce08-bd7d-43b1-a13f-595fa4ecd1bb",
+    "scope": "REGISTERED_DESIGN_REFERENCE_NOT_NEW_CONFIRMATORY_CHECKPOINT"
+  },
+  "protocol_effective_window": {
+    "calendar_dates": [
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-12",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-13",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-14",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-15",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-16",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-17",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-18",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-19",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-20",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-21",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-22",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-23",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-24",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-25",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-26",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-27",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-28",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-29",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-30",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-10-31",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-01",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-02",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-03",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-04",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-05",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-06",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-07",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-08",
+        "is_trading_day": false,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      {
+        "calendar_version": "SSE-2026",
+        "date": "2026-11-09",
+        "is_trading_day": true,
+        "source_hash": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      }
+    ],
+    "calendar_source_hashes": [
+      "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+    ],
+    "calendar_sources": [
+      {
+        "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+        "attachments": [],
+        "bytes": 30794,
+        "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+        "file": "sse-calendar-2026.html",
+        "id": "sse-calendar-2026",
+        "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+        "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+      }
+    ],
+    "covered_future_sessions": 20,
+    "design_hash": "6caede4e10e5ce2df2e6001b8309d88b32324ce8055332a00b9c3af99b590774",
+    "end_date": "2026-11-09",
+    "gaps": [],
+    "horizon_sessions": 20,
+    "protocol_id": "e9a1ce08-bd7d-43b1-a13f-595fa4ecd1bb",
+    "reference_checkpoint_at": "2026-10-12T15:05:00+08:00",
+    "reference_checkpoint_id": "POST_CLOSE_1505_SHANGHAI",
+    "reference_checkpoint_is_trading_day": true,
+    "reference_checkpoint_reached": true,
+    "scope": "PROTOCOL_EVALUATION_EXECUTION_REFERENCE_WINDOW_NOT_FORWARD_START_OR_STATISTICAL_LOOK",
+    "start_date": "2026-10-12"
+  },
+  "knowledge_cutoff": "2026-10-12T15:06:00+08:00",
+  "normalized_known_at": "2026-10-12T15:06:00+08:00",
+  "notices": [
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "62845175",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2013-07-24",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 228067,
+      "pdf_field_source_locator": [
+        1,
+        2,
+        3
+      ],
+      "pdf_raw_hash": "376fe3f19f2f1482101c75336b6f1ae0cc59896dbe36254a570b76d83d53865e",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2013-07-18/62845175.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2013-07-18",
+      "record_date": "2013-07-23",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.50",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2013-07-30",
+      "source_received_at": "2026-10-09T00:09:33.711039+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1200074589",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2014-07-31",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 228202,
+      "pdf_field_source_locator": [
+        1,
+        2,
+        3
+      ],
+      "pdf_raw_hash": "24a7a6954e617920c3817f1e93b0e9dcc492ada9e6815944541a289bbbe46e64",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2014-07-24/1200074589.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2014-07-24",
+      "record_date": "2014-07-30",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.50",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2014-07-31",
+      "source_received_at": "2026-10-09T00:09:33.830601+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1201268396",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2015-07-17",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 228141,
+      "pdf_field_source_locator": [
+        1,
+        2,
+        3
+      ],
+      "pdf_raw_hash": "1cb07ee777acc8cc62c3231f0b8839f00695fa9d524c677e153be75d4de8ed3e",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2015-07-10/1201268396.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2015-07-10",
+      "record_date": "2015-07-16",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.20",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2015-07-17",
+      "source_received_at": "2026-10-09T00:09:33.921013+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1202538463",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2016-08-12",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 139208,
+      "pdf_field_source_locator": [
+        1,
+        2,
+        3
+      ],
+      "pdf_raw_hash": "8344668f84c905e9654240b2ef5584e81bfb4ff35b2fe8abfb05addb40b445d2",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2016-08-05/1202538463.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2016-08-05",
+      "record_date": "2016-08-11",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.10",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2016-08-12",
+      "source_received_at": "2026-10-09T00:09:34.027494+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1203684386",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2017-07-12",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 167951,
+      "pdf_field_source_locator": [
+        1,
+        2
+      ],
+      "pdf_raw_hash": "360915f52d4770c1468be5a70d9a414d38f7c6909b34a2dfdb46db67d738a4a4",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2017-07-06/1203684386.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2017-07-06",
+      "record_date": "2017-07-11",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.15",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2017-07-12",
+      "source_received_at": "2026-10-09T00:09:34.285741+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1205195306",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2018-07-25",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 206924,
+      "pdf_field_source_locator": [
+        1,
+        2
+      ],
+      "pdf_raw_hash": "f8c59755d58dca82911931d6e632a8c6a7bcc3e9f2e1eecc2c961d93c5e6705a",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2018-07-19/1205195306.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2018-07-19",
+      "record_date": "2018-07-24",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.20",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2018-07-25",
+      "source_received_at": "2026-10-09T00:09:34.490678+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1206466159",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2019-07-26",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 619155,
+      "pdf_field_source_locator": [
+        1,
+        2
+      ],
+      "pdf_raw_hash": "945fb4db8341e20b4abe6995c8f01184618a01dac3ea05f33c76edbfc370d181",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2019-07-22/1206466159.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2019-07-22",
+      "record_date": "2019-07-25",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.20",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2019-07-26",
+      "source_received_at": "2026-10-09T00:09:34.609455+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1208016044",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2020-07-16",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 493288,
+      "pdf_field_source_locator": [
+        1,
+        2
+      ],
+      "pdf_raw_hash": "963ff2e75122c2c1b46ec66ab2048a21760f6947a12d14c16090d4f626f390e2",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2020-07-09/1208016044.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2020-07-09",
+      "record_date": "2020-07-15",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.10",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2020-07-16",
+      "source_received_at": "2026-10-09T00:09:34.737182+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1210467038",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2021-07-20",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 723948,
+      "pdf_field_source_locator": [
+        1,
+        2
+      ],
+      "pdf_raw_hash": "c88d5d1e0af78867b0422c231d41249c44fb538863a354b5433cc846f20d8a67",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2021-07-13/1210467038.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2021-07-13",
+      "record_date": "2021-07-19",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.10",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2021-07-20",
+      "source_received_at": "2026-10-09T00:09:34.878365+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1214041661",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2022-07-25",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 739277,
+      "pdf_field_source_locator": [
+        1,
+        2
+      ],
+      "pdf_raw_hash": "b33a976d34ab33f913b3240a9884b534b9e3df9dea763de70d8a8975cd76aad0",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2022-07-15/1214041661.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2022-07-15",
+      "record_date": "2022-07-22",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.50",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2022-07-25",
+      "source_received_at": "2026-10-09T00:09:34.996647+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1217292605",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2023-07-21",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 742423,
+      "pdf_field_source_locator": [
+        1,
+        2
+      ],
+      "pdf_raw_hash": "9d02519195644b524e947c094d3f0513244a9ec74af5e232f606c29c7eef5ff1",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2023-07-14/1217292605.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2023-07-14",
+      "record_date": "2023-07-20",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.50",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2023-07-21",
+      "source_received_at": "2026-10-09T00:09:35.128471+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1220664065",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2024-07-24",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 751851,
+      "pdf_field_source_locator": [
+        1,
+        2,
+        3
+      ],
+      "pdf_raw_hash": "c2e8625173589d6af8c2e5bf1e5bbfde0deb7668f76d09dca6c20979dc6333b6",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2024-07-18/1220664065.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2024-07-18",
+      "record_date": "2024-07-23",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.60",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2024-07-24",
+      "source_received_at": "2026-10-09T00:09:35.384158+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1224163682",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2025-07-22",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 145491,
+      "pdf_field_source_locator": [
+        1,
+        2,
+        3
+      ],
+      "pdf_raw_hash": "f3be87275b7e73ce6cc107f92f2712e172bae9cd4285f5c24804b2b2d071b973",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2025-07-15/1224163682.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2025-07-15",
+      "record_date": "2025-07-21",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.70",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2025-07-22",
+      "source_received_at": "2026-10-09T00:09:35.499009+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    },
+    {
+      "actual_account_receipt": null,
+      "announcement_id": "1224816852",
+      "cancellation_evidence": [],
+      "cancellation_state": "UNKNOWN",
+      "cash_mapping_hash": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "date_precision": "DATE",
+      "deferral_evidence": [],
+      "deferral_state": "UNKNOWN",
+      "ex_date": "2025-11-28",
+      "first_available_at": null,
+      "fulfillment_evidence": [],
+      "fulfillment_state": "UNKNOWN",
+      "historical_pit_claim": false,
+      "instrument": "SSE:600362",
+      "owned_entitlement": "UNKNOWN",
+      "payment_schedule_relation_to_cutoff": "BEFORE_CUTOFF_DATE",
+      "pdf_bytes": 145503,
+      "pdf_field_source_locator": [
+        1,
+        2,
+        3
+      ],
+      "pdf_raw_hash": "e486d0e9a99e5aa0dc77a4aa2037963022a44a1d3f6cd3315290b8e6afe2a28c",
+      "pdf_source_url": "https://static.cninfo.com.cn/finalpage/2025-11-21/1224816852.PDF",
+      "publication_precision": "DATE",
+      "published_date": "2025-11-21",
+      "record_date": "2025-11-27",
+      "resolution_evidence": [],
+      "resolved_at": null,
+      "scheduled_obligation": {
+        "actual_owned_amount_yuan": null,
+        "gross_cash_yuan_per_eligible_share": "0.40",
+        "is_actual_cash_event": false,
+        "kind": "DECLARED_CASH_DISTRIBUTION"
+      },
+      "scheduled_payment_date": "2025-11-28",
+      "source_received_at": "2026-10-09T00:09:35.641081+00:00",
+      "window_relation": "OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN"
+    }
+  ],
+  "gaps": [
+    "KNOWN_OBLIGATION_FULFILLMENT_CANCELLATION_DEFERRAL_UNPROVEN",
+    "ALL_OLDER_OBLIGATION_COVERAGE_UNPROVEN",
+    "NOTICE_FIRST_AVAILABILITY_AND_REVISION_CHAIN_UNPROVEN"
+  ],
+  "known_notice_count": 14,
+  "resolution_unknown_count": 14,
+  "pending_older_obligations_complete": false,
+  "complete_action_coverage": false,
+  "evidence_kind": "METHOD_CASE",
+  "network_calls": 0
+}

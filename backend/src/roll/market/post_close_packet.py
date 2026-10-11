@@ -7,7 +7,7 @@ command can certify completeness or create a forward sample.
 import hashlib
 import json
 import os
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal, InvalidOperation
 from io import BytesIO
 from pathlib import Path
@@ -23,7 +23,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.market.evidence import DataRequest
 from roll.market.rules import SHANGHAI
-from roll.market import cninfo_history
+from roll.market import cninfo_history, known_obligations
 from roll.agents.codex_process import owner_alive,process_creation
 
 SSE_URL='http://yunhq.sse.com.cn:32041/v1/sh1/list/exchange/equity'
@@ -40,10 +40,15 @@ class PacketCommand(BaseModel):
     basis: str=Field(min_length=1,max_length=2000)
 
 
+class ObligationCommand(PacketCommand):
+    protocol_id: str=Field(min_length=1,max_length=100)
+
+
 def code():
     return hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')+
         (CASH_REFERENCE/'sources.json').read_bytes()+(HISTORY_REFERENCE/'sources.json').read_bytes()+
         Path(cninfo_history.__file__).read_bytes().replace(b'\r\n',b'\n')+
+        Path(known_obligations.__file__).read_bytes().replace(b'\r\n',b'\n')+
         (cninfo_history.REFERENCE/'sources.json').read_bytes()).hexdigest()
 
 
@@ -231,6 +236,7 @@ class PostClosePackets:
             db.execute('CREATE TABLE IF NOT EXISTS post_close_packets(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS post_close_capture_jobs(plan_id TEXT NOT NULL,day TEXT NOT NULL,value TEXT NOT NULL,PRIMARY KEY(plan_id,day))')
             db.execute('CREATE TABLE IF NOT EXISTS post_close_source_assessments(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,value TEXT NOT NULL)')
+            db.execute('CREATE TABLE IF NOT EXISTS post_close_obligation_audits(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,protocol_id TEXT NOT NULL,value TEXT NOT NULL)')
             for saved in db.execute('SELECT plan_id,day,value FROM post_close_capture_jobs'):
                 job=json.loads(saved[2])
                 if job['state']=='CLAIMED' and not owner_alive(job):
@@ -339,15 +345,106 @@ class PostClosePackets:
     def source_gaps(self,plan_id):
         plan=self.prospective.plan(plan_id)
         cutoff=datetime.fromisoformat(now())
+        audits=self.obligations(plan_id,cutoff)
         rows,gaps,_=self.inputs(self.prospective.as_of(plan_id,cutoff)['versions'],plan['instrument'],cutoff,
-            self.acquisitions(plan_id,cutoff))
+            self.acquisitions(plan_id,cutoff),audits)
         history=self.history(plan_id,cutoff)
         return {'plan_id':plan_id,'instrument':plan['instrument'],'gaps':gaps,
             'source_gaps':['CURRENT_BOARD_UNIT_SOURCE_UNVERIFIED','CURRENT_STATUS_LISTING_RELISTING_SOURCE_UNADAPTED',
-                'CURRENT_RISK_WARNING_SUBTYPE_COMPLETE_SOURCE_UNADAPTED','CURRENT_ACTION_INTERVAL_AND_OLDER_OBLIGATION_AUDIT_UNADAPTED'],
+                'CURRENT_RISK_WARNING_SUBTYPE_COMPLETE_SOURCE_UNADAPTED','CURRENT_ACTION_INTERVAL_AND_FULL_OLDER_OBLIGATION_COVERAGE_UNADAPTED'],
             'historical_source_assessments':history,'historical_source_gaps':sorted(set(g for s in history for g in s['gaps'])),
+            'known_obligation_audits':audits,'known_obligation_gaps':sorted(set(g for a in audits for g in a['gaps'])),
             'network_calls':0,
             'forward_admissible':bool(rows) and not gaps,'forward_started_at':None,'capability':'NOT_GRANTED'}
+
+    def obligation_protocol(self,protocol_id,instrument):
+        protocol=self.prospective.registry.get(protocol_id)
+        design=protocol.get('design',{});horizon=design.get('horizon_sessions')
+        if instrument not in protocol['scope'].get('instruments',[]) or type(horizon) is not int or horizon!=20:
+            raise HTTPException(422,'KNOWN_OBLIGATION_AUDIT_REGISTERED_INSTRUMENT_AND_20_SESSION_DESIGN_REQUIRED')
+        dataset=self.prospective.registry.dataset(protocol['dataset_id'])
+        return {'protocol_id':protocol_id,'protocol_fingerprint':protocol['protocol_fingerprint'],
+            'instrument':instrument,'design_hash':hashlib.sha256(encode(design).encode()).hexdigest(),
+            'horizon_sessions':horizon,'protocol_evidence_kind':dataset['source_evidence_kind'],
+            'scope':'REGISTERED_DESIGN_REFERENCE_NOT_NEW_CONFIRMATORY_CHECKPOINT'}
+
+    def obligation_window(self,context,cutoff,register=False):
+        local=cutoff.astimezone(SHANGHAI);start=local.date();day=start
+        sessions=0;calendar=[];sources={};gaps=[];end=None
+        for _ in range(366):
+            info=self.evidence.market.rules.calendar('SSE',day)
+            source=info.get('source')
+            if source:
+                sha=source['sha256'];path=self.evidence.directory/source['archive_path']
+                body=path.read_bytes() if register else self.evidence.raw(sha).read_bytes()
+                if len(body)!=source['bytes'] or hashlib.sha256(body).hexdigest()!=sha:
+                    raise HTTPException(409,'OBLIGATION_CALENDAR_ORIGINAL_CORRUPT')
+                if datetime.fromisoformat(source['fetched_at'])>cutoff:
+                    raise HTTPException(409,'OBLIGATION_CALENDAR_AFTER_CUTOFF')
+                if register and sha not in sources:self.evidence.archive(body,'KNOWN_OBLIGATION_CALENDAR_REFERENCE',
+                    path.suffix.lstrip('.'),source_id=source['id'],source_url=source['url'],received_at=source['fetched_at'])
+                sources[sha]=source
+            calendar.append({'date':day.isoformat(),'is_trading_day':info['is_trading_day'],
+                'calendar_version':info.get('calendar_version'),'source_hash':source['sha256'] if source else None})
+            if info['is_trading_day'] is None:
+                gaps.append('PROTOCOL_REFERENCE_WINDOW_CALENDAR_UNKNOWN');break
+            if day>start and info['is_trading_day'] is True:sessions+=1
+            if sessions==context['horizon_sessions']:end=day.isoformat();break
+            day+=timedelta(days=1)
+        if not end and not gaps:gaps.append('PROTOCOL_REFERENCE_WINDOW_HORIZON_NOT_COVERED')
+        return {'protocol_id':context['protocol_id'],'design_hash':context['design_hash'],
+            'horizon_sessions':context['horizon_sessions'],'start_date':start.isoformat(),'end_date':end,
+            'reference_checkpoint_id':'POST_CLOSE_1505_SHANGHAI','reference_checkpoint_at':start.isoformat()+'T15:05:00+08:00',
+            'reference_checkpoint_reached':local.time().isoformat()>='15:05:00',
+            'reference_checkpoint_is_trading_day':calendar[0]['is_trading_day'],
+            'calendar_source_hashes':list(sources),'calendar_sources':list(sources.values()),
+            'calendar_dates':calendar,'covered_future_sessions':sessions,'gaps':gaps,
+            'scope':'PROTOCOL_EVALUATION_EXECUTION_REFERENCE_WINDOW_NOT_FORWARD_START_OR_STATISTICAL_LOOK'}
+
+    def obligation_payload(self,protocol_id,instrument,cutoff,register=False):
+        context=self.obligation_protocol(protocol_id,instrument)
+        body=encode(context).encode();context_sha=hashlib.sha256(body).hexdigest()
+        if register:self.evidence.archive(body,'KNOWN_OBLIGATION_PROTOCOL_REFERENCE')
+        else:self.evidence.raw(context_sha)
+        window=self.obligation_window(context,cutoff,register)
+        inventory=self.cash_inventory(cutoff,register=register,verify_archives=not register)
+        try:payload=known_obligations.notice_audit(inventory,window,cutoff.astimezone(SHANGHAI).isoformat())
+        except (ValueError,KeyError,TypeError) as error:raise HTTPException(409,str(error))
+        return {**payload,'protocol_context':context,'protocol_reference_hash':context_sha,
+            'protocol_effective_window':window,'knowledge_cutoff':cutoff.isoformat(),
+            'gaps':payload['gaps']+window['gaps'],'evidence_kind':'METHOD_CASE' if context['protocol_evidence_kind']=='METHOD_CASE' else 'REAL_ARCHIVED_SOURCE_ASSESSMENT'}
+
+    def assess_obligations(self,plan_id,command):
+        plan=self.prospective.plan(plan_id)
+        if plan['instrument']!='SSE:600362':raise HTTPException(403,'已知现金义务审计仅适配SSE:600362')
+        cutoff=datetime.fromisoformat(now())
+        value={'audit_id':str(uuid4()),'plan_id':plan_id,'protocol_id':command.protocol_id,
+            'instrument':plan['instrument'],'basis':command.basis,'normalized_known_at':cutoff.isoformat(),
+            'parser_fingerprint':code(),**self.obligation_payload(command.protocol_id,plan['instrument'],cutoff,True)}
+        value['archive']=self.evidence.archive(encode(value).encode(),'KNOWN_OBLIGATION_AUDIT',evidence_kind=value['evidence_kind'])
+        with self.ledger.connection() as db:db.execute('INSERT INTO post_close_obligation_audits VALUES(?,?,?,?)',
+            (value['audit_id'],plan_id,command.protocol_id,encode(value)))
+        return value
+
+    def obligations(self,plan_id,cutoff=None,protocol_id=None,ids=None,checkpoint_day=None):
+        cutoff=cutoff or datetime.fromisoformat(now())
+        self.prospective.plan(plan_id)
+        with self.ledger.connection() as db:
+            saved=[json.loads(r[0]) for r in db.execute('SELECT value FROM post_close_obligation_audits WHERE plan_id=? ORDER BY rowid',(plan_id,))]
+        selected=[s for s in saved if datetime.fromisoformat(s['normalized_known_at'])<=cutoff and
+            (protocol_id is None or s['protocol_id']==protocol_id) and
+            (checkpoint_day is None or s['protocol_effective_window']['start_date']==checkpoint_day)]
+        if ids is not None:
+            by_id={s['audit_id']:s for s in selected}
+            if len(set(ids))!=len(ids) or any(i not in by_id for i in ids):raise HTTPException(409,'KNOWN_OBLIGATION_AUDIT_MISSING')
+            selected=[by_id[i] for i in ids]
+        for value in selected:
+            original=json.loads(self.evidence.raw(value['archive']['sha256']).read_bytes())
+            if original!={k:v for k,v in value.items() if k!='archive'}:raise HTTPException(409,'KNOWN_OBLIGATION_AUDIT_ARCHIVE_MISMATCH')
+            if value['parser_fingerprint']!=code():raise HTTPException(409,'POST_CLOSE_PARSER_CHANGED_SUCCESSOR_REQUIRED')
+            computed=self.obligation_payload(value['protocol_id'],value['instrument'],datetime.fromisoformat(value['knowledge_cutoff']))
+            if any(value[k]!=v for k,v in computed.items()):raise HTTPException(409,'KNOWN_OBLIGATION_NORMALIZED_ORIGINAL_MISMATCH')
+        return selected
 
     def capture_once(self,plan_id,basis='Registered forward plan; existing single worker source acquisition'):
         """One existing worker owns a persisted bounded job; failures are not hidden retries."""
@@ -511,12 +608,14 @@ class PostClosePackets:
                 'original_raw_hashes':sorted(set(originals))})
         return result
 
-    def inputs(self,versions,instrument,cutoff,acquisition_attempts=()):
+    def inputs(self,versions,instrument,cutoff,acquisition_attempts=(),obligation_audits=()):
         daily,statuses={},{}
         inventory=self.cash_inventory(cutoff)
         gaps=[]
         latest={}
         current_day=cutoff.astimezone(SHANGHAI).date().isoformat()
+        applicable_audits=[a for a in obligation_audits if a['instrument']==instrument and
+            a['protocol_effective_window']['start_date']==current_day]
         for attempt in acquisition_attempts:
             if attempt['source_id']==SOURCE and attempt['source_day']==current_day:
                 latest[(attempt['source_id'],attempt['source_day'])]=attempt
@@ -543,6 +642,9 @@ class PostClosePackets:
             if any(any(differs(c.get(k),candidates[0].get(k),k) for k in fields) for c in candidates[1:]):
                 gaps.append('UNRESOLVED_CURRENT_DAILY_CONFLICT:'+day)
             row=max(candidates,key=lambda c:datetime.fromisoformat(c['known_at']))
+            row={**row,'known_obligation_audit_ids':[a['audit_id'] for a in applicable_audits]}
+            if any(a['resolution_unknown_count'] for a in applicable_audits):
+                gaps.append('KNOWN_OLDER_OBLIGATION_RESOLUTION_UNPROVEN:'+day)
             states=statuses.get(day,[])
             dims=['suspension','risk_warning','st_subtype','listing_stage','ex_rights','state']
             if any(any(s.get(k)!=states[0].get(k) for k in dims) for s in states[1:]):
@@ -613,7 +715,8 @@ class PostClosePackets:
         inventory=self.cash_inventory(cutoff,register=True)
         versions=self.prospective.as_of(plan_id,cutoff)['versions']
         attempts=self.acquisitions(plan_id,cutoff)
-        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff,attempts)
+        audits=self.obligations(plan_id,cutoff,checkpoint_day=cutoff.astimezone(SHANGHAI).date().isoformat())
+        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff,attempts,audits)
         value={'packet_id':str(uuid4()),'plan_id':plan_id,'instrument':plan['instrument'],
             'created_at':now(),'knowledge_cutoff':cutoff.isoformat(),'basis':basis,'parser_fingerprint':code(),
             'rows':rows,'status_facts':statuses,'gaps':gaps,'versions':versions,'acquisition_attempts':attempts,
@@ -621,6 +724,7 @@ class PostClosePackets:
             'forward_admissible':bool(rows) and not gaps,'capability':'NOT_GRANTED','forward_started_at':None,
             'historical_pit_claim':False,'account_events_added':0}
         value['known_cash_inventory']=inventory
+        value['known_obligation_audits']=audits
         value['historical_source_assessments']=self.history(plan_id,cutoff)
         value['execution_context']=self.execution_context(plan['instrument'],rows)
         value['archive']=self.evidence.archive(encode(value).encode(),'POST_CLOSE_INPUT_PACKET',evidence_kind=value['evidence_kind'])
@@ -644,8 +748,10 @@ class PostClosePackets:
         versions=self.prospective.replay_versions(packet['plan_id'],packet['versions'],cutoff)
         attempts=self.acquisitions(packet['plan_id'],cutoff,[a['batch_id'] for a in packet['acquisition_attempts']])
         if attempts!=packet['acquisition_attempts']:raise HTTPException(409,'POST_CLOSE_PACKET_ACQUISITION_BINDING_MISMATCH')
-        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts)
+        audits=self.obligations(packet['plan_id'],cutoff,ids=[a['audit_id'] for a in packet['known_obligation_audits']],
+            checkpoint_day=cutoff.astimezone(SHANGHAI).date().isoformat())
+        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts,audits)
         inventory=self.cash_inventory(cutoff,verify_archives=True)
         history=self.history(packet['plan_id'],cutoff,[s['assessment_id'] for s in packet['historical_source_assessments']])
-        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'] and history==packet['historical_source_assessments'],
+        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'] and history==packet['historical_source_assessments'] and audits==packet['known_obligation_audits'],
             'network_calls':0,'forward_admissible':packet['forward_admissible'],'capability':'NOT_GRANTED'}
