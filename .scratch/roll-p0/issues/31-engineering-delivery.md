@@ -46,3 +46,6 @@
 
 
 2026-10-11 当前日无交易流程r02独立接受：owner25b3e7f、root no-ff3a37325f，[独立收据](../evidence/continuation-2026-10-11/ticket31-flow-independent/acceptance.md)补当前10/11周日23:10四范围NONE声明（显示分钟use-check CONFIRMED_AS_OF/allowed）→23:10:03.891 ON_DEMAND→23:10:04.917合法CLOSED普通POST_CLOSE→历史/精确cutoff幂等/immutable replay0network，账户不变。两业务任务均PARTIAL8QUOTE/DAILY缺口；前后snapshot相连/NO_SUBSTANTIAL_CHANGE，无完整交易日/调度checkpoint/前向样本或正式资格证明。通知business3/merged1/attempt0/UNKNOWN与r01分别保留。独立197产品源rawGit/15保护/3许可JSON/原19byte-only一致，64文件6689112B两端0差异、manifest43831B/a5cd1922…b3f6、12精确PID独立CIM0；r01ca333…manifest原样，首label harness FAIL/产品0改及API3/Vite3221225786保留。无新测试/HTTP/SQL/provider/P95重跑/清理；AT48仅当前普通无交易切片，AT86原恢复范围不扩展，Completion仍partial；root状态/README/trace/manual另由协调者维护。
+
+
+2026-10-11 root最终手工收口：14 BR＋125编号P0＋10不变量＋90 AT共239条均逐条复核历史字面输入/实际结果/边界，只对明确本轮收据条款添加有限接受；[当前账本](../evidence/continuation-2026-10-11/final-manual239/ledger.md)保留全部原失败/未执行，不宣称239重新运行或全规格PASS。干净安装/五入口/无交易与按需休市复盘/三个P95/两15/实际角色和恢复均独立接受。初次五入口Oct7声明不能替代Oct11普通无交易流程，已单独补验；休市普通复盘不称交易日完整定版或真实影子归档。25缺冻结政策和实际输入、27LOSS、30完整来源先决缺口按责任票继续partial；28实际发送待用户配置，32—34真实自然条件未成立，31 Completion仍partial。本轮状态文档与条款账本本地提交，不推送；工作树清理需在全部进程停止/运行件保全后按精确清单执行并另留收据。

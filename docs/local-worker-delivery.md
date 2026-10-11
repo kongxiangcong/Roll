@@ -1,5 +1,7 @@
 # Roll 本机三进程启动契约（31 工程切片）
 
+当前交付版本的物理安装、三角色及备份恢复已独立有限接受，见[最终31](../.scratch/roll-p0/evidence/31-final/acceptance.md)和[独立核对](../.scratch/roll-p0/evidence/continuation-2026-10-11/ticket31-final-independent/acceptance.md)。worker正常关闭exit0；API信号关闭exit3、Vite3221225786原样记录，不概括为全exit0。恢复保持RECOVERY_LOCK，实际资格和正向LOSS另需有效证据。29工程隔离已接受，30九个有限来源切片已接受且尝试关闭；完整来源仍不足。以下早期切片说明保留其原时点。
+
 本说明交付独立 worker 的安装与运行接口。31 尚为 partial；29 跨出口联验、30 实际来源 producer 与前向证据、28 用户配置后的真实外发、32—34 仍按各票实际状态收口。当前后端范围为 CODEX；历史 DeepSeek 材料保留，不能启动新 DeepSeek 验收或替代当前 Codex 技术审阅。技术审阅完成不等于 G1—G7 PASS 或资金启用。
 
 ## 干净 Windows 安装
