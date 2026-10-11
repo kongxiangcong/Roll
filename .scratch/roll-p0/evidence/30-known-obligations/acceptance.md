@@ -44,3 +44,11 @@
 ## 新运行件保全
 
 [主收据](runtime-preservation-receipt.json)/[逐文件清单](runtime-preservation-manifest.json)：**2749 files/403639159 bytes/0差异**，来源仅本树12个新`t30o-*`目录，目标root `.roll-data/implementation-evidence/continuation-ticket30-known-obligations`。bytewise/Windows扩展路径，没有SQLite-open、旧manifest覆盖或worktree清理。没有打开/写旧13989/2570/2657保存件、旧SHM恢复证明、实际root SQLite/账户；后续分析DB须先另复制到新自有目录。own final API raw archive抽取也没有SQLite-open。Root status/trace/README由父任务维护。
+
+## 集成组合与最终交接
+
+上述31项对应本轮source commit **fbca570e5efe40ab0c199c8ecf773260c877cc80**，不是后来26源码的完整轮。先合root `7c761e009dc01061ee04ea4822487ba2d5f86f23`（own merge `9d5fc06e8168c560e0a5202772794abb0d1630b2`），[最小4案](composition-tests.log) **4 passed/29.60s**：新audit consumer、CNINFO混合原IDs、source-job与未授权caller，源[before](source-composition-before.json)/[after](source-composition-after.json)一致。[该轮独立保全](composition-preservation-receipt.json)/[清单](composition-preservation-manifest.json) **206 files/29446893 bytes/0差异**，只含`t30o-composition`，新target `continuation-ticket30-known-obligations-composition`。
+
+随后26产品独立接受；合accepted root **0d331791e2ab09d4bb226d3e00f438a6d8995530**，没有重跑31或旧4案。[26后最小2案](composition26-tests.log) **2 passed/16.85s**：新audit输入/固定IDs与新current未授权caller合约，METHOD app包含当前source inventory构造。26后源[before](source-composition26-before.json)/[after](source-composition26-after.json)相同，15保护与reference相对accepted base仍无diff。[单独追加保全](composition26-preservation-receipt.json)/[清单](composition26-preservation-manifest.json) **93 files/11808877 bytes/0差异**，只含`t30o-composition26`，新target `continuation-ticket30-known-obligations-composition26`。后合docs-only **61bbccdb4dcd4e7764c61d822c8b57454d5f1b57**（own merge `0fd6f0b52c1af71a8b4a3953e51aaa4731fe8089`），product/config未变，不再重复测试。
+
+三批合计 **3048 files/444894929 bytes/0差异**，仅本轮14个明确自有runtime目录。所有本轮命令/测试已退出，未启动独立后台服务；旧保全目标/manifest不读写，无SQLite-open或worktree清理。严格staged whitespace检查仅排除逐字保留的pytest `.log`原诊断（其空白行保持原样）；不改写失败回执。留现树待父任务独立接受，再按[next-slice](next-slice.md)推进有限官方来源前沿。

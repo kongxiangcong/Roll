@@ -8,11 +8,12 @@ from pathlib import Path
 
 repo=Path(__file__).resolve().parents[4]
 root=Path('D:/dsh-proj/Roll')
-composition=len(sys.argv)>1 and sys.argv[1]=='composition'
-names=['t30o-composition'] if composition else ['t30o-schema','t30o-calendar-schema','t30o-window-red',
+mode=sys.argv[1] if len(sys.argv)>1 else 'main'
+composition=mode in {'composition','composition26'}
+names=['t30o-'+mode] if composition else ['t30o-schema','t30o-calendar-schema','t30o-window-red',
  't30o-window-green','t30o-consumer-red','t30o-calendar-corrected-red','t30o-consumer-green',
  't30o-protocol-red','t30o-protocol-corrected-red','t30o-binding-green','t30o-forward-binding','t30o-final']
-suffix='-composition' if composition else ''
+suffix='-'+mode if composition else ''
 target=root/('.roll-data/implementation-evidence/continuation-ticket30-known-obligations'+suffix)
 def extended(path):
  return Path('\\\\?\\'+str(path.resolve()))
@@ -48,7 +49,7 @@ receipt={'scope':'OWNED_OFFLINE_METHOD_TESTS_ONLY_NO_SQLITE_OPEN',
  'files':len(records),'bytes':sum(r['bytes'] for r in records),'sha_or_length_mismatches':0,
  'target':str(target),'source_directories':[str(repo/'.scratch'/name) for name in names],
  'previous_preservation_targets_read_or_written':False,'original19_sqlite_read':False,'network_calls':0}
-prefix='composition-preservation' if composition else 'runtime-preservation'
+prefix=mode+'-preservation' if composition else 'runtime-preservation'
 for filename,value in [(prefix+'-manifest.json',records),(prefix+'-receipt.json',receipt)]:
  Path(__file__).with_name(filename).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
 print(json.dumps({k:receipt[k] for k in ['files','bytes','sha_or_length_mismatches']}))
