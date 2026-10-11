@@ -23,7 +23,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.market.evidence import DataRequest
 from roll.market.rules import SHANGHAI
-from roll.market import cninfo_history, known_obligations
+from roll.market import cninfo_history, known_obligations, sse_suspension
 from roll.agents.codex_process import owner_alive,process_creation
 
 SSE_URL='http://yunhq.sse.com.cn:32041/v1/sh1/list/exchange/equity'
@@ -49,6 +49,7 @@ def code():
         (CASH_REFERENCE/'sources.json').read_bytes()+(HISTORY_REFERENCE/'sources.json').read_bytes()+
         Path(cninfo_history.__file__).read_bytes().replace(b'\r\n',b'\n')+
         Path(known_obligations.__file__).read_bytes().replace(b'\r\n',b'\n')+
+        Path(sse_suspension.__file__).read_bytes().replace(b'\r\n',b'\n')+
         (cninfo_history.REFERENCE/'sources.json').read_bytes()).hexdigest()
 
 
@@ -237,6 +238,13 @@ class PostClosePackets:
             db.execute('CREATE TABLE IF NOT EXISTS post_close_capture_jobs(plan_id TEXT NOT NULL,day TEXT NOT NULL,value TEXT NOT NULL,PRIMARY KEY(plan_id,day))')
             db.execute('CREATE TABLE IF NOT EXISTS post_close_source_assessments(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS post_close_obligation_audits(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,protocol_id TEXT NOT NULL,value TEXT NOT NULL)')
+            db.execute('CREATE TABLE IF NOT EXISTS post_close_suspension_receipts(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,day TEXT NOT NULL,value TEXT NOT NULL)')
+            db.execute('CREATE TABLE IF NOT EXISTS post_close_suspension_jobs(plan_id TEXT NOT NULL,day TEXT NOT NULL,value TEXT NOT NULL,PRIMARY KEY(plan_id,day))')
+            for saved in db.execute('SELECT plan_id,day,value FROM post_close_suspension_jobs'):
+                job=json.loads(saved[2])
+                if job['state']=='CLAIMED' and not owner_alive(job):
+                    job.update(state='INTERRUPTED',finished_at=now(),gaps=['SSE_SUSPENSION_WORKER_STOPPED_NO_IMPLICIT_RETRY'])
+                    db.execute('UPDATE post_close_suspension_jobs SET value=? WHERE plan_id=? AND day=?',(encode(job),saved[0],saved[1]))
             for saved in db.execute('SELECT plan_id,day,value FROM post_close_capture_jobs'):
                 job=json.loads(saved[2])
                 if job['state']=='CLAIMED' and not owner_alive(job):
@@ -346,14 +354,16 @@ class PostClosePackets:
         plan=self.prospective.plan(plan_id)
         cutoff=datetime.fromisoformat(now())
         audits=self.obligations(plan_id,cutoff)
+        suspension=self.suspension_receipts(plan_id,cutoff)
         rows,gaps,_=self.inputs(self.prospective.as_of(plan_id,cutoff)['versions'],plan['instrument'],cutoff,
-            self.acquisitions(plan_id,cutoff),audits)
+            self.acquisitions(plan_id,cutoff),audits,suspension)
         history=self.history(plan_id,cutoff)
         return {'plan_id':plan_id,'instrument':plan['instrument'],'gaps':gaps,
             'source_gaps':['CURRENT_BOARD_UNIT_SOURCE_UNVERIFIED','CURRENT_STATUS_LISTING_RELISTING_SOURCE_UNADAPTED',
                 'CURRENT_RISK_WARNING_SUBTYPE_COMPLETE_SOURCE_UNADAPTED','CURRENT_ACTION_INTERVAL_AND_FULL_OLDER_OBLIGATION_COVERAGE_UNADAPTED'],
             'historical_source_assessments':history,'historical_source_gaps':sorted(set(g for s in history for g in s['gaps'])),
             'known_obligation_audits':audits,'known_obligation_gaps':sorted(set(g for a in audits for g in a['gaps'])),
+            'suspension_receipts':suspension,'suspension_source_gaps':sorted(set(g for s in suspension for g in s['gaps'])),
             'network_calls':0,
             'forward_admissible':bool(rows) and not gaps,'forward_started_at':None,'capability':'NOT_GRANTED'}
 
@@ -446,6 +456,119 @@ class PostClosePackets:
             if any(value[k]!=v for k,v in computed.items()):raise HTTPException(409,'KNOWN_OBLIGATION_NORMALIZED_ORIGINAL_MISMATCH')
         return selected
 
+    def capture_suspension(self,plan_id,basis):
+        plan=self.prospective.plan(plan_id)
+        if plan['instrument']!='SSE:600362':raise HTTPException(403,'SSE停牌指定日期原件仅适配SSE:600362')
+        started=now();day=datetime.fromisoformat(started).astimezone(SHANGHAI).date().isoformat()
+        try:contract=sse_suspension.schema()
+        except (ValueError,KeyError,TypeError) as error:raise HTTPException(409,str(error))
+        if datetime.fromisoformat(contract['js_source']['received_at'])>datetime.fromisoformat(started):
+            raise HTTPException(409,'SSE_SUSPENSION_QUERY_JS_AFTER_CAPTURE')
+        self.evidence.archive(contract['js_bytes'],'SSE_SUSPENSION_QUERY_JS',source_url=contract['js_source']['url'],
+            received_at=contract['js_source']['received_at'])
+        self.evidence.archive(contract['mapping_bytes'],'SSE_SUSPENSION_SCHEMA_MAPPING')
+        value={'receipt_id':str(uuid4()),'plan_id':plan_id,'instrument':plan['instrument'],'query_date':day,
+            'basis':basis,'started_at':started,'source_id':sse_suspension.SOURCE,'request_budget_pages':2,
+            'parser_fingerprint':code(),'query_js_hash':sse_suspension.JS_SHA,'schema_mapping_hash':contract['mapping_hash'],
+            'evidence_kind':'METHOD_CASE' if self.evidence.evidence_kind=='METHOD_CASE' else 'REAL_SOURCE_ASSESSMENT',
+            'network_calls':0,'pages':[],'errors':[],'system_usable':False,'complete_status_verified':False,
+            'no_event_authority':False,'actual_forward_start':False,'forward_started_at':None,'capability':'NOT_GRANTED'}
+        raw=[]
+        try:
+            blocked=self.prospective.sources.access(sse_suspension.SOURCE,plan['instrument'])
+            if blocked:raise ValueError(blocked)
+            with httpx.Client(transport=self.evidence.transport,follow_redirects=False,timeout=15) as client:
+                for page_no in range(1,3):
+                    params=sse_suspension.parameters(contract,day,page_no)
+                    value['network_calls']+=1
+                    with client.stream('GET',contract['url'],params=params,headers={'Referer':'https://www.sse.com.cn/'}) as response:
+                        body=bytearray();truncated=False
+                        for part in response.iter_bytes():
+                            remaining=8*1024*1024-len(body);body.extend(part[:remaining])
+                            if len(part)>remaining:truncated=True;break
+                        received=now()
+                        archive=self.evidence.archive(bytes(body),'SSE_SUSPENSION_RAW_RESPONSE',source_id=sse_suspension.SOURCE,
+                            source_url=str(response.url),received_at=received,status_code=response.status_code,
+                            content_type=response.headers.get('content-type'),parameters=params,receipt_id=value['receipt_id'],
+                            evidence_kind=value['evidence_kind'],original_complete=not truncated)
+                        value['pages'].append({'parameters':params,'archive':archive,
+                            'original_complete':not truncated,'reported_metadata':sse_suspension.reported_metadata(bytes(body))})
+                        if truncated:raise ValueError('SSE_SUSPENSION_DECODED_BYTE_LIMIT_PREFIX_ONLY')
+                        response.raise_for_status()
+                    raw.append({'content':bytes(body),'parameters':params,'archive':archive})
+                    parsed=sse_suspension.parse_pages(raw,plan['instrument'],day,received)
+                    if not parsed['declared_total'] or parsed['reported_page_count']<=page_no:break
+        except (httpx.HTTPError,ValueError,KeyError,TypeError) as error:
+            value['errors'].append(str(error)[:160] if isinstance(error,ValueError) else type(error).__name__)
+        value['finished_at']=now();value['normalized_known_at']=value['finished_at']
+        if value['errors']:
+            parsed={'events':[],'page_audits':[],'returned_count':None,'declared_total':None,
+                'reported_page_count':None,'returned_count_matches_positive_total':False,
+                'gaps':['SSE_SUSPENSION_CAPTURE_OR_PARSE_REFUSED']+value['errors']}
+        else:parsed=sse_suspension.parse_pages(raw,plan['instrument'],day,value['normalized_known_at'])
+        value.update(parsed,status='REFUSED' if value['errors'] else 'REPORTED_PARTIAL')
+        value['archive']=self.evidence.archive(encode(value).encode(),'SSE_SUSPENSION_RECEIPT',evidence_kind=value['evidence_kind'])
+        with self.ledger.connection() as db:db.execute('INSERT INTO post_close_suspension_receipts VALUES(?,?,?,?)',
+            (value['receipt_id'],plan_id,day,encode(value)))
+        self.prospective.sources.outcome(sse_suspension.SOURCE,not value['errors'],value['status'],value['receipt_id'])
+        return value
+
+    def suspension_receipts(self,plan_id,cutoff=None,ids=None):
+        self.prospective.plan(plan_id);cutoff=cutoff or datetime.fromisoformat(now())
+        with self.ledger.connection() as db:
+            saved=[json.loads(r[0]) for r in db.execute('SELECT value FROM post_close_suspension_receipts WHERE plan_id=? ORDER BY rowid',(plan_id,))]
+        selected=[s for s in saved if datetime.fromisoformat(s['normalized_known_at'])<=cutoff]
+        if ids is not None:
+            available={s['receipt_id']:s for s in selected}
+            if len(set(ids))!=len(ids) or any(i not in available for i in ids):raise HTTPException(409,'SSE_SUSPENSION_RECEIPT_MISSING')
+            selected=[available[i] for i in ids]
+        for value in selected:
+            original=json.loads(self.evidence.raw(value['archive']['sha256']).read_bytes())
+            if original!={k:v for k,v in value.items() if k!='archive'}:raise HTTPException(409,'SSE_SUSPENSION_RECEIPT_ORIGINAL_MISMATCH')
+            if value['parser_fingerprint']!=code():raise HTTPException(409,'POST_CLOSE_PARSER_CHANGED_SUCCESSOR_REQUIRED')
+            try:contract=sse_suspension.schema()
+            except (ValueError,KeyError,TypeError) as error:raise HTTPException(409,str(error))
+            if value['query_js_hash']!=sse_suspension.JS_SHA or value['schema_mapping_hash']!=contract['mapping_hash']:
+                raise HTTPException(409,'SSE_SUSPENSION_SCHEMA_DEPENDENCY_MISMATCH')
+            self.evidence.raw(value['query_js_hash']);self.evidence.raw(value['schema_mapping_hash'])
+            raw=[{'content':self.evidence.raw(p['archive']['sha256']).read_bytes(),**p} for p in value['pages']]
+            for ordinal,page in enumerate(raw,1):
+                source_url=urlparse(page['archive']['source_url'])
+                if (page['reported_metadata']!=sse_suspension.reported_metadata(page['content']) or
+                    page['parameters']!=sse_suspension.parameters(contract,value['query_date'],ordinal) or
+                    source_url._replace(query='').geturl()!=contract['url'] or
+                    {k:v[0] for k,v in parse_qs(source_url.query).items()}!=page['parameters']):
+                    raise HTTPException(409,'SSE_SUSPENSION_REQUEST_OR_REPORTED_METADATA_MISMATCH')
+            if not value['errors']:
+                try:parsed=sse_suspension.parse_pages(raw,value['instrument'],value['query_date'],value['normalized_known_at'])
+                except (ValueError,KeyError,TypeError):raise HTTPException(409,'SSE_SUSPENSION_ORIGINAL_PARSE_FAILED')
+                if any(value[k]!=v for k,v in parsed.items()):raise HTTPException(409,'SSE_SUSPENSION_NORMALIZED_ORIGINAL_MISMATCH')
+        return selected
+
+    def suspension_jobs(self,plan_id):
+        self.prospective.plan(plan_id)
+        with self.ledger.connection() as db:
+            return [json.loads(r[0]) for r in db.execute('SELECT value FROM post_close_suspension_jobs WHERE plan_id=? ORDER BY rowid',(plan_id,))]
+
+    def capture_suspension_once(self,plan_id,basis):
+        self.prospective.plan(plan_id);day=datetime.fromisoformat(now()).astimezone(SHANGHAI).date().isoformat()
+        with self.ledger.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            old=db.execute('SELECT value FROM post_close_suspension_jobs WHERE plan_id=? AND day=?',(plan_id,day)).fetchone()
+            if old:return json.loads(old[0])
+            job={'plan_id':plan_id,'day':day,'source_id':sse_suspension.SOURCE,'state':'CLAIMED',
+                'basis':basis,'started_at':now(),'actual_forward_start':False,'request_budget_pages':2,
+                'host_owner':{'pid':os.getpid(),'creation_ticks':process_creation(os.getpid())}}
+            db.execute('INSERT INTO post_close_suspension_jobs VALUES(?,?,?)',(plan_id,day,encode(job)))
+            db.commit()
+        try:
+            receipt=self.capture_suspension(plan_id,basis)
+            job.update(state='RECORDED',receipt_id=receipt['receipt_id'],gaps=receipt['gaps'],finished_at=now())
+        except HTTPException as error:job.update(state='REFUSED',gaps=[str(error.detail)],finished_at=now())
+        with self.ledger.connection() as db:db.execute('UPDATE post_close_suspension_jobs SET value=? WHERE plan_id=? AND day=?',
+            (encode(job),plan_id,day))
+        return job
+
     def capture_once(self,plan_id,basis='Registered forward plan; existing single worker source acquisition'):
         """One existing worker owns a persisted bounded job; failures are not hidden retries."""
         self.prospective.plan(plan_id)
@@ -459,8 +582,10 @@ class PostClosePackets:
             db.execute('INSERT INTO post_close_capture_jobs VALUES(?,?,?)',(plan_id,day,encode(job)))
             db.commit()
         try:
+            status_job=self.capture_suspension_once(plan_id,basis)
+            job.update(suspension_receipt_id=status_job.get('receipt_id'),suspension_job_state=status_job['state'])
             packet=self.capture(plan_id,basis)
-            job.update(state='RECORDED',packet_id=packet['packet_id'],gaps=packet['gaps'],finished_at=now())
+            job.update(state='RECORDED',packet_id=packet['packet_id'],gaps=sorted(set(packet['gaps']+status_job.get('gaps',[]))),finished_at=now())
         except HTTPException as error:
             job.update(state='REFUSED',gaps=[str(error.detail)],finished_at=now())
         with self.ledger.connection() as db:
@@ -608,7 +733,7 @@ class PostClosePackets:
                 'original_raw_hashes':sorted(set(originals))})
         return result
 
-    def inputs(self,versions,instrument,cutoff,acquisition_attempts=(),obligation_audits=()):
+    def inputs(self,versions,instrument,cutoff,acquisition_attempts=(),obligation_audits=(),suspension_receipts=()):
         daily,statuses={},{}
         inventory=self.cash_inventory(cutoff)
         gaps=[]
@@ -616,6 +741,11 @@ class PostClosePackets:
         current_day=cutoff.astimezone(SHANGHAI).date().isoformat()
         applicable_audits=[a for a in obligation_audits if a['instrument']==instrument and
             a['protocol_effective_window']['start_date']==current_day]
+        applicable_suspension=[s for s in suspension_receipts if s['instrument']==instrument and s['query_date']==current_day]
+        for receipt in applicable_suspension:
+            gaps.extend(receipt['gaps'])
+            for event in receipt['events']:
+                statuses.setdefault(current_day,[]).append({**event,'receipt_id':receipt['receipt_id'],'parser_fingerprint':code()})
         for attempt in acquisition_attempts:
             if attempt['source_id']==SOURCE and attempt['source_day']==current_day:
                 latest[(attempt['source_id'],attempt['source_day'])]=attempt
@@ -642,7 +772,8 @@ class PostClosePackets:
             if any(any(differs(c.get(k),candidates[0].get(k),k) for k in fields) for c in candidates[1:]):
                 gaps.append('UNRESOLVED_CURRENT_DAILY_CONFLICT:'+day)
             row=max(candidates,key=lambda c:datetime.fromisoformat(c['known_at']))
-            row={**row,'known_obligation_audit_ids':[a['audit_id'] for a in applicable_audits]}
+            row={**row,'known_obligation_audit_ids':[a['audit_id'] for a in applicable_audits],
+                'suspension_receipt_ids':[s['receipt_id'] for s in applicable_suspension]}
             if any(a['resolution_unknown_count'] for a in applicable_audits):
                 gaps.append('KNOWN_OLDER_OBLIGATION_RESOLUTION_UNPROVEN:'+day)
             states=statuses.get(day,[])
@@ -653,6 +784,13 @@ class PostClosePackets:
             if not states:gaps.append('CURRENT_COMPLETE_STATUS_UNPROVEN:'+day)
             for state in states:
                 sources=state.get('field_evidence',{})
+                if state.get('source_id')==sse_suspension.SOURCE:
+                    if (state.get('receipt_id') not in [s['receipt_id'] for s in applicable_suspension] or
+                        sources.get('suspension',{}).get('raw_hash')!=state['raw_hash'] or
+                        state.get('query_js_hash')!=sse_suspension.JS_SHA):
+                        gaps.append('CURRENT_STATUS_FIELD_SOURCE_UNPROVEN:'+day)
+                    gaps.append('CURRENT_SUSPENSION_SOURCE_OTHER_STATUS_DIMENSIONS_UNPROVEN:'+day)
+                    continue
                 if (state.get('source_id')!=SOURCE or state.get('parser_fingerprint')!=code() or
                     any(sources.get(k,{}).get('raw_hash')!=state['raw_hash'] for k in ['suspension','risk_warning'])):
                     gaps.append('CURRENT_STATUS_FIELD_SOURCE_UNPROVEN:'+day)
@@ -716,7 +854,8 @@ class PostClosePackets:
         versions=self.prospective.as_of(plan_id,cutoff)['versions']
         attempts=self.acquisitions(plan_id,cutoff)
         audits=self.obligations(plan_id,cutoff,checkpoint_day=cutoff.astimezone(SHANGHAI).date().isoformat())
-        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff,attempts,audits)
+        suspension=self.suspension_receipts(plan_id,cutoff)
+        rows,gaps,statuses=self.inputs(versions,plan['instrument'],cutoff,attempts,audits,suspension)
         value={'packet_id':str(uuid4()),'plan_id':plan_id,'instrument':plan['instrument'],
             'created_at':now(),'knowledge_cutoff':cutoff.isoformat(),'basis':basis,'parser_fingerprint':code(),
             'rows':rows,'status_facts':statuses,'gaps':gaps,'versions':versions,'acquisition_attempts':attempts,
@@ -725,6 +864,7 @@ class PostClosePackets:
             'historical_pit_claim':False,'account_events_added':0}
         value['known_cash_inventory']=inventory
         value['known_obligation_audits']=audits
+        value['suspension_receipts']=suspension
         value['historical_source_assessments']=self.history(plan_id,cutoff)
         value['execution_context']=self.execution_context(plan['instrument'],rows)
         value['archive']=self.evidence.archive(encode(value).encode(),'POST_CLOSE_INPUT_PACKET',evidence_kind=value['evidence_kind'])
@@ -750,8 +890,9 @@ class PostClosePackets:
         if attempts!=packet['acquisition_attempts']:raise HTTPException(409,'POST_CLOSE_PACKET_ACQUISITION_BINDING_MISMATCH')
         audits=self.obligations(packet['plan_id'],cutoff,ids=[a['audit_id'] for a in packet['known_obligation_audits']],
             checkpoint_day=cutoff.astimezone(SHANGHAI).date().isoformat())
-        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts,audits)
+        suspension=self.suspension_receipts(packet['plan_id'],cutoff,ids=[s['receipt_id'] for s in packet['suspension_receipts']])
+        rows,gaps,statuses=self.inputs(versions,packet['instrument'],cutoff,attempts,audits,suspension)
         inventory=self.cash_inventory(cutoff,verify_archives=True)
         history=self.history(packet['plan_id'],cutoff,[s['assessment_id'] for s in packet['historical_source_assessments']])
-        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'] and history==packet['historical_source_assessments'] and audits==packet['known_obligation_audits'],
+        return {'packet_id':packet_id,'matches_original':rows==packet['rows'] and gaps==packet['gaps'] and statuses==packet['status_facts'] and inventory==packet['known_cash_inventory'] and history==packet['historical_source_assessments'] and audits==packet['known_obligation_audits'] and suspension==packet['suspension_receipts'],
             'network_calls':0,'forward_admissible':packet['forward_admissible'],'capability':'NOT_GRANTED'}

@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_existing_worker_job_records_one_bounded_suspension_receipt_without_hidden_retries _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30s-worker-red/test_existing_worker_job_recor0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A2A9C54E90>
+
+    def test_existing_worker_job_records_one_bounded_suspension_receipt_without_hidden_retries(tmp_path,monkeypatch):
+        clocks(monkeypatch);calls=[]
+        closing=json.dumps({'date':20261012,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]}).encode()
+        suspension=json.dumps(page(rows=[],total=0,page_count=0)).encode()
+        def supplier(request):
+            calls.append(request.url.host)
+            return httpx.Response(200,content=closing if request.url.host=='yunhq.sse.com.cn' else suspension)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier))) as client:
+            pid=setup(client);base=f'/api/research/collections/{pid}'
+            response=client.post(base+'/post-close/check',json={'basis':'Same worker owns both bounded current source jobs'})
+            assert response.status_code==201,response.text
+            job=response.json()
+>           assert job['state']=='RECORDED' and job['suspension_receipt_id']
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'suspension_receipt_id'
+
+backend\tests\application\test_sse_current_suspension.py:96: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_current_suspension.py::test_existing_worker_job_records_one_bounded_suspension_receipt_without_hidden_retries
+1 failed in 8.43s

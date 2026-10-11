@@ -1,0 +1,67 @@
+{
+  "protected_git_blobs": {
+    "backend/src/roll/research/models.py": "5b32f8c532aa11ce22de91fb8910dc25fb218b79",
+    "backend/src/roll/research/execution.py": "4e59b10d4fb4c30d9958ad7fa44f65ea1a435194",
+    "backend/src/roll/research/reconstruction.py": "3964841f9be3767c213a134cab0cce8ccd3def4e",
+    "backend/src/roll/research/datasets.py": "c58280e8fca9f2665c7ef344a1f5c62ca2ef5749",
+    "backend/src/roll/research/design.py": "d53c3db6872a42f24f7b2b2a7225fb54da589d71",
+    "backend/src/roll/research/historical_costs.py": "9f0baf8b622bd9d5e8b0cacb428fbba5b05b521b",
+    "backend/src/roll/research/corporate_actions.py": "c3789e1c1dfba342d7f87c364117714fd21a44e1",
+    "backend/src/roll/research/registry.py": "43c01732fd36dccaaa6c35b6ac557336a80c724a",
+    "backend/src/roll/research/training_preflight.py": "f9b9f4bd38eb332f08b2147ff088c153bb974e6e",
+    "backend/src/roll/market/rules.py": "b04c81e30cea87e8d0f3851aa615caa11e1eeecc",
+    "backend/src/roll/research/reference/reconstruction/sources.json": "8e05192b9a00437282323e12f46874ae7520c5e5",
+    "backend/src/roll/research/reference/cash-rights/sources.json": "9f1f67662cef2793f71394e297f0e63fac623fbe",
+    "backend/src/roll/research/shadow.py": "a83de1d6dec80f91b06bf745b7150b48e4480352",
+    "backend/src/roll/research/statistics.py": "a0764e92b1664ec2623fa550a223fca9b296f678",
+    "backend/src/roll/research/validation.py": "df99d5794f955fb5e362e21cac9ac0a1f372f572"
+  },
+  "protected_and_market_reference_diff_from_accepted_base": false,
+  "named_fixed_public_sources": {
+    "suspension": {
+      "sha256": "2511be0a1a618edfd7576563bdbffcc35c697b9e5ebeb9edc81ff9efa2aa01a8",
+      "bytes": 41529
+    },
+    "suspension_query_js": {
+      "sha256": "32fc98ea41e599f457609247ba68defb82e6d855aa2551da6923dbf7e44153a7",
+      "bytes": 39627
+    }
+  },
+  "original19_bytewise_checksum": {
+    "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4",
+    "bytes": 165814272
+  },
+  "original19_sqlite_opened": false,
+  "own": {
+    "backend/src/roll/app.py": {
+      "sha256": "71e5987bab912edba1c69ece04e260ba0117b6308be201467fea95a3546c54a1",
+      "bytes": 51369
+    },
+    "backend/src/roll/research/forward.py": {
+      "sha256": "1f03a45bc321f58b43de7b94b926d9c97a9ebb6364709262174cc17170ae5c17",
+      "bytes": 32531
+    },
+    "backend/src/roll/market/post_close_packet.py": {
+      "sha256": "3f66c1c790af30b2caa7b7c1eae011a0dd38b9590ccbd13c061003887908fc9a",
+      "bytes": 66800
+    },
+    "backend/src/roll/market/sse_suspension.py": {
+      "sha256": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed",
+      "bytes": 8408
+    },
+    "backend/src/roll/market/collection_sources.py": {
+      "sha256": "7cea191c2a32deb6d5f4ec150db466c52713e55420421410b78a1a219668eb23",
+      "bytes": 13894
+    },
+    "backend/tests/application/test_sse_current_suspension.py": {
+      "sha256": "d05db2b4b726fbdb9c0b6262dfd3fc19c747b3ad118a8e03eefd457d61fce488",
+      "bytes": 15242
+    },
+    "backend/tests/application/test_post_close_packet.py": {
+      "sha256": "0e439e9c4b74a3051e860c007d7c4b3e170d8d2d24344c3f562220224adff29a",
+      "bytes": 21005
+    }
+  },
+  "previous_preservation_opened": false,
+  "network_calls": 0
+}
