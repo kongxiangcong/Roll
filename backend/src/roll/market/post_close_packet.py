@@ -23,6 +23,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.market.evidence import DataRequest
 from roll.market.rules import SHANGHAI
+from roll.market import cninfo_history
 from roll.agents.codex_process import owner_alive,process_creation
 
 SSE_URL='http://yunhq.sse.com.cn:32041/v1/sh1/list/exchange/equity'
@@ -41,7 +42,9 @@ class PacketCommand(BaseModel):
 
 def code():
     return hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')+
-        (CASH_REFERENCE/'sources.json').read_bytes()+(HISTORY_REFERENCE/'sources.json').read_bytes()).hexdigest()
+        (CASH_REFERENCE/'sources.json').read_bytes()+(HISTORY_REFERENCE/'sources.json').read_bytes()+
+        Path(cninfo_history.__file__).read_bytes().replace(b'\r\n',b'\n')+
+        (cninfo_history.REFERENCE/'sources.json').read_bytes()).hexdigest()
 
 
 def historical_daily(content,units,source,unit_source,available_at):
@@ -290,9 +293,48 @@ class PostClosePackets:
             original=json.loads(self.evidence.raw(value['archive']['sha256']).read_bytes())
             if original!={k:v for k,v in value.items() if k!='archive'}:raise HTTPException(409,'SSE_HISTORY_ASSESSMENT_ARCHIVE_MISMATCH')
             if value['parser_fingerprint']!=code():raise HTTPException(409,'POST_CLOSE_PARSER_CHANGED_SUCCESSOR_REQUIRED')
-            computed=self.history_payload(value['normalized_known_at'])
+            family=value.get('source_family','SSE_HISTORY')
+            if family not in {'SSE_HISTORY','CNINFO_HISTORY'}:raise HTTPException(409,'POST_CLOSE_HISTORY_FAMILY_UNKNOWN')
+            computed=(self.cninfo_payload(value['normalized_known_at']) if family=='CNINFO_HISTORY'
+                else self.history_payload(value['normalized_known_at']))
             if any(value[k]!=v for k,v in computed.items()):raise HTTPException(409,'SSE_HISTORY_NORMALIZED_ORIGINAL_MISMATCH')
         return selected
+
+    def cninfo_payload(self,available_at,register=False):
+        body=(cninfo_history.REFERENCE/'sources.json').read_bytes();manifest=json.loads(body)
+        raw={}
+        for source in manifest['queries']:
+            sha=source['sha256']
+            if source['file']!=sha+'.raw':raise HTTPException(409,'CNINFO_REFERENCE_LOCATOR_INVALID')
+            content=(cninfo_history.REFERENCE/source['file']).read_bytes() if register else self.evidence.raw(sha).read_bytes()
+            if len(content)!=source['bytes'] or hashlib.sha256(content).hexdigest()!=sha:
+                raise HTTPException(409,'CNINFO_REFERENCE_ORIGINAL_CORRUPT')
+            if register:self.evidence.archive(content,'CNINFO_HISTORY_INDEX_ORIGINAL',source_id='cninfo-history-candidates',
+                source_url=source['url'],received_at=source['received_at'],evidence_kind='REAL_ARCHIVED_SOURCE_ASSESSMENT')
+            raw[sha]=content
+        mapping_hash=hashlib.sha256(body).hexdigest()
+        if register:self.evidence.archive(body,'CNINFO_HISTORY_QUERY_MAPPING')
+        else:self.evidence.raw(mapping_hash)
+        try:
+            payload=cninfo_history.candidates(raw,manifest,available_at)
+            inventory=self.cash_inventory(datetime.fromisoformat(available_at),register=register,verify_archives=not register)
+            links=cninfo_history.cash_links(payload,inventory)
+            payload['gaps']=sorted(set(payload['gaps']+links.pop('additional_gaps')))
+            payload.update(links)
+        except (ValueError,KeyError,TypeError) as error:raise HTTPException(409,str(error))
+        return {**payload,'source_hashes':list(raw),'mapping_hash':mapping_hash,'source_family':'CNINFO_HISTORY'}
+
+    def assess_cninfo_history(self,plan_id,basis):
+        plan=self.prospective.plan(plan_id)
+        if plan['instrument']!='SSE:600362':raise HTTPException(403,'CNINFO历史原件仅适配 SSE:600362')
+        available_at=now()
+        value={'assessment_id':str(uuid4()),'plan_id':plan_id,'instrument':plan['instrument'],'basis':basis,
+            'normalized_known_at':available_at,'parser_fingerprint':code(),**self.cninfo_payload(available_at,register=True)}
+        value['archive']=self.evidence.archive(encode(value).encode(),'CNINFO_HISTORY_SOURCE_ASSESSMENT',
+            evidence_kind=value['evidence_kind'])
+        with self.ledger.connection() as db:db.execute('INSERT INTO post_close_source_assessments VALUES(?,?,?)',
+            (value['assessment_id'],plan_id,encode(value)))
+        return value
 
     def source_gaps(self,plan_id):
         plan=self.prospective.plan(plan_id)
