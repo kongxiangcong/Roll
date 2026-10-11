@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** in-progress
+**Completion:** partial
 
 **Primary acceptance:** AT-64、AT-65、AT-66、AT-67、AT-68、AT-69。
 
@@ -39,3 +39,5 @@
 2026-10-07：补齐 EVAL-16/17 持续监测及 RUN-03/04 维护修正闭环；15 提供日历维护触发，17/20 冻结方法，26 提供实际行为证据，29 后续完成偏差报告联验，34 核对真实启用配置。仅补充文档，新增要求尚未实施或验收。
 
 2026-10-08 本轮依赖前沿核查：未启动本票。26实际意向/成交集成未完成；16已完成，恢复锁未开放解除。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
+
+2026-10-11 独立merger接受稳定源 `86ed2c2052b4be4e4aaa0581e7e067c55dcfdf5c` 的有限工程切片，no-ff merge `5572184c920156b8a9f69beef5b771d8d05a2b77`。独立新METHOD公共API/真实SQLite **10 PASS /77.71s，首suite exit0**：三scope和独立risk、正常current/monitor并发、后续健康source原因绑定恢复、登记检查点一次消费、26部分成交未知与修正计划、LOSS拒绝、真实新备份当前proof及资金变化重新锁、targetALL/REVOKED不新增监测。完整8245/691953514B双端16490 SHA/length及manifest、源/root15保护与原19checksum通过；merge后111产品文件root/source原始bytes与Git blob一致。自身593/49533565B隔离运行原件已完整保全到仓库外，exact CIM0。详见[独立回执](../evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)。原红/环境诊断和owner OS/Chrome计数分列保留，不声称重跑。整体Completion仍partial：LOSS正向恢复缺冻结登记证据、实际长期合格监测未验收；实际NOT_GRANTED不变。有限工程接受解锁28已授权站内/配置实施，不代替28通知出队/在途联验；原验收条件与未完成项保留。0新真实HTTP/provider/fit/forecast/SEALED/资金资格/外发；未push、未清树。
