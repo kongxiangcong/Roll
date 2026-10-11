@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_two_host_candidates_register_distinct_public_grants_and_proofs _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/red-host-native/test_two_host_candidates_regis0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018AA10AD6E0>
+
+    def test_two_host_candidates_register_distinct_public_grants_and_proofs(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        value = paired_package()
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')) as client:
+            setup(client, value)
+            profit = client.post('/api/capabilities/grants', json=grant_command(value, 'profit'))
+            record(tmp_path, 'profit-grant', profit.json())
+            assert profit.status_code == 201, profit.text
+            risk = client.post('/api/capabilities/grants', json=grant_command(value['risk_qualification'], 'risk'))
+            record(tmp_path, 'risk-grant', risk.json())
+>           assert risk.status_code == 201, risk.text
+E           AssertionError: {"detail":{"code":"CAPABILITY_ADMISSION_REFUSED","reasons":["EVIDENCE_UNAVAILABLE","冻结审阅材料不存在"]}}
+E           assert 409 == 201
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+backend\tests\application\test_action_risk_priority.py:45: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_action_risk_priority.py::test_two_host_candidates_register_distinct_public_grants_and_proofs
+1 failed in 6.89s

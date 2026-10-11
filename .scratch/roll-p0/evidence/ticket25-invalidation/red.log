@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_old_action_invalidation_is_one_fact_and_new_account_cause_keeps_history _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/red-invalidation/test_old_action_invalidation_i0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000289CA5ED940>
+
+    def test_old_action_invalidation_is_one_fact_and_new_account_cause_keeps_history(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')) as client:
+            prepare(client, package)
+            original = client.post('/api/actions/evaluate', json={}).json()
+            assert len(original['decisions']) == 1
+            shrunk = client.post('/api/funding/confirm', json=funding(2, total_exposure='10000.00', single_exposure='10000.00', cash_reserve='90000.00'))
+            assert shrunk.status_code == 200
+            first = client.get('/api/actions/current').json()
+            assert first['invalidated'][0]['reasons'] == ['FUNDING_VERSION_CHANGE', 'GRANT_RESTRICTED']
+            events = [e for e in client.get('/api/actions/events').json() if e['event_type'] == 'ACTION_INVALIDATED']
+            assert len(events) == 1
+            second = client.get('/api/actions/current').json()
+            assert second['decisions'] == []
+            assert second['invalidated'][0]['reasons'] == ['PREVIOUSLY_INVALIDATED_REQUIRES_NEW_ACTION', 'FUNDING_VERSION_CHANGE', 'GRANT_RESTRICTED']
+            repeated = [e for e in client.get('/api/actions/events').json() if e['event_type'] == 'ACTION_INVALIDATED']
+            (tmp_path / 'repeated-invalidation.json').write_text(json.dumps({'first': events, 'repeated': repeated}, indent=2), encoding='utf-8')
+>           assert repeated == events
+E           AssertionError: assert [{'account_ve...98bddc', ...}] == [{'account_ve...98bddc', ...}]
+E             
+E             Left contains one more item: {'account_version': 2, 'capability_fingerprint': 'dfda00f8a6cb6846f8daf0a217a5330512261f63f2af9d24288cc1d63bee427c', '...73da3b17b1903bbfbce3fb631c8ac52cd17edcecf1869c515067d6c', 'evaluation_id': '96b726e7-e83f-4f40-90a6-7a215d98bddc', ...}
+E             Use -v to get more diff
+
+backend\tests\application\test_action_invalidation_fact.py:30: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_action_invalidation_fact.py::test_old_action_invalidation_is_one_fact_and_new_account_cause_keeps_history
+1 failed in 6.49s

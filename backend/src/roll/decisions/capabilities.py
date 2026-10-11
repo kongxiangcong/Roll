@@ -107,6 +107,17 @@ class Capabilities:
                 raise ValueError('CAPABILITY_METHOD_PACKAGE_INVALID')
             self.method_package = envelope['package']
             self.method_fingerprint = envelope['sha256']
+            risk = self.method_package.get('risk_qualification')
+            if risk is not None:
+                shared = ('account_version', 'scope_kind', 'scope_id', 'required_as_of', 'effective_at',
+                          'expires_at', 'review_due_at', 'current_data', 'loss_facts')
+                if (self.method_package.get('candidate_kind') != 'PROFIT_MODEL' or not isinstance(risk, dict)
+                    or risk.get('namespace') != 'METHOD_ENGINEERING' or risk.get('candidate_kind') != 'RISK_POLICY'
+                    or 'risk_qualification' in risk
+                    or not risk.get('material_id') or risk['material_id'] == self.method_package['material_id']
+                    or not risk.get('review_run_id') or risk['review_run_id'] == self.method_package['review_run_id']
+                    or any(risk.get(k) != self.method_package.get(k) for k in shared)):
+                    raise ValueError('CAPABILITY_METHOD_RISK_BINDING_INVALID')
         with ledger.connection() as db:
             db.executescript('''
                 CREATE TABLE IF NOT EXISTS capability_grants(id TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -155,15 +166,22 @@ class Capabilities:
         with self.ledger.connection() as db:
             return [json.loads(r[0]) for r in db.execute('SELECT value FROM capability_grants ORDER BY rowid')]
 
+    def method_candidate(self, material_id):
+        if self.method_package is None: return None
+        if self.method_package['material_id'] == material_id: return self.method_package
+        risk = self.method_package.get('risk_qualification')
+        return risk if risk and risk['material_id'] == material_id else None
+
     def proposal(self, material_id, review_run_id):
         # Frozen host evidence determines scope; React never chooses statistics or declares PASS.
         with self.ledger.connection() as db:
-            row = self.method_package if self.method_package and self.method_package['material_id'] == material_id else None
+            method = self.method_candidate(material_id)
+            row = method
             if row is None:
                 material = self.reviews.get_material(material_id)
                 row = {**material['basis_manifest'], 'material_fingerprint': material['material_fingerprint'],
                        'deployment_fingerprints': material['basis_manifest'].get('candidate_fingerprints', {})}
-            if self.method_package and row is self.method_package and review_run_id != row['review_run_id']:
+            if method is not None and review_run_id != row['review_run_id']:
                 raise HTTPException(409, 'REVIEW_BINDING_MISMATCH')
             if not row.get('review_due_at') or not row.get('allowed_actions') or not row.get('scope'):
                 raise HTTPException(409, '最终资格证据、适用动作或到期边界未完成，不能登记资格')
@@ -173,15 +191,16 @@ class Capabilities:
                     'required_as_of': row['required_as_of'], 'effective_at': row['effective_at'], 'expires_at': row['review_due_at']}
 
     def _evidence(self, command, db, proof=None):
-        if self.method_package is not None and command.material_id == self.method_package['material_id']:
+        method = self.method_candidate(command.material_id)
+        if method is not None:
             if os.environ.get('ROLL_ENV') != 'test': raise HTTPException(409, 'METHOD_PRODUCTION_REFUSED')
             row = db.execute('SELECT archive,sources FROM capability_method_basis WHERE id=1').fetchone()
             archive = json.loads(row[0])
             if self.reviews.evidence.raw(archive['sha256']).read_bytes() != encode(self.method_package).encode():
                 raise HTTPException(409, 'METHOD_ARCHIVE_CHANGED')
             if json.loads(row[1]) != source_inventory(): raise HTTPException(409, 'DEPLOYMENT_SOURCE_CHANGED')
-            if command.review_run_id != self.method_package['review_run_id']: raise HTTPException(409, 'REVIEW_BINDING_MISMATCH')
-            package = dict(self.method_package)
+            if command.review_run_id != method['review_run_id']: raise HTTPException(409, 'REVIEW_BINDING_MISMATCH')
+            package = dict(method)
             bindings = {'material_fingerprint': package['material_fingerprint'], 'review_run_id': command.review_run_id,
                         'basis_fingerprint': self.method_fingerprint, 'source_fingerprint': hashlib.sha256(encode(source_inventory()).encode()).hexdigest()}
             if proof is not None and any(proof.get(k) != v for k, v in bindings.items()): raise HTTPException(409, 'HOST_PROOF_BINDING_CHANGED')

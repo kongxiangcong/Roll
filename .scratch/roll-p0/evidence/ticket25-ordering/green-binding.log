@@ -1,0 +1,26 @@
+........F.                                                               [100%]
+================================== FAILURES ===================================
+__________ test_child_failed_gate_cannot_borrow_profit_qualification __________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/green-binding/test_child_failed_gate_cannot_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BDFFBF7D40>
+
+    def test_child_failed_gate_cannot_borrow_profit_qualification(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        value = paired_package()
+        value['risk_qualification']['gates']['STRESS_EXECUTION'] = 'FAIL'
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')) as client:
+            setup(client, value)
+            profit = client.post('/api/capabilities/grants', json=grant_command(value, 'profit'))
+            assert profit.status_code == 201, profit.text
+            risk = client.post('/api/capabilities/grants', json=grant_command(value['risk_qualification'], 'risk'))
+            record(tmp_path, 'child-gate-refusal', risk.json())
+            assert risk.status_code == 409, risk.text
+>           assert 'REQUIRED_GATE_NOT_PASS' in risk.json()['detail']['reasons']
+E           AssertionError: assert 'REQUIRED_GATE_NOT_PASS' in ['REQUIRED_GATES_NOT_PASS']
+
+backend\tests\application\test_action_risk_priority.py:151: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_action_risk_priority.py::test_child_failed_gate_cannot_borrow_profit_qualification
+1 failed, 9 passed in 48.72s

@@ -1,0 +1,100 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_unavailable_profit_input_does_not_hide_independent_risk[missing_policy] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/red-profit/test_unavailable_profit_input_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001AC4DE0E9E0>
+profit_input = 'missing_policy'
+
+    @pytest.mark.parametrize('profit_input', ['missing_policy', 'unsupported_policy', 'ungranted_invalid_probability'])
+    def test_unavailable_profit_input_does_not_hide_independent_risk(tmp_path, monkeypatch, profit_input):
+        method_clock(monkeypatch)
+        value = paired_package()
+        packet = value['action_packet']
+        if profit_input == 'missing_policy':
+            packet.pop('policy')
+        elif profit_input == 'unsupported_policy':
+            packet['policy'] = {'version': 'UNSUPPORTED'}
+        else:
+            for opportunity in packet['opportunities']:
+                opportunity['probability'] = 'NOT_A_QUALIFIED_MODEL_INPUT'
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API'), raise_server_exceptions=False) as client:
+            setup(client, value)
+            granted = client.post('/api/capabilities/grants', json=grant_command(value['risk_qualification'], 'risk'))
+            assert granted.status_code == 201, granted.text
+            response = client.post('/api/actions/evaluate', json={})
+            record(tmp_path, 'risk-with-unavailable-profit', {'status': response.status_code, 'body': response.text})
+>           assert response.status_code == 201, response.text
+E           AssertionError: Internal Server Error
+E           assert 500 == 201
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+backend\tests\application\test_action_risk_priority.py:111: AssertionError
+_ test_unavailable_profit_input_does_not_hide_independent_risk[unsupported_policy] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/red-profit/test_unavailable_profit_input_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001AC4DE0EB10>
+profit_input = 'unsupported_policy'
+
+    @pytest.mark.parametrize('profit_input', ['missing_policy', 'unsupported_policy', 'ungranted_invalid_probability'])
+    def test_unavailable_profit_input_does_not_hide_independent_risk(tmp_path, monkeypatch, profit_input):
+        method_clock(monkeypatch)
+        value = paired_package()
+        packet = value['action_packet']
+        if profit_input == 'missing_policy':
+            packet.pop('policy')
+        elif profit_input == 'unsupported_policy':
+            packet['policy'] = {'version': 'UNSUPPORTED'}
+        else:
+            for opportunity in packet['opportunities']:
+                opportunity['probability'] = 'NOT_A_QUALIFIED_MODEL_INPUT'
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API'), raise_server_exceptions=False) as client:
+            setup(client, value)
+            granted = client.post('/api/capabilities/grants', json=grant_command(value['risk_qualification'], 'risk'))
+            assert granted.status_code == 201, granted.text
+            response = client.post('/api/actions/evaluate', json={})
+            record(tmp_path, 'risk-with-unavailable-profit', {'status': response.status_code, 'body': response.text})
+>           assert response.status_code == 201, response.text
+E           AssertionError: Internal Server Error
+E           assert 500 == 201
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+backend\tests\application\test_action_risk_priority.py:111: AssertionError
+_ test_unavailable_profit_input_does_not_hide_independent_risk[ungranted_invalid_probability] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/red-profit/test_unavailable_profit_input_2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001AC4E4D1D90>
+profit_input = 'ungranted_invalid_probability'
+
+    @pytest.mark.parametrize('profit_input', ['missing_policy', 'unsupported_policy', 'ungranted_invalid_probability'])
+    def test_unavailable_profit_input_does_not_hide_independent_risk(tmp_path, monkeypatch, profit_input):
+        method_clock(monkeypatch)
+        value = paired_package()
+        packet = value['action_packet']
+        if profit_input == 'missing_policy':
+            packet.pop('policy')
+        elif profit_input == 'unsupported_policy':
+            packet['policy'] = {'version': 'UNSUPPORTED'}
+        else:
+            for opportunity in packet['opportunities']:
+                opportunity['probability'] = 'NOT_A_QUALIFIED_MODEL_INPUT'
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API'), raise_server_exceptions=False) as client:
+            setup(client, value)
+            granted = client.post('/api/capabilities/grants', json=grant_command(value['risk_qualification'], 'risk'))
+            assert granted.status_code == 201, granted.text
+            response = client.post('/api/actions/evaluate', json={})
+            record(tmp_path, 'risk-with-unavailable-profit', {'status': response.status_code, 'body': response.text})
+>           assert response.status_code == 201, response.text
+E           AssertionError: Internal Server Error
+E           assert 500 == 201
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+backend\tests\application\test_action_risk_priority.py:111: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_action_risk_priority.py::test_unavailable_profit_input_does_not_hide_independent_risk[missing_policy]
+FAILED backend\tests\application\test_action_risk_priority.py::test_unavailable_profit_input_does_not_hide_independent_risk[unsupported_policy]
+FAILED backend\tests\application\test_action_risk_priority.py::test_unavailable_profit_input_does_not_hide_independent_risk[ungranted_invalid_probability]
+3 failed in 16.14s
