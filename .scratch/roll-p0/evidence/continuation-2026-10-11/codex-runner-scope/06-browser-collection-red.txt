@@ -1,0 +1,50 @@
+✖ default Playwright collection excludes historical positive DS and includes current scope (16092.6305ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16223.7547
+
+✖ failing tests:
+
+test at tests\runners\default-scope.test.mjs:6:1
+✖ default Playwright collection excludes historical positive DS and includes current scope (16092.6305ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /backend-switch\.spec\.ts|deepseek-evidence\.spec\.ts/. Input:
+  
+  'Listing tests:\n' +
+    '  backend-switch.spec.ts:3:1 › saved backend survives reload and creates a separate cross-backend retry\n' +
+    '  backend-switch.spec.ts:25:1 › actual archived switch identities and reused sources survive reopening\n' +
+    '  baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today\n' +
+    '  cash-equity.spec.ts:3:1 › confirmed receivable and partial settlement stay distinct from cash and later corrections\n' +
+    '  cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice\n' +
+    '  codex-evidence.spec.ts:3:1 › Codex host configuration and missing login are visible without losing the run\n' +
+    '  csv.spec.ts:3:1 › Roll CSV download, upload, row errors, whole-batch preview and durable receipt\n' +
+    '  csv.spec.ts:40:1 › CSV v2 previews external funds separately from actual interest and confirms one receipt\n' +
+    '  csv.spec.ts:64:1 › CSV v2 paid rights previews cost and unknown fee split before one debit\n' +
+    '  deepseek-evidence.spec.ts:4:1 › DeepSeek missing credential record and linked retry survive reload\n' +
+    '  deepseek-evidence.spec.ts:27:1 › actual Agents SDK fixed Responses task displays evidence and cancels independent next run\n' +
+    '  fills.spec.ts:3:1 › actual fill with provisional fees can be confirmed and later adjusted without inventing an action\n' +
+    '  funding.spec.ts:3:1 › user confirms funds and sees independent funding, technical and runtime states\n' +
+    '  market-overflow.spec.ts:3:1 › 21 actual holdings remain visible while new watch admission is limited\n' +
+    '  market.spec.ts:3:1 › finite market page preserves holdings, distinct restrictions, membership versions and exchange calendar gaps\n' +
+    '  reconcile.spec.ts:3:1 › scoped declaration, append correction, broker differences and immutable history in real Chrome\n' +
+    '  reconcile.spec.ts:55:1 › CSV v3 confirms replacement, broker snapshot and declaration with a single durable receipt\n' +
+    '  valuation.spec.ts:3:1 › saved cash-flow valuation matches API, excludes transfers from profit and replays after reload\n' +
+    '  valuation.spec.ts:40:1 › preserved real September quote keeps original time, stale mark and unknown baseline in holdings UI\n' +
+    'Total: 19 tests in 12 files\n'
+  
+      at TestContext.<anonymous> (file:///D:/dsh-proj/Roll/.scratch/worktrees/codex-runner-scope/frontend/tests/runners/default-scope.test.mjs:9:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Listing tests:\n  backend-switch.spec.ts:3:1 › saved backend survives reload and creates a separate cross-backend retry\n  backend-switch.spec.ts:25:1 › actual archived switch identities and reused sources survive reopening\n  baseline.spec.ts:3:1 › initial mirror: form → difference → confirmation → durable receipt → today\n  cash-equity.spec.ts:3:1 › confirmed receivable and partial settlement stay distinct from cash and later corrections\n  cash-equity.spec.ts:51:1 › paid rights unknown fee split can be completed without paying twice\n  codex-evidence.spec.ts:3:1 › Codex host configuration and missing login are visible without losing the run\n  csv.spec.ts:3:1 › Roll CSV download, upload, row errors, whole-batch preview and durable receipt\n  csv.spec.ts:40:1 › CSV v2 previews external funds separately from actual interest and confirms one receipt\n  csv.spec.ts:64:1 › CSV v2 paid rights previews cost and unknown fee split before one debit\n  deepseek-evidence.spec.ts:4:1 › DeepSeek missing credential record and linked retry survive reload\n  deepseek-evidence.spec.ts:27:1 › actual Agents SDK fixed Responses task displays evidence and cancels independent next run\n  fills.spec.ts:3:1 › actual fill with provisional fees can be confirmed and later adjusted without inventing an action\n  funding.spec.ts:3:1 › user confirms funds and sees independent funding, technical and runtime states\n  market-overflow.spec.ts:3:1 › 21 actual holdings remain visible while new watch admission is limited\n  market.spec.ts:3:1 › finite market page preserves holdings, distinct restrictions, membership versions and exchange calendar gaps\n  reconcile.spec.ts:3:1 › scoped declaration, append correction, broker differences and immutable history in real Chrome\n  reconcile.spec.ts:55:1 › CSV v3 confirms replacement, broker snapshot and declaration with a single durable receipt\n  valuation.spec.ts:3:1 › saved cash-flow valuation matches API, excludes transfers from profit and replays after reload\n  valuation.spec.ts:40:1 › preserved real September quote keeps original time, stale mark and unknown baseline in holdings UI\nTotal: 19 tests in 12 files\n',
+    expected: /backend-switch\.spec\.ts|deepseek-evidence\.spec\.ts/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

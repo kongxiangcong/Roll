@@ -237,7 +237,12 @@ def test_cancel_timeout_retry_and_acquisition_share_the_same_frozen_execution_sl
         path='/api/research/review-materials/'+material['material_id']+'/reviews'
         assert client.post(path,json={'expected_material_fingerprint':'forged'}).status_code==409
         started=client.post(path,json={'expected_material_fingerprint':material['material_fingerprint']}).json()
-        client.post('/api/agents/settings',json={'expected_version':0,'backend':'DEEPSEEK'}).raise_for_status()
+        refused=client.post('/api/agents/settings',json={'expected_version':0,'backend':'DEEPSEEK'})
+        assert refused.status_code==403 and refused.json()['detail']['code']=='BACKEND_OUTSIDE_CURRENT_SCOPE'
+        refused=client.post('/api/data/requests/'+request_id+'/deepseek',json={'question':'Retrieve fixed fact'})
+        assert refused.status_code==403 and refused.json()['detail']['code']=='BACKEND_OUTSIDE_CURRENT_SCOPE'
+        assert client.get('/api/data/runs').json()==[]
+        assert len(client.get(path).json())==1
         assert client.post('/api/data/requests/'+request_id+'/agent',json={'question':'Retrieve fixed fact'}).status_code==409
         assert client.post(path,json={'expected_material_fingerprint':material['material_fingerprint']}).status_code==409
         current=client.get('/api/research/technical-reviews/'+started['run_id']).json()
@@ -247,14 +252,18 @@ def test_cancel_timeout_retry_and_acquisition_share_the_same_frozen_execution_sl
         cancelled=terminal(client,started['run_id']);assert cancelled['status']=='CANCELLED'
         assert 'review_record' not in cancelled and cancelled['process']['remaining_pids']==[]
         retry=client.post(path,json={'expected_material_fingerprint':material['material_fingerprint'],'retry_of':cancelled['run_id']}).json()
-        unavailable=terminal(client,retry['run_id'])
-        assert unavailable['backend']=='DEEPSEEK' and unavailable['retry_of']==cancelled['run_id'] and unavailable['status']=='UNAVAILABLE'
-        client.post('/api/agents/settings',json={'expected_version':1,'backend':'CODEX'}).raise_for_status()
+        assert retry['backend']=='CODEX' and retry['retry_of']==cancelled['run_id'] and retry['status']=='RUNNING'
+        assert retry['material_fingerprint']==material['material_fingerprint']
+        assert retry['backend_settings']['version']==0
+        client.post('/api/research/technical-reviews/'+retry['run_id']+'/cancel',json={}).raise_for_status()
+        retry_cancelled=terminal(client,retry['run_id'])
+        assert retry_cancelled['status']=='CANCELLED' and retry_cancelled['process']['remaining_pids']==[]
         monkeypatch.setenv('ROLL_TECHNICAL_REVIEW_TIMEOUT_SECONDS','1')
-        bounded=client.post(path,json={'expected_material_fingerprint':material['material_fingerprint'],'retry_of':unavailable['run_id']}).json()
+        bounded=client.post(path,json={'expected_material_fingerprint':material['material_fingerprint'],'retry_of':retry_cancelled['run_id']}).json()
         expired=terminal(client,bounded['run_id'])
         assert expired['status']=='TIMED_OUT' and expired['process']['remaining_pids']==[]
         assert len(client.get(path).json())==3
+        assert client.get('/api/data/runs').json()==[]
         assert client.get('/api/research/technical-reviews/'+cancelled['run_id']).json()==cancelled
 
 

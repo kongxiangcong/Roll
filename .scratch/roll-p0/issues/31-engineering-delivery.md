@@ -35,3 +35,6 @@
 
 
 2026-10-11：在依赖内独立交付 31 worker/安装切片，[本票证据](../evidence/31-worker-delivery.md)与[本机启动契约](../../../docs/local-worker-delivery.md)。生产 API 显式不抢租约；独立 worker 复用原 SQLite 工作循环、后台维护和备份；真实三进程、浏览器关闭、死亡重启、正常关闭、存活宿主/恢复锁及不补造均有定向结果。4 新用例及25无拟合兼容用例通过，15保护源码逐文件一致。扩测的已有 METHOD 模型工件案例超出范围，发现后中断并留存，不能宣称零合成拟合或整组通过；旧 capabilities.state 恢复断言按主责任票明确接受的技术/运行状态分离修复；精确两恢复例子加4角色例子共6 PASS，仅必要原件联验另获准全新隔离METHOD fixture训练，实际研究训练0。无历史grant的fixture不冒称覆盖有grant撤回竞态。Completion 保持 partial，全部原验收框仍保留：29/30、实际28外发、全面条款核对/五入口/容量及32—34尚未因此关闭。README/status/trace/plan由集成维护者更新。
+
+
+2026-10-11 当前默认验收 runner 范围切片：完成 CODEX-only 默认集合、pytest support 路径、保留通用 CODEX 取消/槽/重试/超时和来源契约、每次新隔离 legacy METHOD profile 的当前页面验收。历史 DS-positive 明确 ignore/deselect，不执行能力验证、不计PASS。有限当前行为/集合/构建收据见[runner范围验收](../evidence/continuation-2026-10-11/codex-runner-scope/acceptance.md)。31原验收框及partial状态不变，未运行全suite，不替代五入口/P95/容量/真实通知或剩余责任票证据。

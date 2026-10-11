@@ -1,5 +1,5 @@
 import {expect,test} from '@playwright/test';
-test('new selectors are Codex only while legacy settings and archived identity remain visible',async({page})=>{
+test('new selectors are Codex only while legacy settings and archived identity remain visible',async({page},testInfo)=>{
   const history=await (await page.request.get('/api/agents/settings/history')).json();
   const original=await (await page.request.get('/api/data/runs/legacy-deepseek-method')).json();
   await page.goto('/');await page.getByRole('button',{name:'设置',exact:true}).click();
@@ -11,7 +11,7 @@ test('new selectors are Codex only while legacy settings and archived identity r
   expect((await page.request.post('/api/agents/settings',{data:{expected_version:1,backend:'DEEPSEEK'}})).status()).toBe(403);
   expect((await page.request.post('/api/data/requests/missing/deepseek',{data:{question:'依据？'}})).status()).toBe(403);
   expect(await (await page.request.get('/api/agents/settings/history')).json()).toEqual(history);
-  await page.screenshot({path:'../.scratch/roll-p0/evidence/continuation-2026-10-11/codex-only-scope/browser-legacy-settings-final.png',fullPage:true});
+  await page.screenshot({path:testInfo.outputPath('legacy-settings.png'),fullPage:true});
   await page.getByRole('button',{name:'持仓与关注',exact:true}).click();await page.getByRole('button',{name:'市场事实',exact:true}).click();
   const choices=page.getByLabel('取证方式');
   expect(await choices.locator('option').evaluateAll(options=>options.map(o=>(o as HTMLOptionElement).value))).toEqual(['DIRECT_HTTP','AGENT','CODEX']);
@@ -21,7 +21,7 @@ test('new selectors are Codex only while legacy settings and archived identity r
   await page.getByText('后端与运行配置',{exact:true}).click();
   await expect(page.getByText(/DeepSeek · 模型 historical-method/)).toBeVisible();
   await expect(page.getByRole('button',{name:'重新尝试本次请求'})).toBeDisabled();
-  await page.screenshot({path:'../.scratch/roll-p0/evidence/continuation-2026-10-11/codex-only-scope/browser-legacy-record.png',fullPage:true});
+  await page.screenshot({path:testInfo.outputPath('legacy-record.png'),fullPage:true});
   await page.getByRole('button',{name:'设置',exact:true}).click();await page.getByRole('button',{name:'保存取证后端',exact:true}).click();
   await expect(page.getByText('已保存：Codex · 设置版本 2')).toBeVisible();await page.reload();await page.getByRole('button',{name:'设置',exact:true}).click();
   await expect(page.getByLabel('取证后端',{exact:true})).toHaveValue('CODEX');
@@ -29,5 +29,5 @@ test('new selectors are Codex only while legacy settings and archived identity r
   expect(await (await page.request.get('/api/data/runs/legacy-deepseek-method')).json()).toEqual(original);
   expect((await (await page.request.get('/api/data/runs')).json()).length).toBe(1);
   expect((await page.request.post('/api/data/runs/legacy-deepseek-method/cancel',{data:{}})).status()).toBe(200);
-  await page.screenshot({path:'../.scratch/roll-p0/evidence/continuation-2026-10-11/codex-only-scope/browser-codex-saved.png',fullPage:true});
+  await page.screenshot({path:testInfo.outputPath('codex-saved.png'),fullPage:true});
 });
