@@ -1,0 +1,125 @@
+{
+  "baseline": "5a7f86e89cf978aa74ba637ce8db677673391aab",
+  "owned_sources": [
+    {
+      "path": "backend/src/roll/app.py",
+      "normalized_sha256": "dd87cc43072acdc22259d0a145280a5fc34ca222527531bdf44fc70274173486",
+      "bytes": 46007
+    },
+    {
+      "path": "backend/src/roll/decisions/capabilities.py",
+      "normalized_sha256": "71ef85631d7fc79a1c20de40168684cf43a047eab83017947d1dba3c95ec8b8a",
+      "bytes": 27299
+    },
+    {
+      "path": "backend/tests/application/test_capabilities.py",
+      "normalized_sha256": "016334e4d57eb5be8868026bd37e0a39f99ea67c3d63c4067fd02205d512f8e4",
+      "bytes": 21317
+    },
+    {
+      "path": "backend/tests/support/capability_method_app.py",
+      "normalized_sha256": "28fb646ee276b79acb78086a244ddb5d95b5283cc4415db3381456c398f2520d",
+      "bytes": 3093
+    },
+    {
+      "path": "frontend/src/api.ts",
+      "normalized_sha256": "f8168a5d7cbdb62716b0505c92f28711f8fda7daa70f6c8a489078ba382c3101",
+      "bytes": 3862
+    },
+    {
+      "path": "frontend/src/components/capability-panel.tsx",
+      "normalized_sha256": "14c1d4c661ff00f50eca14bf7b7403fd1b8c0aad46b47bd40057aeff8ef67113",
+      "bytes": 2524
+    },
+    {
+      "path": "frontend/src/pages/settings.tsx",
+      "normalized_sha256": "9826f99f1a3c61ca303d61c84ef8a2387b170ee41ab77f28898700b78766b913",
+      "bytes": 5449
+    },
+    {
+      "path": "frontend/src/pages/today.tsx",
+      "normalized_sha256": "7e852e5ca7450664ebc1dd6557b8296fc2524b2ab27d8dc598071e94e15a5377",
+      "bytes": 5336
+    },
+    {
+      "path": "frontend/tests/e2e/capabilities.spec.ts",
+      "normalized_sha256": "82ae5a292651811161aa83a9fa363abca9851c69d95cf5bcbca84d96e4474130",
+      "bytes": 3381
+    }
+  ],
+  "protected_sources": [
+    {
+      "path": "backend/src/roll/research/models.py",
+      "baseline_sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "current_sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/execution.py",
+      "baseline_sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "current_sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/reconstruction.py",
+      "baseline_sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "current_sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/datasets.py",
+      "baseline_sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "current_sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/design.py",
+      "baseline_sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "current_sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/historical_costs.py",
+      "baseline_sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "current_sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/corporate_actions.py",
+      "baseline_sha256": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+      "current_sha256": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/registry.py",
+      "baseline_sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "current_sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/training_preflight.py",
+      "baseline_sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "current_sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/market/rules.py",
+      "baseline_sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "current_sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/reference/reconstruction/sources.json",
+      "baseline_sha256": "1226a4b3f21bb671e23a1bffab584e3c1a81d25af7037bfc58d765427b34a6c1",
+      "current_sha256": "1226a4b3f21bb671e23a1bffab584e3c1a81d25af7037bfc58d765427b34a6c1",
+      "unchanged": true
+    },
+    {
+      "path": "backend/src/roll/research/reference/cash-rights/sources.json",
+      "baseline_sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "current_sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680",
+      "unchanged": true
+    }
+  ],
+  "protected_all_unchanged": true
+}
