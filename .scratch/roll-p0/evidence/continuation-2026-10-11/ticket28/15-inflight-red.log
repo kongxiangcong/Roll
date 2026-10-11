@@ -1,0 +1,49 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_revoke_inflight_preserves_accepted_body_appends_critical_invalidation_without_writer_wait _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-15/test_revoke_inflight_preserves0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000192F46F8D60>
+
+    def test_revoke_inflight_preserves_accepted_body_appends_critical_invalidation_without_writer_wait(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        entered, release = threading.Event(), threading.Event()
+        received = []
+        def publish(request):
+            received.append(request.content)
+            if len(received) == 1:
+                entered.set(); assert release.wait(timeout=10)
+            return httpx.Response(200, json={'id':'method-inflight','event':'message'})
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=qualification, notification_transport=httpx.MockTransport(publish))) as client:
+            prepare(client, package)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+            assert entered.wait(timeout=10)
+            original = next(n for n in client.get('/api/notifications').json()['notifications'] if n['category'] == 'NEED_ACTION')
+            try:
+                started = time.monotonic()
+                receipt = client.post('/api/capabilities/lifecycle', json={'scope':'NEW_RISK','state':'SUSPENDED','reason_code':'USER_PAUSE',
+                    'reason':'暂停新增风险','expected_version':0,'idempotency_key':'pause-inflight'})
+                assert receipt.status_code == 200, receipt.text
+                assert time.monotonic() - started < 2
+                assert client.post('/api/intents/prepare', json=intent_command(evaluation)).status_code == 409
+            finally: release.set()
+            for _ in range(200):
+                current = client.get('/api/notifications/' + original['notification_id'] + '/current').json()
+                if current['external_status'] == 'CHANNEL_ACCEPTED': break
+                time.sleep(.05)
+            else: raise AssertionError(current)
+            assert current['notification']['message'] == original['message']
+            assert current['current_state'] == 'INVALIDATED' and current['prepare_allowed'] is False
+            assert current['attempts'][0]['result']['status'] == 'CHANNEL_ACCEPTED'
+>           assert any(e['event_type'] == 'SOURCE_INVALIDATED' and e['inflight'] for e in current['source_links'])
+E           assert False
+E            +  where False = any(<generator object test_revoke_inflight_preserves_accepted_body_appends_critical_invalidation_without_writer_wait.<locals>.<genexpr> at 0x00000192F4B94A00>)
+
+backend\tests\application\test_notifications.py:254: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_revoke_inflight_preserves_accepted_body_appends_critical_invalidation_without_writer_wait
+1 failed, 6 deselected in 6.76s

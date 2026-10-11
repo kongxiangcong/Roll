@@ -29,6 +29,13 @@ test('station explicit read, old link current state and disabled private channel
   await expect(settings.getByLabel('认证令牌',{exact:true})).toHaveValue('');
   expect(JSON.stringify(await(await page.request.get('/api/notification-channel')).json())).not.toContain('SYNTHETIC_BROWSER_CANARY');
   expect((await(await page.request.get('/api/notifications/audit')).json()).transmission_attempts).toBe(0);
+  await settings.getByLabel('服务器地址',{exact:true}).fill('not-a-url');
+  await settings.getByLabel('认证令牌',{exact:true}).fill('SYNTHETIC_BROWSER_ERROR_CANARY');
+  await settings.getByRole('button',{name:'保存渠道配置',exact:true}).click();
+  await expect(settings.getByRole('alert')).toContainText('地址须为完整HTTP/HTTPS地址');
+  await expect(settings.getByLabel('认证令牌',{exact:true})).toHaveValue('');
+  expect(await settings.textContent()).not.toContain('SYNTHETIC_BROWSER_ERROR_CANARY');
+  await settings.getByLabel('服务器地址',{exact:true}).fill('https://ntfy.example.test');
   await settings.getByLabel('清除已保存认证',{exact:true}).check();
   await settings.getByRole('button',{name:'保存渠道配置',exact:true}).click();
   await expect(settings.getByText('未配置认证',{exact:true})).toBeVisible();

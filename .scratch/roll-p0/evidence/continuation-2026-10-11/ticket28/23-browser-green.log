@@ -1,0 +1,43 @@
+[WebServer] INFO:     Started server process [47880]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8078 (Press CTRL+C to quit)
+[WebServer] (node:12176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:44888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\notifications.spec.ts:3:1 › station explicit read, old link current state and disabled private channel settings (6.1s)
+
+
+  1) tests\e2e\notifications.spec.ts:3:1 › station explicit read, old link current state and disabled private channel settings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('region', { name: '通知', exact: true }).getByText('未配置外部渠道，需打开查看', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '通知', exact: true }).getByText('未配置外部渠道，需打开查看', { exact: true })[22m
+
+
+       9 |   const panel=page.getByRole('region',{name:'通知',exact:true});
+      10 |   await expect(panel.getByText('需要同步/恢复',{exact:true})).toBeVisible();
+    > 11 |   await expect(panel.getByText('未配置外部渠道，需打开查看',{exact:true})).toBeVisible();
+         |                                                               ^
+      12 |   expect((await(await page.request.get('/api/notifications')).json()).notifications[0].read_at).toBeNull();
+      13 |   await panel.getByRole('button',{name:'标为已读',exact:true}).click();
+      14 |   await expect(panel.getByText('站内已读',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket28\frontend\tests\e2e\notifications.spec.ts:11:63
+
+    Error Context: test-results\notifications-station-expl-78809-ed-private-channel-settings\error-context.md
+
+  1 failed
+    tests\e2e\notifications.spec.ts:3:1 › station explicit read, old link current state and disabled private channel settings 

@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_uncertain_publish_has_no_automatic_retry_one_explicit_retry_and_sanitized_history _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-10/test_uncertain_publish_has_no_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020A72338D60>
+
+    def test_uncertain_publish_has_no_automatic_retry_one_explicit_retry_and_sanitized_history(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        requests = []
+        def publish(request):
+            requests.append(request.url.path)
+            if len(requests) == 1: raise httpx.ReadTimeout('SECRET_IN_TRANSPORT_EXCEPTION', request=request)
+            return httpx.Response(200, json={'id':'method-accepted-retry','event':'message'})
+        with TestClient(create_app(tmp_path / 'data', notification_transport=httpx.MockTransport(publish))) as client:
+            pause(client)
+            client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+            for _ in range(200):
+                notice = client.get('/api/notifications').json()['notifications'][0]
+                if notice['external_status'] == 'RESULT_UNKNOWN': break
+                time.sleep(.05)
+            else: raise AssertionError(notice)
+            identifier = notice['notification_id']
+            time.sleep(.2)
+            assert len(requests) == 1
+            old = client.get('/api/notifications/' + identifier + '/current').json()
+            assert old['attempts'][0]['result']['error_code'] == 'CHANNEL_REQUEST_UNCERTAIN'
+            assert 'SECRET_IN_TRANSPORT_EXCEPTION' not in str(old)
+            command = {'idempotency_key':'retry-once'}
+            retry = client.post('/api/notifications/' + identifier + '/retry', json=command)
+>           assert retry.status_code == 200, retry.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_notifications.py:168: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_uncertain_publish_has_no_automatic_retry_one_explicit_retry_and_sanitized_history
+1 failed, 4 deselected in 6.21s

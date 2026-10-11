@@ -9,6 +9,7 @@ import time
 import threading
 import pytest
 from test_account import baseline
+from test_funding import funding
 
 
 def pause(client, key='pause'):
@@ -508,3 +509,24 @@ def test_http_failure_receipts_are_bounded_sanitized_no_auto_retry(tmp_path,monk
         assert current['attempts'][0]['result']['error_code'] == error and canary not in str(current)
         app.state.notifications.work('owned-test-worker')
         assert requests == ['ntfy.example.test']
+
+
+def test_repeated_current_reads_after_same_funding_failure_do_not_duplicate_major_notice(tmp_path,monkeypatch):
+    monkeypatch.setenv('ROLL_ENV','test')
+    package=action_package()
+    qualification=save_package(tmp_path/'qualification.json',package)
+    with TestClient(create_app(tmp_path/'data',runtime_role='API',capability_method_file=qualification)) as client:
+        prepare(client,package)
+        evaluation=client.post('/api/actions/evaluate',json={}).json()
+        action=next(n for n in client.get('/api/notifications').json()['notifications'] if n['category']=='NEED_ACTION')
+        changed=client.post('/api/funding/confirm',json=funding(2,total_exposure='10000.00',single_exposure='10000.00',cash_reserve='90000.00'))
+        assert changed.status_code == 200,changed.text
+        for _ in range(4):
+            assert client.get('/api/actions/current').json()['decisions'] == []
+            assert client.get('/api/notifications/'+action['notification_id']+'/current').json()['current_state'] == 'INVALIDATED'
+        notifications=client.get('/api/notifications').json()['notifications']
+        critical=[n for n in notifications if n['source']['kind']=='ACTION_INVALIDATION']
+        assert len(critical) == 1
+        assert critical[0]['reasons'] == ['FUNDING_VERSION_CHANGE','GRANT_RESTRICTED']
+        assert next(n for n in notifications if n['notification_id']==action['notification_id'])['message'] == action['message']
+        assert client.get('/api/actions/evaluations/'+evaluation['evaluation_id']).json() == evaluation
