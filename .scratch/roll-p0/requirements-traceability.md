@@ -34,8 +34,8 @@
 
 | 条款 | 验收关注 | 主责任 | 联验/真实证据 | 当前证据 |
 |---|---|---|---|---|
-| AUTH-01 | 技术资格、资金授权与健康取交集 | [10] | [24]、[25] | 部分：10独立资金/技术/健康已验，24按账户、范围、当前资金/部署、到期和恢复锁检查交集；正向仅显式METHOD_ENGINEERING，生产拒绝，真实NOT_GRANTED。25发布调用方待最终独立接受。[10](evidence/10/acceptance.md)、[24](evidence/24/acceptance.md) |
-| AUTH-02 | 能力绑定指纹、范围、账户与期限 | [24] | [22]、[25] | 部分：24公开登记/逐grant查询/重启绑定材料、协议、部署、证券/动作/期限/账户/资金，源变化拒绝旧proof；25调用方仍待验，正向仅host METHOD。[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md)、[当前源检查](evidence/continuation-2026-10-11/codex-only-independent/acceptance.md) |
+| AUTH-01 | 技术资格、资金授权与健康取交集 | [10] | [24]、[25] | 工程通过：10/24交集及25发布前最新资金、名单、到期、估值复核已独立接受；正向仅METHOD_ENGINEERING，生产拒绝，真实NOT_GRANTED。[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)、[25分阶段](evidence/ticket25/acceptance.md) |
+| AUTH-02 | 能力绑定指纹、范围、账户与期限 | [24] | [22]、[25] | 工程通过：24逐grant及25自身grant绑定、重启重放、源变更拒绝旧proof已验；风险资格不能充当收益资格，正向仅host METHOD。[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md)、[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
 | AUTH-03 | 授权生命周期、到期与后继记录 | [27] | [24]、[28] | 待实施 |
 | AUTH-04 | 确定性准入、用户启用及缩权 | [24] | [27]、[34] | 部分：24客户端自签拒绝、host METHOD逐条件准入、资金缩权与生产METHOD拒绝已验；27恢复生命周期及34实际条件启用未完成。[24](evidence/24/acceptance.md) |
 | ACC-01 | 现金、可用、冻结、持仓和批次分列 | [01] | [02]、[09] | 通过：01字段分列、02实际FIFO批次、09原价估值和冻结不重复扣已联验；[01](evidence/01/acceptance.md)、[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md) |
@@ -97,12 +97,12 @@
 | MOD-07 | 不合格概率隔离与独立回退资格 | [25] | [19]、[22]、[29] | 待实施 |
 | MOD-08 | 收益、尾部、回撤、占用及覆盖联合评价 | [21] | [17]、[20] | 待实施 |
 | MOD-09 | 市场状态与未来收益预测分开 | [25] | [15]、[19] | 待实施 |
-| DEC-01 | 动作与账户/数据/资格状态分别保存 | [25] | [10] | 待实施 |
-| DEC-02 | 确定性顺序与发布前权限检查 | [25] | [20]、[24]、[27] | 待实施 |
-| DEC-03 | 新增风险硬约束与有依据的 WAIT | [25] | [10]、[20] | 待实施 |
-| DEC-04 | 联合数量、损失预算与压力假设 | [25] | [09]、[10]、[18]、[22] | 待实施 |
-| DEC-05 | 有限名单稳定排序及联合资金约束 | [20] | [25]、[26] | 待实施 |
-| DEC-06 | 动作卡完整条件、版本、依据与未知 | [25] | [28] | 待实施 |
+| DEC-01 | 动作与账户/数据/资格状态分别保存 | [25] | [10] | 工程通过：五项状态分别持久化、公开GET/replay及重启一致；风险模型NOT_APPLICABLE，零可卖量BLOCKED且无伪Decision。[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
+| DEC-02 | 确定性顺序与发布前权限检查 | [25] | [20]、[24]、[27] | 部分：25按冻结顺序检查且已有幂等回执不能绕过最新资金/名单/到期/估值；27生命周期调用方待验，实际未授权。[25分阶段](evidence/ticket25/acceptance.md) |
+| DEC-03 | 新增风险硬约束与有依据的 WAIT | [25] | [10]、[20] | 部分：冻结BUY/REFUSE及权限、资金、名单、数据硬门禁已验；ADD/HOLD/判断WAIT/反向冷却政策未冻结，明确命名缺口，不造默认WAIT。[25分阶段](evidence/ticket25/acceptance.md) |
+| DEC-04 | 联合数量、损失预算与压力假设 | [25] | [09]、[10]、[18]、[22] | 工程通过：25联合Decimal现金/费用/保留额、损失起点与cashflow、陈旧估值拒绝、并发loss peak及独立风险压力已验；暂停不因反弹或扩容自动恢复。[25分阶段](evidence/ticket25/acceptance.md)、[较早独立固定输入](evidence/continuation-2026-10-11/ticket25-independent/acceptance.md) |
+| DEC-05 | 有限名单稳定排序及联合资金约束 | [20] | [25]、[26] | 部分：20/25冻结排序与最多一新增卡、两机会共同预算、全部已确认持仓风险和列表移除失效已验；26意向竞争/占用联验进行中。[25分阶段](evidence/ticket25/acceptance.md) |
+| DEC-06 | 动作卡完整条件、版本、依据与未知 | [25] | [28] | 部分：25卡片依赖、时间/期限、条件、自身依据、未知及五状态持久化/重放已验；28通知调用方待验。[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)、[25分阶段](evidence/ticket25/acceptance.md) |
 | DEC-07 | 执行意向不入账、未回报抑制冲突 | [26] | [25] | 待实施 |
 | DEC-08 | 部分成交后余量重算或终止 | [26] | [02]、[25] | 待实施 |
 | DEC-09 | 卡片到期不释放外部待结果约束 | [26] | [27] | 待实施 |
@@ -165,8 +165,8 @@
 | 条款 | 验收关注 | 主责任 | 联验 | 当前证据 |
 |---|---|---|---|---|
 | DATA-INV-01 | 真实账户仅由已确认事件构建 | [01] | [26] | 部分：01草稿不入账/原子确认通过；待26意向与成交联验，[证据](evidence/01/acceptance.md) |
-| DATA-INV-02 | 动作依赖与正式资格版本完整 | [25] | [24] | 待实施 |
-| DATA-INV-03 | 旧预测/动作不可变，修订有后继 | [25] | [08]、[28] | 待实施 |
+| DATA-INV-02 | 动作依赖与正式资格版本完整 | [25] | [24] | 工程通过：25动作固定账户/资金/数据/模型/政策/规则及自身grant版本，生产拒绝METHOD、资格不跨依据借用，实际NOT_GRANTED。[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
+| DATA-INV-03 | 旧预测/动作不可变，修订有后继 | [25] | [08]、[28] | 部分：08原档案及25后继拒绝/失效、固定输入重放已验；28已发通知历史链待验。[25分阶段](evidence/ticket25/acceptance.md) |
 | DATA-INV-04 | 实际、历史、影子收益可区分 | [29] | [09]、[20] | 待实施 |
 | DATA-INV-05 | 账户、成交及送达等未知不补造 | [26] | [01]、[02]、[28] | 待实施 |
 | DATA-INV-06 | 回执重试/重启/恢复不丢不重 | [16] | [01]、[03] | COMPLETE（当前已实现账本范围）：9真实OS路径含schema1前DDL/后DDL/异常回滚、包发布前死亡、活peer、坏库CLI、恢复三阶段死亡；原事件/账户/基线与已确认CSV回执/原字节不丢不重；[16证据](evidence/16/acceptance.md) |
