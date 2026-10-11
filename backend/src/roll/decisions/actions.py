@@ -178,6 +178,16 @@ class Actions:
                          and instrument in s['grant']['scope']['instruments'] and action in s['allowed_actions']
                          and (method or s['grant']['system_usable'])
                          and (kind != 'PROFIT_MODEL' or s['grant']['complete_protocol_fingerprint'] == packet.get('complete_protocol_fingerprint'))), None)
+        def capability_status(kind, instrument, grant):
+            own = next((s for s in statuses if grant and s['grant']['grant_id'] == grant['grant_id']), None)
+            if own:
+                return {'state': own['state'], 'grant_id': grant['grant_id'],
+                        'allowed_actions': own['allowed_actions'], 'system_usable': grant['system_usable']}
+            related = any(s['grant']['candidate_kind'] == kind and instrument in s['grant']['scope']['instruments'] for s in statuses)
+            return {'state': 'RESTRICTED' if related else 'UNGRANTED', 'grant_id': None,
+                    'allowed_actions': [], 'system_usable': False}
+        def account_status(check):
+            return {k: check[k] for k in ('purpose', 'state', 'fact_scope_state', 'allowed', 'reasons')}
         loss = None
         if packet.get('loss_facts'):
             try: loss = evaluate_loss(funding, LossFacts(**packet['loss_facts']), inputs.get('previous_loss'))
@@ -231,6 +241,21 @@ class Actions:
                 for row in rows:
                     if row['action'] == 'BUY' and accepted:
                         row.update(action='REFUSE', reasons=['ONE_NEW_ENTRY_LIMIT'])
+                    grant = grant_for('PROFIT_MODEL', row['instrument'], 'BUY')
+                    data_reasons = [r for r in row['reasons'] if r in {
+                        'CURRENT_CUTOFF_NOT_BOUND', 'PURPOSE_DATA_STALE', 'PORTFOLIO_EXPOSURE_UNKNOWN',
+                        'RULE_UNKNOWN_OR_UNSUPPORTED', 'CURRENT_SPECIAL_STATUS_UNKNOWN_OR_NOT_NORMAL',
+                        'CALENDAR_CLOSED_OR_UNKNOWN', 'DAILY_INPUT_INCOMPLETE_INTRADAY_VOLUME_EXCLUDED',
+                        'QUOTE_STALE_FOR_PURPOSE', 'PRICE_OR_FEES_UNKNOWN'}]
+                    if not loss or loss['status'] == 'RESTRICTED':
+                        data_reasons.append('LOSS_BOUNDARY_UNAVAILABLE_OR_PAUSED')
+                    model_scope_failed = any(r in row['reasons'] for r in ('FORECAST_HORIZON_OUTSIDE_POLICY', 'RESEARCH_FORECAST_NOT_CURRENT_FORMAL_INPUT'))
+                    row.update(account_status=account_status(inputs['new_risk_check']),
+                        data_status={'state': 'RESTRICTED' if data_reasons else 'COMPLETE_CURRENT',
+                                     'namespace': packet['namespace'], 'reasons': data_reasons},
+                        model_status='UNQUALIFIED' if not grant else 'OUT_OF_SCOPE' if model_scope_failed else 'METHOD_ENGINEERING' if method else 'QUALIFIED',
+                        execution_eligibility=('METHOD_ONLY' if method else 'ELIGIBLE') if row['action'] == 'BUY' else 'BLOCKED',
+                        capability_status=capability_status('PROFIT_MODEL', row['instrument'], grant))
                     if row['action'] == 'BUY':
                         accepted += 1
                         row.update(current_quantity='0', target_quantity=policy['quantity'], quantity=policy['quantity'],
@@ -259,7 +284,23 @@ class Actions:
                 grant = grant_for('RISK_POLICY', holding['instrument'], 'EXIT' if holding.get('target_quantity') == '0' else 'REDUCE')
                 bound = grant and grant['deployment_fingerprints'].get('policy') == risk_inputs['policy'].get('policy_fingerprint')
                 if not method and risk_inputs.get('evidence_kind') == 'METHOD_CASE': bound = False
-                if holding.get('executable_quantity') is not None and bound and risk_inputs['required_as_of'] == inputs['required_as_of']:
+                eligible = holding.get('executable_quantity') is not None and bound and risk_inputs['required_as_of'] == inputs['required_as_of']
+                data_reasons = [r for r in holding['reasons'] if r in {
+                    'POSITION_PRICE_OR_QUANTITY_UNKNOWN', 'RAW_PRICE_SCOPE_NOT_SUPPORTED',
+                    'PRICE_NOT_SAME_SESSION_COMPLETE_CLOSE', 'PRICE_NOT_AVAILABLE_TO_CONSUMER',
+                    'RULE_UNKNOWN_OR_OUTSIDE_FROZEN_VERSION', 'SELL_QUANTITY_RULE_OUTSIDE_MAIN_A_SCOPE',
+                    'CURRENT_SPECIAL_STATUS_UNKNOWN_OR_NOT_NORMAL', 'CALENDAR_CLOSED_OR_UNKNOWN',
+                    'CURRENT_INPUT_VERSION_CHANGED_DURING_EVALUATION', 'LOSS_FACTS_UNKNOWN_NO_DEFAULT_JUDGMENT'}]
+                if risk_inputs['required_as_of'] != inputs['required_as_of']:
+                    data_reasons.append('RISK_CAPABILITY_OR_CURRENT_INPUT_BINDING_NOT_VERIFIED')
+                data_state = 'RESTRICTED' if data_reasons else 'NOT_EVALUATED' if not holding['in_policy_scope'] or holding['triggered'] is None else 'COMPLETE_CURRENT'
+                row_statuses = {'account_status': account_status(inputs['reduction_check']),
+                    'data_status': {'state': data_state, 'namespace': packet['namespace'], 'reasons': data_reasons},
+                    'model_status': 'NOT_APPLICABLE',
+                    'execution_eligibility': ('METHOD_ONLY' if method else 'ELIGIBLE') if eligible else 'BLOCKED',
+                    'capability_status': capability_status('RISK_POLICY', holding['instrument'], grant if bound else None)}
+                holding.update(row_statuses)
+                if eligible:
                     base['decisions'].append({'instrument': holding['instrument'], 'action': 'EXIT' if holding['target_quantity'] == '0' else 'REDUCE',
                         'basis_type': 'RISK_POLICY', 'grant_id': grant['grant_id'], 'policy_id': risk_inputs['policy']['policy_id'],
                         'quantity': holding['executable_quantity'], 'current_quantity': holding['quantity'], 'target_quantity': holding['target_quantity'],
@@ -268,12 +309,15 @@ class Actions:
                         'required_cash_yuan': '0.00', 'rule_id': holding['rule'].get('rule_id'), 'reasons': holding['reasons'],
                         'trigger_conditions': ['CONFIRMED_AUTHORIZED_EXPOSURE_EXCESS', 'CONFIRMED_SELLABLE_QUANTITY'],
                         'invalidation_conditions': ['ACCOUNT_VERSION_CHANGE', 'FUNDING_CHANGE', 'RULE_OR_DATA_CHANGE', 'GRANT_RESTRICTION', 'EXPIRY'],
-                        'uncertainty': 'PARTIAL_OR_NO_FILL_LEAVES_RISK; profit model advantage is not required', 'stress': holding['stress']})
+                        'uncertainty': 'PARTIAL_OR_NO_FILL_LEAVES_RISK; profit model advantage is not required', 'stress': holding['stress'], **row_statuses})
                 elif holding.get('executable_quantity') is not None:
                     holding['reasons'].append('RISK_CAPABILITY_OR_CURRENT_INPUT_BINDING_NOT_VERIFIED')
         else:
             base['holding_risks'] = [{'instrument': p['instrument'], 'quantity': p['quantity'], 'sellable_quantity': p['sellable_quantity'],
-                                      'reasons': ['INDEPENDENT_RISK_POLICY_INPUT_NOT_AVAILABLE']} for p in account['positions']]
+                'reasons': ['INDEPENDENT_RISK_POLICY_INPUT_NOT_AVAILABLE'], 'account_status': account_status(inputs['reduction_check']),
+                'data_status': {'state': 'NOT_EVALUATED', 'namespace': packet['namespace'], 'reasons': ['INDEPENDENT_RISK_POLICY_INPUT_NOT_AVAILABLE']},
+                'model_status': 'NOT_APPLICABLE', 'execution_eligibility': 'BLOCKED',
+                'capability_status': capability_status('RISK_POLICY', p['instrument'], None)} for p in account['positions']]
         for row in base['decisions']:
             row['decision_id'] = fingerprint({'input': fingerprint(inputs), 'instrument': row['instrument'], 'basis': row['basis_type']})
             row['dependencies'] = {'account_version': account['version'], 'funding_version': funding['version'],

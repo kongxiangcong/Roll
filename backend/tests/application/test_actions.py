@@ -45,6 +45,13 @@ def test_method_host_without_user_funding_stays_facts_only_and_production_reopen
         assert result.status_code == 201
         assert result.json()['decisions'] == []
         assert 'FUNDING_NOT_ENABLED' in result.json()['limitations']
+        unqualified = result.json()['refusals'][0]
+        assert unqualified['account_status']['purpose'] == 'NEW_RISK'
+        assert unqualified['account_status']['allowed'] is False
+        assert unqualified['model_status'] == 'UNQUALIFIED'
+        assert unqualified['execution_eligibility'] == 'BLOCKED'
+        assert unqualified['capability_status'] == {'state': 'UNGRANTED', 'grant_id': None, 'allowed_actions': [], 'system_usable': False}
+        assert unqualified['data_status']['namespace'] == 'METHOD_ENGINEERING'
         prepare(client, p)
         assert len(client.post('/api/actions/evaluate', json={}).json()['decisions']) == 1
     monkeypatch.delenv('ROLL_ENV', raising=False)
@@ -71,6 +78,10 @@ def test_hard_data_failures_do_not_get_scored_away_and_keep_separate_quote_daily
         value = client.post('/api/actions/evaluate', json={}).json()
         assert value['decisions'] == []
         assert reason in value['refusals'][0]['reasons']
+        assert value['refusals'][0]['execution_eligibility'] == 'BLOCKED'
+        assert value['refusals'][0]['capability_status']['state'] == 'METHOD_GRANTED'
+        assert value['refusals'][0]['model_status'] == ('OUT_OF_SCOPE' if reason == 'FORECAST_HORIZON_OUTSIDE_POLICY' else 'METHOD_ENGINEERING')
+        assert value['refusals'][0]['data_status']['state'] == ('COMPLETE_CURRENT' if reason == 'FORECAST_HORIZON_OUTSIDE_POLICY' else 'RESTRICTED')
         assert value['refusals'][0]['cumulative_volume'] == '12345'
         assert value['refusals'][0]['forecast_cutoff'] == p['required_as_of']
         assert client.post('/api/actions/evaluate', json={'probability': 1, 'gates': {'G7': 'PASS'}}).status_code == 422
@@ -126,10 +137,25 @@ def test_independently_qualified_reduction_with_purchase_permission_not_open_kee
         assert granted.status_code == 201, granted.text
         result = client.post('/api/actions/evaluate', json={}).json()
         assert [(d['action'], d['quantity'], d['target_quantity']) for d in result['decisions']] == ([('REDUCE', '100', '200')] if sellable == '300' else [])
-        if sellable == '300': assert result['decisions'][0]['basis_type'] == 'RISK_POLICY'
-        else: assert 'NO_CONFIRMED_SELLABLE_LOT' in result['holding_risks'][0]['reasons']
+        if sellable == '300':
+            decision = result['decisions'][0]
+            assert decision['basis_type'] == 'RISK_POLICY'
+            assert decision['model_status'] == 'NOT_APPLICABLE'
+            assert decision['execution_eligibility'] == 'METHOD_ONLY'
+            assert decision['capability_status']['state'] == 'METHOD_GRANTED'
+            assert decision['capability_status']['grant_id'] == granted.json()['grant_id']
+            assert decision['capability_status']['system_usable'] is False
+        else:
+            assert 'NO_CONFIRMED_SELLABLE_LOT' in result['holding_risks'][0]['reasons']
+            assert result['holding_risks'][0]['execution_eligibility'] == 'BLOCKED'
+        holding = result['holding_risks'][0]
+        assert holding['account_status'] == {'purpose': 'REDUCTION', 'state': 'CONFIRMED_AS_OF', 'fact_scope_state': 'CONFIRMED_AS_OF', 'allowed': True, 'reasons': []}
+        assert holding['data_status'] == {'state': 'COMPLETE_CURRENT', 'namespace': 'METHOD_ENGINEERING', 'reasons': []}
+        assert holding['model_status'] == 'NOT_APPLICABLE'
+        assert holding['capability_status'] == {'state': 'METHOD_GRANTED', 'grant_id': granted.json()['grant_id'], 'allowed_actions': ['REDUCE', 'EXIT'], 'system_usable': False}
         assert len(result['holding_risks']) == 2
         assert 'OUTSIDE_FROZEN_POLICY_SCOPE_FACTS_RETAINED' in result['holding_risks'][1]['reasons']
+        assert client.get(f"/api/actions/evaluations/{result['evaluation_id']}").json() == result
         assert client.post(f"/api/actions/evaluations/{result['evaluation_id']}/replay").json()['matches_original'] is True
 
 
@@ -179,8 +205,18 @@ def test_qualified_host_packet_allocates_stable_joint_cash_with_fees_without_dou
         assert value['joint_budget']['reserved_yuan'] == '30005.00'
         assert 'INSUFFICIENT_JOINT_CASH' in value['refusals'][0]['reasons']
         assert value['decisions'][0]['grant_id'] == grant['grant_id']
+        decision = value['decisions'][0]
+        assert decision['account_status'] == {'purpose': 'NEW_RISK', 'state': 'CONFIRMED_AS_OF', 'fact_scope_state': 'CONFIRMED_AS_OF', 'allowed': True, 'reasons': []}
+        assert decision['data_status'] == {'state': 'COMPLETE_CURRENT', 'namespace': 'METHOD_ENGINEERING', 'reasons': []}
+        assert decision['model_status'] == 'METHOD_ENGINEERING'
+        assert decision['execution_eligibility'] == 'METHOD_ONLY'
+        assert decision['capability_status'] == {'state': 'METHOD_GRANTED', 'grant_id': grant['grant_id'], 'allowed_actions': ['BUY'], 'system_usable': False}
+        assert value['refusals'][0]['model_status'] == 'METHOD_ENGINEERING'
+        assert value['refusals'][0]['execution_eligibility'] == 'BLOCKED'
+        assert value['refusals'][0]['capability_status']['state'] == 'METHOD_GRANTED'
         assert value['namespace'] == 'METHOD_ENGINEERING' and value['system_usable'] is False
         assert client.get('/api/account').json() == before
+        assert client.get(f"/api/actions/evaluations/{value['evaluation_id']}").json() == value
         assert client.post(f"/api/actions/evaluations/{value['evaluation_id']}/replay").json()['matches_original'] is True
         assert client.post('/api/actions/evaluate', json={}).json() == value
 
