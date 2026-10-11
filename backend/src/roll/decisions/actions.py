@@ -413,6 +413,7 @@ class Actions:
                     if new and old['action'] != new['action']:
                         changed.update(event_id=str(uuid4()), event_type='ACTION_FLIPPED', old_action=old['action'], new_action=new['action'])
                         db.execute('INSERT INTO action_events VALUES(?,?)', (changed['event_id'], encode(changed)))
+            if hasattr(self, 'notifications'): self.notifications.actions_published(db, value)
             db.commit()
         return value
 
@@ -461,7 +462,9 @@ class Actions:
                          'lifecycle_event_ids': sorted({s.get('event_id') for status in current[2]['grant_statuses']
                              for s in status['lifecycle']['scopes'].values() if s.get('event_id') and s['state'] != 'ACTIVE'})}
                 inserted = db.execute('INSERT OR IGNORE INTO action_invalidations VALUES(?,?,?)', (decision['decision_id'], reason_key, encode(event))).rowcount
-                if inserted: db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
+                if inserted:
+                    db.execute('INSERT INTO action_events VALUES(?,?)', (event['event_id'], encode(event)))
+                    if hasattr(self, 'notifications'): self.notifications.action_invalidated(db, event)
                 invalidated.append({'decision': decision, 'reasons': reasons})
             else: active.append(decision)
         return {'evaluation': value, 'instrument': instrument, 'decisions': active, 'invalidated': invalidated}
