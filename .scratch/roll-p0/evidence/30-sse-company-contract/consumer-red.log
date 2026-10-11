@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_current_packet_fixed_empty_and_nonempty_contract_ids_survive_same_cutoff_append _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30u-consumer-red/test_current_packet_fixed_empt0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DE9F59A3F0>
+
+    def test_current_packet_fixed_empty_and_nonempty_contract_ids_survive_same_cutoff_append(tmp_path, monkeypatch):
+        clock(monkeypatch)
+        calls = []
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(200, json=snap() if request.url.host == 'yunhq.sse.com.cn' else company())
+        transport = httpx.MockTransport(supplier)
+        with TestClient(create_app(tmp_path, market_transport=transport, runtime_role='API')) as client:
+            base = start(client)
+            before = client.post(base + '/post-close-packets', json={'basis': 'Old packet before contract'}).json()
+>           assert before['company_contract_receipts'] == []
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'company_contract_receipts'
+
+backend\tests\application\test_sse_company_contract.py:77: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_contract.py::test_current_packet_fixed_empty_and_nonempty_contract_ids_survive_same_cutoff_append
+1 failed in 6.74s

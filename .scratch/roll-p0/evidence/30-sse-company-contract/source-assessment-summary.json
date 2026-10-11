@@ -1,0 +1,78 @@
+{
+  "execution_started_at": "2026-10-11T10:17:33.540249+00:00",
+  "execution_finished_at": "2026-10-11T10:17:38.054441+00:00",
+  "job": {
+    "plan_id": "b81b9d08-13ac-472f-933f-a37582c70e8d",
+    "day": "2026-10-11",
+    "source_id": "sse-company-client-contract",
+    "state": "RECORDED",
+    "basis": "Frozen two-attempt finite plan; no retry, redirect, fallback or production qualification",
+    "started_at": "2026-10-11T10:17:37.188408+00:00",
+    "request_budget_calls": 2,
+    "actual_forward_start": false,
+    "host_owner": {
+      "pid": 44092,
+      "creation_ticks": 134361874516125457
+    },
+    "receipt_id": "a78cf1f6-8550-4f67-bac3-1f8f6bcb3491",
+    "gaps": [
+      "SSE_CLIENT_PHASE_NOT_COMPLETE_SUSPENSION_OR_RESUMPTION",
+      "SSE_CLIENT_UNITS_DOCUMENT_BOUND_SESSION_COMPLETION_UNPROVEN",
+      "SSE_COMPANY_LISTING_RISK_ENUM_EFFECTIVE_AND_NEGATIVE_COVERAGE_UNPROVEN"
+    ],
+    "finished_at": "2026-10-11T10:17:37.976132+00:00"
+  },
+  "receipt_id": "a78cf1f6-8550-4f67-bac3-1f8f6bcb3491",
+  "actual_attempts": 2,
+  "raws": {
+    "company": {
+      "bytes": 1732,
+      "content_type": "application/json;charset=UTF-8",
+      "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+      "kind": "SSE_CLIENT_RAW_RESPONSE",
+      "original_complete": true,
+      "parameters": {
+        "COMPANY_CODE": "600362",
+        "isPagination": "false",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C"
+      },
+      "path": "raw/4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a.raw",
+      "received_at": "2026-10-11T10:17:37.912998+00:00",
+      "sha256": "4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a",
+      "source_id": "sse-company-client-contract",
+      "source_url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C&COMPANY_CODE=600362&isPagination=false",
+      "status_code": 200,
+      "stream_error": null
+    },
+    "snap": {
+      "bytes": 409,
+      "content_type": "application/json;charset=UTF-8",
+      "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+      "kind": "SSE_CLIENT_RAW_RESPONSE",
+      "original_complete": true,
+      "parameters": {
+        "select": "name,last,chg_rate,change,amount,volume,open,prev_close,ask,bid,high,low,tradephase,turnover_ratio,totalValue,amp_rate,circulating,up_limit,down_limit,fp_volume,fp_amount,cpxxprodusta,cpxxlmttype,fp_phase"
+      },
+      "path": "raw/bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403.raw",
+      "received_at": "2026-10-11T10:17:37.827298+00:00",
+      "sha256": "bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403",
+      "source_id": "sse-company-client-contract",
+      "source_url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362?select=name%2Clast%2Cchg_rate%2Cchange%2Camount%2Cvolume%2Copen%2Cprev_close%2Cask%2Cbid%2Chigh%2Clow%2Ctradephase%2Cturnover_ratio%2CtotalValue%2Camp_rate%2Ccirculating%2Cup_limit%2Cdown_limit%2Cfp_volume%2Cfp_amount%2Ccpxxprodusta%2Ccpxxlmttype%2Cfp_phase",
+      "status_code": 200,
+      "stream_error": null
+    }
+  },
+  "status": "REPORTED_PARTIAL",
+  "errors": {},
+  "gaps": [
+    "SSE_CLIENT_PHASE_NOT_COMPLETE_SUSPENSION_OR_RESUMPTION",
+    "SSE_CLIENT_UNITS_DOCUMENT_BOUND_SESSION_COMPLETION_UNPROVEN",
+    "SSE_COMPANY_LISTING_RISK_ENUM_EFFECTIVE_AND_NEGATIVE_COVERAGE_UNPROVEN"
+  ],
+  "background_worker_started": false,
+  "account_version": 0,
+  "system_usable": false,
+  "model_or_provider_or_notification_calls": 0,
+  "actual_forward_start": false,
+  "no_retry_or_fallback_or_third_call": true
+}

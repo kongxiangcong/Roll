@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_document_bound_units_and_company_state_are_distinct_from_complete_status _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30u-receipt-red/test_document_bound_units_and_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001953F74B950>
+
+    def test_document_bound_units_and_company_state_are_distinct_from_complete_status(tmp_path, monkeypatch):
+        clock(monkeypatch)
+        calls = []
+        raw_snap = json.dumps(snap()).encode()
+        raw_company = json.dumps(company(), ensure_ascii=False).encode()
+        def supplier(request):
+            calls.append(request)
+            return httpx.Response(200, content=raw_snap if request.url.host == 'yunhq.sse.com.cn' else raw_company)
+        with TestClient(create_app(tmp_path, market_transport=httpx.MockTransport(supplier), runtime_role='API')) as client:
+            base = start(client)
+            response = client.post(base + '/sse-company-contract', json={'basis': 'Exact official company renderer assessment'})
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_company_contract.py:41: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_contract.py::test_document_bound_units_and_company_state_are_distinct_from_complete_status
+1 failed in 5.92s

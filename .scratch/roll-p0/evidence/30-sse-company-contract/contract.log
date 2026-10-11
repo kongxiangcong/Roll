@@ -1,0 +1,35 @@
+..................F                                                      [100%]
+================================== FAILURES ===================================
+_ test_source_disable_client_flags_and_unknown_phase_or_listing_do_not_make_authority _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30u-contract/test_source_disable_client_fla0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C6AE728200>
+
+    def test_source_disable_client_flags_and_unknown_phase_or_listing_do_not_make_authority(tmp_path, monkeypatch):
+        clock(monkeypatch)
+        calls = []
+        def supplier(request):
+            calls.append(request)
+            value = snap() if request.url.host == 'yunhq.sse.com.cn' else company()
+            if 'snap' in value: value['snap'][12] = 'Z7'
+            else: value['result'][0].update(STATE_CODE_A_DESC='', A_LIST_DATE='-')
+            return httpx.Response(200, json=value)
+        with TestClient(create_app(tmp_path, market_transport=httpx.MockTransport(supplier), runtime_role='API')) as client:
+            base = start(client)
+            for field in [{'complete_status_verified': True}, {'source_units': 'SHARE'}, {'evidence_kind': 'REAL'}, {'actual_forward_start': True}]:
+                assert client.post(base + '/sse-company-contract', json={'basis': 'Caller cannot sign authority', **field}).status_code == 422
+            receipt = client.post(base + '/sse-company-contract', json={'basis': 'Opaque stage/state are kept unknown'}).json()
+            assert receipt['quote_fact']['tradephase_display'] == 'Z' and receipt['quote_fact']['tradephase_original'] == 'Z7'
+            assert receipt['company_fact']['listing_date_reported'] is None and receipt['company_fact']['listing_date_precision'] == 'UNKNOWN'
+            assert receipt['company_fact']['risk_warning'] is None and not receipt['system_usable']
+            changed = client.post('/api/data/collection-sources/sse-company-client-contract', json={
+                'enabled': False, 'expected_revision': 1, 'basis': 'METHOD disable source'})
+>           assert changed.status_code == 200, changed.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_company_contract.py:183: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_contract.py::test_source_disable_client_flags_and_unknown_phase_or_listing_do_not_make_authority
+1 failed, 18 passed in 90.16s (0:01:30)
