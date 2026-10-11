@@ -14,6 +14,8 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 
 ## 当前前沿
 
+2026-10-11当前核对补充（accepted 8fa8c81）：25同账户双资格的风险顺序缺陷已由公开接口复现并红→绿，缺失/不支持收益政策或无收益授权不得遮蔽独立风险；自有修复尚待独立接受。28最终23个API/真实OS用例及Chrome/build通过后，跨票组合复现资金缩权重复开卡新增PREVIOUSLY派生原因而重复记ACTION_INVALIDATED；accepted根单例也失败，原失败保留，25追加最小修复，28实质相同通知去重已通过。第七30实际2次取数预算已结束，原件与1577文件保全零差异，独立验收正在收口；不提前记为整体完成。
+
 2026-10-11最新：**01—26工程范围及27有限工程范围已独立接受，28正在实施**。27源86ed2c20合入5572184c，独立收据77f729f6；三范围暂停、同事务失效、冻结检查点/维护、按原因复核及恢复锁有限路径已验。27整体partial：LOSS正向恢复没有已冻结规则，保持拒绝；真实长期合格监测未成立。真实资格仍FITTED_UNVALIDATED/NOT_GRANTED。依赖顺序继续28站内/配置/内部出站链→29；28实际外部发送待用户配置，整体保持partial。30有限来源解析和31安装/worker切片已接受但整体partial；32—34真实起点、自然时间和条件资格尚未成立。以下旧前沿保留其原时点。
 
 26独立首轮6 PASS/1独立断言FAIL（68.45秒），错误把创建草稿后的UPDATE_PENDING与草稿前状态比较；修正同草稿边界后单例1 PASS（8.53秒），不改写首轮为全绿。最终源码真实before_commit/after_commit进程恢复、完整METHOD500绑定/生产200分界、generic200暗改409、REDUCE现金范围、partial余量/四时间及同writer可见性均通过。原5931文件/506312244字节双端11862核零差异，独立311文件已保全，15保护及原19checksum不变；没有新实际训练、资格、资金或外发。见[独立26](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md)、[分阶段26](evidence/ticket26/acceptance.md)。27从0d331791自有工作树实施三范围暂停及后续冻结监测/维护/恢复链，不提前关闭28/29未知项。
@@ -442,3 +444,9 @@ LOSS峰值和trigger latch跨反弹、资金扩展和重启保留；现有合同
 独立首轮3 PASS/1 harnessFAIL43.08秒；原helper受控基线造成version断言失败，改公共account0流程后缺watch前置FAIL6.63秒及diagnose Path错误保留，补齐公共watch/identity/合法盘后前置后只剩余单例1 PASS7.53秒，不称整轮全绿。2,881原材料395,163,085字节双端5,762 SHA/长度核零差异，自有498材料60,255,359字节保存outside；新原件/Git、15保护源及原19checksum不变，源/自有精确CIM0。零新实际HTTP、模型、训练、预测、资金、资格、外发或真实起点。[第六实现](evidence/30-sse-stock-suspension/acceptance.md)、[第六独立](evidence/continuation-2026-10-11/ticket30-stock-independent/acceptance.md)。
 
 30仍partial，首项不勾选。下一第七最小契约沿官方公司HTML与同固定JS的yunhq量额转换/交易阶段及公司fixed sqlId，先冻结契约/parser/有限plan再实际SOURCE_ASSESSMENT；新独立匿名预算总计最多2 HTTP（1指定yunhq snap、1指定company commonQuery），无重试/变体fallback/第三call。文档转换与实际源单位证据分列，累计成交会话/完成条件、风险子类型/生效及完整负向覆盖无证继续UNKNOWN。不能用本次解除32实际窗口和输入门禁。
+
+## 2026-10-11：30第七公司客户端契约切片独立接受
+
+稳定53c5d576合入39a7bdb2，独立收据870b451e。恰2/最多2次实际匿名HTTP预算已结束：snap409字节SHA bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403，公司1732字节SHA 4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a。行情原日期20261009/162905，量额Decimal与同一官方客户端的显示转换绑定，盘后量额独立；完整E110阶段、STATUS_A原值保留未知，上市不推无风险、周五报价不推周日完整日线。独立3公共API案例PASS/30.30秒；1577原材料181872574字节双端3154哈希/长度零差异，自有280文件34125902字节保全，4原件Git身份、15保护和原19checksum不变。实现合同轮18 PASS/1 harnessFAIL及相关3 PASS更正、prefix1、最终组合3 PASS分别保留，不称整轮全部绿。[第七实现](evidence/30-sse-company-contract/acceptance.md)、[第七独立](evidence/continuation-2026-10-11/ticket30-company-independent/acceptance.md)。
+
+整体30仍partial，system_usable=false、首次前向null、NOT_GRANTED。下一第八仅离线消费同固定JS和已保存409字节响应的价格/OHLC/换手字段及当前caller，实际HTTP0，不开放第七预算重试；旧receipt/packet/资格不追认。完整交易会话/日线完成、全风险阶段及行动修订/取消/履行仍有具体源与消费者缺口。25排序/重复失效修复正在收口；28内部独立验收后按依赖启动29；真实自用外发仍待用户配置。

@@ -1,0 +1,33 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_independent_risk_precedes_buy_and_one_new_entry_limit __________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/red-order/test_independent_risk_precedes0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024B7F8C28B0>
+
+    def test_independent_risk_precedes_buy_and_one_new_entry_limit(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        value = paired_package()
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')) as client:
+            setup(client, value)
+            grants = []
+            for package, key in [(value, 'profit'), (value['risk_qualification'], 'risk')]:
+                response = client.post('/api/capabilities/grants', json=grant_command(package, key))
+                assert response.status_code == 201, response.text
+                grants.append(response.json())
+            response = client.post('/api/actions/evaluate', json={})
+            record(tmp_path, 'risk-and-buy', response.json())
+            assert response.status_code == 201, response.text
+            result = response.json()
+>           assert [(r['instrument'], r['action'], r['quantity'], r['target_quantity']) for r in result['decisions']] == [
+                ('SSE:600000', 'REDUCE', '100', '200'), ('SSE:600001', 'BUY', '200', '200')]
+E           AssertionError: assert [('SSE:600001...'100', '200')] == [('SSE:600000...'200', '200')]
+E             
+E             At index 0 diff: ('SSE:600001', 'BUY', '200', '200') != ('SSE:600000', 'REDUCE', '100', '200')
+E             Use -v to get more diff
+
+backend\tests\application\test_action_risk_priority.py:72: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_action_risk_priority.py::test_independent_risk_precedes_buy_and_one_new_entry_limit
+1 failed in 6.76s

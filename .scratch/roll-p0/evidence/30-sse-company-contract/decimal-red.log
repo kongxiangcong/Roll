@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_raw_decimal_amount_is_not_rounded_through_binary_float_or_renderer ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30u-decimal-red/test_raw_decimal_amount_is_not0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BE76BF23F0>
+
+    def test_raw_decimal_amount_is_not_rounded_through_binary_float_or_renderer(tmp_path, monkeypatch):
+        clock(monkeypatch)
+        raw = json.dumps(snap()).replace('1234567.89', '12345678901234567890.123456').encode()
+        def supplier(request):
+            return httpx.Response(200, content=raw) if request.url.host == 'yunhq.sse.com.cn' else httpx.Response(200, json=company())
+        with TestClient(create_app(tmp_path, market_transport=httpx.MockTransport(supplier), runtime_role='API')) as client:
+            base = start(client)
+            receipt = client.post(base + '/sse-company-contract', json={'basis': 'METHOD exact raw decimal must survive'}).json()
+>           assert receipt['quote_fact']['amount_raw'] == '12345678901234567890.123456'
+E           AssertionError: assert '12345678901234567000' == '12345678901234567890.123456'
+E             
+E             - 12345678901234567890.123456
+E             ?                  -- ^^^^^^^
+E             + 12345678901234567000
+E             ?                   ^^
+
+backend\tests\application\test_sse_company_contract.py:111: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_contract.py::test_raw_decimal_amount_is_not_rounded_through_binary_float_or_renderer
+1 failed in 6.69s
