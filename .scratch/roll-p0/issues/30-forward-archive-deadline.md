@@ -32,3 +32,7 @@
 2026-10-11：共同前向归档/成熟结算/停止与原截止恢复工程已实现，METHOD使用同一状态机；第一项仍欠真实完整输入 producer 与实际准入闭合，因此 partial。现真实host状态/权益原件UNKNOWN不能最小映射为完整字段，无客户端complete/PASS覆盖。最终23个定向案例单轮22绿/1新增夹具失败，夹具经公共账户/身份前置修正后同案单独1绿；五OS进程及三共享worker/审阅入场通过。Chrome1/48.1s、build59模块/2.05s，原始SQLite及公共查询均无真实起点；八METHOD运行目录SHA/长度保全。七项勾选表示30工程条件验证，不代替32实存或33真实终点。详见[验收和真实缺口](../evidence/30/acceptance.md)。20既有分红/同日卖出P2另由根安排修复，当前工件收据按原时点保留；未推送。
 
 2026-10-11 收口补充：等价UTC截止重放公共API红→datetime修正；最终9公共API96.84s、新Chrome48.0s/build1.90s通过。最终源码11文件前后一致，11METHOD目录保全；核心收据与修正版各自留证，Completion仍partial。
+
+2026-10-11 producer 续推：增加固定 SSE 原件先归档、严格日期/收盘时间/Decimal 校验、持久化有界 source job、原件后/提交前真实 OS 故障恢复；输入包与 forward 消费者保留全部状态来源、金额/单位/范围冲突、原 ordinal/batch、采集失败回执与规则/cash 原件绑定。相同 cutoff 后更正不改写旧包，失败后明确成功仍可离线重放旧失败包。一次匿名 SOURCE_ASSESSMENT 实际收到星期五原响应，不能作星期日当前完整输入或历史预测；endpoint 单位/成交范围未独立证实。14 份已知现金实施 PDF 及字段映射保持原 SHA/字节，不能证明当前完整行动或无事件。第一项仍未勾选，Completion 仍 partial：完整当前停复牌/风险子类型、listing/relisting、ex-rights/当前行动及旧未结义务的权威来源 routes/parsers 尚未全部实现，另有实际交易日完整 closing/单位/范围证明缺口。不能归因于用户通知配置，不能因 parser/METHOD 通过自动解锁 31/32。具体支持/未适配维度、下一最小步骤与真实/工程收据见 [producer 验收](../evidence/30-producer/acceptance.md)。
+
+2026-10-11 producer 检查收口：补修前固定源码综合 51 passed / 416.38s（公共 API/真实 SQLite/原件/source+forward OS/既有 prospective 与 CNEquity），随后历史失败范围公共 API red 1 failed / 8.73s → 日期范围 green 1 passed / 8.13s；当前源码受影响 producer/forward adapter/assessment-binding 固定轮 25 passed / 127.79s，未重复未变的 OS 事务。源码、12冻结19来源/参考、validation/shadow/statistics 和原始19 SQLite前后一致；各阶段分列，不把以前计数称为当前完整轮，仍无实际前向起点。
