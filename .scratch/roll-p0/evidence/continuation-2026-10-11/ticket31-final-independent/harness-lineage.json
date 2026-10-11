@@ -1,0 +1,16 @@
+{
+  "first_byte_audit": {
+    "exit": 1,
+    "cause": "Windows long path FileNotFoundError while reading preserved destination backup parquet; no product or owner evidence failure established",
+    "correction": "Use explicit Windows extended-length prefix for named byte-only proof; compare raw Git tree/blob inventories in two commands instead of per-file process spawning",
+    "product_changes": 0
+  },
+  "first_cim": {
+    "exit": 0,
+    "status": "UNAVAILABLE_NOT_A_VALID_STOPPED_PROOF",
+    "cause": "Sandbox Get-CimInstance denied with nonterminating errors; generated null rows cannot establish absence",
+    "retained": "cim-sandbox-unavailable.json",
+    "correction": "Exact same 39 owner-receipt PID queries with ErrorAction Stop under scoped escalation; successful result in cim-stopped.json",
+    "process_mutations": 0
+  }
+}
