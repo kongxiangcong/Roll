@@ -351,6 +351,12 @@ Completion partial：此批实际材料分别向CODEX/DeepSeek外发被自动审
 
 23当前CODEX范围Completion complete，01—23共23票工程完成。实际实验仍RUNNING_DIAGNOSTIC、G4/G5 FAIL、其他INCONCLUSIVE、交付INCOMPLETE及能力NOT_GRANTED；审阅四项BLOCKING及两项MAJOR未清除。两项MAJOR已由独立源码/冻结契约/纯算例核实，另由唯一修复实施者处理，不能因此升级真实统计或授权。Ticket24已依赖解锁并在独立工作树实施，后续按24→25→26→27→28→29推进；30仍partial，31/32及真实自然月33/34依赖保持。未推送、无新拟合/SEALED/真实前向/资金启用/资格签发。
 
+### 2026-10-11 当前 CODEX 宿主范围已落实
+
+CODEX-only 宿主和页面实现 c3198e0 已合入 8497fead，独立收据 1c90c6e：三个全新公共 METHOD 场景实际 exit 0，1,097 个运行原件双侧 SHA/长度一致，15 个保护源码与历史真实 ReviewRecord 不变。新 DeepSeek 设置/取证/技术审阅在派发前拒绝，旧设置显式改存 CODEX，历史运行查询和取消保留；0 provider/model/fit。新部署拒绝旧 METHOD proof，不沿用旧批准材料签发当前资格。见[独立验收](evidence/continuation-2026-10-11/codex-only-independent/acceptance.md)。
+
+25 当前独立工作树继续动作与预算验收；30 producer 继续源绑定和归档验收，Completion 仍 partial。31 的独立 worker 与干净安装是可独立准备项，不能提前关闭 29/30 依赖或真实外部渠道要求。28 按用户明确回复先完成站内及外部配置页，实际发送等待用户配置；后续继续依赖顺序推进。
+
 ### 2026-10-11 审阅缺陷修复与 Ticket 24 完成
 
 已确认的两项 MAJOR 实现缺陷完成修复：MA5/20 只在实际上穿时入场，仍按原冻结政策持有至第20交易日收盘，保持200股及50%最大暴露；条件子集采用完整交易日历的成员比率重采样，已观察非成员与真正未知分开。补充实际暴露差异，不能宣称风险匹配。唯一实施者最终相关单轮60 passed /528.60s；独立纯算例、公共METHOD后继冻结/重放及重启验收通过，本地合并f2285ce。原冻结资料/历史ReviewRecord未改；旧批准包在新源码下仅作历史，不据此再外发、补签资格或清除四项真实BLOCKING。见[独立修复验收](evidence/continuation-2026-10-11/codex-review-independent/merge-acceptance.md)。保全661个运行文件，清理原修复worktree后12模型依赖及12999根依赖均零差异。
