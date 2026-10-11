@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "refusals": [
+    {
+      "url": "/api/data/requests/missing/deepseek",
+      "status": 403,
+      "code": "BACKEND_OUTSIDE_CURRENT_SCOPE"
+    },
+    {
+      "url": "/api/data/requests/missing/agent",
+      "status": 403,
+      "code": "BACKEND_OUTSIDE_CURRENT_SCOPE"
+    },
+    {
+      "url": "/api/data/requests/e59bb9ae-a29e-48d1-9013-1786f7e68ca6/deepseek",
+      "status": 403,
+      "code": "BACKEND_OUTSIDE_CURRENT_SCOPE"
+    },
+    {
+      "url": "/api/data/requests/e59bb9ae-a29e-48d1-9013-1786f7e68ca6/agent",
+      "status": 403,
+      "code": "BACKEND_OUTSIDE_CURRENT_SCOPE"
+    },
+    {
+      "url": "/api/research/review-materials/missing/reviews",
+      "status": 403,
+      "code": "BACKEND_OUTSIDE_CURRENT_SCOPE"
+    }
+  ],
+  "legacy_setting_version": 4,
+  "explicit_saved_version": 5,
+  "idempotent_same_version": true,
+  "stale_version_status": 409,
+  "historical_RUNNING_record_unchanged": true,
+  "historical_cancel_route_status": 200,
+  "cancel_requested": false,
+  "active_owner_fixture_only": true,
+  "actual_DeepSeek_runtime_tested": false,
+  "new_run_dispatches": 0,
+  "account_unchanged": true,
+  "restart_history_unchanged": true
+}
