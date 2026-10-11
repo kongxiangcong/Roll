@@ -15,7 +15,7 @@
 
 | 条款 | 验收关注 | 主责任 | 联验 | 当前证据 |
 |---|---|---|---|---|
-| BR-01 | A 股范围、无跨市场扩展 | [06] | [31] | 部分：06有限沪深范围、未知北交所和未适配资产完整保留已验，31安装交付待验；[06证据](evidence/06/acceptance.md) |
+| BR-01 | A 股范围、无跨市场扩展 | [06] | [31] | 部分：06有限沪深范围、未知北交所和未适配资产完整保留已验；31独立本机安装/worker切片已接受，完整五入口及条款交付仍待完成。[06](evidence/06/acceptance.md)、[31独立](evidence/continuation-2026-10-11/ticket31-independent/acceptance.md) |
 | BR-02 | 无券商交易写能力与交易凭据 | [13] | [01]、[31] | 待实施 |
 | BR-03 | 真实账户仅确认事实入账 | [01] | [02]、[04] | 通过：01基线、02成交及04现金/权益均经草稿/明确确认写入，外部线索不自动到账；[01](evidence/01/acceptance.md)、[02](evidence/02/acceptance.md)、[04](evidence/04/acceptance.md)。工程账户样例不代表用户财富 |
 | BR-04 | 意向和触价不推定成交 | [26] | [25] | 工程通过：26 prepare/外部待结果不改现金或持仓，只有原账户确认链写实际成交；部分/超量/无关联不强行推定执行归因。[26独立](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md)、[分阶段](evidence/ticket26/acceptance.md) |
@@ -28,7 +28,7 @@
 | BR-11 | FAIL/INCONCLUSIVE 可验证交付 | [33] | [23]、[34] | 待实施 |
 | BR-12 | 资格、资金、健康分开且可撤回 | [24] | [10]、[27] | 部分：10资金与24确定性资格/健康分列及缩权受限已验；27完整生命周期调用方待验，未启用真实资金。[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md) |
 | BR-13 | 日线范围，不要求分钟路径 | [19] | [07]、[18] | 19工程及限定真实重建通过：固定20交易日日线事件，原价/单位/上下文/已生效现金权益；不引入分钟预测，不代表严格历史PIT或真实前向。[19](evidence/19-reconstruction-2026-10-10/acceptance.md) |
-| BR-14 | 可替换取数、按需补查、关键复盘核验 | [08] | [11]、[12]、[14] | 部分：08真实自动换源/缓存/修订及11实际Codex补查/缺口/离线回放已验；12真实另验，14已验关键触发/独立性不足/冲突/复用失效/真实原件及15关联，[14证据](evidence/14/acceptance.md)，[08](evidence/08/acceptance.md)、[11](evidence/11/acceptance.md)；12补充实际SDK受控补查工程/页面方法通过，真实DeepSeek待凭据，needs-info/partial，[12工程证据](evidence/12/acceptance.md) |
+| BR-14 | 可替换取数、按需补查、关键复盘核验 | [08] | [11]、[12]、[14] | 部分：08真实自动换源/缓存/修订及11实际Codex补查/缺口/离线回放已验；14已验关键触发/独立性不足/冲突/复用失效/真实原件及15关联，[14证据](evidence/14/acceptance.md)，[08](evidence/08/acceptance.md)、[11](evidence/11/acceptance.md)。12旧SDK受控补查工程/页面方法及旧待凭据状态保留其原时点，[12历史证据](evidence/12/acceptance.md)；当前及后续DeepSeek EXCLUDED，不作完成或凭据阻塞，当前CODEX范围与独立行为见[范围](provider-scope-2026-10-11.md)、[独立](evidence/continuation-2026-10-11/codex-only-independent/acceptance.md) |
 
 ## 编号 P0 要求
 
@@ -42,8 +42,8 @@
 | ACC-02 | 手工/文件先草稿再确认原子提交 | [03] | [01]、[04] | 通过：03整批原子确认、04配股CSV2及05更正CSV3后继已联验，三版本语义保留；[03](evidence/03/acceptance.md)、[04](evidence/04/acceptance.md)、[05](evidence/05/acceptance.md) |
 | ACC-03 | 精确金额、数量与舍入守恒 | [01] | [02]、[09] | 通过：字符串精度、费用前FIFO/单扣费用、送转/配股/迟补费及净资产恒等式已联验；[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md) |
 | ACC-04 | 存量基线与历史/可卖未知 | [01] | [09]、[25] | 工程通过：01/09未知保留及25按确认可卖量限制独立风险动作；可卖0或未知不猜数量、不造Decision。正向仅METHOD。[09](evidence/09/acceptance.md)、[25独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
-| ACC-05 | 逆建议成交受理、矛盾输入隔离 | [02] | [26] | 部分：02用户行为事实/关联未知/原材料隔离通过；26实际动作匹配待联验，见[02证据](evidence/02/acceptance.md) |
-| ACC-06 | 已确认成交与暂估费用分开 | [02] | [09]、[26] | 部分：02暂估/追加费用与09费用前估值、未知费用不当零已联验；26实际动作组合待验；[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md) |
+| ACC-05 | 逆建议成交受理、矛盾输入隔离 | [02] | [26] | 工程通过：02实际事实不从建议推定；26明确多对多分配、超量/无关联及UNKNOWN/CONTRARY关联不强行归因，实际成交仍由原确认链受理，过量分配整笔回滚。正向为隔离METHOD。[02](evidence/02/acceptance.md)、[26分阶段](evidence/ticket26/acceptance.md)、[26独立](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md) |
+| ACC-06 | 已确认成交与暂估费用分开 | [02] | [09]、[26] | 工程通过：02暂估/追加费用与09费用前估值、未知费用不当零已联验；26部分成交分配保留原费用对象及实际事件/回执，费用不代替成交关联。29后续偏差报告仍待实际调用方验收。[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md)、[26](evidence/ticket26/acceptance.md) |
 | ACC-07 | 分红、税费、利息、送转确认与对账 | [04] | [05]、[09] | 部分：04现金/权益、05分项对账及09净资产/绩效已联验；09修复应付10/支付10双更正8的实际关联路径，旧知识和原件保持10，CSV/真实崩溃通过；14独立性/原公告单源不足与无账户写门禁已验；真实个人外部权益双源未建立仍不得确认到账，[14](evidence/14/acceptance.md)；[04](evidence/04/acceptance.md)、[05](evidence/05/acceptance.md)、[09](evidence/09/acceptance.md) |
 | ACC-08 | 分笔身份、导入去重与歧义 | [03] | [02] | 通过：文件SHA/原行、可靠分笔去重/原回执、同价同量分笔与无标识跨文件歧义均实测，[03证据](evidence/03/acceptance.md) |
 | ACC-09 | 幂等、版本竞争和原子回执 | [01] | [03]、[26] | 工程通过：26在账户writer同事务写事实/分配/余量/版本/回执/动作失效，独立reader提交前仍见旧版；过量分配整笔回滚，实际before/after_commit恢复及重试唯一。[26独立](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md) |
@@ -81,7 +81,7 @@
 | DAT-09 | 用途新鲜度与原预测截止时点 | [08] | [15]、[25] | 部分：08真实缓存不刷新年龄、消费自己的知识截止/用途及交易所session、局部缺口/当前监控限制通过；待15/25真实预测与动作截止联验，[证据](evidence/08/acceptance.md) |
 | DAT-10 | 换源语义一致、独立性不按工具计票 | [08] | [14] | 部分：08实际Sina/Tencent报价逐对象/日/Decimal字段及单位依据比较、有界自动日线补查通过；14已验两工具原链未证仍不足、同源只算一次、时点/口径门禁及METHOD正例，不把真实价格相同签独立，[14](evidence/14/acceptance.md)，[证据](evidence/08/acceptance.md) |
 | DAT-11 | 日期粒度保守可用时点、占位不当价格 | [07] | [17]、[19] | 19重建用途边界通过：原接收/发布时间与研究完成假设分列，空价停牌/缺行不压缩，严格PIT仍拒绝；不扩大07正式资格。[19实际证据](evidence/19-reconstruction-2026-10-10/acceptance.md)，[07旧证据](evidence/07/acceptance.md)保留 |
-| DAT-12 | 可用联网工具补查、无能力如实缺失 | [13] | [11]、[12]、[15] | 部分：11实际受控GET补充茅台官方网页、其他对象/事项与时点如实缺口；12/13/15另验，[11证据](evidence/11/acceptance.md)；12固定HTTP三轮工具接续与无能力缺口方法通过；真实DeepSeek补查未执行，[12工程证据](evidence/12/acceptance.md) |
+| DAT-12 | 可用联网工具补查、无能力如实缺失 | [13] | [11]、[12]、[15] | 部分：11实际受控GET补充茅台官方网页、其他对象/事项与时点如实缺口，[11证据](evidence/11/acceptance.md)；12旧固定HTTP三轮工具接续与无能力缺口方法通过，旧真实DeepSeek补查未执行记录保留，[12历史证据](evidence/12/acceptance.md)。当前及后续DeepSeek EXCLUDED，不作为待测试缺口；当前CODEX受控取证/通用取消重试和13/15调用方按各票收据核对，[范围](provider-scope-2026-10-11.md)、[当前runner](evidence/continuation-2026-10-11/codex-runner-scope/acceptance.md) |
 | DAT-13 | 最小取证上下文、结果证据与权限边界 | [13] | [07]、[11]、[12] | 部分：11独立配置/认证、技能0/空指令源、有限工具/进程预算、真实敏感能力对抗/取消/崩溃通过；12/13共同边界另验，[11证据](evidence/11/acceptance.md)；12独立空home/cwd、最小工具/上下文、脱敏与有限Job取消/崩溃工程通过；真实模型和13共同边界仍待验，[12工程证据](evidence/12/acceptance.md) |
 | DAT-14 | 证据复用、限额停止与局部缺口 | [13] | [08]、[15] | 待实施 |
 | DAT-15 | 仅关键复盘触发独立核验 | [14] | [15] | 已验：明确三类关键触发，普通观察/日审计不升级；15冻原对象/事实/知识截止，14显式消费同ID原子关联audit；共享输入限制及旧命令可行动拒绝[修复](evidence/review/fixes.md)，真实原件Chrome及METHOD/OS分层，[14证据](evidence/14/acceptance.md) |

@@ -414,3 +414,11 @@ CODEX-only 宿主和页面实现 c3198e0 已合入 8497fead，独立收据 1c90c
 固定源码受影响40 passed /222.29s，最终合25/31/runner后4项组合27.25s；独立2项全新公共API14.49s通过，覆盖原查询字段、精确PDF绑定、mixed family原IDs固定及原件损坏拒绝。2657个新保全文件381402022 bytes，双侧5314次SHA/长度检查零差异；六份raw Git blob、15保护源码及原19checksum一致。旧13989/2570保存件未连接SQLite或改写。[独立验收](evidence/continuation-2026-10-11/ticket30-cninfo-independent/acceptance.md)。
 
 30整体仍partial，第一项未关闭：当前状态/上市阶段、yunhq自身单位/完整范围、当前全部行动区间/修订取消链及旧未结义务尚有内部路径与所需原件缺口。下一有限slice已从479460f启动，为已知14份公告建立source-bound义务审计并接入packet消费者；计划付款日期不推定实际履行或到账，known集合不封成全部义务。无新增真实起点、预测、拟合或资格；32—34真实条件仍未成立。
+
+### 2026-10-11 Ticket 30 已知义务有限审计独立接受
+
+第四切片稳定aa234ee8已合入，独立收据5b09da42；14份原公告、映射及日历绑定到登记协议的20交易日参考窗口，不建立真实统计或自然月起点。历史计划付款仍为OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN，实际履行、持有人权益、修订取消及到账未知；confirmed_pending_count=0不等于没有义务，两个完整覆盖标志保持false。packet固定原audit IDs（含原空列表），只读forward消费者按协议/截止绑定，损坏选中原件409。见[实现验收](evidence/30-known-obligations/acceptance.md)与[独立验收](evidence/continuation-2026-10-11/ticket30-obligations-independent/acceptance.md)。
+
+固定源码31 passed /174.91s，合26后最小2项组合16.85s。独立首轮2 PASS/1测试字段KeyError（20.99s）；仅将断言改用公共status字段后单例1 PASS（23.69s），保留首轮失败。3048个新增运行文件444894929 bytes，双端6096次SHA/长度核验零差异；独立253文件已保全，15保护源码及原19checksum不变。未打开根保全SQLite，没有新拟合、实际forecast、前向起点、资格或外发。
+
+30仍partial，指定日期当前SSE停复牌producer从5b09da42继续有限采集与归档；空响应、分页未证或计划结束日不能证明当前正常/实际复牌。当前全部公告区间、修订取消、上市风险阶段及yunhq自身单位仍分别有具体缺口。27继续冻结监控、维护与恢复；随后按用户范围推进28内部和29。
