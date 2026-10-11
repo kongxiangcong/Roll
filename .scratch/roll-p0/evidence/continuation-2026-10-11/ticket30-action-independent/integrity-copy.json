@@ -1,0 +1,357 @@
+{
+  "handoff": "14b0082674050d430279c153bac0cdbf7427337c",
+  "source_guard": {
+    "protected15_git_blobs": {
+      "backend/src/roll/research/models.py": "5b32f8c532aa11ce22de91fb8910dc25fb218b79",
+      "backend/src/roll/research/execution.py": "4e59b10d4fb4c30d9958ad7fa44f65ea1a435194",
+      "backend/src/roll/research/reconstruction.py": "3964841f9be3767c213a134cab0cce8ccd3def4e",
+      "backend/src/roll/research/datasets.py": "c58280e8fca9f2665c7ef344a1f5c62ca2ef5749",
+      "backend/src/roll/research/design.py": "d53c3db6872a42f24f7b2b2a7225fb54da589d71",
+      "backend/src/roll/research/historical_costs.py": "9f0baf8b622bd9d5e8b0cacb428fbba5b05b521b",
+      "backend/src/roll/research/corporate_actions.py": "c3789e1c1dfba342d7f87c364117714fd21a44e1",
+      "backend/src/roll/research/registry.py": "43c01732fd36dccaaa6c35b6ac557336a80c724a",
+      "backend/src/roll/research/training_preflight.py": "f9b9f4bd38eb332f08b2147ff088c153bb974e6e",
+      "backend/src/roll/market/rules.py": "b04c81e30cea87e8d0f3851aa615caa11e1eeecc",
+      "backend/src/roll/research/reference/reconstruction/sources.json": "8e05192b9a00437282323e12f46874ae7520c5e5",
+      "backend/src/roll/research/reference/cash-rights/sources.json": "9f1f67662cef2793f71394e297f0e63fac623fbe",
+      "backend/src/roll/research/shadow.py": "a83de1d6dec80f91b06bf745b7150b48e4480352",
+      "backend/src/roll/research/statistics.py": "a0764e92b1664ec2623fa550a223fca9b296f678",
+      "backend/src/roll/research/validation.py": "df99d5794f955fb5e362e21cac9ac0a1f372f572"
+    },
+    "old_producer_price_and_old_reference_diff": false,
+    "old_producer_fingerprint": "cae8f942a6f95b138743c54fb24348987bf288b8d960658120acf3a28083a0fc",
+    "price_fingerprint": "11a8063025fe548fb1c996923be6c9f818d5e1dd74f47382ed145ecf73019de1",
+    "collector_fingerprint": "63505424914969f9e1bd65237df93c886e163d01d0facb8cd2ca6754ce2eeb20",
+    "assessment_fingerprint": "c8ea677062d1f4ba711151015fa4162ca21df0b9b1c3c19751ba64020a34d13f",
+    "own_inventory": {
+      "backend/src/roll/app.py": {
+        "sha256_lf": "d7920e9449d2f2e97daa444f8f28f2409f0d7062211b0e4fe83b28efacc487b7",
+        "bytes_lf": 60486
+      },
+      "backend/src/roll/market/collection_sources.py": {
+        "sha256_lf": "71d0af37759396339c6801164daa159f9cf430bd70f9439f2da0511ef03df7fa",
+        "bytes_lf": 16033
+      },
+      "backend/src/roll/market/sse_company_actions.py": {
+        "sha256_lf": "38cd82b42976caef9573eaf05451a62df09c9c6bd9baf80809cb0ca8ef84bf0d",
+        "bytes_lf": 13270
+      },
+      "backend/src/roll/market/sse_action_assessments.py": {
+        "sha256_lf": "e2508ee1206707e040bf4d682ce4b89f5ba13108509f4d824a78b8230df7fc82",
+        "bytes_lf": 16027
+      },
+      "backend/tests/application/test_sse_company_actions.py": {
+        "sha256_lf": "10ff8fc9f437e1d9ea3d5684ad76345a342dbab209cea2f5bb382002fb48a494",
+        "bytes_lf": 19546
+      }
+    },
+    "official_documents": {
+      "company_html": {
+        "url": "https://www.sse.com.cn/assortment/stock/list/info/company/index.shtml?COMPANY_CODE=600362",
+        "received_at": "2026-10-11T09:34:41.501704+00:00",
+        "bytes": 39826,
+        "sha256": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+        "classification": "DOCUMENT_LEAD",
+        "role": "company_html",
+        "path": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b.raw",
+        "publication_time": null,
+        "effective_time": null
+      },
+      "company_js": {
+        "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js?v=ssesite_V3.8.0_20260828",
+        "received_at": "2026-10-11T09:35:06.426492+00:00",
+        "bytes": 277193,
+        "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+        "classification": "DOCUMENT_LEAD",
+        "role": "company_js",
+        "path": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+        "publication_time": null,
+        "effective_time": null
+      }
+    },
+    "prepared_plan_id": "2f08295e-4b11-4374-98a1-6eeaf2a5b590",
+    "prepared_plan_hash": "424fe512ec29f76c415beba626c176fed8261d8ebdb22da25d9fac5d922f29cd",
+    "new_observed_sources": {
+      "sources": [
+        {
+          "role": "dividend",
+          "sha256": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e",
+          "bytes": 5548,
+          "path": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e.raw",
+          "url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L&CONDITION_ZBA=1&CONDITION_ZBB=",
+          "received_at": "2026-10-11T11:59:13.753785+00:00",
+          "status_code": 200,
+          "classification": "REAL_SOURCE_ASSESSMENT_FINITE_FIRST_PAGE_NOT_FULL_COVERAGE",
+          "publication_time": null,
+          "effective_time": null
+        },
+        {
+          "role": "send_share",
+          "sha256": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52",
+          "bytes": 496,
+          "path": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52.raw",
+          "url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L",
+          "received_at": "2026-10-11T11:59:13.791117+00:00",
+          "status_code": 200,
+          "classification": "REAL_SOURCE_ASSESSMENT_FINITE_FIRST_PAGE_NOT_FULL_COVERAGE",
+          "publication_time": null,
+          "effective_time": null
+        }
+      ],
+      "actual_receipt_id": "17def10c-f770-4163-9055-cf7076727186",
+      "collector_fingerprint": "63505424914969f9e1bd65237df93c886e163d01d0facb8cd2ca6754ce2eeb20",
+      "complete_action_coverage": false,
+      "pending_older_obligations_complete": false
+    },
+    "original19_bytewise_checksum": {
+      "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4",
+      "bytes": 165814272
+    },
+    "original19_sqlite_opened": false,
+    "private_or_prior_preserved_sqlite_opened": false,
+    "real_http_budget_closed": true,
+    "real_http_attempts": 2,
+    "guard_http_calls": 0
+  },
+  "preserved1512_both_sides_verified": true,
+  "sha_length_mismatches": 0,
+  "original_actual_or_saved_SQLite_opened": false,
+  "actual_budget": {
+    "execution_plan_hash": "c308f42dc7828c5aa092ff4254291b2b3d8f7ba3f6eb9746bddf3f5bb57d1e3e",
+    "state": "CLOSED_NO_MORE_ATTEMPTS",
+    "started_at": "2026-10-11T11:59:09.390993+00:00",
+    "maximum_attempts": 2,
+    "actual_attempts": 2,
+    "retry_allowed": false,
+    "closed_at": "2026-10-11T11:59:13.923698+00:00"
+  },
+  "closure_sha256": "f6bbafc122c5282bb5f083cac6264c069cf2048119a7d9abb36ca63333850943",
+  "fresh_copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy",
+  "copied_registered_files": [
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\.startup.lock",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\.startup.lock",
+      "sha256": "f1534392279bddbf9d43dde8701cb5be14b82f76ec6607bf8d6ad557f60f304e",
+      "bytes": 2
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\roll.sqlite3",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\roll.sqlite3",
+      "sha256": "806b9628c53995f343b8d517fd8c35197741fda6508a98e58d96252c98fd8701",
+      "bytes": 937984
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\backups\\deployment.json",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\backups\\deployment.json",
+      "sha256": "895fa59e23ea11baf8d726f8f938da71d638ed7fb6e2557df8ed33f5e655e737",
+      "bytes": 134
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\backups\\capability-journal\\origin.json",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\backups\\capability-journal\\origin.json",
+      "sha256": "2775373d032f2abcda3ca256394ac2345f5195002dc967856fe07da9e55118dd",
+      "bytes": 180
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\0dcb0971ac96123f369178ce8f5397d948190d41281175694664de1d1dd4dce5.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\0dcb0971ac96123f369178ce8f5397d948190d41281175694664de1d1dd4dce5.html",
+      "sha256": "0dcb0971ac96123f369178ce8f5397d948190d41281175694664de1d1dd4dce5",
+      "bytes": 19302
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e.html",
+      "sha256": "1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e",
+      "bytes": 24946
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\17f077adaf62ab97dcfa1f947ad452d89de56d123f0fed122490a28315e05512.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\17f077adaf62ab97dcfa1f947ad452d89de56d123f0fed122490a28315e05512.raw",
+      "sha256": "17f077adaf62ab97dcfa1f947ad452d89de56d123f0fed122490a28315e05512",
+      "bytes": 1054
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f.html",
+      "sha256": "1b6418b1dfdbd3c52cf50e9077fdfdcd088a6af71cdf1381973eaed1e128987f",
+      "bytes": 37793
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\1fa6e2d547425b7340bab8bdabcad3a46944c5437a0d4ee7539facf6faf33d7d.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\1fa6e2d547425b7340bab8bdabcad3a46944c5437a0d4ee7539facf6faf33d7d.html",
+      "sha256": "1fa6e2d547425b7340bab8bdabcad3a46944c5437a0d4ee7539facf6faf33d7d",
+      "bytes": 28704
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e.raw",
+      "sha256": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e",
+      "bytes": 5548
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\30bafe4c4a5385ac228602383cd687a270957a2e63d861c1f775279d4f1122f0.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\30bafe4c4a5385ac228602383cd687a270957a2e63d861c1f775279d4f1122f0.html",
+      "sha256": "30bafe4c4a5385ac228602383cd687a270957a2e63d861c1f775279d4f1122f0",
+      "bytes": 29031
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\35fc93671853b08297396868d80cfb335f806753b52130283efd2cb1cb3a0388.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\35fc93671853b08297396868d80cfb335f806753b52130283efd2cb1cb3a0388.html",
+      "sha256": "35fc93671853b08297396868d80cfb335f806753b52130283efd2cb1cb3a0388",
+      "bytes": 28998
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\3f18c317a52e9bee47b5be770141f4f86615b9caa5f9b7b0bedf81d7236cec20.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\3f18c317a52e9bee47b5be770141f4f86615b9caa5f9b7b0bedf81d7236cec20.html",
+      "sha256": "3f18c317a52e9bee47b5be770141f4f86615b9caa5f9b7b0bedf81d7236cec20",
+      "bytes": 28846
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\424fe512ec29f76c415beba626c176fed8261d8ebdb22da25d9fac5d922f29cd.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\424fe512ec29f76c415beba626c176fed8261d8ebdb22da25d9fac5d922f29cd.raw",
+      "sha256": "424fe512ec29f76c415beba626c176fed8261d8ebdb22da25d9fac5d922f29cd",
+      "bytes": 4464
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81.html",
+      "sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+      "bytes": 34826
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\46b301280c2109b8f632ee2cd7f9da8220a4e1402bb8a105252b2d9e7c8a1bd0.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\46b301280c2109b8f632ee2cd7f9da8220a4e1402bb8a105252b2d9e7c8a1bd0.html",
+      "sha256": "46b301280c2109b8f632ee2cd7f9da8220a4e1402bb8a105252b2d9e7c8a1bd0",
+      "bytes": 28864
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "bytes": 277193
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\495b1e238b478f5d66b6496c5e77a92ab20d1b67a221378a87aa7e68636eda12.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\495b1e238b478f5d66b6496c5e77a92ab20d1b67a221378a87aa7e68636eda12.html",
+      "sha256": "495b1e238b478f5d66b6496c5e77a92ab20d1b67a221378a87aa7e68636eda12",
+      "bytes": 28970
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b.raw",
+      "sha256": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+      "bytes": 39826
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\7e886e6f67eef7f3e94f4c5db5453335526a9e67efc2e6205ab43a709c1b7799.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\7e886e6f67eef7f3e94f4c5db5453335526a9e67efc2e6205ab43a709c1b7799.html",
+      "sha256": "7e886e6f67eef7f3e94f4c5db5453335526a9e67efc2e6205ab43a709c1b7799",
+      "bytes": 28855
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+      "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+      "bytes": 30794
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\7f673a2e1cd3fa6905045598f23200649f6e8b9bc78b3b78a653d3c0d5d23070.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\7f673a2e1cd3fa6905045598f23200649f6e8b9bc78b3b78a653d3c0d5d23070.html",
+      "sha256": "7f673a2e1cd3fa6905045598f23200649f6e8b9bc78b3b78a653d3c0d5d23070",
+      "bytes": 28061
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\8113286860fd5b9dc4d87ee626e709324bab5f95a5b11d382885c7230a4584a6.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\8113286860fd5b9dc4d87ee626e709324bab5f95a5b11d382885c7230a4584a6.html",
+      "sha256": "8113286860fd5b9dc4d87ee626e709324bab5f95a5b11d382885c7230a4584a6",
+      "bytes": 28944
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\9183bd346675fd363b3bb4951eec21dc03ad7e65c25509350a9947b42fc127e1.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\9183bd346675fd363b3bb4951eec21dc03ad7e65c25509350a9947b42fc127e1.html",
+      "sha256": "9183bd346675fd363b3bb4951eec21dc03ad7e65c25509350a9947b42fc127e1",
+      "bytes": 29001
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\94956b4fc8f27260352be1964fdce2a9d9df3775588e87738cad13e1dd6c8ec3.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\94956b4fc8f27260352be1964fdce2a9d9df3775588e87738cad13e1dd6c8ec3.html",
+      "sha256": "94956b4fc8f27260352be1964fdce2a9d9df3775588e87738cad13e1dd6c8ec3",
+      "bytes": 33293
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586.pdf",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586.pdf",
+      "sha256": "9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586",
+      "bytes": 282084
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\a1277ee1dc70e4a2e71ffdd7410384cda3ba3f90671944639e945f4a7f7985ef.pdf",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\a1277ee1dc70e4a2e71ffdd7410384cda3ba3f90671944639e945f4a7f7985ef.pdf",
+      "sha256": "a1277ee1dc70e4a2e71ffdd7410384cda3ba3f90671944639e945f4a7f7985ef",
+      "bytes": 431411
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52.raw",
+      "sha256": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52",
+      "bytes": 496
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\b6385ed32912deb290835898277d4e6c0ab98402a5cdfe17740c86d0a97aadde.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\b6385ed32912deb290835898277d4e6c0ab98402a5cdfe17740c86d0a97aadde.html",
+      "sha256": "b6385ed32912deb290835898277d4e6c0ab98402a5cdfe17740c86d0a97aadde",
+      "bytes": 28970
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\bb80fb43abb485f30de37ee47d434952c7722c61802ce82d7ccedd9d1d283e28.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\bb80fb43abb485f30de37ee47d434952c7722c61802ce82d7ccedd9d1d283e28.raw",
+      "sha256": "bb80fb43abb485f30de37ee47d434952c7722c61802ce82d7ccedd9d1d283e28",
+      "bytes": 7133
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\beb0957353f818f551792774f7a21816714dee7bc7be8da388de482248734378.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\beb0957353f818f551792774f7a21816714dee7bc7be8da388de482248734378.html",
+      "sha256": "beb0957353f818f551792774f7a21816714dee7bc7be8da388de482248734378",
+      "bytes": 28511
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\c5af509538194130b7917e88b52b8218be898003118a68d477721c1a4600beb2.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\c5af509538194130b7917e88b52b8218be898003118a68d477721c1a4600beb2.html",
+      "sha256": "c5af509538194130b7917e88b52b8218be898003118a68d477721c1a4600beb2",
+      "bytes": 27898
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\c600f2a8a2839921b4c2c375054a7845fbbc9e795d32da8c6ff6ccb63ff6a1cc.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\c600f2a8a2839921b4c2c375054a7845fbbc9e795d32da8c6ff6ccb63ff6a1cc.html",
+      "sha256": "c600f2a8a2839921b4c2c375054a7845fbbc9e795d32da8c6ff6ccb63ff6a1cc",
+      "bytes": 29007
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\d08c2919272478346734506fd7ac8a5eb19c70f39f9a4f26442c38fe68bd0bf1.raw",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\d08c2919272478346734506fd7ac8a5eb19c70f39f9a4f26442c38fe68bd0bf1.raw",
+      "sha256": "d08c2919272478346734506fd7ac8a5eb19c70f39f9a4f26442c38fe68bd0bf1",
+      "bytes": 1710
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\db0af9294621c73cbae7e55703d6e801da4aa5f1ac273e955e0622f254983950.html",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\db0af9294621c73cbae7e55703d6e801da4aa5f1ac273e955e0622f254983950.html",
+      "sha256": "db0af9294621c73cbae7e55703d6e801da4aa5f1ac273e955e0622f254983950",
+      "bytes": 28940
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5.docx",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5.docx",
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5",
+      "bytes": 16476
+    },
+    {
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\t30a-actual\\raw\\fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+      "copy": "D:\\dsh-proj\\Roll\\.scratch\\t30a9-independent\\actual-copy\\raw\\fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+      "bytes": 65302
+    }
+  ],
+  "actual_HTTP": 0,
+  "model_calls": 0,
+  "SEALED": 0
+}
