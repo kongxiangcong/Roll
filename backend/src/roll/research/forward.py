@@ -122,7 +122,10 @@ class ForwardArchive:
     def code():
         from pathlib import Path
         import hashlib
-        return hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+        from roll.market.post_close_packet import code as packet_code
+        return fingerprint({'forward':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
+            'post_close_packet':packet_code(),
+            'prospective':hashlib.sha256(Path(__file__).with_name('prospective.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest()})
 
     def rows(self, plan, frozen, checked):
         # The engineering namespace uses known synthetic external input. Never REAL.
@@ -136,36 +139,8 @@ class ForwardArchive:
         versions = self.prospective.as_of(plans[0]['plan_id'],checked)['versions']
         if any(v['evidence_kind']!='REAL_ACQUISITION' for v in versions):
             return [], ['SYNTHETIC_PROSPECTIVE_INPUT_CANNOT_START_REAL_CLOCK']
-        daily = {}; statuses = {}; gaps=[]
-        for version in versions:
-            fact = version['fact']; day=fact.get('trade_date')
-            if fact.get('group')=='DAILY' and day:
-                candidate={**fact,'known_at':version['known_at']}
-                if day in daily:
-                    fields=['open','close','high','low','volume_shares','adjustment','volume_unit']
-                    if any(daily[day].get(k)!=candidate.get(k) for k in fields): gaps.append('UNRESOLVED_CURRENT_DAILY_CONFLICT:'+day)
-                if day not in daily or datetime.fromisoformat(candidate['known_at'])>datetime.fromisoformat(daily[day]['known_at']): daily[day]=candidate
-            if fact.get('group')=='STATUS' and day: statuses[day]=fact
-        for day,row in daily.items():
-            state=statuses.get(day,{})
-            if not state.get('complete_status_verified') or state.get('state')!='CONFIRMED_NORMAL':
-                gaps.append('CURRENT_COMPLETE_STATUS_UNPROVEN:'+day)
-            actions=row.get('execution_evidence',{}).get('company_actions')
-            if actions not in {'CONFIRMED_NONE','SOURCE_BOUND_CASH_AND_ANNUAL_SHARE_AUDIT'}:
-                gaps.append('CURRENT_COMPLETE_COMPANY_ACTIONS_UNPROVEN:'+day)
-            if state.get('raw_hash'): self.evidence.raw(state['raw_hash'])
-            if state.get('available_at') and datetime.fromisoformat(state['available_at'])>checked:
-                gaps.append('CURRENT_STATUS_NOT_AVAILABLE:'+day)
-            for event in row.get('cash_events_effective',[]):
-                source=event.get('source',{}).get('sha256')
-                if source: self.evidence.raw(source)
-                else: gaps.append('CURRENT_CASH_SOURCE_MISSING:'+day)
-            row['execution_evidence']={**row.get('execution_evidence',{}),'state':state.get('state','UNKNOWN'),
-                'status_raw_hash':state.get('raw_hash')}
-            if row.get('completion_state')!='COMPLETE_REPORTED_HISTORICAL' or not row.get('model_daily_input_allowed'):
-                gaps.append('CURRENT_DAILY_COMPLETENESS_UNPROVEN:'+day)
-        if not daily: gaps.append('CURRENT_COMPLETE_DAILY_MISSING')
-        return list(daily.values()),sorted(set(gaps))
+        rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked)
+        return rows,gaps
 
     def sessions(self, frozen, first, last, gaps=None):
         exchange = frozen['scope']['identity_context'][frozen['scope']['instruments'][0]]['exchange']
@@ -231,6 +206,11 @@ class ForwardArchive:
             if rule.get('implementation_status')!='ADAPTED' or any(str(rule.get(k))!=str(frozen['rules'][frozen['scope']['instruments'][0]].get(k)) for k in ['price_tick_yuan','normal_price_limit_percent','buy_minimum','buy_increment']):
                 gaps.append('CURRENT_RULES_DO_NOT_MATCH_FROZEN_EXECUTION_SCOPE')
             if len(self.horizon(frozen,day))!=20:gaps.append('FORWARD_TWENTY_SESSION_CALENDAR_NOT_KNOWN')
+        if plan['namespace']=='FORWARD' and not gaps:
+            collection=[p for p in self.prospective.plans() if p['instrument']==frozen['scope']['instruments'][0]]
+            if collection:
+                self.prospective.post_close.capture_once(collection[0]['plan_id'])
+                checked=self.clock()
         rows, source_gaps = self.rows(plan,frozen,checked); gaps += source_gaps
         if gaps:
             self.record_check(plan,checked,gaps,command.basis)

@@ -26,6 +26,8 @@ class ProspectiveEvidence:
         self.evidence = evidence
         self.ledger = evidence.ledger
         self.sources = CollectionSources(evidence)
+        from roll.market.post_close_packet import PostClosePackets
+        self.post_close = PostClosePackets(self)
         with self.ledger.connection() as db:
             db.executescript('''
                 CREATE TABLE IF NOT EXISTS pit_collection_plans(id TEXT PRIMARY KEY, instrument TEXT UNIQUE, value TEXT NOT NULL);

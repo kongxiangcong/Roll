@@ -32,6 +32,7 @@ from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
 from roll.research.prospective import ProspectiveEvidence, CollectionCommand
+from roll.market.post_close_packet import PacketCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
@@ -187,6 +188,21 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/research/complete-freezes/{freeze_id}/forward/stop')
     def forward_stop(freeze_id:str,command:StopCommand):return forward.stop(freeze_id,command)
     app.state.prospective=prospective
+    @app.post('/api/research/collections/{plan_id}/post-close',status_code=201)
+    def post_close_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/post-close/check',status_code=201)
+    def post_close_job(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_once(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/post-close-packets',status_code=201)
+    def post_close_build(plan_id:str,command:PacketCommand):
+        return prospective.post_close.build(plan_id,command.basis)
+
+    @app.post('/api/research/post-close-packets/{packet_id}/replay')
+    def post_close_replay(packet_id:str):
+        return prospective.post_close.replay(packet_id)
     app.state.collection_sources=prospective.sources
     development=SyntheticDevelopment(research,executions,models)
     app.state.development=development
