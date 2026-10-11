@@ -26,7 +26,7 @@
 | BR-07 | 用户无需选模型或裁决投资观点 | [25] | [15]、[31] | 25工程通过：今天/单股共用宿主当前动作与五项显式状态，不需用户裁决模型观点；实际资格不足明确拒绝。31完整交付联验待完成。[25](evidence/ticket25/acceptance.md)、[五状态独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
 | BR-08 | 量化验证约束概率与判断 | [21] | [19]、[24] | 工程通过：21验证清单区分概率支持、门槛结果与资格；24公共准入拒绝缺项和客户端自签。真实G4/G5 FAIL、其他INCONCLUSIVE/NOT_GRANTED；[21](evidence/21/acceptance.md)、[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md) |
 | BR-09 | 合格条件下允许有依据的无机会结果 | [25] | [20] | 部分：25在冻结BUY/REFUSE政策内给出可追溯拒绝和不足，不造默认WAIT；ADD/HOLD/判断型WAIT/反向/冷却政策尚未冻结，真实资格仍NOT_GRANTED。[25行为及缺口](evidence/ticket25/acceptance.md) |
-| BR-10 | 当前动作优先、低噪声与少操作 | [15] | [25]、[28] | 部分：15首屏及25今天/单股当前卡片有限证据保留；25重复开卡只记首次失效已独立接受。28通知去重及整票内部链等待独立验收，实际外发待配置。[15](evidence/15/acceptance.md)、[25补充独立](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md) |
+| BR-10 | 当前动作优先、低噪声与少操作 | [15] | [25]、[28] | 部分：15首屏及25今天/单股有限证据保留；25风险优先和重复开卡只记首次失效、28通知实质去重及内部链均独立接受。31最终五入口仍待当前版本联验，实际外发待配置。[15](evidence/15/acceptance.md)、[25补充独立](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md)、[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | BR-11 | FAIL/INCONCLUSIVE 可验证交付 | [33] | [23]、[34] | 待实施 |
 | BR-12 | 资格、资金、健康分开且可撤回 | [24] | [10]、[27] | 部分：10资金与24确定性资格/健康分列及缩权受限已验；27完整生命周期调用方待验，未启用真实资金。[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md) |
 | BR-13 | 日线范围，不要求分钟路径 | [19] | [07]、[18] | 19工程及限定真实重建通过：固定20交易日日线事件，原价/单位/上下文/已生效现金权益；不引入分钟预测，不代表严格历史PIT或真实前向。[19](evidence/19-reconstruction-2026-10-10/acceptance.md) |
@@ -38,7 +38,7 @@
 |---|---|---|---|---|
 | AUTH-01 | 技术资格、资金授权与健康取交集 | [10] | [24]、[25] | 工程通过：10/24交集及25发布前最新资金、名单、到期、估值复核已独立接受；正向仅METHOD_ENGINEERING，生产拒绝，真实NOT_GRANTED。[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)、[25分阶段](evidence/ticket25/acceptance.md) |
 | AUTH-02 | 能力绑定指纹、范围、账户与期限 | [24] | [22]、[25] | 工程通过：24逐grant及25自身grant绑定、重启重放、源变更拒绝旧proof已验；风险资格不能充当收益资格，正向仅host METHOD。[24独立](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md)、[25最终独立](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md) |
-| AUTH-03 | 授权生命周期、到期与后继记录 | [27] | [24]、[28] | 待实施 |
+| AUTH-03 | 授权生命周期、到期与后继记录 | [27] | [24]、[28] | 部分：27三范围暂停/撤回、到期和原因绑定后继复核，28持久化失效通知/出队复核已验；旧REVOKED不复活。LOSS正向恢复缺冻结规则仍拒绝，真实长期条件未成立。[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)、[28独立](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md) |
 | AUTH-04 | 确定性准入、用户启用及缩权 | [24] | [27]、[34] | 部分：24客户端自签拒绝、host METHOD逐条件准入、资金缩权与生产METHOD拒绝已验；27恢复生命周期及34实际条件启用未完成。[24](evidence/24/acceptance.md) |
 | ACC-01 | 现金、可用、冻结、持仓和批次分列 | [01] | [02]、[09] | 通过：01字段分列、02实际FIFO批次、09原价估值和冻结不重复扣已联验；[01](evidence/01/acceptance.md)、[02](evidence/02/acceptance.md)、[09](evidence/09/acceptance.md) |
 | ACC-02 | 手工/文件先草稿再确认原子提交 | [03] | [01]、[04] | 通过：03整批原子确认、04配股CSV2及05更正CSV3后继已联验，三版本语义保留；[03](evidence/03/acceptance.md)、[04](evidence/04/acceptance.md)、[05](evidence/05/acceptance.md) |
@@ -78,7 +78,7 @@
 | DAT-04 | 当前名单/指数正常与异常样例验收 | [07] | [06]、[08] | 部分：07有限名单/三固定背景真实样例、异常METHOD_CASE与当前UNKNOWN通过；待08用途检查，[证据](evidence/07/acceptance.md) |
 | DAT-05 | 事实对象、时间、口径与原始出处 | [07] | [11]、[12] | 部分：07对象/事实时间精度/原件SHA/快照/观察通过；11同DataRequest/Run接入，实际网页原文/候选原件/时点/宿主校验、Sina选择与必需字段继承通过；12另验，[07证据](evidence/07/acceptance.md)、[11证据](evidence/11/acceptance.md)；12同DataRequest/Run、SINA与必需字段继承/候选SHA短引校验方法通过；实际外部取证未验，[12工程证据](evidence/12/acceptance.md) |
 | DAT-06 | 原始归档先行、版本修订与离线重放 | [08] | [07]、[14] | 部分：08真实两源原件/修订记录、Observation依赖失效、原07版本及ReplayRun零联网重放通过；14已验核验原值/原字节修订失效/旧UUID与原Parquet复放，后续完整后端隔离另验，[14](evidence/14/acceptance.md)，[证据](evidence/08/acceptance.md)。2026-10-10前向CNEquity实际响应先归档、清洗隔离／源值冲突／修订和中断登记／SQLite-Parquet篡改拒绝／一致备份通过，当前取得不补旧PIT，[新证据](evidence/cnequity-integration-2026-10-10/acceptance.md) |
-| DAT-07 | 标识、单位、缺失、零值和日线完成度 | [07] | [19] | 部分：07显式身份单位/零与缺失/日历/完成度/必需字段边界通过；新增SOHU RAW手/万元转换、冲突限制与SSE历史日历，历史阶段未知；待19真实模型输入，[07证据](evidence/07/acceptance.md)、[公共来源续推](evidence/continuation-2026-10-09/acceptance.md) |
+| DAT-07 | 标识、单位、缺失、零值和日线完成度 | [07] | [19] | 部分：07显式身份单位/零与缺失/日历/完成度边界保留；30第七/八将固定SSE报价原件与官方JS绑定手/万元、精确OHLC和换手显示，旧未知档案不回改。QUOTE不升为完整DAILY/session/current状态，完整来源仍不足。[07证据](evidence/07/acceptance.md)、[第八独立](evidence/continuation-2026-10-11/ticket30-price-independent/acceptance.md) |
 | DAT-08 | 原价/调整价及行情调整/实际到账分开 | [07] | [04]、[09] | 部分：07原价/qfq版本与分派待核分离、实际除息上下文通过；待09真实权益核对联验，[证据](evidence/07/acceptance.md) |
 | DAT-09 | 用途新鲜度与原预测截止时点 | [08] | [15]、[25] | 部分：08真实缓存不刷新年龄、消费自己的知识截止/用途及交易所session、局部缺口/当前监控限制通过；待15/25真实预测与动作截止联验，[证据](evidence/08/acceptance.md) |
 | DAT-10 | 换源语义一致、独立性不按工具计票 | [08] | [14] | 部分：08实际Sina/Tencent报价逐对象/日/Decimal字段及单位依据比较、有界自动日线补查通过；14已验两工具原链未证仍不足、同源只算一次、时点/口径门禁及METHOD正例，不把真实价格相同签独立，[14](evidence/14/acceptance.md)，[证据](evidence/08/acceptance.md) |
