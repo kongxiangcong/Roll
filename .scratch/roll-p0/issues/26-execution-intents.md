@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** complete
 
 **Primary acceptance:** AT-05、AT-06、AT-07、AT-49。
 
@@ -27,8 +27,12 @@
 
 ## Comments
 
+2026-10-11 独立接受：稳定sourcee708764a的最小独立检查首轮6 PASS/1 harness状态比较FAIL68.45秒（草稿正确转UPDATE_PENDING，现金/持仓/版本不变）；原红保留，修正同草稿边界后仅该例重跑1 PASS8.53秒，不标首轮全绿。覆盖METHOD500完整declaration/protocol/grant/归档绑定、generic200暗改500拒绝、REDUCE NOT_OPEN及可用1000/UNKNOWN、partial100余量100与15002.50占用/四类时点、caller同SQLite未提交v3与独立reader v2、oldcard失效/latest prepare拒绝及确认幂等。提交前/后实际独立进程崩溃恢复均首轮通过；原5931文件506312244字节双端11862次SHA/长度0差异，15保护与原19checksum相同。工程范围独立接受complete；真实资格仍NOT_GRANTED，28通知/送达/已读及29偏差责任未提前完成。详见[独立验收](../evidence/continuation-2026-10-11/ticket26-independent/acceptance.md)。
+
 2026-10-07：按已确认拆分发布；尚未实施或验收。正式能力正向工程样例只能使用隔离测试凭证，真实资格与资金启用不由本票代签。
 
 2026-10-07：补齐实际时间链、偏差依据及 28/29 联验交接，同时落实当前账户交易权限复核和 15 的意向审计；仅完成文档补充，尚未实施或验收。
 
 2026-10-08 本轮依赖前沿核查：未启动本票。25当前正式动作未完成。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
+
+2026-10-11：基于25独立验收 tip371dd9 完成本票源码，并合入已接受 d2cb60（含30有限历史生产者）。ExecutionIntent/临时占用、同 SQLite 当前依赖核对、外部未决、显式多对多 ActionFillAllocation 与受控账户原子提交、审计和现有浏览器入口已实现。实现与分阶段实际 SQLite/Chrome/OS 故障恢复证据见 [验收回执](../evidence/ticket26/acceptance.md)。真实研究模型/冻结和原真实19数据库均保护；精确500建议/300成交使用完整 host-hashed METHOD_EXECUTION_500_V1 declaration/protocol/grant/packet工程身份绑定，真实20政策仍200。generic200资格暗改500为409。外部发送/送达/已读 UNKNOWN 交28，偏差报告交29，用户实际外发待自己配置渠道。Completion=partial，等待独立 merger 验收，不预先勾选其验收清单或宣称完成通知联验。

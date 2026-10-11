@@ -1,0 +1,830 @@
+{
+  "declaration": {
+    "namespace": "METHOD_ENGINEERING",
+    "protocol_id": "method-execution-500-protocol-v1",
+    "scope": {
+      "instruments": [
+        "SSE:600000",
+        "SSE:600001"
+      ],
+      "market": "SSE",
+      "board": "MAIN",
+      "frequency": "DAILY",
+      "horizon": 20
+    },
+    "policy": {
+      "version": "METHOD_EXECUTION_500_V1",
+      "probability_threshold": "0.60",
+      "quantity": "500",
+      "maximum_gross_exposure": "0.50",
+      "ordering": "descending_probability_then_instrument_then_forecast_id",
+      "exit": "HORIZON_SESSION20_CLOSE"
+    },
+    "model_fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "calibrator_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "method_envelope_sha256": "fcd76834f32bec3d5b9ab1acb71158d454806405319f9029dd70ef24cc9df6b6",
+  "grant": {
+    "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+    "version": 1,
+    "recorded_at": "2026-10-11T05:57:10.807982+00:00",
+    "evidence_kind": "METHOD_ENGINEERING",
+    "proof_id": "14a899e5-efb1-4113-bac3-2b6800642848",
+    "system_usable": false,
+    "candidate_kind": "PROFIT_MODEL",
+    "protocol_id": "method-execution-500-protocol-v1",
+    "complete_protocol_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+    "validation_id": "method-validation",
+    "material_id": "method-execution-500-material",
+    "review_run_id": "method-execution-500-review",
+    "material_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+    "scope": {
+      "board": "MAIN",
+      "frequency": "DAILY",
+      "horizon": 20,
+      "instruments": [
+        "SSE:600000",
+        "SSE:600001"
+      ],
+      "market": "SSE"
+    },
+    "allowed_actions": [
+      "BUY"
+    ],
+    "execution": {
+      "policy_fingerprint": "eaa4a234588994a79b8ce570fad4fad376c5736025064952473cdb7ca8085e4f",
+      "version": "METHOD_EXECUTION_500_V1"
+    },
+    "deployment_fingerprints": {
+      "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "dependency_fingerprints": {
+      "__init__.py": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6",
+      "accounts/__init__.py": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540",
+      "accounts/cash_events.py": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8",
+      "accounts/corrections.py": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93",
+      "accounts/csv_import.py": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8",
+      "accounts/fills.py": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a",
+      "accounts/ledger.py": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2",
+      "accounts/reconcile.py": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a",
+      "accounts/valuation.py": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e",
+      "agents/codex_evidence.py": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+      "agents/codex_process.py": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+      "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "agents/deepseek_evidence.py": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69",
+      "agents/deepseek_process.py": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1",
+      "agents/deepseek_worker.py": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd",
+      "agents/review_runtime.py": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+      "agents/settings.py": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+      "app.py": "40f61cafe30389d664daa25efb9a5bd2bc283a61b4dcdc8edb85ab491c0632ea",
+      "config.py": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc",
+      "decisions/actions.py": "3fa2043a236e0cd54eaa0539457a5fa435c1b86eb4fc2529f6270b9b31571e40",
+      "decisions/capabilities.py": "71ef85631d7fc79a1c20de40168684cf43a047eab83017947d1dba3c95ec8b8a",
+      "decisions/funding.py": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d",
+      "decisions/intents.py": "97c119fdc4c1dd027e42e68d5edbf238b35300897bc4ab748b08c22e99c2a12b",
+      "market/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "market/baostock.py": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695",
+      "market/baostock_process.py": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3",
+      "market/cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+      "market/cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+      "market/cninfo_history.py": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba",
+      "market/collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d",
+      "market/collection_sources.py": "b68937fe8bfbadea3d59987ad664f8210baaa5a01c44c254928dc7939e0759ce",
+      "market/directory.py": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b",
+      "market/evidence.py": "94d551c52f7f37cfe6ed48231c04abcc07046cf494489449452339ba927367ba",
+      "market/fuyao.py": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d",
+      "market/post_close_packet.py": "4e0e34787a196ffd292cf042a0dade37fdc2f93bbcbaee02aff775d042ad527d",
+      "market/resolution.py": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf",
+      "market/rules.py": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6",
+      "market/sohu.py": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1",
+      "market/source_facts.py": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9",
+      "market/verification.py": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43",
+      "market/verification_input.py": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788",
+      "research/corporate_actions.py": "3363dca7bf58666e1e2d31e21061850ed906b0370d9dc349a57c6b3acfae272f",
+      "research/datasets.py": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad",
+      "research/design.py": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8",
+      "research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "research/forward.py": "c4aa20989c6dcbbb71ba9c949c46265c05b5651a06bf5dc09a622043f6ece4f0",
+      "research/historical_costs.py": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd",
+      "research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "research/prospective.py": "8cc87471e5001588c92e2e303a92cfc0a03acb3197599149ba5687d18ae01558",
+      "research/reconstruction.py": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511",
+      "research/registry.py": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c",
+      "research/risk_policy.py": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0",
+      "research/shadow.py": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293",
+      "research/statistics.py": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb",
+      "research/synthetic.py": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94",
+      "research/technical_review.py": "98308d8a1f9f7ca7e585fba06846999eeba0615a79041630fab70f4029e606c9",
+      "research/training_preflight.py": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589",
+      "research/validation.py": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07",
+      "runtime/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runtime/backups.py": "1c409fb5e4360e327fce20896efa7c35498c4f065cd9546f025f609535d13cd5",
+      "runtime/reviews.py": "a5f880d8dab1ddd6df9723a483e02a9aad30c7b2abb109ec435fd035d04b16d1",
+      "worker.py": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+    },
+    "account_version": 2,
+    "funding_version": 2,
+    "funding_scope": {
+      "scope_id": "account-1",
+      "scope_kind": "ACCOUNT"
+    },
+    "effective_at": "2026-10-11T05:56:45+00:00",
+    "expires_at": "2026-10-12T05:57:05+00:00",
+    "revocation_conditions": [
+      "EXPIRY",
+      "DEPLOYMENT_CHANGE",
+      "ACCOUNT_VERSION_CHANGE",
+      "FUNDING_CHANGE",
+      "RECOVERY_LOCK",
+      "DATA_OR_SCOPE_CHANGE"
+    ],
+    "human_review_label": "\u7ecf\u81ea\u52a8\u9a8c\u8bc1\u4e0e\u6a21\u578b\u6280\u672f\u5ba1\u9605\uff0c\u672a\u7ecf\u4eba\u5de5\u72ec\u7acb\u590d\u6838",
+    "command": {
+      "material_id": "method-execution-500-material",
+      "review_run_id": "method-execution-500-review",
+      "expected_material_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+      "deployment_fingerprints": {
+        "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "scope": {
+        "board": "MAIN",
+        "frequency": "DAILY",
+        "horizon": 20,
+        "instruments": [
+          "SSE:600000",
+          "SSE:600001"
+        ],
+        "market": "SSE"
+      },
+      "allowed_actions": [
+        "BUY"
+      ],
+      "expected_account_version": 2,
+      "expected_funding_version": 2,
+      "required_as_of": "2026-10-11T05:57:05+00:00",
+      "effective_at": "2026-10-11T05:56:45+00:00",
+      "expires_at": "2026-10-12T05:57:05+00:00",
+      "idempotency_key": "method-500-grant",
+      "basis": "explicit METHOD 500-share execution fixture"
+    }
+  },
+  "host_proofs": [
+    {
+      "archive": {
+        "bytes": 1426,
+        "kind": "CAPABILITY_HOST_PROOF",
+        "path": "raw/22bad1c67b19111fae1a2ef23c06903439ba1b6c0118c2d67df8d33c4f061513.raw",
+        "sha256": "22bad1c67b19111fae1a2ef23c06903439ba1b6c0118c2d67df8d33c4f061513"
+      },
+      "basis_fingerprint": "fcd76834f32bec3d5b9ab1acb71158d454806405319f9029dd70ef24cc9df6b6",
+      "command": {
+        "allowed_actions": [
+          "BUY"
+        ],
+        "basis": "explicit METHOD 500-share execution fixture",
+        "deployment_fingerprints": {
+          "calibrator": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "model": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "effective_at": "2026-10-11T05:56:45+00:00",
+        "expected_account_version": 2,
+        "expected_funding_version": 2,
+        "expected_material_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+        "expires_at": "2026-10-12T05:57:05+00:00",
+        "idempotency_key": "method-500-grant",
+        "material_id": "method-execution-500-material",
+        "required_as_of": "2026-10-11T05:57:05+00:00",
+        "review_run_id": "method-execution-500-review",
+        "scope": {
+          "board": "MAIN",
+          "frequency": "DAILY",
+          "horizon": 20,
+          "instruments": [
+            "SSE:600000",
+            "SSE:600001"
+          ],
+          "market": "SSE"
+        }
+      },
+      "evidence_kind": "METHOD_ENGINEERING",
+      "finished_at": "2026-10-11T05:57:10.708987+00:00",
+      "material_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+      "material_id": "method-execution-500-material",
+      "proof_id": "14a899e5-efb1-4113-bac3-2b6800642848",
+      "reproduction": {
+        "matches_original": true,
+        "network_calls": 0
+      },
+      "review_run_id": "method-execution-500-review",
+      "source_fingerprint": "e9dd82eae1b36bf10df7e2d03d27b2357d2543713ac1a93fc496b54fe311427c",
+      "started_at": "2026-10-11T05:57:10.617719+00:00",
+      "status": "VERIFIED"
+    }
+  ],
+  "evaluation": {
+    "evaluation_id": "78a00c21-6162-4562-aa20-d0bd9a906ef4",
+    "registered_at": "2026-10-11T05:57:11.022568+00:00",
+    "input_fingerprint": "c03e94ef59c438a4c89b653d8908b8370a0fc8bc6a62da63dbf232bd53211cb9",
+    "input_archive": {
+      "sha256": "159cc8ec119b4d926d5844c3edd53b10b776f2d6f8cff39ecbab83a2ac76066c",
+      "path": "raw/159cc8ec119b4d926d5844c3edd53b10b776f2d6f8cff39ecbab83a2ac76066c.raw",
+      "bytes": 23371,
+      "kind": "CURRENT_ACTION_INPUT"
+    },
+    "code_fingerprint": "3fa2043a236e0cd54eaa0539457a5fa435c1b86eb4fc2529f6270b9b31571e40",
+    "predecessor_id": null,
+    "account_version": 2,
+    "funding_version": 2,
+    "decisions": [
+      {
+        "board": "MAIN",
+        "calendar_open": true,
+        "cumulative_volume": "12345",
+        "daily_completion": "COMPLETE",
+        "fees_yuan": "5.00",
+        "forecast_cutoff": "2026-10-11T05:57:05+00:00",
+        "forecast_horizon": 20,
+        "forecast_id": "forecast-SSE:600000",
+        "input_gaps": [],
+        "instrument": "SSE:600000",
+        "market": "SSE",
+        "market_status": "CONFIRMED_NORMAL",
+        "price_lower_yuan": "9.00",
+        "price_upper_yuan": "10.00",
+        "probability": ".80",
+        "quantity": "500",
+        "quote_at": "2026-10-11T05:57:05+00:00",
+        "quote_available_at": "2026-10-11T05:57:05+00:00",
+        "rule_id": "MAIN-A-2026",
+        "rule_status": "ADAPTED",
+        "required_cash_yuan": "5005.00",
+        "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+        "action": "BUY",
+        "reasons": [],
+        "model_loss_from_refusal": false,
+        "account_status": {
+          "purpose": "NEW_RISK",
+          "state": "CONFIRMED_AS_OF",
+          "fact_scope_state": "CONFIRMED_AS_OF",
+          "allowed": true,
+          "reasons": []
+        },
+        "data_status": {
+          "state": "COMPLETE_CURRENT",
+          "namespace": "METHOD_ENGINEERING",
+          "reasons": []
+        },
+        "model_status": "METHOD_ENGINEERING",
+        "execution_eligibility": "METHOD_ONLY",
+        "capability_status": {
+          "state": "METHOD_GRANTED",
+          "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+          "allowed_actions": [
+            "BUY"
+          ],
+          "system_usable": false
+        },
+        "current_quantity": "0",
+        "target_quantity": "500",
+        "basis_type": "PROFIT_MODEL",
+        "expires_at": "2026-10-12T05:57:05+00:00",
+        "data_cutoff": "2026-10-11T05:57:05+00:00",
+        "trigger_conditions": [
+          "PRICE_WITHIN_FROZEN_INTERVAL",
+          "CURRENT_DEPENDENCIES_VALID"
+        ],
+        "invalidation_conditions": [
+          "ACCOUNT_VERSION_CHANGE",
+          "FUNDING_CHANGE",
+          "DATA_CHANGE",
+          "GRANT_RESTRICTION",
+          "EXPIRY"
+        ],
+        "uncertainty": "NEXT_PRICE_AND_FILL_NOT_GUARANTEED; no ledger event until explicit actual confirmation",
+        "decision_id": "d0bb5552c2c05e7638b33c16f2f91269e3b27e9b72732191a5e8b2ee12ae1261",
+        "dependencies": {
+          "account_version": 2,
+          "funding_version": 2,
+          "grant_version": 1,
+          "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+          "policy_fingerprint": "eaa4a234588994a79b8ce570fad4fad376c5736025064952473cdb7ca8085e4f",
+          "data_fingerprint": "e56f24bb2bf19c80d87e4aea37a66176c6cdfb69b7c609b699dd84a7c2c4b482",
+          "complete_protocol_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+          "code_fingerprint": "3fa2043a236e0cd54eaa0539457a5fa435c1b86eb4fc2529f6270b9b31571e40",
+          "rule_id": "MAIN-A-2026"
+        }
+      }
+    ],
+    "refusals": [
+      {
+        "board": "MAIN",
+        "calendar_open": true,
+        "cumulative_volume": "12345",
+        "daily_completion": "COMPLETE",
+        "fees_yuan": "5.00",
+        "forecast_cutoff": "2026-10-11T05:57:05+00:00",
+        "forecast_horizon": 20,
+        "forecast_id": "forecast-SSE:600001",
+        "input_gaps": [],
+        "instrument": "SSE:600001",
+        "market": "SSE",
+        "market_status": "CONFIRMED_NORMAL",
+        "price_lower_yuan": "9.00",
+        "price_upper_yuan": "10.00",
+        "probability": ".70",
+        "quantity": "500",
+        "quote_at": "2026-10-11T05:57:05+00:00",
+        "quote_available_at": "2026-10-11T05:57:05+00:00",
+        "rule_id": "MAIN-A-2026",
+        "rule_status": "ADAPTED",
+        "required_cash_yuan": "5005.00",
+        "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+        "action": "REFUSE",
+        "reasons": [
+          "ONE_NEW_ENTRY_LIMIT"
+        ],
+        "model_loss_from_refusal": false,
+        "account_status": {
+          "purpose": "NEW_RISK",
+          "state": "CONFIRMED_AS_OF",
+          "fact_scope_state": "CONFIRMED_AS_OF",
+          "allowed": true,
+          "reasons": []
+        },
+        "data_status": {
+          "state": "COMPLETE_CURRENT",
+          "namespace": "METHOD_ENGINEERING",
+          "reasons": []
+        },
+        "model_status": "METHOD_ENGINEERING",
+        "execution_eligibility": "BLOCKED",
+        "capability_status": {
+          "state": "METHOD_GRANTED",
+          "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+          "allowed_actions": [
+            "BUY"
+          ],
+          "system_usable": false
+        }
+      }
+    ],
+    "holding_risks": [],
+    "observations": [
+      {
+        "instrument": "SSE:600000",
+        "identity": {
+          "board": "UNKNOWN",
+          "code": "600000",
+          "exchange": "SSE",
+          "instrument_type": "UNKNOWN",
+          "name": null,
+          "source": null
+        },
+        "quote": null
+      },
+      {
+        "instrument": "SSE:600001",
+        "identity": {
+          "board": "UNKNOWN",
+          "code": "600001",
+          "exchange": "SSE",
+          "instrument_type": "UNKNOWN",
+          "name": null,
+          "source": null
+        },
+        "quote": null
+      },
+      {
+        "instrument": "SSE:000001",
+        "identity": null,
+        "quote": null
+      },
+      {
+        "instrument": "SZSE:399001",
+        "identity": null,
+        "quote": null
+      },
+      {
+        "instrument": "SSE:000300",
+        "identity": null,
+        "quote": null
+      },
+      {
+        "instrument": "SSE:000905",
+        "identity": null,
+        "quote": null
+      },
+      {
+        "instrument": "SZSE:399997",
+        "identity": null,
+        "quote": null
+      }
+    ],
+    "holdings": [],
+    "limitations": [],
+    "namespace": "METHOD_ENGINEERING",
+    "system_usable": false,
+    "probabilities": [],
+    "joint_budget": {
+      "available_after_user_reserve_yuan": "50000.10",
+      "unreflected_intent_reservation_yuan": "0.00",
+      "reserved_yuan": "5005.00",
+      "broker_frozen_deducted_again": false,
+      "existing_exposure_yuan": "0.00",
+      "loss": {
+        "formula_version": "cashflow-adjusted-loss-v1",
+        "authorization_version": 2,
+        "scope_kind": "ACCOUNT",
+        "scope_id": "account-1",
+        "origin_at": "2026-10-07T02:00:00+00:00",
+        "baseline_account_version": 2,
+        "as_of": "2026-10-11T05:57:05+00:00",
+        "facts_version": "isolated-loss",
+        "baseline_assets": "100000.10",
+        "pnl": "0.00",
+        "loss": "0.00",
+        "remaining_loss_allowance": "5000.00",
+        "peak_loss": "0.00",
+        "triggered": false,
+        "status": "WITHIN_BOUNDARY"
+      },
+      "account_version": 2,
+      "funding_version": 2
+    },
+    "publication_check": {
+      "account_version": 2,
+      "funding_version": 2,
+      "capability_fingerprint": "bb9e61e0bab1187e651b9d351d4e1dcba0d49896a77b0c3ebf412bd13bafedbe",
+      "data_fingerprint": "e56f24bb2bf19c80d87e4aea37a66176c6cdfb69b7c609b699dd84a7c2c4b482",
+      "peak_loss": null,
+      "refusal": null,
+      "checked_at": "2026-10-11T05:57:11.022327+00:00"
+    }
+  },
+  "intent": {
+    "intent_id": "84430e55-a9dd-450e-9200-095b070f0bcd",
+    "decision_id": "d0bb5552c2c05e7638b33c16f2f91269e3b27e9b72732191a5e8b2ee12ae1261",
+    "evaluation_id": "78a00c21-6162-4562-aa20-d0bd9a906ef4",
+    "decision": {
+      "account_status": {
+        "allowed": true,
+        "fact_scope_state": "CONFIRMED_AS_OF",
+        "purpose": "NEW_RISK",
+        "reasons": [],
+        "state": "CONFIRMED_AS_OF"
+      },
+      "action": "BUY",
+      "basis_type": "PROFIT_MODEL",
+      "board": "MAIN",
+      "calendar_open": true,
+      "capability_status": {
+        "allowed_actions": [
+          "BUY"
+        ],
+        "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+        "state": "METHOD_GRANTED",
+        "system_usable": false
+      },
+      "cumulative_volume": "12345",
+      "current_quantity": "0",
+      "daily_completion": "COMPLETE",
+      "data_cutoff": "2026-10-11T05:57:05+00:00",
+      "data_status": {
+        "namespace": "METHOD_ENGINEERING",
+        "reasons": [],
+        "state": "COMPLETE_CURRENT"
+      },
+      "decision_id": "d0bb5552c2c05e7638b33c16f2f91269e3b27e9b72732191a5e8b2ee12ae1261",
+      "dependencies": {
+        "account_version": 2,
+        "code_fingerprint": "3fa2043a236e0cd54eaa0539457a5fa435c1b86eb4fc2529f6270b9b31571e40",
+        "complete_protocol_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+        "data_fingerprint": "e56f24bb2bf19c80d87e4aea37a66176c6cdfb69b7c609b699dd84a7c2c4b482",
+        "funding_version": 2,
+        "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+        "grant_version": 1,
+        "policy_fingerprint": "eaa4a234588994a79b8ce570fad4fad376c5736025064952473cdb7ca8085e4f",
+        "rule_id": "MAIN-A-2026"
+      },
+      "execution_eligibility": "METHOD_ONLY",
+      "expires_at": "2026-10-12T05:57:05+00:00",
+      "fees_yuan": "5.00",
+      "forecast_cutoff": "2026-10-11T05:57:05+00:00",
+      "forecast_horizon": 20,
+      "forecast_id": "forecast-SSE:600000",
+      "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+      "input_gaps": [],
+      "instrument": "SSE:600000",
+      "invalidation_conditions": [
+        "ACCOUNT_VERSION_CHANGE",
+        "FUNDING_CHANGE",
+        "DATA_CHANGE",
+        "GRANT_RESTRICTION",
+        "EXPIRY"
+      ],
+      "market": "SSE",
+      "market_status": "CONFIRMED_NORMAL",
+      "model_loss_from_refusal": false,
+      "model_status": "METHOD_ENGINEERING",
+      "price_lower_yuan": "9.00",
+      "price_upper_yuan": "10.00",
+      "probability": ".80",
+      "quantity": "500",
+      "quote_at": "2026-10-11T05:57:05+00:00",
+      "quote_available_at": "2026-10-11T05:57:05+00:00",
+      "reasons": [],
+      "required_cash_yuan": "5005.00",
+      "rule_id": "MAIN-A-2026",
+      "rule_status": "ADAPTED",
+      "target_quantity": "500",
+      "trigger_conditions": [
+        "PRICE_WITHIN_FROZEN_INTERVAL",
+        "CURRENT_DEPENDENCIES_VALID"
+      ],
+      "uncertainty": "NEXT_PRICE_AND_FILL_NOT_GUARANTEED; no ledger event until explicit actual confirmation"
+    },
+    "instrument": "SSE:600000",
+    "action": "BUY",
+    "status": "PREPARED",
+    "remaining_quantity": "500",
+    "synced_quantity": "0",
+    "provisional_reservation_yuan": "5005.00",
+    "original_reservation_yuan": "5005.00",
+    "broker_reflection": "NOT_REFLECTED",
+    "effective_broker_reflection": "NOT_REFLECTED",
+    "broker_reflection_account_version": 2,
+    "external_order_id": null,
+    "resolution": null,
+    "time_chain": {
+      "decision_issued_at": "2026-10-11T05:57:11.022568+00:00",
+      "decision_issued_source": "HOST_PUBLICATION",
+      "sent_at": null,
+      "delivered_at": null,
+      "read_at": null,
+      "notification_source": "UNKNOWN",
+      "prepared_at": "2026-10-11T05:57:11.148352+00:00",
+      "prepared_source": "USER_PREPARE",
+      "occurred_at": null,
+      "occurred_source": "UNKNOWN",
+      "reported_at": null,
+      "reported_source": "UNKNOWN",
+      "known_at": "2026-10-11T05:57:11.148352+00:00",
+      "known_source": "HOST_RECEIPT"
+    },
+    "namespace": "METHOD_ENGINEERING",
+    "system_usable": false
+  },
+  "actual_receipt": {
+    "receipt_id": "ee5f567b-e9e5-4fdc-8da0-fdc3c4c4866a",
+    "draft_id": "132f3ea2-08e4-4f24-831e-5381bf192bd2",
+    "idempotency_key": "at05",
+    "account_version": 3,
+    "confirmed_at": "2026-10-11T05:57:11.191818+00:00",
+    "event_ids": [
+      "89caa634-c82b-4ad6-ade5-9b925c7ec1c8"
+    ],
+    "diff": {
+      "version": {
+        "before": 2,
+        "after": 3
+      },
+      "cash_balance": {
+        "before": "100000.10",
+        "after": "96995.10"
+      },
+      "broker_available": {
+        "before": "90000.10",
+        "after": "86995.10"
+      },
+      "positions": {
+        "before": [],
+        "after": [
+          {
+            "instrument": "SSE:600000",
+            "quantity": "300",
+            "sellable_quantity": null,
+            "reference_cost": null,
+            "buy_time": null,
+            "historical_fees": null,
+            "acquisition_cost": "3005.00",
+            "cost_basis": "KNOWN"
+          }
+        ]
+      },
+      "confirmed_at": {
+        "before": "2026-10-11T05:57:10.466111+00:00",
+        "after": "2026-10-11T05:57:11.191818+00:00"
+      },
+      "effective_at": {
+        "before": "2026-10-07T10:00:00+08:00",
+        "after": "2026-10-11T05:57:05+00:00"
+      },
+      "broker_available_as_of": {
+        "before": "2026-10-07T10:00:00+08:00",
+        "after": "2026-10-11T05:57:05+00:00"
+      },
+      "conservative_available": {
+        "before": "90000.10",
+        "after": "86995.10"
+      },
+      "lots": {
+        "before": null,
+        "after": [
+          {
+            "lot_id": "at05-300",
+            "instrument": "SSE:600000",
+            "original_quantity": "300",
+            "remaining_quantity": "300",
+            "original_cost": "3005.00",
+            "remaining_cost": "3005.00",
+            "cost_basis": "KNOWN",
+            "effective_at": "2026-10-11T05:57:05+00:00"
+          }
+        ]
+      },
+      "cash_balance_basis": {
+        "before": null,
+        "after": "KNOWN_FEES"
+      },
+      "fills": {
+        "before": null,
+        "after": [
+          {
+            "direction": "BUY",
+            "broker_available_after": "86995.10",
+            "source": "\u7528\u6237\u6838\u5bf9\u771f\u5b9e\u6210\u4ea4\u56de\u62a5",
+            "order_id": "order-1",
+            "record_id": "at05-300",
+            "behavior_context": "NO_RECOMMENDATION",
+            "fill_id": "at05-300",
+            "fee": {
+              "status": "KNOWN",
+              "amount": "5.00",
+              "reserve_amount": null,
+              "basis": "\u5238\u5546\u6210\u4ea4\u56de\u62a5"
+            },
+            "price": "10.00",
+            "quantity": "300",
+            "instrument": "SSE:600000",
+            "effective_at": "2026-10-11T05:57:05+00:00",
+            "gross_amount": "3000.00",
+            "charged_fee": "5.00",
+            "action_association": {
+              "status": "UNKNOWN",
+              "decision_id": null
+            },
+            "event_id": "89caa634-c82b-4ad6-ade5-9b925c7ec1c8",
+            "receipt_id": "ee5f567b-e9e5-4fdc-8da0-fdc3c4c4866a"
+          }
+        ]
+      },
+      "latest_fill_facts": {
+        "before": null,
+        "after": [
+          "SSE:600000 \u5b9e\u9645\u65b0\u589e 300 \u80a1\u66b4\u9732\uff08\u6ca1\u6709\u5bf9\u5e94\u5efa\u8bae\uff0c\u622a\u81f3 2026-10-11T05:57:05+00:00\uff09"
+        ]
+      },
+      "fees_pending": {
+        "before": null,
+        "after": []
+      },
+      "rights_fee_breakdown_pending": {
+        "before": null,
+        "after": []
+      },
+      "net_result_state": {
+        "before": null,
+        "after": "KNOWN_FEES"
+      },
+      "system_known_at": {
+        "before": "2026-10-11T05:57:10.466111+00:00",
+        "after": "2026-10-11T05:57:11.191818+00:00"
+      },
+      "latest_fact_recorded_at": {
+        "before": "2026-10-11T05:57:10.398468+00:00",
+        "after": "2026-10-11T05:57:11.191818+00:00"
+      },
+      "latest_effective_fact_at": {
+        "before": "2026-10-07T10:00:00+08:00",
+        "after": "2026-10-11T05:57:05+00:00"
+      }
+    }
+  },
+  "remaining_intent": {
+    "action": "BUY",
+    "broker_reflection": "NOT_REFLECTED",
+    "broker_reflection_account_version": 2,
+    "decision": {
+      "account_status": {
+        "allowed": true,
+        "fact_scope_state": "CONFIRMED_AS_OF",
+        "purpose": "NEW_RISK",
+        "reasons": [],
+        "state": "CONFIRMED_AS_OF"
+      },
+      "action": "BUY",
+      "basis_type": "PROFIT_MODEL",
+      "board": "MAIN",
+      "calendar_open": true,
+      "capability_status": {
+        "allowed_actions": [
+          "BUY"
+        ],
+        "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+        "state": "METHOD_GRANTED",
+        "system_usable": false
+      },
+      "cumulative_volume": "12345",
+      "current_quantity": "0",
+      "daily_completion": "COMPLETE",
+      "data_cutoff": "2026-10-11T05:57:05+00:00",
+      "data_status": {
+        "namespace": "METHOD_ENGINEERING",
+        "reasons": [],
+        "state": "COMPLETE_CURRENT"
+      },
+      "decision_id": "d0bb5552c2c05e7638b33c16f2f91269e3b27e9b72732191a5e8b2ee12ae1261",
+      "dependencies": {
+        "account_version": 2,
+        "code_fingerprint": "3fa2043a236e0cd54eaa0539457a5fa435c1b86eb4fc2529f6270b9b31571e40",
+        "complete_protocol_fingerprint": "52f7dfd085a49cc9a2e0884d12296d26f55064814c90e63165d42387ce2dc902",
+        "data_fingerprint": "e56f24bb2bf19c80d87e4aea37a66176c6cdfb69b7c609b699dd84a7c2c4b482",
+        "funding_version": 2,
+        "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+        "grant_version": 1,
+        "policy_fingerprint": "eaa4a234588994a79b8ce570fad4fad376c5736025064952473cdb7ca8085e4f",
+        "rule_id": "MAIN-A-2026"
+      },
+      "execution_eligibility": "METHOD_ONLY",
+      "expires_at": "2026-10-12T05:57:05+00:00",
+      "fees_yuan": "5.00",
+      "forecast_cutoff": "2026-10-11T05:57:05+00:00",
+      "forecast_horizon": 20,
+      "forecast_id": "forecast-SSE:600000",
+      "grant_id": "ef682580-3343-4316-a4f8-4a88e33e0419",
+      "input_gaps": [],
+      "instrument": "SSE:600000",
+      "invalidation_conditions": [
+        "ACCOUNT_VERSION_CHANGE",
+        "FUNDING_CHANGE",
+        "DATA_CHANGE",
+        "GRANT_RESTRICTION",
+        "EXPIRY"
+      ],
+      "market": "SSE",
+      "market_status": "CONFIRMED_NORMAL",
+      "model_loss_from_refusal": false,
+      "model_status": "METHOD_ENGINEERING",
+      "price_lower_yuan": "9.00",
+      "price_upper_yuan": "10.00",
+      "probability": ".80",
+      "quantity": "500",
+      "quote_at": "2026-10-11T05:57:05+00:00",
+      "quote_available_at": "2026-10-11T05:57:05+00:00",
+      "reasons": [],
+      "required_cash_yuan": "5005.00",
+      "rule_id": "MAIN-A-2026",
+      "rule_status": "ADAPTED",
+      "target_quantity": "500",
+      "trigger_conditions": [
+        "PRICE_WITHIN_FROZEN_INTERVAL",
+        "CURRENT_DEPENDENCIES_VALID"
+      ],
+      "uncertainty": "NEXT_PRICE_AND_FILL_NOT_GUARANTEED; no ledger event until explicit actual confirmation"
+    },
+    "decision_id": "d0bb5552c2c05e7638b33c16f2f91269e3b27e9b72732191a5e8b2ee12ae1261",
+    "effective_broker_reflection": "UNKNOWN",
+    "evaluation_id": "78a00c21-6162-4562-aa20-d0bd9a906ef4",
+    "excess_quantity": "0",
+    "external_order_id": null,
+    "instrument": "SSE:600000",
+    "intent_id": "84430e55-a9dd-450e-9200-095b070f0bcd",
+    "namespace": "METHOD_ENGINEERING",
+    "original_reservation_yuan": "5005.00",
+    "provisional_reservation_yuan": "2002.00",
+    "remaining_action_state": "REEVALUATION_REQUIRED",
+    "remaining_quantity": "200",
+    "resolution": null,
+    "status": "OPERATION_PENDING",
+    "synced_quantity": "300",
+    "system_usable": false,
+    "time_chain": {
+      "decision_issued_at": "2026-10-11T05:57:11.022568+00:00",
+      "decision_issued_source": "HOST_PUBLICATION",
+      "delivered_at": null,
+      "known_at": "2026-10-11T05:57:11.148352+00:00",
+      "known_source": "HOST_RECEIPT",
+      "notification_source": "UNKNOWN",
+      "occurred_at": null,
+      "occurred_source": "UNKNOWN",
+      "prepared_at": "2026-10-11T05:57:11.148352+00:00",
+      "prepared_source": "USER_PREPARE",
+      "read_at": null,
+      "reported_at": null,
+      "reported_source": "UNKNOWN",
+      "sent_at": null
+    }
+  }
+}
