@@ -14,6 +14,8 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 
 ## 当前前沿
 
+2026-10-12最终清理：10个精确实施工作树已清理，10个接受分支保留；完整运行材料、Root依赖/15保护/3许可工件/原19字节核验一致，原42项非本票untracked入口未改。3802项新增遗漏闭合（3687公开双端保存、113测试私有元数据排除、2来源UNKNOWN私有同卷rename保留且不读/hash/copy）；业务/来源进程停止0（先前自有只读预检中止2）、SQL连接0、实际provider/外发/新业务验收0。原失败诊断保留。见[最终清理收据](evidence/continuation-2026-10-11/final-cleanup/acceptance.md)。各票Completion和真实条件仍按下列当前账本，未宣称全规格PASS。
+
 2026-10-11最终工程对账：四项P2及prepare并发残差已独立修复接受，29工程complete；31干净锁定安装、当前五入口/无交易与按需休市复盘、两项当前15检索预算、三进程/备份恢复及三个P95已有独立有限收据。P95分别221.6225ms、1079.4350ms、0.5617275s，记录环境下均通过；本地评估为1个METHOD冻结scope＋29拒绝＋5背景，非完整真实资格。239条均已手工对账，没有新239行为全跑或全规格PASS。25缺冻结政策及生产费用/有效期输入、27正向LOSS规则、30完整来源合同仍partial，31据先决条件保持partial；28站内/配置/内部链完成，实际外发0待用户配置。32—34真实前向起点/自然终点/资格未成立，FITTED_UNVALIDATED/NOT_GRANTED保持。95dd已批准包真实Codex技术审阅仅一次，内部双轴审阅不新增ReviewRecord；DeepSeek后续排除。
 
 [239条当前对账](evidence/continuation-2026-10-11/final-manual239/ledger.md)、[31当前独立](evidence/continuation-2026-10-11/ticket31-final-independent/acceptance.md)、[无交易补验](evidence/continuation-2026-10-11/ticket31-flow-independent/acceptance.md)。以下各旧前沿/正文按其原时点保留；当前未完成责任以新账本与每票末尾评论为准。

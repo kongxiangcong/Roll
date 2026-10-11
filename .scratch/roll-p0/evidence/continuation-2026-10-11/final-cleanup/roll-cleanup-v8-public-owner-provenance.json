@@ -1,0 +1,66 @@
+{
+  "state": "PUBLIC_METADATA_PROVENANCE_NOT_RELEASED",
+  "source_inquiry": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-v8-owner-argv-proof-v5.json",
+  "signatures": [
+    {
+      "path": "C:\\Users\\72449\\AppData\\Local\\OpenAI\\Codex\\bin\\2e5e00daee91c61d\\codex.exe",
+      "status": "Valid",
+      "subject": "CN=\"OpenAI OpCo, LLC\", O=\"OpenAI OpCo, LLC\", L=San Francisco, S=California, C=US",
+      "issuer": "CN=Microsoft ID Verified CS AOC CA 03, O=Microsoft Corporation, C=US",
+      "certificate_thumbprint": "0C6C3CA94B5A2DDA98357A1176470AB7B85ADF8F",
+      "length": 334121776,
+      "public_executable_signature_metadata_only": true
+    },
+    {
+      "path": "C:\\Program Files\\WindowsApps\\OpenAI.Codex_26.1007.2314.0_x64__2p2nqsd0c76g0\\app\\ChatGPT.exe",
+      "status": "Valid",
+      "subject": "CN=\"OpenAI OpCo, LLC\", O=\"OpenAI OpCo, LLC\", L=San Francisco, S=California, C=US",
+      "issuer": "CN=Microsoft ID Verified CS AOC CA 03, O=Microsoft Corporation, C=US",
+      "certificate_thumbprint": "0C6C3CA94B5A2DDA98357A1176470AB7B85ADF8F",
+      "length": 4781872,
+      "public_executable_signature_metadata_only": true
+    },
+    {
+      "path": "C:\\Program Files\\nodejs\\node.exe",
+      "status": "Valid",
+      "subject": "CN=OpenJS Foundation, O=OpenJS Foundation, L=San Francisco, S=California, C=US",
+      "issuer": "CN=Microsoft ID Verified CS EOC CA 01, O=Microsoft Corporation, C=US",
+      "certificate_thumbprint": "2C2EEC0874D97C7F0CEB2353AF87D73194DD7B4F",
+      "length": 95271424,
+      "public_executable_signature_metadata_only": true
+    },
+    {
+      "path": "C:\\Users\\72449\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\cfb32733c877621e\\bin\\node.exe",
+      "status": "Valid",
+      "subject": "CN=\"OpenAI OpCo, LLC\", O=\"OpenAI OpCo, LLC\", L=San Francisco, S=California, C=US",
+      "issuer": "CN=Microsoft ID Verified CS AOC CA 03, O=Microsoft Corporation, C=US",
+      "certificate_thumbprint": "0C6C3CA94B5A2DDA98357A1176470AB7B85ADF8F",
+      "length": 93381936,
+      "public_executable_signature_metadata_only": true
+    },
+    {
+      "path": "C:\\Windows\\System32\\cmd.exe",
+      "status": "NotSigned",
+      "subject": null,
+      "issuer": null,
+      "certificate_thumbprint": null,
+      "length": 344064,
+      "public_executable_signature_metadata_only": true
+    }
+  ],
+  "package": {
+    "path": "C:\\Users\\72449\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\cfb32733c877621e\\bin\\node_modules\\@oai\\cua-repl\\package.json",
+    "name": "@oai/cua-repl",
+    "version": "0.1.0",
+    "bin": {
+      "cua-repl": "bin/cua-repl.mjs"
+    },
+    "type": "module",
+    "length": 822
+  },
+  "command_lines_saved": 0,
+  "credential_bodies_read": 0,
+  "hashes_computed": 0,
+  "processes_stopped": 0,
+  "gates_released": false
+}

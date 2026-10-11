@@ -1,0 +1,1365 @@
+{
+  "version": 6,
+  "root": "D:\\dsh-proj\\Roll",
+  "observed_root_head": "b7d3157830c007a5493c8f2a06ae021c743c75d9",
+  "trees": [
+    {
+      "name": "ticket25",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+      "expected_accepted_oid": "759033c8bf87af1fecd7dff9021232b33542df0b",
+      "branch": "codex/roll-p0-ticket25",
+      "observed_head": "759033c8bf87af1fecd7dff9021232b33542df0b",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": false,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "relative": "backend/.venv",
+          "target": "D:\\dsh-proj\\Roll\\backend\\.venv",
+          "kind": "Junction"
+        },
+        {
+          "relative": "frontend/node_modules",
+          "target": "D:\\dsh-proj\\Roll\\frontend\\node_modules",
+          "kind": "Junction"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation.json",
+          "field": "files",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 831,
+          "bytes": 64490910.0,
+          "manifest_bytes": 431055,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-all.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-all.json",
+          "field": "files",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 977,
+          "bytes": 75712658.0,
+          "manifest_bytes": 501663,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-handoff.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-handoff.json",
+          "field": "files",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 1934,
+          "bytes": 155881034.0,
+          "manifest_bytes": 1008939,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-states.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-states.json",
+          "field": "files",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 2922,
+          "bytes": 238999386.0,
+          "manifest_bytes": 1535780,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-latest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\ticket25\\runtime-preservation-latest.json",
+          "field": "files",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 3135,
+          "bytes": 264329777.0,
+          "manifest_bytes": 1647208,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket25-preservation-additional\\roll-ticket25-cleanup-additional-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket25-preservation-additional\\roll-ticket25-cleanup-additional-manifest.json",
+          "field": "files",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 10108,
+          "bytes": 824294955.0,
+          "manifest_bytes": 8717987,
+          "rows_keys": [
+            "source",
+            "destination",
+            "relative",
+            "category",
+            "sha256",
+            "bytes",
+            "source_mtime_ns",
+            "copy_verified",
+            "final_both_ends_verified"
+          ],
+          "self_copy": null
+        }
+      ],
+      "exclusions": [
+        {
+          "field": "array",
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket25-preservation-additional\\roll-ticket25-cleanup-additional-exclusions.json",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+          "required_count": 6,
+          "kind": "METHOD_AUTH_METADATA"
+        }
+      ],
+      "additional_coverage_required": false,
+      "metadata_only": true
+    },
+    {
+      "name": "ticket26",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26",
+      "expected_accepted_oid": "e708764af833baee970f34fcc4112146c2c33958",
+      "branch": "codex/roll-p0-ticket26",
+      "observed_head": "e708764af833baee970f34fcc4112146c2c33958",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": false,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "relative": "backend/.venv",
+          "target": null,
+          "kind": "PHYSICAL"
+        },
+        {
+          "relative": "frontend/node_modules",
+          "target": null,
+          "kind": "PHYSICAL"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26\\.scratch\\roll-p0\\evidence\\ticket26\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\ticket26\\runtime-preservation-manifest.json",
+          "field": "files",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 5930,
+          "bytes": 502947022.0,
+          "manifest_bytes": 3365222,
+          "rows_keys": [
+            "source",
+            "destination",
+            "bytes",
+            "sha256",
+            "verified"
+          ],
+          "self_copy": {
+            "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket26\\2026-10-11-ca9e3b0\\runtime-preservation-manifest.json",
+            "sha256": "9d2d37893673dcd20aa6ff9413db3aa3ab246eb74192cc12fd150f059c0c9efc",
+            "bytes": 3365222
+          }
+        }
+      ],
+      "exclusions": [
+        {
+          "kind": "METHOD_AUTH_METADATA",
+          "exact_relative": ".scratch/t26-final1/test_archived_review_producer_0/auth.json",
+          "provenance": "backend/tests/application/test_capabilities.py literal METHOD_CASE_ONLY"
+        }
+      ],
+      "additional_coverage_required": false,
+      "metadata_only": true
+    },
+    {
+      "name": "codex-runner-scope",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope",
+      "expected_accepted_oid": "31f3febcfee0e27ac5996feefe4ef6919cd4390e",
+      "branch": "codex/roll-p0-codex-runner-scope",
+      "observed_head": "31f3febcfee0e27ac5996feefe4ef6919cd4390e",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": false,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "relative": "backend/.venv",
+          "target": "D:\\dsh-proj\\Roll\\backend\\.venv",
+          "kind": "Junction"
+        },
+        {
+          "relative": "frontend/node_modules",
+          "target": null,
+          "kind": "PHYSICAL"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "field": "inventory",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope",
+          "destination_base": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\codex-runner-scope\\runner-2026-10-11",
+          "special": "runner",
+          "count": 540,
+          "bytes": 44276137.0,
+          "manifest_bytes": 131047,
+          "rows_keys": [
+            "path",
+            "bytes",
+            "sha256"
+          ],
+          "self_copy": null
+        }
+      ],
+      "exclusions": [
+        {
+          "exact_relative": ".scratch/crsf/test_cancel_kills_actual_desce0/chatgpt.json",
+          "kind": "METHOD_AUTH_METADATA",
+          "provenance": "backend/tests/application/test_codex_evidence.py:121-123 literal access_token METHOD_CASE_ONLY; root explicitly requires metadata-only",
+          "forced_no_contents": true
+        }
+      ],
+      "additional_coverage_required": false,
+      "metadata_only": true
+    },
+    {
+      "name": "ticket25-ordering",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25-ordering",
+      "expected_accepted_oid": "9332d0cd78d721301faf675354aa209db3b37dea",
+      "branch": "codex/roll-p0-ticket25-ordering",
+      "observed_head": "9332d0cd78d721301faf675354aa209db3b37dea",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": false,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25-ordering\\.scratch\\roll-p0\\evidence\\ticket25-ordering\\preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\ticket25-ordering\\preservation-manifest.json",
+          "field": "rows",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25-ordering",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 2039,
+          "bytes": 154331607.0,
+          "manifest_bytes": 1432272,
+          "rows_keys": [
+            "source",
+            "destination",
+            "relative",
+            "bytes",
+            "sha256"
+          ],
+          "self_copy": {
+            "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket25-ordering\\preservation-manifest.json",
+            "sha256": "2ebf5d583dc3d75210a891ac66f6499bb61ba48205a1acdea233419c2e97d429",
+            "bytes": 1432272
+          }
+        }
+      ],
+      "exclusions": [],
+      "additional_coverage_required": false,
+      "metadata_only": true
+    },
+    {
+      "name": "ticket27",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27",
+      "expected_accepted_oid": "86ed2c2052b4be4e4aaa0581e7e067c55dcfdf5c",
+      "branch": "codex/roll-p0-ticket27",
+      "observed_head": "86ed2c2052b4be4e4aaa0581e7e067c55dcfdf5c",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": false,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "relative": "backend/.venv",
+          "target": "D:\\dsh-proj\\Roll\\backend\\.venv",
+          "kind": "Junction"
+        },
+        {
+          "relative": "frontend/node_modules",
+          "target": "D:\\dsh-proj\\Roll\\frontend\\node_modules",
+          "kind": "Junction"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket27\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket27\\runtime-preservation-manifest.json",
+          "field": "entries",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 8245,
+          "bytes": 691953514.0,
+          "manifest_bytes": 3676724,
+          "rows_keys": [
+            "source",
+            "preserved",
+            "bytes",
+            "sha256"
+          ],
+          "self_copy": {
+            "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket27-r02\\manifest.json",
+            "sha256": "6e7e9294d093af1aa491b7da86867222a74aa24ae3bab5c01e9266b56a69d00d",
+            "bytes": 3676724
+          }
+        }
+      ],
+      "exclusions": [],
+      "additional_coverage_required": false,
+      "metadata_only": true
+    },
+    {
+      "name": "ticket28",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28",
+      "expected_accepted_oid": "83c9289db44a1d6d6d91542b638e22eb45f5a72f",
+      "branch": "codex/roll-p0-ticket28",
+      "observed_head": "83c9289db44a1d6d6d91542b638e22eb45f5a72f",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": false,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "relative": "backend/.venv",
+          "target": "D:\\dsh-proj\\Roll\\backend\\.venv",
+          "kind": "Junction"
+        },
+        {
+          "relative": "frontend/node_modules",
+          "target": null,
+          "kind": "PHYSICAL"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 1218,
+          "bytes": 100247004.0,
+          "manifest_bytes": 632312,
+          "rows_keys": [
+            "source",
+            "destination",
+            "bytes",
+            "sha256"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\length-runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\length-runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 198,
+          "bytes": 15686482.0,
+          "manifest_bytes": 105531,
+          "rows_keys": [
+            "source",
+            "destination",
+            "bytes",
+            "sha256"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\current-runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\current-runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 72,
+          "bytes": 5682523.0,
+          "manifest_bytes": 39520,
+          "rows_keys": [
+            "source",
+            "destination",
+            "bytes",
+            "sha256"
+          ],
+          "self_copy": null
+        }
+      ],
+      "exclusions": [
+        {
+          "field": "array",
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\runtime-private-exclusions.json",
+          "source_base": "D:\\dsh-proj\\Roll",
+          "required_count": 35,
+          "kind": "METHOD_NOTIFICATION_PRIVATE_METADATA"
+        },
+        {
+          "field": "array",
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\length-runtime-private-exclusions.json",
+          "source_base": "D:\\dsh-proj\\Roll",
+          "required_count": 10,
+          "kind": "METHOD_NOTIFICATION_PRIVATE_METADATA"
+        },
+        {
+          "field": "array",
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28\\current-runtime-private-exclusions.json",
+          "source_base": "D:\\dsh-proj\\Roll",
+          "required_count": 2,
+          "kind": "METHOD_NOTIFICATION_PRIVATE_METADATA"
+        }
+      ],
+      "additional_coverage_required": false,
+      "metadata_only": true
+    },
+    {
+      "name": "ticket29",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29",
+      "expected_accepted_oid": null,
+      "branch": "codex/roll-p0-ticket29",
+      "observed_head": "db6ffec19c454722dc7c0c9d96ead5ff9b7b2b53",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": true,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "kind": "Junction",
+          "target": "D:\\dsh-proj\\Roll\\frontend\\node_modules",
+          "relative": "frontend/node_modules"
+        },
+        {
+          "kind": "Junction",
+          "target": "D:\\dsh-proj\\Roll\\frontend\\node_modules",
+          "relative": "frontend/frontend/node_modules"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket29\\runtime-preservation.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket29\\runtime-preservation.json",
+          "field": "entries",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 13043,
+          "bytes": 732166275,
+          "manifest_bytes": 7804746,
+          "rows_keys": [
+            "source",
+            "preserved",
+            "bytes",
+            "sha256"
+          ],
+          "self_copy": {
+            "bytes": 7804746,
+            "sha256": "be1cf70aa87e6855f2bbe67f59ede3814b70110d9e0f0acb57127cc476450ad6",
+            "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket29-r01\\manifest.json"
+          }
+        }
+      ],
+      "exclusions": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket29\\runtime-preservation.json",
+          "field": "exact_private_metadata_exclusions",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29",
+          "kind": "METHOD_NOTIFICATION_PRIVATE_METADATA",
+          "required_count": 4,
+          "source_provenance": "backend/tests/application/test_reports.py:58-90 test_report_preserves_actual_28_worker_attempt_receipt_without_inventing_delivery_or_read; literal ntfy.example.test MockTransport; runtime contents never read"
+        }
+      ],
+      "additional_coverage_required": true,
+      "metadata_only": true,
+      "stable_handoff_hint": "db6ffec19c454722dc7c0c9d96ead5ff9b7b2b53"
+    },
+    {
+      "name": "ticket30-producer",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+      "expected_accepted_oid": null,
+      "branch": "codex/roll-p0-ticket30-producer",
+      "observed_head": "14b0082674050d430279c153bac0cdbf7427337c",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": true,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-producer\\composition-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-producer\\composition-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 98,
+          "bytes": 16859917.0,
+          "manifest_bytes": 56971,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-producer\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-producer\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 13891,
+          "bytes": 1269967416.0,
+          "manifest_bytes": 8211300,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-producer-followup\\composition-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-producer-followup\\composition-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 171,
+          "bytes": 31451719.0,
+          "manifest_bytes": 99438,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-producer-followup\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-producer-followup\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 2399,
+          "bytes": 323286747.0,
+          "manifest_bytes": 1328132,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-cninfo-history\\composition-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-cninfo-history\\composition-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 218,
+          "bytes": 35055992.0,
+          "manifest_bytes": 125513,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-cninfo-history\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-cninfo-history\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 2439,
+          "bytes": 346346030.0,
+          "manifest_bytes": 1335221,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-known-obligations\\composition-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-known-obligations\\composition-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 206,
+          "bytes": 29446893.0,
+          "manifest_bytes": 117677,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-known-obligations\\composition26-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-known-obligations\\composition26-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 93,
+          "bytes": 11808877.0,
+          "manifest_bytes": 53686,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-known-obligations\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-known-obligations\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 2749,
+          "bytes": 403639159.0,
+          "manifest_bytes": 1526398,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-sse-current-suspension\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-sse-current-suspension\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 2717,
+          "bytes": 420677469.0,
+          "manifest_bytes": 1509407,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-sse-stock-suspension\\composition27-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-sse-stock-suspension\\composition27-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 153,
+          "bytes": 20080223.0,
+          "manifest_bytes": 85298,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-sse-stock-suspension\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-sse-stock-suspension\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 2728,
+          "bytes": 375082862.0,
+          "manifest_bytes": 1513776,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-sse-company-contract\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-sse-company-contract\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 1577,
+          "bytes": 181872574.0,
+          "manifest_bytes": 878632,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-sse-price-quotes\\runtime-preservation-accepted25-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-sse-price-quotes\\runtime-preservation-accepted25-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 92,
+          "bytes": 11056228.0,
+          "manifest_bytes": 52724,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-sse-price-quotes\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-sse-price-quotes\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 1670,
+          "bytes": 174336481.0,
+          "manifest_bytes": 932645,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        },
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer\\.scratch\\roll-p0\\evidence\\30-sse-company-actions\\runtime-preservation-manifest.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\30-sse-company-actions\\runtime-preservation-manifest.json",
+          "field": "array",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 1512,
+          "bytes": 162091056,
+          "manifest_bytes": 839515,
+          "rows_keys": [
+            "source",
+            "destination",
+            "sha256",
+            "bytes"
+          ],
+          "self_copy": null
+        }
+      ],
+      "exclusions": [],
+      "additional_coverage_required": true,
+      "metadata_only": true,
+      "stable_handoff_hint": "14b0082674050d430279c153bac0cdbf7427337c"
+    },
+    {
+      "name": "final31",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final",
+      "expected_accepted_oid": null,
+      "branch": "codex/roll-p0-ticket31-final",
+      "observed_head": "f3377d8c4fe2f7d8c9bc67368f02a32ec7535193",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": true,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "kind": "PHYSICAL",
+          "target": null,
+          "relative": "backend/.venv"
+        },
+        {
+          "kind": "PHYSICAL",
+          "target": null,
+          "relative": "frontend/node_modules"
+        }
+      ],
+      "manifests": [],
+      "exclusions": [],
+      "additional_coverage_required": true,
+      "metadata_only": true,
+      "install_checkpoint_hint": "efdee0ba1cca5f02a0dc98fcddbeb3b7104fe84f",
+      "install_evidence_target": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket31-final-install",
+      "behavior_runtime_status": "BEHAVIOR_PREPARED_NOT_EXECUTED_FINAL_HEAD_ACCEPTANCE_AND_MANIFEST_PENDING",
+      "latest_parent_prepared_hint": "bde1b857_BEHAVIOR_PENDING_NOT_ACCEPTED"
+    },
+    {
+      "name": "final-singlefix",
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix",
+      "expected_accepted_oid": null,
+      "branch": "codex/roll-p0-final-review-fix",
+      "observed_head": "94d871111693958ee11e1d75c142f19a0f1bebe0",
+      "observed_tracked_dirty": [],
+      "dynamic_required_accepted_final": true,
+      "lifecycle": "UNMANAGED_GIT",
+      "dependencies": [
+        {
+          "relative": "frontend/node_modules",
+          "kind": "Junction",
+          "target": "D:\\dsh-proj\\Roll\\frontend\\node_modules"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.scratch\\roll-p0\\evidence\\final-review-fix\\runtime-preservation-manifest-v2.json",
+          "root_mirror": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\final-review-fix\\runtime-preservation-manifest-v2.json",
+          "field": "entries",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 4872,
+          "bytes": 299928587,
+          "manifest_bytes": 3651911,
+          "manifest_sha256": "042deedef5f872cb935cb6929eb913f4104955e026d523545a6f612e831684ee",
+          "sha_origin": "DECLARED_ACCEPTANCE_NOT_COMPUTED",
+          "self_copy": null
+        },
+        {
+          "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-batch-v6-finalfix-extra-targets.json",
+          "root_mirror": null,
+          "field": "rows",
+          "source_base": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix",
+          "destination_base": "D:\\dsh-proj\\Roll",
+          "special": "",
+          "count": 190,
+          "bytes": 12043573,
+          "manifest_bytes": 127453,
+          "manifest_sha256": null,
+          "self_copy": null
+        }
+      ],
+      "exclusions": [
+        {
+          "exact_relative": ".fr/chrome-red/fixture/auth.json",
+          "kind": "METHOD_AUTH_METADATA",
+          "provenance": "backend/tests/support/final_review_method_app.py:19-21 actual literal METHOD_CASE_ONLY writer; original manifest line22-24 hint retained unchanged",
+          "forced_no_contents": true
+        },
+        {
+          "exact_relative": ".fr/chrome-green/fixture/auth.json",
+          "kind": "METHOD_AUTH_METADATA",
+          "provenance": "backend/tests/support/final_review_method_app.py:19-21 actual literal METHOD_CASE_ONLY writer; original manifest line22-24 hint retained unchanged",
+          "forced_no_contents": true
+        },
+        {
+          "exact_relative": ".fr/chrome-research/fixture/auth.json",
+          "kind": "METHOD_AUTH_METADATA",
+          "provenance": "backend/tests/support/final_review_method_app.py:19-21 actual literal METHOD_CASE_ONLY writer; original manifest line22-24 hint retained unchanged",
+          "forced_no_contents": true
+        },
+        {
+          "exact_relative": ".fr/affected/test_report_preserves_actual_20/data/notification-private/channel.json",
+          "kind": "METHOD_NOTIFICATION_PRIVATE_METADATA",
+          "provenance": "backend/tests/application/test_reports.py test_report_preserves_actual_28_worker_attempt_receipt; literal ntfy.example.test MockTransport; exact private companion JSON/lock only",
+          "forced_no_contents": true
+        },
+        {
+          "exact_relative": ".fr/affected/test_report_preserves_actual_20/data/notification-private/channel.lock",
+          "kind": "METHOD_NOTIFICATION_PRIVATE_METADATA",
+          "provenance": "backend/tests/application/test_reports.py test_report_preserves_actual_28_worker_attempt_receipt; literal ntfy.example.test MockTransport; exact private companion JSON/lock only",
+          "forced_no_contents": true
+        }
+      ],
+      "additional_coverage_required": false,
+      "metadata_only": true,
+      "observed_head_authority": "STABLE_HANDOFF_SOURCE;ROOTMERGER_ACTIVE_FINAL_RELEASE_PENDING",
+      "stable_handoff_hint": "94d871111693958ee11e1d75c142f19a0f1bebe0",
+      "source_product_hint": "4a975c629379cba4cbee34178bf5d2ac4452d87c",
+      "supplemental_boundaries": {
+        "legacy32_is_source_subset": true,
+        "source_runtime_bytes": 299928587,
+        "all_targets_require_actual_final_preflight": true,
+        "unique_source_runtime_files": 4872,
+        "source_union_not_inflated": true,
+        "first_partial_verified": 157,
+        "supplemental158_copied_validation_failed": true,
+        "extra_targets": 190
+      }
+    }
+  ],
+  "excluded_archived_managed": "C:\\Users\\72449\\.codex\\worktrees\\ticket31-delivery\\Roll",
+  "prepared_not_executed": true,
+  "hashes_computed": 0,
+  "cim_queries": 0,
+  "sqlite_connections": 0,
+  "source_file_walks": 0,
+  "delete_operations": 0,
+  "manifest_binding_metadata": [
+    {
+      "name": "ticket25",
+      "manifest_rows_before_union": 19907,
+      "manifest_row_bytes_before_union": 1623708720,
+      "unique_source_bindings": 13243,
+      "unique_targets": 13243,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "ticket26",
+      "manifest_rows_before_union": 5930,
+      "manifest_row_bytes_before_union": 502947022,
+      "unique_source_bindings": 5930,
+      "unique_targets": 5930,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "codex-runner-scope",
+      "manifest_rows_before_union": 540,
+      "manifest_row_bytes_before_union": 44276137,
+      "unique_source_bindings": 540,
+      "unique_targets": 540,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crmr/test_cancel_timeout_retry_and_0/auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crmg/test_agent_child_preserves_exp0/method-auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crmg/test_cancel_timeout_retry_and_0/auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crsf/test_agent_child_preserves_exp0/method-auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crsf/test_cancel_kills_actual_desce0/chatgpt.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crsf/test_cancel_timeout_retry_and_0/auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crsf/test_codex_retry_rejects_revis0/method-auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crsf/test_explicit_codex_works_with0/auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        },
+        {
+          "manifest": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-scope\\runtime-preservation.json",
+          "source": "RUNNER_RELATIVE:crs25/test_cancel_timeout_retry_and_0/auth.json",
+          "requires_exact_provenance": true,
+          "content_read": false
+        }
+      ],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "ticket25-ordering",
+      "manifest_rows_before_union": 2039,
+      "manifest_row_bytes_before_union": 154331607,
+      "unique_source_bindings": 2039,
+      "unique_targets": 2039,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "ticket27",
+      "manifest_rows_before_union": 8245,
+      "manifest_row_bytes_before_union": 691953514,
+      "unique_source_bindings": 8245,
+      "unique_targets": 8245,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "ticket28",
+      "manifest_rows_before_union": 1488,
+      "manifest_row_bytes_before_union": 121616009,
+      "unique_source_bindings": 1488,
+      "unique_targets": 1488,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "ticket29",
+      "manifest_rows_before_union": 0,
+      "manifest_row_bytes_before_union": 0,
+      "unique_source_bindings": 0,
+      "unique_targets": 0,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "ticket30-producer",
+      "manifest_rows_before_union": 31201,
+      "manifest_row_bytes_before_union": 3650968587,
+      "unique_source_bindings": 31201,
+      "unique_targets": 31201,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "final31",
+      "manifest_rows_before_union": 0,
+      "manifest_row_bytes_before_union": 0,
+      "unique_source_bindings": 0,
+      "unique_targets": 0,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    },
+    {
+      "name": "final-singlefix",
+      "manifest_rows_before_union": 0,
+      "manifest_row_bytes_before_union": 0,
+      "unique_source_bindings": 0,
+      "unique_targets": 0,
+      "conflicting_current_source_bindings": [],
+      "private_looking_public_rows": [],
+      "runtime_files_not_enumerated": true,
+      "unknown_uncovered_files": "NOT_MEASURED_PREPARATION_ONLY"
+    }
+  ],
+  "independent_manifests_observed": [
+    {
+      "bytes": 12732578.0,
+      "field": "files",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\codex-runner-independent\\owned-runtime-manifest.json",
+      "manifest_bytes": 43577,
+      "count": 151,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 105034710.0,
+      "field": "files",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket25-independent\\owned-runtime-manifest.json",
+      "manifest_bytes": 366649,
+      "count": 1293,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 6658274.0,
+      "field": "files",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket25-independent\\decision-states\\owned-runtime-manifest.json",
+      "manifest_bytes": 31800,
+      "count": 106,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 16173385.0,
+      "field": "entries",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket25-ordering-independent\\own-runtime-preservation.json",
+      "manifest_bytes": 131433,
+      "count": 229,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 24706986.0,
+      "field": "files",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket26-independent\\owned-runtime-manifest.json",
+      "manifest_bytes": 88903,
+      "count": 311,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 49533565.0,
+      "field": "entries",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket27-independent\\own-runtime-preservation.json",
+      "manifest_bytes": 409232,
+      "count": 593,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 9481336.0,
+      "field": "entries",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket28-independent\\own-runtime-preservation.json",
+      "manifest_bytes": 76106,
+      "count": 132,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 16602193.0,
+      "field": "files",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-cninfo-independent\\owned-runtime-manifest.json",
+      "manifest_bytes": 32250,
+      "count": 113,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 34125902.0,
+      "field": "entries",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-company-independent\\own-runtime-preservation.json",
+      "manifest_bytes": 164961,
+      "count": 280,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 66930767.0,
+      "field": "files",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-history-independent\\owned-runtime-manifest.json",
+      "manifest_bytes": 131265,
+      "count": 464,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 36431215.0,
+      "field": "rows",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-obligations-independent\\owned-runtime-manifest.json",
+      "manifest_bytes": 74183,
+      "count": 253,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 8634460.0,
+      "field": "rows",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-price-independent\\own-root-runtime-preservation.json",
+      "manifest_bytes": 29833,
+      "count": 56,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 58501210.0,
+      "field": "rows",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-price-independent\\own-runtime-preservation.json",
+      "manifest_bytes": 241595,
+      "count": 443,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 23448613.0,
+      "field": "rows",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-sse-current-independent\\owned-runtime-manifest.json",
+      "manifest_bytes": 120217,
+      "count": 213,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "bytes": 60255359.0,
+      "field": "entries",
+      "manifest_sha256": null,
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-stock-independent\\own-runtime-preservation.json",
+      "manifest_bytes": 293036,
+      "count": 498,
+      "metadata_only": true,
+      "destination_base": "D:\\dsh-proj\\Roll"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket30-action-independent\\own-runtime-preservation.json",
+      "field": "rows",
+      "count": 368,
+      "bytes": 49390035,
+      "manifest_bytes": 201228,
+      "manifest_sha256": null,
+      "destination_base": "D:\\dsh-proj\\Roll",
+      "metadata_only": true
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\ticket29-independent\\runtime-preservation.json",
+      "field": "entries",
+      "count": 3122,
+      "bytes": 178351749,
+      "manifest_bytes": 1875271,
+      "manifest_sha256": "be4f9f1cadb9d0653fc08f05eba56069de92492053524b3782ced8c7fe07e264",
+      "sha_origin": "DECLARED_ACCEPTANCE_RECEIPT_NOT_RECOMPUTED",
+      "destination_base": "D:\\dsh-proj\\Roll",
+      "metadata_only": true
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\final-singlefix-independent\\runtime-preservation.json",
+      "field": "entries",
+      "count": 396,
+      "bytes": 26167907,
+      "manifest_bytes": 214851,
+      "manifest_sha256": "fd09e9e6cca68ac64db8eb49c1ef37d5def8aa913904153b5722c22f542ce7f8",
+      "sha_origin": "ACCEPTANCE_BEFORE_MERGE_DECLARED_NOT_COMPUTED",
+      "destination_base": "D:\\dsh-proj\\Roll",
+      "metadata_only": true
+    }
+  ],
+  "forced_metadata_only_paths": [
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\crsf\\test_cancel_kills_actual_desce0\\chatgpt.json",
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\codex-runner-scope\\runner-2026-10-11\\crsf\\test_cancel_kills_actual_desce0\\chatgpt.json",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.fr\\chrome-red\\fixture\\auth.json",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.fr\\chrome-green\\fixture\\auth.json",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.fr\\chrome-research\\fixture\\auth.json",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.fr\\affected\\test_report_preserves_actual_20\\data\\notification-private\\channel.json",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.fr\\affected\\test_report_preserves_actual_20\\data\\notification-private\\channel.lock"
+  ],
+  "forced_metadata_only_dispositions": [
+    {
+      "contents_read": false,
+      "hashed": false,
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope\\.scratch\\crsf\\test_cancel_kills_actual_desce0\\chatgpt.json",
+      "cannot_override_with_public_fixture_allow": true,
+      "preserved_target": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\codex-runner-scope\\runner-2026-10-11\\crsf\\test_cancel_kills_actual_desce0\\chatgpt.json",
+      "source_provenance": "backend/tests/application/test_codex_evidence.py:121-123 literal access_token METHOD_CASE_ONLY; root explicitly requires metadata-only",
+      "copied": false,
+      "relative": ".scratch/crsf/test_cancel_kills_actual_desce0/chatgpt.json",
+      "kind": "METHOD_AUTH_METADATA"
+    }
+  ],
+  "dependency_baseline_rule": "AFTER_ALL_TESTS_COMPLETE_PRE_CLEANUP_ONLY;29 default Vite previously mutated root cache; no assertion unchanged before29; Preflight/Post compare only final cleanup interval",
+  "ninth_union_metadata": {
+    "unique_source_paths": 32713,
+    "manifest_rows": 32713,
+    "content_reads": false,
+    "conflicts": [],
+    "unique_targets": 32713,
+    "manifest_row_bytes": 3813059643,
+    "actual_current_runtime_coverage": "NOT_WALKED_NOT_VERIFIED"
+  },
+  "ninth_independent_accepted_root": "b3cbfacdf1647fab644f07afcd19a3fad17c252c",
+  "v5_delta": {
+    "future_runtime_files_accessed": 0,
+    "independent_saved_target": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket29-independent-r01",
+    "source_and_preserved_paths_absolute": true,
+    "ticket25_business_completion": "PARTIAL_POLICY_REGISTRATION_AND_PRODUCTION_INPUT_GAPS_RETAINED;accepted engineering checkout preservation/cleanup permitted by final release",
+    "nine_source_attempt_budgets": "CLOSED_NO_NEW_COLLECTION",
+    "ticket29_independent_manifest_actual": ".scratch/roll-p0/evidence/continuation-2026-10-11/ticket29-independent/runtime-preservation.json"
+  },
+  "retained_manifest_controls": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.scratch\\roll-p0\\evidence\\final-review-fix\\legacy-profile-manifest.json",
+      "sha256": "b42835a26089245b8435c14f827e3bc3afc550b6c8d2401f9636ac561e2e6cca",
+      "bytes": 11939,
+      "reason": "Pinned original legacy raw manifest checksum only"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\final-review-fix\\legacy-profile-manifest.json",
+      "sha256": "b42835a26089245b8435c14f827e3bc3afc550b6c8d2401f9636ac561e2e6cca",
+      "bytes": 11939,
+      "reason": "After root scoped merge immutable tracked mirror"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix\\.scratch\\roll-p0\\evidence\\final-review-fix\\preservation-copy-failure.json",
+      "sha256": null,
+      "bytes": 737,
+      "reason": "Historical partial-copy diagnostic retained"
+    },
+    {
+      "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-batch-v6-finalfix-extra-targets.json",
+      "sha256": null,
+      "bytes": 127453,
+      "reason": "Outside supplemental expected-boundary metadata only"
+    }
+  ]
+}
