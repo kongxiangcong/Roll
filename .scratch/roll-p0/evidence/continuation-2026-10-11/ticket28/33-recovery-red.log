@@ -1,0 +1,26 @@
+F....                                                                    [100%]
+================================== FAILURES ===================================
+_ test_public_restoration_creates_recovery_notice_without_restoring_grant_or_channel_secret _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-33/test_public_restoration_create0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002127F7D0FC0>
+
+    def test_public_restoration_creates_recovery_notice_without_restoring_grant_or_channel_secret(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        with TestClient(create_app(tmp_path / 'source',runtime_role='API')) as client:
+            draft = client.post('/api/account/drafts',json=baseline()).json()
+            assert client.post('/api/account/confirm',json={'draft_id':draft['draft_id'],'idempotency_key':'baseline'}).status_code == 200
+            backup = client.post('/api/runtime/backups').json()
+            bundle = client.get('/api/runtime/backups/' + backup['backup_id'] + '/export').content
+        with TestClient(create_app(tmp_path / 'target',runtime_role='API')) as client:
+            assert client.post('/api/runtime/restores',content=bundle,headers={'content-type':'application/zip'}).status_code == 202
+        with TestClient(create_app(tmp_path / 'target',runtime_role='API')) as client:
+            notices = client.get('/api/notifications').json()['notifications']
+>           notice = next(n for n in notices if n['source']['kind'] == 'RECOVERY_LOCK')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           StopIteration
+
+backend\tests\application\test_notifications.py:474: StopIteration
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_public_restoration_creates_recovery_notice_without_restoring_grant_or_channel_secret
+1 failed, 4 passed, 16 deselected in 25.73s

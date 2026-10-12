@@ -1,0 +1,47 @@
+..F....                                                                  [100%]
+================================== FAILURES ===================================
+_ test_partial_confirm_uses_same_writer_latest_facts_and_preserves_four_times _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/r26i/test_partial_confirm_uses_same0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002205D3F8A70>
+
+    def test_partial_confirm_uses_same_writer_latest_facts_and_preserves_four_times(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        app = create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')
+        with TestClient(app) as client:
+            prepare(client, p)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            command = intent_command(evaluation)
+            before = client.get('/api/account').json()
+            intent_response = client.post('/api/intents/prepare', json=command)
+            assert intent_response.status_code == 201, intent_response.text
+            intent = intent_response.json()
+            assert client.get('/api/account').json() == before
+            assert client.post('/api/intents/prepare', json=command).json() == intent
+            declaration = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state': 'OPERATION_PENDING', 'external_order_id': 'own-order-1', 'broker_reflection': 'CONFIRMED_REFLECTED',
+                'occurred_at': p['required_as_of'], 'idempotency_key': 'own-pending'})
+            assert declaration.status_code == 200
+            assert client.get('/api/intents').json()['unreflected_reservation_yuan'] == '0.00'
+            actual = fill(evaluation['account_version'], 'own-partial')
+            actual['payload'].update(quantity='100', price='140.00', effective_at=p['required_as_of'], order_id='own-order-1', broker_available_after='76000.10')
+            draft = client.post('/api/account/drafts', json=actual).json()
+            allocation = {'intent_id': intent['intent_id'], 'fill_record_id': 'own-partial', 'allocated_quantity': '100', 'association_status': 'USER_CONFIRMED'}
+            rejected = client.post('/api/account/confirm', json={'draft_id': draft['draft_id'], 'idempotency_key': 'own-excess', 'fill_allocations': [{**allocation, 'allocated_quantity': '101'}]})
+            assert rejected.status_code == 422
+>           assert client.get('/api/account').json() == before
+E           AssertionError: assert {'account_sco...NFIRMED', ...} == {'account_sco...NFIRMED', ...}
+E             
+E             Omitting 23 identical items, use -vv to show
+E             Differing items:
+E             {'state': 'UPDATE_PENDING'} != {'state': 'CONFIRMED_AS_OF'}
+E             Left contains 1 more item:
+E             {'state_reasons': ['存在未确认草稿、未补录变化或外部委托待结果，先核对实际事实']}
+E             Use -v to get more diff
+
+..\..\roll-p0\evidence\continuation-2026-10-11\ticket26-independent\test_independent_intents.py:79: AssertionError
+=========================== short test summary info ===========================
+FAILED backend::test_partial_confirm_uses_same_writer_latest_facts_and_preserves_four_times
+1 failed, 6 passed in 68.45s (0:01:08)

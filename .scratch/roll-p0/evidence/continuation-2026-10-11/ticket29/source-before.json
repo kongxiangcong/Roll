@@ -1,0 +1,671 @@
+{
+  "protected": [
+    {
+      "path": "backend/src/roll/research/models.py",
+      "bytes": 32371,
+      "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e"
+    },
+    {
+      "path": "backend/src/roll/research/execution.py",
+      "bytes": 37186,
+      "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac"
+    },
+    {
+      "path": "backend/src/roll/research/reconstruction.py",
+      "bytes": 18472,
+      "sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511"
+    },
+    {
+      "path": "backend/src/roll/research/datasets.py",
+      "bytes": 15398,
+      "sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad"
+    },
+    {
+      "path": "backend/src/roll/research/design.py",
+      "bytes": 12909,
+      "sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8"
+    },
+    {
+      "path": "backend/src/roll/research/historical_costs.py",
+      "bytes": 5154,
+      "sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd"
+    },
+    {
+      "path": "backend/src/roll/research/corporate_actions.py",
+      "bytes": 7307,
+      "sha256": "ba28137c834140c350fc35634ca38bb218c9e1c7a8b8c047de2a976a3cac3c36"
+    },
+    {
+      "path": "backend/src/roll/research/registry.py",
+      "bytes": 20337,
+      "sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c"
+    },
+    {
+      "path": "backend/src/roll/research/training_preflight.py",
+      "bytes": 10008,
+      "sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589"
+    },
+    {
+      "path": "backend/src/roll/market/rules.py",
+      "bytes": 13012,
+      "sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6"
+    },
+    {
+      "path": "backend/src/roll/research/reference/reconstruction/sources.json",
+      "bytes": 5396,
+      "sha256": "ea7919e633ccc1499da53d848b0581096fd74d3dd17a33a894261ab68bd10004"
+    },
+    {
+      "path": "backend/src/roll/research/reference/cash-rights/sources.json",
+      "bytes": 85112,
+      "sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680"
+    },
+    {
+      "path": "backend/src/roll/research/shadow.py",
+      "bytes": 39344,
+      "sha256": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293"
+    },
+    {
+      "path": "backend/src/roll/research/statistics.py",
+      "bytes": 11758,
+      "sha256": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb"
+    },
+    {
+      "path": "backend/src/roll/research/validation.py",
+      "bytes": 37521,
+      "sha256": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07"
+    }
+  ],
+  "sources": [
+    {
+      "path": "backend/src/roll/__init__.py",
+      "bytes": 30,
+      "sha256": "5e25d35bc9735f79463f8492f3e04e7d5122a2e37421b10b02297af4f9f54ce6"
+    },
+    {
+      "path": "backend/src/roll/accounts/__init__.py",
+      "bytes": 53,
+      "sha256": "fe8694dd985d374699ea534b8d7d9db6125e10e0bfbe7a06d8f44d4056806540"
+    },
+    {
+      "path": "backend/src/roll/accounts/cash_events.py",
+      "bytes": 18051,
+      "sha256": "6dd3c3d05c5fa3d2ab6cb9ea4f8f024c11156415f689b9ee874880498be7d8b8"
+    },
+    {
+      "path": "backend/src/roll/accounts/corrections.py",
+      "bytes": 6001,
+      "sha256": "0fe30e656bcfdadd3007654723a06a3a6d4634340ee5bda15e764951b8fabc93"
+    },
+    {
+      "path": "backend/src/roll/accounts/csv_import.py",
+      "bytes": 21237,
+      "sha256": "3025c948f222c496b66d2542fd601e671c1c5cc3eb0724b34c2269e6db10b0e8"
+    },
+    {
+      "path": "backend/src/roll/accounts/fills.py",
+      "bytes": 16915,
+      "sha256": "7a16fa1eb8a10f874ef2bf4c051990d1281744e1a86bca79ebabd0b40a10038a"
+    },
+    {
+      "path": "backend/src/roll/accounts/ledger.py",
+      "bytes": 36373,
+      "sha256": "95cd1ff264787418aa6c21cc710f8f4fd3cf79490e23f49c0a7886a52837b7d2"
+    },
+    {
+      "path": "backend/src/roll/accounts/reconcile.py",
+      "bytes": 15842,
+      "sha256": "e2bd54a26eb602f65928346865eccdd4b31cf3fb060f4487afcdebdc421fe72a"
+    },
+    {
+      "path": "backend/src/roll/accounts/valuation.py",
+      "bytes": 15332,
+      "sha256": "166f21486cbb687e24511c1060f99c022cb3f6cf2bfd8f6b5bd1df8cc4170f0e"
+    },
+    {
+      "path": "backend/src/roll/agents/codex_evidence.py",
+      "bytes": 8501,
+      "sha256": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee"
+    },
+    {
+      "path": "backend/src/roll/agents/codex_process.py",
+      "bytes": 35671,
+      "sha256": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f"
+    },
+    {
+      "path": "backend/src/roll/agents/codex_worker.py",
+      "bytes": 8545,
+      "sha256": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+    },
+    {
+      "path": "backend/src/roll/agents/deepseek_evidence.py",
+      "bytes": 7746,
+      "sha256": "9da4d94a828b42b5d9cdd7128b306c05ed420cdb83395d0b0b74c3c8f4254f69"
+    },
+    {
+      "path": "backend/src/roll/agents/deepseek_process.py",
+      "bytes": 6467,
+      "sha256": "7cbe74025102b6f2cfe19a72f1dfa998f004b3b1b6e4a79702ba4999bf652df1"
+    },
+    {
+      "path": "backend/src/roll/agents/deepseek_worker.py",
+      "bytes": 9646,
+      "sha256": "0e5b27d0cc81154619b551c07195b6acbda30342c72b05dc9ff3c70177ced9fd"
+    },
+    {
+      "path": "backend/src/roll/agents/review_runtime.py",
+      "bytes": 8836,
+      "sha256": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b"
+    },
+    {
+      "path": "backend/src/roll/agents/settings.py",
+      "bytes": 4943,
+      "sha256": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101"
+    },
+    {
+      "path": "backend/src/roll/app.py",
+      "bytes": 57172,
+      "sha256": "76d4ef77284cbff1d70358eaa5d6f4634c3786ea6edffc00b6e8ee0a3ce889b5"
+    },
+    {
+      "path": "backend/src/roll/config.py",
+      "bytes": 2161,
+      "sha256": "f6ba9c279c2eb4943f72d25c73cc58b13f31cbc6257eeff653d16f8b8fd57ecc"
+    },
+    {
+      "path": "backend/src/roll/decisions/actions.py",
+      "bytes": 41566,
+      "sha256": "5a037f14c1c5fb85bd8406290b358e97d9b95e2fa7d06d5376031746b772562e"
+    },
+    {
+      "path": "backend/src/roll/decisions/capabilities.py",
+      "bytes": 43199,
+      "sha256": "5acfddbb9e9a051a11fd46a2e350406816eae9b940d9b5ca7185d7f46aabc18a"
+    },
+    {
+      "path": "backend/src/roll/decisions/funding.py",
+      "bytes": 13113,
+      "sha256": "24d4c9463edb3911c3d1c46978722514a373691bdd4a4820af5d651f9db0f71d"
+    },
+    {
+      "path": "backend/src/roll/decisions/intents.py",
+      "bytes": 15567,
+      "sha256": "91733e3b703855d09c4f69f73c5ee324148c23e852635b9a0eeba5eb614f0a53"
+    },
+    {
+      "path": "backend/src/roll/decisions/lifecycle_journal.py",
+      "bytes": 5787,
+      "sha256": "30c7132d7ccbb132efa36e841eddf6b1301541f8c164531615423b02843448e8"
+    },
+    {
+      "path": "backend/src/roll/decisions/monitoring.py",
+      "bytes": 33518,
+      "sha256": "2b3e989264f3e0340a795647ad18864f4396126fc46202ee1477e5d33147587f"
+    },
+    {
+      "path": "backend/src/roll/decisions/notifications.py",
+      "bytes": 33262,
+      "sha256": "071ba32bec7517079717904131ae92832ba165917006639836bb6c33164a1f1c"
+    },
+    {
+      "path": "backend/src/roll/decisions/recovery.py",
+      "bytes": 6541,
+      "sha256": "541b3546a8d4cc4dc3e941e0bdaa9e85fb0a344f8f181e30bc2e7e63d84b6a83"
+    },
+    {
+      "path": "backend/src/roll/market/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/src/roll/market/baostock.py",
+      "bytes": 13301,
+      "sha256": "cade846632046191b1644a114be639af41738b4658ede5edbfc138f63d440695"
+    },
+    {
+      "path": "backend/src/roll/market/baostock_process.py",
+      "bytes": 6424,
+      "sha256": "9671795f85f5ac8bdd08cc88879287b63d7bbd1eba4a5f8ac662b1ffc12690a3"
+    },
+    {
+      "path": "backend/src/roll/market/cnequity.py",
+      "bytes": 11702,
+      "sha256": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966"
+    },
+    {
+      "path": "backend/src/roll/market/cnequity_process.py",
+      "bytes": 12863,
+      "sha256": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c"
+    },
+    {
+      "path": "backend/src/roll/market/cninfo_history.py",
+      "bytes": 8151,
+      "sha256": "eef85a59eebb02c99605ab3a12409bb3589ec8e93b8caf1c3ddb9fa0c13d5cba"
+    },
+    {
+      "path": "backend/src/roll/market/collection_cleaning.py",
+      "bytes": 8220,
+      "sha256": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+    },
+    {
+      "path": "backend/src/roll/market/collection_sources.py",
+      "bytes": 15331,
+      "sha256": "ba3cdd19446efeefd5930aa305d39cda89ff92ff93aedd32a111dc1cc5f39016"
+    },
+    {
+      "path": "backend/src/roll/market/directory.py",
+      "bytes": 12595,
+      "sha256": "78e307e13a56b09497b865168480c6c9268a91c270fc4adec8fd260d3bd5a57b"
+    },
+    {
+      "path": "backend/src/roll/market/evidence.py",
+      "bytes": 50402,
+      "sha256": "81ba0c4d62d309de96fcfe02b8dbc3e88ac730ce43527371fcc352bc02756c5d"
+    },
+    {
+      "path": "backend/src/roll/market/fuyao.py",
+      "bytes": 7312,
+      "sha256": "9b6142c931f53b6b53d8d525dcef3b17c77801c6e46700fe812d3d9d767b546d"
+    },
+    {
+      "path": "backend/src/roll/market/known_obligations.py",
+      "bytes": 3187,
+      "sha256": "2b59e99cd5a68bf1b3ddbcd4d764e6f81d4d18d44a150ea9f367ba873a4ed285"
+    },
+    {
+      "path": "backend/src/roll/market/post_close_packet.py",
+      "bytes": 71275,
+      "sha256": "c8265704de27d5058942ab88ad1f0beaf6aa0e81aee3364c8470be586143ab18"
+    },
+    {
+      "path": "backend/src/roll/market/reference/cninfo-history/sources.json",
+      "bytes": 6388,
+      "sha256": "fc90763c6ed0afccd95b4bb33244a5d4235f9dd944c99c57b6636184f368e437"
+    },
+    {
+      "path": "backend/src/roll/market/reference/sources.json",
+      "bytes": 12807,
+      "sha256": "0740a48cc8e385d3c94c2b249aad048f0bd0a9e815ad1e61a43c737b4db6a700"
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-company-contract/sources.json",
+      "bytes": 1054,
+      "sha256": "17f077adaf62ab97dcfa1f947ad452d89de56d123f0fed122490a28315e05512"
+    },
+    {
+      "path": "backend/src/roll/market/reference/sse-history/sources.json",
+      "bytes": 4924,
+      "sha256": "e65238ba11819bedba3ebab26c2825327c2b5300d25813589f1f427cad48a09e"
+    },
+    {
+      "path": "backend/src/roll/market/resolution.py",
+      "bytes": 26455,
+      "sha256": "6f655d3fa829828bcd8abd834d83751e5cd838ef67ed520577e9b863f89eeecf"
+    },
+    {
+      "path": "backend/src/roll/market/rules.py",
+      "bytes": 13012,
+      "sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6"
+    },
+    {
+      "path": "backend/src/roll/market/sohu.py",
+      "bytes": 5550,
+      "sha256": "9cd3be542c63152594ceddfbe7a89f60757d974b659620627ce45b59f2a0cec1"
+    },
+    {
+      "path": "backend/src/roll/market/source_facts.py",
+      "bytes": 22890,
+      "sha256": "18444c1197ded7025b4e550d7e8df9b85ebbb2a7a24087b779aaf417f93a24b9"
+    },
+    {
+      "path": "backend/src/roll/market/sse_company_contract.py",
+      "bytes": 20590,
+      "sha256": "d09ec89912cb024f9390a135a9ce761846158ef082f0c4f9ca02cb35e3101035"
+    },
+    {
+      "path": "backend/src/roll/market/sse_stock_suspension.py",
+      "bytes": 21365,
+      "sha256": "689b8dd528eb02ce5ae5c88b12e97de52af675631ea625d000fe223b252fefa7"
+    },
+    {
+      "path": "backend/src/roll/market/sse_suspension.py",
+      "bytes": 8408,
+      "sha256": "e02d580d26f82c89a65446d8f408929a0c8d455fbf20718a56e2a167298adfed"
+    },
+    {
+      "path": "backend/src/roll/market/verification.py",
+      "bytes": 17958,
+      "sha256": "8f3e32c9e2aeea4a3dc57caa781b496d4e8960cc1f81738ded316dff57e76f43"
+    },
+    {
+      "path": "backend/src/roll/market/verification_input.py",
+      "bytes": 867,
+      "sha256": "1b6fc25c9688f43d2c5b6ad08e18da681133fa3ec9619e14b8db73b38d618788"
+    },
+    {
+      "path": "backend/src/roll/research/corporate_actions.py",
+      "bytes": 7307,
+      "sha256": "ba28137c834140c350fc35634ca38bb218c9e1c7a8b8c047de2a976a3cac3c36"
+    },
+    {
+      "path": "backend/src/roll/research/datasets.py",
+      "bytes": 15398,
+      "sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad"
+    },
+    {
+      "path": "backend/src/roll/research/design.py",
+      "bytes": 12909,
+      "sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8"
+    },
+    {
+      "path": "backend/src/roll/research/execution.py",
+      "bytes": 37186,
+      "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac"
+    },
+    {
+      "path": "backend/src/roll/research/forward.py",
+      "bytes": 32743,
+      "sha256": "9581f768f2938023a88c31981817538d493ea9695ac152c250f3ba255546b437"
+    },
+    {
+      "path": "backend/src/roll/research/historical_costs.py",
+      "bytes": 5154,
+      "sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd"
+    },
+    {
+      "path": "backend/src/roll/research/models.py",
+      "bytes": 32371,
+      "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e"
+    },
+    {
+      "path": "backend/src/roll/research/prospective.py",
+      "bytes": 15274,
+      "sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83"
+    },
+    {
+      "path": "backend/src/roll/research/reconstruction.py",
+      "bytes": 18472,
+      "sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511"
+    },
+    {
+      "path": "backend/src/roll/research/reference/cash-rights/sources.json",
+      "bytes": 85112,
+      "sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680"
+    },
+    {
+      "path": "backend/src/roll/research/reference/historical-cost-sources.json",
+      "bytes": 3063,
+      "sha256": "152f04564bd9fc49f5c52fe6b7dc6e2a7ef8fa5b956c9cf7cce6808d3da639fb"
+    },
+    {
+      "path": "backend/src/roll/research/reference/reconstruction/sources.json",
+      "bytes": 5396,
+      "sha256": "ea7919e633ccc1499da53d848b0581096fd74d3dd17a33a894261ab68bd10004"
+    },
+    {
+      "path": "backend/src/roll/research/reference/sources.json",
+      "bytes": 2105,
+      "sha256": "40a38f86c92984506632f931d7f8c74f152f383b8de6456a0a6e66cb8c2aaca3"
+    },
+    {
+      "path": "backend/src/roll/research/registry.py",
+      "bytes": 20337,
+      "sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c"
+    },
+    {
+      "path": "backend/src/roll/research/risk_policy.py",
+      "bytes": 22734,
+      "sha256": "01a453df685c5883448e1eac7c56d55b7ddcbebdfd3bc208f7ce536cd3ad88c0"
+    },
+    {
+      "path": "backend/src/roll/research/shadow.py",
+      "bytes": 39344,
+      "sha256": "cb6c67eaba691733547ca7b009cd35c911cdd328c4e4bb23c9d41126a63c3293"
+    },
+    {
+      "path": "backend/src/roll/research/statistics.py",
+      "bytes": 11758,
+      "sha256": "d3850518e51457fa65b4373ef2a9075cb2ff772604e00de3806045a5b11668bb"
+    },
+    {
+      "path": "backend/src/roll/research/synthetic.py",
+      "bytes": 9101,
+      "sha256": "f7f7f6c616e32578e8a1245d5df7461319974a0558b5b7eb29012366175f4a94"
+    },
+    {
+      "path": "backend/src/roll/research/technical_review.py",
+      "bytes": 27456,
+      "sha256": "98308d8a1f9f7ca7e585fba06846999eeba0615a79041630fab70f4029e606c9"
+    },
+    {
+      "path": "backend/src/roll/research/training_preflight.py",
+      "bytes": 10008,
+      "sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589"
+    },
+    {
+      "path": "backend/src/roll/research/validation.py",
+      "bytes": 37521,
+      "sha256": "1f8d70357b94f5feb4147502f8dbc82542ebbc18daf071ce62c95b3ae5882b07"
+    },
+    {
+      "path": "backend/src/roll/runtime/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/src/roll/runtime/backups.py",
+      "bytes": 34238,
+      "sha256": "4ba771d938e7a11e3bb48640b95fdb77bcbe87cdb6cda2643f411b92b7b83cf0"
+    },
+    {
+      "path": "backend/src/roll/runtime/notification_channel.py",
+      "bytes": 8270,
+      "sha256": "16e9be0be1ce709624d20c8abd358e44682d08902d3092bd50d5e1a664a3fad5"
+    },
+    {
+      "path": "backend/src/roll/runtime/reviews.py",
+      "bytes": 45030,
+      "sha256": "a1afa6f6e972c79328bc4df9684f9cef773e60c97d73f50659e491af7762c47f"
+    },
+    {
+      "path": "backend/src/roll/worker.py",
+      "bytes": 1644,
+      "sha256": "e27e0a6fa0fc0c9c95850cd504435b6cc05b12c956fd3d73fcf515860f8a1a87"
+    },
+    {
+      "path": "frontend/src/api.ts",
+      "bytes": 4305,
+      "sha256": "af9904a2cf21a05c9bd2280107ecfca8b3e61610f172a22c4df98b6c92a3121f"
+    },
+    {
+      "path": "frontend/src/app.tsx",
+      "bytes": 1756,
+      "sha256": "d2c98369c8d16559278cce56fb913f13aa8c0623c14dcced8e74a6f95b25406f"
+    },
+    {
+      "path": "frontend/src/components/action-panel.tsx",
+      "bytes": 6088,
+      "sha256": "f297bcf007dbdb49e26814f6803e8115938b58f05a577ae4b2e2cdb52687b24b"
+    },
+    {
+      "path": "frontend/src/components/backend-panel.tsx",
+      "bytes": 1762,
+      "sha256": "db294641db537ab14fa50a2fd5960cd4d49e65890f427b6a202d82892b4c3bb1"
+    },
+    {
+      "path": "frontend/src/components/backup-panel.tsx",
+      "bytes": 4426,
+      "sha256": "66a2e0d7fb48303710a5b9a615a24ec3c67f4810f40c47ecdebe1fd74e6c8753"
+    },
+    {
+      "path": "frontend/src/components/capability-panel.tsx",
+      "bytes": 3509,
+      "sha256": "6bb5f24d93eec0c0a16df549d47c85630bb513e6c3b18c6f4306564bba6d22e5"
+    },
+    {
+      "path": "frontend/src/components/execution-intents.tsx",
+      "bytes": 3873,
+      "sha256": "4bf8005f5b57b50aa53379060aedf34e585bf9c27031c68e94114ee0f0379108"
+    },
+    {
+      "path": "frontend/src/components/forward-panel.tsx",
+      "bytes": 4190,
+      "sha256": "c0e0fb7604454e0a0856dd2733a500479e61aa9ceb11f878a91d7dc77b274d7f"
+    },
+    {
+      "path": "frontend/src/components/funding-status.tsx",
+      "bytes": 844,
+      "sha256": "d76c6d1b575dbd31847833e966c8f55d0aea4db433092f6c71db0e85061c633f"
+    },
+    {
+      "path": "frontend/src/components/lifecycle-panel.tsx",
+      "bytes": 11324,
+      "sha256": "e4891254a56311a7f09476ed9e76f565494637ce6e7a083a83d3ef1fddd2eb91"
+    },
+    {
+      "path": "frontend/src/components/notification-channel-panel.tsx",
+      "bytes": 3554,
+      "sha256": "a8adbb4ace1d16f1299ef3978ff48254d246d5f3795d8e973623e9c904bc2418"
+    },
+    {
+      "path": "frontend/src/components/notification-panel.tsx",
+      "bytes": 4602,
+      "sha256": "10fd6e0fe04541f95d48273bdb6d7b10114d4be00d821641a1757b682f16ce3f"
+    },
+    {
+      "path": "frontend/src/components/review-panel.tsx",
+      "bytes": 11606,
+      "sha256": "76c2a7a975a281e5cd61a0839d8ba6798be5a9150a895dfbb9a9a2b818f699f3"
+    },
+    {
+      "path": "frontend/src/main.tsx",
+      "bytes": 222,
+      "sha256": "f9266e79bd456471b764556f8903ae591055374a19e10681c8b7e8ce8f4ce871"
+    },
+    {
+      "path": "frontend/src/pages/collections.tsx",
+      "bytes": 4675,
+      "sha256": "4737116a40e305afafae6bd0d7f332aae82dd47dba395096135296b67e9a5aff"
+    },
+    {
+      "path": "frontend/src/pages/evidence.tsx",
+      "bytes": 18480,
+      "sha256": "0d5957902596b5709003b666a40c7e359fcf37e1323905dc7ba5be7425822761"
+    },
+    {
+      "path": "frontend/src/pages/executions.tsx",
+      "bytes": 7068,
+      "sha256": "a4026e39bb85d4a1c160bf5bb2e055c1cbb91a3b4571e363236ad4f0e469382a"
+    },
+    {
+      "path": "frontend/src/pages/history.tsx",
+      "bytes": 5490,
+      "sha256": "40a0b586461cf0e9c41a1c4de4b412dcb8ef09debdcd0ab9d9a3f83a3632de26"
+    },
+    {
+      "path": "frontend/src/pages/market.tsx",
+      "bytes": 12149,
+      "sha256": "fb203471fec4fd414d004b88349b77398c4b49630c4ce4c67297ec96c1c79bda"
+    },
+    {
+      "path": "frontend/src/pages/models.tsx",
+      "bytes": 6626,
+      "sha256": "ee0489b038ee9b94d8a3bfa34368e603dbd7f01dedcf591d7510e911f9ec2ace"
+    },
+    {
+      "path": "frontend/src/pages/research.tsx",
+      "bytes": 9032,
+      "sha256": "b4fef02595cdb9192bf4a1f3e6dba66cf8a934df9aaa2d90757e1e0a150e565b"
+    },
+    {
+      "path": "frontend/src/pages/risk-policies.tsx",
+      "bytes": 6151,
+      "sha256": "7c76b05f293799d1605d20904f82bba1f79d2b27798e99ccab98e95b823826e3"
+    },
+    {
+      "path": "frontend/src/pages/settings.tsx",
+      "bytes": 5638,
+      "sha256": "a666352b72f796610aaab28eb933d9b0a9a14ee2db3c1a4b21c507b6633130c0"
+    },
+    {
+      "path": "frontend/src/pages/shadow.tsx",
+      "bytes": 7638,
+      "sha256": "140eb0921e9f2847196b10dbcff2b20be981ed18fd0d3fbac2360e3214b95239"
+    },
+    {
+      "path": "frontend/src/pages/SourceResolution.tsx",
+      "bytes": 7309,
+      "sha256": "04b2ce8c8246ba93f9ca783a8d6d5025d59590c1ccc3bb2dd17c4723b8212586"
+    },
+    {
+      "path": "frontend/src/pages/sync-account.tsx",
+      "bytes": 9437,
+      "sha256": "eed7262c58e85ceb75c2d617d25f9ee92883eec261742234659c925d96ce5a96"
+    },
+    {
+      "path": "frontend/src/pages/sync-cash.tsx",
+      "bytes": 9883,
+      "sha256": "3edba39b9da759e8e77b9734f9bae9144ad2a821a9948b2936c2bf906d680d4d"
+    },
+    {
+      "path": "frontend/src/pages/sync-csv.tsx",
+      "bytes": 6496,
+      "sha256": "658d45db5a86cdbe3d66d0993138bbc48b39cb6cf6de200fcd21ba5ea1da0683"
+    },
+    {
+      "path": "frontend/src/pages/sync-fill.tsx",
+      "bytes": 10471,
+      "sha256": "bee458b8d827279f4ab3525006856aec09613acf86e2e76b4062823a397be188"
+    },
+    {
+      "path": "frontend/src/pages/sync-reconcile.tsx",
+      "bytes": 13191,
+      "sha256": "7c1379dbf08a95d491d96b1211364096add53f5422f1fa5e73fd6b5550f490bf"
+    },
+    {
+      "path": "frontend/src/pages/technical-review.tsx",
+      "bytes": 4742,
+      "sha256": "db749d79e59c390831c1919dca9af69adda4138c065f384952d3f15dcb49609b"
+    },
+    {
+      "path": "frontend/src/pages/today.tsx",
+      "bytes": 5795,
+      "sha256": "8b1476f79af0f39d3226e0892fb2a7323c10007f8047065df967013d10b3e619"
+    },
+    {
+      "path": "frontend/src/pages/validation.tsx",
+      "bytes": 4776,
+      "sha256": "b961110465752d44780f0b2a89f697a794be4efd561f5b50fd8fcd0935cef9d0"
+    },
+    {
+      "path": "frontend/src/pages/valuation.tsx",
+      "bytes": 9574,
+      "sha256": "55e77d4676b24bf998467461e2212f7e5b5071679e51bba9f8534e97d3f6aee9"
+    },
+    {
+      "path": "frontend/src/pages/verification.tsx",
+      "bytes": 10349,
+      "sha256": "efb2e289b6aa9fe44f4c3c19e681bc6e9b99a34a98637cf4783cbbbfa05e1da0"
+    },
+    {
+      "path": "frontend/src/styles/app.css",
+      "bytes": 2951,
+      "sha256": "68ae68e6af9e70c7f0808f0904f90bcbeab0124e90e8a76e5aa864edfb75be6f"
+    },
+    {
+      "path": "frontend/src/styles/evidence.css",
+      "bytes": 238,
+      "sha256": "2954ea6902461ac42c6fea617b909c018940f23b8d4fb8c63fdea3c6817d5f57"
+    },
+    {
+      "path": "frontend/src/styles/funding.css",
+      "bytes": 462,
+      "sha256": "c77a5ad79401a79a210370c82a59a82dfc08576931a84de3529fd459f408dc00"
+    },
+    {
+      "path": "frontend/src/styles/market.css",
+      "bytes": 551,
+      "sha256": "1330d6c4d18e5f53613d87553dd4248c5dbe391d7c85ec5b39ad2151bb97b848"
+    }
+  ]
+}

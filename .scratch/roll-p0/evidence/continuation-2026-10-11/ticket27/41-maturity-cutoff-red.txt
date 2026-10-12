@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_claimed_mature_label_after_evidence_cutoff_stays_unscored ________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r21/test_claimed_mature_label_afte0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000028E90A6E3F0>
+
+    def test_claimed_mature_label_after_evidence_cutoff_stays_unscored(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(30)
+        package['monitoring_basis']['results'] = [{'known_at': package['required_as_of'],
+            'mature_at': (datetime.fromisoformat(package['required_as_of']) + timedelta(days=1)).isoformat(),
+            'mature': True, 'label': 1}]
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            grant = prepare(client, package)
+            result = client.post('/api/capabilities/monitoring/check', json={'grant_id': grant['grant_id'], 'basis': 'fixed future label cutoff'})
+            assert result.status_code == 201, result.text
+            value = result.json()
+>           assert value['maturity']['mature_count'] == 0
+E           assert 1 == 0
+
+tests\application\test_capability_monitoring.py:131: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_monitoring.py::test_claimed_mature_label_after_evidence_cutoff_stays_unscored
+1 failed in 6.95s

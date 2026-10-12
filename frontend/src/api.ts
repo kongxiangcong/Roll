@@ -7,7 +7,12 @@ export type Account = {latest_confirmed_input_at?:string;latest_effective_fact_a
 export type Receipt = {receipt_id:string;draft_id:string;account_version:number;confirmed_at:string;event_ids:string[]};
 export type Draft = {draft_id:string;preview:Record<string,{before:unknown;after:unknown}>;status?:string;issues?:string[];command?:{kind:string;payload:Record<string,unknown>}};
 export type Funding = {version:number;state:string;loss_status:string;remaining_loss_allowance:string|null;scope_kind?:'ACCOUNT'|'TRIAL_ACTUAL';scope_id?:string;purpose?:string;capital_amount?:string;total_exposure?:string;single_exposure?:string;cash_reserve?:string;loss_threshold?:string;basis?:string;effective_at?:string;enabled?:boolean;pause_latched?:boolean;confirmed_at?:string};
-export type Capability = {state:string;reason:string};
+export type CapabilityGrant = {grant_id:string;evidence_kind:string;expires_at:string;scope:{instruments:string[];frequency:string;horizon:number};allowed_actions:string[]};
+export type LifecycleScope='NEW_RISK'|'MODEL'|'ALL_MONITOR';
+export type LifecycleState={state:string;version:number;reason_code:string|null;reason:string|null;effective_at:string|null;event_id?:string};
+export type Lifecycle={version:number;scopes:Record<LifecycleScope,LifecycleState>;observations_allowed:boolean;model_judgments_allowed:boolean;new_risk_allowed:boolean};
+export type CurrentCapabilityScope={basis_type:string;grant_id:string;scope:CapabilityGrant['scope'];allowed_actions:string[];expires_at:string;system_usable:boolean};
+export type Capability = {state:string;reason:string;formal_judgment:string;headline:string;formal_capabilities:CurrentCapabilityScope[];method_capabilities:CurrentCapabilityScope[];reasons?:string[];human_review_label?:string;grant?:CapabilityGrant;lifecycle?:Lifecycle;grant_statuses?:{state:string;reason:string;grant:CapabilityGrant;allowed_actions?:string[];lifecycle?:Lifecycle}[]};
 export type RuntimeHealth = {service:string;reason:string};
 export async function request<T>(path:string, body?:unknown):Promise<T> {
   const response = await fetch(`/api${path}`,body===undefined ? undefined : {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});

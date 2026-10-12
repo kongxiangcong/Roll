@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_action_successor_keeps_fixed_empty_and_nonempty_ids_after_same_cutoff_append_and_restart _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30a-packet-red/test_action_successor_keeps_fi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000027E29622520>
+
+    def test_action_successor_keeps_fixed_empty_and_nonempty_ids_after_same_cutoff_append_and_restart(tmp_path,monkeypatch):
+        method_clock(monkeypatch);bodies=actual_bodies();calls=[]
+        def supplier(request):
+            calls.append(request);return httpx.Response(200,content=bodies[request.url.params['sqlId']])
+        transport=httpx.MockTransport(supplier)
+        with TestClient(create_app(tmp_path,market_transport=transport,runtime_role='API')) as client:
+            base=start(client)
+            original=client.post(base+'/post-close-packets',json={'basis':'Original daily packet keeps old parser and input identity'}).json()
+            empty_command={'source_receipt_id':None,'assessment_ids':[],'predecessor_packet_id':original['packet_id'],
+                           'basis':'Explicit empty action successor before any source receipt'}
+            response=client.post(base+'/sse-action-packets',json=empty_command)
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_company_actions.py:78: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_company_actions.py::test_action_successor_keeps_fixed_empty_and_nonempty_ids_after_same_cutoff_append_and_restart
+1 failed in 6.14s

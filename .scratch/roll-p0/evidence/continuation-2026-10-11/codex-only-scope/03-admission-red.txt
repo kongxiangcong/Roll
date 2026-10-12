@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_legacy_deepseek_admission_is_refused_before_request_retry_or_material_lookup _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/codex-scope/.scratch/csr2/test_legacy_deepseek_admission0')
+
+    def test_legacy_deepseek_admission_is_refused_before_request_retry_or_material_lookup(tmp_path):
+        legacy=legacy_settings(tmp_path)
+>       with TestClient(create_app(tmp_path)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_codex_only_scope.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:946: in create_app
+    backups,marker,previous=bootstrap(directory)
+                            ^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\runtime\backups.py:521: in bootstrap
+    previous=backups.create('PRE_UPGRADE')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\runtime\backups.py:273: in create
+    self.validate(staging,manifest)
+backend\src\roll\runtime\backups.py:311: in validate
+    verify_database(database,manifest)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('//?/D:/dsh-proj/Roll/.scratch/worktrees/codex-scope/.scratch/csr2/test_legacy_deepseek_admission0/backups/.building-45abe318-c092-49fb-a07a-366860346d43/roll.sqlite3')
+manifest = {'access_control': 'WINDOWS_CURRENT_USER_AND_SYSTEM', 'account_confirmed_at': None, 'account_projection_sha256': '74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b', 'account_version': 0, ...}
+
+    def verify_database(path,manifest):
+        with connection(path) as db:
+            if db.execute('PRAGMA integrity_check').fetchone()[0]!='ok':raise HTTPException(409,{'code':'DATABASE_INTEGRITY_FAILED'})
+            actual=facts(db)
+>           if actual['schema_version'] not in {1,2}:raise HTTPException(409,{'code':'UNSUPPORTED_DATABASE_SCHEMA'})
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           fastapi.exceptions.HTTPException: 409: {'code': 'UNSUPPORTED_DATABASE_SCHEMA'}
+
+backend\src\roll\runtime\backups.py:208: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_codex_only_scope.py::test_legacy_deepseek_admission_is_refused_before_request_retry_or_material_lookup
+1 failed in 2.52s

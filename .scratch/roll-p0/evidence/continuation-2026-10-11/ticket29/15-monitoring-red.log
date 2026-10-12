@@ -1,0 +1,96 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_report_reads_registered_execution_misfit_and_missing_support_without_new_check_or_grant[0-PRICE_OUTSIDE_FROZEN_WINDOW] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r9/test_report_reads_registered_e0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000224F67F75C0>
+missing = 0, expected_reason = 'PRICE_OUTSIDE_FROZEN_WINDOW'
+
+    @pytest.mark.parametrize('missing,expected_reason', [(0, 'PRICE_OUTSIDE_FROZEN_WINDOW'), (5, 'REQUIRED_FEATURE_COVERAGE_BELOW80_PERCENT')])
+    def test_report_reads_registered_execution_misfit_and_missing_support_without_new_check_or_grant(tmp_path, monkeypatch, missing, expected_reason):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = monitored_package(20, missing=missing)
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', capability_method_file=file)) as client:
+            evaluation = prepare_copied_actual(client, p)
+            if missing == 0:
+                intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+                actual = fill(3, 'report-outside-band')
+                actual['payload'].update(quantity='100', price='155.00', effective_at=p['required_as_of'])
+                actual['payload']['fee']['amount'] = '7.00'
+                draft = client.post('/api/account/drafts', json=actual)
+                assert draft.status_code == 201, draft.text
+                confirmation = client.post('/api/account/confirm', json={'draft_id': draft.json()['draft_id'], 'idempotency_key': 'outside',
+                    'fill_allocations': [{'intent_id': intent['intent_id'], 'fill_record_id': 'report-outside-band',
+                        'allocated_quantity': '100', 'association_status': 'USER_CONFIRMED'}]})
+                assert confirmation.status_code == 200, confirmation.text
+            response = client.post('/api/capabilities/monitoring/check', json={'grant_id': evaluation['decisions'][0]['grant_id'],
+                'basis': 'source-bound METHOD existing registered monitoring fixture'})
+            assert response.status_code == 201, response.text
+            check = response.json()
+            assert check['status'] == 'RESTRICTED' and expected_reason in check['reasons'], check
+            correction = client.post('/api/capabilities/corrections', json={'monitoring_check_id': check['check_id'],
+                'category': 'EXECUTION_ASSUMPTION' if missing == 0 else 'DATA_REPAIR',
+                'error_source': expected_reason, 'expected_improvement': 'restore source coverage or register successor assumptions',
+                'affected_modules': ['execution' if missing == 0 else 'data'], 'validation_plan': 'verify source and rerun registered regression',
+                'changes_frozen': False, 'idempotency_key': 'report-review'})
+            assert correction.status_code == 201, correction.text
+            before = {path: client.get(path).json() for path in ['/api/capabilities/monitoring', '/api/capabilities/grants', '/api/capabilities/events']}
+            params = {'monitoring_check_id': check['check_id']}
+            url = '/api/research/reports/' + FREEZE
+            report = client.get(url, params=params).json()
+>           assert report['monitoring']['checks'] == [check]
+                   ^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'monitoring'
+
+tests\application\test_reports.py:54: KeyError
+_ test_report_reads_registered_execution_misfit_and_missing_support_without_new_check_or_grant[5-REQUIRED_FEATURE_COVERAGE_BELOW80_PERCENT] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r9/test_report_reads_registered_e1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000224F67F76F0>
+missing = 5, expected_reason = 'REQUIRED_FEATURE_COVERAGE_BELOW80_PERCENT'
+
+    @pytest.mark.parametrize('missing,expected_reason', [(0, 'PRICE_OUTSIDE_FROZEN_WINDOW'), (5, 'REQUIRED_FEATURE_COVERAGE_BELOW80_PERCENT')])
+    def test_report_reads_registered_execution_misfit_and_missing_support_without_new_check_or_grant(tmp_path, monkeypatch, missing, expected_reason):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = monitored_package(20, missing=missing)
+        p['account_version'] = p['loss_facts']['baseline_account_version'] = 3
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), runtime_role='API', capability_method_file=file)) as client:
+            evaluation = prepare_copied_actual(client, p)
+            if missing == 0:
+                intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+                actual = fill(3, 'report-outside-band')
+                actual['payload'].update(quantity='100', price='155.00', effective_at=p['required_as_of'])
+                actual['payload']['fee']['amount'] = '7.00'
+                draft = client.post('/api/account/drafts', json=actual)
+                assert draft.status_code == 201, draft.text
+                confirmation = client.post('/api/account/confirm', json={'draft_id': draft.json()['draft_id'], 'idempotency_key': 'outside',
+                    'fill_allocations': [{'intent_id': intent['intent_id'], 'fill_record_id': 'report-outside-band',
+                        'allocated_quantity': '100', 'association_status': 'USER_CONFIRMED'}]})
+                assert confirmation.status_code == 200, confirmation.text
+            response = client.post('/api/capabilities/monitoring/check', json={'grant_id': evaluation['decisions'][0]['grant_id'],
+                'basis': 'source-bound METHOD existing registered monitoring fixture'})
+            assert response.status_code == 201, response.text
+            check = response.json()
+            assert check['status'] == 'RESTRICTED' and expected_reason in check['reasons'], check
+            correction = client.post('/api/capabilities/corrections', json={'monitoring_check_id': check['check_id'],
+                'category': 'EXECUTION_ASSUMPTION' if missing == 0 else 'DATA_REPAIR',
+                'error_source': expected_reason, 'expected_improvement': 'restore source coverage or register successor assumptions',
+                'affected_modules': ['execution' if missing == 0 else 'data'], 'validation_plan': 'verify source and rerun registered regression',
+                'changes_frozen': False, 'idempotency_key': 'report-review'})
+            assert correction.status_code == 201, correction.text
+            before = {path: client.get(path).json() for path in ['/api/capabilities/monitoring', '/api/capabilities/grants', '/api/capabilities/events']}
+            params = {'monitoring_check_id': check['check_id']}
+            url = '/api/research/reports/' + FREEZE
+            report = client.get(url, params=params).json()
+>           assert report['monitoring']['checks'] == [check]
+                   ^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'monitoring'
+
+tests\application\test_reports.py:54: KeyError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_report_reads_registered_execution_misfit_and_missing_support_without_new_check_or_grant[0-PRICE_OUTSIDE_FROZEN_WINDOW]
+FAILED tests/application/test_reports.py::test_report_reads_registered_execution_misfit_and_missing_support_without_new_check_or_grant[5-REQUIRED_FEATURE_COVERAGE_BELOW80_PERCENT]
+2 failed in 21.39s

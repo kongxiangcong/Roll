@@ -13,16 +13,26 @@ from pydantic import BaseModel,ConfigDict,Field,model_validator
 from roll.accounts.ledger import encode,now
 
 
+class MethodWindows(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    development:int=Field(default=160,ge=60,le=1000)
+    calibration:int=Field(default=160,ge=60,le=1000)
+    sealed:int=Field(default=60,ge=21,le=1000)
+
+
 class DatasetCommand(BaseModel):
     model_config=ConfigDict(extra='forbid')
     archive_id:str|None=Field(default=None,pattern=r'^[a-z0-9][a-z0-9-]{0,39}$')
     source_run_id:str|None=Field(default=None,min_length=1,max_length=100)
     basis:str=Field(min_length=1,max_length=2000)
+    method_windows:MethodWindows|None=None
 
     @model_validator(mode='after')
     def source_is_unambiguous(self):
         if (self.archive_id is None)==(self.source_run_id is None):
             raise ValueError('Exactly one archive_id or source_run_id is required')
+        if self.source_run_id is not None and self.method_windows is not None:
+            raise ValueError('method_windows only applies to explicit synthetic archives')
         return self
 
 
@@ -52,6 +62,13 @@ def import_dataset(evidence,command):
     if len(set(dates))!=len(dates):raise HTTPException(409,'同版原价日线重复，不能静默挑选')
     partitions={};supported=len(daily)>=181
     intervals={'DEVELOPMENT':(0,min(80,len(daily)),0),'CALIBRATION':(100,140,80),'SEALED':(160,len(daily),140)}
+    if command.method_windows:
+        if snapshot['evidence_kind']!='METHOD_CASE':raise HTTPException(422,'虚拟开发窗口仅允许明确METHOD_CASE，不改变真实数据准入')
+        w=command.method_windows;cal_start=w.development+20;seal_start=cal_start+w.calibration+20
+        if len(daily)!=seal_start+w.sealed:raise HTTPException(422,'虚拟输入行数须与预登记窗口和隔离期完全一致')
+        supported=True
+        intervals={'DEVELOPMENT':(0,w.development,0),'CALIBRATION':(cal_start,cal_start+w.calibration,cal_start-20),
+                   'SEALED':(seal_start,len(daily),seal_start-20)}
     for name,(start,end,context_start) in intervals.items():
         if name!='DEVELOPMENT' and not supported:
             partitions[name]={'state':'INSUFFICIENT_COVERAGE','rows':0};continue
@@ -83,7 +100,8 @@ def import_dataset(evidence,command):
         'limitations':['CURRENT_PROVIDER_REVISION_NOT_HISTORICAL_PIT','HISTORICAL_SPECIAL_STATUS_UNKNOWN',
             'ENGINEERING_PRICE_INPUT_EXPOSURE_NOT_A_CONFIRMATORY_PASS_LOOK','UNKNOWN_ACTUAL_BROKER_COMMISSION',
             'HISTORICAL_AMOUNT_MISSING','HISTORICAL_SEAL_INDEPENDENCE_UNPROVEN'],
-        'partition_basis':'181 available sessions:80 development,20 label embargo,40 calibration,20 label embargo,21 sealed; only metadata used to allocate',
+        'partition_basis':('Explicit synthetic metadata windows: '+encode(command.method_windows.model_dump())+'; 20-session embargo between windows'
+            if command.method_windows else '181 available sessions:80 development,20 label embargo,40 calibration,20 label embargo,21 sealed; only metadata used to allocate'),
         'label_results_computed':False,'validation_verdict':None,'capability':'NOT_GRANTED'}
 
 
@@ -93,6 +111,7 @@ def partition(evidence,dataset,name,allow_sealed=False):
     if value['state']!='HOST_FILTERED':raise HTTPException(409,{'code':'RESEARCH_WINDOWS_NOT_PREREGISTERED' if value['state']=='NOT_PREREGISTERED' else 'INSUFFICIENT_PARTITION_COVERAGE','reason':'仅登记采集覆盖不授权训练窗口；不临时缩窗'})
     facts=[json.loads(r['payload']) for r in pq.read_table(evidence.raw(value['artifact']['sha256'])).to_pylist()]
     return {'dataset_id':dataset['dataset_id'],'namespace':'HISTORICAL','partition':name,'metadata':value,
+        'data_use':dataset.get('data_use'),'research_assumptions':dataset.get('research_assumptions'),
         'facts':facts,'context_policy':'Leading20 calibration rows are feature context only; never fitted labels',
         'historical_point_in_time_proven':False,'capability':'NOT_GRANTED','consumer_knowledge_cutoff':now(),
         'availability_basis':'Consumers must compare original available_at with their own knowledge cutoff; request flag is not permanent',

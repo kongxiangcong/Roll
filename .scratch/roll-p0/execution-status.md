@@ -14,6 +14,42 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 
 ## 当前前沿
 
+2026-10-12最终清理：10个精确实施工作树已清理，10个接受分支保留；完整运行材料、Root依赖/15保护/3许可工件/原19字节核验一致，原42项非本票untracked入口未改。3802项新增遗漏闭合（3687公开双端保存、113测试私有元数据排除、2来源UNKNOWN私有同卷rename保留且不读/hash/copy）；业务/来源进程停止0（先前自有只读预检中止2）、SQL连接0、实际provider/外发/新业务验收0。原失败诊断保留。见[最终清理收据](evidence/continuation-2026-10-11/final-cleanup/acceptance.md)。各票Completion和真实条件仍按下列当前账本，未宣称全规格PASS。
+
+2026-10-11最终工程对账：四项P2及prepare并发残差已独立修复接受，29工程complete；31干净锁定安装、当前五入口/无交易与按需休市复盘、两项当前15检索预算、三进程/备份恢复及三个P95已有独立有限收据。P95分别221.6225ms、1079.4350ms、0.5617275s，记录环境下均通过；本地评估为1个METHOD冻结scope＋29拒绝＋5背景，非完整真实资格。239条均已手工对账，没有新239行为全跑或全规格PASS。25缺冻结政策及生产费用/有效期输入、27正向LOSS规则、30完整来源合同仍partial，31据先决条件保持partial；28站内/配置/内部链完成，实际外发0待用户配置。32—34真实前向起点/自然终点/资格未成立，FITTED_UNVALIDATED/NOT_GRANTED保持。95dd已批准包真实Codex技术审阅仅一次，内部双轴审阅不新增ReviewRecord；DeepSeek后续排除。
+
+[239条当前对账](evidence/continuation-2026-10-11/final-manual239/ledger.md)、[31当前独立](evidence/continuation-2026-10-11/ticket31-final-independent/acceptance.md)、[无交易补验](evidence/continuation-2026-10-11/ticket31-flow-independent/acceptance.md)。以下各旧前沿/正文按其原时点保留；当前未完成责任以新账本与每票末尾评论为准。
+
+2026-10-11最新：最终singlefix产品4a975c62、稳定94d87111已独立接受并合入67afeadc，收据076e67d5。四项P2及prepare并发残差关闭，独立5PASS31.09秒；owner4872文件/299928587字节及独立396文件双端零差异，保护15、允许3工件和原19checksum不变。29风险报告工程缺口关闭，Completion=complete；25政策/生产输入、27LOSS、28实际发送和30完整来源仍partial。31已从接受根继续五入口/三P95/两项当前检索预算及三进程有限交付检查，不能继承旧性能。真实Codex95dd包只执行一次，DeepSeek排除、外发0待配置、FITTED_UNVALIDATED/NOT_GRANTED、32—34真实条件不变。[审阅关闭](evidence/continuation-2026-10-11/final-review/resolution.md)、[独立接受](evidence/continuation-2026-10-11/final-singlefix-independent/acceptance.md)。以下旧前沿保留原时点。
+
+2026-10-11最终内部审阅：固定80fbcc23产品快照，Standards无可操作问题；Spec四项P2为能力标题恒关闭、风险SELL报告缺冻结费用键、prepare重试未返回不可变原回执、设置维护表单未默认折叠。singlefix在自有树处理，后续独立接受与31五入口/三P95仍待执行。已将未登记的ADD/HOLD/判断WAIT/反向/冷却/迁移及生产费用/有效期输入缺口回20/25/31，25整票partial，既有有限验收保持。真实Codex95dd包一次已完成，此次内部代码审阅不新增模型ReviewRecord；DeepSeek排除、外部发送0待配置、FITTED_UNVALIDATED/NOT_GRANTED及32—34条件不变。见[双轴审阅](evidence/continuation-2026-10-11/final-review/review.md)。
+
+2026-10-11最新接受：29源`db6ffec1`合入`80fbcc23`、独立最终`182de124`，五项只读语义及合后组合通过，工具失败谱系保留，13043原运行件及3122独立运行件双端零差异。30第九源`14b00826`合入`5073f486`、独立最终`b3cbfac`，3离线公共API通过，实际2/CLOSED不再扩源，完整来源仍partial。31新树干净安装及静态许可/生产Agent对账完成；双轴内部审阅固定产品80fbcc23/基线ca912b81，已识别当前能力标题常量及风险成交报告缺费用键，29保持partial，统一修复后继续31功能/P95检查。外部实际发送0，FITTED_UNVALIDATED/NOT_GRANTED及32—34真实条件不变。见[29独立](evidence/continuation-2026-10-11/ticket29-independent/acceptance.md)、[第九独立](evidence/continuation-2026-10-11/ticket30-action-independent/acceptance.md)。
+
+2026-10-11当前前沿：25风险优先及首次失效去重、28站内通知/配置/内部链和30第八价格切片均已独立接受。29最终10个API用例与Chrome通过，仍待独立接受；31在新自有工作树只进行干净锁定安装准备，最终五入口/三P95等待集成审阅修复。30第九实际两次匿名请求已结束且预算CLOSED：FH原件5548字节、SG原件496字节，离线消费零HTTP；独立接受正在进行。FH仅报告6条中的首5条，SG空结果及未知日期边界不能证明完整行动清单。以下各段保留原时点，旧“第九未执行”不是当前结论。28实际外发0，按用户要求待配置；真实资格FITTED_UNVALIDATED/NOT_GRANTED、32—34真实条件仍未成立。
+
+2026-10-11第八30价格切片已独立接受（源`3d541869`，合入`4cc5b21`，收据`3d029cbf`）：4离线公共API通过50.37秒、合后固定IDs/重放与28路由共存单例通过9.08秒。首轮Windows长路径夹具失败及独立路由422错误预期分别留存，不改写为单轮全绿。固定409字节报价与官方JS绑定精确价格/OHLC/换手，显式PRICE_SUCCESSOR保留旧包身份；1762文件185392709字节双端零差异，实际HTTP0。30仍partial，完整每日/状态/行动版本及旧义务来源未成立。见[第八独立验收](evidence/continuation-2026-10-11/ticket30-price-independent/acceptance.md)。第九准备只允许固定官方客户端根路径两SQL各首5条；执行前冻结实现与有限计划，总预算最多2匿名尝试，无重试/回退/新增页。
+
+2026-10-11通知内部链已独立接受（源`83c9289d`，合入`1387bdd`）：4公共API/真实SQLite用例通过21.30秒，核首次失效audit/通知去重、长中文站内原文与有限出站投影、只读时间链UNKNOWN及显式已读、禁用配置保存零发送。1488保存文件双端2976核零差异，47精确私有配置/锁仅元数据排除，保护源码及原19校验不变。28整体partial，真实自用ntfy发送0，按用户要求待配置；内部工程已解除29依赖，29正在实施。见[独立28验收](evidence/continuation-2026-10-11/ticket28-independent/acceptance.md)。第八30离线价格切片独立4例通过，合入及收据正在收口；第九两行动SQL有限取数仍只是冻结准备，未执行。
+
+2026-10-11动作补充已独立接受（`eb060fd8`，源`9332d0cd`）：DEC-02/MON-03同账户双资格先风险后收益，计划减仓不释放新增预算；收益政策缺失/不支持或无收益授权不遮蔽独立风险。首次失效事实只记录一次，重复开卡不新增ACTION_INVALIDATED，后来实际失效原因仍出现在当前响应。独立5项公共API通过，保护15源码、允许3工件及原19校验不变；见[独立动作验收](evidence/continuation-2026-10-11/ticket25-ordering-independent/acceptance.md)。未登记的ADD/HOLD/判断WAIT/反转/冷却/迁移政策及LOSS正向恢复规则继续不足。28内部链与30第八离线价格切片已稳定交接，等待独立接受；29依赖28内部链。外部自用提醒按用户要求待配置，实际发送0。
+
+2026-10-11当前核对补充（accepted 8fa8c81）：25同账户双资格的风险顺序缺陷已由公开接口复现并红→绿，缺失/不支持收益政策或无收益授权不得遮蔽独立风险；自有修复尚待独立接受。28最终23个API/真实OS用例及Chrome/build通过后，跨票组合复现资金缩权重复开卡新增PREVIOUSLY派生原因而重复记ACTION_INVALIDATED；accepted根单例也失败，原失败保留，25追加最小修复，28实质相同通知去重已通过。第七30实际2次取数预算已结束，原件与1577文件保全零差异，独立验收正在收口；不提前记为整体完成。
+
+2026-10-11最新：**01—26工程范围及27有限工程范围已独立接受，28正在实施**。27源86ed2c20合入5572184c，独立收据77f729f6；三范围暂停、同事务失效、冻结检查点/维护、按原因复核及恢复锁有限路径已验。27整体partial：LOSS正向恢复没有已冻结规则，保持拒绝；真实长期合格监测未成立。真实资格仍FITTED_UNVALIDATED/NOT_GRANTED。依赖顺序继续28站内/配置/内部出站链→29；28实际外部发送待用户配置，整体保持partial。30有限来源解析和31安装/worker切片已接受但整体partial；32—34真实起点、自然时间和条件资格尚未成立。以下旧前沿保留其原时点。
+
+26独立首轮6 PASS/1独立断言FAIL（68.45秒），错误把创建草稿后的UPDATE_PENDING与草稿前状态比较；修正同草稿边界后单例1 PASS（8.53秒），不改写首轮为全绿。最终源码真实before_commit/after_commit进程恢复、完整METHOD500绑定/生产200分界、generic200暗改409、REDUCE现金范围、partial余量/四时间及同writer可见性均通过。原5931文件/506312244字节双端11862核零差异，独立311文件已保全，15保护及原19checksum不变；没有新实际训练、资格、资金或外发。见[独立26](evidence/continuation-2026-10-11/ticket26-independent/acceptance.md)、[分阶段26](evidence/ticket26/acceptance.md)。27从0d331791自有工作树实施三范围暂停及后续冻结监测/维护/恢复链，不提前关闭28/29未知项。
+
+2026-10-11本轮：**20与21工程范围完成，按顺序推进23**。21保存G1—G7初步门槛、连续策略/可比基线、概率支持与相关区间、G5必需分项、正式监测固定输入方法、宿主确认性准入及审计、重放/页面。当前真实19一致副本诊断FAIL（G4/G5），G1/G2/G3/G6/G7不足，原账户/家族拟合预算不变，无SEALED消费或真实前向。冻结参数邻域、独立统计/实际G6/G7与技术审阅缺口保留；正式能力NOT_GRANTED。见[21验收](evidence/21/acceptance.md)。以下旧前沿均为历史快照。
+
+2026-10-10本轮：**19基本闭环完成，依赖已具备，后续可另行实施**。ADR0004批准真实历史量价重建用途，严格PIT不足保持限制；实际600362 DEV1148/CAL444完成固定候选训练与独立CAL截距拟合，模型/CAL/输入及依赖工件冻结，校准FITTED_UNVALIDATED、完整实验未冻结、正式能力NOT_GRANTED。460后端/52模块稳定指纹通过，前端build/真实Chrome、两个实际HTTP宿主重启及禁止外网0调用重放、原账户/旧失败预算/154原件保全通过。详见[本轮19验收](evidence/19-reconstruction-2026-10-10/acceptance.md)。仅实施19；没有后续票开发、SEALED消费、真实账户改写或前向起点。以下当天旧路线与取证快照作为历史保留。
+
+2026-10-10 CNEquity补充数据层已接入固定提交c118038：通达信实际27条RAW，源访问审计／失败冷却、清洗隔离、修订、源值差异、SQLite／原件／Parquet校验与备份完成。最终231个累计事实版本／55归档通过完整性检查，原30事实与本次受保护研究／账户／预算／虚拟模型不变。东财日线与巨潮失败冷却，状态休市跳过；当前已知回看27日／新增前向交易日0。相关14测试、最后1重复专项及前端build通过。每日16:10任务已纳入维护，系统仍COLLECTING／NOT_GRANTED；只交付接入工程，不替代真实研究资格。见[最新数据层验收](evidence/cnequity-integration-2026-10-10/acceptance.md)。
+
+2026-10-10 最新路线调整：按用户指示，停止继续搜寻旧PIT，ticket19采用“虚拟工程先完成＋从今日自建前向数据库”并行路线。真实PIT库 `.roll-data/pit` 已开始追加，首批30条真实事实／27个当前已知回看日线日期；今天周六，新增前向交易日0。隔离虚拟库 `.roll-data/synthetic19` 用固定窗口完成透明候选工程链路；METHOD_CASE不消费旧真实家族额度或授予资格。每日16:10采集自动任务已创建。19状态改为ready-for-agent，框架可继续开发；真实训练／校准／冻结、确认性和前向验证、技术审阅及正式资格仍待数据和完整证据，不以工程交付代替。见[框架验收](evidence/19-framework-2026-10-10/acceptance.md)。以下旧同步与partial信息保留为历史，不能解读为仍要求继续寻找旧PIT。
+
+2026-10-10最新：Wind+搜狐更新包已同步实际数据库，7,031条交付记录/双源对称视图/105个关联唯一归档文件。旧版1,977条原值及2018-12-31休市校正与新包一致，旧数据集保留；最新两个数据集 `7b5e4ee4-e9cb-438d-a960-ccb9b6c60a8a`、`b34112c8-7eea-4367-acbd-73dba0b8f296`。正确日历1,945交易日，未解释缺日期0、8停牌占位另列，1,944状态日未完整覆盖。按100元实际显示精度仍40日量额待核（包内10,000元容差仅2日），coverage旧统计已单列纠正；PIT/版本链/完整状态权益及真实训练仍未合格。实际重放、重复同步和账户/预算不变通过，19仍partial/needs-info、20不解锁。见[最新最终核对](evidence/19-workbuddy-wind-sync-2026-10-10/acceptance.md)；[首次旧版同步](evidence/19-workbuddy-sync-2026-10-10/acceptance.md)保留为历史记录。
+
 - 01：本票范围完成，已合入 `17ca07ded3e78d6d0e0bfc146a2021032b4356b8`。后续 26/27 等联验仍按其责任票保留。
 - 10：本票范围完成，已合入 `759be587ea50ef69151cf0d2999c519b2b6c4e50`；实际估值及动作触发联验仍等待 09/25/27。
 - 02：本票范围完成，已合入 `fd4d177e17e59cc6dcacdf7fd0cb73a5605aae16`；08/13 外部超时组合及 26/27 真实动作联验仍待对应票。
@@ -29,7 +65,7 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 - 13：本票范围完成，已合入 `14568b1582f9500ee091dabe2b741224e95e5322`；真实双向30持仓/5固定指数切换、旧配置冻结、关联重试、依据复用、有限超时/取消和生产隔离分层留证。双轴修复 `db9ef0c` 合入 `6ad9928`，两轴只读复核无新增问题；完整集成验收另列，不授予正式能力。
 - 17：本票工程范围完成，已合入 `f2d312942d175e5e3bc19ca3142555a5b4487707`；登记/尝试/审计不等于完整协议冻结，历史支持/PIT/封存独立性缺口保留。
 - 18：本票工程范围完成，已合入 `e8d8b7f5f865ccc0fbf007c03d15c3597f18157f`；实际120条均不可评分，训练支持0，不用方法案例代替真实G7。
-- 19：needs-info/partial。最新历史quote合计43业务日、最长连续序列2日，仍不能作为21行回看；2013—2025的14次已知现金分派和官方税制已实现来源绑定研究计算，仍不证明完整权益或实际到账。metadata准入与事务内CAL额度保护已合入，旧模型字节保留；当前家族仍余主拟合／邻域3次、CAL1次。完整取证、工程验收与缺口见[最新续推验收](evidence/19-execution-2026-10-09/acceptance.md)。真实源资格/预登记分窗/完整状态权益、历史规则及非METHOD特征/标签/训练/校准/冻结仍待完成；其中内部路径由代理负责，不能全部归因外部档案。未读取实际SEALED、计算真实标签、清预算或解锁20。旧来源与失败回执保留，模型冻结与20完整实验冻结分开。
+- 19：本票基本要求完成／真实重建模型与CAL工件冻结；旧家族两失败和预算保持，实际训练支持DEV1148/CAL444。模型`8be461f3-af8b-4f0f-a707-13e41cf48249`，code`9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db`；独立校准有效性未确认、严格PIT未证明、完整实验未冻结、正式能力未授权。[本轮验收](evidence/19-reconstruction-2026-10-10/acceptance.md)。ticket19依赖已具备，后续可另行实施；本轮未实施后续票。旧虚拟/取证不足快照保留为历史。
 - 22：本票范围完成，已合入 `c12793096b992dea8a8a79e733d97a33c7a384e1`；确定性政策/压力方法与实际无授权INCONCLUSIVE分别留证，未签发正式能力。
 - 15：本票范围完成，已合入 `ad3b4dbda71e1a48b42df0a78be84fe84c15f12f`；14关键核验实际关联由14完成，后续概率/动作/通知/前向消费者仍待责任票。
 - 14：本票范围完成，已合入 `0609fead5b2b51e50122be69d5176de067e98f6a`；15显式请求消费与17输入审计已联验，真实供应商来源独立性仍不足。
@@ -297,3 +333,140 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴�
 已合入 `3006296` 权益、`7eae269` 应用准入和 `cda5b7e` 原子CAL保护。精确历史正文新增5份、业务日合计43／连续最长2，仍不足21行回看；18真实原件来源绑定的14次已知现金权益仍INCOMPLETE/scorable=false。完整后端429项／48模块通过且指纹不变；这是原子修复前检查，修复后七相关模块41项通过，原日志分开留存。双轴P2已修复复核，旧模型字节不变；真实主机manifest终检与开始相等，3主拟合／1CAL未消耗。两实施工作树托管归档，必要忽略原件保全及归档后SHA／长度0差异。
 
 真实模型、独立校准、冻结尚未通过。外部连续PIT／状态权益证据缺口及内部真实准入／分窗／特征标签训练路径分别记录，不把技术实现转交用户，不让工程示例替代实际验收。19仍needs-info/partial，20不解锁；未读实际SEALED／实际标签、未真实拟合、未推送。见[最新验收、尝试方法和下一步](evidence/19-execution-2026-10-09/acceptance.md)。
+
+## 2026-10-11 Ticket 20 续推与当前依赖前沿
+
+本节是当前状态；以上2026-10-08/09的19部分完成、20尚未解锁记录按原时点保留。19已按2026-10-10明确授权完成当前真实历史量价重建训练、时间隔离CAL拟合与模型工件冻结，集成基线为 `eabc7a3ae3462821bedc80c2d6c8b2a88d04b19c`；逐项真实证据见[19重建验收](evidence/19-reconstruction-2026-10-10/acceptance.md)。重建用途、FITTED_UNVALIDATED、严格历史PIT、完整实验及正式资格继续分别记录，旧失败/预算/暴露不删除。
+
+20完整协议/确定性政策/独立连续影子实施 `fe4a98c` 合入 `72002e2`；独立验收发现非空持仓数量解析HTTP500，由原实现者修正 `4a099d8` 并合入 `b321f40a16bcf7a9ad3d392b7088508f9cce6edb`。修正版单轮7项API/真实SQLite/隔离归档检查通过（88.98秒），单次实际React/FastAPI浏览器通过（59.0秒），TypeScript/Vite构建通过。另一个全新METHOD运行目录的[独立结构化结果](evidence/continuation-2026-10-11/independent20-results.json)确认非空基线守恒、成熟拒绝诊断、账户补录隔离、四结果分列、重启重放及完整协议/重放输入归档损坏拒绝。原红/旧版绿与修正版结果分开保留，不跨运行加总；详见[独立合并验收](evidence/continuation-2026-10-11/merge20.md)。
+
+12个19模型指纹依赖源码SHA256/长度保持相同。原版和修正版停止后的浏览器METHOD运行资料分别保全到根运行证据目录，各312文件逐个SHA256/长度差异0；最终独立运行193文件另有清单。仅本地合并/证据提交，未推送；既有未跟踪资料保留。完整后端回归的最终收据由本轮根实施验收另行记录，本节不将定向结果写成完整回归。
+
+当前01—20及22共21张票完成；20完成仅为工程交付，无真实G1—G7统计PASS、真实前向起点或正式能力授权。21已启动；23等待21。30的20依赖已解除，可行前沿包含30，按用户顺序先推进21→23。24—29、31—34仍按各自前置推进，真实前向和自然月终点不得由METHOD或历史CAL重建代替。20当前HTTP连续影子只消费冻结CAL，21确认性与30真实前向须各自准入独立输入后复用已冻结模拟函数。
+
+### 2026-10-11 Ticket 21 自动验证与当前缺口
+
+本票Completion complete，验证能力与当前候选证据不足分别呈现。最终3项API/SQLite/重放通过；Chrome1项及build通过。真实重建候选在一致副本保存完整冻结和当前诊断，旧方法重放409、现方法0联网一致，无新拟合/SEALED/前向起点。所需忽略的最终METHOD浏览器运行件逐件SHA/长度保全到根`.roll-data/implementation-evidence/21/browser-final-method`；实际副本位于同级`actual-current-copy`。本票不授予正式能力，真实确认性与G7按33责任保留。见[21验收](evidence/21/acceptance.md)。
+
+### 2026-10-11 Ticket 21 独立合并验收与当前前沿
+
+授权实现 `aef9b27` 已no-ff合入 `4f24dac6c18071309107a8a03b968395de44a710`；[独立METHOD公开API](evidence/continuation-2026-10-11/independent21-results.json)及[实际一致副本只读/离线重放](evidence/continuation-2026-10-11/independent21-actual-copy-results.json)分别PASS、进程退出0。重复逻辑机会入选1/raw2、时间段平仓总数1；空策略不足与资金不足硬FAIL分开，清单重启/归档损坏拒绝通过。实际当前G4/G5 FAIL、其余INCONCLUSIVE，最终重放一致、旧方法409，账户与原拟合预算不变；没有新拟合、SEALED消费或真实前向起点。
+
+315个浏览器源/根保全原件SHA与长度独立核对一致；独立METHOD运行目录209文件另有清单，12个19模型指纹依赖源码不变。工程完成不表示真实协议统计结项、独立技术复核或正式能力已完成。详见[合并验收](evidence/continuation-2026-10-11/merge21.md)。当前01—22共22票工程完成；23依赖已解除并按顺序推进。30仍可行但不跳过既定21→23顺序，真实G1—G7与自然月前向证据由后续责任取证。未推送。
+
+### 2026-10-11 Ticket 23 本地工程与实际接入阻塞
+
+23本地冻结材料/宿主核验/双adapter契约/进度与重试/完整导出/独立状态已实现；最终定向API39项345.47s、浏览器1项56.6s及build58模块2.00s通过。原acquisition进程约束和跨任务并发入场回归通过。METHOD终点FAIL/INCONCLUSIVE与真实SDK合成本地loopback分开，不升级为真实模型或统计证据。ReviewRecord完整不等于异议已处理、实际交付完成或能力资格；实际仍preliminary FAIL/NOT_GRANTED，12个19依赖不变。
+
+Completion partial：此批实际材料分别向CODEX/DeepSeek外发被自动审批审查拒绝，0实际外发，等待用户明确授权且未重试。根[永久审批清单](D:/dsh-proj/Roll/.roll-data/implementation-evidence/23/provider-approval/provider-material-manifest.json)与原预览同SHA，接续脚本从集成根读取固定packet/副本，拒绝自动重复。实际copy、640文件停止后浏览器METHOD资料及审批资料已根目录保全SHA/长度0差异，排除auth；见[23验收](evidence/23/acceptance.md)。未推送。此阻塞不替代其他已解锁可行票的实施；24等仍遵守各自真实审阅/资格证据依赖。
+
+### 2026-10-11 Ticket 30 前向工程与真实输入缺口
+
+30 Completion partial、Status ready-for-agent：已有Reviews单worker/SQLite任务共用当前盘后归档，protocol/checkpoint/day唯一身份、首次样本原子起点、三自然月夹紧、无停机补预测、拒绝成熟诊断隔离、原截止关闭/中断恢复/恢复锁及UI已实现。METHOD从不写真实registry时钟；新增真实当前特征adapter计算能力已验证，但现Host完整状态/公司行为生命周期与源绑定execution producer尚未闭合，外部真实原件也不足，不能把内部欠项统称外部等待。21实际副本metadata只读核前后SHA相同，prospective plans/batches均0，历史完整日线不证明当前完整状态权益。32还需真实合法预登记检查点及当前完整输入/必要后继基线，未执行；33待真实自然月证据。
+
+最终定向单轮22 passed/1夹具失败221.09s；仅新增账户/快照改版用例补齐公共列表身份后1 passed16.47s，生产源码未改；五真实进程fault/race与三共享worker/23入场已通过。Chrome1 passed48.1s、TS/Vite59模块2.05s，raw SQLite及公共协议/模型确认真实起点null/NOT_GRANTED。八停止METHOD runtime逐件SHA/长度根30保全，12原模型依赖及本版23五provider源码不变。20既有分红时序P2由根另行修复，当前收据不冒充修后证据。见[30验收](evidence/30/acceptance.md)，未推送。
+
+30收口修正：等价上海/UTC截止的公共API重放红1项14.85s，ISO字符串过滤改为datetime后最终9项公共API全绿96.84s、新目录Chrome1/48.0s、build59模块1.90s，稳定源 `11df4e3`。最终11文件测试前后SHA/长度完全一致；核心版与修正版分开保留，11停止METHOD目录逐文件保全，旧五进程/三worker/六算法不写成offset修后重跑。Completion仍partial；真实producer/32/33缺口及20财务时序另案修复责任不变。
+
+
+### 2026-10-11 CODEX-only 实际审阅完成与 Ticket 24 前沿
+
+本节覆盖上文23实际外发待批准状态，旧拒绝/失败原记录保留。用户批准材料 `95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1`，并明确当前及后续只验收CODEX，DeepSeek排除而非通过。真实CODEX运行 `ed0d834e-049b-4356-b5a7-1ff5bc853aef` COMPLETE：7次已核验原文读取、1次宿主离线复算，固定SDK/CLI 0.161.0，实际模型gpt-6.1-sol，66.392秒；独立持久化验收PASS、原失败记录与批准材料/12个模型源码依赖保持不变。见[实际执行收据](evidence/continuation-2026-10-11/review-fixes/codex-execution-receipt.md)、[独立验收](evidence/continuation-2026-10-11/review-fixes/actual-codex-continuation-acceptance.json)。
+
+首次初始化InternalRpcError发生于模型线程/回合及材料读取之前；独立账户启动探针通过，根因UNKNOWN，保留失败后仅接续一次尚未发生的批准模型审阅。宿主复算0联网不等于SDK认证0网络。模型只获得登记精简材料，部分大文件输出截断、上游依赖及原始数据仍宿主绑定，限制原样保留。
+
+23当前CODEX范围Completion complete，01—23共23票工程完成。实际实验仍RUNNING_DIAGNOSTIC、G4/G5 FAIL、其他INCONCLUSIVE、交付INCOMPLETE及能力NOT_GRANTED；审阅四项BLOCKING及两项MAJOR未清除。两项MAJOR已由独立源码/冻结契约/纯算例核实，另由唯一修复实施者处理，不能因此升级真实统计或授权。Ticket24已依赖解锁并在独立工作树实施，后续按24→25→26→27→28→29推进；30仍partial，31/32及真实自然月33/34依赖保持。未推送、无新拟合/SEALED/真实前向/资金启用/资格签发。
+
+### 2026-10-11 当前 CODEX 宿主范围已落实
+
+CODEX-only 宿主和页面实现 c3198e0 已合入 8497fead，独立收据 1c90c6e：三个全新公共 METHOD 场景实际 exit 0，1,097 个运行原件双侧 SHA/长度一致，15 个保护源码与历史真实 ReviewRecord 不变。新 DeepSeek 设置/取证/技术审阅在派发前拒绝，旧设置显式改存 CODEX，历史运行查询和取消保留；0 provider/model/fit。新部署拒绝旧 METHOD proof，不沿用旧批准材料签发当前资格。见[独立验收](evidence/continuation-2026-10-11/codex-only-independent/acceptance.md)。
+
+25 当前独立工作树继续动作与预算验收；30 producer 继续源绑定和归档验收，Completion 仍 partial。31 的独立 worker 与干净安装是可独立准备项，不能提前关闭 29/30 依赖或真实外部渠道要求。28 按用户明确回复先完成站内及外部配置页，实际发送等待用户配置；后续继续依赖顺序推进。
+
+### 2026-10-11 审阅缺陷修复与 Ticket 24 完成
+
+已确认的两项 MAJOR 实现缺陷完成修复：MA5/20 只在实际上穿时入场，仍按原冻结政策持有至第20交易日收盘，保持200股及50%最大暴露；条件子集采用完整交易日历的成员比率重采样，已观察非成员与真正未知分开。补充实际暴露差异，不能宣称风险匹配。唯一实施者最终相关单轮60 passed /528.60s；独立纯算例、公共METHOD后继冻结/重放及重启验收通过，本地合并f2285ce。原冻结资料/历史ReviewRecord未改；旧批准包在新源码下仅作历史，不据此再外发、补签资格或清除四项真实BLOCKING。见[独立修复验收](evidence/continuation-2026-10-11/codex-review-independent/merge-acceptance.md)。保全661个运行文件，清理原修复worktree后12模型依赖及12999根依赖均零差异。
+
+24工程Completion complete，本地源码合并fe53c5e、独立收据a350893：最终同源36公共API /187.79s、Chrome1 /15.8s、TypeScript/Vite构建通过；另有6独立公共API组合 /40.66s、重启/原件及源篡改拒绝。逐grant范围核验、确定性门槛/独立风险五门、账户权限、资金、部署/完整协议、到期、恢复锁、幂等及事件持久化已交付。签发复现证明在writer事务外计算，短事务复核最新资金/账户；查询校验档案并复用证明，不反复运行全部数学。正向仅显式METHOD_ENGINEERING且system_usable=false，生产拒绝；无专业复核人员不增加额外否决门槛，界面如实披露未经人工独立复核。真实材料仍不足，正式动作发布由25接入，未启用真实能力。1315个运行文件已根目录逐SHA/长度保全。见[24独立验收](evidence/continuation-2026-10-11/ticket24-independent/merge-acceptance.md)及[本票分阶段证据](evidence/24/acceptance.md)。这些用例不证明真实P95或统计PASS。
+
+当前01—24工程完成，25已从a350893启动；随后26→27→28内部→29。28按用户明确范围先交付站内通知与单外部渠道配置页，实际发送等待用户配置，原整体保持partial；内部出站/未知回执契约验收后解锁29。30生产链补缺并行推进，尚未据真实完整输入建立前向起点。31/32及33/34仍保留各自依赖/合法窗口/成熟结果要求。CODEX-only选择器及显式DeepSeek新任务入口已由c3198e0收紧并独立接受，历史查询/取消保留；不调用或测试DeepSeek能力。不推送、不读SEALED、不拟合或启用真实资金。
+
+### 2026-10-11 Ticket 30 源绑定 producer 第一批独立接受
+
+有限盘后原件 producer 已合入463658b，独立收据2db3bd1。最新受影响轮25 passed /127.79s、CODEX宿主组合2 passed /13.82s；另一全新METHOD目录的4项公共API独立检查38.98s、exit 0，覆盖同截止更正的原ordinal/batch重放、单位未知拒绝、raw与SQL/Parquet改写拒绝、失败回执历史和当前上海日期缺口分列。已有真实OS原件后/提交前中止证明保留原件、INTERRUPTED及零事实，不自动补取。见[实现边界](evidence/30-producer/acceptance.md)与[独立验收](evidence/continuation-2026-10-11/ticket30-producer-independent/acceptance.md)。
+
+真实取数仅一次匿名SSE来源评估：星期日收到星期五报文，单位/成交范围未证实，不能转为完整模型日线或补写前向预测。14份原现金公告映射可重放，但不证明当前完整公司行动覆盖。总13,989个保全文件最终双侧SHA/长度零差异；独立读取曾改变一项METHOD SQLite SHM，已先保全改变后的诊断原件，再按原清单核验源并精确恢复该SHM，完整复核通过，原清单与其他文件未改写。以后分析保全SQLite先复制到独立目录，不能认为mode=ro不会修改SHM。
+
+30仍partial：当前状态/上市阶段/单位/完整行动区间及实际组合准入缺口保留；已有官方历史daily、单位JS和停牌原件的有限离线解析正在继续实施。25独立验收及31独立worker/安装partial验收进行中，26尚未启动；01—24完成数不变。15保护源码与原19数据库checksum保持不变，无实际拟合、预测、前向起点或正式授权；未推送。
+
+### 2026-10-11 Ticket 31 本机安装与独立 worker 部分交付
+
+已接受安装/角色切片a19ce9b，no-ff合入6c0f2d5，独立收据7390cce。独立干净目录按锁安装Python/npm并运行实际HTTP API、worker、Chrome；浏览器关闭后服务继续。最终30组合6 passed /47.63s；另两个独立公共API/实际OS worker用例2 passed /14.65s、exit 0，API正常关闭不释放worker，重开后同任务身份和attempt保留，精确控制台正常停止成功。明确生产API只持久化任务，独立worker沿现有SQLite单租约执行，不新增队列。见[安装及逐层原件](evidence/31-worker-delivery.md)、[独立验收](evidence/continuation-2026-10-11/ticket31-independent/acceptance.md)和[三进程说明](../../docs/local-worker-delivery.md)。
+
+旧4057文件与新增237文件共4294个保全原件双侧SHA/长度零差异；15保护源码、原19checksum不变。两条旧备份断言按已接受24契约区分技术UNGRANTED与运行RECOVERY_LOCK；必要legacy恢复夹具存在隔离METHOD合成训练，实际研究拟合为0，不能把此层写成零METHOD训练。此前中断/失败与后续精确通过记录分列。
+
+31 Completion仍partial：完整五入口、90AT/125编号P0/14BR/10不变量逐条行为证据与25—29联验继续收口，库存数量不是通过证明。28真实外发等用户配置，30完整当前来源/32合法实际启运及33—34真实时间/验证/条件启用未闭合。25独立公开31项与新计时已通过，但发现Decision行缺五项显式状态字段，由原实施者补齐后再独立接受；26尚未解锁。未推送、未启用真实资金或资格。
+
+### 2026-10-11 Ticket 30 有限官方历史 parser 续推接受
+
+六份已存SSE公开原件共360501 bytes固定为离线参考，原Git blob逐SHA/长度核验。2025-12-31日线及该历史query自身单位、2016有限停牌事件、78/78分页、0/10不一致和空daily缺口分别解析；未知复牌日保持未知，历史单位不补当前yunhq来源。独立assessment保存原接收时间和本次规范化可知时点，输入包固定assessment IDs，损坏原件及单位/停牌JS依赖时拒绝重放。只读缺口查询不取数、不启动真实时钟。见[实现验收](evidence/30-producer-followup/acceptance.md)。
+
+固定源码受影响33 passed /192.57s，合31后最小组合3 passed /21.91s；另9项独立公共API同轮55.31s通过。2570个新增保全文件双侧5140次SHA/长度核验零差异，旧13989文件未连接SQLite或改写。source合入ac5a119，独立收据c3fe7d8；15保护源码及原19checksum不变。见[独立接受](evidence/continuation-2026-10-11/ticket30-history-independent/acceptance.md)。
+
+30仍partial：当前完整状态/上市阶段、当前endpoint单位及公司行动覆盖尚未闭合；已有2013—2025 CNINFO候选/分页schema仍是下一有限内部前沿，不能统称外部等待。32尚无合法真实首次归档，33真实自然月终点和34条件启用保持未执行。25字段补齐与当前默认CODEX-only验收清单收口正在进行；旧DeepSeek正向测试排除而非通过，历史查询/取消与403守卫继续验。
+
+### 2026-10-11 Ticket 25 最终独立接受与 Ticket 26 启动
+
+25 Completion complete：最终源759033c8合入bf555242，独立收据371dd9c。确定性门禁、联合资金/费用/保留额/损失预算、有限名单及不可变动作已交付；当前与重放分别保存账户、数据、模型、执行、资格状态，独立风险动作使用自身grant，收益模型无资格时不借用全局风险资格。发布及已有幂等回执之前复核最新资金、名单、到期与估值；拒绝和失效保存后继，不改真实账本。见[本票分阶段验收](evidence/ticket25/acceptance.md)、[五状态最终独立验收](evidence/continuation-2026-10-11/ticket25-independent/decision-states/acceptance.md)。
+
+最终字段修正后23项动作API通过134.57s、6项CODEX/producer/worker组合34.20s；合最新30历史源后最小3项组合18.90s。另3项全新公共API独立检查18.89s，含重启重放、风险自身资格、零可卖量及生产拒绝METHOD。较早31项独立检查、旧103 PASS/1 heartbeat FAIL、旧浏览器流程及各轮计时保留原源码边界，不改写为最终整套通过。
+
+最终21次完整本地数值/应用/writer采样P95为0.4157914秒：使用实际冻结模型与校准工件、隔离METHOD特征和21个实际归档交易日，覆盖30股与5指数有限名单；不是30个合格机会，不授予真实资格。未执行新训练、实际forecast或provider调用。3135个停止运行文件按最新清单保全，新增1201文件双侧2402次SHA/长度检查零差异；15保护源码及原19数据库checksum不变。真实工件仍FITTED_UNVALIDATED，实际NOT_GRANTED。
+
+26已从371dd9c启动独立工作树，正在完成准备操作、部分成交、显式关联和外部未决；尚未验收或结项。27—29继续按依赖推进，不重复询问已授权内部通知范围。CODEX默认runner修正正在独立验收，DeepSeek正向历史用例排除而非通过。
+
+### 2026-10-11 默认 CODEX 验收范围独立接受
+
+仅tests/config/scripts/docs的runner修正31f3feb合入d5ef226，独立收据ed936ce；产品源码未修改。默认收集591 selected /594 collected /3历史deselected，三纯历史DeepSeek文件不进入默认验收；显式指定它们仍21 deselected /0 selected /exit5，不计PASS。CODEX slot/retry/timeout、archive retry、旧DeepSeek GET/cancel、新DeepSeek403和显式改存CODEX保留。首次独立4项为3 PASS/1回执shape断言失败，诊断保留；修正测试断言后该单例1 PASS/6.52s。另前端CLI/list2 PASS/5.73s，未重复Chrome/build或执行整套默认suite。[独立验收](evidence/continuation-2026-10-11/codex-runner-independent/acceptance.md)。540运行文件双端1080 SHA/长度核验零差异，15保护及原19checksum不变，DeepSeek SDK/provider调用0。当前后续前沿仍26→27→28内部→29。
+
+### 2026-10-11 Ticket 30 有限 CNINFO 历史候选独立接受
+
+第三批有限parser源e984edb、稳定7c46dc59合入fb0e7ef，独立收据479460f：六份原件17848 bytes、八个原查询、24个唯一候选、原count/请求区间及13个现金公告ID/PDF精确关联已归档与重放；14份原现金inventory独立保留，其中1202538463未返回明确记缺口。totalpages=0语义、索引时间、first-availability及修订取消关联线索保持UNKNOWN，不把2013—2025关键词索引当2026全类别当前覆盖。见[本票实现及具体剩余caller](evidence/30-cninfo-history/acceptance.md)。
+
+固定源码受影响40 passed /222.29s，最终合25/31/runner后4项组合27.25s；独立2项全新公共API14.49s通过，覆盖原查询字段、精确PDF绑定、mixed family原IDs固定及原件损坏拒绝。2657个新保全文件381402022 bytes，双侧5314次SHA/长度检查零差异；六份raw Git blob、15保护源码及原19checksum一致。旧13989/2570保存件未连接SQLite或改写。[独立验收](evidence/continuation-2026-10-11/ticket30-cninfo-independent/acceptance.md)。
+
+30整体仍partial，第一项未关闭：当前状态/上市阶段、yunhq自身单位/完整范围、当前全部行动区间/修订取消链及旧未结义务尚有内部路径与所需原件缺口。下一有限slice已从479460f启动，为已知14份公告建立source-bound义务审计并接入packet消费者；计划付款日期不推定实际履行或到账，known集合不封成全部义务。无新增真实起点、预测、拟合或资格；32—34真实条件仍未成立。
+
+### 2026-10-11 Ticket 30 已知义务有限审计独立接受
+
+第四切片稳定aa234ee8已合入，独立收据5b09da42；14份原公告、映射及日历绑定到登记协议的20交易日参考窗口，不建立真实统计或自然月起点。历史计划付款仍为OLDER_SCHEDULE_WITH_RESOLUTION_UNKNOWN，实际履行、持有人权益、修订取消及到账未知；confirmed_pending_count=0不等于没有义务，两个完整覆盖标志保持false。packet固定原audit IDs（含原空列表），只读forward消费者按协议/截止绑定，损坏选中原件409。见[实现验收](evidence/30-known-obligations/acceptance.md)与[独立验收](evidence/continuation-2026-10-11/ticket30-obligations-independent/acceptance.md)。
+
+固定源码31 passed /174.91s，合26后最小2项组合16.85s。独立首轮2 PASS/1测试字段KeyError（20.99s）；仅将断言改用公共status字段后单例1 PASS（23.69s），保留首轮失败。3048个新增运行文件444894929 bytes，双端6096次SHA/长度核验零差异；独立253文件已保全，15保护源码及原19checksum不变。未打开根保全SQLite，没有新拟合、实际forecast、前向起点、资格或外发。
+
+30仍partial，该第四切片时的指定日期当前SSE停复牌producer已在下列第五切片独立接受；空响应、分页未证或计划结束日不能证明当前正常/实际复牌。当前全部公告区间、修订取消、上市风险阶段及yunhq自身单位仍分别有具体缺口。27继续冻结监控、维护与恢复；随后按用户范围推进28内部和29。
+
+### 2026-10-11 Ticket 30 指定日期SSE停牌第五切片独立接受
+
+稳定05a17176/source60b4f31合入a2e21c4e，独立收据39c35f22。固定官方JS绑定、typed plan/raw-first有限caller、日期/证券/分页/大小拒绝、原receipt IDs（包括空列表）、输入及缺口消费者、worker日内缓存均已独立核对。真实预算仅1次：SEARCH_DATE=2026-10-11，HTTP200原件13367字节SHA986c403e89bf4aab9f260034f1d301126daa0de9ff62926f90cf798768eeb958。回包26条无600362、日期空/未核验、结束日期“-”，REPORTED_PARTIAL及完整否定authority=false保留，不证明当前正常、复牌或完整覆盖。原JS POST/JSONP25与固定历史GET/JSON100变体区别明列，不伪称完整前端语义重现。
+
+独立首轮2 PASS/1 harness FAIL（18.05秒）：第四拒绝已正确触发SOURCE_COOLDOWN零调用，独立预期错误；原诊断保留，仅修独立剩余case1 PASS/9.53秒，无产品重改。2717原材料/420677469字节双端5434核零差异，独立213材料/23448613字节保存outside；15保护源及原19仅checksum不变，精确源进程0。没有新模型调用、训练、预测、SEALED、资金、资格或真实前向。见[源验收](evidence/30-sse-current-suspension/acceptance.md)、[独立验收](evidence/continuation-2026-10-11/ticket30-sse-current-independent/acceptance.md)及[剩余具体路径](evidence/30-sse-current-suspension/next-slice.md)。下一commonSoa停复牌区间及trade-day先离线合同，另列1次trade-day加最多2页、共不超过3次匿名查询预算，不复用第五预算，不隐式重试。
+
+## 2026-10-11：27有限工程独立接受，28内部前沿启动
+
+27独立10 PASS/77.71秒，8,245原材料双端16,490 SHA/长度核验零差异；独立593文件/49,533,565字节保全。三范围、并发writer/journal边界、旧卡不复活、已登记30-session检查点只消费一次、26partial费用与延迟未知、恢复后当前资金变化再锁、目标ALL_MONITOR/REVOKED不追加监测有独立公共调用证据。原生OS/Chrome按实施者原阶段分列，未伪称独立重跑。15保护及原19checksum不变，无新HTTP、拟合、预测、SEALED、真实资格或外发。[27独立](evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)、[27分阶段](evidence/continuation-2026-10-11/ticket27/acceptance.md)。
+
+LOSS峰值和trigger latch跨反弹、资金扩展和重启保留；现有合同未登记正向override，REASON_BOUND_RECOVERY_EVIDENCE_REQUIRED继续拒绝。物理旧RECOVERY_LOCK保留，有限METHOD当前证明仅导出RECOVERED_VERIFIED且system_usable=false，旧代码回滚不复活资格。整体27仍partial；28已从77f729f6自有工作树实施，真实外发待用户配置，内部验收后继续29。30第六切片正独立验收，不提前升级真实来源或32起点。
+
+## 2026-10-11：30第六区间/交易日切片独立接受
+
+稳定f44d1685/产品018536c合入f34b5aad，独立收据0cb1aab8。固定commonSoa交易日/证券区间caller、Host capture-plan先归档、有限分页与拒绝、共享SQLite worker/source-gap/packet固定IDs及after27暂停组合已验。实际最多3次预算仅2次HTTP：trade-day599字节SHAf45a2a21a972c1150d69db7a60e8506932974bc1bdd216d3f6d052a5cdc7fc22；interval481字节SHA7fd45879b5af75c7e0cb7f4c92ce9ad6fa31ddca8ad472deb83b66f3bbfd1c6f。beforeTradeDay报告20261009；lastTradeDay原值20261015用途未证、不用于日历；目标区间空列表/total0/date echo空仍REPORTED_PARTIAL，不证明正常、复牌或完整覆盖。system_usable=false/起点null/NOT_GRANTED保持。
+
+独立首轮3 PASS/1 harnessFAIL43.08秒；原helper受控基线造成version断言失败，改公共account0流程后缺watch前置FAIL6.63秒及diagnose Path错误保留，补齐公共watch/identity/合法盘后前置后只剩余单例1 PASS7.53秒，不称整轮全绿。2,881原材料395,163,085字节双端5,762 SHA/长度核零差异，自有498材料60,255,359字节保存outside；新原件/Git、15保护源及原19checksum不变，源/自有精确CIM0。零新实际HTTP、模型、训练、预测、资金、资格、外发或真实起点。[第六实现](evidence/30-sse-stock-suspension/acceptance.md)、[第六独立](evidence/continuation-2026-10-11/ticket30-stock-independent/acceptance.md)。
+
+30仍partial，首项不勾选。下一第七最小契约沿官方公司HTML与同固定JS的yunhq量额转换/交易阶段及公司fixed sqlId，先冻结契约/parser/有限plan再实际SOURCE_ASSESSMENT；新独立匿名预算总计最多2 HTTP（1指定yunhq snap、1指定company commonQuery），无重试/变体fallback/第三call。文档转换与实际源单位证据分列，累计成交会话/完成条件、风险子类型/生效及完整负向覆盖无证继续UNKNOWN。不能用本次解除32实际窗口和输入门禁。
+
+## 2026-10-11：30第七公司客户端契约切片独立接受
+
+稳定53c5d576合入39a7bdb2，独立收据870b451e。恰2/最多2次实际匿名HTTP预算已结束：snap409字节SHA bc0971238819277c2b9d6773e341c6d12496adb7991fc897000974cbb2942403，公司1732字节SHA 4e4bd76727f03b989b98f923c65c2d3d99816f6683172dba4ab7e148b6c2fb7a。行情原日期20261009/162905，量额Decimal与同一官方客户端的显示转换绑定，盘后量额独立；完整E110阶段、STATUS_A原值保留未知，上市不推无风险、周五报价不推周日完整日线。独立3公共API案例PASS/30.30秒；1577原材料181872574字节双端3154哈希/长度零差异，自有280文件34125902字节保全，4原件Git身份、15保护和原19checksum不变。实现合同轮18 PASS/1 harnessFAIL及相关3 PASS更正、prefix1、最终组合3 PASS分别保留，不称整轮全部绿。[第七实现](evidence/30-sse-company-contract/acceptance.md)、[第七独立](evidence/continuation-2026-10-11/ticket30-company-independent/acceptance.md)。
+
+整体30仍partial，system_usable=false、首次前向null、NOT_GRANTED。下一第八仅离线消费同固定JS和已保存409字节响应的价格/OHLC/换手字段及当前caller，实际HTTP0，不开放第七预算重试；旧receipt/packet/资格不追认。完整交易会话/日线完成、全风险阶段及行动修订/取消/履行仍有具体源与消费者缺口。25排序/重复失效修复正在收口；28内部独立验收后按依赖启动29；真实自用外发仍待用户配置。

@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_current_validation_manifest_is_persistent_replayable_and_never_a_grant _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket21/backend/.roll-data/validation21-segment-red/test_current_validation_manife0')
+
+    def test_current_validation_manifest_is_persistent_replayable_and_never_a_grant(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            frozen, protocol, model = prepared(client, tmp_path)
+            response = client.post('/api/research/complete-freezes/'+frozen['freeze_id']+'/validations', json={
+                'purpose': 'DIAGNOSTIC', 'expected_complete_protocol_fingerprint': frozen['complete_protocol_fingerprint'],
+                'basis': 'Current METHOD evidence gap review, no actual qualification'})
+            assert response.status_code == 201, response.text
+            manifest = response.json()
+            assert set(manifest['gates']) == {'G1','G2','G3','G4','G5','G6','G7'}
+            assert manifest['validation_verdict'] in ('FAIL','INCONCLUSIVE')
+            assert manifest['capability_status'] == 'NOT_GRANTED'
+            assert manifest['review_status'] == 'PENDING_TECHNICAL_REVIEW'
+            assert manifest['gates']['G7']['status'] == 'INCONCLUSIVE'
+            assert manifest['gates']['G4']['details']['basis'] == 'CONSTRAINED_CONTINUOUS_NAV'
+            assert manifest['gates']['G4']['details']['unique_opportunities']==1
+            assert manifest['gates']['G4']['details']['selected']==1
+            assert manifest['gates']['G4']['details']['decision_coverage']==1
+            assert 'MINIMUM_DECISION_COVERAGE_NOT_MET' not in manifest['gates']['G4']['details']['hard_failures']
+>           assert sum(c['details']['closed_positions'] for c in manifest['gates']['G5']['details']['time_segments'])==1
+E           assert 3 == 1
+E            +  where 3 = sum(<generator object test_current_validation_manifest_is_persistent_replayable_and_never_a_grant.<locals>.<genexpr> at 0x0000022CCB498380>)
+
+tests\application\test_validation.py:36: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_validation.py::test_current_validation_manifest_is_persistent_replayable_and_never_a_grant
+1 failed, 2 deselected in 17.13s

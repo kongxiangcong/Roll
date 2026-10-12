@@ -1,0 +1,109 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+____ test_real_old_active_backup_cannot_hide_a_later_committed_revocation _____
+
+self = <starlette.datastructures.State object at 0x000001D488A8D160>
+key = 'backups'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+>           return self._state[key]
+                   ^^^^^^^^^^^^^^^^
+E           KeyError: 'backups'
+
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\datastructures.py:683: KeyError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g17/test_real_old_active_backup_ca0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D48888A060>
+
+    def test_real_old_active_backup_cannot_hide_a_later_committed_revocation(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+>       with TestClient(create_app(directory, capability_method_file=file)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_lifecycle_recovery.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1076: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:845: in _create_app
+    app.state.backups.authorization_check = authorization_recovery.status
+    ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001D488A8D160>
+key = 'backups'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'backups'
+
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\datastructures.py:686: AttributeError
+_ test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation _
+
+self = <starlette.datastructures.State object at 0x000001D488C92350>
+key = 'backups'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+>           return self._state[key]
+                   ^^^^^^^^^^^^^^^^
+E           KeyError: 'backups'
+
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\datastructures.py:683: KeyError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27g17/test_recovery_requires_current0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D488A6BBB0>
+
+    def test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        cutoff = (datetime.fromisoformat(package['required_as_of']) + timedelta(minutes=2)).isoformat()
+        package.update(account_version=4, required_as_of=cutoff)
+        package['current_data']['as_of'] = cutoff
+        package['loss_facts']['as_of'] = cutoff
+        package['action_packet'].update(as_of=cutoff)
+        for item in package['action_packet']['opportunities']:
+            for field in ['quote_at', 'quote_available_at', 'forecast_cutoff']: item[field] = cutoff
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+>       with TestClient(create_app(directory, capability_method_file=file)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_lifecycle_recovery.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1076: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:845: in _create_app
+    app.state.backups.authorization_check = authorization_recovery.status
+    ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001D488C92350>
+key = 'backups'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'backups'
+
+..\..\..\..\backend\.venv\Lib\site-packages\starlette\datastructures.py:686: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_recovery.py::test_real_old_active_backup_cannot_hide_a_later_committed_revocation
+FAILED tests/application/test_lifecycle_recovery.py::test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation
+2 failed in 11.22s

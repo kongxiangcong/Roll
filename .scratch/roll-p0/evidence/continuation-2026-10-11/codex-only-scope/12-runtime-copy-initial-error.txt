@@ -1,0 +1,5 @@
+Initial owned METHOD runtime preservation returned exit 1 from shutil.copytree.
+WinError 3 on two backup research-inputs/method-execution paths in csg3/test_frozen_review_is_checked_0/runtime/backups/ee49f900-2c84-48e7-90cf-99177e606d44:
+03c842aa959c961bf64bd7cbc08a03482f6898932916526a04e1607db7f4559c.parquet
+494729b06e7b6094b696817870138fd2824262e2339a430cd049c53e309e3935.raw
+This is a Windows path-length copying failure, not an API failure. Source and partial destination remain. The corrected helper uses extended absolute paths and only writes absent files after checking every already-present byte against its source. It does not delete or replace existing preserved bytes.

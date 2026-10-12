@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
 **Primary acceptance:** AT-64、AT-65、AT-66、AT-67、AT-68、AT-69。
 
@@ -28,8 +28,16 @@
 
 ## Comments
 
+2026-10-11 最终实施源码已合接受的30续项（integration `dd90129`，own merge `a8ee5dc`）。当前公共接口组合7 PASS/47.31s、修复两次journal竞态后的Chrome1 PASS/22.0s、最终构建exit0；15保护源码原始SHA/length不变。先前真实OS恢复/旧代码锁态8 PASS/82.10s另列保留，不机械重复。独立接收仍由merger完成，整体有限工程/partial，LOSS正向解除未登记证据，保持原峰值/latch与原因绑定拒绝；原验收条件不删改。最终保全见自有[回执](../evidence/continuation-2026-10-11/ticket27/acceptance.md)。
+
+2026-10-11 实施回执见 [Ticket27 scoped receipt](../evidence/continuation-2026-10-11/ticket27/acceptance.md)：三scope/当前writer动作失效、原因绑定监测恢复、实际26回报未知保留、成熟登记点、修正分类及真实OS/旧代码锁态切片已验证；最终相关组合、runtime保全与独立验收仍待收口。冻结LOSS OR latch未登记正向解除政策，按原因证据缺口保持拒绝、峰值/旧记录不变，不写成正向LOSS恢复PASS或全场景complete。
+
+2026-10-11：已在独立工作树 `ticket27` 认领，基于已独立接受的26 integration `0d331791e2ab09d4bb226d3e00f438a6d8995530`。按公开FastAPI/真实SQLite、隔离source-bound METHOD、真实进程恢复与浏览器逐切片TDD实施；真实资格仍NOT_GRANTED，不改冻结数学、原19库或旧证据。父任务负责最终独立验收与完成状态。
+
 2026-10-07：按已确认拆分发布；尚未实施或验收。28 负责将本票的最新资格检查接入实际通知出队与在途消息场景，不能用此处尚无外部渠道的工程结果替代它。
 
 2026-10-07：补齐 EVAL-16/17 持续监测及 RUN-03/04 维护修正闭环；15 提供日历维护触发，17/20 冻结方法，26 提供实际行为证据，29 后续完成偏差报告联验，34 核对真实启用配置。仅补充文档，新增要求尚未实施或验收。
 
 2026-10-08 本轮依赖前沿核查：未启动本票。26实际意向/成交集成未完成；16已完成，恢复锁未开放解除。保留原分诊标签和全部验收要求，不用合成样例关闭任务；实际解锁后继续。整体执行证据见[实施记录](../execution-status.md)。
+
+2026-10-11 独立merger接受稳定源 `86ed2c2052b4be4e4aaa0581e7e067c55dcfdf5c` 的有限工程切片，no-ff merge `5572184c920156b8a9f69beef5b771d8d05a2b77`。独立新METHOD公共API/真实SQLite **10 PASS /77.71s，首suite exit0**：三scope和独立risk、正常current/monitor并发、后续健康source原因绑定恢复、登记检查点一次消费、26部分成交未知与修正计划、LOSS拒绝、真实新备份当前proof及资金变化重新锁、targetALL/REVOKED不新增监测。完整8245/691953514B双端16490 SHA/length及manifest、源/root15保护与原19checksum通过；merge后111产品文件root/source原始bytes与Git blob一致。自身593/49533565B隔离运行原件已完整保全到仓库外，exact CIM0。详见[独立回执](../evidence/continuation-2026-10-11/ticket27-independent/acceptance.md)。原红/环境诊断和owner OS/Chrome计数分列保留，不声称重跑。整体Completion仍partial：LOSS正向恢复缺冻结登记证据、实际长期合格监测未验收；实际NOT_GRANTED不变。有限工程接受解锁28已授权站内/配置实施，不代替28通知出队/在途联验；原验收条件与未完成项保留。0新真实HTTP/provider/fit/forecast/SEALED/资金资格/外发；未push、未清树。

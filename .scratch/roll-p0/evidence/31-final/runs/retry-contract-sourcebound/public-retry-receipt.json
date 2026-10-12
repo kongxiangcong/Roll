@@ -1,0 +1,1911 @@
+{
+  "task": {
+    "attempts": 3,
+    "audit_id": "73ceab5d-dc87-40f2-b15a-dfb24502b0f2",
+    "created_at": "2026-10-11T14:32:10.022299+00:00",
+    "finished_at": "2026-10-11T14:32:14.174546+00:00",
+    "frozen_account": {
+      "account_scope": "\u666e\u901a\u73b0\u91d1\u8d26\u6237",
+      "broker_available": null,
+      "broker_available_as_of": null,
+      "broker_available_basis": "UNKNOWN",
+      "broker_frozen": null,
+      "broker_frozen_as_of": null,
+      "cash_balance": "10000.00",
+      "confirmed_at": "2026-10-11T14:32:09.902005+00:00",
+      "conservative_available": null,
+      "conservative_available_basis": "\u5238\u5546\u53ef\u7528\u672a\u77e5",
+      "currency": "CNY",
+      "effective_at": "2026-10-07T00:00:00+08:00",
+      "historical_return": null,
+      "latest_confirmed_input_at": "2026-10-07T00:00:00+08:00",
+      "latest_effective_fact_at": "2026-10-07T00:00:00+08:00",
+      "latest_fact_recorded_at": "2026-10-11T14:32:09.902005+00:00",
+      "permission_profile": [],
+      "positions": [
+        {
+          "baseline_source": "\u8131\u654f\u5238\u5546\u5feb\u7167",
+          "buy_time": null,
+          "historical_fees": null,
+          "instrument": "SSE:600519",
+          "quantity": "100",
+          "reference_cost": null,
+          "sellable_quantity": null
+        }
+      ],
+      "state": "CONFIRMED_AS_OF",
+      "system_known_at": "2026-10-11T14:32:09.902005+00:00",
+      "version": 1,
+      "withdrawable": null,
+      "withdrawable_as_of": null
+    },
+    "frozen_listing": {
+      "account_version": 1,
+      "as_of_date": "2026-10-11",
+      "background_indices": [
+        {
+          "instrument": "SSE:000001",
+          "instrument_type": "INDEX",
+          "name": "\u4e0a\u8bc1\u6307\u6570",
+          "purpose": "BROAD_BACKGROUND",
+          "trading_capability": "NONE"
+        },
+        {
+          "instrument": "SZSE:399001",
+          "instrument_type": "INDEX",
+          "name": "\u6df1\u8bc1\u6210\u6307",
+          "purpose": "BROAD_BACKGROUND",
+          "trading_capability": "NONE"
+        },
+        {
+          "basis": "\u9884\u56fa\u5b9a\u4e2d\u8bc1\u5bbd\u57fa\uff1b\u5b98\u65b9\u4e8b\u5b9e\u8868\u4ee3\u7801000300\uff0c\u6276\u6447\u4ee3\u7801\u8868\u6838\u5b9e000300.SH/\u6caa\u6df1300/SH/\u6307\u6570",
+          "basis_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
+          "instrument": "SSE:000300",
+          "instrument_type": "INDEX",
+          "name": "\u6caa\u6df1300",
+          "purpose": "BROAD_BACKGROUND",
+          "trading_capability": "NONE"
+        },
+        {
+          "basis": "\u9884\u56fa\u5b9a\u4e2d\u8bc1\u5bbd\u57fa\uff1b\u5b98\u65b9\u4e8b\u5b9e\u8868\u4ee3\u7801000905\uff0c\u6276\u6447\u4ee3\u7801\u8868\u6838\u5b9e000905.SH/\u4e2d\u8bc1500/SH/\u6307\u6570",
+          "basis_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000905factsheet.pdf",
+          "instrument": "SSE:000905",
+          "instrument_type": "INDEX",
+          "name": "\u4e2d\u8bc1500",
+          "purpose": "BROAD_BACKGROUND",
+          "trading_capability": "NONE"
+        },
+        {
+          "basis": "\u9884\u56fa\u5b9a\u4e00\u4e2a\u76f8\u5173\u884c\u4e1a\u6307\u6570\uff1b\u5b98\u7f51\u4e8b\u5b9e\u8868\u6210\u5206\u5217\u542b600519\uff0c\u4e0d\u4f5c\u52a8\u6001\u884c\u4e1a\u7b5b\u9009",
+          "basis_date": "2026-08-31",
+          "basis_source": "csi-399997-sector-basis",
+          "instrument": "SZSE:399997",
+          "instrument_type": "INDEX",
+          "name": "\u4e2d\u8bc1\u767d\u9152",
+          "purpose": "SECTOR_BACKGROUND",
+          "related_instruments": [
+            "SSE:600519"
+          ],
+          "trading_capability": "NONE"
+        }
+      ],
+      "formal_judgment": "DISABLED",
+      "limit": 20,
+      "members": [
+        {
+          "account_permission": {
+            "basis": "\u8d26\u6237\u672a\u786e\u8ba4\u8be5\u8303\u56f4",
+            "status": "UNKNOWN"
+          },
+          "current_status": {
+            "as_of": null,
+            "reason": "\u5c1a\u672a\u53d6\u5f97\u8be5\u8bc1\u5238\u5f53\u524d\u505c\u724c\u3001\u98ce\u9669\u8b66\u793a\u3001\u4e0a\u5e02\u9636\u6bb5\u4e0e\u9664\u6743\u8bc1\u636e",
+            "source": null,
+            "state": "UNKNOWN"
+          },
+          "holding": {
+            "baseline_source": "\u8131\u654f\u5238\u5546\u5feb\u7167",
+            "buy_time": null,
+            "historical_fees": null,
+            "instrument": "SSE:600519",
+            "quantity": "100",
+            "reference_cost": null,
+            "sellable_quantity": null
+          },
+          "identity": {
+            "board": "UNKNOWN",
+            "code": "600519",
+            "exchange": "SSE",
+            "instrument_type": "UNKNOWN",
+            "name": null,
+            "source": null
+          },
+          "instrument": "SSE:600519",
+          "limitations": [
+            "CURRENT_STATUS_UNKNOWN",
+            "MODEL_QUALIFICATION_NOT_GRANTED",
+            "IDENTITY_UNKNOWN",
+            "RULE_UNSUPPORTED",
+            "ACCOUNT_PERMISSION_UNKNOWN"
+          ],
+          "model_qualification": "NOT_GRANTED",
+          "new_trade_use": "RESTRICTED",
+          "rule": {
+            "board": "UNKNOWN",
+            "exchange": "SSE",
+            "implementation_status": "UNSUPPORTED",
+            "instrument_type": "UNKNOWN",
+            "reason": "\u672a\u53d6\u5f97/\u9002\u914d\u8be5\u5e02\u573a\u3001\u677f\u5757\u3001\u7c7b\u578b\u6216\u65e5\u671f\u8303\u56f4\u7684\u6709\u6548\u89c4\u5219",
+            "source": null
+          },
+          "watch_added_at": null,
+          "watched": false
+        }
+      ],
+      "over_limit": false,
+      "recorded_at": "2026-10-11T14:32:09.973876+00:00",
+      "version": 1
+    },
+    "frozen_result": {
+      "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+      "account_confirmed_at": "2026-10-11T14:32:09.902005+00:00",
+      "account_effective_at": "2026-10-07T00:00:00+08:00",
+      "account_version": 1,
+      "calendar": {
+        "calendar_version": "SSE-2026",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "date": "2026-10-11",
+        "exchange": "SSE",
+        "is_trading_day": false,
+        "phase": "CLOSED",
+        "reason": "WEEKEND",
+        "rules_source": {
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+          "bytes": 65302,
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "file": "sse-rules-text-2026.docx",
+          "id": "sse-rules-text-2026",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+        },
+        "source": {
+          "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+          "attachments": [],
+          "bytes": 30794,
+          "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+          "file": "sse-calendar-2026.html",
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+          "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+        },
+        "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+        "timezone": "Asia/Shanghai"
+      },
+      "change": "NEW_INFORMATION",
+      "coverage": {
+        "intraday_observed": false,
+        "minute_capture_promised": false,
+        "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+      },
+      "cutoff": "2026-10-11T14:32:09.933493+00:00",
+      "data_versions": [],
+      "forecast": null,
+      "formal_judgment": "DISABLED",
+      "forward_sample_created": false,
+      "gaps": [
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "CURRENT_STATUS_UNKNOWN",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "MAJOR_EVENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000300"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000300"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000905"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000905"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399997"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399997"
+        }
+      ],
+      "instruments": [
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:600519",
+          "last_complete_daily": null,
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "HOLDING"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000001",
+          "last_complete_daily": null,
+          "name": "\u4e0a\u8bc1\u6307\u6570",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399001",
+          "last_complete_daily": null,
+          "name": "\u6df1\u8bc1\u6210\u6307",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000300",
+          "last_complete_daily": null,
+          "name": "\u6caa\u6df1300",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000905",
+          "last_complete_daily": null,
+          "name": "\u4e2d\u8bc1500",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399997",
+          "last_complete_daily": null,
+          "name": "\u4e2d\u8bc1\u767d\u9152",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        }
+      ],
+      "knowledge_basis": "ACTUAL_COMPLETION_NO_BACKDATED_KNOWLEDGE",
+      "knowledge_cutoff": "2026-10-11T14:32:14.155003+00:00",
+      "observations": [],
+      "observed_at": "2026-10-11T14:32:14.155003+00:00",
+      "previous_snapshot_id": null,
+      "snapshot_id": "e3a8e367-45d4-426d-bdff-30eaa530a9e7",
+      "source_assessments": [],
+      "state_fingerprint": "65e07a379fa5ff5aba0ea7a95bf5e4f669d044dc0c429b918464c838280e9b40"
+    },
+    "host_owner": {
+      "creation_ticks": 134362027213909677,
+      "nonce": "2bc6142d-d046-4c9a-afe0-24364def9f1e",
+      "pid": 468
+    },
+    "inputs": {
+      "account_version": 1,
+      "cutoff": "2026-10-11T14:32:09.933493+00:00",
+      "data_versions": [],
+      "list_version": 1,
+      "mode": "ON_DEMAND",
+      "phase": "CLOSED",
+      "refresh_missing": true,
+      "shadow_version": null,
+      "trading_date": "2026-10-11"
+    },
+    "last_attempt_at": "2026-10-11T14:32:13.893809+00:00",
+    "module_errors": [
+      {
+        "adjustment": "RAW",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "ADJUSTMENTS",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "PERFORMANCE",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+      },
+      {
+        "adjustment": "RAW",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:000001",
+        "reason": "controlled source timeout",
+        "run_id": "b9a8dc8a-9835-4475-bb7d-201b72cc2b42"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:000001",
+        "reason": "controlled source timeout",
+        "run_id": "b9a8dc8a-9835-4475-bb7d-201b72cc2b42"
+      },
+      {
+        "adjustment": "RAW",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "ADJUSTMENTS",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "PERFORMANCE",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+      },
+      {
+        "adjustment": "RAW",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:000001",
+        "reason": "controlled source timeout",
+        "run_id": "2f731b8a-421b-4f8d-9e59-50edd67144ad"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:000001",
+        "reason": "controlled source timeout",
+        "run_id": "2f731b8a-421b-4f8d-9e59-50edd67144ad"
+      },
+      {
+        "adjustment": "RAW",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+      },
+      {
+        "adjustment": "FORWARD_CURRENT_VERSION",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "ADJUSTMENTS",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "PERFORMANCE",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "ANNOUNCEMENTS",
+        "instrument": "SSE:600519",
+        "reason": "controlled source timeout",
+        "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+      },
+      {
+        "adjustment": "RAW",
+        "code": "ConnectTimeout",
+        "group": "DAILY",
+        "instrument": "SSE:000001",
+        "reason": "controlled source timeout",
+        "run_id": "9e2d1ae6-fa26-4ef0-85c0-cf075d631e65"
+      },
+      {
+        "code": "ConnectTimeout",
+        "group": "QUOTE",
+        "instrument": "SSE:000001",
+        "reason": "controlled source timeout",
+        "run_id": "9e2d1ae6-fa26-4ef0-85c0-cf075d631e65"
+      }
+    ],
+    "refresh_missing": true,
+    "result": {
+      "account_basis": "CURRENT_CONFIRMED_ACCOUNT",
+      "account_confirmed_at": "2026-10-11T14:32:09.902005+00:00",
+      "account_effective_at": "2026-10-07T00:00:00+08:00",
+      "account_version": 1,
+      "calendar": {
+        "calendar_version": "SSE-2026",
+        "coverage": "VERIFIED_ANNUAL_CALENDAR",
+        "date": "2026-10-11",
+        "exchange": "SSE",
+        "is_trading_day": false,
+        "phase": "CLOSED",
+        "reason": "WEEKEND",
+        "rules_source": {
+          "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx",
+          "bytes": 65302,
+          "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+          "file": "sse-rules-text-2026.docx",
+          "id": "sse-rules-text-2026",
+          "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx"
+        },
+        "source": {
+          "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html",
+          "attachments": [],
+          "bytes": 30794,
+          "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+          "file": "sse-calendar-2026.html",
+          "id": "sse-calendar-2026",
+          "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+          "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+        },
+        "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02",
+        "timezone": "Asia/Shanghai"
+      },
+      "change": "NEW_INFORMATION",
+      "coverage": {
+        "intraday_observed": false,
+        "minute_capture_promised": false,
+        "unobserved_trigger_sequence": "NOT_RECONSTRUCTED"
+      },
+      "cutoff": "2026-10-11T14:32:09.933493+00:00",
+      "data_versions": [],
+      "forecast": null,
+      "formal_judgment": "DISABLED",
+      "forward_sample_created": false,
+      "gaps": [
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "CURRENT_STATUS_UNKNOWN",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_ACQUIRED_FACT",
+          "group": "MAJOR_EVENTS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000300"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000300"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SSE:000905"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SSE:000905"
+        },
+        {
+          "code": "MISSING",
+          "group": "QUOTE",
+          "instrument": "SZSE:399997"
+        },
+        {
+          "code": "NO_COMPLETE_DAILY",
+          "group": "DAILY",
+          "instrument": "SZSE:399997"
+        }
+      ],
+      "instruments": [
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:600519",
+          "last_complete_daily": null,
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "HOLDING"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000001",
+          "last_complete_daily": null,
+          "name": "\u4e0a\u8bc1\u6307\u6570",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399001",
+          "last_complete_daily": null,
+          "name": "\u6df1\u8bc1\u6210\u6307",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000300",
+          "last_complete_daily": null,
+          "name": "\u6caa\u6df1300",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SSE:000905",
+          "last_complete_daily": null,
+          "name": "\u4e2d\u8bc1500",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        },
+        {
+          "company_facts": [],
+          "incomplete_daily": null,
+          "instrument": "SZSE:399997",
+          "last_complete_daily": null,
+          "name": "\u4e2d\u8bc1\u767d\u9152",
+          "quote": null,
+          "quote_status": "MISSING",
+          "role": "BACKGROUND"
+        }
+      ],
+      "knowledge_basis": "ACTUAL_COMPLETION_NO_BACKDATED_KNOWLEDGE",
+      "knowledge_cutoff": "2026-10-11T14:32:14.155003+00:00",
+      "observations": [],
+      "observed_at": "2026-10-11T14:32:14.155003+00:00",
+      "previous_snapshot_id": null,
+      "snapshot_id": "e3a8e367-45d4-426d-bdff-30eaa530a9e7",
+      "source_assessments": [],
+      "state_fingerprint": "65e07a379fa5ff5aba0ea7a95bf5e4f669d044dc0c429b918464c838280e9b40"
+    },
+    "retrieval_runs": [
+      "8a445113-7c8c-4ac4-8298-52db5a8f5e04",
+      "b9a8dc8a-9835-4475-bb7d-201b72cc2b42",
+      "8787e6df-8610-4d02-b229-dbbd2b3a7680",
+      "2f731b8a-421b-4f8d-9e59-50edd67144ad",
+      "f4268f5d-94f3-49b9-956c-726e186557d4",
+      "9e2d1ae6-fa26-4ef0-85c0-cf075d631e65"
+    ],
+    "retry_at": "2026-10-11T14:32:13.852153+00:00",
+    "status": "PARTIAL",
+    "task_id": "ffefad57-508d-4d2a-ba27-62ddcc609ab8",
+    "task_key": "6c5a5018ded62d865e31468345c4b1aa3a2f239369feb15982fd76763b38da29",
+    "timing": {
+      "acquisition_seconds": 0.699762,
+      "local_seconds": 0.733214,
+      "network_seconds": 0.010526
+    }
+  },
+  "runs": [
+    {
+      "acquisition_limits": {
+        "max_response_bytes": 1048576,
+        "max_total_bytes": 4194304
+      },
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "8ab636983ddaf4f72aacafdb001409521258ab3b8d53050d5568b51bc145db1c",
+      "elapsed_seconds": 0.064,
+      "evidence_kind": "METHOD_CASE",
+      "finished_at": "2026-10-11T14:32:10.346686+00:00",
+      "gaps": [
+        {
+          "adjustment": "RAW",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "NO_FACTS_IN_REQUEST_WINDOW",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_FACTS_IN_REQUEST_WINDOW",
+          "group": "MAJOR_EVENTS",
+          "instrument": "SSE:600519"
+        }
+      ],
+      "host_owner": {
+        "creation_ticks": 134362027213909677,
+        "nonce": "2bc6142d-d046-4c9a-afe0-24364def9f1e",
+        "pid": 468
+      },
+      "model": null,
+      "request_id": "8786bfe1-d765-4a3c-adf6-d30634d7e02a",
+      "retrieved_bytes": 0,
+      "retrieved_decoded_bytes": 0,
+      "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "10683c62-8372-4d53-a903-6d98eeba3fa3",
+      "started_at": "2026-10-11T14:32:10.275917+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-11T14:32:10.293805+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=0&beg=20260901&end=20261011&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-11T14:32:10.293008+00:00",
+          "status": "FAILED"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "finished_at": "2026-10-11T14:32:10.308634+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=1&beg=20260901&end=20261011&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-11T14:32:10.308027+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:10.312211+00:00",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh600519",
+          "started_at": "2026-10-11T14:32:10.311879+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:10.316056+00:00",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-actions",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1",
+          "started_at": "2026-10-11T14:32:10.315637+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:10.320124+00:00",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-performance",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1",
+          "started_at": "2026-10-11T14:32:10.319702+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:10.332814+00:00",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-announcements",
+          "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519",
+          "started_at": "2026-10-11T14:32:10.332529+00:00",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "acquisition_limits": {
+        "max_response_bytes": 1048576,
+        "max_total_bytes": 4194304
+      },
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "0a691132009fe91eeb329500778823f8be4e2c62a131f0878e40a7e94ede1b22",
+      "elapsed_seconds": 0.053,
+      "evidence_kind": "METHOD_CASE",
+      "finished_at": "2026-10-11T14:32:10.517853+00:00",
+      "gaps": [
+        {
+          "adjustment": "RAW",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:000001",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "QUOTE",
+          "instrument": "SSE:000001",
+          "reason": "controlled source timeout"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SSE:000300"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SSE:000300"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SSE:000905"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SSE:000905"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SZSE:399997"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SZSE:399997"
+        }
+      ],
+      "host_owner": {
+        "creation_ticks": 134362027213909677,
+        "nonce": "2bc6142d-d046-4c9a-afe0-24364def9f1e",
+        "pid": 468
+      },
+      "model": null,
+      "request_id": "2110dfc0-8fdf-4c8e-bde0-7ac2af3df089",
+      "retrieved_bytes": 0,
+      "retrieved_decoded_bytes": 0,
+      "run_id": "b9a8dc8a-9835-4475-bb7d-201b72cc2b42",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "a6fe6e29-efa8-482f-860d-83faaa7c9413",
+      "started_at": "2026-10-11T14:32:10.459516+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-11T14:32:10.492707+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:000001",
+          "method": "GET",
+          "source_id": "tencent-index-daily",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh000001%2Cday%2C2026-09-01%2C2026-10-11%2C800%2C",
+          "started_at": "2026-10-11T14:32:10.492213+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:10.507694+00:00",
+          "group": "QUOTE",
+          "instrument": "SSE:000001",
+          "method": "GET",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh000001",
+          "started_at": "2026-10-11T14:32:10.507298+00:00",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "acquisition_limits": {
+        "max_response_bytes": 1048576,
+        "max_total_bytes": 4194304
+      },
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "8ab636983ddaf4f72aacafdb001409521258ab3b8d53050d5568b51bc145db1c",
+      "elapsed_seconds": 0.058,
+      "evidence_kind": "METHOD_CASE",
+      "finished_at": "2026-10-11T14:32:11.743919+00:00",
+      "gaps": [
+        {
+          "adjustment": "RAW",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "NO_FACTS_IN_REQUEST_WINDOW",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_FACTS_IN_REQUEST_WINDOW",
+          "group": "MAJOR_EVENTS",
+          "instrument": "SSE:600519"
+        }
+      ],
+      "host_owner": {
+        "creation_ticks": 134362027213909677,
+        "nonce": "2bc6142d-d046-4c9a-afe0-24364def9f1e",
+        "pid": 468
+      },
+      "model": null,
+      "request_id": "3ef972ad-6f42-4c03-8787-3ba644e39e0b",
+      "retrieved_bytes": 0,
+      "retrieved_decoded_bytes": 0,
+      "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "5407bf94-a0ec-45c0-9ede-940e0d0c02c8",
+      "started_at": "2026-10-11T14:32:11.681094+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-11T14:32:11.706067+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=0&beg=20260901&end=20261011&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-11T14:32:11.705569+00:00",
+          "status": "FAILED"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "finished_at": "2026-10-11T14:32:11.709534+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=1&beg=20260901&end=20261011&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-11T14:32:11.709041+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:11.712590+00:00",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh600519",
+          "started_at": "2026-10-11T14:32:11.712410+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:11.716568+00:00",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-actions",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1",
+          "started_at": "2026-10-11T14:32:11.716168+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:11.734009+00:00",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-performance",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1",
+          "started_at": "2026-10-11T14:32:11.733384+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:11.738184+00:00",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-announcements",
+          "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519",
+          "started_at": "2026-10-11T14:32:11.737764+00:00",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "acquisition_limits": {
+        "max_response_bytes": 1048576,
+        "max_total_bytes": 4194304
+      },
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "0a691132009fe91eeb329500778823f8be4e2c62a131f0878e40a7e94ede1b22",
+      "elapsed_seconds": 0.03,
+      "evidence_kind": "METHOD_CASE",
+      "finished_at": "2026-10-11T14:32:11.839605+00:00",
+      "gaps": [
+        {
+          "adjustment": "RAW",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:000001",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "QUOTE",
+          "instrument": "SSE:000001",
+          "reason": "controlled source timeout"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SSE:000300"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SSE:000300"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SSE:000905"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SSE:000905"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SZSE:399997"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SZSE:399997"
+        }
+      ],
+      "host_owner": {
+        "creation_ticks": 134362027213909677,
+        "nonce": "2bc6142d-d046-4c9a-afe0-24364def9f1e",
+        "pid": 468
+      },
+      "model": null,
+      "request_id": "efc9b87a-bdd6-4a71-b715-67782cc1b19b",
+      "retrieved_bytes": 0,
+      "retrieved_decoded_bytes": 0,
+      "run_id": "2f731b8a-421b-4f8d-9e59-50edd67144ad",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "bb61d1ec-31bf-4d56-85cb-7ced3fd5c3bf",
+      "started_at": "2026-10-11T14:32:11.801737+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-11T14:32:11.819454+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:000001",
+          "method": "GET",
+          "source_id": "tencent-index-daily",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh000001%2Cday%2C2026-09-01%2C2026-10-11%2C800%2C",
+          "started_at": "2026-10-11T14:32:11.818969+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:11.834702+00:00",
+          "group": "QUOTE",
+          "instrument": "SSE:000001",
+          "method": "GET",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh000001",
+          "started_at": "2026-10-11T14:32:11.834281+00:00",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "acquisition_limits": {
+        "max_response_bytes": 1048576,
+        "max_total_bytes": 4194304
+      },
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "8ab636983ddaf4f72aacafdb001409521258ab3b8d53050d5568b51bc145db1c",
+      "elapsed_seconds": 0.059,
+      "evidence_kind": "METHOD_CASE",
+      "finished_at": "2026-10-11T14:32:14.056864+00:00",
+      "gaps": [
+        {
+          "adjustment": "RAW",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "NO_FACTS_IN_REQUEST_WINDOW",
+          "group": "STATUS",
+          "instrument": "SSE:600519"
+        },
+        {
+          "code": "NO_FACTS_IN_REQUEST_WINDOW",
+          "group": "MAJOR_EVENTS",
+          "instrument": "SSE:600519"
+        }
+      ],
+      "host_owner": {
+        "creation_ticks": 134362027213909677,
+        "nonce": "2bc6142d-d046-4c9a-afe0-24364def9f1e",
+        "pid": 468
+      },
+      "model": null,
+      "request_id": "1adccefd-a9de-4aff-bf08-d573a3f3d107",
+      "retrieved_bytes": 0,
+      "retrieved_decoded_bytes": 0,
+      "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "84795eae-90df-4bff-9813-ee570abcc907",
+      "started_at": "2026-10-11T14:32:13.992990+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-11T14:32:14.020420+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=0&beg=20260901&end=20261011&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-11T14:32:14.020003+00:00",
+          "status": "FAILED"
+        },
+        {
+          "adjustment": "FORWARD_CURRENT_VERSION",
+          "finished_at": "2026-10-11T14:32:14.023642+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-daily",
+          "source_url": "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.600519&klt=101&fqt=1&beg=20260901&end=20261011&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61",
+          "started_at": "2026-10-11T14:32:14.023277+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:14.026293+00:00",
+          "group": "QUOTE",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh600519",
+          "started_at": "2026-10-11T14:32:14.026138+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:14.028933+00:00",
+          "group": "ADJUSTMENTS",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-actions",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_SHAREBONUS_DET&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=5&pageNumber=1&sortColumns=REPORT_DATE&sortTypes=-1",
+          "started_at": "2026-10-11T14:32:14.028548+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:14.045728+00:00",
+          "group": "PERFORMANCE",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-performance",
+          "source_url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=%28SECURITY_CODE%3D%22600519%22%29&pageSize=3&pageNumber=1&sortColumns=REPORTDATE&sortTypes=-1",
+          "started_at": "2026-10-11T14:32:14.045325+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:14.052150+00:00",
+          "group": "ANNOUNCEMENTS",
+          "instrument": "SSE:600519",
+          "method": "GET",
+          "source_id": "eastmoney-announcements",
+          "source_url": "https://np-anotice-stock.eastmoney.com/api/security/ann?sr=-1&page_size=30&page_index=1&ann_type=A&stock_list=600519",
+          "started_at": "2026-10-11T14:32:14.051453+00:00",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "acquisition_limits": {
+        "max_response_bytes": 1048576,
+        "max_total_bytes": 4194304
+      },
+      "backend": "DIRECT_HTTP",
+      "config_fingerprint": "0a691132009fe91eeb329500778823f8be4e2c62a131f0878e40a7e94ede1b22",
+      "elapsed_seconds": 0.017,
+      "evidence_kind": "METHOD_CASE",
+      "finished_at": "2026-10-11T14:32:14.123591+00:00",
+      "gaps": [
+        {
+          "adjustment": "RAW",
+          "code": "ConnectTimeout",
+          "group": "DAILY",
+          "instrument": "SSE:000001",
+          "reason": "controlled source timeout"
+        },
+        {
+          "code": "ConnectTimeout",
+          "group": "QUOTE",
+          "instrument": "SSE:000001",
+          "reason": "controlled source timeout"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SSE:000300"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SSE:000300"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SSE:000905"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SSE:000905"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SZSE:399001"
+        },
+        {
+          "adjustment": "RAW",
+          "code": "TECHNICAL_LIMIT",
+          "group": "DAILY",
+          "instrument": "SZSE:399997"
+        },
+        {
+          "code": "TECHNICAL_LIMIT",
+          "group": "QUOTE",
+          "instrument": "SZSE:399997"
+        }
+      ],
+      "host_owner": {
+        "creation_ticks": 134362027213909677,
+        "nonce": "2bc6142d-d046-4c9a-afe0-24364def9f1e",
+        "pid": 468
+      },
+      "model": null,
+      "request_id": "c722acdf-8d9d-4e82-8fce-4581b5307699",
+      "retrieved_bytes": 0,
+      "retrieved_decoded_bytes": 0,
+      "run_id": "9e2d1ae6-fa26-4ef0-85c0-cf075d631e65",
+      "runtime_versions": {
+        "httpx": "0.28.1",
+        "pyarrow": "25.0.1",
+        "pypdf": "6.19.0"
+      },
+      "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+      "snapshot_id": "4130a8f0-17ad-4bee-ac33-dc674d986d23",
+      "started_at": "2026-10-11T14:32:14.098258+00:00",
+      "status": "FAILED",
+      "tools": [
+        {
+          "adjustment": "RAW",
+          "finished_at": "2026-10-11T14:32:14.114994+00:00",
+          "group": "DAILY",
+          "instrument": "SSE:000001",
+          "method": "GET",
+          "source_id": "tencent-index-daily",
+          "source_url": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh000001%2Cday%2C2026-09-01%2C2026-10-11%2C800%2C",
+          "started_at": "2026-10-11T14:32:14.114438+00:00",
+          "status": "FAILED"
+        },
+        {
+          "finished_at": "2026-10-11T14:32:14.118479+00:00",
+          "group": "QUOTE",
+          "instrument": "SSE:000001",
+          "method": "GET",
+          "source_id": "tencent-quote",
+          "source_url": "https://qt.gtimg.cn/q=sh000001",
+          "started_at": "2026-10-11T14:32:14.118205+00:00",
+          "status": "FAILED"
+        }
+      ]
+    }
+  ],
+  "audit": {
+    "account_version": 1,
+    "audit_id": "73ceab5d-dc87-40f2-b15a-dfb24502b0f2",
+    "checked_at": "2026-10-11T14:32:14.179933+00:00",
+    "critical_review": {
+      "reason": "\u666e\u901a\u8fd0\u884c\u6458\u8981\u4e0d\u81ea\u52a8\u5347\u7ea7\u4e3a\u591a\u6e90\u6838\u9a8c",
+      "status": "NOT_REQUIRED"
+    },
+    "data_versions": [],
+    "metrics": {
+      "account_differences": {
+        "reasons": [],
+        "state": "CONFIRMED_AS_OF",
+        "status": "CHECKED",
+        "value": 0
+      },
+      "action_flips": {
+        "status": "CHECKED",
+        "value": 0
+      },
+      "data_coverage": {
+        "gaps": [
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "CURRENT_STATUS_UNKNOWN",
+            "group": "STATUS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "ANNOUNCEMENTS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "PERFORMANCE",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "NO_ACQUIRED_FACT",
+            "group": "MAJOR_EVENTS",
+            "instrument": "SSE:600519"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SSE:000001"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SSE:000001"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SZSE:399001"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SZSE:399001"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SSE:000300"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SSE:000300"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SSE:000905"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SSE:000905"
+          },
+          {
+            "code": "MISSING",
+            "group": "QUOTE",
+            "instrument": "SZSE:399997"
+          },
+          {
+            "code": "NO_COMPLETE_DAILY",
+            "group": "DAILY",
+            "instrument": "SZSE:399997"
+          }
+        ],
+        "status": "CHECKED",
+        "value": 17
+      },
+      "duplicate_notifications": {
+        "business_notifications": 1,
+        "delivery_status": "UNKNOWN",
+        "failed_attempts": 0,
+        "possible_duplicate_attempts": 0,
+        "status": "CHECKED",
+        "transmission_attempts": 0,
+        "unknown_attempts": 0,
+        "value": 0
+      },
+      "invalidated_actions": {
+        "status": "CHECKED",
+        "value": 0
+      },
+      "module_errors": {
+        "errors": [
+          {
+            "adjustment": "RAW",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+          },
+          {
+            "adjustment": "FORWARD_CURRENT_VERSION",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "QUOTE",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "PERFORMANCE",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "ANNOUNCEMENTS",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8a445113-7c8c-4ac4-8298-52db5a8f5e04"
+          },
+          {
+            "adjustment": "RAW",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:000001",
+            "reason": "controlled source timeout",
+            "run_id": "b9a8dc8a-9835-4475-bb7d-201b72cc2b42"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "QUOTE",
+            "instrument": "SSE:000001",
+            "reason": "controlled source timeout",
+            "run_id": "b9a8dc8a-9835-4475-bb7d-201b72cc2b42"
+          },
+          {
+            "adjustment": "RAW",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+          },
+          {
+            "adjustment": "FORWARD_CURRENT_VERSION",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "QUOTE",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "PERFORMANCE",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "ANNOUNCEMENTS",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "8787e6df-8610-4d02-b229-dbbd2b3a7680"
+          },
+          {
+            "adjustment": "RAW",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:000001",
+            "reason": "controlled source timeout",
+            "run_id": "2f731b8a-421b-4f8d-9e59-50edd67144ad"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "QUOTE",
+            "instrument": "SSE:000001",
+            "reason": "controlled source timeout",
+            "run_id": "2f731b8a-421b-4f8d-9e59-50edd67144ad"
+          },
+          {
+            "adjustment": "RAW",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+          },
+          {
+            "adjustment": "FORWARD_CURRENT_VERSION",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "QUOTE",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "ADJUSTMENTS",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "PERFORMANCE",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "ANNOUNCEMENTS",
+            "instrument": "SSE:600519",
+            "reason": "controlled source timeout",
+            "run_id": "f4268f5d-94f3-49b9-956c-726e186557d4"
+          },
+          {
+            "adjustment": "RAW",
+            "code": "ConnectTimeout",
+            "group": "DAILY",
+            "instrument": "SSE:000001",
+            "reason": "controlled source timeout",
+            "run_id": "9e2d1ae6-fa26-4ef0-85c0-cf075d631e65"
+          },
+          {
+            "code": "ConnectTimeout",
+            "group": "QUOTE",
+            "instrument": "SSE:000001",
+            "reason": "controlled source timeout",
+            "run_id": "9e2d1ae6-fa26-4ef0-85c0-cf075d631e65"
+          }
+        ],
+        "status": "CHECKED",
+        "value": 24
+      },
+      "partially_synced_intents": {
+        "status": "CHECKED",
+        "value": 0
+      },
+      "shadow_records": {
+        "account_conditional_records": 0,
+        "records": [],
+        "status": "CHECKED",
+        "value": 0
+      },
+      "unfinished_execution_intents": {
+        "status": "CHECKED",
+        "value": 0
+      }
+    },
+    "phase": "CLOSED",
+    "snapshot_id": "e3a8e367-45d4-426d-bdff-30eaa530a9e7",
+    "task_id": "ffefad57-508d-4d2a-ba27-62ddcc609ab8",
+    "trade_date": "2026-10-11"
+  },
+  "notification_audit_at_assertion": {
+    "business_notifications": 1,
+    "transmission_attempts": 0,
+    "merged_sources": 0,
+    "possible_duplicate_attempts": 0,
+    "failed_attempts": 0,
+    "unknown_attempts": 0,
+    "delivered": null,
+    "delivery_status": "UNKNOWN"
+  },
+  "notifications_at_assertion": [
+    {
+      "category": "STAGE_SUMMARY",
+      "evidence_kind": "HOST_OBSERVATION_SUMMARY",
+      "expires_at": "2026-10-11T22:32:14.174546+00:00",
+      "known_at": "2026-10-11T14:32:14.174546+00:00",
+      "message": "\u672c\u9636\u6bb5\u89c2\u5bdf\u5df2\u8bb0\u5f55\uff0c\u8bf7\u6253\u5f00\u67e5\u770b\u4e8b\u5b9e\u3001\u7f3a\u9879\u548c\u9002\u7528\u8fb9\u754c\uff1b\u4e0d\u6784\u6210\u4ea4\u6613\u5efa\u8bae\u3002",
+      "notification_id": "ba4ec568-a065-4eaf-aa57-e84248889abc",
+      "occurred_at": "2026-10-11T14:32:14.155003+00:00",
+      "severity": "NORMAL",
+      "source": {
+        "id": "e3a8e367-45d4-426d-bdff-30eaa530a9e7",
+        "kind": "RUN_SUMMARY",
+        "version": "ffefad57-508d-4d2a-ba27-62ddcc609ab8"
+      },
+      "title": "\u672c\u9636\u6bb5\u89c2\u5bdf\u5df2\u8bb0\u5f55",
+      "read_at": null,
+      "read_source": "UNKNOWN",
+      "sent_at": null,
+      "sent_source": "UNKNOWN",
+      "dispatch_started_at": null,
+      "dispatch_started_source": "UNKNOWN",
+      "publish_confirmed_at": null,
+      "accepted_known_at": null,
+      "accepted_occurred_at": null,
+      "accepted_occurred_source": "UNKNOWN",
+      "delivered_at": null,
+      "delivery_source": "UNKNOWN",
+      "external_status": "CHANNEL_DISABLED"
+    }
+  ],
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false
+}

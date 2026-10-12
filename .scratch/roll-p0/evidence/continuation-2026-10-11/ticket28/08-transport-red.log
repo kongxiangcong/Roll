@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_worker_channel_acceptance_not_delivery_or_read_and_single_business_attempt _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-08/test_worker_channel_acceptance0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019A26944D60>
+
+    def test_worker_channel_acceptance_not_delivery_or_read_and_single_business_attempt(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        received = []
+        def publish(request):
+            import json
+            received.append({'path':request.url.path,'body':json.loads(request.content),'authorization_present':'authorization' in request.headers})
+            return httpx.Response(200, json={'id':'method-accepted-1','event':'message','time':1791700000})
+>       with TestClient(create_app(tmp_path / 'data', notification_transport=httpx.MockTransport(publish))) as client:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: create_app() got an unexpected keyword argument 'notification_transport'
+
+backend\tests\application\test_notifications.py:121: TypeError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_worker_channel_acceptance_not_delivery_or_read_and_single_business_attempt
+1 failed, 3 deselected in 1.58s

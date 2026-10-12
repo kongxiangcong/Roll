@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_missed_days_no_backfill_and_exact_deadline_closes_with_unmatured_separate _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30/.scratch/pytest-30-red2/test_missed_days_no_backfill_a0')
+
+    def test_missed_days_no_backfill_and_exact_deadline_closes_with_unmatured_separate(tmp_path):
+        clock = [datetime.fromisoformat('2026-06-10T16:00:00+08:00')]
+        with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+            _, protocol, model, dates = setup(client,tmp_path)
+            clock[0] = datetime.fromisoformat(dates[110]+'T16:00:00+08:00')
+            frozen = freeze(client,protocol,model).json()
+            path = '/api/research/complete-freezes/'+frozen['freeze_id']+'/forward'
+            client.post(path,json={'purpose':'METHOD_VALIDATION','basis':'Deadline METHOD'})
+            first = client.post(path+'/check',json={'basis':'First live METHOD checkpoint'}).json()
+>           assert first['samples'][0]['action']['maturity_date'] == dates[130]
+E           AssertionError: assert None == '2026-07-21'
+
+backend\tests\application\test_forward.py:48: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_forward.py::test_missed_days_no_backfill_and_exact_deadline_closes_with_unmatured_separate
+1 failed, 1 deselected in 15.38s

@@ -1,0 +1,210 @@
+{
+  "instrument": "SSE:600362",
+  "generated_at": "2026-10-09T16:30:55.576261+00:00",
+  "gaps": [
+    {
+      "id": "GAP-001",
+      "category": "POINT_IN_TIME_AVAILABILITY",
+      "severity": "BLOCKS_HISTORICAL_INPUT",
+      "affected_dates_or_scope": "entire requested range 2016-01-01..2023-12-31",
+      "affected_fields": [
+        "historical_publication",
+        "historical_availability",
+        "captured_at",
+        "evidence_class"
+      ],
+      "description": "Every daily bar delivered is evidence_class=CURRENT_QUERY_ONLY. The single Sohu hisHq request returns 2160 continuous rows, but it is a CURRENT query: it proves the values exist NOW, not that any specific version was public before a given prediction cutoff. No point-in-time (as-of) reconstruction is possible from this package.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-002",
+          "locator": "whole response"
+        }
+      ],
+      "methods_attempted": [
+        "Sohu hisHq current query (success, current only)",
+        "SSE daily-statistics current query (2023+ only)",
+        "Internet Archive CDX + id_ replay (unreachable: CONNECT tunnel 502 through local egress proxy)",
+        "prior collections: 43 unique Sina quote captures (longest consecutive run = 1)"
+      ],
+      "why_unresolved": "No reachable source exposes an as-of/revision view of the daily-bar series, and the web archive became unreachable mid-collection so captured historical versions could not be retrieved.",
+      "next_step": "Obtain an authorised PIT data product (e.g. a licensed historical database with as-of semantics), or restore network access to web.archive.org / a WARC corpus and crawl dense captures.",
+      "requires_external_authorization": true
+    },
+    {
+      "id": "GAP-002",
+      "category": "REVISION_HISTORY",
+      "severity": "BLOCKS_HISTORICAL_INPUT",
+      "affected_dates_or_scope": "all sources",
+      "affected_fields": [
+        "revision_policy",
+        "revision chain"
+      ],
+      "description": "No source documented a revision policy for its daily-bar series. revision_chain_completeness = 0.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-002",
+          "locator": "response header/body - no as-of or revision metadata"
+        }
+      ],
+      "methods_attempted": [
+        "inspected response bodies for revision/as-of fields",
+        "searched provider documentation pages"
+      ],
+      "why_unresolved": "Providers publish a single current state; no documented version chain is exposed.",
+      "next_step": "Request the provider's data-change log, or reconstruct versions from dense third-party archives.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "GAP-003",
+      "category": "SECURITY_STATUS_COVERAGE",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "2016-01-01..2023-12-31",
+      "affected_fields": [
+        "trading_status",
+        "is_st",
+        "price_limit_pct"
+      ],
+      "description": "PARTIALLY ADDRESSED by the second source. Wind supplies a documented NEGATIVE for ST (explicit empty ST-event result + an unchanged security abbreviation that has never been ST-prefixed). What is STILL missing is the per-trading-day trading-status history and the per-date applicable price limit. A missing status row is still NOT evidence of NORMAL.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-017",
+          "locator": "pageHelp.data"
+        }
+      ],
+      "methods_attempted": [
+        "SSE per-date suspension list (works per date, not as a full history)",
+        "SSE daily-statistics query (only ~2023+)",
+        "Wind ST event query (explicit empty)",
+        "Wind security-master abbreviation history"
+      ],
+      "why_unresolved": "No source reachable in this round serves a per-trading-day status/limit history. The ST question specifically IS answered in the negative.",
+      "next_step": "Pull the exchange's full suspension/ST history (authorised data product) or parse every daily bulletin.",
+      "requires_external_authorization": true
+    },
+    {
+      "id": "GAP-004",
+      "category": "DAILY_BAR_GAPS",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "2018-12-31 only",
+      "affected_fields": [
+        "trade_date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume_shares",
+        "amount_yuan"
+      ],
+      "description": "RESOLVED BY SECOND SOURCE (downgraded from BLOCKS_HISTORICAL_INPUT to LIMITS_COVERAGE). The Wind series covers 29 of the 30 dates that Sohu omitted, including all 21 non-February dates. The only remaining date with no bar from either source is 2018-12-31, which the second source shows was a holiday. The Feb-2016 dates are a genuine exchange suspension and are delivered as SUSPENSION_PLACEHOLDER rows by Wind.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-WIND-WIND_KLINE_600362_2016_2023_",
+          "locator": "data.rows[] date set"
+        },
+        {
+          "evidence_id": "EV-E-017",
+          "locator": "PRODUCT_CODE=600362"
+        }
+      ],
+      "methods_attempted": [
+        "Sohu cross-check",
+        "SSE calendar derivation",
+        "Wind second-source pull",
+        "Wind gap-window probes"
+      ],
+      "why_unresolved": "",
+      "next_step": "No action required for the window; 2018-12-31 is a confirmed holiday.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "GAP-005",
+      "category": "UNIT_PROVENANCE",
+      "severity": "INFORMATION_ONLY",
+      "affected_dates_or_scope": "volume_shares / amount_yuan on every delivered bar",
+      "affected_fields": [
+        "volume_shares",
+        "amount_yuan",
+        "unit_conversion"
+      ],
+      "description": "LARGELY RESOLVED: the unit conversion is now validated on 1916 overlapping observed dates against a second independent source, with 1914 exact agreements and only 2 sub-3% volume/amount differences. See CONF-006 / CONF-007.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-014",
+          "locator": "result[0]"
+        },
+        {
+          "evidence_id": "EV-E-011",
+          "locator": "column labels 成交量(手)/成交金额(万)"
+        }
+      ],
+      "methods_attempted": [
+        "direct SSE-vs-Sohu comparison for 2023-12-29",
+        "attempted the same for 2016/2019 (SSE query returns empty)"
+      ],
+      "why_unresolved": "",
+      "next_step": "No action required; retained for audit trail.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "GAP-006",
+      "category": "CORPORATE_ACTION_COMPLETENESS",
+      "severity": "LIMITS_COVERAGE",
+      "affected_dates_or_scope": "2013-2023 cash distributions; all non-cash action types",
+      "affected_fields": [
+        "corporate_action_coverage_by_type",
+        "gross_cash_per_eligible_share"
+      ],
+      "description": "PARTIALLY ADDRESSED: the second source adds a structured dividend table with base shares and an explicit NULL bonus/capitalization ratio, strengthening the no-bonus/no-capitalization finding. It remains NOT a complete-scope authoritative register, so unlisted action types stay SEARCHED_NO_HIT rather than EXPLICIT_NO_EVENT.",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-E-033",
+          "locator": "implementation table"
+        }
+      ],
+      "methods_attempted": [
+        "cninfo announcement index (700 rows) keyword search",
+        "retrieved each implementation PDF individually",
+        "Wind structured corporate-action query"
+      ],
+      "why_unresolved": "cninfo serves filings, not a machine-readable complete corporate-action register.",
+      "next_step": "Use an authorised corporate-action data product, or hand-verify the full filing list year by year.",
+      "requires_external_authorization": false
+    },
+    {
+      "id": "GAP-007",
+      "category": "WEB_ARCHIVE_UNREACHABLE",
+      "severity": "BLOCKS_HISTORICAL_INPUT",
+      "affected_dates_or_scope": "all attempted archive captures",
+      "affected_fields": [
+        "evidence_class for any CAPTURED_HISTORICAL_VERSION"
+      ],
+      "description": "web.archive.org became unreachable through the local egress MITM proxy (CONNECT tunnel 502 / HTTP 000) after an initial partial success. The CDX index had confirmed captures exist for the target URLs, but the capture bodies could not be retrieved. NO archive payload was fabricated.",
+      "evidence_refs": [],
+      "methods_attempted": [
+        "curl CDX index (initial success)",
+        "curl id_ replay (502)",
+        "bounded retry probes"
+      ],
+      "why_unresolved": "Network-layer proxy failure to archive.org, not a provider restriction.",
+      "next_step": "Restore direct or alternate egress to web.archive.org and re-run the capture retrieval.",
+      "requires_external_authorization": true
+    },
+    {
+      "id": "GAP-008",
+      "category": "BROKER_COMMISSION",
+      "severity": "BLOCKS_EXECUTION_OR_RIGHTS",
+      "affected_dates_or_scope": "every study date",
+      "affected_fields": [
+        "broker_commission"
+      ],
+      "description": "The user's real broker commission is UNKNOWN and is deliberately NOT set to 0. A research scenario rate is an assumption and is not evidence of the rate actually paid.",
+      "evidence_refs": [],
+      "methods_attempted": [
+        "checked official fee/tax originals (these do NOT include broker commission)"
+      ],
+      "why_unresolved": "Broker commission is a per-account private commercial term; it cannot be collected from public sources.",
+      "next_step": "User supplies their own broker fee schedule / trade confirmations.",
+      "requires_external_authorization": true
+    }
+  ]
+}

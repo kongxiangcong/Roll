@@ -17,6 +17,10 @@ from roll.agents.codex_process import Job,clean_environment,command,tool,publish
 
 
 def execute(host,run,request,cancel,key):
+    if run.get('task_kind')=='TECHNICAL_REVIEW':
+        from roll.agents.review_runtime import command as task_command,tool as task_tool,publish as task_publish
+    elif run.get('task_kind') is None:task_command,task_tool,task_publish=command,tool,publish
+    else:raise ValueError('TASK_KIND_NOT_ALLOWED')
     started=time.monotonic();deadline=started+run['limits']['timeout_seconds']
     state={'facts':[],'snapshots':[],'http_calls':0,'bytes':0,'returned_bytes':0,'source_texts':{}}
     root=Path(tempfile.mkdtemp(prefix='roll-deepseek-task-'+run['run_id']+'-')).resolve()
@@ -43,7 +47,7 @@ def execute(host,run,request,cancel,key):
         run['process'].update(worker_pid=process.pid,containment='WINDOWS_JOB_KILL_ON_CLOSE',
             isolated_cwd=True,isolated_home=True,environment_keys=sorted(clean_environment(root)))
         threading.Thread(target=drain,daemon=True).start()
-        frozen=command(run,request)
+        frozen=task_command(run,request)
         run['tool_schema_fingerprint']=hashlib.sha256(encode(frozen['tools']).encode()).hexdigest()
         # Key crosses this private pipe once, and is never a prompt/tool/audit field or file.
         send({**frozen,'key':key,'endpoint':host.endpoint,'limits':run['limits']});host.save(run)
@@ -71,13 +75,13 @@ def execute(host,run,request,cancel,key):
                 run.setdefault('model_responses',[]).append({**event,'sha256':archive['sha256'],'bytes':archive['bytes']})
                 if event.get('resolved_model'):run['resolved_model']=event['resolved_model']
             elif kind=='tool':
-                result=tool(host,run,request,state,event,deadline,cancel)
+                result=task_tool(host,run,request,state,event,deadline,cancel)
                 send({'kind':'tool_result','id':event['id'],'result':result})
             elif kind=='denied':
                 run.setdefault('denied_requests',[]).append(event)
             elif kind=='completed':
                 run['token_usage']=event['usage']
-                publish(host,run,request,state,event['output']);break
+                task_publish(host,run,request,state,event['output']);break
             elif kind in {'failure','eof'}:
                 code=event.get('code','DEEPSEEK_WORKER_EXIT')
                 status='UNAVAILABLE' if code in {'DEEPSEEK_AUTH_REJECTED','DEEPSEEK_MODEL_UNAVAILABLE','DEEPSEEK_QUOTA_OR_RATE_LIMIT'} else 'INVALID_OUTPUT' if code in {'DEEPSEEK_OUTPUT_SCHEMA_INVALID','DEEPSEEK_OUTPUT_TOKEN_LIMIT'} else 'TOOL_LIMIT' if code=='DEEPSEEK_MODEL_CALL_LIMIT' else 'FAILED'

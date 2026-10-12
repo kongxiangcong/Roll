@@ -1,0 +1,86 @@
+{
+  "kind": "CONTROL_GUARD_CORRECTION_CONTINUATION",
+  "created_utc": "2026-10-11T20:06:28.466740+00:00",
+  "original_preflight": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-v14-original-accepted-preflight.json",
+  "original_preflight_bytes": 209712275,
+  "original_preflight_sha256": "ca10e9787fa4fc2ad895e91d54b7c448f84e1ef15f8123dd3f1299f357ca9bca",
+  "original_created_utc_preserved": true,
+  "old_executor": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-batch-v14-root-exact-batch.ps1",
+  "new_executor": {
+    "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-batch-v15-root-exact-batch.ps1",
+    "bytes": 40329,
+    "mtime_ticks": 639273459151593980,
+    "sha256": "0a28ca1720f40920d1ee5a43861564827892ccd4e8e296246702a22a4bfe6cb5"
+  },
+  "exact_replacement_old": "[IO.Path]::GetFileName($_.FullName) -ne '.git'",
+  "exact_replacement_new": "(N $_.FullName) -ne (N (Join-Path $t.path '.git'))",
+  "corrected_source_file_sets": [
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25",
+      "expected": 15888,
+      "actual": 15888,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26",
+      "expected": 29945,
+      "actual": 29945,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope",
+      "expected": 6231,
+      "actual": 6231,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25-ordering",
+      "expected": 5201,
+      "actual": 5201,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27",
+      "expected": 11213,
+      "actual": 11213,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28",
+      "expected": 11739,
+      "actual": 11739,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29",
+      "expected": 16450,
+      "actual": 16450,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+      "expected": 36040,
+      "actual": 36040,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final",
+      "expected": 16456,
+      "actual": 16456,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix",
+      "expected": 8428,
+      "actual": 8428,
+      "identical": true
+    }
+  ],
+  "all_previous_proof_and_inventory_metadata_unchanged": true,
+  "source_or_saved_content_hash_sweeps_added": 0,
+  "private_body_reads": 0,
+  "sqlite_connections": 0,
+  "deleted": 0,
+  "private_moves": 0,
+  "continued_preflight_sha256": "7f02f7dc3f88e5204911bbb13684c77bb3ad3158b4a47de81ffaa7215947a576"
+}

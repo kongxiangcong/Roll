@@ -42,9 +42,13 @@ class MaintenanceCommand(BaseModel):
 
 
 class Reviews:
-    def __init__(self,ledger,market,evidence,clock=None):
+    def __init__(self,ledger,market,evidence,clock=None,worker_enabled=True):
         self.ledger,self.market,self.evidence=ledger,market,evidence
+        self.capabilities = None
+        self.monitoring = None
+        self.worker_enabled=worker_enabled
         self.resolutions=None
+        self.forward=None
         self.clock=clock or (lambda:datetime.now(timezone.utc))
         self.owner={'pid':os.getpid(),'creation_ticks':process_creation(os.getpid()),'nonce':str(uuid4())}
         self.stop=threading.Event()
@@ -71,7 +75,9 @@ class Reviews:
             db.execute('INSERT OR IGNORE INTO schema_migrations VALUES(?,?)',('15-reviews-v1',now()))
 
     def start(self):
+        if not self.worker_enabled:return False
         with self.start_lock:self.acquire_worker()
+        return bool(self.thread and self.thread.is_alive())
 
     def acquire_worker(self):
         if self.thread and self.thread.is_alive():return
@@ -165,6 +171,11 @@ class Reviews:
                 except Exception as error:self.finish_error(identifier,error)
             self.check_maintenance()
             self.check_running_day()
+            if hasattr(self, 'notifications'): self.notifications.work(self.owner)
+            if self.monitoring:
+                try:self.monitoring.check_post_close(self.clock())
+                except HTTPException as error:self.worker_error={'code':'CAPABILITY_MONITORING_RETRY_REQUIRED','message':str(error.detail),'occurred_at':now()}
+            if self.forward and (not self.capabilities or self.capabilities.lifecycle()['observations_allowed']):self.forward.work()
             self.stop.wait(.05)
 
     def check_running_day(self):
@@ -227,7 +238,7 @@ class Reviews:
         content=command.model_dump(mode='json')
         identity=hashlib.sha256(encode({**content,'first_due_at':due.isoformat()}).encode()).hexdigest()
         schedule={**content,'schedule_id':identity,'next_due_at':due.isoformat(),'next_nominal_at':command.first_due_at.astimezone(SHANGHAI).isoformat(),'registered_at':now(),
-            'calendar_version':command.exchange+'-2026','status':'ACTIVE','business_checks_owner':'27_NOT_CONNECTED'}
+            'calendar_version':command.exchange+'-2026','status':'ACTIVE','business_checks_owner':'CAPABILITY_LIFECYCLE'}
         with self.ledger.connection() as db:
             db.execute('INSERT OR IGNORE INTO review_maintenance VALUES(?,?)',(identity,encode(schedule)))
             schedule=json.loads(db.execute('SELECT value FROM review_maintenance WHERE id=?',(identity,)).fetchone()[0])
@@ -248,21 +259,27 @@ class Reviews:
     def check_maintenance(self):
         checked=self.clock()
         checked_any=False
+        with self.ledger.connection() as read:
+            due = any(json.loads(row[0]).get('next_due_at') and datetime.fromisoformat(json.loads(row[0])['next_due_at']) <= checked
+                      for row in read.execute('SELECT value FROM review_maintenance'))
+        prepared = self.monitoring.prepare_maintenance(checked) if due and self.monitoring else []
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
+            business_checks = None
             for row in db.execute('SELECT id,value FROM review_maintenance'):
                 schedule=json.loads(row['value'])
                 if not schedule['next_due_at'] or datetime.fromisoformat(schedule['next_due_at'])>checked:continue
                 due=datetime.fromisoformat(schedule['next_due_at'])
                 key=hashlib.sha256((schedule['schedule_id']+'|'+due.isoformat()).encode()).hexdigest()
                 checked_any=True
-                account=self.ledger.account()
+                account=self.ledger.account(db=db)
                 state,reasons=consistency(account,self.ledger.pending_drafts())
+                if business_checks is None and self.monitoring:business_checks=self.monitoring.apply_maintenance(prepared,db)
                 entry={'check_id':key,'schedule_id':schedule['schedule_id'],'scheduled_at':due.isoformat(),'checked_at':checked.isoformat(),
                     'status':'OVERDUE_CHECKED' if (checked-due).total_seconds()>1 else 'DUE_CHECKED',
                     'late_seconds':max(0,(checked-due).total_seconds()),'account_version':account['version'],
                     'calendar_version':schedule['calendar_version'],'runtime_check':{'state':state,'account_reasons':reasons,'service_seen_at':checked.isoformat()},
-                    'business_checks':{name:{'status':'NOT_CONNECTED','value':None} for name in ['mature_labels','qualification_expiry','new_experiment_conditions']},
+                    'business_checks':business_checks if business_checks is not None else {name:{'status':'NOT_CONNECTED','value':None} for name in ['mature_labels','qualification_expiry','new_experiment_conditions']},
                     'statistical_pass_checks_added':0,'retrained':False,'missed_due_instants':[]}
                 candidate=self.next_maintenance(schedule,due)
                 while candidate and candidate<=checked:
@@ -284,6 +301,8 @@ class Reviews:
 
     def perform(self,identifier):
         task=self.get(identifier)
+        if task['status']=='CANCELLED':return
+        if self.capabilities and not self.capabilities.lifecycle()['observations_allowed']:return
         self.cancel_event.clear()
         started=time.monotonic()
         error=False
@@ -317,6 +336,7 @@ class Reviews:
             db.execute('BEGIN IMMEDIATE')
             latest=json.loads(db.execute('SELECT value FROM review_tasks WHERE id=?',(identifier,)).fetchone()[0])
             if latest['status']=='CANCELLED':return
+            if self.capabilities and not self.capabilities.lifecycle(db)['observations_allowed']:return
             if self.stop.is_set():
                 task.update(status='QUEUED',retry_at=now(),recovery_reason='NORMAL_CLOSE_PENDING_ATTEMPT')
             elif error and task['attempts']<LIMITS['attempts'] and time.monotonic()<deadline:
@@ -348,7 +368,8 @@ class Reviews:
                 result['previous_snapshot_id']=previous['result']['snapshot_id'] if previous else None
                 result['change']='NO_SUBSTANTIAL_CHANGE' if previous and previous['result'].get('state_fingerprint')==fingerprint else 'NEW_INFORMATION'
                 result['coverage']['unobserved_trigger_sequence']='NOT_RECONSTRUCTED'
-                audit=self.audit(task,result)
+                if hasattr(self, 'notifications'): self.notifications.review_completed(db, task, result)
+                audit=self.audit(task,result,db)
                 db.execute('INSERT INTO review_audits VALUES(?,?)',(audit['audit_id'],encode(audit)))
                 task['audit_id']=audit['audit_id']
             task['timing']['network_seconds']+=round(network,6)
@@ -371,9 +392,13 @@ class Reviews:
             db.execute('INSERT INTO review_audits VALUES(?,?)',(audit['audit_id'],encode(audit)))
             db.execute('UPDATE review_tasks SET value=? WHERE id=?',(encode(task),identifier))
 
-    def audit(self,task,result):
+    def audit(self,task,result,db=None):
         state,reasons=consistency(task['frozen_account'],self.ledger.pending_drafts())
         metrics={name:{'status':'NOT_CONNECTED','value':None} for name in ['unfinished_execution_intents','invalidated_actions','duplicate_notifications','action_flips','shadow_records']}
+        if hasattr(self, 'actions'): metrics.update(self.actions.metrics())
+        if hasattr(self, 'intents'): metrics.update(self.intents.metrics())
+        if hasattr(self, 'notifications'): metrics.update(self.notifications.metrics(db))
+        if hasattr(self, 'reports'): metrics.update(self.reports.metrics(db))
         metrics.update(data_coverage={'status':'CHECKED','value':len(result['gaps']),'gaps':result['gaps']},
             account_differences={'status':'CHECKED','value':len(reasons),'state':state,'reasons':reasons},
             module_errors={'status':'CHECKED','value':len(task['module_errors']),'errors':task['module_errors']})
@@ -398,6 +423,14 @@ class Reviews:
                 db.execute('UPDATE review_tasks SET value=? WHERE id=?',(encode(task),identifier))
             db.commit()
         return task
+
+    def restrict_observations(self,db,event):
+        """Cancel related pending observations in the lifecycle writer chain."""
+        for identifier,raw in db.execute('SELECT id,value FROM review_tasks').fetchall():
+            task=json.loads(raw)
+            if task['status'] not in {'QUEUED','RUNNING','RETRY_WAIT'}:continue
+            task.update(status='CANCELLED',finished_at=event['recorded_at'],cancel_reason='ALL_MONITOR_SUSPENDED',lifecycle_event_id=event['event_id'])
+            db.execute('UPDATE review_tasks SET value=? WHERE id=?',(encode(task),identifier))
 
     def facts_at(self,listing,cutoff,knowledge=None):
         knowledge=knowledge or cutoff
@@ -473,6 +506,8 @@ class Reviews:
         return result
 
     def submit(self,command:ReviewCommand):
+        if self.capabilities and not self.capabilities.lifecycle()['observations_allowed']:
+            raise HTTPException(409, 'ALL_MONITOR_SUSPENDED')
         if not self.stop.is_set() and self.thread is None:self.start()
         started=self.clock()
         cutoff=command.cutoff or started
@@ -507,6 +542,8 @@ class Reviews:
               'retry_at':now(),'created_at':now(),'finished_at':None,'result':None}
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
+            if self.capabilities and not self.capabilities.lifecycle(db)['observations_allowed']:
+                raise HTTPException(409, 'ALL_MONITOR_SUSPENDED')
             old=db.execute('SELECT value FROM review_tasks WHERE task_key=?',(task_key,)).fetchone()
             if old:return json.loads(old[0])
             db.execute('INSERT INTO review_tasks VALUES(?,?,?)',(task['task_id'],task_key,encode(task)))

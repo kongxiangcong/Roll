@@ -1,0 +1,196 @@
+{
+  "status": "PASS",
+  "recorded_at": "2026-10-10T18:37:25.3638732Z",
+  "preflight": "cleanup20-21-preflight.json",
+  "removed_worktrees": [
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket20",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket21"
+  ],
+  "untracked_fixture_files_removed": [
+    8543,
+    1519
+  ],
+  "related_live_processes": 0,
+  "junction_unlink_method": "System.IO.Directory.Delete(path,false), exact root targets verified",
+  "native_removal": "Remove-Item -LiteralPath exact authorized worktree -Recurse -Force; exact native Git registration removal",
+  "first_native_git_partial_removal": "Ticket20 registration removed, residual entity directory required native PowerShell cleanup",
+  "root_profiles": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\20\\browser-method-final",
+      "files": 312,
+      "sha_and_length_matches": true
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\20\\browser-method-holding-fixed",
+      "files": 312,
+      "sha_and_length_matches": true
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21\\browser-final-method",
+      "files": 315,
+      "sha_and_length_matches": true
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\20\\independent-api-runtime-fixed",
+      "files": 193,
+      "sha_and_length_matches": true
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21\\independent-api-runtime",
+      "files": 209,
+      "sha_and_length_matches": true
+    }
+  ],
+  "root_tools_before": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\.venv\\Scripts\\python.exe",
+      "bytes": 45568,
+      "sha256": "010d231169271b2be3e282c0faa876ec70972dcc6b006be74aa3b092e2a38908"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\.venv\\pyvenv.cfg",
+      "bytes": 193,
+      "sha256": "1baa95dd288e0db8db5920058481116878a6b2a2fc620e2219200e652e4a1355"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\frontend\\node_modules\\playwright\\package.json",
+      "bytes": 2238,
+      "sha256": "718c91812946dcfbb4b724cfa0084ee3be205c571df09094f218bc4571f43c2b"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\frontend\\node_modules\\playwright\\cli.js",
+      "bytes": 698,
+      "sha256": "5e79302a6aad7d835d92d5ae6b4244c91cf61b28e94d7917279090e6c231f7a1"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\frontend\\node_modules\\playwright-core\\package.json",
+      "bytes": 1499,
+      "sha256": "16a25dbd7368a87af8b58a45c6216b9cec5a91a72cf704533344701997ebde22"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\frontend\\node_modules\\playwright-core\\lib\\server\\registry\\index.js",
+      "bytes": 70280,
+      "sha256": "0a35b418606183a0f64b977f2b467e0f7ffd874cb2ad077ee21aa6d72fa3d625"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\frontend\\node_modules\\@playwright\\test\\package.json",
+      "bytes": 754,
+      "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+    },
+    {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4512408,
+      "sha256": "9f404d549975473934abf80e596147312f01f1d68de6afc73a24331a2e35ae25"
+    }
+  ],
+  "root_tools_after_verified": true,
+  "upstream19": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\models.py",
+      "bytes": 32371,
+      "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\execution.py",
+      "bytes": 37186,
+      "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\reconstruction.py",
+      "bytes": 18472,
+      "sha256": "e16b9a66d009e020ee3c56680b5a7a92ab35ec4fd8af5ab3359b79832fd04511"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\datasets.py",
+      "bytes": 15398,
+      "sha256": "144302e1a1fbf020e77b7a37a2dffd4e3f192c2eac24257c2e879e2663f2eaad"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\design.py",
+      "bytes": 12909,
+      "sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\historical_costs.py",
+      "bytes": 5154,
+      "sha256": "280ad7ba41bd9647fe643e1d3cde97dae63e2faf028ca46185fd85fcd1a5c5cd"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\corporate_actions.py",
+      "bytes": 7307,
+      "sha256": "ba28137c834140c350fc35634ca38bb218c9e1c7a8b8c047de2a976a3cac3c36"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\registry.py",
+      "bytes": 20337,
+      "sha256": "14e8948e85e437cceab033eed6344e95f6803e03db1a0108b8b966b0132c712c"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\training_preflight.py",
+      "bytes": 10008,
+      "sha256": "c853a63c50426b2293b11c357f46cc1c65e247a46c340eaf70efa771ac55c589"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\market\\rules.py",
+      "bytes": 13012,
+      "sha256": "f4265aee5efa4c396c84b3853c7f398247c62386d4bf0fbe42b5800807c48ca6"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\reference\\reconstruction\\sources.json",
+      "bytes": 5396,
+      "sha256": "ea7919e633ccc1499da53d848b0581096fd74d3dd17a33a894261ab68bd10004"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\reference\\cash-rights\\sources.json",
+      "bytes": 85112,
+      "sha256": "721b2c153ea08354bdc9a0fdd71069703190777488f69186a49b853ad4414680"
+    }
+  ],
+  "upstream19_unchanged": true,
+  "actual_diagnostic_archives": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21\\actual-current-copy\\raw\\bbf58ad3b6d2f22e9da1787535f354894590a599101e2b04bdaa1bf1068e20ec.raw",
+      "bytes": 60695,
+      "sha256": "bbf58ad3b6d2f22e9da1787535f354894590a599101e2b04bdaa1bf1068e20ec"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21\\actual-current-copy\\raw\\c2f5e9a5603a7632f8a0af78d751ddf68998bd65df87d86179a4856ebbb4f818.raw",
+      "bytes": 12391995,
+      "sha256": "c2f5e9a5603a7632f8a0af78d751ddf68998bd65df87d86179a4856ebbb4f818"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21\\actual-current-copy\\raw\\1c0ace5ed829b4225b734468de28b7ce5e5615b6861bd910a9643b0647102e5f.raw",
+      "bytes": 568938,
+      "sha256": "1c0ace5ed829b4225b734468de28b7ce5e5615b6861bd910a9643b0647102e5f"
+    }
+  ],
+  "protected_paths_present": [
+    "D:\\dsh-proj\\Roll\\.scratch\\local-commit-20261011",
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-reconstruction-2026-10-10\\negative-real-integrity\\.startup.lock",
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-reconstruction-2026-10-10\\negative-real-integrity\\backups",
+    "D:\\dsh-proj\\Roll\\.workbuddy",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket23",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30"
+  ],
+  "worktrees_after": [
+    "worktree D:/dsh-proj/Roll",
+    "HEAD d789870117d59b240e4bb2540e66a2c36461c440",
+    "branch refs/heads/codex/roll-p0-integration",
+    "",
+    "worktree D:/dsh-proj/Roll/.scratch/worktrees/ticket23",
+    "HEAD 09a5b7959c6fe6b292f4ec5712015180106de5fc",
+    "branch refs/heads/codex/roll-p0-ticket23",
+    "",
+    "worktree D:/dsh-proj/Roll/.scratch/worktrees/ticket30",
+    "HEAD d789870117d59b240e4bb2540e66a2c36461c440",
+    "branch refs/heads/codex/roll-p0-ticket30",
+    ""
+  ],
+  "implementation_branches_retained": [
+    "  codex/roll-p0-ticket20",
+    "  codex/roll-p0-ticket21"
+  ],
+  "no_push": true,
+  "tracker_unchanged": true,
+  "production19_not_opened": true
+}

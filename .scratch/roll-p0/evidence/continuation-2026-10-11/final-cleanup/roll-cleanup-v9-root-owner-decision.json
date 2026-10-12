@@ -1,0 +1,18 @@
+{
+  "disposition": "OUTSIDE_DELETION_SCOPE_BOUNDARY_ONLY",
+  "root_reviewed": true,
+  "exact_identities": 40,
+  "absolute_public_modules": 10,
+  "relative_modules_with_exact_cwd": 30,
+  "relative_existing": 20,
+  "relative_missing": 10,
+  "inference": "CWD and resolved module are outside every Roll target; signed launcher identity and 2-token shape retained. Missing legacy module does not imply source availability.",
+  "fresh_contract": "Repeat canonical PID/Creation/executable/parent and parent ancestry; 2-token argv, exact CWD/resolved module, outside Root and no reparse; recheck identities after reads.",
+  "historical_unknown_observation_retained": true,
+  "timestamp_comparator_diagnostic_retained": true,
+  "slash_bug_claim": false,
+  "process_stops": 0,
+  "environment_reads": 0,
+  "credential_reads": 0,
+  "gates_released": false
+}

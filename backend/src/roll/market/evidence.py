@@ -84,7 +84,7 @@ class EvidenceStore:
                     run.update(status='INTERRUPTED',finished_at=now(),recovery_reason='PROCESS_RESTART_BEFORE_SNAPSHOT_COMMIT')
                     db.execute('UPDATE retrieval_runs SET value=? WHERE id=?',(encode(run),row['id']))
 
-    def archive(self,content,kind,extension='raw',**metadata):
+    def archive(self,content,kind,extension='raw',db=None,**metadata):
         sha=hashlib.sha256(content).hexdigest()
         relative=Path('parquet' if extension=='parquet' else 'raw')/(sha+'.'+extension)
         target=self.directory/relative
@@ -97,7 +97,10 @@ class EvidenceStore:
         if hashlib.sha256(target.read_bytes()).hexdigest()!=sha:
             raise RuntimeError('市场证据归档指纹损坏')
         result={'sha256':sha,'path':relative.as_posix(),'bytes':len(content),'kind':kind,**metadata}
-        with self.ledger.connection() as db:
+        if db is None:
+            with self.ledger.connection() as connection:
+                connection.execute('INSERT OR IGNORE INTO evidence_archives VALUES(?,?)',(sha,encode(result)))
+        else:
             db.execute('INSERT OR IGNORE INTO evidence_archives VALUES(?,?)',(sha,encode(result)))
         return result
 
@@ -207,7 +210,7 @@ class EvidenceStore:
             'full_history_verified':False,'truncation':'REQUEST_BOUNDED; SOURCE_TOTAL_IS_NOT_RETURNED_COVERAGE',
             'adjustment':adjustment,'raw_hash':archive['sha256']}
 
-    def retrieve(self,request_id,*,acquisition_limits=None,cancel_event=None):
+    def retrieve(self,request_id,*,acquisition_limits=None,cancel_event=None,collection_source_policy=None):
         import time
         request=self.get('data_requests',request_id)
         # Recheck current membership, so a stale request cannot acquire a removed stock.
@@ -234,6 +237,9 @@ class EvidenceStore:
         with httpx.Client(transport=self.transport,follow_redirects=False) as client:
             def fetch(source_id,instrument,group,url,params=None,headers=None,**context):
                 nonlocal total_bytes
+                blocked=collection_source_policy.access(source_id,instrument) if collection_source_policy else None
+                if blocked:
+                    run['gaps'].append({'instrument':instrument,'group':group,'source_id':source_id,'code':blocked});return None
                 if sum(t.get('network_calls',1) for t in run['tools'])>=request['max_calls'] or time.monotonic()>=deadline or (cancel_event and cancel_event.is_set()) or total_bytes>=max_total_bytes:
                     run['gaps'].append({'instrument':instrument,'group':group,'code':'TECHNICAL_LIMIT',**context});return None
                 tool={'source_id':source_id,'instrument':instrument,'group':group,'started_at':now(),
@@ -262,10 +268,13 @@ class EvidenceStore:
                             received_at=now(),http_status=response.status_code,evidence_kind=self.evidence_kind)
                     archives.append(archive);tool.update(raw_hash=archive['sha256'],http_status=response.status_code)
                     response.raise_for_status();tool.update(status='ARCHIVED',finished_at=now(),received_bytes=len(content))
+                    if collection_source_policy:collection_source_policy.outcome(source_id,True,'HTTP_ACQUIRED',run['run_id'])
                     return archive,bytes(content)
                 except (httpx.HTTPError,ValueError,KeyError,TypeError) as error:
                     tool.update(status='FAILED',finished_at=now());run['gaps'].append({'instrument':instrument,'group':group,'code':type(error).__name__,
-                        'reason':str(error)[:300],**context});return None
+                        'reason':str(error)[:300],**context})
+                    if collection_source_policy:collection_source_policy.outcome(source_id,False,type(error).__name__,run['run_id'])
+                    return None
 
             def bao_fetch(instrument,group,**parameters):
                 nonlocal total_bytes,total_decoded_bytes
@@ -555,6 +564,10 @@ class EvidenceStore:
         saved=pq.read_table(self.raw(snapshot['parquet']['sha256'])).to_pylist()
         facts=[json.loads(row['payload']) for row in saved]
         if facts!=snapshot['facts']:raise HTTPException(409,{'code':'PARQUET_SQLITE_FACTS_MISMATCH'})
+        if run.get('backend')=='SSE_POST_CLOSE':
+            from roll.market.post_close_packet import PostClosePackets
+            # The source parser re-checks raw body/date/time, not just two agreeing normalized copies.
+            PostClosePackets.verify_snapshot(self,run,snapshot)
         return {'run_id':run_id,'replay_kind':'IMMUTABLE_ARCHIVE_ONLY','adapter_version':snapshot['adapter_version'],
             'facts':facts,'observations':snapshot['observations'],'network_calls':0}
 

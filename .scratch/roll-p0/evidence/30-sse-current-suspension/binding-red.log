@@ -1,0 +1,74 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_refused_response_keeps_original_and_literal_reported_metadata[date-SSE_SUSPENSION_MATCHED_SECURITY_DATE_RANGE_INVALID] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30s-binding-red/test_refused_response_keeps_or0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A9CFE00FC0>
+fault = 'date', expected = 'SSE_SUSPENSION_MATCHED_SECURITY_DATE_RANGE_INVALID'
+
+    @pytest.mark.parametrize('fault,expected',[
+        ('date','SSE_SUSPENSION_MATCHED_SECURITY_DATE_RANGE_INVALID'),
+        ('echo','SSE_SUSPENSION_RESPONSE_DATE_MISMATCH'),
+        ('security','SSE_SUSPENSION_ROW_SECURITY_UNPROVEN'),
+        ('page','SSE_SUSPENSION_PAGE_REQUEST_RESPONSE_MISMATCH'),
+    ])
+    def test_refused_response_keeps_original_and_literal_reported_metadata(tmp_path,monkeypatch,fault,expected):
+        clocks(monkeypatch);value=page()
+        if fault=='date':value['result'][0]['SHOW_END_DATE']='2026-10-11'
+        if fault=='echo':value['queryDate']='2016-02-16'
+        if fault=='security':value['result'][0]['PRODUCT_CODE']='600362?'
+        if fault=='page':value['pageHelp']['pageNo']=2
+        raw=json.dumps(value).encode();calls=[]
+        def supplier(request):
+            calls.append(request);return httpx.Response(200,content=raw)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier))) as client:
+            pid=setup(client);base=f'/api/research/collections/{pid}'
+            response=client.post(base+'/sse-suspension',json={'basis':'METHOD malformed authoritative fields, keep raw first'})
+            assert response.status_code==201,response.text
+            receipt=response.json()
+            assert receipt['status']=='REFUSED' and expected in receipt['errors']
+            assert receipt['network_calls']==1 and len(calls)==1 and receipt['events']==[]
+            saved=receipt['pages'][0]
+>           assert saved['reported_metadata']['declared_total']==1
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'reported_metadata'
+
+backend\tests\application\test_sse_current_suspension.py:133: KeyError
+_ test_refused_response_keeps_original_and_literal_reported_metadata[echo-SSE_SUSPENSION_RESPONSE_DATE_MISMATCH] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30s-binding-red/test_refused_response_keeps_or1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A9AF294770>
+fault = 'echo', expected = 'SSE_SUSPENSION_RESPONSE_DATE_MISMATCH'
+
+    @pytest.mark.parametrize('fault,expected',[
+        ('date','SSE_SUSPENSION_MATCHED_SECURITY_DATE_RANGE_INVALID'),
+        ('echo','SSE_SUSPENSION_RESPONSE_DATE_MISMATCH'),
+        ('security','SSE_SUSPENSION_ROW_SECURITY_UNPROVEN'),
+        ('page','SSE_SUSPENSION_PAGE_REQUEST_RESPONSE_MISMATCH'),
+    ])
+    def test_refused_response_keeps_original_and_literal_reported_metadata(tmp_path,monkeypatch,fault,expected):
+        clocks(monkeypatch);value=page()
+        if fault=='date':value['result'][0]['SHOW_END_DATE']='2026-10-11'
+        if fault=='echo':value['queryDate']='2016-02-16'
+        if fault=='security':value['result'][0]['PRODUCT_CODE']='600362?'
+        if fault=='page':value['pageHelp']['pageNo']=2
+        raw=json.dumps(value).encode();calls=[]
+        def supplier(request):
+            calls.append(request);return httpx.Response(200,content=raw)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier))) as client:
+            pid=setup(client);base=f'/api/research/collections/{pid}'
+            response=client.post(base+'/sse-suspension',json={'basis':'METHOD malformed authoritative fields, keep raw first'})
+            assert response.status_code==201,response.text
+            receipt=response.json()
+            assert receipt['status']=='REFUSED' and expected in receipt['errors']
+            assert receipt['network_calls']==1 and len(calls)==1 and receipt['events']==[]
+            saved=receipt['pages'][0]
+>           assert saved['reported_metadata']['declared_total']==1
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'reported_metadata'
+
+backend\tests\application\test_sse_current_suspension.py:133: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_current_suspension.py::test_refused_response_keeps_original_and_literal_reported_metadata[date-SSE_SUSPENSION_MATCHED_SECURITY_DATE_RANGE_INVALID]
+FAILED backend\tests\application\test_sse_current_suspension.py::test_refused_response_keeps_original_and_literal_reported_metadata[echo-SSE_SUSPENSION_RESPONSE_DATE_MISMATCH]
+2 failed, 5 deselected in 9.96s

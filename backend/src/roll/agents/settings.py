@@ -14,6 +14,13 @@ HOST_LIMITS={'timeout_seconds':120,'tool_calls':8,'http_calls':6,'response_bytes
              'total_bytes':262144,'concurrency':1,'subtasks':0,'recursive_depth':0,'retries':0}
 
 
+def require_current_backend(backend):
+    """New agent work is currently authorized only for Codex; history stays readable."""
+    if backend!='CODEX':
+        raise HTTPException(403,{'code':'BACKEND_OUTSIDE_CURRENT_SCOPE','supported_backends':['CODEX'],
+            'message':'当前仅支持 Codex 新任务；历史设置须重新保存为 Codex。'})
+
+
 class BackendSelection(BaseModel):
     model_config=ConfigDict(extra='forbid')
     expected_version:int=Field(ge=0)
@@ -37,19 +44,28 @@ def check_retry(evidence,request_id,command):
 
 def insert_run(evidence,db,run,selection):
     """Called inside the same transaction that obtains the shared execution slot."""
+    admit_agent_run(db,run,selection)
+    paths=[Path(__file__).with_name('codex_process.py'),*Path(__file__).parent.parent.joinpath('market').glob('*.py')]
+    run['source_dependency_fingerprint']=hashlib.sha256(encode({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}).encode()).hexdigest()
+    db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)',(run['run_id'],run['request_id'],encode(run)))
+
+
+def admit_agent_run(db,run,selection):
+    """One transaction-bound finite slot shared by acquisition and technical review."""
+    require_current_backend(run['backend'])
     from roll.agents.codex_process import owner_alive
     current=json.loads(db.execute('SELECT value FROM agent_settings ORDER BY version DESC LIMIT 1').fetchone()[0])
     if selection is not None and current['version']!=selection['version']:
         raise HTTPException(409,{'code':'BACKEND_SETTINGS_VERSION_CONFLICT','current':current})
     run['backend_settings']=selection or current
     run['selection_kind']='SAVED_BACKEND' if selection else 'EXPLICIT_BACKEND'
-    paths=[Path(__file__).with_name('codex_process.py'),*Path(__file__).parent.parent.joinpath('market').glob('*.py')]
-    run['source_dependency_fingerprint']=hashlib.sha256(encode({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}).encode()).hexdigest()
-    for row in db.execute('SELECT value FROM retrieval_runs'):
-        prior=json.loads(row[0])
-        if prior.get('backend') in {'CODEX','DEEPSEEK'} and prior['status']=='RUNNING' and owner_alive(prior):
-            raise HTTPException(409,{'code':'AGENT_CONCURRENCY_LIMIT','running_backend':prior['backend'],'max_concurrency':1})
-    db.execute('INSERT INTO retrieval_runs VALUES(?,?,?)',(run['run_id'],run['request_id'],encode(run)))
+    tables={r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    for table in ['retrieval_runs','technical_review_runs']:
+        if table not in tables:continue
+        for row in db.execute('SELECT value FROM '+table):
+            prior=json.loads(row[0])
+            if prior.get('backend') in {'CODEX','DEEPSEEK'} and prior['status']=='RUNNING' and owner_alive(prior):
+                raise HTTPException(409,{'code':'AGENT_CONCURRENCY_LIMIT','running_backend':prior['backend'],'max_concurrency':1})
 
 
 class AgentSettings:
@@ -65,6 +81,7 @@ class AgentSettings:
         return json.loads(db.execute('SELECT value FROM agent_settings ORDER BY version DESC LIMIT 1').fetchone()[0])
 
     def select(self,command):
+        require_current_backend(command.backend)
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
             current=self.get(db)

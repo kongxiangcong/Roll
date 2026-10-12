@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\ticket25\.scratch\roll-p0\evidence\ticket25\benchmark.py", line 65, in <module>
+    response = client.post('/api/market/watch', json={'operation': 'ADD', 'instrument': symbol, 'expected_list_version': client.get('/api/market').json()['version']})
+                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'version'

@@ -1,0 +1,177 @@
+{
+  "owner": "final31-flow-r02",
+  "source_root": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final",
+  "source_oid": "3dcd7bc59748da89000912b0cd582656d7fcc9ba",
+  "namespace": "METHOD_ENGINEERING",
+  "system_usable": false,
+  "original_sqlite_connections": 0,
+  "runtime_union_roots": [
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.roll-data\\f31-flow-r02-20261011-230801"
+  ],
+  "processes": [
+    {
+      "role": "api-method-in-process",
+      "launcher_pid": 42472,
+      "argv": [
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "uvicorn",
+        "offline_app:factory",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "50612"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend",
+      "cim_at_start": [
+        {
+          "ProcessId": 42472,
+          "ParentProcessId": 37792,
+          "CreationDate": "/Date(1791731282156)/",
+          "ExecutablePath": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe",
+          "CommandLine": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\backend\\.venv\\Scripts\\python.exe -B -X utf8 -m uvicorn offline_app:factory --factory --host 127.0.0.1 --port 50612"
+        },
+        {
+          "ProcessId": 36356,
+          "ParentProcessId": 42472,
+          "CreationDate": "/Date(1791731282177)/",
+          "ExecutablePath": "C:\\WINDOWS\\system32\\conhost.exe",
+          "CommandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+        },
+        {
+          "ProcessId": 30892,
+          "ParentProcessId": 42472,
+          "CreationDate": "/Date(1791731282252)/",
+          "ExecutablePath": "C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+          "CommandLine": "\"C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe\"  -B -X utf8 -m uvicorn offline_app:factory --factory --host 127.0.0.1 --port 50612"
+        }
+      ],
+      "stop": "CTRL_BREAK_NORMAL",
+      "exit_code": 3,
+      "cim_after_stop": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "role": "ui",
+      "launcher_pid": 53392,
+      "argv": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\vite\\bin\\vite.js",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "50614",
+        "--strictPort"
+      ],
+      "cwd": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend",
+      "cim_at_start": [
+        {
+          "ProcessId": 53392,
+          "ParentProcessId": 37792,
+          "CreationDate": "/Date(1791731295814)/",
+          "ExecutablePath": "C:\\Program Files\\nodejs\\node.exe",
+          "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\vite\\bin\\vite.js --host 127.0.0.1 --port 50614 --strictPort"
+        },
+        {
+          "ProcessId": 12584,
+          "ParentProcessId": 53392,
+          "CreationDate": "/Date(1791731295835)/",
+          "ExecutablePath": "C:\\WINDOWS\\system32\\conhost.exe",
+          "CommandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+        },
+        {
+          "ProcessId": 12160,
+          "ParentProcessId": 53392,
+          "CreationDate": "/Date(1791731296397)/",
+          "ExecutablePath": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\@esbuild\\win32-x64\\esbuild.exe",
+          "CommandLine": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\frontend\\node_modules\\@esbuild\\win32-x64\\esbuild.exe --service=0.27.7 --ping"
+        }
+      ],
+      "stop": "CTRL_BREAK_NORMAL",
+      "exit_code": 3221225786,
+      "cim_after_stop": [
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "clock_modified": false,
+  "started_at": "2026-10-11T15:08:02.147616+00:00",
+  "local_started_at": "2026-10-11T23:08:02.147649+08:00",
+  "status": "FAIL",
+  "api_health": {
+    "status": "ok",
+    "runtime_role": "IN_PROCESS",
+    "environment": "test"
+  },
+  "initial_summary": {
+    "calendar": {
+      "exchange": "SSE",
+      "date": "2026-10-11",
+      "timezone": "Asia/Shanghai",
+      "is_trading_day": false,
+      "phase": "CLOSED",
+      "coverage": "VERIFIED_ANNUAL_CALENDAR",
+      "calendar_version": "SSE-2026",
+      "source": {
+        "id": "sse-calendar-2026",
+        "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+        "fetched_at": "2026-10-07T14:54:37.868437+00:00",
+        "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c",
+        "file": "sse-calendar-2026.html",
+        "bytes": 30794,
+        "attachments": [],
+        "archive_path": "raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html"
+      },
+      "rules_source": {
+        "id": "sse-rules-text-2026",
+        "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+        "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+        "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+        "file": "sse-rules-text-2026.docx",
+        "bytes": 65302,
+        "archive_path": "raw/fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888.docx"
+      },
+      "reason": "WEEKEND",
+      "special_closure_check": "\u672a\u63a5\u5165\u76d8\u4e2d\u4e34\u65f6\u505c\u5e02\u5b9e\u65f6\u6e90\uff1b\u8bc1\u5238\u505c\u724c\u53e6\u4f5c\u4e8b\u5b9e\uff0c\u4e0d\u7b49\u540c\u4ea4\u6613\u6240\u4f11\u5e02"
+    },
+    "latest": null,
+    "health": {
+      "worker_limit": 1,
+      "worker_state": "RUNNING",
+      "last_worker_error": null,
+      "worker": {
+        "heartbeat_at": "2026-10-11T15:08:15.771734+00:00",
+        "host_owner": {
+          "creation_ticks": 134362048822524671,
+          "nonce": "0628555d-3baa-4cd8-ad91-9d78d78dc2b7",
+          "pid": 30892
+        }
+      },
+      "technical_limits": {
+        "attempts": 3,
+        "backoff_seconds": [
+          1,
+          2
+        ],
+        "timeout_seconds": 8,
+        "http_calls_per_attempt": 8,
+        "recursive_tasks": 0
+      },
+      "backlog": 0,
+      "running": 0
+    },
+    "coverage_gap": null
+  },
+  "failure": "CalledProcessError(1, ['C:\\\\Program Files\\\\nodejs\\\\node.exe', 'D:\\\\dsh-proj\\\\Roll\\\\.scratch\\\\worktrees\\\\ticket31-final\\\\.scratch\\\\roll-p0\\\\evidence\\\\31-final\\\\flow-r02\\\\no-trade.mjs'])",
+  "completed_at": "2026-10-11T15:09:08.144890+00:00",
+  "local_completed_at": "2026-10-11T23:09:08.144940+08:00"
+}

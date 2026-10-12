@@ -1,0 +1,34 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________________ test_shared_worker_and_restart_cache _____________________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.roll-data/t30si-worker-corrected/test_shared_worker_and_restart0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002301442C2B0>
+
+    def test_shared_worker_and_restart_cache(tmp_path,monkeypatch):
+        clock(monkeypatch);calls=[]
+        closing=json.dumps({'date':20261011,'time':150005,'list':[['600362','江西铜业',100,101,99,100,1234,123400,100]]}).encode()
+        def supply(r):
+            calls.append(str(r.url))
+            if r.url.host=='yunhq.sse.com.cn':return httpx.Response(200,content=closing)
+            sql=r.url.params['sqlId']
+            if sql.endswith('TRADEDAY'):return httpx.Response(200,content=DAY)
+            if sql=='GW_PL_JYTS_TFPXX':return httpx.Response(200,content=EMPTY)
+            return httpx.Response(200,json=page(rows=[],total=0,page_count=0))
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supply),runtime_role='API')) as c:
+            pid=start(c);base=f'/api/research/collections/{pid}'
+            account=c.get('/api/account').json();assert account['version']==0
+            response=c.post(base+'/post-close/check',json={'basis':'独立account0共享worker共同入口'})
+            assert response.status_code==201,response.text
+>           shared=response.json();assert shared['state']=='RECORDED',shared
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {'actual_forward_start': False, 'basis': '独立account0共享worker共同入口', 'day': '2026-10-11', 'finished_at': '2026-10-11T16:20:00+08:00', ...}
+E           assert 'REFUSED' == 'RECORDED'
+E             
+E             - RECORDED
+E             + REFUSED
+
+..\..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-stock-independent\test_public.py:116: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\..\roll-p0\evidence\continuation-2026-10-11\ticket30-stock-independent\test_public.py::test_shared_worker_and_restart_cache
+1 failed in 6.63s

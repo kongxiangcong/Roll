@@ -1,0 +1,47 @@
+{
+  "pit": {
+    "integrity": "ok",
+    "verified_archives": 7,
+    "account_version": 0,
+    "readiness": {
+      "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+      "started_at": "2026-10-10T00:27:17.363282+00:00",
+      "state": "COLLECTING",
+      "real_recorded_sessions": 0,
+      "real_context_sessions": 27,
+      "batches": 1,
+      "system_usable": false,
+      "capability": "NOT_GRANTED",
+      "minimum_calibration_examples_per_class": 20,
+      "minimum_effective_time_blocks": 30,
+      "requirements": [
+        "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+        "COMPLETE_STATUS_ACTIONS_AND_RULES",
+        "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+        "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+        "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+        "CONFIRMATORY_AND_FORWARD_VALIDATION",
+        "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+      ],
+      "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+    }
+  },
+  "synthetic19": {
+    "integrity": "ok",
+    "verified_archives": 271,
+    "account_version": 0,
+    "restart_replay": {
+      "forecast_id": "7ef64402-ebb7-4de0-9d1d-a8f690525d5d",
+      "network_calls": 0,
+      "matches_original": true,
+      "prediction": {
+        "uncalibrated_probability": 0.3317730384114732,
+        "probability": 0.27708600568268127,
+        "logit": -0.7001767627876369
+      },
+      "input_sha256": "ccbdbc3d8dd78a667d8e77561630f02f41dc09adc052fc5e6a29129cbaace327",
+      "forecast_sha256": "c4074327c3ff6c561c7f64f596c2c28d30907b1ea4ff5011ec729b1bf40537c9"
+    }
+  },
+  "model_code_sha256": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49"
+}

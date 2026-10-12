@@ -1,0 +1,662 @@
+{
+  "status": "PASS_REAL_CODEX_REVIEW",
+  "backend_scope": "CODEX_ONLY_USER_APPROVED",
+  "run": {
+    "run_id": "ed0d834e-049b-4356-b5a7-1ff5bc853aef",
+    "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+    "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+    "backend": "CODEX",
+    "model": "gpt-6.1-sol",
+    "resolved_model": "gpt-6.1-sol",
+    "model_provider": "openai",
+    "status": "COMPLETE",
+    "retry_of": "88f44e5c-33fd-4e27-a36a-66b9d33c853c",
+    "started_at": "2026-10-11T01:44:22.947322+00:00",
+    "finished_at": "2026-10-11T01:45:29.361424+00:00",
+    "evidence_kind": "REAL_CODEX_TECHNICAL_REVIEW",
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "config_fingerprint": "5b9c4783445dcb8dd6422e9fbf22120c49de0ddddc80b9f98e3f9f88ecedc493",
+    "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+    "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+    "bridge": {
+      "name": "bundled-code-mode-host",
+      "runtime": "Rust/V8, no Node bridge",
+      "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+      "version": "0.161.0"
+    },
+    "runtime_thread_id": "01a128a2-15f6-75e0-9aa9-88d6829e9bbe",
+    "runtime_turn_id": "01a128a2-175c-79e3-9fc5-f92a8cc5ff38",
+    "runtime_completion": {
+      "error_info": null,
+      "status": "completed"
+    },
+    "limits": {
+      "concurrency": 1,
+      "http_calls": 6,
+      "max_output_tokens": 4096,
+      "model_calls": 9,
+      "model_input_bytes": 262144,
+      "model_response_bytes": 65536,
+      "model_total_response_bytes": 262144,
+      "recursive_depth": 0,
+      "response_bytes": 65536,
+      "retries": 0,
+      "runtime_operations": 8,
+      "subtasks": 0,
+      "timeout_seconds": 120,
+      "tool_calls": 8,
+      "total_bytes": 262144,
+      "total_calls": 22
+    },
+    "tools": [
+      {
+        "arguments": {
+          "material_id": "protocol-and-attempts"
+        },
+        "material_id": "protocol-and-attempts",
+        "received_at": "2026-10-11T01:44:41.226966+00:00",
+        "sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf",
+        "source_id": "roll_read_review_material",
+        "status": "VERIFIED_READ"
+      },
+      {
+        "arguments": {
+          "material_id": "results-and-limitations"
+        },
+        "material_id": "results-and-limitations",
+        "received_at": "2026-10-11T01:44:41.371336+00:00",
+        "sha256": "23fe45d7f77ffeb9923d25f3e003ce76ab7d09ef3248d29e2490a95493222f1c",
+        "source_id": "roll_read_review_material",
+        "status": "VERIFIED_READ"
+      },
+      {
+        "arguments": {
+          "material_id": "code-models"
+        },
+        "material_id": "code-models",
+        "received_at": "2026-10-11T01:44:43.823875+00:00",
+        "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+        "source_id": "roll_read_review_material",
+        "status": "VERIFIED_READ"
+      },
+      {
+        "arguments": {
+          "material_id": "code-execution"
+        },
+        "material_id": "code-execution",
+        "received_at": "2026-10-11T01:44:43.995602+00:00",
+        "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+        "source_id": "roll_read_review_material",
+        "status": "VERIFIED_READ"
+      },
+      {
+        "arguments": {
+          "material_id": "code-shadow"
+        },
+        "material_id": "code-shadow",
+        "received_at": "2026-10-11T01:44:47.460456+00:00",
+        "sha256": "432e5a164043f2140ff1c0aaa1d4261614812d95c7e491141cee850775a8cdf0",
+        "source_id": "roll_read_review_material",
+        "status": "VERIFIED_READ"
+      },
+      {
+        "arguments": {
+          "material_id": "code-statistics"
+        },
+        "material_id": "code-statistics",
+        "received_at": "2026-10-11T01:44:51.163661+00:00",
+        "sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c",
+        "source_id": "roll_read_review_material",
+        "status": "VERIFIED_READ"
+      },
+      {
+        "arguments": {
+          "material_id": "code-validation"
+        },
+        "material_id": "code-validation",
+        "received_at": "2026-10-11T01:44:54.350288+00:00",
+        "sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79",
+        "source_id": "roll_read_review_material",
+        "status": "VERIFIED_READ"
+      },
+      {
+        "arguments": {},
+        "check_id": "validation-reproduction",
+        "matches_original": true,
+        "network_calls": 0,
+        "received_at": "2026-10-11T01:44:54.481912+00:00",
+        "result_sha256": "7a5908712bc7e5f0a87e13b95770717c9cd24e70373b39d2a839adc5a6582d17",
+        "source_id": "roll_reproduce_validation",
+        "status": "VERIFIED_REPRODUCTION"
+      }
+    ],
+    "gaps": [],
+    "review_record": {
+      "backend": "CODEX",
+      "blocking_issues_resolved": false,
+      "capability_status": "NOT_GRANTED",
+      "checks": [
+        {
+          "check_id": "validation-reproduction",
+          "matches_original": true,
+          "result_sha256": "7a5908712bc7e5f0a87e13b95770717c9cd24e70373b39d2a839adc5a6582d17"
+        }
+      ],
+      "config_fingerprint": "5b9c4783445dcb8dd6422e9fbf22120c49de0ddddc80b9f98e3f9f88ecedc493",
+      "finished_at": "2026-10-11T01:45:29.361424+00:00",
+      "host_unresolved_gate_evidence": {
+        "G1": {
+          "reasons": [
+            "STRICT_HISTORICAL_PIT_AND_INDEPENDENCE_UNPROVEN"
+          ],
+          "status": "INCONCLUSIVE"
+        },
+        "G2": {
+          "reasons": [
+            "COMPLETE_DEPLOYMENT_ENGINEERING_EVIDENCE_NOT_BOUND"
+          ],
+          "status": "INCONCLUSIVE"
+        },
+        "G3": {
+          "reasons": [
+            "INDEPENDENT_CALIBRATION_UNVALIDATED",
+            "DEPENDENT_SUPPORT_OR_ASSUMPTIONS_UNVERIFIED"
+          ],
+          "status": "INCONCLUSIVE"
+        },
+        "G4": {
+          "reasons": [
+            "MINIMUM_DECISION_COVERAGE_NOT_MET"
+          ],
+          "status": "FAIL"
+        },
+        "G5": {
+          "reasons": [
+            "time_segments/1/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "time_segments/2/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "time_segments/3/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "cost_pressure/commission_scenario_rate=0.0003/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "cost_pressure/commission_scenario_rate=0.0006/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "cost_pressure/commission_scenario_rate=0.003/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "cost_pressure/slippage_each_side_rate=0.0005/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "cost_pressure/slippage_each_side_rate=0.001/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "cost_pressure/slippage_each_side_rate=0.002/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "delays/NEXT_OPEN/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "delays/NEXT_CLOSE/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "delays/ONE_MORE_SESSION_OPEN/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "delays/OUTSIDE_ALLOWED_PRICE_NO_FILL/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "delays/NEXT_OPEN_FILL=0/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "delays/NEXT_OPEN_FILL=0.50/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "delays/NEXT_OPEN_FILL=1/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "parameter_neighborhood/probability_threshold=0.55/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "parameter_neighborhood/probability_threshold=0.60/MINIMUM_DECISION_COVERAGE_NOT_MET",
+            "parameter_neighborhood/probability_threshold=0.65/MINIMUM_DECISION_COVERAGE_NOT_MET"
+          ],
+          "status": "FAIL"
+        },
+        "G6": {
+          "reasons": [
+            "REAL_FORWARD_ENGINEERING_CONSISTENCY_NOT_RECORDED"
+          ],
+          "status": "INCONCLUSIVE"
+        },
+        "G7": {
+          "reasons": [
+            "REAL_ARCHIVED_MATURE_FORWARD_RESULTS_MISSING"
+          ],
+          "status": "INCONCLUSIVE"
+        }
+      },
+      "human_independent_review": false,
+      "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+      "issues": [
+        {
+          "blocking": true,
+          "description": "Strict historical PIT, complete historical execution/corporate-action coverage and unused independent SEALED evidence are unproven. SEALED is not allocated. Reconstructed acquisition is not confirmatory evidence.",
+          "issue_id": "historical-admission",
+          "references": [
+            {
+              "material_id": "protocol-and-attempts",
+              "sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf"
+            }
+          ],
+          "resolution": null,
+          "severity": "BLOCKING"
+        },
+        {
+          "blocking": true,
+          "description": "The intercept calibrator is fitted but unvalidated; CAL is reused diagnostically. Independent probability calibration, dependent support and sampling assumptions are unavailable. The transparent probability-rule comparison is incomplete.",
+          "issue_id": "probability-validity",
+          "references": [
+            {
+              "material_id": "code-validation",
+              "sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79"
+            },
+            {
+              "material_id": "code-statistics",
+              "sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c"
+            }
+          ],
+          "resolution": null,
+          "severity": "BLOCKING"
+        },
+        {
+          "blocking": true,
+          "description": "The reproduced diagnostic verdict is FAIL: G4 and G5 fail minimum decision coverage. Six penalty/lookback neighbor checks lack preregistered frozen artifacts; migration remains inconclusive. Reproduction does not complete G5.",
+          "issue_id": "economic-and-robustness-failure",
+          "references": [
+            {
+              "material_id": "results-and-limitations",
+              "sha256": "23fe45d7f77ffeb9923d25f3e003ce76ab7d09ef3248d29e2490a95493222f1c"
+            }
+          ],
+          "resolution": null,
+          "severity": "BLOCKING"
+        },
+        {
+          "blocking": true,
+          "description": "Deployment acceptance and real G6/G7 evidence are unavailable. Real forward predictions have not started; mature forward results are absent. Historical replay neither starts the three-natural-month clock nor grants qualification.",
+          "issue_id": "forward-and-deployment",
+          "references": [
+            {
+              "material_id": "results-and-limitations",
+              "sha256": "23fe45d7f77ffeb9923d25f3e003ce76ab7d09ef3248d29e2490a95493222f1c"
+            },
+            {
+              "material_id": "protocol-and-attempts",
+              "sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf"
+            }
+          ],
+          "resolution": null,
+          "severity": "BLOCKING"
+        },
+        {
+          "blocking": false,
+          "description": "START_HOLD and MA5_MA20 use the fixed 200-share policy quantity, not a separately sized 50% initial exposure. MA5_MA20 implements an above-average signal with horizon exits, not explicit crossover entry/exit detection. Comparator labels and risk-matching claims therefore overstate implementation fidelity.",
+          "issue_id": "comparator-fidelity",
+          "references": [
+            {
+              "material_id": "code-shadow",
+              "sha256": "432e5a164043f2140ff1c0aaa1d4261614812d95c7e491141cee850775a8cdf0"
+            },
+            {
+              "material_id": "protocol-and-attempts",
+              "sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf"
+            }
+          ],
+          "resolution": null,
+          "severity": "MAJOR"
+        },
+        {
+          "blocking": false,
+          "description": "Per-bin and selected-subset bootstrap inputs insert missing scores on every nonmember date. The interval routine rejects any missing score, making these uncertainty checks incomplete whenever membership is sparse. Descriptive bin counts cannot replace valid dependent uncertainty.",
+          "issue_id": "sparse-subset-intervals",
+          "references": [
+            {
+              "material_id": "code-validation",
+              "sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79"
+            },
+            {
+              "material_id": "code-statistics",
+              "sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c"
+            }
+          ],
+          "resolution": null,
+          "severity": "MAJOR"
+        }
+      ],
+      "limitations": [
+        "All seven registered materials were acquired once and host reproduction invoked once. Combined models/execution output was truncated, limiting complete line-level inspection of those two files.",
+        "Only five registered code files were available; upstream dependency fingerprints and raw data remain host-bound. File hashes and composite candidate fingerprints are distinct bindings.",
+        "The manifest retains two failed primary fits, one successful reconstructed fit and one calibration fit across six linked protocols, plus one successful diagnostic validation attempt. It cannot establish completeness of unreported out-of-host work.",
+        "Scope is conditional reconstructed history for SSE:600362, daily bars and synthetic capital; no intraday fills, actual account costs, historical membership or cross-instrument generalization are established.",
+        "The diagnostic cutoff is 2022-02-10, not the full CAL window. Bootstrap arithmetic and date/block upper bounds do not establish stationarity, effective independent support or finite-sample coverage.",
+        "Review does not grant PASS, authorization or qualification, resolve missing evidence, or end the RUNNING_DIAGNOSTIC experiment."
+      ],
+      "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+      "method": "Host-SHA-verified acquisition of every registered material; static protocol, lineage, fingerprint and implementation review; one deterministic offline host reproduction. Reproduction matched the frozen diagnostic result, not independent scientific validity.",
+      "model": "gpt-6.1-sol",
+      "references": [
+        {
+          "material_id": "protocol-and-attempts",
+          "sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf"
+        },
+        {
+          "material_id": "results-and-limitations",
+          "sha256": "23fe45d7f77ffeb9923d25f3e003ce76ab7d09ef3248d29e2490a95493222f1c"
+        },
+        {
+          "material_id": "code-models",
+          "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e"
+        },
+        {
+          "material_id": "code-execution",
+          "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac"
+        },
+        {
+          "material_id": "code-shadow",
+          "sha256": "432e5a164043f2140ff1c0aaa1d4261614812d95c7e491141cee850775a8cdf0"
+        },
+        {
+          "material_id": "code-statistics",
+          "sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c"
+        },
+        {
+          "material_id": "code-validation",
+          "sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79"
+        }
+      ],
+      "reproduction_verified": true,
+      "resolved_model": "gpt-6.1-sol",
+      "review_id": "2c05d94c-33a0-4353-9078-aed0060d7c6e",
+      "review_scope_limitations": [
+        "Only the five registered candidate/validation code files are read by the model; upstream dependency fingerprints remain host-bound.",
+        "No personal account, authorization, credentials or protected SEALED input is sent."
+      ],
+      "review_status": "COMPLETE",
+      "run_id": "ed0d834e-049b-4356-b5a7-1ff5bc853aef",
+      "started_at": "2026-10-11T01:44:22.947322+00:00",
+      "tools": [
+        {
+          "arguments": {
+            "material_id": "protocol-and-attempts"
+          },
+          "material_id": "protocol-and-attempts",
+          "received_at": "2026-10-11T01:44:41.226966+00:00",
+          "sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf",
+          "source_id": "roll_read_review_material",
+          "status": "VERIFIED_READ"
+        },
+        {
+          "arguments": {
+            "material_id": "results-and-limitations"
+          },
+          "material_id": "results-and-limitations",
+          "received_at": "2026-10-11T01:44:41.371336+00:00",
+          "sha256": "23fe45d7f77ffeb9923d25f3e003ce76ab7d09ef3248d29e2490a95493222f1c",
+          "source_id": "roll_read_review_material",
+          "status": "VERIFIED_READ"
+        },
+        {
+          "arguments": {
+            "material_id": "code-models"
+          },
+          "material_id": "code-models",
+          "received_at": "2026-10-11T01:44:43.823875+00:00",
+          "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+          "source_id": "roll_read_review_material",
+          "status": "VERIFIED_READ"
+        },
+        {
+          "arguments": {
+            "material_id": "code-execution"
+          },
+          "material_id": "code-execution",
+          "received_at": "2026-10-11T01:44:43.995602+00:00",
+          "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+          "source_id": "roll_read_review_material",
+          "status": "VERIFIED_READ"
+        },
+        {
+          "arguments": {
+            "material_id": "code-shadow"
+          },
+          "material_id": "code-shadow",
+          "received_at": "2026-10-11T01:44:47.460456+00:00",
+          "sha256": "432e5a164043f2140ff1c0aaa1d4261614812d95c7e491141cee850775a8cdf0",
+          "source_id": "roll_read_review_material",
+          "status": "VERIFIED_READ"
+        },
+        {
+          "arguments": {
+            "material_id": "code-statistics"
+          },
+          "material_id": "code-statistics",
+          "received_at": "2026-10-11T01:44:51.163661+00:00",
+          "sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c",
+          "source_id": "roll_read_review_material",
+          "status": "VERIFIED_READ"
+        },
+        {
+          "arguments": {
+            "material_id": "code-validation"
+          },
+          "material_id": "code-validation",
+          "received_at": "2026-10-11T01:44:54.350288+00:00",
+          "sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79",
+          "source_id": "roll_read_review_material",
+          "status": "VERIFIED_READ"
+        },
+        {
+          "arguments": {},
+          "check_id": "validation-reproduction",
+          "matches_original": true,
+          "network_calls": 0,
+          "received_at": "2026-10-11T01:44:54.481912+00:00",
+          "result_sha256": "7a5908712bc7e5f0a87e13b95770717c9cd24e70373b39d2a839adc5a6582d17",
+          "source_id": "roll_reproduce_validation",
+          "status": "VERIFIED_REPRODUCTION"
+        }
+      ]
+    },
+    "review_record_archive": {
+      "bytes": 10908,
+      "kind": "VERIFIED_TECHNICAL_REVIEW_RECORD",
+      "path": "raw/a84197f7e9fbd1a16cb419a37b16b9f2676052c6489ef376a0d6c8e10c4b78e6.raw",
+      "sha256": "a84197f7e9fbd1a16cb419a37b16b9f2676052c6489ef376a0d6c8e10c4b78e6"
+    },
+    "call_usage": {
+      "host_tool_calls": 8,
+      "http_calls": 0,
+      "model_requests": 0,
+      "runtime_operations": 5,
+      "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+      "total": 13
+    },
+    "token_usage": {
+      "last": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 34560,
+        "inputTokens": 43877,
+        "outputTokens": 1953,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 45830
+      },
+      "modelContextWindow": 258400,
+      "total": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 103680,
+        "inputTokens": 148504,
+        "outputTokens": 2167,
+        "reasoningOutputTokens": 40,
+        "totalTokens": 150671
+      }
+    },
+    "acquisition_usage": {
+      "archived_bytes": 6975,
+      "http_calls": 0,
+      "model_tool_result_bytes": 184619,
+      "received_bytes": 0
+    },
+    "elapsed_seconds": 66.392,
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "observed_pids": [
+        33376
+      ],
+      "owner_nonce": "015af7ed-1377-4961-8226-62ec795b6db2",
+      "pids_before_cleanup": [],
+      "remaining_pids": [],
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-ed0d834e-049b-4356-b5a7-1ff5bc853aef-wqccjprb",
+      "temporary_directory_removed": true,
+      "worker_pid": 33376
+    }
+  },
+  "delivery": {
+    "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+    "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+    "validation_verdict": "FAIL",
+    "experiment_status": "RUNNING_DIAGNOSTIC",
+    "review_status": "COMPLETE",
+    "review_id": "ed0d834e-049b-4356-b5a7-1ff5bc853aef",
+    "blocking_issues_resolved": false,
+    "delivery_status": "INCOMPLETE",
+    "preliminary": true,
+    "capability_status": "NOT_GRANTED",
+    "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+    "gaps": [
+      "REGISTERED_EXPERIMENT_ENDPOINT_NOT_REACHED",
+      "parameter_neighborhood/penalty=0.5",
+      "parameter_neighborhood/penalty=1",
+      "parameter_neighborhood/penalty=2",
+      "parameter_neighborhood/lookback_sessions=15",
+      "parameter_neighborhood/lookback_sessions=20",
+      "parameter_neighborhood/lookback_sessions=25"
+    ],
+    "evidence_kind": "REAL_ACQUISITION"
+  },
+  "local_export": {
+    "archive": {
+      "sha256": "507a49f9b4b750e5acaafdaee189bc43cd3048e3545f61a636476dcb32fa199d",
+      "path": "raw/507a49f9b4b750e5acaafdaee189bc43cd3048e3545f61a636476dcb32fa199d.zip",
+      "bytes": 1549941,
+      "kind": "VALIDATION_DELIVERY_PACKAGE"
+    },
+    "delivery": {
+      "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+      "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+      "validation_verdict": "FAIL",
+      "experiment_status": "RUNNING_DIAGNOSTIC",
+      "review_status": "COMPLETE",
+      "review_id": "ed0d834e-049b-4356-b5a7-1ff5bc853aef",
+      "blocking_issues_resolved": false,
+      "delivery_status": "INCOMPLETE",
+      "preliminary": true,
+      "capability_status": "NOT_GRANTED",
+      "human_review_label": "经自动验证与模型技术审阅，未经人工独立复核",
+      "gaps": [
+        "REGISTERED_EXPERIMENT_ENDPOINT_NOT_REACHED",
+        "parameter_neighborhood/penalty=0.5",
+        "parameter_neighborhood/penalty=1",
+        "parameter_neighborhood/penalty=2",
+        "parameter_neighborhood/lookback_sessions=15",
+        "parameter_neighborhood/lookback_sessions=20",
+        "parameter_neighborhood/lookback_sessions=25"
+      ],
+      "evidence_kind": "REAL_ACQUISITION"
+    },
+    "manifest_fingerprint": "256161741b3e4542156b48c5e79f4bd05e80496aec11bfa1d62a0bcb18752b5c"
+  },
+  "same_frozen_approved_material": true,
+  "approved_manifest_sha256": "206d2ec53d85af4b28423017da24b5a6030d5078ec5237ee939233245ef84984",
+  "actual_review_run_count": 2,
+  "authorized_continuation_count": 1,
+  "retry_of": "88f44e5c-33fd-4e27-a36a-66b9d33c853c",
+  "initial_prebootstrap_failure_preserved": true,
+  "initial_failure_root_cause": "UNKNOWN",
+  "deepseek_calls": 0,
+  "automatic_retry_count": 0,
+  "account_model_freeze_attempts_budget_audits_forward_unchanged": true,
+  "all_research_tables_unchanged": true,
+  "protected_files_before_after_unchanged": {
+    "D:\\dsh-proj\\Roll\\.roll-data\\reconstructed19-v1\\roll.sqlite3": {
+      "bytes": 165814272,
+      "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21\\actual-current-copy\\roll.sqlite3": {
+      "bytes": 167727104,
+      "sha256": "c8d2a7f55e69718371e6c697635ad14471649b7fc01b1a6483fb1a11b54577d1"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\actual-current-copy\\roll.sqlite3": {
+      "bytes": 168329216,
+      "sha256": "e4a2d0dbafac0319d4e565c4b77c6b60fdc11855fb9c4ada29265bd4d4ff10e0"
+    },
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\23\\actual-review.py": {
+      "bytes": 4816,
+      "sha256": "1fb33ef13d74fb25f14ca77e4ad4ab56bd1b10072413d748430f2f0d28bec9c7"
+    },
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\continuation-2026-10-11\\review-fixes\\actual-review-corrected.py": {
+      "bytes": 6387,
+      "sha256": "6c3857ea161ec7404bd3a9e89e3d8c4da13bb0127a490ae77ca5e0ab7541eece"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\actual-copy-manifest.json": {
+      "bytes": 818636,
+      "sha256": "f660e4449a6a735aa62dd5503d9179a83f4dca9a1196f22bed2401461f7569a5"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\actual-material.json": {
+      "bytes": 958695,
+      "sha256": "d3e156ce4da0e9f65c46295c1a551b0f62f8d6db16d49a50a45ea66a9266aae3"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-material-manifest.json": {
+      "bytes": 5715,
+      "sha256": "c2cfc640530d008b3aca3e18a32154be43550bd136fa59c129b9009169994204"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-execution.json": {
+      "bytes": 37733,
+      "sha256": "36298a2d37dfc554f5c26ade04f9fe69f2df67feeef27f332e4478adb6e162ef"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-models.json": {
+      "bytes": 32852,
+      "sha256": "6c3dbb9970b744da44ccca43a8557b5fad2986f533b2b0d0c4010e13c2f0b5d0"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-shadow.json": {
+      "bytes": 38888,
+      "sha256": "aafa41eab99394633098f82e1337e664da7f20916795c30afd3aa39860b35a95"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-statistics.json": {
+      "bytes": 10335,
+      "sha256": "1e4c08fa67444b1b3823640ecc96c6a1486e7979549954bbb7ae197d3f0ce7a7"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\code-validation.json": {
+      "bytes": 36390,
+      "sha256": "5b35913fc4784b6e561489071026ab6b0c49f48fb10d1bc3bd90a5b4da474de7"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\codex-command.json": {
+      "bytes": 4824,
+      "sha256": "485415cc236f7a6cde7af825319b8a16ade7892cad2aaf0f8534b65f36a22758"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\deepseek-command.json": {
+      "bytes": 4827,
+      "sha256": "7e520db10a0dcfae04ab1063838292cb9b19bdeadaa4d41e9fc18bc5749cd123"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\protocol-and-attempts.json": {
+      "bytes": 21728,
+      "sha256": "f01abfef86e87dfa42231eb188be0667fb2f01fa1eba708fb2bfca23f6137bd1"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\reproduction.json": {
+      "bytes": 163,
+      "sha256": "1e0f10d0f4eda1a88b33eded7fd0a6848fb20b5c63e4673fe64adea7fa436aae"
+    },
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23\\provider-approval\\provider-materials\\results-and-limitations.json": {
+      "bytes": 8423,
+      "sha256": "473e0157dd1362f9368edc3d1bf4125c7b0a9ae51f2a9e426520d8724f6bb1c4"
+    }
+  },
+  "sealed_read": false,
+  "real_forward_started": false,
+  "market_network_calls": 0,
+  "capability_status": "NOT_GRANTED",
+  "historical_diagnostic_verdict": "FAIL",
+  "G7": "INCONCLUSIVE",
+  "provider_body_context_limit": "Old freeze UUID/fingerprint and original model UUID omitted by existing projection; exact linkage remains in local archive"
+}

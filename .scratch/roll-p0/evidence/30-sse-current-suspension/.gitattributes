@@ -1,0 +1,4 @@
+# Preserve literal source response and captured Windows diagnostic bytes.
+*.raw binary
+*.log -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+*.json -text

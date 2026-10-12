@@ -1,0 +1,53 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r17/test_recovery_requires_current0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020829CE5CD0>
+
+    def test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        cutoff = (datetime.fromisoformat(package['required_as_of']) + timedelta(minutes=2)).isoformat()
+        package.update(account_version=3, required_as_of=cutoff)
+        package['current_data']['as_of'] = cutoff
+        package['loss_facts']['as_of'] = cutoff
+        package['action_packet'].update(as_of=cutoff)
+        for item in package['action_packet']['opportunities']:
+            for field in ['quote_at', 'quote_available_at', 'forecast_cutoff']: item[field] = cutoff
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            ready(client)
+            backup = client.post('/api/runtime/backups').json()
+            bundle = client.get('/api/runtime/backups/' + backup['backup_id'] + '/export').content
+            assert client.post('/api/runtime/restores', content=bundle).status_code == 202
+        import roll.decisions.capabilities as capabilities
+        import roll.accounts.ledger as ledger
+        class RecoveryClock(datetime):
+            @classmethod
+            def now(cls, tz=None): return datetime.fromisoformat(cutoff).astimezone(tz)
+        monkeypatch.setattr(ledger, 'datetime', RecoveryClock)
+        monkeypatch.setattr(capabilities, 'now', lambda: cutoff)
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            assert client.get('/api/runtime/backups/status').json()['recovery']['state'] == 'RECOVERY_LOCK'
+            snapshot = broker_snapshot('100000.10', '0.00', '0.00')
+            snapshot['pending_items'] = []
+            command = reconcile(2, 'method-current-broker', snapshot)
+            command['payload'].update(effective_at=cutoff, source='隔离METHOD当前券商快照；非真实账户')
+            submit(client, command, 'reconcile-after-restore')
+            request = {**method_command(), 'scope': package['scope'], 'expected_account_version': 3,
+                       'required_as_of': cutoff, 'idempotency_key': 'proof-under-lock'}
+            refused = client.post('/api/capabilities/grants', json=request)
+            assert refused.status_code == 409, refused.text
+>           assert refused.json()['detail']['reasons'] == ['RECOVERY_LOCK']
+E           AssertionError: assert ['ACCOUNT_FAC...ECOVERY_LOCK'] == ['RECOVERY_LOCK']
+E             
+E             At index 0 diff: 'ACCOUNT_FACTS_NOT_RECONCILED' != 'RECOVERY_LOCK'
+E             Left contains 2 more items, first extra item: '本次用途缺少所需范围/截至时点的无变化声明，无需补每日记录'
+E             Use -v to get more diff
+
+tests\application\test_lifecycle_recovery.py:77: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_recovery.py::test_recovery_requires_current_source_bound_proof_and_new_broker_reconciliation
+1 failed in 7.81s

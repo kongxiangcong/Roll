@@ -1,0 +1,14 @@
+{
+  "kind": "METADATA_ANALYZER_DIAGNOSTICS_ONLY",
+  "product_tests": 0,
+  "private_endpoint_io": 0,
+  "attempts": [
+    {"attempt": 1, "exit_code": 1, "diagnostic": "Literal test env string spacing assertion; test_http_failure_receipts uses no space after comma.", "product_result": null},
+    {"attempt": 2, "exit_code": 1, "diagnostic": "Added case metadata to assertion: test_http_failure_receipts env spacing; no candidate endpoint touched.", "product_result": null},
+    {"attempt": 3, "exit_code": 1, "diagnostic": "After whitespace normalization, server-literal check failed for lock-only test_invalid_config_unknown_fields_and_storage_failure_never_echo_synthetic_secret.", "product_result": null},
+    {"attempt": 4, "exit_code": 1, "diagnostic": "Added case metadata to server-literal assertion; public source subsequently confirms disabled synthetic token and mocked failing persist, channel.lock only.", "product_result": null},
+    {"attempt": 5, "exit_code": 0, "diagnostic": "Metadata/source analysis completed:113 proven public METHOD writer/case rows,2UNKNOWN. Launcher emitted Failed to find real location warning for uv Python; script completed.", "product_result": null},
+    {"attempt": 6, "exit_code": 0, "diagnostic": "Metadata regeneration adds public browser UI caller citation; unchanged113+2classification, launcher warning retained.", "product_result": null}
+  ],
+  "cleanup_release_or_disposal_authorization": false
+}

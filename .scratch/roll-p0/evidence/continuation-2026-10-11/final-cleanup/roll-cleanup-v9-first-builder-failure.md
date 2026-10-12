@@ -1,0 +1,1 @@
+Initial V9 builder exit1 before release/preflight/deletion: Get-Command returned two Git applications; an array was interpolated as one executable. V9a explicitly selects the first observed installed Git, applies longpaths per command, retains V9 history. No runtime byte sweep or deletion occurred.

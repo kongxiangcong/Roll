@@ -1,0 +1,30 @@
+..F                                                                      [100%]
+================================== FAILURES ===================================
+____ test_zero_rows_with_nonzero_total_and_old_empty_daily_stay_named_gaps ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30h-empty-green/test_zero_rows_with_nonzero_to0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A8FC952210>
+
+    def test_zero_rows_with_nonzero_total_and_old_empty_daily_stay_named_gaps(tmp_path,monkeypatch):
+        monkeypatch.setattr('roll.market.post_close_packet.now',lambda:'2026-10-12T15:06:00+08:00')
+        app=create_app(tmp_path)
+        with TestClient(app) as client:
+            pid=setup(client)
+            value=client.post(f'/api/research/collections/{pid}/sse-history-assessments',json={'basis':'Preserve failed finite query evidence'}).json()
+            audit=next(a for a in value['query_audits'] if a['source_role']=='suspension_inconsistent')
+            assert audit['returned_count']==0 and audit['declared_total']==10
+            assert audit['requested_start_date']=='2013-01-01' and audit['requested_end_date']=='2025-12-31'
+            assert not audit['finite_query_completed'] and not audit['no_event_authority']
+            assert 'SSE_HISTORY_SUSPENSION_TOTAL_RETURNED_MISMATCH' in audit['gaps']
+            empty=next(a for a in value['query_audits'] if a['source_role']=='daily_empty')
+            assert empty['returned_count']==0 and empty['query_date']=='2013-01-04'
+            assert not empty['no_event_authority'] and not empty['complete_current_status']
+            gaps=client.get(f'/api/research/collections/{pid}/source-gaps').json()
+>           assert 'SSE_HISTORY_SUSPENSION_TOTAL_RETURNED_MISMATCH' in gaps['historical_source_gaps']
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'historical_source_gaps'
+
+backend\tests\application\test_sse_history_assessment.py:80: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_history_assessment.py::test_zero_rows_with_nonzero_total_and_old_empty_daily_stay_named_gaps
+1 failed, 2 passed in 16.41s

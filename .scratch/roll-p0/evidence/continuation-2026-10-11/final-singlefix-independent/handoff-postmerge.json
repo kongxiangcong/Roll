@@ -1,0 +1,75 @@
+{
+  "stage": "postmerge",
+  "handoff_oid": "94d871111693958ee11e1d75c142f19a0f1bebe0",
+  "product_oid": "4a975c629379cba4cbee34178bf5d2ac4452d87c",
+  "owner_manifest": {
+    "bytes": 3651911,
+    "sha256": "042deedef5f872cb935cb6929eb913f4104955e026d523545a6f612e831684ee"
+  },
+  "files": 4872,
+  "bytes": 299928587,
+  "dual_endpoint_checks": 9744,
+  "mismatches": 0,
+  "private_exclusions_metadata": [
+    {
+      "path": ".fr/chrome-red/fixture/auth.json",
+      "basis": "Exact synthetic METHOD_CASE_ONLY writer: backend/tests/support/final_review_method_app.py:22-24; metadata only",
+      "content_read": false,
+      "hashed": false,
+      "copied": false
+    },
+    {
+      "path": ".fr/chrome-green/fixture/auth.json",
+      "basis": "Exact synthetic METHOD_CASE_ONLY writer: backend/tests/support/final_review_method_app.py:22-24; metadata only",
+      "content_read": false,
+      "hashed": false,
+      "copied": false
+    },
+    {
+      "path": ".fr/chrome-research/fixture/auth.json",
+      "basis": "Exact synthetic METHOD_CASE_ONLY writer: backend/tests/support/final_review_method_app.py:22-24; metadata only",
+      "content_read": false,
+      "hashed": false,
+      "copied": false
+    },
+    {
+      "path": ".fr/affected/test_report_preserves_actual_20/data/notification-private/channel.json",
+      "basis": "Exact test_reports.py public MockTransport ntfy.example.test configuration, no actual channel; private contents not read/hash/copied",
+      "content_read": false,
+      "hashed": false,
+      "copied": false
+    },
+    {
+      "path": ".fr/affected/test_report_preserves_actual_20/data/notification-private/channel.lock",
+      "basis": "Exact private channel lock companion; metadata only, no content/hash/copy",
+      "content_read": false,
+      "hashed": false,
+      "copied": false
+    }
+  ],
+  "protected_15_root_owner_checks": 30,
+  "separate_allowed_3_checksum_only": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-corrected-copy\\raw\\062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50.raw",
+      "bytes": 16282,
+      "sha256": "062d5e3a5389d918367ee84d815250bfad8e7fe9bb4adfdeb73914f1a1002f50"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-corrected-copy\\raw\\85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d.raw",
+      "bytes": 474,
+      "sha256": "85966ee09476d01af83548fa66fbca644598cd36e108c70c0d826f92dcfdbb1d"
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket25-offline-model\\candidate-config.json",
+      "bytes": 3971,
+      "sha256": "ceb23fe9881584f1c2c5955497895a2a9bd6a0806888afe2a749750e22dee9e9"
+    }
+  ],
+  "application_source_count": 75,
+  "original19_checksum_only": {
+    "path": "D:\\dsh-proj\\Roll\\.roll-data\\reconstructed19-v1\\roll.sqlite3",
+    "bytes": 165814272,
+    "sha256": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4"
+  },
+  "original_or_saved_sqlite_connections": 0
+}

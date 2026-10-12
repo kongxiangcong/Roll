@@ -1,0 +1,865 @@
+{
+  "protected_state_unchanged": true,
+  "original_pit_facts_unchanged": true,
+  "original_fact_versions": 30,
+  "current_fact_versions": 231,
+  "integrity": {
+    "checked_at": "2026-10-10T03:54:28.840412+00:00",
+    "sqlite": "ok",
+    "archives_checked": 55,
+    "archive_failures": [],
+    "ok": true,
+    "reference_failures": [],
+    "facts_checked": 231,
+    "network_calls": 0,
+    "system_usable": false,
+    "consistent": true
+  },
+  "sources": [
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.174666+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "sohu-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "搜狐日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "SOHU",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-10T03:50:29.759840+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "d9a3c67a-dfac-47ec-b136-340060df79ec",
+        "last_success_at": "2026-10-10T03:50:29.759840+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.175421+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "QUOTE",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "sina-quote",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "新浪报价与状态线索",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "SINA",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-10T03:50:29.903957+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "d9a3c67a-dfac-47ec-b136-340060df79ec",
+        "last_success_at": "2026-10-10T03:50:29.903957+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.176118+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "ADJUSTMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "eastmoney-actions",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "东财权益线索",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-10T03:50:30.002337+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "d9a3c67a-dfac-47ec-b136-340060df79ec",
+        "last_success_at": "2026-10-10T03:50:30.002337+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.177009+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "ANNOUNCEMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "eastmoney-announcements",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "东财公告原件",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-10T03:50:30.302792+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "d9a3c67a-dfac-47ec-b136-340060df79ec",
+        "last_success_at": "2026-10-10T03:50:30.302792+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.177670+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-tdx-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 通达信日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "TDX",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-10T03:53:26.958658+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "3d4a6515-50fb-49cb-aa52-948e1fe4e0ff",
+        "last_success_at": "2026-10-10T03:53:26.958658+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.178487+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 3,
+        "last_attempt_at": "2026-10-10T03:48:35.240808+00:00",
+        "last_code": "ACQUISITION_OR_CLEANING_FAILED",
+        "last_run_id": "50632a33-9248-4851-aa23-b9ba05d746e8",
+        "retry_after": "2026-10-10T04:48:35.240824+00:00",
+        "state": "FAILED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.179177+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "STATUS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-status",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财交易状态",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.179835+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "ADJUSTMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-actions",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财公司行为",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-10T03:50:38.889920+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "8dd2ab45-129a-4e6c-b541-eb356dc22a84",
+        "last_success_at": "2026-10-10T03:50:38.889920+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.180469+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "ANNOUNCEMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-cninfo-announcements",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 巨潮公告索引",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "CNINFO",
+      "health": {
+        "consecutive_failures": 3,
+        "last_attempt_at": "2026-10-10T03:48:39.115340+00:00",
+        "last_code": "ACQUISITION_OR_CLEANING_FAILED",
+        "last_run_id": "62f8e572-a63a-4a83-8aca-8c3b912df392",
+        "retry_after": "2026-10-10T04:48:39.115353+00:00",
+        "state": "FAILED"
+      }
+    }
+  ],
+  "cleaning": [
+    {
+      "accepted_rows": 27,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:53:26.962086+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [],
+      "input_rows": 27,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "27a34817235627fec69bd6e4d212a51a03ec18dc38bc48f6a313613f67cbed1a"
+      ],
+      "roll_code_sha256": {
+        "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+        "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+        "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+      },
+      "run_id": "3d4a6515-50fb-49cb-aa52-948e1fe4e0ff",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-tdx-daily"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:50:38.954414+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_COOLDOWN",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [],
+      "run_id": "f48c1e04-9cda-4a52-a7d8-dda667a94a41",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-cninfo-announcements"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:50:38.893447+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "ea6528a2204b61a7ee34683a73ca00f8afdc86aadf3f765d4dae39bbfb19dbe7",
+        "cf47d1c40269514f16bc4688287af064c0142118605f559b420f60723202873f"
+      ],
+      "run_id": "8dd2ab45-129a-4e6c-b541-eb356dc22a84",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-actions"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:50:37.127215+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "STATUS_NOT_A_VERIFIED_SESSION",
+          "group": "STATUS",
+          "source_id": "cnequity-eastmoney-status"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [],
+      "run_id": "f3231f6d-1f8b-4240-9074-1e5f73d9d705",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-status"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:50:37.064551+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_COOLDOWN",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [],
+      "run_id": "e736514a-f16d-48e8-a4fc-ec93f73e7723",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-daily"
+    },
+    {
+      "accepted_rows": 27,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:50:36.976731+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [],
+      "input_rows": 27,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "27a34817235627fec69bd6e4d212a51a03ec18dc38bc48f6a313613f67cbed1a"
+      ],
+      "run_id": "ec637b49-69c7-4ffc-86bf-b00b29e56234",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-tdx-daily"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:48:39.120099+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_HTTPStatusError",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "915f3a7abdcaefeb404f5f2ae5349b8a8ebdb53b0c9b3659a12d0813ccb5f191",
+        "91c1e2145ec5a9f17cb0ee8b50538b2102cedeecc47866ce9af69da4d37ad011"
+      ],
+      "run_id": "62f8e572-a63a-4a83-8aca-8c3b912df392",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-cninfo-announcements"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:48:37.136323+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "ADJUSTMENTS",
+          "source_id": "cnequity-eastmoney-actions"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "ea6528a2204b61a7ee34683a73ca00f8afdc86aadf3f765d4dae39bbfb19dbe7",
+        "b44040a8b0cbd68d48afa8070008f81715aa2a89bbb0f2b799dce1ae1ab981d5"
+      ],
+      "run_id": "9bab41ae-30ad-4ca1-a88c-70fd2511bbbb",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-actions"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:48:35.306528+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "STATUS_NOT_A_VERIFIED_SESSION",
+          "group": "STATUS",
+          "source_id": "cnequity-eastmoney-status"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [],
+      "run_id": "512c2fd0-7adb-401e-9359-20ec1d970341",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-status"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:48:35.244589+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "EASTMONEY_DAILY_SOURCE_FAILED",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "f63bd8624f79b06d5fb6022a263db711ece6ea5082331f51c5535fd07525843e"
+      ],
+      "run_id": "50632a33-9248-4851-aa23-b9ba05d746e8",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-daily"
+    },
+    {
+      "accepted_rows": 27,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:48:33.530248+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [],
+      "input_rows": 27,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "6b6c2459f57c20a318fbed40edeb205bdca16c7e1dc54ddeb45b21476e75cf91",
+        "27a34817235627fec69bd6e4d212a51a03ec18dc38bc48f6a313613f67cbed1a"
+      ],
+      "run_id": "17f2b238-179f-4b7d-9013-048dd167ad7f",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-tdx-daily"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:43:40.143455+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_HTTPStatusError",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "915f3a7abdcaefeb404f5f2ae5349b8a8ebdb53b0c9b3659a12d0813ccb5f191",
+        "dd2942642bef37c3f04f5c7365cdf1444532b74a68ec88cc58b4d7c6f1f70cfd"
+      ],
+      "run_id": "2a7897e6-0a91-4f3d-bd15-ed5ac6e64bab",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-cninfo-announcements"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:43:38.263764+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_ZoneInfoNotFoundError",
+          "group": "ADJUSTMENTS",
+          "source_id": "cnequity-eastmoney-actions"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "ADJUSTMENTS",
+          "source_id": "cnequity-eastmoney-actions"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "ADJUSTMENTS",
+          "source_id": "cnequity-eastmoney-actions"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "09e32b45d2c91330cbdaf99aa4f38514aca47c4f6965a590164171eea980d23c"
+      ],
+      "run_id": "bd82f1ff-ee30-4f86-a072-ffbad4b546da",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-actions"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:43:36.642630+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "STATUS_NOT_A_VERIFIED_SESSION",
+          "group": "STATUS",
+          "source_id": "cnequity-eastmoney-status"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [],
+      "run_id": "d7698a0b-4d73-4334-9d65-5ab4066c065a",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-status"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:43:36.581551+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_ZoneInfoNotFoundError",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "478182c76d835be36eb1f2d2ab3cfd3d8441e645ba0021bb2bdb2048ed04e09f"
+      ],
+      "run_id": "885eaf60-27d3-4b9a-8d7c-1603a6dae81a",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-daily"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:43:34.932506+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_ZoneInfoNotFoundError",
+          "group": "DAILY",
+          "source_id": "cnequity-tdx-daily"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "DAILY",
+          "source_id": "cnequity-tdx-daily"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "DAILY",
+          "source_id": "cnequity-tdx-daily"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "b26fcf555abeb578c50b51e63afc4c3162901a3c2e8482b5fe7f22598be866ed"
+      ],
+      "run_id": "e9c1d5d6-2b6d-4049-a216-0cec9f188960",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-tdx-daily"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:42:41.532415+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_ModuleNotFoundError",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "ANNOUNCEMENTS",
+          "source_id": "cnequity-cninfo-announcements"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "4f04ef4f44fb8cb05f8cc64af5a0899815f337feb006050d49b424619dafa536"
+      ],
+      "run_id": "82d48813-a26b-4cc4-a2e1-4ba25084d1c7",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-cninfo-announcements"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:42:40.947039+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_ModuleNotFoundError",
+          "group": "ADJUSTMENTS",
+          "source_id": "cnequity-eastmoney-actions"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "ADJUSTMENTS",
+          "source_id": "cnequity-eastmoney-actions"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "ADJUSTMENTS",
+          "source_id": "cnequity-eastmoney-actions"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "3a52e053c5317155f6c19193079a7d02ef5883f6168bfe7010152c69e83b23e6"
+      ],
+      "run_id": "3578d767-02ac-4e70-a501-ac496c8867c9",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-actions"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:42:40.380344+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "STATUS_NOT_A_VERIFIED_SESSION",
+          "group": "STATUS",
+          "source_id": "cnequity-eastmoney-status"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [],
+      "run_id": "32bc3c3c-414f-4726-9cb3-380dd0d260a8",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-status"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:42:40.312018+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_ModuleNotFoundError",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "DAILY",
+          "source_id": "cnequity-eastmoney-daily"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "bc7af97e921ce0e199f69ba08d2c9c17fe160338c5fdf5f2d805e181c62f42f0"
+      ],
+      "run_id": "f390a48c-d2b3-4985-96af-90be20c91263",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-eastmoney-daily"
+    },
+    {
+      "accepted_rows": 0,
+      "cleaning_version": "prospective-cleaning-v1",
+      "created_at": "2026-10-10T03:42:39.728029+00:00",
+      "evidence_kind": "REAL_ACQUISITION",
+      "gaps": [
+        {
+          "code": "SOURCE_FAILED_ModuleNotFoundError",
+          "group": "DAILY",
+          "source_id": "cnequity-tdx-daily"
+        },
+        {
+          "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+          "group": "DAILY",
+          "source_id": "cnequity-tdx-daily"
+        },
+        {
+          "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+          "group": "DAILY",
+          "source_id": "cnequity-tdx-daily"
+        }
+      ],
+      "input_rows": 0,
+      "quarantined_rows": [],
+      "raw_hashes": [
+        "ef772d67b760beb6bd0aea05ffad32e3cb05e61ace01a4ccb77c26c9563c8951"
+      ],
+      "run_id": "fb31c7a0-9afa-4f9c-9e00-ef95c408f0af",
+      "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "source_id": "cnequity-tdx-daily"
+    }
+  ],
+  "model_code_sha256": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49"
+}

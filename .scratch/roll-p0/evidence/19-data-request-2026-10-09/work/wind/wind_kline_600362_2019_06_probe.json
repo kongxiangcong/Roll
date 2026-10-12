@@ -1,0 +1,16 @@
+{
+  "request": {
+    "tool": "wind:get_stock_kline",
+    "windcode": "600362.SH",
+    "begin_date": "2019-06-10",
+    "end_date": "2019-07-10",
+    "period": "10",
+    "aftype": "2"
+  },
+  "response": {
+    "dates_returned_first": "2019-06-10",
+    "dates_returned_last": "2019-07-10",
+    "row_count": 23,
+    "note": "All of 2019-06-17..2019-07-01 present with LARGE volumes, i.e. these were NORMAL trading days. The Sohu omission was a Sohu data defect, not a suspension."
+  }
+}

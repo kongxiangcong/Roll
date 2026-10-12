@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_new_immutable_evaluation_after_ordinary_quote_merges_notice_but_old_link_cannot_prepare _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-03/test_new_immutable_evaluation_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EBF64FCE90>
+
+    def test_new_immutable_evaluation_after_ordinary_quote_merges_notice_but_old_link_cannot_prepare(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        quote = [''] * 60
+        for index, value in {2:'600000',3:'136',4:'135',5:'135',6:'100',30:'20261009103000',33:'137',34:'134'}.items(): quote[index] = value
+        transport = httpx.MockTransport(lambda request: httpx.Response(200, content=('v_sh600000="' + '~'.join(quote) + '";').encode('gbk')))
+        with TestClient(create_app(tmp_path / 'data', runtime_role='API', capability_method_file=qualification, market_transport=transport)) as client:
+            prepare(client, package)
+            first = client.post('/api/actions/evaluate', json={}).json()
+            assert [(d['action'],d['quantity']) for d in first['decisions']] == [('BUY','200')]
+            notices = client.get('/api/notifications').json()['notifications']
+>           action = next(n for n in notices if n['category'] == 'NEED_ACTION')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           StopIteration
+
+backend\tests\application\test_notifications.py:58: StopIteration
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_new_immutable_evaluation_after_ordinary_quote_merges_notice_but_old_link_cannot_prepare
+1 failed, 1 deselected in 7.12s

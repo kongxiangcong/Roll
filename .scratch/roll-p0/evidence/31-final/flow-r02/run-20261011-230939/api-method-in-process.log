@@ -1,0 +1,82 @@
+INFO:     Started server process [1064]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:52101 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60087 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55078 - "GET /api/reviews/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52917 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52918 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52920 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52919 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58244 - "POST /api/account/drafts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52921 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54292 - "POST /api/account/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53998 - "GET /api/account/receipts/917499c9-895d-4af7-af52-e0212d60fcea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63977 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57247 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62281 - "GET /api/account/pending-drafts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62282 - "GET /api/account/correction-candidates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60906 - "GET /api/account/pending-drafts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50482 - "GET /api/account/correction-candidates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63978 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62648 - "POST /api/account/drafts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:51792 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50994 - "POST /api/account/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55054 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55057 - "POST /api/account/use-check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55055 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50125 - "GET /api/capabilities/lifecycle HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49682 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51338 - "GET /api/capabilities/events HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49358 - "GET /api/capabilities/recovery HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51339 - "GET /api/capabilities/monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51150 - "GET /api/intents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54022 - "GET /api/capabilities/lifecycle HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56775 - "GET /api/capabilities/events HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52357 - "GET /api/reviews/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56774 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63656 - "GET /api/intents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63655 - "GET /api/capabilities/monitoring HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63509 - "GET /api/capabilities/recovery HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65422 - "GET /api/reviews/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60080 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51337 - "GET /api/capabilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60467 - "POST /api/reviews/tasks HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:54021 - "GET /api/actions/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57685 - "GET /api/capabilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55695 - "GET /api/actions/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62723 - "GET /api/reviews/tasks/72d0ed83-c603-42a2-b2f8-04c317a306d5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/reviews/tasks/72d0ed83-c603-42a2-b2f8-04c317a306d5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55057 - "GET /api/reviews/audits/0f466e4e-4f35-4134-a18e-cd769b1b63fa HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59565 - "GET /api/reviews/audits/0f466e4e-4f35-4134-a18e-cd769b1b63fa HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "POST /api/reviews/tasks HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:55057 - "POST /api/reviews/tasks/72d0ed83-c603-42a2-b2f8-04c317a306d5/replay HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/reviews/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54065 - "POST /api/reviews/tasks HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:57702 - "GET /api/reviews/tasks/2f693048-2e2b-498c-8b93-ebda59cf2a27 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/reviews/tasks/2f693048-2e2b-498c-8b93-ebda59cf2a27 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55057 - "GET /api/reviews/audits/8a227f50-8b44-4be5-a692-c216e9b4a8f2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58253 - "GET /api/reviews/audits/8a227f50-8b44-4be5-a692-c216e9b4a8f2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "POST /api/reviews/tasks HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:55057 - "POST /api/reviews/tasks/2f693048-2e2b-498c-8b93-ebda59cf2a27/replay HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55057 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/notifications/audit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55057 - "GET /api/capabilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63979 - "GET /api/capabilities/grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55057 - "GET /api/reviews/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63609 - "GET /api/account/audit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54338 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63608 - "GET /api/reviews/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60741 - "GET /api/account/audit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63668 - "GET /api/reviews/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63667 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60889 - "GET /api/account HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63520 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63520 - "GET /api/reviews/health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1064]

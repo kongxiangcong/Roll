@@ -104,7 +104,25 @@ def test_persistent_worker_retries_with_backoff_once_per_identity_and_preserves_
             assert sum(len(run['tools']) for run in attempt)<=8
         assert client.post('/api/reviews/tasks',json={'mode':'ON_DEMAND','cutoff':task['inputs']['cutoff'],'refresh_missing':True}).json()['task_id']==identifier
         assert client.get('/api/account').json()['version']==1
-        assert client.get('/api/reviews/audits/'+task['audit_id']).json()['metrics']['duplicate_notifications']['value'] is None
+        audit = client.get('/api/reviews/audits/'+task['audit_id']).json()
+        notice_audit = client.get('/api/notifications/audit').json()
+        duplicate = audit['metrics']['duplicate_notifications']
+        assert duplicate['status'] == 'CHECKED'
+        assert duplicate['value'] == notice_audit['merged_sources'] == 0
+        # The persisted RUN_SUMMARY notice exists before the final retry audit.
+        notices = client.get('/api/notifications').json()['notifications']
+        assert len(notices) == duplicate['business_notifications'] == notice_audit['business_notifications'] == 1
+        assert notices[0]['source']['kind'] == 'RUN_SUMMARY'
+        assert notices[0]['source']['id'] == task['result']['snapshot_id']
+        assert notices[0]['source']['version'] == identifier
+        assert duplicate['transmission_attempts'] == notice_audit['transmission_attempts'] == 0
+        assert duplicate['delivery_status'] == notice_audit['delivery_status'] == 'UNKNOWN'
+        import os, json
+        from pathlib import Path
+        if output := os.environ.get('ROLL_FINAL31_RETRY_RECEIPT'):
+            Path(output).write_text(json.dumps({'task': task, 'runs': runs, 'audit': audit,
+                'notification_audit_at_assertion': notice_audit, 'notifications_at_assertion': notices, 'namespace': 'METHOD_ENGINEERING',
+                'system_usable': False}, indent=2)+'\n', encoding='utf-8')
         assert client.get('/api/reviews/audits/'+task['audit_id']).json()['metrics']['module_errors']['value']>=3
         assert any(e['code']=='ConnectTimeout' for e in client.get('/api/reviews/audits/'+task['audit_id']).json()['metrics']['module_errors']['errors'])
 

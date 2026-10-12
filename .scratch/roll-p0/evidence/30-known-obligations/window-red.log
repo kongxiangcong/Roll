@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_known_notice_audit_binds_protocol_window_and_keeps_elapsed_schedule_unknown _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30o-window-red/test_known_notice_audit_binds_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D25648CB00>
+
+    def test_known_notice_audit_binds_protocol_window_and_keeps_elapsed_schedule_unknown(tmp_path,monkeypatch):
+        clock='2026-10-12T15:06:00+08:00'
+        monkeypatch.setattr('roll.market.post_close_packet.now',lambda:clock)
+        monkeypatch.setattr('roll.research.prospective.now',lambda:clock)
+        def offline(request):raise AssertionError('Known-notice audit must stay offline')
+        app=create_app(tmp_path,market_transport=httpx.MockTransport(offline))
+        with TestClient(app) as client:
+            pid=setup(client);registered=protocol(client,tmp_path)
+            response=client.post(f'/api/research/collections/{pid}/known-obligation-audits',
+                json={'protocol_id':registered['protocol_id'],'basis':'Known scheduled obligations at one protocol window'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_known_obligation_audit.py:19: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_known_obligation_audit.py::test_known_notice_audit_binds_protocol_window_and_keeps_elapsed_schedule_unknown
+1 failed in 7.57s

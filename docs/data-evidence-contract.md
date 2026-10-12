@@ -1,5 +1,7 @@
 # 有限市场取证与归档契约（07）
 
+2026-10-10 ticket19最小用途修订见 [ADR0004](adr/0004-reconstructed-price-volume-research.md)及[透明模型契约](transparent-model-contract.md)。原始身份/单位/时钟/版本/内容指纹不变；当前真实历史版本可经宿主检查进入 RECONSTRUCTED_RESEARCH，但不是严格历史时点证据。METHOD永不升级；可得性假设不改写实际 `received_at/available_at` 或未知源发布时间，原始成功不等于训练支持。此范围只限量价和单机会经济标签必需权益/状态/规则，不自动准入后来财报、新闻、预测或情绪。
+
 宿主 `EvidenceStore` 是真实 SQLite、可靠原始文件和规范化 Parquet 的唯一写入者。`DataRequest` 先经06当前名单/固定背景检查，再产生 `RetrievalRun`。取数前重新检查当前成员；外部材料只能作为数据。11/12可使用相同请求与结果，不能直接写账、签发资格或把模型回答当成通过检查的事实。
 
 ## 请求与运行

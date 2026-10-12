@@ -1,0 +1,114 @@
+{
+  "preparation_id": "2f08295e-4b11-4374-98a1-6eeaf2a5b590",
+  "prepared_host_at": "2026-10-11T11:29:06.493150+00:00",
+  "classification": "DOCUMENTARY_PLAN_NOT_RESPONSE_OR_EXECUTION_PROOF",
+  "prepared_from_eighth_stable": "3d541869989d446150b0c25b2dd8370a55f088ab",
+  "state": "PREPARED_WAITING_ACCEPTED8_AND_EXPLICIT_PARENT_RELEASE",
+  "execution_allowed": false,
+  "offline_public_api_tdd_complete": false,
+  "implementation_fingerprint": null,
+  "implementation_fingerprint_required_before_http": true,
+  "documents": {
+    "company_html": {
+      "url": "https://www.sse.com.cn/assortment/stock/list/info/company/index.shtml?COMPANY_CODE=600362",
+      "received_at": "2026-10-11T09:34:41.501704+00:00",
+      "bytes": 39826,
+      "sha256": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b",
+      "classification": "DOCUMENT_LEAD",
+      "role": "company_html",
+      "path": "72bdf9f924465e3c848577fa4ec5285c163474a79be9bee4a0500a2ecb53f55b.raw",
+      "publication_time": null,
+      "effective_time": null
+    },
+    "company_js": {
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js?v=ssesite_V3.8.0_20260828",
+      "received_at": "2026-10-11T09:35:06.426492+00:00",
+      "bytes": 277193,
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "classification": "DOCUMENT_LEAD",
+      "role": "company_js",
+      "path": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "publication_time": null,
+      "effective_time": null
+    }
+  },
+  "client_variant": {
+    "method": "POST",
+    "format": "JSONP",
+    "callback": "jsonCallBack=?"
+  },
+  "planned_variant": {
+    "method": "GET",
+    "format": "JSON",
+    "callback": null,
+    "client_path_retained": true
+  },
+  "older_proposal_path": "/sseQuery/commonQuery.do",
+  "older_proposal_rewritten": false,
+  "requests": [
+    {
+      "role": "dividend",
+      "method": "GET",
+      "url": "https://query.sse.com.cn/commonQuery.do",
+      "parameters": {
+        "isPagination": "true",
+        "pageHelp.pageSize": "5",
+        "pageHelp.pageNo": "1",
+        "pageHelp.beginPage": "1",
+        "pageHelp.cacheSize": "1",
+        "pageHelp.endPage": "1",
+        "COMPANY_CODE": "600362",
+        "IS_STAR": "0",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L",
+        "CONDITION_ZBA": "1",
+        "CONDITION_ZBB": ""
+      },
+      "canonical_request_url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L&CONDITION_ZBA=1&CONDITION_ZBB=",
+      "request_date_scope": "UNKNOWN_NOT_DECLARED_BY_FIXED_CLIENT",
+      "max_attempts": 1,
+      "page": 1,
+      "page_size": 5,
+      "further_pages_allowed": false
+    },
+    {
+      "role": "send_share",
+      "method": "GET",
+      "url": "https://query.sse.com.cn/commonQuery.do",
+      "parameters": {
+        "isPagination": "true",
+        "pageHelp.pageSize": "5",
+        "pageHelp.pageNo": "1",
+        "pageHelp.beginPage": "1",
+        "pageHelp.cacheSize": "1",
+        "pageHelp.endPage": "1",
+        "COMPANY_CODE": "600362",
+        "IS_STAR": "0",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L"
+      },
+      "canonical_request_url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L",
+      "request_date_scope": "UNKNOWN_NOT_DECLARED_BY_FIXED_CLIENT",
+      "max_attempts": 1,
+      "page": 1,
+      "page_size": 5,
+      "further_pages_allowed": false
+    }
+  ],
+  "request_budget_calls": 2,
+  "actual_network_calls": 0,
+  "timeout_seconds": 15,
+  "maximum_response_bytes_per_attempt": 8388608,
+  "redirects": false,
+  "retry": false,
+  "fallback": false,
+  "alternate_host_or_path": false,
+  "raw_first_including_http_error_and_interruption_prefix": true,
+  "query_date_scope": "UNKNOWN",
+  "current_or_negative_coverage": false,
+  "lifecycle_or_payment_proof": false,
+  "system_usable": false,
+  "model_daily_input_allowed": false,
+  "forward_started_at": null,
+  "capability": "NOT_GRANTED",
+  "account_or_original_or_preserved_sqlite_opened": false,
+  "followup_source_slices_after_two_sources": false
+}

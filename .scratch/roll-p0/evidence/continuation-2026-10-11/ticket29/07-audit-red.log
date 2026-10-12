@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_run_audit_counts_existing_shadow_records_and_locates_their_saved_revisions _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket29/.scratch/t29r4/test_run_audit_counts_existing0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001473D9BE9E0>
+
+    def test_run_audit_counts_existing_shadow_records_and_locates_their_saved_revisions(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        clock = lambda: datetime.fromisoformat('2026-10-07T10:00:00+08:00')
+        with TestClient(create_app(copy_donor(tmp_path / 'data'), review_clock=clock)) as client:
+            response = client.post('/api/reviews/tasks', json={'mode': 'ON_DEMAND'})
+            assert response.status_code == 202, response.text
+            task = wait_result(client, response.json()['task_id'])
+            metric = client.get('/api/reviews/audits/' + task['audit_id']).json()['metrics']['shadow_records']
+>           assert metric['status'] == 'CHECKED', metric
+E           AssertionError: {'status': 'NOT_CONNECTED', 'value': None}
+E           assert 'NOT_CONNECTED' == 'CHECKED'
+E             
+E             - CHECKED
+E             + NOT_CONNECTED
+
+tests\application\test_reports.py:20: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_reports.py::test_run_audit_counts_existing_shadow_records_and_locates_their_saved_revisions
+1 failed in 12.32s

@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\ticket28\.scratch\roll-p0\evidence\continuation-2026-10-11\ticket28\preserve-runtime.py", line 43, in <module>
+    with ThreadPoolExecutor(max_workers=8) as pool: manifest = list(pool.map(copy_verified,entries))
+                                                               ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\ticket28\.scratch\roll-p0\evidence\continuation-2026-10-11\ticket28\preserve-runtime.py", line 39, in copy_verified
+    shutil.copyfile(source,target)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\shutil.py", line 262, in copyfile
+    with open(dst, 'wb') as fdst:
+         ~~~~^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\ticket28\\final-internal-v1\\.test-tmp-notifications-final\\test_notification_time_chain_a0\\data\\backups\\fe1ad7fa-becc-4274-b0e0-2cbe9009bf9a\\raw\\7790168f5e2cc6c1ce785ff1d4474b4d2af61e17323e67678afeaa5608d09ff6.raw'

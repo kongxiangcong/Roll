@@ -19,34 +19,54 @@ from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
-from roll.agents.settings import AgentSettings, BackendSelection, AgentQuestion
+from roll.agents.settings import AgentSettings, BackendSelection, AgentQuestion, require_current_backend
 from roll.market.resolution import SourceResolutions, ResolutionCommand
 from roll.market.verification import IndependentVerifications, VerificationCommand
 from roll.research.registry import ExperimentRegistry, ProtocolCommand, AttemptCommand, FinishCommand, FreezeCommand, ReasonCommand, CheckpointCommand, deadline_preview
 from roll.research.datasets import DatasetCommand
+from roll.research.reconstruction import ReconstructionCommand,reconstruct
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
+from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
+from roll.research.validation import AutomaticValidation,ValidationCommand
+from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
+from roll.research.prospective import ProspectiveEvidence, CollectionCommand
+from roll.market.post_close_packet import PacketCommand, ObligationCommand
+from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand
+from roll.market.sse_company_actions import CompanyActionPages
+from roll.market.sse_action_assessments import ActionAssessments,ActionAssessmentCommand,ActionPacketCommand
+from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
+from roll.research.synthetic import SyntheticDevelopment
+from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
 from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,PolicyEvaluationCommand
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
+from roll.decisions.capabilities import Capabilities, GrantCommand, LifecycleCommand
+from roll.decisions.actions import Actions, EvaluationCommand
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
 
-def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None):
+def _create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None,notification_transport=None):
     @asynccontextmanager
     async def lifespan(application):
-        application.state.reviews.start()
-        application.state.backups.start()
-        yield
-        await asyncio.to_thread(application.state.research.close)
-        await asyncio.to_thread(application.state.reviews.close)
-        await asyncio.to_thread(application.state.codex.close)
-        await asyncio.to_thread(application.state.deepseek.close)
-        await asyncio.to_thread(application.state.backups.close)
-        if not (application.state.reviews.thread and application.state.reviews.thread.is_alive()):
-            application.state.host_marker.unlink(missing_ok=True)
+        try:
+            started=application.state.reviews.start()
+            if runtime_role == 'WORKER' and not started:
+                raise RuntimeError('BACKGROUND_WORKER_ALREADY_RUNNING')
+            if runtime_role != 'API':
+                application.state.backups.start()
+            yield
+        finally:
+            await asyncio.to_thread(application.state.research.close)
+            await asyncio.to_thread(application.state.reviews.close)
+            await asyncio.to_thread(application.state.codex.close)
+            await asyncio.to_thread(application.state.deepseek.close)
+            await asyncio.to_thread(application.state.technical_reviews.close)
+            await asyncio.to_thread(application.state.backups.close)
+            if not (application.state.reviews.thread and application.state.reviews.thread.is_alive()):
+                application.state.host_marker.unlink(missing_ok=True)
 
     app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
     ledger = Ledger(directory or data_directory())
@@ -95,12 +115,276 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     research=ExperimentRegistry(ledger,evidence)
     app.state.research=research
     executions=DailyExecutions(research)
+    research.executions=executions
     app.state.executions=executions
     models=TransparentModels(research,executions)
+    research.models=models
     app.state.models=models
+    shadow=ShadowLab(research,models)
+    app.state.shadow=shadow
+    validation=AutomaticValidation(shadow)
+    app.state.validation=validation
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/validations',status_code=201)
+    def validation_create(freeze_id:str,command:ValidationCommand):
+        return validation.create(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/validations')
+    def validation_list(freeze_id:str):
+        return validation.list(freeze_id)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/validation-attempts')
+    def validation_attempts(freeze_id:str):
+        return validation.attempts(freeze_id)
+
+    @app.get('/api/research/validations/{validation_id}')
+    def validation_get(validation_id:str):
+        return validation.get(validation_id)
+
+    @app.post('/api/research/validations/{validation_id}/replay')
+    def validation_replay(validation_id:str):
+        return validation.replay(validation_id)
+
+    @app.post('/api/research/protocols/{protocol_id}/complete-freezes',status_code=201)
+    def complete_freeze(protocol_id:str,command:CompleteFreezeCommand):
+        return shadow.freeze(protocol_id,command)
+
+    @app.get('/api/research/protocols/{protocol_id}/complete-freezes')
+    def complete_freezes(protocol_id:str):
+        return shadow.list(protocol_id)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}')
+    def complete_freeze_get(freeze_id:str):
+        return shadow.get(freeze_id)
+
+    @app.post('/api/research/shadow/{freeze_id}/advance',status_code=201)
+    def shadow_advance(freeze_id:str,command:AdvanceCommand):
+        return shadow.advance(freeze_id,command)
+
+    @app.get('/api/research/shadow/{freeze_id}')
+    def shadow_get(freeze_id:str):
+        return shadow.current(freeze_id)
+
+    @app.post('/api/research/shadow/{freeze_id}/replay')
+    def shadow_replay(freeze_id:str):
+        return shadow.replay(freeze_id)
+
+    @app.post('/api/research/shadow/{freeze_id}/account-conditional',status_code=201)
+    def shadow_conditional(freeze_id:str,command:ConditionalCommand):
+        return shadow.conditional(freeze_id,command)
+
+    @app.get('/api/research/results')
+    def shadow_results(freeze_id:str):
+        return shadow.results(freeze_id)
+    prospective=ProspectiveEvidence(evidence,research)
+    price_quotes=PriceQuotes(prospective)
+    company_actions=CompanyActionPages(prospective)
+    action_assessments=ActionAssessments(company_actions,price_quotes)
+    forward=ForwardArchive(shadow,prospective,review_clock)
+    app.state.forward=forward
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward',status_code=201)
+    def forward_register(freeze_id:str,command:ForwardCommand):return forward.register(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/forward')
+    def forward_get(freeze_id:str):return forward.state(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/check',status_code=201)
+    def forward_check(freeze_id:str,command:CheckCommand):return forward.check(freeze_id,command)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/replay')
+    def forward_replay(freeze_id:str):return forward.replay(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/settle',status_code=201)
+    def forward_settle(freeze_id:str,command:CheckCommand):return forward.settle(freeze_id,command)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/forward/stop')
+    def forward_stop(freeze_id:str,command:StopCommand):return forward.stop(freeze_id,command)
+    app.state.prospective=prospective
+    @app.post('/api/research/collections/{plan_id}/post-close',status_code=201)
+    def post_close_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/post-close/check',status_code=201)
+    def post_close_job(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_once(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/post-close-packets',status_code=201)
+    def post_close_build(plan_id:str,command:PacketCommand):
+        return prospective.post_close.build(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/sse-history-assessments',status_code=201)
+    def assess_sse_history(plan_id: str,command: PacketCommand):
+        return prospective.post_close.assess_history(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/cninfo-history-assessments',status_code=201)
+    def cninfo_history_assessment(plan_id:str,command:PacketCommand):
+        return prospective.post_close.assess_cninfo_history(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/known-obligation-audits',status_code=201)
+    def known_obligation_audit(plan_id:str,command:ObligationCommand):
+        return prospective.post_close.assess_obligations(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/known-obligation-audits')
+    def known_obligation_audits(plan_id:str,protocol_id:str|None=None):
+        return prospective.post_close.obligations(plan_id,protocol_id=protocol_id)
+
+    @app.get('/api/research/collections/{plan_id}/source-gaps')
+    def post_close_source_gaps(plan_id: str):
+        return {**prospective.post_close.source_gaps(plan_id),
+                'price_quote_assessments': price_quotes.assessments(plan_id),
+                'price_quote_current': price_quotes.current(plan_id),
+                'action_source_receipts':company_actions.receipts(plan_id),
+                'action_assessments':action_assessments.assessments(plan_id),
+                'action_current':action_assessments.current(plan_id)}
+
+    @app.post('/api/research/collections/{plan_id}/sse-suspension',status_code=201)
+    def sse_suspension_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_suspension(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-suspension-receipts')
+    def sse_suspension_receipts(plan_id:str):
+        return prospective.post_close.suspension_receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-suspension/check',status_code=201)
+    def sse_suspension_worker(plan_id:str,command:PacketCommand):
+        return prospective.post_close.capture_suspension_once(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/sse-stock-suspension',status_code=201)
+    def sse_stock_suspension_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.stock_suspensions.capture(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/sse-company-contract',status_code=201)
+    def sse_company_contract_capture(plan_id:str,command:PacketCommand):
+        return prospective.post_close.company_contracts.capture(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/sse-company-actions',status_code=201)
+    def sse_company_action_capture(plan_id:str,command:PacketCommand):
+        return company_actions.capture_once(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-company-action-receipts')
+    def sse_company_action_receipts(plan_id:str):
+        return company_actions.receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-action-assessments',status_code=201)
+    def sse_action_assess(plan_id:str,command:ActionAssessmentCommand):
+        return action_assessments.assess(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-action-assessments')
+    def sse_action_assessment_query(plan_id:str):return action_assessments.assessments(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/sse-action-assessments/current')
+    def sse_action_current(plan_id:str):return action_assessments.current(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-action-packets',status_code=201)
+    def sse_action_packet(plan_id:str,command:ActionPacketCommand):return action_assessments.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-action-packets/{packet_id}')
+    def sse_action_packet_query(plan_id:str,packet_id:str):return action_assessments.packet(plan_id,packet_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)
+    def sse_price_assess(plan_id:str,command:PriceQuoteCommand):
+        return price_quotes.assess(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-price-quotes')
+    def sse_price_assessments(plan_id:str):
+        return price_quotes.assessments(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/sse-price-quotes/current')
+    def sse_price_current(plan_id:str):
+        return price_quotes.current(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-price-packets',status_code=201)
+    def sse_price_packet(plan_id:str,command:PricePacketCommand):
+        return price_quotes.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-price-packets/{packet_id}')
+    def sse_price_packet_get(plan_id:str,packet_id:str):
+        return price_quotes.packet(plan_id,packet_id)
+
+    @app.get('/api/research/collections/{plan_id}/sse-company-contract-receipts')
+    def sse_company_contract_receipts(plan_id:str):
+        return prospective.post_close.company_contracts.receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-company-contract/check',status_code=201)
+    def sse_company_contract_worker(plan_id:str,command:PacketCommand):
+        return prospective.post_close.company_contracts.capture_once(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-stock-suspension-receipts')
+    def sse_stock_suspension_receipts(plan_id:str):
+        return prospective.post_close.stock_suspensions.receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-stock-suspension/check',status_code=201)
+    def sse_stock_suspension_worker(plan_id:str,command:PacketCommand):
+        return prospective.post_close.stock_suspensions.capture_once(plan_id,command.basis)
+
+    @app.post('/api/research/post-close-packets/{packet_id}/replay')
+    def post_close_replay(packet_id:str):
+        if action_assessments.saved_packet(packet_id):
+            return action_assessments.replay(packet_id)
+        if price_quotes.saved_packet(packet_id):
+            return price_quotes.replay(packet_id)
+        return prospective.post_close.replay(packet_id)
+    app.state.collection_sources=prospective.sources
+    development=SyntheticDevelopment(research,executions,models)
+    app.state.development=development
+
+    @app.post('/api/research/collections',status_code=201)
+    def collection_start(command:CollectionCommand):
+        return prospective.start(command)
+
+    @app.get('/api/research/collections')
+    def collection_plans():
+        return prospective.plans()
+
+    @app.post('/api/research/collections/{plan_id}/collect',status_code=201)
+    def collection_collect(plan_id:str):
+        return prospective.collect(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/batches')
+    def collection_batches(plan_id:str):
+        return prospective.batches(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/as-of')
+    def collection_asof(plan_id:str,cutoff:datetime):
+        return prospective.as_of(plan_id,cutoff)
+
+    @app.get('/api/research/collections/{plan_id}/readiness')
+    def collection_readiness(plan_id:str):
+        return prospective.readiness(plan_id)
+
+    @app.get('/api/research/collection-sources')
+    def collection_sources():
+        return prospective.sources.listing()
+
+    @app.post('/api/research/collection-sources/{source_id}/policy')
+    def collection_source_policy(source_id:str,command:SourcePolicyCommand):
+        return prospective.sources.change(source_id,command)
+
+    @app.get('/api/research/collection-cleaning')
+    def collection_cleaning():
+        return prospective.sources.reports()
+
+    @app.post('/api/research/collection-integrity')
+    def collection_integrity():
+        return prospective.sources.integrity()
+
+    @app.get('/api/research/collections/{plan_id}/comparisons')
+    def collection_comparisons(plan_id:str):
+        prospective.plan(plan_id)
+        return prospective.sources.comparisons(plan_id)
+
+    @app.post('/api/research/development-runs',status_code=201)
+    def virtual_development():
+        return development.create()
+
+    @app.get('/api/research/development-runs')
+    def virtual_development_runs():
+        return development.runs()
 
     @app.post('/api/research/protocols/{protocol_id}/models',status_code=201)
     def research_model_create(protocol_id:str,command:ModelCommand):
+        if shadow.list(protocol_id):raise HTTPException(409,'完整实验已冻结；新模型须登记关联后继实验')
         admit_model_training(research,protocol_id,command.purpose)
         return models.create(protocol_id,command)
 
@@ -161,6 +445,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def research_datasets():
         return research.datasets()
 
+    @app.post('/api/research/datasets/{dataset_id}/reconstruct',status_code=201)
+    def research_reconstruct(dataset_id:str,command:ReconstructionCommand):
+        return reconstruct(research,dataset_id,command)
+
     @app.get('/api/research/datasets/{dataset_id}')
     def research_dataset(dataset_id:str):
         return research.dataset(dataset_id)
@@ -183,6 +471,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/protocols/{protocol_id}/attempts',status_code=201)
     def research_attempt(protocol_id:str,command:AttemptCommand):
+        if shadow.list(protocol_id):raise HTTPException(409,'完整实验已冻结；修改政策/方法须登记关联后继实验')
         return research.start_attempt(protocol_id,command)
 
     @app.get('/api/research/protocols/{protocol_id}/attempts')
@@ -212,7 +501,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/research/protocols/{protocol_id}/checkpoints',status_code=201)
     def research_checkpoint(protocol_id:str,command:CheckpointCommand):
         return research.checkpoint(protocol_id,command)
-    reviews=Reviews(ledger,market,evidence,review_clock)
+    reviews=Reviews(ledger,market,evidence,review_clock,worker_enabled=runtime_role != "API")
+    reviews.forward=forward
     app.state.reviews=reviews
 
     @app.post('/api/reviews/tasks',status_code=202)
@@ -358,10 +648,65 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.deepseek=deepseek
     agent_settings=AgentSettings(ledger)
     app.state.agent_settings=agent_settings
+    technical_reviews=TechnicalReviews(validation,agent_settings,worker=codex_worker,endpoint=deepseek_endpoint,risk_policies=risk_policies,method_file=technical_review_method_file)
+    app.state.technical_reviews=technical_reviews
+
+    @app.get('/api/research/method-review-materials')
+    def technical_method_materials():
+        return technical_reviews.method_materials()
+
+    @app.post('/api/research/validations/{validation_id}/review-materials',status_code=201)
+    def technical_review_materials(validation_id:str):
+        return technical_reviews.material(validation_id)
+
+    @app.get('/api/research/validations/{validation_id}/review-materials')
+    def validation_review_material_list(validation_id:str):
+        return technical_reviews.basis_materials(validation_id)
+
+    @app.post('/api/research/risk-evaluations/{evaluation_id}/review-materials',status_code=201)
+    def risk_technical_review_materials(evaluation_id:str):
+        return technical_reviews.risk_material(evaluation_id)
+
+    @app.get('/api/research/risk-evaluations/{evaluation_id}/review-materials')
+    def risk_review_material_list(evaluation_id:str):
+        return technical_reviews.basis_materials(evaluation_id)
+
+    @app.get('/api/research/review-materials')
+    def saved_technical_review_materials():
+        return technical_reviews.materials()
+
+    @app.get('/api/research/review-materials/{material_id}')
+    def technical_review_material(material_id:str):
+        return technical_reviews.get_material(material_id)
+
+    @app.post('/api/research/review-materials/{material_id}/reviews',status_code=202)
+    def technical_review_start(material_id:str,command:TechnicalReviewCommand):
+        return technical_reviews.start(material_id,command)
+
+    @app.get('/api/research/review-materials/{material_id}/reviews')
+    def technical_review_runs(material_id:str):
+        return technical_reviews.runs(material_id)
+
+    @app.get('/api/research/technical-reviews/{run_id}')
+    def technical_review_get(run_id:str):
+        return technical_reviews.get(run_id)
+
+    @app.post('/api/research/technical-reviews/{run_id}/cancel')
+    def technical_review_cancel(run_id:str):
+        return technical_reviews.cancel(run_id)
+
+    @app.get('/api/research/review-materials/{material_id}/delivery')
+    def validation_delivery(material_id:str):
+        return technical_reviews.delivery(material_id)
+
+    @app.post('/api/research/review-materials/{material_id}/export',status_code=201)
+    def validation_delivery_export(material_id:str):
+        return technical_reviews.export(material_id)
 
     @app.get('/api/agents/settings')
     def backend_settings():
-        return agent_settings.get()
+        current=agent_settings.get()
+        return {**current,'supported_backends':['CODEX'],'resave_required':current['backend']!='CODEX'}
 
     @app.get('/api/agents/settings/history')
     def backend_settings_history():
@@ -374,8 +719,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/data/requests/{request_id}/agent',status_code=202)
     def agent_start(request_id:str,command:AgentQuestion):
         selection=agent_settings.get()
-        backend=codex if selection['backend']=='CODEX' else deepseek
-        return backend.start(request_id,command,selection)
+        require_current_backend(selection['backend'])
+        return codex.start(request_id,command,selection)
 
     @app.post('/api/data/requests/{request_id}/deepseek',status_code=202)
     def deepseek_start(request_id:str,command:DeepSeekQuestion):
@@ -435,7 +780,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.get('/api/data/sources')
     def data_sources():
-        return REGISTRY
+        return REGISTRY+[p for p in prospective.sources.listing() if p['engine']=='CNEQUITY']
 
     @app.get('/api/data/runs')
     def data_runs():
@@ -565,7 +910,195 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get("/api/capabilities")
     def current_capabilities():
         recovery=app.state.backups.recovery()
-        return {**capabilities(),"recovery":recovery,**({"state":"RECOVERY_LOCK","reason":"恢复后当前资格及遗漏撤回未核实，仅可观察。"} if recovery['state']=='RECOVERY_LOCK' else {})}
+        return capability_service.current()
+
+    capability_service = Capabilities(ledger, funding, technical_reviews, valuations, capability_method_file, lambda: app.state.backups.recovery())
+    app.state.capabilities = capability_service
+    reviews.capabilities = capability_service
+    capability_service.observation_reviews = reviews
+
+    @app.post('/api/capabilities/grants', status_code=201)
+    def grant_capability(command: GrantCommand):
+        return capability_service.grant(command)
+
+    @app.get('/api/capabilities/proposal')
+    def capability_proposal(material_id: str, review_run_id: str):
+        return capability_service.proposal(material_id, review_run_id)
+
+    @app.get('/api/capabilities/grants')
+    def capability_grants():
+        return capability_service.grants()
+
+    @app.get('/api/capabilities/grants/{grant_id}/status')
+    def capability_grant_status(grant_id: str):
+        return capability_service.current(grant_id=grant_id)
+
+    @app.get('/api/capabilities/events')
+    def capability_events():
+        return capability_service.events()
+
+    @app.get('/api/capabilities/proofs')
+    def capability_proofs():
+        return capability_service.proofs()
+
+    @app.get('/api/capabilities/proofs/{proof_id}/check')
+    def capability_proof_check(proof_id: str):
+        return capability_service.verify_proof(proof_id)
+
+    actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
+    capability_service.actions = actions
+    from roll.decisions.notifications import Notifications, ReadNotice
+    from roll.runtime.notification_channel import NotificationChannel
+    notification_channel = NotificationChannel(Path(ledger.path).parent, notification_transport)
+    app.state.notification_channel = notification_channel
+    notifications = Notifications(ledger, capability_service, notification_channel)
+    app.state.notifications = notifications
+    capability_service.notifications = notifications
+    actions.notifications = notifications
+    reviews.notifications = notifications
+
+    @app.get('/api/notification-channel')
+    def channel_configuration(): return notification_channel.get()
+
+    @app.post('/api/notification-channel')
+    async def channel_configuration_update(request: Request):
+        raw = bytearray()
+        async for chunk in request.stream():
+            raw.extend(chunk)
+            if len(raw) > 16384: raise HTTPException(413, 'CHANNEL_CONFIG_TOO_LARGE')
+        try:
+            import json
+            command = json.loads(raw)
+        except (ValueError, UnicodeError): raise HTTPException(422, 'CHANNEL_CONFIG_INVALID') from None
+        return notification_channel.save(command)
+
+    @app.get('/api/notifications')
+    def notification_list(): return notifications.listing()
+
+    @app.get('/api/notifications/audit')
+    def notification_audit(): return notifications.audit()
+
+    @app.get('/api/notifications/time-chain')
+    def notification_time_chain(decision_id: str, evaluation_id: str, intent_id: str | None = None):
+        return notifications.time_chain(decision_id, evaluation_id, intent_id)
+
+    @app.get('/api/notifications/{identifier}/current')
+    def notification_current(identifier: str): return notifications.current(identifier)
+
+    @app.post('/api/notifications/{identifier}/read')
+    def notification_read(identifier: str, command: ReadNotice): return notifications.read(identifier, command)
+
+    @app.post('/api/notifications/{identifier}/retry')
+    def notification_retry(identifier: str, command: ReadNotice): return notifications.retry(identifier, command)
+    from roll.decisions.recovery import AuthorizationRecovery, RecoveryCommand
+    authorization_recovery = AuthorizationRecovery(capability_service)
+    app.state.authorization_recovery = authorization_recovery
+
+    @app.get('/api/capabilities/recovery')
+    def capability_recovery(): return authorization_recovery.status()
+
+    @app.post('/api/capabilities/recovery', status_code=201)
+    def capability_recovery_check(command: RecoveryCommand): return authorization_recovery.check(command)
+
+    @app.get('/api/capabilities/lifecycle')
+    def capability_lifecycle(): return capability_service.lifecycle()
+
+    @app.post('/api/capabilities/lifecycle')
+    def capability_lifecycle_change(command: LifecycleCommand): return capability_service.change_lifecycle(command)
+    app.state.actions = actions
+    reviews.actions = actions
+    from roll.decisions.intents import Intents, PrepareIntent, DeclareIntent
+    intents = Intents(ledger, actions)
+    app.state.intents = intents
+    ledger.execution_intents = intents
+    actions.execution_intents = intents
+    from roll.decisions.monitoring import Monitoring, MonitoringCommand, CorrectionCommand
+    monitoring = Monitoring(capability_service, validation, forward, intents)
+    capability_service.monitoring = monitoring
+    app.state.monitoring = monitoring
+    reviews.monitoring = monitoring
+    from roll.research.reports import ResearchReports
+    reports = ResearchReports(shadow, valuations, intents, notifications, monitoring)
+    app.state.reports = reports
+    reviews.reports = reports
+
+    @app.get('/api/research/reports/{freeze_id}')
+    def research_report(freeze_id: str, valuation_id: str | None = None, decision_id: str | None = None,
+                        evaluation_id: str | None = None, intent_id: str | None = None, monitoring_check_id: str | None = None):
+        return reports.get(freeze_id, valuation_id, decision_id, evaluation_id, intent_id, monitoring_check_id)
+
+    @app.get('/api/research/reports/{freeze_id}/export')
+    def research_report_export(freeze_id: str, valuation_id: str | None = None, decision_id: str | None = None,
+                               evaluation_id: str | None = None, intent_id: str | None = None,
+                               monitoring_check_id: str | None = None,
+                               format: str = Query('json', pattern='^(json|text)$')):
+        value = reports.get(freeze_id, valuation_id, decision_id, evaluation_id, intent_id, monitoring_check_id)
+        content = reports.text(value) if format == 'text' else __import__('json').dumps(value, ensure_ascii=False, sort_keys=True)
+        return Response(content, media_type='text/plain' if format == 'text' else 'application/json',
+                        headers={'Content-Disposition': 'attachment; filename="roll-research-report.' + ('txt' if format == 'text' else 'json') + '"'})
+
+    @app.get('/api/capabilities/corrections')
+    def capability_corrections(): return monitoring.corrections()
+
+    @app.post('/api/capabilities/corrections', status_code=201)
+    def capability_correction(command: CorrectionCommand): return monitoring.record_correction(command)
+
+    @app.get('/api/capabilities/monitoring')
+    def capability_monitoring_records(): return monitoring.records()
+
+    @app.post('/api/capabilities/monitoring/check', status_code=201)
+    def capability_monitoring_check(command: MonitoringCommand): return monitoring.check(command)
+
+    @app.get('/api/capabilities/monitoring/{check_id}')
+    def capability_monitoring_record(check_id: str): return monitoring.get(check_id)
+
+    @app.post('/api/capabilities/monitoring/{check_id}/replay')
+    def capability_monitoring_replay(check_id: str): return monitoring.replay(check_id)
+    reviews.intents = intents
+
+    @app.post('/api/intents/prepare', status_code=201)
+    def prepare_intent(command: PrepareIntent):
+        return intents.prepare(command)
+
+    @app.get('/api/intents')
+    def execution_intents():
+        return intents.listing()
+
+    @app.post('/api/intents/{intent_id}/declare')
+    def declare_intent(intent_id: str, command: DeclareIntent):
+        return intents.declare(intent_id, command)
+
+    @app.get('/api/intents/allocations')
+    def intent_allocations():
+        return intents.allocations()
+
+    @app.get('/api/intents/audit')
+    def intent_audit():
+        return intents.metrics()
+
+    @app.post('/api/actions/evaluate', status_code=201)
+    def evaluate_actions(command: EvaluationCommand):
+        return actions.evaluate(command)
+
+    @app.get('/api/actions/current')
+    def current_actions(instrument: str | None = None):
+        return actions.current(instrument)
+
+    @app.get('/api/actions/evaluations/{evaluation_id}')
+    def action_evaluation(evaluation_id: str):
+        return actions.get(evaluation_id)
+
+    @app.post('/api/actions/evaluations/{evaluation_id}/replay')
+    def action_replay(evaluation_id: str):
+        return actions.replay(evaluation_id)
+
+    @app.get('/api/actions/events')
+    def action_events():
+        return actions.events()
+
+    @app.get('/api/actions/audit')
+    def action_audit():
+        return actions.metrics()
 
     @app.post("/api/formal/evaluate")
     @app.post("/api/formal/probability")
@@ -581,7 +1114,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.get("/api/health")
     def health():
-        return {"status": "ok","environment":"test" if os.environ.get("ROLL_ENV")=="test" else "local"}
+        return {"status": "ok","runtime_role":runtime_role,"environment":"test" if os.environ.get("ROLL_ENV")=="test" else "local"}
 
     @app.post("/api/account/use-check")
     def account_use(command:UseCheck):
@@ -696,25 +1229,33 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
                 pending.append(f"{item['record_id']} {'应收' if item['flow_category']=='INVESTMENT_INCOME' else '应付'}待结算 {item['outstanding_amount']} 元")
         for hint in ledger.equity_hints():
             pending.append(f"外部权益线索待核：{hint['content']}；来源 {hint['source']}，获知于 {hint['learned_at']}，未确认个人账户实际发生")
-        return {"account": account, "formal_judgment": "DISABLED", "pending_items": pending,
-                "funding": funding.current(), "technical_capability": capabilities(), "runtime_health": runtime_health(), "recovery": app.state.backups.recovery()}
+        capability = capability_service.current()
+        return {"account": account, "formal_judgment": capability['formal_judgment'], "pending_items": pending,
+                "funding": funding.current(), "technical_capability": capability, "runtime_health": runtime_health(), "recovery": app.state.backups.recovery(), "current_actions": actions.current()}
 
     return app
 
 
 
-def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None):
+def create_app(directory: Path | None = None, market_transport=None, market_clock=None, codex_worker: Path | None = None, deepseek_endpoint: str | None = None, review_clock=None, backup_clock=None, baostock_worker: Path | None = None,technical_review_method_file:Path|None=None,capability_method_file:Path|None=None,runtime_role:str|None=None,notification_transport=None):
+    if capability_method_file is not None and os.environ.get('ROLL_ENV') != 'test':
+        raise ValueError('CAPABILITY_METHOD_HOST_TEST_ONLY')
     if directory is None:
         load_runtime_environment()
+    runtime_role=runtime_role or os.environ.get('ROLL_RUNTIME_ROLE') or ('IN_PROCESS' if directory is not None or os.environ.get('ROLL_ENV')=='test' else 'API')
+    if runtime_role not in {'API','WORKER','IN_PROCESS'}:
+        raise ValueError('INVALID_RUNTIME_ROLE')
     directory=directory or data_directory()
     backups,marker,previous=bootstrap(directory)
     if backup_clock:backups.clock=backup_clock
     try:
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='before_ddl':os._exit(87)
-        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker)
+        app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='after_ddl':os._exit(87)
         if os.environ.get('ROLL_ENV')=='test' and os.environ.get('ROLL_TEST_BOOTSTRAP_FAULT')=='migration_failure':raise RuntimeError('TEST_INITIALIZATION_FAILURE')
         app.state.backups=backups;app.state.host_marker=marker
+        backups.authorization_check=app.state.authorization_recovery.status
+        app.state.forward.recovery=backups.recovery
         finish_bootstrap(backups)
     except BaseException:
         rollback_bootstrap(backups,marker,previous)
@@ -722,7 +1263,7 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
 
     @app.middleware('http')
     async def local_recovery_access(request:Request,call_next):
-        if request.url.path.startswith(('/api/runtime/backups','/api/runtime/restores')):
+        if request.url.path.startswith(('/api/runtime/backups','/api/runtime/restores','/api/notification-channel')):
             import ipaddress
             from urllib.parse import urlparse
             host=request.client.host if request.client else ''

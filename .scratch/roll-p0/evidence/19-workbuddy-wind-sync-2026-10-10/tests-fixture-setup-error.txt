@@ -1,0 +1,29 @@
+EEEEE                                                                    [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_delivery_sync_appends_exact_coverage_without_training_and_reuses_originals _
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-workbuddy-wind-sync-2026-10-10\\.roll-data\\test-run-1'
+__ ERROR at setup of test_altered_zip_is_refused_before_any_database_import ___
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-workbuddy-wind-sync-2026-10-10\\.roll-data\\test-run-1'
+_ ERROR at setup of test_host_acquisition_import_is_source_backed_and_never_invents_historical_windows_or_account_authority _
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-workbuddy-wind-sync-2026-10-10\\.roll-data\\test-run-1'
+_ ERROR at setup of test_import_refuses_corrupt_original_before_registering_dataset _
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-workbuddy-wind-sync-2026-10-10\\.roll-data\\test-run-1'
+_ ERROR at setup of test_client_cannot_grant_as_of_eligibility_or_select_ambiguous_sources _
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:722: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-workbuddy-wind-sync-2026-10-10\\.roll-data\\test-run-1'
+=========================== short test summary info ===========================
+ERROR tests/application/test_workbuddy_delivery_sync.py::test_delivery_sync_appends_exact_coverage_without_training_and_reuses_originals
+ERROR tests/application/test_workbuddy_delivery_sync.py::test_altered_zip_is_refused_before_any_database_import
+ERROR tests/application/test_research_acquisition_import.py::test_host_acquisition_import_is_source_backed_and_never_invents_historical_windows_or_account_authority
+ERROR tests/application/test_research_acquisition_import.py::test_import_refuses_corrupt_original_before_registering_dataset
+ERROR tests/application/test_research_acquisition_import.py::test_client_cannot_grant_as_of_eligibility_or_select_ambiguous_sources
+5 errors in 2.19s

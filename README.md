@@ -1,8 +1,14 @@
 # Roll
 
+2026-10-11最终工程对账：四项P2及prepare并发残差已独立修复接受，29工程complete；31干净锁定安装、当前五入口/无交易与按需休市复盘、两项当前15检索预算、三进程/备份恢复及三个P95已有独立有限收据。P95分别221.6225ms、1079.4350ms、0.5617275s，记录环境下均通过；本地评估为1个METHOD冻结scope＋29拒绝＋5背景，非完整真实资格。239条均已手工对账，没有新239行为全跑或全规格PASS。25缺冻结政策及生产费用/有效期输入、27正向LOSS规则、30完整来源合同仍partial，31据先决条件保持partial；28站内/配置/内部链完成，实际外发0待用户配置。32—34真实前向起点/自然终点/资格未成立，FITTED_UNVALIDATED/NOT_GRANTED保持。95dd已批准包真实Codex技术审阅仅一次，内部双轴审阅不新增ReviewRecord；DeepSeek后续排除。
+
+当前交付证据见[工程验收](.scratch/roll-p0/evidence/31-final/acceptance.md)、[最终独立](.scratch/roll-p0/evidence/continuation-2026-10-11/ticket31-final-independent/acceptance.md)、[普通无交易流程](.scratch/roll-p0/evidence/continuation-2026-10-11/ticket31-flow-independent/acceptance.md)和[逐条对账](.scratch/roll-p0/evidence/continuation-2026-10-11/final-manual239/ledger.md)。全部改动位于本地集成分支 `codex/roll-p0-integration`，未推送。
+
 本机 React/FastAPI 应用。支持账户与 CSV 全批确认、成交和费用、现金与权益、更正与一致性检查、估值、资金授权、备份与恢复。市场事实、来源选择、独立核验和重点复盘保留原件、取得时点与版本；研究登记、日线事件、透明模型和独立风险政策保留尝试及失败记录。交易判断与真实资金前向未启用。
 
-Codex 与 DeepSeek 受控取证已有真实多轮任务证据；实际资料中的缺口、模型失败和取消按原运行保留。实际研究数据不足以完成模型/校准冻结，不能用 METHOD 案例代替实际训练或授予资格。当前完成与条件见 [任务状态](.scratch/roll-p0/execution-status.md)。
+当前新取证和技术审阅仅支持 CODEX；历史 DeepSeek 记录保留，后续不测试其能力。真实历史量价重建研究已完成训练、校准拟合及模型工件冻结；校准器仍为 FITTED_UNVALIDATED，重建用途不等于严格历史 PIT。已批准冻结材料的真实 CODEX 技术审阅完成，G4/G5 为 FAIL、其他门槛为 INCONCLUSIVE，真实能力仍为 NOT_GRANTED。工程完成、完整实验冻结、验证交付和正式资格分别记录，见 [任务状态](.scratch/roll-p0/execution-status.md)。
+
+前向数据积累和独立 METHOD 工程案例继续分开；历史重建训练不能补成真实前向预测。每日采集与虚拟构建命令、数据库目录、时点契约和可用门禁见 [前向数据契约](docs/prospective-data-contract.md)。当前完整盘后状态与权益来源仍有缺口，尚未建立真实前向起点。
 
 ## 启动（Windows PowerShell）
 
@@ -14,6 +20,7 @@ Codex 与 DeepSeek 受控取证已有真实多轮任务证据；实际资料中�
 uv sync --frozen
 # 可选：指定独立运行数据目录；不配置时 Windows 使用 %LOCALAPPDATA%\Roll。
 $env:ROLL_DATA_DIR = Join-Path $env:LOCALAPPDATA 'Roll'
+$env:ROLL_RUNTIME_ROLE = 'API'
 uv run --frozen uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 8010
 ```
 
@@ -21,14 +28,22 @@ uv run --frozen uvicorn roll.app:create_app --factory --host 127.0.0.1 --port 80
 
 使用 Codex 后端时，在启动后端的终端显式指定已有的 ChatGPT 登录文件，例如 `$env:ROLL_CODEX_AUTH_FILE = Join-Path $env:USERPROFILE '.codex\auth.json'`。应用不会自动搜索登录文件；文件只供工作进程认证，不会进入取证归档或备份。
 
-另一个终端，在 `frontend` 目录：
+API 健康检查成功后，另一个终端在 `backend` 目录启动独立后台进程，使用相同运行目录：
+
+```powershell
+$env:ROLL_DATA_DIR = Join-Path $env:LOCALAPPDATA 'Roll'
+$env:ROLL_RUNTIME_ROLE = 'WORKER'
+uv run --frozen python -m roll.worker
+```
+
+第三个终端，在 `frontend` 目录：
 
 ```powershell
 npm ci
 npm run dev -- --port 5173
 ```
 
-打开 `http://127.0.0.1:5173`，在“同步账户”填写当前真实现金与持仓，先预览，再确认。两个服务默认只绑定本机。`npm run build` 生成已检查的前端构建；上述开发服务器是当前可重复的本地启动路径。
+打开 `http://127.0.0.1:5173`，在“同步账户”填写当前真实现金与持仓，先预览，再确认。API 和前端只绑定本机，worker 没有 HTTP 端口；关闭网页不会停止服务。`npm run build` 生成已检查的前端构建；上述开发服务器是当前可重复的本地启动路径。安装、停止、任务恢复、升级备份和恢复锁见 [本机三进程说明](docs/local-worker-delivery.md)。
 
 `ROLL_DATA_DIR` 控制应用数据目录；默认位于操作系统用户数据目录，Unix 为 `$XDG_DATA_HOME/roll` 或 `~/.local/share/roll`。其中 `roll.sqlite3` 保存账户、证据和任务元数据，运行时可能有 SQLite WAL/SHM；`raw/` 保存账户 CSV 和来源原字节，`parquet/` 保存规范化事实，`research-inputs/` 保存导入的研究依据，`backups/` 保存完整恢复包与校验记录。原件按 SHA256 引用，复制单个数据库不能替代完整备份。不要把真实账户数据、凭据或备份提交到源码。模型工作进程使用独立临时目录并在结束后清理；凭据不属于取证原件或恢复包。
 
@@ -50,3 +65,7 @@ npm run test:e2e
 默认集合及逐文件退出码保存在 `frontend/test-results/default/manifest.json`；任一文件失败都会让命令失败。外部来源、SDK 方法、已有研究原件和备份两阶段使用 [独立验收命令](docs/browser-acceptance.md)，先移除相应 profile 环境变量再运行默认命令。手动改变 API 端口时，前端启动终端设置 `ROLL_API_PORT` 到同一个端口。浏览器默认集合使用合成账户，不能证明真实券商同步或投资资格。
 
 接口说明见 [账户](docs/account-contract.md)、[成交与费用](docs/fill-contract.md)、[现金与权益](docs/cash-equity-contract.md)、[资金](docs/funding-contract.md)、[证据取得](docs/data-evidence-contract.md)、[来源选择](docs/source-resolution-contract.md) 和 [研究登记](docs/research-protocol-contract.md)。
+
+## CNEquity 补充数据层
+
+先运行 `backend\.venv\Scripts\python.exe -B -X utf8 scripts\setup_cnequity.py` 安装固定版本的隔离适配器环境，再使用现有 `scripts\collect_prospective.py` 持续追加。来源开关、失败退避、异常隔离、修订及源值差异均保存到前向库；完整性通过后生成数据库与原件一致备份。详情见 [数据层维护契约](docs/cnequity-data-contract.md)。系统继续积累中，不因接入或虚拟模型成功而启用。

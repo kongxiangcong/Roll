@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "target": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes",
+  "source_head": "581aa21ff3f78e36d8912a89c72714225ea7af4a",
+  "absent": true,
+  "native_git_exit": 255,
+  "native_git_output": [
+    "error: failed to delete 'D:/dsh-proj/Roll/.scratch/worktrees/continuation-review-fixes': Filename too long"
+  ],
+  "owned_untracked_count": 8560,
+  "owned_entities": 10919,
+  "junction_count": 0,
+  "unlink_method": "Directory.Delete(link,false) only after exact root target verification; no links observed means no unlink",
+  "required_root_profiles": [
+    {
+      "manifest": "runtime-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\review-fixes-old-method",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\old-method",
+      "file_count": 270,
+      "bytes": 14612148,
+      "historical_root_SHA_length_matches": true,
+      "source_reused_and_preserved_separately": false
+    },
+    {
+      "manifest": "runtime-failed-forward-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\pytest-review-fixes-final\\test_mature_settlement_only_sc0",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\failed-forward",
+      "file_count": 191,
+      "bytes": 11434803,
+      "historical_root_SHA_length_matches": true,
+      "source_reused_and_preserved_separately": true
+    },
+    {
+      "manifest": "runtime-new-method-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\prf\\test_continuous_joint_budget_r0",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\new-method",
+      "file_count": 193,
+      "bytes": 11091220,
+      "historical_root_SHA_length_matches": true,
+      "source_reused_and_preserved_separately": false
+    },
+    {
+      "manifest": "runtime-new-forward-endpoint-manifest.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\prf\\test_natural_month_deadline_ke0",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\new-forward-endpoint",
+      "file_count": 92,
+      "bytes": 6630733,
+      "historical_root_SHA_length_matches": true,
+      "source_reused_and_preserved_separately": false
+    },
+    {
+      "manifest": "cleanup-source-final-preservation.json",
+      "source": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\continuation-review-fixes\\.scratch\\pytest-review-fixes-final\\test_mature_settlement_only_sc0",
+      "destination": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\source-final-state\\failed-forward",
+      "file_count": 275,
+      "bytes": 16399970,
+      "source_final_SHA_length_matches": true,
+      "historical_timepoint": false
+    }
+  ],
+  "dependency_files": 12999,
+  "dependencies_SHA_length_unchanged": true,
+  "model_dependencies_unchanged": true,
+  "protected_paths_present": [
+    "D:\\dsh-proj\\Roll\\.scratch\\local-commit-20261011",
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-reconstruction-2026-10-10\\negative-real-integrity\\.startup.lock",
+    "D:\\dsh-proj\\Roll\\.scratch\\roll-p0\\evidence\\19-reconstruction-2026-10-10\\negative-real-integrity\\backups",
+    "D:\\dsh-proj\\Roll\\.workbuddy",
+    "D:\\dsh-proj\\Roll\\.roll-data\\reconstructed19-v1",
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\21",
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\23",
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\actual-corrected-copy",
+    "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current"
+  ],
+  "branches_retained": [
+    "  codex/roll-p0-continuation-review-fixes"
+  ],
+  "worktrees_after": [
+    "worktree D:/dsh-proj/Roll",
+    "HEAD f3ed4cc04ff5bba4a69aea3a8c0efa0edbfe207f",
+    "branch refs/heads/codex/roll-p0-integration",
+    ""
+  ],
+  "credentials_copied": false,
+  "provider_calls": 0,
+  "original19_started": false,
+  "tracker_unchanged": true,
+  "no_push": true
+}

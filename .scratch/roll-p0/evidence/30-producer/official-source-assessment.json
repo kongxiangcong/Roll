@@ -1,0 +1,25 @@
+{
+  "namespace": "SOURCE_ASSESSMENT",
+  "forward_started_at": null,
+  "credentials_used": false,
+  "attempts": 1,
+  "actual_started_at": "2026-10-11T02:45:17.204862+00:00",
+  "url": "http://yunhq.sse.com.cn:32041/v1/sh1/list/exchange/equity",
+  "parameters": {
+    "select": "code,name,open,high,low,last,volume,amount,prev_close",
+    "begin": "0",
+    "end": "6000"
+  },
+  "unit_scope": "UNVERIFIED",
+  "current_status_actions_complete": false,
+  "http_status": 200,
+  "bytes": 193804,
+  "sha256": "100af352fe6f66c87b18310e26f01b5eb41d932a68e27a094f87a906f78ec5ab",
+  "content_type": "application/json;charset=UTF-8",
+  "source_date": 20261009,
+  "source_time": 162905,
+  "matched_rows": 1,
+  "field_count": 9,
+  "response_kind": "JSON_BODY_NOT_COMPLETENESS_PROOF",
+  "actual_finished_at": "2026-10-11T02:45:17.568187+00:00"
+}

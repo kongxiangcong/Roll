@@ -1,0 +1,82 @@
+{
+  "source_oid": "d4864a4e29ddcb80462e44250569d652e8cc03cf",
+  "classification": "CURRENT_STATIC_DELTA_WITH_PRIOR_INSTALLED_PUBLIC_RECORDS",
+  "source_rows": [
+    {
+      "path": "backend/src/roll/agents/codex_evidence.py",
+      "bytes": 8501,
+      "sha256": "bb1f5d6bc07b7de0a2adae5c642928feb21b96757450940271da7fabfc8d82ee",
+      "unchanged_from_install": true
+    },
+    {
+      "path": "backend/src/roll/agents/codex_worker.py",
+      "bytes": 8545,
+      "sha256": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "unchanged_from_install": true
+    },
+    {
+      "path": "backend/src/roll/agents/codex_process.py",
+      "bytes": 35671,
+      "sha256": "8311b1f3c8ce33aeafa1df590a6730e3748869b975853dfdfbe37a581ed3a34f",
+      "unchanged_from_install": true
+    },
+    {
+      "path": "backend/src/roll/agents/review_runtime.py",
+      "bytes": 8836,
+      "sha256": "b4c187e5e57edd832c4fd4118f94fb36540ccbfe163c6696d92cfb75c100693b",
+      "unchanged_from_install": true
+    },
+    {
+      "path": "backend/src/roll/research/technical_review.py",
+      "bytes": 27720,
+      "sha256": "e7a83e5f26330e0b071c0185a5156871cd434be860b3f1439bed8f4c5778ca19",
+      "unchanged_from_install": false
+    },
+    {
+      "path": "backend/src/roll/agents/settings.py",
+      "bytes": 4943,
+      "sha256": "36fe92bf9eead4031200a6f259eed69d291b82b16dd869179f2ec7f2aa210101",
+      "unchanged_from_install": true
+    },
+    {
+      "path": "backend/src/roll/decisions/capabilities.py",
+      "bytes": 45332,
+      "sha256": "dde20db4c2326b6b26fa2c615fa02a88b56a3b262eec2ff7088d6e2684da648e",
+      "unchanged_from_install": false
+    }
+  ],
+  "evidence_tools": [
+    "roll_read_evidence",
+    "roll_read_source",
+    "clock__curr_time"
+  ],
+  "review_tools": [
+    "roll_read_review_material",
+    "roll_reproduce_validation"
+  ],
+  "locks_unchanged": true,
+  "physical_dependency_directories": [
+    {
+      "path": "backend/.venv",
+      "symlink": false
+    },
+    {
+      "path": "frontend/node_modules",
+      "symlink": false
+    }
+  ],
+  "prior_public_component_record": {
+    "path": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final\\.scratch\\roll-p0\\evidence\\31-final\\install\\public-component-verification.json",
+    "sha256": "bbc1a46d445dfb3ff9e09eb071f4b750be949982e063670ecea21772d300cedb"
+  },
+  "cne_installed_files_rechecked": 0,
+  "new_provider_calls": 0,
+  "new_actual_review_records": 0,
+  "credential_reads_hashes_copies": 0,
+  "limitations": [
+    "Only technical_review saved-material enumerator and controlled capability service changed among seven source bindings. Agent launcher/evidence/review runtime/settings unchanged.",
+    "Historical11/23 actual receipts remain separately attributed; static current tools do not establish new runtime review, market data or qualification.",
+    "DSA design-only MIT and CNE fixed410/source382/Apache2 NOTICE/TDX MIT prior installed records retained, no rerun/reinstall/network.",
+    "npm audit2 diagnostic retained; no exploitability inference."
+  ]
+}

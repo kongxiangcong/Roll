@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\scripts\reconstructed19_protection.py", line 41, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "D:\dsh-proj\Roll\scripts\reconstructed19_protection.py", line 37, in main
+    assert all(isolated_checks.values()) and all(v['preserved'] for v in old_rows.values()) and value['original_archives_and_opaque_copies_unchanged'] and not unexpected
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

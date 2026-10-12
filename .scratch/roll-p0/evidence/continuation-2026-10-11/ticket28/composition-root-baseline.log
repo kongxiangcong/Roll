@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_funding_shrink_invalidates_current_card_but_keeps_original_revision_and_one_audit _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-root-baseline/test_funding_shrink_invalidate0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018943C72C40>
+
+    def test_funding_shrink_invalidates_current_card_but_keeps_original_revision_and_one_audit(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        p = action_package()
+        file = save_package(tmp_path / 'qualification.json', p)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, p)
+            value = client.post('/api/actions/evaluate', json={}).json()
+            assert len(value['decisions']) == 1
+            assert client.post('/api/funding/confirm', json=funding(2, total_exposure='10000.00', single_exposure='10000.00', cash_reserve='90000.00')).status_code == 200
+            current = client.get('/api/actions/current').json()
+            assert current['decisions'] == []
+            assert current['invalidated'][0]['reasons'] == ['FUNDING_VERSION_CHANGE', 'GRANT_RESTRICTED']
+            assert client.get(f"/api/actions/evaluations/{value['evaluation_id']}").json() == value
+            client.get('/api/actions/current')
+>           assert len([e for e in client.get('/api/actions/events').json() if e['event_type'] == 'ACTION_INVALIDATED']) == 1
+E           AssertionError: assert 2 == 1
+E            +  where 2 = len([{'account_version': 2, 'capability_fingerprint': '91f0ed0686a5c5c46f2b906b5095d71281af8c1695a66fd4a578e86d1009d9b5', ...040690fb4ef440d0f04b99eb7ce08600e71f6e57effa91c4562fda', 'evaluation_id': '57b47c72-99f1-47bd-a15f-ec6e0d5f0b1e', ...}])
+
+..\..\..\backend\tests\application\test_actions.py:238: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\..\backend\tests\application\test_actions.py::test_funding_shrink_invalidates_current_card_but_keeps_original_revision_and_one_audit
+1 failed in 10.50s

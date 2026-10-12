@@ -1,0 +1,30 @@
+........F                                                                [100%]
+================================== FAILURES ===================================
+_ test_same_permission_state_new_reason_words_merge_immutable_sources_but_escalation_is_new _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket28/backend/.test-tmp-notifications-20/test_same_permission_state_new0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F1A1AF76B0>
+
+    def test_same_permission_state_new_reason_words_merge_immutable_sources_but_escalation_is_new(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        with TestClient(create_app(tmp_path / 'data', runtime_role='API')) as client:
+            first = pause(client).json()
+            original = client.get('/api/notifications').json()['notifications'][0]
+            second = client.post('/api/capabilities/lifecycle', json={'scope':'ALL_MONITOR','state':'SUSPENDED','reason_code':'USER_PAUSE',
+                'reason':'同一暂停，仅说明文字改变','expected_version':1,'idempotency_key':'new-words'}).json()
+            assert second['event_id'] != first['event_id']
+            notices = client.get('/api/notifications').json()['notifications']
+            assert len(notices) == 1
+            assert notices[0]['message'] == original['message']
+            current = client.get('/api/notifications/' + original['notification_id'] + '/current').json()
+            assert len(current['source_links']) == 2 and current['current_state'] == 'SUPERSEDED'
+            escalated = client.post('/api/capabilities/lifecycle', json={'scope':'NEW_RISK','state':'SUSPENDED','reason_code':'LOSS_BOUNDARY',
+                'reason':'METHOD已达到损失边界','expected_version':2,'idempotency_key':'major-risk'})
+>           assert escalated.status_code == 200
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+backend\tests\application\test_notifications.py:300: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_notifications.py::test_same_permission_state_new_reason_words_merge_immutable_sources_but_escalation_is_new
+1 failed, 8 passed in 43.54s

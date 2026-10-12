@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "source_behavior_unchanged_since": "25d9b9ae48b94ea4603cc36ab3dbacc8200be248",
+  "run_id": "ed0d834e-049b-4356-b5a7-1ff5bc853aef",
+  "review_id": "2c05d94c-33a0-4353-9078-aed0060d7c6e",
+  "retry_of": "88f44e5c-33fd-4e27-a36a-66b9d33c853c",
+  "two_persisted_CODEX_runs": true,
+  "initial_failed_record_byte_and_content_preserved": true,
+  "approved_inventory_7_reads_exact_sha": true,
+  "one_host_reproduction_verified_network_calls": 0,
+  "six_provider_source_hashes_unchanged": true,
+  "twelve_model_source_hashes_unchanged": true,
+  "review_record_and_full_local_export_archive_sha_length_verified": true,
+  "issues": [
+    {
+      "issue_id": "historical-admission",
+      "severity": "BLOCKING",
+      "blocking": true,
+      "resolved": false
+    },
+    {
+      "issue_id": "probability-validity",
+      "severity": "BLOCKING",
+      "blocking": true,
+      "resolved": false
+    },
+    {
+      "issue_id": "economic-and-robustness-failure",
+      "severity": "BLOCKING",
+      "blocking": true,
+      "resolved": false
+    },
+    {
+      "issue_id": "forward-and-deployment",
+      "severity": "BLOCKING",
+      "blocking": true,
+      "resolved": false
+    },
+    {
+      "issue_id": "comparator-fidelity",
+      "severity": "MAJOR",
+      "blocking": false,
+      "resolved": false
+    },
+    {
+      "issue_id": "sparse-subset-intervals",
+      "severity": "MAJOR",
+      "blocking": false,
+      "resolved": false
+    }
+  ],
+  "blocking_issues_resolved": false,
+  "delivery_status": "INCOMPLETE",
+  "capability_status": "NOT_GRANTED",
+  "DeepSeek": "EXCLUDED_0_CALLS",
+  "actual_helper_exit_code": 0,
+  "actual_helper_session_id": 64171,
+  "initial_helper_exit_code": 0,
+  "initial_helper_session_id": 3035,
+  "account_only_probe_exit_code": 0,
+  "account_only_probe_session_id": 33254,
+  "initial_InternalRpcError_root_cause": "UNKNOWN",
+  "production_bug_fix_claimed": false,
+  "scope_limitations": [
+    "All seven registered materials were acquired once and host reproduction invoked once. Combined models/execution output was truncated, limiting complete line-level inspection of those two files.",
+    "Only five registered code files were available; upstream dependency fingerprints and raw data remain host-bound. File hashes and composite candidate fingerprints are distinct bindings.",
+    "The manifest retains two failed primary fits, one successful reconstructed fit and one calibration fit across six linked protocols, plus one successful diagnostic validation attempt. It cannot establish completeness of unreported out-of-host work.",
+    "Scope is conditional reconstructed history for SSE:600362, daily bars and synthetic capital; no intraday fills, actual account costs, historical membership or cross-instrument generalization are established.",
+    "The diagnostic cutoff is 2022-02-10, not the full CAL window. Bootstrap arithmetic and date/block upper bounds do not establish stationarity, effective independent support or finite-sample coverage.",
+    "Review does not grant PASS, authorization or qualification, resolve missing evidence, or end the RUNNING_DIAGNOSTIC experiment.",
+    "Only the five registered candidate/validation code files are read by the model; upstream dependency fingerprints remain host-bound.",
+    "No personal account, authorization, credentials or protected SEALED input is sent."
+  ]
+}

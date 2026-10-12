@@ -1,5 +1,21 @@
 # 本地Chrome验收的账户隔离
 
+## 2026-10-11 当前默认范围仅 CODEX
+
+当前默认入口排除历史 `backend-switch.spec.ts`、`deepseek-evidence.spec.ts` 正向任务。脚本与默认 config 共用 [default-files.mjs](../frontend/scripts/default-files.mjs)，包含新的 `codex-only-scope`。本文以下旧双后端名单、实际归档及 METHOD 说明保留为历史，不能覆盖当前用户明确排除 DeepSeek 的范围，也不表示当前重新执行通过。
+
+在 frontend 使用 `node scripts/test-e2e.mjs --list` 或 `npx playwright test --list --config playwright.default.config.ts` 只核对集合；`npm run test:e2e -- --file=codex-only-scope` 只运行当前范围场景，报告标记 `DEFAULT_OFFLINE_SUBSET`，不是整个默认套件通过。没有参数时仍逐文件新建 profile，清除模型/来源凭据。指定历史 DS 文件的默认命令在创建 profile 之前拒绝。
+
+新范围场景使用仅测试的 `codex_scope_method_app`，在全新 profile 内通过公开 API 建立合成账户/请求，关闭首个 writer 后加入旧设置/取消归档的 METHOD 字节，再打开当前 writer；拒绝已有数据库，不复制或打开旧实际 profile，不启动 DeepSeek 或任何模型任务。截图写入每次新建的报告目录，不覆盖历史 scope 截图。旧 `playwright.codex-scope.config.ts` 固定目录是历史验收配置，不作为新默认入口。
+
+backend 默认 pytest 通过 `tests/conftest.py` 明确 ignore 三份历史 DS-positive application/recovery 文件，并 deselect 两个历史纯 DS/跨后端 case；不把排除记 PASS。CODEX 来源继承、明确同 CODEX 的修订归档 retry、共享槽/取消/超时、当前 DS 403 与旧配置重存继续默认收集。pytest 的 `tests/support` 路径用于已有工程夹具导入，不改变生产权限或资格。当前有限回归及分层红绿见[runner 范围回执](../.scratch/roll-p0/evidence/continuation-2026-10-11/codex-runner-scope/acceptance.md)。
+
+## 2026-10-10 ticket19真实冻结研究单独profile
+
+仅显式`ROLL_RECONSTRUCTED19_LIVE=1`时运行`playwright.reconstructed19.config.ts`，并将`ROLL_TEST_DATA_DIR`指向`.roll-data/reconstructed19-v1`。这是实际历史研究/原账本的隔离副本，非默认合成集合；源账本不写，测试前后比较副本账户与协议前向起点，读取实际非METHOD模型、历史CAL预测与重放，不拟合、不访问SEALED、不授能力。使用独立报告目录，默认runner不消费此profile。最终真实Chrome1 passed及源码版本/HTTP禁止外网重放见[19本轮验收](../.scratch/roll-p0/evidence/19-reconstruction-2026-10-10/acceptance.md)。
+
+## 默认合成账户profile
+
 Playwright启动真实FastAPI、SQLite与Vite；ROLL_ENV=test和临时ROLL_DATA_DIR只包含合成账户，不暴露产品reset接口。`frontend`目录先设置：
 
 ```powershell

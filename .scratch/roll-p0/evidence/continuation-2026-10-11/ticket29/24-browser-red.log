@@ -1,0 +1,43 @@
+[WebServer] INFO:     Started server process [16696]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8091 (Press CTRL+C to quit)
+[WebServer] (node:8228) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:41864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\reports.spec.ts:4:1 › saved METHOD report, isolated four curves, readonly export and legacy research link (5.5s)
+
+
+  1) tests\e2e\reports.spec.ts:4:1 › saved METHOD report, isolated four curves, readonly export and legacy research link 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('heading', { name: '历史记录', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: '历史记录', exact: true })[22m
+
+
+       5 |   const original=await(await page.request.get('/api/research/shadow/'+freeze)).json();
+       6 |   await page.goto('/#research='+freeze);
+    >  7 |   await expect(page.getByRole('heading',{name:'历史记录',exact:true})).toBeVisible();
+         |                                                                    ^
+       8 |   const report=page.getByRole('region',{name:'保存的研究报告',exact:true});
+       9 |   await expect(report).toBeVisible();
+      10 |   await expect(report.getByText('NOT_COMPARABLE',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\.scratch\worktrees\ticket29\frontend\tests\e2e\reports.spec.ts:7:68
+
+    Error Context: test-results\reports-saved-METHOD-repor-a00a7-rt-and-legacy-research-link\error-context.md
+
+  1 failed
+    tests\e2e\reports.spec.ts:4:1 › saved METHOD report, isolated four curves, readonly export and legacy research link 

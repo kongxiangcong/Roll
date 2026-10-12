@@ -1,5 +1,21 @@
 # 透明模型与研究预测（19）
 
+## 2026-10-10 获准真实重建用途（当前有效修订）
+
+依据 [ADR0004](adr/0004-reconstructed-price-volume-research.md)，原文中“所有真实拟合必须严格历史PIT、只METHOD、ready永久false”的解释仅保留为旧实现记录。当前 `POST /api/research/datasets/{id}/reconstruct` 仅接受宿主已登记的真实单证券原件及真实状态run，宿主重新核对 RAW 原体、身份/单位、Parquet一致性、日历、现金原件/年度股本审计和字段冲突，生成新版本。客户端不能提交可信布尔标志、标签或概率。STRICT_HISTORICAL_AS_OF仍拒绝；METHOD不可升级。
+
+当前有限范围600362，2016-12上下文，2017—2021 DEV，2022首20交易日隔离后至2023年底 CAL；按覆盖和规则适配选窗，先于标签/表现。量价冲突只隔离受影响字段/日期，量额可选差异不全局拒绝；停牌和缺行保留日历位置。原价与转换依据、实际接收/可消费时钟保持，显式 `research_completion_available_at` 是盘后15:05研究假设。来源真实发布时间未知保持未知。
+
+新PRICE_VOLUME_LOGIT_RECONSTRUCTED_V2使用四项量价、λ1、20交易日、NEXT_OPEN、固定截距校准。5/20日与波动以过去已生效的现金权益构成经济回报链；禁止当前qfq/未来权益/财报或情绪进入特征。RAW成交/历史税费/研究佣金滑点/单机会现金及持有税负分别冻结。未成熟、跨窗、未知、停牌、无法退出、复杂权益或冲突不可训练，不标负例。
+
+宿主训练预检对获准重建版本实际检查原件、特征和18成熟支持，不拟合、不占额度。原五次拟合/一次CAL及家族失败保持。CAL每类20仍是必要拟合支持；后续独立校准确认、有效块/概率箱等验证条件不混作拟合准入。先归档独立CAL的原模型预测并记录事件，再登记唯一CAL拟合，保存后校准输出。`RESEARCH_ARTIFACT_FROZEN` / `model_training_status=SUCCEEDED` / `calibrator_fit_status=FITTED_UNVALIDATED` / `model_freeze_status=FROZEN` / `complete_experiment_frozen=false` / `capability=NOT_GRANTED` 分列。
+
+冻结manifest引用特征、DEV标准化、训练/CAL样本及排除、分窗、执行/费用/权益/可得性假设、代码依赖、数据、模型和校准指纹。当前算法变化不能冒充旧版重放。获准历史CAL内Forecast可保存、重启查询及零联网重放；当前日期/前向发布不开放。CASH、DEV基础发生率、单机会初始持有参考和MA5/20按同一执行费用SHA比较，规则概率为空，不拼连续NAV。严格PIT、投资优势、完整实验及正式能力均未授。
+
+## 原METHOD路径及旧准入限制（兼容记录）
+
+以下V1/METHOD、CAL40及旧未准入来源描述保留其既有工件语义；获准重建V2候选和实际分窗适用上方当前修订，不将旧拒绝条件前置给新用途。
+
 `POST /api/research/protocols/{id}/models` 接受 `basis` 与 `purpose`（默认 RESEARCH；明确合成输入才能用 METHOD_VALIDATION）。固定PRICE_VOLUME_LOGIT_V1、四特征、λ=1、20交易日费用后事件；无模型搜索/LLM信心/客户端概率/参数调优入口。模型尝试先进入17的PRIMARY_FIT，失败和方法拟合均占五次谱系预算；CALIBRATION最多一次，包括失败。有限100步Newton求解、总60秒上限，计算不持有账户SQLite事务。模型自有两表不改变Ledger全局schema2。
 
 宿主消费18同一 `execution-support` 及17真实允许DEV/CAL分片。只用成熟、可评分、标签可得的唯一观察日记录、原预登记NEXT_OPEN/100%成交/基础费用。跨标签窗、重复日期/情景、未知标签、缺日线/完成/单位/消费知识时点、历史PIT不明全部留下排除原因；校准前20日只提供特征上下文，绝不作为校准标签。21行回看须符合06已归档日历，不越缺行。没有标签不拟合、不保存中性概率，失败继续保留全attempt manifest。

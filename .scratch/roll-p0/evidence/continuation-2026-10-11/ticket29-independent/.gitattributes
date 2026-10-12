@@ -1,0 +1,3 @@
+# Receipt and captured console bytes are retained without line normalization.
+*.json -text whitespace=cr-at-eol
+*.log -text whitespace=-blank-at-eol,cr-at-eol

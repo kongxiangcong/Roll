@@ -1,0 +1,37 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_two_host_candidates_register_distinct_public_grants_and_proofs _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25-ordering/.ord/green-host/test_two_host_candidates_regis0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C6FF0615B0>
+
+    def test_two_host_candidates_register_distinct_public_grants_and_proofs(tmp_path, monkeypatch):
+        method_clock(monkeypatch)
+        value = paired_package()
+        file = save_package(tmp_path / 'qualification.json', value)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file, runtime_role='API')) as client:
+            setup(client, value)
+            profit = client.post('/api/capabilities/grants', json=grant_command(value, 'profit'))
+            record(tmp_path, 'profit-grant', profit.json())
+            assert profit.status_code == 201, profit.text
+            risk = client.post('/api/capabilities/grants', json=grant_command(value['risk_qualification'], 'risk'))
+            record(tmp_path, 'risk-grant', risk.json())
+            assert risk.status_code == 201, risk.text
+            assert profit.json()['candidate_kind'] == 'PROFIT_MODEL'
+            assert risk.json()['candidate_kind'] == 'RISK_POLICY'
+            assert profit.json()['grant_id'] != risk.json()['grant_id']
+            assert profit.json()['proof_id'] != risk.json()['proof_id']
+            for grant in [profit.json(), risk.json()]:
+                status = client.get('/api/capabilities/grants/' + grant['grant_id'] + '/status').json()
+                assert status['state'] == 'METHOD_GRANTED', status
+                assert status['grant']['system_usable'] is False
+>               assert client.post('/api/capabilities/proofs/' + grant['proof_id'] + '/verify').status_code == 200
+E               AssertionError: assert 404 == 200
+E                +  where 404 = <Response [404 Not Found]>.status_code
+E                +    where <Response [404 Not Found]> = post((('/api/capabilities/proofs/' + '44abfb35-46b1-46b1-a9b6-18f88ffaaccf') + '/verify'))
+E                +      where post = <starlette.testclient.TestClient object at 0x000001C6FF361550>.post
+
+backend\tests\application\test_action_risk_priority.py:54: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_action_risk_priority.py::test_two_host_candidates_register_distinct_public_grants_and_proofs
+1 failed in 7.05s

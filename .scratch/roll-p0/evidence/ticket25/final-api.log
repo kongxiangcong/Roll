@@ -1,0 +1,23 @@
+........................................................................ [ 69%]
+........................F.......                                         [100%]
+================================== FAILURES ===================================
+_ test_sleep_gap_and_holiday_rolled_weekly_maintenance_keep_actual_checks_and_nominal_week _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket25/.scratch/t25final/test_sleep_gap_and_holiday_rol0')
+
+    def test_sleep_gap_and_holiday_rolled_weekly_maintenance_keep_actual_checks_and_nominal_week(tmp_path):
+        clock=[datetime.fromisoformat('2026-09-30T16:00:00+08:00')]
+        with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+            registration=client.post('/api/reviews/maintenance',json={'kind':'WEEKLY','exchange':'SSE','first_due_at':'2026-10-07T16:00:00+08:00'})
+            assert registration.json()['next_due_at']=='2026-10-08T16:00:00+08:00'
+            clock[0]=datetime.fromisoformat('2026-10-09T10:00:00+08:00')
+            time.sleep(.15)
+            gaps=client.get('/api/reviews/coverage').json()['gaps']
+>           assert len(gaps)==1 and gaps[0]['reason']=='RUNNING_HEARTBEAT_GAP_UNOBSERVED'
+E           assert (0 == 1)
+E            +  where 0 = len([])
+
+backend\tests\application\test_reviews.py:269: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_reviews.py::test_sleep_gap_and_holiday_rolled_weekly_maintenance_keep_actual_checks_and_nominal_week
+1 failed, 103 passed in 531.67s (0:08:51)

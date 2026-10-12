@@ -1,0 +1,10 @@
+{
+  "status": "HARNESS_SETUP_ERROR",
+  "exit_code": 1,
+  "pytest_errors": 4,
+  "pytest_seconds": 2.26,
+  "product_assertions_started": false,
+  "reason": "pytest basetemp parent directory did not exist; FileNotFoundError WinError 3 before fixture setup",
+  "correction": "Create only the new owned runtime parent, then run unchanged four tests in a distinct pytest-02 directory",
+  "source_code_changed": false
+}

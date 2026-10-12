@@ -1,0 +1,65 @@
+{
+  "data_dir": "D:\\dsh-proj\\Roll\\.roll-data\\pit",
+  "plan": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "instrument": "SSE:600362",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "basis": "2026-10-10用户决定从今开始自建PIT数据库，停止追寻旧PIT；数据与验证满足前不启用",
+    "namespace": "PROSPECTIVE",
+    "source_policy": {
+      "daily": "SOHU",
+      "quote": "SINA",
+      "adjustments": "EASTMONEY",
+      "lookback_calendar_days": 45,
+      "historical_pit_search": false
+    },
+    "capability": "NOT_GRANTED",
+    "forward_started_at": null
+  },
+  "batch": {
+    "batch_id": "9b34d37c-b9e7-4d7a-98c0-5ee96e54db0d",
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "run_id": "f4bb2f48-9fbd-49d5-b9a0-9f5f3fe4cb45",
+    "snapshot_id": "83b931cb-e77d-4d78-ad6c-0c6d1213bddc",
+    "recorded_at": "2026-10-10T00:27:19.342281+00:00",
+    "known_at": "2026-10-10T00:27:19.244447+00:00",
+    "status": "PARTIAL",
+    "fact_count": 30,
+    "evidence_kind": "REAL_ACQUISITION",
+    "gaps": [
+      {
+        "code": "CURRENT_STATUS_UNKNOWN",
+        "group": "STATUS",
+        "instrument": "SSE:600362"
+      },
+      {
+        "code": "NO_ORIGINAL_IN_BOUNDED_METADATA_PAGE",
+        "group": "ADJUSTMENTS",
+        "instrument": "SSE:600362"
+      }
+    ],
+    "capability": "NOT_GRANTED"
+  },
+  "readiness": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "state": "COLLECTING",
+    "real_recorded_sessions": 0,
+    "real_context_sessions": 27,
+    "batches": 1,
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "minimum_calibration_examples_per_class": 20,
+    "minimum_effective_time_blocks": 30,
+    "requirements": [
+      "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+      "COMPLETE_STATUS_ACTIONS_AND_RULES",
+      "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+      "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+      "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+      "CONFIRMATORY_AND_FORWARD_VALIDATION",
+      "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+    ],
+    "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+  }
+}

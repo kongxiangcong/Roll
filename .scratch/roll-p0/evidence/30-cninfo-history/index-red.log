@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_finite_cninfo_index_keeps_counts_opaque_dates_and_current_gaps _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30c-index-red/test_finite_cninfo_index_keeps0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021D281CC8A0>
+
+    def test_finite_cninfo_index_keeps_counts_opaque_dates_and_current_gaps(tmp_path,monkeypatch):
+        clock='2026-10-12T15:06:00+08:00'
+        monkeypatch.setattr('roll.market.post_close_packet.now',lambda:clock)
+        monkeypatch.setattr('roll.research.prospective.now',lambda:clock)
+        def offline(request):raise AssertionError('Fixed public originals must not request live data')
+        app=create_app(tmp_path,market_transport=httpx.MockTransport(offline))
+        with TestClient(app) as client:
+            pid=setup(client)
+            response=client.post(f'/api/research/collections/{pid}/cninfo-history-assessments',json={'basis':'Finite historical candidate audit'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_cninfo_history_assessment.py:17: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_cninfo_history_assessment.py::test_finite_cninfo_index_keeps_counts_opaque_dates_and_current_gaps
+1 failed in 6.34s

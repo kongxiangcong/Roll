@@ -1,0 +1,33 @@
+F
+================================== FAILURES ===================================
+_ test_trusted_method_loss_event_latches_new_risk_and_funding_expansion_cannot_resume _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r13/test_trusted_method_loss_event0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FAFFED4E90>
+
+    def test_trusted_method_loss_event_latches_new_risk_and_funding_expansion_cannot_resume(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        # Two separately declared immutable METHOD inputs: prior qualification was
+        # healthy, later action valuation has a literal 6000 cashflow-adjusted loss.
+        package['action_packet']['loss_facts'] = {**package['loss_facts'], 'facts_version': 'method-decline',
+            'net_assets': '94000.10', 'realized_pnl': '-6000.00'}
+        file = save_package(tmp_path / 'qualification.json', package)
+        directory = tmp_path / 'data'
+        with TestClient(create_app(directory, capability_method_file=file)) as client:
+            prepare(client, package)
+            grant = client.get('/api/capabilities/grants').json()[0]
+            decline = client.post('/api/actions/evaluate', json={}).json()
+            assert decline['joint_budget']['loss']['status'] == 'PAUSED'
+            assert decline['joint_budget']['loss']['peak_loss'] == '6000.00'
+            events = [e for e in client.get('/api/capabilities/events').json() if e.get('reason_code') == 'LOSS_BOUNDARY']
+>           assert len(events) == 1, events
+E           AssertionError: []
+E           assert 0 == 1
+E            +  where 0 = len([])
+
+tests\application\test_lifecycle_loss.py:25: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_lifecycle_loss.py::test_trusted_method_loss_event_latches_new_risk_and_funding_expansion_cannot_resume
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 6.61s

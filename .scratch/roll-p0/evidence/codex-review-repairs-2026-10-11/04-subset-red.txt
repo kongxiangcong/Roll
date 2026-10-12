@@ -1,0 +1,21 @@
+Failed to find real location of C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\python.exe
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_observed_nonmembers_retain_calendar_and_have_conditional_intervals ___
+
+    def test_observed_nonmembers_retain_calendar_and_have_conditional_intervals():
+        frozen, original = probability_case()
+        result = probability_checks(frozen, original)
+        assert result['unobserved_checkpoint_sessions'] == 0
+        assert result['selected_mature'] == 600
+        for interval in result['selected_dependent_loss_intervals']:
+>           assert interval['status'] == 'CONDITIONAL_NUMERICAL_INTERVAL'
+E           AssertionError: assert 'INCOMPLETE_A...LENDAR_SCORES' == 'CONDITIONAL_...ICAL_INTERVAL'
+E             
+E             - CONDITIONAL_NUMERICAL_INTERVAL
+E             + INCOMPLETE_ALIGNED_CALENDAR_SCORES
+
+backend\tests\application\test_conditional_probability_intervals.py:27: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_conditional_probability_intervals.py::test_observed_nonmembers_retain_calendar_and_have_conditional_intervals
+1 failed in 18.95s

@@ -1,0 +1,40 @@
+import {expect,test} from '@playwright/test';
+test('current action shows bounded quantity, separate times and immediate funding invalidation',async({page})=>{
+  await page.goto('/');
+  await page.getByRole('button',{name:'核验当前动作',exact:true}).click();
+  await expect(page.getByText('当前没有有效正式动作',{exact:true})).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  const at=new Date(Date.now()-1000).toISOString();
+  const b=await(await page.request.post('/api/account/drafts',{data:{kind:'BASELINE',expected_account_version:0,payload:{effective_at:'2026-10-07T10:00:00+08:00',source:'METHOD browser',cash_balance:'100000.10',broker_available:'90000.10',broker_frozen:'10000.00',withdrawable:null,positions:[],permission_profile:[{market:'SSE',board:'MAIN',status:'OPEN',basis:'METHOD'}]}}})).json();
+  await page.request.post('/api/account/confirm',{data:{draft_id:b.draft_id,idempotency_key:'baseline'}});
+  const d=await(await page.request.post('/api/account/drafts',{data:{kind:'ACCOUNT_DECLARATION',expected_account_version:1,payload:{effective_at:at,source:'METHOD',record_id:'declaration',scope:['TRADES','ORDERS','CASH','EQUITY'],changes:'NONE',basis:'METHOD'} }})).json();
+  await page.request.post('/api/account/confirm',{data:{draft_id:d.draft_id,idempotency_key:'declaration'}});
+  for(const instrument of ['SSE:600000','SSE:600001']){
+    const listing=await(await page.request.get('/api/market/list')).json();
+    expect((await page.request.post('/api/market/watch',{data:{instrument,operation:'ADD',expected_list_version:listing.version}})).status()).toBe(200);
+  }
+  const authorization={scope_kind:'ACCOUNT',scope_id:'account-1',purpose:'METHOD',capital_amount:'100000.00',total_exposure:'60000.00',single_exposure:'40000.00',cash_reserve:'40000.00',loss_threshold:'5000.00',effective_at:'2026-10-07T10:00:00+08:00',basis:'METHOD',enabled:true};
+  await page.request.post('/api/funding/confirm',{data:{expected_version:0,idempotency_key:'funding',authorization}});
+  const proposal=await(await page.request.get('/api/capabilities/proposal?material_id=method-material&review_run_id=method-codex-review')).json();
+  const grant=await page.request.post('/api/capabilities/grants',{data:{...proposal,allowed_actions:['BUY'],idempotency_key:'grant',basis:'METHOD'}});
+  expect(grant.status()).toBe(201);
+  await page.reload();
+  await page.getByRole('button',{name:'核验当前动作',exact:true}).click();
+  await expect(page.getByText('SSE:600000 · 买入',{exact:true})).toBeVisible();
+  await expect(page.getByText('当前 0 股 → 目标 200 股')).toBeVisible();
+  await expect(page.getByText(/当前报价截至.*累计成交量 12345/)).toBeVisible();
+  await expect(page.getByText(/最近完整日线预测截至.*20 个交易日/)).toBeVisible();
+  await expect(page.getByText('METHOD 工程样例，不能用于真实正式建议。')).toBeVisible();
+  await expect(page.getByText('后续价格和成交结果存在不确定性，实际成交须由你确认入账。')).toBeVisible();
+  await page.screenshot({path:'test-results/actions-current.png',fullPage:true});
+  await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+  const stock=page.getByRole('article',{name:'SSE:600000',exact:true});
+  await stock.getByText('查看单股当前动作',{exact:true}).click();
+  await expect(stock.getByText('当前 0 股 → 目标 200 股')).toBeVisible();
+  await expect(stock.getByText(/最近完整日线预测截至.*20 个交易日/)).toBeVisible();
+  await page.screenshot({path:'test-results/actions-stock.png',fullPage:true});
+  await page.request.post('/api/funding/confirm',{data:{expected_version:1,idempotency_key:'shrink',authorization:{...authorization,total_exposure:'10000.00',single_exposure:'10000.00',cash_reserve:'90000.00'}}});
+  await page.reload();
+  await expect(page.getByText(/SSE:600000 原动作已失效：FUNDING_VERSION_CHANGE/)).toBeVisible();
+  await expect(page.getByText('SSE:600000 · 买入',{exact:true})).toHaveCount(0);
+});

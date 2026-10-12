@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_bounded_receipt_keeps_reported_suspension_original_without_resume_or_full_status _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket30-producer/.scratch/t30s-receipt-red/test_bounded_receipt_keeps_rep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000194FF67D350>
+
+    def test_bounded_receipt_keeps_reported_suspension_original_without_resume_or_full_status(tmp_path,monkeypatch):
+        clocks(monkeypatch)
+        raw=json.dumps(page(),ensure_ascii=False).encode();calls=[]
+        def supplier(request):
+            calls.append(request)
+            assert request.url.host=='query.sse.com.cn' and request.url.path=='/sseQuery/commonQuery.do'
+            return httpx.Response(200,content=raw)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(supplier))) as client:
+            pid=setup(client)
+            response=client.post(f'/api/research/collections/{pid}/sse-suspension',json={'basis':'Explicit METHOD current source receipt'})
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_sse_current_suspension.py:36: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_sse_current_suspension.py::test_bounded_receipt_keeps_reported_suspension_original_without_resume_or_full_status
+1 failed in 5.96s

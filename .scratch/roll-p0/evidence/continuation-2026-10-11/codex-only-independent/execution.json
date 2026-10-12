@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "command": "root backend/.venv/Scripts/python.exe -B -X utf8 codex-only-independent/check.py",
+  "cwd": ".scratch/worktrees/codex-scope/backend",
+  "sandbox_permissions": "require_escalated",
+  "actual_exit_code": 0,
+  "independent_scenarios": 3,
+  "pytest_run": false,
+  "scenario_timing_not_claimed": true,
+  "first_workspace_write_harness": "sandbox-harness-stop.json",
+  "first_runtime_retained": ".roll-data/implementation-evidence/codex-only-independent",
+  "successful_runtime": ".roll-data/implementation-evidence/codex-only-independent-elevated",
+  "provider_model_calls": 0,
+  "actual_profiles_started": 0
+}

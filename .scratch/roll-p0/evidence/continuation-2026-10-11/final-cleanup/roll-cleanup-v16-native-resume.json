@@ -1,0 +1,99 @@
+{
+  "kind": "EXACT_PARTIAL_NATIVE_RESUME",
+  "release_id": "roll-root-final-cleanup-20261012-v14-exact3802-cache1-bounded4",
+  "root_head": "e0bb4b3f83a5d1f49fa6e746d893131261eac64f",
+  "already_removed": [
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25"
+  ],
+  "remaining": [
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25-ordering",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final",
+    "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix"
+  ],
+  "retained_branches_exact": true,
+  "all_nine_corrected_file_sets": [
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket26",
+      "expected": 29945,
+      "actual": 29945,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\codex-runner-scope",
+      "expected": 6231,
+      "actual": 6231,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket25-ordering",
+      "expected": 5201,
+      "actual": 5201,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket27",
+      "expected": 11213,
+      "actual": 11213,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket28",
+      "expected": 11737,
+      "actual": 11737,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket29",
+      "expected": 16450,
+      "actual": 16450,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket30-producer",
+      "expected": 36040,
+      "actual": 36040,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\ticket31-final",
+      "expected": 16456,
+      "actual": 16456,
+      "identical": true
+    },
+    {
+      "tree": "D:\\dsh-proj\\Roll\\.scratch\\worktrees\\final-review-fix",
+      "expected": 8428,
+      "actual": 8428,
+      "identical": true
+    }
+  ],
+  "remaining_and_retained_metadata_entries": 323943,
+  "remaining_and_retained_metadata_unchanged": true,
+  "private_retention_receipt_status": "PRIVATE_RETENTION_PASS",
+  "private_moves_already": 2,
+  "junction_unlinks_already": 9,
+  "private_moves_repeated": 0,
+  "junction_unlinks_repeated": 0,
+  "original_acceptance_time": "2026-10-11T19:56:50.8650595Z",
+  "original_acceptance_time_not_refreshed": true,
+  "parent_preflight": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-v15-before-native-resume.json",
+  "parent_preflight_sha256": "7f02f7dc3f88e5204911bbb13684c77bb3ad3158b4a47de81ffaa7215947a576",
+  "source_content_sweeps_added": 0,
+  "private_content_reads": 0,
+  "sqlite_connections": 0,
+  "preceding_failure": {
+    "script_stack": "at G, C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-batch-v15-root-exact-batch.ps1: line 21\r\nat <ScriptBlock>, C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-batch-v15-root-exact-batch.ps1: line 408\r\nat <ScriptBlock>, C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-run-v14-final-phase.ps1: line 8\r\nat <ScriptBlock>, <No file>: line 2",
+    "executor": "roll-cleanup-batch-v15-root-exact-batch.ps1",
+    "phase": "Execute",
+    "error": "Git failed: show-ref --verify refs/heads/ codex/roll-p0-ticket25",
+    "success": false,
+    "utc": "2026-10-11T20:13:27.4517463Z",
+    "release": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\10\\01a126a2-cdcc-7d52-b24a-ad47b49bcc56\\roll-cleanup-release-v14-exact3802.json"
+  }
+}

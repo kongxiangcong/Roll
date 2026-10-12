@@ -1,0 +1,32 @@
+F
+================================== FAILURES ===================================
+_ test_frozen_drift_support_and_normal_warmup_preserve_old_verdict[19-0-0-PENDING-None] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/ticket27/.scratch/p27r12/test_frozen_drift_support_and_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000013ACB5A1CD0>
+count = 19, outside = 0, missing = 0, expected = 'PENDING', reason = None
+
+    @pytest.mark.parametrize('count,outside,missing,expected,reason', [
+        (19, 0, 0, 'PENDING', None), (20, 3, 0, 'CHECKED', None),
+        (20, 4, 0, 'RESTRICTED', 'FEATURE_OUTSIDE_DEV_REFERENCE_AT_LEAST20_PERCENT'),
+        (20, 0, 5, 'RESTRICTED', 'REQUIRED_FEATURE_COVERAGE_BELOW80_PERCENT'),
+    ])
+    def test_frozen_drift_support_and_normal_warmup_preserve_old_verdict(tmp_path, monkeypatch, count, outside, missing, expected, reason):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = monitored_package(count, outside, missing)
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, package)
+            grant = client.get('/api/capabilities/grants').json()[0]
+            old = client.post('/api/actions/evaluate', json={}).json()
+            response = client.post('/api/capabilities/monitoring/check', json={'grant_id': grant['grant_id'], 'basis': 'literal frozen monitor'})
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+tests\application\test_capability_monitoring.py:47: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_capability_monitoring.py::test_frozen_drift_support_and_normal_warmup_preserve_old_verdict[19-0-0-PENDING-None]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 7.80s

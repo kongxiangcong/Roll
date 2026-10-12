@@ -1,17 +1,22 @@
 import {BackupPanel} from '../components/backup-panel';
 import {MaintenancePanel} from '../components/review-panel';
 import {useEffect,useState} from 'react';
-import {Funding,request} from '../api';
+import {Capability,Funding,request} from '../api';
 import {FundingStatus} from '../components/funding-status';
 import {BackendPanel} from '../components/backend-panel';
+import {CapabilityPanel} from '../components/capability-panel';
+import {LifecyclePanel} from '../components/lifecycle-panel';
+import {NotificationChannelPanel} from '../components/notification-channel-panel';
 
 export function Settings(){
   const [funding,setFunding]=useState<Funding|null>(null),[error,setError]=useState(''),[history,setHistory]=useState<Funding|null>(null);
+  const [capability,setCapability]=useState<Capability|null>(null);
   const [scope,setScope]=useState<'ACCOUNT'|'TRIAL_ACTUAL'>('ACCOUNT'),[scopeId,setScopeId]=useState('account-1');
   const [purpose,setPurpose]=useState(''),[basis,setBasis]=useState(''),[enabled,setEnabled]=useState(false),[pause,setPause]=useState(false);
   const [amounts,setAmounts]=useState<Record<string,string>>({capital_amount:'',total_exposure:'',single_exposure:'',cash_reserve:'',loss_threshold:''});
   function populate(value:Funding){setFunding(value);if(value.version){setScope(value.scope_kind!);setScopeId(value.scope_id!);setPurpose(value.purpose!);setBasis(value.basis!);setEnabled(value.enabled!);setPause(value.pause_latched!);setAmounts({capital_amount:value.capital_amount!,total_exposure:value.total_exposure!,single_exposure:value.single_exposure!,cash_reserve:value.cash_reserve!,loss_threshold:value.loss_threshold!});}}
   useEffect(()=>{request<Funding>('/funding').then(populate).catch(e=>setError(String(e)));},[]);
+  useEffect(()=>{const refresh=()=>void request<Capability>('/capabilities').then(setCapability).catch(e=>setError(String(e)));refresh();window.addEventListener('roll-capability-changed',refresh);window.addEventListener('focus',refresh);return()=>{window.removeEventListener('roll-capability-changed',refresh);window.removeEventListener('focus',refresh);};},[]);
   const [pending,setPending]=useState<unknown>(()=>JSON.parse(sessionStorage.getItem('roll.funding.confirmation')??'null'));
   const [busy,setBusy]=useState(false);
   async function confirm(){
@@ -24,7 +29,7 @@ export function Settings(){
     }catch(e){setError(`${String(e)}；保留原确认内容与幂等键，可重试找回结果。`);}finally{setBusy(false);}
   }
   if(!funding)return <p role={error?'alert':undefined}>{error||'正在读取资金边界…'}</p>;
-  return <><h1>设置</h1><p>建立账户无需配置取证后端。资金确认不产生技术资格；交易判断未启用。</p><BackendPanel/><BackupPanel/><MaintenancePanel/><FundingStatus funding={funding}/><section><h2>确认资金用途与边界</h2><p>填写自己的金额。损失口径从首次授权起保留，跨日、反弹或扩大金额不清除暂停历史。恢复须核对暂停原因和实际事实。</p>
+  return <><h1>设置</h1><p>建立账户无需配置取证后端。资金确认不产生技术资格。</p>{capability&&<p className="capability">{capability.headline}</p>}<NotificationChannelPanel/><BackendPanel/><BackupPanel/><details><summary>模型维护与资格核验</summary><MaintenancePanel/><CapabilityPanel/></details><LifecyclePanel/><FundingStatus funding={funding}/><section><h2>确认资金用途与边界</h2><p>填写自己的金额。损失口径从首次授权起保留，跨日、反弹或扩大金额不清除暂停历史。恢复须核对暂停原因和实际事实。</p>
     {error&&<p role="alert">{error}</p>}{!!pending&&<p>正在保留未明确认，可重试原内容。</p>}<form onSubmit={e=>{e.preventDefault();void confirm();}}><fieldset className="funding-fields" disabled={busy||!!pending}>
     <label>资金范围<select aria-label="资金范围" value={scope} disabled={funding.version>0} onChange={e=>{setScope(e.target.value as 'ACCOUNT'|'TRIAL_ACTUAL');setScopeId(e.target.value==='ACCOUNT'?'account-1':'');}}><option value="ACCOUNT">整个真实账户</option><option value="TRIAL_ACTUAL">已界定的真实试验资金</option></select></label>
     {scope==='TRIAL_ACTUAL'&&<label>真实资金范围标识<input required value={scopeId} disabled={funding.version>0} onChange={e=>setScopeId(e.target.value)}/></label>}

@@ -1,0 +1,295 @@
+{
+  "replay": {
+    "freeze_id": "05de33da-6a37-4267-8d36-0acfbe3ac581",
+    "samples": 2,
+    "matches_original": false,
+    "network_calls": 0,
+    "statistical_pass_checks_added": 0
+  },
+  "samples": [
+    {
+      "sample_id": "88e57e2e6c0ebb8562039583c662f1364dbaebda7571efddbf8ffbadb8733148",
+      "trading_date": "2026-06-23",
+      "recorded_at": "2026-06-23T16:00:00+08:00"
+    },
+    {
+      "sample_id": "63014b8185eb639b6f79041cbff4c3a0cdb17f1ab267f86b04b26be778374594",
+      "trading_date": "2026-07-21",
+      "recorded_at": "2026-07-21T16:00:00+08:00"
+    }
+  ],
+  "assessment_id": "b9ee3416-39ee-4454-93fc-a525f185c0fd",
+  "assessment_cutoff": "2026-07-21T16:00:00+08:00",
+  "saved_shadow_revision": 1,
+  "differences": {
+    "opportunities": {
+      "saved": [
+        {
+          "action": "REFUSE",
+          "actual_forward_prediction": false,
+          "artifact_fingerprints": {
+            "calibrator": "f1f35a9cd42707d143011403f4b4f8f644baa7d66189b4fd87786b4f91ebc8d6",
+            "code": "9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db",
+            "data": "13e513e3e2ebb8a3441562974de11e267f662b11e285139699e0bff578db43af",
+            "features_and_inputs": "3375b759f97bd62929f00584ef6a8c36bd978daae069e8d83a27f2839fc0065d",
+            "model": "5a96d0c81494a4f02b16238813902fd7f0ab2c49ab349c0df8fdc12387d0bbd6",
+            "protocol": "7e52eef1c7f2cfa7ee5b0c3b301ebee4d94e8280002d14e97ae9a139364d7618"
+          },
+          "capability": "NOT_GRANTED",
+          "consumer_knowledge_cutoff": "2026-06-23T16:00:00+08:00",
+          "counterfactual": {
+            "diagnostic_only": true,
+            "namespace": "HISTORICAL",
+            "result": null,
+            "status": "UNSCORABLE"
+          },
+          "entry_date": "2026-06-24",
+          "evidence_kind": "METHOD_CASE",
+          "execution_status": "PENDING",
+          "feature_snapshot": {
+            "availability_basis": "EXPLICIT_SYNTHETIC_METHOD_CLOCK; actual archive available_at retained, no historical PIT proof",
+            "consumer_knowledge_cutoff": "2026-10-07T00:00:00+08:00",
+            "features": {
+              "log_volume_to_trailing20_mean": 0.028000315820112004,
+              "raw_return_20": -0.03399255415925901,
+              "raw_return_5": -0.07309039131382562,
+              "raw_return_volatility_20": 0.010757113900529258
+            },
+            "input_trade_dates": [
+              "2026-05-25",
+              "2026-05-26",
+              "2026-05-27",
+              "2026-05-28",
+              "2026-05-29",
+              "2026-06-01",
+              "2026-06-02",
+              "2026-06-03",
+              "2026-06-04",
+              "2026-06-05",
+              "2026-06-08",
+              "2026-06-09",
+              "2026-06-10",
+              "2026-06-11",
+              "2026-06-12",
+              "2026-06-15",
+              "2026-06-16",
+              "2026-06-17",
+              "2026-06-18",
+              "2026-06-22",
+              "2026-06-23"
+            ],
+            "latest_input_trade_date": "2026-06-23",
+            "observation_cutoff": "2026-06-23T15:05:00+08:00",
+            "raw_hashes": [
+              "494729b06e7b6094b696817870138fd2824262e2339a430cd049c53e309e3935"
+            ],
+            "values": [
+              -0.07309039131382562,
+              -0.03399255415925901,
+              0.010757113900529258,
+              0.028000315820112004
+            ]
+          },
+          "forecast_id": "88e57e2e6c0ebb8562039583c662f1364dbaebda7571efddbf8ffbadb8733148",
+          "horizon_sessions": 20,
+          "input_gaps": [],
+          "instrument": "SSE:600519",
+          "logit": 0.7216090013465815,
+          "lower_yuan": "89.93",
+          "maturity_date": "2026-07-21",
+          "model_loss_from_refusal": false,
+          "model_run_id": "6b0bf4dd-6513-420a-b544-dff5a463daef",
+          "namespace": "SHADOW",
+          "observation_cutoff": "2026-06-23T15:05:00+08:00",
+          "observation_date": "2026-06-23",
+          "opportunity_key": "9c10b0de2eb726e861fec3b68855970b1273515ceb079cca5eb87666a8955c6d",
+          "probability": 0.4788830280942357,
+          "quantity": "200",
+          "reasons": [
+            "BELOW_FROZEN_THRESHOLD",
+            "INSUFFICIENT_JOINT_CASH",
+            "MAXIMUM_GROSS_EXPOSURE"
+          ],
+          "required_cash_yuan": "21990.82",
+          "uncalibrated_probability": 0.672961231683255,
+          "upper_yuan": "109.92"
+        }
+      ],
+      "replayed": [
+        {
+          "actual_forward_prediction": false,
+          "artifact_fingerprints": {
+            "calibrator": "f1f35a9cd42707d143011403f4b4f8f644baa7d66189b4fd87786b4f91ebc8d6",
+            "code": "9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db",
+            "data": "13e513e3e2ebb8a3441562974de11e267f662b11e285139699e0bff578db43af",
+            "features_and_inputs": "3375b759f97bd62929f00584ef6a8c36bd978daae069e8d83a27f2839fc0065d",
+            "model": "5a96d0c81494a4f02b16238813902fd7f0ab2c49ab349c0df8fdc12387d0bbd6",
+            "protocol": "7e52eef1c7f2cfa7ee5b0c3b301ebee4d94e8280002d14e97ae9a139364d7618"
+          },
+          "capability": "NOT_GRANTED",
+          "consumer_knowledge_cutoff": "2026-06-23T16:00:00+08:00",
+          "evidence_kind": "METHOD_CASE",
+          "feature_snapshot": {
+            "availability_basis": "EXPLICIT_SYNTHETIC_METHOD_CLOCK; actual archive available_at retained, no historical PIT proof",
+            "consumer_knowledge_cutoff": "2026-10-07T00:00:00+08:00",
+            "features": {
+              "log_volume_to_trailing20_mean": 0.028000315820112004,
+              "raw_return_20": -0.03399255415925901,
+              "raw_return_5": -0.07309039131382562,
+              "raw_return_volatility_20": 0.010757113900529258
+            },
+            "input_trade_dates": [
+              "2026-05-25",
+              "2026-05-26",
+              "2026-05-27",
+              "2026-05-28",
+              "2026-05-29",
+              "2026-06-01",
+              "2026-06-02",
+              "2026-06-03",
+              "2026-06-04",
+              "2026-06-05",
+              "2026-06-08",
+              "2026-06-09",
+              "2026-06-10",
+              "2026-06-11",
+              "2026-06-12",
+              "2026-06-15",
+              "2026-06-16",
+              "2026-06-17",
+              "2026-06-18",
+              "2026-06-22",
+              "2026-06-23"
+            ],
+            "latest_input_trade_date": "2026-06-23",
+            "observation_cutoff": "2026-06-23T15:05:00+08:00",
+            "raw_hashes": [
+              "494729b06e7b6094b696817870138fd2824262e2339a430cd049c53e309e3935"
+            ],
+            "values": [
+              -0.07309039131382562,
+              -0.03399255415925901,
+              0.010757113900529258,
+              0.028000315820112004
+            ]
+          },
+          "forecast_id": "88e57e2e6c0ebb8562039583c662f1364dbaebda7571efddbf8ffbadb8733148",
+          "horizon_sessions": 20,
+          "instrument": "SSE:600519",
+          "logit": 0.7216090013465815,
+          "model_run_id": "6b0bf4dd-6513-420a-b544-dff5a463daef",
+          "namespace": "SHADOW",
+          "observation_cutoff": "2026-06-23T15:05:00+08:00",
+          "probability": 0.4788830280942357,
+          "uncalibrated_probability": 0.672961231683255,
+          "observation_date": "2026-06-23",
+          "quantity": "200",
+          "entry_date": "2026-06-24",
+          "maturity_date": "2026-07-21",
+          "opportunity_key": "9c10b0de2eb726e861fec3b68855970b1273515ceb079cca5eb87666a8955c6d",
+          "lower_yuan": "89.93",
+          "upper_yuan": "109.92",
+          "required_cash_yuan": "21990.82",
+          "input_gaps": [],
+          "execution_status": "PENDING",
+          "action": "REFUSE",
+          "reasons": [
+            "BELOW_FROZEN_THRESHOLD",
+            "INSUFFICIENT_JOINT_CASH",
+            "MAXIMUM_GROSS_EXPOSURE"
+          ],
+          "model_loss_from_refusal": false,
+          "counterfactual": {
+            "diagnostic_only": true,
+            "namespace": "HISTORICAL",
+            "result": null,
+            "status": "UNSCORABLE"
+          }
+        },
+        {
+          "actual_forward_prediction": false,
+          "artifact_fingerprints": {
+            "calibrator": "f1f35a9cd42707d143011403f4b4f8f644baa7d66189b4fd87786b4f91ebc8d6",
+            "code": "9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db",
+            "data": "13e513e3e2ebb8a3441562974de11e267f662b11e285139699e0bff578db43af",
+            "features_and_inputs": "3375b759f97bd62929f00584ef6a8c36bd978daae069e8d83a27f2839fc0065d",
+            "model": "5a96d0c81494a4f02b16238813902fd7f0ab2c49ab349c0df8fdc12387d0bbd6",
+            "protocol": "7e52eef1c7f2cfa7ee5b0c3b301ebee4d94e8280002d14e97ae9a139364d7618"
+          },
+          "capability": "NOT_GRANTED",
+          "consumer_knowledge_cutoff": "2026-07-21T16:00:00+08:00",
+          "evidence_kind": "METHOD_CASE",
+          "feature_snapshot": {
+            "availability_basis": "EXPLICIT_SYNTHETIC_METHOD_CLOCK; actual archive available_at retained, no historical PIT proof",
+            "consumer_knowledge_cutoff": "2026-10-07T00:00:00+08:00",
+            "features": {
+              "log_volume_to_trailing20_mean": 0.026582479641436597,
+              "raw_return_20": -0.03221244924897997,
+              "raw_return_5": 0.07507909791688437,
+              "raw_return_volatility_20": 0.01213637459579128
+            },
+            "input_trade_dates": [
+              "2026-06-23",
+              "2026-06-24",
+              "2026-06-25",
+              "2026-06-26",
+              "2026-06-29",
+              "2026-06-30",
+              "2026-07-01",
+              "2026-07-02",
+              "2026-07-03",
+              "2026-07-06",
+              "2026-07-07",
+              "2026-07-08",
+              "2026-07-09",
+              "2026-07-10",
+              "2026-07-13",
+              "2026-07-14",
+              "2026-07-15",
+              "2026-07-16",
+              "2026-07-17",
+              "2026-07-20",
+              "2026-07-21"
+            ],
+            "latest_input_trade_date": "2026-07-21",
+            "observation_cutoff": "2026-07-21T15:05:00+08:00",
+            "raw_hashes": [
+              "494729b06e7b6094b696817870138fd2824262e2339a430cd049c53e309e3935"
+            ],
+            "values": [
+              0.07507909791688437,
+              -0.03221244924897997,
+              0.01213637459579128,
+              0.026582479641436597
+            ]
+          },
+          "forecast_id": "63014b8185eb639b6f79041cbff4c3a0cdb17f1ab267f86b04b26be778374594",
+          "horizon_sessions": 20,
+          "instrument": "SSE:600519",
+          "logit": 1.3502609921496538,
+          "model_run_id": "6b0bf4dd-6513-420a-b544-dff5a463daef",
+          "namespace": "SHADOW",
+          "observation_cutoff": "2026-07-21T15:05:00+08:00",
+          "probability": 0.6327735262800968,
+          "uncalibrated_probability": 0.7941722939459505,
+          "observation_date": "2026-07-21",
+          "quantity": "200",
+          "entry_date": "2026-07-22",
+          "maturity_date": "2026-08-18",
+          "opportunity_key": "5fdd68dfbd413afbe51b4ee39bd65c243fc5a4a16c1b78ffa0775b5e02b05f07",
+          "lower_yuan": "87.03",
+          "upper_yuan": "106.38",
+          "required_cash_yuan": "21282.59",
+          "input_gaps": [],
+          "execution_status": "PENDING",
+          "action": "REFUSE",
+          "reasons": [
+            "INSUFFICIENT_JOINT_CASH",
+            "MAXIMUM_GROSS_EXPOSURE"
+          ],
+          "model_loss_from_refusal": false
+        }
+      ]
+    }
+  }
+}

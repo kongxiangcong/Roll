@@ -13,7 +13,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
 from roll.accounts.ledger import encode, now
-from roll.agents.settings import AgentQuestion, check_retry, insert_run, HOST_LIMITS
+from roll.agents.settings import AgentQuestion, check_retry, insert_run, HOST_LIMITS, require_current_backend
 from roll.agents.codex_process import owner_alive, process_creation, recover_directory
 
 MODEL='deepseek-flash'
@@ -58,6 +58,7 @@ class DeepSeekEvidence:
             db.commit()
 
     def start(self,request_id,command,selection=None):
+        require_current_backend('DEEPSEEK')
         request=self.evidence.get('data_requests',request_id)
         check_retry(self.evidence,request_id,command)
         try:

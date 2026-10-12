@@ -1,0 +1,112 @@
+{
+  "status": "PASS_WITH_PROVIDER_CONTEXT_LIMIT",
+  "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+  "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+  "successor_protocol_id": "bdc77bbb-c156-4ae3-ab6e-65ff9b4df09c",
+  "new_freeze_id": "647b6164-e716-42ff-bbd6-177e60ec5759",
+  "new_complete_protocol_fingerprint": "aad0ece6083134c7dd61c30a876c7adbb7f0da32c8bb7da29fea43837ca2fa34",
+  "seven_bodies": [
+    {
+      "material_id": "protocol-and-attempts",
+      "bytes": 18443,
+      "sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf",
+      "parent_protocol_present": true,
+      "old_freeze_present": false,
+      "old_freeze_fingerprint_present": false,
+      "original_model_uuid_present": false,
+      "inherited_attempt_ids_present": [
+        "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+        "e648f20e-99da-4544-a59d-75a2c383bc00",
+        "fdacb78e-7aa0-4852-bbf5-804f45d18082",
+        "2b4fb2f8-a995-4a37-acf4-1700ff6ab139"
+      ]
+    },
+    {
+      "material_id": "results-and-limitations",
+      "bytes": 7745,
+      "sha256": "23fe45d7f77ffeb9923d25f3e003ce76ab7d09ef3248d29e2490a95493222f1c",
+      "parent_protocol_present": false,
+      "old_freeze_present": false,
+      "old_freeze_fingerprint_present": false,
+      "original_model_uuid_present": false,
+      "inherited_attempt_ids_present": []
+    },
+    {
+      "material_id": "code-models",
+      "bytes": 32371,
+      "sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "parent_protocol_present": false,
+      "old_freeze_present": false,
+      "old_freeze_fingerprint_present": false,
+      "original_model_uuid_present": false,
+      "inherited_attempt_ids_present": []
+    },
+    {
+      "material_id": "code-execution",
+      "bytes": 37186,
+      "sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "parent_protocol_present": false,
+      "old_freeze_present": false,
+      "old_freeze_fingerprint_present": false,
+      "original_model_uuid_present": false,
+      "inherited_attempt_ids_present": []
+    },
+    {
+      "material_id": "code-shadow",
+      "bytes": 38336,
+      "sha256": "432e5a164043f2140ff1c0aaa1d4261614812d95c7e491141cee850775a8cdf0",
+      "parent_protocol_present": false,
+      "old_freeze_present": false,
+      "old_freeze_fingerprint_present": false,
+      "original_model_uuid_present": false,
+      "inherited_attempt_ids_present": []
+    },
+    {
+      "material_id": "code-statistics",
+      "bytes": 10010,
+      "sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c",
+      "parent_protocol_present": false,
+      "old_freeze_present": false,
+      "old_freeze_fingerprint_present": false,
+      "original_model_uuid_present": false,
+      "inherited_attempt_ids_present": []
+    },
+    {
+      "material_id": "code-validation",
+      "bytes": 35798,
+      "sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79",
+      "parent_protocol_present": false,
+      "old_freeze_present": false,
+      "old_freeze_fingerprint_present": false,
+      "original_model_uuid_present": false,
+      "inherited_attempt_ids_present": []
+    }
+  ],
+  "existing_host_tool_context": {
+    "tool": "roll_read_review_material",
+    "material_id": "protocol-and-attempts",
+    "fields": [
+      "attempt_manifest.lineage",
+      "attempt_manifest.attempt_ids",
+      "attempt_manifest.attempts",
+      "candidate_fingerprints",
+      "complete_protocol_fingerprint"
+    ],
+    "parent_and_all_attempts_present": true,
+    "model_binding": "Artifact/model-code fingerprints present; original model UUID omitted"
+  },
+  "missing_provider_context": [
+    "old complete-freeze UUID",
+    "old complete-protocol fingerprint",
+    "original model UUID",
+    "complete-freeze basis"
+  ],
+  "local_binding": {
+    "full_freeze_archive_sha256": "6a24a167d8dec94394f547c7bb977ca01347e15634b6dd249b5c201232025147",
+    "explicit_basis_parent_old_freeze_fingerprint_model": true,
+    "native_predecessor_protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+    "native_predecessor_freeze_field": false
+  },
+  "limitation": "The existing provider projection omits complete-freeze basis. Exact freeze/model UUID inheritance remains host-local and must not be claimed present in provider tool bodies. No schema or extra full-input external context added.",
+  "provider_calls": 0
+}

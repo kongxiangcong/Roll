@@ -1,0 +1,152 @@
+{
+  "material_id": "b27b0047-d0ef-4c39-8d8d-46ad20becc74",
+  "material_fingerprint": "95ddbd52fa7f4e2df78b97556f36c6c675da75603eb290ec5ecab260abfbfba1",
+  "validation_id": "a28f871f-42cd-4ab0-b358-ced71971a981",
+  "source_commit": "581aa21ff3f78e36d8912a89c72714225ea7af4a",
+  "inventory_content_bytes": 179889,
+  "maximum_tool_payload_bytes": 184619,
+  "reproduction_file": {
+    "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\reproduction.json",
+    "bytes": 163,
+    "sha256": "f81c0649a2dd244f2ad2259da71334119caa78010c302b1d269d107f2868e889"
+  },
+  "files": [
+    {
+      "material_id": "protocol-and-attempts",
+      "material_sha256": "3da931f77f494e247f07610f4a8378557f4ae98487957d2a639acc459c86a1bf",
+      "content_bytes": 18443,
+      "tool_response_bytes": 19751,
+      "tool_response_sha256": "0d2a30ab590fe616eaf700d5ba9f6b507736fabfd25784aeb572da5b8262762c",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\protocol-and-attempts.json"
+    },
+    {
+      "material_id": "results-and-limitations",
+      "material_sha256": "23fe45d7f77ffeb9923d25f3e003ce76ab7d09ef3248d29e2490a95493222f1c",
+      "content_bytes": 7745,
+      "tool_response_bytes": 8423,
+      "tool_response_sha256": "613ebedd433833952a54766fdb62e07491597a5734a8862235a0c1864666178a",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\results-and-limitations.json"
+    },
+    {
+      "material_id": "code-models",
+      "material_sha256": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+      "content_bytes": 32371,
+      "tool_response_bytes": 32852,
+      "tool_response_sha256": "6c3dbb9970b744da44ccca43a8557b5fad2986f533b2b0d0c4010e13c2f0b5d0",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\code-models.json"
+    },
+    {
+      "material_id": "code-execution",
+      "material_sha256": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+      "content_bytes": 37186,
+      "tool_response_bytes": 37733,
+      "tool_response_sha256": "36298a2d37dfc554f5c26ade04f9fe69f2df67feeef27f332e4478adb6e162ef",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\code-execution.json"
+    },
+    {
+      "material_id": "code-shadow",
+      "material_sha256": "432e5a164043f2140ff1c0aaa1d4261614812d95c7e491141cee850775a8cdf0",
+      "content_bytes": 38336,
+      "tool_response_bytes": 38972,
+      "tool_response_sha256": "83098511d6cd662dbb9d9fe9fafc8d85a000cd47bf10ca6cc43014b4e9485d96",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\code-shadow.json"
+    },
+    {
+      "material_id": "code-statistics",
+      "material_sha256": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c",
+      "content_bytes": 10010,
+      "tool_response_bytes": 10335,
+      "tool_response_sha256": "1e4c08fa67444b1b3823640ecc96c6a1486e7979549954bbb7ae197d3f0ce7a7",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\code-statistics.json"
+    },
+    {
+      "material_id": "code-validation",
+      "material_sha256": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79",
+      "content_bytes": 35798,
+      "tool_response_bytes": 36390,
+      "tool_response_sha256": "5b35913fc4784b6e561489071026ab6b0c49f48fb10d1bc3bd90a5b4da474de7",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\code-validation.json"
+    },
+    {
+      "backend": "CODEX",
+      "kind": "INITIAL_COMMAND_WITH_PROMPT_AND_TOOL_SCHEMAS",
+      "bytes": 4824,
+      "sha256": "8ab14d5f50979ac753ad86ed5df6bb396a6b8d340ee4ab5d7470fe5b65fc3e0c",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\codex-command.json"
+    },
+    {
+      "backend": "DEEPSEEK",
+      "kind": "INITIAL_COMMAND_WITH_PROMPT_AND_TOOL_SCHEMAS",
+      "bytes": 4827,
+      "sha256": "f27bd85f1d8988ef5cdaa65a05433e88c8e3d44778dd9a05a3e58d406284b9b1",
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\implementation-evidence\\continuation-review-fixes\\provider-approval-current\\provider-materials\\deepseek-command.json"
+    }
+  ],
+  "source_files": [
+    "backend/src/roll/research/models.py",
+    "backend/src/roll/research/execution.py",
+    "backend/src/roll/research/shadow.py",
+    "backend/src/roll/research/statistics.py",
+    "backend/src/roll/research/validation.py"
+  ],
+  "source_sha256": {
+    "backend/src/roll/research/models.py": "78540de16da105045846d3125aab51bd196305ab2f89efb0a5f89ab81736552e",
+    "backend/src/roll/research/execution.py": "f4c6a2136b15421c79ada48c818adedfc833dafa8ee3844df54fc57ba6f9fcac",
+    "backend/src/roll/research/shadow.py": "432e5a164043f2140ff1c0aaa1d4261614812d95c7e491141cee850775a8cdf0",
+    "backend/src/roll/research/statistics.py": "506bc42ebb8cc090135c22109d0d1c772b8d5d23c8481a6a4b4c6427582e7d9c",
+    "backend/src/roll/research/validation.py": "ed713e7561f61c15c27b7333857c7e7ecb7e99d306a723acb2ca74b814960c79",
+    "backend/src/roll/research/forward.py": "930f375851946501ac887a69a957ba8d0359dcab2b289cb748d4349e2caf4a3a"
+  },
+  "lineage_binding": {
+    "parent_protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+    "old_freeze_id": "42ccd899-ef10-4706-842d-ce71ce62e6d9",
+    "old_complete_protocol_fingerprint": "ae31db04e17c5e9788fe5e345ff136d13c2de29c60086b2af3420cef3c0afeaf",
+    "new_complete_protocol_fingerprint": "aad0ece6083134c7dd61c30a876c7adbb7f0da32c8bb7da29fea43837ca2fa34",
+    "original_model_run_id": "8be461f3-af8b-4f0f-a707-13e41cf48249",
+    "inherited_attempt_ids": [
+      "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+      "e648f20e-99da-4544-a59d-75a2c383bc00",
+      "fdacb78e-7aa0-4852-bbf5-804f45d18082",
+      "2b4fb2f8-a995-4a37-acf4-1700ff6ab139"
+    ],
+    "native_predecessor_freeze_field": false,
+    "old_freeze_linkage": "Explicit basis text hashed into complete-freeze archive; local material references archive"
+  },
+  "provider_body_context_presence": {
+    "parent_protocol_id": true,
+    "old_freeze_id": false,
+    "old_complete_protocol_fingerprint": false,
+    "original_model_run_id": false,
+    "attempt_0": true,
+    "attempt_1": true,
+    "attempt_2": true,
+    "attempt_3": true
+  },
+  "destinations": [
+    {
+      "backend": "CODEX",
+      "model": "gpt-6.1-sol",
+      "service": "OpenAI Codex runtime; endpoint selected by SDK"
+    },
+    {
+      "backend": "DEEPSEEK",
+      "model": "deepseek-flash",
+      "endpoint": "https://api.deepseek.com/responses"
+    }
+  ],
+  "external_transmissions": 0,
+  "approval_status": "NOT_APPROVED_NEW_PACKAGE",
+  "actual_review_runs": 0,
+  "scope": [
+    "Protocol and all attempt metadata",
+    "Gates, reasons, incompleteness and G5 summaries",
+    "Five current model/validation source files",
+    "Deterministic host reproduction fingerprint"
+  ],
+  "excluded": [
+    "Personal account amounts/holdings/identity and funding",
+    "Full input/raw archives and SEALED",
+    "Credentials/configuration",
+    "Database and unrelated evidence"
+  ]
+}

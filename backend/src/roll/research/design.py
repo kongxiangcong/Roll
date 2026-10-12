@@ -77,7 +77,18 @@ def proposal(dataset):
             'technical_limits':{'maximum_primary_candidates':1,'maximum_model_fits_including_fixed_neighbors':5,'maximum_fit_seconds':60,'maximum_calibration_fits':1,'sealed_parameter_tuning_calls':0,'runtime_money_budget_required':False}},
         'risk_policy_evidence':{'owner':'ticket22','inherits_profit_model_pass':False,
             'required':['own frozen deterministic rules/data fingerprints','authorized risk boundaries','calculation and stress-execution proof','online consistency and scope checks'],'profit_model_required_gates':['G1','G2','G3','G4','G5','G6','G7']}}
-    if dataset.get('source_origin')=='HOST_DATA_REQUEST':
+    if dataset.get('data_use')=='RECONSTRUCTED_RESEARCH':
+        from roll.research.reconstruction import CANDIDATE,FEATURES
+        design['design_version']='19-m0-reconstructed-v2'
+        design['event']='Positive20-session single RAW round-trip economic return after historical statutory costs, frozen broker/slippage scenario and source-bound cash rights/tax; unresolved cases are not losses'
+        design['candidates'][0].update(candidate_id=CANDIDATE,features=FEATURES,
+            status='PREREGISTERED_RECONSTRUCTED_CANDIDATE',feature_basis='Gross cash economic return chain from effective events on/before observation only; not current qfq')
+        design['research_assumptions']=dataset['research_assumptions']
+        design['data_use']='RECONSTRUCTED_RESEARCH'
+        design['support_projection']['state']='FIT_SUPPORT_TO_BE_COMPUTED; CONFIRMATORY_INDEPENDENCE_NOT_ESTABLISHED'
+        design['execution']['synthetic_basis']='Frozen research lot capital, not actual account funds or continuous NAV'
+        design['statistics']['fit_support']='Both DEV classes present; CAL at least20 per class. Effective blocks/bins/selected thresholds remain later validation conditions.'
+    elif dataset.get('source_origin')=='HOST_DATA_REQUEST':
         design['execution']['synthetic_basis']='Research simulation capital only; no user funds or prior engineering stock-price authority. Real windows remain NOT_PREREGISTERED.'
         design['support_projection']['state']='RESEARCH_WINDOWS_NOT_PREREGISTERED'
     design['design_fingerprint']=hashlib.sha256(encode(design).encode()).hexdigest()

@@ -1,0 +1,191 @@
+{
+  "status": "PASS",
+  "evidence_kind": "METHOD_CASE",
+  "literal": {
+    "already_above_no_cross_events": 0,
+    "single_cross_fills": [
+      [
+        "BUY_FILL",
+        "2025-01-22",
+        "200",
+        "70.40"
+      ],
+      [
+        "SELL_FILL",
+        "2025-02-10",
+        "200",
+        "74.20"
+      ]
+    ],
+    "final_NAV": "80760.00",
+    "risk_difference": {
+      "baseline": {
+        "status": "DESCRIPTIVE_CONTINUOUS_NAV",
+        "net_return": 0.0,
+        "maximum_drawdown": 0,
+        "statistical_pass": false
+      },
+      "paired20_session_nav_intervals": [
+        {
+          "calendar_sessions": 80,
+          "block_sessions": 20,
+          "effective_block_upper_bound": 4,
+          "replicates": 2000,
+          "seed": 1701,
+          "lower_95": 0.0,
+          "upper_95": 0.0,
+          "interval_kind": "ONE_SIDED_95_ENDPOINTS_CENTRAL_90_RANGE",
+          "assumptions_verified": false,
+          "statistical_pass": false,
+          "status": "CONDITIONAL_NUMERICAL_INTERVAL",
+          "mean": 0.0
+        },
+        {
+          "calendar_sessions": 80,
+          "block_sessions": 40,
+          "effective_block_upper_bound": 2,
+          "replicates": 2000,
+          "seed": 1701,
+          "lower_95": 0.0,
+          "upper_95": 0.0,
+          "interval_kind": "ONE_SIDED_95_ENDPOINTS_CENTRAL_90_RANGE",
+          "assumptions_verified": false,
+          "statistical_pass": false,
+          "status": "CONDITIONAL_NUMERICAL_INTERVAL",
+          "mean": 0.0
+        }
+      ],
+      "statistical_status": "INCONCLUSIVE",
+      "same_baseline_and_constraints": true,
+      "risk_difference": "CASH zero exposure is explicit; START_HOLD/MA use frozen50% cap",
+      "baseline_exposure": {
+        "average_gross_exposure": 0.17325,
+        "maximum_gross_exposure": 0.175,
+        "occupied_session_fraction": 0.99,
+        "observed_sessions": 100,
+        "unknown_sessions": 0
+      },
+      "position_difference": {
+        "average_gross_exposure": -0.17325,
+        "maximum_gross_exposure": -0.175,
+        "occupied_session_fraction": -0.99
+      },
+      "risk_matching": "COMMON_CONSTRAINTS_DO_NOT_ESTABLISH_REALIZED_RISK_MATCHING"
+    },
+    "weighted_conditional_intervals": [
+      {
+        "calendar_sessions": 240,
+        "block_sessions": 20,
+        "effective_block_upper_bound": 6,
+        "replicates": 2000,
+        "seed": 1701,
+        "lower_95": 0.55,
+        "upper_95": 0.55,
+        "interval_kind": "ONE_SIDED_95_ENDPOINTS_CENTRAL_90_RANGE",
+        "assumptions_verified": false,
+        "statistical_pass": false,
+        "member_calendar_sessions": 120,
+        "member_count": 240,
+        "calendar_effective_block_upper_bound": 12,
+        "estimand": "CONDITIONAL_MEMBER_SCORE_SUM_OVER_MEMBER_COUNT",
+        "status": "CONDITIONAL_NUMERICAL_INTERVAL",
+        "mean": 0.55
+      },
+      {
+        "calendar_sessions": 240,
+        "block_sessions": 40,
+        "effective_block_upper_bound": 3,
+        "replicates": 2000,
+        "seed": 1701,
+        "lower_95": 0.55,
+        "upper_95": 0.55,
+        "interval_kind": "ONE_SIDED_95_ENDPOINTS_CENTRAL_90_RANGE",
+        "assumptions_verified": false,
+        "statistical_pass": false,
+        "member_calendar_sessions": 120,
+        "member_count": 240,
+        "calendar_effective_block_upper_bound": 6,
+        "estimand": "CONDITIONAL_MEMBER_SCORE_SUM_OVER_MEMBER_COUNT",
+        "status": "CONDITIONAL_NUMERICAL_INTERVAL",
+        "mean": 0.55
+      }
+    ],
+    "empty_subset": {
+      "calendar_sessions": 80,
+      "block_sessions": 20,
+      "effective_block_upper_bound": 0,
+      "replicates": 2000,
+      "seed": 1701,
+      "lower_95": null,
+      "upper_95": null,
+      "interval_kind": "ONE_SIDED_95_ENDPOINTS_CENTRAL_90_RANGE",
+      "assumptions_verified": false,
+      "statistical_pass": false,
+      "member_calendar_sessions": 0,
+      "member_count": 0,
+      "calendar_effective_block_upper_bound": 4,
+      "estimand": "CONDITIONAL_MEMBER_SCORE_SUM_OVER_MEMBER_COUNT",
+      "status": "INSUFFICIENT_MEMBER_SUPPORT"
+    },
+    "true_missing_preserved": true,
+    "duplicate_support_not_increased": true,
+    "qualifies_real_model": false
+  },
+  "public_API_flow": "Completed all API, old-version409, new freeze, shadow/validation replay and restart assertions before final harness table-name mistake; this read-only closeout corrects that count without rerunning Host.",
+  "old_shadow_and_validation_409": true,
+  "restart_replay_match": true,
+  "old_freeze_validation_shadow_rows_unchanged": true,
+  "new_freeze_id": "b8e3310f-72d1-4221-8063-f1dc0e0feba6",
+  "new_validation_id": "177f2b37-2be9-40a9-b661-8ddbd1ab3bb5",
+  "new_model_or_forecast_count": 0,
+  "family_attempt_rows_unchanged": true,
+  "added_validation_attempts": "1 DIAGNOSTIC SUCCEEDED only",
+  "network_calls": 0,
+  "provider_calls": 0,
+  "SEALED_read": false,
+  "account_version": 0,
+  "forward_started_at": null,
+  "NOT_GRANTED": true,
+  "source18_stable": true,
+  "preserved_runtime_profiles": [
+    {
+      "profile": "old",
+      "files": 275,
+      "sha_length_mismatches": 0
+    },
+    {
+      "profile": "new",
+      "files": 193,
+      "sha_length_mismatches": 0
+    },
+    {
+      "profile": "final",
+      "files": 193,
+      "sha_length_mismatches": 0
+    }
+  ],
+  "new_archive_integrity": [
+    {
+      "kind": "COMPLETE_EXPERIMENT_PROTOCOL",
+      "sha256": "cdb23c5dc6c1624fffdd2e27706f5d618e660b18026792c55fffe1b6cb08d1a9",
+      "bytes": 36639
+    },
+    {
+      "kind": "AUTOMATIC_VALIDATION_INPUT",
+      "sha256": "857bac0160bff3b0d90b0a96605ef9bc3e459c51a98267f06a12e6345c8e3e33",
+      "bytes": 453445
+    },
+    {
+      "kind": "VALIDATION_MANIFEST",
+      "sha256": "e7cf9cee9020bb951e9a78d9e8c3c5d7edc0a7c53c3266dd3d66f9173f1ec4a5",
+      "bytes": 462313
+    },
+    {
+      "kind": "SHADOW_CONTINUOUS_INPUT",
+      "sha256": "3ca7a5c13fb600bfe47256221511d51187196f0346bbfd5623357cf5d9d2d736",
+      "bytes": 104190
+    }
+  ],
+  "closeout": "SQLite mode=ro, literal-only; no Host restart or research mutation",
+  "exit_code": 0
+}

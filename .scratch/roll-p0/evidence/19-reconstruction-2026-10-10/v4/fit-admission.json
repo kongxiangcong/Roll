@@ -1,0 +1,590 @@
+{
+  "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+  "dataset_id": "86cd98e9-f687-4249-a0e7-ec917f7ab3be",
+  "purpose": "RESEARCH",
+  "assessment": "HOST_RECONSTRUCTED_INPUTS_AND_MATURE_SUPPORT",
+  "ready_to_fit": true,
+  "source": {
+    "evidence_kind": "REAL_ACQUISITION",
+    "data_use": "RECONSTRUCTED_RESEARCH",
+    "data_fingerprint": "0eaefd09803c54924263181b84f60fe1b028e19b9569ce4f3bd4c335def22ae0"
+  },
+  "registered_windows": {
+    "DEVELOPMENT": {
+      "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+      "context_first_date": "2016-12-05",
+      "context_rows": 20,
+      "first_date": "2017-01-03",
+      "last_date": "2021-12-31",
+      "rows": 1217,
+      "state": "HOST_FILTERED"
+    },
+    "CALIBRATION": {
+      "access": "DEVELOPMENT_OR_CALIBRATION_ONLY",
+      "context_first_date": "2022-01-04",
+      "context_rows": 20,
+      "first_date": "2022-02-08",
+      "last_date": "2023-12-29",
+      "rows": 464,
+      "state": "HOST_FILTERED"
+    }
+  },
+  "support": {
+    "DEVELOPMENT": {
+      "feature_and_mature_label_count": 1148,
+      "per_class": {
+        "0": 626,
+        "1": 522
+      },
+      "independent_sample_count": null,
+      "daily_count_divided_by_horizon": 57,
+      "latest_label_end": "2021-12-31"
+    },
+    "CALIBRATION": {
+      "feature_and_mature_label_count": 444,
+      "per_class": {
+        "0": 238,
+        "1": 206
+      },
+      "independent_sample_count": null,
+      "daily_count_divided_by_horizon": 22,
+      "latest_label_end": "2023-12-29"
+    }
+  },
+  "excluded": {
+    "DEVELOPMENT": [
+      {
+        "execution_id": "a26c341e-b490-4983-a0cd-31e208f39067",
+        "observation_date": "2017-03-03",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "f37f0d4a-1871-4153-ac1d-b4f8d3859801",
+        "observation_date": "2017-03-06",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "ef1585e5-a351-4244-a360-57d0bbb3615f",
+        "observation_date": "2017-03-07",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "08ed0de6-3440-49b8-90d6-81746d443d24",
+        "observation_date": "2017-03-08",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "4ff69c5e-93b9-4857-8c3b-ee6674d28663",
+        "observation_date": "2017-03-09",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "77f18a56-4824-48da-8ec7-02aff677245d",
+        "observation_date": "2017-03-10",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "35e582ce-c3f0-4831-a072-0b32935504a3",
+        "observation_date": "2017-03-13",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "3cb6322d-f261-4c05-acb6-8cb876737c38",
+        "observation_date": "2017-03-14",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "8243ea84-4bda-49a4-ac99-69ef726fbd3d",
+        "observation_date": "2017-03-15",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "0f459779-7d9b-4b59-b48c-6cbeac3cd2ae",
+        "observation_date": "2017-03-16",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "b67c79b9-925a-4fe4-8b04-43fa8309e4e2",
+        "observation_date": "2017-03-17",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "6d9e419c-6de6-4a40-95d3-8a69e2ff7834",
+        "observation_date": "2017-03-20",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "a1c46272-f6f4-4fe1-b7a5-0973299aa103",
+        "observation_date": "2017-03-21",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "0c81164d-38fa-4c88-b90c-6440ce126321",
+        "observation_date": "2017-03-22",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "7429f51f-5353-4499-9af8-ab2f3c3724fa",
+        "observation_date": "2017-03-23",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "a515137b-e20d-4e28-8ad3-e1b75dd59982",
+        "observation_date": "2017-03-24",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "51387a0d-e1b1-47b3-9745-300f1e0de94b",
+        "observation_date": "2017-03-27",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "b28c0cc0-a632-4b0b-894d-200639af0620",
+        "observation_date": "2017-03-28",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "fbfa7c1a-f17d-463d-b1c8-af47df22c61b",
+        "observation_date": "2017-03-29",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "6ef845db-b2e9-4655-a44f-32bae5e7145a",
+        "observation_date": "2017-03-30",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "6831c4bf-f125-4231-9104-46e52a87d7dc",
+        "observation_date": "2017-03-31",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "d4275684-d5d0-488f-a19b-954ed9e0b702",
+        "observation_date": "2017-04-05",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "b06e0bfb-cbe2-47c3-b091-fb3a0887c673",
+        "observation_date": "2017-04-06",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "0235b71d-aea8-428b-b8ec-253b3361169b",
+        "observation_date": "2017-04-07",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "95971d12-c769-48d1-a2dd-acc3d4bd5e29",
+        "observation_date": "2017-04-10",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "0abf1ff3-35f1-4dcc-babe-bd308f5311fa",
+        "observation_date": "2017-04-11",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "c7d7dd58-8cea-4de8-96df-8038724dd7f2",
+        "observation_date": "2017-04-12",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "e79e098e-127e-4fae-b294-c6e6ad9afcc9",
+        "observation_date": "2017-04-13",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "7cfd6ee7-cdd0-4c9b-ac2b-14990eda2f47",
+        "observation_date": "2017-04-14",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "76ae041f-4158-4d8d-bc27-ee4ff68ca6d3",
+        "observation_date": "2017-04-17",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "45b53349-8ca8-403f-97a4-4c6481ef20ff",
+        "observation_date": "2017-04-18",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "b30d8f62-4bf2-4fdf-abda-ddd3744dae2f",
+        "observation_date": "2017-04-19",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "a2222dbf-52af-4a99-8d7f-4aa16ec09bd1",
+        "observation_date": "2017-04-20",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "45dbd75a-ff1b-48f4-bc4b-4d5ef3e8900c",
+        "observation_date": "2017-04-21",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "60d55094-df46-4ac2-8c45-64b3fb8c5a87",
+        "observation_date": "2017-04-24",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "868fd24b-3710-46c3-8d3e-4b394c210319",
+        "observation_date": "2017-04-25",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "638eb505-95e5-4e97-b1ec-65a611fadd3e",
+        "observation_date": "2017-04-26",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "72d584e8-4abc-443c-953c-f9adae5cf753",
+        "observation_date": "2017-04-27",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "5ec9114d-552f-49c3-91af-d861060c5f06",
+        "observation_date": "2017-04-28",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "71b59fbf-8942-4cef-a9f9-7bccdb120347",
+        "observation_date": "2017-05-02",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "24e4db99-1968-4095-9b10-06c73f2a8f66",
+        "observation_date": "2017-05-03",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "5065f1cd-0ecb-4b62-b545-ea500a0f3067",
+        "observation_date": "2017-05-04",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "e1aff92b-ebf5-46ac-9487-5e9e9723fee4",
+        "observation_date": "2017-05-05",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "f4069999-24b2-4871-960a-cb890cd8b3dc",
+        "observation_date": "2017-05-08",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "1d58bd84-470e-4382-9196-f9cf202c15cc",
+        "observation_date": "2017-05-09",
+        "reason": "FEATURE_INPUT_NOT_COMPLETE_RAW_SHARE"
+      },
+      {
+        "execution_id": "ce34caaf-8ecc-4d3b-823e-70f271a9c599",
+        "observation_date": "2018-01-12",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "7baa08cc-bfe6-4bfc-afb0-dea2569c5e45",
+        "observation_date": "2019-12-26",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "4808fdd5-117d-479d-81ad-8af3c1ba832c",
+        "observation_date": "2020-11-24",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "8251dd4a-a7e7-4fd4-b2d5-871cb42129b5",
+        "observation_date": "2021-02-10",
+        "reason": "LABEL_NOT_MATURE_SCORABLE"
+      },
+      {
+        "execution_id": "75056bc6-ceb7-47e9-8654-f2349a6a5c0c",
+        "observation_date": "2021-12-06",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "dd3ebb6e-2ff0-4e68-90ad-07f15d21cb54",
+        "observation_date": "2021-12-07",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "e6fcc884-97d0-42e3-87d9-0cddfa417f14",
+        "observation_date": "2021-12-08",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "896ab434-db0a-4b7f-a6f5-d157309bb6c6",
+        "observation_date": "2021-12-09",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "8d4ff68d-b504-4296-bb8f-c90f4c04160c",
+        "observation_date": "2021-12-10",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "86b453ae-3c88-471a-8d79-0f6f953cd422",
+        "observation_date": "2021-12-13",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "65e3f974-2825-4278-87ac-6f259c5e796d",
+        "observation_date": "2021-12-14",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "22b1a74b-e692-41c3-9010-14b3bc10d116",
+        "observation_date": "2021-12-15",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "85fba5f3-83c7-4afb-815b-2c1e4a8021c7",
+        "observation_date": "2021-12-16",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "bc3a1d33-6d2f-4d77-96c8-7571ef16dead",
+        "observation_date": "2021-12-17",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "76c9f319-79fe-48f3-b32e-c1def5d85175",
+        "observation_date": "2021-12-20",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "65fec97d-0881-48c0-bd08-6399bd3f4371",
+        "observation_date": "2021-12-21",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "c2005be7-2803-47b3-93eb-bc8f0c7758be",
+        "observation_date": "2021-12-22",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "7e439ceb-e386-4a66-b546-745d28177f93",
+        "observation_date": "2021-12-23",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "1e4f1833-6860-49a2-90de-db393005ba8e",
+        "observation_date": "2021-12-24",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "4f76f23f-31e9-412d-aac4-93fd71cbd4b7",
+        "observation_date": "2021-12-27",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "e3fc7526-da22-4fa7-a9c7-3028f617b576",
+        "observation_date": "2021-12-28",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "e08379d2-f5eb-4db2-8fff-9859b5d3adf6",
+        "observation_date": "2021-12-29",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "8b5de8ad-b89f-4079-8581-a7ecf4338ff8",
+        "observation_date": "2021-12-30",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "1aa98773-0271-405a-bb22-26c311cabd6e",
+        "observation_date": "2021-12-31",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      }
+    ],
+    "CALIBRATION": [
+      {
+        "execution_id": "22ce9f05-aec6-45ed-b594-91f3d0053384",
+        "observation_date": "2023-12-04",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "2e82edb3-085c-4515-bf8c-fe0c5beb7216",
+        "observation_date": "2023-12-05",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "5e109a5b-3664-44e1-9afe-f9f8ab020c03",
+        "observation_date": "2023-12-06",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "289b44ea-b8ca-4337-b3dc-d04dee062ef3",
+        "observation_date": "2023-12-07",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "9e15340d-5f7a-4bd5-befe-452d229379a1",
+        "observation_date": "2023-12-08",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "2c97c127-fba7-4bbf-8a74-f7984ba2f158",
+        "observation_date": "2023-12-11",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "69bc1c5d-c515-4ecd-b306-cc35e6b04bea",
+        "observation_date": "2023-12-12",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "4b176b60-dfa1-462e-a810-eebff62a2c99",
+        "observation_date": "2023-12-13",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "8fb832be-1522-4207-85cc-ab26b06354cf",
+        "observation_date": "2023-12-14",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "2c82f045-c22d-4baf-bd53-4c3ed6640b31",
+        "observation_date": "2023-12-15",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "2a3eefc2-e6e2-42ff-ab19-1e7b317583df",
+        "observation_date": "2023-12-18",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "3055c2a4-06c7-4d86-a590-b9283f80c538",
+        "observation_date": "2023-12-19",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "d41fe672-c428-474e-be44-48335733d9ff",
+        "observation_date": "2023-12-20",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "8d053159-4d2f-4b40-ae8b-77b3e3525464",
+        "observation_date": "2023-12-21",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "e6cd8c74-373b-4ec4-8de3-439a9f26f5a6",
+        "observation_date": "2023-12-22",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "5b5bb5c6-f425-4ec6-aa7f-d834d19148fe",
+        "observation_date": "2023-12-25",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "ddd1bd98-76bb-4546-9fa1-272f86dace40",
+        "observation_date": "2023-12-26",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "6a21719d-39bb-4d92-add7-d1b1351d03f8",
+        "observation_date": "2023-12-27",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "98b4b0fb-c0d0-4aa6-b362-7d9fa9e57c47",
+        "observation_date": "2023-12-28",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      },
+      {
+        "execution_id": "c814b43e-a3ff-40eb-ba3f-084593c010ae",
+        "observation_date": "2023-12-29",
+        "reason": "LABEL_CROSSES_FROZEN_PARTITION"
+      }
+    ]
+  },
+  "checks": {
+    "historical_point_in_time": "NOT_PROVEN; RECONSTRUCTED_PURPOSE_ONLY",
+    "real_training_path": "IMPLEMENTED_RECONSTRUCTED_SCOPE",
+    "source_artifact_integrity": "VERIFIED",
+    "training_inputs_labels_and_support": "CHECKED"
+  },
+  "blockers": [],
+  "budget": {
+    "primary_and_neighbors": {
+      "categories": [
+        "PRIMARY_FIT",
+        "G5_NEIGHBOR"
+      ],
+      "limit": 5,
+      "used": 2,
+      "remaining": 3,
+      "exhausted": false
+    },
+    "calibration": {
+      "categories": [
+        "CALIBRATION"
+      ],
+      "limit": 1,
+      "used": 0,
+      "remaining": 1,
+      "exhausted": false
+    }
+  },
+  "budget_basis": "All prior family failures retained; this support check is not a fit or reservation",
+  "attempt_manifest": {
+    "lineage": [
+      "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+      "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+      "f977645b-200a-4c39-a6de-5e122f4e5101"
+    ],
+    "family_protocol_ids": [
+      "bab919f3-14b5-4d28-8df6-f0f0979755db",
+      "a9792e33-98e1-464e-85ba-046623fb4bd1",
+      "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+      "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+      "f977645b-200a-4c39-a6de-5e122f4e5101"
+    ],
+    "attempt_ids": [
+      "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+      "e648f20e-99da-4544-a59d-75a2c383bc00"
+    ],
+    "basis": "All linked family predecessors and sibling failures, aborts and interruptions remain required; this is not proof of unreported out-of-host work",
+    "attempts": [
+      {
+        "attempt_id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+        "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+        "category": "PRIMARY_FIT",
+        "partition": "DEVELOPMENT",
+        "status": "FAILED",
+        "started_at": "2026-10-08T17:08:18.766352+00:00",
+        "host_owner": {
+          "creation_ticks": 134359528622286991,
+          "nonce": "f090adf7-c866-4314-98c3-e101717ea1ea",
+          "pid": 34324
+        },
+        "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c",
+        "completion_recorded_at": "2026-10-08T17:08:18.941510+00:00"
+      },
+      {
+        "attempt_id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+        "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+        "category": "PRIMARY_FIT",
+        "partition": "DEVELOPMENT",
+        "status": "FAILED",
+        "started_at": "2026-10-08T17:14:24.413994+00:00",
+        "host_owner": {
+          "creation_ticks": 134359532206248511,
+          "nonce": "218e340b-eb98-421d-bda8-5f2a176a2a73",
+          "pid": 34636
+        },
+        "configuration_sha256": "75a5a6e8e7e121523d897408045cbfb68194ae1061397476f4e15578bf82ac0c",
+        "completion_recorded_at": "2026-10-08T17:14:24.517554+00:00"
+      }
+    ]
+  },
+  "strict_historical_as_of_allowed": false,
+  "capability": "NOT_GRANTED",
+  "calibration_validity": "NOT_INDEPENDENTLY_VALIDATED"
+}

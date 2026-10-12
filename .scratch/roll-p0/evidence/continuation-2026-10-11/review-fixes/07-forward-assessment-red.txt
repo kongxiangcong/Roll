@@ -1,0 +1,59 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_____ test_later_same_cutoff_sample_does_not_enter_an_earlier_settlement ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/continuation-review-fixes/.scratch/pytest-forward-assessment-red/test_later_same_cutoff_sample_0')
+
+    def test_later_same_cutoff_sample_does_not_enter_an_earlier_settlement(tmp_path):
+        # The real worker runs throughout setup at the final logical instant. METHOD
+        # clock control then permits an explicit API order without sleeps or worker mocks.
+        clock = [datetime.fromisoformat('2026-07-21T16:00:00+08:00')]
+        with TestClient(create_app(tmp_path, review_clock=lambda: clock[0])) as client:
+            _, protocol, model, dates = setup(client, tmp_path)
+            frozen = freeze(client, protocol, model, baseline={'cash_yuan': '1.00', 'positions': []}).json()
+            path = '/api/research/complete-freezes/' + frozen['freeze_id'] + '/forward'
+            clock[0] = datetime.fromisoformat(dates[110] + 'T16:00:00+08:00')
+            client.post(path, json={'purpose': 'METHOD_VALIDATION', 'basis': 'Explicit controlled METHOD sequence'})
+            first = client.post(path + '/check', json={'basis': 'First archived sample'}).json()['samples'][0]
+            clock[0] = datetime.fromisoformat(dates[130] + 'T16:00:00+08:00')
+            assessment = client.post(path + '/settle', json={'basis': 'Snapshot before another same-cutoff sample'}).json()
+            assert assessment['shadow']['revision'] == 1
+            newer = client.post(path + '/check', json={'basis': 'Later commit, same frozen clock'}).json()
+            assert len(newer['samples']) == 2
+            assert newer['samples'][-1]['recorded_at'] == assessment['cutoff']
+            assert [item['sample_id'] for item in assessment['mature']] == [first['sample_id']]
+>           assert client.post(path + '/replay').json()['matches_original'] is True
+E           assert False is True
+
+backend\tests\application\test_forward_assessment_binding.py:28: AssertionError
+_ test_user_stop_does_not_later_score_outcomes_unmatured_at_original_endpoint _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/continuation-review-fixes/.scratch/pytest-forward-assessment-red/test_user_stop_does_not_later_0')
+
+    def test_user_stop_does_not_later_score_outcomes_unmatured_at_original_endpoint(tmp_path):
+        clock = [datetime.fromisoformat('2026-07-21T16:00:00+08:00')]
+        with TestClient(create_app(tmp_path, review_clock=lambda: clock[0])) as client:
+            _, protocol, model, dates = setup(client, tmp_path)
+            clock[0] = datetime.fromisoformat(dates[110] + 'T16:00:00+08:00')
+            frozen = freeze(client, protocol, model).json()
+            path = '/api/research/complete-freezes/' + frozen['freeze_id'] + '/forward'
+            client.post(path, json={'purpose': 'METHOD_VALIDATION', 'basis': 'Stopped METHOD endpoint'})
+            client.post(path + '/check', json={'basis': 'One original forecast'})
+            stopped = client.post(path + '/stop', json={'kind': 'USER_STOP', 'basis': 'Original early endpoint'}).json()
+            endpoint = stopped['endpoint']
+            assert len(endpoint['unmatured']) == 1 and endpoint['mature'] == []
+            clock[0] = datetime.fromisoformat(dates[130] + 'T16:00:00+08:00')
+            late = client.post(path + '/settle', json={'basis': 'Later clock cannot extend original scoring'}).json()
+>           assert late['cutoff'] == endpoint['cutoff']
+E           AssertionError: assert '2026-07-21T16:00:00+08:00' == '2026-06-23T16:00:00+08:00'
+E             
+E             - 2026-06-23T16:00:00+08:00
+E             ?       ^  ^
+E             + 2026-07-21T16:00:00+08:00
+E             ?       ^  ^
+
+backend\tests\application\test_forward_assessment_binding.py:76: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_forward_assessment_binding.py::test_later_same_cutoff_sample_does_not_enter_an_earlier_settlement
+FAILED backend\tests\application\test_forward_assessment_binding.py::test_user_stop_does_not_later_score_outcomes_unmatured_at_original_endpoint
+2 failed in 28.22s

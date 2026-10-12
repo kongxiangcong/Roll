@@ -1,0 +1,59 @@
+{
+  "data_dir": "D:\\dsh-proj\\Roll\\.roll-data\\synthetic19",
+  "run": {
+    "development_run_id": "ticket19-synthetic-v1",
+    "started_at": "2026-10-10T00:30:28.238724+00:00",
+    "status": "ENGINEERING_COMPLETE",
+    "evidence_kind": "METHOD_CASE",
+    "namespace": "SYNTHETIC_DEVELOPMENT",
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "forward_started_at": null,
+    "real_attempt_budget_consumed": false,
+    "dataset_id": "8cf07ebc-e206-4ec0-b9fa-0ace5554121d",
+    "protocol_id": "1f5c611b-aa9c-4cbd-ab8b-acf4f4dab4ba",
+    "model_run_id": "360197c6-d597-4ffa-adf1-77119b266739",
+    "forecast_id": "7ef64402-ebb7-4de0-9d1d-a8f690525d5d",
+    "replay": {
+      "forecast_id": "7ef64402-ebb7-4de0-9d1d-a8f690525d5d",
+      "network_calls": 0,
+      "matches_original": true,
+      "prediction": {
+        "uncalibrated_probability": 0.3317730384114732,
+        "probability": 0.27708600568268127,
+        "logit": -0.7001767627876369
+      },
+      "input_sha256": "ccbdbc3d8dd78a667d8e77561630f02f41dc09adc052fc5e6a29129cbaace327",
+      "forecast_sha256": "c4074327c3ff6c561c7f64f596c2c28d30907b1ea4ff5011ec729b1bf40537c9"
+    },
+    "statistical_support": {
+      "development_total": 120,
+      "calibration_total": 140,
+      "calibration_per_class": {
+        "0": 80,
+        "1": 60
+      },
+      "minimum_per_class": 20,
+      "calibration_metadata_mature_upper_bound": 140
+    },
+    "artifact_fingerprints": {
+      "model": "e0e5fd2f6f629fed10352d34bb6420b766050e65d8da1d7de3a780a0b1f782f2",
+      "calibrator": "e461e25ee80bc4720e5f99efbdbc27ba4a8ab7bb6606ddca14cd67c733250c98",
+      "features_and_inputs": "ccbdbc3d8dd78a667d8e77561630f02f41dc09adc052fc5e6a29129cbaace327",
+      "code": "a4672de83a34bebc2013604266fd721ab2c3bf87acc0fbbd1bc9e13d9287fa49",
+      "data": "c71970b2cc68e8498b25e388d3c7c667050d65bff4a6d54198170a3f9e58b299",
+      "protocol": "769190c8d3bc1dacc1cc23763707655a9931320cc71edde01f38c3fd1c1136ab"
+    },
+    "development_freeze": {
+      "sha256": "b2ea97c614433b867e136ec8d60cf69c9e1004de042b9c53f383a0ba3dc7b68a",
+      "path": "raw/b2ea97c614433b867e136ec8d60cf69c9e1004de042b9c53f383a0ba3dc7b68a.raw",
+      "bytes": 936,
+      "kind": "VIRTUAL_DEVELOPMENT_FREEZE"
+    },
+    "real_model_frozen": false,
+    "complete_experiment_frozen": false,
+    "validation_verdict": null,
+    "sealed_consumed": false,
+    "finished_at": "2026-10-10T00:30:49.117677+00:00"
+  }
+}

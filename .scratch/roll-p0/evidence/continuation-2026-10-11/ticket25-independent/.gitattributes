@@ -1,0 +1,4 @@
+# Preserve original independent receipts and scripts, including Windows CRLF.
+*.json -text whitespace=cr-at-eol
+*.log -text whitespace=-blank-at-eol,cr-at-eol
+*.py -text whitespace=cr-at-eol
