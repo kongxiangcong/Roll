@@ -120,7 +120,7 @@ class BrokerCosts:
             current = self.listing(db)
             account, funding = self.ledger.account(db=db), self.funding.current(db=db)
             if current['version'] != command.expected_version: raise HTTPException(409, 'BROKER_COST_VERSION_CONFLICT')
-            if account['version'] != command.expected_account_version or funding['version'] != command.expected_funding_version or funding['state'] != 'CONFIRMED':
+            if account['version'] != command.expected_account_version or funding['version'] != command.expected_funding_version:
                 raise HTTPException(409, 'BROKER_COST_ACCOUNT_OR_FUNDING_VERSION_CONFLICT')
             archive = self.evidence.archive(command.source_text.encode('utf-8'), 'CONFIRMED_BROKER_COST_BASIS', db=db, source_name=command.source_name)
             record = {'version': current['version'] + 1, 'command': value, 'confirmed_at': now(), 'source_archive': archive,

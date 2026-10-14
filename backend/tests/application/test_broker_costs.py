@@ -3,6 +3,7 @@ from roll.app import create_app
 from test_account import baseline, submit
 from test_funding import funding
 from datetime import datetime, timezone
+import pytest
 
 
 def contract(**changes):
@@ -13,6 +14,22 @@ def contract(**changes):
         'transfer_each_side_rate': '0.00001', 'source_name': 'Test user broker tariff',
         'source_text': 'Synthetic isolated tariff\r\ncommission includes regulatory fees; transfer separate.',
         'confirmed': True, **changes}
+
+
+@pytest.mark.parametrize('changes,state', [({'enabled': False}, 'REVOKED'), ({'pause': True}, 'PAUSED')])
+def test_tariff_facts_can_be_saved_without_enabling_or_resuming_funding(tmp_path, changes, state):
+    with TestClient(create_app(tmp_path)) as client:
+        submit(client, baseline(), 'baseline')
+        response = client.post('/api/funding/confirm', json=funding(**changes))
+        assert response.status_code == 200, response.text
+        before = client.get('/api/funding').json()
+        assert before['state'] == state
+        registered = client.post('/api/actions/broker-costs/confirm', json=contract())
+        assert registered.status_code == 201, registered.text
+        assert registered.json()['system_usable'] is False
+        assert client.get('/api/funding').json() == before
+        assert client.get('/api/capabilities').json()['allowed_actions'] == []
+        assert client.get('/api/capabilities/grants').json() == []
 
 
 def test_source_bound_cost_registration_is_immutable_and_never_grants_capability(tmp_path):
