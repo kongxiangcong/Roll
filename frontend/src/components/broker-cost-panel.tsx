@@ -5,6 +5,7 @@ type CostCommand={expected_version:number;expected_account_version:number;expect
 type CostRecord={version:number;confirmed_at:string;contract_fingerprint:string;command:CostCommand};
 type Costs={version:number;current:CostRecord|null;versions:CostRecord[];limitations:string[];current_status:string;current_reasons:string[]};
 const costReasons:Record<string,string>={BROKER_COST_ACCOUNT_OR_FUNDING_VERSION_CHANGED:'账户或资金范围已变更，须重新确认适用依据。',BROKER_COST_OUTSIDE_EFFECTIVE_INTERVAL:'当前时间不在费用依据的生效区间内。',BROKER_COST_SOURCE_UNAVAILABLE_OR_CORRUPT:'费用依据原件无法核验，须检查原件。'};
+const costErrors:Record<string,string>={BROKER_COST_VERSION_CONFLICT:'费用版本已改变，请核对当前版本后重新确认。',BROKER_COST_ACCOUNT_OR_FUNDING_VERSION_CONFLICT:'账户或资金范围已改变，请重新打开设置并核对适用范围。',BROKER_COST_IDEMPOTENCY_CONFLICT:'原确认内容不一致，请核对已有历史版本。'};
 const pendingKey='roll.broker-cost.confirmation';
 function savedCommand():CostCommand|null{try{return JSON.parse(sessionStorage.getItem(pendingKey)??'null');}catch{return null;}}
 
@@ -14,7 +15,7 @@ export function BrokerCostPanel({funding}:{funding:Funding}){
   const [from,setFrom]=useState(''),[until,setUntil]=useState(''),[commission,setCommission]=useState(''),[minimum,setMinimum]=useState(''),[transfer,setTransfer]=useState('');
   const [sourceName,setSourceName]=useState(''),[sourceText,setSourceText]=useState(''),[confirmed,setConfirmed]=useState(false),[history,setHistory]=useState<CostRecord|null>(null);
   async function refresh(){const [c,a]=await Promise.all([request<Costs>('/actions/broker-costs'),request<Account>('/account')]);setCosts(c);setAccount(a);}
-  useEffect(()=>{void refresh().catch(e=>setError(String(e)));},[funding.version]);
+  useEffect(()=>{void refresh().catch(()=>setError('无法读取费用设置，请确认服务已更新并重新打开设置。'));},[funding.version]);
   async function save(){
     if(!costs||!account)return;
     setBusy(true);setError('');
@@ -25,7 +26,7 @@ export function BrokerCostPanel({funding}:{funding:Funding}){
       const value=await response.json();
       if(response.status>=500)throw new Error('确认结果未明，请重试原确认');
       setPending(null);sessionStorage.removeItem(pendingKey);
-      if(!response.ok){setError(typeof value.detail==='string'?value.detail:JSON.stringify(value.detail));await refresh();return;}
+      if(!response.ok){setError(costErrors[value.detail]??'费用登记未通过校验，请核对生效区间、费用格式及适用账户。');await refresh();return;}
       setHistory(value);setConfirmed(false);setSourceText('');await refresh();
     }catch(e){setError(`${String(e)}${sessionStorage.getItem(pendingKey)?'；已保留原内容，可重试找回回执。':''}`);}finally{setBusy(false);}
   }
