@@ -85,6 +85,7 @@ class ForwardArchive:
                 CREATE TABLE IF NOT EXISTS research_forward_assessments(id TEXT PRIMARY KEY, freeze_id TEXT NOT NULL,value TEXT NOT NULL);
             ''')
         self.last_worker_check = None
+        self.action_windows = None
         self.recovery = lambda: {'state':'NOT_RESTORED'}
 
     def plan(self, freeze_id):
@@ -123,7 +124,9 @@ class ForwardArchive:
         from pathlib import Path
         import hashlib
         from roll.market.post_close_packet import code as packet_code
+        from roll.market.action_window import fingerprint as action_window_code
         return fingerprint({'forward':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
+            'action_window':action_window_code(),
             'post_close_packet':packet_code(),
             'prospective':hashlib.sha256(Path(__file__).with_name('prospective.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest()})
 
@@ -146,6 +149,10 @@ class ForwardArchive:
         stock=self.prospective.post_close.stock_suspensions.receipts(plans[0]['plan_id'],checked)
         company=self.prospective.post_close.company_contracts.receipts(plans[0]['plan_id'],checked)
         rows,gaps,_=self.prospective.post_close.inputs(versions,symbol,checked,attempts,audits,suspension,stock,company)
+        if self.action_windows:
+            action_inputs=self.action_windows.consume(plans[0]['plan_id'],plan['protocol_id'],checked)
+            rows=self.action_windows.enrich_rows(rows,action_inputs)
+            gaps=sorted(set(gaps+action_inputs['gaps']))
         return rows,gaps
 
     def sessions(self, frozen, first, last, gaps=None):

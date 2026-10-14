@@ -38,6 +38,7 @@ from roll.market.post_close_packet import PacketCommand, ObligationCommand
 from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand
 from roll.market.sse_company_actions import CompanyActionPages
 from roll.market.sse_action_assessments import ActionAssessments,ActionAssessmentCommand,ActionPacketCommand
+from roll.market.action_window import ActionWindows,ActionWindowCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
@@ -46,6 +47,7 @@ from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,Poli
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.decisions.capabilities import Capabilities, GrantCommand, LifecycleCommand
 from roll.decisions.actions import Actions, EvaluationCommand
+from roll.decisions.broker_costs import BrokerCosts, BrokerCostConfirmation, BrokerCostEstimate
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
@@ -229,7 +231,9 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     price_quotes=PriceQuotes(prospective)
     company_actions=CompanyActionPages(prospective)
     action_assessments=ActionAssessments(company_actions,price_quotes)
+    action_windows=ActionWindows(action_assessments)
     forward=ForwardArchive(shadow,prospective,review_clock)
+    forward.action_windows=action_windows
     app.state.forward=forward
 
     @app.post('/api/research/complete-freezes/{freeze_id}/forward',status_code=201)
@@ -331,6 +335,15 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/collections/{plan_id}/sse-action-packets/{packet_id}')
     def sse_action_packet_query(plan_id:str,packet_id:str):return action_assessments.packet(plan_id,packet_id)
 
+    @app.post('/api/research/collections/{plan_id}/action-window-packets',status_code=201)
+    def action_window_build(plan_id:str,command:ActionWindowCommand):return action_windows.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/action-window-packets/{packet_id}')
+    def action_window_packet(plan_id:str,packet_id:str):return action_windows.packet(plan_id,packet_id)
+
+    @app.get('/api/research/collections/{plan_id}/action-window-inputs')
+    def action_window_inputs(plan_id:str,protocol_id:str):return action_windows.consume(plan_id,protocol_id)
+
     @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)
     def sse_price_assess(plan_id:str,command:PriceQuoteCommand):
         return price_quotes.assess(plan_id,command)
@@ -369,6 +382,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
+        if action_windows.saved_packet(packet_id):
+            return action_windows.replay(packet_id)
         if action_assessments.saved_packet(packet_id):
             return action_assessments.replay(packet_id)
         if price_quotes.saved_packet(packet_id):
@@ -934,6 +949,23 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         source = market.rules.source(source_id)
         return FileResponse(market.rules.directory / source['archive_path'], media_type='application/octet-stream', filename=source['file'],headers={'X-Content-Type-Options':'nosniff'})
     funding = Funding(ledger)
+    broker_costs = BrokerCosts(ledger, funding, evidence)
+
+    @app.post('/api/actions/broker-costs/confirm', status_code=201)
+    def confirm_broker_costs(command: BrokerCostConfirmation):
+        return broker_costs.confirm(command)
+
+    @app.get('/api/actions/broker-costs')
+    def current_broker_costs():
+        return broker_costs.listing()
+
+    @app.get('/api/actions/broker-costs/versions/{version}')
+    def broker_cost_version(version: int):
+        return broker_costs.get(version)
+
+    @app.post('/api/actions/broker-costs/estimate')
+    def estimate_broker_costs(command: BrokerCostEstimate):
+        return broker_costs.preview(command)
 
     if os.environ.get("ROLL_ENV") == "test":
         @app.post("/api/testing/funding-loss-samples")
@@ -995,6 +1027,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return capability_service.verify_proof(proof_id)
 
     actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
+    actions.broker_costs = broker_costs
     capability_service.actions = actions
     from roll.decisions.notifications import Notifications, ReadNotice
     from roll.runtime.notification_channel import NotificationChannel
