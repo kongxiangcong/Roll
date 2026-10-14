@@ -158,3 +158,42 @@ def test_unknown_state_and_calendar_gaps_never_become_hold_or_distant_open_fills
         assert distant['evaluations'][-1]['actions'][0]['action'] == 'WAIT'
         assert client.post(gap_path+'/shadow/replay').json()['matches_original'] is True
         assert client.post(gap_path+'/shadow/advance', json=frame(4, evidence_kind='REAL_ACQUISITION')).status_code == 422
+
+
+def test_blocked_original_horizon_cannot_sell_added_lot_on_a_later_session(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        frozen = predecessor(client, tmp_path)
+        proposal = register(client, frozen).json()
+        receipt = migration(client, proposal, 'SSE:600519', 100, 3).json()
+        baseline = position('SSE:600519', 100, receipt, 3)
+        baseline['sellable_quantity'] = 0
+        successor = freeze_successor(client, proposal, [baseline]).json()
+        path = '/api/research/policy-successor-freezes/'+successor['successor_freeze_id']
+        for session in [1, 2, 3]:
+            response = client.post(path+'/shadow/advance', json=frame(session))
+            assert response.status_code == 201, response.text
+        response = client.post(path+'/shadow/advance', json=frame(4))
+        assert response.status_code == 201, response.text
+        state = response.json()
+        assert [(event['kind'], event['quantity']) for event in state['events']] == [('BUY_FILL', 100)]
+        assert [(p['quantity'], p['exit_session'], p['baseline']) for p in state['positions']] == [(100, 3, True), (100, 23, False)]
+        assert state['cash_yuan'] == '8993.99'
+        assert any(gap['reason'] == 'SELLABLE_QUANTITY_UNKNOWN_OR_INSUFFICIENT' for gap in state['gaps'])
+        assert client.post(path+'/shadow/replay').json()['matches_original'] is True
+
+
+def test_successor_freeze_refuses_split_baseline_instead_of_rewriting_added_horizon(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        frozen = predecessor(client, tmp_path)
+        proposal = register(client, frozen).json()
+        receipt = migration(client, proposal, 'SSE:600519', 100, 20).json()
+        split = position('SSE:600519', 100, receipt)
+        split['original_remaining_quantity'] = 0
+        split['added_lots'] = [{'lot_id': 'research-added', 'quantity': 100, 'entry_session': 4, 'exit_session': 24}]
+        response = freeze_successor(client, proposal, [split], starting_session=5)
+        assert response.status_code == 422, response.text
+        assert response.json()['detail'] == 'SUCCESSOR_BASELINE_REQUIRES_ORIGINAL_MIGRATION_LOT'
+        normal = position('SSE:600519', 100, receipt)
+        response = freeze_successor(client, proposal, [normal])
+        assert response.status_code == 201, response.text
+        assert response.json()['baseline']['positions'][0]['original_exit_session'] == 20
