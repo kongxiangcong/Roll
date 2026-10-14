@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib
 import json
 import shutil
+import sys
 
 workspace = Path(__file__).resolve().parents[4]
 assert workspace.name == 't20-policy-successor'
@@ -15,6 +16,11 @@ def extended(path):
 workspace_long, target_long = extended(workspace), extended(target)
 roots = [p for p in (workspace_long/'.scratch').iterdir() if p.is_dir() and (
     p.name.startswith('policy-') or p.name.startswith('successor-shadow-') or p.name == 'successor-combined-final')]
+requested = set(sys.argv[1:])
+if requested:
+    assert all(name.startswith('successor-shadow-spec-') and '/' not in name and '\\' not in name for name in requested)
+    roots = [root for root in roots if root.name in requested]
+    assert {root.name for root in roots} == requested
 manifest, excluded = [], []
 for root in sorted(roots):
     for source in sorted(root.rglob('*')):
@@ -34,6 +40,17 @@ for root in sorted(roots):
         assert destination.stat().st_size == source.stat().st_size
         assert hashlib.sha256(destination.read_bytes()).hexdigest() == digest
         manifest.append({'path': relative.as_posix(), 'length': source.stat().st_size, 'sha256': digest})
+if requested:
+    prior_file = evidence/'runtime-preservation.json'
+    prior = json.loads(prior_file.read_text(encoding='utf-8'))
+    initial = evidence/'runtime-preservation-initial.json'
+    if not initial.exists():
+        initial.write_text(prior_file.read_text(encoding='utf-8'), encoding='utf-8')
+    prior_rows = {row['path']: row for row in prior['files']}
+    for row in manifest:
+        assert row['path'] not in prior_rows or prior_rows[row['path']] == row
+        prior_rows[row['path']] = row
+    manifest = list(prior_rows.values())
 document = {'source': str(workspace), 'target': str(target), 'files': manifest,
     'file_count': len(manifest), 'bytes': sum(row['length'] for row in manifest),
     'mismatches': 0, 'excluded_credential_paths': excluded}

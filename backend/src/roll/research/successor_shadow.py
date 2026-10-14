@@ -83,7 +83,7 @@ def simulate(frozen, frames):
     def charge(gross, side):
         return Decimal(fees(gross, costs, side)['total_yuan'])
 
-    def execute(symbol, quantity, side, bar, point, bounds, session, order_id):
+    def execute(symbol, quantity, side, bar, point, bounds, session, order_id, target_lot_id=None):
         nonlocal cash
         if not usable(bar):
             return 'MISSING_OR_UNKNOWN_EXECUTION_INPUT'
@@ -120,7 +120,8 @@ def simulate(frozen, frames):
                 'original_exit_session': session + frozen['design']['new_lot_horizon_sessions'],
                 'migration_id': None, 'baseline': False})
         else:
-            eligible = [p for p in lots if p['instrument'] == symbol and p['entry_session'] < session and p['sellable_quantity'] is not None]
+            eligible = [p for p in lots if p['instrument'] == symbol and p['entry_session'] < session and
+                p['sellable_quantity'] is not None and (target_lot_id is None or p['lot_id'] == target_lot_id)]
             if sum(p['sellable_quantity'] for p in eligible) < quantity:
                 return 'SELLABLE_QUANTITY_UNKNOWN_OR_INSUFFICIENT'
             remaining = quantity
@@ -173,7 +174,7 @@ def simulate(frozen, frames):
         for lot in list(lots):
             if lot['exit_session'] <= session:
                 reason = execute(lot['instrument'], lot['quantity'], 'SELL', bars.get(lot['instrument']),
-                    'close_yuan', None, session, 'HORIZON:'+lot['lot_id'])
+                    'close_yuan', None, session, 'HORIZON:'+lot['lot_id'], target_lot_id=lot['lot_id'])
                 if reason:
                     gaps.append({'session': session, 'instrument': lot['instrument'], 'reason': reason,
                         'original_exit_session': lot['exit_session']})
@@ -268,6 +269,8 @@ class SuccessorShadow:
             if len({p.instrument for p in command.positions}) != len(command.positions):
                 raise HTTPException(422, 'DUPLICATE_BASELINE_INSTRUMENT')
             for p in command.positions:
+                if p.added_lots or p.original_remaining_quantity not in (None, p.quantity):
+                    raise HTTPException(422, 'SUCCESSOR_BASELINE_REQUIRES_ORIGINAL_MIGRATION_LOT')
                 row = db.execute('SELECT value FROM research_policy_migrations WHERE id=? AND proposal_id=?', (p.migration_id, proposal_id)).fetchone()
                 if not row:
                     raise HTTPException(409, 'BASELINE_MIGRATION_REQUIRED')
