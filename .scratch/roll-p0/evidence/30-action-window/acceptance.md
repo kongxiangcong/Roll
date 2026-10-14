@@ -32,9 +32,12 @@ The actual read-only `ForwardArchive.rows` consumer uses this same saved protoco
 | Concrete original daily-row consumption | Genuine missing reference_rows RED: 1 failed / 12.44s |
 | Corrected four-case combination | 4 passed / 40.08s |
 | Fixed final affected source | 42 passed / 255.47s: all10 new cases, preserved action successor, full price quote suite, known-obligation read-only forward seam and pure forward features |
+| Integration-tip composition | After merging integration policy/broker implementation into a1098e1: concrete row consumer, fixed IDs/restart and broker cost suite 6 passed / 44.66s; previous42 is not restated as a post-merge full suite |
 
 Initial unprivileged venv discovery failed to resolve the configured host Python and was interrupted; it is not a product RED. One subsequent automatic permission review timed out, its permitted retry succeeded; this was not a safety rejection.
 
 `git diff --exit-code f463dcb` against company-action collector/assessment, price quotes, daily post-close module and the complete `market/reference/` tree passed; `git diff --check` is clean. All seven newly owned METHOD runtime directories were moved only after test completion to the fresh ignored `.roll-data/implementation-evidence/ticket30-action-window-20261014/` target. The exact source/destination file manifests and pre/post SHA256-length comparisons are in `runtime-preservation-receipt.json`: 2558 files, zero differences. SQLite files were byte-hashed only during preservation, never reopened. No old preservation target was read or overwritten. The worktree is retained for independent acceptance.
+
+The separate post-merge composition directory is preserved under the same fresh target with its own `composition-preservation-receipt.json`; the earlier manifest remains unchanged. Frozen source/reference diff checks passed again after integration merge.
 
 The remaining complete-current action inventory/lifecycle, nonempty SG schema, full effective risk/listing/resume/status and daily session/completion/unit semantics require authoritative source evidence unavailable in these saved originals. This implementation does not close Ticket30 first acceptance condition or start Tickets32/33 real clocks.
