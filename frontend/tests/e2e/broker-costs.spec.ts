@@ -1,0 +1,41 @@
+import {test,expect} from '@playwright/test';
+
+test('broker cost basis confirmation, lost response retry and immutable history',async({page})=>{
+  const draft=await(await page.request.post('/api/account/drafts',{data:{kind:'BASELINE',expected_account_version:0,payload:{effective_at:'2026-10-07T10:00:00+08:00',source:'合成费用页面验收',cash_balance:'100000.00',broker_available:'100000.00',broker_frozen:'0.00',withdrawable:null,positions:[],permission_profile:[]}}})).json();
+  expect((await page.request.post('/api/account/confirm',{data:{draft_id:draft.draft_id,idempotency_key:'broker-browser-baseline'}})).ok()).toBeTruthy();
+  expect((await page.request.post('/api/funding/confirm',{data:{expected_version:0,idempotency_key:'broker-browser-funding',authorization:{scope_kind:'ACCOUNT',scope_id:'account-1',purpose:'合成页面验收',capital_amount:'100000.00',total_exposure:'60000.00',single_exposure:'20000.00',cash_reserve:'40000.00',loss_threshold:'5000.00',effective_at:'2026-10-07T10:00:00+08:00',basis:'合成数据',enabled:true}}})).ok()).toBeTruthy();
+  await page.goto('/');await page.getByRole('button',{name:'设置',exact:true}).click();
+  const panel=page.getByRole('region',{name:'券商费用',exact:true});
+  await expect(panel.getByText('尚未登记券商费用',{exact:false})).toBeVisible();
+  await expect(panel.getByLabel('生效时间',{exact:true})).not.toBeVisible();
+  await panel.getByText('登记费用依据与查看历史',{exact:true}).click();
+  await panel.getByLabel('生效时间',{exact:true}).fill('2026-10-01T00:00');
+  await panel.getByLabel('截止时间',{exact:true}).fill('2026-10-31T23:59');
+  await panel.getByLabel('佣金综合费率（小数）',{exact:true}).fill('0.0003');
+  await panel.getByLabel('最低佣金（元）',{exact:true}).fill('5.00');
+  await panel.getByLabel('过户费率（小数）',{exact:true}).fill('0.00001');
+  await panel.getByLabel('依据名称',{exact:true}).fill('合成券商依据');
+  await panel.getByLabel('费用依据原文',{exact:true}).fill('测试原文\n综合佣金万分之三，最低五元。');
+  await expect(panel.getByRole('button',{name:'确认费用依据',exact:true})).toBeDisabled();
+  await panel.getByRole('checkbox').check();
+  // Commit through the real API, then simulate only the lost HTTP response.
+  await page.route('**/api/actions/broker-costs/confirm',async route=>{await route.fetch();await route.fulfill({status:503,contentType:'application/json',body:'{"detail":"synthetic lost response"}'});},{times:1});
+  await panel.getByRole('button',{name:'确认费用依据',exact:true}).click();
+  await expect(panel.getByRole('alert')).toContainText('已保留原内容');
+  await page.reload();await page.getByRole('button',{name:'设置',exact:true}).click();
+  await panel.getByText('登记费用依据与查看历史',{exact:true}).click();
+  await panel.getByRole('button',{name:'重试原确认',exact:true}).click();
+  await expect(panel.getByRole('status')).toContainText('版本 1 · 合成券商依据');
+  const costs=await(await page.request.get('/api/actions/broker-costs')).json();
+  expect(costs.version).toBe(1);expect(costs.versions).toHaveLength(1);
+  expect((await(await page.request.get('/api/capabilities')).json()).state).toBe('UNGRANTED');
+  await panel.getByRole('button',{name:'版本 1',exact:true}).click();
+  await expect(panel.getByRole('status')).toContainText('2026-10-31');
+  await page.screenshot({path:'test-results/broker-costs-settings.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  const sourceText=panel.getByLabel('费用依据原文',{exact:true});
+  await sourceText.scrollIntoViewIfNeeded();await expect(sourceText).toBeVisible();
+  const bounds=await sourceText.boundingBox();
+  expect(bounds!.width).toBeGreaterThan(240);expect(bounds!.x+bounds!.width).toBeLessThanOrEqual(390);
+  await page.screenshot({path:'test-results/broker-costs-mobile.png'});
+});
