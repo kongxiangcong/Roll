@@ -1,6 +1,6 @@
 # 2026-10-14 继续工程验收
 
-集成分支：`codex/roll-p0-integration`。起点 `f463dcb755c4785a6f07842aeb4231bb210f1010`；最终产品合并 `50a1bf4d073b12557e5c47e4890a594cf8e27243`。本轮仅本地提交，没有推送、创建 PR 或签发真实资格。
+集成分支：`codex/roll-p0-integration`。起点 `f463dcb755c4785a6f07842aeb4231bb210f1010`；最终产品合并 `a020be4225beb8d88f62feee7bad2a37862b4922`。本轮仅本地提交，没有推送、创建 PR 或签发真实资格。
 
 ## 已交付代码
 
@@ -24,6 +24,8 @@
 实施者各阶段红/绿、源指纹、运行件保全及失败诊断在各自 receipt；这些独立检查没有替代它们或重新声称完整90 AT/239条/全套软件验收。默认沙箱的 Python/Vite 路径权限失败、Windows 长路径保全失败、旧固定时钟 METHOD 用例失败分别留存；新检查使用新目录、当前固定输入，不把旧失败改写成成功。原始 RED 日志空白不被规范化。
 
 ## 未关闭责任
+
+最终设置流程修复：费用事实登记也接受资金 PAUSED/REVOKED，仍要求精确的当前账户/资金版本；登记不启用资金、不恢复暂停、不改变授权。新增两例先红，实施者两例加相关回归共4 PASS；最终集成独立两例 PASS，见 closed-funding-independent.log。Standards/Spec 窄增量复核均无 actionable findings，见 standards-closed-funding.md 与 spec-closed-funding.md。第五个临时树281份生成文件三端 SHA/长度一致、0所属进程，保全后移除，分支保留；独立 cleanup 收据未覆盖此前四树记录。
 
 20/25：v2 完整经济/统计协议、相应政策验证器与合格后生产派发尚缺；本轮冻结明确 `complete_experiment_frozen=false`，研究状态 UNVALIDATED/INCONCLUSIVE、NOT_GRANTED。正式动作有效期/报价用途时效规则仍未冻结，费用表单不替它们授权。新增规则不能关闭整票。
 

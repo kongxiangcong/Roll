@@ -11,3 +11,5 @@
 结果：四个实施工作树移除，`git worktree list`仅保留主工作区。共享前端node_modules和后端Python环境存在，8914/5914测试端口无监听；没有停止用户服务或删除原未跟踪目录。原脚本及三份脏文档在合并前后保护，协调者自己的追加记录另用独立补丁暂存。
 
 证据：cleanup-content-audit.json、cleanup-result.json、audit_cleanup.py、cleanup_owned_worktrees.ps1；保全数据在 `.roll-data/implementation-evidence/worktree-cleanup-20261014/`。首两次审计失败和全部实施者较早保全记录均保留，不重标单轮成功。
+
+末项资金关闭状态修复另建第五树 `t25-closed-funding`，合入 a020be4 后完整保全281文件/24262790字节，三端核验0差异；精确清单与源/目标逐文件再核验后自动审批通过并清理，无链接、所属进程0。分支保留，工作树列表仍仅主工作区。证据：ticket25-closed-funding-preservation.json、preserve-ticket25-closed-funding.ps1、cleanup_closed_funding.ps1、closed-funding-cleanup-result.json；独立目标 `.roll-data/implementation-evidence/ticket25-closed-funding-20261014/`。
