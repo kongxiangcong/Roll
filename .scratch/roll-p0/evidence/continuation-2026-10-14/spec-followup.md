@@ -1,0 +1,13 @@
+# Spec follow-up — fixed successor slice
+
+Reviewed `git diff 1041842...a23a808cd0a6cf6a99bfd6a1f1f95bfa1060cf2f`, focusing on policy evaluation, successor freeze/shadow, public routes/tests and successor acceptance. Static review only; no tests, actual database, provider, training, SEALED or external calls.
+
+## Findings
+
+**[P2] Scheduled horizon exits can consume another lot.** In `successor_shadow.py`, the horizon loop submits only symbol/quantity to `execute`; SELL chooses every eligible lot for that symbol, sorted by exit session. An original100 lot with sellable quantity0 or UNKNOWN can remain after its horizon while a later ADD100 becomes eligible. The retry can skip the original lot and sell ADD100 instead, although the addition has its own later horizon. Ticket25 requires “政策变化保留持仓迁移安排”; the accepted slice requires “original baseline lot horizon CLOSE independent of ADD lot horizon”, and frozen design says `KEEP_ORIGINAL_LOT_HORIZON_CLOSE`. Bind scheduled CLOSE execution to its specific lot and refuse that lot when its own sellability is insufficient; ordinary position-wide support exits may retain their separate allocation rule. Verify original100 with zero/unknown sellability plus later ADD100 does not liquidate the addition at the original horizon.
+
+**[P2] Freeze silently collapses supplied added-lot horizons.** `SuccessorFreezeCommand.positions` reuses the newly extended `Position`, accepting `added_lots` and `original_remaining_quantity`. Freeze validates only migration position/instrument/full quantity/original exit, while `simulate` initializes one baseline lot for the full quantity at the original exit session. A submitted split baseline is thus accepted but loses its addition's horizon. This conflicts with the same “original baseline lot horizon CLOSE independent of ADD lot horizon” requirement. Either reject those fields for the initial migration-only baseline or validate and construct their separate lots; do not accept and ignore them.
+
+## Previously reported and remaining scope
+
+The original migration-after-ADD P2 is addressed at the public evaluator by explicit remaining-original and added-lot provenance, with follow-up HOLD and original-only EXIT assertions. Model/design/source bindings, progressive frame integrity, unknown-state refusal and opening exposure recheck are present. This assessment does not upgrade the owner's ten tests or establish actual validation. Complete v2 economic/statistical protocol, policy-aware validation and production dispatch remain explicitly unfinished; no ticket completion or real forward start is inferred.

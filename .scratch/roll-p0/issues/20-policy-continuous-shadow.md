@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Completion:** complete
+**Completion:** partial
 
 **Primary acceptance:** AT-39、AT-62、AT-63、AT-74。
 
@@ -37,3 +37,6 @@
 2026-10-11 独立合并验收：修正合入 `b321f40a16bcf7a9ad3d392b7088508f9cce6edb` 后，另建隔离METHOD运行目录，公开API确认非空基线多日持仓守恒、重叠拒绝/成熟诊断、实际账户更新后影子不变、四命名空间分列、重启重放及两类归档损坏拒绝全部通过。12个19模型指纹依赖源码SHA256与长度不变；原版/修正版浏览器运行资料分别保全，各312文件零差异。`Completion: complete` 仅表示本票工程交付，不表示真实统计PASS、前向验证或正式资格。见[独立合并验收](../evidence/continuation-2026-10-11/merge20.md)。
 
 2026-10-11 最终内部规格审阅边界：本票已接受的冻结 BUY/REFUSE 研究政策、连续影子及四命名空间工程结果保持。25 所需 ADD/HOLD/判断型 WAIT、反向/冷却和版本化持仓迁移仍无已登记冻结政策，不能从本票 complete 推导其实现或真实授权。政策扩展须先有明确版本化契约及验证，当前不创造金融规则；25 整票回 partial，31 保留该先决缺口。见[最终双轴审阅](../evidence/continuation-2026-10-11/final-review/review.md)第5项。
+
+
+2026-10-14 本轮继续工程独立接受：新增后继研究政策、不可变迁移及原持仓/ADD批次各自期限，独立政策/模拟冻结和连续 METHOD 影子。迁移后续数量、损坏帧、UNKNOWN/错过交易日、OPEN暴露及两项期限P2均完成公共入口验证和审阅闭合。既有v1接受证据保留；新增v2仍缺完整经济/统计协议、对应验证器和合格后生产派发，不能把 policy_and_simulation_frozen 解释为完整实验。Completion据扩展责任改partial，UNVALIDATED/NOT_GRANTED，旧实际模型/预算不变。见[本轮独立验收](../evidence/continuation-2026-10-14/acceptance.md)。
