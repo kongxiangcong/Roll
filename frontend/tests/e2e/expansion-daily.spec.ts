@@ -1,0 +1,36 @@
+import {test,expect} from '@playwright/test';
+
+test('saved daily evidence and missing admission remain visible without collecting again',async({page,request})=>{
+  const api=process.env.ROLL_TEST_API_PORT??'8010';
+  const created=await request.post(`http://127.0.0.1:${api}/api/research/collections`,{data:{instrument:'SSE:600362',basis:'Isolated browser handoff daily query'}});
+  expect(created.ok()).toBeTruthy();
+  await page.goto('/');
+  await page.getByRole('button',{name:'历史记录',exact:true}).click();
+  await page.getByRole('button',{name:'研究登记',exact:true}).click();
+  await page.getByText('数据源与清洗',{exact:true}).click();
+  await page.getByRole('button',{name:'查看日线与来源缺口'}).click();
+  await expect(page.getByRole('status').filter({hasText:'前向输入尚未准入'})).toBeVisible();
+  await expect(page.getByText('尚无指定日期日线收据',{exact:true})).toBeVisible();
+  await expect(page.getByText('CURRENT_STATUS_LISTING_RELISTING_SOURCE_UNADAPTED',{exact:true})).toBeVisible();
+  await page.setViewportSize({width:390,height:844});
+  await expect(page.getByRole('button',{name:'查看日线与来源缺口'})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/02-daily/mobile.png',fullPage:true});
+  const plan=await created.json();
+  const sources=await (await request.get(`http://127.0.0.1:${api}/api/research/collection-sources`)).json();
+  const source=sources.find((s:{id:string})=>s.id==='sse-dated-daily-statistic');
+  expect((await request.post(`http://127.0.0.1:${api}/api/research/collection-sources/${source.id}/policy`,{data:{enabled:true,expected_revision:source.revision,basis:'Explicit isolated source fixture'}})).ok()).toBeTruthy();
+  const capture=await request.post(`http://127.0.0.1:${api}/api/research/collections/${plan.plan_id}/sse-daily/check`,{data:{basis:'Isolated browser raw archive verification'}});
+  expect(capture.ok()).toBeTruthy();
+  const receipt=await capture.json();
+  expect(receipt.evidence_kind).toBe('METHOD_CASE');
+  await page.getByRole('button',{name:'查看日线与来源缺口'}).click();
+  await page.getByText('2026-10-14 · 已保存日线统计 · 工程样本',{exact:true}).click();
+  await expect(page.getByText('成交 128845200.00 股 · 金额 7005041400.00 元',{exact:true})).toBeVisible();
+  await expect(page.getByText('模型日线用途：未获准',{exact:false})).toBeVisible();
+  const raw=page.getByRole('link',{name:'查看已保存原响应'});
+  expect((await request.get((await raw.getAttribute('href'))!)).ok()).toBeTruthy();
+  const saved=await (await request.get(`http://127.0.0.1:${api}/api/research/collections/${plan.plan_id}/sse-daily-receipts`)).json();
+  expect(saved).toHaveLength(1);
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/02-daily/receipt-mobile.png',fullPage:true});
+});

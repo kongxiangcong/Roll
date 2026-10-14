@@ -1,5 +1,6 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
+import {DailyEvidencePanel} from '../components/daily-evidence-panel';
 
 type Plan={plan_id:string;instrument:string;started_at:string};
 type Readiness={state:string;real_recorded_sessions:number;real_context_sessions:number;batches:number;system_usable:boolean;readiness_basis:string};
@@ -27,6 +28,7 @@ export function Collections(){
     {!plans.length&&<button disabled={busy} onClick={()=>void act(()=>request('/research/collections',{instrument:'SSE:600362',basis:'从现在开始记录江西铜业PIT数据；旧数据只保留，不再搜旧PIT'}))}>开始记录江西铜业</button>}
     {runs.map((r,i)=><p key={i}>虚拟框架 · {r.status==='ENGINEERING_COMPLETE'?'构建完成':r.status} · 开发样本 {r.statistical_support?.development_total??0} / 校准样本 {r.statistical_support?.calibration_total??0} · 重放 {r.replay?.matches_original?'一致':'尚未完成'} · 不具备真实使用资格</p>)}
     <details><summary>数据源与清洗</summary>
+      {plans.map(p=><DailyEvidencePanel key={p.plan_id} planId={p.plan_id} instrument={p.instrument}/>)}
       <table><thead><tr><th>来源</th><th>最近访问</th><th>采集</th></tr></thead><tbody>{sources.map(s=><tr key={s.id}>
         <td>{s.name}</td><td>{s.health.retry_after&&new Date(s.health.retry_after)>new Date()?'失败退避中':s.health.state==='ACQUIRED'?'已取得':s.health.state==='FAILED'?'访问失败':'尚未采集'}</td>
         <td><button disabled={busy} aria-pressed={s.enabled} onClick={()=>void act(()=>request(`/research/collection-sources/${s.id}/policy`,{enabled:!s.enabled,expected_revision:s.revision,basis:s.enabled?'用户暂停该采集来源':'用户启用该采集来源'}))}>{s.enabled?'已启用 · 暂停':'已暂停 · 启用'}</button></td>

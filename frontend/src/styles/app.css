@@ -4,4 +4,6 @@
 .research-results {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
 .research-results article {border:1px solid #dce3ed;border-radius:8px;padding:12px;min-width:0}
 .research-results h4 {color:#245a9b;margin:0 0 8px}
+.daily-evidence{min-width:0;overflow-wrap:anywhere;border-bottom:1px solid #e0e6da;padding:12px 0}
+.daily-evidence details{margin:10px 0}
 @media (max-width:640px) {.research-results {grid-template-columns:1fr}}
