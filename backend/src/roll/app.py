@@ -36,6 +36,7 @@ from roll.market.post_close_packet import PacketCommand, ObligationCommand
 from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand
 from roll.market.sse_company_actions import CompanyActionPages
 from roll.market.sse_action_assessments import ActionAssessments,ActionAssessmentCommand,ActionPacketCommand
+from roll.market.action_window import ActionWindows,ActionWindowCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
@@ -180,7 +181,9 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     price_quotes=PriceQuotes(prospective)
     company_actions=CompanyActionPages(prospective)
     action_assessments=ActionAssessments(company_actions,price_quotes)
+    action_windows=ActionWindows(action_assessments)
     forward=ForwardArchive(shadow,prospective,review_clock)
+    forward.action_windows=action_windows
     app.state.forward=forward
 
     @app.post('/api/research/complete-freezes/{freeze_id}/forward',status_code=201)
@@ -282,6 +285,15 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/collections/{plan_id}/sse-action-packets/{packet_id}')
     def sse_action_packet_query(plan_id:str,packet_id:str):return action_assessments.packet(plan_id,packet_id)
 
+    @app.post('/api/research/collections/{plan_id}/action-window-packets',status_code=201)
+    def action_window_build(plan_id:str,command:ActionWindowCommand):return action_windows.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/action-window-packets/{packet_id}')
+    def action_window_packet(plan_id:str,packet_id:str):return action_windows.packet(plan_id,packet_id)
+
+    @app.get('/api/research/collections/{plan_id}/action-window-inputs')
+    def action_window_inputs(plan_id:str,protocol_id:str):return action_windows.consume(plan_id,protocol_id)
+
     @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)
     def sse_price_assess(plan_id:str,command:PriceQuoteCommand):
         return price_quotes.assess(plan_id,command)
@@ -320,6 +332,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
+        if action_windows.saved_packet(packet_id):
+            return action_windows.replay(packet_id)
         if action_assessments.saved_packet(packet_id):
             return action_assessments.replay(packet_id)
         if price_quotes.saved_packet(packet_id):
