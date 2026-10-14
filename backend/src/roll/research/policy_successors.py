@@ -33,6 +33,14 @@ class MigrationCommand(BaseModel):
     basis: str = Field(min_length=1)
 
 
+class AddedLot(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+    lot_id: str = Field(min_length=1)
+    quantity: int = Field(gt=0)
+    entry_session: int = Field(ge=0)
+    exit_session: int = Field(ge=0)
+
+
 class Position(BaseModel):
     model_config = ConfigDict(extra='forbid', strict=True)
     position_id: str = Field(min_length=1)
@@ -41,6 +49,8 @@ class Position(BaseModel):
     sellable_quantity: int | None = Field(default=None, ge=0)
     original_exit_session: int = Field(ge=0)
     migration_id: str | None = None
+    original_remaining_quantity: int | None = Field(default=None, ge=0)
+    added_lots: list[AddedLot] = Field(default_factory=list)
 
 
 class Opportunity(BaseModel):
@@ -109,15 +119,32 @@ def calculate(proposal, inputs, migrations):
         reasons = []
         action, amount = 'REFUSE', 0
         migration = migrations.get(p.get('migration_id')) if p else None
+        position_lots = []
+        if p:
+            added = p.get('added_lots', [])
+            if len({lot['lot_id'] for lot in added}) != len(added):
+                raise HTTPException(422, 'DUPLICATE_ADDED_LOT')
+            horizon = int(policy['horizon'].removeprefix('HORIZON_SESSION').removesuffix('_CLOSE'))
+            if any(lot['entry_session'] > session or lot['exit_session'] != lot['entry_session'] + horizon for lot in added):
+                raise HTTPException(422, 'ADDED_LOT_HORIZON_OR_TIME_MISMATCH')
+            original_remaining = p.get('original_remaining_quantity')
+            if original_remaining is None:
+                original_remaining = migration['quantity'] if migration else quantity - sum(lot['quantity'] for lot in added)
+            if original_remaining < 0 or original_remaining + sum(lot['quantity'] for lot in added) != quantity:
+                raise HTTPException(409, 'POSITION_MIGRATION_FACTS_MISMATCH')
+            position_lots = [{'lot_id': migration['migration_id'] if migration else p['position_id'],
+                'quantity': original_remaining, 'exit_session': p['original_exit_session']}] + [
+                {k: lot[k] for k in ['lot_id','quantity','exit_session']} for lot in added]
         if migration:
-            if any(migration[key] != p[key] for key in ['position_id', 'instrument', 'quantity', 'original_exit_session']):
+            if (any(migration[key] != p[key] for key in ['position_id', 'instrument', 'original_exit_session']) or
+                    original_remaining > migration['quantity'] or quantity != original_remaining + sum(lot['quantity'] for lot in added)):
                 raise HTTPException(409, 'POSITION_MIGRATION_FACTS_MISMATCH')
             if migration['effective_session'] > session:
                 raise HTTPException(409, 'POSITION_MIGRATION_NOT_YET_EFFECTIVE')
-        bound = bool(p and migration and all(migration[key] == p[key] for key in
-            ['position_id', 'instrument', 'quantity', 'original_exit_session']) and migration['effective_session'] <= session)
-        if p and session >= p['original_exit_session']:
-            action, amount = 'EXIT', quantity
+        bound = bool(p and migration and migration['effective_session'] <= session)
+        expired_quantity = sum(lot['quantity'] for lot in position_lots if lot['exit_session'] <= session)
+        if p and expired_quantity:
+            action, amount = 'EXIT', expired_quantity
             reasons.append('ORIGINAL_HORIZON_REACHED')
         elif probability is None:
             reasons.append('PREDICTION_SUPPORT_UNKNOWN_NO_DEFAULT_HOLD')
@@ -173,7 +200,7 @@ def calculate(proposal, inputs, migrations):
             'target_quantity': quantity + amount if action in {'BUY', 'ADD'} else quantity - amount if action == 'EXIT' else quantity,
             'reserved_cash_yuan': format(required, '.2f'), 'reasons': reasons,
             'original_exit_session': p['original_exit_session'] if p else None,
-            'migration_id': migration['migration_id'] if bound else None})
+            'migration_id': migration['migration_id'] if bound else None, 'position_lots': position_lots})
     actions.sort(key=lambda row: 0 if row['action'] in {'EXIT', 'REDUCE'} else 1)
     return {'actions': actions, 'available_cash_after_reservations_yuan': format(cash, '.2f'),
         'exposure_after_reservations_yuan': format(exposure, '.2f'), 'planned_sale_proceeds_yuan': '0.00'}
