@@ -29,6 +29,7 @@ from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentC
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
 from roll.research.policy_successors import PolicySuccessors,SuccessorCommand,MigrationCommand,PolicyEvaluation
+from roll.research.successor_shadow import SuccessorShadow,SuccessorFreezeCommand,SuccessorAdvanceCommand
 from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
@@ -124,6 +125,27 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     shadow=ShadowLab(research,models)
     app.state.shadow=shadow
     policy_successors = PolicySuccessors(shadow)
+    successor_shadow = SuccessorShadow(policy_successors)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/freezes', status_code=201)
+    def successor_freeze(proposal_id: str, command: SuccessorFreezeCommand):
+        return successor_shadow.freeze(proposal_id, command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}')
+    def successor_freeze_get(freeze_id: str):
+        return successor_shadow.get(freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/shadow/advance', status_code=201)
+    def successor_shadow_advance(freeze_id: str, command: SuccessorAdvanceCommand):
+        return successor_shadow.advance(freeze_id, command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/shadow')
+    def successor_shadow_current(freeze_id: str):
+        return successor_shadow.current(freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/shadow/replay')
+    def successor_shadow_replay(freeze_id: str):
+        return successor_shadow.replay(freeze_id)
 
     @app.post('/api/research/policy-successors', status_code=201)
     def policy_successor_register(command: SuccessorCommand):

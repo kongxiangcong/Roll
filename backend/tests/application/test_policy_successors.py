@@ -159,3 +159,37 @@ def test_research_reversal_budget_unknown_support_and_conflicting_history_are_ex
         assert budget['actions'][0]['reasons'] == ['JOINT_CASH_BUDGET']
         assert budget['available_cash_after_reservations_yuan'] == '1000.00'
         assert client.post(path+'/evaluations', json=evaluation(idempotency_key='malicious', system_usable=True)).status_code == 422
+
+
+def test_public_add_followup_preserves_original_and_added_lot_horizons(tmp_path):
+    with TestClient(create_app(tmp_path)) as client:
+        frozen = predecessor(client, tmp_path)
+        proposal = register(client, frozen).json()
+        receipt = migration(client, proposal, 'A', 100, 20).json()
+        path = '/api/research/policy-successors/'+proposal['proposal_id']
+        added = client.post(path+'/evaluations', json=evaluation(
+            positions=[position('A', 100, receipt)], opportunities=[opportunity('A', '0.80')])).json()
+        assert added['actions'][0]['action'] == 'ADD'
+        followup = position('A', 200, receipt)
+        followup['added_lots'] = [{'lot_id': 'simulated-add-fill', 'quantity': 100,
+                                  'entry_session': 4, 'exit_session': 24}]
+        response = client.post(path+'/evaluations', json=evaluation(idempotency_key='hold-added',
+            completed_session=5, positions=[followup], opportunities=[opportunity('A', '0.80')]))
+        assert response.status_code == 201, response.text
+        row = response.json()['actions'][0]
+        assert row['action'] == 'HOLD'
+        assert row['position_lots'] == [{'lot_id': receipt['migration_id'], 'quantity': 100, 'exit_session': 20},
+                                        {'lot_id': 'simulated-add-fill', 'quantity': 100, 'exit_session': 24}]
+        saved = path+'/evaluations/'+response.json()['evaluation_id']
+        assert client.post(saved+'/replay').json()['matches_original'] is True
+        horizon = client.post(path+'/evaluations', json=evaluation(idempotency_key='original-horizon',
+            completed_session=20, positions=[followup], opportunities=[opportunity('A', '0.80')])).json()
+        assert (horizon['actions'][0]['action'], horizon['actions'][0]['quantity']) == ('EXIT', 100)
+        after_original = {**followup, 'quantity': 100, 'original_remaining_quantity': 0}
+        after = client.post(path+'/evaluations', json=evaluation(idempotency_key='after-original-exit',
+            completed_session=21, positions=[after_original], opportunities=[opportunity('A', '0.80')]))
+        assert after.status_code == 201, after.text
+        assert after.json()['actions'][0]['action'] == 'ADD'
+        followup['added_lots'][0]['quantity'] = 200
+        assert client.post(path+'/evaluations', json=evaluation(idempotency_key='wrong-total',
+            completed_session=5, positions=[followup], opportunities=[opportunity('A', '0.80')])).status_code == 409
