@@ -12,6 +12,7 @@ type Integrity={consistent:boolean;archives_checked:number;facts_checked:number}
 export function Collections(){
   const [plans,setPlans]=useState<Plan[]>([]),[states,setStates]=useState<Record<string,Readiness>>({}),[runs,setRuns]=useState<Development[]>([]);
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
+  const [queryRevision,setQueryRevision]=useState(0);
   const [sources,setSources]=useState<Source[]>([]),[cleaning,setCleaning]=useState<Cleaning[]>([]),[integrity,setIntegrity]=useState<Integrity|null>(null);
   async function refresh(){
     const found=await request<Plan[]>('/research/collections');setPlans(found);
@@ -20,7 +21,7 @@ export function Collections(){
     setSources(await request<Source[]>('/research/collection-sources'));setCleaning(await request<Cleaning[]>('/research/collection-cleaning'));
   }
   useEffect(()=>{void refresh().catch(e=>setError(String(e)));},[]);
-  async function act(action:()=>Promise<unknown>){setBusy(true);setError('');try{await action();await refresh();}catch(e){setError(String(e));}finally{setBusy(false);}}
+  async function act(action:()=>Promise<unknown>){setBusy(true);setQueryRevision(v=>v+1);setError('');try{await action();await refresh();}catch(e){setError(String(e));}finally{setBusy(false);}}
   return <section aria-label="前向数据积累"><h3>从现在开始积累数据</h3><p>系统尚不可用。数据取得时点与修订版本持续保存，资料和验证满足后才能启用。</p>
     {plans.map(p=><div key={p.plan_id}><p>{p.instrument} · 起点 {new Date(p.started_at).toLocaleString('zh-CN')}</p>
       {states[p.plan_id]&&<p>真实记录 {states[p.plan_id].real_recorded_sessions} 个交易日 · 当前已知回看 {states[p.plan_id].real_context_sessions} 日 · {states[p.plan_id].batches} 次采集</p>}
@@ -28,7 +29,7 @@ export function Collections(){
     {!plans.length&&<button disabled={busy} onClick={()=>void act(()=>request('/research/collections',{instrument:'SSE:600362',basis:'从现在开始记录江西铜业PIT数据；旧数据只保留，不再搜旧PIT'}))}>开始记录江西铜业</button>}
     {runs.map((r,i)=><p key={i}>虚拟框架 · {r.status==='ENGINEERING_COMPLETE'?'构建完成':r.status} · 开发样本 {r.statistical_support?.development_total??0} / 校准样本 {r.statistical_support?.calibration_total??0} · 重放 {r.replay?.matches_original?'一致':'尚未完成'} · 不具备真实使用资格</p>)}
     <details><summary>数据源与清洗</summary>
-      {plans.map(p=><DailyEvidencePanel key={p.plan_id} planId={p.plan_id} instrument={p.instrument}/>)}
+      {plans.map(p=><DailyEvidencePanel key={`${p.plan_id}:${queryRevision}`} planId={p.plan_id} instrument={p.instrument} disabled={busy}/>)}
       <table><thead><tr><th>来源</th><th>最近访问</th><th>采集</th></tr></thead><tbody>{sources.map(s=><tr key={s.id}>
         <td>{s.name}</td><td>{s.health.retry_after&&new Date(s.health.retry_after)>new Date()?'失败退避中':s.health.state==='ACQUIRED'?'已取得':s.health.state==='FAILED'?'访问失败':'尚未采集'}</td>
         <td><button disabled={busy} aria-pressed={s.enabled} onClick={()=>void act(()=>request(`/research/collection-sources/${s.id}/policy`,{enabled:!s.enabled,expected_revision:s.revision,basis:s.enabled?'用户暂停该采集来源':'用户启用该采集来源'}))}>{s.enabled?'已启用 · 暂停':'已暂停 · 启用'}</button></td>

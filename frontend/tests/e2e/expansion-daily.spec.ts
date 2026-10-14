@@ -33,4 +33,13 @@ test('saved daily evidence and missing admission remain visible without collecti
   const saved=await (await request.get(`http://127.0.0.1:${api}/api/research/collections/${plan.plan_id}/sse-daily-receipts`)).json();
   expect(saved).toHaveLength(1);
   await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/02-daily/receipt-mobile.png',fullPage:true});
+  await page.reload();
+  await page.getByRole('button',{name:'历史记录',exact:true}).click();
+  await page.getByRole('button',{name:'研究登记',exact:true}).click();
+  await page.getByText('数据源与清洗',{exact:true}).click();
+  await page.getByRole('button',{name:'查看日线与来源缺口'}).click();
+  await expect(page.getByText('2026-10-14 · 已保存日线统计 · 工程样本',{exact:true})).toBeVisible();
+  await page.getByRole('row').filter({hasText:source.name}).getByRole('button',{name:'已启用 · 暂停',exact:true}).click();
+  await expect(page.getByText('2026-10-14 · 已保存日线统计 · 工程样本',{exact:true})).not.toBeVisible();
+  await expect(page.getByRole('status').filter({hasText:'前向输入尚未准入'})).not.toBeVisible();
 });

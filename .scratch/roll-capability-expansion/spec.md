@@ -2,7 +2,7 @@
 
 **Status:** ready-for-agent
 **Completion:** pending
-**Execution:** NOT_STARTED — 等待用户在另一会话结束后启动；发布规格与tickets不构成实施启动。
+**Execution:** IN_PROGRESS — 2026-10-15 用户显式启动；2026-10-14“仅发布”的文字为发布时历史边界。
 **Created:** 2026-10-14（Asia/Shanghai）
 
 ## Problem Statement

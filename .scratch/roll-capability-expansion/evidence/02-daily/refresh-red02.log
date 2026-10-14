@@ -1,0 +1,45 @@
+[WebServer] INFO:     Started server process [14760]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8032 (Press CTRL+C to quit)
+[WebServer] (node:10160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:14808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-daily.spec.ts:3:1 › saved daily evidence and missing admission remain visible without collecting again (7.6s)
+
+
+  1) tests\e2e\expansion-daily.spec.ts:3:1 › saved daily evidence and missing admission remain visible without collecting again 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).not.[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  getByText('2026-10-14 · 已保存日线统计 · 工程样本', { exact: true })
+    Expected: not visible
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "not toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('2026-10-14 · 已保存日线统计 · 工程样本', { exact: true })[22m
+    [2m    9 × locator resolved to <summary>2026-10-14 · 已保存日线统计 · 工程样本</summary>[22m
+    [2m      - unexpected value "visible"[22m
+
+
+      41 |   await expect(page.getByText('2026-10-14 · 已保存日线统计 · 工程样本',{exact:true})).toBeVisible();
+      42 |   await page.getByRole('row').filter({hasText:source.name}).getByRole('button',{name:'已启用 · 暂停',exact:true}).click();
+    > 43 |   await expect(page.getByText('2026-10-14 · 已保存日线统计 · 工程样本',{exact:true})).not.toBeVisible();
+         |                                                                                ^
+      44 |   await expect(page.getByRole('status').filter({hasText:'前向输入尚未准入'})).not.toBeVisible();
+      45 | });
+      46 |
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-daily.spec.ts:43:80
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\02-daily\browser-results\expansion-daily-saved-dail-ae6d3-le-without-collecting-again\error-context.md
+
+  1 failed
+    tests\e2e\expansion-daily.spec.ts:3:1 › saved daily evidence and missing admission remain visible without collecting again 

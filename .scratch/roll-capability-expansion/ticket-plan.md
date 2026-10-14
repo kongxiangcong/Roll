@@ -2,7 +2,7 @@
 
 **Status:** ready-for-agent
 **Completion:** pending
-**Execution:** NOT_STARTED
+**Execution:** IN_PROGRESS — 2026-10-15 用户显式启动，按默认单票順序实施；下述发布范围为2026-10-14历史记录。
 **Feature:** roll-capability-expansion
 
 ## 发布范围

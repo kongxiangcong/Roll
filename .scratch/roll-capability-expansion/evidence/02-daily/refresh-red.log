@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [22436]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8032 (Press CTRL+C to quit)
+[WebServer] (node:28828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:14808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-daily.spec.ts:3:1 › saved daily evidence and missing admission remain visible without collecting again (1.0m)
+
+
+  1) tests\e2e\expansion-daily.spec.ts:3:1 › saved daily evidence and missing admission remain visible without collecting again 
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('row').filter({ hasText: '上交所指定交易日日线统计' }).getByRole('button', { name: '已启用 · 暂停', exact: true })[22m
+
+
+      34 |   expect(saved).toHaveLength(1);
+      35 |   await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/02-daily/receipt-mobile.png',fullPage:true});
+    > 36 |   await page.getByRole('row').filter({hasText:source.name}).getByRole('button',{name:'已启用 · 暂停',exact:true}).click();
+         |                                                                                                              ^
+      37 |   await expect(page.getByText('2026-10-14 · 已保存日线统计 · 工程样本',{exact:true})).not.toBeVisible();
+      38 |   await expect(page.getByRole('status').filter({hasText:'前向输入尚未准入'})).not.toBeVisible();
+      39 | });
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-daily.spec.ts:36:110
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\02-daily\browser-results\expansion-daily-saved-dail-ae6d3-le-without-collecting-again\error-context.md
+
+  1 failed
+    tests\e2e\expansion-daily.spec.ts:3:1 › saved daily evidence and missing admission remain visible without collecting again 

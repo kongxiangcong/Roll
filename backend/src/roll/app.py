@@ -15,6 +15,7 @@ from roll.accounts.valuation import Valuations,ValuationRequest
 from roll.accounts.corrections import active_events,fact_command
 from roll.config import data_directory, load_runtime_environment
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
+from roll.market.status_evidence import query as status_evidence_query
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
@@ -367,6 +368,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/collections/{plan_id}/sse-company-contract-receipts')
     def sse_company_contract_receipts(plan_id:str):
         return prospective.post_close.company_contracts.receipts(plan_id)
+
+    @app.get('/api/research/collections/{plan_id}/status-evidence')
+    def status_evidence(plan_id:str,known_by:datetime=Query(...)):
+        return status_evidence_query(prospective.post_close,plan_id,known_by)
 
     @app.post('/api/research/collections/{plan_id}/sse-company-contract/check',status_code=201)
     def sse_company_contract_worker(plan_id:str,command:PacketCommand):

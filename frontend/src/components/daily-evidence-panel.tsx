@@ -7,7 +7,7 @@ type Receipt={receipt_id:string;host_date:string;status:string;evidence_kind:str
   response:{archive:{sha256:string;received_at:string};original_complete:boolean}};
 type SourceGaps={instrument:string;forward_admissible:boolean;gaps:string[];source_gaps:string[];dated_daily_receipts:Receipt[]};
 
-export function DailyEvidencePanel({planId,instrument}:{planId:string;instrument:string}){
+export function DailyEvidencePanel({planId,instrument,disabled=false}:{planId:string;instrument:string;disabled?:boolean}){
   const [value,setValue]=useState<SourceGaps|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
   async function inspect(){
     setBusy(true);setError('');setValue(null);
@@ -15,7 +15,7 @@ export function DailyEvidencePanel({planId,instrument}:{planId:string;instrument
     catch(e){setError(String(e));}finally{setBusy(false);}
   }
   return <div className="daily-evidence">
-    <p>{instrument}</p><button disabled={busy} onClick={()=>void inspect()}>查看日线与来源缺口</button>
+    <p>{instrument}</p><button disabled={busy||disabled} onClick={()=>void inspect()}>查看日线与来源缺口</button>
     {error&&<p role="alert">{error}</p>}
     {value&&<>
       <p role="status">{value.forward_admissible?'当前前向输入已准入':'前向输入尚未准入'}</p>
