@@ -44,6 +44,7 @@ from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,Poli
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.decisions.capabilities import Capabilities, GrantCommand, LifecycleCommand
 from roll.decisions.actions import Actions, EvaluationCommand
+from roll.decisions.broker_costs import BrokerCosts, BrokerCostConfirmation, BrokerCostEstimate
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
@@ -885,6 +886,23 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         source = market.rules.source(source_id)
         return FileResponse(market.rules.directory / source['archive_path'], media_type='application/octet-stream', filename=source['file'],headers={'X-Content-Type-Options':'nosniff'})
     funding = Funding(ledger)
+    broker_costs = BrokerCosts(ledger, funding, evidence)
+
+    @app.post('/api/actions/broker-costs/confirm', status_code=201)
+    def confirm_broker_costs(command: BrokerCostConfirmation):
+        return broker_costs.confirm(command)
+
+    @app.get('/api/actions/broker-costs')
+    def current_broker_costs():
+        return broker_costs.listing()
+
+    @app.get('/api/actions/broker-costs/versions/{version}')
+    def broker_cost_version(version: int):
+        return broker_costs.get(version)
+
+    @app.post('/api/actions/broker-costs/estimate')
+    def estimate_broker_costs(command: BrokerCostEstimate):
+        return broker_costs.preview(command)
 
     if os.environ.get("ROLL_ENV") == "test":
         @app.post("/api/testing/funding-loss-samples")
@@ -946,6 +964,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return capability_service.verify_proof(proof_id)
 
     actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
+    actions.broker_costs = broker_costs
     capability_service.actions = actions
     from roll.decisions.notifications import Notifications, ReadNotice
     from roll.runtime.notification_channel import NotificationChannel

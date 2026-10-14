@@ -14,6 +14,7 @@ from roll.accounts.reconcile import UseCheck, use_check
 from roll.decisions.funding import LossFacts, evaluate_loss
 from roll.research.shadow import calculate_policy
 from roll.research.risk_policy import calculate as calculate_risk
+from roll.decisions.broker_costs import VALIDITY_GAP
 
 
 def fingerprint(value):
@@ -63,6 +64,7 @@ class Actions:
         funding = self.funding.current(db=db)
         previous = db.execute('SELECT value FROM action_loss_state WHERE scope=?', (encode([funding.get('scope_kind'), funding.get('scope_id'), funding.get('loss_origin_at')]),)).fetchone()
         return {'account': account, 'funding': funding, 'loss_state': json.loads(previous[0]) if previous else None,
+                'broker_cost_state': self.broker_costs.listing(db) if hasattr(self, 'broker_costs') else None,
                 'execution_intents': self.execution_intents.listing(db) if hasattr(self, 'execution_intents') else {'intents': [], 'unreflected_reservation_yuan': '0.00', 'pending_attribution': False},
                 'capabilities': self.capabilities.current(db=db),
                 'data_state': self.data_state(db, account), 'checked_at': now()}
@@ -77,6 +79,8 @@ class Actions:
             return 'CURRENT_DATA_OR_LIST_CHANGED_BEFORE_PUBLICATION'
         if boundary['execution_intents'] != inputs['execution_intents']:
             return 'CURRENT_EXECUTION_OCCUPANCY_CHANGED_BEFORE_PUBLICATION'
+        if not inputs.get('method_capture') and boundary.get('broker_cost_state') != inputs.get('broker_cost_state'):
+            return 'CURRENT_BROKER_COST_CHANGED_BEFORE_PUBLICATION'
         loss = (result.get('joint_budget') or {}).get('loss')
         if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'):
             return 'CURRENT_LOSS_BOUNDARY_CHANGED_BEFORE_PUBLICATION'
@@ -150,16 +154,19 @@ class Actions:
                 quote, identity = observation.get('quote') or {}, observation.get('identity') or {}
                 rule = self.evidence.market.rules.rule(identity.get('exchange'), identity.get('board'), identity.get('instrument_type'))
                 upper = str(Decimal(quote['last']) * (1 + Decimal(rule.get('normal_price_limit_percent', '0')) / 100)) if quote.get('last') else None
+                cost = self.broker_costs.estimate(boundary['broker_cost_state'], account, funding, identity, upper,
+                    frozen['policy']['quantity'], required, boundary['checked_at'])
                 opportunities.append({'instrument': forecast['instrument'], 'forecast_id': forecast['forecast_id'],
                     'probability': forecast['probability'], 'quantity': frozen['policy']['quantity'],
-                    'price_lower_yuan': quote.get('last'), 'price_upper_yuan': upper, 'fees_yuan': None,
+                    'price_lower_yuan': quote.get('last'), 'price_upper_yuan': upper, 'fees_yuan': cost['fees_yuan'],
+                    'cost_binding': cost['cost_binding'],
                     'quote_at': quote.get('upstream_at'), 'quote_available_at': quote.get('available_at'),
                     'cumulative_volume': quote.get('volume'), 'forecast_cutoff': forecast['observation_cutoff'],
                     'forecast_horizon': forecast['horizon_sessions'], 'daily_completion': 'COMPLETE' if forecast['feature_snapshot'].get('complete') is True else 'UNVERIFIED',
                     'rule_id': rule.get('rule_id'), 'rule_status': rule['implementation_status'],
                     'market_status': quote.get('current_status'), 'market': identity.get('exchange'), 'board': identity.get('board'),
                     'calendar_open': self.evidence.market.rules.calendar(identity.get('exchange'), datetime.fromisoformat(required).date()).get('is_trading_day'),
-                    'input_gaps': ['ACTUAL_BROKER_COST_NOT_CONFIRMED'], 'forecast_namespace': forecast['namespace'],
+                    'input_gaps': [*cost['limitations'], VALIDITY_GAP], 'forecast_namespace': forecast['namespace'],
                     'artifact_fingerprints': forecast['artifact_fingerprints']})
             try:
                 valuation = self.valuations.get()
@@ -176,6 +183,8 @@ class Actions:
             packet['risk_inputs'] = risk_inputs
             packet['risk_policy_id'] = risk['policy_id']
         return {'command': command.model_dump(), 'account': account, 'funding': funding, 'capabilities': capabilities,
+                'broker_cost_state': boundary['broker_cost_state'] if method is None else None,
+                'method_capture': method is not None,
                 'previous_loss': boundary['loss_state'],
                 'execution_intents': intents,
                 'required_as_of': required, 'observations': observations,
@@ -192,9 +201,12 @@ class Actions:
                 'limitations': ['TECHNICAL_CAPABILITY_UNGRANTED'] if not caps['allowed_actions'] else ['FROZEN_ACTION_INPUT_NOT_AVAILABLE'],
                 'namespace': 'ACTUAL', 'system_usable': False, 'probabilities': [], 'joint_budget': None}
         packet = inputs['packet']
-        if not packet: return base
+        if not packet:
+            if not inputs.get('method_capture'): base['limitations'].append(VALIDITY_GAP)
+            return base
         method = packet['namespace'] == 'METHOD_ENGINEERING'
         base.update(namespace=packet['namespace'], limitations=[], system_usable=not method)
+        if not method: base['limitations'].append(VALIDITY_GAP)
         account, funding = inputs['account'], inputs['funding']
         statuses = caps['grant_statuses']
         def grant_for(kind, instrument, action):
@@ -292,6 +304,7 @@ class Actions:
         for original in packet.get('opportunities', []) if supported_policy else []:
             row = dict(original)
             reasons = [*global_gaps, *row.get('input_gaps', [])]
+            if not method: reasons.append(VALIDITY_GAP)
             if intent_state['pending_attribution']: reasons.append('EXTERNAL_ORDER_OCCUPANCY_ATTRIBUTION_UNKNOWN')
             if any(v['action'] in {'BUY', 'ADD'} and v['status'] not in {'NOT_EXECUTED', 'RESOLVED'} for v in intent_state['intents']): reasons.append('ACTIVE_NEW_ENTRY_INTENT')
             if row['instrument'] not in inputs['data_state']['instruments']: reasons.append('OUTSIDE_CURRENT_FINITE_LIST')
@@ -335,7 +348,8 @@ class Actions:
                         'CURRENT_CUTOFF_NOT_BOUND', 'PURPOSE_DATA_STALE', 'PORTFOLIO_EXPOSURE_UNKNOWN',
                         'RULE_UNKNOWN_OR_UNSUPPORTED', 'CURRENT_SPECIAL_STATUS_UNKNOWN_OR_NOT_NORMAL',
                         'CALENDAR_CLOSED_OR_UNKNOWN', 'DAILY_INPUT_INCOMPLETE_INTRADAY_VOLUME_EXCLUDED',
-                        'QUOTE_STALE_FOR_PURPOSE', 'PRICE_OR_FEES_UNKNOWN'}]
+                        'QUOTE_STALE_FOR_PURPOSE', 'PRICE_OR_FEES_UNKNOWN', VALIDITY_GAP,
+                        'ACTUAL_BROKER_COST_NOT_CONFIRMED'} or r.startswith('BROKER_COST_')]
                     if not loss or loss['status'] == 'RESTRICTED':
                         data_reasons.append('LOSS_BOUNDARY_UNAVAILABLE_OR_PAUSED')
                     model_scope_failed = any(r in row['reasons'] for r in ('FORECAST_HORIZON_OUTSIDE_POLICY', 'RESEARCH_FORECAST_NOT_CURRENT_FORMAL_INPUT'))
@@ -389,6 +403,7 @@ class Actions:
             boundary = self.boundary(db)
             refusal = self.publication_refusal(inputs, boundary, result)
             publication = {'account_version': boundary['account']['version'], 'funding_version': boundary['funding']['version'],
+                           'broker_cost_fingerprint': fingerprint(boundary.get('broker_cost_state')) if not inputs.get('method_capture') else None,
                            'capability_fingerprint': fingerprint(boundary['capabilities']),
                            'data_fingerprint': boundary['data_state']['fingerprint'],
                            'peak_loss': (boundary['loss_state'] or {}).get('peak_loss'),
@@ -466,6 +481,15 @@ class Actions:
             if datetime.fromisoformat(decision['expires_at']) <= datetime.fromisoformat(boundary['checked_at']): reasons.append('EXPIRED')
             if value['code_fingerprint'] != code(): reasons.append('ACTION_CODE_CHANGED')
             if decision['dependencies']['data_fingerprint'] != current_data['fingerprint']: reasons.append('DATA_OR_LIST_CHANGE')
+            cost_binding = decision.get('cost_binding')
+            if cost_binding:
+                cost = (boundary.get('broker_cost_state') or {}).get('current')
+                if not cost or cost['version'] != cost_binding['version'] or cost['contract_fingerprint'] != cost_binding['contract_fingerprint']:
+                    reasons.append('BROKER_COST_VERSION_CHANGE')
+                elif datetime.fromisoformat(cost_binding['effective_until']) <= datetime.fromisoformat(boundary['checked_at']):
+                    reasons.append('BROKER_COST_EXPIRED')
+                if (boundary.get('broker_cost_state') or {}).get('current_reasons'):
+                    reasons.extend(boundary['broker_cost_state']['current_reasons'])
             loss = (value.get('joint_budget') or {}).get('loss')
             if loss and boundary['loss_state'] and Decimal(boundary['loss_state'].get('peak_loss') or '0') > Decimal(loss.get('peak_loss') or '0'): reasons.append('LOSS_BOUNDARY_CHANGE')
             if reasons:
