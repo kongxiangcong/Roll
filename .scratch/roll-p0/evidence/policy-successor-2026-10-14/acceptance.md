@@ -1,0 +1,11 @@
+# Policy successor research engineering
+
+Base f463dcb755c4785a6f07842aeb4231bb210f1010; branch codex/t20-policy-successor. Current public FastAPI/real isolated SQLite file: **4 passed / 72.10 seconds**, exit 0, [final.log](final.log). Registration/proposal, migrations, HOLD/ADD/EXIT/WAIT, stable cash reservation, unchanged predecessor, restart/replay, reversal cooldown, no migration/no support/no sellable quantity, joint cash refusal and client qualification flag rejection covered.
+
+TDD phase evidence: initial sandbox uv interpreter resolution printed failure and hung, stopped with Ctrl-C; this was a harness failure and yielded no red case. Registration subsequently passed 1/22.72s. Migration route 404 red 1/19.59s → green 1/20.78s. Original migration exit override returned EXIT100 red 1/18.38s → fixed current 3/52.81s. Contradictory same-session BUY/EXIT history returned BUY200 red 1/17.81s → green 1/18.76s. Counts are separate runs, not cumulative acceptance.
+
+Registration derives entry/support threshold, target lot, exposure and original horizon from checked predecessor policy. Low-support exit and one completed-session reversal cooldown are explicit unvalidated technical proposals. Position migration is immutable and bound to original quantity, original exit session and prospective effective session. No planned sale proceeds enter budget. Inputs are untrusted research samples; caller-declared session ordinals are not verified trading-calendar evidence.
+
+Namespace RESEARCH_POLICY_PROPOSAL, validation UNVALIDATED, NOT_GRANTED/system_usable=false. No ACTUAL consumer exists. This closes an implementable proposal/calculator slice, **not ticket20/25 overall**. Next required engineering: separately frozen successor policy/model/design/source, policy-aware continuous shadow and economic validation, then matching-qualified-policy current capture. Actual qualification remains closed. No actual training/source requests/SEALED/account or notifications; synthetic METHOD predecessor training occurred only in fresh test directories as explicitly authorized.
+
+Old shadow/model/execution source SHA256 and length agree with integration, [protected-sources.json](protected-sources.json). No old artifacts or historical frozen protocol changed; app registration and a new module are the only production code changes. Root dirty files are untouched.
