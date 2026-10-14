@@ -28,6 +28,7 @@ from roll.research.reconstruction import ReconstructionCommand,reconstruct
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
+from roll.research.policy_successors import PolicySuccessors,SuccessorCommand,MigrationCommand,PolicyEvaluation
 from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
@@ -123,6 +124,32 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.models=models
     shadow=ShadowLab(research,models)
     app.state.shadow=shadow
+    policy_successors = PolicySuccessors(shadow)
+
+    @app.post('/api/research/policy-successors', status_code=201)
+    def policy_successor_register(command: SuccessorCommand):
+        return policy_successors.register(command)
+
+    @app.get('/api/research/policy-successors/{proposal_id}')
+    def policy_successor_get(proposal_id: str):
+        return policy_successors.get(proposal_id)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/migrations', status_code=201)
+    def policy_successor_migrate(proposal_id: str, command: MigrationCommand):
+        return policy_successors.migrate(proposal_id, command)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/evaluations', status_code=201)
+    def policy_successor_evaluate(proposal_id: str, command: PolicyEvaluation):
+        return policy_successors.evaluate(proposal_id, command)
+
+    @app.get('/api/research/policy-successors/{proposal_id}/evaluations/{evaluation_id}')
+    def policy_successor_evaluation(proposal_id: str, evaluation_id: str):
+        return policy_successors.evaluation(proposal_id, evaluation_id)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/evaluations/{evaluation_id}/replay')
+    def policy_successor_replay(proposal_id: str, evaluation_id: str):
+        return policy_successors.replay(proposal_id, evaluation_id)
+
     validation=AutomaticValidation(shadow)
     app.state.validation=validation
 
