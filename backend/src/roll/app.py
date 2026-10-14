@@ -16,6 +16,7 @@ from roll.accounts.corrections import active_events,fact_command
 from roll.config import data_directory, load_runtime_environment
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.market.status_evidence import query as status_evidence_query
+from roll.market.action_evidence import query as action_evidence_query
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
@@ -327,6 +328,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/collections/{plan_id}/sse-action-assessments')
     def sse_action_assessment_query(plan_id:str):return action_assessments.assessments(plan_id)
 
+    @app.get('/api/research/collections/{plan_id}/action-evidence')
+    def action_evidence(plan_id:str,known_by:datetime|None=Query(None)):
+        return action_evidence_query(action_assessments,plan_id,known_by)
+
     @app.get('/api/research/collections/{plan_id}/sse-action-assessments/current')
     def sse_action_current(plan_id:str):return action_assessments.current(plan_id)
 
@@ -370,7 +375,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return prospective.post_close.company_contracts.receipts(plan_id)
 
     @app.get('/api/research/collections/{plan_id}/status-evidence')
-    def status_evidence(plan_id:str,known_by:datetime=Query(...)):
+    def status_evidence(plan_id:str,known_by:datetime|None=Query(None)):
         return status_evidence_query(prospective.post_close,plan_id,known_by)
 
     @app.post('/api/research/collections/{plan_id}/sse-company-contract/check',status_code=201)

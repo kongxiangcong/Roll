@@ -30,6 +30,9 @@ def test_status_evidence_preserves_reported_listing_and_historical_unknown(tmp_p
         earlier=client.get(base+'/status-evidence',params={'known_by':'2026-10-11T17:59:59+08:00'}).json()
         assert earlier['receipt_ids']==[] and earlier['state']=='UNKNOWN'
         assert len(calls)==2
+        current=client.get(base+'/status-evidence')
+        assert current.status_code==200,current.text
+        assert current.json()['company_observations'][0]['company_state_reported']=='上市'
     with TestClient(create_app(tmp_path,market_transport=transport,runtime_role='API')) as client:
         assert client.get(base+'/status-evidence',params={'known_by':stamp}).json()==value
         assert client.get('/api/account').json()['version']==0

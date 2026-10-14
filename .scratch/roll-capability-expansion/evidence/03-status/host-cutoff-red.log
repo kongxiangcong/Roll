@@ -1,0 +1,43 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_status_evidence_preserves_reported_listing_and_historical_unknown ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/03-status/host-cutoff-red-data/test_status_evidence_preserves0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002D33CCAD220>
+
+    def test_status_evidence_preserves_reported_listing_and_historical_unknown(tmp_path,monkeypatch):
+        stamp='2026-10-11T18:00:00+08:00'
+        for module in ['roll.market.post_close_packet','roll.market.sse_company_contract','roll.research.prospective','roll.market.evidence']:
+            monkeypatch.setattr(module+'.now',lambda:stamp)
+        snap={'code':'600362','date':20261009,'time':150004,'snap':['����ͭҵ',44.01,1,.44,1234567.89,12345,43,43.57,[],[],45,42,' E1 ',125,0,3,0,48,39,None,0,'opaque-status','opaque-limit','']}
+        company={'sqlId':'COMMON_SSE_CP_GPJCTPZ_GPLB_GPGK_GSGK_C','isPagination':'false','result':[{'COMPANY_CODE':'600362','A_STOCK_CODE':'600362','SEC_TYPE':'����A','STATE_CODE_A_DESC':'����','A_LIST_DATE':'2002-01-11','STATUS_A':'opaque'}]}
+        calls=[]
+        def source(request):
+            calls.append(request)
+            return httpx.Response(200,content=json.dumps(snap if request.url.host=='yunhq.sse.com.cn' else company,ensure_ascii=False).encode())
+        transport=httpx.MockTransport(source)
+        with TestClient(create_app(tmp_path,market_transport=transport,runtime_role='API')) as client:
+            plan=client.post('/api/research/collections',json={'instrument':'SSE:600362','basis':'Isolated state query'}).json()
+            base='/api/research/collections/'+plan['plan_id']
+            receipt=client.post(base+'/sse-company-contract',json={'basis':'Pinned state evidence fixture'}).json()
+            query=client.get(base+'/status-evidence',params={'known_by':stamp})
+            assert query.status_code==200,query.text
+            value=query.json()
+            assert value['state']=='UNKNOWN' and not value['negative_coverage_verified']
+            assert value['company_observations'][0]['company_state_reported']=='����'
+            assert value['company_observations'][0]['effective_at'] is None
+            assert value['receipt_ids']==[receipt['receipt_id']]
+            assert value['network_calls']==0 and value['capability']=='NOT_GRANTED'
+            earlier=client.get(base+'/status-evidence',params={'known_by':'2026-10-11T17:59:59+08:00'}).json()
+            assert earlier['receipt_ids']==[] and earlier['state']=='UNKNOWN'
+            assert len(calls)==2
+            current=client.get(base+'/status-evidence')
+>           assert current.status_code==200,current.text
+E           AssertionError: {"detail":[{"type":"missing","loc":["query","known_by"],"msg":"Field required","input":null}]}
+E           assert 422 == 200
+E            +  where 422 = <Response [422 Unprocessable Content]>.status_code
+
+backend\tests\application\test_status_evidence_query.py:34: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_status_evidence_query.py::test_status_evidence_preserves_reported_listing_and_historical_unknown
+1 failed in 7.41s

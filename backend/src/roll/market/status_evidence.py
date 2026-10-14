@@ -4,6 +4,7 @@ from fastapi import HTTPException
 
 
 def query(post_close, plan_id, known_by):
+    known_by=known_by or datetime.now(timezone.utc)
     if known_by.tzinfo is None:
         raise HTTPException(422,'STATUS_KNOWLEDGE_CUTOFF_REQUIRES_TIMEZONE')
     if known_by > datetime.now(timezone.utc):

@@ -17,7 +17,7 @@
 | [01 · 交接基线与既有能力继承](issues/01-handoff-baseline.md) | complete | 交接映射与当前有限兼容检查3 PASS/35.84s；真实服务当前不可访问 |
 | [02 · 完整日线用途与来源缺口补齐](issues/02-daily-evidence.md) | partial | 已继承采集/重放，页面查询和Chrome/手机/构建通过；完整session/RAW修订依据不足 |
 | [03 · 有效交易状态与未知覆盖](issues/03-status-evidence.md) | partial | 截止查询/单股来源区/API2 PASS及Chrome通过；全状态与否定覆盖依据不足 |
-| [04 · 公司行动版本与义务证据](issues/04-action-lifecycle.md) | pending | 已发布，未实施 |
+| [04 · 公司行动版本与义务证据](issues/04-action-lifecycle.md) | partial | 截止版本/旧义务查询和单股原件链已验收，生命周期和完整覆盖待证 |
 | [05 · 后继政策完整冻结与验证消费者](issues/05-policy-freeze-validation.md) | pending | 已发布，未实施 |
 | [06 · 当前动作有效期与政策派发](issues/06-current-action-validity.md) | pending | 已发布，未实施 |
 | [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | pending | 已发布，未实施 |

@@ -12,8 +12,8 @@ export function StatusEvidencePanel({instrument}:{instrument:string}){
     setBusy(true);setError('');setRows([]);setQueried(false);
     try{
       const plans=await request<{plan_id:string;instrument:string}[]>('/research/collections');
-      const knownBy=cutoff?new Date(cutoff).toISOString():new Date().toISOString();
-      const results=await Promise.all(plans.filter(p=>p.instrument===instrument).map(p=>request<Evidence>(`/research/collections/${p.plan_id}/status-evidence?known_by=${encodeURIComponent(knownBy)}`)));
+      const params=cutoff?`?known_by=${encodeURIComponent(new Date(cutoff).toISOString())}`:'';
+      const results=await Promise.all(plans.filter(p=>p.instrument===instrument).map(p=>request<Evidence>(`/research/collections/${p.plan_id}/status-evidence${params}`)));
       setRows(results);setQueried(true);
     }catch(e){setError(String(e));}finally{setBusy(false);}
   }

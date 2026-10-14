@@ -10,6 +10,7 @@ test('single stock status exposes reported listing and cutoff while keeping full
   await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
   const stock=page.getByRole('article',{name:'SSE:600362',exact:true});
   await stock.getByText('查看证券状态来源',{exact:true}).click();
+  await page.clock.setFixedTime(new Date(Date.now()+300000));
   await stock.getByRole('button',{name:'查询保存的状态依据'}).click();
   await expect(stock.getByText('来源报告：上市',{exact:false})).toBeVisible();
   await expect(stock.getByRole('status').filter({hasText:'完整交易状态未知'})).toBeVisible();
