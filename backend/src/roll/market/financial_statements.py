@@ -59,7 +59,8 @@ def normalize(service,instrument,run,manifest,captures):
 
 
 def joined(income,supplement,instrument,cutoff=None):
-    primary=income.listing(instrument,cutoff);extra=supplement.listing(instrument,cutoff)
+    primary=income.listing(instrument,cutoff)
+    extra=supplement.listing(instrument,datetime.fromisoformat(primary['known_by']),active_current=cutoff is None)
     all_facts=primary['facts']+extra['facts'];latest={}
     for f in all_facts:
         stream=(f['statement'],f['report_period'],f['source_id'])

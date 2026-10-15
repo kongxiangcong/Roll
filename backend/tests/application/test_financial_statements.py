@@ -12,7 +12,7 @@ async def statements(instrument,output):
           'CASH_FLOW':{'NETCASH_OPERATE':5814230993,'NETCASH_INVEST':-23434970323,'NETCASH_FINANCE':30308136531,'CCE_ADD':12478238776}}
     captures=[]
     for statement,role in [('BALANCE','zcfzbAjaxNew'),('CASH_FLOW','xjllbAjaxNew')]:
-        row={'SECUCODE':'600362.SH','REPORT_DATE':'2026-06-30 00:00:00','CURRENCY':'CNY','UPDATE_DATE':'2026-08-26 00:00:00',**data[statement]}
+        row={'ORG_CODE':'10002541','SECUCODE':'600362.SH','REPORT_DATE':'2026-06-30 00:00:00','CURRENCY':'CNY','UPDATE_DATE':'2026-08-26 00:00:00',**data[statement]}
         body=json.dumps({'data':[row]}).encode();name=f'{len(captures)+1:02}.raw';(output/name).write_bytes(body)
         captures.append({'role':role,'raw_file':name,'url':'https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/'+role,'received_at':'2026-10-15T08:00:00+00:00','original_complete':True,'status_code':200,'sha256':hashlib.sha256(body).hexdigest()})
     return {'sdk_version':SDK_VERSION,'sdk_source_sha256':SDK_SOURCE_SHA,'status':'CAPTURED','captures':captures,'date_selections':{'BALANCE':['2026-06-30'],'CASH_FLOW':['2026-06-30']}}

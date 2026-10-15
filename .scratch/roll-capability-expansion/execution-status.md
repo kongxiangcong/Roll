@@ -24,7 +24,7 @@
 | [08 · 现有候选真实前向启运](issues/08-existing-forward-start.md) | pending | 已发布，未实施；含真实外部/时间条件 |
 | [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | complete | 独立生产SDK/API/SQLite/Chrome已验收：3HTTP/5期/原件SHA/账户不变，预算封口 |
 | [10 · 资产负债表与现金流三表联读](issues/10-balance-cashflow.md) | complete | 三表联读/版本/异常、实际5HTTP封口、只读Chrome通过；其余语义缺口保留 |
-| [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | pending | 已发布，未实施 |
+| [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | complete | 确定性公式/未知口径/修订重放/API/真实只读Chrome通过，零新增取数 |
 | [12 · Docling表格与页码证据](issues/12-document-tables.md) | pending | 已发布，未实施 |
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | pending | 已发布，未实施 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | pending | 已发布，未实施 |
@@ -65,3 +65,5 @@
 2026-10-15：07原因绑定LOSS恢复工程交付；API总计42通过及已修复旧基线fixture单项通过、子进程2通过、Chrome/构建及双审查证据见07-loss-recovery/acceptance.md。原峰值及历史保留，再次越界重新锁定；未启用真实资金，07保留partial。下一依赖就绪工程票10，复用09采集/原件约定；09已封口预算不重开。
 
 2026-10-15：10 complete，单独用户批准的资产负债/现金流真实验收成功并CLOSED_NO_RETRY：5HTTP、681064B、6.386677秒、10facts；H1三表完整关联，其余语义未知保留。API/SDK、METHOD及真实只读Chrome/构建证据在10-statements/acceptance.md；15原脏文件及12旧模型依赖保持。下一票11依赖解除，复用保存事实做确定性指标，不再额外取数。
+
+2026-10-15：11 complete，复用09/10不可变事实，季度/TTM/同比及同主体比率、营业收入专用字段、零负基期/字段冲突拒算、当前修订与旧截止重放已验。详见11-metrics/acceptance.md；下一依赖就绪票12。

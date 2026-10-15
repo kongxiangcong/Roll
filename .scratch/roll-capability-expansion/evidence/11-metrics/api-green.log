@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______________ test_metrics_quarters_ttm_ratios_and_asof_replay _______________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r11g/test_metrics_quarters_ttm_rati0')
+
+    def test_metrics_quarters_ttm_ratios_and_asof_replay(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            base=prepare(client);response=client.get(base+'/metrics');assert response.status_code==200,response.text
+            result=response.json();h1=next(r for r in result['periods'] if r['report_period']=='2026-06-30');m=h1['metrics']
+            assert m['quarter_revenue']['value']=='168030866946'
+            assert m['ttm_revenue']['value']=='594819535918'
+            assert m['revenue_yoy']['value']=='19.534663' and m['revenue_yoy']['absolute_change']=='50196051858'
+            assert m['net_margin']['value']=='3.093153'
+            assert m['gross_margin']['value']=='5.823553'
+            assert m['debt_ratio']['value']=='65.475577'
+>           assert m['cash_profit_ratio']['status']=='KNOWN' and m['cash_profit_ratio']['formula']=='operating_cash_flow / consolidated_net_profit'
+E           AssertionError: assert ('UNKNOWN' == 'KNOWN'
+E             
+E             - KNOWN
+E             + UNKNOWN
+E             ? ++)
+
+backend\tests\application\test_financial_metrics.py:34: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_metrics.py::test_metrics_quarters_ttm_ratios_and_asof_replay
+1 failed in 8.76s

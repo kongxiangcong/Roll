@@ -6,6 +6,7 @@ import {Valuation} from './valuation';
 import {ActionPanel} from '../components/action-panel';
 import {StatusEvidencePanel} from '../components/status-evidence-panel';
 import {ActionEvidencePanel} from '../components/action-evidence-panel';
+import {FinancialMetricsPanel} from '../components/financial-metrics-panel';
 import {FinancialStatementsPanel} from '../components/financial-statements-panel';
 import {FinancialIncomePanel} from '../components/financial-income-panel';
 
@@ -82,7 +83,7 @@ export function Market() {
           {m.rule.implementation_status==='ADAPTED'?<><p>买入至少 {m.rule.buy_minimum} 股，按 {m.rule.buy_increment} 股递增；价格最小变动 {m.rule.price_tick_yuan} 元。普通状态涨跌幅 {m.rule.normal_price_limit_percent}%。数量、价格限制仍需核对当日特殊状态。</p><p>规则自 {m.rule.effective_from} 生效，本次适配日期 {m.rule.adapted_date_range?.join(' 至 ')}。买入后最早下一交易日可卖，实际可卖数量按账户事实核对。</p><p>费用：{m.rule.fees?.reason}</p></>:<p>{m.rule.reason}</p>}
           {m.rule.source&&<p><a href={m.rule.source.url} target="_blank" rel="noreferrer">交易所原规则</a> · <a href={`/api/market/sources/${m.rule.source.id}/raw`}>已归档原件</a> · 取得于 {m.rule.source.fetched_at}</p>}
           {m.identity.source&&<p>身份来源：用户核对 · {m.identity.source.basis}</p>}
-        </details><StatusEvidencePanel instrument={m.instrument}/><ActionEvidencePanel instrument={m.instrument}/><FinancialIncomePanel instrument={m.instrument}/><FinancialStatementsPanel instrument={m.instrument}/><IdentityForm member={m} onDone={setListing}/><details><summary>查看单股当前动作</summary><ActionPanel instrument={m.instrument}/></details>
+        </details><StatusEvidencePanel instrument={m.instrument}/><ActionEvidencePanel instrument={m.instrument}/><FinancialIncomePanel instrument={m.instrument}/><FinancialStatementsPanel instrument={m.instrument}/><FinancialMetricsPanel instrument={m.instrument}/><IdentityForm member={m} onDone={setListing}/><details><summary>查看单股当前动作</summary><ActionPanel instrument={m.instrument}/></details>
       </article>)}
       <p className="muted">背景指数：{listing.background_indices.map(i=>`${i.name}（${i.instrument}）`).join('、')}。仅作市场背景/基准，无指数交易能力。</p>
     </>}

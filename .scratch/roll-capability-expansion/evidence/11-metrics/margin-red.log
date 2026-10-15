@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_operating_revenue_absence_or_conflict_cannot_use_total_revenue_for_margin _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r11mr/test_operating_revenue_absence0')
+
+    def test_operating_revenue_absence_or_conflict_cannot_use_total_revenue_for_margin(tmp_path):
+        import hashlib
+        with TestClient(create_app(tmp_path)) as client:
+            base=prepare(client)
+            for value in (None,100):
+                async def conflict(instrument,output):
+                    manifest=await income(instrument,output);raw=json.loads((output/'03.raw').read_bytes());raw['data'][0]['OPERATE_INCOME']=value
+                    body=json.dumps(raw).encode();(output/'03.raw').write_bytes(body);manifest['captures'][2]['sha256']=hashlib.sha256(body).hexdigest();return manifest
+                client.app.state.financial.worker=conflict
+                assert client.post(base+'/income/collect',json={'idempotency_key':str(value),'basis':'METHOD operating revenue field missing or contradicts verified income header'}).json()['status']=='COMPLETE'
+                m=next(p for p in client.get(base+'/metrics').json()['periods'] if p['report_period']=='2026-06-30')['metrics']
+>               assert m['gross_margin']['status']=='UNKNOWN'
+E               AssertionError: assert 'KNOWN' == 'UNKNOWN'
+E                 
+E                 - UNKNOWN
+E                 ? --
+E                 + KNOWN
+
+backend\tests\application\test_financial_metrics.py:77: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_metrics.py::test_operating_revenue_absence_or_conflict_cannot_use_total_revenue_for_margin
+1 failed in 10.13s

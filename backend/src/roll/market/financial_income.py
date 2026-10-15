@@ -71,7 +71,7 @@ class FinancialIncome:
         task.cancel()
         return {'run_id':identifier,'cancellation_requested':True}
 
-    def listing(self,instrument,cutoff=None):
+    def listing(self,instrument,cutoff=None,active_current=False):
         stamp=cutoff or datetime.fromisoformat(now())
         if stamp.tzinfo is None or stamp>datetime.fromisoformat(now()):raise HTTPException(422,'FINANCIAL_CUTOFF_REQUIRES_PAST_AWARE_TIME')
         with self.ledger.connection() as db:
@@ -83,7 +83,7 @@ class FinancialIncome:
             self.evidence.raw(fact['raw_sha256'])
             if fact['semantic_document']:self.evidence.raw(fact['semantic_document']['sha256'])
         return {'instrument':instrument,'known_by':stamp.isoformat(),'facts':facts,
-            'active_run_ids':[r['run_id'] for r in runs if r['status']=='RUNNING'] if cutoff is None else [],
+            'active_run_ids':[r['run_id'] for r in runs if r['status']=='RUNNING'] if cutoff is None or active_current else [],
             'runs':[self.checked(r) for r in runs if r['finished_at'] and datetime.fromisoformat(r['finished_at'])<=stamp],
             'system_usable':False,'historical_pit_eligible':False,'network_calls':0,'capability':'NOT_GRANTED'}
 
