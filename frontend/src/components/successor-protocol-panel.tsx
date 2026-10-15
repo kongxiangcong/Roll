@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
 import {SuccessorCostStressPanel} from './successor-cost-stress-panel';
+import {SuccessorProbabilityEvidencePanel} from './successor-probability-evidence-panel';
 
 type Freeze={successor_freeze_id:string;successor_fingerprint:string;policy:{version:string}};
 type Protocol={protocol_id:string;predecessor_id:string|null;protocol_fingerprint:string};
@@ -36,6 +37,7 @@ export function SuccessorProtocolPanel({parentFreezeId,parentProtocolId}:{parent
     {complete&&<><p role="status">后继设计参数已冻结 · 完整实验未冻结 · METHOD工程研究 · 正式能力未授予</p><p>净值改善目标 {percent(Number(complete.design.primary_objective.minimum_improvement_nav_return))} · 最少有效时间块 {complete.design.statistics.minimum_effective_time_blocks} · 首次真实归档后最长 {complete.design.stopping.maximum_natural_months} 自然月，当前未启运。</p><details><summary>完整冻结剩余条件</summary><ul>{complete.complete_freeze_gaps.map(g=><li key={g}>{g}</li>)}</ul></details><button disabled={busy} onClick={()=>void act(validate)}>验证已保存后继影子</button></>}
     {results.map(v=><div key={v.validation_id}><p>METHOD前缀 {v.shadow_revision} · {v.validation_verdict} · 无正式能力</p><p>工程模拟净值收益率 {percent(v.economics.net_return)} · 最大回撤 {percent(v.economics.maximum_drawdown)}</p><details><summary>验证门槛与缺口</summary><ul>{Object.entries(v.gates).map(([g,s])=><li key={g}>{g} · {s.status} · {s.reasons.join('、')}</li>)}</ul></details><button disabled={busy} onClick={()=>void act(async()=>{const r=await request<{matches_original:boolean;shadow_revision:number}>(`/research/successor-validations/${v.validation_id}/replay`,{});setNotice(`前缀${r.shadow_revision}重放${r.matches_original?'一致':'不一致'}`);})}>重放后继验证前缀 {v.shadow_revision}</button></div>)}
     {complete&&<SuccessorCostStressPanel key={selected} freezeId={selected} fingerprint={complete.complete_protocol_fingerprint}/>}
+    {complete&&<SuccessorProbabilityEvidencePanel key={'probability-'+selected} freezeId={selected} parentFreezeId={parentFreezeId} fingerprint={complete.complete_protocol_fingerprint}/>}
     {notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </details>;
 }

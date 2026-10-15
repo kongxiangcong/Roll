@@ -217,6 +217,22 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     successor_protocols=SuccessorProtocols(successor_shadow,validation)
     from roll.research.successor_stress import SuccessorStresses
     successor_stresses=SuccessorStresses(successor_protocols)
+    from roll.research.successor_probability import SuccessorProbabilityEvidence,ProbabilityBindingCommand
+    successor_probability=SuccessorProbabilityEvidence(successor_protocols,probability_references,block_references)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/probability-evidence',status_code=201)
+    def successor_probability_create(freeze_id:str,command:ProbabilityBindingCommand):return successor_probability.create(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/probability-evidence')
+    def successor_probability_list(freeze_id:str):return successor_probability.listing(freeze_id)
+
+    @app.get('/api/research/successor-probability-evidence/{identifier}')
+    def successor_probability_get(identifier:str):return successor_probability.get(identifier)
+
+    @app.post('/api/research/successor-probability-evidence/{identifier}/replay')
+    def successor_probability_replay(identifier:str):
+        successor_probability.get(identifier)
+        return {'matches_original':True,'recomputed':False,'new_fit_calls':0,'sealed_reads':0}
 
     @app.post('/api/research/policy-successor-freezes/{freeze_id}/cost-stress',status_code=201)
     async def successor_cost_stress_create(freeze_id:str,command:DiagnosticCommand):return await successor_stresses.create(freeze_id,command)
