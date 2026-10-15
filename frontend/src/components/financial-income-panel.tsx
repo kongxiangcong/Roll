@@ -1,3 +1,4 @@
+import {FinancialDocumentPanel} from './financial-document-panel';
 import {useState} from 'react';
 import {request} from '../api';
 
@@ -37,6 +38,7 @@ export function FinancialIncomePanel({instrument}:{instrument:string}){
       <dl>{[['revenue','营业收入'],['net_profit','净利润'],['parent_net_profit','归母净利润']].map(([key,label])=><div key={key}><dt>{label}</dt><dd>{f.values[key]??'未知'}</dd></div>)}</dl>
       <p>来源披露日 {f.reported_publication_date??'未知'}（日期精度） · 来源更新 {f.reported_update_date??'未知'}<br/>首次接收 {f.first_received_at}<br/>本规范事实可知 {f.available_at}</p>
       <p><a href={`/api/data/archives/${f.raw_sha256}`} target="_blank" rel="noreferrer">利润表原响应</a>{f.semantic_document&&<> · <a href={`/api/data/archives/${f.semantic_document.sha256}#page=${f.semantic_document.page}`} target="_blank" rel="noreferrer">口径PDF第{f.semantic_document.page}页</a></>}</p>
+      {f.semantic_document&&<FinancialDocumentPanel sha={f.semantic_document.sha256} page={f.semantic_document.page}/>}
       {f.supersedes_id&&<p>同来源修订前版本 {f.supersedes_id} · {f.comparable_with_superseded?'已验证口径一致':'可比口径未证明'}</p>}
       <details><summary>来源字段与缺口</summary><pre>{JSON.stringify(f.original_fields,null,2)}</pre><p>{f.gaps.join('；')}</p></details>
     </section>)}

@@ -1,0 +1,46 @@
+{
+  "version": "docling-runtime-plan-v1",
+  "code": "docling-slim==2.139.0",
+  "extras": [
+    "convert-core",
+    "format-pdf",
+    "models-local",
+    "feat-ocr-rapidocr-onnx"
+  ],
+  "device": "CPU",
+  "runtime": "D:/dsh-proj/Roll/.scratch/rce-runtime/docling",
+  "cache": "D:/dsh-proj/Roll/.scratch/rce-runtime/docling-cache",
+  "max_new_download_bytes": 1610612736,
+  "max_runtime_disk_bytes": 4294967296,
+  "resolution_timeout_seconds": 600,
+  "installation_timeout_seconds": 600,
+  "model_prefetch_timeout_seconds": 300,
+  "implicit_retries": 0,
+  "processing_network": false,
+  "parse_limits": {
+    "max_pdf_bytes": 16777216,
+    "max_pages_per_request": 8,
+    "timeout_seconds": 120,
+    "cpu_threads": 2,
+    "max_rss_bytes": 2147483648
+  },
+  "sources": [
+    "https://pypi.org/project/docling/2.139.0/",
+    "https://raw.githubusercontent.com/docling-project/docling/v2.139.0/pyproject.toml",
+    "https://docling-project.github.io/docling/usage/advanced_options/"
+  ],
+  "status": "DEPENDENCY_RESOLUTION_ONLY",
+  "torch_distribution": "Official PyPI Windows torch2.10.0/torchvision0.25.0 wheels; CPU enforced at inference",
+  "resolution_amendment": "Metadata set larger than first preflight budget; one explicit 600-second constrained transport phase uses prior install time reservation, unchanged 1.5GiB download and4GiB disk caps; old attempts remain closed.",
+  "resolution_transport": {
+    "hosts": [
+      "pypi.org",
+      "files.pythonhosted.org"
+    ],
+    "max_http_requests": 256,
+    "retries": 0,
+    "address_family": "IPv4",
+    "trust_env": false,
+    "redirects": 0
+  }
+}

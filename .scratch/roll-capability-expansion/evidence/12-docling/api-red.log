@@ -1,0 +1,46 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_document_parse_keeps_source_pages_parentheses_and_failed_attempts ____
+
+self = <starlette.datastructures.State object at 0x000001AE54F3AE40>
+key = 'financial_documents'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+>           return self._state[key]
+                   ^^^^^^^^^^^^^^^^
+E           KeyError: 'financial_documents'
+
+backend\.venv\Lib\site-packages\starlette\datastructures.py:683: KeyError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r12r/test_document_parse_keeps_sour0')
+
+    def test_document_parse_keeps_source_pages_parentheses_and_failed_attempts(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            base=prepare(client);fact=client.get(base+'/income').json()['facts'][0];sha=fact['semantic_document']['sha256']
+            async def parser(source,output,command):
+                return {'status':'SUCCESS','parser_version':'2.139.0','source_sha256':sha,'document':{'texts':[{'text':'人民币元；合并现金流量表（续）；附注68','prov':[{'page_no':67,'bbox':{'l':20,'t':40,'r':500,'b':100}}]}],
+                    'tables':[{'prov':[{'page_no':67,'bbox':{'l':20,'t':100,'r':500,'b':600}}],'data':{'num_rows':2,'num_cols':2,'table_cells':[{'text':'投资活动现金流量净额','row_span':1,'col_span':1},{'text':'(23,434,970,323)','row_span':1,'col_span':1}]}}]},'confidence':None,'warnings':['MULTIPAGE_HEADERS_REQUIRE_REVIEW'],'runtime':{'kind':'METHOD_TRANSPORT_FIXTURE'}}
+>           client.app.state.financial_documents.worker=parser
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_financial_documents.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001AE54F3AE40>
+key = 'financial_documents'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'financial_documents'
+
+backend\.venv\Lib\site-packages\starlette\datastructures.py:686: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_documents.py::test_document_parse_keeps_source_pages_parentheses_and_failed_attempts
+1 failed in 8.47s

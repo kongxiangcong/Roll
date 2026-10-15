@@ -1,0 +1,21 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_document_output_directory_failure_is_terminal_and_does_not_lock_next_parse _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r12dr/test_document_output_directory0')
+
+    def test_document_output_directory_failure_is_terminal_and_does_not_lock_next_parse(tmp_path):
+        with TestClient(create_app(tmp_path),raise_server_exceptions=False) as client:
+            base=prepare(client);sha=client.get(base+'/income').json()['facts'][0]['semantic_document']['sha256'];path='/api/market/financial/documents/'+sha+'/parses'
+            command={'first_page':66,'last_page':66,'idempotency_key':'disk-failure','basis':'METHOD output directory fault'}
+            output=client.app.state.evidence.directory/'document-parses';assert output.is_relative_to(tmp_path);output.write_text('METHOD directory conflict',encoding='utf-8')
+>           response=client.post(path,json=command);assert response.status_code==201,response.text
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Internal Server Error
+E           assert 500 == 201
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+backend\tests\application\test_financial_documents.py:60: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_documents.py::test_document_output_directory_failure_is_terminal_and_does_not_lock_next_parse
+1 failed in 12.34s

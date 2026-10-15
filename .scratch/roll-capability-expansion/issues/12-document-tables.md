@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** PARTIAL — 公开API/持久化/页面与METHOD正向验收已交付；依赖解析达到600秒上限封口，真实Docling和权重许可/指纹未完成，运行时保持UNAVAILABLE。
 
 **Scope / inheritance:** 新增文档解析；复用现有pypdf和原件查看。
 
@@ -32,4 +32,6 @@
 ## Comments
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
+
+2026-10-15：差量工程和失败恢复见[验收](../evidence/12-docling/acceptance.md)。原件/pypdf保留，METHOD派生不得充当实际组件推理；选定模型权重和真实复杂/扫描样例尚缺。有限依赖解析已关闭，不自动重试；13保持依赖阻塞，继续独立14。
 

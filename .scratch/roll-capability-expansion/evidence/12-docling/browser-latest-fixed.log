@@ -1,0 +1,30 @@
+[WebServer] INFO:     Started server process [10836]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8052 (Press CTRL+C to quit)
+[WebServer] (node:14160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7300) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7300) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-documents.spec.ts:3:1 › METHOD document derivation preserves page references and raw bracketed amount (2ms)
+
+
+  1) tests\e2e\expansion-documents.spec.ts:3:1 › METHOD document derivation preserves page references and raw bracketed amount 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\72449\AppData\Local\ms-playwright\chromium_headless_shell-1208\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  1 failed
+    tests\e2e\expansion-documents.spec.ts:3:1 › METHOD document derivation preserves page references and raw bracketed amount 

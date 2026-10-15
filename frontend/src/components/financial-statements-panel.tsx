@@ -1,3 +1,4 @@
+import {FinancialDocumentPanel} from './financial-document-panel';
 import {useState} from 'react';
 import {request} from '../api';
 
@@ -29,6 +30,7 @@ export function FinancialStatementsPanel({instrument}:{instrument:string}){
         <p>{f.evidence_kind==='METHOD_CASE'?'METHOD工程证据':'当前来源观察'} · 可知时间{f.available_at}</p>
         <dl>{Object.entries(f.values).map(([key,amount])=><div key={key}><dt>{fields[key]??key}</dt><dd>{amount??'未知'}</dd></div>)}</dl>
         <p><a href={`/api/data/archives/${f.raw_sha256}`} target="_blank" rel="noreferrer">{labels[statement]}原响应</a>{f.semantic_document&&<> · <a href={`/api/data/archives/${f.semantic_document.sha256}#page=${f.semantic_document.page}`} target="_blank" rel="noreferrer">口径PDF第{f.semantic_document.page}页</a></>}</p>
+        {f.semantic_document&&<FinancialDocumentPanel sha={f.semantic_document.sha256} page={f.semantic_document.page}/>}
         <details><summary>原始字段与缺口</summary><pre>{JSON.stringify(f.original_fields,null,2)}</pre><p>{f.gaps.join('；')}</p></details>
       </details>)}
     </section>)}

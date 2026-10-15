@@ -20,12 +20,12 @@
 | [04 · 公司行动版本与义务证据](issues/04-action-lifecycle.md) | partial | 截止版本/旧义务查询和单股原件链已验收，生命周期和完整覆盖待证 |
 | [05 · 后继政策完整冻结与验证消费者](issues/05-policy-freeze-validation.md) | partial | 同源九类诊断、联合压力、阈值/迁移、工程检查、两主模型中心及原CAL预测完整日历执行已验收；来源包→模型→独立推进METHOD管线已补；REAL准入/authority、共同风险匹配/四非中心工件/独立支持和完整冻结仍缺 |
 | [06 · 当前动作有效期与政策派发](issues/06-current-action-validity.md) | pending | 已发布，未实施 |
-| [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | partial | 继承latch保护；原规则未登记，资金恢复语义已询问，未改真实状态 |
+| [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | partial | 用户确认显式后继恢复规则，工程/API/Chrome通过；真实资金条件未满足 |
 | [08 · 现有候选真实前向启运](issues/08-existing-forward-start.md) | pending | 已发布，未实施；含真实外部/时间条件 |
 | [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | complete | 独立生产SDK/API/SQLite/Chrome已验收：3HTTP/5期/原件SHA/账户不变，预算封口 |
 | [10 · 资产负债表与现金流三表联读](issues/10-balance-cashflow.md) | complete | 三表联读/版本/异常、实际5HTTP封口、只读Chrome通过；其余语义缺口保留 |
 | [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | complete | 确定性公式/未知口径/修订重放/API/真实只读Chrome通过，零新增取数 |
-| [12 · Docling表格与页码证据](issues/12-document-tables.md) | pending | 已发布，未实施 |
+| [12 · Docling表格与页码证据](issues/12-document-tables.md) | partial | 选页/原表/METHOD正向与失败恢复通过；依赖600秒封口，实际组件/权重待验 |
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | pending | 已发布，未实施 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | pending | 已发布，未实施 |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | pending | 已发布，未实施 |
@@ -67,3 +67,5 @@
 2026-10-15：10 complete，单独用户批准的资产负债/现金流真实验收成功并CLOSED_NO_RETRY：5HTTP、681064B、6.386677秒、10facts；H1三表完整关联，其余语义未知保留。API/SDK、METHOD及真实只读Chrome/构建证据在10-statements/acceptance.md；15原脏文件及12旧模型依赖保持。下一票11依赖解除，复用保存事实做确定性指标，不再额外取数。
 
 2026-10-15：11 complete，复用09/10不可变事实，季度/TTM/同比及同主体比率、营业收入专用字段、零负基期/字段冲突拒算、当前修订与旧截止重放已验。详见11-metrics/acceptance.md；下一依赖就绪票12。
+
+2026-10-15：12工程partial，PDF选页/原件/表格/页边界/API及METHOD验收交付；最终依赖解析600秒达到上限封口，Docling运行时UNAVAILABLE，未下载模型。详见12-docling/acceptance.md。13依赖未解除，下一独立票14；09/10预算保持封口。
