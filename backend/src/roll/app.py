@@ -291,6 +291,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     async def successor_joint_replay(identifier:str):return await successor_joint.replay(identifier)
     from roll.research.successor_evidence_review import SuccessorEvidenceReviews,EvidenceReviewCommand
     successor_evidence=SuccessorEvidenceReviews(successor_stresses,successor_segments,successor_cash,successor_controls,successor_entries,successor_probability)
+    from roll.research.successor_joint_review import SuccessorJointReviews,JointReviewCommand
+    successor_joint_reviews=SuccessorJointReviews(successor_evidence,successor_joint)
+
+    @app.post('/api/research/successor-evidence-reviews/{identifier}/joint-review',status_code=201)
+    def successor_joint_review_create(identifier:str,command:JointReviewCommand):return successor_joint_reviews.create(identifier,command)
+
+    @app.get('/api/research/successor-evidence-reviews/{identifier}/joint-review')
+    def successor_joint_review_list(identifier:str):return successor_joint_reviews.listing(identifier)
+
+    @app.get('/api/research/successor-joint-reviews/{identifier}')
+    def successor_joint_review_get(identifier:str):return successor_joint_reviews.get(identifier)
+
+    @app.post('/api/research/successor-joint-reviews/{identifier}/replay')
+    def successor_joint_review_replay(identifier:str):return successor_joint_reviews.replay(identifier)
 
     @app.post('/api/research/successor-cost-stresses/{identifier}/evidence-review',status_code=201)
     def successor_evidence_create(identifier:str,command:EvidenceReviewCommand):return successor_evidence.create(identifier,command)

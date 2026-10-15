@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {request} from '../api';
+import {SuccessorJointReviewPanel} from './successor-joint-review-panel';
 const names=['segments','cash','controls','entry','probability'] as const;
 type Name=typeof names[number];
 const labels:Record<Name,string>={segments:'时间分段',cash:'CASH控制',controls:'原登记基准',entry:'入场压力',probability:'CAL概率'};
@@ -27,6 +28,7 @@ export function SuccessorEvidenceReviewPanel({stressId,freezeId}:{stressId:strin
     {current&&<><p>METHOD证据汇总 · 前缀{current.shadow_revision} · {current.validation_verdict} · NOT_GRANTED</p><p>已绑定 {current.bound_components.length} 类保存证据；完整实验未冻结，真实前向未启动。</p><ul>{Object.entries(current.gates).map(([name,g])=><li key={name}>{name} · {g.status}<details><summary>{name}依据与缺口</summary>{g.reasons.join('、')}</details></li>)}</ul>
       <details><summary>证据原件、支持要求与绑定详情</summary><pre>{JSON.stringify(current,null,2)}</pre></details>
       <button disabled={busy} onClick={()=>void action(async()=>{const result=await request<{matches_original:boolean}>('/research/successor-evidence-reviews/'+current.review_id+'/replay',{});setNotice(result.matches_original?'证据汇总原工件重放一致':'证据汇总重放不一致');})}>重放保存的证据汇总</button>
+      <SuccessorJointReviewPanel key={current.review_id} reviewId={current.review_id} stressId={stressId}/>
     </>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </details>;
 }

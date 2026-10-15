@@ -1,0 +1,33 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_joint_review_extends_without_rewriting_old_review_or_replay _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05xr/test_joint_review_extends_with0')
+
+    def test_joint_review_extends_without_rewriting_old_review_or_replay(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path);proposal=register(client,previous).json();frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Versioned evidence extension'}).json()
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            protocol=client.post(base+'/complete-protocol',json={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'parameters','basis':'Original design'}).json()
+            for day in range(1,4):assert client.post(base+'/shadow/advance',json=frame(day)).status_code==201
+            def source(revision,key):
+                result=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':protocol['complete_protocol_fingerprint'],'expected_revision':revision,'idempotency_key':key,'basis':'Exact frozen METHOD prefix'}).json()
+                route='/api/research/successor-cost-stresses/'+result['stress_id'];command={'idempotency_key':key,'basis':'Saved component'}
+                control=client.post(route+'/registered-controls',json=command).json();entry=client.post(route+'/entry-stress',json=command).json()
+                joint=client.post(route+'/joint-stress',json={**command,'controls_id':control['comparison_id'],'entry_id':entry['diagnostic_id']}).json()
+                review=client.post(route+'/evidence-review',json={**command,'controls_id':control['comparison_id'],'entry_id':entry['diagnostic_id']}).json()
+                return review,joint
+            original,joint=source(3,'source');old_path='/api/research/successor-evidence-reviews/'+original['review_id'];route=old_path+'/joint-review'
+            before_replay=client.post(old_path+'/replay').json();command={'joint_id':joint['joint_id'],'idempotency_key':'extension','basis':'Bind joint scenarios without editing old report'}
+>           response=client.post(route,json=command);assert response.status_code==201,response.text
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_successor_joint_review.py:24: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_joint_review.py::test_joint_review_extends_without_rewriting_old_review_or_replay
+1 failed in 27.53s

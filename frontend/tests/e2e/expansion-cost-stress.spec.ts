@@ -33,6 +33,10 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByRole('button',{name:'保存选定证据的验证汇总',exact:true}).click();await expect(page.getByText('METHOD证据汇总 · 前缀3 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await expect(page.getByText('已绑定 5 类保存证据；完整实验未冻结，真实前向未启动。',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的证据汇总',exact:true}).click();await expect(page.getByText('证据汇总原工件重放一致',{exact:true})).toBeVisible();
+  await page.getByText('将联合压力绑定至此汇总',{exact:true}).click();await page.getByRole('button',{name:'读取可绑定联合压力',exact:true}).click();await page.getByLabel('汇总扩展联合压力',{exact:true}).selectOption({index:1});await page.getByRole('button',{name:'保存联合证据汇总新版本',exact:true}).click();
+  await expect(page.getByText('METHOD联合证据汇总 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'重放联合证据汇总新版本',exact:true}).click();await expect(page.getByText('联合汇总新版本重放一致',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'重放保存的证据汇总',exact:true}).click();await expect(page.getByText('证据汇总原工件重放一致',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的费用诊断',exact:true}).click();await expect(page.getByText('费用诊断原前缀重放一致',{exact:true})).toBeVisible({timeout:35000});
   await page.reload();await page.getByRole('button',{name:'历史记录',exact:true}).click();await page.getByRole('button',{name:'研究登记',exact:true}).click();await page.getByRole('button',{name:`查看协议 ${parent.protocol_id.slice(0,8)}`,exact:true}).click();
   await page.getByText('后继政策完整设计与验证',{exact:true}).click();await page.getByLabel('后继影子版本').selectOption(frozen.successor_freeze_id);
@@ -44,6 +48,7 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByText('入场延迟与部分成交压力',{exact:true}).click();await page.getByRole('button',{name:'查看保存的入场压力',exact:true}).click();await expect(page.getByText('METHOD入场压力 6项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('同场景候选与原基准压力',{exact:true}).click();await page.getByRole('button',{name:'查看保存的联合压力',exact:true}).click();await expect(page.getByText('METHOD联合压力 12项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('当前保存证据与验证缺口',{exact:true}).click();await page.getByRole('button',{name:'查看保存的验证汇总',exact:true}).click();await expect(page.getByText('METHOD证据汇总 · 前缀3 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByText('将联合压力绑定至此汇总',{exact:true}).click();await page.getByRole('button',{name:'查看保存的联合汇总版本',exact:true}).click();await expect(page.getByText('METHOD联合证据汇总 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
-  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-joint-stress/mobile.png',fullPage:true});
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-joint-review/mobile.png',fullPage:true});
 });
