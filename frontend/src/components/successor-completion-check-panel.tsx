@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {request} from '../api';
+import {SuccessorPrimaryCenterPanel} from './successor-primary-center-panel';
 type Saved={check_id:string;recorded_at:string;bound_diagnostic_count:number;required_diagnostic_count:number;diagnostic_package_complete:boolean;diagnostic_binding_gaps:string[];complete_freeze_admission:{status:string;reasons:string[]};validation_verdict:string};
 export function SuccessorCompletionCheckPanel({jointReviewId,stressId}:{jointReviewId:string;stressId:string}){
   const [thresholds,setThresholds]=useState<{diagnostic_id:string;recorded_at:string;status:string}[]>([]),[migrations,setMigrations]=useState<{audit_id:string;recorded_at:string}[]>([]),[threshold,setThreshold]=useState(''),[migration,setMigration]=useState('');
@@ -18,6 +19,7 @@ export function SuccessorCompletionCheckPanel({jointReviewId,stressId}:{jointRev
     {!!records.length&&<label>工程检查版本<select disabled={busy} value={selected} onChange={e=>{setSelected(e.target.value);setNotice('');}}>{records.map(r=><option key={r.check_id} value={r.check_id}>{r.recorded_at}</option>)}</select></label>}
     {current&&<><p>METHOD诊断绑定 {current.bound_diagnostic_count}/{current.required_diagnostic_count} · {current.validation_verdict} · 完整冻结未授予 · NOT_GRANTED</p><p>{current.diagnostic_package_complete?'所选诊断绑定一致；工程、真实及资格条件仍未全部满足。':'所选诊断或运行状态仍有缺口。'}</p><details><summary>工程/冻结与启运后资格缺口</summary><pre>{JSON.stringify(current,null,2)}</pre></details>
       <button disabled={busy} onClick={()=>void action(async()=>{const result=await request<{matches_original:boolean}>('/research/successor-completion-checks/'+current.check_id+'/replay',{});setNotice(result.matches_original?'工程检查原工件重放一致':'工程检查重放不一致');})}>重放保存的工程检查</button>
+      <SuccessorPrimaryCenterPanel key={current.check_id} checkId={current.check_id}/>
     </>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </details>;
 }

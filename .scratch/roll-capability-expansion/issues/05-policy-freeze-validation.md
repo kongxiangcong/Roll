@@ -62,3 +62,7 @@
 2026-10-15 增量：原迁移lot/登记scope审计已接入，原截止与新入场期限独立、到期阻塞不延长、空原持仓边界明确；位置身份P2已补，API1 PASS/22.88s、修复后Chrome1 PASS/61.85s与构建通过。见[迁移审计验收](../evidence/05-migration-audit/acceptance.md)。一致性不是真实迁移或G5资格；下一离线前沿为版本化工程完成检查，05仍partial。
 
 2026-10-15 增量：版本化工程检查已正向绑定九类同源METHOD诊断，live尝试快照/终态父/错源/源完整性/保存重放通过；诊断包一致不等工程全完成或完整冻结，real-input/拟合邻域与资格缺口分列，G6/G7不作freeze前置。API1 PASS/60.79s、Chrome1 PASS/67.12s与构建/双审查通过。见[工程检查验收](../evidence/05-completion-check/acceptance.md)。中心槽位只读工件映射仍可继续，05保持partial。
+
+### 原冻结主模型中心绑定（2026-10-15）
+
+补齐 penalty1/lookback20 的精确冻结身份映射，绑定工程检查且不改旧记录；核验模型、特征、校准前后原件，21收盘价/20收益区间及DEV/CAL快照。非中心四工件、执行预测对齐、真实消费者及独立支持仍缺，不授邻域压力结论，整票保持partial。验收见 evidence/05-primary-center/acceptance.md。下一离线前沿是原CAL预测的独立完整日历METHOD执行回放，不再新增单纯聚合包装。

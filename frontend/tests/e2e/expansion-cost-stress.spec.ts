@@ -43,6 +43,8 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByText('诊断绑定与完整冻结剩余条件',{exact:true}).click();await page.getByRole('button',{name:'读取工程检查依据',exact:true}).click();await page.getByLabel('工程检查阈值版本',{exact:true}).selectOption({index:1});await page.getByLabel('工程检查迁移版本',{exact:true}).selectOption({index:1});await page.getByRole('button',{name:'保存诊断绑定与工程检查',exact:true}).click();
   await expect(page.getByText('METHOD诊断绑定 8/9 · INCONCLUSIVE · 完整冻结未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的工程检查',exact:true}).click();await expect(page.getByText('工程检查原工件重放一致',{exact:true})).toBeVisible();
+  await page.getByText('原冻结主模型中心工件',{exact:true}).click();await page.getByRole('button',{name:'绑定原冻结中心工件',exact:true}).click();await expect(page.getByText('主模型中心绑定 2/2 · INCONCLUSIVE · 邻域压力未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'重放保存的中心绑定',exact:true}).click();await expect(page.getByText('中心工件原绑定重放一致',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的证据汇总',exact:true}).click();await expect(page.getByText('证据汇总原工件重放一致',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的费用诊断',exact:true}).click();await expect(page.getByText('费用诊断原前缀重放一致',{exact:true})).toBeVisible({timeout:35000});
   await page.reload();await page.getByRole('button',{name:'历史记录',exact:true}).click();await page.getByRole('button',{name:'研究登记',exact:true}).click();await page.getByRole('button',{name:`查看协议 ${parent.protocol_id.slice(0,8)}`,exact:true}).click();
@@ -59,6 +61,7 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByText('当前保存证据与验证缺口',{exact:true}).click();await page.getByRole('button',{name:'查看保存的验证汇总',exact:true}).click();await expect(page.getByText('METHOD证据汇总 · 前缀3 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('将联合压力绑定至此汇总',{exact:true}).click();await page.getByRole('button',{name:'查看保存的联合汇总版本',exact:true}).click();await expect(page.getByText('METHOD联合证据汇总 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('诊断绑定与完整冻结剩余条件',{exact:true}).click();await page.getByRole('button',{name:'查看保存的工程检查',exact:true}).click();await expect(page.getByText('METHOD诊断绑定 8/9 · INCONCLUSIVE · 完整冻结未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByText('原冻结主模型中心工件',{exact:true}).click();await page.getByRole('button',{name:'查看保存的中心绑定',exact:true}).click();await expect(page.getByText('主模型中心绑定 2/2 · INCONCLUSIVE · 邻域压力未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
-  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-completion-check/mobile.png',fullPage:true});
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-primary-center/mobile.png',fullPage:true});
 });

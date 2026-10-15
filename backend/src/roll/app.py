@@ -389,6 +389,21 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/research/successor-cost-stresses/{identifier}/replay')
     async def successor_cost_stress_replay(identifier:str):return await successor_stresses.replay(identifier)
 
+    from roll.research.successor_primary_center import SuccessorPrimaryCenters,CenterCommand
+    successor_centers=SuccessorPrimaryCenters(successor_completion)
+
+    @app.post('/api/research/successor-completion-checks/{identifier}/primary-center-binding',status_code=201)
+    def successor_center_create(identifier:str,command:CenterCommand):return successor_centers.create(identifier,command)
+
+    @app.get('/api/research/successor-completion-checks/{identifier}/primary-center-binding')
+    def successor_center_list(identifier:str):return successor_centers.listing(identifier)
+
+    @app.get('/api/research/successor-primary-center-bindings/{identifier}')
+    def successor_center_get(identifier:str):return successor_centers.get(identifier)
+
+    @app.post('/api/research/successor-primary-center-bindings/{identifier}/replay')
+    def successor_center_replay(identifier:str):return successor_centers.replay(identifier)
+
     @app.get('/api/research/complete-freezes/{predecessor_freeze_id}/policy-successor-freezes')
     def successor_freezes_for_parent(predecessor_freeze_id:str):
         return successor_protocols.for_parent(predecessor_freeze_id)
