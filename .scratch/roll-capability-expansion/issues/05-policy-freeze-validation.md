@@ -52,3 +52,5 @@
 2026-10-15 增量：六个原网格BUY/ADD入场压力已接入，默认逐前缀完整状态等于旧引擎，close/+2/0与50%/lot期限/预留释放可追踪；最终API2 PASS/49.73s、Chrome1 PASS/45.7s与构建通过。见[入场压力验收](../evidence/05-entry-stress/acceptance.md)。早退/到期及基准联合压力、真实/独立支持和完整冻结仍缺，05保持partial。
 
 2026-10-15 增量：同费用前缀保存证据汇总已接入，五/六类工件正向绑定、混前缀拒绝、嵌套原件/硬FAIL/保存重放通过，CAL不拼日历。G6/G7移至启运后资格缺口，避免循环冻结前置。最终API2 PASS/69.96s、Chrome1 PASS/46.3s。见[证据汇总验收](../evidence/05-evidence-review/acceptance.md)。联合压力仍是下一可离线前沿，05保持partial。
+
+2026-10-15 增量：十二固定配对费用/入场场景已同时消费保存候选与三原基准，默认曲线相等、原时点/未知/基准不可比保留；最终API1 PASS/63.63s、Chrome1 PASS/54.5s、构建与双审查通过。见[联合压力验收](../evidence/05-joint-stress/acceptance.md)。下一离线前沿为联合结果版本化接入汇总，不改变旧汇总重放；05仍partial。

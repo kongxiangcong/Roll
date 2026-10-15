@@ -24,6 +24,10 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByRole('button',{name:'重放保存的原基准参照',exact:true}).click();await expect(page.getByText('原登记基准归档重放一致',{exact:true})).toBeVisible({timeout:35000});
   await page.getByText('入场延迟与部分成交压力',{exact:true}).click();await page.getByRole('button',{name:'运行保存前缀的入场压力',exact:true}).click();await expect(page.getByText('METHOD入场压力 6项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible({timeout:35000});
   await page.getByRole('button',{name:'重放保存的入场压力',exact:true}).click();await expect(page.getByText('入场压力原前缀重放一致',{exact:true})).toBeVisible({timeout:35000});
+  await page.getByText('同场景候选与原基准压力',{exact:true}).click();await page.getByRole('button',{name:'读取同前缀对照工件',exact:true}).click();
+  await page.getByLabel('联合压力原基准',{exact:true}).selectOption({index:1});await page.getByLabel('联合压力入场版本',{exact:true}).selectOption({index:1});await page.getByRole('button',{name:'运行同场景候选基准压力',exact:true}).click();
+  await expect(page.getByText('METHOD联合压力 12项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible({timeout:35000});
+  await page.getByRole('button',{name:'重放保存的联合压力',exact:true}).click();await expect(page.getByText('联合压力原工件重放一致',{exact:true})).toBeVisible({timeout:35000});
   await page.getByText('当前保存证据与验证缺口',{exact:true}).click();await page.getByRole('button',{name:'读取可绑定证据',exact:true}).click();
   for(const label of ['汇总时间分段证据','汇总CASH控制证据','汇总原登记基准证据','汇总入场压力证据'])await page.getByLabel(label,{exact:true}).selectOption({index:1});
   await page.getByRole('button',{name:'保存选定证据的验证汇总',exact:true}).click();await expect(page.getByText('METHOD证据汇总 · 前缀3 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
@@ -38,7 +42,8 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByText('同窗口CASH控制',{exact:true}).click();await page.getByRole('button',{name:'查看保存的CASH控制',exact:true}).click();await expect(page.getByText('METHOD CASH控制 · G4 INCONCLUSIVE · 风险未匹配 · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('原登记基准与期限差异',{exact:true}).click();await page.getByRole('button',{name:'查看保存的原基准参照',exact:true}).click();await expect(page.getByText('METHOD原登记基准 · G4 INCONCLUSIVE · 风险匹配未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('入场延迟与部分成交压力',{exact:true}).click();await page.getByRole('button',{name:'查看保存的入场压力',exact:true}).click();await expect(page.getByText('METHOD入场压力 6项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByText('同场景候选与原基准压力',{exact:true}).click();await page.getByRole('button',{name:'查看保存的联合压力',exact:true}).click();await expect(page.getByText('METHOD联合压力 12项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('当前保存证据与验证缺口',{exact:true}).click();await page.getByRole('button',{name:'查看保存的验证汇总',exact:true}).click();await expect(page.getByText('METHOD证据汇总 · 前缀3 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
-  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-evidence-review/mobile.png',fullPage:true});
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-joint-stress/mobile.png',fullPage:true});
 });

@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_joint_scenarios_keep_candidate_and_original_control_timing _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05jr/test_joint_scenarios_keep_cand0')
+
+    def test_joint_scenarios_keep_candidate_and_original_control_timing(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path);proposal=register(client,previous).json();frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Paired fixed scenarios before METHOD results'}).json()
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            protocol=client.post(base+'/complete-protocol',json={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'parameters','basis':'Original comparator contracts'}).json()
+            for day in range(1,46):
+                observation=frame(day)
+                if day>=22:observation['bars'][0].update(open_yuan='11.00',high_yuan='11.00',low_yuan='10.50',close_yuan='11.00',reference_close_yuan='10.00' if day==22 else '11.00')
+                assert client.post(base+'/shadow/advance',json=observation).status_code==201
+            state=client.get(base+'/shadow').json()
+            def components(revision,key):
+                source=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':protocol['complete_protocol_fingerprint'],'expected_revision':revision,'idempotency_key':key,'basis':'Same paired METHOD prefix'}).json()
+                route='/api/research/successor-cost-stresses/'+source['stress_id']
+                controls=client.post(route+'/registered-controls',json={'idempotency_key':'controls','basis':'Original control contracts'}).json()
+                entry=client.post(route+'/entry-stress',json={'idempotency_key':'entry','basis':'Same entry grid and source'}).json()
+                return source,route,controls,entry
+            source,route,controls,entry=components(45,'source')
+            command={'controls_id':controls['comparison_id'],'entry_id':entry['diagnostic_id'],'idempotency_key':'joint','basis':'Paired scenario labels preserve original timing; no qualification'}
+>           response=client.post(route+'/joint-stress',json=command);assert response.status_code==201,response.text
+                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_successor_joint_stress.py:27: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_joint_stress.py::test_joint_scenarios_keep_candidate_and_original_control_timing
+1 failed in 30.26s

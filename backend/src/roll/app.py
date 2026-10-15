@@ -275,6 +275,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def successor_segments_replay(identifier:str):return successor_segments.replay(identifier)
     from roll.research.successor_probability import SuccessorProbabilityEvidence,ProbabilityBindingCommand
     successor_probability=SuccessorProbabilityEvidence(successor_protocols,probability_references,block_references)
+    from roll.research.successor_joint import SuccessorJointStresses,JointStressCommand
+    successor_joint=SuccessorJointStresses(successor_stresses,successor_controls,successor_entries)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/joint-stress',status_code=201)
+    async def successor_joint_create(identifier:str,command:JointStressCommand):return await successor_joint.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/joint-stress')
+    def successor_joint_list(identifier:str):return successor_joint.listing(identifier)
+
+    @app.get('/api/research/successor-joint-stresses/{identifier}')
+    def successor_joint_get(identifier:str):return successor_joint.get(identifier)
+
+    @app.post('/api/research/successor-joint-stresses/{identifier}/replay')
+    async def successor_joint_replay(identifier:str):return await successor_joint.replay(identifier)
     from roll.research.successor_evidence_review import SuccessorEvidenceReviews,EvidenceReviewCommand
     successor_evidence=SuccessorEvidenceReviews(successor_stresses,successor_segments,successor_cash,successor_controls,successor_entries,successor_probability)
 
