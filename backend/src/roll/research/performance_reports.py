@@ -48,7 +48,9 @@ class PerformanceReports:
         executable=os.environ.get('ROLL_QUANTSTATS_PYTHON')
         if not executable:raise HTTPException(409,'QUANTSTATS_ISOLATED_PYTHON_NOT_CONFIGURED')
         identifier=str(uuid4());output=self.evidence.directory/'performance-renders'/identifier;output.mkdir(parents=True)
-        inputs={'curves':source['curves'],'sessions':sessions,'output_directory':str(output)}
+        inputs={'curves':source['curves'],'sessions':sessions,'output_directory':str(output),
+            'benchmarks':{name:state.get('comparators',{}).get(name,{}).get('curve',[]) for name in ('CASH','START_HOLD','MA5_MA20')
+                if name in state.get('comparators',{})}}
         source_archive=self.evidence.archive(encode(source).encode(),'SAVED_PERFORMANCE_SOURCE')
         input_archive=self.evidence.archive(encode(inputs).encode(),'QUANTSTATS_INPUT')
         with (output/'stderr.log').open('wb') as errors:
@@ -80,7 +82,7 @@ class PerformanceReports:
         # Original report remains byte-bound separately; offline export has no
         # remote assets or URLs and never invokes the library on subsequent reads.
         text='<!doctype html><html><meta charset="utf-8"><title>Roll saved performance</title><style>body{font:16px system-ui;max-width:1000px;margin:32px auto;padding:0 16px;color:#253b30}svg{width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}td,th{padding:8px;border-bottom:1px solid #ddd;text-align:left}table{border-collapse:collapse}</style><body><h1>Roll saved performance · NOT_GRANTED</h1>'
-        text+='<p>QuantStats '+html.escape(result['library']['version'])+' · '+html.escape(source['evidence_kind'])+' · first saved close anchor; no matched baseline; partial calendar months.</p>'
+        text+='<p>QuantStats '+html.escape(result['library']['version'])+' · '+html.escape(source['evidence_kind'])+' · first saved close anchor; partial calendar months. Saved benchmarks are descriptive, not risk-matching qualification.</p>'
         for name,section in result['namespaces'].items():
             text+='<h2>'+name+'</h2><p>'+html.escape(section['status'])+'</p>'
             if section['status']=='DESCRIPTIVE_SAVED_CLOSE_INTERVAL':
@@ -88,6 +90,10 @@ class PerformanceReports:
                 for key in ('total_return','maximum_drawdown','annualized_return'):
                     number=section.get(key);text+='<td>'+('Not calculated: insufficient observed periods' if number is None else f'{number*100:.2f}%')+'</td>'
                 text+='</tr></table>'
+                for label,baseline in section.get('benchmarks',{}).items():
+                    text+='<h3>Saved baseline '+html.escape(label)+'</h3><p>'+html.escape(baseline['status'])+'</p>'
+                    if baseline['status']=='DESCRIPTIVE_SAVED_CLOSE_INTERVAL':
+                        text+='<p>Interval return '+f"{baseline['total_return']*100:.2f}%"+'; maximum drawdown '+f"{baseline['maximum_drawdown']*100:.2f}%"+'; descriptive return difference '+f"{baseline['interval_return_difference']*100:.2f}%"+'</p>'
             if name in figures:text+=self.evidence.raw(figures[name]['sha256']).read_text(encoding='utf-8')
         text+='<details><summary>Saved inputs, coverage and method fingerprints</summary><pre>'+html.escape(json.dumps({k:v for k,v in value.items() if k not in {'source_report','input_archive','figures','original_fingerprints'}},ensure_ascii=False,indent=2))+'</pre></details>'
         text+='</body></html>'

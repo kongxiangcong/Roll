@@ -18,7 +18,8 @@ results={}
 for name,values in cases.items():
  points=[{'date':day,'nav_yuan':value} for day,value in zip(days,values)]
  curves={'SHADOW':{'continuous_performance':True,'points':points},'ACTUAL':{'continuous_performance':False,'points':[{'as_of':days[0],'net_assets':'100'},{'as_of':days[1],'net_assets':'200','external_cash_in':'100'}]}}
- command={'curves':curves,'sessions':days[:1] if name=='short' else days}
+ benchmark=[{'date':d,'nav_yuan':'100'} for d in days]
+ command={'curves':curves,'sessions':days[:1] if name=='short' else days,'benchmarks':{'CASH':benchmark,'MISSING_DAY':benchmark[:2],'NULL_NAV':[benchmark[0],{'date':days[1],'nav_yuan':None},benchmark[2]],'SHIFTED':[{'date':'2026-06-05','nav_yuan':'100'},*benchmark[1:]]}}
  result=module.render(command);result.pop('figures');results[name]=result['namespaces']
 print(json.dumps(results,allow_nan=False))
 '''
@@ -29,6 +30,13 @@ print(json.dumps(results,allow_nan=False))
     assert zero['total_return']==0 and zero['maximum_drawdown']==0
     assert [m['month'] for m in zero['monthly_returns']]==['2026-06']
     assert zero['annualized_return'] is None and zero['returns'][0]['value'] is None
+    assert zero['benchmarks']['CASH']['total_return']==0
+    for key in ('MISSING_DAY','NULL_NAV','SHIFTED'):
+        assert zero['benchmarks'][key]['status']=='INCOMPLETE_FIXED_WINDOW'
+        assert 'interval_return_difference' not in zero['benchmarks'][key]
+        assert not zero['benchmarks'][key]['returns']
+    assert zero['benchmarks']['SHIFTED']['coverage']['unexpected_sessions']==['2026-06-05']
+    assert zero['benchmark_status']=='SAVED_BASELINE_WINDOW_MISMATCH'
     assert result['short']['SHADOW']['status']=='INSUFFICIENT_POSITIVE_NAV_SUPPORT'
     for name in ('missing','null'):
         assert result[name]['SHADOW']['status']=='INCOMPLETE_FIXED_WINDOW'

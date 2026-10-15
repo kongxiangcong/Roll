@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {request} from '../api';
 
 type Curve={status:string;window:[string,string]|null;coverage:{original_points:number;missing_sessions:string[];unknown_nav_dates:string[]};benchmark_status:string;
-  total_return?:number;maximum_drawdown?:number;annualized_return:number|null;monthly_returns:{month:string;value:number;coverage:string}[]};
+  total_return?:number;maximum_drawdown?:number;annualized_return:number|null;monthly_returns:{month:string;value:number;coverage:string}[];benchmarks?:Record<string,Curve>;interval_return_difference?:number};
 type Saved={performance_report_id:string;source_revision:number;created_at:string;source_evidence_kind:string;library:{version:string};namespaces:Record<string,Curve>;figures:Record<string,{sha256:string}>;renderer_fingerprint:string};
 const percent=(value:number)=>`${(100*value).toFixed(2)}%`;
 
@@ -27,7 +27,8 @@ export function PerformanceReportPanel({freezeId,revision,options}:{freezeId:str
           <p>{c.coverage.original_points}个保存时点 · {c.window![0]} 至 {c.window![1]}</p>
           <p>区间收益 {percent(c.total_return!)} · 最大回撤 {percent(c.maximum_drawdown!)}</p>
           <p>{c.annualized_return===null?'年化收益：窗口不足，未计算':`252期年化收益 ${percent(c.annualized_return)}`}</p>
-          <p>无已保存的匹配连续基准序列，未计算相对收益。无风险率假设0，年化252期；不改变冻结研究口径。</p>
+          <p>无风险率假设0，年化252期；不改变冻结研究口径。保存的基准仅作收盘区间描述，不授风险匹配资格。</p>
+          {c.benchmarks&&Object.keys(c.benchmarks).length?<div className="reference-table"><table><thead><tr><th>已保存影子基准</th><th>覆盖</th><th>区间收益</th><th>最大回撤</th><th>策略减基准</th></tr></thead><tbody>{Object.entries(c.benchmarks).map(([label,b])=><tr key={label}><td>{label}</td><td>{b.status==='DESCRIPTIVE_SAVED_CLOSE_INTERVAL'?'同一完整收盘窗口':'日期或净值缺失，未对比'}</td><td>{b.total_return===undefined?'不足':percent(b.total_return)}</td><td>{b.maximum_drawdown===undefined?'不足':percent(b.maximum_drawdown)}</td><td>{b.interval_return_difference===undefined?'不足':percent(b.interval_return_difference)}</td></tr>)}</tbody></table></div>:<p>该保存版本未包含匹配连续基准序列，未计算相对收益。</p>}
           {current.figures[name]&&<img alt={name+'累计收益、回撤与观察月度收益'} src={`/api/research/performance-reports/${current.performance_report_id}/figures/${name}`}/>}
           <details><summary>观察月度区间（边界月份不是完整月收益）</summary>{c.monthly_returns.map(m=><p key={m.month}>{m.month} · {percent(m.value)}</p>)}</details>
         </>:<p>{c.status==='NOT_A_CONTINUOUS_RETURN_SERIES'?'没有连续收益序列，未串成策略绩效':`固定窗口不完整或支持不足；缺日${c.coverage.missing_sessions.length}，未知净值${c.coverage.unknown_nav_dates.length}，未计算完整期指标`}</p>}
