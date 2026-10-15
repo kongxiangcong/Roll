@@ -25,6 +25,7 @@ SDK受限传输丢弃其硬编码示例cookies；每个准备好的请求再移�
 - source-plan.json单独新来源预算已执行并CLOSED_NO_RETRY：source-attempt.json实际4HTTP、218675字节、10条新闻事实、4份SHA核验原件（1列表+3正文HTML），capture_elapsed_seconds4.039768。账户完全不变；原始实体及journal在actual-source/。source-response.json状态PARTIAL，full_text_verified=false；未重开任何财报或历史预算。
 - production-browser.log默认应用读取实际已保存profile，1通过/11.7秒，390px、标题/原HTML/范围提示通过，POST采集0。追加运行原件展开后production-browser-final.log为1通过/13.0秒，build-final.log为最新TypeScript/Vite通过；没有重复真实采集。
 - spec-review.md与standards-review.md记录已关闭实质P2；版本和原15脏文件/12旧模型依赖核验见code-versions.json、preservation.json与model-preservation.json。
+- compatibility.log为旧来源策略/冷却/作用域、旧权益修订及禁用不调用、PDF工程回归5通过/43.49秒；这是本增量适用的兼容检查，不是全仓测试结论。
 
 ## 实际全文阻塞
 
