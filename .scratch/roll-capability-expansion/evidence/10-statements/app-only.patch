@@ -1,0 +1,30 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -512,6 +512,17 @@
+     successor_inputs=SuccessorInputConsumers(successor_centers,prospective)
+     financial=FinancialIncome(evidence,prospective.sources)
+     app.state.financial=financial
++    financial_statements=FinancialIncome(evidence,prospective.sources,statement="SUPPLEMENT")
++    app.state.financial_statements=financial_statements
++
++    @app.get("/api/market/financial/{instrument}/statements")
++    def statements(instrument:str,known_by:datetime|None=Query(None)):
++        from roll.market.financial_statements import joined
++        return joined(financial,financial_statements,instrument,known_by)
++
++    @app.post("/api/market/financial/{instrument}/statements/collect",status_code=201)
++    async def statements_collect(instrument:str,command:IncomeCommand):
++        return await financial_statements.collect(instrument,command)
+ 
+     @app.get('/api/market/financial/{instrument}/income')
+     def financial_income(instrument:str,known_by:datetime|None=Query(None)):
+@@ -523,7 +534,8 @@
+ 
+     @app.post('/api/market/financial/runs/{run_id}/cancel')
+     async def financial_income_cancel(run_id:str):
+-        return await financial.cancel(run_id)
++        service=financial_statements if run_id in financial_statements.tasks else financial
++        return await service.cancel(run_id)
+ 
+     price_quotes=PriceQuotes(prospective)
+     company_actions=CompanyActionPages(prospective)

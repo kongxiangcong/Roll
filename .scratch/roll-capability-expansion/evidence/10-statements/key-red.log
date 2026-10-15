@@ -1,0 +1,38 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_saved_three_statements_join_full_identities_and_replay _________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r10kr/test_saved_three_statements_jo0')
+
+    def test_saved_three_statements_join_full_identities_and_replay(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            base='/api/market/financial/SSE:600362'
+            client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':client.get('/api/market/list').json()['version']})
+            policy=next(p for p in client.get('/api/research/collection-sources').json() if p['id']=='akshare-financial-em')
+            client.post('/api/research/collection-sources/akshare-financial-em/policy',json={'enabled':True,'expected_revision':policy['revision'],'basis':'METHOD isolated three statements'})
+            client.app.state.financial_statements.worker=statements
+            command={'idempotency_key':'three-once','basis':'METHOD fixture from issuer statement; no network'}
+            saved=client.post(base+'/statements/collect',json=command)
+            assert saved.status_code==201,saved.text
+            saved=saved.json();assert saved['status']=='COMPLETE',saved
+            assert len(saved['facts'])==2 and saved['network_calls']==0
+            value=client.get(base+'/statements').json()
+            group=value['groups'][0]
+            assert group['balance_check']=={'status':'WITHIN_ROUNDING','difference':'0','tolerance':'1.5'}
+            assert group['status']=='MISSING_STATEMENTS' and group['missing']==['INCOME']
+            assert group['facts']['BALANCE']['period_basis']=='POINT_IN_TIME'
+            assert group['facts']['CASH_FLOW']['values']['investing_cash_flow']=='-23434970323'
+            assert group['facts']['CASH_FLOW']['period_basis']=='YEAR_TO_DATE'
+            async def income(instrument,output):
+                m=json.loads((CAPTURE/'capture.json').read_text())
+                for c in m['captures']:(output/c['raw_file']).write_bytes((CAPTURE/c['raw_file']).read_bytes())
+                return m
+            client.app.state.financial.worker=income
+>           assert client.post(base+'/income/collect',json={**command,'idempotency_key':'SUPPLEMENT:three-once'}).json()['status']=='COMPLETE'
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'status'
+
+backend\tests\application\test_financial_statements.py:45: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_statements.py::test_saved_three_statements_join_full_identities_and_replay
+1 failed in 7.86s

@@ -34,18 +34,21 @@ def decimal_text(value):
 
 
 class FinancialIncome:
-    def __init__(self,evidence,sources):
+    def __init__(self,evidence,sources,statement="INCOME"):
+        if statement not in ("INCOME","SUPPLEMENT"):raise ValueError("FINANCIAL_STATEMENT_UNSUPPORTED")
+        self.statement=statement
+        self.run_table="financial_income_runs" if statement=="INCOME" else "financial_supplement_runs"
         self.evidence,self.ledger,self.sources=evidence,evidence.ledger,sources
         self.worker=None
         self.active={}
         self.tasks={}
         self.cancel_requested=set()
         with self.ledger.connection() as db:
-            db.executescript('''
-                CREATE TABLE IF NOT EXISTS financial_income_runs(id TEXT PRIMARY KEY,instrument TEXT NOT NULL,key TEXT NOT NULL,command_hash TEXT NOT NULL,value TEXT NOT NULL,UNIQUE(instrument,key));
+            db.executescript(f'''
+                CREATE TABLE IF NOT EXISTS {self.run_table}(id TEXT PRIMARY KEY,instrument TEXT NOT NULL,key TEXT NOT NULL,command_hash TEXT NOT NULL,value TEXT NOT NULL,UNIQUE(instrument,key));
                 CREATE TABLE IF NOT EXISTS financial_income_facts(id TEXT PRIMARY KEY,instrument TEXT NOT NULL,identity TEXT NOT NULL,content_hash TEXT NOT NULL,value TEXT NOT NULL);
             ''')
-            recovering=db.execute('SELECT id,value FROM financial_income_runs').fetchall()
+            recovering=db.execute(f'SELECT id,value FROM {self.run_table}').fetchall()
         for identifier,raw in recovering:
             run=json.loads(raw)
             if run['status']=='RUNNING' and not owner_alive(run):
@@ -55,7 +58,7 @@ class FinancialIncome:
                     except Exception:pass
                 run.update(status='INTERRUPTED',finished_at=now(),errors=['HOST_INTERRUPTED_NO_AUTOMATIC_RETRY'])
                 with self.ledger.connection() as db:
-                    db.execute('UPDATE financial_income_runs SET value=? WHERE id=?',(encode(run),identifier))
+                    db.execute(f'UPDATE {self.run_table} SET value=? WHERE id=?',(encode(run),identifier))
 
     def checked(self,run):
         for original in run['originals']:self.evidence.raw(original['sha256'])
@@ -72,9 +75,10 @@ class FinancialIncome:
         stamp=cutoff or datetime.fromisoformat(now())
         if stamp.tzinfo is None or stamp>datetime.fromisoformat(now()):raise HTTPException(422,'FINANCIAL_CUTOFF_REQUIRES_PAST_AWARE_TIME')
         with self.ledger.connection() as db:
-            facts=[json.loads(r[0]) for r in db.execute("SELECT value FROM financial_income_facts WHERE instrument=? ORDER BY json_extract(value,'$.report_period') DESC,rowid DESC",(instrument,))]
-            runs=[json.loads(r[0]) for r in db.execute('SELECT value FROM financial_income_runs WHERE instrument=? ORDER BY rowid DESC',(instrument,))]
-        facts=[f for f in facts if datetime.fromisoformat(f['available_at'])<=stamp]
+            facts=[json.loads(r[0]) for r in db.execute(f"SELECT value FROM financial_income_facts WHERE instrument=? ORDER BY json_extract(value,'$.report_period') DESC,rowid DESC",(instrument,))]
+            runs=[json.loads(r[0]) for r in db.execute(f'SELECT value FROM {self.run_table} WHERE instrument=? ORDER BY rowid DESC',(instrument,))]
+        facts=[f for f in facts if (f['statement']=='INCOME')==(self.statement=='INCOME') and datetime.fromisoformat(f['available_at'])<=stamp]
+        runs=[r for r in runs if r.get('statement','INCOME')==self.statement]
         for fact in facts:
             self.evidence.raw(fact['raw_sha256'])
             if fact['semantic_document']:self.evidence.raw(fact['semantic_document']['sha256'])
@@ -86,7 +90,7 @@ class FinancialIncome:
     async def process(self,instrument,output):
         executable=os.environ.get('ROLL_AKSHARE_PYTHON')
         if not executable:raise ValueError('AKSHARE_ISOLATED_PYTHON_NOT_CONFIGURED')
-        command={'instrument':instrument,'output_directory':str(output),'deadline_at':time.time()+18}
+        command={'instrument':instrument,'output_directory':str(output),'deadline_at':time.time()+18,'statement':self.statement}
         process=await asyncio.create_subprocess_exec(executable,'-B',str(Path(__file__).with_name('akshare_financial_process.py')),
             stdin=asyncio.subprocess.PIPE,stdout=asyncio.subprocess.DEVNULL,stderr=asyncio.subprocess.DEVNULL,
             creationflags=0x08000000 if os.name=='nt' else 0)
@@ -128,6 +132,9 @@ class FinancialIncome:
 
     def facts(self,instrument,run,manifest,output):
         captures=self.archive_capture(manifest,output,run)
+        if self.statement!='INCOME':
+            from roll.market.financial_statements import normalize
+            return normalize(self,instrument,run,manifest,captures)
         income=[i for i,c in enumerate(captures) if c.get('role')=='lrbAjaxNew']
         if len(income)!=1:raise ValueError('FINANCIAL_SINGLE_INCOME_ENTITY_REQUIRED')
         original=run['originals'][income[0]]
@@ -167,9 +174,10 @@ class FinancialIncome:
         return facts
 
     async def collect(self,instrument,command):
+        stored_key=command.idempotency_key
         command_hash=hashlib.sha256(encode(command.model_dump()).encode()).hexdigest()
         with self.ledger.connection() as db:
-            old=db.execute('SELECT command_hash,value FROM financial_income_runs WHERE instrument=? AND key=?',(instrument,command.idempotency_key)).fetchone()
+            old=db.execute(f'SELECT command_hash,value FROM {self.run_table} WHERE instrument=? AND key=?',(instrument,stored_key)).fetchone()
         if old:
             if old[0]!=command_hash:raise HTTPException(409,'FINANCIAL_IDEMPOTENCY_CONFLICT')
             return self.checked(json.loads(old[1]))
@@ -177,14 +185,14 @@ class FinancialIncome:
         denied=self.sources.access(SOURCE,instrument)
         if denied:raise HTTPException(409,denied)
         run={'run_id':str(uuid4()),'instrument':instrument,'status':'RUNNING','started_at':now(),'finished_at':None,
-            'basis':command.basis,'originals':[],'facts':[],'errors':[],'upstream_entity_count':0,'network_calls':0,
+            'statement':self.statement,'basis':command.basis,'originals':[],'facts':[],'errors':[],'upstream_entity_count':0,'network_calls':0,
             'evidence_kind':'METHOD_CASE' if self.worker is not None else 'REAL_ACQUISITION',
             'host_owner':{'pid':os.getpid(),'creation_ticks':process_creation(os.getpid())},
             'capture_plan':{'max_calls':8,'total_timeout_seconds':18,'max_bytes':8*1024*1024,'retries':0},'system_usable':False}
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
-            if db.execute("SELECT 1 FROM financial_income_runs WHERE instrument=? AND json_extract(value,'$.status')='RUNNING'",(instrument,)).fetchone():raise HTTPException(409,'FINANCIAL_ACQUISITION_ALREADY_RUNNING')
-            db.execute('INSERT INTO financial_income_runs VALUES(?,?,?,?,?)',(run['run_id'],instrument,command.idempotency_key,command_hash,encode(run)));db.commit()
+            if db.execute(f"SELECT 1 FROM {self.run_table} WHERE instrument=? AND json_extract(value,'$.status')='RUNNING'",(instrument,)).fetchone():raise HTTPException(409,'FINANCIAL_ACQUISITION_ALREADY_RUNNING')
+            db.execute(f'INSERT INTO {self.run_table} VALUES(?,?,?,?,?)',(run['run_id'],instrument,stored_key,command_hash,encode(run)));db.commit()
         output=self.evidence.directory/'financial-captures'/run['run_id'];output.mkdir(parents=True)
         self.tasks[run['run_id']]=asyncio.current_task()
         try:
@@ -198,7 +206,7 @@ class FinancialIncome:
                     # never a claim that unknown scopes are financially comparable.
                     identity=encode([instrument,fact['statement'],fact['report_period'],SOURCE,'BY_REPORT_API'])
                     content=hashlib.sha256(encode([fact['original_fields'],fact['semantic_document'] and fact['semantic_document']['sha256'],fact['evidence_kind']]).encode()).hexdigest()
-                    previous=db.execute('SELECT id,content_hash,value FROM financial_income_facts WHERE identity=? ORDER BY rowid DESC LIMIT 1',(identity,)).fetchone()
+                    previous=db.execute(f'SELECT id,content_hash,value FROM financial_income_facts WHERE identity=? ORDER BY rowid DESC LIMIT 1',(identity,)).fetchone()
                     if previous and previous[1]==content:fact=json.loads(previous[2])
                     else:
                         prior_fact=json.loads(previous[2]) if previous else None
@@ -206,10 +214,10 @@ class FinancialIncome:
                             for k in ('statement_scope','currency','unit','period_basis'))
                         fact.update(fact_id=str(uuid4()),version=1 if previous is None else json.loads(previous[2])['version']+1,supersedes_id=previous[0] if previous else None)
                         fact.update(revision_lineage='SOURCE_STREAM_OBSERVATIONS_ONLY',comparable_with_superseded=comparable)
-                        db.execute('INSERT INTO financial_income_facts VALUES(?,?,?,?,?)',(fact['fact_id'],instrument,identity,content,encode(fact)))
+                        db.execute(f'INSERT INTO financial_income_facts VALUES(?,?,?,?,?)',(fact['fact_id'],instrument,identity,content,encode(fact)))
                     run['facts'].append(fact)
                 run.update(status='COMPLETE',finished_at=now())
-                db.execute('UPDATE financial_income_runs SET value=? WHERE id=?',(encode(run),run['run_id']));db.commit()
+                db.execute(f'UPDATE {self.run_table} SET value=? WHERE id=?',(encode(run),run['run_id']));db.commit()
         except (Exception,asyncio.CancelledError) as error:
             # Preserve a worker journal even when its parent deadline or caller is cancelled.
             if not run['originals'] and (output/'capture.json').exists():
@@ -217,7 +225,7 @@ class FinancialIncome:
                 except Exception:pass
             run.update(status='CANCELLED' if isinstance(error,asyncio.CancelledError) else 'FAILED',finished_at=now(),
                 errors=[str(error)[:300] if isinstance(error,ValueError) else type(error).__name__])
-            with self.ledger.connection() as db:db.execute('UPDATE financial_income_runs SET value=? WHERE id=?',(encode(run),run['run_id']))
+            with self.ledger.connection() as db:db.execute(f'UPDATE {self.run_table} SET value=? WHERE id=?',(encode(run),run['run_id']))
             if isinstance(error,asyncio.CancelledError) and run['run_id'] not in self.cancel_requested:raise
         finally:
             self.tasks.pop(run['run_id'],None)

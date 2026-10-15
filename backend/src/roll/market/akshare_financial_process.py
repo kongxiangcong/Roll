@@ -14,13 +14,13 @@ SDK_VERSION='1.19.1'
 SDK_SOURCE_SHA='e9cb438a5e033e9ba2d14c0341528b1aeec3f162fb2c0e5cbff41a6bc293348e'
 HOST='emweb.securities.eastmoney.com'
 PREFIX='/PC_HSF10/NewFinanceAnalysis/'
-SOURCE_PATHS={'Index','lrbDateAjaxNew','lrbAjaxNew'}
+SOURCE_PATHS={'Index','lrbDateAjaxNew','lrbAjaxNew','zcfzbDateAjaxNew','zcfzbAjaxNew','xjllbDateAjaxNew','xjllbAjaxNew'}
 
 
 def main(command):
     output=Path(command['output_directory']);output.mkdir(parents=True,exist_ok=True)
     state={'sdk_version':SDK_VERSION,'sdk_source_sha256':SDK_SOURCE_SHA,'status':'FAILED',
-        'captures':[],'date_selection':None,'sdk_result':None,'errors':[],
+        'captures':[],'date_selections':{},'date_selection':None,'sdk_result':None,'errors':[],
         'evidence_kind':'METHOD_CASE' if command.get('fixture') else 'REAL_SOURCE_ASSESSMENT'}
     def save():
         temporary=output/'capture.json.tmp'
@@ -34,6 +34,8 @@ def main(command):
         if version('akshare')!=SDK_VERSION or source_file is None or hashlib.sha256(source_file.read_bytes()).hexdigest()!=SDK_SOURCE_SHA:
             raise ValueError('AKSHARE_VERSION_OR_SOURCE_MISMATCH')
         if command['instrument']!='SSE:600362':raise ValueError('AKSHARE_FINANCIAL_SCOPE_NOT_ACCEPTED')
+        supplement=command.get('statement','INCOME')=='SUPPLEMENT'
+        allowed={'Index','zcfzbDateAjaxNew','zcfzbAjaxNew','xjllbDateAjaxNew','xjllbAjaxNew'} if supplement else {'Index','lrbDateAjaxNew','lrbAjaxNew'}
         symbol='SH600362';used=0;selected=[]
         original_init=requests.Session.__init__;original_send=requests.Session.send
         def anonymous(session,*args,**kwargs):
@@ -48,10 +50,10 @@ def main(command):
             nonlocal used,selected
             parsed=urlsplit(request.url);query=parse_qs(parsed.query,keep_blank_values=True)
             role=parsed.path.removeprefix(PREFIX)
-            if parsed.scheme!='https' or parsed.hostname!=HOST or parsed.port not in (None,443) or role not in SOURCE_PATHS or request.method!='GET':
+            if parsed.scheme!='https' or parsed.hostname!=HOST or parsed.port not in (None,443) or role not in allowed or request.method!='GET':
                 raise ValueError('AKSHARE_FINANCIAL_UNAPPROVED_REQUEST')
             if query.get('code')!=[symbol.lower() if role=='Index' else symbol]:raise ValueError('AKSHARE_FINANCIAL_SYMBOL_MISMATCH')
-            if role=='lrbAjaxNew' and query.get('dates')!=[','.join(selected)]:raise ValueError('AKSHARE_FINANCIAL_DATE_SELECTION_MISMATCH')
+            if role in ('lrbAjaxNew','zcfzbAjaxNew','xjllbAjaxNew') and query.get('dates')!=[','.join(selected)]:raise ValueError('AKSHARE_FINANCIAL_DATE_SELECTION_MISMATCH')
             remaining=command['deadline_at']-time.time()
             if len(state['captures'])>=8 or remaining<=0:raise ValueError('AKSHARE_FINANCIAL_CALL_OR_TIME_BUDGET')
             kwargs.update(timeout=max(.01,remaining),stream=True,allow_redirects=False)
@@ -91,7 +93,7 @@ def main(command):
                 response.close();save()
             if response.status_code!=200:raise ValueError('AKSHARE_FINANCIAL_HTTP_'+str(response.status_code))
             response._content=bytes(body);response._content_consumed=True
-            if role=='lrbDateAjaxNew':
+            if role in ('lrbDateAjaxNew','zcfzbDateAjaxNew','xjllbDateAjaxNew'):
                 value=json.loads(body);rows=value.get('data')
                 if not isinstance(rows,list) or not rows:raise ValueError('AKSHARE_FINANCIAL_PERIODS_EMPTY_OR_UNKNOWN')
                 periods={str(row['REPORT_DATE'])[:10] for row in rows}
@@ -102,12 +104,20 @@ def main(command):
                     'selected_report_dates':selected,'selection':'LATEST_FIVE_DISTINCT_REPORT_PERIODS',
                     'library_input_is_derived':True,'upstream_original_is_unchanged':True}
                 response.json=lambda **kw:{**value,'data':chosen}
+                statement={'lrbDateAjaxNew':'INCOME','zcfzbDateAjaxNew':'BALANCE','xjllbDateAjaxNew':'CASH_FLOW'}[role]
+                state['date_selections'][statement]=selected
                 save()
             return response
         requests.Session.send=send
         with contextlib.redirect_stdout(sys.stderr):
             import akshare as ak
-            frame=ak.stock_profit_sheet_by_report_em(symbol=symbol)
+            if supplement:
+                balance=ak.stock_balance_sheet_by_report_em(symbol=symbol)
+                cash=ak.stock_cash_flow_sheet_by_report_em(symbol=symbol)
+                if not len(balance) or not len(cash):raise ValueError('FINANCIAL_SUPPLEMENT_EMPTY_STATEMENT')
+                frame=balance
+                state['statement_rows']={'BALANCE':len(balance),'CASH_FLOW':len(cash)}
+            else:frame=ak.stock_profit_sheet_by_report_em(symbol=symbol)
         state['sdk_result']={'rows':len(frame),'columns':[str(c) for c in frame.columns]}
         state['status']='CAPTURED' if len(frame) else 'EMPTY_RESULT'
     except Exception as error:

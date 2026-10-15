@@ -1,0 +1,43 @@
+[WebServer] INFO:     Started server process [11388]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8178 (Press CTRL+C to quit)
+[WebServer] (node:14588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:28600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-statements.spec.ts:3:1 › single stock reads matched statements with original values and replays after reload (5.9s)
+
+
+  1) tests\e2e\expansion-statements.spec.ts:3:1 › single stock reads matched statements with original values and replays after reload 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('region', { name: '三表 2026-06-30 MATCHED', exact: true }).getByText('三表口径匹配', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '三表 2026-06-30 MATCHED', exact: true }).getByText('三表口径匹配', { exact: true })[22m
+
+
+       8 |   await page.getByRole('button',{name:'有限采集资产负债与现金流',exact:true}).click();
+       9 |   const matched=page.getByRole('region',{name:'三表 2026-06-30 MATCHED',exact:true});
+    > 10 |   await expect(matched.getByText('三表口径匹配',{exact:true})).toBeVisible();
+         |                                                          ^
+      11 |   await expect(matched.getByText('资产−负债−权益：0；来源舍入容差：1.5；差异在来源舍入范围内',{exact:true})).toBeVisible();
+      12 |   await matched.getByText('资产负债表 · 版本1 · 报告期末时点',{exact:true}).click();
+      13 |   await matched.getByText('现金流量表 · 版本1 · 年初累计',{exact:true}).click();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-statements.spec.ts:10:58
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\10-statements\browser-results\expansion-statements-singl-6db60-es-and-replays-after-reload\error-context.md
+
+  1 failed
+    tests\e2e\expansion-statements.spec.ts:3:1 › single stock reads matched statements with original values and replays after reload 
