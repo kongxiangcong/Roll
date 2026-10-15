@@ -13,6 +13,7 @@ from roll.accounts.ledger import encode, now
 CNE_COMMIT = 'c118038ea82b5bb78783c0c17a1d9251b36de71d'
 CLEANING_VERSION = 'prospective-cleaning-v1'
 SOURCES = [
+    {'id': 'akshare-news-em', 'name': 'AKShare 东财单股新闻', 'upstream': 'EASTMONEY', 'group': 'NEWS', 'engine': 'AKSHARE'},
     {'id': 'akshare-financial-em', 'name': 'AKShare 东财利润表', 'upstream': 'EASTMONEY', 'group': 'FINANCIAL', 'engine': 'AKSHARE'},
     {'id': 'sse-company-client-contract', 'name': '上交所公司行情字段原件', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
     {'id': 'sse-closing-board', 'name': '上交所盘后原始快照', 'upstream': 'SSE', 'group': 'DAILY', 'engine': 'ROLL'},
@@ -62,6 +63,10 @@ class CollectionSources:
                           'unit_scope': 'Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted',
                           'license': 'Apache-2.0 code; upstream data rights separate',
                           'cleaning_version': CLEANING_VERSION, 'qualification': 'NOT_GRANTED'}
+                if spec['id']=='akshare-news-em':
+                    policy.update(enabled=False,basis='2026-10-15新增独立新闻来源，按单证券显式启用',
+                        adapter_version='akshare-1.19.1-news-raw-v1',license='AKShare MIT; Trafilatura Apache-2.0; upstream data rights separate',
+                        unit_scope='Recent search page only; actual SDK pageSize10; no complete history/entity assertion')
                 if spec['id']=='akshare-financial-em':
                     policy.update(enabled=False,basis='2026-10-15新增利润表来源，按单证券显式启用',
                         adapter_version='akshare-1.19.1-income-raw-v1',license='AKShare 1.19.1 MIT; upstream data rights separate',

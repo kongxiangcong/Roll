@@ -1,0 +1,25 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -510,6 +510,22 @@
+         return shadow.results(freeze_id)
+     prospective=ProspectiveEvidence(evidence,research)
+     successor_inputs=SuccessorInputConsumers(successor_centers,prospective)
++    from roll.market.news_ingestion import News,NewsCommand
++    news=News(evidence,prospective.sources)
++    app.state.news=news
++
++    @app.get('/api/market/news/runs/{identifier}')
++    def news_run(identifier:str):return news.get(identifier)
++
++    @app.post('/api/market/news/runs/{identifier}/cancel')
++    async def news_cancel(identifier:str):return await news.cancel(identifier)
++
++    @app.get('/api/market/news/{instrument}')
++    def news_query(instrument:str,known_by:datetime|None=Query(None)):return news.listing(instrument,known_by)
++
++    @app.post('/api/market/news/{instrument}/collect',status_code=201)
++    async def news_collect(instrument:str,command:NewsCommand):return await news.collect(instrument,command)
++
+     financial=FinancialIncome(evidence,prospective.sources)
+     app.state.financial=financial
+     financial_statements=FinancialIncome(evidence,prospective.sources,statement="SUPPLEMENT")

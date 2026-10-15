@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** PARTIAL — 公开API/原件/标题与METHOD正文、实际4HTTP/10列表事实/3HTML及Chrome已交付；Trafilatura依赖准备两次关闭，真实全文抽取未完成。
 
 **Scope / inheritance:** 新增新闻事实；复用09组件运行边界和现有来源配置。
 
@@ -33,3 +33,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-15：差量交付和全部失败/有限来源预算见[验收](../evidence/14-news/acceptance.md)。正文不取/失败/损坏仍保留标题与原件，SDK实际只第一页10条。两类传输/原件P2及双宿主恢复P2已修复，实际来源预算CLOSED_NO_RETRY；不得把HTML或METHOD正文算成真实Trafilatura。15依赖尚未解除。
