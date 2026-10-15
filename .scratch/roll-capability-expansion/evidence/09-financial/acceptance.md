@@ -31,3 +31,7 @@ actual-plan.json 与 actual-source/attempt.json：一次18秒/8MiB/8calls封口�
 剩余：在下一次明确允许的真实单证券采集请求中验收当前生产整链；该运行不得自动重开本次封口评估。不因缺这一运行而声称财报/PIT/模型资格已完成。后续三表与Docling票仍保留各自验收要求。
 
 最终修复后浏览器 browser-final.log：1 PASS/16.1s；build-final.log PASS。最新报告期优先，原件/PDF与移动布局通过。
+
+## 后续独立生产整链已完成（2026-10-15）
+
+上文“剩余生产整链”是用户批准前历史。用户已单独批准，3HTTP/5期/3原件SHA及同库只读Chrome21.0s通过，预算已封口，双审查开放0。见[integration acceptance](integration-acceptance.md)。票09 complete，不授历史PIT或模型/资金资格。

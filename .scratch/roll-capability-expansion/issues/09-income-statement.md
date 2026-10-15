@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** partial
+**Completion:** complete
 
-**Execution:** PARTIAL — 利润表原件/版本/API/取消/单股已验收；实际来源3HTTP成功，当前生产整链真实运行待下一次明确请求。
+**Execution:** COMPLETE — 用户批准的一次生产SDK→API→SQLite→只读Chrome整链已验收；3HTTP/5期/原件SHA/账户不变，预算已封口。
 
 **Scope / inheritance:** 新增财务观察；复用来源配置/归档/子进程，优先AKShare。
 
@@ -35,3 +35,5 @@
 
 
 2026-10-15：AKShare1.19.1真实来源一次有限查询成功；METHOD API/SDK/Chrome链和原件、版本、取消、金额修订审查修复通过。完整验收与真实运行剩余条件见[09 acceptance](../evidence/09-financial/acceptance.md)。原预算封口，不重复联网冒充验收。
+
+2026-10-15 用户批准独立生产整链，实际3HTTP/11.623秒成功，5期3原响应，Chrome只读1 PASS/21.0s；见[integration acceptance](../evidence/09-financial/integration-acceptance.md)。此前待确认事项已解除，09工程complete，10/12/14依赖可进入；不授PIT、模型或资金资格。

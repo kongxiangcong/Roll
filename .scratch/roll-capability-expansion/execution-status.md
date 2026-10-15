@@ -22,7 +22,7 @@
 | [06 · 当前动作有效期与政策派发](issues/06-current-action-validity.md) | pending | 已发布，未实施 |
 | [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | partial | 继承latch保护；原规则未登记，资金恢复语义已询问，未改真实状态 |
 | [08 · 现有候选真实前向启运](issues/08-existing-forward-start.md) | pending | 已发布，未实施；含真实外部/时间条件 |
-| [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | partial | 原件/版本/API/Chrome已验收；实际SDK评估成功，生产整链真实运行尚缺 |
+| [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | complete | 独立生产SDK/API/SQLite/Chrome已验收：3HTTP/5期/原件SHA/账户不变，预算封口 |
 | [10 · 资产负债表与现金流三表联读](issues/10-balance-cashflow.md) | pending | 已发布，未实施 |
 | [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | pending | 已发布，未实施 |
 | [12 · Docling表格与页码证据](issues/12-document-tables.md) | pending | 已发布，未实施 |
@@ -59,3 +59,5 @@
 本地集成HEAD将在05-input-consumer提交后记录；01/19/20/21 complete，其余保留表中partial/pending。05补齐原主模型两中心身份、原CAL40会话20概率独立执行，以及来源输入→冻结特征/预测→独立v2状态的METHOD正向管线；不覆盖真实来源权威缺口或实际模型/独立资格。消费者最终API1 PASS/93.32s、Chrome/构建和双审查通过，原15脏文件与12旧模型依赖保留。
 
 当前无已确认契约且工件齐备的新增独立消费者可正向验收。02—04需源证据才能接通REAL；05四非中心拟合工件/独立支持不从手填概率补造；08/23—25另需真实窗口/登记与授权。07仍需选择LOSS恢复语义。09已备独立一次性生产整链脚本及integration-plan.json（600362/8调用/18秒/8MiB/零重试重定向/隔离profile），等待用户确认，不重开已关闭的源评估；09未complete故10—18及22/26依赖仍未解除。没有推送、PR、真实前向起点、资格或真实资金状态变化。
+
+2026-10-15 用户确认07恢复语义与09一次预算；09独立生产整链成功并关闭，票09 complete。07已解除needs-info并进入实施；10/12/14的09依赖已解除，按编号在07之后继续。前文待确认状态为历史快照，不再要求重复授权。
