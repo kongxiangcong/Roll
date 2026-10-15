@@ -44,3 +44,5 @@
 2026-10-15 增量：已接入同前驱冻结/模型/截止的20/21保存CAL概率与区块参照绑定；公开保存/父错配拒绝/嵌套原件损坏拒绝/重启重放/Chrome通过。CAL不是独立成熟验证，G3仍INCONCLUSIVE，05仍partial。见[概率绑定验收](../evidence/05-probability-binding/acceptance.md)。
 
 2026-10-15 增量：已接入同一METHOD轨迹的时间三段，承接原现金/各lot/净值；漏会话和未知边界不填补，超大跨度不压缩，API/Chrome/保存重放通过。见[时间三段验收](../evidence/05-time-segments/acceptance.md)。其余真实输入/共同风险基准/延迟/邻域/迁移与独立支持仍缺，05保持partial。
+
+2026-10-15 增量：已接入空初始持仓的同窗口CASH控制，非空lot拒绝假定清仓；完整METHOD跨度/候选未知/已观察风险硬FAIL保留，API/Chrome/重放通过。见[CASH控制验收](../evidence/05-cash-control/acceptance.md)。risk_matched=false，完整基准与真实/独立支持仍缺，05保持partial。

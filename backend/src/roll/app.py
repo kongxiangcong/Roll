@@ -217,6 +217,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     successor_protocols=SuccessorProtocols(successor_shadow,validation)
     from roll.research.successor_stress import SuccessorStresses
     successor_stresses=SuccessorStresses(successor_protocols)
+    from roll.research.successor_cash import SuccessorCashControls,CashControlCommand
+    successor_cash=SuccessorCashControls(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/cash-control',status_code=201)
+    def successor_cash_create(identifier:str,command:CashControlCommand):return successor_cash.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/cash-control')
+    def successor_cash_list(identifier:str):return successor_cash.listing(identifier)
+
+    @app.get('/api/research/successor-cash-controls/{identifier}')
+    def successor_cash_get(identifier:str):return successor_cash.get(identifier)
+
+    @app.post('/api/research/successor-cash-controls/{identifier}/replay')
+    def successor_cash_replay(identifier:str):return successor_cash.replay(identifier)
     from roll.research.successor_segments import SuccessorTimeSegments,SegmentCommand
     successor_segments=SuccessorTimeSegments(successor_stresses)
 

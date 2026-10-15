@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_cash_control_keeps_full_window_zero_exposure_and_candidate_unknowns ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05kr/test_cash_control_keeps_full_w0')
+
+    def test_cash_control_keeps_full_window_zero_exposure_and_candidate_unknowns(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path);proposal=register(client,previous).json();frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Frozen zero-exposure cash control'}).json()
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            protocol=client.post(base+'/complete-protocol',json={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'parameters','basis':'Before METHOD frames'}).json()
+            for day in (1,2,3):assert client.post(base+'/shadow/advance',json=frame(day)).status_code==201
+            def cost(revision,key):
+                response=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':protocol['complete_protocol_fingerprint'],'expected_revision':revision,'idempotency_key':key,'basis':'Saved METHOD control source'})
+                assert response.status_code==201,response.text
+                return response.json()
+            stress=cost(3,'costs3');route='/api/research/successor-cost-stresses/'+stress['stress_id']+'/cash-control';command={'idempotency_key':'cash','basis':'Same original cash/slots, zero exposure and interest'}
+            response=client.post(route,json=command)
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_successor_cash_control.py:21: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_cash_control.py::test_cash_control_keeps_full_window_zero_exposure_and_candidate_unknowns
+1 failed in 20.78s
