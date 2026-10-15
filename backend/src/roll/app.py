@@ -215,6 +215,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return {'reference_id':identifier,'matches_original':True,'recomputed':False,'new_fit_calls':0,'sealed_reads':0}
 
     successor_protocols=SuccessorProtocols(successor_shadow,validation)
+    from roll.research.successor_stress import SuccessorStresses
+    successor_stresses=SuccessorStresses(successor_protocols)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/cost-stress',status_code=201)
+    async def successor_cost_stress_create(freeze_id:str,command:DiagnosticCommand):return await successor_stresses.create(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/cost-stress')
+    def successor_cost_stress_list(freeze_id:str):return successor_stresses.listing(freeze_id)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}')
+    def successor_cost_stress_get(identifier:str):return successor_stresses.get(identifier)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/replay')
+    async def successor_cost_stress_replay(identifier:str):return await successor_stresses.replay(identifier)
 
     @app.get('/api/research/complete-freezes/{predecessor_freeze_id}/policy-successor-freezes')
     def successor_freezes_for_parent(predecessor_freeze_id:str):

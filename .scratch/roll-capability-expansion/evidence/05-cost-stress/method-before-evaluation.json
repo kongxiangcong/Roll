@@ -1,0 +1,14 @@
+{
+  "method_id": "SUCCESSOR_SAVED_PREFIX_COST_STRESS_V1",
+  "fields": {"commission_scenario_rate": "commission_rates", "slippage_each_side_rate": "slippage_each_side_rates"},
+  "selection": "All values already frozen in protocol design.g5, one field at a time; no client-supplied costs or winner selection",
+  "maximum_values_per_field": 3,
+  "maximum_frames": 200,
+  "worker_seconds": 30,
+  "maximum_output_bytes": 8388608,
+  "source": "Same immutable METHOD prefix only, original simulator and costs, no changes to policy, model, lot horizons or original frames",
+  "qualification": "G5 INCONCLUSIVE; real input, common-risk baselines, delay/neighbor/migration and independent support remain unbound",
+  "network_calls": 0,
+  "new_fit_calls": 0,
+  "sealed_reads": 0
+}
