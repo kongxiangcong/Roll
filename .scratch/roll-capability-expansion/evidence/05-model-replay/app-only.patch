@@ -1,0 +1,24 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -404,6 +404,21 @@
+     @app.post('/api/research/successor-primary-center-bindings/{identifier}/replay')
+     def successor_center_replay(identifier:str):return successor_centers.replay(identifier)
+ 
++    from roll.research.successor_model_replay import SuccessorModelReplays,ModelReplayCommand
++    successor_model_replays=SuccessorModelReplays(successor_centers)
++
++    @app.post('/api/research/successor-primary-center-bindings/{identifier}/model-execution-replay',status_code=201)
++    async def successor_model_replay_create(identifier:str,command:ModelReplayCommand):return await successor_model_replays.create(identifier,command)
++
++    @app.get('/api/research/successor-primary-center-bindings/{identifier}/model-execution-replay')
++    def successor_model_replay_list(identifier:str):return successor_model_replays.listing(identifier)
++
++    @app.get('/api/research/successor-model-execution-replays/{identifier}')
++    def successor_model_replay_get(identifier:str):return successor_model_replays.get(identifier)
++
++    @app.post('/api/research/successor-model-execution-replays/{identifier}/replay')
++    async def successor_model_replay_replay(identifier:str):return await successor_model_replays.replay(identifier)
++
+     @app.get('/api/research/complete-freezes/{predecessor_freeze_id}/policy-successor-freezes')
+     def successor_freezes_for_parent(predecessor_freeze_id:str):
+         return successor_protocols.for_parent(predecessor_freeze_id)

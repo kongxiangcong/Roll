@@ -18,7 +18,7 @@
 | [02 · 完整日线用途与来源缺口补齐](issues/02-daily-evidence.md) | partial | 已继承采集/重放，页面查询和Chrome/手机/构建通过；完整session/RAW修订依据不足 |
 | [03 · 有效交易状态与未知覆盖](issues/03-status-evidence.md) | partial | 截止查询/单股来源区/API2 PASS及Chrome通过；全状态与否定覆盖依据不足 |
 | [04 · 公司行动版本与义务证据](issues/04-action-lifecycle.md) | partial | 截止版本/旧义务查询和单股原件链已验收，生命周期和完整覆盖待证 |
-| [05 · 后继政策完整冻结与验证消费者](issues/05-policy-freeze-validation.md) | partial | 参数/METHOD前缀、六费用、CAL绑定、时间三段、CASH/原基准、入场压力及同源证据汇总均验收；真实输入/共同风险基准/余下G5/独立支持和完整冻结仍缺 |
+| [05 · 后继政策完整冻结与验证消费者](issues/05-policy-freeze-validation.md) | partial | 同源九类诊断、联合压力、阈值/迁移、工程检查、两主模型中心及原CAL预测完整日历执行已验收；真实输入消费者/authority、共同风险匹配/四非中心工件/独立支持和完整冻结仍缺 |
 | [06 · 当前动作有效期与政策派发](issues/06-current-action-validity.md) | pending | 已发布，未实施 |
 | [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | partial | 继承latch保护；原规则未登记，资金恢复语义已询问，未改真实状态 |
 | [08 · 现有候选真实前向启运](issues/08-existing-forward-start.md) | pending | 已发布，未实施；含真实外部/时间条件 |
