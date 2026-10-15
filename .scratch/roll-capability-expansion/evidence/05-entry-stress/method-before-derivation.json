@@ -1,0 +1,20 @@
+{
+  "method_id": "successor-entry-stress-v1",
+  "evidence_kind": "METHOD_CASE",
+  "scope": "BUY_AND_ADD_ENTRY_ONLY; early SELL and scheduled horizon CLOSE unchanged; no comparator stress qualification",
+  "delays": ["NEXT_OPEN", "NEXT_CLOSE", "ONE_MORE_SESSION_OPEN", "OUTSIDE_ALLOWED_PRICE_NO_FILL"],
+  "partial_fractions": ["0", "0.50", "1"],
+  "grid": "Each delay at full fraction, plus NEXT_OPEN at 0 and 0.50; six distinct scenarios, no Cartesian search",
+  "close_priority": "Early pending SELL at OPEN, then original scheduled horizon CLOSE, then pending entry NEXT_CLOSE, then close valuation and policy observation",
+  "exposure": "Use actual execution point for every existing lot; close entry uses close valuation, other original orders use open valuation",
+  "delay_coverage": "Observation plus2 requires declared consecutive intermediate and target frames; exact target only, never next available bar",
+  "reservation": "Keep full original reservation until target attempt, subtract from available cash, refuse duplicate entry for same pending instrument; release all remainder after one attempt, no automatic resubmit; later original policy ADD decisions remain possible",
+  "partial_quantity": "floor(requested*fraction/registered buy_increment)*buy_increment; original buy_minimum and offset rule still checked; zero/below-minimum produces explicit no fill",
+  "horizons": "Each actual entry fill retains entry+20 original horizon; baseline migration and early SELL unchanged",
+  "unknown": "Missing slots/valuation retain null and hard observed failures; no fill is not prediction loss; G5 cannot PASS",
+  "maximum_frames": 200,
+  "maximum_declared_session_span": 200,
+  "worker_seconds": 30,
+  "maximum_input_bytes": 8388608,
+  "maximum_output_bytes": 8388608
+}

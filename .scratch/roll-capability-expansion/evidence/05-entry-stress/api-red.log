@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_saved_entry_stress_delays_partial_lots_and_original_prefix _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05er/test_saved_entry_stress_delays0')
+
+    def test_saved_entry_stress_delays_partial_lots_and_original_prefix(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path);proposal=register(client,previous).json();frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Entry-only grid before METHOD outcomes'}).json()
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            protocol=client.post(base+'/complete-protocol',json={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'parameters','basis':'Frozen entry stress grid'}).json()
+            for day in range(1,25):
+                command=frame(day);command['bars'][0]['close_yuan']='10.20'
+                response=client.post(base+'/shadow/advance',json=command);assert response.status_code==201,response.text
+            state=client.get(base+'/shadow').json()
+            stress=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':protocol['complete_protocol_fingerprint'],'expected_revision':24,'idempotency_key':'cost-source','basis':'Immutable entry diagnostic source'}).json()
+            route='/api/research/successor-cost-stresses/'+stress['stress_id']+'/entry-stress';command={'idempotency_key':'entries','basis':'Entry-only; no early SELL/horizon stress or qualification'}
+>           response=client.post(route,json=command);assert response.status_code==201,response.text
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_successor_entry_stress.py:20: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_entry_stress.py::test_saved_entry_stress_delays_partial_lots_and_original_prefix
+1 failed in 21.37s

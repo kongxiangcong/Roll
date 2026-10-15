@@ -22,6 +22,8 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByRole('button',{name:'重放保存的CASH控制',exact:true}).click();await expect(page.getByText('CASH控制原工件重放一致',{exact:true})).toBeVisible();
   await page.getByText('原登记基准与期限差异',{exact:true}).click();await page.getByRole('button',{name:'运行原登记基准参照',exact:true}).click();await expect(page.getByText('METHOD原登记基准 · G4 INCONCLUSIVE · 风险匹配未授予 · NOT_GRANTED',{exact:true})).toBeVisible({timeout:35000});
   await page.getByRole('button',{name:'重放保存的原基准参照',exact:true}).click();await expect(page.getByText('原登记基准归档重放一致',{exact:true})).toBeVisible({timeout:35000});
+  await page.getByText('入场延迟与部分成交压力',{exact:true}).click();await page.getByRole('button',{name:'运行保存前缀的入场压力',exact:true}).click();await expect(page.getByText('METHOD入场压力 6项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible({timeout:35000});
+  await page.getByRole('button',{name:'重放保存的入场压力',exact:true}).click();await expect(page.getByText('入场压力原前缀重放一致',{exact:true})).toBeVisible({timeout:35000});
   await page.getByRole('button',{name:'重放保存的费用诊断',exact:true}).click();await expect(page.getByText('费用诊断原前缀重放一致',{exact:true})).toBeVisible({timeout:35000});
   await page.reload();await page.getByRole('button',{name:'历史记录',exact:true}).click();await page.getByRole('button',{name:'研究登记',exact:true}).click();await page.getByRole('button',{name:`查看协议 ${parent.protocol_id.slice(0,8)}`,exact:true}).click();
   await page.getByText('后继政策完整设计与验证',{exact:true}).click();await page.getByLabel('后继影子版本').selectOption(frozen.successor_freeze_id);
@@ -30,6 +32,7 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByText('同一轨迹的时间三段',{exact:true}).click();await page.getByRole('button',{name:'查看保存的时间分段',exact:true}).click();await expect(page.getByText('METHOD时间三段 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('同窗口CASH控制',{exact:true}).click();await page.getByRole('button',{name:'查看保存的CASH控制',exact:true}).click();await expect(page.getByText('METHOD CASH控制 · G4 INCONCLUSIVE · 风险未匹配 · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('原登记基准与期限差异',{exact:true}).click();await page.getByRole('button',{name:'查看保存的原基准参照',exact:true}).click();await expect(page.getByText('METHOD原登记基准 · G4 INCONCLUSIVE · 风险匹配未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByText('入场延迟与部分成交压力',{exact:true}).click();await page.getByRole('button',{name:'查看保存的入场压力',exact:true}).click();await expect(page.getByText('METHOD入场压力 6项 · G5 INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
-  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-registered-controls/mobile.png',fullPage:true});
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-entry-stress/mobile.png',fullPage:true});
 });
