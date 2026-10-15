@@ -9,7 +9,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field
 from roll.accounts.ledger import encode,now
 from roll.research.shadow import fingerprint
-from roll.research.successor_shadow import source_fingerprint,usable
+from roll.research.successor_shadow import source_fingerprint,usable,simulate
 from roll.research.statistics import method_manifest,continuous_summary,fingerprint as statistics_fingerprint
 
 
@@ -155,9 +155,25 @@ class SuccessorProtocols:
 
     def prefix(self,freeze_id,revision):
         frozen=self.successor.get(freeze_id)
-        with self.ledger.connection() as db:frames=self.successor.frames(freeze_id,db,frozen)
+        # Bind verification to this immutable prefix, including SQL retrieval.
+        # Later history must neither consume this budget nor affect its replay.
+        frames=[]
+        with self.ledger.connection() as db:
+            rows=db.execute('SELECT revision,command_hash,value FROM research_successor_frames WHERE freeze_id=? AND revision<=? ORDER BY revision',(freeze_id,revision))
+            for number,command_hash,raw in rows:
+                value=json.loads(raw)
+                try:
+                    if (number!=len(frames)+1 or value['command']['expected_revision']!=len(frames) or
+                            fingerprint(value['command'])!=value['input_fingerprint'] or command_hash!=value['input_fingerprint']):
+                        raise ValueError('input')
+                    result=simulate(frozen,[f['command'] for f in frames]+[value['command']])
+                    if result!=value['result'] or fingerprint(result)!=value['result_fingerprint']:
+                        raise ValueError('result')
+                except (KeyError,TypeError,ValueError):
+                    raise HTTPException(409,'SUCCESSOR_VALIDATION_PREFIX_BINDING_MISMATCH')
+                frames.append(value)
         if revision>len(frames):raise HTTPException(409,'SUCCESSOR_VALIDATION_REVISION_NOT_AVAILABLE')
-        return frozen,frames[:revision]
+        return frozen,frames
 
     def create(self,freeze_id,command):
         protocol=self.get(freeze_id)

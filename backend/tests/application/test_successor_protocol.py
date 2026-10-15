@@ -52,5 +52,11 @@ def test_successor_protocol_binds_family_before_frames_and_replays_validation_pr
         denied=client.post('/api/research/policy-successor-freezes/'+empty['successor_freeze_id']+'/complete-protocol',json={
             **command,'expected_successor_fingerprint':empty['successor_fingerprint'],'idempotency_key':'complete-zero'})
         assert denied.status_code==409 and 'EMPTY_ZERO_VALUE_BASELINE' in denied.json()['detail']['gaps']
+        with client.app.state.ledger.connection() as db:
+            db.execute("UPDATE research_successor_frames SET value='{}' WHERE freeze_id=? AND revision=4",(frozen['successor_freeze_id'],))
+            db.commit()
+        independent=client.post('/api/research/successor-validations/'+result['validation_id']+'/replay')
+        assert independent.status_code==200,independent.text
+        assert independent.json()['matches_original'] is True
     with TestClient(create_app(tmp_path)) as client:
         assert client.get(base+'/complete-protocol').json()==complete

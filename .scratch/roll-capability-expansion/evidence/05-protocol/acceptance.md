@@ -25,3 +25,7 @@
 真实v2输入消费者、独立成熟概率标签/同窗口风险匹配基准绑定、v2 G5压力/邻域包消费者尚未接入，完整实验冻结继续false。当前只冻结既定设计参数并提供可执行METHOD前缀诊断；不是完整统计验证交付，不宣称PASS/独立有效性或实际预算增加。下一差量必须沿02—04可信原件/日期/状态/行动合同接入真实输入，并完成上述消费者，不能将当前METHOD整数帧升级REAL。
 
 06生产派发仍有前置差量，08没有实际起点；07、09、19、20等独立票不因这些条件停工。旧模型12项指纹依赖不得改变，旧真实G4/G5 FAIL、FITTED_UNVALIDATED及所有旧记录必须保留。
+
+## Prefix review repair
+
+P2: bounded query/verification now ignores later frames. Public regression corrupts frame4 and successfully replays immutable validation3. prefix-red.log records original KeyError; prefix-green.log: 1 PASS/20.87s. Standards re-review closes finding. Original successor_shadow implementation unchanged.
