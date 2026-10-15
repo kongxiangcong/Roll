@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** PARTIAL — 同家族参数冻结/METHOD前缀验证已交付；完整实验及真实/概率/基准/G5消费者待补。
 
 **Scope / inheritance:** 旧P020/21差量；复用既有政策后继、连续影子和G1—G7。
 
@@ -31,6 +31,8 @@
 优先复用原服务和指定成熟组件；新增表、接口、页面与测试围绕本票用户路径增量实现，不横向重写整个模块。01交接票只做交接核对；08及23—25是真实运行操作。其他票的API/持久化/界面与测试应作为同一可演示切片交付。新组件不可写真实账本或自签资格；没有必要不新增测试入口或插件框架。
 
 ## Comments
+
+2026-10-15：按旧v2差量新增同家族设计参数绑定、统计算术例证、不可变工件、G1—G7缺口和METHOD净值/回撤前缀诊断。参数冻结不冒充完整冻结，complete_experiment_frozen=false。最终API1 PASS/21.16s，Chrome1 PASS/24.0s；旧完整冻结/账户不变、硬FAIL与INCONCLUSIVE/重放/唯一性/零基线边界已验证。见[逐阶段验收与确切剩余工程](../evidence/05-protocol/acceptance.md)。新真实消费者、成熟概率/同窗口风险匹配基准、v2G5绑定尚未接入，保持partial，未拟合新真实模型、消费SEALED、授资格或启计时。
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 

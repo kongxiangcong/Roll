@@ -18,11 +18,11 @@
 | [02 · 完整日线用途与来源缺口补齐](issues/02-daily-evidence.md) | partial | 已继承采集/重放，页面查询和Chrome/手机/构建通过；完整session/RAW修订依据不足 |
 | [03 · 有效交易状态与未知覆盖](issues/03-status-evidence.md) | partial | 截止查询/单股来源区/API2 PASS及Chrome通过；全状态与否定覆盖依据不足 |
 | [04 · 公司行动版本与义务证据](issues/04-action-lifecycle.md) | partial | 截止版本/旧义务查询和单股原件链已验收，生命周期和完整覆盖待证 |
-| [05 · 后继政策完整冻结与验证消费者](issues/05-policy-freeze-validation.md) | pending | 已发布，未实施 |
+| [05 · 后继政策完整冻结与验证消费者](issues/05-policy-freeze-validation.md) | partial | 参数绑定和METHOD前缀诊断/API/Chrome通过；完整实验与真实/概率/基准/G5消费者仍缺 |
 | [06 · 当前动作有效期与政策派发](issues/06-current-action-validity.md) | pending | 已发布，未实施 |
-| [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | pending | 已发布，未实施 |
+| [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | partial | 继承latch保护；原规则未登记，资金恢复语义已询问，未改真实状态 |
 | [08 · 现有候选真实前向启运](issues/08-existing-forward-start.md) | pending | 已发布，未实施；含真实外部/时间条件 |
-| [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | pending | 已发布，未实施 |
+| [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | pending | 已开始发行/许可与隔离环境核对，尚无业务验收 |
 | [10 · 资产负债表与现金流三表联读](issues/10-balance-cashflow.md) | pending | 已发布，未实施 |
 | [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | pending | 已发布，未实施 |
 | [12 · Docling表格与页码证据](issues/12-document-tables.md) | pending | 已发布，未实施 |

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {request} from '../api';
+import {savedEvidence} from '../saved-evidence';
 
 type Company={company_state_reported:string;listing_date_reported:string|null;effective_at:string|null;raw_hash:string;received_at:string};
 type Suspension={reported_start_date:string;reported_end_date:string|null;resume_date:null;reason?:string;stop_reason_reported?:string;raw_hash:string;received_at:string};
@@ -11,9 +11,7 @@ export function StatusEvidencePanel({instrument}:{instrument:string}){
   async function inspect(){
     setBusy(true);setError('');setRows([]);setQueried(false);
     try{
-      const plans=await request<{plan_id:string;instrument:string}[]>('/research/collections');
-      const params=cutoff?`?known_by=${encodeURIComponent(new Date(cutoff).toISOString())}`:'';
-      const results=await Promise.all(plans.filter(p=>p.instrument===instrument).map(p=>request<Evidence>(`/research/collections/${p.plan_id}/status-evidence${params}`)));
+      const results=await savedEvidence<Evidence>(instrument,'status-evidence',cutoff);
       setRows(results);setQueried(true);
     }catch(e){setError(String(e));}finally{setBusy(false);}
   }

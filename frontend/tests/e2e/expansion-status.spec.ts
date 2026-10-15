@@ -16,7 +16,7 @@ test('single stock status exposes reported listing and cutoff while keeping full
   await expect(stock.getByRole('status').filter({hasText:'完整交易状态未知'})).toBeVisible();
   const raw=stock.getByRole('link',{name:'公司信息原件'});
   expect((await request.get((await raw.getAttribute('href'))!)).ok()).toBeTruthy();
-  await stock.getByLabel('系统已知截至（留空查询当前）').fill('2026-10-14T17:59');
+  await stock.getByLabel('系统已知截至（留空查询当前）',{exact:true}).fill('2026-10-14T17:59');
   await stock.getByRole('button',{name:'查询保存的状态依据'}).click();
   await expect(stock.getByText('来源报告：上市',{exact:false})).not.toBeVisible();
   await expect(stock.getByRole('status').filter({hasText:'完整交易状态未知'})).toBeVisible();

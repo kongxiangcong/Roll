@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {request} from '../api';
+import {savedEvidence} from '../saved-evidence';
 
 type Candidate={candidate_id:string;raw_hash:string;record_date_reported:string;dividend_date_reported:string;cash_before_tax_exact:string;cash_per_share_unit:string};
 type Assessment={assessment_id:string;normalized_known_at:string;candidates:Candidate[];role_audits:Record<string,{returned_count:number;total_reported:number;missing_reported_rows:number}>};
@@ -12,9 +12,7 @@ export function ActionEvidencePanel({instrument}:{instrument:string}){
   async function inspect(){
     setBusy(true);setError('');setRows([]);setQueried(false);
     try{
-      const plans=await request<{plan_id:string;instrument:string}[]>('/research/collections');
-      const params=cutoff?`?known_by=${encodeURIComponent(new Date(cutoff).toISOString())}`:'';
-      setRows(await Promise.all(plans.filter(p=>p.instrument===instrument).map(p=>request<Evidence>(`/research/collections/${p.plan_id}/action-evidence${params}`))));
+      setRows(await savedEvidence<Evidence>(instrument,'action-evidence',cutoff));
       setQueried(true);
     }catch(e){setError(String(e));}finally{setBusy(false);}
   }

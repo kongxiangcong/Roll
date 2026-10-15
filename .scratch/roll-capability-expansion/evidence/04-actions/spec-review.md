@@ -1,0 +1,12 @@
+# Spec review: action evidence slice and status cutoff repair
+
+Reviewed committed range `d279a0c551d96bb2e7dededd5f77d195aad06a12..e655be7`. No code changes, commits, or tests performed. Inherited P0 action/obligation readers were inspected only to establish the consumed contracts.
+
+No actionable specification deviation found in this partial slice.
+
+- The action API returns saved assessments and known-obligation audits without rewriting their facts. Both inherited readers select `normalized_known_at <= cutoff` and verify archived originals; explicit naive/future cutoffs are rejected. Current queries resolve host time. Read paths add no account events or upstream calls, consistent with [spec ID-04/05](../../spec.md) and [04 criteria](../../issues/04-action-lifecycle.md).
+- The UI labels upstream cash fields as units unverified, matching the inherited `cash_per_share_unit=UNKNOWN`. It preserves reported registration/distribution dates, page counts and missing rows. It keeps revision, cancellation, fulfillment and actual account receipt unknown; known notices are explicitly not a complete older-obligation inventory. Candidate hashes and notice PDF hashes match their existing archive-link contracts.
+- Existing single-stock entry is extended with a collapsible panel. Busy disables query and cutoff editing, and each refresh clears prior rows. No same-panel response/cutoff race was identified.
+- [Acceptance](acceptance.md) accurately limits the new positive tests to action assessments and candidate original links. The new tests do not exercise populated known-obligation audits, and acceptance explicitly retains the old 14-notice producer as inherited rather than claiming a fresh positive run. Recorded logs match the claimed API 1 PASS/7.49s and browser 1 PASS/13.9s. Real lifecycle authority and complete coverage remain partial, consistent with [spec Testing Decisions](../../spec.md).
+
+Prior 03 P2 is closed: the browser now omits `known_by` for blank/current queries, and the API resolves one server timestamp and returns it. Explicit historical cutoffs retain strict validation. The committed browser regression advances the browser clock five minutes and still reaches saved company observations; [host-browser.log](../03-status/host-browser.log) records 1 PASS/13.8s. [host-cutoff-green.log](../03-status/host-cutoff-green.log) records 2 API passes, including the omitted-cutoff assertion. This review inspected code and recorded evidence without rerunning those checks.

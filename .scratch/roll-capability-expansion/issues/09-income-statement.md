@@ -8,7 +8,7 @@
 
 **Completion:** pending
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** IN_PROGRESS — 锁定AKShare1.19.1/MIT/Python>=3.11，准备独立运行环境与有界原响应适配。
 
 **Scope / inheritance:** 新增财务观察；复用来源配置/归档/子进程，优先AKShare。
 

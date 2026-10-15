@@ -32,6 +32,7 @@ from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
 from roll.research.policy_successors import PolicySuccessors,SuccessorCommand,MigrationCommand,PolicyEvaluation
 from roll.research.successor_shadow import SuccessorShadow,SuccessorFreezeCommand,SuccessorAdvanceCommand
+from roll.research.successor_protocol import SuccessorProtocols,ProtocolFreezeCommand,DiagnosticCommand
 from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
@@ -177,6 +178,31 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     validation=AutomaticValidation(shadow)
     app.state.validation=validation
+    successor_protocols=SuccessorProtocols(successor_shadow,validation)
+
+    @app.get('/api/research/complete-freezes/{predecessor_freeze_id}/policy-successor-freezes')
+    def successor_freezes_for_parent(predecessor_freeze_id:str):
+        return successor_protocols.for_parent(predecessor_freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/complete-protocol',status_code=201)
+    def successor_protocol_freeze(freeze_id:str,command:ProtocolFreezeCommand):
+        return successor_protocols.freeze(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/complete-protocol')
+    def successor_protocol_get(freeze_id:str):
+        return successor_protocols.get(freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/validations',status_code=201)
+    def successor_validation_create(freeze_id:str,command:DiagnosticCommand):
+        return successor_protocols.create(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/validations')
+    def successor_validation_list(freeze_id:str):
+        return successor_protocols.list(freeze_id)
+
+    @app.post('/api/research/successor-validations/{identifier}/replay')
+    def successor_validation_replay(identifier:str):
+        return successor_protocols.replay(identifier)
 
     @app.post('/api/research/complete-freezes/{freeze_id}/validations',status_code=201)
     def validation_create(freeze_id:str,command:ValidationCommand):

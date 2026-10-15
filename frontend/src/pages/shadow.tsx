@@ -2,6 +2,7 @@ import {useEffect,useState} from 'react';
 import {request} from '../api';
 import {ForwardPanel} from '../components/forward-panel';
 import {ResearchReport} from '../components/research-report';
+import {SuccessorProtocolPanel} from '../components/successor-protocol-panel';
 type Frozen={freeze_id:string;model_run_id:string;evidence_kind:string;complete_protocol_fingerprint:string;baseline:{cash_yuan:string};calibrator_fit_status:string;validation_gaps:string[]};
 type Opportunity={forecast_id:string;action:string;reasons:string[];execution_status:string;counterfactual?:{diagnostic_only:boolean}};
 type State={revision:number;through_date:string|null;cash_yuan:string;nav_yuan?:string|null;reserved_cash_yuan:string;positions:{instrument:string;quantity:string}[];opportunities:Opportunity[];comparators?:Record<string,{nav_yuan:string|null;cash_yuan:string}>};
@@ -25,6 +26,7 @@ export function Shadow({protocolId,firstDate}:{protocolId:string;firstDate?:stri
     {results.SHADOW.comparators&&<table><caption>同资金、规则与费用的连续基线</caption><thead><tr><th>策略</th><th>现金</th><th>净值</th></tr></thead><tbody>{Object.entries(results.SHADOW.comparators).map(([name,s])=><tr key={name}><td>{name}</td><td>{s.cash_yuan}</td><td>{s.nav_yuan??'未知'}</td></tr>)}</tbody></table>}
     <ul>{results.SHADOW.opportunities.map(o=><li key={o.forecast_id}>{o.action} · {o.execution_status} · {o.reasons.join('、')||'符合冻结政策'} {o.counterfactual?'· 成熟反事实仅作诊断':''}</li>)}</ul></>}
     {selected&&<ForwardPanel freezeId={selected.freeze_id} evidenceKind={selected.evidence_kind}/>}
+    {selected&&<SuccessorProtocolPanel key={selected.freeze_id} parentFreezeId={selected.freeze_id} parentProtocolId={protocolId}/>}
     {selected&&<ResearchReport freezeId={selected.freeze_id}/>}
     {notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </section>;
