@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {request} from '../api';
+import {SuccessorTimeSegmentsPanel} from './successor-time-segments-panel';
 type Scenario={component:string;fees_yuan:string;economics:{net_return:number|null;maximum_drawdown:number|null};input_gaps:unknown[]};
 type Saved={stress_id:string;shadow_revision:number;recorded_at:string;scenarios:Scenario[];remaining_components:string[];G5_status:string};
 const percent=(v:number|null)=>v===null?'未知':(v*100).toFixed(2)+'%';
@@ -19,6 +20,7 @@ export function SuccessorCostStressPanel({freezeId,fingerprint}:{freezeId:string
       <div className="reference-table"><table><thead><tr><th>已冻结费用场景</th><th>成交费用（元）</th><th>净值收益率</th><th>最大回撤</th><th>输入缺口</th></tr></thead><tbody>{current.scenarios.map(s=><tr key={s.component}><td>{s.component}</td><td>{s.fees_yuan}</td><td>{percent(s.economics.net_return)}</td><td>{percent(s.economics.maximum_drawdown)}</td><td>{s.input_gaps.length}</td></tr>)}</tbody></table></div>
       <details><summary>结果原件、输入指纹与剩余G5条件</summary><pre>{JSON.stringify(current,null,2)}</pre></details>
       <button disabled={busy} onClick={()=>void action(async()=>{const result=await request<{matches_original:boolean}>('/research/successor-cost-stresses/'+current.stress_id+'/replay',{});setNotice(result.matches_original?'费用诊断原前缀重放一致':'费用诊断重放不一致');})}>重放保存的费用诊断</button>
+      <SuccessorTimeSegmentsPanel key={current.stress_id} stressId={current.stress_id}/>
     </>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </details>;
 }

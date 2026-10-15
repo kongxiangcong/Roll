@@ -42,3 +42,5 @@
 2026-10-15 增量：已接入冻结佣金/滑点六场景的保存前缀费用消费者，公开运行/保存/重放与Chrome通过；已知硬风险失败保留，未知不补。其余G5/真实输入/完整冻结仍未完成。见[费用压力验收](../evidence/05-cost-stress/acceptance.md)。
 
 2026-10-15 增量：已接入同前驱冻结/模型/截止的20/21保存CAL概率与区块参照绑定；公开保存/父错配拒绝/嵌套原件损坏拒绝/重启重放/Chrome通过。CAL不是独立成熟验证，G3仍INCONCLUSIVE，05仍partial。见[概率绑定验收](../evidence/05-probability-binding/acceptance.md)。
+
+2026-10-15 增量：已接入同一METHOD轨迹的时间三段，承接原现金/各lot/净值；漏会话和未知边界不填补，超大跨度不压缩，API/Chrome/保存重放通过。见[时间三段验收](../evidence/05-time-segments/acceptance.md)。其余真实输入/共同风险基准/延迟/邻域/迁移与独立支持仍缺，05保持partial。

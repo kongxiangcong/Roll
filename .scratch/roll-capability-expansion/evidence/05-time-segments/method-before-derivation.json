@@ -1,0 +1,11 @@
+{
+  "method_id": "SUCCESSOR_SAVED_TRAJECTORY_CHRONOLOGICAL_THIRDS_V1",
+  "partition": "Three chronological thirds of the entire declared METHOD session span, floor(N*i/3) boundaries; missing slots remain unknown",
+  "carry_in": "Preceding boundary NAV, cash and actual saved lots; no capital reset, refit, reinvestment or concatenated performance claim",
+  "missing_boundary": "No exact saved boundary state means unknown carry-in, not last observation carried forward",
+  "maximum_declared_session_span": 200,
+  "qualification": "Known hard drawdown breach retains FAIL; otherwise INCONCLUSIVE, never PASS; METHOD slots are not real trading-calendar evidence",
+  "new_fit_calls": 0,
+  "sealed_reads": 0,
+  "network_calls": 0
+}
