@@ -1,0 +1,53 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -18,6 +18,7 @@
+ from roll.market.status_evidence import query as status_evidence_query
+ from roll.market.action_evidence import query as action_evidence_query
+ from roll.market.evidence import EvidenceStore, DataRequest
++from roll.market.financial_income import FinancialIncome,IncomeCommand
+ from roll.market.source_facts import REGISTRY
+ from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
+ from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
+@@ -256,6 +257,21 @@
+     def shadow_results(freeze_id:str):
+         return shadow.results(freeze_id)
+     prospective=ProspectiveEvidence(evidence,research)
++    financial=FinancialIncome(evidence,prospective.sources)
++    app.state.financial=financial
++
++    @app.get('/api/market/financial/{instrument}/income')
++    def financial_income(instrument:str,known_by:datetime|None=Query(None)):
++        return financial.listing(instrument,known_by)
++
++    @app.post('/api/market/financial/{instrument}/income/collect',status_code=201)
++    async def financial_income_collect(instrument:str,command:IncomeCommand):
++        return await financial.collect(instrument,command)
++
++    @app.post('/api/market/financial/runs/{run_id}/cancel')
++    async def financial_income_cancel(run_id:str):
++        return await financial.cancel(run_id)
++
+     price_quotes=PriceQuotes(prospective)
+     company_actions=CompanyActionPages(prospective)
+     action_assessments=ActionAssessments(company_actions,price_quotes)
+--- a/backend/src/roll/market/collection_sources.py
++++ b/backend/src/roll/market/collection_sources.py
+@@ -13,6 +13,7 @@
+ CNE_COMMIT = 'c118038ea82b5bb78783c0c17a1d9251b36de71d'
+ CLEANING_VERSION = 'prospective-cleaning-v1'
+ SOURCES = [
++    {'id': 'akshare-financial-em', 'name': 'AKShare 东财利润表', 'upstream': 'EASTMONEY', 'group': 'FINANCIAL', 'engine': 'AKSHARE'},
+     {'id': 'sse-company-client-contract', 'name': '上交所公司行情字段原件', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
+     {'id': 'sse-closing-board', 'name': '上交所盘后原始快照', 'upstream': 'SSE', 'group': 'DAILY', 'engine': 'ROLL'},
+     {'id': 'sse-suspension-date', 'name': '上交所指定日期停牌观察', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
+@@ -61,6 +62,10 @@
+                           'unit_scope': 'Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted',
+                           'license': 'Apache-2.0 code; upstream data rights separate',
+                           'cleaning_version': CLEANING_VERSION, 'qualification': 'NOT_GRANTED'}
++                if spec['id']=='akshare-financial-em':
++                    policy.update(enabled=False,basis='2026-10-15新增利润表来源，按单证券显式启用',
++                        adapter_version='akshare-1.19.1-income-raw-v1',license='AKShare 1.19.1 MIT; upstream data rights separate',
++                        unit_scope='Source-bound statement proof or explicit UNKNOWN; no historical PIT claim')
+                 if spec['id']=='sse-closing-board':
+                     policy.update(basis='2026-10-11授权继续30宿主producer工程与公开来源核验',max_calls=1,
+                         timeout_seconds=15,adapter_version='source-bound-post-close-v1',

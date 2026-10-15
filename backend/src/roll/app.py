@@ -18,6 +18,7 @@ from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand
 from roll.market.status_evidence import query as status_evidence_query
 from roll.market.action_evidence import query as action_evidence_query
 from roll.market.evidence import EvidenceStore, DataRequest
+from roll.market.financial_income import FinancialIncome,IncomeCommand
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
@@ -256,6 +257,21 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def shadow_results(freeze_id:str):
         return shadow.results(freeze_id)
     prospective=ProspectiveEvidence(evidence,research)
+    financial=FinancialIncome(evidence,prospective.sources)
+    app.state.financial=financial
+
+    @app.get('/api/market/financial/{instrument}/income')
+    def financial_income(instrument:str,known_by:datetime|None=Query(None)):
+        return financial.listing(instrument,known_by)
+
+    @app.post('/api/market/financial/{instrument}/income/collect',status_code=201)
+    async def financial_income_collect(instrument:str,command:IncomeCommand):
+        return await financial.collect(instrument,command)
+
+    @app.post('/api/market/financial/runs/{run_id}/cancel')
+    async def financial_income_cancel(run_id:str):
+        return await financial.cancel(run_id)
+
     price_quotes=PriceQuotes(prospective)
     company_actions=CompanyActionPages(prospective)
     action_assessments=ActionAssessments(company_actions,price_quotes)

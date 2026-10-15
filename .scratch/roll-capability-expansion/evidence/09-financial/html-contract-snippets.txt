@@ -1,0 +1,249 @@
+PATTERN 单位:: 2
+
+                        该指标取自上市公司定期报告披露值
+                    </div>
+                </i>
+                <samp class="tips-unit">
+                    单位:元
+                </samp>
+            </div>
+            <div class="db_02">
+                <p class="db_data01">
+                    {{formatPercent(value.JROA, '%')}}
+                </p>
+                <i class="tip
+
+                        该指标取自上市公司定期报告披露值
+                    </div>
+                </i>
+                <samp class="tips-unit">
+                    单位:元
+                </samp>
+            </div>
+            <div class="db_02">
+                <p class="db_data01">
+                    {{formatPercent(value.JROA, '%')}}
+                </p>
+                <i class="tip
+
+PATTERN 合并: 6
+
+/td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>其中:被合并方在合并前实现利润</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatMoney(value.PRECOMBINE_PROFIT)}}</span>
+                </td>
+
+
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>其中:被合并方在合并前实现利润</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatMoney(value.PRECOMBINE_PROFIT)}}</span>
+                </td>
+   
+
+/td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>其中:被合并方在合并前实现利润</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatPercent(value.PRECOMBINE_PROFIT_YOY)}}</span>
+               
+
+
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>其中:被合并方在合并前实现利润</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatPercent(value.PRECOMBINE_PROFIT_YOY)}}</span>
+                </t
+
+/td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>其中:被合并方在合并前实现利润</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatPercent(value.PRECOMBINE_PROFIT_QOQ)}}</span>
+               
+
+PATTERN 母公司: 15
+
+</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>归属于母公司股东权益其他项目</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatMoney(value.PARENT_EQUITY_OTHER)}}</span>
+                </td
+
+</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>归属于母公司股东权益平衡项目</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatMoney(value.PARENT_EQUITY_BALANCE)}}</span>
+                </
+
+                {{/each}}
+            </tr>
+
+            <tr>
+                <td class="tips-fieldname-Left font-bold">
+                    <span>归属于母公司股东权益总计</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatMoney(value.TOTAL_PARENT_EQUITY)}}</span>
+                </td>
+
+
+</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>归属于母公司股东权益其他项目</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatPercent(value.PARENT_EQUITY_OTHER_YOY)}}</span>
+              
+
+</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="tips-fieldname-Left pl20">
+                    <span>归属于母公司股东权益平衡项目</span>
+                </td>
+                {{each data as value i}}
+                <td class="tips-data-Right">
+                    <span>{{formatPercent(value.PARENT_EQUITY_BALANCE_YOY)}}</span>
+            
+
+PATTERN reportType: 15
+
+ge("zcfzb");
+        initReportTabChange("lrb");
+        initReportTabChange("xjllb");
+
+        //360锚点定位
+        var reportDateType = 0;
+        var reportType = 1;
+        var reportTab = "";
+        var reportDate = "";
+        var urlArr = window.location.href.split('#');
+        if (urlArr.length == 2) {
+            var rtype = getQueryString("rtype");
+            var rdat
+
+lass", "");
+                    $tab.attr("class", "current");
+
+                    reportDateType = $tab.attr("reportDateType");
+                    reportType = $tab.attr("reportType");
+                    reportTab = tab;
+                    reportDate = rdate;
+                }
+            }
+        }
+
+        // 初始化报表数据
+        switch (reportTab) {
+            case "zcfzb"
+
+        $tab.attr("class", "current");
+
+                    reportDateType = $tab.attr("reportDateType");
+                    reportType = $tab.attr("reportType");
+                    reportTab = tab;
+                    reportDate = rdate;
+                }
+            }
+        }
+
+        // 初始化报表数据
+        switch (reportTab) {
+            case "zcfzb":
+                getRep
+
+   }
+            }
+        }
+
+        // 初始化报表数据
+        switch (reportTab) {
+            case "zcfzb":
+                getReportDate(reportDateType, reportType, reportTab, reportDate);
+                getReportDate(0, 1, "lrb", "");
+                getReportDate(0, 1, "xjllb", "");
+                break;
+            case "lrb":
+                getReportDate(0, 1, "zcfzb", "");
+
+, "");
+                break;
+            case "lrb":
+                getReportDate(0, 1, "zcfzb", "");
+                getReportDate(reportDateType, reportType, reportTab, reportDate);
+                getReportDate(0, 1, "xjllb", "");
+                break;
+            case "xjllb":
+                getReportDate(0, 1, "zcfzb", "");
+                getReportDate(0, 1, "lrb", ""
+
+PATTERN function ConvertNumToWan: 1
+
+}
+                }
+            ]
+        };
+        zcChart.setOption(zcOption);
+        fzChart.setOption(fzOption);
+
+
+    };
+
+    //数据单位格式化为万元
+    function ConvertNumToWan(value) {
+        if (!value || value == "--")
+            return "-";
+        if (value.indexOf("万亿") >= 0) {
+            return Math.round(parseFloat(value.replace("万亿", "")) * 10000 * 10000);
+        }
+        else if
+
+PATTERN function formatMoney: 0
+
+PATTERN lrbAjaxNew: 0

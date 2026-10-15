@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** IN_PROGRESS — 锁定AKShare1.19.1/MIT/Python>=3.11，准备独立运行环境与有界原响应适配。
+**Execution:** PARTIAL — 利润表原件/版本/API/取消/单股已验收；实际来源3HTTP成功，当前生产整链真实运行待下一次明确请求。
 
 **Scope / inheritance:** 新增财务观察；复用来源配置/归档/子进程，优先AKShare。
 
@@ -33,3 +33,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-15：AKShare1.19.1真实来源一次有限查询成功；METHOD API/SDK/Chrome链和原件、版本、取消、金额修订审查修复通过。完整验收与真实运行剩余条件见[09 acceptance](../evidence/09-financial/acceptance.md)。原预算封口，不重复联网冒充验收。

@@ -1,0 +1,22 @@
+        // 报表数据加载
+            getReportData(reportDateType, reportType, reportTab);
+        });
+    }
+    // 报表数据加载
+    function getReportData(reportDateType, reportType, reportTab) {
+        // 报告期列表
+        var endDate = "";
+        var dateList = [];
+        switch (reportTab) {
+            case "z
+
+;
+    var lrbEndDate = "";
+    var lrbDate = [];
+    var xjllbEndDate = "";
+    var xjllbDate = [];
+    // 报表获取日期列表
+    function getReportDate(reportDateType, reportType, reportTab, endDate) {
+        var url = "../NewFinanceAnalysis/" + reportTab + "DateAjaxNew";
+        var data = {
+            comp

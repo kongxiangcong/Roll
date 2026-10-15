@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [8552]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8139 (Press CTRL+C to quit)
+[WebServer] (node:17836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:14720) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14720) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-financial.spec.ts:3:1 › single stock reads versioned income originals without granting capability (1.0m)
+
+
+  1) tests\e2e\expansion-financial.spec.ts:3:1 › single stock reads versioned income originals without granting capability 
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: '市场与单股', exact: true })[22m
+
+
+      2 |
+      3 | test('single stock reads versioned income originals without granting capability',async({page,request})=>{
+    > 4 |   await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+        |                                                                                 ^
+      5 |   await page.getByText('查看利润表',{exact:true}).click();
+      6 |   await page.getByRole('button',{name:'查询保存的利润表',exact:true}).click();
+      7 |   await expect(page.getByText('尚无已保存利润表',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-financial.spec.ts:4:81
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\09-financial\browser-results\expansion-financial-single-7d6cc-without-granting-capability\error-context.md
+
+  1 failed
+    tests\e2e\expansion-financial.spec.ts:3:1 › single stock reads versioned income originals without granting capability 

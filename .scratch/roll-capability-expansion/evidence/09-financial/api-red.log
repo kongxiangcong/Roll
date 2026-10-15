@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________________ test_income_raw_versions_failures_and_restart ________________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/09-financial/api-red-data/test_income_raw_versions_failu0')
+
+    def test_income_raw_versions_failures_and_restart(tmp_path):
+        calls=[]
+        async def supplier(instrument,output):
+            calls.append(instrument)
+            manifest=json.loads((CAPTURE/'capture.json').read_text())
+            for item in manifest['captures']:
+                (output/item['raw_file']).write_bytes((CAPTURE/item['raw_file']).read_bytes())
+            return manifest
+        with TestClient(create_app(tmp_path)) as client:
+            # A finite watch member, not a fabricated actual holding.
+>           assert client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':0}).status_code==200
+E           AssertionError: assert 409 == 200
+E            +  where 409 = <Response [409 Conflict]>.status_code
+E            +    where <Response [409 Conflict]> = post('/api/market/watch', json={'expected_list_version': 0, 'instrument': 'SSE:600362', 'operation': 'ADD'})
+E            +      where post = <starlette.testclient.TestClient object at 0x00000126D5C778C0>.post
+
+backend\tests\application\test_financial_income.py:19: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_income.py::test_income_raw_versions_failures_and_restart
+1 failed in 6.94s

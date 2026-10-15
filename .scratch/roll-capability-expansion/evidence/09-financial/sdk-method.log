@@ -1,0 +1,64 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+___ test_pinned_sdk_raw_first_transport_is_bounded_and_keeps_failures[200] ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/09-financial/sdk-method-data/test_pinned_sdk_raw_first_tran0')
+http_status = 200
+
+    @pytest.mark.parametrize('http_status',[200,503])
+    def test_pinned_sdk_raw_first_transport_is_bounded_and_keeps_failures(tmp_path,http_status):
+        if not PYTHON.exists():pytest.skip('Pinned isolated AKShare runtime is not configured on this host')
+        manifest=json.loads((CAPTURE/'capture.json').read_text())
+        fixture={c['role']:{'status_code':http_status if c['role']=='lrbAjaxNew' else 200,
+            'body':(CAPTURE/c['raw_file']).read_text(encoding='utf-8')} for c in manifest['captures']}
+        path=tmp_path/'fixture.json';path.write_text(json.dumps(fixture),encoding='utf-8')
+        output=tmp_path/'capture'
+        env={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','PATH','TEMP','TMP','USERPROFILE','LOCALAPPDATA','APPDATA'}}
+        env['ROLL_ENV']='test'
+        command={'instrument':'SSE:600362','output_directory':str(output),'deadline_at':time.time()+18,'fixture':str(path)}
+        completed=subprocess.run([str(PYTHON),'-B',str(ROOT/'backend/src/roll/market/akshare_financial_process.py')],
+            input=json.dumps(command),text=True,capture_output=True,env=env,timeout=20)
+        assert completed.returncode==0,completed.stderr[-500:]
+        result=json.loads((output/'capture.json').read_text())
+        assert result['evidence_kind']=='METHOD_CASE'
+        assert len(result['captures'])==3
+>       assert (output/'03.raw').read_bytes()==(CAPTURE/'03.raw').read_bytes()
+E       assert b'{\n   "page...count" : 5\n}' == b'{\r\n   "pa...unt" : 5\r\n}'
+E         
+E         At index 1 diff: b'\n' != b'\r'
+E         Use -v to get more diff
+
+backend\tests\recovery\test_akshare_financial_process.py:31: AssertionError
+___ test_pinned_sdk_raw_first_transport_is_bounded_and_keeps_failures[503] ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/09-financial/sdk-method-data/test_pinned_sdk_raw_first_tran1')
+http_status = 503
+
+    @pytest.mark.parametrize('http_status',[200,503])
+    def test_pinned_sdk_raw_first_transport_is_bounded_and_keeps_failures(tmp_path,http_status):
+        if not PYTHON.exists():pytest.skip('Pinned isolated AKShare runtime is not configured on this host')
+        manifest=json.loads((CAPTURE/'capture.json').read_text())
+        fixture={c['role']:{'status_code':http_status if c['role']=='lrbAjaxNew' else 200,
+            'body':(CAPTURE/c['raw_file']).read_text(encoding='utf-8')} for c in manifest['captures']}
+        path=tmp_path/'fixture.json';path.write_text(json.dumps(fixture),encoding='utf-8')
+        output=tmp_path/'capture'
+        env={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','PATH','TEMP','TMP','USERPROFILE','LOCALAPPDATA','APPDATA'}}
+        env['ROLL_ENV']='test'
+        command={'instrument':'SSE:600362','output_directory':str(output),'deadline_at':time.time()+18,'fixture':str(path)}
+        completed=subprocess.run([str(PYTHON),'-B',str(ROOT/'backend/src/roll/market/akshare_financial_process.py')],
+            input=json.dumps(command),text=True,capture_output=True,env=env,timeout=20)
+        assert completed.returncode==0,completed.stderr[-500:]
+        result=json.loads((output/'capture.json').read_text())
+        assert result['evidence_kind']=='METHOD_CASE'
+        assert len(result['captures'])==3
+>       assert (output/'03.raw').read_bytes()==(CAPTURE/'03.raw').read_bytes()
+E       assert b'{\n   "page...count" : 5\n}' == b'{\r\n   "pa...unt" : 5\r\n}'
+E         
+E         At index 1 diff: b'\n' != b'\r'
+E         Use -v to get more diff
+
+backend\tests\recovery\test_akshare_financial_process.py:31: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\recovery\test_akshare_financial_process.py::test_pinned_sdk_raw_first_transport_is_bounded_and_keeps_failures[200]
+FAILED backend\tests\recovery\test_akshare_financial_process.py::test_pinned_sdk_raw_first_transport_is_bounded_and_keeps_failures[503]
+2 failed in 7.63s
