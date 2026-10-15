@@ -56,3 +56,5 @@
 2026-10-15 增量：十二固定配对费用/入场场景已同时消费保存候选与三原基准，默认曲线相等、原时点/未知/基准不可比保留；最终API1 PASS/63.63s、Chrome1 PASS/54.5s、构建与双审查通过。见[联合压力验收](../evidence/05-joint-stress/acceptance.md)。下一离线前沿为联合结果版本化接入汇总，不改变旧汇总重放；05仍partial。
 
 2026-10-15 增量：联合压力已按独立新版本绑定至证据汇总，旧汇总GET/重放前后及重启相等；错源/嵌套损坏/硬FAIL保持，API1 PASS/46.21s、Chrome1 PASS/56.0s和构建通过。见[版本化汇总验收](../evidence/05-joint-review/acceptance.md)。真实/独立支持及其余完整G5仍缺，05保持partial。
+
+2026-10-15 增量：原登记entry-only三档阈值已消费，support固定、base全state同原、逐档METHOD审计与训练清单分开，失败/中断/并发恢复/幂等留证。两项生命周期P2已修，API1 PASS/33.38s、修复后Chrome1 PASS/63.94s与构建通过。见[阈值邻域验收](../evidence/05-threshold-stress/acceptance.md)。未新增fit/CAL/SEALED额度；迁移审计及完整checker仍是离线前沿，05保持partial。

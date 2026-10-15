@@ -217,6 +217,23 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     successor_protocols=SuccessorProtocols(successor_shadow,validation)
     from roll.research.successor_stress import SuccessorStresses
     successor_stresses=SuccessorStresses(successor_protocols)
+    from roll.research.successor_threshold import SuccessorThresholdStresses,ThresholdCommand
+    successor_thresholds=SuccessorThresholdStresses(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/threshold-stress',status_code=201)
+    async def successor_threshold_create(identifier:str,command:ThresholdCommand):return await successor_thresholds.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/threshold-stress')
+    def successor_threshold_list(identifier:str):return successor_thresholds.listing(identifier)
+
+    @app.get('/api/research/successor-threshold-stresses/{identifier}')
+    def successor_threshold_get(identifier:str):return successor_thresholds.get(identifier)
+
+    @app.post('/api/research/successor-threshold-stresses/{identifier}/replay')
+    async def successor_threshold_replay(identifier:str):return await successor_thresholds.replay(identifier)
+
+    @app.get('/api/research/protocols/{identifier}/successor-method-attempts')
+    def successor_method_attempts(identifier:str):return successor_thresholds.manifest(identifier)
     from roll.research.successor_entry import SuccessorEntryStresses,EntryStressCommand
     successor_entries=SuccessorEntryStresses(successor_stresses)
 

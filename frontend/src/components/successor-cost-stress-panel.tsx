@@ -6,6 +6,7 @@ import {SuccessorRegisteredControlsPanel} from './successor-registered-controls-
 import {SuccessorEntryStressPanel} from './successor-entry-stress-panel';
 import {SuccessorEvidenceReviewPanel} from './successor-evidence-review-panel';
 import {SuccessorJointStressPanel} from './successor-joint-stress-panel';
+import {SuccessorThresholdStressPanel} from './successor-threshold-stress-panel';
 type Scenario={component:string;fees_yuan:string;economics:{net_return:number|null;maximum_drawdown:number|null};input_gaps:unknown[]};
 type Saved={stress_id:string;shadow_revision:number;recorded_at:string;scenarios:Scenario[];remaining_components:string[];G5_status:string};
 const percent=(v:number|null)=>v===null?'未知':(v*100).toFixed(2)+'%';
@@ -30,6 +31,7 @@ export function SuccessorCostStressPanel({freezeId,fingerprint}:{freezeId:string
       <SuccessorRegisteredControlsPanel key={'controls-'+current.stress_id} stressId={current.stress_id}/>
       <SuccessorEntryStressPanel key={'entries-'+current.stress_id} stressId={current.stress_id}/>
       <SuccessorJointStressPanel key={'joint-'+current.stress_id} stressId={current.stress_id}/>
+      <SuccessorThresholdStressPanel key={'threshold-'+current.stress_id} stressId={current.stress_id}/>
       <SuccessorEvidenceReviewPanel key={'review-'+current.stress_id} stressId={current.stress_id} freezeId={freezeId}/>
     </>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </details>;
