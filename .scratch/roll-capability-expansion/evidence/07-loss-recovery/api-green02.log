@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_explicit_boundary_and_successor_recover_loss_without_resetting_peak_or_old_grant _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r07g2/test_explicit_boundary_and_suc0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000227C37BCB00>
+
+    def test_explicit_boundary_and_successor_recover_loss_without_resetting_peak_or_old_grant(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        p=action_package();p['action_packet']['loss_facts']={**p['loss_facts'],'facts_version':'method-loss6000','net_assets':'94000.10','realized_pnl':'-6000.00'}
+        file=save_package(tmp_path/'qualification.json',p);directory=tmp_path/'data'
+        with TestClient(create_app(directory,capability_method_file=file)) as client:
+            original=prepare(client,p);decline=client.post('/api/actions/evaluate',json={}).json()
+            pause=next(e for e in client.get('/api/capabilities/events').json() if e.get('reason_code')=='LOSS_BOUNDARY')
+            assert decline['joint_budget']['loss']['peak_loss']=='6000.00'
+            assert client.post('/api/funding/confirm',json=funding(2,loss_threshold='10000.00')).status_code==200
+            lifecycle=client.get('/api/capabilities/lifecycle').json()
+            retired=client.post('/api/capabilities/lifecycle',json={'grant_id':original['grant_id'],'scope':'MODEL','state':'REVOKED','reason_code':'USER_REVOKE','reason':'Retire original grant for explicit loss successor','expected_version':lifecycle['version'],'idempotency_key':'retire'})
+            assert retired.status_code==200,retired.text
+            proposal=client.get('/api/capabilities/proposal',params={'material_id':p['material_id'],'review_run_id':p['review_run_id']}).json()
+            successor=client.post('/api/capabilities/grants',json={**proposal,'allowed_actions':['BUY'],'predecessor_grant_id':original['grant_id'],'idempotency_key':'new-grant','basis':'Fresh current qualification after explicit boundary reconfirmation'})
+            assert successor.status_code==201,successor.text
+            successor=successor.json();control=client.get('/api/capabilities/lifecycle').json()
+            command={'pause_event_id':pause['event_id'],'successor_grant_id':successor['grant_id'],'expected_funding_version':3,'expected_account_version':2,'expected_lifecycle_version':control['version'],'idempotency_key':'check','basis':'User chose reconfirmed boundary plus successor, preserving peak/history'}
+            response=client.post('/api/funding/loss-recovery/checks',json=command);assert response.status_code==201,response.text
+>           check=response.json();assert check['status']=='READY' and check['gaps']==[]
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: assert ('RESTRICTED' == 'READY'
+E             
+E             - READY
+E             + RESTRICTED)
+
+backend\tests\application\test_loss_recovery.py:26: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_loss_recovery.py::test_explicit_boundary_and_successor_recover_loss_without_resetting_peak_or_old_grant
+1 failed in 9.82s

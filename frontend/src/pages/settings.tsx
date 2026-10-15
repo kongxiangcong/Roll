@@ -8,6 +8,7 @@ import {CapabilityPanel} from '../components/capability-panel';
 import {LifecyclePanel} from '../components/lifecycle-panel';
 import {NotificationChannelPanel} from '../components/notification-channel-panel';
 import {BrokerCostPanel} from '../components/broker-cost-panel';
+import {LossRecoveryPanel} from '../components/loss-recovery-panel';
 
 export function Settings(){
   const [funding,setFunding]=useState<Funding|null>(null),[error,setError]=useState(''),[history,setHistory]=useState<Funding|null>(null);
@@ -40,5 +41,6 @@ export function Settings(){
     <label><input type="checkbox" checked={enabled} onChange={e=>setEnabled(e.target.checked)}/>允许在此资金边界内使用</label>
     <label><input type="checkbox" checked={pause} disabled={!!funding.pause_latched} onChange={e=>setPause(e.target.checked)}/>暂停此资金用途</label>
     </fieldset><button type="submit" disabled={busy}>确认资金边界</button></form></section>
+    <LossRecoveryPanel/>
     {funding.version>0&&<section><h2>资金授权历史</h2>{Array.from({length:funding.version},(_,i)=>i+1).map(version=><button key={version} onClick={()=>request<Funding>(`/funding/versions/${version}`).then(setHistory).catch(e=>setError(String(e)))}>查看资金授权版本 {version}</button>)}{history&&<p>历史资金用途：{history.purpose} · {history.capital_amount} 元 · {history.state}</p>}</section>}</>;
 }

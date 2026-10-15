@@ -1,0 +1,25 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -1332,6 +1332,22 @@
+         return capability_service.verify_proof(proof_id)
+ 
+     actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
++    from roll.decisions.loss_recovery import LossRecoveries,RecoveryCheckCommand,RecoveryActivateCommand
++    loss_recoveries=LossRecoveries(funding,capability_service,actions)
++    funding.loss_recovery=loss_recoveries
++
++    @app.post('/api/funding/loss-recovery/checks',status_code=201)
++    def loss_recovery_check(command:RecoveryCheckCommand):return loss_recoveries.create_check(command)
++
++    @app.get('/api/funding/loss-recovery/checks/{identifier}')
++    def loss_recovery_check_get(identifier:str):return loss_recoveries.get_check(identifier)
++
++    @app.post('/api/funding/loss-recovery/checks/{identifier}/activate',status_code=201)
++    def loss_recovery_activate(identifier:str,command:RecoveryActivateCommand):return loss_recoveries.activate(identifier,command)
++
++    @app.get('/api/funding/loss-recovery/receipts')
++    def loss_recovery_receipts():return loss_recoveries.receipts()
++
+     actions.broker_costs = broker_costs
+     capability_service.actions = actions
+     from roll.decisions.notifications import Notifications, ReadNotice

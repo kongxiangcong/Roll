@@ -81,6 +81,20 @@ def evaluate_loss(authorization, facts: LossFacts, previous=None):
               "facts_version": value["facts_version"], "baseline_assets": current_baseline or known_baseline, "pnl": None, "loss": None,
               "remaining_loss_allowance": None, "peak_loss": previous.get("peak_loss") if previous else None,
               "triggered": previous.get("triggered", False) if previous else False}
+    if previous and previous.get("loss_recovery_id"):
+        result["historical_triggered"]=bool(previous.get("historical_triggered") or previous.get("triggered"))
+        result["loss_recovery_id"]=previous["loss_recovery_id"]
+    recovery=authorization.get("loss_recovery")
+    if recovery and previous:
+        scope={k:authorization[k] for k in ("scope_kind","scope_id","baseline_account_version")}
+        scope["origin_at"]=authorization["loss_origin_at"]
+        eligible=(recovery.get("funding_version")==authorization["version"] and recovery.get("loss_scope")==scope
+            and Decimal(previous.get("peak_loss") or "0")<=Decimal(recovery["acknowledged_peak_loss"]))
+        if eligible:
+            result["historical_triggered"]=bool(previous.get("historical_triggered") or previous.get("triggered"))
+            result["loss_recovery_id"]=recovery["recovery_id"]
+            if previous.get("loss_recovery_id")!=recovery["recovery_id"]:
+                result["triggered"]=False
     if value["valuation_status"] != "COMPLETE" or None in amounts.values():
         return {**result, "status": "RESTRICTED", "reason": "陈旧/缺失估值或必需事实不足，损失与剩余额度未知"}
     with localcontext() as context:
@@ -138,7 +152,9 @@ class Funding:
         row = db.execute("SELECT snapshot FROM funding_versions ORDER BY version DESC LIMIT 1" if version is None
                          else "SELECT snapshot FROM funding_versions WHERE version=?", () if version is None else (version,)).fetchone()
         if row:
-            return json.loads(row[0])
+            value=json.loads(row[0])
+            recovery=getattr(self,"loss_recovery",None)
+            return recovery.effective(value,db) if recovery and version is None else value
         if version not in (None, 0):
             raise HTTPException(404, "资金授权版本不存在")
         return {"version": 0, "state": "UNCONFIRMED", "loss_status": "PENDING_FACTS",

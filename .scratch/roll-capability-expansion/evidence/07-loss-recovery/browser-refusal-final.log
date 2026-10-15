@@ -1,0 +1,53 @@
+[WebServer] INFO:     Started server process [33176]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8176 (Press CTRL+C to quit)
+[WebServer] (node:9192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:25512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-loss-recovery.spec.ts:3:1 › LOSS recovery keeps peak and revoked predecessor after explicit confirmation (4.6s)
+
+
+  1) tests\e2e\expansion-loss-recovery.spec.ts:3:1 › LOSS recovery keeps peak and revoked predecessor after explicit confirmation 
+
+    Error: route.fulfill: Route is already handled!
+
+      14 |   await page.route('**/loss-recovery/checks/*/activate',async route=>{
+      15 |     await page.unroute('**/loss-recovery/checks/*/activate');
+    > 16 |     await route.fulfill({status:409,contentType:'application/json',body:JSON.stringify({detail:{code:'LOSS_RECOVERY_CURRENT_CONDITIONS_CHANGED',gaps:[]}})});
+         |                 ^
+      17 |   });
+      18 |   await page.getByRole('button',{name:'确认按后继资格恢复LOSS限制',exact:true}).click();
+      19 |   await expect(page.getByRole('alert')).toContainText('本次确认未提交');
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-loss-recovery.spec.ts:16:17
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('alert')
+    Expected substring: [32m"本次确认未提交"[39m
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('alert')[22m
+
+
+      17 |   });
+      18 |   await page.getByRole('button',{name:'确认按后继资格恢复LOSS限制',exact:true}).click();
+    > 19 |   await expect(page.getByRole('alert')).toContainText('本次确认未提交');
+         |                                         ^
+      20 |   await expect(page.getByRole('button',{name:'核验当前LOSS恢复条件',exact:true})).toBeEnabled();
+      21 |   await page.reload();await page.getByRole('button',{name:'设置',exact:true}).click();await page.getByText('LOSS原因绑定恢复',{exact:true}).click();
+      22 |   await page.getByRole('button',{name:'读取LOSS恢复条件',exact:true}).click();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-loss-recovery.spec.ts:19:41
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\07-loss-recovery\browser-results\expansion-loss-recovery-LO-d2c73-after-explicit-confirmation\error-context.md
+
+  1 failed
+    tests\e2e\expansion-loss-recovery.spec.ts:3:1 › LOSS recovery keeps peak and revoked predecessor after explicit confirmation 

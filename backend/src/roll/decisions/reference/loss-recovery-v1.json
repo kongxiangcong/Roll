@@ -1,0 +1,7 @@
+{
+  "rule_id": "loss-recovery-v1",
+  "user_decision": "2026-10-15: explicitly reconfirm loss boundary and obtain successor qualification; retain original peak and pause history",
+  "conditions": ["current global LOSS pause", "same loss origin, baseline and scope", "new enabled funding confirmation after pause", "reconfirmed threshold strictly above retained peak", "current complete reconciled loss facts", "qualified successor grant after confirmation linked to a terminal loss-affected old grant", "current account, deployment, runtime and lifecycle unchanged"],
+  "effect": "Acknowledge only the bound historical trigger, never reset peak/origin or revive old grant; a new threshold breach latches again",
+  "no_automatic_recovery": ["price rebound", "capital increase alone", "restart", "old backup restore", "old grant", "METHOD evidence in production"]
+}

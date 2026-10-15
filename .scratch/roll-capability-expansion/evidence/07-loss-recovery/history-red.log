@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_recovery_history_survives_a_later_peak_within_the_new_boundary _____
+
+    def test_recovery_history_survives_a_later_peak_within_the_new_boundary():
+        from roll.decisions.funding import evaluate_loss,LossFacts
+        from test_funding import loss_facts
+        auth={**funding()['authorization'],'version':3,'baseline_account_version':1,'loss_origin_at':'2026-10-07T02:00:00+00:00','loss_threshold':'10000.00'}
+        auth['loss_recovery']={'recovery_id':'fixed-recovery','funding_version':3,'acknowledged_peak_loss':'6000.00','loss_scope':{'scope_kind':'ACCOUNT','scope_id':'account-1','baseline_account_version':1,'origin_at':auth['loss_origin_at']}}
+        previous={'peak_loss':'6000.00','triggered':False,'historical_triggered':True,'loss_recovery_id':'fixed-recovery','as_of':'2026-10-07T03:00:00+00:00','baseline_assets':'100000.00'}
+        facts=LossFacts(**loss_facts(net_assets='93000.00',external_in='0.00',external_out='0.00',realized_pnl='-7000.00',unrealized_pnl='0.00',income='0.00',fees='0.00'))
+        first=evaluate_loss(auth,facts,previous)
+        assert first['peak_loss']=='7000.00' and first['historical_triggered'] is True and first['loss_recovery_id']=='fixed-recovery'
+        second=evaluate_loss(auth,facts,first)
+>       assert second['status']=='WITHIN_BOUNDARY' and second['historical_triggered'] is True and second['loss_recovery_id']=='fixed-recovery'
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'historical_triggered'
+
+backend\tests\application\test_loss_recovery.py:113: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_loss_recovery.py::test_recovery_history_survives_a_later_peak_within_the_new_boundary
+1 failed, 2 deselected in 2.95s

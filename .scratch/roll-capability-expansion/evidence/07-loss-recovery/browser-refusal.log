@@ -1,0 +1,33 @@
+[WebServer] INFO:     Started server process [29680]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8175 (Press CTRL+C to quit)
+[WebServer] (node:9320) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:13408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-loss-recovery.spec.ts:3:1 › LOSS recovery keeps peak and revoked predecessor after explicit confirmation (1.3s)
+
+
+  1) tests\e2e\expansion-loss-recovery.spec.ts:3:1 › LOSS recovery keeps peak and revoked predecessor after explicit confirmation 
+
+    TypeError: Cannot read properties of undefined (reading 'grant_id')
+
+       7 |   await page.goto('/');await page.getByRole('button',{name:'设置',exact:true}).click();await page.getByText('LOSS原因绑定恢复',{exact:true}).click();
+       8 |   await page.getByRole('button',{name:'读取LOSS恢复条件',exact:true}).click();
+    >  9 |   await page.getByLabel('LOSS后继资格',{exact:true}).selectOption(successor.grant_id);
+         |                                                                         ^
+      10 |   await page.getByLabel('LOSS恢复依据',{exact:true}).fill('METHOD显式后继资格恢复，保留6000峰值和全部暂停历史');
+      11 |   await page.getByRole('button',{name:'核验当前LOSS恢复条件',exact:true}).click();
+      12 |   await expect(page.getByText('LOSS恢复核验 · READY · 保留峰值6000.00元',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-loss-recovery.spec.ts:9:73
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\07-loss-recovery\browser-results\expansion-loss-recovery-LO-d2c73-after-explicit-confirmation\error-context.md
+
+  1 failed
+    tests\e2e\expansion-loss-recovery.spec.ts:3:1 › LOSS recovery keeps peak and revoked predecessor after explicit confirmation 

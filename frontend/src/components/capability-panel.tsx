@@ -7,7 +7,7 @@ type Material={material_id:string;protocol_id:string;candidate_kind:string;evide
 type Review={run_id:string;backend:string;status:string;finished_at?:string;review_record?:{blocking_issues_resolved:boolean}};
 
 export function CapabilityPanel(){
-  const [value,setValue]=useState<Capability|null>(null),[material,setMaterial]=useState(''),[review,setReview]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+  const [value,setValue]=useState<Capability|null>(null),[material,setMaterial]=useState(''),[review,setReview]=useState(''),[predecessor,setPredecessor]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
   const [materials,setMaterials]=useState<Material[]>([]),[reviews,setReviews]=useState<Review[]>([]),[revision,setRevision]=useState(0);
   async function reload(){setValue(await request<Capability>('/capabilities'));}
   useEffect(()=>{const refresh=()=>void reload().catch(e=>setError(String(e)));refresh();window.addEventListener('roll-capability-changed',refresh);window.addEventListener('focus',refresh);return()=>{window.removeEventListener('roll-capability-changed',refresh);window.removeEventListener('focus',refresh);};},[]);
@@ -18,7 +18,7 @@ export function CapabilityPanel(){
     setBusy(true);setError('');
     try{
       const proposal=await request<Record<string,unknown>>(`/capabilities/proposal?material_id=${encodeURIComponent(material)}&review_run_id=${encodeURIComponent(review)}`);
-      const response=await fetch('/api/capabilities/grants',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...proposal,idempotency_key:crypto.randomUUID(),basis:'用户请求按冻结证据核验能力资格'})});
+      const response=await fetch('/api/capabilities/grants',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...proposal,predecessor_grant_id:predecessor||null,idempotency_key:crypto.randomUUID(),basis:'用户请求按冻结证据核验能力资格'})});
       const result=await response.json();
       if(!response.ok)setError(result.detail?.reasons?.join('；')??(typeof result.detail==='string'?result.detail:JSON.stringify(result.detail)));
       await reload();
@@ -30,6 +30,7 @@ export function CapabilityPanel(){
     <form onSubmit={e=>{e.preventDefault();void check();}}><label>已保存的冻结审阅材料<select required value={material} onChange={e=>setMaterial(e.target.value)}><option value="">选择已保存材料</option>{materials.map(m=><option key={m.material_id} value={m.material_id}>{m.protocol_id} · {m.candidate_kind} · {m.basis_manifest.validation_verdict} · {new Date(m.created_at).toLocaleString('zh-CN')}</option>)}</select></label>
     {selected&&<p>材料结论：{selected.basis_manifest.validation_verdict} · 实验状态 {selected.basis_manifest.experiment_status} · {selected.evidence_kind}{selected.basis_manifest.preliminary?' · 仍为初步材料':''}。选择材料不表示资格已授予。</p>}
     <label>已保存的 Codex 审阅记录<select required value={review} disabled={!material||!reviews.length} onChange={e=>setReview(e.target.value)}><option value="">选择已保存审阅</option>{reviews.map(r=><option key={r.run_id} value={r.run_id}>{r.status} · {r.finished_at?new Date(r.finished_at).toLocaleString('zh-CN'):'尚未结束'} · {r.review_record?.blocking_issues_resolved?'阻断项已解决':'资格仍待核验'}</option>)}</select></label>
+    {!!value?.grant_statuses?.some(s=>s.state==='REVOKED'||s.state==='EXPIRED')&&<label>后继资格原记录（原记录保持关闭）<select aria-label="后继资格原记录" value={predecessor} onChange={e=>setPredecessor(e.target.value)}><option value="">普通登记，不关联原记录</option>{value?.grant_statuses?.filter(s=>s.state==='REVOKED'||s.state==='EXPIRED').map(s=><option key={s.grant.grant_id} value={s.grant.grant_id}>{s.grant.grant_id} · {capabilityLabel(s.state)}</option>)}</select></label>}
     {material&&!reviews.length&&<p>此材料尚无已保存的 Codex 审阅记录。</p>}<button disabled={busy||!material||!review} type="submit">核验并登记资格</button></form>{error&&<p role="alert">{error}</p>}
   </section>;
 }

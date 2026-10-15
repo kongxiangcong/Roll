@@ -1,0 +1,24 @@
+..........................................F                              [100%]
+================================== FAILURES ===================================
+_ test_revoked_record_stays_closed_when_current_checks_admit_an_explicit_successor _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r07ff/test_revoked_record_stays_clos0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023DA9732C80>
+
+    def test_revoked_record_stays_closed_when_current_checks_admit_an_explicit_successor(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        file = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
+            prepare(client, package)
+            original = client.get('/api/capabilities/grants').json()[0]
+            revoked = client.post('/api/capabilities/lifecycle', json={'grant_id': original['grant_id'], 'scope': 'MODEL', 'state': 'REVOKED',
+                'reason_code': 'USER_REVOKE', 'reason': '撤回原记录', 'expected_version': 0, 'idempotency_key': 'revoke'})
+>           assert revoked.status_code == 200
+E           assert 409 == 200
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+backend\tests\application\test_capability_successors.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_capability_successors.py::test_revoked_record_stays_closed_when_current_checks_admit_an_explicit_successor
+1 failed, 42 passed in 225.68s (0:03:45)
