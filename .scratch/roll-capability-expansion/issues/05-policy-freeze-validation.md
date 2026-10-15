@@ -46,3 +46,5 @@
 2026-10-15 增量：已接入同一METHOD轨迹的时间三段，承接原现金/各lot/净值；漏会话和未知边界不填补，超大跨度不压缩，API/Chrome/保存重放通过。见[时间三段验收](../evidence/05-time-segments/acceptance.md)。其余真实输入/共同风险基准/延迟/邻域/迁移与独立支持仍缺，05保持partial。
 
 2026-10-15 增量：已接入空初始持仓的同窗口CASH控制，非空lot拒绝假定清仓；完整METHOD跨度/候选未知/已观察风险硬FAIL保留，API/Chrome/重放通过。见[CASH控制验收](../evidence/05-cash-control/acceptance.md)。risk_matched=false，完整基准与真实/独立支持仍缺，05保持partial。
+
+2026-10-15 增量：已接入原登记CASH/START_HOLD/MA5_MA20描述轨迹，原引擎和不同持有时点保留；MA前置上下文缺失、未知会话与风险不可比明确，不裁窗。API1 PASS/37.54s、Chrome1 PASS/37.4s、构建及两路审查通过。见[原登记基准验收](../evidence/05-registered-controls/acceptance.md)。真实/共同风险匹配与余下G5仍缺，05保持partial。

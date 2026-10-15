@@ -217,6 +217,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     successor_protocols=SuccessorProtocols(successor_shadow,validation)
     from roll.research.successor_stress import SuccessorStresses
     successor_stresses=SuccessorStresses(successor_protocols)
+    from roll.research.successor_controls import SuccessorRegisteredControls,ControlsCommand
+    successor_controls=SuccessorRegisteredControls(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/registered-controls',status_code=201)
+    async def successor_controls_create(identifier:str,command:ControlsCommand):return await successor_controls.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/registered-controls')
+    def successor_controls_list(identifier:str):return successor_controls.listing(identifier)
+
+    @app.get('/api/research/successor-registered-controls/{identifier}')
+    def successor_controls_get(identifier:str):return successor_controls.get(identifier)
+
+    @app.post('/api/research/successor-registered-controls/{identifier}/replay')
+    async def successor_controls_replay(identifier:str):return await successor_controls.replay(identifier)
     from roll.research.successor_cash import SuccessorCashControls,CashControlCommand
     successor_cash=SuccessorCashControls(successor_stresses)
 
