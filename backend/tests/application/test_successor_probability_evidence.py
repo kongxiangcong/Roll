@@ -33,6 +33,15 @@ def test_successor_binds_same_frozen_probability_and_block_archives(tmp_path,mon
         assert saved['probability_manifest']==probability['archive'] and saved['block_manifest']==blocks['archive']
         assert client.post(base+'/probability-evidence',json=command).json()==saved
         assert client.get(base+'/probability-evidence').json()==[saved]
+        # This historical donor retains its old inherited engine fingerprint.
+        # Do not relabel it to run a different current execution engine.
+        from test_successor_shadow import frame
+        symbol=next(iter(successor['rules']))
+        for day in range(1,4):
+            observation=frame(day);observation['bars'][0]['instrument']=symbol;observation['signals'][0]['instrument']=symbol
+            assert client.post(base+'/shadow/advance',json=observation).status_code==201
+        stress_response=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':complete['complete_protocol_fingerprint'],'expected_revision':3,'idempotency_key':'review-cost','basis':'METHOD execution kept distinct from saved CAL'})
+        assert stress_response.status_code==409 and 'WORKER_FAILED' in stress_response.text
         # Corrupt only newly generated archives in this disposable copy.
         for archive in (probability['source'],blocks['source']):
             path=client.app.state.evidence.raw(archive['sha256']);original=path.read_bytes();path.write_bytes(b'corrupt nested reference')

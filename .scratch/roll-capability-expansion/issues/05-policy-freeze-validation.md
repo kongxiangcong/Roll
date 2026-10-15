@@ -50,3 +50,5 @@
 2026-10-15 增量：已接入原登记CASH/START_HOLD/MA5_MA20描述轨迹，原引擎和不同持有时点保留；MA前置上下文缺失、未知会话与风险不可比明确，不裁窗。API1 PASS/37.54s、Chrome1 PASS/37.4s、构建及两路审查通过。见[原登记基准验收](../evidence/05-registered-controls/acceptance.md)。真实/共同风险匹配与余下G5仍缺，05保持partial。
 
 2026-10-15 增量：六个原网格BUY/ADD入场压力已接入，默认逐前缀完整状态等于旧引擎，close/+2/0与50%/lot期限/预留释放可追踪；最终API2 PASS/49.73s、Chrome1 PASS/45.7s与构建通过。见[入场压力验收](../evidence/05-entry-stress/acceptance.md)。早退/到期及基准联合压力、真实/独立支持和完整冻结仍缺，05保持partial。
+
+2026-10-15 增量：同费用前缀保存证据汇总已接入，五/六类工件正向绑定、混前缀拒绝、嵌套原件/硬FAIL/保存重放通过，CAL不拼日历。G6/G7移至启运后资格缺口，避免循环冻结前置。最终API2 PASS/69.96s、Chrome1 PASS/46.3s。见[证据汇总验收](../evidence/05-evidence-review/acceptance.md)。联合压力仍是下一可离线前沿，05保持partial。

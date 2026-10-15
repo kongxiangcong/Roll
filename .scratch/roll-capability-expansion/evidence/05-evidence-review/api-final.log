@@ -1,0 +1,53 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_______ test_successor_binds_same_frozen_probability_and_block_archives _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05vf/test_successor_binds_same_froz0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018ADBEBBCE0>
+
+    def test_successor_binds_same_frozen_probability_and_block_archives(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        monkeypatch.setenv('ROLL_SKLEARN_PYTHON',str(ROOT/'.scratch/rce-runtime/probability/Scripts/python.exe'))
+        monkeypatch.setenv('ROLL_ARCH_PYTHON',str(ROOT/'.scratch/rce-runtime/arch/Scripts/python.exe'))
+        with TestClient(create_app(copy_donor(tmp_path/'data'),runtime_role='API')) as client:
+            account=client.get('/api/account').json()
+            previous=client.get('/api/research/complete-freezes/'+FREEZE).json()
+            probability=client.post('/api/research/complete-freezes/'+FREEZE+'/probability-reference',json={'expected_complete_protocol_fingerprint':previous['complete_protocol_fingerprint'],'idempotency_key':'prob-source','basis':'Reuse saved METHOD CAL, no new fitting'}).json()
+            blocks=client.post('/api/research/probability-references/'+probability['reference_id']+'/block-reference',json={'idempotency_key':'block-source','basis':'Same archived calendar reference'}).json()
+            proposal=client.post('/api/research/policy-successors',json={'predecessor_freeze_id':FREEZE,'predecessor_policy_fingerprint':previous['fingerprints']['policy'],'version':'METHOD-successor-probability-v2','idempotency_key':'successor','basis':'Same frozen model and existing policy'}).json()
+            successor=client.post('/api/research/policy-successors/'+proposal['proposal_id']+'/freezes',json={'policy_fingerprint':proposal['policy_fingerprint'],'idempotency_key':'successor-freeze','starting_session':0,'cash_yuan':'10000.00','positions':[],'basis':'METHOD baseline'}).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Source binding only, no fit'}).json()
+            base='/api/research/policy-successor-freezes/'+successor['successor_freeze_id']
+            complete=client.post(base+'/complete-protocol',json={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],'expected_successor_fingerprint':successor['successor_fingerprint'],'idempotency_key':'parameters','basis':'Original economic/statistical design'}).json()
+            attempts=client.get('/api/research/protocols/'+child['protocol_id']+'/attempts').json()
+            command={'expected_complete_protocol_fingerprint':complete['complete_protocol_fingerprint'],'probability_reference_id':probability['reference_id'],'block_reference_id':blocks['reference_id'],'idempotency_key':'bind','basis':'Reuse same source archives; never grant independent calibration'}
+            response=client.post(base+'/probability-evidence',json=command)
+            assert response.status_code==201,response.text
+            saved=response.json();identifier=saved['binding_id']
+            assert saved['G3_status']=='INCONCLUSIVE' and saved['independent_calibration_validation'] is False
+            assert saved['system_usable'] is False and saved['capability']=='NOT_GRANTED'
+            assert len(saved['phases'])==2 and all(p['mature_unique']==20 for p in saved['phases'].values())
+            for name,phase in saved['phases'].items():
+                expected=[r for r in probability['phases'][name]['accepted_rows'] if r['probability']>=.6]
+                assert phase['selected_mature']==len(expected)
+            assert all('CALIBRATION_FIT_WINDOW_REUSED' in p['gaps'] and p['missing_calendar_sessions']==20 for p in saved['phases'].values())
+            assert saved['probability_manifest']==probability['archive'] and saved['block_manifest']==blocks['archive']
+            assert client.post(base+'/probability-evidence',json=command).json()==saved
+            assert client.get(base+'/probability-evidence').json()==[saved]
+            # The consolidated consumer admits this exact saved CAL binding as
+            # separate descriptive evidence, never as the METHOD execution calendar.
+            from test_successor_shadow import frame
+            symbol=next(iter(successor['rules']))
+            for day in range(1,4):
+                observation=frame(day);observation['bars'][0]['instrument']=symbol;observation['signals'][0]['instrument']=symbol
+                assert client.post(base+'/shadow/advance',json=observation).status_code==201
+            stress=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':complete['complete_protocol_fingerprint'],'expected_revision':3,'idempotency_key':'review-cost','basis':'METHOD execution kept distinct from saved CAL'}).json()
+>           review_response=client.post('/api/research/successor-cost-stresses/'+stress['stress_id']+'/evidence-review',json={'probability_id':identifier,'idempotency_key':'cal-review','basis':'No joint-calendar or independent-label claim'})
+                                                                                 ^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'stress_id'
+
+backend\tests\application\test_successor_probability_evidence.py:44: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_probability_evidence.py::test_successor_binds_same_frozen_probability_and_block_archives
+1 failed, 1 passed in 56.73s

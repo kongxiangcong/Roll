@@ -275,6 +275,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def successor_segments_replay(identifier:str):return successor_segments.replay(identifier)
     from roll.research.successor_probability import SuccessorProbabilityEvidence,ProbabilityBindingCommand
     successor_probability=SuccessorProbabilityEvidence(successor_protocols,probability_references,block_references)
+    from roll.research.successor_evidence_review import SuccessorEvidenceReviews,EvidenceReviewCommand
+    successor_evidence=SuccessorEvidenceReviews(successor_stresses,successor_segments,successor_cash,successor_controls,successor_entries,successor_probability)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/evidence-review',status_code=201)
+    def successor_evidence_create(identifier:str,command:EvidenceReviewCommand):return successor_evidence.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/evidence-review')
+    def successor_evidence_list(identifier:str):return successor_evidence.listing(identifier)
+
+    @app.get('/api/research/successor-evidence-reviews/{identifier}')
+    def successor_evidence_get(identifier:str):return successor_evidence.get(identifier)
+
+    @app.post('/api/research/successor-evidence-reviews/{identifier}/replay')
+    def successor_evidence_replay(identifier:str):return successor_evidence.replay(identifier)
 
     @app.post('/api/research/policy-successor-freezes/{freeze_id}/probability-evidence',status_code=201)
     def successor_probability_create(freeze_id:str,command:ProbabilityBindingCommand):return successor_probability.create(freeze_id,command)
