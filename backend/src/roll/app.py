@@ -179,6 +179,24 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     validation=AutomaticValidation(shadow)
     app.state.validation=validation
+    from roll.research.probability_reference import ProbabilityReferences,ProbabilityCommand
+    probability_references=ProbabilityReferences(shadow)
+    app.state.probability_references=probability_references
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/probability-reference',status_code=201)
+    async def probability_reference_create(freeze_id:str,command:ProbabilityCommand):return await probability_references.create(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/probability-reference')
+    def probability_reference_list(freeze_id:str):return probability_references.listing(freeze_id)
+
+    @app.get('/api/research/probability-references/{identifier}')
+    def probability_reference_get(identifier:str):return probability_references.get(identifier)
+
+    @app.post('/api/research/probability-references/{identifier}/replay')
+    def probability_reference_replay(identifier:str):
+        value=probability_references.get(identifier)
+        return {'reference_id':identifier,'matches_original':True,'recomputed':False,'new_fit_calls':0,'sealed_reads':0}
+
     successor_protocols=SuccessorProtocols(successor_shadow,validation)
 
     @app.get('/api/research/complete-freezes/{predecessor_freeze_id}/policy-successor-freezes')

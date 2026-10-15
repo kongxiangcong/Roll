@@ -1,0 +1,19 @@
+{
+  "version": "probability-reference-v1",
+  "library": "scikit-learn1.9.1",
+  "absolute_tolerance": 1e-12,
+  "relative_tolerance": 0,
+  "source": "Saved before/after CALIBRATION prediction vectors and the same archived mature labels, never new fits or SEALED",
+  "weights": "Equal weight per canonical instrument/date/event/horizon, exact duplicates once, conflicts rejected",
+  "maturity": "Source CALIBRATION last date and consumer knowledge cutoff; archived label/maturity/availability required",
+  "brier": "Binary squared error; scale_by_half=True; pos_label1",
+  "log_loss": "Explicit two columns [P0,P1], labels[0,1]. Align model per-class probability floor1e-15; separately show library default machine epsilon",
+  "bins": "5 uniform bins; preserve Roll left-closed convention incl1 in final bin; show library raw uniform right-edge convention separately; per-Roll-bin calibration_curve n_bins1 for aligned means/frequencies",
+  "independence": "None; CAL fit reused, no CV/calibrator fit or statistical qualification",
+  "limits": {
+    "events": 10000,
+    "timeout_seconds": 20,
+    "result_bytes": 8388608,
+    "network_calls": 0
+  }
+}
