@@ -48,6 +48,8 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByRole('button',{name:'重放保存的中心绑定',exact:true}).click();await expect(page.getByText('中心工件原绑定重放一致',{exact:true})).toBeVisible();
   await page.getByText('原CAL模型预测的独立执行回放',{exact:true}).click();await page.getByRole('button',{name:'运行原CAL预测执行回放',exact:true}).click();await expect(page.getByText('METHOD模型执行 · 日历40 · 预测20 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的模型执行',exact:true}).click();await expect(page.getByText('模型执行原日历重放一致',{exact:true})).toBeVisible();
+  await page.getByText('来源输入与冻结模型消费者',{exact:true}).click();await page.getByLabel('METHOD输入观察日',{exact:true}).fill('2026-06-25');await page.getByRole('button',{name:'消费来源并推进独立状态',exact:true}).click();await expect(page.getByText('METHOD输入消费 · 版本1 · INPUT_CONSUMED · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'重放保存的输入消费',exact:true}).click();await expect(page.getByText('输入消费原件重放一致',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的证据汇总',exact:true}).click();await expect(page.getByText('证据汇总原工件重放一致',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'重放保存的费用诊断',exact:true}).click();await expect(page.getByText('费用诊断原前缀重放一致',{exact:true})).toBeVisible({timeout:35000});
   await page.reload();await page.getByRole('button',{name:'历史记录',exact:true}).click();await page.getByRole('button',{name:'研究登记',exact:true}).click();await page.getByRole('button',{name:`查看协议 ${parent.protocol_id.slice(0,8)}`,exact:true}).click();
@@ -66,6 +68,7 @@ test('successor saved prefix cost sensitivity stays METHOD and replays',async({p
   await page.getByText('诊断绑定与完整冻结剩余条件',{exact:true}).click();await page.getByRole('button',{name:'查看保存的工程检查',exact:true}).click();await expect(page.getByText('METHOD诊断绑定 8/9 · INCONCLUSIVE · 完整冻结未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('原冻结主模型中心工件',{exact:true}).click();await page.getByRole('button',{name:'查看保存的中心绑定',exact:true}).click();await expect(page.getByText('主模型中心绑定 2/2 · INCONCLUSIVE · 邻域压力未授予 · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.getByText('原CAL模型预测的独立执行回放',{exact:true}).click();await page.getByRole('button',{name:'查看保存的模型执行回放',exact:true}).click();await expect(page.getByText('METHOD模型执行 · 日历40 · 预测20 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.getByText('来源输入与冻结模型消费者',{exact:true}).click();await page.getByRole('button',{name:'查看保存的输入消费',exact:true}).click();await expect(page.getByText('METHOD输入消费 · 版本1 · INPUT_CONSUMED · NOT_GRANTED',{exact:true})).toBeVisible();
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
-  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-model-replay/mobile.png',fullPage:true});
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-input-consumer/mobile.png',fullPage:true});
 });

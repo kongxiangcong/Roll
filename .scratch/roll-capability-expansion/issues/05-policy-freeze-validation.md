@@ -68,3 +68,5 @@
 补齐 penalty1/lookback20 的精确冻结身份映射，绑定工程检查且不改旧记录；核验模型、特征、校准前后原件，21收盘价/20收益区间及DEV/CAL快照。非中心四工件、执行预测对齐、真实消费者及独立支持仍缺，不授邻域压力结论，整票保持partial。验收见 evidence/05-primary-center/acceptance.md。下一离线前沿是原CAL预测的独立完整日历METHOD执行回放，不再新增单纯聚合包装。
 
 2026-10-15 增量：原CAL冻结模型20条校准后概率已按40会话完整日历驱动独立METHOD v2执行，非手填信号，原价格/概率精度和人工前缀保留。API1 PASS/66.32s实际BUY14/SELL34，Chrome/构建/双审查通过，见[模型执行回放验收](../evidence/05-model-replay/acceptance.md)。CAL拟合内重用不构成独立资格；真实消费者与02—04权威契约仍待实现/具备，四个非中心拟合工件未供，05保持partial。
+
+2026-10-15 增量：来源输入到冻结features/predict与独立v2状态的管线已接通，生产入口严格消费旧PostClose包/宿主截止和原来源缺口；METHOD正向、CAS/漏日未知/模式隔离/原件/重启重放通过。两项P2（版本边界、预测前准入）已修，最终API1 PASS/93.32s与Chrome/构建通过，见[输入消费者验收](../evidence/05-input-consumer/acceptance.md)。现有producer仍强制状态/行动UNKNOWN，REAL正向未验收，不能宣称整05工程完成；四非中心产物、独立支持及真实来源契约仍缺。无新增拟合、SEALED访问或真实启运。

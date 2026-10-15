@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import {request} from '../api';
 import {SuccessorModelReplayPanel} from './successor-model-replay-panel';
-type Saved={binding_id:string;recorded_at:string;bound_center_count:number;validation_verdict:string};
+import {SuccessorInputConsumerPanel} from './successor-input-consumer-panel';
+type Saved={binding_id:string;recorded_at:string;bound_center_count:number;validation_verdict:string;source_model_evidence_kind:string};
 export function SuccessorPrimaryCenterPanel({checkId}:{checkId:string}){
   const [records,setRecords]=useState<Saved[]>([]),[selected,setSelected]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[error,setError]=useState('');
   const base='/research/successor-completion-checks/'+checkId+'/primary-center-binding',current=records.find(r=>r.binding_id===selected);
@@ -15,6 +16,7 @@ export function SuccessorPrimaryCenterPanel({checkId}:{checkId:string}){
     {current&&<><p>主模型中心绑定 {current.bound_center_count}/2 · {current.validation_verdict} · 邻域压力未授予 · NOT_GRANTED</p><details><summary>中心产物与剩余缺口</summary><pre>{JSON.stringify(current,null,2)}</pre></details>
       <button disabled={busy} onClick={()=>void action(async()=>{const result=await request<{matches_original:boolean}>('/research/successor-primary-center-bindings/'+current.binding_id+'/replay',{});setNotice(result.matches_original?'中心工件原绑定重放一致':'中心工件重放不一致');})}>重放保存的中心绑定</button>
       <SuccessorModelReplayPanel key={current.binding_id} bindingId={current.binding_id}/>
+      <SuccessorInputConsumerPanel key={current.binding_id+'inputs'} bindingId={current.binding_id} methodModel={current.source_model_evidence_kind==='METHOD_CASE'}/>
     </>}{notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </details>;
 }

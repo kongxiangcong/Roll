@@ -1,0 +1,12 @@
+{
+  "method_id": "successor-input-consumer-v1",
+  "scope": "Frozen model source-packet consumer with an independent state; never overwrites manual frames or starts the forward clock",
+  "real": "Current post-close host packet, offline replay exact, REAL model and REAL original versions, empty source gaps, exact scope/rules/calendar/cutoff; missing authority refuses before prediction",
+  "method": "Test environment only, original frozen CAL inputs and explicit observation date; no source or capability promotion",
+  "progress": "Recompute original features and frozen prediction; previous state revision checked atomically; missing intervening sessions become unknown empty frames, never historical predictions or filled bars",
+  "baseline": "Explicit empty positions only, original cash/policy/rules/costs; no invented liquidation or shifted migration dates",
+  "maximum_sessions": 200,
+  "maximum_input_bytes": 8388608,
+  "maximum_output_bytes": 8388608,
+  "worker_seconds": 30
+}
