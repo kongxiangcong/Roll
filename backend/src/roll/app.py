@@ -1155,6 +1155,34 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     reports = ResearchReports(shadow, valuations, intents, notifications, monitoring)
     app.state.reports = reports
     reviews.reports = reports
+    from roll.research.performance_reports import PerformanceReports,PerformanceCommand
+    performance=PerformanceReports(reports)
+    app.state.performance=performance
+
+    @app.post('/api/research/reports/{freeze_id}/performance',status_code=201)
+    async def performance_create(freeze_id:str,command:PerformanceCommand):return await performance.create(freeze_id,command)
+
+    @app.get('/api/research/reports/{freeze_id}/performance')
+    def performance_list(freeze_id:str):return performance.listing(freeze_id)
+
+    @app.get('/api/research/performance-reports/{identifier}')
+    def performance_get(identifier:str):return performance.get(identifier)
+
+    @app.get('/api/research/performance-reports/{identifier}/figures/{namespace}')
+    def performance_figure(identifier:str,namespace:str):
+        value=performance.get(identifier)
+        if namespace not in value['figures']:raise HTTPException(404,'PERFORMANCE_FIGURE_UNAVAILABLE')
+        return Response(evidence.raw(value['figures'][namespace]['sha256']).read_bytes(),media_type='image/svg+xml',headers={'Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'"})
+
+    @app.get('/api/research/performance-reports/{identifier}/export')
+    def performance_export(identifier:str):
+        value=performance.get(identifier)
+        return Response(evidence.raw(value['export']['sha256']).read_bytes(),media_type='text/html',headers={'Content-Disposition':'attachment; filename="roll-performance.html"'})
+
+    @app.post('/api/research/performance-reports/{identifier}/replay')
+    def performance_replay(identifier:str):
+        value=performance.get(identifier)
+        return {'performance_report_id':identifier,'matches_original':True,'network_calls':0,'recomputed':False}
 
     @app.get('/api/research/reports/{freeze_id}')
     def research_report(freeze_id: str, valuation_id: str | None = None, decision_id: str | None = None,

@@ -1,5 +1,6 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
+import {PerformanceReportPanel} from './performance-report-panel';
 type Point={date?:string;as_of?:string;nav_yuan?:string|null;net_assets?:string|null;cash_yuan?:string;origin_at?:string};
 type Curve={continuous_performance:boolean;points:Point[];reason?:string};
 type Valuation={valuation_id:string;as_of:string;account_version:number};
@@ -43,6 +44,7 @@ export function ResearchReport({freezeId}:{freezeId:string}){
       {!!report.execution.unlinked_fills.length&&<p>另有 {report.execution.unlinked_fills.length} 项实际成交关联未知，不能追认研究建议。</p>}
       <p><strong>{report.comparison.status}</strong> · {report.comparison.reasons.join('、')}</p><details><summary>比较窗口与资金、持仓、范围、执行条件</summary><pre>{JSON.stringify({window:report.comparison.window,conditions:report.comparison.conditions},null,2)}</pre></details>
       <div className="research-results">{Object.entries(report.curves).map(([name,curve])=><CurveView key={name} name={name} curve={curve}/>)}</div>
+      <PerformanceReportPanel key={url} freezeId={freezeId} revision={report.platform.state.revision} options={Object.fromEntries(params)}/>
       <p>ACCOUNT_CONDITIONAL 保存 {report.namespaces.ACCOUNT_CONDITIONAL.length} 项；被拒机会的反事实评分只进入 HISTORICAL 预测诊断。</p>
       {report.monitoring.checks.map(c=><article key={c.check_id}><h4>原保存监测 · {c.status}</h4><p>{c.reasons.join('、')} · {report.monitoring.same_strategy?'相同策略':'不同冻结来源'}</p></article>)}
       <details><summary>保存的监测方法、检查点与修正计划</summary><pre>{JSON.stringify(report.monitoring,null,2)}</pre></details>

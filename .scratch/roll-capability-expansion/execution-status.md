@@ -32,7 +32,7 @@
 | [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | pending | 已发布，未实施 |
 | [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
-| [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | pending | 已发布，未实施 |
+| [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | partial | 只读QuantStats三图/API/Chrome/离线导出已验收；匹配连续基准序列尚缺 |
 | [20 · scikit-learn概率计算核验](issues/20-probability-reference.md) | pending | 已发布，未实施 |
 | [21 · arch区块统计核验](issues/21-block-stat-reference.md) | pending | 已发布，未实施 |
 | [22 · 新增特征快照与消融协议](issues/22-feature-asof-protocol.md) | pending | 已发布，未实施 |

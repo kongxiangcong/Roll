@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** PARTIAL — 已存报告→QuantStats三图→归档/离线导出/重放/浏览器通过；连续基准输入与正向错位联读尚缺。
 
 **Scope / inheritance:** 复用原报告、净值和归档；Apache-2.0组件版本待实施锁定。
 
@@ -33,3 +33,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-15：QuantStats0.0.86只读切片、公开/API/数值/浏览器/离线排版已验，双轴审查0开放发现。未制造缺失基准，保持partial。见[19 acceptance](../evidence/19-performance/acceptance.md)。

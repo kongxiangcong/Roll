@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\backend\src\roll\research\performance_process.py", line 92, in <module>
+    result=render(command)
+  File "D:\dsh-proj\Roll\backend\src\roll\research\performance_process.py", line 29, in render
+    import quantstats as qs
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\quantstats\__init__.py", line 25, in <module>
+    from . import plots, reports, stats, utils
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\quantstats\plots.py", line 27, in <module>
+    from quantstats._plotting.wrappers import *
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\quantstats\_plotting\wrappers.py", line 28, in <module>
+    import seaborn as _sns
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\seaborn\__init__.py", line 5, in <module>
+    from .relational import *  # noqa: F401,F403
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\seaborn\relational.py", line 21, in <module>
+    from ._statistics import EstimateAggregator, WeightedAggregator
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\seaborn\_statistics.py", line 28, in <module>
+    from statistics import NormalDist
+  File "D:\dsh-proj\Roll\backend\src\roll\research\statistics.py", line 10, in <module>
+    from statistics import fmean
+ImportError: cannot import name 'fmean' from 'statistics' (consider renaming 'D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\statistics.py' since it has the same name as the standard library module named 'statistics' and prevents importing that standard library module)
