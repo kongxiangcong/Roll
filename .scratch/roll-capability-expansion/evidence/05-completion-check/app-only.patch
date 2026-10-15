@@ -1,0 +1,23 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -324,6 +324,20 @@
+     successor_evidence=SuccessorEvidenceReviews(successor_stresses,successor_segments,successor_cash,successor_controls,successor_entries,successor_probability)
+     from roll.research.successor_joint_review import SuccessorJointReviews,JointReviewCommand
+     successor_joint_reviews=SuccessorJointReviews(successor_evidence,successor_joint)
++    from roll.research.successor_completion import SuccessorCompletionChecks,CompletionCommand
++    successor_completion=SuccessorCompletionChecks(successor_joint_reviews,successor_thresholds,successor_migrations)
++
++    @app.post('/api/research/successor-joint-reviews/{identifier}/completion-check',status_code=201)
++    def successor_completion_create(identifier:str,command:CompletionCommand):return successor_completion.create(identifier,command)
++
++    @app.get('/api/research/successor-joint-reviews/{identifier}/completion-check')
++    def successor_completion_list(identifier:str):return successor_completion.listing(identifier)
++
++    @app.get('/api/research/successor-completion-checks/{identifier}')
++    def successor_completion_get(identifier:str):return successor_completion.get(identifier)
++
++    @app.post('/api/research/successor-completion-checks/{identifier}/replay')
++    def successor_completion_replay(identifier:str):return successor_completion.replay(identifier)
+ 
+     @app.post('/api/research/successor-evidence-reviews/{identifier}/joint-review',status_code=201)
+     def successor_joint_review_create(identifier:str,command:JointReviewCommand):return successor_joint_reviews.create(identifier,command)
