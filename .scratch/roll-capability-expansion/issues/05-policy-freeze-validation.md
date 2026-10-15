@@ -58,3 +58,5 @@
 2026-10-15 增量：联合压力已按独立新版本绑定至证据汇总，旧汇总GET/重放前后及重启相等；错源/嵌套损坏/硬FAIL保持，API1 PASS/46.21s、Chrome1 PASS/56.0s和构建通过。见[版本化汇总验收](../evidence/05-joint-review/acceptance.md)。真实/独立支持及其余完整G5仍缺，05保持partial。
 
 2026-10-15 增量：原登记entry-only三档阈值已消费，support固定、base全state同原、逐档METHOD审计与训练清单分开，失败/中断/并发恢复/幂等留证。两项生命周期P2已修，API1 PASS/33.38s、修复后Chrome1 PASS/63.94s与构建通过。见[阈值邻域验收](../evidence/05-threshold-stress/acceptance.md)。未新增fit/CAL/SEALED额度；迁移审计及完整checker仍是离线前沿，05保持partial。
+
+2026-10-15 增量：原迁移lot/登记scope审计已接入，原截止与新入场期限独立、到期阻塞不延长、空原持仓边界明确；位置身份P2已补，API1 PASS/22.88s、修复后Chrome1 PASS/61.85s与构建通过。见[迁移审计验收](../evidence/05-migration-audit/acceptance.md)。一致性不是真实迁移或G5资格；下一离线前沿为版本化工程完成检查，05仍partial。

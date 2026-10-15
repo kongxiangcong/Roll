@@ -217,6 +217,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     successor_protocols=SuccessorProtocols(successor_shadow,validation)
     from roll.research.successor_stress import SuccessorStresses
     successor_stresses=SuccessorStresses(successor_protocols)
+    from roll.research.successor_migration import SuccessorMigrationAudits,MigrationAuditCommand
+    successor_migrations=SuccessorMigrationAudits(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/migration-audit',status_code=201)
+    def successor_migration_create(identifier:str,command:MigrationAuditCommand):return successor_migrations.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/migration-audit')
+    def successor_migration_list(identifier:str):return successor_migrations.listing(identifier)
+
+    @app.get('/api/research/successor-migration-audits/{identifier}')
+    def successor_migration_get(identifier:str):return successor_migrations.get(identifier)
+
+    @app.post('/api/research/successor-migration-audits/{identifier}/replay')
+    def successor_migration_replay(identifier:str):return successor_migrations.replay(identifier)
     from roll.research.successor_threshold import SuccessorThresholdStresses,ThresholdCommand
     successor_thresholds=SuccessorThresholdStresses(successor_stresses)
 

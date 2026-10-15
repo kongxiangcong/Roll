@@ -1,0 +1,10 @@
+{
+  "method_id": "successor-migration-audit-v1",
+  "scope": "Read immutable METHOD predecessor-scope, baseline migration bindings and each saved lot timeline; no new execution or transfer qualification",
+  "checks": "Original position/instrument/quantity/deadline binding, no lot identity/horizon rewrites, entry+registered horizon for new lots, exact allowed instrument scope; overdue blocked lots retain their original deadline",
+  "empty": "Empty initial positions means baseline migrations not applicable, not evidence for other scope or regimes",
+  "decision": "Engineering consistency only, no G5 PASS/FAIL inferred from migration performance or registered scope; real transfer and independent support remain unknown",
+  "maximum_frames": 200,
+  "maximum_declared_session_span": 200,
+  "maximum_input_bytes": 8388608
+}
