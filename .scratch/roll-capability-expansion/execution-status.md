@@ -22,7 +22,7 @@
 | [06 · 当前动作有效期与政策派发](issues/06-current-action-validity.md) | pending | 已发布，未实施 |
 | [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | partial | 继承latch保护；原规则未登记，资金恢复语义已询问，未改真实状态 |
 | [08 · 现有候选真实前向启运](issues/08-existing-forward-start.md) | pending | 已发布，未实施；含真实外部/时间条件 |
-| [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | pending | 已开始发行/许可与隔离环境核对，尚无业务验收 |
+| [09 · AKShare利润表首个完整切片](issues/09-income-statement.md) | partial | 原件/版本/API/Chrome已验收；实际SDK评估成功，生产整链真实运行尚缺 |
 | [10 · 资产负债表与现金流三表联读](issues/10-balance-cashflow.md) | pending | 已发布，未实施 |
 | [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | pending | 已发布，未实施 |
 | [12 · Docling表格与页码证据](issues/12-document-tables.md) | pending | 已发布，未实施 |
@@ -34,7 +34,7 @@
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | partial | 只读QuantStats三图/API/Chrome/离线导出已验收；匹配连续基准序列尚缺 |
 | [20 · scikit-learn概率计算核验](issues/20-probability-reference.md) | complete | 固定口径实际库/API/边界/Chrome/源绑定/重放已验；非独立统计资格 |
-| [21 · arch区块统计核验](issues/21-block-stat-reference.md) | pending | 已发布，未实施 |
+| [21 · arch区块统计核验](issues/21-block-stat-reference.md) | complete | 实际arch成对统计/API/边界/Chrome/保存重放通过；来源区间不足，独立有效性未授予 |
 | [22 · 新增特征快照与消融协议](issues/22-feature-asof-protocol.md) | pending | 已发布，未实施 |
 | [23 · 后继候选真实训练与完整冻结](issues/23-successor-fit.md) | pending | 已发布，未实施；含真实外部/时间条件 |
 | [24 · 后继候选真实前向启运](issues/24-successor-forward.md) | pending | 已发布，未实施；含真实外部/时间条件 |

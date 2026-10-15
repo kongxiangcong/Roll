@@ -1,0 +1,20 @@
+{
+  "method_id": "ARCH_MOVING_BLOCK_REFERENCE_V1",
+  "library": "arch==8.0.0",
+  "absolute_tolerance": 1e-12,
+  "relative_tolerance": 0,
+  "block_sessions": [20, 40],
+  "replicates": 2000,
+  "seed": 1701,
+  "construction": "NON_CIRCULAR_MOVING_BLOCK; truncate final block to original calendar length",
+  "unconditional_estimand": "EQUAL_DATE_MEAN_OF_SAME_DAY_PAIRED_BRIER_IMPROVEMENTS",
+  "conditional_estimand": "SUM_MEMBER_SCORES_OVER_SUM_MEMBER_COUNTS; probability >= 0.60",
+  "missing_dates": "RETAIN_FULL_SOURCE_CALENDAR; unknown day is None, observed nonmembership is empty group",
+  "interval": "Each endpoint one-sided 95%; jointly central 90%, not two-sided 95%",
+  "rank_endpoints": "floor(.05*(2000-1)), ceil(.95*(2000-1))",
+  "comparison": "Compare point statistic and every arch draw using its public index against original grouped formula. Compare analytic constant METHOD case to frozen function. Python MT19937 vs NumPy PCG64 draws need not coincide; no endpoint equality claim for differing draws.",
+  "method_cases": "80 fixed artificial date slots: constant paired mean 0.25; varying paired vector; conditional observed empty dates and varying member counts. METHOD only, no market coverage.",
+  "limits": {"calendar_sessions": 10000, "worker_seconds": 30, "output_bytes": 8388608, "network_calls": 0},
+  "assumptions_verified": false,
+  "independent_validity": false
+}

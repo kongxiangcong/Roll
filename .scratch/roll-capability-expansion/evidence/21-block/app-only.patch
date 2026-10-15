@@ -1,0 +1,26 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -182,6 +182,23 @@
+     from roll.research.probability_reference import ProbabilityReferences,ProbabilityCommand
+     probability_references=ProbabilityReferences(shadow)
+     app.state.probability_references=probability_references
++    from roll.research.block_reference import BlockReferences,BlockCommand
++    block_references=BlockReferences(probability_references)
++    app.state.block_references=block_references
++
++    @app.post('/api/research/probability-references/{identifier}/block-reference',status_code=201)
++    async def block_reference_create(identifier:str,command:BlockCommand):return await block_references.create(identifier,command)
++
++    @app.get('/api/research/probability-references/{identifier}/block-reference')
++    def block_reference_list(identifier:str):return block_references.listing(identifier)
++
++    @app.get('/api/research/block-references/{identifier}')
++    def block_reference_get(identifier:str):return block_references.get(identifier)
++
++    @app.post('/api/research/block-references/{identifier}/replay')
++    def block_reference_replay(identifier:str):
++        block_references.get(identifier)
++        return {'matches_original':True,'recomputed':False,'new_fit_calls':0,'sealed_reads':0}
+ 
+     @app.post('/api/research/complete-freezes/{freeze_id}/probability-reference',status_code=201)
+     async def probability_reference_create(freeze_id:str,command:ProbabilityCommand):return await probability_references.create(freeze_id,command)

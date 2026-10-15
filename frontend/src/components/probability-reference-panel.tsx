@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {request} from '../api';
+import {BlockReferencePanel} from './block-reference-panel';
 
 type Bin={bin:number;count:number;mean_probability:number|null;observed_positive_rate:number|null};
 type Phase={status:string;error?:string;mature_unique?:number;excluded?:unknown[];duplicate_keys?:string[];unique_observation_dates?:number;absolute_tolerance?:number;
@@ -37,6 +38,7 @@ export function ProbabilityReferencePanel({freezeId,fingerprint}:{freezeId:strin
       </article>)}
       <button disabled={busy} onClick={()=>void replay()}>校验保存的概率核验工件</button>
       <p>仅验证数值实现，不改变FITTED_UNVALIDATED、统计假设或G1—G7门槛。</p>
+      <BlockReferencePanel key={current.reference_id} probabilityId={current.reference_id}/>
     </>}{message&&<p role="status">{message}</p>}{error&&<p role="alert">{error}</p>}
   </details>;
 }

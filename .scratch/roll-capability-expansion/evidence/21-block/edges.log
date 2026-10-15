@@ -1,0 +1,88 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_real_arch_handles_missing_empty_group_dates_and_same_day_pairing ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r21e/test_real_arch_handles_missing0')
+
+    def test_real_arch_handles_missing_empty_group_dates_and_same_day_pairing(tmp_path):
+        root=Path(__file__).resolve().parents[3]
+        method=json.loads((root/'backend/src/roll/research/reference/block-reference-v1.json').read_text())
+        rows=[{'date':f'METHOD:{i:03}','scores':{'A':float(i%7),'B':float(-i%3)}} for i in range(80)]
+        conditional=[{**r,'scores':{} if i%3==0 else r['scores']} for i,r in enumerate(rows)]
+        missing=copy.deepcopy(rows);missing[21]['scores']={'A':None}
+        empty=[{**r,'scores':{}} for r in rows]
+        def case(data,selected=False,block=20):
+            return {'date_scores':data,'conditional':selected,'block_sessions':block,'evidence_kind':'METHOD',
+                'frozen_result':paired_block_interval(data,block_sessions=block,conditional=selected)}
+        cases={'paired20':case(rows),'paired40':case(rows,block=40),'conditional':case(conditional,True),
+            'missing':case(missing),'missing_conditional':case(missing,True),'empty':case(empty,True),'short':case(rows[:19]),'no_dates':case([])}
+        cases['duplicate_dates']={**cases['paired20'],'date_scores':rows+[rows[-1]]}
+        cases['wrong_block']={**cases['paired20'],'block_sessions':2}
+        wrong=copy.deepcopy(cases['paired20']);wrong['frozen_result']['mean']+=.1;cases['wrong_point']=wrong
+        output=tmp_path/'result.json'
+>       process=subprocess.run([str(root/'.scratch/rce-runtime/arch/Scripts/python.exe'),'-I','-B',str(root/'backend/src/roll/research/block_process.py')],
+            input=json.dumps({'cases':cases,'method':method,'output_file':str(output)}),text=True,capture_output=True,timeout=30)
+
+backend\tests\application\test_block_reference_edges.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\subprocess.py:556: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\subprocess.py:1222: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Popen: returncode: 1 args: ['D:\\dsh-proj\\Roll\\.scratch\\rce-runtime\\arc...>
+input = '{"cases": {"paired20": {"date_scores": [{"date": "METHOD:000", "scores": {"A": 0.0, "B": 0.0}}, {"date": "METHOD:001"...false}, "output_file": "D:\\\\dsh-proj\\\\Roll\\\\.scratch\\\\r21e\\\\test_real_arch_handles_missing0\\\\result.json"}'
+endtime = 22735.0753932, orig_timeout = 30
+
+    def _communicate(self, input, endtime, orig_timeout):
+        # Start reader threads feeding into a list hanging off of this
+        # object, unless they've already been started.
+        if self.stdout and not hasattr(self, "_stdout_buff"):
+            self._stdout_buff = []
+            self.stdout_thread = \
+                    threading.Thread(target=self._readerthread,
+                                     args=(self.stdout, self._stdout_buff))
+            self.stdout_thread.daemon = True
+            self.stdout_thread.start()
+        if self.stderr and not hasattr(self, "_stderr_buff"):
+            self._stderr_buff = []
+            self.stderr_thread = \
+                    threading.Thread(target=self._readerthread,
+                                     args=(self.stderr, self._stderr_buff))
+            self.stderr_thread.daemon = True
+            self.stderr_thread.start()
+    
+        # Start writer thread to send input to stdin, unless already
+        # started.  The thread writes input and closes stdin when done,
+        # or continues in the background on timeout.
+        if self.stdin and not hasattr(self, "_stdin_thread"):
+            self._stdin_thread = \
+                    threading.Thread(target=self._writerthread,
+                                     args=(input,))
+            self._stdin_thread.daemon = True
+            self._stdin_thread.start()
+    
+        # Wait for the writer thread, or time out.  If we time out, the
+        # thread remains writing and the fd left open in case the user
+        # calls communicate again.
+        if hasattr(self, "_stdin_thread"):
+            self._stdin_thread.join(self._remaining_time(endtime))
+            if self._stdin_thread.is_alive():
+                raise TimeoutExpired(self.args, orig_timeout)
+    
+        # Wait for the reader threads, or time out.  If we time out, the
+        # threads remain reading and the fds left open in case the user
+        # calls communicate again.
+        if self.stdout is not None:
+            self.stdout_thread.join(self._remaining_time(endtime))
+            if self.stdout_thread.is_alive():
+>               raise TimeoutExpired(self.args, orig_timeout)
+E               subprocess.TimeoutExpired: Command '['D:\\dsh-proj\\Roll\\.scratch\\rce-runtime\\arch\\Scripts\\python.exe', '-I', '-B', 'D:\\dsh-proj\\Roll\\backend\\src\\roll\\research\\block_process.py']' timed out after 30 seconds
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\subprocess.py:1665: TimeoutExpired
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_block_reference_edges.py::test_real_arch_handles_missing_empty_group_dates_and_same_day_pairing
+1 failed in 31.55s

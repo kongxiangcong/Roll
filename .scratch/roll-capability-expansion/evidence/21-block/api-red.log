@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_saved_block_reference_preserves_calendar_and_replays __________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r21r/test_saved_block_reference_pre0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002172EFA9350>
+
+    def test_saved_block_reference_preserves_calendar_and_replays(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        monkeypatch.setenv('ROLL_SKLEARN_PYTHON',str(ROOT/'.scratch/rce-runtime/probability/Scripts/python.exe'))
+        monkeypatch.setenv('ROLL_ARCH_PYTHON',str(ROOT/'.scratch/rce-runtime/arch/Scripts/python.exe'))
+        with TestClient(create_app(copy_donor(tmp_path/'data'),runtime_role='API')) as client:
+            frozen=client.get('/api/research/complete-freezes/'+FREEZE).json()
+            probability=client.post('/api/research/complete-freezes/'+FREEZE+'/probability-reference',json={
+                'expected_complete_protocol_fingerprint':frozen['complete_protocol_fingerprint'],'idempotency_key':'block-source','basis':'METHOD source reuse'}).json()
+            base='/api/research/probability-references/'+probability['reference_id']+'/block-reference'
+            command={'idempotency_key':'block-once','basis':'METHOD verify paired date groups; source gaps remain unknown'}
+            response=client.post(base,json=command)
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_block_reference.py:17: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_block_reference.py::test_saved_block_reference_preserves_calendar_and_replays
+1 failed in 14.40s
