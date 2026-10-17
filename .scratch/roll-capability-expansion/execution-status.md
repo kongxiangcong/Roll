@@ -29,7 +29,7 @@
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | complete | 版本化观察/趋势/缺口/原件与PDF派生；真实三表副本、缺失/修订/禁用源、Chrome通过 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
-| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | pending | needs-info：官方无情绪checkpoint；归档语料不足120条，待用户选择权重或自训/标注授权 |
+| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | pending | needs-info：已补150条唯一标题摘要（同上游）；仍缺120条冻结标签与许可明确的情绪checkpoint |
 | [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
@@ -108,3 +108,7 @@
 ### 2026-10-18 03 官方状态文档尝试
 
 STATUS-DOC-ATTEMPT-01 取回 search_HQ_2021.js 与 sse_full.js（2请求/537KB/零重试），但两份均无 kcbShowIconFlag/STATUS_A/getFpphaseText 定义；全状态/风险映射仍无依据，未生成回执、未重开行情预算，03 维持 partial。下一线索需另登记 sse_menufun_2021.js 或状态模块。
+
+### 2026-10-18 16 语料补充
+
+SENTIMENT-CORPUS-01 经 3 次有界请求取得 150 条唯一标题/摘要（73KB、零重试、同上游），数量达到120但仅标题摘要且非独立来源；仍需冻结标签/阈值与许可明确的情绪权重。16 保持 needs-info，未下载模型、未训练、未改依赖。

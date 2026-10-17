@@ -1,0 +1,16 @@
+{
+  "attempt_id": "SENTIMENT-CORPUS-01",
+  "status": "PLANNED_ONCE",
+  "created_at": "2026-10-17T17:58:51.510Z",
+  "purpose": "Check whether the existing public Eastmoney search upstream can return more than 10 recent 600362 headlines per page for a bounded evaluation corpus; no bodies, no new source vendor.",
+  "upstream": "search-api-web.eastmoney.com/search/jsonp (same upstream as akshare-news-em)",
+  "limits": {
+    "maximum_requests": 3,
+    "maximum_seconds": 18,
+    "maximum_decoded_bytes": 8388608,
+    "retries": 0,
+    "redirects": 0
+  },
+  "scope": "SSE:600362 only; headline and list summary; no article bodies",
+  "policy": "Same-upstream corpus is not an independent source; it may only support a limited, non-independent evaluation."
+}

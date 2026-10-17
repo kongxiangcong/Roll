@@ -36,3 +36,5 @@
 
 
 2026-10-18：只读核对 HuggingFace 组织与 GitHub README，未找到可直接推理的 FinBERT2 中文情绪权重；官方仅提供 base/large 预训练与 Fin-labeler/SC_2 训练数据+脚本。归档中文新闻仅10条/3正文，不足120条标签集。详见[诊断](../evidence/16-sentiment/model-and-corpus-diagnosis.md)。需要用户选择：提供许可明确的情绪 checkpoint，或授权自训+标注方案。未下载/未训练/未改依赖，17及后续保持阻塞。
+
+2026-10-18：新增 SENTIMENT-CORPUS-01（3请求/150条唯一标题摘要/73KB/零重试，同上游），数量已够120但仅标题摘要且非独立来源；仍需冻结120条标签与阈值、确定许可明确的中文情绪权重。FinBERT2 仍无情绪 checkpoint。16 保持 needs-info。见[诊断](../evidence/16-sentiment/model-and-corpus-diagnosis.md)。
