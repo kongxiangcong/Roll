@@ -1,0 +1,19 @@
+{
+  "attempt_id": "STATUS-DOC-ATTEMPT-01",
+  "status": "PLANNED_ONCE",
+  "created_at": "2026-10-17T17:51:44.102Z",
+  "purpose": "Fetch the official SSE company-page status scripts to resolve full tradephase/fp_phase/STATUS_A enumerations that are missing from the archived CDR script; static documents only, no market data query.",
+  "previous": "Existing real status budgets remain CLOSED; this is a new document-only attempt.",
+  "hosts": [
+    "www.sse.com.cn"
+  ],
+  "limits": {
+    "maximum_requests": 2,
+    "maximum_seconds": 20,
+    "maximum_bytes": 6291456,
+    "retries": 0,
+    "redirects": 0
+  },
+  "network_route": "machine HTTPS proxy 127.0.0.1:7890",
+  "outputs": "evidence/03-status/status-docs/"
+}

@@ -1,0 +1,26 @@
+{
+  "attempt_id": "STATUS-DOC-ATTEMPT-01",
+  "status": "CLOSED",
+  "outcome": "DOCUMENTS_FETCHED_MAPPING_NOT_FOUND",
+  "requests": 2,
+  "bytes": 537336,
+  "retries": 0,
+  "documents": [
+    {
+      "file": "search_HQ_2021.js",
+      "bytes": 160211,
+      "sha256": "e2c944248245259c646f54014920795e8dff32b83ddf1d2b6f64dc465c243d96"
+    },
+    {
+      "file": "sse_full.js",
+      "bytes": 377125,
+      "sha256": "7a8a29c5c6a1074c60302109db9fb3a92eb3a67171b8beadd3e1ec87514c781c"
+    }
+  ],
+  "findings": [
+    "search_HQ_2021.js contains the company-page quote select including tradephase and fp_phase and calls kcbShowIconFlag, but does not define it.",
+    "sse_full.js contains no STATUS_A, getFpphaseText, kcbShowIconFlag or STATE_CODE_A_DESC definitions.",
+    "Therefore full STATUS_A/risk subtype enumeration and effective-time basis remain unproven; no source receipt was produced and no old budget was reopened."
+  ],
+  "next_lead": "Official sse_menufun_2021.js or a status-specific module; require a new independent plan before fetching."
+}

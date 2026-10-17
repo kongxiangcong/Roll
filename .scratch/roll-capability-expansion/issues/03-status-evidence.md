@@ -35,3 +35,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-18：新文档尝试 STATUS-DOC-ATTEMPT-01 只取两份官方静态脚本（2请求/537KB/零重试），确认 `kcbShowIconFlag`、`STATUS_A`、`getFpphaseText` 定义均不在其中；未调用行情、未产生回执、旧预算未重开。03 仍 partial，下一线索为 sse_menufun_2021.js 或状态专用模块，需新计划。见[尝试记录](../evidence/03-status/status-docs/attempt.md)。
