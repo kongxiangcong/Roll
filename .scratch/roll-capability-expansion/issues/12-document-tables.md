@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** partial
+**Completion:** complete
 
-**Execution:** PARTIAL — 公开API/持久化/页面与METHOD正向验收已交付；依赖解析达到600秒上限封口，真实Docling和权重许可/指纹未完成，运行时保持UNAVAILABLE。
+**Execution:** COMPLETE — 实际 Docling 2.139.0 + 官方 layout/TableFormer + RapidOCR 在隔离环境完成；真实文本财报页、扫描图像页与跨页边界通过 API/Chrome 验收，reference 转 VERIFIED。
 
 **Scope / inheritance:** 新增文档解析；复用现有pypdf和原件查看。
 
@@ -35,3 +35,5 @@
 
 2026-10-15：差量工程和失败恢复见[验收](../evidence/12-docling/acceptance.md)。原件/pypdf保留，METHOD派生不得充当实际组件推理；选定模型权重和真实复杂/扫描样例尚缺。有限依赖解析已关闭，不自动重试；13保持依赖阻塞，继续独立14。
 
+
+2026-10-18：DOCLING-DEP-ATTEMPT-02 经代理 250 请求/395MB/88.8s 下载 83 wheel 并哈希安装；模型 47 文件/701MB/99.3s。真实 PDF：三季报页10（9文本/2表）与年报扫描页102—103（22文本/2表，OCR 识别真实金额）经 API COMPLETE，账户不变、0网络；Chrome 1 PASS；回归 3 passed。修复子进程 home/username 与 NaN 序列化。详见[验收](../evidence/12-docling/acceptance.md)。13 依赖解除。

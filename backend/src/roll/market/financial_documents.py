@@ -1,5 +1,5 @@
 """Bounded local PDF derivations; archived originals and financial facts stay immutable."""
-import asyncio,ctypes,hashlib,json,os
+import asyncio,ctypes,hashlib,json,math,os
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
@@ -10,6 +10,13 @@ from roll.accounts.ledger import encode,now
 from roll.agents.codex_process import Job,owner_alive,process_creation
 
 VERSION='2.139.0'
+
+
+def json_safe(value):
+    if isinstance(value,float):return value if math.isfinite(value) else None
+    if isinstance(value,dict):return {key:json_safe(item) for key,item in value.items()}
+    if isinstance(value,list):return [json_safe(item) for item in value]
+    return value
 REFERENCE=Path(__file__).with_name('docling-reference.json')
 
 
@@ -51,7 +58,7 @@ class FinancialDocuments:
         self.evidence.raw(value['source_sha256'])
         for key in ('artifact','attempt_artifact'):
             if value.get(key):self.evidence.raw(value[key]['sha256'])
-        return value
+        return json_safe(value)
 
     def get(self,identifier):
         with self.ledger.connection() as db:row=db.execute('SELECT value FROM financial_document_parses WHERE id=?',(identifier,)).fetchone()
@@ -82,7 +89,7 @@ class FinancialDocuments:
 
     async def process(self,source,output,command):
         executable,root,reference=self.runtime()
-        environment={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','TEMP','TMP'}}
+        environment={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','TEMP','TMP','USERPROFILE','HOME','HOMEDRIVE','HOMEPATH','APPDATA','LOCALAPPDATA','USERNAME','USER','LOGNAME','COMPUTERNAME','NUMBER_OF_PROCESSORS'}}
         environment.update(HF_HOME=str(root/'cache/hf'),TORCH_HOME=str(root/'cache/torch'),XDG_CACHE_HOME=str(root/'cache'),DOCLING_ARTIFACTS_PATH=str(root/'models'),OMP_NUM_THREADS='2',MKL_NUM_THREADS='2',HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_HUB_DISABLE_TELEMETRY='1',DO_NOT_TRACK='1')
         process=await asyncio.create_subprocess_exec(executable,'-I','-B',str(Path(__file__).with_name('docling_pdf_process.py')),stdin=asyncio.subprocess.PIPE,stdout=asyncio.subprocess.DEVNULL,stderr=asyncio.subprocess.DEVNULL,env=environment,creationflags=0x08000000 if os.name=='nt' else 0)
         job=None
@@ -96,7 +103,7 @@ class FinancialDocuments:
             await asyncio.wait_for(process.communicate(encode(payload).encode()),timeout=120)
             path=output/'result.json'
             if not path.exists() or path.stat().st_size>16*1024*1024:raise ValueError('DOCLING_OUTPUT_MISSING_OR_BYTE_BUDGET')
-            return json.loads(path.read_text(encoding='utf-8'))
+            return json_safe(json.loads(path.read_text(encoding='utf-8')))
         finally:
             if job:job.terminate();job.close()
             elif process.returncode is None:process.kill()

@@ -11,3 +11,13 @@
 依赖准备已封口：pip-bounded-resolution-receipt为CLOSED/RESOLUTION_WALL_TIME_LIMIT/600.038993秒，无安装、无模型下载；runtime reference仍UNAVAILABLE，实际Docling/OCR/复杂跨页/扫描样例及资源测量均未验收。后续准备须另记有限计划，不能静默重试本次尝试。
 
 开放代码问题0；真实运行与权重/许可/指纹及实际样例验收待补。未运行测试或安装。
+
+
+## 2026-10-18 最终工程复核
+
+- 依赖：新尝试独立编号，预算（1800s/512 请求/1.5GiB）内完成；旧 CLOSED 记录未重开；无镜像切换、无隐式重试。
+- 隔离：Docling 仅以 `ROLL_DOCLING_PYTHON` 子进程接入；业务依赖未增加；解析时 HF/Torch 离线且 socket 拒绝。
+- 持久化：派生工件进入既有内容寻址原件；失败尝试也归档；公开查询先校验原件存在。
+- 修复：子进程 home/username 环境、NaN JSON 序列化；读取旧记录也做有限浮点净化，未删除历史失败。
+- 测试：真实 API + 真实 SQLite 副本 + 真实 PDF/图像页；浏览器只读；METHOD 回归 3 passed。
+- 风险：解析 120 秒上限对 8 页上限仍可能不足（本次 1—2 页 42—87 秒）；未做并发解析压力测试。

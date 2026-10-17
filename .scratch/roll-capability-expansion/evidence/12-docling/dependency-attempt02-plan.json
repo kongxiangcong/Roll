@@ -1,0 +1,32 @@
+{
+  "attempt_id": "DOCLING-DEP-ATTEMPT-02",
+  "status": "PLANNED_ONCE",
+  "created_at": "2026-10-17T16:49:13.536Z",
+  "purpose": "Download and install the pinned Docling 2.139.0 CPU/PDF/OCR/table runtime into the existing isolated venv using the machine HTTPS proxy, after the previous direct-connection resolution hit its 600s wall.",
+  "previous_attempts": [
+    "pip-bounded-resolution-receipt.json remains CLOSED (RESOLUTION_WALL_TIME_LIMIT 600.039s, 146 metadata requests, proxy bypassed)."
+  ],
+  "root_requirement": "docling-slim[convert-core,format-pdf,models-local,feat-ocr-rapidocr-onnx]==2.139.0 + torch==2.10.0 + torchvision==0.25.0",
+  "license": "Docling MIT; torch BSD-3-Clause; dependency licenses recorded from wheel metadata after download",
+  "environment": "D:/dsh-proj/Roll/.scratch/rce-runtime/docling (CPython 3.13.12, empty besides pip); business and AKShare environments untouched",
+  "network_route": "Machine HTTPS proxy http://127.0.0.1:7890 (HTTP_PROXY/HTTPS_PROXY already set); official PyPI hosts only; no mirror; no direct bypass.",
+  "hosts": [
+    "pypi.org",
+    "files.pythonhosted.org"
+  ],
+  "limits": {
+    "maximum_seconds": 1800,
+    "maximum_http_requests": 512,
+    "maximum_download_bytes": 1610612736,
+    "per_request_timeout_seconds": 30,
+    "retries": 0,
+    "redirects": 0,
+    "only_binary": true
+  },
+  "install_sequence": [
+    "pip download --only-binary=:all: --dest docling-wheels -r requirements-pypi.in under traced transport",
+    "record every wheel SHA256 and total bytes; fail if budget exceeded",
+    "pip install --no-index --find-links docling-wheels --require-hashes -r generated lock (no network)"
+  ],
+  "failure_policy": "Fail closed; no automatic retry, no mirror switch, no reuse of the CLOSED direct-connection attempt."
+}
