@@ -4,11 +4,11 @@
 
 **Blocked by:** [15 · 新闻证券关联与转载去重](15-news-entity-dedup.md)
 
-**Status:** needs-info
+**Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** BLOCKED_EXTERNAL — 官方未发布中文情绪 checkpoint（只有预训练 base/large 与 SC_2 训练集）；归档语料亦不足120条，需新授权或新资源条件。
+**Execution:** PARTIAL — 官方无 FinBERT2 情绪 checkpoint；已补150条公司名语料、冻结120条代理标签与门槛，并完成 apache-2.0 中文二分类模型的最小替代评估。二分类门槛通过，但中性/不相关拒判仅5.9%，未满足本票拒判要求；下一差量为拒判层与公开API/页面。
 
 **Scope / inheritance:** FinBERT2为优先候选；无合适权重不能假称接入成功。
 
@@ -38,3 +38,5 @@
 2026-10-18：只读核对 HuggingFace 组织与 GitHub README，未找到可直接推理的 FinBERT2 中文情绪权重；官方仅提供 base/large 预训练与 Fin-labeler/SC_2 训练数据+脚本。归档中文新闻仅10条/3正文，不足120条标签集。详见[诊断](../evidence/16-sentiment/model-and-corpus-diagnosis.md)。需要用户选择：提供许可明确的情绪 checkpoint，或授权自训+标注方案。未下载/未训练/未改依赖，17及后续保持阻塞。
 
 2026-10-18：新增 SENTIMENT-CORPUS-01（3请求/150条唯一标题摘要/73KB/零重试，同上游），数量已够120但仅标题摘要且非独立来源；仍需冻结120条标签与阈值、确定许可明确的中文情绪权重。FinBERT2 仍无情绪 checkpoint。16 保持 needs-info。见[诊断](../evidence/16-sentiment/model-and-corpus-diagnosis.md)。
+
+2026-10-18：SENTIMENT-CORPUS-02 取150条公司名标题摘要；冻结 labels-120（P45/N24/U18/I33）与门槛；下载 Erlangshen apache-2.0 权重（SHA a1d1328c…，409MB）离线推理。结果：二分类 macro-F1 0.853、P recall 1.0、N recall 0.625、低置信拒判9.2%、p95 0.26s；但51条中性/不相关仅3条被拒判（5.9%），48条被强判方向。能力保持 RESEARCH_LIMITED，16 partial。下一轮先冻结拒判规则再重跑，并接入API/页面；不得据本轮称通过。见[结果](../evidence/16-sentiment/eval-report.md)。
