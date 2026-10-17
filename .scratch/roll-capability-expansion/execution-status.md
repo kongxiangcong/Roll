@@ -26,7 +26,7 @@
 | [10 · 资产负债表与现金流三表联读](issues/10-balance-cashflow.md) | complete | 三表联读/版本/异常、实际5HTTP封口、只读Chrome通过；其余语义缺口保留 |
 | [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | complete | 确定性公式/未知口径/修订重放/API/真实只读Chrome通过，零新增取数 |
 | [12 · Docling表格与页码证据](issues/12-document-tables.md) | complete | 实际 Docling 2.139.0/官方权重/RapidOCR：真实文本页与扫描页、跨页边界、API/Chrome 通过 |
-| [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | pending | 已发布，未实施 |
+| [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | complete | 版本化观察/趋势/缺口/原件与PDF派生；真实三表副本、缺失/修订/禁用源、Chrome通过 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
 | [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | pending | 已发布，未实施 |
@@ -83,3 +83,7 @@
 ### 2026-10-18 12 Docling 运行时补齐
 
 新依赖尝试经代理 250 请求/395MB/88.8s 安装 83 wheel（哈希锁定、离线安装），模型 47 文件/701MB/99.3s（layout Apache-2.0、TableFormer CDLA-Permissive-2.0、RapidOCR PP-OCRv6）。真实解析：三季报第10页 9文本/2表；年报第102—103页（pypdf 零文本扫描页）OCR 22文本/2表并识别真实金额；API COMPLETE、工件 65,938B/115,755B、账户不变、0网络；跨页表头显式不合并。修复子进程 home/username 环境与 NaN JSON 序列化；回归 3 passed/29.18s，真实 Chrome 1 PASS。12 complete，解除 13 依赖；下一票 13（11、12 均已 complete）。
+
+### 2026-10-18 13 财务观察
+
+新增只追加版本化财务观察与公开查询，单股与历史复盘均有折叠入口；文字只来自确定性指标，结论/限制分列。真实 r10real 副本 15 条三表事实：FRESH、2026-06-30、4期趋势、4份PDF、1份真实 Docling 派生、账户不变、0网络；历史截至 2026-04-01 显示缺失。METHOD 2 passed（幂等/修订/行业/禁用源/旧版本不变），财务回归 11 passed/100.9s，Chrome 1 PASS/13.0s。修复当前查询版本膨胀。13 complete，18 的 13 依赖解除；17 仍受 16 阻塞。下一票评估 16 或 18 的剩余依赖。

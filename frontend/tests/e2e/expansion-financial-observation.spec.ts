@@ -1,0 +1,25 @@
+import {test,expect} from '@playwright/test';
+test('financial observation reads saved facts, trend, PDF parse and reports missing at earlier cutoff',async({page,request})=>{
+ let collections=0;page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/collect'))collections++;});
+ await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+ await page.getByText('财务观察',{exact:true}).click();await page.getByRole('button',{name:'查看财务观察',exact:true}).click();
+ await expect(page.getByRole('status').filter({hasText:'新鲜 · 最新报告期 2026-06-30'})).toBeVisible();
+ await expect(page.getByText('一般非金融企业口径',{exact:false})).toBeVisible();
+ await expect(page.getByText('2026-06-30 营业收入 3,071.55 亿元，同比 +19.53%。',{exact:true})).toBeVisible();
+ await page.getByText('指标趋势与缺失',{exact:true}).click();
+ await expect(page.getByRole('cell',{name:'2026-06-30',exact:true})).toBeVisible();
+ await page.getByText('原件与解析依据',{exact:true}).click();
+ await expect(page.getByRole('link',{name:/PDF原件 2025-09-30/}).first()).toBeVisible();
+ await expect(page.getByRole('link',{name:/派生 COMPLETE 10—10页/}).first()).toBeVisible();
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/13-observation/mobile.png',fullPage:true});
+ expect(collections).toBe(0);
+ await page.getByRole('button',{name:'历史记录',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'财务观察复盘',exact:true})).toBeVisible();
+ const section=page.locator('section').filter({hasText:'财务观察复盘'}).last();
+ await section.getByText('财务观察',{exact:true}).click();
+ await section.getByLabel('复盘已知截至').fill('2026-04-01T00:00');
+ await section.getByRole('button',{name:'查看财务观察',exact:true}).click();
+ await expect(section.getByText(/缺失 · 最新报告期 无/)).toBeVisible();
+ await expect(section.getByText('该截止时点没有已保存财务事实；不补造默认值。',{exact:true})).toBeVisible();
+});

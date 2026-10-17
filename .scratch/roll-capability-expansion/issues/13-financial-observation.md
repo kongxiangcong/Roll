@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** complete
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** COMPLETE — 版本化财务观察已进入单股与复盘；真实三表副本、PDF派生链接、缺失/修订/禁用源与Chrome通过。
 
 **Scope / inheritance:** 新增阅读功能；不新增一级入口或交易信号。
 
@@ -33,3 +33,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-18：新增 financial_observation 模块、只追加版本表与两个公开查询；单股页面与历史复盘接入折叠面板。METHOD 2 passed（幂等/缺失/修订/行业/禁用源/旧版本不变），财务回归 11 passed/100.9s。真实 r10real 副本：15事实三表、FRESH/2026-06-30、4期趋势、4份PDF、1份真实Docling派生、账户0→0、0网络；Chrome 1 PASS/13.0s。修复“当前查询时间进入摘要导致版本膨胀”。详见[验收](../evidence/13-observation/acceptance.md)。18 的 13 依赖解除；仍待 17。

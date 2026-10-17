@@ -44,6 +44,7 @@ from roll.market.sse_company_actions import CompanyActionPages
 from roll.market.sse_action_assessments import ActionAssessments,ActionAssessmentCommand,ActionPacketCommand
 from roll.market.action_window import ActionWindows,ActionWindowCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
+from roll.market.sse_daily import DatedDaily, DailyPacketCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
@@ -561,6 +562,17 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         from roll.market.financial_metrics import metrics
         return metrics(financial,financial_statements,instrument,known_by)
 
+    from roll.market.financial_observation import FinancialObservations
+    financial_observations=FinancialObservations(evidence,financial,financial_statements)
+    app.state.financial_observations=financial_observations
+
+    @app.get('/api/market/financial/{instrument}/observations')
+    def financial_observation(instrument:str,known_by:datetime|None=Query(None)):
+        return financial_observations.listing(instrument,known_by)
+
+    @app.get('/api/market/financial/observations/{identifier}')
+    def financial_observation_get(identifier:str):return financial_observations.get(identifier)
+
     @app.get('/api/market/financial/{instrument}/income')
     def financial_income(instrument:str,known_by:datetime|None=Query(None)):
         return financial.listing(instrument,known_by)
@@ -574,6 +586,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         service=financial_statements if run_id in financial_statements.tasks else financial
         return await service.cancel(run_id)
 
+    dated_daily=DatedDaily(prospective)
+    app.state.dated_daily=dated_daily
     price_quotes=PriceQuotes(prospective)
     company_actions=CompanyActionPages(prospective)
     action_assessments=ActionAssessments(company_actions,price_quotes)
@@ -604,6 +618,19 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def post_close_capture(plan_id:str,command:PacketCommand):
         return prospective.post_close.capture(plan_id,command.basis)
 
+    @app.post('/api/research/collections/{plan_id}/sse-daily/check',status_code=201)
+    def sse_daily_capture(plan_id:str,command:PacketCommand):
+        return dated_daily.capture_once(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-daily-receipts')
+    def sse_daily_receipts(plan_id:str):return dated_daily.receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-daily-packets',status_code=201)
+    def sse_daily_packet(plan_id:str,command:DailyPacketCommand):return dated_daily.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-daily-packets/{packet_id}')
+    def sse_daily_packet_get(plan_id:str,packet_id:str):return dated_daily.packet(plan_id,packet_id)
+
     @app.post('/api/research/collections/{plan_id}/post-close/check',status_code=201)
     def post_close_job(plan_id:str,command:PacketCommand):
         return prospective.post_close.capture_once(plan_id,command.basis)
@@ -631,6 +658,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/collections/{plan_id}/source-gaps')
     def post_close_source_gaps(plan_id: str):
         return {**prospective.post_close.source_gaps(plan_id),
+            'dated_daily_receipts':dated_daily.receipts(plan_id),
                 'price_quote_assessments': price_quotes.assessments(plan_id),
                 'price_quote_current': price_quotes.current(plan_id),
                 'action_source_receipts':company_actions.receipts(plan_id),
@@ -736,6 +764,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
+        if dated_daily.saved_packet(packet_id):return dated_daily.replay(packet_id)
         if action_windows.saved_packet(packet_id):
             return action_windows.replay(packet_id)
         if action_assessments.saved_packet(packet_id):
@@ -921,6 +950,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return research.checkpoint(protocol_id,command)
     reviews=Reviews(ledger,market,evidence,review_clock,worker_enabled=runtime_role != "API")
     reviews.forward=forward
+    reviews.dated_daily=dated_daily
     app.state.reviews=reviews
 
     @app.post('/api/reviews/tasks',status_code=202)
