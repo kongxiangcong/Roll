@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** complete
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** COMPLETE — 确定性事件归并、四类证券关联、别名冲突、多对象、事件页面与真实样本已验收；真实转载/修订样本未出现，由 METHOD 覆盖。
 
 **Scope / inheritance:** 新增新闻派生事实；原文不可变。
 
@@ -33,3 +33,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-18：新增 news_events 归并/关联模块、四张派生表与事件化查询/页面。METHOD 2 passed 覆盖同文异URL、同URL修订、同标题异内容、多对象、别名冲突、重启幂等；news 全套 6 passed/44.71s。真实副本（r14real→r15real）10 条已归档新闻：10 唯一事件、COMPANY_SUBJECT 4/COMPANY_MENTIONED 2/INDUSTRY_BACKGROUND 2/UNRELATED 2，账户版本不变，Chrome 1 PASS/11.0s。限制见[验收](../evidence/15-events/acceptance.md)：真实样本无转载/修订，近似改写不合并，身份为当前登记而非时点快照。16 依赖解除。

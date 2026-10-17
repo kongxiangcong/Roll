@@ -9,6 +9,7 @@ from roll.accounts.ledger import encode,now
 from roll.agents.codex_process import Job,owner_alive,process_creation
 from roll.market.directory import ScopeCommand
 from roll.market.news_contract import SDK_VERSION,SDK_SOURCE_SHA,EXTRACTOR_VERSION,SOURCE,body_url,list_rows
+from roll.market.news_events import ASSOCIATION_VERSION,GROUPING_VERSION,associate,group_facts
 
 
 class NewsCommand(BaseModel):
@@ -21,7 +22,7 @@ class News:
     def __init__(self,evidence,sources):
         self.evidence,self.ledger,self.sources=evidence,evidence.ledger,sources;self.worker=None;self.tasks={};self.cancel_requested=set()
         with self.ledger.connection() as db:
-            db.executescript('CREATE TABLE IF NOT EXISTS news_runs(id TEXT PRIMARY KEY,instrument TEXT,key TEXT,command_hash TEXT,value TEXT,UNIQUE(instrument,key));CREATE TABLE IF NOT EXISTS news_facts(id TEXT PRIMARY KEY,instrument TEXT,value TEXT);')
+            db.executescript('CREATE TABLE IF NOT EXISTS news_runs(id TEXT PRIMARY KEY,instrument TEXT,key TEXT,command_hash TEXT,value TEXT,UNIQUE(instrument,key));CREATE TABLE IF NOT EXISTS news_facts(id TEXT PRIMARY KEY,instrument TEXT,value TEXT);CREATE TABLE IF NOT EXISTS news_events(event_id TEXT PRIMARY KEY,instrument TEXT,grouping_version INTEGER,primary_fact_id TEXT,value TEXT,created_at TEXT);CREATE TABLE IF NOT EXISTS news_event_members(event_id TEXT,fact_id TEXT,relation TEXT,parent_fact_id TEXT,decided_at TEXT,PRIMARY KEY(event_id,fact_id));CREATE TABLE IF NOT EXISTS news_association_decisions(fact_id TEXT,version INTEGER,value TEXT,decided_at TEXT,PRIMARY KEY(fact_id,version));CREATE TABLE IF NOT EXISTS news_derivations(instrument TEXT,grouping_version INTEGER,association_version INTEGER,input_sha256 TEXT,created_at TEXT,PRIMARY KEY(instrument,grouping_version,association_version,input_sha256));')
             pending=db.execute('SELECT id,value FROM news_runs').fetchall()
         for identifier,raw in pending:
             value=json.loads(raw)
@@ -52,16 +53,53 @@ class News:
         if not row:raise HTTPException(404,'NEWS_RUN_NOT_FOUND')
         return self.checked(json.loads(row[0]))
 
+    def identities(self):
+        with self.ledger.connection() as db:
+            rows=db.execute('SELECT instrument,identity FROM market_identities ORDER BY revision').fetchall()
+        latest={}
+        for instrument,raw in rows:latest[instrument]=json.loads(raw)
+        return [{'instrument':instrument,'name':value.get('name',''),'code':value.get('code')} for instrument,value in sorted(latest.items())]
+
+    def derive(self,facts):
+        identities=self.identities()
+        associations={fact['fact_id']:associate(fact,identities) for fact in facts}
+        memberships,events=group_facts(facts,associations)
+        return associations,memberships,events
+
+    def record_derivation(self,instrument,facts,associations,memberships,events):
+        digest=hashlib.sha256(encode([fact['fact_id'] for fact in facts]).encode()).hexdigest();stamp=now()
+        with self.ledger.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            db.execute('INSERT OR IGNORE INTO news_derivations VALUES(?,?,?,?,?)',(instrument,GROUPING_VERSION,ASSOCIATION_VERSION,digest,stamp))
+            for fact in facts:
+                db.execute('INSERT OR IGNORE INTO news_association_decisions VALUES(?,?,?,?)',(fact['fact_id'],ASSOCIATION_VERSION,encode(associations[fact['fact_id']]),stamp))
+            for event in events:
+                db.execute('INSERT OR IGNORE INTO news_events VALUES(?,?,?,?,?,?)',(event['event_id'],instrument,GROUPING_VERSION,event['primary_fact_id'],encode(event),stamp))
+            for fact_id,member in memberships.items():
+                db.execute('INSERT OR IGNORE INTO news_event_members VALUES(?,?,?,?,?)',(member['event_id'],fact_id,member['relation'],member['parent_fact_id'],stamp))
+            db.commit()
+
     def listing(self,instrument,known_by=None):
         stamp=known_by or datetime.fromisoformat(now())
         if stamp.tzinfo is None or stamp>datetime.fromisoformat(now()):raise HTTPException(422,'NEWS_CUTOFF_REQUIRES_PAST_AWARE_TIME')
         with self.ledger.connection() as db:
             runs=[json.loads(r[0]) for r in db.execute('SELECT value FROM news_runs WHERE instrument=? ORDER BY rowid DESC',(instrument,))]
-            facts=[json.loads(r[0]) for r in db.execute('SELECT value FROM news_facts WHERE instrument=? ORDER BY rowid DESC',(instrument,))]
-        facts=[f for f in facts if datetime.fromisoformat(f['available_at'])<=stamp]
+            rows=db.execute('SELECT rowid,value FROM news_facts WHERE instrument=? ORDER BY rowid',(instrument,)).fetchall()
+        ordered=[json.loads(raw) for _,raw in rows]
+        facts=[fact for fact in ordered if datetime.fromisoformat(fact['available_at'])<=stamp]
         self.checked({'facts':facts})
-        return {'instrument':instrument,'facts':facts,'known_by':stamp.isoformat(),'runs':[self.checked(r) for r in runs if r['finished_at'] and datetime.fromisoformat(r['finished_at'])<=stamp],
-            'active_run_ids':[r['run_id'] for r in runs if r['status']=='RUNNING'] if known_by is None else [],'coverage':{'upstream_documented_maximum':100,'actual_sdk_page_size':10,'page':1,'sort':'UPSTREAM_DEFAULT','complete_history':False,'entity_association':'SEARCH_KEYWORD_ONLY_UNVERIFIED'},'network_calls':0,'system_usable':False,'capability':'NOT_GRANTED'}
+        associations,memberships,events=self.derive(facts)
+        if known_by is None:self.record_derivation(instrument,facts,associations,memberships,events)
+        for fact in facts:
+            fact['association']=associations[fact['fact_id']];fact['event']=memberships[fact['fact_id']]
+        counts={}
+        for association in associations.values():counts[association['classification']]=counts.get(association['classification'],0)+1
+        return {'instrument':instrument,'facts':list(reversed(facts)),'events':events,'unique_event_count':len(events),
+            'reprint_count':sum(event['reprints'] for event in events),'revision_count':sum(event['revisions'] for event in events),
+            'association_counts':counts,'known_by':stamp.isoformat(),'runs':[self.checked(r) for r in runs if r['finished_at'] and datetime.fromisoformat(r['finished_at'])<=stamp],
+            'active_run_ids':[r['run_id'] for r in runs if r['status']=='RUNNING'] if known_by is None else [],
+            'derivation':{'grouping_version':GROUPING_VERSION,'association_version':ASSOCIATION_VERSION,'algorithm':'EXACT_CANONICAL_URL_OR_CONTENT_SHA256','near_duplicate_merge':False,'similarity_candidates':[]},
+            'coverage':{'upstream_documented_maximum':100,'actual_sdk_page_size':10,'page':1,'sort':'UPSTREAM_DEFAULT','complete_history':False,'entity_association':'REGISTERED_IDENTITY_TITLE_BODY_RULES'},'network_calls':0,'system_usable':False,'capability':'NOT_GRANTED'}
 
     async def cancel(self,identifier):
         if identifier not in self.tasks:raise HTTPException(409,'NEWS_RUN_NOT_ACTIVE_IN_THIS_HOST')
