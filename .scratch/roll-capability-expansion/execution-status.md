@@ -29,7 +29,7 @@
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | complete | 版本化观察/趋势/缺口/原件与PDF派生；真实三表副本、缺失/修订/禁用源、Chrome通过 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
-| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | partial | 150条公司名语料/120条冻结标签/最小替代评估完成；二分类F1 0.853但中性拒判仅5.9%，需拒判层与API/页面 |
+| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | partial | 受限组件/持久化/API/页面/真实运行已交付；替代模型未过门槛，FinBERT2情绪权重仍缺 |
 | [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
@@ -124,3 +124,7 @@ SENTIMENT-CORPUS-02 150条公司名标题摘要；冻结120条代理标签（P45
 ### 2026-10-18 16 拒判层与留出验证
 
 冻结 R1—R5 后：设计集 macro-F1 0.956、中性/不相关拒判 0.804；留出集 N recall 0.000、macro-F1 0.333；合并 macro-F1 0.803、N recall 0.500、总拒判覆盖 0.540，未过冻结门槛。能力仍 RESEARCH_LIMITED；下一差量为受限组件的持久化/API/页面，16 保持 partial。
+
+### 2026-10-18 16 受限情绪组件
+
+交付隔离推理/指纹/只追加存储/公开查询/页面限制；真实10条归档新闻运行 POSITIVE2、拒判8、覆盖20%、账户0、0网络；METHOD 1 passed、Chrome 1 PASS、回归5 passed。替代模型合并 macro-F1 0.803、N recall 0.500、拒判覆盖0.540，未过门槛；FinBERT2 权重缺失，16 按验收第6条保持 partial。17/18/22/26 继续阻塞。

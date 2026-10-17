@@ -527,6 +527,19 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/market/news/{instrument}/collect',status_code=201)
     async def news_collect(instrument:str,command:NewsCommand):return await news.collect(instrument,command)
 
+    from roll.market.sentiment import Sentiment,SentimentCommand
+    sentiment=Sentiment(evidence)
+    app.state.sentiment=sentiment
+
+    @app.get('/api/market/sentiment/runs/{identifier}')
+    def sentiment_run(identifier:str):return sentiment.get(identifier)
+
+    @app.get('/api/market/sentiment/{instrument}')
+    def sentiment_query(instrument:str,known_by:datetime|None=Query(None)):return sentiment.listing(instrument,known_by)
+
+    @app.post('/api/market/sentiment/{instrument}/classify',status_code=201)
+    async def sentiment_classify(instrument:str,command:SentimentCommand):return await sentiment.classify(instrument,command)
+
     financial=FinancialIncome(evidence,prospective.sources)
     app.state.financial=financial
     financial_statements=FinancialIncome(evidence,prospective.sources,statement="SUPPLEMENT")

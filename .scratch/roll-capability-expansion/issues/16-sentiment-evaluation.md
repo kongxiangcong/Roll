@@ -4,11 +4,11 @@
 
 **Blocked by:** [15 · 新闻证券关联与转载去重](15-news-entity-dedup.md)
 
-**Status:** ready-for-agent
+**Status:** needs-info
 
 **Completion:** partial
 
-**Execution:** PARTIAL — 官方无 FinBERT2 情绪 checkpoint；已补150条公司名语料、冻结120条代理标签与门槛，并完成 apache-2.0 中文二分类模型的最小替代评估。二分类门槛通过，但中性/不相关拒判仅5.9%，未满足本票拒判要求；下一差量为拒判层与公开API/页面。
+**Execution:** PARTIAL — 受限研究组件已交付（持久化/API/页面/METHOD与真实运行）；替代模型未过冻结门槛，FinBERT2 官方情绪 checkpoint 仍缺失，故按验收第6条保持 partial。
 
 **Scope / inheritance:** FinBERT2为优先候选；无合适权重不能假称接入成功。
 
@@ -42,3 +42,5 @@
 2026-10-18：SENTIMENT-CORPUS-02 取150条公司名标题摘要；冻结 labels-120（P45/N24/U18/I33）与门槛；下载 Erlangshen apache-2.0 权重（SHA a1d1328c…，409MB）离线推理。结果：二分类 macro-F1 0.853、P recall 1.0、N recall 0.625、低置信拒判9.2%、p95 0.26s；但51条中性/不相关仅3条被拒判（5.9%），48条被强判方向。能力保持 RESEARCH_LIMITED，16 partial。下一轮先冻结拒判规则再重跑，并接入API/页面；不得据本轮称通过。见[结果](../evidence/16-sentiment/eval-report.md)。
 
 2026-10-18：冻结拒判层（R1—R5）后重跑，设计集 macro-F1 0.956/中性拒判0.804，但留出集 N recall 0.000、合并 macro-F1 0.803、N recall 0.500、总拒判覆盖0.540，未过门槛。能力仍 RESEARCH_LIMITED；下一差量为受限研究组件的持久化/API/页面与覆盖说明。见[第二轮结果](../evidence/16-sentiment/eval-reject-report.md)。
+
+2026-10-18：受限情绪组件交付：隔离推理、reference 指纹、只追加存储、公开查询、页面限制、METHOD 1 passed、真实10条归档新闻运行（POSITIVE2/拒判8/覆盖20%/账户0）、Chrome 1 PASS、回归5 passed。替代模型合并 macro-F1 0.803、N recall 0.500、拒判覆盖0.540，未过门槛；FinBERT2 权重缺失。16 保持 partial，17 及后续继续阻塞。见[验收](../evidence/16-sentiment/acceptance.md)。
