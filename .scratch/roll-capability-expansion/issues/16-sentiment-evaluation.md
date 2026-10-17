@@ -40,3 +40,5 @@
 2026-10-18：新增 SENTIMENT-CORPUS-01（3请求/150条唯一标题摘要/73KB/零重试，同上游），数量已够120但仅标题摘要且非独立来源；仍需冻结120条标签与阈值、确定许可明确的中文情绪权重。FinBERT2 仍无情绪 checkpoint。16 保持 needs-info。见[诊断](../evidence/16-sentiment/model-and-corpus-diagnosis.md)。
 
 2026-10-18：SENTIMENT-CORPUS-02 取150条公司名标题摘要；冻结 labels-120（P45/N24/U18/I33）与门槛；下载 Erlangshen apache-2.0 权重（SHA a1d1328c…，409MB）离线推理。结果：二分类 macro-F1 0.853、P recall 1.0、N recall 0.625、低置信拒判9.2%、p95 0.26s；但51条中性/不相关仅3条被拒判（5.9%），48条被强判方向。能力保持 RESEARCH_LIMITED，16 partial。下一轮先冻结拒判规则再重跑，并接入API/页面；不得据本轮称通过。见[结果](../evidence/16-sentiment/eval-report.md)。
+
+2026-10-18：冻结拒判层（R1—R5）后重跑，设计集 macro-F1 0.956/中性拒判0.804，但留出集 N recall 0.000、合并 macro-F1 0.803、N recall 0.500、总拒判覆盖0.540，未过门槛。能力仍 RESEARCH_LIMITED；下一差量为受限研究组件的持久化/API/页面与覆盖说明。见[第二轮结果](../evidence/16-sentiment/eval-reject-report.md)。

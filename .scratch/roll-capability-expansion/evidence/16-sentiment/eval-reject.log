@@ -1,0 +1,118 @@
+{
+  "design": {
+    "total": 120,
+    "binary": 69,
+    "non_directional": 51,
+    "recall": {
+      "POSITIVE": 1.0,
+      "NEGATIVE": 0.8571428571428571
+    },
+    "precision": {
+      "POSITIVE": 0.9761904761904762,
+      "NEGATIVE": 1.0
+    },
+    "f1": {
+      "POSITIVE": 0.9879518072289156,
+      "NEGATIVE": 0.923076923076923
+    },
+    "macro_f1": 0.9555143651529193,
+    "abstain": 62,
+    "abstain_coverage": 0.5167,
+    "non_directional_rejected": 41,
+    "non_directional_rejection_rate": 0.8039,
+    "confusion": {
+      "NEUTRAL->ABSTAIN_NO_DIRECTIONAL_CUE": 11,
+      "NEUTRAL->ABSTAIN_LOW_CONFIDENCE": 1,
+      "POSITIVE->POSITIVE": 41,
+      "IRRELEVANT->ABSTAIN_MARKET_INDEX": 9,
+      "NEUTRAL->POSITIVE": 6,
+      "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 2,
+      "NEGATIVE->ABSTAIN_MARKET_INDEX": 15,
+      "IRRELEVANT->ABSTAIN_NO_DIRECTIONAL_CUE": 9,
+      "IRRELEVANT->ABSTAIN_FUND_FLOW": 11,
+      "IRRELEVANT->POSITIVE": 4,
+      "POSITIVE->ABSTAIN_NO_DIRECTIONAL_CUE": 1,
+      "POSITIVE->ABSTAIN_MARKET_INDEX": 3,
+      "NEGATIVE->NEGATIVE": 6,
+      "NEGATIVE->POSITIVE": 1
+    }
+  },
+  "holdout": {
+    "total": 30,
+    "binary": 14,
+    "non_directional": 16,
+    "recall": {
+      "POSITIVE": 1.0,
+      "NEGATIVE": 0.0
+    },
+    "precision": {
+      "POSITIVE": 0.5,
+      "NEGATIVE": null
+    },
+    "f1": {
+      "POSITIVE": 0.6666666666666666,
+      "NEGATIVE": 0.0
+    },
+    "macro_f1": 0.3333333333333333,
+    "abstain": 19,
+    "abstain_coverage": 0.6333,
+    "non_directional_rejected": 15,
+    "non_directional_rejection_rate": 0.9375,
+    "confusion": {
+      "POSITIVE->POSITIVE": 5,
+      "POSITIVE->ABSTAIN_MARKET_INDEX": 3,
+      "IRRELEVANT->ABSTAIN_MARKET_INDEX": 14,
+      "NEGATIVE->POSITIVE": 5,
+      "IRRELEVANT->POSITIVE": 1,
+      "IRRELEVANT->ABSTAIN_NO_DIRECTIONAL_CUE": 1,
+      "NEGATIVE->ABSTAIN_MARKET_INDEX": 1
+    }
+  },
+  "combined": {
+    "total": 150,
+    "binary": 83,
+    "non_directional": 67,
+    "recall": {
+      "POSITIVE": 1.0,
+      "NEGATIVE": 0.5
+    },
+    "precision": {
+      "POSITIVE": 0.8846153846153846,
+      "NEGATIVE": 1.0
+    },
+    "f1": {
+      "POSITIVE": 0.9387755102040816,
+      "NEGATIVE": 0.6666666666666666
+    },
+    "macro_f1": 0.8027210884353742,
+    "abstain": 81,
+    "abstain_coverage": 0.54,
+    "non_directional_rejected": 56,
+    "non_directional_rejection_rate": 0.8358,
+    "confusion": {
+      "NEUTRAL->ABSTAIN_NO_DIRECTIONAL_CUE": 11,
+      "NEUTRAL->ABSTAIN_LOW_CONFIDENCE": 1,
+      "POSITIVE->POSITIVE": 46,
+      "IRRELEVANT->ABSTAIN_MARKET_INDEX": 23,
+      "NEUTRAL->POSITIVE": 6,
+      "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 2,
+      "NEGATIVE->ABSTAIN_MARKET_INDEX": 16,
+      "IRRELEVANT->ABSTAIN_NO_DIRECTIONAL_CUE": 10,
+      "IRRELEVANT->ABSTAIN_FUND_FLOW": 11,
+      "IRRELEVANT->POSITIVE": 5,
+      "POSITIVE->ABSTAIN_NO_DIRECTIONAL_CUE": 1,
+      "POSITIVE->ABSTAIN_MARKET_INDEX": 6,
+      "NEGATIVE->NEGATIVE": 6,
+      "NEGATIVE->POSITIVE": 6
+    }
+  },
+  "gates": {
+    "macro_f1": 0.6,
+    "positive_recall": 0.55,
+    "negative_recall": 0.55,
+    "non_directional_rejection": 0.8,
+    "abstain_coverage": 0.35,
+    "p95_seconds": 3.0
+  },
+  "passed": false
+}

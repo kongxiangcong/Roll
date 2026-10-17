@@ -120,3 +120,7 @@ SENTIMENT-CORPUS-01 经 3 次有界请求取得 150 条唯一标题/摘要（73K
 ### 2026-10-18 16 最小替代评估
 
 SENTIMENT-CORPUS-02 150条公司名标题摘要；冻结120条代理标签（P45/N24/U18/I33）与门槛后，用 apache-2.0 Erlangshen 二分类模型离线推理：macro-F1 0.853、P recall 1.0、N recall 0.625、低置信拒判9.2%、p95 0.26s；但中性/不相关51条仅3条被拒判，48条强判方向。能力 RESEARCH_LIMITED，16 转 partial；下一轮先冻结拒判规则再重跑并接入API/页面。未授权/未训练 FinBERT2。
+
+### 2026-10-18 16 拒判层与留出验证
+
+冻结 R1—R5 后：设计集 macro-F1 0.956、中性/不相关拒判 0.804；留出集 N recall 0.000、macro-F1 0.333；合并 macro-F1 0.803、N recall 0.500、总拒判覆盖 0.540，未过冻结门槛。能力仍 RESEARCH_LIMITED；下一差量为受限组件的持久化/API/页面，16 保持 partial。

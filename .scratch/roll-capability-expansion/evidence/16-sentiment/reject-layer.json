@@ -1,0 +1,66 @@
+{
+  "version": "sentiment-reject-v1",
+  "frozen_at": "2026-10-17T18:09:22.428Z",
+  "note": "Frozen after the first (no-reject) run exposed 48 directional misclassifications. Generic genre/cue rules; labels and thresholds unchanged. First run remains preserved and is not overwritten.",
+  "rules": [
+    {
+      "id": "R1_MARKET_INDEX",
+      "when": "title contains ETF/指数/收评/午评 and company name not in title",
+      "action": "ABSTAIN_MARKET_INDEX"
+    },
+    {
+      "id": "R2_FUND_FLOW",
+      "when": "title contains 资金流入/资金流出/资金流向/主力资金 and company name not in title",
+      "action": "ABSTAIN_FUND_FLOW"
+    },
+    {
+      "id": "R3_NO_DIRECTIONAL_CUE",
+      "when": "title+summary contains none of the frozen directional cue list",
+      "action": "ABSTAIN_NO_DIRECTIONAL_CUE"
+    },
+    {
+      "id": "R4_ASSOCIATION",
+      "when": "association classification is INDUSTRY_BACKGROUND or UNRELATED",
+      "action": "ABSTAIN_RELEVANCE"
+    },
+    {
+      "id": "R5_LOW_CONFIDENCE",
+      "when": "max probability < 0.65",
+      "action": "ABSTAIN_LOW_CONFIDENCE"
+    }
+  ],
+  "directional_cues": [
+    "涨",
+    "跌",
+    "增",
+    "减",
+    "盈",
+    "亏",
+    "风险",
+    "停牌",
+    "减持",
+    "增持",
+    "回购",
+    "中标",
+    "投产",
+    "业绩",
+    "利润",
+    "收入",
+    "净利",
+    "突破",
+    "新高",
+    "走强",
+    "走弱",
+    "重挫",
+    "涨停",
+    "跌停",
+    "扭亏",
+    "翻倍",
+    "下降",
+    "上涨",
+    "下跌"
+  ],
+  "company_aliases": [
+    "江西铜业"
+  ]
+}
