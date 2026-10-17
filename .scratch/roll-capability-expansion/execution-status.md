@@ -112,3 +112,7 @@ STATUS-DOC-ATTEMPT-01 取回 search_HQ_2021.js 与 sse_full.js（2请求/537KB/�
 ### 2026-10-18 16 语料补充
 
 SENTIMENT-CORPUS-01 经 3 次有界请求取得 150 条唯一标题/摘要（73KB、零重试、同上游），数量达到120但仅标题摘要且非独立来源；仍需冻结标签/阈值与许可明确的情绪权重。16 保持 needs-info，未下载模型、未训练、未改依赖。
+
+### 2026-10-18 16 语料构成复核
+
+150 条代码关键词语料经 15 票规则分类：COMPANY_SUBJECT 33 / COMPANY_MENTIONED 28 / INDUSTRY 33 / UNRELATED 29 / UNCERTAIN 27，公司相关仅 61 条，不足以做 120 条公司级情绪标签。下一步改用公司名称关键词的新有界尝试；16 仍 needs-info。
