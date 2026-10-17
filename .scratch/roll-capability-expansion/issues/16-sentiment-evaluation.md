@@ -4,11 +4,11 @@
 
 **Blocked by:** [15 · 新闻证券关联与转载去重](15-news-entity-dedup.md)
 
-**Status:** ready-for-agent
+**Status:** needs-info
 
 **Completion:** pending
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** BLOCKED_EXTERNAL — 官方未发布中文情绪 checkpoint（只有预训练 base/large 与 SC_2 训练集）；归档语料亦不足120条，需新授权或新资源条件。
 
 **Scope / inheritance:** FinBERT2为优先候选；无合适权重不能假称接入成功。
 
@@ -34,3 +34,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-18：只读核对 HuggingFace 组织与 GitHub README，未找到可直接推理的 FinBERT2 中文情绪权重；官方仅提供 base/large 预训练与 Fin-labeler/SC_2 训练数据+脚本。归档中文新闻仅10条/3正文，不足120条标签集。详见[诊断](../evidence/16-sentiment/model-and-corpus-diagnosis.md)。需要用户选择：提供许可明确的情绪 checkpoint，或授权自训+标注方案。未下载/未训练/未改依赖，17及后续保持阻塞。

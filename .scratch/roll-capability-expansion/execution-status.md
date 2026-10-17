@@ -29,7 +29,7 @@
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | complete | 版本化观察/趋势/缺口/原件与PDF派生；真实三表副本、缺失/修订/禁用源、Chrome通过 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
-| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | pending | 已发布，未实施 |
+| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | pending | needs-info：官方无情绪checkpoint；归档语料不足120条，待用户选择权重或自训/标注授权 |
 | [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
@@ -87,3 +87,7 @@
 ### 2026-10-18 13 财务观察
 
 新增只追加版本化财务观察与公开查询，单股与历史复盘均有折叠入口；文字只来自确定性指标，结论/限制分列。真实 r10real 副本 15 条三表事实：FRESH、2026-06-30、4期趋势、4份PDF、1份真实 Docling 派生、账户不变、0网络；历史截至 2026-04-01 显示缺失。METHOD 2 passed（幂等/修订/行业/禁用源/旧版本不变），财务回归 11 passed/100.9s，Chrome 1 PASS/13.0s。修复当前查询版本膨胀。13 complete，18 的 13 依赖解除；17 仍受 16 阻塞。下一票评估 16 或 18 的剩余依赖。
+
+### 2026-10-18 16 情绪权重与语料诊断
+
+只读核对官方 HuggingFace/GitHub：FinBERT2 仅发布 base/large 预训练与检索模型（apache-2.0），情绪任务只有 Fin-labeler/SC_2 数据集与训练脚本，没有可直接推理的情绪 checkpoint。本仓库归档新闻 10 条标题/3 正文，不足 120 条带标签评测集。16 转 needs-info，未下载权重、未训练、未改依赖；17 及 18/22/26 继续受 16 阻塞。已向用户提出具体选择。
