@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** partial
+**Completion:** complete
 
-**Execution:** PARTIAL — 公开API/原件/标题与METHOD正文、实际4HTTP/10列表事实/3HTML及Chrome已交付；Trafilatura依赖准备两次关闭，真实全文抽取未完成。
+**Execution:** COMPLETE — 公开API/原件/标题、实际4HTTP/10列表事实/3HTML与Chrome已交付；2026-10-18 在新独立依赖尝试中安装 Trafilatura 2.3.1，生产适配器对 3 份真实归档 HTML 实际抽取成功，reference 转 VERIFIED。
 
 **Scope / inheritance:** 新增新闻事实；复用09组件运行边界和现有来源配置。
 
@@ -35,3 +35,5 @@
 
 
 2026-10-15：差量交付和全部失败/有限来源预算见[验收](../evidence/14-news/acceptance.md)。正文不取/失败/损坏仍保留标题与原件，SDK实际只第一页10条。两类传输/原件P2及双宿主恢复P2已修复，实际来源预算CLOSED_NO_RETRY；不得把HTML或METHOD正文算成真实Trafilatura。15依赖尚未解除。
+
+2026-10-18：TRAF-DEP-ATTEMPT-04 经环境代理从官方 PyPI 取得并校验 18 个 wheel（54请求/29.4MB/17.7秒，零重试），离线哈希安装；生产适配器对实际归档 3 份 HTML 运行实际 Trafilatura 2.3.1，3/3 EXTRACTED（2663/1760/1115字符，1.51秒），reference VERIFIED。回归 4 passed/47.35秒。14 complete，解除15依赖；不声称全量新闻或长期来源可用。

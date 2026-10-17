@@ -1,6 +1,6 @@
 # 14 单股新闻列表与HTML原件工程交付
 
-Completion为partial。公开GET/POST /api/market/news/{instrument}及/collect、/runs/{id}、/cancel和单股页面已交付，独立SQLite新闻表、列表/HTML原件先存、幂等/取消/断点恢复可验收。实际AKShare列表与HTML已成功；指定Trafilatura实际正文抽取仍受依赖准备阻塞，不将METHOD合成正文算成真实全文能力。
+Completion为complete（2026-10-18 补齐实际 Trafilatura 运行时后）。公开GET/POST /api/market/news/{instrument}及/collect、/runs/{id}、/cancel和单股页面已交付，独立SQLite新闻表、列表/HTML原件先存、幂等/取消/断点恢复可验收。实际AKShare列表与HTML已成功；指定Trafilatura实际正文抽取仍受依赖准备阻塞，不将METHOD合成正文算成真实全文能力。
 
 ## 来源、时间与范围
 
@@ -36,3 +36,12 @@ SDK受限传输丢弃其硬编码示例cookies；每个准备好的请求再移�
 trafilatura-reference.json保持UNAVAILABLE，包完整指纹/实际SDK提取输出/中文真实正文准确性与空页拒判未完成，不接受用标题、摘要或手写抽取替代指定组件。新闻HTML归档成功不等于全文能力完成。15的14完成依赖尚未解除；13仍依赖12真实解析。其余票按既有来源、冻结、资格及时间条件保持阻塞，不推送、不授资格、不改变真实前向起点。
 
 官方依据：[Trafilatura元数据](https://pypi.org/pypi/trafilatura/json)、[核心API](https://trafilatura.readthedocs.io/en/latest/corefunctions.html)。锁定AKShare代码以本地既有1.19.1文件和SHA为准，不用最新网页替换既有组件。
+
+
+## 实际 Trafilatura 运行时补齐（2026-10-18）
+
+此前 CLOSED 的两次依赖准备保持原记录，不重开。新独立尝试 TRAF-DEP-ATTEMPT-04（03 为追踪器缺陷闭合，未安装任何包）改用用户环境已配置的 HTTPS 代理访问官方 PyPI：54 请求、29,457,050 字节、17.694 秒，18 个 wheel 全部记录 SHA256，离线 `--require-hashes` 安装成功（trafilatura 2.3.1、lxml 6.1.3、htmldate 1.11.0、justext 3.0.2、courlan 1.4.0、charset-normalizer 3.5.2、urllib3 2.8.0）。业务 venv 与 AKShare 环境未改动。
+
+生产适配器 `trafilatura_process.py` 先在导入前拒绝 socket，再对 14 票实际归档的 3 份完整 HTML 原件运行 `bare_extraction`：3/3 EXTRACTED，正文 2663/1760/1115 字符，总计 1.509 秒，标题、日期、站点有值；原始字节 SHA256 与 capture.json 一致。`trafilatura-reference.json` 由 UNAVAILABLE 更新为 VERIFIED，固定包版本与 5 个运行时文件 SHA256，`EXTRACTOR_VERSION=2.3.1` 一致。应用装配仍通过 `ROLL_TRAFILATURA_PYTHON` 指向隔离解释器。
+
+回归：news ingestion + SDK recovery 4 passed / 47.35 秒（post-runtime-tests.log）。限制不变：只证明该次 3 篇真实归档正文；不证明全量/长期新闻覆盖、独立来源或收益含义；账户、资格、真实前向起点未改变。

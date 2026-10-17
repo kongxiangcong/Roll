@@ -1,0 +1,33 @@
+{
+  "attempt_id": "TRAF-DEP-ATTEMPT-03",
+  "status": "PLANNED_ONCE",
+  "created_at": "2026-10-17T16:21:55.792Z",
+  "purpose": "Install pinned trafilatura==2.3.1 and its declared dependencies into the existing isolated venv, then verify actual offline extraction on already archived HTML.",
+  "previous_attempts": [
+    "dependency-attempt.json remains CLOSED (metadata timeout, proxy bypassed)",
+    "dependency-recovery-plan.json / dependency-recovery-receipt.json remain CLOSED (TLS handshake timeout, proxy bypassed)"
+  ],
+  "root_requirement": "trafilatura==2.3.1",
+  "license": "Apache-2.0",
+  "environment": "D:/dsh-proj/Roll/.scratch/rce-runtime/trafilatura (CPython 3.13.12, empty besides pip 25.3); business and AKShare environments untouched",
+  "network_route": "Machine-configured HTTPS proxy http://127.0.0.1:7890 (HTTP_PROXY/HTTPS_PROXY already set in user environment). No direct-connection bypass this attempt; no mirror; official PyPI hosts only.",
+  "hosts": [
+    "pypi.org",
+    "files.pythonhosted.org"
+  ],
+  "limits": {
+    "maximum_seconds": 600,
+    "maximum_http_requests": 128,
+    "maximum_download_bytes": 104857600,
+    "per_request_timeout_seconds": 20,
+    "retries": 0,
+    "redirects": 0,
+    "only_binary": true
+  },
+  "install_sequence": [
+    "pip download --only-binary=:all: --dest <wheels> trafilatura==2.3.1 under traced transport",
+    "record wheel SHA256 and total bytes",
+    "pip install --no-index --find-links <wheels> --no-deps --require-hashes"
+  ],
+  "failure_policy": "Fail closed; no automatic retry, no mirror switch, no proxy bypass reuse."
+}

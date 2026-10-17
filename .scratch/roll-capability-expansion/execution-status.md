@@ -27,7 +27,7 @@
 | [11 · 财务口径、修订与确定性指标](issues/11-financial-metrics.md) | complete | 确定性公式/未知口径/修订重放/API/真实只读Chrome通过，零新增取数 |
 | [12 · Docling表格与页码证据](issues/12-document-tables.md) | partial | 选页/原表/METHOD正向与失败恢复通过；依赖600秒封口，实际组件/权重待验 |
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | pending | 已发布，未实施 |
-| [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | partial | API/原件/标题/METHOD及真实4HTTP/10条/3HTML/Chrome通过；Trafilatura实际抽取受依赖准备阻塞 |
+| [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | pending | 已发布，未实施 |
 | [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | pending | 已发布，未实施 |
 | [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
@@ -71,3 +71,7 @@
 2026-10-15：12工程partial，PDF选页/原件/表格/页边界/API及METHOD验收交付；最终依赖解析600秒达到上限封口，Docling运行时UNAVAILABLE，未下载模型。详见12-docling/acceptance.md。13依赖未解除，下一独立票14；09/10预算保持封口。
 
 2026-10-15：14工程partial，实际新新闻来源一次4HTTP/218675B/10条/3HTML成功并封口，账户不变；METHOD全文与实际SDK传输/API/恢复并发最终4 PASS/33.18s，真实只读Chrome/构建通过。见14-news/acceptance.md。Trafilatura两次有限依赖准备分别元数据超时及TLS超时，运行环境UNAVAILABLE；不重试或冒充真实全文。当前7票complete（01/09/10/11/19/20/21），02/03/04/05/07/12/14 partial；13依赖12、15依赖14，后续情绪/快照/工程整体验收依赖仍未解除。06受05完整冻结/资格缺口、08/23—25受真实来源/冻结/自然窗口等条件阻塞。当前无全部前置条件齐备的新工程票；未完成整份规格，未推送或建立真实资格/资金/前向起点。
+
+### 2026-10-18 14 运行时补齐
+
+新独立依赖尝试 TRAF-DEP-ATTEMPT-04（旧 CLOSED 记录不重开）经环境既有代理访问官方 PyPI，54请求/29.4MB/17.7秒下载并哈希锁定18个 wheel，离线安装 Trafilatura 2.3.1 成功。生产适配器对 14 票实际归档 HTML 运行真实 `bare_extraction`：3/3 EXTRACTED（2663/1760/1115字符，1.51秒），reference 由 UNAVAILABLE 转 VERIFIED 并固定包/文件 SHA256；news 回归 4 passed/47.35秒。14 转 complete，解除 15 依赖。未改变账户、资格、真实前向起点，也不声称全量新闻覆盖。下一票 15。
