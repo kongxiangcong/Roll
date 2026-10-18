@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {request} from '../api';
 type Fact={fact_id:string;title:string;media:string|null;association:string;label:string|null;confidence:number|null;reject_reason:string|null};
-type Evaluation={design:{macro_f1:number;negative_recall:number};holdout:{macro_f1:number;negative_recall:number};combined:{macro_f1:number;positive_recall:number;negative_recall:number;non_directional_rejection_rate:number;abstain_coverage:number};passed_frozen_gates:boolean;limitations:string[]};
+type Evaluation={metric_scope?:string;design:{macro_f1:number;negative_recall:number};holdout:{macro_f1:number;negative_recall:number};combined:{macro_f1:number;positive_recall:number;negative_recall:number;non_directional_rejection_rate:number;abstain_coverage:number};passed_frozen_gates:boolean;limitations:string[]};
 type Run={run_id:string;status:string;counts:Record<string,number>;reject_counts:Record<string,number>;coverage:number;evidence_kind:string;errors:string[]};
 type Value={run:Run;facts:Fact[];counts:Record<string,number>;coverage:number;model:string;license:string;weights_sha256:string;evaluation:Evaluation;reject_layer:string;network_calls:number;capability:string};
 const LABEL:Record<string,string>={POSITIVE:'正向',NEGATIVE:'负向'};
@@ -18,7 +18,8 @@ export function SentimentPanel({instrument}:{instrument:string}){
   {value&&<section aria-label="情绪分类结果">
    <p role="status">覆盖 {Math.round(value.coverage*100)}% · {value.run.evidence_kind==='METHOD_CASE'?'METHOD工程':'实际本地分类'} · 能力 {value.capability} · 网络调用 {value.network_calls}</p>
    <p>模型 {value.model}（{value.license}）· 权重 {value.weights_sha256.slice(0,16)}… · 拒判层 {value.reject_layer}</p>
-   <p>评测：合并 macro-F1 {value.evaluation.combined.macro_f1.toFixed(3)}、正向召回 {value.evaluation.combined.positive_recall.toFixed(3)}、负向召回 {value.evaluation.combined.negative_recall.toFixed(3)}、留出集负向召回 {value.evaluation.holdout.negative_recall.toFixed(3)}、中性/不相关拒判 {value.evaluation.combined.non_directional_rejection_rate.toFixed(3)}；冻结门槛{value.evaluation.passed_frozen_gates?'通过':'未通过'}。</p>
+   <p>{value.evaluation.metric_scope==='ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE'?'评测口径：拒判计入该真实类别的漏判；宏平均只含正负二类。':'旧评测口径：拒判未计入召回分母，不作验收依据。'}</p>
+   <p>评测：合并二类 macro-F1 {value.evaluation.combined.macro_f1.toFixed(3)}、正向召回 {value.evaluation.combined.positive_recall.toFixed(3)}、负向召回 {value.evaluation.combined.negative_recall.toFixed(3)}、留出集负向召回 {value.evaluation.holdout.negative_recall.toFixed(3)}、中性/不相关拒判 {value.evaluation.combined.non_directional_rejection_rate.toFixed(3)}；冻结门槛{value.evaluation.passed_frozen_gates?'通过':'未通过'}。</p>
    <p>限制：{value.evaluation.limitations.join('；')}</p>
    <p>计数：{Object.entries(value.counts).map(([key,count])=>`${LABEL[key]??REJECT[key]??key} ${count}`).join('；')}</p>
    {value.facts.map(fact=><p key={fact.fact_id}>{fact.title} · {fact.label?LABEL[fact.label]:`拒判：${REJECT[fact.reject_reason??'']??fact.reject_reason}`}{fact.confidence!==null&&` · 置信度 ${fact.confidence.toFixed(3)}`} · 关联 {fact.association}</p>)}

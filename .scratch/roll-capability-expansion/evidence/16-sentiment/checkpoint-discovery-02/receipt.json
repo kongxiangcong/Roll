@@ -1,0 +1,56 @@
+{
+  "attempt_id": "SENTIMENT-CHECKPOINT-DISCOVERY-02",
+  "status": "CLOSED_NO_RETRY",
+  "elapsed_seconds": 0.083,
+  "bytes": 0,
+  "requests": [
+    {
+      "request": 1,
+      "url": "https://huggingface.co/api/models?search=FinBERT2&limit=100&full=true",
+      "received_at": "2026-10-18T03:47:36.632008+00:00",
+      "error_type": "ProxyError"
+    },
+    {
+      "request": 2,
+      "url": "https://huggingface.co/api/models?author=valuesimplex-ai-lab&limit=100&full=true",
+      "received_at": "2026-10-18T03:47:36.644187+00:00",
+      "error_type": "ProxyError"
+    },
+    {
+      "request": 3,
+      "url": "https://api.github.com/repos/valuesimplex/FinBERT/git/trees/main?recursive=1",
+      "received_at": "2026-10-18T03:47:36.645478+00:00",
+      "error_type": "ProxyError"
+    },
+    {
+      "request": 4,
+      "url": "https://huggingface.co/valuesimplex-ai-lab/FinBERT2-base/raw/main/config.json",
+      "received_at": "2026-10-18T03:47:36.660775+00:00",
+      "error_type": "ProxyError"
+    },
+    {
+      "request": 5,
+      "url": "https://huggingface.co/valuesimplex-ai-lab/FinBERT2-large/raw/main/config.json",
+      "received_at": "2026-10-18T03:47:36.680566+00:00",
+      "error_type": "ProxyError"
+    },
+    {
+      "request": 6,
+      "url": "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/Fin-labeler/runclassify.sh",
+      "received_at": "2026-10-18T03:47:36.693385+00:00",
+      "error_type": "ProxyError"
+    },
+    {
+      "request": 7,
+      "url": "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/Fin-labeler/sequence_inference.py",
+      "received_at": "2026-10-18T03:47:36.710551+00:00",
+      "error_type": "ProxyError"
+    },
+    {
+      "request": 8,
+      "url": "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/README.md",
+      "received_at": "2026-10-18T03:47:36.713509+00:00",
+      "error_type": "ProxyError"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "attempt_id": "SENTIMENT-CHECKPOINT-DISCOVERY-05",
+  "date": "2026-10-18 Asia/Shanghai",
+  "purpose": "Verify a concrete Chinese financial BERT substitute for a user decision if no FinBERT2 sentiment checkpoint exists; metadata only",
+  "limits": {
+    "maximum_requests": 4,
+    "maximum_seconds": 75,
+    "maximum_bytes": 4194304,
+    "retries": 0,
+    "redirects": 0
+  },
+  "requests": [
+    "https://huggingface.co/api/models/bardsai/finance-sentiment-zh-base",
+    "https://huggingface.co/bardsai/finance-sentiment-zh-base/raw/main/README.md",
+    "https://huggingface.co/bardsai/finance-sentiment-zh-base/raw/main/config.json",
+    "https://huggingface.co/api/models/yiyanghkust/finbert-tone-chinese"
+  ],
+  "environment": "Host network via existing environment proxy; public metadata only; separate attempt after sandbox ProxyError, no changes to closed attempt 02.",
+  "decision": "A base model or random classifier head is not a sentiment checkpoint. Download weights only under a separate fixed plan once Chinese sentiment task, labels, license and provenance are verified. No training or substitute acceptance is inferred."
+}

@@ -29,7 +29,7 @@
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | complete | 版本化观察/趋势/缺口/原件与PDF派生；真实三表副本、缺失/修订/禁用源、Chrome通过 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
-| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | partial | 受限组件/持久化/API/页面/真实运行已交付；替代模型未过门槛，FinBERT2情绪权重仍缺 |
+| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | partial | 已纠正拒判漏计FN：合并负向召回0.200、二类macro-F1 0.563；旧评测时间交叠，FinBERT2情绪权重与新冻结评测仍缺，中文FinBERT替代待选择 |
 | [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
@@ -132,3 +132,11 @@ SENTIMENT-CORPUS-02 150条公司名标题摘要；冻结120条代理标签（P45
 ### 2026-10-18 交接文档
 
 供后续代理/工程师接手的完整说明见 [handoff-2026-10-18.md](handoff-2026-10-18.md)：分支/HEAD、11 complete、6 partial、9 pending、运行时路径、复现命令、阻塞条件与陷阱。
+
+### 2026-10-18 接手：16 checkpoint核查与指标纠正
+
+现场分支codex/roll-capability-expansion、HEAD b4fb440；上一实施会话notLoaded，379条既有dirty/untracked保留。新独立attempt02—06完成公开元数据核查，官方base/large为MLM；第三方Riverise虽有权重但为环境主题分类且许可缺失，不能作情绪模型。发现Apache-2.0的yiyanghkust/finbert-tone-chinese（约409MB、三分类、非FinBERT2），已请求用户选择替代评估路线，未下载权重或训练。
+
+审查发现旧评测漏计拒判FN与跨类FP，已新增只读纠正工具、真实support/混淆/指标、reference口径版本和页面解释；旧报告/保存包保持可重放。合并150条二类macro-F1纠正为0.563218、正向召回0.867925、负向召回6/30=0.200，总拒判0.540，原门槛未变且未通过。旧120/30日期重叠、holdout无中性支持，精确hash组不证明语义事件隔离；新候选推理前必须重新冻结有效切分。
+
+修改后pytest10 passed/37.93s、构建通过、Chrome1 passed/12.7s；真实已有模型在新副本10条新闻上运行正向2/拒判8/覆盖20%/账户0→0/网络0，旧包不变。初次沙箱无输出、纠正后Windows长路径失败日志均保留；新短临时目录复跑通过。双轴审查和证据见[evidence/16-sentiment/takeover-20261018/acceptance.md](evidence/16-sentiment/takeover-20261018/acceptance.md)。状态仍11 complete/6 partial/9 pending；16未完成，不解除17/18/22/26依赖。无推送、PR、资格、真实资金或前向起点变化。

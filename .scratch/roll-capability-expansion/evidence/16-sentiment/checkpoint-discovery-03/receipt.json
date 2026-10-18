@@ -1,0 +1,88 @@
+{
+  "attempt_id": "SENTIMENT-CHECKPOINT-DISCOVERY-03",
+  "status": "CLOSED_NO_RETRY",
+  "elapsed_seconds": 4.356,
+  "bytes": 87765,
+  "requests": [
+    {
+      "request": 1,
+      "url": "https://huggingface.co/api/models?search=FinBERT2&limit=100&full=true",
+      "received_at": "2026-10-18T03:47:56.019928+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 58372,
+      "sha256": "8d3bafcee4a5b97952903eae20d4d11ab08909702196179235a2c53d15ef7fbc",
+      "file": "01.raw"
+    },
+    {
+      "request": 2,
+      "url": "https://huggingface.co/api/models?author=valuesimplex-ai-lab&limit=100&full=true",
+      "received_at": "2026-10-18T03:47:56.967190+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 3447,
+      "sha256": "de74da0ee9c693bd473a1d17b0e6b2229829d6815bb913f133cc038500d9f4a4",
+      "file": "02.raw"
+    },
+    {
+      "request": 3,
+      "url": "https://api.github.com/repos/valuesimplex/FinBERT/git/trees/main?recursive=1",
+      "received_at": "2026-10-18T03:47:57.229414+00:00",
+      "status_code": 403,
+      "link": null,
+      "bytes": 281,
+      "sha256": "2c78efa140b720ab5d3591fcf935ed951735198358e5b69bbf6083fcaa9ca154",
+      "file": "03.raw"
+    },
+    {
+      "request": 4,
+      "url": "https://huggingface.co/valuesimplex-ai-lab/FinBERT2-base/raw/main/config.json",
+      "received_at": "2026-10-18T03:47:58.208765+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 878,
+      "sha256": "e92c989126d2615cfce9dc4265f8a9cba6f6532c1f3fb95906bf811dd0341530",
+      "file": "04.raw"
+    },
+    {
+      "request": 5,
+      "url": "https://huggingface.co/valuesimplex-ai-lab/FinBERT2-large/raw/main/config.json",
+      "received_at": "2026-10-18T03:47:58.450961+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 879,
+      "sha256": "46bbdf6d11186bea4cde74546df4a8776f659fbec3d7fb8962e0a6536eeca634",
+      "file": "05.raw"
+    },
+    {
+      "request": 6,
+      "url": "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/Fin-labeler/runclassify.sh",
+      "received_at": "2026-10-18T03:47:58.696320+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 157,
+      "sha256": "2208187b639626bb871841752e3109d5b54c96ab61ac27d6fb7628757395d508",
+      "file": "06.raw"
+    },
+    {
+      "request": 7,
+      "url": "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/Fin-labeler/sequence_inference.py",
+      "received_at": "2026-10-18T03:47:59.726044+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 8228,
+      "sha256": "ed2f95c5dc77856bda934d2b671aa844395c1d495f32949928008459a69b2e16",
+      "file": "07.raw"
+    },
+    {
+      "request": 8,
+      "url": "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/README.md",
+      "received_at": "2026-10-18T03:48:00.049384+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 15523,
+      "sha256": "8b5c40f2a27fa885c6dcaf67a5446b451312070f32893d62fc7adb5df6449930",
+      "file": "08.raw"
+    }
+  ]
+}

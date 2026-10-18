@@ -1,0 +1,24 @@
+{
+  "attempt_id": "SENTIMENT-CHECKPOINT-DISCOVERY-04",
+  "date": "2026-10-18 Asia/Shanghai",
+  "purpose": "Inspect discovered third-party checkpoint task/labels/license at pinned revisions, no weights or remote code execution",
+  "limits": {
+    "maximum_requests": 8,
+    "maximum_seconds": 75,
+    "maximum_bytes": 4194304,
+    "retries": 0,
+    "redirects": 0
+  },
+  "requests": [
+    "https://huggingface.co/Riverise/FINBERT2_finetune/raw/fc9ae4e5b68307ab5182a576a1ba1ffe150e317e/README.md",
+    "https://huggingface.co/Riverise/FINBERT2_finetune/raw/fc9ae4e5b68307ab5182a576a1ba1ffe150e317e/bert_finetune_task1.py",
+    "https://huggingface.co/Riverise/FINBERT2_finetune/raw/fc9ae4e5b68307ab5182a576a1ba1ffe150e317e/bert_finetue_task2.py",
+    "https://huggingface.co/Riverise/FINBERT2_finetune/raw/fc9ae4e5b68307ab5182a576a1ba1ffe150e317e/model_inference_task1.py",
+    "https://huggingface.co/Riverise/FINBERT2_finetune/raw/fc9ae4e5b68307ab5182a576a1ba1ffe150e317e/model_inference_task2.py",
+    "https://huggingface.co/Czunzun/finbert2_v2/raw/13567f161b622e605d30b60c6d1efb354fbd6559/config.json",
+    "https://huggingface.co/Czunzun/finbert2_v1/raw/02be9433b8e77d446ee00f3af86bae408c580937/README.md",
+    "https://huggingface.co/Narsil/finbert2/raw/fce2210ffffc0861ff2be76aa8ee950802267d81/README.md"
+  ],
+  "environment": "Host network via existing environment proxy; public metadata only; separate attempt after sandbox ProxyError, no changes to closed attempt 02.",
+  "decision": "A base model or random classifier head is not a sentiment checkpoint. Download weights only under a separate fixed plan once Chinese sentiment task, labels, license and provenance are verified. No training or substitute acceptance is inferred."
+}

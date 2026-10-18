@@ -1,0 +1,95 @@
+---
+language:
+  - zh
+license: apache-2.0
+library_name: transformers
+pipeline_tag: text-classification
+tags:
+  - text-classification
+  - financial-sentiment-analysis
+  - sentiment-analysis
+base_model: google-bert/bert-base-chinese
+datasets:
+  - financial_phrasebank
+metrics:
+  - f1
+  - accuracy
+  - precision
+  - recall
+widget:
+  - text: "净销售额增长30%，达到3600万欧元。"
+    example_title: "Example 1"
+  - text: "黑色星期五拉开帷幕。店内促销活动列表。"
+    example_title: "Example 2"
+  - text: "CDPROJEKT股价在WSE上市公司中跌幅最大。"
+    example_title: "Example 3"
+model-index:
+  - name: finance-sentiment-zh-base
+    results:
+      - task:
+          type: text-classification
+          name: Financial Sentiment Analysis
+        dataset:
+          name: Financial PhraseBank (translated to Chinese)
+          type: financial_phrasebank
+        metrics:
+          - type: f1
+            value: 0.966
+            name: F1 (macro)
+          - type: precision
+            value: 0.963
+            name: Precision (macro)
+          - type: recall
+            value: 0.969
+            name: Recall (macro)
+          - type: accuracy
+            value: 0.973
+            name: Accuracy
+---
+
+
+# Finance Sentiment ZH (base)
+
+Finance Sentiment ZH (base) is a model based on [bert-base-chinese](https://huggingface.co/bert-base-chinese) for analyzing sentiment of Chinese financial news. It was trained on the translated version of [Financial PhraseBank](https://www.researchgate.net/publication/251231107_Good_Debt_or_Bad_Debt_Detecting_Semantic_Orientations_in_Economic_Texts) by Malo et al. (2014) for 10 epochs on single RTX3090 gpu. 
+
+The model will give you a three labels: positive, negative and neutral.
+
+## How to use
+
+You can use this model directly with a pipeline for sentiment-analysis:
+
+```python
+from transformers import pipeline
+
+nlp = pipeline("sentiment-analysis", model="bardsai/finance-sentiment-zh-base")
+nlp("净销售额增长30%，达到3600万欧元。")
+```
+```bash
+[{'label': 'negative', 'score': 0.9999314546585083}]
+```
+
+## Performance
+| Metric | Value |
+| --- | ----------- |
+| f1 macro | 0.966 |
+| precision macro | 0.963 |
+| recall macro | 0.969 |
+| accuracy | 0.973 |
+| samples per second | 135.2 |
+
+(The performance was evaluated on RTX 3090 gpu)
+
+## Changelog
+- 2023-07-12: Initial release
+
+## License
+
+This model is released under the **[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)**, inherited from the base model [google-bert/bert-base-chinese](https://huggingface.co/google-bert/bert-base-chinese) (Apache 2.0).
+
+Attribution: bert-base-chinese — Google Research; Finance Sentiment ZH (base) — bards.ai.
+
+## About bards.ai
+
+At bards.ai, we focus on providing machine learning expertise and skills to our partners, particularly in the areas of nlp, machine vision and time series analysis. Our team is located in Wroclaw, Poland. Please visit our website for more information: [bards.ai](https://bards.ai/)
+
+Let us know if you use our model :). Also, if you need any help, feel free to contact us at info@bards.ai

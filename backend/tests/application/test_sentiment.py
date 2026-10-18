@@ -34,7 +34,9 @@ def test_limited_sentiment_persists_rejects_and_replays(tmp_path):
         assert value['coverage']==0.5 and value['counts']=={'POSITIVE':1,'NEGATIVE':1,'ABSTAIN_NO_DIRECTIONAL_CUE':1,'ABSTAIN_FUND_FLOW':1}
         listing=client.get('/api/market/sentiment/SSE:600362').json()
         assert listing['run']['run_id']==value['run_id'] and listing['evaluation']['passed_frozen_gates'] is False
-        assert listing['evaluation']['combined']['negative_recall']<0.55 and listing['network_calls']==0
+        assert listing['evaluation']['combined']['negative_recall']==0.2 and listing['network_calls']==0
+        assert listing['evaluation']['combined']['per_class']['NEGATIVE']['support']==30
+        assert listing['evaluation']['metric_scope']=='ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE'
         assert client.post('/api/market/sentiment/SSE:600362/classify',json={'idempotency_key':'sentiment-once','basis':'METHOD limited sentiment'}).json()==value
         assert client.post('/api/market/sentiment/SSE:600362/classify',json={'idempotency_key':'sentiment-once','basis':'different'}).status_code==409
         cutoff=client.get('/api/market/sentiment/SSE:600362',params={'known_by':'2025-01-01T00:00:00Z'})
