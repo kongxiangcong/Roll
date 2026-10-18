@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checks": [
+    "six pinned model artifact hashes",
+    "frozen evaluation source hashes",
+    "138 labels and disjoint groups/dates",
+    "exact checkpoint loading",
+    "all split support/TP/FN/FP/recall/F1 independently recounted",
+    "all confusion row totals and abstention rates",
+    "production reference unchanged",
+    "numerical gate failure retained"
+  ],
+  "prediction_count": 138,
+  "model_calls": 82,
+  "production_reference_unchanged": true
+}

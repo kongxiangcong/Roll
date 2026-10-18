@@ -1,0 +1,15 @@
+{
+  "frozen_at": "2026-10-18T15:56:15.655867+00:00",
+  "phase": "BEFORE_FIRST_CANDIDATE_INFERENCE",
+  "files": {
+    "frozen-dataset.json": "030621bf6de027d4613a0270f82093752e2df3866be6511f418285a3fe988103",
+    "freeze_dataset.py": "e286496b62fac4d6a33aca01e51c6026463ba6e15620d0c30a29130ab2b8d2bf",
+    "evaluation-protocol.md": "e76fae4af17db5e438cf8234c09b80552ee284d40332f8696409fae14a82e75c",
+    "preflight.md": "b067461621c5a2b60e90d77b2927a9cd74a184c16fcf78bd3cd36aa785aa24a3",
+    "infer.py": "f96695217b59c77107c9453f77c040ae2ba3796ab89053ff67cf0e5a9b395645",
+    "evaluate.py": "3b334d027675259bc5eba0c0f35e6ec71b0c0defed09949044cc32feed134b88"
+  },
+  "production_reference_sha256": "29afd27bf5245cf73e6e524b45faa8db55f2abc37ef6990e9d71b517e2a6f40a",
+  "previous_manifest_sha256": "ad2c18242a2c86482e0e4c9c08238fed1e6a6cb078adbb0fa30f8bbca051e0d5",
+  "pre_inference_amendment": "Require exact checkpoint loading with no missing/unexpected/mismatched weights; no labels, grouping, rejection rule or thresholds changed. No candidate outputs yet."
+}

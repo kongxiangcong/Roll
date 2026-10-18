@@ -1,0 +1,330 @@
+{
+  "candidate": "yiyanghkust/finbert-tone-chinese",
+  "revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "evidence_kind": "REAL_LOCAL_CANDIDATE_EVALUATION_NON_INDEPENDENT_LABELS",
+  "dataset_sha256": "030621bf6de027d4613a0270f82093752e2df3866be6511f418285a3fe988103",
+  "inference_sha256": "e9b04af6e54aed600e4632c892b3ed9d798b979726970cbcc0fe3b666d2d7c2e",
+  "splits": {
+    "DEVELOPMENT": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 48,
+          "tp": 38,
+          "fn": 10,
+          "fp": 7,
+          "recall": 0.7916666666666666,
+          "precision": 0.8444444444444444,
+          "f1": 0.8172043010752689,
+          "abstained": 6,
+          "event_groups": 6
+        },
+        "NEGATIVE": {
+          "support": 26,
+          "tp": 8,
+          "fn": 18,
+          "fp": 2,
+          "recall": 0.3076923076923077,
+          "precision": 0.8,
+          "f1": 0.4444444444444444,
+          "abstained": 13,
+          "event_groups": 2
+        },
+        "NEUTRAL": {
+          "support": 9,
+          "tp": 7,
+          "fn": 2,
+          "fp": 5,
+          "recall": 0.7777777777777778,
+          "precision": 0.5833333333333334,
+          "f1": 0.6666666666666666,
+          "abstained": 0,
+          "event_groups": 7
+        },
+        "IRRELEVANT": {
+          "support": 22,
+          "tp": 0,
+          "fn": 22,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 19,
+          "event_groups": 9
+        }
+      },
+      "positive_recall": 0.7916666666666666,
+      "negative_recall": 0.3076923076923077,
+      "confusion": {
+        "NEUTRAL->NEUTRAL": 7,
+        "NEGATIVE->NEGATIVE": 8,
+        "POSITIVE->POSITIVE": 38,
+        "NEUTRAL->POSITIVE": 2,
+        "POSITIVE->NEUTRAL": 2,
+        "POSITIVE->ABSTAIN_LOW_CONFIDENCE": 1,
+        "POSITIVE->NEGATIVE": 2,
+        "IRRELEVANT->POSITIVE": 2,
+        "NEGATIVE->NEUTRAL": 2,
+        "NEGATIVE->POSITIVE": 3,
+        "NEGATIVE->ABSTAIN_MARKET_INDEX": 12,
+        "IRRELEVANT->ABSTAIN_FUND_FLOW": 1,
+        "IRRELEVANT->ABSTAIN_LOW_CONFIDENCE": 1,
+        "IRRELEVANT->ABSTAIN_MARKET_INDEX": 17,
+        "POSITIVE->ABSTAIN_MARKET_INDEX": 5,
+        "IRRELEVANT->NEUTRAL": 1,
+        "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 1
+      },
+      "binary_macro_f1": 0.6308243727598566,
+      "three_class_macro_f1": 0.6427718040621266,
+      "rows": 105,
+      "event_groups": 18,
+      "reject_counts": {
+        "ABSTAIN_LOW_CONFIDENCE": 3,
+        "ABSTAIN_MARKET_INDEX": 34,
+        "ABSTAIN_FUND_FLOW": 1
+      },
+      "abstain_coverage": 0.3619047619047619,
+      "irrelevant_rejection_rate": 0.8636363636363636
+    },
+    "HOLDOUT": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 3,
+          "tp": 1,
+          "fn": 2,
+          "fp": 2,
+          "recall": 0.3333333333333333,
+          "precision": 0.3333333333333333,
+          "f1": 0.3333333333333333,
+          "abstained": 1,
+          "event_groups": 2
+        },
+        "NEGATIVE": {
+          "support": 4,
+          "tp": 0,
+          "fn": 4,
+          "fp": 1,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "abstained": 4,
+          "event_groups": 4
+        },
+        "NEUTRAL": {
+          "support": 6,
+          "tp": 5,
+          "fn": 1,
+          "fp": 3,
+          "recall": 0.8333333333333334,
+          "precision": 0.625,
+          "f1": 0.7142857142857143,
+          "abstained": 0,
+          "event_groups": 3
+        },
+        "IRRELEVANT": {
+          "support": 20,
+          "tp": 0,
+          "fn": 20,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 16,
+          "event_groups": 12
+        }
+      },
+      "positive_recall": 0.3333333333333333,
+      "negative_recall": 0.0,
+      "confusion": {
+        "NEUTRAL->NEUTRAL": 5,
+        "NEUTRAL->POSITIVE": 1,
+        "POSITIVE->POSITIVE": 1,
+        "IRRELEVANT->ABSTAIN_MARKET_INDEX": 6,
+        "NEGATIVE->ABSTAIN_MARKET_INDEX": 4,
+        "IRRELEVANT->ABSTAIN_FUND_FLOW": 10,
+        "IRRELEVANT->NEUTRAL": 3,
+        "IRRELEVANT->POSITIVE": 1,
+        "POSITIVE->ABSTAIN_MARKET_INDEX": 1,
+        "POSITIVE->NEGATIVE": 1
+      },
+      "binary_macro_f1": 0.16666666666666666,
+      "three_class_macro_f1": 0.34920634920634924,
+      "rows": 33,
+      "event_groups": 17,
+      "reject_counts": {
+        "ABSTAIN_MARKET_INDEX": 11,
+        "ABSTAIN_FUND_FLOW": 10
+      },
+      "abstain_coverage": 0.6363636363636364,
+      "irrelevant_rejection_rate": 0.8
+    },
+    "ALL_DIAGNOSTIC": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 51,
+          "tp": 39,
+          "fn": 12,
+          "fp": 9,
+          "recall": 0.7647058823529411,
+          "precision": 0.8125,
+          "f1": 0.7878787878787878,
+          "abstained": 7,
+          "event_groups": 8
+        },
+        "NEGATIVE": {
+          "support": 30,
+          "tp": 8,
+          "fn": 22,
+          "fp": 3,
+          "recall": 0.26666666666666666,
+          "precision": 0.7272727272727273,
+          "f1": 0.3902439024390244,
+          "abstained": 17,
+          "event_groups": 6
+        },
+        "NEUTRAL": {
+          "support": 15,
+          "tp": 12,
+          "fn": 3,
+          "fp": 8,
+          "recall": 0.8,
+          "precision": 0.6,
+          "f1": 0.6857142857142857,
+          "abstained": 0,
+          "event_groups": 10
+        },
+        "IRRELEVANT": {
+          "support": 42,
+          "tp": 0,
+          "fn": 42,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 35,
+          "event_groups": 21
+        }
+      },
+      "positive_recall": 0.7647058823529411,
+      "negative_recall": 0.26666666666666666,
+      "confusion": {
+        "NEUTRAL->NEUTRAL": 12,
+        "NEUTRAL->POSITIVE": 3,
+        "POSITIVE->POSITIVE": 39,
+        "IRRELEVANT->ABSTAIN_MARKET_INDEX": 23,
+        "NEGATIVE->NEGATIVE": 8,
+        "NEGATIVE->ABSTAIN_MARKET_INDEX": 16,
+        "POSITIVE->NEUTRAL": 2,
+        "IRRELEVANT->ABSTAIN_FUND_FLOW": 11,
+        "POSITIVE->ABSTAIN_LOW_CONFIDENCE": 1,
+        "POSITIVE->NEGATIVE": 3,
+        "IRRELEVANT->POSITIVE": 3,
+        "IRRELEVANT->NEUTRAL": 4,
+        "POSITIVE->ABSTAIN_MARKET_INDEX": 6,
+        "NEGATIVE->NEUTRAL": 2,
+        "NEGATIVE->POSITIVE": 3,
+        "IRRELEVANT->ABSTAIN_LOW_CONFIDENCE": 1,
+        "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 1
+      },
+      "binary_macro_f1": 0.5890613451589062,
+      "three_class_macro_f1": 0.6212789920106992,
+      "rows": 138,
+      "event_groups": 35,
+      "reject_counts": {
+        "ABSTAIN_MARKET_INDEX": 45,
+        "ABSTAIN_FUND_FLOW": 11,
+        "ABSTAIN_LOW_CONFIDENCE": 3
+      },
+      "abstain_coverage": 0.427536231884058,
+      "irrelevant_rejection_rate": 0.8333333333333334
+    }
+  },
+  "latency": {
+    "model_calls": 82,
+    "p50_seconds": 0.18955484998878092,
+    "p95_seconds": 0.24089989997446537
+  },
+  "cold_start_seconds": 12.032651799963787,
+  "peak_working_set_bytes": 821559296,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "logical_cpus": 16,
+    "torch_threads": 2,
+    "device": "CPU",
+    "precision": "float32"
+  },
+  "packages": {
+    "torch": "2.10.0",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "safetensors": "0.8.0"
+  },
+  "gates": {
+    "binary_macro_f1": {
+      "actual": 0.16666666666666666,
+      "threshold": 0.6,
+      "operator": ">=",
+      "passed": false
+    },
+    "positive_recall": {
+      "actual": 0.3333333333333333,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": false
+    },
+    "negative_recall": {
+      "actual": 0.0,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": false
+    },
+    "three_class_macro_f1": {
+      "actual": 0.34920634920634924,
+      "threshold": 0.6,
+      "operator": ">=",
+      "passed": false
+    },
+    "neutral_recall": {
+      "actual": 0.8333333333333334,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": true
+    },
+    "irrelevant_rejection_rate": {
+      "actual": 0.8,
+      "threshold": 0.8,
+      "operator": ">=",
+      "passed": true
+    },
+    "abstain_coverage": {
+      "actual": 0.6363636363636364,
+      "threshold": 0.35,
+      "operator": "<=",
+      "passed": false
+    },
+    "model_p95_seconds": {
+      "actual": 0.24089989997446537,
+      "threshold": 3.0,
+      "operator": "<=",
+      "passed": true
+    }
+  },
+  "passed_numerical_gates": false,
+  "ticket_16_complete": false,
+  "production_reference_changed": false,
+  "capability": "RESEARCH_LIMITED",
+  "limitations": [
+    "SAME_UPSTREAM_HEADLINES_ONLY",
+    "NON_INDEPENDENT_PREVIOUSLY_EXPOSED_LABELS",
+    "LOW_UNIQUE_EVENT_SUPPORT",
+    "NO_VERIFIED_CORRECTION_PAIR",
+    "MODEL_TRAINING_CUTOFF_UNKNOWN",
+    "HOLDOUT_COVERAGE_GATES_STRUCTURALLY_INCOMPATIBLE_SEE_PREFLIGHT",
+    "NO_INDEPENDENT_VALIDITY_CLAIM",
+    "NOT_FINBERT2",
+    "NO_TRADING_OR_RETURN_PROBABILITY"
+  ]
+}

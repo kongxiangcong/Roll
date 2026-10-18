@@ -1,0 +1,48 @@
+{
+  "attempt_id": "SENTIMENT-FINBERT-DOWNLOAD-03",
+  "date": "2026-10-18 Asia/Shanghai",
+  "authorization": "User explicitly approved downloading and evaluating yiyanghkust/finbert-tone-chinese as an alternative; no automatic replacement or training.",
+  "model": "yiyanghkust/finbert-tone-chinese",
+  "revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "license": "apache-2.0",
+  "label_mapping": {
+    "0": "NEUTRAL",
+    "1": "POSITIVE",
+    "2": "NEGATIVE"
+  },
+  "destination": ".scratch/rce-runtime/sentiment/FinBERT-tone-chinese-e91b1a3a-03",
+  "files": [
+    "config.json",
+    "vocab.txt",
+    "tokenizer_config.json",
+    "special_tokens_map.json",
+    "README.md",
+    "model.safetensors"
+  ],
+  "allowed_hosts": [
+    "huggingface.co",
+    "cas-bridge.xethub.hf.co",
+    "cdn-lfs.huggingface.co",
+    "cdn-lfs-us-1.huggingface.co"
+  ],
+  "limits": {
+    "maximum_requests": 18,
+    "maximum_seconds": 900,
+    "maximum_bytes": 524288000,
+    "maximum_redirects_per_file": 2,
+    "retries": 0
+  },
+  "environment": "Existing isolated Docling runtime, torch2.10.0 CPU/transformers5.20.1; business venv unchanged; downloaded scripts are never executed.",
+  "checks": "First capture pinned API blob metadata. Verify every LFS SHA256 and declared size, record all artifact SHA256. Stop on mismatch/budget/host error; no inference during download.",
+  "allowed_host_suffixes": [
+    "hf.co"
+  ],
+  "previous_attempt": "02 CLOSED at 240s; preserve original partial bytes, copy verified prefix into a new directory and acquire only remaining HTTP Range, no implicit retries.",
+  "resume": {
+    "model.safetensors": {
+      "path": ".scratch/rce-runtime/sentiment/FinBERT-tone-chinese-e91b1a3a-02/model.safetensors",
+      "bytes": 162529280,
+      "sha256": "18b9619a1eafc1ce3bdf203b3d1792b90ac9a69e94f77ac063ac43d5709f0922"
+    }
+  }
+}

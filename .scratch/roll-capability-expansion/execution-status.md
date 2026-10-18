@@ -29,7 +29,7 @@
 | [13 · 财务分析进入单股与复盘](issues/13-financial-observation.md) | complete | 版本化观察/趋势/缺口/原件与PDF派生；真实三表副本、缺失/修订/禁用源、Chrome通过 |
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
-| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | partial | 已纠正拒判漏计FN：合并负向召回0.200、二类macro-F1 0.563；旧评测时间交叠，FinBERT2情绪权重与新冻结评测仍缺，中文FinBERT替代待选择 |
+| [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | partial | 中文FinBERT替代已授权、固定下载并完成138条事件/时间互斥评估；较晚P/N/U召回0.333/0/0.833、拒判0.636，门槛未过，未换生产；仍缺充分独立事件/真实更正支持 |
 | [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
@@ -140,3 +140,11 @@ SENTIMENT-CORPUS-02 150条公司名标题摘要；冻结120条代理标签（P45
 审查发现旧评测漏计拒判FN与跨类FP，已新增只读纠正工具、真实support/混淆/指标、reference口径版本和页面解释；旧报告/保存包保持可重放。合并150条二类macro-F1纠正为0.563218、正向召回0.867925、负向召回6/30=0.200，总拒判0.540，原门槛未变且未通过。旧120/30日期重叠、holdout无中性支持，精确hash组不证明语义事件隔离；新候选推理前必须重新冻结有效切分。
 
 修改后pytest10 passed/37.93s、构建通过、Chrome1 passed/12.7s；真实已有模型在新副本10条新闻上运行正向2/拒判8/覆盖20%/账户0→0/网络0，旧包不变。初次沙箱无输出、纠正后Windows长路径失败日志均保留；新短临时目录复跑通过。双轴审查和证据见[evidence/16-sentiment/takeover-20261018/acceptance.md](evidence/16-sentiment/takeover-20261018/acceptance.md)。状态仍11 complete/6 partial/9 pending；16未完成，不解除17/18/22/26依赖。无推送、PR、资格、真实资金或前向起点变化。
+
+### 2026-10-19 16中文FinBERT替代：授权评估完成，门槛未过
+
+用户明确允许下载并评估yiyanghkust/finbert-tone-chinese；固定revision e91b1a3a…、Apache-2.0、三分类0中性/1正向/2负向，409103316B权重SHA256 0c25b105…与LFS元数据一致。新attempt01白名单停止、02时间封口、03复制已哈希前缀并Range完成，全部留证且零隐式重试；未改业务依赖。
+
+原150条旧代理标签在候选结果前按保守事件组/09-16时间边界冻结，剔除12条跨边界回顾，138条/35组（开发105、较晚33）。标签仍非独立且曾暴露，不声称新人工未见测试。实际82次模型调用、网络0、无训练、冷启动12.033s、p95 0.241s、峰值约783.5MiB。较晚集合二类F1 0.167、三类F1 0.349、P/N/U召回0.333/0/0.833、I拒判0.800、总拒判0.636；四条N全为前置拒判，不能说模型错判。其不相关构成使覆盖门槛推理前已知不可同时满足，原门槛不改，结果未过。新候选未部署或替换生产reference。
+
+API/指标METHOD pytest6通过/20.00s，构建通过，干净副本/独立端口现有组件Chrome1通过/33.4s；逐条复算、冻结/模型摘要及生产reference不变验证通过。首次模型结果set序列化失败日志保留，仅修复序列化后相同方案重跑。完整证据和双轴审查见[evidence/16-sentiment/finbert-candidate-01/acceptance.md](evidence/16-sentiment/finbert-candidate-01/acceptance.md)。16仍partial；资源选择等待已解除，但新独立事件、对象归属/覆盖协议、真实更正等验收差量未满足，17/18/22/26不解锁。状态仍11 complete/6 partial/9 pending，无推送、PR、真实前向/资格/资金变化。

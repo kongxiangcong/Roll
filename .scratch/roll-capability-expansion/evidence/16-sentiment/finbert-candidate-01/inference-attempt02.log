@@ -1,0 +1,39 @@
+W1018 23:59:25.591000 35092 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]
+Loading weights:  32%|███▏      | 64/201 [00:00<00:00, 622.88it/s]
+Loading weights:  63%|██████▎   | 127/201 [00:00<00:00, 563.83it/s]
+Loading weights: 100%|██████████| 201/201 [00:00<00:00, 742.56it/s]
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-18T15:59:15.780190+00:00",
+  "model": "yiyanghkust/finbert-tone-chinese",
+  "revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "license": "apache-2.0",
+  "freeze_manifest_sha256": "f04a6379236043536cffc32aa529a1463e23362f1fb794f1b148805cedb6658c",
+  "network_calls": 0,
+  "training": false,
+  "loading_info": {
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "cold_start_seconds": 12.032651799963787,
+  "packages": {
+    "torch": "2.10.0",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "safetensors": "0.8.0"
+  },
+  "peak_working_set_bytes": 821559296,
+  "elapsed_seconds": 26.812732799968217,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "logical_cpus": 16,
+    "torch_threads": 2,
+    "device": "CPU",
+    "precision": "float32"
+  }
+}

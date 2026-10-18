@@ -1,0 +1,127 @@
+{
+  "attempt_id": "SENTIMENT-FINBERT-DOWNLOAD-03",
+  "started_at": "2026-10-18T15:54:04.507120+00:00",
+  "requests": [
+    {
+      "host": "huggingface.co",
+      "artifact": "download03-pinned-model-metadata.raw",
+      "bytes": 2211,
+      "status": 200
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "config.json",
+      "bytes": 0,
+      "status": 307
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "config.json",
+      "bytes": 1041,
+      "status": 200
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "vocab.txt",
+      "bytes": 0,
+      "status": 307
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "vocab.txt",
+      "bytes": 109540,
+      "status": 200
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "tokenizer_config.json",
+      "bytes": 0,
+      "status": 307
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "tokenizer_config.json",
+      "bytes": 1243,
+      "status": 200
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "special_tokens_map.json",
+      "bytes": 0,
+      "status": 307
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "special_tokens_map.json",
+      "bytes": 125,
+      "status": 200
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "README.md",
+      "bytes": 0,
+      "status": 307
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "README.md",
+      "bytes": 1333,
+      "status": 200
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "model.safetensors",
+      "bytes": 0,
+      "status": 302
+    },
+    {
+      "host": "us.aws.cdn.hf.co",
+      "artifact": "model.safetensors",
+      "bytes": 246574036,
+      "status": 206
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "config.json",
+      "bytes": 1041,
+      "sha256": "4b9eb1fc46e979f0177934b4ce798591a86fb5817459854a83e0ba0517f12ec2",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "vocab.txt",
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 1243,
+      "sha256": "cfcc4a4dd9757a0ebb06c5ec8056d7dd4cb1eda36ca3609e4cfa7922c3b9f003",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "special_tokens_map.json",
+      "bytes": 125,
+      "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "README.md",
+      "bytes": 1333,
+      "sha256": "24acec05c89a61bd1afa360d9913b0b043be61e5602c24eff832d14fd96d5ea6",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "model.safetensors",
+      "bytes": 409103316,
+      "sha256": "0c25b105902f90d1e039d511944af4f49d1490f6698e701f2704a714ca74e66b",
+      "lfs_sha256_verified": true
+    }
+  ],
+  "bytes": 246689529,
+  "status": "DOWNLOADED_VERIFIED",
+  "elapsed_seconds": 109.137,
+  "closed": true,
+  "retries": 0
+}
