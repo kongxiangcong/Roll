@@ -30,7 +30,7 @@
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
 | [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | complete | 单候选训练2轮/348.6秒，冻结400/120/120；主各30/事件17/19/21/27，一次评估全部原门槛通过；真实API12条/账户0/重启一致，pytest23/构建/新旧Chrome/双轴通过。仅单公司非独立受限研究，原失败及修订/转载限制保留；显式候选，NOT_GRANTED |
-| [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | pending | 已发布，未实施 |
+| [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | partial | 不可变事件序列/API/页面；pytest15、构建、真实与METHOD Chrome通过；真实旧10事件/新12待消费，等待双轴审查 |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
 | [20 · scikit-learn概率计算核验](issues/20-probability-reference.md) | complete | 固定口径实际库/API/边界/Chrome/源绑定/重放已验；非独立统计资格 |

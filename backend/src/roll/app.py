@@ -530,6 +530,24 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     from roll.market.sentiment import Sentiment,SentimentCommand
     sentiment=Sentiment(evidence)
     app.state.sentiment=sentiment
+    from roll.market.sentiment_series import SentimentSeries,SeriesCommand
+    sentiment_series=SentimentSeries(sentiment)
+    app.state.sentiment_series=sentiment_series
+
+    @app.get('/api/market/sentiment-series/runs/{identifier}')
+    def sentiment_series_run(identifier:str):return sentiment_series.get(identifier)
+
+    @app.get('/api/market/sentiment-series/{instrument}/source-runs')
+    def sentiment_series_sources(instrument:str):return sentiment_series.source_runs(instrument)
+
+    @app.get('/api/market/sentiment-series/{instrument}/snapshots')
+    def sentiment_series_history(instrument:str):return sentiment_series.history(instrument)
+
+    @app.get('/api/market/sentiment-series/{instrument}')
+    def sentiment_series_query(instrument:str):return sentiment_series.listing(instrument)
+
+    @app.post('/api/market/sentiment-series/{instrument}',status_code=201)
+    def sentiment_series_build(instrument:str,command:SeriesCommand):return sentiment_series.build(instrument,command)
 
     @app.get('/api/market/sentiment/runs/{identifier}')
     def sentiment_run(identifier:str):return sentiment.get(identifier)

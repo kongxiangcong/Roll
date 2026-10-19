@@ -1,0 +1,38 @@
+import {test,expect} from '@playwright/test';
+
+test('saved real series preserves model lineages, missing labels and first consumable checkpoint',async({page,request})=>{
+ let modelCalls=0;page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/classify'))modelCalls++;});
+ const snapshots=await (await request.get('/api/market/sentiment-series/SSE:600362/snapshots')).json();
+ expect(snapshots).toHaveLength(2);
+ const values=await Promise.all(snapshots.map(async(row:{series_id:string})=>(await request.get('/api/market/sentiment-series/runs/'+row.series_id)).json()));
+ const legacy=values.find(v=>!v.labels_supported.includes('NEUTRAL'));
+ const modern=values.find(v=>v.labels_supported.includes('NEUTRAL'));
+ expect(legacy.evidence_kind).toBe('REAL_SAVED_OBSERVATION_RECONSTRUCTION');
+ expect(modern.deferred_events).toHaveLength(12);
+ expect(modern.days.find((d:{trade_date:string})=>d.trade_date==='2026-10-20').counts).toEqual({POSITIVE:null,NEGATIVE:null,NEUTRAL:null});
+ await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+ await page.getByText('受限情绪研究',{exact:true}).click();
+ await page.getByText('事件情绪序列',{exact:true}).click();
+ await page.getByRole('button',{name:'查询已保存序列',exact:true}).click();
+ const panel=page.getByRole('region',{name:'事件情绪序列结果'});
+ await expect(panel.getByText(/实际归档观察重建.*模型/)).toBeVisible();
+ await expect(panel.getByText(/待消费事件 12/)).toBeVisible();
+ await expect(panel.getByText('2026-10-20 · 检查点未到',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'查询分类版本',exact:true}).click();
+ await expect(page.getByLabel('情绪序列分类版本').getByRole('option')).toHaveCount(5);
+ await expect(page.getByLabel('情绪序列分类版本')).toContainText('finbert-adaptation-01');
+ await expect(page.getByLabel('情绪序列分类版本')).toContainText('legacy');
+ await page.getByLabel('已保存情绪序列版本').selectOption(legacy.series_id);
+ await expect(panel.getByText(/待消费事件 0/)).toBeVisible();
+ await expect(panel.getByText('2026-10-19 · 已观察',{exact:true})).toBeVisible();
+ await expect(panel.getByText(/唯一新事件 10 · 来源 10 条 · 正向 2 · 负向 0 · 中性 未支持 · 拒判 8 · 覆盖 20%/)).toBeVisible();
+ await expect(panel.getByText('2026-10-17 · 休市',{exact:true})).toBeVisible();
+ await expect(panel.getByText('2026-10-15 · 此版本当时尚无分类',{exact:true})).toBeVisible();
+ await panel.getByText('查看序列版本与限制',{exact:true}).click();
+ await expect(panel.getByText(/分类回执/)).toBeVisible();
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/17-series/desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/17-series/mobile.png',fullPage:true});
+ for(const value of values)expect(await (await request.get('/api/market/sentiment-series/runs/'+value.series_id)).json()).toEqual(value);
+ expect(modelCalls).toBe(0);expect((await (await request.get('/api/account')).json()).version).toBe(0);
+});

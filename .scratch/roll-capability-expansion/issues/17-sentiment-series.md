@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** REVIEW_PENDING — API/不可变序列/页面、pytest15、构建、真实与METHOD Chrome已通过；真实旧10事件可消费/新12事件顺延次日，模型调用0/账户不变，等待双轴审查。
 
 **Scope / inheritance:** 观察序列，不是收益预测输入授权。
 
@@ -33,3 +33,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-19：实现与证据见[17验收](../evidence/17-series/acceptance.md)。默认模型/资格未改变；观察重建不是历史预测归档；旧失败原样保留。

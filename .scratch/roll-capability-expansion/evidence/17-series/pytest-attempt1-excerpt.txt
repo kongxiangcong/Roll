@@ -1,0 +1,9 @@
+METHOD first attempt: pytest reported3 failed,11 passed in67.39s. All3 failures were stored-snapshot GET returning404 after a successful build response. Source: observed terminal output retained in this conversation; this is an excerpt/incident note, not the original complete log.
+
+Observed failure excerpt:
+assert client.get('/api/market/sentiment-series/runs/'+old['series_id']).json() == old
+E AssertionError: assert {'detail': 'SENTIMENT_SERIES_NOT_FOUND'} == {...}
+
+Cause confirmed in ledger.connection: isolation_level=None and explicit BEGIN IMMEDIATE requires explicit commit; build closed the connection with an uncommitted insert. Fixed by db.commit() after checkpoint/snapshot insert.
+
+Log-retention incident: copying the first pytest.log used a repository-relative path while workdir was backend, so Copy-Item failed. The next pytest redirection then replaced pytest.log. The complete first log was not preserved; do not claim otherwise. No frozen source, training/evaluation artifact, or pre-existing dirty file was overwritten. Subsequent attempts use distinct file names.

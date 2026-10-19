@@ -7,7 +7,7 @@ from typing import Literal
 from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field
 from roll.accounts.ledger import encode,now
-from roll.market.news_events import associate,group_facts
+from roll.market.news_events import associate,group_facts,GROUPING_VERSION,ASSOCIATION_VERSION
 from roll.market.sentiment_contract import VERSION as REJECT_VERSION,final_label,pre_reject
 from roll.market.sentiment_object import project,VERSION as OBJECT_VERSION
 
@@ -115,6 +115,7 @@ class Sentiment:
         value={'run_id':str(uuid4()),'instrument':instrument,'basis':command.basis,'status':'RUNNING','started_at':now(),'finished_at':None,
             'reference_sha256':reference_sha,'reference':reference,'profile':command.profile,
             'reject_layer':OBJECT_VERSION if research else REJECT_VERSION,'classification_version':'sentiment-classification-v2-three-class' if research else VERSION,
+            'news_grouping_version':GROUPING_VERSION,'news_association_version':ASSOCIATION_VERSION,
             'evidence_kind':'METHOD_CASE' if self.worker or research and any(fact.get('evidence_kind')=='METHOD_CASE' for fact in facts) else 'REAL_LOCAL_CLASSIFICATION','facts':[],'errors':[],'network_calls':0,
             'system_usable':False,'capability':'RESEARCH_LIMITED'}
         with self.ledger.connection() as db:

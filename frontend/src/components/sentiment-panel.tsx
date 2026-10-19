@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {request} from '../api';
+import {SentimentSeriesPanel} from './sentiment-series-panel';
 type Fact={fact_id:string;title:string;media:string|null;association:string;label:string|null;confidence:number|null;reject_reason:string|null;text_sha256?:string;source_input_sha256?:string;model_input_text?:string;model_input_version?:string;event_id?:string};
 type Primary={binary_macro_f1:number;three_class_macro_f1:number;total_rejection:number;irrelevant_rejection:number;per_class:Record<string,{support:number;recall:number;event_groups:number}>;confusion:Record<string,number>};
 type Evaluation={metric_scope?:string;holdout?:{macro_f1:number;negative_recall:number};combined?:{macro_f1:number;positive_recall:number;negative_recall:number;non_directional_rejection_rate:number;abstain_coverage:number};primary?:Primary;primary_p95_seconds?:number;passed_frozen_gates:boolean;limitations:string[]};
@@ -33,5 +34,6 @@ export function SentimentPanel({instrument}:{instrument:string}){
    <p>拒判不是中性；未覆盖条目不进入任何情绪汇总。</p>
   </section>}
   {error&&<p role="alert">{error}</p>}
+  <SentimentSeriesPanel key={instrument} instrument={instrument} initialRunId={value?.run.run_id}/>
  </details>;
 }

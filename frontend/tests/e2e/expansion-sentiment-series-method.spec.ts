@@ -1,0 +1,21 @@
+import {test,expect} from '@playwright/test';
+test('METHOD copies, postclose gap, multi-object direction and immutable versions',async({page,request})=>{
+ const history=await (await request.get('/api/market/sentiment-series/SSE:600362/snapshots')).json();
+ const old=await (await request.get('/api/market/sentiment-series/runs/'+history[1].series_id)).json();
+ await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+ await page.getByText('受限情绪研究',{exact:true}).click();
+ await page.getByRole('button',{name:'查询已保存分类',exact:true}).click();
+ await expect(page.getByText(/江西铜业涨3%，紫金矿业跌2% · 正向/)).toBeVisible();
+ await page.getByText('事件情绪序列',{exact:true}).click();await page.getByRole('button',{name:'查询已保存序列',exact:true}).click();
+ const panel=page.getByRole('region',{name:'事件情绪序列结果'});
+ await expect(panel.getByText(/METHOD工程样例.*模型/)).toBeVisible();
+ await expect(panel.getByText(/唯一新事件 3 · 来源 4 条 · 正向 2 · 负向 1 · 中性 0/)).toBeVisible();
+ await expect(panel.getByText(/正向 67% · 负向 33% · 中性 0%/)).toBeVisible();
+ await expect(panel.getByText('2026-10-16 · 无可消费归档观察',{exact:true})).toBeVisible();
+ await expect(panel.getByText('2026-10-17 · 休市',{exact:true})).toBeVisible();
+ await page.getByLabel('已保存情绪序列版本').selectOption(old.series_id);
+ await expect(panel.getByText('2026-10-19 · 无可消费归档观察',{exact:true})).toBeVisible();
+ expect(await (await request.get('/api/market/sentiment-series/runs/'+old.series_id)).json()).toEqual(old);
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/17-series/method-mobile.png',fullPage:true});
+});
