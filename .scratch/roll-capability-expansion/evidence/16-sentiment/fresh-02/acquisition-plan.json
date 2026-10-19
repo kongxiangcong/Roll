@@ -1,0 +1,20 @@
+{
+  "attempt_id": "SENTIMENT-FRESH-CORPUS-03",
+  "date": "2026-10-19 Asia/Shanghai",
+  "authorization": "User explicitly instructed bounded acquisition of new real materials and pre-result freezing; do not reuse old holdout for tuning.",
+  "purpose": "Acquire fresh candidate Chinese headlines/summaries for SSE:600362, including company negatives, positives, neutral disclosures, corrections/denials and incidental contexts. No model inference during acquisition or labeling.",
+  "upstream": "https://search-api-web.eastmoney.com/search/jsonp",
+  "requests": [
+    {"keyword":"江西铜业 净利润 下降","page":1},
+    {"keyword":"江西铜业 亏损","page":1},
+    {"keyword":"江西铜业 净利润 增长","page":1},
+    {"keyword":"江西铜业 投产","page":1},
+    {"keyword":"江西铜业 董事会 公告","page":1},
+    {"keyword":"江西铜业 更正","page":1},
+    {"keyword":"江西铜业 澄清","page":1},
+    {"keyword":"江西铜业","page":4}
+  ],
+  "page_size": 100,
+  "limits": {"maximum_requests":8,"maximum_seconds":18,"maximum_bytes":8388608,"maximum_rows":800,"redirects":0,"retries":0},
+  "policy": "Only public list metadata and original response bytes; same upstream is not independent. Previously captured URLs/texts are excluded before sampling. Do not assert actual correction coverage unless real correction material is found. No old CLOSED budget is reopened."
+}

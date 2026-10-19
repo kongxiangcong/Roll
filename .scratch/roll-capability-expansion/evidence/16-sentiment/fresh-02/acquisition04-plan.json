@@ -1,0 +1,51 @@
+{
+  "attempt_id": "SENTIMENT-FRESH-CORPUS-04",
+  "date": "2026-10-19 Asia/Shanghai",
+  "authorization": "User explicitly instructed bounded acquisition of new real materials and pre-result freezing; do not reuse old holdout for tuning.",
+  "purpose": "Keyword-with-spaces requests in03 returned mostly non-target matches. Acquire only the previously supported bare-company search on new pages5-12; no requests from CLOSED attempts are repeated.",
+  "upstream": "https://search-api-web.eastmoney.com/search/jsonp",
+  "requests": [
+    {
+      "keyword": "江西铜业",
+      "page": 5
+    },
+    {
+      "keyword": "江西铜业",
+      "page": 6
+    },
+    {
+      "keyword": "江西铜业",
+      "page": 7
+    },
+    {
+      "keyword": "江西铜业",
+      "page": 8
+    },
+    {
+      "keyword": "江西铜业",
+      "page": 9
+    },
+    {
+      "keyword": "江西铜业",
+      "page": 10
+    },
+    {
+      "keyword": "江西铜业",
+      "page": 11
+    },
+    {
+      "keyword": "江西铜业",
+      "page": 12
+    }
+  ],
+  "page_size": 100,
+  "limits": {
+    "maximum_requests": 8,
+    "maximum_seconds": 18,
+    "maximum_bytes": 8388608,
+    "maximum_rows": 800,
+    "redirects": 0,
+    "retries": 0
+  },
+  "policy": "Only public list metadata and original response bytes; same upstream is not independent. Previously captured URLs/texts are excluded before sampling. Do not assert actual correction coverage unless real correction material is found. No old CLOSED budget is reopened."
+}

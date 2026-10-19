@@ -1,0 +1,37 @@
+{
+  "attempt_id": "SENTIMENT-FRESH-CORPUS-05",
+  "status": "FAILED_CLOSED",
+  "started_at": "2026-10-19T00:16:23.283690+00:00",
+  "requests": [
+    {
+      "number": 1,
+      "request_form": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2013-01-01~2026-10-18",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "1",
+        "pageSize": "30"
+      },
+      "received_at": "2026-10-19T00:16:23.284042+00:00",
+      "status_code": 200,
+      "file": "01.raw",
+      "sha256": "6ba3d0b959dba58bf7c2b64312b68710ffc553485693d4801c69ea2297dc71b0",
+      "bytes": 19935,
+      "returned": 30,
+      "declared_total": 1093,
+      "has_more": true
+    }
+  ],
+  "bytes": 19935,
+  "retries": 0,
+  "redirects": 0,
+  "error_type": "RuntimeError",
+  "error_code": "PDF_LOCATOR_IDENTITY_MISMATCH",
+  "elapsed_seconds": 1.934,
+  "returned": 0,
+  "unique": 0
+}

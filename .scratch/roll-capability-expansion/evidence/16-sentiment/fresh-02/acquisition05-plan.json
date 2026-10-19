@@ -1,0 +1,13 @@
+{
+  "attempt_id": "SENTIMENT-FRESH-CORPUS-05",
+  "date": "2026-10-19 Asia/Shanghai",
+  "purpose": "Supplement headline pool with issuer-bound real CNINFO disclosures, neutral governance events, genuine correction/denial/revision and impairment/earnings-decrease materials. Existing CNINFO identity/transport contract reused; no lifecycle completeness or PIT claim.",
+  "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+  "identity": {"stock":"600362,gssh0600362","column":"sse","tabName":"fulltext"},
+  "interval": "2013-01-01~2026-10-18",
+  "queries": [{"keyword":"","page":1},{"keyword":"","page":2},{"keyword":"","page":3},{"keyword":"更正","page":1},{"keyword":"澄清","page":1},{"keyword":"修订","page":1},{"keyword":"减值","page":1},{"keyword":"业绩预减","page":1}],
+  "page_size":30,
+  "limits":{"maximum_requests":8,"maximum_seconds":18,"maximum_bytes":8388608,"retries":0,"redirects":0},
+  "object_binding":"Require secCode=600362 and orgId=gssh0600362. Preserve original title; model input may prefix the verified secName 江西铜业 only when title lacks company alias. This is source metadata identity projection, not invented financial text.",
+  "closed_budget_boundary":"New purpose/queries; old CNINFO action/P0 acquisitions remain closed. Metadata clues do not establish complete correction chain without linked original documents."
+}

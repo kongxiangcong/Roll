@@ -1,0 +1,137 @@
+{
+  "passed_frozen_gates": false,
+  "primary": {
+    "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+    "per_class": {
+      "POSITIVE": {
+        "support": 30,
+        "tp": 30,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
+        "abstained": 0,
+        "event_groups": 24
+      },
+      "NEGATIVE": {
+        "support": 30,
+        "tp": 11,
+        "fn": 19,
+        "fp": 0,
+        "recall": 0.36666666666666664,
+        "precision": 1.0,
+        "f1": 0.5365853658536586,
+        "abstained": 1,
+        "event_groups": 30
+      },
+      "NEUTRAL": {
+        "support": 30,
+        "tp": 27,
+        "fn": 3,
+        "fp": 18,
+        "recall": 0.9,
+        "precision": 0.6,
+        "f1": 0.72,
+        "abstained": 3,
+        "event_groups": 12
+      },
+      "IRRELEVANT": {
+        "support": 30,
+        "tp": 0,
+        "fn": 30,
+        "fp": 0,
+        "recall": 0.0,
+        "precision": null,
+        "f1": 0.0,
+        "abstained": 30,
+        "event_groups": 27
+      }
+    },
+    "positive_recall": 1.0,
+    "negative_recall": 0.36666666666666664,
+    "confusion": {
+      "POSITIVE->POSITIVE": 30,
+      "NEGATIVE->NEGATIVE": 11,
+      "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 1,
+      "NEGATIVE->NEUTRAL": 18,
+      "NEUTRAL->NEUTRAL": 27,
+      "NEUTRAL->ABSTAIN_NO_COMPANY_OBJECT": 3,
+      "IRRELEVANT->ABSTAIN_NO_COMPANY_OBJECT": 30
+    },
+    "binary_macro_f1": 0.7682926829268293,
+    "three_class_macro_f1": 0.7521951219512196,
+    "rows": 120,
+    "event_groups": 91,
+    "reject_counts": {
+      "ABSTAIN_LOW_CONFIDENCE": 1,
+      "ABSTAIN_NO_COMPANY_OBJECT": 33
+    },
+    "abstain_coverage": 0.2833333333333333,
+    "irrelevant_rejection_rate": 1.0
+  },
+  "gates": {
+    "binary_macro_f1": {
+      "actual": 0.7682926829268293,
+      "threshold": 0.6,
+      "operator": ">=",
+      "passed": true
+    },
+    "positive_recall": {
+      "actual": 1.0,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": true
+    },
+    "negative_recall": {
+      "actual": 0.36666666666666664,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": false
+    },
+    "three_class_macro_f1": {
+      "actual": 0.7521951219512196,
+      "threshold": 0.6,
+      "operator": ">=",
+      "passed": true
+    },
+    "neutral_recall": {
+      "actual": 0.9,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": true
+    },
+    "irrelevant_rejection_rate": {
+      "actual": 1.0,
+      "threshold": 0.8,
+      "operator": ">=",
+      "passed": true
+    },
+    "abstain_coverage": {
+      "actual": 0.2833333333333333,
+      "threshold": 0.35,
+      "operator": "<=",
+      "passed": true
+    },
+    "model_p95_seconds": {
+      "actual": 0.09479239996289834,
+      "threshold": 3.0,
+      "operator": "<=",
+      "passed": true
+    }
+  },
+  "latency": {
+    "model_calls": 100,
+    "p50_seconds": 0.06910709998919629,
+    "p95_seconds": 0.09479239996289834
+  },
+  "pair": {
+    "members": [
+      "04-137",
+      "04-145"
+    ],
+    "same_input": true,
+    "same_prediction": true,
+    "counts_once_in_primary": true
+  }
+}

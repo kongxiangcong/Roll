@@ -1,0 +1,48 @@
+{
+  "primary": 120,
+  "support": {
+    "POSITIVE": {
+      "rows": 30,
+      "event_groups": 24
+    },
+    "NEGATIVE": {
+      "rows": 30,
+      "event_groups": 30
+    },
+    "NEUTRAL": {
+      "rows": 30,
+      "event_groups": 12
+    },
+    "IRRELEVANT": {
+      "rows": 30,
+      "event_groups": 27
+    }
+  },
+  "known_object_misses": [
+    "CNI-1202552172",
+    "CNI-1203572168",
+    "CNI-1224607196"
+  ],
+  "source_features": {
+    "real_negation_visual_transcription": [
+      "CNI-62167749"
+    ],
+    "real_complete_archived_report_revision_chain": [
+      "CNI-63213186",
+      "CNI-63261941",
+      "CNI-63261942"
+    ],
+    "real_later_correction_notices": [
+      "CNI-1208664534",
+      "CNI-1210301354"
+    ],
+    "shared_summary_republication": [
+      "04-137",
+      "04-145"
+    ],
+    "explicit_shared_multi_company_predicate": [
+      "04-75",
+      "04-79"
+    ]
+  }
+}
