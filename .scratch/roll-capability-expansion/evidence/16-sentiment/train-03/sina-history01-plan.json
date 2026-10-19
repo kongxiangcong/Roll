@@ -1,0 +1,28 @@
+{
+  "attempt_id": "TRAIN03-SINA-HISTORY-PROBE",
+  "url": "https://search.sina.com.cn/api/advanced?q=%E6%B1%9F%E8%A5%BF%E9%93%9C%E4%B8%9A&tp=news&sort=1&page=1&size=50&from=advanced_search&stime=1514736000&etime=1672502399",
+  "output": "sina-history01.raw",
+  "receipt": "sina-history01-receipt.json",
+  "prior_receipts": [
+    "acquisition-receipt.json",
+    "contract-html-receipt.json",
+    "contract-js-receipt.json",
+    "sina-contract-receipt.json",
+    "sina-canonical-receipt.json",
+    "sina-js-receipt.json",
+    "sina-advanced-receipt.json",
+    "sina-results-receipt.json"
+  ],
+  "purpose": "One supported public advanced query, exact fields from official modules, <=5 years; no login/verification interfaces, stop on authentication/captcha/code error; size50 no escalation if clamped",
+  "maximum_file_bytes": 2097152,
+  "params": {
+    "q": "江西铜业",
+    "tp": "news",
+    "sort": 1,
+    "page": 1,
+    "size": 50,
+    "from": "advanced_search",
+    "stime": 1514736000,
+    "etime": 1672502399
+  }
+}

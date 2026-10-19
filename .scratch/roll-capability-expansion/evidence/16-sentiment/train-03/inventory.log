@@ -1,0 +1,140 @@
+{
+  "status": "SOURCE_ONLY_NOT_TRAINING_READY",
+  "gold_labels": 0,
+  "counts": {
+    "PREVIOUSLY_CAPTURED_OR_EVALUATED_CONSERVATIVE": 224,
+    "NO_OBJECT": 1116,
+    "UP_CUE_REVIEW": 104,
+    "DIRECTION_UNRESOLVED": 301,
+    "DOWN_CUE_REVIEW": 18,
+    "DUPLICATE_URL": 105
+  },
+  "remaining_unique": 1539,
+  "by_year": {
+    "2013": {
+      "DIRECTION_UNRESOLVED": 19,
+      "NO_OBJECT": 9
+    },
+    "2014": {
+      "DIRECTION_UNRESOLVED": 29,
+      "NO_OBJECT": 11
+    },
+    "2015": {
+      "DIRECTION_UNRESOLVED": 8,
+      "NO_OBJECT": 2
+    },
+    "2016": {
+      "DIRECTION_UNRESOLVED": 1,
+      "NO_OBJECT": 1
+    },
+    "2018": {
+      "DIRECTION_UNRESOLVED": 47,
+      "NO_OBJECT": 10
+    },
+    "2020": {
+      "DIRECTION_UNRESOLVED": 2
+    },
+    "2021": {
+      "DIRECTION_UNRESOLVED": 1
+    },
+    "2022": {
+      "DIRECTION_UNRESOLVED": 48,
+      "NO_OBJECT": 46,
+      "DOWN_CUE_REVIEW": 2,
+      "UP_CUE_REVIEW": 7
+    },
+    "2023": {
+      "DIRECTION_UNRESOLVED": 14,
+      "NO_OBJECT": 16
+    },
+    "2024": {
+      "NO_OBJECT": 32,
+      "DOWN_CUE_REVIEW": 4,
+      "DIRECTION_UNRESOLVED": 11,
+      "UP_CUE_REVIEW": 5
+    },
+    "2025": {
+      "DIRECTION_UNRESOLVED": 19,
+      "NO_OBJECT": 12
+    },
+    "2026": {
+      "NO_OBJECT": 977,
+      "UP_CUE_REVIEW": 92,
+      "DIRECTION_UNRESOLVED": 102,
+      "DOWN_CUE_REVIEW": 12
+    }
+  },
+  "source_sha256": {
+    "corpus-attempt/corpus.json": "e898fda3fc66dff6eda9d8c9cfbba3891c2c405441913aab473bb505a92f590f",
+    "corpus-name-attempt/corpus.json": "e8f3e27576569597fb6239fc304e8658a8d7ffff132a9c5a6b8249fcec53a398",
+    "labels-120.json": "d826224f6bd5c311d15133ef8f1bffd887416a4e82ff198b0aeacc9ef712bfa4",
+    "labels-holdout-30.json": "8136b81776612d3f8d19b019d54bf59f4b8d181b905eddd6b9b1cc855a34aafd",
+    "fresh-02/frozen-evaluation.json": "73bfe80b85e0b30120f14e487859c69b3bb4c19b75b90d9de50899be5e7fe42c",
+    "fresh-02/corpus.json": "061a4eb080bed1c342cf2d1ef491c7e64d3ba6069e4109da1e08d6bf140cbae7",
+    "fresh-02/corpus04.json": "09cfddeb12104f5c7b09863f62c0945ad0bbfb8f1881fa99ce4f6bc83b5a04f0",
+    "fresh-02/corpus06.json": "43feaa4090510673f438d99910f3fe9414d5c1bd5770d29ba762c65f12477d99",
+    "train-03/corpus.json": "bffe1a7446d37a984dfdc033729e4a1bf5b73c5808dd40ceb91338e1a7ae04f7",
+    "train-03/sina-probe-corpus.json": "31cc4a90f82df02b8ef72362b79d7965f9d67b06c09d3e155a0cc00098c44e39",
+    "train-03/remaining-corpus.json": "a3c457783b5e7470d57ee20b08bbe823317b5c6ba508d120c69f326ae31c2ca2"
+  },
+  "old_exclusions_are_not_relabeling": true,
+  "cue_buckets_are_not_gold_labels": true,
+  "no_model_calls": true,
+  "fixed_period_source_upper_bounds": {
+    "TRAIN": {
+      "raw_unique_candidates": 243,
+      "object_projected_candidates": 164,
+      "not_gold_labels": true,
+      "cue_buckets": {
+        "DIRECTION_UNRESOLVED": 155,
+        "NO_OBJECT": 79,
+        "DOWN_CUE_REVIEW": 2,
+        "UP_CUE_REVIEW": 7
+      }
+    },
+    "DEVELOPMENT": {
+      "raw_unique_candidates": 82,
+      "object_projected_candidates": 34,
+      "not_gold_labels": true,
+      "cue_buckets": {
+        "DIRECTION_UNRESOLVED": 25,
+        "NO_OBJECT": 48,
+        "DOWN_CUE_REVIEW": 4,
+        "UP_CUE_REVIEW": 5
+      }
+    },
+    "HOLDOUT": {
+      "raw_unique_candidates": 1214,
+      "object_projected_candidates": 225,
+      "not_gold_labels": true,
+      "cue_buckets": {
+        "NO_OBJECT": 989,
+        "UP_CUE_REVIEW": 92,
+        "DIRECTION_UNRESOLVED": 121,
+        "DOWN_CUE_REVIEW": 12
+      }
+    }
+  },
+  "training_400_raw_cardinality_gate": false,
+  "training_started": false
+}
+
+NEGATIVE CUE CANDIDATES (not labels)
+fresh-02/corpus04.json|37|2026-06-23 17:00:04|龙虎榜|江西铜业今日跌停 2家机构专用席位净买入1.17亿元；江西铜业今日跌停
+fresh-02/corpus04.json|109|2026-07-13 10:08:05|江西铜业下跌6.16%
+fresh-02/corpus04.json|177|2026-06-23 10:54:07|江西铜业跌超8%
+fresh-02/corpus04.json|186|2026-06-24 11:10:14|江西铜业下跌
+fresh-02/corpus04.json|190|2026-06-23 14:27:17|江西铜业下跌10.01%
+fresh-02/corpus04.json|320|2026-05-05 09:47:46|江西铜业股份跌超4%
+fresh-02/corpus04.json|331|2026-06-08 11:10:00|泰金新能、锡业股份、江西铜业等均跌超5%
+fresh-02/corpus04.json|455|2026-05-05 10:25:00|江西铜业股份跌超4%
+train-03/sina-probe-corpus.json|S19-11|2022-10-27 18:39:00|江西铜业：第三季度净利12.6亿元 同比下降13.79%
+train-03/remaining-corpus.json|S22-06|2022-06-23 11:13:33|港股异动 | 有色金属板块跌幅居前 洛阳钼业(03993)跌超8% 江西铜业股份(00358)跌超6%
+train-03/remaining-corpus.json|S24-01|2024-12-31 18:50:47|江西铜业收盘下跌2.37%
+train-03/remaining-corpus.json|S24-04|2024-12-31 14:11:30|江西铜业跌2.03%；江西铜业盘中下跌2.03%
+train-03/remaining-corpus.json|S24-14|2024-12-27 19:00:52|江西铜业收盘下跌0.05%
+train-03/remaining-corpus.json|S27-19|2024-12-20 19:15:46|江西铜业收盘下跌1.34%
+train-03/remaining-corpus.json|S28-01|2026-10-15 15:09:19|江西铜业（600362.SH）跌超5%
+train-03/remaining-corpus.json|S29-01|2026-09-11 11:52:00|港股异动 | 港股有色金属板块集体走弱  江西铜业股份、洛阳钼业均跌超10%
+train-03/remaining-corpus.json|S29-05|2026-09-11 10:00:35|江西铜业跌超10%；江西铜业股份跌超10%
+train-03/remaining-corpus.json|S29-10|2026-09-11 09:32:11|港股铜矿股多数走弱 江西铜业股份跌超6%；转自：财联社【港股铜矿股多数走弱江西铜业股份跌超6%】财联社9月11日电；江西铜业股份(00358.HK)跌6.65%
