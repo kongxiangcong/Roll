@@ -30,7 +30,7 @@
 | [14 · 单股新闻与正文归档](issues/14-news-ingestion.md) | complete | API/原件/标题及真实4HTTP/10条/3HTML/Chrome通过；2026-10-18 实际 Trafilatura 2.3.1 对3份归档HTML抽取成功，reference VERIFIED |
 | [15 · 新闻证券关联与转载去重](issues/15-news-entity-dedup.md) | complete | 事件归并/四类关联/别名冲突/多对象/重启幂等；真实10条样本与Chrome通过，真实转载未出现 |
 | [16 · 中文情绪组件与有限评测](issues/16-sentiment-evaluation.md) | complete | 单候选训练2轮/348.6秒，冻结400/120/120；主各30/事件17/19/21/27，一次评估全部原门槛通过；真实API12条/账户0/重启一致，pytest23/构建/新旧Chrome/双轴通过。仅单公司非独立受限研究，原失败及修订/转载限制保留；显式候选，NOT_GRANTED |
-| [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | partial | 不可变事件序列/API/页面；pytest15、构建、真实与METHOD Chrome通过；真实旧10事件/新12待消费，等待双轴审查 |
+| [17 · 事件级情绪序列与覆盖说明](issues/17-sentiment-series.md) | complete | 不可变v2事件序列/计数比例/拒判/日历缺口/API/页面；pytest15+审查后序列6、构建、真与METHOD Chrome/双轴通过；真实10已观察/12待次日，零推理；非历史预测/NOT_GRANTED |
 | [18 · 财报新闻接入现有日常运行](issues/18-observation-worker.md) | pending | 已发布，未实施 |
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
 | [20 · scikit-learn概率计算核验](issues/20-probability-reference.md) | complete | 固定口径实际库/API/边界/Chrome/源绑定/重放已验；非独立统计资格 |
@@ -158,3 +158,5 @@ API/指标METHOD pytest6通过/20.00s，构建通过，干净副本/独立端口
 ### 2026-10-19 16单次训练获授权，数据可行性阶段停止
 
 用户批准一次2 epoch/60分钟本地候选训练。先按授权进行32HTTP/120秒/16MiB取数，实际32/2723000B/62.180秒封口；含25索引查询及7接口契约读取。新公开历史接口/实际页长20已核实；CNINFO page50重复错误保留，page30真实内容翻页修复。训练<=2022、开发2023—24、主留出>=2025在任何模型前固定，旧曝光材料保守排除；原始候选上界243/82/1214，对象投影164/34/225，不能称金标准支持。必要训练400/开发120尚不足，故0训练/0新模型评估，原fresh02负召回11/30失败不改、不降低门槛。摘要/预算/冻结校验通过、METHOD14通过、构建/原组件Chrome1通过，见[验收](evidence/16-sentiment/train-03/acceptance.md)。16仍needs-info/partial、总11complete/6partial/9pending，17/18/22/26仍阻塞。训练权限已解决且未消耗；下一仅语料64请求日历分段提案待新增外部取数预算授权，不能无限追加请求。其余真实来源/工件/资金/自然时间条件不变。
+
+2026-10-19：17完成受限观察工程，证据17-series/acceptance.md；审查发现旧转载覆盖更正/推迟首次消费两个问题，v2及METHOD回归修复，旧快照保留。下一18，22工程依赖亦就绪；26仍缺02/03/04权威来源、05完整拟合/REAL、06、07真实资金，不能标记完成。

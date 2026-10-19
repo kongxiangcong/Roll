@@ -104,6 +104,27 @@ def test_revision_before_first_consumption_uses_latest_known_event_once(tmp_path
         assert monday['events'][0]['source_run_id'] == second['run_id']
 
 
+def test_late_reprint_neither_delays_first_consumption_nor_reverts_correction(tmp_path, monkeypatch):
+    with TestClient(create_app(tmp_path, runtime_role='API')) as client:
+        setup(client)
+        collect(client, monkeypatch, [P], '2026-10-15T14:00:00+08:00', 'original')
+        collect(client, monkeypatch, [COPY], '2026-10-15T15:01:00+08:00', 'postclose-copy')
+        first = classify(client, monkeypatch, '2026-10-15T15:02:00+08:00', 'first')
+        old, _ = build(client, first, 'first-series')
+        assert old['days'][0]['unique_events'] == 1 and old['days'][0]['source_fact_count'] == 2
+        assert old['days'][0]['counts']['POSITIVE'] == 1 and not old['deferred_events']
+        collect(client, monkeypatch, [(P[0], N[1], N[2])], '2026-10-16T14:00:00+08:00', 'correction')
+        classify(client, monkeypatch, '2026-10-16T14:01:00+08:00', 'corrected')
+        collect(client, monkeypatch, [('20261014123800', P[1], P[2])], '2026-10-19T14:00:00+08:00', 'late-old-copy')
+        latest = classify(client, monkeypatch, '2026-10-19T14:01:00+08:00', 'late-copy-classification')
+        value, _ = build(client, latest, 'latest-series')
+        assert value['latest_consumed_states'][0]['label'] == 'NEGATIVE'
+        assert value['days'][1]['revision_event_count'] == 1
+        assert value['days'][-1]['status'] == 'NO_OBSERVATIONS'
+        assert value['days'][-1]['revision_event_count'] == 0
+        assert client.get('/api/market/sentiment-series/runs/'+old['series_id']).json() == old
+
+
 def test_later_exact_link_and_model_changes_start_successor_without_old_rewrite(tmp_path, monkeypatch):
     with TestClient(create_app(tmp_path, runtime_role='API')) as client:
         setup(client)

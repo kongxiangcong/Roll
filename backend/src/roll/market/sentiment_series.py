@@ -12,7 +12,7 @@ from roll.accounts.ledger import encode, now
 from roll.market.news_events import content_digest
 from roll.market.rules import SHANGHAI
 
-VERSION = 'sentiment-event-series-v1'
+VERSION = 'sentiment-event-series-v2'
 CHECKPOINT = {'id': 'POST_CLOSE_1505_V1', 'time': '15:05:00', 'timezone': 'Asia/Shanghai',
               'source_close_boundary': '15:00:00', 'namespace': 'SAVED_RESEARCH_OBSERVATION'}
 LABELS = ('POSITIVE', 'NEGATIVE', 'NEUTRAL')
@@ -154,7 +154,14 @@ class SentimentSeries:
                     digests[source['fact_id']] = content_digest(source)
                 groups[prediction['event_id']].append((source, prediction))
             for event_id, members in groups.items():
-                source, prediction = max(members, key=lambda item: (aware(item[0]['available_at']), item[0]['fact_id']))
+                # A reprint repeats an existing content version. Its later receipt
+                # must neither supersede a correction nor delay first consumption.
+                versions = {}
+                for item in members:
+                    digest = digests[item[0]['fact_id']]
+                    if digest not in versions or (aware(item[0]['available_at']), item[0]['fact_id']) < (aware(versions[digest][0]['available_at']), versions[digest][0]['fact_id']):
+                        versions[digest] = item
+                source, prediction = max(versions.values(), key=lambda item: (aware(item[0]['available_at']), item[0]['fact_id']))
                 signature = digests[source['fact_id']] + '|' + prediction['text_sha256']
                 if seen.get(event_id) == signature:
                     continue
