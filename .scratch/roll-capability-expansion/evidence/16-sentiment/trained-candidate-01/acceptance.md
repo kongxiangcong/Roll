@@ -1,6 +1,6 @@
-# Ticket16 Chinese FinBERT bounded adaptation — ready for two-axis review
+# Ticket16 Chinese FinBERT bounded adaptation — limited research component complete
 
-Status: implementation and recorded checks complete; ticket remains partial pending standards/spec review. No formal capability grant. New research profile requires explicit selection; the legacy binary default/reference remains unchanged.
+Status: COMPLETE_LIMITED_RESEARCH after independent Standards/Spec review; no blocking findings. No formal capability grant. New research profile requires explicit selection; the legacy binary default/reference remains unchanged.
 
 ## Frozen real study
 
@@ -30,6 +30,6 @@ Pytest23 passed/37.79s: existing binary API/metric tests, new research API3-clas
 
 Frontend build passed/Vite3.59s; existing >500kB chunk warning retained. Chrome channel research1 passed/13.2s, old binary1 passed/17.7s, clean data copies and unused ports18223/15223 and18224/15224. No browser-triggered classification; actual API positive path is separately verified above. New desktop/mobile screenshots inspected,390px no horizontal overflow. Chinese limitations are readable and detailed original limits remain expandable. Legacy binary loading/mapping compatibility checked with zero text inputs/inference: no missing/unexpected/mismatched weights, labels Negative/Positive unchanged.
 
-## Remaining review and scope
+## Review outcome and remaining limits
 
-Do not mark ticket16 complete before the two-axis review. Formal capability remains RESEARCH_LIMITED/NOT_GRANTED. Source/authority/funding/training/time gates in other tickets remain. Ticket17 remains blocked until16 is actually complete. Main source, training/evaluation, runtime and METHOD records are intentionally distinct.
+The two-axis review is complete: Standards0 findings, Spec1 nonblocking coverage limitation and0 blockers; see review-results.md. Ticket16 is complete as the accepted limited research slice. Formal capability remains RESEARCH_LIMITED/NOT_GRANTED. Source/authority/funding/training/time gates in other tickets remain;17 is now dependency-ready but has not been accepted. Main source, training/evaluation, runtime and METHOD records remain distinct. Fixed commit tree3581c60 was independently byte-checked against all319 explicit manifest entries after the staged-check sequencing error; see commit-integrity.json. Original HTML whitespace was preserved and checked separately from generated files.
