@@ -8,7 +8,7 @@
 
 **Completion:** pending
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** WAITING_FOR_DEPENDENCIES — 已核对02/03/04/05/06/07仍未complete；18/22工程依赖已交付，但不得跳过其余前置开始集成验收。
 
 **Scope / inheritance:** 本票工程收口不等待08/23—25自然时间，但不能替代它们的真实验收。
 
@@ -34,3 +34,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-20：现场逐票核对见[evidence/26-readiness/dependency-audit.json](../evidence/26-readiness/dependency-audit.json)。Completion仍pending，未勾选验收、未执行安装/迁移/正式收口。下一就绪工作需先补02—04权威契约、05指定真实工件/authority等、07真实资金；06仍依赖05。08/23—25真实条件另外保留。

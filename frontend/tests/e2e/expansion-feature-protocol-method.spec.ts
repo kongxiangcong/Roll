@@ -16,6 +16,13 @@ test('METHOD linked preregistration to snapshot and engineering preflight, with 
  await expect(page.getByRole('region',{name:'特征工程预检'}).getByText(/工程契约成立 · 真实拟合未准入/)).toBeVisible();
  await page.getByText('查看拟合仍缺条件',{exact:true}).click();
  await expect(page.getByText('FEATURE_FIT_EXECUTOR_AND_TRAINING_AUTHORITY_TICKET23_REQUIRED',{exact:true})).toBeVisible();
+ const selector=page.getByLabel('已保存特征协议',{exact:true});const current=await selector.inputValue();
+ const saved=await (await request.get('/api/research/feature-plans')).json();const other=saved.find((p:{plan_id:string})=>p.plan_id!==current);
+ await selector.selectOption(other.plan_id);await expect(page.getByRole('region',{name:'特征工程预检'})).toHaveCount(0);
+ await selector.selectOption(current);await expect(page.getByRole('region',{name:'特征工程预检'})).toHaveCount(0);
+ await page.getByRole('button',{name:'保存特征工程预检',exact:true}).click();
+ await expect(page.getByRole('region',{name:'特征工程预检'}).getByText(/工程契约成立 · 真实拟合未准入/)).toBeVisible();
+ await page.getByRole('button',{name:'查询特征协议与快照',exact:true}).click();await expect(page.getByRole('region',{name:'特征工程预检'})).toHaveCount(0);
  await page.getByRole('button',{name:'登记关联特征协议',exact:true}).click();
  await expect(page.getByRole('alert').filter({hasText:'家族拟合额度不足'})).toBeVisible();
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();

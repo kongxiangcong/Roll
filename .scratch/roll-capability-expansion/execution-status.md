@@ -35,11 +35,11 @@
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
 | [20 · scikit-learn概率计算核验](issues/20-probability-reference.md) | complete | 固定口径实际库/API/边界/Chrome/源绑定/重放已验；非独立统计资格 |
 | [21 · arch区块统计核验](issues/21-block-stat-reference.md) | complete | 实际arch成对统计/API/边界/Chrome/保存重放通过；来源区间不足，独立有效性未授予 |
-| [22 · 新增特征快照与消融协议](issues/22-feature-asof-protocol.md) | partial | 关联家族预算/固定契约/特征快照/预检/API/页面；14回归+最终4新项/构建/真与METHOD Chrome通过；真实来源快照零拟合/SEALED，待双审查 |
+| [22 · 新增特征快照与消融协议](issues/22-feature-asof-protocol.md) | complete | 双轴通过；预检绑定修复/Chrome16.5s/构建3.11s；关联预算/固定契约/快照/API/页面工程完成，真实拟合未准入 |
 | [23 · 后继候选真实训练与完整冻结](issues/23-successor-fit.md) | pending | 已发布，未实施；含真实外部/时间条件 |
 | [24 · 后继候选真实前向启运](issues/24-successor-forward.md) | pending | 已发布，未实施；含真实外部/时间条件 |
 | [25 · 后继实验终点验证交付](issues/25-successor-verdict.md) | pending | 已发布，未实施；含真实外部/时间条件 |
-| [26 · 增量工程交付与兼容验收](issues/26-integration-delivery.md) | pending | 已发布，未实施 |
+| [26 · 增量工程交付与兼容验收](issues/26-integration-delivery.md) | pending | 依赖核对：02/03/04/05/06/07未完成，不启动收口 |
 
 ## 规划文档检查
 
@@ -162,3 +162,5 @@ API/指标METHOD pytest6通过/20.00s，构建通过，干净副本/独立端口
 2026-10-19：17完成受限观察工程，证据17-series/acceptance.md；审查发现旧转载覆盖更正/推迟首次消费两个问题，v2及METHOD回归修复，旧快照保留。下一18，22工程依赖亦就绪；26仍缺02/03/04权威来源、05完整拟合/REAL、06、07真实资金，不能标记完成。
 
 2026-10-19：18完成受限观察工程（18-worker/acceptance.md）；默认暂停，旧worker脏字节保留，仅提交两行接入。真实首轮推理45秒超时没有冒充成功；最终事实路径原进程租约/重启/通知/账户通过。通知回归3项旧失败已在pre18模块复现；不改旧P0路径。下一22，26真实前置仍不齐。
+
+2026-10-20：22工程完成（22-features/acceptance.md、review-results.md），预检跨协议旧结果修复，METHOD Chrome/构建通过。当前15complete/5partial/6pending。26保持pending，缺02/03/04权威契约、05四非中心工件/REAL authority/独立支持/完整冻结、06依赖05、07真实资金；不绕过Blocked by。23—25另需真实训练材料/授权与自然时间，16训练授权已消费，不复用。

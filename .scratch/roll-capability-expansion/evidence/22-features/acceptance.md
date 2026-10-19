@@ -1,4 +1,4 @@
-# Ticket22 acceptance — review pending
+# Ticket22 acceptance — complete (engineering only)
 
 Dependencies11/17/20/21 complete, implementation baselineaa5af2d. New feature research is a linked immutable supplement to an existing core baseline protocol; no original registry/models/design/execution/validation source change. Original12 model-fingerprint files matchfe5d01c7 (`model-preservation.json`). Old protocols/artifacts/accounts/results remain unchanged. No fitting, label computation, model calls, source HTTP or SEALED access by this feature.
 
@@ -32,4 +32,7 @@ Final build passed3.27s, existing >500kB warning. Chrome channel/explicitAPI rol
 
 ## Limits / next
 
-Python3.13.12, existing FastAPI/SQLite/Pydantic/React/Vite/Playwright/Chrome, no dependency install. Fixed feature versionfinancial-sentiment-feature-protocol-v1 and exact code/reference archives. No real fitting/training authorization, qualifying historical feature/label package, independent calibration validity, source authority, funds or complete experiment freeze provided.23 requires these separately;16's one training authorization was consumed for its Chinese sentiment candidate and is not reused here.26 still has incomplete02/03/04/05/06/07 dependencies. Dual Standards/Spec review required before complete.
+Python3.13.12, existing FastAPI/SQLite/Pydantic/React/Vite/Playwright/Chrome, no dependency install. Fixed feature versionfinancial-sentiment-feature-protocol-v1 and exact code/reference archives. No real fitting/training authorization, qualifying historical feature/label package, independent calibration validity, source authority, funds or complete experiment freeze provided.23 requires these separately;16's one training authorization was consumed for its Chinese sentiment candidate and is not reused here.26 still has incomplete02/03/04/05/06/07 dependencies. Dual Standards/Spec review passed; see review-results.md.
+
+
+2026-10-20 review closure: Spec passed pinned9a2cb33. Standards found stale preflight presentation on protocol changes; fixed by clearing on selection/load/register/capture and requiring plan_id plus snapshot_id equality at render (including late async responses). Final METHOD Chrome1passed16.5s covers switching, returning, explicit re-preflight and reload invalidation; build3.11s passed. Prior browser JSON/screenshot preserved separately. No backend/model/holdout/threshold change in this fix.
