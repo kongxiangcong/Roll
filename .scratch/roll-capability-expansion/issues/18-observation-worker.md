@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** REVIEW_PENDING — 原worker接入/API/持久化/页面，METHOD/真实保存来源进程租约与重启、构建/Chrome通过；真实首轮推理超时保留，成功事实路径零HTTP/推理，旧通知3失败在基线复现。待双轴审查。
 
 **Scope / inheritance:** 复用原worker、租约、缓存、退避、站内通知。
 
@@ -34,3 +34,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-19：见[18验收](../evidence/18-worker/acceptance.md)。默认暂停/站内限定，原worker旧脏字节受保护，不提交旧P0修改。

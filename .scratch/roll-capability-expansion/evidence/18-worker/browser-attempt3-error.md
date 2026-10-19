@@ -1,0 +1,157 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]: Roll 账户镜像
+    - navigation "主导航" [ref=e5]:
+      - button "今天" [ref=e6] [cursor=pointer]
+      - button "持仓与关注" [ref=e7] [cursor=pointer]
+      - button "同步账户" [ref=e8] [cursor=pointer]
+      - button "历史记录" [ref=e9] [cursor=pointer]
+      - button "设置" [ref=e10] [cursor=pointer]
+  - main [ref=e11]:
+    - button "市场事实" [ref=e12] [cursor=pointer]
+    - button "账户估值与绩效" [ref=e13] [cursor=pointer]
+    - generic [ref=e14]:
+      - heading "持仓与关注" [level=1] [ref=e15]
+      - paragraph [ref=e16]: 真实持仓自动纳入。关注只用于有限名单内观察，交易判断尚未启用。
+      - paragraph [ref=e17]: 名单版本 5 · 账户版本 0 · 共 1 只
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - text: 关注交易所
+          - combobox "关注交易所" [ref=e20]:
+            - option "上交所" [selected]
+            - option "深交所"
+            - option "北交所"
+        - generic [ref=e21]:
+          - text: 关注代码
+          - textbox "关注代码" [ref=e22]:
+            - /placeholder: 六位代码
+        - button "添加关注" [ref=e23] [cursor=pointer]
+      - article "SSE:600362" [ref=e24]:
+        - generic [ref=e25]:
+          - heading "江西铜业股份有限公司 · SSE:600362" [level=2] [ref=e26]:
+            - text: 江西铜业股份有限公司
+            - generic [ref=e27]: · SSE:600362
+          - button "取消关注" [ref=e28] [cursor=pointer]
+        - paragraph [ref=e29]: 关注证券
+        - paragraph [ref=e30]: 身份：SSE / 主板 / 普通 A 股
+        - paragraph [ref=e31]: 规则：未适配 · 账户权限：未知
+        - paragraph [ref=e32]: 当前证券状态未知，依赖该状态的交易用途受限。账户权限未知 · 模型资格未授予。
+        - group [ref=e33]:
+          - generic "查看规则、状态与依据" [ref=e34] [cursor=pointer]
+        - group [ref=e35]:
+          - generic "查看证券状态来源" [ref=e36] [cursor=pointer]
+        - group [ref=e37]:
+          - generic "查看公司行动与旧义务" [ref=e38] [cursor=pointer]
+        - group [ref=e39]:
+          - generic "查看利润表" [ref=e40] [cursor=pointer]
+        - group [ref=e41]:
+          - generic "三表联读" [ref=e42] [cursor=pointer]
+        - group [ref=e43]:
+          - generic "确定性财务指标" [ref=e44] [cursor=pointer]
+        - group [ref=e45]:
+          - generic "财务观察" [ref=e46] [cursor=pointer]
+        - group [ref=e47]:
+          - generic "查看近期新闻" [ref=e48] [cursor=pointer]
+        - group [ref=e49]:
+          - generic "受限情绪研究" [ref=e50] [cursor=pointer]
+          - option "请选择已完成的分类" [selected]
+        - group [ref=e51]:
+          - generic "日常财报新闻观察" [ref=e52] [cursor=pointer]
+          - paragraph [ref=e53]: 复用原后台进程与租约。财报按需更新；新闻可在当前在线交易日15:05后观察，离线缺席不补造当日预测。只发站内变化摘要，外部通知渠道保持既有设置。
+          - button "查询日常观察状态" [ref=e54] [cursor=pointer]
+          - region "日常观察状态" [ref=e55]:
+            - status [ref=e56]: 日常观察已启用 · 设置版本 4 · 单任务上限45秒 · 账户与交易资格独立
+            - button "暂停日常观察" [ref=e57] [cursor=pointer]
+            - generic [ref=e58]:
+              - checkbox "盘后新闻观察" [ref=e59]
+              - text: 盘后新闻观察
+            - generic [ref=e60]:
+              - checkbox "盘后按原来源预算补取（来源另需启用）" [ref=e61]
+              - text: 盘后按原来源预算补取（来源另需启用）
+            - generic [ref=e62]:
+              - checkbox "受限情绪分类（失败仍保留新闻事实）" [ref=e63]
+              - text: 受限情绪分类（失败仍保留新闻事实）
+            - generic [ref=e64]:
+              - text: 日常情绪版本
+              - combobox "日常情绪版本" [ref=e65]:
+                - option "原二分类（旧质量门槛未通过）"
+                - option "中文FinBERT（单公司有限挑战集，非独立有效性）" [selected]
+            - paragraph [ref=e66]:
+              - text: AKShare 东财单股新闻 · 来源已暂停
+              - button "恢复AKShare 东财单股新闻" [ref=e67] [cursor=pointer]
+              - text: · 连续失败 0 次
+            - paragraph [ref=e68]:
+              - text: AKShare 东财利润表 · 来源已暂停
+              - button "恢复AKShare 东财利润表" [ref=e69] [cursor=pointer]
+              - text: · 连续失败 0 次
+            - generic [ref=e70]:
+              - checkbox "本次允许按原预算刷新来源；不勾选只读已保存事实" [ref=e71]
+              - text: 本次允许按原预算刷新来源；不勾选只读已保存事实
+            - button "请求财务观察更新" [ref=e72] [cursor=pointer]
+            - button "请求新闻观察更新" [ref=e73] [cursor=pointer]
+            - paragraph [ref=e74]: 任务 4 条；观察 2 个。源缓存按实际采集完成时点判断，不用包装时间刷新；同输入复用保存观察。
+            - paragraph [ref=e76]: FINANCIAL · CANCELLED · 创建 2026-10-19T15:18:52.204265+00:00 · 完成 2026-10-19T15:18:52.347392+00:00 · USER_CANCELLED
+            - paragraph [ref=e78]: NEWS · COMPLETE · 创建 2026-10-19T15:14:29.101267+00:00 · 完成 2026-10-19T15:14:29.388356+00:00 · 已复用同输入观察
+            - paragraph [ref=e80]: FINANCIAL · COMPLETE · 创建 2026-10-19T15:14:18.664629+00:00 · 完成 2026-10-19T15:14:23.476938+00:00
+            - paragraph [ref=e82]: NEWS · COMPLETE · 创建 2026-10-19T15:14:18.650343+00:00 · 完成 2026-10-19T15:14:23.142422+00:00
+            - group [ref=e83]:
+              - generic "FINANCIAL · 实际保存来源观察 · 2026-10-19T15:14:23.476685+00:00" [ref=e84] [cursor=pointer]
+            - group [ref=e85]:
+              - generic "NEWS · 实际保存来源观察 · 2026-10-19T15:14:23.142274+00:00" [ref=e86] [cursor=pointer]
+            - group [ref=e87]:
+              - generic "查看原worker与离线覆盖回执" [active] [ref=e88] [cursor=pointer]
+              - paragraph [ref=e89]: 原后台进程 STOPPED · 租约上限 1 · 实际会话 14 次
+              - paragraph [ref=e90]: 离线或心跳缺席 13 段；不重建历史预测、不补发过期机会。
+              - paragraph [ref=e91]: 2026-10-17T16:48:11.156921+00:00 至 2026-10-17T18:13:27.817652+00:00 · PROCESS_OR_SLEEP_GAP_UNOBSERVED
+              - paragraph [ref=e92]: 2026-10-17T18:13:40.857711+00:00 至 2026-10-17T18:14:35.960282+00:00 · NORMAL_OFFLINE_NO_COVERAGE_PROMISED
+              - paragraph [ref=e93]: 2026-10-17T18:15:37.451006+00:00 至 2026-10-17T18:16:02.626832+00:00 · PROCESS_OR_SLEEP_GAP_UNOBSERVED
+              - paragraph [ref=e94]: 2026-10-17T18:16:03.720524+00:00 至 2026-10-17T18:16:20.258797+00:00 · PROCESS_OR_SLEEP_GAP_UNOBSERVED
+              - paragraph [ref=e95]: 2026-10-17T18:16:26.901738+00:00 至 2026-10-18T03:51:26.294477+00:00 · PROCESS_OR_SLEEP_GAP_UNOBSERVED
+              - paragraph [ref=e96]: 2026-10-18T03:51:39.582035+00:00 至 2026-10-18T03:52:32.264970+00:00 · PROCESS_OR_SLEEP_GAP_UNOBSERVED
+              - paragraph [ref=e97]: 2026-10-18T03:53:33.961496+00:00 至 2026-10-18T03:56:15.594976+00:00 · NORMAL_OFFLINE_NO_COVERAGE_PROMISED
+              - paragraph [ref=e98]: 2026-10-18T03:56:34.812505+00:00 至 2026-10-18T03:57:06.576248+00:00 · NORMAL_OFFLINE_NO_COVERAGE_PROMISED
+              - paragraph [ref=e99]: 2026-10-18T03:57:14.166624+00:00 至 2026-10-19T15:14:22.797903+00:00 · PROCESS_OR_SLEEP_GAP_UNOBSERVED
+              - paragraph [ref=e100]: 2026-10-19T15:14:29.513025+00:00 至 2026-10-19T15:14:34.317170+00:00 · NORMAL_OFFLINE_NO_COVERAGE_PROMISED
+        - group [ref=e101]:
+          - generic "核对证券身份与依据" [ref=e102] [cursor=pointer]
+          - option "主板" [selected]
+          - option "科创板"
+          - option "创业板"
+          - option "北交所"
+          - option "未核对"
+          - option "其他"
+          - option "未核对"
+          - option "普通 A 股" [selected]
+          - option "其他证券（基本规则未适配）"
+        - group [ref=e103]:
+          - generic "查看单股当前动作" [ref=e104] [cursor=pointer]
+      - paragraph [ref=e105]: 背景指数：上证指数（SSE:000001）、深证成指（SZSE:399001）、沪深300（SSE:000300）、中证500（SSE:000905）、中证白酒（SZSE:399997）。仅作市场背景/基准，无指数交易能力。
+    - generic [ref=e106]:
+      - heading "交易日与规则范围" [level=2] [ref=e107]
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - text: 日历交易所
+          - combobox "日历交易所" [ref=e110]:
+            - option "上交所" [selected]
+            - option "深交所"
+            - option "北交所"
+        - generic [ref=e111]:
+          - text: 查询日期（上海时间）
+          - textbox "查询日期（上海时间）" [ref=e112]: 2026-10-19
+        - button "查询交易日" [ref=e113] [cursor=pointer]
+      - paragraph [ref=e114]: 2026-10-19 · SSE · 交易日
+      - paragraph [ref=e115]: 下一个已知交易日：2026-10-20
+      - paragraph [ref=e116]:
+        - link "交易所休市安排" [ref=e117] [cursor=pointer]:
+          - /url: https://www.sse.com.cn/disclosure/dealinstruc/closed/
+        - text: ·
+        - link "已归档原件" [ref=e118] [cursor=pointer]:
+          - /url: /api/market/sources/sse-calendar-2026/raw
+      - paragraph [ref=e119]: 已取得上交所 2013—2026 年及深交所 2026 年日历；历史交易阶段及未适配规则保持未知。基本规则适配沪市主板、科创板与深市主板、创业板的普通 A 股，日期限 2026-07-06 至 2026-12-31。北交所原页本次访问受限，规则/日历范围未适配；全部真实持仓仍可查看。盘中临时停市与证券停牌另需当前证据。
+    - generic [ref=e120]:
+      - heading "名单历史" [level=2] [ref=e121]
+      - button "查询名单历史" [ref=e122] [cursor=pointer]
+```

@@ -1,0 +1,35 @@
+# Ticket18 acceptance — review pending
+
+Dependencies13 and17 complete, exact17 completionc891d57. Reuse original Reviews worker/lease and financial/news/source/sentiment/series services, not a second scheduler. Module defaults paused. Public settings/queue/query/cancel and the existing market page form one slice; supported source scopeSSE:600362 only. Separate source switches are authoritative and never auto-enabled. No new training/holdout evaluation, account/grant/forward start or external notification enable.
+
+## Delivered
+
+`ObservationUpdates` registers durable jobs, at most100 active, original worker consumes one per loop. Unique current-day online15:05 checkpoint jobs do not catch up old dates. Financial updates are on demand. Restart preserves completed receipts; interrupted work is explicitly interrupted without automatic source retry. Actual worker gaps are inherited/exposed, not described as historical forecasts.
+
+Original source completed-run freshness (news15minutes,financial24hours), source policy/cooldown, local5minute kind backoff and explicit request refresh control govern acquisition. Same logical input/version fingerprint reuses first observation/creation/cutoff; source wrapper timestamps do not re-age data facts. One45second task bound,30second local model bound, pause/cancel and child cleanup. Missing/bad model reference or inference failure still saves facts-only news with an explicit gap; a task resource deadline may cancel with a receipt. Errors in this module cannot stop the original market/account chain.
+
+Station notices reuse existing notification storage. Semantic key is event identity/labels or financial period/metric values, so exact copies and wording-only revisions do not add a notice. Every new observation notice is `in_app_only`; existing external eligibility explicitly closes it even if the old external channel is enabled. Channel settings/credentials are untouched.
+
+API: `/api/observation-updates/{instrument}` GET, `/settings` POST, `/requests` POST; `/api/observation-update-jobs/{id}` GET and `/cancel` POST. Page “日常财报新闻观察” provides enable/pause, original source pause, profile/collection/classification controls, request/cancel, saved observation/source cutoff, health and actual offline gaps.
+
+## Actual online runtime
+
+`runtime03-freeze.json`, `run-real-worker03.py`, `online-host.py`, `real-worker03.log`, `real03-worker-summary.json`, `real03-online-status.json`, `worker03-process-1/2.log`, `second-worker03-probe.log`. Fresh complete isolated copy `.scratch/r18-runtime03` merges original13 real financial facts into17 saved news/series, with raw integrity and original journals preserved. Source DB hashes unchanged. Actual clock, actual original worker process, no provider/inference overrides; no HTTP or model calls in successful facts-only successor.
+
+News22 saved actual facts /22 events and financial observation each succeed; repeated request reuses the old observation. Second actual worker rejected by existing durable lease. Real process stop/restart preserves exact jobs and2 observations, station notices remain2, external transmissions0, account version0→0. Actual offline interval recorded; no forecast archive created. This is actual online saved-source processing, not a new acquisition or model effectiveness evaluation. Raw13 and16/17 quality/PIT/coverage limits remain.
+
+First real runtime01 tried one new local classification over22 non-holdout saved inputs; it did not finish before45seconds, canceled/child reaped, receipt/log/data/freeze retained. It is not successful inference and no reason such as network/cold-start is asserted. After this failure a separate30second model subdeadline and unique job inference key permit explicit later recovery while retaining facts. Successor02/03 explicitly disable new classification and prove positive facts processing/restart; they do not disguise the failed inference. The literal30→namedconstant has unchanged behavior, exact final hook/code bound in03.
+
+## METHOD / checks
+
+Initial4 new tests passed42.72s. Expanded5 new +2 financial observation tests passed57.70s (`pytest-attempt2.log`). Model-reference/shortened-model-deadline cases pass in `pytest-model-notifications.log`; existing notifications in that run:20 passed,3 failed, plus2 model cases passed (overall22passed/3failed188.62s). Independent pre18 in-memory module overlay reproduces the same3 failures in33.78s (`notification-baseline.log`, loader script); disk/unrelated dirty bytes untouched. Failures: old action evaluation has no decisions/NEED_ACTION and pending-intent idempotentprepare returns201 vs old expected409. No notification-suite all-green claim or P0 rewrite.
+
+`pytest-station-only.log`:1 passed9.78s, wording revision creates a new immutable observation but one notice; previously enabled MockTransport channel receives zero messages, notice closed for external use. `pytest-positive-refresh.log` separately proves original source cache expiry calls the existing financial/supplement/news services, then actual-source-run freshness reuses cache; providers/clocks are METHOD, not real HTTP. Resource limit/pause/cancel, worker liveness, source failure isolation, cached timestamps, scheduled uniqueness and restart are covered by the above new tests.
+
+Build passed3.55s, existing >500kB bundle warning. Final Chrome channel1 passed18.6s, separate full copy/free18228/15228 and explicit API host; source pause, persisted settings, queue/cancel, source-only real observation, offline gap, unchanged observations/account/channel, no model/collectPOST.390px no horizontal overflow; screenshots inspected. Initial Chrome1pass22s used default test IN_PROCESS role; follow-up exposed queue/cancel completion race, fixed harness to API role. Another assertion matched multiple legitimate offline gaps; scoped to first. All logs/error contexts retained; product never promised cancellation of an already completed job. Current page renders human-readable gap summaries rather than a full internal dump.
+
+## Source / ownership / remaining limits
+
+Python3.13.12, existing FastAPI/SQLite/Pydantic/React/Vite/Playwright/Chrome; no dependency install. Worker `observation-worker-v1`, seriesv2, original source budgets/no retries and original model/default unchanged. `protected-baseline.json` binds old worker bytes. Only own two-line hook is staged againstHEAD; old `dated_daily`/forward dirty hunks stay unstaged. Protected stage proof/manifest verifies exact bytes; other original12 dirty tracked files retained.
+
+Only saved-source positive real observation is claimed; first actual inference timeout remains. No complete news feed, independent model validity, new historical PIT or returns, policy dispatch, funds or real forward qualification. Dual Standards/Spec must pass before complete.22 is dependency-ready engineering;26 remains blocked by02/03/04/05/06/07.

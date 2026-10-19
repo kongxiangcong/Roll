@@ -1469,6 +1469,25 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     capability_service.notifications = notifications
     actions.notifications = notifications
     reviews.notifications = notifications
+    from roll.runtime.observation_updates import ObservationUpdates,UpdateSettings,UpdateRequest
+    observation_updates=ObservationUpdates(reviews,financial,financial_statements,financial_observations,news,sentiment,sentiment_series,prospective.sources,notifications)
+    reviews.observation_updates=observation_updates
+    app.state.observation_updates=observation_updates
+
+    @app.get('/api/observation-updates/{instrument}')
+    def observation_updates_status(instrument:str):return observation_updates.listing(instrument)
+
+    @app.post('/api/observation-updates/{instrument}/settings')
+    def observation_updates_settings(instrument:str,command:UpdateSettings):return observation_updates.configure(instrument,command)
+
+    @app.post('/api/observation-updates/{instrument}/requests',status_code=201)
+    def observation_updates_request(instrument:str,command:UpdateRequest):return observation_updates.submit(instrument,command)
+
+    @app.get('/api/observation-update-jobs/{identifier}')
+    def observation_update_job(identifier:str):return observation_updates.get(identifier)
+
+    @app.post('/api/observation-update-jobs/{identifier}/cancel')
+    def observation_update_cancel(identifier:str):return observation_updates.cancel(identifier)
 
     @app.get('/api/notification-channel')
     def channel_configuration(): return notification_channel.get()

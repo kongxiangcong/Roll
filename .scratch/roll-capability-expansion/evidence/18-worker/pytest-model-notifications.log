@@ -1,0 +1,92 @@
+...........FF...F........                                                [100%]
+================================== FAILURES ===================================
+_ test_notification_time_chain_augments_intent_query_without_rewriting_original_unknowns _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r18-pytest03/test_notification_time_chain_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024388F88870>
+
+    def test_notification_time_chain_augments_intent_query_without_rewriting_original_unknowns(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        transport = httpx.MockTransport(lambda request:httpx.Response(200, json={'id':'method-timechain','event':'message'}))
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=qualification, notification_transport=transport)) as client:
+            prepare(client, package)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+>           intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_notifications.py:275: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+evaluation = {'account_version': 2, 'code_fingerprint': '3870bbbd22caf806374de4c2e3c8c26dca3ed94e4ad1d50143d62bc9e7773110', 'decisions': [], 'evaluation_id': '00fe2f79-8a74-40e4-bc9d-dc0d8275a548', ...}
+
+    def intent_command(evaluation):
+>       d = evaluation['decisions'][0]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests\application\test_intents.py:60: IndexError
+_ test_revoke_inflight_preserves_accepted_body_appends_critical_invalidation_without_writer_wait _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r18-pytest03/test_revoke_inflight_preserves0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002438B696810>
+
+    def test_revoke_inflight_preserves_accepted_body_appends_critical_invalidation_without_writer_wait(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        entered, release = threading.Event(), threading.Event()
+        received = []
+        def publish(request):
+            received.append(request.content)
+            if len(received) == 1:
+                entered.set(); assert release.wait(timeout=10)
+            return httpx.Response(200, json={'id':'method-inflight','event':'message'})
+        with TestClient(create_app(tmp_path / 'data', capability_method_file=qualification, notification_transport=httpx.MockTransport(publish))) as client:
+            prepare(client, package)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            client.post('/api/notification-channel', json={'expected_version':0,'enabled':True,
+                'server':'https://ntfy.example.test','topic':'method-only','app_base_url':'http://127.0.0.1:5173'})
+            assert entered.wait(timeout=10)
+>           original = next(n for n in client.get('/api/notifications').json()['notifications'] if n['category'] == 'NEED_ACTION')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           StopIteration
+
+tests\application\test_notifications.py:329: StopIteration
+_ test_external_operation_pending_sync_notice_survives_revoke_and_original_intent_is_preserved _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r18-pytest03/test_external_operation_pendin0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002438BA8E350>
+
+    def test_external_operation_pending_sync_notice_survives_revoke_and_original_intent_is_preserved(tmp_path, monkeypatch):
+        monkeypatch.setenv('ROLL_ENV', 'test')
+        package = action_package()
+        qualification = save_package(tmp_path / 'qualification.json', package)
+        with TestClient(create_app(tmp_path / 'data', runtime_role='API', capability_method_file=qualification)) as client:
+            prepare(client, package)
+            evaluation = client.post('/api/actions/evaluate', json={}).json()
+            intent = client.post('/api/intents/prepare', json=intent_command(evaluation)).json()
+            declaration = client.post('/api/intents/' + intent['intent_id'] + '/declare', json={
+                'state':'OPERATION_PENDING','idempotency_key':'pending'})
+            assert declaration.status_code == 200, declaration.text
+            pending = declaration.json()
+            pause(client)
+            notices = client.get('/api/notifications').json()['notifications']
+            notice = next(n for n in notices if n['source']['kind'] == 'EXTERNAL_OPERATION_PENDING')
+            assert notice['category'] == 'NEED_SYNC_RECOVERY'
+            assert client.get('/api/notifications/' + notice['notification_id'] + '/current').json()['current_state'] == 'CURRENT'
+            assert client.get('/api/intents').json()['intents'][0] == pending
+>           assert client.post('/api/intents/prepare', json=intent_command(evaluation)).status_code == 409
+E           AssertionError: assert 201 == 409
+E            +  where 201 = <Response [201 Created]>.status_code
+E            +    where <Response [201 Created]> = post('/api/intents/prepare', json={'decision_id': 'a7238931dc736e85b023e53f7c774e77f83b342be2db716790b3abf94e2cc658', 'expected_account_version': 2, 'expected_evaluation_id': 'c637f308-ff7a-42b2-8005-881e54eca959', 'expected_funding_version': 2, ...})
+E            +      where post = <starlette.testclient.TestClient object at 0x000002438BD928B0>.post
+E            +      and   {'decision_id': 'a7238931dc736e85b023e53f7c774e77f83b342be2db716790b3abf94e2cc658', 'expected_account_version': 2, 'expected_evaluation_id': 'c637f308-ff7a-42b2-8005-881e54eca959', 'expected_funding_version': 2, ...} = intent_command({'account_version': 2, 'code_fingerprint': '3870bbbd22caf806374de4c2e3c8c26dca3ed94e4ad1d50143d62bc9e7773110', 'decisi...Y', 'basis_type': 'PROFIT_MODEL', 'board': 'MAIN', ...}], 'evaluation_id': 'c637f308-ff7a-42b2-8005-881e54eca959', ...})
+
+tests\application\test_notifications.py:437: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_notifications.py::test_notification_time_chain_augments_intent_query_without_rewriting_original_unknowns
+FAILED tests/application/test_notifications.py::test_revoke_inflight_preserves_accepted_body_appends_critical_invalidation_without_writer_wait
+FAILED tests/application/test_notifications.py::test_external_operation_pending_sync_notice_survives_revoke_and_original_intent_is_preserved
+3 failed, 22 passed in 188.62s (0:03:08)
