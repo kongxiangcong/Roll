@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-**Completion:** pending
+**Completion:** partial
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** REVIEW_PENDING — 关联家族/共享预算/固定模型与源码契约/不可变快照/API/页面/预检已交付；14相关回归及最终4新测试、构建、真实与METHOD Chrome通过，真实指标快照零HTTP/模型/拟合/SEALED，待双轴审查。
 
 **Scope / inheritance:** 新增研究入口，复用原实验注册和特征/来源归档。
 
@@ -33,3 +33,5 @@
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
 
+
+2026-10-19：见[22验收](../evidence/22-features/acceptance.md)。真实保存来源只证明特征推导；正向登记/预检为METHOD，未伪造真实家族、拟合支持或授权。旧12个模型指纹文件未变。

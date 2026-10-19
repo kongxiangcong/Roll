@@ -35,7 +35,7 @@
 | [19 · QuantStats绩效图与导出](issues/19-performance-report.md) | complete | 三条保存基准读取遗漏已修复；固定窗口/错位/API/Chrome/旧报告重放通过，未授资格 |
 | [20 · scikit-learn概率计算核验](issues/20-probability-reference.md) | complete | 固定口径实际库/API/边界/Chrome/源绑定/重放已验；非独立统计资格 |
 | [21 · arch区块统计核验](issues/21-block-stat-reference.md) | complete | 实际arch成对统计/API/边界/Chrome/保存重放通过；来源区间不足，独立有效性未授予 |
-| [22 · 新增特征快照与消融协议](issues/22-feature-asof-protocol.md) | pending | 已发布，未实施 |
+| [22 · 新增特征快照与消融协议](issues/22-feature-asof-protocol.md) | partial | 关联家族预算/固定契约/特征快照/预检/API/页面；14回归+最终4新项/构建/真与METHOD Chrome通过；真实来源快照零拟合/SEALED，待双审查 |
 | [23 · 后继候选真实训练与完整冻结](issues/23-successor-fit.md) | pending | 已发布，未实施；含真实外部/时间条件 |
 | [24 · 后继候选真实前向启运](issues/24-successor-forward.md) | pending | 已发布，未实施；含真实外部/时间条件 |
 | [25 · 后继实验终点验证交付](issues/25-successor-verdict.md) | pending | 已发布，未实施；含真实外部/时间条件 |

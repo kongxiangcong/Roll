@@ -6,6 +6,7 @@ import {Shadow} from './shadow';
 import {Validation} from './validation';
 import {RiskPolicies} from './risk-policies';
 import {Collections} from './collections';
+import {FeatureResearchPanel} from '../components/feature-research-panel';
 type Dataset={dataset_id:string;source_evidence_kind:string;data_use?:string;reconstruction_version?:string;quality_report_archive?:{sha256:string};assumptions_archive?:{sha256:string};coverage:{session_count:number;first_date:string;last_date:string};partitions:Record<string,{rows:number;first_date?:string;last_date?:string}>;limitations:string[]};
 type Protocol={protocol_id:string;dataset_id:string|null;predecessor_id:string|null;registered_at:string;status:string;basis:string;protocol_fingerprint:string;data_fingerprint?:string;freeze_gaps:string[];sealed_independence:string;validation_verdict:string|null;forward_started_at:string|null;capability:string;design?:{primary_objective:{minimum_improvement_nav_return:string};support_projection:{state:string;sealed_mature_label_upper_bound:number};costs:{broker_actual_commission:string};statistics:{pass_look_count:number};stopping:{maximum_natural_months:number}}};
 type Attempt={attempt_id:string;category:string;partition:string;status:string;basis:string;configuration:unknown};
@@ -22,6 +23,7 @@ export function Research(){
   const previous=protocols.find(p=>p.protocol_id===selected?.predecessor_id);
   return <section aria-label="研究登记"><h2>研究登记与尝试</h2><p>登记保留事先设计和全部尝试。当前未授模型资格，未启动真实前向使用。</p>
     <Collections/>
+    <FeatureResearchPanel/>
     {datasets.map(d=><section key={d.dataset_id}><h3>已归档覆盖 · {d.source_evidence_kind}</h3><p>{d.coverage.session_count} 个交易日 · {d.coverage.first_date} 至 {d.coverage.last_date} · {d.data_use==='RECONSTRUCTED_RESEARCH'?'真实历史重建研究 · 严格PIT未证明':'HISTORICAL 今天名单条件性回溯'}</p><p>{Object.entries(d.partitions).map(([n,p])=>`${n} ${p.rows}行 ${p.first_date??'不足'}—${p.last_date??'不足'}`).join('；')}</p><details><summary>数据限制</summary>{d.quality_report_archive&&<p>{d.reconstruction_version} · <a href={`/api/data/archives/${d.quality_report_archive.sha256}`} download>逐日字段质量报告</a> · <a href={`/api/data/archives/${d.assumptions_archive?.sha256}`} download>原始时钟与研究可得性假设</a></p>}<ul>{d.limitations.map(l=><li key={l}>{l}</li>)}</ul></details></section>)}
     {!datasets.length&&<p>尚无研究输入，仍可保存草稿；宿主应先核验公开工程档案，不导入来源账户为真实资金起点。</p>}
     <button disabled={busy} onClick={()=>void register()}>登记研究设计</button><ul>{protocols.map(p=><li key={p.protocol_id}><button onClick={()=>void inspect(p).catch(e=>setError(String(e)))}>查看协议 {p.protocol_id.slice(0,8)}</button> · {p.status} · {new Date(p.registered_at).toLocaleString('zh-CN')}</li>)}</ul>

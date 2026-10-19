@@ -617,6 +617,40 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         service=financial_statements if run_id in financial_statements.tasks else financial
         return await service.cancel(run_id)
 
+    from roll.research.feature_protocol import FeatureProtocols,FeaturePlanCommand,FeatureSnapshotCommand,FeaturePreflightCommand,SCHEMA as FEATURE_SCHEMA
+    feature_protocols=FeatureProtocols(research,financial,financial_statements,sentiment_series)
+    app.state.feature_protocols=feature_protocols
+
+    @app.get('/api/research/feature-schema')
+    def feature_schema():return FEATURE_SCHEMA
+
+    @app.get('/api/research/feature-budget/{predecessor_id}')
+    def feature_budget(predecessor_id:str):return feature_protocols.budget(predecessor_id)
+
+    @app.post('/api/research/feature-plans',status_code=201)
+    def feature_plan_register(command:FeaturePlanCommand):return feature_protocols.register(command)
+
+    @app.get('/api/research/feature-plans')
+    def feature_plan_list():return feature_protocols.listing('research_feature_plans')
+
+    @app.get('/api/research/feature-plans/{identifier}')
+    def feature_plan_get(identifier:str):return feature_protocols.get('research_feature_plans',identifier)
+
+    @app.post('/api/research/feature-snapshots',status_code=201)
+    def feature_snapshot_create(command:FeatureSnapshotCommand):return feature_protocols.snapshot(command)
+
+    @app.get('/api/research/feature-snapshots')
+    def feature_snapshot_list():return feature_protocols.listing('research_feature_snapshots')
+
+    @app.get('/api/research/feature-snapshots/{identifier}')
+    def feature_snapshot_get(identifier:str):return feature_protocols.get('research_feature_snapshots',identifier)
+
+    @app.post('/api/research/feature-plans/{identifier}/preflights',status_code=201)
+    def feature_preflight_create(identifier:str,command:FeaturePreflightCommand):return feature_protocols.preflight(identifier,command)
+
+    @app.get('/api/research/feature-preflights/{identifier}')
+    def feature_preflight_get(identifier:str):return feature_protocols.get('research_feature_preflights',identifier)
+
     dated_daily=DatedDaily(prospective)
     app.state.dated_daily=dated_daily
     price_quotes=PriceQuotes(prospective)
