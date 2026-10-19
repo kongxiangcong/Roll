@@ -1,4 +1,4 @@
-# Ticket18 acceptance — review pending
+# Ticket18 acceptance — complete limited observation engineering
 
 Dependencies13 and17 complete, exact17 completionc891d57. Reuse original Reviews worker/lease and financial/news/source/sentiment/series services, not a second scheduler. Module defaults paused. Public settings/queue/query/cancel and the existing market page form one slice; supported source scopeSSE:600362 only. Separate source switches are authoritative and never auto-enabled. No new training/holdout evaluation, account/grant/forward start or external notification enable.
 
@@ -14,11 +14,11 @@ API: `/api/observation-updates/{instrument}` GET, `/settings` POST, `/requests` 
 
 ## Actual online runtime
 
-`runtime03-freeze.json`, `run-real-worker03.py`, `online-host.py`, `real-worker03.log`, `real03-worker-summary.json`, `real03-online-status.json`, `worker03-process-1/2.log`, `second-worker03-probe.log`. Fresh complete isolated copy `.scratch/r18-runtime03` merges original13 real financial facts into17 saved news/series, with raw integrity and original journals preserved. Source DB hashes unchanged. Actual clock, actual original worker process, no provider/inference overrides; no HTTP or model calls in successful facts-only successor.
+`runtime04-freeze.json`, `run-real-worker04.py`, `online-host.py`, `real-worker04.log`, `real04-worker-summary.json`, `real04-online-status.json`, `worker04-process-1/2.log`, `second-worker04-probe.log`. Fresh complete isolated copy `.scratch/r18-runtime04` merges original13 real financial facts into17 saved news/series, with raw integrity and original journals preserved. Source DB hashes unchanged. Actual clock, actual original worker process, no provider/inference overrides; no HTTP or model calls in successful facts-only successor.
 
 News22 saved actual facts /22 events and financial observation each succeed; repeated request reuses the old observation. Second actual worker rejected by existing durable lease. Real process stop/restart preserves exact jobs and2 observations, station notices remain2, external transmissions0, account version0→0. Actual offline interval recorded; no forecast archive created. This is actual online saved-source processing, not a new acquisition or model effectiveness evaluation. Raw13 and16/17 quality/PIT/coverage limits remain.
 
-First real runtime01 tried one new local classification over22 non-holdout saved inputs; it did not finish before45seconds, canceled/child reaped, receipt/log/data/freeze retained. It is not successful inference and no reason such as network/cold-start is asserted. After this failure a separate30second model subdeadline and unique job inference key permit explicit later recovery while retaining facts. Successor02/03 explicitly disable new classification and prove positive facts processing/restart; they do not disguise the failed inference. The literal30→namedconstant has unchanged behavior, exact final hook/code bound in03.
+First real runtime01 tried one new local classification over22 non-holdout saved inputs; it did not finish before45seconds, canceled/child reaped, receipt/log/data/freeze retained. It is not successful inference and no reason such as network/cold-start is asserted. After this failure a separate30second model subdeadline and unique job inference key permit explicit later recovery while retaining facts. Successor02/03 explicitly disable new classification and prove positive facts processing/restart; they do not disguise the failed inference. The literal30→namedconstant has unchanged behavior, exact final hook/code bound in04.
 
 ## METHOD / checks
 
@@ -32,4 +32,6 @@ Build passed3.55s, existing >500kB bundle warning. Final Chrome channel1 passed1
 
 Python3.13.12, existing FastAPI/SQLite/Pydantic/React/Vite/Playwright/Chrome; no dependency install. Worker `observation-worker-v1`, seriesv2, original source budgets/no retries and original model/default unchanged. `protected-baseline.json` binds old worker bytes. Only own two-line hook is staged againstHEAD; old `dated_daily`/forward dirty hunks stay unstaged. Protected stage proof/manifest verifies exact bytes; other original12 dirty tracked files retained.
 
-Only saved-source positive real observation is claimed; first actual inference timeout remains. No complete news feed, independent model validity, new historical PIT or returns, policy dispatch, funds or real forward qualification. Dual Standards/Spec must pass before complete.22 is dependency-ready engineering;26 remains blocked by02/03/04/05/06/07.
+Only saved-source positive real observation is claimed; first actual inference timeout remains. No complete news feed, independent model validity, new historical PIT or returns, policy dispatch, funds or real forward qualification. Dual review: Standards1 cancellation judgment risk and Spec1 checkpoint blocker both resolved; final full new suite10passed80.83s. Final read-only delta review found no remaining blocker (review-results.md).22 is dependency-ready engineering;26 remains blocked by02/03/04/05/06/07.
+
+Final targeted source-positive METHOD test1passed12.24s; final full10-test observation suite passed80.83s includes both review regressions. Classified observation cache key includes latest reached trading checkpoint; source_available_through remains the original facts timestamp and old series immutable, no new classifier call or repeated semantic notice. Error terminal transaction preserves explicit user cancellation against concurrent prepare failure. Prior proofs/logs are retained.

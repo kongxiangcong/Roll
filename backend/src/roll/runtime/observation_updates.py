@@ -3,7 +3,7 @@ import asyncio
 import hashlib
 import json
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time as wall_time
 from typing import Literal
 from uuid import uuid4
 
@@ -161,6 +161,19 @@ class ObservationUpdates:
         with self.ledger.connection() as db:
             db.execute('INSERT OR REPLACE INTO observation_update_health VALUES(?,?)', (key, encode(value)))
 
+    def consumption_epoch(self, instrument):
+        instant = datetime.fromisoformat(now()).astimezone(SHANGHAI)
+        day = instant.date() if instant.time().replace(tzinfo=None) >= wall_time(15, 5) else instant.date()-timedelta(days=1)
+        basis = {}
+        for _ in range(32):
+            calendar = self.series.calendar(instrument.split(':')[0], day, basis)
+            if calendar['is_trading_day'] is None:
+                return 'CALENDAR_UNKNOWN:'+day.isoformat()
+            if calendar['is_trading_day']:
+                return datetime.combine(day, wall_time(15, 5), SHANGHAI).isoformat()
+            day -= timedelta(days=1)
+        return 'CHECKPOINT_LOOKBACK_LIMIT'
+
     def work(self, clock, stop):
         # Called only by the existing worker loop after it validates its lease.
         try:
@@ -230,10 +243,20 @@ class ObservationUpdates:
             if prepared['errors']:
                 self.health_write(job['command']['kind'], {'error': prepared['errors'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
         except (Exception, asyncio.CancelledError) as error:
-            job.update(status='CANCELLED' if reason else 'FAILED', finished_at=now(), error=reason or str(getattr(error, 'detail', type(error).__name__))[:300])
             with self.ledger.connection() as db:
-                db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(job), job['job_id']))
-            self.health_write(job['command']['kind'], {'error': job['error'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
+                db.execute('BEGIN IMMEDIATE')
+                current = json.loads(db.execute('SELECT value FROM observation_update_jobs WHERE id=?', (job['job_id'],)).fetchone()[0])
+                # An explicit persisted cancellation wins over a concurrent failure.
+                if current['status'] != 'RUNNING':
+                    return
+                configured = db.execute('SELECT value FROM observation_update_settings WHERE instrument=?', (job['instrument'],)).fetchone()
+                paused = not configured or not json.loads(configured[0])['enabled']
+                current.update(status='CANCELLED' if reason or paused else 'FAILED', finished_at=now(),
+                    error='OBSERVATION_UPDATES_PAUSED' if paused else reason or str(getattr(error, 'detail', type(error).__name__))[:300])
+                db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(current), job['job_id']))
+                db.commit()
+            if current['status'] == 'FAILED' or reason == 'RESOURCE_DEADLINE_EXCEEDED':
+                self.health_write(job['command']['kind'], {'error': current['error'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
 
     async def refresh(self, service, job, source_id, receipts, errors):
         if not job['command']['refresh_sources']:
@@ -287,10 +310,16 @@ class ObservationUpdates:
                 except Exception as error:
                     errors.append('SENTIMENT:'+str(getattr(error, 'detail', error))[:200])
             input_value = ['NEWS', SERIES_VERSION, profile, reference_sha, sorted(fact['fact_id'] for fact in facts)]
-            payload = {'saved_fact_count': len(facts), 'unique_event_count': news['unique_event_count'], 'classification_run_id': None, 'series_id': None}
+            payload = {'saved_fact_count': len(facts), 'unique_event_count': news['unique_event_count'], 'classification_run_id': None, 'series_id': None,
+                'source_available_through': max((fact['available_at'] for fact in facts), key=datetime.fromisoformat, default=None)}
             meaning = ['NEWS', sorted({fact['event']['event_id'] for fact in facts})]
             if reference_sha:
                 try:
+                    # A newly reached consumer checkpoint is a new logical input,
+                    # while unchanged source timestamps and semantics stay frozen.
+                    epoch = self.consumption_epoch(instrument)
+                    input_value.append(epoch)
+                    payload['consumption_checkpoint'] = epoch
                     with self.ledger.connection() as db:
                         runs = [json.loads(row[0]) for row in db.execute('SELECT value FROM sentiment_runs WHERE instrument=? ORDER BY rowid DESC', (instrument,))]
                     run = next((run for run in runs if run['status'] == 'COMPLETE' and run['reference_sha256'] == reference_sha and {row['fact_id'] for row in run['facts']} == {fact['fact_id'] for fact in facts}), None)

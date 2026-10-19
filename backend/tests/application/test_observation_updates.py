@@ -9,7 +9,7 @@ from roll.app import create_app
 from roll.runtime import observation_updates
 from test_financial_metrics import prepare
 from test_news_events import register, enable_news, rows_fixture
-from roll.market import financial_income, news_ingestion
+from roll.market import financial_income, news_ingestion, sentiment_series, sentiment
 
 BASE = '/api/observation-updates/SSE:600362'
 
@@ -234,3 +234,53 @@ def test_expired_original_source_cache_refreshes_through_existing_worker_once(tm
         again = wait(client, again)
         assert again['status'] == 'COMPLETE' and again['result'][0]['refresh'] == 'CACHE_FRESH_BY_ACTUAL_SOURCE_RUN'
         assert again['observation_id'] == news['observation_id'] and len(calls) == 3
+
+
+def test_consumer_checkpoint_advances_without_reaging_sources_or_notifying_twice(tmp_path, monkeypatch):
+    stamp = {'value': '2026-10-15T15:01:00+08:00'}
+    for module in (observation_updates, news_ingestion, sentiment, sentiment_series):
+        monkeypatch.setattr(module, 'now', lambda: stamp['value'])
+    with TestClient(create_app(tmp_path, runtime_role='API', review_clock=lambda: datetime.fromisoformat(stamp['value']))) as client:
+        seed_news(client); configure(client, classify=True)
+        calls = []
+        async def model(instrument, items):
+            calls.append(items)
+            return {item['fact_id']: {'prob_positive': .9, 'prob_negative': .1} for item in items}
+        client.app.state.sentiment.worker = model
+        stamp['value'] = '2026-10-15T15:06:00+08:00'
+        job, _ = submit(client, 'first-checkpoint'); start(client)
+        first = wait(client, job)
+        assert first['status'] == 'COMPLETE', first
+        old = client.get(BASE).json()['observations'][0]
+        old_series = client.get('/api/market/sentiment-series/runs/'+old['payload']['series_id']).json()
+        assert len(old_series['deferred_events']) == 1
+        stamp['value'] = '2026-10-16T15:06:00+08:00'
+        job, _ = submit(client, 'next-checkpoint'); second = wait(client, job)
+        assert second['status'] == 'COMPLETE' and second['observation_id'] != first['observation_id']
+        new = client.get(BASE).json()['observations'][0]
+        assert new['payload']['source_available_through'] == old['payload']['source_available_through'] == '2026-10-15T15:01:00+08:00'
+        current = client.get('/api/market/sentiment-series/runs/'+new['payload']['series_id']).json()
+        assert not current['deferred_events']
+        assert current['days'][-1]['counts']['POSITIVE'] == 1
+        assert client.get('/api/market/sentiment-series/runs/'+old_series['series_id']).json() == old_series
+        job, _ = submit(client, 'same-checkpoint'); third = wait(client, job)
+        assert third['cache_reused'] and third['observation_id'] == second['observation_id'] and len(calls) == 1
+        notices = [n for n in client.get('/api/notifications').json()['notifications'] if n['source']['kind'] == 'OBSERVATION_UPDATE']
+        assert len(notices) == 1
+
+
+def test_persisted_cancel_wins_over_concurrent_prepare_failure(tmp_path):
+    with TestClient(create_app(tmp_path, runtime_role='API')) as client:
+        configure(client)
+        async def cancel_then_fail(job):
+            response = client.post('/api/observation-update-jobs/'+job['job_id']+'/cancel')
+            assert response.json()['error'] == 'USER_CANCELLED'
+            raise ValueError('METHOD concurrent prepare failure')
+        client.app.state.observation_updates.prepare = cancel_then_fail
+        job, _ = submit(client, 'cancel-failure-order')
+        start(client)
+        result = wait(client, job)
+        time.sleep(.2)  # allow the terminal failure handler to run after cancel
+        final = client.get('/api/observation-update-jobs/'+job['job_id']).json()
+        assert final == result and final['status'] == 'CANCELLED' and final['error'] == 'USER_CANCELLED'
+        assert client.get(BASE).json()['observations'] == []
