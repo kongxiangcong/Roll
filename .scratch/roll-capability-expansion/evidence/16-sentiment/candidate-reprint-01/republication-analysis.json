@@ -1,0 +1,32 @@
+{
+  "kind": "REAL_REPUBLICATION_SOURCE_PROOF_NOT_QUALITY_SUPPORT",
+  "extractor": "trafilatura2.3.1",
+  "raws": [
+    {
+      "url": "https://finance.sina.com.cn/roll/2022-05-18/doc-imcwipik0470571.shtml?from=pcsearch",
+      "http_status": 200,
+      "file": "01.html",
+      "bytes": 102518,
+      "sha256": "da8b7bb2d602d0365d1ff7432062f4414429c9bea7c35f8ba63ad99c31f6c88a"
+    },
+    {
+      "url": "https://finance.sina.com.cn/stock/relnews/cn/2022-05-18/doc-imcwiwst8085737.shtml?from=pcsearch",
+      "http_status": 200,
+      "file": "02.html",
+      "bytes": 106233,
+      "sha256": "68717f5e294a5056537c2228a6b5a75b8ab401f299206543690504e2af078778"
+    }
+  ],
+  "first_extracted_sha256": "cda3733183f2da8050ab0a7d2b427d460ff333a106324c24d1ac6f7d4f4efa72",
+  "second_extracted_sha256": "2a04c84656b1cd02b951530cdda47d129348d77e657d55ac8a564bdc3f92ea2d",
+  "first_chars": 1016,
+  "second_chars": 1006,
+  "difference": "First text has the actual10-character publisher prefix 智通财经APP获悉，; remaining1006 characters exactly equal, including footer. No source text edited.",
+  "same_story": true,
+  "exact_full_content_hash_equal": false,
+  "existing_exact_dedup_would_merge": false,
+  "semantic_event": "ISSUER-EARNINGS-MEETING-2022-05-17",
+  "split_side": "TRAINING_PERIOD_ONLY_NOT_IN_NEW_PRIMARY",
+  "independent_event_support": 1,
+  "limitations": "This confirms a real same-story publication pair, not general fuzzy dedup. Existing15 exact dedup is inherited and not rewritten; these prefix-different copies do not masquerade as exact matches."
+}

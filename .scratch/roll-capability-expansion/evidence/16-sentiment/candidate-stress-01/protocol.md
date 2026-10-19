@@ -1,0 +1,3 @@
+# Additional source-feature acceptance, before seeing any new candidate output
+
+Primary400/120/120 freeze and its one evaluation remain immutable. This one new2026 issuer revision-index request (10s/1MiB, zero retries/redirects) may supply a genuine unexposed revision for later bounded API acceptance. The current primary challenge has real negation and multi-company cases; genuine2022 correction is a training source, not unexposed heldout performance. Do not pretend it covers new candidate revision generalization. Any successor feature sample must be excluded from training/old exposed revisions and registered with labels/events/object rule before its single inference. It cannot change primary scores, thresholds or trained weights. No extra fit or selection.

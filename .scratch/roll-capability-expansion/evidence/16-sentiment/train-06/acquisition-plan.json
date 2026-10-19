@@ -1,0 +1,67 @@
+{
+  "status": "AUTHORIZED_BEFORE_ACQUISITION",
+  "endpoint": "https://search.sina.com.cn/api/advanced",
+  "limits": {
+    "maximum_requests": 5,
+    "maximum_transfer_seconds": 30,
+    "maximum_bytes": 2097152,
+    "retries": 0,
+    "automatic_redirects": 0
+  },
+  "commands": [
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-01-01",
+      "maximum_date": "2025-02-23",
+      "page": 3,
+      "page_size": 20,
+      "sort": 1,
+      "prior_window_number": 53
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-02-24",
+      "maximum_date": "2025-04-19",
+      "page": 3,
+      "page_size": 20,
+      "sort": 1,
+      "prior_window_number": 54
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-04-20",
+      "maximum_date": "2025-06-13",
+      "page": 3,
+      "page_size": 20,
+      "sort": 1,
+      "prior_window_number": 55
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-10-01",
+      "maximum_date": "2025-11-24",
+      "page": 3,
+      "page_size": 20,
+      "sort": 1,
+      "prior_window_number": 58
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2026-01-18",
+      "maximum_date": "2026-03-13",
+      "page": 3,
+      "page_size": 20,
+      "sort": 1,
+      "prior_window_number": 60
+    }
+  ],
+  "same_model_rule_and_thresholds": true,
+  "reason": "Training now436 unique projected inputs; primary N24 unique/17 events still needs30. Five known existing-window page3 requests, no new metadata or source.",
+  "approved_plan_sha256": "ab702f74cd08d254743cad24035dd66a466c4e6668f735af89dda1221c4ae066",
+  "authorization": "User approved5 pages and broadly authorized autonomous bounded completion of missing public data/content; fixed one training candidate and frozen gates remain."
+}

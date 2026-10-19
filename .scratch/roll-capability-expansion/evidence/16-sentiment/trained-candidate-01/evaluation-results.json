@@ -1,0 +1,196 @@
+{
+  "evidence_kind": "REAL_SINGLE_TRAINED_CANDIDATE_OFFLINE_EVALUATION_NON_INDEPENDENT_LABELS",
+  "splits": {
+    "DEVELOPMENT": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 32,
+          "tp": 32,
+          "fn": 0,
+          "fp": 2,
+          "recall": 1.0,
+          "precision": 0.9411764705882353,
+          "f1": 0.9696969696969697,
+          "abstained": 0,
+          "event_groups": 18
+        },
+        "NEGATIVE": {
+          "support": 27,
+          "tp": 27,
+          "fn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0,
+          "abstained": 0,
+          "event_groups": 17
+        },
+        "NEUTRAL": {
+          "support": 61,
+          "tp": 59,
+          "fn": 2,
+          "fp": 0,
+          "recall": 0.9672131147540983,
+          "precision": 1.0,
+          "f1": 0.9833333333333333,
+          "abstained": 0,
+          "event_groups": 40
+        },
+        "IRRELEVANT": {
+          "support": 0,
+          "tp": 0,
+          "fn": 0,
+          "fp": 0,
+          "recall": null,
+          "precision": null,
+          "f1": null,
+          "abstained": 0,
+          "event_groups": 0
+        }
+      },
+      "positive_recall": 1.0,
+      "negative_recall": 1.0,
+      "confusion": {
+        "POSITIVE->POSITIVE": 32,
+        "NEUTRAL->NEUTRAL": 59,
+        "NEUTRAL->POSITIVE": 2,
+        "NEGATIVE->NEGATIVE": 27
+      },
+      "binary_macro_f1": 0.9848484848484849,
+      "three_class_macro_f1": 0.9843434343434344,
+      "total_rejection": 0.0,
+      "irrelevant_rejection": null
+    },
+    "HOLDOUT_PRIMARY": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 30,
+          "tp": 30,
+          "fn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0,
+          "abstained": 0,
+          "event_groups": 17
+        },
+        "NEGATIVE": {
+          "support": 30,
+          "tp": 30,
+          "fn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0,
+          "abstained": 0,
+          "event_groups": 19
+        },
+        "NEUTRAL": {
+          "support": 30,
+          "tp": 30,
+          "fn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0,
+          "abstained": 0,
+          "event_groups": 21
+        },
+        "IRRELEVANT": {
+          "support": 30,
+          "tp": 0,
+          "fn": 30,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 30,
+          "event_groups": 27
+        }
+      },
+      "positive_recall": 1.0,
+      "negative_recall": 1.0,
+      "confusion": {
+        "POSITIVE->POSITIVE": 30,
+        "NEUTRAL->NEUTRAL": 30,
+        "IRRELEVANT->ABSTAIN_NO_COMPANY_OBJECT": 30,
+        "NEGATIVE->NEGATIVE": 30
+      },
+      "binary_macro_f1": 1.0,
+      "three_class_macro_f1": 1.0,
+      "total_rejection": 0.25,
+      "irrelevant_rejection": 1.0
+    }
+  },
+  "gates": {
+    "binary_macro_f1": {
+      "actual": 1.0,
+      "threshold": 0.6,
+      "operator": ">=",
+      "passed": true
+    },
+    "positive_recall": {
+      "actual": 1.0,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": true
+    },
+    "negative_recall": {
+      "actual": 1.0,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": true
+    },
+    "three_class_macro_f1": {
+      "actual": 1.0,
+      "threshold": 0.6,
+      "operator": ">=",
+      "passed": true
+    },
+    "neutral_recall": {
+      "actual": 1.0,
+      "threshold": 0.55,
+      "operator": ">=",
+      "passed": true
+    },
+    "irrelevant_rejection": {
+      "actual": 1.0,
+      "threshold": 0.8,
+      "operator": ">=",
+      "passed": true
+    },
+    "maximum_total_rejection": {
+      "actual": 0.25,
+      "threshold": 0.35,
+      "operator": "<=",
+      "passed": true
+    },
+    "maximum_cpu_p95_seconds": {
+      "actual": 0.12450850004097447,
+      "threshold": 3.0,
+      "operator": "<=",
+      "passed": true
+    }
+  },
+  "passed_frozen_gates": true,
+  "primary_model_calls": 90,
+  "primary_p95_seconds": 0.12450850004097447,
+  "all_model_calls": 210,
+  "cold_start_seconds": 14.668802499945741,
+  "peak_working_set_bytes": 818380800,
+  "training_freeze_sha256": "e5598d0eff66b8b250fd185b3121adffc6d0351bce95f171340cd6f171f3f12c",
+  "inference_sha256": "6ef7ae098f711832493a32f54c25d57df260bbe27fdf08c826aea1c79d7c14fc",
+  "limitations": [
+    "Non-independent agent labels",
+    "Only one issuer, stratified snippet challenge; not natural news flow coverage",
+    "Unknown overlap with base model original private training data",
+    "PDF correction body read as source evidence; labels still concern frozen snippet inputs",
+    "Distinct nonempty projected inputs; irrelevant rows have empty projection but distinct full source texts"
+  ],
+  "capability": "RESEARCH_LIMITED",
+  "formal_grant": "NOT_GRANTED",
+  "production_component_changed": false,
+  "old_holdouts_reevaluated": false
+}

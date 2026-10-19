@@ -1,0 +1,41 @@
+{
+  "attempt_id": "SENTIMENT-TRAIN-SUPPLEMENT-08",
+  "authorization": "User broad public data/content fill permission; new bounded source-only purpose, no closed budget reopened",
+  "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+  "identity": {
+    "stock": "600362,gssh0600362",
+    "column": "sse",
+    "tabName": "fulltext"
+  },
+  "interval": "2018-01-01~2022-12-31",
+  "queries": [
+    {
+      "keyword": "",
+      "page": 3
+    },
+    {
+      "keyword": "",
+      "page": 4
+    },
+    {
+      "keyword": "",
+      "page": 5
+    },
+    {
+      "keyword": "",
+      "page": 6
+    },
+    {
+      "keyword": "",
+      "page": 7
+    }
+  ],
+  "page_size": 30,
+  "limits": {
+    "maximum_requests": 5,
+    "maximum_seconds": 30,
+    "maximum_bytes": 4194304,
+    "retries": 0,
+    "redirects": 0
+  }
+}

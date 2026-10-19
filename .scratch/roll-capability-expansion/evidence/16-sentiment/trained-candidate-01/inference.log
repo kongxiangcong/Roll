@@ -1,0 +1,45 @@
+W1019 22:01:37.598000 46252 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]
+Loading weights:  30%|██▉       | 60/201 [00:00<00:00, 568.33it/s]
+Loading weights:  68%|██████▊   | 137/201 [00:00<00:00, 679.13it/s]
+Loading weights: 100%|██████████| 201/201 [00:00<00:00, 694.80it/s]
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-19T14:01:25.588430+00:00",
+  "model": {
+    "name": "Roll Chinese FinBERT bounded adaptation01",
+    "label_mapping": {
+      "0": "NEUTRAL",
+      "1": "POSITIVE",
+      "2": "NEGATIVE"
+    }
+  },
+  "evaluation_freeze_sha256": "e7b26b8563da7770d0285b5126e2da37064932a622b03bbee9224a241f72e78c",
+  "network_calls": 0,
+  "training": false,
+  "old_holdout_loaded": false,
+  "loading_info": {
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "cold_start_seconds": 14.668802499945741,
+  "packages": {
+    "torch": "2.10.0",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "safetensors": "0.8.0"
+  },
+  "peak_working_set_bytes": 818380800,
+  "elapsed_seconds": 34.555145299993455,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "logical_cpus": 16,
+    "threads": 2,
+    "device": "CPU",
+    "precision": "float32"
+  }
+}

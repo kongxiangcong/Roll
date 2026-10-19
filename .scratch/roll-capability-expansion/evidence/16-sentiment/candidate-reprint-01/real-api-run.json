@@ -1,0 +1,242 @@
+{
+  "run_id": "e2490e04-761a-4911-9bf2-0a626f4de472",
+  "instrument": "SSE:600362",
+  "basis": "User-authorized actual local classification of2 hash-verified archived source snippets; no training/primary rows or METHOD worker",
+  "status": "COMPLETE",
+  "started_at": "2026-10-19T14:17:07.739815+00:00",
+  "finished_at": "2026-10-19T14:17:07.748991+00:00",
+  "reference_sha256": "09eb7838a8a7867a36aa373b802728b379fc5efafbac39b4b68feb0d1501a880",
+  "reference": {
+    "status": "VERIFIED",
+    "profile": "finbert-adaptation-01",
+    "enabled_by_default": false,
+    "task": "CHINESE_FINANCIAL_SENTIMENT_3_CLASS",
+    "model": "Roll Chinese FinBERT adaptation01 (base yiyanghkust/finbert-tone-chinese@e91b1a3a)",
+    "license": "apache-2.0",
+    "base_model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    "model_directory": "D:\\dsh-proj\\Roll\\.scratch\\rce-runtime\\sentiment\\Roll-FinBERT-adaptation-01",
+    "weights_sha256": "d3ba72cd79ea77b0285745909d40ae2a43512b0baa4c5b9328a10fd8eceb69da",
+    "packages": {
+      "torch": "2.10.0",
+      "transformers": "5.20.1",
+      "tokenizers": "0.23.3",
+      "safetensors": "0.8.0"
+    },
+    "artifacts": [
+      {
+        "path": "config.json",
+        "bytes": 1175,
+        "sha256": "e76f693b88cca4269f28684e70cc759f7388df342ebb32d042e42667b6ff3a6a"
+      },
+      {
+        "path": "model.safetensors",
+        "bytes": 409103316,
+        "sha256": "d3ba72cd79ea77b0285745909d40ae2a43512b0baa4c5b9328a10fd8eceb69da"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 439372,
+        "sha256": "2fd943d7c063d731de5967c3c503a5a9e2546a613cf7f8f45b918d324cdd2188"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 460,
+        "sha256": "a9ed690ea693e325785b71f2be7cde566ff893d87957717abb960dc3914e10e9"
+      }
+    ],
+    "object_version": "sentiment-object-v2.1-shared-predicate",
+    "object_sha256": "54c8da1ea55ade13b1135a26d6f7278d45ad3b340ecf5d54e2efc60b732e3a15",
+    "input_scope": "Archived title/excerpt, explicit company clauses, max800 chars/tokenizer256; full article bodies are not substituted",
+    "confidence_floor": 0.65,
+    "label_mapping": {
+      "0": "NEUTRAL",
+      "1": "POSITIVE",
+      "2": "NEGATIVE"
+    },
+    "capability": "RESEARCH_LIMITED",
+    "system_usable": false,
+    "evaluation": {
+      "dataset": "120 primary challenge snippets,30 each P/N/U/I;400 train<=2022,120 development2023-2024,120 primary>=2025; single frozen trained candidate",
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "primary": {
+        "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+        "per_class": {
+          "POSITIVE": {
+            "support": 30,
+            "tp": 30,
+            "fn": 0,
+            "fp": 0,
+            "recall": 1.0,
+            "precision": 1.0,
+            "f1": 1.0,
+            "abstained": 0,
+            "event_groups": 17
+          },
+          "NEGATIVE": {
+            "support": 30,
+            "tp": 30,
+            "fn": 0,
+            "fp": 0,
+            "recall": 1.0,
+            "precision": 1.0,
+            "f1": 1.0,
+            "abstained": 0,
+            "event_groups": 19
+          },
+          "NEUTRAL": {
+            "support": 30,
+            "tp": 30,
+            "fn": 0,
+            "fp": 0,
+            "recall": 1.0,
+            "precision": 1.0,
+            "f1": 1.0,
+            "abstained": 0,
+            "event_groups": 21
+          },
+          "IRRELEVANT": {
+            "support": 30,
+            "tp": 0,
+            "fn": 30,
+            "fp": 0,
+            "recall": 0.0,
+            "precision": null,
+            "f1": 0.0,
+            "abstained": 30,
+            "event_groups": 27
+          }
+        },
+        "positive_recall": 1.0,
+        "negative_recall": 1.0,
+        "confusion": {
+          "POSITIVE->POSITIVE": 30,
+          "NEUTRAL->NEUTRAL": 30,
+          "IRRELEVANT->ABSTAIN_NO_COMPANY_OBJECT": 30,
+          "NEGATIVE->NEGATIVE": 30
+        },
+        "binary_macro_f1": 1.0,
+        "three_class_macro_f1": 1.0,
+        "total_rejection": 0.25,
+        "irrelevant_rejection": 1.0
+      },
+      "gates": {
+        "binary_macro_f1": {
+          "actual": 1.0,
+          "threshold": 0.6,
+          "operator": ">=",
+          "passed": true
+        },
+        "positive_recall": {
+          "actual": 1.0,
+          "threshold": 0.55,
+          "operator": ">=",
+          "passed": true
+        },
+        "negative_recall": {
+          "actual": 1.0,
+          "threshold": 0.55,
+          "operator": ">=",
+          "passed": true
+        },
+        "three_class_macro_f1": {
+          "actual": 1.0,
+          "threshold": 0.6,
+          "operator": ">=",
+          "passed": true
+        },
+        "neutral_recall": {
+          "actual": 1.0,
+          "threshold": 0.55,
+          "operator": ">=",
+          "passed": true
+        },
+        "irrelevant_rejection": {
+          "actual": 1.0,
+          "threshold": 0.8,
+          "operator": ">=",
+          "passed": true
+        },
+        "maximum_total_rejection": {
+          "actual": 0.25,
+          "threshold": 0.35,
+          "operator": "<=",
+          "passed": true
+        },
+        "maximum_cpu_p95_seconds": {
+          "actual": 0.12450850004097447,
+          "threshold": 3.0,
+          "operator": "<=",
+          "passed": true
+        }
+      },
+      "passed_frozen_gates": true,
+      "limitations": [
+        "Non-independent agent labels",
+        "Only one issuer, stratified snippet challenge; not natural news flow coverage",
+        "Unknown overlap with base model original private training data",
+        "PDF correction body read as source evidence; labels still concern frozen snippet inputs",
+        "Distinct nonempty projected inputs; irrelevant rows have empty projection but distinct full source texts",
+        "Perfect primary score is limited to this pre-registered snippet challenge and is not independent validation of general effectiveness."
+      ],
+      "training_freeze_sha256": "e5598d0eff66b8b250fd185b3121adffc6d0351bce95f171340cd6f171f3f12c",
+      "evaluation_sha256": "f0341d338ac6ab5d36885041f4210bc29ffdc31c53dc52f05ee11b84f83a6477",
+      "inference_sha256": "6ef7ae098f711832493a32f54c25d57df260bbe27fdf08c826aea1c79d7c14fc",
+      "primary_p95_seconds": 0.12450850004097447
+    }
+  },
+  "profile": "finbert-adaptation-01",
+  "reject_layer": "sentiment-object-v2.1-shared-predicate",
+  "classification_version": "sentiment-classification-v2-three-class",
+  "evidence_kind": "REAL_LOCAL_CLASSIFICATION",
+  "facts": [
+    {
+      "fact_id": "02c13639-aa85-5da2-a3e5-6a2b1527e8e7",
+      "title": "直击业绩会 | 江西铜业(600362.SH)：预计铜市将继续维持高位震荡走势",
+      "media": "金融界",
+      "event_id": "f10cc225-6dcf-5845-b33a-4229fef7dfe9",
+      "association": "COMPANY_SUBJECT",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "397e474b618b0f40c1630608a806192017852fafc77858ea7e5905cdbe0e7d5e"
+    },
+    {
+      "fact_id": "b9acaf88-24d4-5225-ad12-bfa8bfc26a49",
+      "title": "江西铜业(600362.SH)：预计铜市将继续维持高位震荡走势",
+      "media": "市场资讯",
+      "event_id": "f7cefb1a-0310-52fc-a1a9-dcbd2b500d65",
+      "association": "COMPANY_SUBJECT",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "2f73cb904d28452831be1058d97435a3d6dce9e7625d50b1ea2ead98d0bc5057"
+    }
+  ],
+  "errors": [],
+  "network_calls": 0,
+  "system_usable": false,
+  "capability": "RESEARCH_LIMITED",
+  "counts": {
+    "ABSTAIN_NO_COMPANY_OBJECT": 2
+  },
+  "reject_counts": {
+    "ABSTAIN_NO_COMPANY_OBJECT": 2
+  },
+  "covered": 0,
+  "total": 2,
+  "coverage": 0.0
+}

@@ -1,0 +1,145 @@
+{
+  "status": "SOURCE_ONLY_NOT_TRAINING_READY",
+  "gold_labels": 0,
+  "counts": {
+    "PREVIOUSLY_CAPTURED_OR_EVALUATED_CONSERVATIVE": 244,
+    "NO_OBJECT": 1577,
+    "UP_CUE_REVIEW": 480,
+    "DIRECTION_UNRESOLVED": 495,
+    "DOWN_CUE_REVIEW": 204,
+    "DUPLICATE_URL": 172,
+    "BOTH_DIRECTION_CUES": 6
+  },
+  "remaining_unique": 2762,
+  "by_year": {
+    "2013": {
+      "DIRECTION_UNRESOLVED": 19,
+      "NO_OBJECT": 9
+    },
+    "2014": {
+      "DIRECTION_UNRESOLVED": 29,
+      "NO_OBJECT": 11
+    },
+    "2015": {
+      "DIRECTION_UNRESOLVED": 8,
+      "NO_OBJECT": 2
+    },
+    "2016": {
+      "DOWN_CUE_REVIEW": 1,
+      "NO_OBJECT": 1
+    },
+    "2018": {
+      "DIRECTION_UNRESOLVED": 81,
+      "UP_CUE_REVIEW": 30,
+      "NO_OBJECT": 73,
+      "DOWN_CUE_REVIEW": 10,
+      "BOTH_DIRECTION_CUES": 1
+    },
+    "2020": {
+      "DIRECTION_UNRESOLVED": 3,
+      "BOTH_DIRECTION_CUES": 1,
+      "DOWN_CUE_REVIEW": 2,
+      "NO_OBJECT": 7,
+      "UP_CUE_REVIEW": 9
+    },
+    "2021": {
+      "DIRECTION_UNRESOLVED": 51,
+      "UP_CUE_REVIEW": 74,
+      "NO_OBJECT": 94,
+      "DOWN_CUE_REVIEW": 50,
+      "BOTH_DIRECTION_CUES": 1
+    },
+    "2022": {
+      "DIRECTION_UNRESOLVED": 57,
+      "NO_OBJECT": 44,
+      "UP_CUE_REVIEW": 26,
+      "DOWN_CUE_REVIEW": 9,
+      "BOTH_DIRECTION_CUES": 2
+    },
+    "2023": {
+      "DIRECTION_UNRESOLVED": 65,
+      "NO_OBJECT": 68,
+      "DOWN_CUE_REVIEW": 5,
+      "UP_CUE_REVIEW": 12
+    },
+    "2024": {
+      "NO_OBJECT": 84,
+      "DOWN_CUE_REVIEW": 26,
+      "UP_CUE_REVIEW": 20,
+      "DIRECTION_UNRESOLVED": 29
+    },
+    "2025": {
+      "DIRECTION_UNRESOLVED": 42,
+      "NO_OBJECT": 223,
+      "DOWN_CUE_REVIEW": 28,
+      "UP_CUE_REVIEW": 58
+    },
+    "2026": {
+      "NO_OBJECT": 961,
+      "UP_CUE_REVIEW": 251,
+      "DIRECTION_UNRESOLVED": 111,
+      "DOWN_CUE_REVIEW": 73,
+      "BOTH_DIRECTION_CUES": 1
+    }
+  },
+  "source_sha256": {
+    "corpus-attempt/corpus.json": "e898fda3fc66dff6eda9d8c9cfbba3891c2c405441913aab473bb505a92f590f",
+    "corpus-name-attempt/corpus.json": "e8f3e27576569597fb6239fc304e8658a8d7ffff132a9c5a6b8249fcec53a398",
+    "labels-120.json": "d826224f6bd5c311d15133ef8f1bffd887416a4e82ff198b0aeacc9ef712bfa4",
+    "labels-holdout-30.json": "8136b81776612d3f8d19b019d54bf59f4b8d181b905eddd6b9b1cc855a34aafd",
+    "fresh-02/frozen-evaluation.json": "73bfe80b85e0b30120f14e487859c69b3bb4c19b75b90d9de50899be5e7fe42c",
+    "fresh-02/corpus.json": "061a4eb080bed1c342cf2d1ef491c7e64d3ba6069e4109da1e08d6bf140cbae7",
+    "fresh-02/corpus04.json": "09cfddeb12104f5c7b09863f62c0945ad0bbfb8f1881fa99ce4f6bc83b5a04f0",
+    "fresh-02/corpus06.json": "43feaa4090510673f438d99910f3fe9414d5c1bd5770d29ba762c65f12477d99",
+    "train-03/corpus.json": "bffe1a7446d37a984dfdc033729e4a1bf5b73c5808dd40ceb91338e1a7ae04f7",
+    "train-03/sina-probe-corpus.json": "31cc4a90f82df02b8ef72362b79d7965f9d67b06c09d3e155a0cc00098c44e39",
+    "train-03/remaining-corpus.json": "a3c457783b5e7470d57ee20b08bbe823317b5c6ba508d120c69f326ae31c2ca2",
+    "train-04/corpus.json": "19d2f75221707b6ef66142e89045d77734a686dc306adb2ee599f653b25bea77",
+    "train-04/continuation-corpus.json": "6a2930fb86437f0bcd587f3fd905a46d6b9469dd5af7ca5c680d2fe507108fd3",
+    "train-05/corpus.json": "3a42d346c00ddcf61ff8b82dfe2cd58419f7fdddc203eaec775dd5582468d937",
+    "train-05/continuation-corpus.json": "b2df17993c16a9cdc6c26f3dc65c2be8d08ab2bb261f03ee87f82c73e49a0581",
+    "train-06/corpus.json": "84239de5a3127b314a9716948371296f2dfc1b048bd2ef0232ec990812691f7f"
+  },
+  "old_exclusions_are_not_relabeling": true,
+  "cue_buckets_are_not_gold_labels": true,
+  "no_model_calls": true,
+  "fixed_period_source_upper_bounds": {
+    "TRAIN": {
+      "raw_unique_candidates": 705,
+      "object_projected_candidates": 464,
+      "not_gold_labels": true,
+      "cue_buckets": {
+        "DOWN_CUE_REVIEW": 72,
+        "DIRECTION_UNRESOLVED": 248,
+        "NO_OBJECT": 241,
+        "UP_CUE_REVIEW": 139,
+        "BOTH_DIRECTION_CUES": 5
+      }
+    },
+    "DEVELOPMENT": {
+      "raw_unique_candidates": 309,
+      "object_projected_candidates": 157,
+      "not_gold_labels": true,
+      "cue_buckets": {
+        "DIRECTION_UNRESOLVED": 94,
+        "NO_OBJECT": 152,
+        "DOWN_CUE_REVIEW": 31,
+        "UP_CUE_REVIEW": 32
+      }
+    },
+    "HOLDOUT": {
+      "raw_unique_candidates": 1748,
+      "object_projected_candidates": 564,
+      "not_gold_labels": true,
+      "cue_buckets": {
+        "NO_OBJECT": 1184,
+        "UP_CUE_REVIEW": 309,
+        "DIRECTION_UNRESOLVED": 153,
+        "DOWN_CUE_REVIEW": 101,
+        "BOTH_DIRECTION_CUES": 1
+      }
+    }
+  },
+  "training_400_raw_cardinality_gate": true,
+  "training_started": false
+}

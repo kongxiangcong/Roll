@@ -1,0 +1,98 @@
+{
+  "at": "2026-10-19T13:54:49.524296+00:00",
+  "status": "FROZEN_BEFORE_TRAINING",
+  "complete_data_gate": true,
+  "counts": {
+    "TRAIN": 400,
+    "DEVELOPMENT": 120,
+    "HOLDOUT_PRIMARY": 120
+  },
+  "support": {
+    "POSITIVE": {
+      "rows": 30,
+      "event_groups": 17
+    },
+    "NEGATIVE": {
+      "rows": 30,
+      "event_groups": 19
+    },
+    "NEUTRAL": {
+      "rows": 30,
+      "event_groups": 21
+    },
+    "IRRELEVANT": {
+      "rows": 30,
+      "event_groups": 27
+    }
+  },
+  "training_file": "training.json",
+  "training_sha256": "635d7b519d61f2dfdda54de76ef4fe62f38ce24797cbc583e720688261abcb67",
+  "training_script_sha256": "5ce42949fa31757b709b6f3e7e8103ad3fdfaa7678e47912b14e9e3471c433c2",
+  "training_settings": {
+    "seed": 42,
+    "cpu_threads": 2,
+    "precision": "float32",
+    "max_length": 256,
+    "learning_rate": 2e-05,
+    "batch_size": 4,
+    "maximum_epochs": 2,
+    "maximum_seconds": 3600,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1.0
+  },
+  "files": {
+    "training.json": "635d7b519d61f2dfdda54de76ef4fe62f38ce24797cbc583e720688261abcb67",
+    "development.json": "03604de744c87d86257bc509330ae09215a2c6586e02273843da4d410ed1b924",
+    "primary.json": "5b79b51b3a3eea174d3a5d6bc62cdaa3b5fca482099def550dd96fce9c6c6459",
+    "object_contract.py": "54c8da1ea55ade13b1135a26d6f7278d45ad3b340ecf5d54e2efc60b732e3a15",
+    "protocol.md": "95ab75cb9843ab762f473e721f7f96d1fde7b24e32886eb0b4d9b7090a5f751f",
+    "freeze-data.py": "554de3d63ef6a976468499a8c5fa87086288d252ddf17c30f71ef102c040459e",
+    "train_candidate.py": "5ce42949fa31757b709b6f3e7e8103ad3fdfaa7678e47912b14e9e3471c433c2",
+    "infer.py": "f238fe102b07a29d3456bacfaf5d6665b66f3678af16423dd4eef2fb5a1cbd32",
+    "score.py": "6bb1b6396790ba6f6aa9d7421b7450474fb8012e89f4e24f9bbb6910438e043a"
+  },
+  "source_sha256": {
+    "corpus-attempt/corpus.json": "e898fda3fc66dff6eda9d8c9cfbba3891c2c405441913aab473bb505a92f590f",
+    "corpus-name-attempt/corpus.json": "e8f3e27576569597fb6239fc304e8658a8d7ffff132a9c5a6b8249fcec53a398",
+    "labels-120.json": "d826224f6bd5c311d15133ef8f1bffd887416a4e82ff198b0aeacc9ef712bfa4",
+    "labels-holdout-30.json": "8136b81776612d3f8d19b019d54bf59f4b8d181b905eddd6b9b1cc855a34aafd",
+    "fresh-02/frozen-evaluation.json": "73bfe80b85e0b30120f14e487859c69b3bb4c19b75b90d9de50899be5e7fe42c",
+    "fresh-02/corpus.json": "061a4eb080bed1c342cf2d1ef491c7e64d3ba6069e4109da1e08d6bf140cbae7",
+    "fresh-02/corpus04.json": "09cfddeb12104f5c7b09863f62c0945ad0bbfb8f1881fa99ce4f6bc83b5a04f0",
+    "fresh-02/corpus06.json": "43feaa4090510673f438d99910f3fe9414d5c1bd5770d29ba762c65f12477d99",
+    "train-03/corpus.json": "bffe1a7446d37a984dfdc033729e4a1bf5b73c5808dd40ceb91338e1a7ae04f7",
+    "train-03/sina-probe-corpus.json": "31cc4a90f82df02b8ef72362b79d7965f9d67b06c09d3e155a0cc00098c44e39",
+    "train-03/remaining-corpus.json": "a3c457783b5e7470d57ee20b08bbe823317b5c6ba508d120c69f326ae31c2ca2",
+    "train-04/corpus.json": "19d2f75221707b6ef66142e89045d77734a686dc306adb2ee599f653b25bea77",
+    "train-04/continuation-corpus.json": "6a2930fb86437f0bcd587f3fd905a46d6b9469dd5af7ca5c680d2fe507108fd3",
+    "train-05/corpus.json": "3a42d346c00ddcf61ff8b82dfe2cd58419f7fdddc203eaec775dd5582468d937",
+    "train-05/continuation-corpus.json": "b2df17993c16a9cdc6c26f3dc65c2be8d08ab2bb261f03ee87f82c73e49a0581",
+    "train-06/corpus.json": "84239de5a3127b314a9716948371296f2dfc1b048bd2ef0232ec990812691f7f",
+    "train-07/corpus.json": "28a1519b3ca4d4c440104c14041d602c52b4e07255f3c3b2ca58aef398ee2041",
+    "train-08/corpus.json": "23891d7df5627cfe0f31ef22f377dfb79643e0d4bfcacfeb6d9bc4c9355f5861"
+  },
+  "annotation_sha256": {
+    "train-06\\training-annotations.json": "8bd8e045dc0b47b70b69334fe3f3d3ea119624f57f350990061375a9e64d00f8",
+    "train-06\\primary-negative-source-audit.json": "c70e9b517f88128a09e43a8358a9863d5eae59dcb2371c3931ec8ddbe2b3f75a",
+    "train-08\\training-reviewed-audit.json": "70489d78aa370f429b77852fb0a84c9d408929a0dd36891b550e4ca25e119058",
+    "train-08\\development-reviewed-audit.json": "498c7e89d04aa49c85651a4e44aa7bde327ab66b47fc3449f2475942249a085e"
+  },
+  "confidence_floor": 0.65,
+  "gates": {
+    "binary_macro_f1": 0.6,
+    "positive_recall": 0.55,
+    "negative_recall": 0.55,
+    "three_class_macro_f1": 0.6,
+    "neutral_recall": 0.55,
+    "irrelevant_rejection": 0.8,
+    "maximum_total_rejection": 0.35,
+    "maximum_cpu_p95_seconds": 3.0
+  },
+  "limitations": [
+    "Non-independent agent labels",
+    "Only one issuer, stratified snippet challenge; not natural news flow coverage",
+    "Unknown overlap with base model original private training data",
+    "PDF correction body read as source evidence; labels still concern frozen snippet inputs",
+    "Distinct nonempty projected inputs; irrelevant rows have empty projection but distinct full source texts"
+  ]
+}

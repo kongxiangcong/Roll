@@ -1,0 +1,3 @@
+# Train07 source-only bounded supplement
+
+Before any new model output, audit semantic-event embargo in addition to URL/input exclusions. Co-reported annual/interim results and impairment reports are conservatively treated as one reporting cycle; old revisions and AGM outcomes remain embargoed. The earlier 406 is a snippet-level label count, not a qualified training freeze. Acquire only 16 already discovered, unused training-window page2 queries, max80 transfer seconds/4MiB, zero retries/redirects. Fixed dates, object implementation, threshold0.65, gates, one candidate/2epochs/60min and single heldout evaluation unchanged. No dev/primary acquisition here.

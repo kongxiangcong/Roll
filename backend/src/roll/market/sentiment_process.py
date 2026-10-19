@@ -1,4 +1,4 @@
-"""Offline binary sentiment inference in the isolated research runtime."""
+"""Offline, fingerprint-bound sentiment inference in the isolated research runtime."""
 import hashlib,json,socket,sys,time
 from importlib.metadata import version
 from pathlib import Path
@@ -24,15 +24,22 @@ def main(command):
         from transformers import AutoModelForSequenceClassification,AutoTokenizer
         torch.set_num_threads(2)
         tokenizer=AutoTokenizer.from_pretrained(str(model_dir),local_files_only=True)
-        model=AutoModelForSequenceClassification.from_pretrained(str(model_dir),local_files_only=True)
+        model,loading=AutoModelForSequenceClassification.from_pretrained(str(model_dir),local_files_only=True,output_loading_info=True)
+        if any(loading.values()):raise ValueError('SENTIMENT_CHECKPOINT_LOADING_MISMATCH')
+        research=reference.get('task')=='CHINESE_FINANCIAL_SENTIMENT_3_CLASS'
+        mapping={int(key):value.upper() for key,value in model.config.id2label.items()}
+        expected={0:'NEUTRAL',1:'POSITIVE',2:'NEGATIVE'} if research else {0:'NEGATIVE',1:'POSITIVE'}
+        if mapping!=expected:raise ValueError('SENTIMENT_MODEL_LABEL_MAPPING_MISMATCH')
         model.eval()
         for item in command['items']:
             started=time.monotonic()
             with torch.inference_mode():
                 encoded=tokenizer(item['text'][:800],return_tensors='pt',truncation=True,max_length=256)
                 probabilities=torch.softmax(model(**encoded).logits[0],dim=-1).tolist()
-            result['predictions'].append({'fact_id':item['fact_id'],'prob_negative':float(probabilities[0]),
-                'prob_positive':float(probabilities[1]),'latency_seconds':time.monotonic()-started})
+            if len(probabilities)!=len(expected):raise ValueError('SENTIMENT_MODEL_LABEL_COUNT_MISMATCH')
+            values={mapping[index]:float(value) for index,value in enumerate(probabilities)}
+            result['predictions'].append({'fact_id':item['fact_id'],'prob_negative':values['NEGATIVE'],
+                'prob_positive':values['POSITIVE'],'probabilities':values,'latency_seconds':time.monotonic()-started})
         result['status']='SUCCESS'
     except Exception as error:result['errors'].append(type(error).__name__+': '+str(error)[:300])
     Path(command['output']).write_text(json.dumps(result,ensure_ascii=False),encoding='utf-8')

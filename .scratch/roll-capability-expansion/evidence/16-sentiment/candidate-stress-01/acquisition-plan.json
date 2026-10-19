@@ -1,0 +1,25 @@
+{
+  "attempt_id": "SENTIMENT-CANDIDATE-UNEXPOSED-REVISION-STRESS",
+  "authorization": "User broad public data/content fill permission; new bounded source-only purpose, no closed budget reopened",
+  "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+  "identity": {
+    "stock": "600362,gssh0600362",
+    "column": "sse",
+    "tabName": "fulltext"
+  },
+  "interval": "2026-01-01~2026-10-18",
+  "queries": [
+    {
+      "keyword": "修订",
+      "page": 1
+    }
+  ],
+  "page_size": 30,
+  "limits": {
+    "maximum_requests": 1,
+    "maximum_seconds": 10,
+    "maximum_bytes": 1048576,
+    "retries": 0,
+    "redirects": 0
+  }
+}

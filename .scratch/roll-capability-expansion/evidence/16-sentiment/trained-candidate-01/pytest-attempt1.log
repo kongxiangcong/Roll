@@ -1,0 +1,26 @@
+.F.....................                                                  [100%]
+================================== FAILURES ===================================
+___________ test_three_class_append_replay_restart_and_source_input ___________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r16c1t/test_three_class_append_replay0')
+
+    def test_three_class_append_replay_restart_and_source_input(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            prepare(client);client.app.state.sentiment.worker=worker
+            response=client.post('/api/market/sentiment/SSE:600362/classify',json=COMMAND)
+            assert response.status_code==201,response.text
+            run=response.json();assert run['status']=='COMPLETE' and run['evidence_kind']=='METHOD_CASE'
+>           assert run['counts']=={'POSITIVE':1,'NEGATIVE':1,'NEUTRAL':1,'ABSTAIN_NO_COMPANY_OBJECT':1,'ABSTAIN_LOW_CONFIDENCE':1}
+E           AssertionError: assert {'ABSTAIN_NO_...'POSITIVE': 1} == {'ABSTAIN_LOW...TRAL': 1, ...}
+E             
+E             Omitting 3 identical items, use -vv to show
+E             Differing items:
+E             {'ABSTAIN_NO_COMPANY_OBJECT': 2} != {'ABSTAIN_NO_COMPANY_OBJECT': 1}
+E             Right contains 1 more item:
+E             {'ABSTAIN_LOW_CONFIDENCE': 1}
+E             Use -v to get more diff
+
+tests\application\test_sentiment_research.py:35: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_sentiment_research.py::test_three_class_append_replay_restart_and_source_input
+1 failed, 22 passed in 38.12s

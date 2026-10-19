@@ -1,0 +1,22 @@
+{
+  "status": "AUTHORIZED_BOUNDED_PUBLIC_ARCHIVE_RUNTIME",
+  "endpoint": "https://search.sina.com.cn/api/advanced",
+  "limits": {
+    "maximum_requests": 1,
+    "maximum_transfer_seconds": 10,
+    "maximum_bytes": 1048576,
+    "retries": 0,
+    "automatic_redirects": 0
+  },
+  "commands": [
+    {
+      "period": "RUNTIME_NOT_PRIMARY",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-05-01",
+      "maximum_date": "2025-05-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    }
+  ]
+}

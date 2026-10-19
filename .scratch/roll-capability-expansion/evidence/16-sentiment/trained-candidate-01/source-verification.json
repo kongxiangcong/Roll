@@ -1,0 +1,85 @@
+{
+  "status": "VERIFIED_BEFORE_INFERENCE",
+  "source_ledgers": [
+    {
+      "phase": "train-04",
+      "http_attempts": 64,
+      "bytes": 952514,
+      "seconds": 112.74134409963153,
+      "verified_raws": 64,
+      "no_response_attempts": 0
+    },
+    {
+      "phase": "train-05",
+      "http_attempts": 20,
+      "bytes": 388333,
+      "seconds": 44.73737699986668,
+      "verified_raws": 19,
+      "no_response_attempts": 1
+    },
+    {
+      "phase": "train-06",
+      "http_attempts": 5,
+      "bytes": 112586,
+      "seconds": 9.41866770008346,
+      "verified_raws": 5,
+      "no_response_attempts": 0
+    },
+    {
+      "phase": "train-07",
+      "http_attempts": 16,
+      "bytes": 61988,
+      "seconds": 14.516908600053284,
+      "verified_raws": 16,
+      "no_response_attempts": 0
+    },
+    {
+      "phase": "train-08",
+      "http_attempts": 5,
+      "bytes": 102793,
+      "seconds": 6.187,
+      "verified_raws": 5,
+      "no_response_attempts": 0
+    }
+  ],
+  "pdf_http_attempts": 1,
+  "pdf_bytes": 260801,
+  "pdf_seconds": 4.15619400003925,
+  "training_freeze_sha256": "e5598d0eff66b8b250fd185b3121adffc6d0351bce95f171340cd6f171f3f12c",
+  "support": {
+    "POSITIVE": {
+      "rows": 30,
+      "event_groups": 17
+    },
+    "NEGATIVE": {
+      "rows": 30,
+      "event_groups": 19
+    },
+    "NEUTRAL": {
+      "rows": 30,
+      "event_groups": 21
+    },
+    "IRRELEVANT": {
+      "rows": 30,
+      "event_groups": 27
+    }
+  },
+  "training_labels": {
+    "NEUTRAL": 207,
+    "POSITIVE": 126,
+    "NEGATIVE": 67
+  },
+  "development_labels": {
+    "POSITIVE": 32,
+    "NEUTRAL": 61,
+    "NEGATIVE": 27
+  },
+  "new_model_evaluation_count_at_audit": 0,
+  "limitations": [
+    "Non-independent agent labels",
+    "Only one issuer, stratified snippet challenge; not natural news flow coverage",
+    "Unknown overlap with base model original private training data",
+    "PDF correction body read as source evidence; labels still concern frozen snippet inputs",
+    "Distinct nonempty projected inputs; irrelevant rows have empty projection but distinct full source texts"
+  ]
+}

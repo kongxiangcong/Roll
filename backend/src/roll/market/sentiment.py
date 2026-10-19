@@ -1,15 +1,18 @@
 """Limited research sentiment classification over saved news facts; no trading or return meaning."""
-import asyncio,hashlib,json,os
+import asyncio,hashlib,json,os,math
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
+from typing import Literal
 from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field
 from roll.accounts.ledger import encode,now
 from roll.market.news_events import associate,group_facts
 from roll.market.sentiment_contract import VERSION as REJECT_VERSION,final_label,pre_reject
+from roll.market.sentiment_object import project,VERSION as OBJECT_VERSION
 
 REFERENCE=Path(__file__).with_name('sentiment-reference.json')
+RESEARCH_REFERENCE=Path(__file__).with_name('sentiment-research-reference.json')
 VERSION='sentiment-classification-v1'
 
 
@@ -17,6 +20,7 @@ class SentimentCommand(BaseModel):
     model_config=ConfigDict(extra='forbid')
     idempotency_key:str=Field(min_length=1,max_length=128)
     basis:str=Field(min_length=1,max_length=2000)
+    profile:Literal['legacy','finbert-adaptation-01']='legacy'
 
 
 class Sentiment:
@@ -27,9 +31,16 @@ class Sentiment:
             db.execute('CREATE TABLE IF NOT EXISTS sentiment_facts(fact_id TEXT,reference_sha256 TEXT,value TEXT,PRIMARY KEY(fact_id,reference_sha256))')
             db.execute('CREATE TABLE IF NOT EXISTS sentiment_references(sha256 TEXT PRIMARY KEY,value TEXT,created_at TEXT)')
 
-    def reference(self):
-        body=REFERENCE.read_bytes();value=json.loads(body)
+    def reference(self,profile='legacy'):
+        path=REFERENCE if profile=='legacy' else RESEARCH_REFERENCE
+        if not path.is_file():raise ValueError('SENTIMENT_RESEARCH_REFERENCE_NOT_CONFIGURED')
+        body=path.read_bytes();value=json.loads(body)
         if value.get('status')!='VERIFIED':raise ValueError('SENTIMENT_RUNTIME_NOT_VERIFIED')
+        if profile!='legacy':
+            if value.get('profile')!=profile or value.get('task')!='CHINESE_FINANCIAL_SENTIMENT_3_CLASS':
+                raise ValueError('SENTIMENT_RESEARCH_TASK_NOT_VERIFIED')
+            if value.get('object_version')!=OBJECT_VERSION or value.get('object_sha256')!=hashlib.sha256(Path(__file__).with_name('sentiment_object.py').read_bytes()).hexdigest():
+                raise ValueError('SENTIMENT_OBJECT_FINGERPRINT_MISMATCH')
         model=Path(value['model_directory']).resolve()
         for item in value['artifacts']:
             path=(model/item['path']).resolve()
@@ -70,25 +81,41 @@ class Sentiment:
         return json.loads(path.read_text(encoding='utf-8'))
 
     async def classify(self,instrument,command):
-        hashed=hashlib.sha256(encode(command.model_dump()).encode()).hexdigest()
+        # Omit the legacy default so previously saved two-field command hashes replay unchanged.
+        hashed=hashlib.sha256(encode(command.model_dump(exclude_defaults=True)).encode()).hexdigest()
         with self.ledger.connection() as db:prior=db.execute('SELECT command_hash,value FROM sentiment_runs WHERE instrument=? AND key=?',(instrument,command.idempotency_key)).fetchone()
         if prior:
             if prior[0]!=hashed:raise HTTPException(409,'SENTIMENT_IDEMPOTENCY_CONFLICT')
             return json.loads(prior[1])
-        reference_sha,reference=self.reference()
+        research=command.profile!='legacy'
+        if research and instrument!='SSE:600362':raise HTTPException(422,'SENTIMENT_RESEARCH_INSTRUMENT_NOT_VERIFIED')
+        try:
+            reference_sha,reference=self.reference(command.profile)
+            if research and not self.worker and not os.environ.get('ROLL_SENTIMENT_PYTHON'):
+                raise ValueError('SENTIMENT_ISOLATED_PYTHON_NOT_CONFIGURED')
+        except ValueError as error:raise HTTPException(409,str(error)) from error
         facts=self.facts(instrument)
         if not facts:raise HTTPException(409,'SENTIMENT_NO_SAVED_NEWS')
         identities=self.identities();associations={fact['fact_id']:associate(fact,identities) for fact in facts}
+        if research and not any(identity['instrument']==instrument and identity.get('code')=='600362' and '江西铜业' in identity.get('name','') for identity in identities):
+            raise HTTPException(409,'SENTIMENT_RESEARCH_IDENTITY_NOT_VERIFIED')
         memberships,_=group_facts(facts,associations)
         items=[];pre={}
         for fact in facts:
-            text=(fact.get('title') or '')+'\n'+(fact.get('body_text') or fact.get('excerpt') or '')
-            reason=pre_reject(fact.get('title'),text,associations[fact['fact_id']]['classification'])
+            if research:
+                projection=project(fact.get('title'),fact.get('excerpt'))
+                text,reason=projection['text'],projection['reject_reason']
+                if any(instrument in conflict['instruments'] for conflict in associations[fact['fact_id']]['conflicts']):
+                    text,reason='','ABSTAIN_IDENTITY_CONFLICT'
+            else:
+                text=(fact.get('title') or '')+'\n'+(fact.get('body_text') or fact.get('excerpt') or '')
+                reason=pre_reject(fact.get('title'),text,associations[fact['fact_id']]['classification'])
             pre[fact['fact_id']]=reason
             items.append({'fact_id':fact['fact_id'],'text':text,'reason':reason})
         value={'run_id':str(uuid4()),'instrument':instrument,'basis':command.basis,'status':'RUNNING','started_at':now(),'finished_at':None,
-            'reference_sha256':reference_sha,'reference':reference,'reject_layer':REJECT_VERSION,'classification_version':VERSION,
-            'evidence_kind':'METHOD_CASE' if self.worker else 'REAL_LOCAL_CLASSIFICATION','facts':[],'errors':[],'network_calls':0,
+            'reference_sha256':reference_sha,'reference':reference,'profile':command.profile,
+            'reject_layer':OBJECT_VERSION if research else REJECT_VERSION,'classification_version':'sentiment-classification-v2-three-class' if research else VERSION,
+            'evidence_kind':'METHOD_CASE' if self.worker or research and any(fact.get('evidence_kind')=='METHOD_CASE' for fact in facts) else 'REAL_LOCAL_CLASSIFICATION','facts':[],'errors':[],'network_calls':0,
             'system_usable':False,'capability':'RESEARCH_LIMITED'}
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
@@ -113,13 +140,33 @@ class Sentiment:
                 fact=next(fact for fact in facts if fact['fact_id']==item['fact_id'])
                 prediction=predictions.get(item['fact_id'])
                 if item['reason'] is None and not prediction:raise ValueError('SENTIMENT_PREDICTION_MISSING')
-                prob_positive=prediction['prob_positive'] if prediction else None
-                prob_negative=prediction['prob_negative'] if prediction else None
-                label,confidence,reason=final_label(prob_positive,prob_negative,item['reason'])
+                if research:
+                    probabilities=prediction.get('probabilities') if prediction else None
+                    if item['reason']:
+                        label,confidence,reason=None,None,item['reason']
+                    else:
+                        if not isinstance(probabilities,dict) or set(probabilities)!={'POSITIVE','NEGATIVE','NEUTRAL'}:
+                            raise ValueError('SENTIMENT_THREE_CLASS_OUTPUT_MISSING')
+                        if not all(type(v) in (int,float) and math.isfinite(v) and 0<=v<=1 for v in probabilities.values()) or abs(sum(probabilities.values())-1)>1e-5:
+                            raise ValueError('SENTIMENT_INVALID_PROBABILITIES')
+                        label=max(probabilities,key=probabilities.get);confidence=probabilities[label];reason=None
+                        if confidence<reference['confidence_floor']:label,reason=None,'ABSTAIN_LOW_CONFIDENCE'
+                    prob_positive=probabilities['POSITIVE'] if probabilities else None
+                    prob_negative=probabilities['NEGATIVE'] if probabilities else None
+                else:
+                    probabilities=None
+                    prob_positive=prediction['prob_positive'] if prediction else None
+                    prob_negative=prediction['prob_negative'] if prediction else None
+                    label,confidence,reason=final_label(prob_positive,prob_negative,item['reason'])
                 text_sha=hashlib.sha256(item['text'].encode()).hexdigest()
                 results.append({'fact_id':fact['fact_id'],'title':fact.get('title'),'media':fact.get('media'),'event_id':memberships[fact['fact_id']]['event_id'],
                     'association':associations[fact['fact_id']]['classification'],'text_sha256':text_sha,'label':label,'confidence':confidence,
-                    'reject_reason':reason,'prob_positive':prob_positive,'prob_negative':prob_negative})
+                    'reject_reason':reason,'prob_positive':prob_positive,'prob_negative':prob_negative,
+                    'prob_neutral':probabilities['NEUTRAL'] if probabilities else None,
+                    'model_input_text':item['text'] if research else None,
+                    'latency_seconds':prediction.get('latency_seconds') if prediction else None,
+                    'model_input_version':OBJECT_VERSION if research else REJECT_VERSION,
+                    'source_input_sha256':hashlib.sha256(((fact.get('title') or '')+'\n'+(fact.get('excerpt') or '')).encode()).hexdigest()})
             counts={};rejects={}
             for row in results:
                 key=row['label'] or row['reject_reason']
@@ -156,4 +203,5 @@ class Sentiment:
         return {'instrument':instrument,'run':run,'facts':run['facts'],'counts':run['counts'],'reject_counts':run['reject_counts'],
             'coverage':run['coverage'],'model':reference.get('model'),'license':reference.get('license'),'weights_sha256':reference.get('weights_sha256'),
             'evaluation':reference.get('evaluation'),'reject_layer':run['reject_layer'],'known_by':stamp.isoformat(),
+            'profile':run.get('profile','legacy'),'labels_supported':['NEUTRAL','POSITIVE','NEGATIVE'] if reference.get('task')=='CHINESE_FINANCIAL_SENTIMENT_3_CLASS' else ['NEGATIVE','POSITIVE'],
             'network_calls':0,'system_usable':False,'capability':'RESEARCH_LIMITED'}

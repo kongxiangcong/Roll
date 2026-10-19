@@ -1,0 +1,190 @@
+{
+  "status": "TRAINED_LAST_STEP",
+  "started_at": "2026-10-19T13:55:11.530812+00:00",
+  "training_authorization": "One bounded user-approved candidate, max2epochs/60min",
+  "training_manifest_sha256": "e5598d0eff66b8b250fd185b3121adffc6d0351bce95f171340cd6f171f3f12c",
+  "training_rows": 400,
+  "network_calls": 0,
+  "development_loaded": false,
+  "holdout_loaded": false,
+  "optimizer_steps": 200,
+  "settings": {
+    "seed": 42,
+    "cpu_threads": 2,
+    "precision": "float32",
+    "max_length": 256,
+    "learning_rate": 2e-05,
+    "batch_size": 4,
+    "maximum_epochs": 2,
+    "maximum_seconds": 3600,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1.0
+  },
+  "step_log": [
+    {
+      "step": 10,
+      "epoch": 1,
+      "examples_seen_this_epoch": 40,
+      "loss": 0.0019252205966040492,
+      "elapsed_seconds": 88.67809639999177
+    },
+    {
+      "step": 20,
+      "epoch": 1,
+      "examples_seen_this_epoch": 80,
+      "loss": 0.0047451891005039215,
+      "elapsed_seconds": 103.8059787999955
+    },
+    {
+      "step": 30,
+      "epoch": 1,
+      "examples_seen_this_epoch": 120,
+      "loss": 0.001446085050702095,
+      "elapsed_seconds": 119.31247579999035
+    },
+    {
+      "step": 40,
+      "epoch": 1,
+      "examples_seen_this_epoch": 160,
+      "loss": 0.001521239522844553,
+      "elapsed_seconds": 134.01307799998904
+    },
+    {
+      "step": 50,
+      "epoch": 1,
+      "examples_seen_this_epoch": 200,
+      "loss": 0.0009115546708926558,
+      "elapsed_seconds": 147.98140410002088
+    },
+    {
+      "step": 60,
+      "epoch": 1,
+      "examples_seen_this_epoch": 240,
+      "loss": 0.0016739387065172195,
+      "elapsed_seconds": 160.42658680002205
+    },
+    {
+      "step": 70,
+      "epoch": 1,
+      "examples_seen_this_epoch": 280,
+      "loss": 0.0005953878862783313,
+      "elapsed_seconds": 174.689853399992
+    },
+    {
+      "step": 80,
+      "epoch": 1,
+      "examples_seen_this_epoch": 320,
+      "loss": 0.0004293833044357598,
+      "elapsed_seconds": 188.3201262000366
+    },
+    {
+      "step": 90,
+      "epoch": 1,
+      "examples_seen_this_epoch": 360,
+      "loss": 0.0004751022788695991,
+      "elapsed_seconds": 201.8043891999987
+    },
+    {
+      "step": 100,
+      "epoch": 1,
+      "examples_seen_this_epoch": 400,
+      "loss": 0.002359778853133321,
+      "elapsed_seconds": 215.18944620003458
+    },
+    {
+      "step": 110,
+      "epoch": 2,
+      "examples_seen_this_epoch": 40,
+      "loss": 0.0002555199316702783,
+      "elapsed_seconds": 229.09233050001785
+    },
+    {
+      "step": 120,
+      "epoch": 2,
+      "examples_seen_this_epoch": 80,
+      "loss": 0.0007302468875423074,
+      "elapsed_seconds": 242.10103429999435
+    },
+    {
+      "step": 130,
+      "epoch": 2,
+      "examples_seen_this_epoch": 120,
+      "loss": 0.0009061094606295228,
+      "elapsed_seconds": 256.80120099999476
+    },
+    {
+      "step": 140,
+      "epoch": 2,
+      "examples_seen_this_epoch": 160,
+      "loss": 0.0010922271758317947,
+      "elapsed_seconds": 272.5208557000151
+    },
+    {
+      "step": 150,
+      "epoch": 2,
+      "examples_seen_this_epoch": 200,
+      "loss": 0.0003498682926874608,
+      "elapsed_seconds": 284.8569932000246
+    },
+    {
+      "step": 160,
+      "epoch": 2,
+      "examples_seen_this_epoch": 240,
+      "loss": 0.0004097271303180605,
+      "elapsed_seconds": 297.81501570000546
+    },
+    {
+      "step": 170,
+      "epoch": 2,
+      "examples_seen_this_epoch": 280,
+      "loss": 0.0002863238623831421,
+      "elapsed_seconds": 309.43633970001247
+    },
+    {
+      "step": 180,
+      "epoch": 2,
+      "examples_seen_this_epoch": 320,
+      "loss": 0.0003887155035044998,
+      "elapsed_seconds": 321.0528037000331
+    },
+    {
+      "step": 190,
+      "epoch": 2,
+      "examples_seen_this_epoch": 360,
+      "loss": 0.0001601144322194159,
+      "elapsed_seconds": 335.86735790001694
+    },
+    {
+      "step": 200,
+      "epoch": 2,
+      "examples_seen_this_epoch": 400,
+      "loss": 0.0003293719491921365,
+      "elapsed_seconds": 347.79106980003417
+    }
+  ],
+  "cold_start_seconds": 70.96522390004247,
+  "model_directory": "D:\\dsh-proj\\Roll\\.scratch\\rce-runtime\\sentiment\\Roll-FinBERT-adaptation-01",
+  "artifacts": [
+    {
+      "path": "config.json",
+      "bytes": 1175,
+      "sha256": "e76f693b88cca4269f28684e70cc759f7388df342ebb32d042e42667b6ff3a6a"
+    },
+    {
+      "path": "model.safetensors",
+      "bytes": 409103316,
+      "sha256": "d3ba72cd79ea77b0285745909d40ae2a43512b0baa4c5b9328a10fd8eceb69da"
+    },
+    {
+      "path": "tokenizer.json",
+      "bytes": 439372,
+      "sha256": "2fd943d7c063d731de5967c3c503a5a9e2546a613cf7f8f45b918d324cdd2188"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 460,
+      "sha256": "a9ed690ea693e325785b71f2be7cde566ff893d87957717abb960dc3914e10e9"
+    }
+  ],
+  "elapsed_seconds": 348.61308350000763
+}
