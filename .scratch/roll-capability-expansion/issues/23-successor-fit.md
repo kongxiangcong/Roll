@@ -8,7 +8,7 @@
 
 **Completion:** pending
 
-**Execution:** NOT_STARTED；当前仅发布计划，用户稍后启动后才执行。
+**Execution:** WAITING_FOR_REAL_TRAINING_GATES — 已完成真实历史家族的只读元数据核查；已知共享CAL预算耗尽，真实特征/标签、完整方案与训练授权亦未满足，未开始训练实现或实际拟合。
 
 **Scope / inheritance:** 外部启动条件：真实数据支持、拟合/CAL余额、完整冻结设计和授权均满足。
 
