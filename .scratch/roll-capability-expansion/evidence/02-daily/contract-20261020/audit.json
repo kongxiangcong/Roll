@@ -1,0 +1,597 @@
+{
+  "at": "2026-10-20T11:57:14.295816+00:00",
+  "head": "0f57695489453f7b53747dbc62d825a4a71ebafa",
+  "branch": "codex/roll-capability-expansion",
+  "tickets": {
+    "01": {
+      "path": ".scratch/roll-capability-expansion/issues/01-handoff-baseline.md",
+      "completion": "complete",
+      "sha256": "8d5ddbca9cbbe8a792419fa06b39f65615709ce77f26dcbe2d1200496ccca0ec",
+      "dependencies": [],
+      "unmet_dependencies": []
+    },
+    "02": {
+      "path": ".scratch/roll-capability-expansion/issues/02-daily-evidence.md",
+      "completion": "partial",
+      "sha256": "b7e3cff7af6d17f11aeb12a2dfcf315462fd3e0a45e388370e9840496cd46b87",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "03": {
+      "path": ".scratch/roll-capability-expansion/issues/03-status-evidence.md",
+      "completion": "partial",
+      "sha256": "e77404252c59711fb352808bfb5131e2805eb50bdcc56a6b6c7463c75f6a0b29",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "04": {
+      "path": ".scratch/roll-capability-expansion/issues/04-action-lifecycle.md",
+      "completion": "partial",
+      "sha256": "cc69e1db13a35cd791afc4545bbac818d49f9e005a5138034a3c43ae9d121587",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "05": {
+      "path": ".scratch/roll-capability-expansion/issues/05-policy-freeze-validation.md",
+      "completion": "partial",
+      "sha256": "2b5d8e3781a45480c290f075447c27a0411f13e5195cb8341341a2bd6f2d03f7",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "06": {
+      "path": ".scratch/roll-capability-expansion/issues/06-current-action-validity.md",
+      "completion": "pending",
+      "sha256": "7c260d1af577ce5e2cc585da2cabaf5b6e2f6b603772ad2d79df467fb14c7b1f",
+      "dependencies": [
+        "05"
+      ],
+      "unmet_dependencies": [
+        "05"
+      ]
+    },
+    "07": {
+      "path": ".scratch/roll-capability-expansion/issues/07-loss-recovery.md",
+      "completion": "partial",
+      "sha256": "8aeb7f35a7f220514a43cf2e79b2f2bf4e3874114bb12e325eac65b219449c36",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "08": {
+      "path": ".scratch/roll-capability-expansion/issues/08-existing-forward-start.md",
+      "completion": "pending",
+      "sha256": "82740dcbd74f9b7d70f44174e593a4041b6d24b62cc5a6cb17f14272037f1f06",
+      "dependencies": [
+        "02",
+        "03",
+        "04",
+        "05"
+      ],
+      "unmet_dependencies": [
+        "02",
+        "03",
+        "04",
+        "05"
+      ]
+    },
+    "09": {
+      "path": ".scratch/roll-capability-expansion/issues/09-income-statement.md",
+      "completion": "complete",
+      "sha256": "b333300b214adc7df92614a6ed54426864a4661e3896ed12b051d4d940b0133c",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "10": {
+      "path": ".scratch/roll-capability-expansion/issues/10-balance-cashflow.md",
+      "completion": "complete",
+      "sha256": "54094efce673789088153d3e4a49234dade502b56367b5cdb513e6014bdca084",
+      "dependencies": [
+        "09"
+      ],
+      "unmet_dependencies": []
+    },
+    "11": {
+      "path": ".scratch/roll-capability-expansion/issues/11-financial-metrics.md",
+      "completion": "complete",
+      "sha256": "631b43b56e593eb7f71b90c3fe2a08427632f14f0c6d75cd6083e62dae89fb64",
+      "dependencies": [
+        "10"
+      ],
+      "unmet_dependencies": []
+    },
+    "12": {
+      "path": ".scratch/roll-capability-expansion/issues/12-document-tables.md",
+      "completion": "complete",
+      "sha256": "d633526ad5982e0fe795ba63d2c221a2e75c6800739946f99b4d288a5bf0f198",
+      "dependencies": [
+        "09"
+      ],
+      "unmet_dependencies": []
+    },
+    "13": {
+      "path": ".scratch/roll-capability-expansion/issues/13-financial-observation.md",
+      "completion": "complete",
+      "sha256": "973a0addb62cbf30c867c87cd42fbf2702815c723729dcdf0c681174a1fa962b",
+      "dependencies": [
+        "11",
+        "12"
+      ],
+      "unmet_dependencies": []
+    },
+    "14": {
+      "path": ".scratch/roll-capability-expansion/issues/14-news-ingestion.md",
+      "completion": "complete",
+      "sha256": "02cf64da9cddae0a6984c15680a63bdabc7a604d427e3a8daeddf7a875087ebf",
+      "dependencies": [
+        "09"
+      ],
+      "unmet_dependencies": []
+    },
+    "15": {
+      "path": ".scratch/roll-capability-expansion/issues/15-news-entity-dedup.md",
+      "completion": "complete",
+      "sha256": "7553dff7591fd663a86f096b1467941a081414e8ac7afeef4a712284369853b0",
+      "dependencies": [
+        "14"
+      ],
+      "unmet_dependencies": []
+    },
+    "16": {
+      "path": ".scratch/roll-capability-expansion/issues/16-sentiment-evaluation.md",
+      "completion": "complete",
+      "sha256": "37860877c513c57f76ccef39475f5ae241b2a2e15862a1dd17e473c773db9b11",
+      "dependencies": [
+        "15"
+      ],
+      "unmet_dependencies": []
+    },
+    "17": {
+      "path": ".scratch/roll-capability-expansion/issues/17-sentiment-series.md",
+      "completion": "complete",
+      "sha256": "342c979e5e03811f96c4aa40520a7cf294f94749647f058ab3af2ae1c8c5f9c1",
+      "dependencies": [
+        "16"
+      ],
+      "unmet_dependencies": []
+    },
+    "18": {
+      "path": ".scratch/roll-capability-expansion/issues/18-observation-worker.md",
+      "completion": "complete",
+      "sha256": "2465902848126a9949d4612ac0e6f248c99c5d26552c5c4ae6ee65c07f663af2",
+      "dependencies": [
+        "13",
+        "17"
+      ],
+      "unmet_dependencies": []
+    },
+    "19": {
+      "path": ".scratch/roll-capability-expansion/issues/19-performance-report.md",
+      "completion": "complete",
+      "sha256": "16b7ebf36ce6e4a13e5e9b932cbe9b43321bbe97ca46d2bdebaba4c83aeaac11",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "20": {
+      "path": ".scratch/roll-capability-expansion/issues/20-probability-reference.md",
+      "completion": "complete",
+      "sha256": "86003ba1d1d2c0d00b2be25b3a72a182d319f28d99916820d5f240bc5a280c3c",
+      "dependencies": [
+        "01"
+      ],
+      "unmet_dependencies": []
+    },
+    "21": {
+      "path": ".scratch/roll-capability-expansion/issues/21-block-stat-reference.md",
+      "completion": "complete",
+      "sha256": "d98c7ad9b9158b210d4c7868a9b4117ab08d7a394ba58b7c20793e849a2006e6",
+      "dependencies": [
+        "20"
+      ],
+      "unmet_dependencies": []
+    },
+    "22": {
+      "path": ".scratch/roll-capability-expansion/issues/22-feature-asof-protocol.md",
+      "completion": "complete",
+      "sha256": "9a2f84c5069929be229c3c12545753d93366c8fb2712b76a4d5637c1dff51ea7",
+      "dependencies": [
+        "11",
+        "17",
+        "20",
+        "21"
+      ],
+      "unmet_dependencies": []
+    },
+    "23": {
+      "path": ".scratch/roll-capability-expansion/issues/23-successor-fit.md",
+      "completion": "pending",
+      "sha256": "e41c6ce53226c801b1a6247d63593116b24e13a6283f6f22be3f21f2bb1e6c11",
+      "dependencies": [
+        "22"
+      ],
+      "unmet_dependencies": []
+    },
+    "24": {
+      "path": ".scratch/roll-capability-expansion/issues/24-successor-forward.md",
+      "completion": "pending",
+      "sha256": "0e0f2d07210fbe82d1827a440acf2d2ab2766aa2cd704b5d3a0bdbbaaf56f4a6",
+      "dependencies": [
+        "23"
+      ],
+      "unmet_dependencies": [
+        "23"
+      ]
+    },
+    "25": {
+      "path": ".scratch/roll-capability-expansion/issues/25-successor-verdict.md",
+      "completion": "pending",
+      "sha256": "deddc1bdbddaf34acfea5d5aa210b24bc5d0ba4fef2524fd2d5e343e391520f6",
+      "dependencies": [
+        "24"
+      ],
+      "unmet_dependencies": [
+        "24"
+      ]
+    },
+    "26": {
+      "path": ".scratch/roll-capability-expansion/issues/26-integration-delivery.md",
+      "completion": "pending",
+      "sha256": "73cfe5f5df4eaf85fc3288859ebf1b8a5e90ebd1d43b66df4b7b4e3a9097e26a",
+      "dependencies": [
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "13",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22"
+      ],
+      "unmet_dependencies": [
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07"
+      ]
+    }
+  },
+  "counts": {
+    "complete": 15,
+    "partial": 5,
+    "pending": 6
+  },
+  "reference_integrity": [
+    {
+      "catalog": "authority-20261020",
+      "role": "bao_home",
+      "sha256": "6a931ebea4ff858c46cf89e6c8f448b755cceab10071a35265b576ff09545884",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "bao_daily",
+      "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "bao_factors",
+      "sha256": "6820224b59a62b5e96b3347e0342263f0f9fb448a00a5c4ce1e61d2857b8984b",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "phase_client",
+      "sha256": "5e30aa03c402eecc759de04b4b683548355a144861bc8cc814018150c6a6070e",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "phase_snap",
+      "sha256": "6a96cead1b5f1f76d59149872218c874797117c48163f98221f66fb3193018aa",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "company_client",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "company_page",
+      "sha256": "d374164f4824cc4f9c1e97241934ff063099b10dd36431a9a6bc5ff472a2d90f",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "dividend_1",
+      "sha256": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "dividend_2",
+      "sha256": "f1882cf8257766c0db7b72ed2f7bdedb4b5482ffbf684eae205f1060665bbf1b",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "send_share_1",
+      "sha256": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "announcements_1",
+      "sha256": "e4240812210a80aeda2586a8aea61689ae3b1384815a1776e61095bf465ea955",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "announcements_2",
+      "sha256": "701e28cfad644c7029e14b65812817a28983ad40c8756c67fd2c7b5a6baf2444",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "interim_notice",
+      "sha256": "991efe20772ae0c4ee1580ce2c0a8566d45178f6c9fc9ba348653d5152f77471",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "annual_notice",
+      "sha256": "cb0f30999cae5bae3b8a18d0a8365e300751f874db028316cb58ebd914cc1213",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "annual_report",
+      "sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "authority-20261020",
+      "role": "sse_daily_comparison",
+      "sha256": "1c4ce7b610ad84b966ebee62c7a29e1490ed5907d2a30607cabc505d1f4abd74",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "prior_phase_snap",
+      "sha256": "6a96cead1b5f1f76d59149872218c874797117c48163f98221f66fb3193018aa",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "prior_company_client",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "prior_bao_daily",
+      "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "prior_bao_home",
+      "sha256": "6a931ebea4ff858c46cf89e6c8f448b755cceab10071a35265b576ff09545884",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "snap_20",
+      "sha256": "ceb8310ebf82769dab3ea4c9ce55a423ebef79adbf578afb4dbba202822d5c89",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "stat_19",
+      "sha256": "1c4ce7b610ad84b966ebee62c7a29e1490ed5907d2a30607cabc505d1f4abd74",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "stat_16",
+      "sha256": "d8b8737967f30d759684e0e89b7db0f5f6400ec971aa478e0d1eb17924a7e4f7",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "stat_15",
+      "sha256": "9ae95a0e37a1b021a307bfcf56c0cbd838a8297b93b62bc81a7eb635e06bfef6",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "stat_14",
+      "sha256": "9537daa946f48cf46db0bac1ebd4db94a6d6e33e06e3e3b3877c6320fad1e3ff",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "stat_13",
+      "sha256": "3ff14d3f49ceabb63e96f0034e555529bb62e17171cf4e5d08bf4fde1cf33bfe",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "block_19",
+      "sha256": "675b34a967c81d10534ae00eb7123d9735344441d3126157ab7e17c3a4cbae8e",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "stat_20",
+      "sha256": "cca37a03ab857ecaa6a9076020f4b652ca60db51ff5330c16d9b3dfd6476117f",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "block_20",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": null,
+      "source_error": "TimeoutError"
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "sse-rules-2026",
+      "sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "sse-rules-text-2026",
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    },
+    {
+      "catalog": "daily-session-20261020",
+      "role": "sse-deferred-2026",
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5",
+      "hash_matches": true,
+      "length_matches": true,
+      "source_status": 200,
+      "source_error": null
+    }
+  ],
+  "reference_integrity_passed": true,
+  "research_metadata": [
+    {
+      "path": ".roll-data/pit/roll.sqlite3",
+      "exists": true,
+      "counts": {
+        "research_protocols": 0,
+        "research_attempts": 0
+      },
+      "access": "READ_ONLY_COUNTS_NO_LABELS_NO_ATTEMPT_CONTENT"
+    },
+    {
+      "path": ".scratch/r22-real03/roll.sqlite3",
+      "exists": true,
+      "counts": {
+        "research_protocols": 0,
+        "research_attempts": 0
+      },
+      "access": "READ_ONLY_COUNTS_NO_LABELS_NO_ATTEMPT_CONTENT"
+    }
+  ],
+  "scope": "Only named stores checked; no assertion about other deployments or external artifacts.",
+  "market_calls": 0,
+  "fits": 0,
+  "sealed_reads": 0,
+  "funds_mutations": 0
+}

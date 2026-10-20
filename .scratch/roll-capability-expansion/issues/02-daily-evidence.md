@@ -31,6 +31,8 @@
 
 ## Comments
 
+2026-10-20 持久Goal续作：核现场0f57695，用户确认没有现成授权交付文件。限定4检索/4页面复查未取得完整会话契约，不重开旧预算。修复清单/原件不可读时的明确409拒绝，旧归档/幂等仍可读；pytest9通过55.48秒、构建3.49秒、Chrome18.3秒、双轴无问题，代码28da15d。详见[本轮验收](../evidence/02-daily/contract-20261020/acceptance.md)。02仍partial，不宣称全部开发完成。
+
 2026-10-15：按01保护的基线继承SSE日线raw-first/once/API与worker，不重复开发或真实取数。新增原页面的日线/来源缺口查询、原件链接和手机阅读。公开API有限复核3 PASS/35.84s；Chrome空计划1 PASS/13.1s、最终固定响应与原件1 PASS/15.3s；TypeScript/Vite通过，RED及真实/METHOD边界分别留证。详见[验收及确切来源条件](../evidence/02-daily/acceptance.md)。原件不证明完整session/RAW修订契约，模型用途false、NOT_GRANTED与真实起点null不变；partial，不关闭旧P030，不重开已CLOSED预算。
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。
