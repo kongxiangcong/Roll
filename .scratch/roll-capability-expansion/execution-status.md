@@ -1,5 +1,7 @@
 # 能力补齐执行记录
 
+> 2026-10-20 范围调整：用户要求优先实现 [江西铜业单股日常使用闭环](../roll-daily-use/spec.md)。以下为旧能力扩展记录，模型冻结、资格、真实前向和本计划的整体收口均不再作为基础使用前置条件。研究工作独立保留，不改写旧完成状态。
+
 **Status:** ready-for-agent
 **Completion:** pending
 **Execution:** IN_PROGRESS — 2026-10-15 用户显式启动，集成分支 codex/roll-capability-expansion。

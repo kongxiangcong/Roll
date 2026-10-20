@@ -1,5 +1,7 @@
 # 26: 增量工程交付与兼容验收
 
+> 2026-10-20 用户调整：本票保留为完整能力扩展验收，不再阻塞基础日常使用。新的开发主线与基础交付入口见 [江西铜业单股日常使用](../../roll-daily-use/spec.md) 和 [01 日常闭环](../../roll-daily-use/issues/01-daily-loop.md)。原研究依赖与未完成项如实保留。
+
 **What to build:** 用户得到可安装、可禁用、可恢复的新观察与研究功能，原功能继续可用。
 
 **Blocked by:** [02 · 完整日线用途与来源缺口补齐](02-daily-evidence.md)；[03 · 有效交易状态与未知覆盖](03-status-evidence.md)；[04 · 公司行动版本与义务证据](04-action-lifecycle.md)；[05 · 后继政策完整冻结与验证消费者](05-policy-freeze-validation.md)；[06 · 当前动作有效期与政策派发](06-current-action-validity.md)；[07 · LOSS原因绑定恢复闭环](07-loss-recovery.md)；[13 · 财务分析进入单股与复盘](13-financial-observation.md)；[18 · 财报新闻接入现有日常运行](18-observation-worker.md)；[19 · QuantStats绩效图与导出](19-performance-report.md)；[20 · scikit-learn概率计算核验](20-probability-reference.md)；[21 · arch区块统计核验](21-block-stat-reference.md)；[22 · 新增特征快照与消融协议](22-feature-asof-protocol.md)

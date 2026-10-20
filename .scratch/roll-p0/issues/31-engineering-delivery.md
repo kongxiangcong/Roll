@@ -1,5 +1,7 @@
 # 31: 本地交付与工程验收收口
 
+> 2026-10-20 用户调整：本票保留原 P0 完整范围及未完成条件；基础日常交付改由 [江西铜业单股日常使用](../../roll-daily-use/spec.md) 独立验收，不再等待模型冻结、真实前向或正式建议资格。
+
 **What to build:** 在记录的 Windows 环境交付可以按说明安装、启动和使用的 Roll，将每票已有验收证据整理成可检查的工程交付，并明确尚在进行的真实研究及正式启用状态。
 
 **Blocked by:** [03 · Roll CSV 草稿与整批确认](03-csv-import.md)；[14 · 关键复盘的独立来源核验](14-independent-verification.md)；[29 · 研究查看、导出与跨出口隔离](29-research-isolation.md)；[30 · 盘后唯一前向归档与研究终点](30-forward-archive-deadline.md)。

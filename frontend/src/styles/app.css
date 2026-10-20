@@ -11,3 +11,10 @@ section[aria-label="研究登记"]{min-width:0;overflow-wrap:anywhere}
 .performance-report{min-width:0;overflow-wrap:anywhere}.performance-report img{display:block;width:100%;max-width:900px;height:auto}.performance-report pre{white-space:pre-wrap;max-height:320px;overflow:auto}
 .probability-reference{min-width:0;overflow-wrap:anywhere}.probability-reference pre{white-space:pre-wrap;max-height:320px;overflow:auto}.reference-table{max-width:100%;overflow-x:auto}.reference-table table{width:100%;font-size:13px}.reference-table th,.reference-table td{padding:6px;text-align:left}
 @media (max-width:640px) {.research-results {grid-template-columns:1fr}}
+.daily-use label:has(input[type="checkbox"]) {display:flex;align-items:center;gap:.6rem;margin:.8rem 0;}
+.daily-use input[type="checkbox"] {width:auto;flex:none;margin:0;}
+.daily-latest {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;}
+.daily-latest h3 {grid-column:1/-1;margin-bottom:0;}
+.daily-latest>div {padding:1rem;background:#f3f5ee;border-radius:.5rem;overflow-wrap:anywhere;}
+.daily-use details>summary {cursor:pointer;padding:.6rem 0;}
+@media(max-width:700px){.daily-latest{grid-template-columns:1fr;}}

@@ -1,5 +1,7 @@
 # Roll
 
+**2026-10-20 当前开发主线：江西铜业单股日常使用闭环。** 默认首页「日常使用」串联行情、财报新闻、按需分析和实际买卖记录；复用现有 worker，模型验证独立保留，不再阻塞基础使用。启动、停止、更新范围与操作方法见 [日常使用说明](docs/daily-use.md)。下面的 P0 与能力扩展验收记录保留为历史范围，不能解释为基础功能必须等待全部研究完成。
+
 2026-10-11最终工程对账：四项P2及prepare并发残差已独立修复接受，29工程complete；31干净锁定安装、当前五入口/无交易与按需休市复盘、两项当前15检索预算、三进程/备份恢复及三个P95已有独立有限收据。P95分别221.6225ms、1079.4350ms、0.5617275s，记录环境下均通过；本地评估为1个METHOD冻结scope＋29拒绝＋5背景，非完整真实资格。239条均已手工对账，没有新239行为全跑或全规格PASS。25缺冻结政策及生产费用/有效期输入、27正向LOSS规则、30完整来源合同仍partial，31据先决条件保持partial；28站内/配置/内部链完成，实际外发0待用户配置。32—34真实前向起点/自然终点/资格未成立，FITTED_UNVALIDATED/NOT_GRANTED保持。95dd已批准包真实Codex技术审阅仅一次，内部双轴审阅不新增ReviewRecord；DeepSeek后续排除。
 
 当前交付证据见[工程验收](.scratch/roll-p0/evidence/31-final/acceptance.md)、[最终独立](.scratch/roll-p0/evidence/continuation-2026-10-11/ticket31-final-independent/acceptance.md)、[普通无交易流程](.scratch/roll-p0/evidence/continuation-2026-10-11/ticket31-flow-independent/acceptance.md)和[逐条对账](.scratch/roll-p0/evidence/continuation-2026-10-11/final-manual239/ledger.md)。全部改动位于本地集成分支 `codex/roll-p0-integration`，未推送。
@@ -11,6 +13,10 @@
 前向数据积累和独立 METHOD 工程案例继续分开；历史重建训练不能补成真实前向预测。每日采集与虚拟构建命令、数据库目录、时点契约和可用门禁见 [前向数据契约](docs/prospective-data-contract.md)。当前完整盘后状态与权益来源仍有缺口，尚未建立真实前向起点。
 
 ## 启动（Windows PowerShell）
+
+依赖已安装后，在仓库根目录执行 `./scripts/start-roll.ps1`，即可依次启动 API、后台 worker 和网页；打开 [本机 Roll](http://127.0.0.1:5173)。执行 `./scripts/start-roll.ps1 -Status` 查看三者状态。脚本沿用 `%LOCALAPPDATA%\Roll` 的账户数据，重复执行复用已登记进程，遇到未登记的端口占用会停止并说明原因，不结束其他进程。
+
+需要 Codex 取证时，可显式传入 `-CodexAuthFile "$env:USERPROFILE\.codex\auth.json"`；只设置认证文件位置，不读取或展示凭据内容。自定义运行目录用 `-DataDirectory`，独立私有配置用 `-EnvironmentFile`。配置变更需要按[本机运行说明](docs/local-worker-delivery.md)停止原宿主再启动，重复执行脚本不会改写正在运行进程的配置。进程回执和日志保存在运行目录的 `logs/`，关闭网页不会停止服务。以下保留首次安装和手动启动步骤。
 
 需要 Python 3.12+、uv、Node.js 22.12+。已验收环境见 `.scratch/roll-p0/evidence/01/acceptance.md`。
 

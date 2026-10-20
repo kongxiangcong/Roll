@@ -69,7 +69,7 @@ class Notifications:
         at = observation['created_at']
         value = {'notification_id':str(uuid4()),'category':'STAGE_SUMMARY','severity':'NORMAL',
                  'source':{'kind':'OBSERVATION_UPDATE','id':observation['observation_id'],'version':observation['version']},
-                 'title':'财报新闻观察已更新','message':observation['instrument']+' 的已保存观察有变化，请查看来源覆盖和研究限制。',
+                 'title':'行情观察已更新' if observation['kind']=='MARKET' else '财报新闻观察已更新','message':observation['instrument']+' 的已保存观察有变化，请查看来源覆盖和研究限制。',
                  'occurred_at':at,'known_at':at,'expires_at':(datetime.fromisoformat(at)+timedelta(hours=8)).isoformat(),
                  'evidence_kind':observation['evidence_kind'],'in_app_only':True}
         db.execute('INSERT OR IGNORE INTO notification_records VALUES(?,?,?)', (value['notification_id'],key,encode(value)))

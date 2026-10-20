@@ -3,6 +3,7 @@ import asyncio
 import hashlib
 import json
 import time
+import threading
 from datetime import datetime, timedelta, time as wall_time
 from typing import Literal
 from uuid import uuid4
@@ -14,6 +15,7 @@ from roll.agents.codex_process import owner_alive
 from roll.market.rules import SHANGHAI
 from roll.market.news_ingestion import NewsCommand
 from roll.market.financial_income import IncomeCommand
+from roll.market.evidence import DataRequest
 from roll.market.sentiment import SentimentCommand
 from roll.market.sentiment_series import SeriesCommand, VERSION as SERIES_VERSION
 
@@ -32,6 +34,8 @@ class UpdateSettings(BaseModel):
     basis: str = Field(min_length=1, max_length=2000)
     enabled: bool
     news_postclose: bool = False
+    financial_postclose: bool = False
+    market_postclose: bool = False
     news_refresh: bool = False
     classify: bool = False
     profile: Literal['legacy', 'finbert-adaptation-01'] = 'legacy'
@@ -41,7 +45,7 @@ class UpdateRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     idempotency_key: str = Field(min_length=1, max_length=128)
     basis: str = Field(min_length=1, max_length=2000)
-    kind: Literal['FINANCIAL', 'NEWS']
+    kind: Literal['FINANCIAL', 'NEWS', 'MARKET']
     refresh_sources: bool = False
 
 
@@ -67,7 +71,8 @@ class ObservationUpdates:
             raise HTTPException(409, 'OBSERVATION_SOURCE_SCOPE_UNSUPPORTED')
         with self.ledger.connection() as db:
             row = db.execute('SELECT value FROM observation_update_settings WHERE instrument=?', (instrument,)).fetchone()
-        return json.loads(row[0]) if row else {'instrument': instrument, 'revision': 1, 'enabled': False,
+        return {'financial_postclose': False, 'market_postclose': False, **json.loads(row[0])} if row else {'instrument': instrument, 'revision': 1, 'enabled': False,
+            'financial_postclose': False, 'market_postclose': False,
             'news_postclose': False, 'news_refresh': False, 'classify': False, 'profile': 'legacy',
             'basis': '新增观察默认暂停，需显式配置；不改变来源开关或外部通知渠道', 'changed_at': None}
 
@@ -136,7 +141,7 @@ class ObservationUpdates:
             observations = [json.loads(row[0]) for row in db.execute('SELECT value FROM background_observations WHERE instrument=? ORDER BY rowid DESC LIMIT 30', (instrument,))]
             health = {row[0]: json.loads(row[1]) for row in db.execute('SELECT id,value FROM observation_update_health')}
         return {'settings': settings, 'jobs': jobs, 'observations': observations, 'health': health,
-            'sources': [source for source in self.sources.listing() if source['id'] in ('akshare-news-em', 'akshare-financial-em')],
+            'sources': [source for source in self.sources.listing() if source['id'] in ('akshare-news-em', 'akshare-financial-em', 'sohu-daily', 'sina-quote')],
             'checkpoint': 'Asia/Shanghai 15:05; online current session only', 'timeout_seconds': TIMEOUT,
             'offline_coverage': self.reviews.coverage(), 'worker': self.reviews.health(),
             'forecast_backfill': False, 'external_notifications': 'IN_APP_ONLY_NO_CHANNEL_ACTIVATION'}
@@ -144,18 +149,26 @@ class ObservationUpdates:
     def schedule(self, clock):
         local = clock.astimezone(SHANGHAI)
         settings = self.settings('SSE:600362')
-        if not settings['enabled'] or not settings['news_postclose'] or (local.hour, local.minute) < (15, 5):
+        if not settings['enabled'] or (local.hour, local.minute) < (15, 5):
             return
         day = local.date()
         calendar = self.news.evidence.market.rules.calendar('SSE', day, clock)
         if calendar['is_trading_day'] is not True:
             return
-        with self.ledger.connection() as db:
-            if db.execute('SELECT 1 FROM observation_update_jobs WHERE instrument=? AND key=?', ('SSE:600362', 'postclose:'+day.isoformat())).fetchone():
-                return
-        self.submit('SSE:600362', UpdateRequest(idempotency_key='postclose:'+day.isoformat(), kind='NEWS',
-            refresh_sources=settings['news_refresh'], basis='已登记15:05观察检查点；当前在线观察，不补造离线预测'),
-            scheduled=datetime.combine(day, datetime.min.time().replace(hour=15, minute=5), SHANGHAI).isoformat())
+        for kind, enabled, prefix in (
+            ('NEWS', settings['news_postclose'], 'postclose:'),
+            ('FINANCIAL', settings.get('financial_postclose', False), 'financial-postclose:'),
+            ('MARKET', settings.get('market_postclose', False), 'market-postclose:'),
+        ):
+            if not enabled:
+                continue
+            key = prefix+day.isoformat()
+            with self.ledger.connection() as db:
+                if db.execute('SELECT 1 FROM observation_update_jobs WHERE instrument=? AND key=?', ('SSE:600362', key)).fetchone():
+                    continue
+            self.submit('SSE:600362', UpdateRequest(idempotency_key=key, kind=kind,
+                refresh_sources=settings['news_refresh'], basis='已登记15:05观察检查点；当前在线观察，不补造离线预测'),
+                scheduled=datetime.combine(day, datetime.min.time().replace(hour=15, minute=5), SHANGHAI).isoformat())
 
     def health_write(self, key, value):
         with self.ledger.connection() as db:
@@ -270,9 +283,14 @@ class ObservationUpdates:
         with self.ledger.connection() as db:
             runs = [json.loads(row[0]) for row in db.execute(f'SELECT value FROM {table} WHERE instrument=? ORDER BY rowid DESC', (job['instrument'],))]
         complete = next((run for run in runs if run['status'] in ('COMPLETE', 'PARTIAL', 'EMPTY') and run.get('finished_at')), None)
-        lifetime = timedelta(minutes=15) if source_id == 'akshare-news-em' else timedelta(hours=24)
-        if complete and datetime.fromisoformat(now())-datetime.fromisoformat(complete['finished_at']) < lifetime:
-            receipts.append({'source': source_id, 'run_id': complete['run_id'], 'refresh': 'CACHE_FRESH_BY_ACTUAL_SOURCE_RUN', 'source_finished_at': complete['finished_at']})
+        current = datetime.fromisoformat(now())
+        completed = datetime.fromisoformat(complete['finished_at']) if complete else None
+        fresh = completed and (
+            current-completed < timedelta(minutes=15) if source_id == 'akshare-news-em'
+            else current.astimezone(SHANGHAI).date() == completed.astimezone(SHANGHAI).date())
+        if complete and fresh:
+            receipts.append({'source': source_id, 'run_id': complete['run_id'], 'status': complete['status'],
+                'refresh': 'CACHE_FRESH_BY_ACTUAL_SOURCE_RUN', 'source_finished_at': complete['finished_at']})
             return
         try:
             command = {'idempotency_key': 'observation:'+job['job_id']+':'+table, 'basis': job['command']['basis']}
@@ -287,7 +305,41 @@ class ObservationUpdates:
         instrument, kind = job['instrument'], job['command']['kind']
         receipts, errors, payload = [], [], {}
         evidence = []
-        if kind == 'FINANCIAL':
+        if kind == 'MARKET':
+            # Existing bounded source adapters; no model input admission required.
+            if job['command']['refresh_sources']:
+                cutoff = datetime.fromisoformat(now())
+                day = cutoff.astimezone(SHANGHAI).date()
+                request = self.reviews.evidence.request(DataRequest(
+                    instruments=[instrument], groups=['DAILY', 'QUOTE'], purpose='OBSERVATION',
+                    start_date=day-timedelta(days=90), end_date=day, cutoff=cutoff,
+                    daily_source='SOHU', quote_source='SINA', max_calls=2, timeout_seconds=18,
+                    max_decoded_bytes=1048576, max_total_decoded_bytes=2097152))
+                cancelled = threading.Event()
+                try:
+                    run = await asyncio.to_thread(self.reviews.evidence.retrieve, request['request_id'],
+                        collection_source_policy=self.sources, cancel_event=cancelled,
+                        acquisition_limits={'max_response_bytes':1048576, 'max_total_bytes':2097152})
+                finally:
+                    cancelled.set()
+                receipts.append({'source': 'SOHU_DAILY_SINA_QUOTE', 'run_id': run['run_id'], 'status': run['status']})
+                errors.extend(str(gap.get('code', 'SOURCE_GAP')) for gap in run['gaps'])
+            else:
+                receipts.append({'source': 'SOHU_DAILY_SINA_QUOTE', 'refresh': 'NOT_REQUESTED_SAVED_FACTS_ONLY'})
+            listing = self.reviews.market.listing()
+            rows, _, gaps, _ = self.reviews.facts_at(listing, datetime.fromisoformat(now()))
+            member = next((row for row in rows if row['instrument'] == instrument), None)
+            payload = {'market': member, 'limitations': ['原价行情；公司行动覆盖不足时不推算总收益', '不生成买卖建议']}
+            if member is None:
+                errors.append('INSTRUMENT_NOT_IN_WATCHLIST')
+            facts = [fact for fact in ((member or {}).get('quote'), (member or {}).get('last_complete_daily')) if fact]
+            evidence = [fact.get('evidence_kind') for fact in facts]
+            input_value = ['MARKET', facts]
+            meaning = ['MARKET', [{key: fact.get(key) for key in
+                ('group', 'trade_date', 'upstream_at', 'last', 'close', 'open', 'high', 'low', 'volume_shares')}
+                for fact in facts]]
+            meaningful = bool(facts)
+        elif kind == 'FINANCIAL':
             for service in (self.financial, self.supplement):
                 await self.refresh(service, job, 'akshare-financial-em', receipts, errors)
             observation = self.observations.listing(instrument)['current']
