@@ -1,0 +1,29 @@
+{
+  "attempt_id": "BAOSTOCK-RAW-DAY-20261020-01",
+  "scope": "SSE:600362 only2026-10-19; observation only current provider revision",
+  "auth_mode": "PUBLIC",
+  "host": "public-api.baostock.com:10030",
+  "maximum_calls": 3,
+  "maximum_seconds": 18,
+  "maximum_bytes": 8388608,
+  "retries": 0,
+  "fallbacks": 0,
+  "credentials_used": false,
+  "request": {
+    "instruments": [
+      "SSE:600362"
+    ],
+    "groups": [
+      "DAILY"
+    ],
+    "purpose": "OBSERVATION",
+    "start_date": "2026-10-19",
+    "end_date": "2026-10-19",
+    "daily_source": "BAOSTOCK",
+    "baostock_auth_mode": "PUBLIC",
+    "timeout_seconds": 18,
+    "max_calls": 3,
+    "max_decoded_bytes": 8388608,
+    "max_total_decoded_bytes": 8388608
+  }
+}

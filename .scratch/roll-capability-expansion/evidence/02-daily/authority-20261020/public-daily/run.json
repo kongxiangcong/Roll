@@ -1,0 +1,45 @@
+{
+  "run_id": "554975ba-065a-4d45-82af-279d0f6c24b6",
+  "request_id": "8d4d36a8-c956-47c6-b868-b3d692efd094",
+  "backend": "DIRECT_HTTP",
+  "model": null,
+  "sdk_runtime_version": "httpx-0.28.1/08-market-v1",
+  "runtime_versions": {
+    "httpx": "0.28.1",
+    "pyarrow": "25.0.1",
+    "pypdf": "6.19.0"
+  },
+  "config_fingerprint": "4bf78ca67e6aea888fc7718e8b4670b6d4cb3266bcc5a110799db24bf111ff88",
+  "evidence_kind": "REAL_ACQUISITION",
+  "started_at": "2026-10-20T00:13:33.357267+00:00",
+  "status": "COMPLETE",
+  "tools": [
+    {
+      "source_id": "baostock-daily",
+      "instrument": "SSE:600362",
+      "group": "DAILY",
+      "started_at": "2026-10-20T00:13:33.575885+00:00",
+      "method": "SDK_TCP",
+      "auth_mode": "PUBLIC",
+      "source_url": "tcp://public-api.baostock.com:10030",
+      "query": {
+        "fields": "date,code,open,high,low,close,preclose,volume,amount,adjustflag,tradestatus,isST"
+      },
+      "network_calls": 2,
+      "decoded_bytes": 299,
+      "status": "ARCHIVED",
+      "raw_hash": "f5f365275abbf403d842e28d52ceee73a0b9e7befd11f82fe36ad8c5f7996cc9",
+      "decoded_hash": "23570753a867f3bd72b8224b1e2b3a412fc97576a02d939f0d7180d0b51225b5",
+      "sdk_runtime_version": "00.9.40",
+      "sdk_distribution_version": "0.9.4",
+      "pandas_distribution_version": "3.0.6",
+      "finished_at": "2026-10-20T00:13:38.891498+00:00"
+    }
+  ],
+  "gaps": [],
+  "snapshot_id": "111c3440-b7de-4cae-b0ae-1e67aeba1cf1",
+  "finished_at": "2026-10-20T00:13:40.028903+00:00",
+  "elapsed_seconds": 6.664,
+  "retrieved_bytes": 345,
+  "retrieved_decoded_bytes": 299
+}

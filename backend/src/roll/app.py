@@ -17,6 +17,7 @@ from roll.config import data_directory, load_runtime_environment
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
 from roll.market.status_evidence import query as status_evidence_query
 from roll.market.action_evidence import query as action_evidence_query
+from roll.market.authority_supplements import AuthoritySupplements, AuthorityCommand
 from roll.market.evidence import EvidenceStore, DataRequest
 from roll.market.financial_income import FinancialIncome,IncomeCommand
 from roll.market.source_facts import REGISTRY
@@ -120,6 +121,20 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     market = MarketDirectory(ledger)
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport,baostock_worker)
+    authority_supplements = AuthoritySupplements(evidence)
+    app.state.authority_supplements = authority_supplements
+
+    @app.post('/api/market/source-authority', status_code=201)
+    def source_authority_create(command: AuthorityCommand):
+        return authority_supplements.create(command)
+
+    @app.get('/api/market/source-authority')
+    def source_authority_history(instrument: str, known_by: datetime | None = None):
+        return authority_supplements.listing(instrument, known_by)
+
+    @app.get('/api/market/source-authority/{identifier}')
+    def source_authority_get(identifier: str):
+        return authority_supplements.get(identifier)
     app.state.evidence=evidence
     research=ExperimentRegistry(ledger,evidence)
     app.state.research=research

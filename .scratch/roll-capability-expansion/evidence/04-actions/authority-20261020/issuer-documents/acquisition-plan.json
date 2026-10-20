@@ -1,0 +1,15 @@
+{
+  "attempt_id": "ACTION-ISSUER-DOCS-20261020-02",
+  "authorization": "2026-10-20 autonomous public supplementation",
+  "maximum_requests": 3,
+  "maximum_transfer_seconds": 60,
+  "maximum_bytes": 8388608,
+  "retries": 0,
+  "redirects": 0,
+  "scope": "Only first-party issuer disclosures published on CNINFO/HKEX; same issuer is not independent corroboration",
+  "requests": [
+    "https://static.cninfo.com.cn/finalpage/2026-07-10/1225416956.PDF",
+    "https://www.hkexnews.hk/listedco/listconews/sehk/2026/0327/2026032700133_c.pdf"
+  ],
+  "reason": "SSE static PDF returned HTML challenge (200), not parsed or bypassed; use separately discovered legal disclosure copies, no request retry"
+}

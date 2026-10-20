@@ -1,0 +1,2338 @@
+var hqBondUrl = "v1/shb1/",
+  hqOthUrl = "v1/sh1/";
+var isShb1 = hqBondUrl == "v1/shb1/" ? "all" : "bond";
+
+var isExtended = true; //true为延长 false为不延长（手动控制）
+/**
+ * IE原型链增加数组处理函数
+ */
+var isIE = window.ActiveXObject || "ActiveXObject" in window
+if (isIE) {
+  Array.prototype.filter = function (fun /*, thisp*/) {
+    var len = this.length;
+    if (typeof fun != "function") {
+      throw new TypeError();
+    }
+    var res = new Array();
+    var thisp = arguments[1];
+    for (var i = 0; i < len; i++) {
+      if (i in this) {
+        var val = this[i]; // in case fun mutates this  
+        if (fun.call(thisp, val, i, this)) {
+          res.push(val);
+        }
+      }
+    }
+    return res;
+  }
+  Array.prototype.find = function find(fn) {
+    for (var i = 0; i < this.length; i++) {
+      var res = fn(this[i], i, this)
+      if (res) {
+        return this[i]
+      }
+    }
+  }
+  if (!Array.prototype.includes) {
+    /**
+     * 给数组原型链绑定原型方法includes
+     * * @param {findAttr}  Array
+     * * @param {fromIndex}  从fromIndex数组下标开始计算
+     * * @returns  [1, 2, 3, 4, 5, NaN, 7, 8, 9].includes(NaN) => true 
+     * * @returns  [1, 2, 3, 4, 5, NaN, 7, 8, 9].includes(NaN,6) =>false
+     **/
+    Object.defineProperty(Array.prototype, 'includes', {
+      value: function (findAttr, fromIndex) {
+        // this为null时报错。undefined不用考虑，当this为undefined时，在调用之前就应该报错了。
+        if (this === null) {
+          throw new TypeError('"this" is null or not defined');
+        }
+        // 一定是数组，不然不会进入这个方法，所以可以不用类型判断
+        var parArr = Object(this);
+        // 数组长度
+        var len = parArr.length;
+        // 若数组为空，直接返回false
+        if (!len) {
+          return false;
+        }
+        // 索引
+        var n = fromIndex || 0;
+        // 当n为小数的时候，n为数组长度加上n，若计算出的数字小于0，会遍历整个数组，所以最小由0表示即可
+        n = Math.max(n >= 0 ? n : len + n, 0);
+        // 若数组为空，直接返回false
+        if (n >= len) {
+          return false;
+        }
+        // 对比函数
+        function compare(x, y) {
+          // NaN的原型是Number，但是 NaN === NaN => false
+          return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+        }
+        // n代表需要查找的数组起点位置，左闭右开
+        while (n < len) {
+          // 判断是否相等
+          if (compare(findAttr, parArr[n++])) {
+            return true;
+          }
+        }
+        return false;
+      },
+    })
+  }
+}
+
+//获取视口尺寸
+function getViewportOffset() {
+  if (window.innerWidth) {
+    return {
+      w: window.innerWidth,
+      h: window.innerHeight,
+    };
+  } else {
+    // ie8及其以下
+    if (document.compatMode === "BackCompat") {
+      // 怪异模式
+      return {
+        w: document.body.clientWidth,
+        h: document.body.clientHeight,
+      };
+    } else {
+      // 标准模式
+      return {
+        w: document.documentElement.clientWidth,
+        h: document.documentElement.clientHeight,
+      };
+    }
+  }
+}
+var clientWidth = getViewportOffset().w; //视口宽度
+var clientHeight = getViewportOffset().h; //视口高度
+//滚动条滚动距离
+function getScrollOffset() {
+  if (window.pageXOffset) {
+    return {
+      x: window.pageXOffset,
+      y: window.pageYOffset,
+    };
+  } else {
+    return {
+      x: document.body.scrollLeft + document.documentElement.scrollLeft,
+      y: document.body.scrollTop + document.documentElement.scrollTop,
+    };
+  }
+}
+
+/*
+--------------------------------------------------通用方法区域-------------------------------------------
+*/
+
+var commonsFunArea = {
+  changeGuarantee: function (args) {
+    if (!args) {
+      return "-";
+    }
+    switch (args) {
+      case "1":
+        return "是";
+      case "0":
+        return "否";
+      default:
+        return args;
+    }
+  },
+};
+// 返回当天至前30天(含当天)的时间段
+// 默认使用当前时间传参为1时为系统时间
+function dateMaxLimit(args) {
+  switch (args) {
+    case 1:
+      return (
+        changeFormatDate(get_systemDate_global(), 0, -3, 0) +
+        " - " +
+        get_systemDate_global()
+      );
+    default:
+      return (
+        changeFormatDate(
+          new Date().toLocaleDateString().split("/").join("-"),
+          0,
+          -3,
+          0
+        ) +
+        " - " +
+        new Date().toLocaleDateString().split("/").join("-")
+      );
+  }
+}
+
+// 返回当天至前30天(含当天)的时间段
+// 默认使用当前时间传参为1时为系统时间
+function dateReitsMaxLimit(args) {
+  switch (args) {
+    case 1:
+      return (
+        changeFormatDate(
+          changeFormatDate(get_systemDate_global(), 1, 0, 0),
+          0,
+          -3,
+          0
+        ) +
+        " - " +
+        changeFormatDate(get_systemDate_global(), 1, 0, 0)
+      );
+    default:
+      return (
+        changeFormatDate(
+          new Date().toLocaleDateString().split("/").join("-"),
+          0,
+          -3,
+          0
+        ) +
+        " - " +
+        new Date().toLocaleDateString().split("/").join("-")
+      );
+  }
+}
+
+// -----------------------------------------------------------生成真实DOM方法------------------------------------------------------------
+/**
+ * @author JackCHEN
+ * @version 创建时间：${date} ${2021/10/26}
+ * @method { jackVnodeMethods } return 生产真实DOM
+ * @params { args } DOM节点对象
+ */
+var jackVnodeMethods = function (args) {
+  args.vnode = document.createElement(args.domType);
+  for (var j = 0; j < Object.keys(args).length; j++) {
+    if (
+      Object.keys(args)[j] != "domType" &&
+      Object.keys(args)[j] != "vnode" &&
+      Object.keys(args)[j] != "childrenList"
+    ) {
+      if (Object.keys(args)[j] == "onclick") {
+        args.vnode.setAttribute(
+          Object.keys(args)[j],
+          args[Object.keys(args)[j]]
+        );
+      } else {
+        args.vnode[Object.keys(args)[j]] = args[Object.keys(args)[j]];
+      }
+    }
+  }
+  return args.vnode;
+};
+/**
+ * @author JackCHEN
+ * @version 创建时间：${date} ${2021/10/26}
+ * @method { jackNextNode } 如果节点下仍有数据挂载子节点DOM
+ * @params { args, arr} 真实DOM节点对象，子节点DOM数据
+ */
+var jackNextNode = function (args, arr) {
+  for (var i = 0; i < arr.length; i++) {
+    var node = jackVnodeMethods(arr[i]);
+    if (arr[i].childrenList && arr[i].childrenList.length > 0) {
+      jackNextNode(node, arr[i].childrenList);
+    }
+    args.appendChild(node);
+  }
+};
+/**
+ * @author JackCHEN
+ * @version 创建时间：${date} ${2021/10/26}
+ * @method { jackVnode } 生产完整的虚拟dom
+ * @params { args} 真实DOM节点对象，子节点DOM数据
+ */
+
+var jackVnode = function (args) {
+  var dom = jackVnodeMethods(args);
+  if (args.childrenList && args.childrenList.length > 0) {
+    jackNextNode(dom, args.childrenList);
+    return dom;
+  } else {
+    return dom;
+  }
+};
+// -----------------------------------------------------------生成真实DOM方法------------------------------------------------------------
+/*
+--------------------------------------------------通用方法区域-------------------------------------------
+*/
+
+// 去除0.0的
+function isZero(args) {
+  if (Number(args) == 0) {
+    return 0;
+  } else {
+    return args;
+  }
+}
+
+//非空验证
+var isNull = function (str) {
+  if (typeof str == "undefined" || str == null || str == "") {
+    return false;
+  }
+  return true;
+};
+
+//// 判空处理
+function isBlankOrNull(obj) {
+  var res;
+  if (obj) {
+    var str = JSON.stringify(obj);
+    res = str == "[]" || str == "{}";
+  } else {
+    // null、''、undefined
+    var noneArr = [null, "", undefined];
+    res = noneArr.indexOf(obj) != -1;
+  }
+  return res;
+}
+
+//获取url参数
+function getWindowHref() {
+  var sHref = window.location.href;
+  var args = sHref.split("?");
+  if (args[0] === sHref) {
+    return "";
+  }
+  var hrefarr = args[1].split("#")[0].split("&");
+  var obj = {};
+  for (var i = 0; i < hrefarr.length; i++) {
+    hrefarr[i] = hrefarr[i].split("=");
+    obj[hrefarr[i][0]] = hrefarr[i][1];
+  }
+  return obj;
+}
+
+/**
+ * 把一个数字舍入为最接近的整数
+ * @param { Number } digits 数字
+ * @returns digits最接近的整数
+ */
+Number.prototype.round = function (digits) {
+  digits = Math.floor(digits);
+  if (isNaN(digits) || digits === 0) {
+    return Math.round(this);
+  }
+  if (digits < 0 || digits > 16) {
+    throw "RangeError: Number.round() digits argument must be between 0 and 16";
+  }
+  var multiplicator = Math.pow(10, digits);
+  return Math.round(this * multiplicator) / multiplicator;
+};
+
+/**
+ * 把 Number 四舍五入为指定小数位数digits的数字
+ * @param { Number } digits 小数位数
+ * @returns 四舍五入后的正确结果
+ */
+Number.prototype.toFixed = function (digits) {
+  digits = Math.floor(digits);
+  if (isNaN(digits) || digits === 0) {
+    return Math.round(this).toString();
+  }
+  var parts = this.round(digits).toString().split(".");
+  var fraction = parts.length === 1 ? "" : parts[1];
+  if (digits > fraction.length) {
+    fraction += new Array(digits - fraction.length + 1).join("0");
+  }
+  return parts[0] + "." + fraction;
+};
+
+/* YYYYMMDD日期转换为YYYY-MM-DD */
+function turnDateAddLine(turnDate) {
+  return (
+    turnDate.substring(0, 4) +
+    "-" +
+    turnDate.substring(4, 6) +
+    "-" +
+    turnDate.substring(6, 8)
+  );
+}
+
+/* YYYY-MM-DD日期转换为YYYYMMDD */
+function turnDateMoveLine(turnDate) {
+  return turnDate.slice(0, 4) + turnDate.slice(5, 7) + turnDate.slice(8, 10);
+}
+
+/*
+ * @author sunriseYe
+ * @methods{ Function} formatDecimal 数据格式化
+ * @params{ Number } num 处理的数据
+ * @params{ Number } decimal 保留数据的位数 0为取整
+ * @params{ Number } type 是否补零 1 是 其它为否
+ */
+function formatDecimal(num, decimal, type) {
+  num = String(num);
+  if (num == "-" || num == null || num == "undefined" || num == "0") {
+    num = "-";
+    return num;
+  }
+  var newArray1 = num.split(".");
+  if (String(decimal) == "0") {
+    return newArray1[0];
+  }
+  if (decimal == "" || decimal == "undefind" || decimal == null) {
+    decimal = 2;
+  }
+  if (newArray1.length == "1") {
+    var t = decimal;
+    return num;
+  } else {
+    var t = decimal - newArray1[1].length;
+  }
+  if (t > 0) {
+    var num2 = String(newArray1[1]);
+    for (var i = 0; i < t; i++) {
+      num2 += "0";
+    }
+    if (type == 1) {
+      return newArray1[0] + "." + num2;
+    }
+  } else {
+    var num2 = newArray1[1].substring(0, decimal);
+  }
+  var num3 = Number("1." + num2);
+  if (Number.isInteger(num3)) {
+    return newArray1[0];
+  } else {
+    var newArrays = String(num3).split(".");
+    return newArray1[0] + "." + newArrays[1];
+  }
+}
+/**
+ * V2022-S-1
+ * 《日历控件》
+ * 近一月、近三月、近一年
+ * latestType(today) tyee:today(今日)、tomorrow(明日)、threeDay（近三日）、week(近一周)、dayMore(近多少天)、monthOne(近一月)、monthThree(近三月)、monthMore(近多少月)、year(近一年)、yearMore(近多少年)
+ * @param {*} type 类型 
+ * @param {*} parameter 参数 
+ * 使用方法：latestType('monthThree') 或 latestType('monthMore',3)
+ */
+function latestType(type, parameter) {
+  if (isNull(parameter)) { //判断传递的参数是否为空 
+    parameter = Number(parameter);//将传递的参数确定为数字类型供计算使用
+  }
+  var yearArray = [];//近年的日期数据
+  var date = new Date();
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  if (type == 'monthThree' || type == 'monthMore' || type == 'year') {
+    var monthCount = parameter;//近多少个月
+    if (type == 'monthThree') {
+      monthCount = 3;
+      parameter = 1;
+    } else if (type == 'year') {
+      monthCount = 12;
+      parameter = 1;
+    } else {
+      var parameter = Math.ceil(parameter / 12);//近月数算年
+    }
+  }
+  if (type == 'yearMore') {
+    var monthCount = parameter * 12;//近年数算月
+  }
+  if (type == 'monthOne' || type == 'monthThree' || type == 'monthMore' || type == 'year' || type == 'yearMore') {
+    var dayCount = 0;
+    for (var i = m - 1; i >= 1; i--) {
+      var ny = y + '-' + i;
+      yearArray.push({ data: ny, data_count: new Date(y, i, 0).getDate() })
+    }
+    if (!isNull(parameter) ? false : (y - parameter > 0)) {
+      for (var i = y - 1; i > (y - parameter); i--) {
+        for (var j = 12; j >= 1; j--) {
+          var ny = i + '-' + j;
+          yearArray.push({ data: ny, data_count: new Date(i, j, 0).getDate() })
+        }
+      }
+    }
+    for (var i = 12; i >= m; i--) {
+      var ny = y - parameter + '-' + i;
+      yearArray.push({ data: ny, data_count: new Date(y, i, 0).getDate() })
+    }
+    if (type == 'monthThree' || type == 'monthMore' || type == 'year' || type == 'yearMore') {
+      for (var i = 0; i < monthCount; i++) {
+        dayCount += yearArray[i].data_count;
+      }
+    }
+  }
+
+  //根据参数传的类型返回处理好的数据
+  if (type == 'today') { //今日
+    return [new Date(), new Date()];
+  } else if (type == 'tomorrow') { //明日
+    return [
+      new Date(new Date().setDate(new Date().getDate() + 1)),
+      new Date(new Date().setDate(new Date().getDate() + 1)),
+    ]
+  } else if (type == 'threeDay') {
+    return [
+      new Date(new Date().setDate(new Date().getDate() - 3)),
+      new Date(),
+    ]
+  } else if (type == 'week') { //近一周
+    return [
+      new Date(new Date().setDate(new Date().getDate() - 7)),
+      new Date(),
+    ]
+  } else if (type == 'dayMore') { //近多日
+    return [
+      new Date(new Date().setDate(new Date().getDate() - (!isNull(parameter) ? 0 : parameter))),
+      new Date(),
+    ]
+  } else if (type == 'monthOne') { //近一个月
+    return [
+      new Date(new Date().setDate(new Date().getDate() - yearArray[0].data_count)),
+      new Date(),
+    ]
+  } else if (type == 'monthThree' || type == 'monthMore' || type == 'year' || type == 'yearMore') { //近多个月、近多少年
+    return [
+      new Date(new Date().setDate(new Date().getDate() - dayCount)),
+      new Date(),
+    ]
+  }
+}
+
+/**
+* V2022-S-2
+* 《下载文件》
+* 支持pdf、word直接下载
+* @param {*} url 文件地址
+* @param {*} filename 下载的文件名字 格式‘xxx.文件类型’
+*/
+function fileDownload(url, filename) {
+  // 创建 a 标签
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+}
+
+/**
+* V2022-S-3
+* 《修改文件MIME参数》
+* @param {*} url 文件地址
+* @param {*} filename 下载文件名字 格式‘xxx.文件类型’
+*/
+function fileLink(url, filename) {
+  try {
+    fetch(url, {
+      method: 'get',
+      responseType: 'arraybuffer'
+    }).then(function (res) {
+      if (res.status !== 200) {
+        return res.json();
+      }
+      return res.arrayBuffer();
+    }).then(function (blobRes) {
+      // 生成 Blob 对象，设置 type 等信息
+      var e = new Blob([blobRes], {
+        type: 'application/octet-stream',
+        'Content-Disposition': 'attachment'
+      });
+      // 将 Blob 对象转为 url
+      var link = window.URL.createObjectURL(e);
+      fileDownload(link, filename);
+    }).catch(function (err) {
+      console.error(err);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+* V2022-S-4
+* 《获取文件类型》
+* @param {*} url 
+* @returns 文件类型 如：‘.pdf’、‘.doc’
+* obtainFileType('xxxxx.pdf');
+*/
+function obtainFileType(url) {
+  if (isNull(url)) {
+    var index = url.lastIndexOf(".");
+    var fileType = url.substr(index);
+    if (index == -1) {
+      return '';
+    } else {
+      return fileType;
+    }
+  }
+  return '';
+}
+
+/**
+* V20230228-S-5
+* 《中国标准时间转化为年月日:xxxx-xx-xx》
+* @param {中国标准时间格式} time 
+* @returns 
+*/
+function dateConversion(time) {
+  var date = new Date(time)
+  var y = date.getFullYear()
+  var m = date.getMonth() + 1
+  m = m < 10 ? '0' + m : m
+  var d = date.getDate()
+  d = d < 10 ? '0' + d : d
+  return y + '-' + m + '-' + d
+}
+
+//为0转换成-
+function newFormatDecimal(num) {
+  if (String(num) === "0") {
+    return "-";
+  } else {
+    return String(num);
+  }
+}
+
+//日期格式化
+Date.prototype.Format = function (fmt) {
+  var o = {
+    "M+": this.getMonth() + 1, //月份
+    "d+": this.getDate(), //日
+    "h+": this.getHours(), //小时
+    "m+": this.getMinutes(), //分
+    "s+": this.getSeconds(), //秒
+    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+    S: this.getMilliseconds(), //毫秒
+  };
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(
+      RegExp.$1,
+      (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+    );
+  }
+  for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) {
+      fmt = fmt.replace(
+        RegExp.$1,
+        RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+      );
+    }
+  return fmt;
+};
+// 计算当前月天数
+function getMonthCount() {
+  var selectedDate = new Date();
+  var selectedMonth = selectedDate.getMonth();
+  selectedDate.setMonth(selectedMonth);
+  selectedDate.setDate(0);
+  return selectedDate.getDate();
+}
+
+/**
+ * @param {string} date 当前日期
+ * @param {number} year 年数，往后（+） 往前（-） 整数格式 不修改则传0
+ * @param {number} mouth 月数，往后（+） 往前（-） 整数格式 不修改则传0
+ * @param {number} day 天数，往后（+） 往前（-） 整数格式 不修改则传0
+ */
+function changeFormatDate(date, day, mouth, year) {
+  var y = new Date(date).getFullYear(); //获取年份
+  var m = new Date(date).getMonth(); //获取月份
+  var d = new Date(date).getDate(); //获取日期
+  var fullDate = new Date(y + year, m + mouth, d + day);
+  y = fullDate.getFullYear();
+  m = fullDate.getMonth() + 1;
+  d = fullDate.getDate();
+  return (
+    y +
+    "-" +
+    (String(m).length < 2 ? "0" + m : m) +
+    "-" +
+    (String(d).length < 2 ? "0" + d : d)
+  );
+}
+
+/**
+ * 日期比较
+ * @param {string} startDate 开始日期
+ * @param {string} endDate 结束日期
+ * @param {numer} day 相差天数
+ * @param {number} mouth 相差月数
+ * @param {number} year 相差年数
+ * @returns
+ */
+function IsDayLimit(startDate, endDate, day, mouth, year) {
+  var y = new Date(startDate).getFullYear(); //获取年份
+  var m = new Date(startDate).getMonth(); //获取月份
+  var d = new Date(startDate).getDate(); //获取日期
+  var limitDate = new Date(y + year, m + mouth, d + day);
+  endDate = new Date(
+    new Date(endDate).getFullYear(),
+    new Date(endDate).getMonth(),
+    new Date(endDate).getDate()
+  );
+  if (new Date(endDate) > new Date(limitDate)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+// x为星期，值为1-7，分别代表周一到周日
+function getXDayString(dateStr, x) {
+  var nowDate = new Date(dateStr);
+  var nowDay = nowDate.getDay() ? nowDate.getDay() : 7;
+  var nowRi = nowDate.getDate();
+  nowDate.setDate(nowRi + x - nowDay);
+  return turnDateToString(nowDate);
+}
+// Date类型的日期转换成YYYY-MM-DD
+function turnDateToString(turnDate) {
+  var year = turnDate.getFullYear();
+  var month = (turnDate.getMonth() + 1).toString();
+  var day = turnDate.getDate().toString();
+  if (month.length == 1) {
+    month = "0" + month;
+  }
+  if (day.length == 1) {
+    day = "0" + day;
+  }
+  var dateTime = year + "-" + month + "-" + day;
+  return dateTime;
+}
+
+//数字加，
+function formatNum(str) {
+  str = str + "";
+  var newStr = "";
+  var count = 0;
+
+  if (str.indexOf(".") == -1) {
+    for (var i = str.length - 1; i >= 0; i--) {
+      if (count % 3 == 0 && count != 0) {
+        newStr = str.charAt(i) + "," + newStr;
+      } else {
+        newStr = str.charAt(i) + newStr;
+      }
+      count++;
+    }
+    str = newStr;
+  } else {
+    for (var i = str.indexOf(".") - 1; i >= 0; i--) {
+      if (count % 3 == 0 && count != 0) {
+        newStr = str.charAt(i) + "," + newStr;
+      } else {
+        newStr = str.charAt(i) + newStr; //逐个字符相接起来
+      }
+      count++;
+    }
+    str = newStr + (str + "00").substr((str + "00").indexOf("."), 3);
+  }
+  return str;
+}
+
+/**
+ * 数组横向变纵向
+ * @param {Array} oldarr
+ * @returns
+ */
+function changearr(oldarr) {
+  var maxLength = getMaxLength(oldarr);
+  var rowarr = [],
+    rowoldarr = [];
+  for (var k = 0; k < oldarr.length; k++) {
+    for (var m = 0; m < maxLength; m++) {
+      if (!rowarr[m]) rowarr[m] = [];
+      rowarr[m].push(oldarr[k][m]);
+      if (!rowoldarr[m]) rowoldarr[m] = [];
+      rowoldarr[m].push(oldarr[k][m]);
+    }
+  }
+  return rowarr;
+}
+
+function getMaxLength(arr) {
+  var max = 0;
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].length > max) {
+      max = arr[i].length;
+    }
+  }
+  return max;
+}
+
+//简称 后面加 字母
+function kcbShowIconFlag(f) {
+  var flag = false;
+  var str = "";
+  if (f) {
+    if (f.substring(7, 8) == "U") {
+      flag = true;
+      str += "U";
+    }
+    if (f.substring(8, 9) == "W") {
+      flag = true;
+      str += "W";
+    }
+    if (f.substring(4, 5) == "Y") {
+      flag = true;
+      str += "D";
+    }
+    if (flag) {
+      str = "-" + str;
+    }
+  }
+  return str;
+}
+
+//行情表判断颜色
+function Comparative(fir, las) {
+  var _cls = "";
+  if (Number(fir) > Number(las)) {
+    _cls = "trending-up";
+  } else if (Number(fir) < Number(las)) {
+    _cls = "trending-down";
+  }
+  return _cls;
+}
+
+/**
+ * 工具类方法
+ */
+var sseUtil = {
+  BondCodeSearthUrl: function (bondCode) {
+    var tBondCodeUrl = "";
+    var subCodeCheckFormer = bondCode.substring(0, 3);
+    if (
+      subCodeCheckFormer == "204" ||
+      subCodeCheckFormer == "206" ||
+      subCodeCheckFormer == "207"
+    ) {
+      tBondCodeUrl = "/assortment/bonds/repo/repoinfo/basic/index.shtml";
+    } else {
+      tBondCodeUrl = "/assortment/bonds/list/bondinfo/basic/index.shtml";
+    }
+    return tBondCodeUrl;
+  },
+  /**
+   * 转换值
+   */
+  changeValue: function (value) {
+    if (!value) return "-";
+    if (value == "Y") return "是";
+    if (value == "N") return "否";
+    return value;
+  },
+  ifZeroTurn: function (str) {
+    if (str == "0" || str == 0 || str == null || str == "") {
+      return "-";
+    } else {
+      return str;
+    }
+  },
+};
+
+//接口公共调用方法
+var requestNum = 0; //请求次数
+function getJSON(url, params, successCallback, errCallback) {
+  requestNum++;
+  showLoading();
+  $.ajax({
+    type: "get",
+    url: url,
+    data: params,
+    dataType: "json",
+    jsonp: "jsonCallBack",
+    jsonpCallback: "jsonpCallback" + Math.floor(Math.random() * (100000000 + 1)),
+    timeout: 10000,
+    success: successCallback,
+    error: errCallback,
+    complete: function () {
+      requestNum--;
+      if (requestNum == 0) {
+        hideLoading();
+      }
+      if (typeof zh_tran === "function" && locationStr.indexOf("big5.sse.com.cn") >= 0) {
+        zh_tran('t');
+      }
+    },
+  });
+}
+
+// 定位锚点取得id标识位置
+function getUrl() {
+  var url = location.href
+  var mk = url.split('#')
+  if (mk[1]) {
+    location.href = '#' + mk[1]
+  }
+}
+
+//jsonp
+function getJSONP(obj) {
+  requestNum++;
+  showLoading();
+  $.ajax({
+    type: obj.type ? obj.type : "post",
+    url: obj.url,
+    data: obj.data,
+    dataType: obj.dataType ? obj.dataType : "jsonp",
+    jsonp: obj.jsonp ? obj.jsonp : "jsonCallBack",
+    cache: false,
+    jsonpCallback: "jsonpCallback" + Math.floor(Math.random() * (100000000 + 1)),
+    success: obj.successCallback,
+    error: obj.errCallback,
+    complete: function () {
+      requestNum--;
+      if (requestNum == 0) {
+        hideLoading();
+        getUrl()
+      }
+      if (typeof zh_tran === "function" && locationStr.indexOf("big5.sse.com.cn") >= 0) {
+        zh_tran('t');
+      }
+    },
+  });
+}
+
+//搜索按钮点击，回车键触发查询
+function triggerSearch(method) {
+  //点击搜索触发查询
+  $(".sse_searchInput .search_btn").on("click", function () {
+    method();
+  });
+  //回车键触发查询
+  $(".sse_searchInput input").on(bind_name, function (e) {
+    var keyCode = e.keyCode || e.which || e.charCode;
+    if (keyCode == 13) {
+      method();
+    }
+  });
+}
+//下拉框拼接数据内容
+function addSelectOption(option) {
+  var optionHtml = "";
+  $.each(option, function (k, v) {
+    optionHtml += '<option value="' + v.value + '">' + v.name + "</option>";
+  });
+  return optionHtml;
+}
+
+//show loading /hide loading
+var loadingHtml =
+  '<div class="loading"><span class="iconfont iconLoading"></span></div>';
+$("body").append(loadingHtml);
+
+function showLoading() {
+  $(".loading").show();
+}
+
+function hideLoading() {
+  $(".loading").hide();
+}
+
+/** tab切换 */
+$.each($(".js_navTabs"), function (k, v) {
+  $(this).children().eq(0).addClass("active");
+  $(v).on("click", "span", function () {
+    $(this).addClass("active").siblings().removeClass("active");
+    var contentIndex = $(this).index();
+    $(".tab_main").eq(k).children().eq(contentIndex).siblings().fadeOut(100);
+    setTimeout(function () {
+      $(".tab_main").eq(k).children().eq(contentIndex).fadeIn(100);
+    }, 100);
+  });
+});
+
+//左侧菜单slide
+$(".toggleMenu").on("click", function () {
+  $(".left_menu .menu_lv_1").slideToggle();
+  var judgeValue = $(".left_sideMenu .bi-chevron-double-down").toggleClass("rotate").attr("class");
+  if (/rotate/.test(judgeValue)) {
+    $(".leftmenyText").text("关闭导航菜单");
+  } else {
+    $(".leftmenyText").text("展开导航菜单");
+  }
+});
+//无搜索条件展开菜单
+var judgment_one = $(".left_menuOption .sse_outerItem").length == 0;
+var judgment_two = $(".js_show_menu") && $(".js_show_menu").length > 0;
+if (judgment_one || judgment_two) {
+  $(".left_menu .menu_lv_1").show();
+  $(".left_sideMenu .bi-chevron-double-down").toggleClass("rotate");
+  $(".leftmenyText").text("关闭导航菜单");
+}
+
+
+//判断终端改变keyup
+var bind_name = "keyup";
+var isIOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+if (isIOS) {
+  bind_name = "input";
+}
+
+$(".js_page-title").html(
+  pageTitle ? pageTitle : $(".breadcrumb-ul li:last-child a").html()
+); //面包屑导航最后一级标题
+
+
+/* 一网通办、业务专区下拉 start */
+var oneShow = null, oneHide = null, userShow = null, userHide = null;
+
+function clearOne() {
+  if (oneShow) {
+    clearTimeout(oneShow);
+  }
+  if (oneHide) {
+    clearTimeout(oneHide);
+  }
+}
+
+function clearUser() {
+  if (userShow) {
+    clearTimeout(userShow);
+  }
+  if (userHide) {
+    clearTimeout(userHide);
+  }
+}
+
+function addOneShow() {
+  $(".js_user_content").addClass("user_show");
+}
+
+function removeOneShow() {
+  $(".js_user_content").removeClass("user_show");
+}
+
+function addUserShow() {
+  $(".js_bizzone_content").addClass("user_show");
+}
+
+function removeUserShow() {
+  $(".js_bizzone_content").removeClass("user_show");
+}
+
+$(document)
+  .on("mouseover", ".js_user_enter .userenter_link", function () {
+    clearUser();
+    clearOne();
+    userHide = setTimeout(removeUserShow, 450);
+    oneShow = setTimeout(addOneShow, 450);
+  })
+  .on("mouseover", ".js_user_enter .bizzone_link", function () {
+    clearUser();
+    clearOne();
+    oneHide = setTimeout(removeOneShow, 450);
+    userShow = setTimeout(addUserShow, 450);
+  })
+  .on("mouseover", ".js_user_content", function () {
+    clearOne();
+  })
+  .on("mouseover", ".js_bizzone_content", function () {
+    clearUser();
+  })
+  .on("mouseleave", ".js_user_enter .userenter_link,.js_user_content", function () {
+    clearUser();
+    userHide = setTimeout(removeUserShow, 450);
+    oneHide = setTimeout(removeOneShow, 450);
+  })
+  .on("mouseleave", ".js_user_enter .bizzone_link,.js_bizzone_content", function () {
+    clearUser();
+    userHide = setTimeout(removeUserShow, 450);
+    oneHide = setTimeout(removeOneShow, 450);
+  });
+/* 一网通办、业务专区下拉 end */
+
+/*网站顶部简繁体显示*/
+var locationStr = window.location.href;
+var $link1 = $("#js_link_change");
+if (locationStr.indexOf("/cht/") >= 0) {
+  $link1
+    .text("\u7b80")
+    .attr(
+      "href",
+      "ht" + "tp://" + locationStr.substring(locationStr.indexOf("/cht/") + 5)
+    );
+} else {
+  $link1
+    .text("\u7e41")
+    .attr(
+      "href",
+      "http://big5.sse.com.cn/site/cht/" +
+      locationStr.substring(locationStr.indexOf("://") + 3)
+    );
+}
+
+/* Ajax方法增加complete */
+$.ajaxSetup({
+  complete: function () {
+    if (typeof zh_tran === "function" && locationStr.indexOf("big5.sse.com.cn") >= 0) {
+      zh_tran('t');
+    }
+  }
+});
+
+$("#dl-menu-button").on("click", function () {
+  $(".layui-laydate").remove();
+  bootstrapSelect({
+    method: function () {
+      $(".selectpicker").dropdown("hide");
+    },
+  });
+});
+
+//意见反馈
+$("a[href='/home/feedback/']").on("click", function () {
+  var search_word = $("input[type='search']").val()
+    ? $("input[type='search']").val()
+    : "";
+  var data_feedbackurl =
+    "/home/feedback/" + "?searchword=" + search_word + "&columnid=" + col_id;
+  $("a[href='/home/feedback/']").attr("href", data_feedbackurl);
+});
+
+/** 添加模态框 */
+var modalHtml =
+  '<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
+modalHtml += '<div class="modal-dialog" role="document">';
+modalHtml += '<div class="modal-content">';
+modalHtml += '<div class="modal-body">';
+modalHtml += "</div>";
+modalHtml += "</div>";
+modalHtml += "</div>";
+modalHtml += "</div>";
+$("body").append(modalHtml);
+
+/** 输入框focus圆角动效 **/
+$(".sse_outerItem .sse_input")
+  .on("focus", function () {
+    $(this).parent().addClass("input_focus");
+  })
+  .on("blur", function () {
+    $(this).parent().removeClass("input_focus");
+  });
+/** 输入框focus圆角动效end **/
+
+/**分页 */
+function isPositiveInteger(s) {
+  //是否为正整数
+  var re = /(^[0-9]\d*$)/;
+  return re.test(s);
+}
+(function () {
+  var Page = {
+    version: "1.0",
+    author: "",
+    currentPage: 1,
+  };
+  var showPage = 7;
+  //分页拼接
+  (Page.navigation = function (
+    divId,
+    totalPage,
+    total,
+    currentPage,
+    pageSize,
+    func,
+    k
+  ) {
+    currentPage = currentPage > totalPage ? totalPage : currentPage;
+    var nav = "<ul>";
+    nav +=
+      currentPage == 1
+        ? '<li class="pre noPre"><a href="javascript:void(0);">上一页</a></li>'
+        : '<li class="pre"><a href="javascript:' +
+        func +
+        "(" +
+        (currentPage - 1) +
+        "," +
+        k +
+        ');" title="上一页">上一页</a></li>';
+    var start = currentPage - Math.floor(showPage / 2),
+      end = currentPage + Math.floor(showPage / 2);
+    start -= end > totalPage ? end - totalPage : 0;
+    start = start <= 0 ? 1 : start;
+    end = currentPage < showPage && end < showPage ? showPage : end;
+    end = end > totalPage ? totalPage : end;
+
+    if (currentPage >= 4) {
+      nav +=
+        '<li class="hidden-xs"><a title="转到第1页"  href="javascript:' +
+        func +
+        "(1," +
+        k +
+        ');">1</a></li>';
+      nav += '<li class="hidden-xs"><a href="javascript:;">...</a></li>';
+      start += 2;
+    }
+    end -= totalPage - currentPage >= 4 ? 2 : 0;
+
+    for (var i = start; i <= end; i++) {
+      nav +=
+        '<li class="hidden-xs ' +
+        (i == currentPage ? "active" : "") +
+        '"><a  title="转到第' +
+        i +
+        '页" href="javascript:' +
+        func +
+        "(" +
+        i +
+        "," +
+        k +
+        ');">' +
+        i +
+        "</a></li>";
+    }
+
+    if (totalPage - currentPage >= 4) {
+      nav += '<li class="hidden-xs"><a href="javascript:;">...</a></li>';
+      nav +=
+        '<li class="hidden-xs"><a title="转到第' +
+        totalPage +
+        '页"  href="javascript:' +
+        func +
+        "(" +
+        totalPage +
+        "," +
+        k +
+        ');">' +
+        totalPage +
+        "</a></li>";
+    }
+    nav +=
+      currentPage == totalPage
+        ? '<li class="next noNext"><a href="javascript:void(0);">下一页</a></li>'
+        : '<li class="next"><a href="javascript:' +
+        func +
+        "(" +
+        (currentPage + 1) +
+        "," +
+        k +
+        ');" title="下一页">下一页</a></li>';
+    nav += "</ul>";
+    nav +=
+      '<span class="jump_input hidden-xl">到第<input type="text" class="page_no" totalPage="' +
+      totalPage +
+      '">页</span><span class="jump_btn hidden-xl"><a href="javascript:' +
+      func +
+      "(0," +
+      k +
+      ');" class="search">确定</a></span>';
+    nav += '<span class="_count hidden-xl">共<b>' + total + "</b>条</span>";
+    if (pageSize == 25 || pageSize == 50 || pageSize == 100) {
+      nav +=
+        '<div class="change-pageSize hidden-xl"><select class="selectpicker-pageSize" onchange="javascript:' +
+        func +
+        "(" +
+        1 +
+        ');"><option value="25" ' +
+        (pageSize == 25 ? "selected" : "") +
+        '>每页25条</option><option value="50" ' +
+        (pageSize == 50 ? "selected" : "") +
+        '>每页50条</option><option value="100" ' +
+        (pageSize == 100 ? "selected" : "") +
+        ">每页100条</option></select></div>";
+    }
+    $(divId).html(nav);
+    if (totalPage > 1) {
+      $(divId).show();
+      if ($(".selectpicker-pageSize").length > 0) {
+        bootstrapSelect({
+          method: function () {
+            $(".selectpicker-pageSize")
+              .selectpicker()
+              .selectpicker("refresh")
+              .selectpicker("render");
+          },
+        });
+      }
+      //enter跳转
+      k = k ? k : 0;
+      $(divId + " .jump_input").on(bind_name, function (e) {
+        var keyCode = e.keyCode || e.which || e.charCode;
+        if (keyCode == 13) {
+          eval(func + "(" + 0 + "," + k + ")");
+        }
+      });
+    } else {
+      $(divId).hide();
+    }
+  }),
+    (Page.setTops = function (_setTopspx) {
+      $("html,body").animate(
+        {
+          scrollTop: _setTopspx,
+        },
+        500
+      );
+    });
+  this.Page = Page;
+})();
+
+//输入框输入跳转页数
+function dynaGetData(elem, page) {
+  var elem = elem ? elem : "";
+  if (0 == page) {
+    var _totalpage = Number($(elem + " .page_no").attr("totalpage"));
+    if (isPositiveInteger($.trim($(elem + " .page_no").val()))) {
+      var pageno = Number($.trim($(elem + " .page_no").val()));
+      if (pageno == 0 || pageno > _totalpage) {
+        bootstrapModal({
+          text: "请输入正确的页码",
+        });
+        $(elem + " .page_no").focus();
+        return;
+      }
+      page = pageno < _totalpage ? (pageno <= 0 ? 1 : pageno) : _totalpage;
+    } else {
+      bootstrapModal({
+        text: "请输入正确的页码",
+      });
+      $(elem + " .page_no").focus();
+      return;
+    }
+  }
+  if (Page.currentPage != page) {
+    var listParent = $(elem + " .pagination-box")
+      .parent()
+      .offset().top;
+    Page.setTops(listParent - 100);
+    Page.currentPage = page;
+  }
+  return page;
+}
+
+function staticGetData(page, k) {
+  if (0 == page) {
+    var _totalpage = Number($(".page_no").eq(k).attr("totalpage"));
+    if (isPositiveInteger($.trim($(".page_no").eq(k).val()))) {
+      var pageno = Number($.trim($(".page_no").eq(k).val()));
+      if (pageno == 0 || pageno > _totalpage) {
+        bootstrapModal({
+          text: "请输入正确的页码",
+        });
+        $(".page_no").eq(k).focus();
+        return;
+      }
+      page = pageno < _totalpage ? (pageno <= 0 ? 1 : pageno) : _totalpage;
+    } else {
+      bootstrapModal({
+        text: "请输入正确的页码",
+      });
+      $(".page_no").eq(k).focus();
+      return;
+    }
+  }
+
+  $.ajax({
+    type: "get",
+    dataType: "html",
+    url:
+      staticGetPage[k].pageName +
+      (page == 1 ? "" : "_" + page) +
+      "." +
+      staticGetPage[k].pageExt + '?v=' + Math.random(),
+    success: function (xml) {
+      if (xml) {
+        staticGetPage[k].currentPage = parseInt(
+          page
+        );
+        staticShowData(
+          $(xml).children(staticGetPage[k].dataDom).html(),
+          k,
+          page
+        );
+      }
+    },
+    error: function (xml) { },
+  });
+}
+
+function staticShowData(data, k, page) {
+  $(staticGetPage[k].dataDom).eq(k).html(data);
+  Page.navigation(
+    ".pagination:eq(" + k + ")",
+    staticGetPage[k].totalPage,
+    staticGetPage[k].totalPage,
+    staticGetPage[k].currentPage,
+    staticGetPage[k].pageSize,
+    "staticGetData",
+    k
+  );
+  if (Page.currentPage != page) {
+    Page.setTops($(staticGetPage[k].dataDom).eq(k).offset().top - 100);
+    Page.currentPage = page;
+  }
+}
+var staticGetPage = [];
+$("div[id=createPage]").each(function () {
+  staticGetPage.push({
+    totalPage: parseInt($(this).attr("page_count")),
+    currentPage: parseInt($(this).attr("page_index")),
+    pageSize: "",
+    pageName: $(this).attr("PAGE_NAME"),
+    pageExt: $(this).attr("PAGE_EXT"),
+    dataDom: $(this).attr("rel") || $(this).parent().attr("rel"),
+  });
+});
+
+var $pageList = $("div[id=createPage]");
+if ($pageList.length > 0) {
+  //初始化分页
+  for (var i = 0; i < $pageList.length; i++) {
+    Page.navigation(
+      ".pagination:eq(" + i + ")",
+      staticGetPage[i].totalPage,
+      staticGetPage[i].totalPage,
+      staticGetPage[i].currentPage,
+      staticGetPage[i].pageSize,
+      "staticGetData",
+      i
+    );
+    if (staticGetPage[i].totalPage > 1) {
+      $(".pagination").eq(i).parents(".page-con-table").show();
+    } else {
+      $(".pagination").eq(i).parents(".page-con-table").hide();
+    }
+  }
+}
+
+/**
+ * * 调用接口时修改分页参数
+ * @param {obj} params 调用接口参数对象，
+ * @param {number} pageIndex 点击分页的页数
+ * @param {string} elem 多个动态分页传入所在的class,单个可不填
+ * @returns
+ */
+function paginationChange(params, pageIndex, elem) {
+  var elem = elem ? elem : "";
+  var pageSize = $(elem + " .pagination-box .selectpicker-pageSize").val(); //改变每页条数
+  params["pageHelp.pageSize"] = pageSize ? pageSize : (params["pageHelp.pageSize"] ? params["pageHelp.pageSize"] : 25);
+  var toPage = dynaGetData(elem, pageIndex);
+  //非正确页码时返回false
+  if (isNaN(toPage)) {
+    return false;
+  }
+  params["pageHelp.pageNo"] = toPage;
+  params["pageHelp.beginPage"] = toPage;
+  params["pageHelp.endPage"] = toPage;
+  return true;
+}
+
+/**
+ * 全文检索 逻辑处理
+ */
+
+//搜索框 预检索 类型及对应背景色
+preTypeArr = "";
+preColor = "";
+var globalSearch = {
+  deskdisp: true,
+  init: function () {
+    this.searchEvents();
+  },
+  regxL: function (str) {
+    var regx = new RegExp(/^\[([6|9]\d{5})\][\*\A-Z\u4e00-\u9fa5]+$/g); //匹配  [XXXXXX]XXXX
+    return regx.test(str);
+  },
+  searchEvents: function () {
+    //输入框键盘事件
+    $(".js_globalSearch").keydown(function (e) {
+      var key = e.keyCode || e.which || e.charCode;
+      if (
+        key == 13 ||
+        (key == 10 && $.browser.msie && $.browser.version <= 6.0)
+      ) {
+        globalSearch.topSearchInput();
+      }
+    });
+    //点击空白处隐藏
+    $(document).click(function () {
+      //点击搜索处显示
+      $(".js_globalSearch").click(function () {
+        globalSearch.deskdisp = true;
+      });
+      if (!globalSearch.deskdisp) {
+        $("#desksearhInput").hide();
+      }
+      globalSearch.deskdisp = false;
+    });
+    //搜索按钮点击查询
+    $(".js_searchBtn").on("click", function () {
+      globalSearch.topSearchInput();
+    });
+  },
+  //搜索事件
+  topSearchInput: function () {
+    var search = $(".js_globalSearch").val();
+    if (search) {
+      search = search.replace(
+        /[\[\]\、\—\…\/\$\@\=\>\<\!\&\%\^\￥\#\!\！\+\?\'\\]/g,
+        ""
+      );
+      search = search.replace(/'/g, "\\'");
+      search = search.replace(/\s+/g, " ");
+      if ($.trim(search) != "") {
+        search = $.trim(search);
+        var gourl = "/home/search/index.shtml?webswd=" + search;
+        window.open(gourl, "_blank");
+      } else {
+        bootstrapModal({
+          text: "输入的检索条件不符合要求，请重新输入！",
+        });
+        return false;
+      }
+    } else {
+      window.open("/home/search/index.shtml", "_blank");
+    }
+  },
+  //点击下拉列表 输入框赋值  并检索
+  desksearchValues: function (index) {
+    $(".js_globalSearch").val($("#" + index).attr("value"));
+    globalSearch.topSearchInput();
+  },
+  //点击下拉列表 输入框赋值  并检索
+  desksearchValues: function (index) {
+    $(".js_globalSearch").val($("#" + index).attr("value"));
+    globalSearch.topSearchInput();
+  },
+};
+globalSearch.init();
+
+/** 全文检索框end */
+
+/** 全局检索框添加动画class */
+var $scrollTop
+if ($(".sse_searchContainer").length > 0) {
+  var search_boxTop = $(".sse_searchContainer").offset().top;
+  var fixedStaus = 0;
+  searchAnimation();
+  const debounce2022 = function debounce(fn, delay) {
+    // 1.定义一个定时器, 保存上一次的定时器
+    let timer = null
+    let isInvoke = false
+    // 2.真正执行的函数
+    var _debounce = function _debounce() {
+      var _this = this;
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      // 取消上一次的定时器
+      if (timer) clearTimeout(timer);
+      // 判断是否需要立即执行
+      if ($scrollTop === 0 && !isInvoke) {
+        fn.apply(this, args);
+        isInvoke = true;
+      } else {
+        // 延迟执行
+        timer = setTimeout(function () {
+          // 外部传入的真正要执行的函数
+          fn.apply(_this, args);
+          isInvoke = false;
+        }, delay);
+      }
+    };
+    return _debounce
+  }
+  const searchAnimationDeunce = debounce2022(scrollEventMove, 150)
+  $(window).on("resize", function () {
+    searchAnimation();
+  });
+  window.addEventListener("scroll", searchAnimationDeunce);
+  $(".js_globalSearch")
+    .on("focus", function () {
+      $(".sse_searchBorder").addClass("sse_searchActive");
+    })
+    .on("blur", function () {
+      $(".sse_searchBorder").removeClass("sse_searchActive");
+    });
+}
+
+function scrollEventMove() {
+  var mtScrollFalg = popularize.getCookie('home-search-scroll') !== 'tab'
+  if (mtScrollFalg) {
+    searchAnimation();
+  } else {
+    var timer = setTimeout(function () {
+      searchAnimation($scrollTop);
+      this.clearTimeout(timer)
+    }, 600);
+  }
+  var timer2 = setTimeout(function () {
+    popularize.setCookie('home-search-scroll', '')
+    this.clearTimeout(timer2)
+  }, 600);
+}
+
+function searchAnimation(currentScrollH) {
+  var scrollH = currentScrollH ? currentScrollH : getScrollOffset().y;
+  $scrollTop = scrollH
+  if (scrollH > search_boxTop) {
+    if (!$(".sse_searchContainer").hasClass("search_fixed")) {
+      fixedStaus = 1;
+      $(".sse_searchContainer")
+        .addClass("search_fixed animation-slide")
+        .removeClass("animation-reverse");
+    }
+  } else {
+    if ($(".sse_searchContainer").hasClass("search_fixed")) {
+      fixedStaus = 2;
+      $(".sse_searchContainer").removeClass("animation-slide");
+      setTimeout(function () {
+        if (getScrollOffset().y > search_boxTop) {
+          $(".sse_searchContainer").addClass("animation-slide");
+        } else {
+          $(".sse_searchContainer").addClass("animation-slide animation-reverse");
+        }
+      }, 100);
+      setTimeout(function () {
+        if (getScrollOffset().y > search_boxTop) {
+          $(".sse_searchContainer").removeClass(
+            "animation-reverse"
+          );
+        } else {
+          $(".sse_searchContainer").removeClass(
+            "search_fixed animation-slide animation-reverse"
+          );
+        }
+      }, 600);
+    }
+  }
+}
+/** 全局检索框添加动画end */
+
+window.mysse = {
+  isIE: !!window.ActiveXObject || "ActiveXObject" in window,
+  chnlId: col_id || 0,
+  mysse_vcodeUrl: myUrl + "uc/vcode.jsp",
+  mysse_collection: myUrl + "uc/view/optional_plate.shtml",
+  mysse_collectionDoc: myUrl + "uc/view/my_collection.shtml",
+  mysseSite: myUrl + "uc",
+  mysseFeedbackUrl: myUrl + "uc/feedback/save",
+  mysseDataDownloadSave: myUrl + "uc/dataDownload/save",
+  getChannelSourceUrl: myUrl + "uc/optionalPlate/getChannelSource",
+  getFollowedChannelUrl: myUrl + "uc/optionalPlate/getFollowedChannel",
+  collectionChnlSaveUrl: myUrl + "uc/optionalPlate/save",
+  deleteFollowedChannelUrl: myUrl + "uc/optionalPlate/deleteFollowedChannel",
+  ckCollectionStatusUrl: myUrl + "uc/collection/ckCollectionStatus",
+  userMessageCountUrl: myUrl + "uc/third/message/list",
+  passportDomain: "https://passport.sseinfo.com",
+  mysseIndex: myUrl + "uc/view/index.shtml",
+  collectionDocSave: myUrl + "uc/collection/save",
+  feedbackCheckUrl: myUrl + "uc/feedback/check",
+  chnlUrl: function () {
+    return $(".breadcrumb-ul li:last a").attr("href", function (idx, item) {
+      return item;
+    })[0].href;
+  },
+  passportLogin: function (str) {
+    return this.mysseIndex;
+  },
+  getSSECookie: function (name) {
+    var arr,
+      reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if ((arr = document.cookie.match(reg))) {
+      return unescape(arr[2]);
+    } else {
+      return null;
+    }
+  },
+  dataDownload: function (obj) {
+    var _this = this;
+    var chnlName = $(".breadcrumb-ul li:last a").text();
+    var chnlUrl = _this.chnlUrl();
+    var mysseUserId = _this.getSSECookie("mysseUserId");
+    var dataLink = typeof obj != "string" ? obj.attr("href") : obj;
+    var loc = _this.passportLogin();
+    if (mysseUserId == null) {
+      if (_this.isIE) {
+        var gotoLink = document.createElement("a");
+        gotoLink.href = dataLink;
+        document.body.appendChild(gotoLink);
+        gotoLink.click();
+      } else {
+        window.open(dataLink, "_blank");
+      }
+    } else {
+      $.ajax({
+        url: _this.mysseDataDownloadSave,
+        type: "post",
+        dataType: "jsonp",
+        jsonp: "jsonCallback", //服务端用于接收callback调用的function名的参数
+        jsonCallback: "dataDownload_jsonpCallback",
+        data: {
+          title: chnlName,
+          url: chnlUrl,
+          source: chnlName,
+          uid: mysseUserId,
+        },
+        success: function (result) {
+          if (result != null) {
+            var state = result.state;
+            var returnCode = result.message.returnCode;
+            if (returnCode == "0") {
+              _this.alertMsg({
+                msg: "下载失败!",
+                ok: "确定",
+              });
+            } else {
+              if (_this.isIE) {
+                var gotoLink = document.createElement("a");
+                gotoLink.href = dataLink;
+                document.body.appendChild(gotoLink);
+                gotoLink.click();
+              } else {
+                window.open(dataLink, "_blank");
+              }
+            }
+          }
+        },
+      });
+    }
+  },
+  collectionDocInit: function () {
+    var _this = this;
+    var mysseUserId = _this.getSSECookie("mysseUserId");
+    var docUrl = window.location.href;
+    if (mysseUserId != null) {
+      $.ajax({
+        type: "post",
+        async: false,
+        url: _this.ckCollectionStatusUrl,
+        dataType: "jsonp",
+        jsonp: "jsonCallback", //服务端用于接收callback调用的function名的参数
+        jsonpCallback: "collection_jsonCallback",
+        data: {
+          docurl: docUrl,
+          userid: mysseUserId,
+        },
+        success: function (data) {
+          if (data != null && data.state == 1) {
+            $("a.js_myCollection").removeClass("sseicon2-icon_nocollection");
+            $("a.js_myCollection").addClass("sseicon2-icon_collection");
+          }
+        },
+      });
+    }
+  },
+  init: function () {
+    var _this = this;
+
+    //初始化事件
+    $(document)
+      .on("click", ".js_download-export", function (e) {
+        //数据下载
+        e.preventDefault();
+        _this.dataDownload($(this));
+      })
+      .on("click", ".js_myCollection", function (e) {
+        //文章收藏
+        e.preventDefault();
+        _this.collectionDoc($(this));
+      });
+    /**
+     * 初始化方法
+     */
+    //文章收藏
+    if ($("a.js_myCollection").length) {
+      _this.collectionDocInit();
+    }
+  },
+};
+mysse.init();
+
+/**
+ * 文章字号缩放，微博分享，微信二维码生成
+ */
+var articleEvents = {
+  weiboParams: {
+    TYPE: "2",
+    URL: "http://service.weibo.com/share/share.php",
+    SOURCE: "bookmark",
+    APPKEY: "",
+    PIC: "",
+    SUMMARY: "",
+  },
+  init: function () {
+    this.loadEvents();
+  },
+  loadEvents: function () {
+    var _this = this;
+    //文本放大、缩小
+    if ($(".article-infor").length > 0) {
+      $(".sseicon-icon_print").on("click", function (e) {
+        e.preventDefault();
+        window.event.returnValue = false;
+        window.print();
+      });
+      $(".article-infor").each(function () {
+        var $this = $(this),
+          $this_p = $this.find(".allZoom"); //需要所包含的所有内容都可放大缩小
+        if ($this_p.length > 0) {
+          var fsize = $this_p.css("font-size"),
+            textsize = parseInt(fsize, 10),
+            px = fsize.slice(-2);
+          $this.on("click", ".article_opt .zoom", function (e) {
+            e.preventDefault();
+            window.event.returnValue = false;
+            var type = $(this).attr("data-type"),
+              new_textsize = type == "zoom_in" ? textsize + 2 : textsize - 2;
+            if (new_textsize <= 20 && new_textsize >= 10) {
+              textsize = new_textsize;
+              $this_p.css("font-size", textsize + px);
+              $this_p.find("*").css("font-size", textsize + px);
+              //需要所包含的所有内容(如表格内容等)都可放大缩小
+            }
+          });
+        }
+      });
+    }
+    //二维码显示隐藏
+    $(".wechatico").on("click", function (e) {
+      e.preventDefault();
+      window.event.returnValue = false;
+      $(".feedback_slide").css("display", "flex");
+    });
+    $(document).on("click", function (e) {
+      if (
+        !$(".wechatico").is(e.target) &&
+        $(".wechatico").has(e.target).length === 0
+      ) {
+        $(".feedback_slide").hide();
+      }
+    });
+    //微博方法
+    $(".sinaico").on("click", function () {
+      _this.share(_this.weiboParams);
+    });
+  },
+  share: function (obj) {
+    var loc = obj.URL;
+    var url = window.location.href;
+    var title = $(".article-infor").find("h2").html();
+    if (obj.TYPE == "1") {
+      var siteUrl = url.substring(0, url.indexOf(".com.cn") + 8);
+      var gourl =
+        loc +
+        "&title=" +
+        title +
+        "&url=" +
+        url +
+        "&appkey=" +
+        obj.APPKEY +
+        "&site=" +
+        siteUrl +
+        "&pic=" +
+        obj.PIC;
+      window.open(gourl, "_blank");
+    } else {
+      var gourl =
+        loc +
+        "?title=" +
+        title +
+        "&url=" +
+        url +
+        "&appkey=" +
+        obj.APPKEY +
+        "&pic=" +
+        obj.PIC +
+        "&summary=" +
+        obj.SUMMARY +
+        "&ralateUid=" +
+        obj.RELATEUID;
+      window.open(gourl, "_blank");
+    }
+  },
+};
+if ($(".article-infor").length > 0) {
+  articleEvents.init();
+}
+
+/**
+ * 最新仪式轮播图
+ */
+if ($(".swiper-container-page").length > 0) {
+  var bannerLoop = false;
+  bannerLoop =
+    $(".swiper-container-page .swiper-slide").length > 1 ? true : false; //slide个数大于1:loop=true
+  setSwiper({
+    el: ".swiper-container-page",
+    param: {
+      autoplay: {
+        delay: 8000,
+        disableOnInteraction: false,
+      },
+      speed: 900,
+      loop: bannerLoop,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+        disabledClass: "d-none",
+      },
+      pagination: {
+        el: bannerLoop ? ".swiper-pagination" : "",
+        clickable: true,
+      },
+    },
+  });
+}
+
+//企业上市服务
+if ($("#NEWSPIC_SWIPER_INDEX_TOP").length > 0) {
+  var picbannerLoop = false;
+  picbannerLoop =
+    $("#NEWSPIC_SWIPER_INDEX_TOP .swiper-slide").length > 1 ? true : false; //slide个数大于1:loop=true
+  setSwiper({
+    el: "#NEWSPIC_SWIPER_INDEX_TOP",
+    param: {
+      autoplay: {
+        delay: 8000,
+        disableOnInteraction: false,
+      },
+      speed: 900,
+      effect: "fade",
+      loop: picbannerLoop,
+      pagination: {
+        el: ".swiper-pagination-white",
+        clickable: true,
+        disabledClass: "d-none",
+      },
+    },
+  });
+}
+
+if ($("#NEWSPIC_MOBILE_SWIPER_INDEX_TOP").length > 0) {
+  setSwiper({
+    el: "#NEWSPIC_MOBILE_SWIPER_INDEX_TOP",
+    param: {
+      autoplay: {
+        delay: 8000,
+        disableOnInteraction: false,
+      },
+      speed: 900,
+      loop: true,
+    },
+  });
+}
+
+//常见问题手风琴
+var listLi = $(".sse_list_6 li");
+var listDetails = listLi.find(".title-details2");
+if (listLi.length > 0) {
+  $(".sse_list_6 li:first").addClass("cur").find(".title-details2").show();
+  listLi.on("click", function (e) {
+    e.stopPropagation();
+    var $this = $(this);
+    $this
+      .toggleClass("cur")
+      .find(".title-details2")
+      .slideToggle()
+      .end()
+      .siblings()
+      .removeClass("cur")
+      .find(".title-details2")
+      .slideUp();
+
+    if ($(".colContent_lev2")) {
+      $this
+        .closest(".colContent_lev2")
+        .siblings()
+        .find("li")
+        .removeClass("cur")
+        .find(".title-details2")
+        .slideUp();
+    }
+  });
+  listDetails.on("click", function (e) {
+    e.stopPropagation();
+  });
+}
+
+/**
+ * 相关文章
+ */
+var Trimx = function (obj) {
+  var result;
+  var result = obj.str.replace(/(^\s+)|(\s+$)/g, "");
+  if (obj.is_global.toLowerCase() == "g") {
+    result = result.replace(/\s/g, "");
+  }
+  return result;
+};
+//数组去重
+function unique2(array, searchKeyWord, thisKeyDate) {
+  var n = {},
+    r = [],
+    val,
+    type,
+    valThis = [];
+  valThis.push(searchKeyWord);
+  valThis.push(thisKeyDate);
+  for (var i = 0; i < array.length; i++) {
+    val = array[i];
+    var val2 = [];
+    val2.push(array[i][0]);
+    val2.push(array[i][1]);
+    type = typeof val2;
+    if (!n[val2]) {
+      n[val2] = [type];
+      if (
+        !(
+          Trimx({
+            str: valThis[0],
+            is_global: "g",
+          }) ==
+          Trimx({
+            str: val2[0],
+            is_global: "g",
+          }) &&
+          Trimx({
+            str: valThis[1],
+            is_global: "g",
+          }) ==
+          Trimx({
+            str: val2[1],
+            is_global: "g",
+          })
+        )
+      ) {
+        r.push(val);
+      }
+    } else if (n[val2].indexOf(type) < 0) {
+      n[val2].push(type);
+      if ($.trim(valThis[0]) != $.trim(val2[0]) && valThis[1] != val2[1]) {
+        r.push(val);
+      }
+    }
+  }
+  //多维数组排序
+  r.sort(function (x, y) {
+    return y[1].localeCompare(x[1]);
+  });
+  return r;
+}
+
+var $titleAjax = $(".js_outline");
+if ($titleAjax.length > 0) {
+  var searchKeyWordP;
+  if ($("#searchTitle").length) {
+    searchKeyWordP = Trimx({
+      str: $("#searchTitle").text(),
+      is_global: "g",
+    });
+  } else {
+    if ("undefined" != typeof searchTitle) {
+      searchKeyWordP = searchTitle;
+    } else {
+      searchKeyWordP = searchKeyWord;
+    }
+  }
+  var sendWord = searchKeyWordP;
+  sendWord =
+    "likeT_L" +
+    searchKeyWordP.replace(/[`~!@#$%^&*()_+<>?:"{}=.\/;'[\]]/g, " ") +
+    "T_R";
+  var sendKeywords = Trimx({
+    str: $("#keywords").text(),
+    is_global: "g",
+  });
+  if ("" != sendKeywords) {
+    sendWord = sendKeywords
+      .substring(0, sendKeywords.length - 1)
+      .replace(/\,/g, "T_D");
+  }
+  var htmlArrFir = [];
+  var thisKeyDate = $(".article_opt").find("i").text();
+  $(".js_outline")
+    .find(".list-group")
+    .html('<li class="list-group-iem">数据加载中......</li>');
+  $.ajax({
+    url: sseQueryURL + "search/getSearchResult.do",
+    type: "get",
+    dataType: "jsonp",
+    jsonp: "jsonCallBack",
+    jsonpCallback: "jsonpCallback" + Math.floor(Math.random() * (100000 + 1)),
+    data: {
+      search: "qwjs",
+      perpage: 10,
+      orderby: "-CRELEASETIME",
+      searchword: sendWord,
+    },
+    success: function (callBackData) {
+      doShowTitleAjax(callBackData);
+    },
+  });
+
+  function doShowTitleAjax(callBackData) {
+    var htmlArr = [];
+    var returnData = callBackData.data;
+    if (returnData == undefined || returnData.length < 1) {
+      htmlArr.push('<li class="list-group-item">暂无数据</li>');
+    } else {
+      //相关文章去重操作
+      var arrAfterDeal = [];
+      for (var i = 0; i < returnData.length; ++i) {
+        var arrLine = [
+          returnData[i].CTITLE_TXT,
+          returnData[i].CRELEASETIME,
+          returnData[i],
+        ];
+        arrAfterDeal.push(arrLine);
+      }
+      var toshowArr = unique2(arrAfterDeal, searchKeyWordP, thisKeyDate);
+      if (toshowArr.length < 1) {
+        htmlArr.push('<li class="list-group-item">暂无数据</li>');
+      } else {
+        for (var i = 0; i < toshowArr.length; ++i) {
+          if (i > 4) {
+            break;
+          } else {
+            var data = toshowArr[i][2];
+            htmlArr.push('<li class="list-group-item">');
+            htmlArr.push(
+              '<a href="' +
+              data.CURL +
+              '" target="_blank">' +
+              data.CTITLE_TXT +
+              "</a>"
+            );
+            htmlArr.push(
+              '<span class="new_date">' + data.CRELEASETIME + "</span>"
+            );
+            htmlArr.push("</li>");
+          }
+        }
+      }
+    }
+    $(".js_outline").find(".list-group").html(htmlArr.join(""));
+  }
+}
+
+//相关文章end
+
+/* 阿拉伯数字转换成中文数字 */
+function NumberChange(num) {
+  num = Math.floor(num);
+  var chinese = "";
+  var digits = Math.floor(Math.log10(num)) + 1;
+  var digit = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  var times = ['', '十', '百', '千', '万'];
+  if (digits >= 9) {
+    var quotient = Math.floor(num / Math.pow(10, 8));
+    var remainder = num % Math.pow(10, 8);
+    var remainderDigits = Math.floor(Math.log10(remainder)) + 1;
+    return NumberChange(quotient) + '亿' + (remainderDigits < 8 ? "零" : "") + (remainder > 0 ? NumberChange(remainder) : "");
+  }
+  if (digits == 1) {
+    return digit[num];
+  }
+  if (digits == 2) {
+    var quotient = Math.floor(num / 10);
+    var remainder = num % 10;
+    if (quotient > 1) {
+      chinese = digit[quotient];
+    }
+    chinese = chinese + times[1];
+    if (remainder > 0) {
+      chinese = chinese + digit[remainder];
+    }
+    return chinese;
+  }
+  if (digits > 5) {
+    var quotient = num / Math.pow(10, 4);
+    var remainder = num % Math.pow(10, 4);
+    var remainderDigits = Math.floor(Math.log10(remainder)) + 1;
+    return NumberChange(quotient) + '万' + (remainderDigits < 4 ? "零" : "") + (remainder > 0 ? NumberChange(remainder) : "");
+  }
+  for (var index = digits; index >= 1; index--) {
+    var number = Math.floor(num / Math.pow(10, index - 1) % 10);
+    if (number > 0) {
+      chinese = chinese + digit[number] + times[index - 1];
+    }
+    else {
+      if (index > 1) {
+        var nextNumber = Math.floor(num / Math.pow(10, index - 2) % 10);
+        if (nextNumber > 0 && index > 1) {
+          chinese = chinese + digit[number];
+        }
+      }
+    }
+  }
+  return chinese;
+}
+
+/**
+ * 关键字过滤
+ * keyword关键字
+ */
+function keywordFiltration(keyword) {
+  var newKeyword = keyword.toString().replace(/[`~!@#$%^&*()_+<>?:"{}=.\/;'[\]]/g, "");
+  return newKeyword;
+}
+
+/**
+ * 廉洁从业举报实名举报和匿名举报提交信息后子页面调用官网提示内容
+*/
+
+function promptText(event) {
+  bootstrapModal({ text: event.data.message });
+}
+
+window.addEventListener("message", function (event) {
+  if (event.data.type === "mysse_message") {
+    promptText(event);
+  }
+})
+
+/**
+ * 廉洁从业举报实名举报和匿名举报提交信息后子页面调用官网提示内容
+*/
+
+// 接口筛选参数对象转为下载链接参数字符串
+function transformPara(obj) {
+  var newObj = JSON.parse(JSON.stringify(obj));
+  var str;
+  for (var i = 0; i < Object.keys(newObj).length; i++) {
+    if (i == 0) {
+      str = Object.keys(newObj)[i] + "=" + newObj[Object.keys(newObj)[i]];
+    } else {
+      str +=
+        "&" + Object.keys(newObj)[i] + "=" + newObj[Object.keys(newObj)[i]];
+    }
+  }
+  return str;
+}
+
+// 扁平化函数
+function flatES5(arr) {
+  return arr.reduce(function (flat, item) {
+    if (Array.isArray(item)) {
+      return flat.concat(flatES5(item)); // 如果是数组，‌则递归调用
+    } else {
+      flat.push(item); // 否则，‌将元素添加到结果数组中
+    }
+    return flat;
+  }, []); // 初始值为空数组
+}
+
+// Blob流下载文件
+function downloadFile(fileUrl, fileName) {
+  fileUrl = fileUrl ? '//static.sse.com.cn' + fileUrl : "";
+  fetch(fileUrl).then(res => res.blob().then(blob => {
+    let a = document.createElement('a');
+    let url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }))
+}
+
+// 日期字段处理获取：{YYYY, MM月DD日}
+function formatDateYMD(dateStr) {
+  const pureDateStr = dateStr.split(' ')[0];
+  // pureDateStr: "2025-10-27"
+  const parts = pureDateStr.split('-');
+  if (parts.length !== 3) {
+    return { year: '', monthDay: '' };
+  }
+  const year = parts[0]; // 年："2025"
+  const month = parts[1]; // 月："10"
+  const day = parts[2]; // 日："27"
+  const monthDay = month + '月' + day + '日'; // 拼接为 "10月27日"
+  return { year, monthDay };
+}
+
+
+// 从当前url中获取对应参数
+function getUrlParam(str) {
+  // 获取原始查询参数
+  const searchStr = window.location.search;
+  // 创建 URLSearchParams 实例
+  const params = new URLSearchParams(searchStr);
+  // 获取uniformCode参数的值
+  const value = params.get(str) ? params.get(str) : "";
+  // 过滤处理特殊字符：`~!@#$%^&*()_+<>?:"{}=./;'[]
+  const filteredValue = keywordFiltration(value);
+  return filteredValue;
+}
+
+/**
+ * 获取交易状态描述
+ * @param tradephase 交易状态
+ * @returns
+ */
+function getTradephaseText(tradephase) {
+  tradephase = tradephase ? tradephase.replace(/\s/gi, "") : "";
+  if (!tradephase) return "";
+  tradephase = tradephase.substr(0, 1);
+  switch (tradephase) {
+    case "S":
+      tradephase = "开市前";
+      break;
+    case "C":
+      tradephase = "集合竞价";
+      break;
+    case "D":
+      tradephase = "集合竞价结束";
+      break;
+    case "T":
+      tradephase = "连续竞价";
+      break;
+    case "B":
+      tradephase = "午间休市";
+      break;
+    case "E":
+      tradephase = "闭市";
+      break;
+    case "P":
+      tradephase = "停牌";
+      break;
+    case "M":
+      tradephase = "熔断(可恢复)";
+      break;
+    case "N":
+      tradephase = "熔断(至闭市)";
+      break;
+    case "U":
+      tradephase = "收盘集合竞价";
+      break;
+  }
+  return tradephase;
+}
+
+/**
+ * 获取盘后交易状态描述
+ * @param fp_phaseArr 盘后交易状态
+ * @returns
+ */
+function getFpphaseText(fp_phaseArr) {
+  let fp_phase = "--"; // 盘后交易阶段
+  if (fp_phaseArr[0] == "I") fp_phase = "开市前";
+  if (fp_phaseArr[0] == "A") fp_phase = "集中撮合";
+  if (fp_phaseArr[0] == "H") fp_phase = "连续交易";
+  if (fp_phaseArr[0] == "D") fp_phase = "闭市";
+  if (fp_phaseArr[0] == "F") fp_phase = "停牌";
+  return fp_phase;
+}
+
+/**
+ * 日期格式化（YYYYMMDD转为YYYY-MM-DD）
+ * @param {String} date YYYYMMDD格式
+ * @returns {String} YYYY-MM-DD格式
+ */
+function dateReplace(date) {
+  return date
+    ? date.substring(0, 4) +
+        "-" +
+        date.substring(4, 6) +
+        "-" +
+        date.substring(6)
+    : "-";
+}
+
+/*
+ * 空值/空字符串/字符串null 统一转换为横杠
+ * @param {*} turnParam 待转换参数
+ * @returns {string} 非空返回原内容，空相关值返回 "-"
+ */
+function ifNullTurnStr(turnParam) {
+  if (turnParam === null || turnParam === "" || turnParam === "null" || turnParam === "NULL") {
+    return "-";
+  } else {
+    return turnParam;
+  }
+}

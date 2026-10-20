@@ -37,3 +37,5 @@
 
 
 2026-10-18：新文档尝试 STATUS-DOC-ATTEMPT-01 只取两份官方静态脚本（2请求/537KB/零重试），确认 `kcbShowIconFlag`、`STATUS_A`、`getFpphaseText` 定义均不在其中；未调用行情、未产生回执、旧预算未重开。03 仍 partial，下一线索为 sse_menufun_2021.js 或状态专用模块，需新计划。见[尝试记录](../evidence/03-status/status-docs/attempt.md)。
+
+2026-10-20：新增权威契约调查与真实取数/原件补采；API/SQLite/页面已接入新不可变来源核验，不改旧包。02当前供应商日K契约与单日真实响应已补，SSE量额对照冲突保留；03仅盘后阶段显示，04已补6/6分红分页/181公告索引/两份实施原件与期间链，完整状态/全行动旧义务仍未知。详见[本轮验收](../evidence/04-actions/authority-20261020/acceptance.md)及各票authority-20261020/research.md，待双轴审查，不以METHOD或未证覆盖关闭。
