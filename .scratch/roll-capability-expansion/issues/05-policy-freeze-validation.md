@@ -32,6 +32,8 @@
 
 ## Comments
 
+2026-10-20 实际家族预算核查：reconstructed19-v1保留同根3fit/1CAL，拟合最多余2/CAL余0，宿主早期副本不得重置余额。05缺四非中心工件，不能假定现有限额足够新增四次拟合；既有工件/REAL authority/独立支持/完整冻结门槛保持。只读元数据证据见[家族预算核查](../evidence/23-readiness/metadata-20261020/findings.md)，未读标签/封存或训练，05仍partial。
+
 2026-10-15：按旧v2差量新增同家族设计参数绑定、统计算术例证、不可变工件、G1—G7缺口和METHOD净值/回撤前缀诊断。参数冻结不冒充完整冻结，complete_experiment_frozen=false。最终API1 PASS/21.16s，Chrome1 PASS/24.0s；旧完整冻结/账户不变、硬FAIL与INCONCLUSIVE/重放/唯一性/零基线边界已验证。见[逐阶段验收与确切剩余工程](../evidence/05-protocol/acceptance.md)。新真实消费者、成熟概率/同窗口风险匹配基准、v2G5绑定尚未接入，保持partial，未拟合新真实模型、消费SEALED、授资格或启计时。
 
 2026-10-14：依据用户授权发布，尚未实施。完成状态与真实启动条件独立于分诊标签；先读01交接和任务计划，保留另一会话成果及原P0验收。

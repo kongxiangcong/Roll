@@ -1,0 +1,216 @@
+{
+  "observed_at": "2026-10-20T12:28:11.577457+00:00",
+  "stores": [
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\reconstructed19-v1\\roll.sqlite3",
+      "exists": true,
+      "state": "METADATA_READ",
+      "protocols": [
+        {
+          "id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "predecessor_id": null,
+          "dataset_id": "9c0ca50c-f3e0-4028-a575-aa6d0fad18e5",
+          "fingerprint": "cf91fb8981673ea8ee4e43a80a3f5e858713c757224b327d1f78daa010c52416"
+        },
+        {
+          "id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "predecessor_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "dataset_id": "ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+          "fingerprint": "8d7ae80324b0ae1e3cfc07316eaa8dd781e03b34b311e8ddc83a7578cb265225"
+        },
+        {
+          "id": "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+          "predecessor_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "dataset_id": "0b0a1194-58fd-45ab-9035-a989ad093269",
+          "fingerprint": "4ac7335aabde70d690d7d6b0a99794e542cef4480f258dc6d103cf8d4b003a3f"
+        },
+        {
+          "id": "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+          "predecessor_id": "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+          "dataset_id": "34eb0e11-57be-4656-a750-9ea80683ca2c",
+          "fingerprint": "c9af538f35122640fd4120990d1c1ff069465b5468e9e9e72e47b9d2cddd2bcf"
+        },
+        {
+          "id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+          "predecessor_id": "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+          "dataset_id": "86cd98e9-f687-4249-a0e7-ec917f7ab3be",
+          "fingerprint": "9c383bc45c9f1627d14cf767066669392e29e69ad59f074af73c2a7a2f972458"
+        }
+      ],
+      "attempts": [
+        {
+          "id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+          "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "category": "PRIMARY_FIT",
+          "status": "RUNNING",
+          "started_at": "2026-10-08T17:08:18.766352+00:00",
+          "terminal_status": "FAILED"
+        },
+        {
+          "id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+          "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "category": "PRIMARY_FIT",
+          "status": "RUNNING",
+          "started_at": "2026-10-08T17:14:24.413994+00:00",
+          "terminal_status": "FAILED"
+        },
+        {
+          "id": "fdacb78e-7aa0-4852-bbf5-804f45d18082",
+          "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+          "category": "PRIMARY_FIT",
+          "status": "RUNNING",
+          "started_at": "2026-10-10T08:56:42.197457+00:00",
+          "terminal_status": "SUCCEEDED"
+        },
+        {
+          "id": "2b4fb2f8-a995-4a37-acf4-1700ff6ab139",
+          "protocol_id": "f977645b-200a-4c39-a6de-5e122f4e5101",
+          "category": "CALIBRATION",
+          "status": "RUNNING",
+          "started_at": "2026-10-10T08:57:16.116598+00:00",
+          "terminal_status": "SUCCEEDED"
+        }
+      ],
+      "datasets": [
+        {
+          "id": "0b0a1194-58fd-45ab-9035-a989ad093269",
+          "source_evidence_kind": "REAL_ACQUISITION",
+          "data_use": "RECONSTRUCTED_RESEARCH",
+          "source_origin": "HOST_RECONSTRUCTED_RESEARCH",
+          "fingerprint": "bcb623399e0bdb971a174af62ede450f12134413c0954cbd0885911cd192c611"
+        },
+        {
+          "id": "34eb0e11-57be-4656-a750-9ea80683ca2c",
+          "source_evidence_kind": "REAL_ACQUISITION",
+          "data_use": "RECONSTRUCTED_RESEARCH",
+          "source_origin": "HOST_RECONSTRUCTED_RESEARCH",
+          "fingerprint": "25c8c38888d76b6e275525be590841fffc001f74c3e27f4d7a53e76cb106cefa"
+        },
+        {
+          "id": "86cd98e9-f687-4249-a0e7-ec917f7ab3be",
+          "source_evidence_kind": "REAL_ACQUISITION",
+          "data_use": "RECONSTRUCTED_RESEARCH",
+          "source_origin": "HOST_RECONSTRUCTED_RESEARCH",
+          "fingerprint": "0eaefd09803c54924263181b84f60fe1b028e19b9569ce4f3bd4c335def22ae0"
+        },
+        {
+          "id": "9c0ca50c-f3e0-4028-a575-aa6d0fad18e5",
+          "source_evidence_kind": "REAL_ACQUISITION",
+          "data_use": null,
+          "source_origin": "HOST_DATA_REQUEST",
+          "fingerprint": "9a50206d8b2b46edf16b3f22cb54788b66571ba9b3dbb6192d0309a09f68d1e2"
+        },
+        {
+          "id": "ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+          "source_evidence_kind": "REAL_ACQUISITION",
+          "data_use": null,
+          "source_origin": "HOST_DATA_REQUEST",
+          "fingerprint": "fd93fee32106b53e81d284dbe734ea58fc427cfb06d54fc6e390bb7e65b9cd89"
+        }
+      ],
+      "families": [
+        {
+          "root": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "members": [
+            "bab919f3-14b5-4d28-8df6-f0f0979755db",
+            "a9792e33-98e1-464e-85ba-046623fb4bd1",
+            "2c2ccbd3-b3a5-487d-954b-97581eaa42ad",
+            "ee35ab9f-83a8-4e23-af4d-e73fa0f1096f",
+            "f977645b-200a-4c39-a6de-5e122f4e5101"
+          ],
+          "fit_records": 3,
+          "unreserved_fit_limit_remaining": 2,
+          "calibration_records": 1,
+          "calibration_remaining": 0,
+          "feature_reservations": "NOT_EVALUATED_NOT_A_FIT_ADMISSION"
+        }
+      ],
+      "db_sha256_before": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4",
+      "db_sha256_after": "ec46257c4420f69c245791778c49079355700615cc3ed7b94d8027bd4dcf66c4",
+      "main_db_bytes_unchanged": true
+    },
+    {
+      "path": "D:\\dsh-proj\\Roll\\.roll-data\\reconstructed19\\roll.sqlite3",
+      "exists": true,
+      "state": "RESEARCH_SCHEMA_NOT_PRESENT",
+      "db_sha256_before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "db_sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "main_db_bytes_unchanged": true
+    },
+    {
+      "path": "C:\\Users\\72449\\AppData\\Local\\Roll\\roll.sqlite3",
+      "exists": true,
+      "state": "METADATA_READ",
+      "protocols": [
+        {
+          "id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "predecessor_id": null,
+          "dataset_id": "9c0ca50c-f3e0-4028-a575-aa6d0fad18e5",
+          "fingerprint": "cf91fb8981673ea8ee4e43a80a3f5e858713c757224b327d1f78daa010c52416"
+        },
+        {
+          "id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "predecessor_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "dataset_id": "ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+          "fingerprint": "8d7ae80324b0ae1e3cfc07316eaa8dd781e03b34b311e8ddc83a7578cb265225"
+        }
+      ],
+      "attempts": [
+        {
+          "id": "61be4ab6-c9c8-4adf-91d3-e1d1a484bd82",
+          "protocol_id": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "category": "PRIMARY_FIT",
+          "status": "RUNNING",
+          "started_at": "2026-10-08T17:08:18.766352+00:00",
+          "terminal_status": "FAILED"
+        },
+        {
+          "id": "e648f20e-99da-4544-a59d-75a2c383bc00",
+          "protocol_id": "a9792e33-98e1-464e-85ba-046623fb4bd1",
+          "category": "PRIMARY_FIT",
+          "status": "RUNNING",
+          "started_at": "2026-10-08T17:14:24.413994+00:00",
+          "terminal_status": "FAILED"
+        }
+      ],
+      "datasets": [
+        {
+          "id": "9c0ca50c-f3e0-4028-a575-aa6d0fad18e5",
+          "source_evidence_kind": "REAL_ACQUISITION",
+          "data_use": null,
+          "source_origin": "HOST_DATA_REQUEST",
+          "fingerprint": "9a50206d8b2b46edf16b3f22cb54788b66571ba9b3dbb6192d0309a09f68d1e2"
+        },
+        {
+          "id": "ad8ae9ae-13eb-4000-828c-092fdb1332e9",
+          "source_evidence_kind": "REAL_ACQUISITION",
+          "data_use": null,
+          "source_origin": "HOST_DATA_REQUEST",
+          "fingerprint": "fd93fee32106b53e81d284dbe734ea58fc427cfb06d54fc6e390bb7e65b9cd89"
+        }
+      ],
+      "families": [
+        {
+          "root": "bab919f3-14b5-4d28-8df6-f0f0979755db",
+          "members": [
+            "bab919f3-14b5-4d28-8df6-f0f0979755db",
+            "a9792e33-98e1-464e-85ba-046623fb4bd1"
+          ],
+          "fit_records": 2,
+          "unreserved_fit_limit_remaining": 3,
+          "calibration_records": 0,
+          "calibration_remaining": 1,
+          "feature_reservations": "NOT_EVALUATED_NOT_A_FIT_ADMISSION"
+        }
+      ],
+      "db_sha256_before": "9e2f7f4e59df0b596f424f9bce77b1caaa7d8341ea789cabdb69b6c70cd2fe78",
+      "db_sha256_after": "9e2f7f4e59df0b596f424f9bce77b1caaa7d8341ea789cabdb69b6c70cd2fe78",
+      "main_db_bytes_unchanged": true
+    }
+  ],
+  "network_calls": 0,
+  "label_reads": 0,
+  "archive_reads": 0,
+  "fit_calls": 0,
+  "scope": "Named stores only. Copies are not separate budgets; no admission or authority granted."
+}
