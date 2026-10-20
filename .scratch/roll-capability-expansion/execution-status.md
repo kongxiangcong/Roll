@@ -166,3 +166,5 @@ API/指标METHOD pytest6通过/20.00s，构建通过，干净副本/独立端口
 2026-10-20：22工程完成（22-features/acceptance.md、review-results.md），预检跨协议旧结果修复，METHOD Chrome/构建通过。当前15complete/5partial/6pending。26保持pending，缺02/03/04权威契约、05四非中心工件/REAL authority/独立支持/完整冻结、06依赖05、07真实资金；不绕过Blocked by。23—25另需真实训练材料/授权与自然时间，16训练授权已消费，不复用。
 
 2026-10-20 02—04自主补证：新第一方资料/真实BaoStock单日取数/官方旧日phase/6条分红与181公告索引/两份实施原件均归档；持久化/API/页面及观察输入隔离已验，5新测试/30回归、构建/Chrome/双轴通过。Spec确认三票仍partial，原因分别为完整session量额口径/差异用途、全状态生效及否定覆盖、全行动修订取消与旧义务。详见evidence/04-actions/authority-20261020/acceptance.md。当前仍15complete/5partial/6pending；未授资格、未拟合/开封存/派发或启运，26仍缺02/03/04/05/06/07。
+
+2026-10-20 02会话专项：6日真实BaoStock与两日SSE分项/统计已保存，盘后与两位万单位显示可解释差异但未证供应商全会话契约；20日大宗超时未知。新增DAILY_SESSION公开API/不可变存储/页面，METHOD8通过、构建/Chrome通过、真实零联网重放/重启/原包账户不变。详见evidence/02-daily/session-20261020/acceptance.md。02仍partial，总计15complete/5partial/6pending；03/04和依赖未解锁。官方正式历史接口仍有主板适配缺口，匿名样本TLS失败不推断付费必须。

@@ -1,0 +1,57 @@
+{
+  "attempt_id": "DAILY-SESSION-VALIDATION-20261020-01",
+  "authorization": "User explicitly authorized official contract research and bounded real validation on2026-10-20",
+  "hypothesis_before_new_results": "Ordinary SSE quote aligns with BaoStock; postclose total adds fp at rawunits, published statistic may lose precision; do not assume universal mapping or zero block from missing query",
+  "maximum_requests": 8,
+  "maximum_transfer_seconds": 120,
+  "maximum_bytes": 8388608,
+  "retries": 0,
+  "redirects": 0,
+  "commands": [
+    {
+      "role": "current_snap",
+      "url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362?select=name%2Clast%2Cchg_rate%2Cchange%2Camount%2Cvolume%2Copen%2Cprev_close%2Cask%2Cbid%2Chigh%2Clow%2Ctradephase%2Cturnover_ratio%2CtotalValue%2Camp_rate%2Ccirculating%2Cup_limit%2Cdown_limit%2Cfp_volume%2Cfp_amount%2Ccpxxprodusta%2Ccpxxlmttype%2Cfp_phase"
+    },
+    {
+      "role": "daily_2026-10-19",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-19&TX_DATE_MON=&TX_DATE_YEAR="
+    },
+    {
+      "role": "daily_2026-10-16",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-16&TX_DATE_MON=&TX_DATE_YEAR="
+    },
+    {
+      "role": "daily_2026-10-15",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-15&TX_DATE_MON=&TX_DATE_YEAR="
+    },
+    {
+      "role": "daily_2026-10-14",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-14&TX_DATE_MON=&TX_DATE_YEAR="
+    },
+    {
+      "role": "daily_2026-10-13",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-13&TX_DATE_MON=&TX_DATE_YEAR="
+    },
+    {
+      "role": "reported_block_20261019",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_XXPL_JYXXPL_DZJYXX_L_1&stockId=600362&startDate=2026-10-19&endDate=2026-10-19&isPagination=true&pageHelp.pageSize=25&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1"
+    }
+  ],
+  "baostock_public": {
+    "maximum_calls": 3,
+    "maximum_seconds": 18,
+    "maximum_bytes": 8388608,
+    "instrument": "SSE:600362",
+    "start": "2026-10-13",
+    "end": "2026-10-19",
+    "frequency": "d",
+    "adjustflag": "3",
+    "groups": [
+      "DAILY"
+    ],
+    "method": "existing public API + actual SDK",
+    "purpose": "OBSERVATION"
+  },
+  "no_fit_no_sealed_no_account_events": true,
+  "closed_budgets_not_reopened": true
+}

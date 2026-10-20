@@ -1,0 +1,188 @@
+{
+  "version": "daily-session-observation-v1",
+  "instrument": "SSE:600362",
+  "effective_from": "2026-07-06",
+  "sources": {
+    "prior_phase_snap": {
+      "url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362?select=name,last,chg_rate,change,amount,volume,open,prev_close,ask,bid,high,low,tradephase,turnover_ratio,totalValue,amp_rate,circulating,up_limit,down_limit,fp_volume,fp_amount,cpxxprodusta,cpxxlmttype,fp_phase",
+      "received_at": "2026-10-20T00:11:26.484062+00:00",
+      "status": 200,
+      "method": "GET",
+      "path": "prior_phase_snap.raw",
+      "sha256": "6a96cead1b5f1f76d59149872218c874797117c48163f98221f66fb3193018aa",
+      "bytes": 404
+    },
+    "prior_company_client": {
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js",
+      "received_at": "2026-10-20T00:11:11.902666+00:00",
+      "status": 200,
+      "method": "GET",
+      "path": "prior_company_client.raw",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "bytes": 277193
+    },
+    "prior_bao_daily": {
+      "url": "https://www.baostock.com/helpdocs/api/markdown/stockKData.md",
+      "received_at": "2026-10-20T00:11:36.744788+00:00",
+      "status": 200,
+      "method": "POST",
+      "path": "prior_bao_daily.raw",
+      "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac",
+      "bytes": 12485
+    },
+    "prior_bao_home": {
+      "url": "https://www.baostock.com/helpdocs/api/markdown/home.md",
+      "received_at": "2026-10-20T00:11:35.151409+00:00",
+      "status": 200,
+      "method": "POST",
+      "path": "prior_bao_home.raw",
+      "sha256": "6a931ebea4ff858c46cf89e6c8f448b755cceab10071a35265b576ff09545884",
+      "bytes": 10167
+    },
+    "snap_20": {
+      "url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362?select=name%2Clast%2Cchg_rate%2Cchange%2Camount%2Cvolume%2Copen%2Cprev_close%2Cask%2Cbid%2Chigh%2Clow%2Ctradephase%2Cturnover_ratio%2CtotalValue%2Camp_rate%2Ccirculating%2Cup_limit%2Cdown_limit%2Cfp_volume%2Cfp_amount%2Ccpxxprodusta%2Ccpxxlmttype%2Cfp_phase",
+      "received_at": "2026-10-20T11:11:37.003984+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "snap_20.raw",
+      "sha256": "ceb8310ebf82769dab3ea4c9ce55a423ebef79adbf578afb4dbba202822d5c89",
+      "bytes": 411
+    },
+    "stat_19": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-19&TX_DATE_MON=&TX_DATE_YEAR=",
+      "received_at": "2026-10-20T11:11:41.771158+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "stat_19.raw",
+      "sha256": "1c4ce7b610ad84b966ebee62c7a29e1490ed5907d2a30607cabc505d1f4abd74",
+      "bytes": 1147
+    },
+    "stat_16": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-16&TX_DATE_MON=&TX_DATE_YEAR=",
+      "received_at": "2026-10-20T11:11:45.229281+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "stat_16.raw",
+      "sha256": "d8b8737967f30d759684e0e89b7db0f5f6400ec971aa478e0d1eb17924a7e4f7",
+      "bytes": 1154
+    },
+    "stat_15": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-15&TX_DATE_MON=&TX_DATE_YEAR=",
+      "received_at": "2026-10-20T11:11:48.530244+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "stat_15.raw",
+      "sha256": "9ae95a0e37a1b021a307bfcf56c0cbd838a8297b93b62bc81a7eb635e06bfef6",
+      "bytes": 1150
+    },
+    "stat_14": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-14&TX_DATE_MON=&TX_DATE_YEAR=",
+      "received_at": "2026-10-20T11:11:53.254211+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "stat_14.raw",
+      "sha256": "9537daa946f48cf46db0bac1ebd4db94a6d6e33e06e3e3b3877c6320fad1e3ff",
+      "bytes": 1149
+    },
+    "stat_13": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-13&TX_DATE_MON=&TX_DATE_YEAR=",
+      "received_at": "2026-10-20T11:11:58.700369+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "stat_13.raw",
+      "sha256": "3ff14d3f49ceabb63e96f0034e555529bb62e17171cf4e5d08bf4fde1cf33bfe",
+      "bytes": 1147
+    },
+    "block_19": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_XXPL_JYXXPL_DZJYXX_L_1&stockId=600362&startDate=2026-10-19&endDate=2026-10-19&isPagination=true&pageHelp.pageSize=25&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1",
+      "received_at": "2026-10-20T11:12:02.841050+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "block_19.raw",
+      "sha256": "675b34a967c81d10534ae00eb7123d9735344441d3126157ab7e17c3a4cbae8e",
+      "bytes": 495
+    },
+    "stat_20": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-20&TX_DATE_MON=&TX_DATE_YEAR=",
+      "received_at": "2026-10-20T11:13:02.553755+00:00",
+      "status": 200,
+      "original_complete": true,
+      "error": null,
+      "method": "GET",
+      "path": "stat_20.raw",
+      "sha256": "cca37a03ab857ecaa6a9076020f4b652ca60db51ff5330c16d9b3dfd6476117f",
+      "bytes": 1155
+    },
+    "block_20": {
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_XXPL_JYXXPL_DZJYXX_L_1&stockId=600362&startDate=2026-10-20&endDate=2026-10-20&isPagination=true&pageHelp.pageSize=25&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1",
+      "received_at": "2026-10-20T11:13:17.566418+00:00",
+      "status": null,
+      "original_complete": false,
+      "error": "TimeoutError",
+      "method": "GET",
+      "path": "block_20.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "sse-rules-2026": {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+      "received_at": "2026-10-07T14:54:37.967017+00:00",
+      "status": 200,
+      "method": "GET",
+      "path": "sse-rules-2026.raw",
+      "sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+      "bytes": 34826
+    },
+    "sse-rules-text-2026": {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+      "received_at": "2026-10-07T14:55:48.748702+00:00",
+      "status": 200,
+      "method": "GET",
+      "path": "sse-rules-text-2026.raw",
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+      "bytes": 65302
+    },
+    "sse-deferred-2026": {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/f6bd756cdd8248f49b7795f62e73237f.docx",
+      "received_at": "2026-10-07T14:55:49.195423+00:00",
+      "status": 200,
+      "method": "GET",
+      "path": "sse-deferred-2026.raw",
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5",
+      "bytes": 16476
+    }
+  },
+  "cases": {
+    "2026-10-19": {
+      "snapshot": "prior_phase_snap",
+      "statistic": "stat_19",
+      "block": "block_19"
+    },
+    "2026-10-20": {
+      "snapshot": "snap_20",
+      "statistic": "stat_20",
+      "block": "block_20"
+    }
+  },
+  "other_statistics": {
+    "2026-10-13": "stat_13",
+    "2026-10-14": "stat_14",
+    "2026-10-15": "stat_15",
+    "2026-10-16": "stat_16"
+  },
+  "inference_policy": "Local component-sum/2dp presentation diagnostic only; no supplier session declaration/server rounding/all-session admission inferred"
+}

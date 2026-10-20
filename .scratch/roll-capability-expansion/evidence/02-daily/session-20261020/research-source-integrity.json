@@ -1,0 +1,83 @@
+{
+  "state": "OFFLINE_EXISTING_REAL_ORIGINALS_VERIFIED",
+  "new_http_requests": 0,
+  "new_market_requests": 0,
+  "sources": [
+    {
+      "id": "sse-rules-2026",
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+      "fetched_at": "2026-10-07T14:54:37.967017+00:00",
+      "sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+      "file": "sse-rules-2026.html",
+      "bytes": 34826,
+      "attachments": [
+        "10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+        "10816482/files/982290258b184b4b9c2b56a625202a9c.docx",
+        "10816482/files/f6bd756cdd8248f49b7795f62e73237f.docx",
+        "10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+        "10816482/files/982290258b184b4b9c2b56a625202a9c.docx",
+        "10816482/files/f6bd756cdd8248f49b7795f62e73237f.docx",
+        "10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+        "10816482/files/982290258b184b4b9c2b56a625202a9c.docx",
+        "10816482/files/f6bd756cdd8248f49b7795f62e73237f.docx",
+        "10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+        "10816482/files/982290258b184b4b9c2b56a625202a9c.docx",
+        "10816482/files/f6bd756cdd8248f49b7795f62e73237f.docx"
+      ],
+      "local_path": "backend/src/roll/market/reference/sse-rules-2026.html",
+      "verified_sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+      "integrity_ok": true
+    },
+    {
+      "id": "sse-rules-text-2026",
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/959da0158c65434daa8a43a6e32be7ba.docx",
+      "fetched_at": "2026-10-07T14:55:48.748702+00:00",
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+      "file": "sse-rules-text-2026.docx",
+      "bytes": 65302,
+      "local_path": "backend/src/roll/market/reference/sse-rules-text-2026.docx",
+      "verified_sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+      "integrity_ok": true
+    },
+    {
+      "id": "sse-deferred-2026",
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/f6bd756cdd8248f49b7795f62e73237f.docx",
+      "fetched_at": "2026-10-07T14:55:49.195423+00:00",
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5",
+      "file": "sse-deferred-2026.docx",
+      "bytes": 16476,
+      "local_path": "backend/src/roll/market/reference/sse-deferred-2026.docx",
+      "verified_sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5",
+      "integrity_ok": true
+    },
+    {
+      "role": "company_js",
+      "local_path": ".scratch/roll-capability-expansion/evidence/03-status/authority-20261020/09.raw",
+      "verified_sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f"
+    },
+    {
+      "role": "existing_real_snapshot",
+      "local_path": ".scratch/roll-capability-expansion/evidence/03-status/authority-20261020/10.raw",
+      "verified_sha256": "6a96cead1b5f1f76d59149872218c874797117c48163f98221f66fb3193018aa"
+    }
+  ],
+  "comparison": {
+    "instrument": "SSE:600362",
+    "trade_date": "2026-10-19",
+    "baostock_volume": "19499178",
+    "baostock_amount": "762858168.3800",
+    "snap_ordinary_volume": "19499178",
+    "snap_ordinary_amount": "762858168",
+    "snap_fp_volume": "3800",
+    "snap_fp_amount": "148542.000",
+    "sse_daily_vol_wangu": "1950.3",
+    "sse_daily_amt_wanyuan": "76300.67",
+    "ordinary_plus_fp_volume": "19502978",
+    "ordinary_plus_fp_amount": "763006710.3800",
+    "sse_display_volume_minus_sum_shares": "22",
+    "sse_display_amount_minus_sum_yuan": "-10.3800",
+    "round2_wangu_of_sum": "1950.30",
+    "round2_wanyuan_of_sum": "76300.67",
+    "interpretation": "Arithmetic compatible at published 0.01 ten-thousand units; not proof of a server rounding contract or all-date BaoStock exclusion."
+  }
+}

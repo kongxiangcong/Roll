@@ -1,0 +1,13 @@
+{
+  "purpose": "Read official CIIS page and at most three directly linked public historical samples, contract research only",
+  "max_http_requests": 4,
+  "max_seconds": 60,
+  "max_bytes": 16777216,
+  "retries": 0,
+  "follow_redirects": false,
+  "page": "https://www.ciis.com.hk/hongkong/sc/historicaldata/his_introduction/index.shtml",
+  "prior_attempt": "web tool page open returned 502; this is a separately recorded host HTTP attempt, not an overwrite or hidden retry",
+  "allow_other_instrument_contract_research": true,
+  "roll_observations_models_allowlist_changes": false,
+  "contact_login_purchase": false
+}

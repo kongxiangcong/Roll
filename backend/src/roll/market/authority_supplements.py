@@ -15,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from pypdf import PdfReader
 from roll.accounts.ledger import encode, now
 from roll.market.rules import SHANGHAI
+from roll.market import daily_sessions
 
 REFERENCE = Path(__file__).parent / 'reference/authority-20261020'
 MANIFEST = '6a81b945a9e782f7ff25cebc1faf905e0d88f72ee85cda2ac1b630445abb65e7'
@@ -23,19 +24,23 @@ PHASES = dict(zip('IAHDF', ['开市前', '集中撮合', '连续交易', '闭市
 
 class AuthorityCommand(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    kind: Literal['DAILY', 'STATUS_PHASE', 'ACTION_DOCUMENTS']
+    kind: Literal['DAILY', 'STATUS_PHASE', 'ACTION_DOCUMENTS', 'DAILY_SESSION']
     snapshot_id: str | None = None
     instrument: Literal['SSE:600362'] = 'SSE:600362'
     idempotency_key: str = Field(min_length=1, max_length=120)
 
 
 def reference():
-    body = (REFERENCE / 'sources.json').read_bytes()
-    if hashlib.sha256(body).hexdigest() != MANIFEST:
+    return checked_reference(REFERENCE, MANIFEST)
+
+
+def checked_reference(directory, manifest):
+    body = (directory / 'sources.json').read_bytes()
+    if hashlib.sha256(body).hexdigest() != manifest:
         raise HTTPException(409, 'AUTHORITY_MANIFEST_CORRUPT')
     catalog = json.loads(body); bodies = {}
     for role, item in catalog['sources'].items():
-        raw = (REFERENCE / item['path']).read_bytes()
+        raw = (directory / item['path']).read_bytes()
         if len(raw) != item['bytes'] or hashlib.sha256(raw).hexdigest() != item['sha256']:
             raise HTTPException(409, 'AUTHORITY_ORIGINAL_CORRUPT:' + role)
         bodies[role] = raw
@@ -149,17 +154,18 @@ class AuthoritySupplements:
 
     def create(self, command):
         request = command.model_dump()
-        if (command.kind == 'DAILY') != bool(command.snapshot_id): raise HTTPException(422, 'DAILY_SNAPSHOT_REQUIRED_OTHER_KINDS_FORBIDDEN')
+        needs_snapshot = command.kind in {'DAILY', 'DAILY_SESSION'}
+        if needs_snapshot != bool(command.snapshot_id): raise HTTPException(422, 'DAILY_SNAPSHOT_REQUIRED_OTHER_KINDS_FORBIDDEN')
         with self.ledger.connection() as db:
             row = db.execute('SELECT id,value FROM source_authority_supplements WHERE idem=?', (command.idempotency_key,)).fetchone()
         if row:
             if json.loads(row[1])['request'] != request: raise HTTPException(409, 'AUTHORITY_IDEMPOTENCY_CONFLICT')
             return self.get(row[0])
-        catalog, bodies, mapping = reference(); stamp = now()
+        catalog, bodies, mapping = (checked_reference(daily_sessions.REFERENCE, daily_sessions.MANIFEST) if command.kind == 'DAILY_SESSION' else reference()); stamp = now()
         if any(datetime.fromisoformat(r['received_at']) > datetime.fromisoformat(stamp) for r in catalog['sources'].values()):
             raise HTTPException(409, 'AUTHORITY_REFERENCE_NOT_YET_KNOWN')
         dependencies = []; kind = 'REAL_SAVED_SOURCE_OBSERVATION'
-        if command.kind == 'DAILY':
+        if needs_snapshot:
             with self.ledger.connection() as db:
                 purpose = db.execute("""SELECT json_extract(r.value,'$.purpose') FROM market_evidence_snapshots s
                     JOIN data_requests r ON r.id=json_extract(s.value,'$.request_id') WHERE s.id=?""", (command.snapshot_id,)).fetchone()
@@ -174,9 +180,12 @@ class AuthoritySupplements:
             details = {'rows': [{**f, 'successor_use': daily_use(f)} for f in rows], 'source_snapshot_id': command.snapshot_id,
                        'gaps': ['PROVIDER_REVISION_HISTORY_UNKNOWN', 'STRICT_HISTORICAL_PIT_NOT_GRANTED'],
                        'source_independence': 'UNPROVEN', 'cross_source_comparison': 'NOT_INDEPENDENT_VERIFICATION'}
-            comparison = json.loads(bodies['sse_daily_comparison'])['result'][0]
-            details['sse_reported_comparison'] = comparison
-            details['comparison_policy'] = 'DIFFERENT_PROVIDER_VALUES_RETAINED_NO_SELECTION_AVERAGING_OR_MODEL_ADMISSION'
+            if command.kind == 'DAILY_SESSION':
+                details = daily_sessions.assess(rows, bodies, catalog)
+            else:
+                comparison = json.loads(bodies['sse_daily_comparison'])['result'][0]
+                details['sse_reported_comparison'] = comparison
+                details['comparison_policy'] = 'DIFFERENT_PROVIDER_VALUES_RETAINED_NO_SELECTION_AVERAGING_OR_MODEL_ADMISSION'
         elif command.kind == 'STATUS_PHASE':
             snap = json.loads(bodies['phase_snap']); phase = snap['snap'][23]
             if snap['code'] != '600362' or not isinstance(phase, str): raise HTTPException(409, 'AUTHORITY_PHASE_OBJECT_MISMATCH')
@@ -192,7 +201,7 @@ class AuthoritySupplements:
             refs.append({'role': role, **item, 'archive_sha256': archive['sha256']}); dependencies.append(archive['sha256'])
         dependencies.append(self.evidence.archive(mapping, 'SOURCE_AUTHORITY_MAPPING')['sha256'])
         value = {'assessment_id': str(uuid4()), 'request': request, 'instrument': command.instrument, 'kind': command.kind,
-                 'created_at': stamp, 'reference_version': catalog['version'], 'reference_manifest_sha256': MANIFEST,
+                 'created_at': stamp, 'reference_version': catalog['version'], 'reference_manifest_sha256': hashlib.sha256(mapping).hexdigest(),
                  'evidence_kind': kind, 'details': details, 'references': refs, 'dependency_hashes': sorted(set(dependencies)),
                  'network_calls': 0, 'account_events_added': 0, 'system_usable': False, 'capability': 'NOT_GRANTED',
                  'historical_pit_claim': False}

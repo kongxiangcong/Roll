@@ -1,0 +1,43 @@
+[WebServer] INFO:     Started server process [37796]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:18250 (Press CTRL+C to quit)
+[WebServer] (node:13816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:32576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-daily-session.spec.ts:2:1 › actual two-day session components retain residuals and failed block query without promoting full daily (14.9s)
+
+
+  1) tests\e2e\expansion-daily-session.spec.ts:2:1 › actual two-day session components retain residuals and failed block query without promoting full daily 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('region', { name: '日线会话量额对照' }).getByText(/实际保存来源观察/)
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '日线会话量额对照' }).getByText(/实际保存来源观察/)[22m
+
+
+       8 |  await page.getByLabel('契约核验日线版本',{exact:true}).selectOption(choices[0].snapshot_id);
+       9 |  await page.getByRole('button',{name:'核对会话量额差异',exact:true}).click();const region=page.getByRole('region',{name:'日线会话量额对照'});
+    > 10 |  await expect(region.getByText(/实际保存来源观察/)).toBeVisible();
+         |                                             ^
+      11 |  await expect(region.getByText(/同日盘后分量 3800股 \/ 148542.000元/)).toBeVisible();
+      12 |  await expect(region.getByText(/统计显示减分量合计：22.0股 \/ -10.3800元/)).toBeVisible();
+      13 |  await expect(region.getByText(/同日盘后分量 21800股 \/ 829926.000元/)).toBeVisible();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-daily-session.spec.ts:10:45
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\02-daily\session-20261020\browser-results\expansion-daily-session-ac-d8fec-ithout-promoting-full-daily\error-context.md
+
+  1 failed
+    tests\e2e\expansion-daily-session.spec.ts:2:1 › actual two-day session components retain residuals and failed block query without promoting full daily 

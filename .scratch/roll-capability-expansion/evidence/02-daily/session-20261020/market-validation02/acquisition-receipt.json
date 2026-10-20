@@ -1,0 +1,50 @@
+{
+  "attempt_id": "DAILY-SESSION-CURRENT-CHECK-20261020-02",
+  "requests": [
+    {
+      "number": 1,
+      "role": "daily_2026-10-20",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-20&TX_DATE_MON=&TX_DATE_YEAR=",
+      "started_at": "2026-10-20T11:12:58.219528+00:00",
+      "complete": true,
+      "status": 200,
+      "headers": {
+        "server": "nginx",
+        "date": "Tue, 20 Oct 2026 11:12:58 GMT",
+        "content-type": "application/json;charset=UTF-8",
+        "content-length": "1155",
+        "connection": "keep-alive",
+        "content-language": "en-CN",
+        "x-download-options": "noopen",
+        "x-permitted-cross-domain-policies": "none",
+        "x-xss-protection": "1",
+        "referrer-policy": "origin-when-cross-origin",
+        "content-security-policy": "style-src 'self' https://*.sseinfo.com https://*.sse.com.cn  https://yunhq.sse.com.cn:32042 'unsafe-inline'; script-src 'self' https://*.sseinfo.com https://*.sse.com.cn https://yunhq.sse.com.cn:32042 'unsafe-inline' 'unsafe-eval'; frame-ancestors *.sse.com.cn *.sseinfo.com"
+      },
+      "transfer_seconds": 4.334203100006562,
+      "received_at": "2026-10-20T11:13:02.553755+00:00",
+      "sha256": "cca37a03ab857ecaa6a9076020f4b652ca60db51ff5330c16d9b3dfd6476117f",
+      "bytes": 1155,
+      "path": "01.raw"
+    },
+    {
+      "number": 2,
+      "role": "reported_block_20261020",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_XXPL_JYXXPL_DZJYXX_L_1&stockId=600362&startDate=2026-10-20&endDate=2026-10-20&isPagination=true&pageHelp.pageSize=25&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1",
+      "started_at": "2026-10-20T11:13:02.555118+00:00",
+      "complete": false,
+      "error": "TimeoutError",
+      "transfer_seconds": 15.011277999961749,
+      "received_at": "2026-10-20T11:13:17.566418+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "path": "02.raw"
+    }
+  ],
+  "bytes": 1155,
+  "transfer_seconds": 19.34548109996831,
+  "evidence_kind": "REAL_PUBLIC_SOURCE_DOCUMENT",
+  "closed_historical_budgets_not_reopened": true,
+  "status": "CLOSED_NO_RETRY",
+  "unused_requests": 0
+}
