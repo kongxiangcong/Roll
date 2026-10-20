@@ -15,9 +15,9 @@
 | 票 | Completion | 备注 |
 | --- | --- | --- |
 | [01 · 交接基线与既有能力继承](issues/01-handoff-baseline.md) | complete | 交接映射与当前有限兼容检查3 PASS/35.84s；真实服务当前不可访问 |
-| [02 · 完整日线用途与来源缺口补齐](issues/02-daily-evidence.md) | partial | 已继承采集/重放，页面查询和Chrome/手机/构建通过；完整session/RAW修订依据不足 |
-| [03 · 有效交易状态与未知覆盖](issues/03-status-evidence.md) | partial | 截止查询/单股来源区/API2 PASS及Chrome通过；全状态与否定覆盖依据不足 |
-| [04 · 公司行动版本与义务证据](issues/04-action-lifecycle.md) | partial | 截止版本/旧义务查询和单股原件链已验收，生命周期和完整覆盖待证 |
+| [02 · 完整日线用途与来源缺口补齐](issues/02-daily-evidence.md) | partial | 新供应商日K/RAW/单位/入库契约及真实PUBLIC单日原件已补；完整session量额范围/SSE差异用途仍缺，模型不准入 |
+| [03 · 有效交易状态与未知覆盖](issues/03-status-evidence.md) | partial | 官方盘后阶段映射与真实旧日行情已补；完整状态/生效/否定覆盖仍未知 |
+| [04 · 公司行动版本与义务证据](issues/04-action-lifecycle.md) | partial | 6/6分红分页/181公告索引/两份真实实施PDF与期间链已补；全行动更正取消/旧义务仍缺 |
 | [05 · 后继政策完整冻结与验证消费者](issues/05-policy-freeze-validation.md) | partial | 同源九类诊断、联合压力、阈值/迁移、工程检查、两主模型中心及原CAL预测完整日历执行已验收；来源包→模型→独立推进METHOD管线已补；REAL准入/authority、共同风险匹配/四非中心工件/独立支持和完整冻结仍缺 |
 | [06 · 当前动作有效期与政策派发](issues/06-current-action-validity.md) | pending | 已发布，未实施 |
 | [07 · LOSS原因绑定恢复闭环](issues/07-loss-recovery.md) | partial | 用户确认显式后继恢复规则，工程/API/Chrome通过；真实资金条件未满足 |
@@ -164,3 +164,5 @@ API/指标METHOD pytest6通过/20.00s，构建通过，干净副本/独立端口
 2026-10-19：18完成受限观察工程（18-worker/acceptance.md）；默认暂停，旧worker脏字节保留，仅提交两行接入。真实首轮推理45秒超时没有冒充成功；最终事实路径原进程租约/重启/通知/账户通过。通知回归3项旧失败已在pre18模块复现；不改旧P0路径。下一22，26真实前置仍不齐。
 
 2026-10-20：22工程完成（22-features/acceptance.md、review-results.md），预检跨协议旧结果修复，METHOD Chrome/构建通过。当前15complete/5partial/6pending。26保持pending，缺02/03/04权威契约、05四非中心工件/REAL authority/独立支持/完整冻结、06依赖05、07真实资金；不绕过Blocked by。23—25另需真实训练材料/授权与自然时间，16训练授权已消费，不复用。
+
+2026-10-20 02—04自主补证：新第一方资料/真实BaoStock单日取数/官方旧日phase/6条分红与181公告索引/两份实施原件均归档；持久化/API/页面及观察输入隔离已验，5新测试/30回归、构建/Chrome/双轴通过。Spec确认三票仍partial，原因分别为完整session量额口径/差异用途、全状态生效及否定覆盖、全行动修订取消与旧义务。详见evidence/04-actions/authority-20261020/acceptance.md。当前仍15complete/5partial/6pending；未授资格、未拟合/开封存/派发或启运，26仍缺02/03/04/05/06/07。

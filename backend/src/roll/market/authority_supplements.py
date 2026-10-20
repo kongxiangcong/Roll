@@ -119,6 +119,17 @@ class AuthoritySupplements:
         with self.ledger.connection() as db:
             db.execute('CREATE TABLE IF NOT EXISTS source_authority_supplements(id TEXT PRIMARY KEY, idem TEXT UNIQUE, value TEXT NOT NULL)')
 
+    def daily_options(self):
+        # Query only observation metadata. Never enumerate/expose research facts or SEALED inputs.
+        with self.ledger.connection() as db:
+            rows = db.execute("""SELECT s.id, json_extract(s.value,'$.created_at'), json_extract(s.value,'$.evidence_kind')
+                FROM market_evidence_snapshots s JOIN data_requests r ON r.id=json_extract(s.value,'$.request_id')
+                WHERE json_extract(r.value,'$.purpose')='OBSERVATION'
+                AND EXISTS (SELECT 1 FROM json_each(s.value,'$.requested_instruments') WHERE value='SSE:600362')
+                AND EXISTS (SELECT 1 FROM json_each(s.value,'$.requested_groups') WHERE value='DAILY')
+                ORDER BY s.rowid DESC LIMIT 100""").fetchall()
+        return [{'snapshot_id': r[0], 'created_at': r[1], 'evidence_kind': r[2]} for r in rows]
+
     def get(self, identifier):
         with self.ledger.connection() as db:
             row = db.execute('SELECT value FROM source_authority_supplements WHERE id=?', (identifier,)).fetchone()
@@ -149,6 +160,10 @@ class AuthoritySupplements:
             raise HTTPException(409, 'AUTHORITY_REFERENCE_NOT_YET_KNOWN')
         dependencies = []; kind = 'REAL_SAVED_SOURCE_OBSERVATION'
         if command.kind == 'DAILY':
+            with self.ledger.connection() as db:
+                purpose = db.execute("""SELECT json_extract(r.value,'$.purpose') FROM market_evidence_snapshots s
+                    JOIN data_requests r ON r.id=json_extract(s.value,'$.request_id') WHERE s.id=?""", (command.snapshot_id,)).fetchone()
+            if not purpose or purpose[0] != 'OBSERVATION': raise HTTPException(403, 'OBSERVATION_SOURCE_ONLY_NO_RESEARCH_INPUT_ACCESS')
             snapshot = self.evidence.get('market_evidence_snapshots', command.snapshot_id)
             replay = self.evidence.replay(snapshot['run_id'])
             if replay['facts'] != snapshot['facts']: raise HTTPException(409, 'AUTHORITY_SOURCE_REPLAY_MISMATCH')

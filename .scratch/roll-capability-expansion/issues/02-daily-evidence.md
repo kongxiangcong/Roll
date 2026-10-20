@@ -8,7 +8,7 @@
 
 **Completion:** partial
 
-**Execution:** PARTIAL — 继承日线采集与重放，新增页面查询已验收；完整会话/用途来源依据待补。
+**Execution:** PARTIAL — 新BaoStock官方日K/RAW/单位/入库契约和单日真实PUBLIC原件、离线重放已补；完整会话量额范围与SSE对照差异用途未证，新增消费者不授可评分/模型准入。
 
 **Scope / inheritance:** 旧P030日线范围；优先复用既有CNEquity/BaoStock/官方已接入来源。
 
@@ -37,3 +37,5 @@
 
 
 2026-10-20：新增权威契约调查与真实取数/原件补采；API/SQLite/页面已接入新不可变来源核验，不改旧包。02当前供应商日K契约与单日真实响应已补，SSE量额对照冲突保留；03仅盘后阶段显示，04已补6/6分红分页/181公告索引/两份实施原件与期间链，完整状态/全行动旧义务仍未知。详见[本轮验收](../evidence/04-actions/authority-20261020/acceptance.md)及各票authority-20261020/research.md，待双轴审查，不以METHOD或未证覆盖关闭。
+
+2026-10-20：本轮有限补充双轴通过，最终5新测试/30相关回归、构建3.26s、Chrome17.0s；观察元数据专用选择器排除研究/封存输入。完整门槛仍缺，Completion保持partial，未解锁依赖。

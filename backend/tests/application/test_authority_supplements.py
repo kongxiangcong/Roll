@@ -93,3 +93,20 @@ def test_corrupt_reference_and_saved_original_refuse(tmp_path,monkeypatch):
         monkeypatch.setattr(authority,'REFERENCE',copied)
         (copied/'phase_client.raw').write_bytes(b'corrupt')
         assert client.post('/api/market/source-authority',json={'kind':'STATUS_PHASE','idempotency_key':'bad'}).status_code==409
+
+
+def test_daily_choices_and_commands_exclude_research_before_fact_replay(tmp_path,monkeypatch):
+    with TestClient(create_app(tmp_path/'data', baostock_worker=method_source(tmp_path), runtime_role='API')) as client:
+        snap=snapshot(client)
+        assert client.get('/api/market/source-authority/daily-options').json()==[{
+            'snapshot_id':snap['snapshot_id'],'created_at':snap['created_at'],'evidence_kind':'METHOD_CASE'}]
+        ledger=client.app.state.authority_supplements.ledger
+        # Engineering-only classification change in an isolated fixture; no real research/SEALED data opened.
+        with ledger.connection() as db:
+            row=db.execute('SELECT value FROM data_requests WHERE id=?',(snap['request_id'],)).fetchone()
+            value=json.loads(row[0]);value['purpose']='RESEARCH'
+            db.execute('UPDATE data_requests SET value=? WHERE id=?',(json.dumps(value),snap['request_id']))
+        assert client.get('/api/market/source-authority/daily-options').json()==[]
+        def forbidden(*args,**kwargs):raise AssertionError('Research input replay must never be reached')
+        monkeypatch.setattr(client.app.state.authority_supplements.evidence,'replay',forbidden)
+        assert client.post('/api/market/source-authority',json={'kind':'DAILY','snapshot_id':snap['snapshot_id'],'idempotency_key':'research'}).status_code==403

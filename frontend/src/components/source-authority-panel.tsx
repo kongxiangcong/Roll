@@ -12,7 +12,7 @@ export function SourceAuthorityPanel({instrument}:{instrument:string}){
  const [saved,setSaved]=useState<Saved[]>([]),[snapshots,setSnapshots]=useState<Snapshot[]>([]),[snapshot,setSnapshot]=useState(''),[cutoff,setCutoff]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');
  if(instrument!=='SSE:600362')return null;
  async function action(work:()=>Promise<void>){setBusy(true);setError('');try{await work();}catch(e){setError(String(e));}finally{setBusy(false);}}
- async function load(){setSaved([]);const suffix=cutoff?'&known_by='+encodeURIComponent(cutoff+'+08:00'):'';setSaved(await request<Saved[]>('/market/source-authority?instrument='+instrument+suffix));setSnapshots(await request<Snapshot[]>('/data/snapshots?instrument='+instrument+'&group=DAILY'));}
+ async function load(){setSaved([]);const suffix=cutoff?'&known_by='+encodeURIComponent(cutoff+'+08:00'):'';setSaved(await request<Saved[]>('/market/source-authority?instrument='+instrument+suffix));setSnapshots(await request<Snapshot[]>('/market/source-authority/daily-options'));}
  async function capture(kind:string){const value=await request<Saved>('/market/source-authority',{kind,instrument,idempotency_key:crypto.randomUUID(),snapshot_id:kind==='DAILY'?snapshot:null});setSaved(rows=>[...rows,value]);}
  return <details className="status-evidence"><summary>来源契约与新补充原件</summary>
   <p>只消费已保存原件。供应商日线、交易所阶段显示和发行人公告分别核验；这些观察不授予完整状态、全部义务、历史时点或交易资格。</p>

@@ -132,6 +132,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def source_authority_history(instrument: str, known_by: datetime | None = None):
         return authority_supplements.listing(instrument, known_by)
 
+    @app.get('/api/market/source-authority/daily-options')
+    def source_authority_daily_options():
+        return authority_supplements.daily_options()
+
     @app.get('/api/market/source-authority/{identifier}')
     def source_authority_get(identifier: str):
         return authority_supplements.get(identifier)

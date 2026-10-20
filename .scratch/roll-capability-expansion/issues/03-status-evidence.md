@@ -8,7 +8,7 @@
 
 **Completion:** partial
 
-**Execution:** PARTIAL — 有截止的来源查询及单股折叠页已验收，完整枚举/否定覆盖待权威依据。
+**Execution:** PARTIAL — 新官方盘后首位显示契约与10/19真实行情已补；全状态、生效及否定覆盖未证，旧报告不冒充今日。
 
 **Scope / inheritance:** 旧P030状态范围；复用已接入状态适配与源配置。
 
@@ -39,3 +39,5 @@
 2026-10-18：新文档尝试 STATUS-DOC-ATTEMPT-01 只取两份官方静态脚本（2请求/537KB/零重试），确认 `kcbShowIconFlag`、`STATUS_A`、`getFpphaseText` 定义均不在其中；未调用行情、未产生回执、旧预算未重开。03 仍 partial，下一线索为 sse_menufun_2021.js 或状态专用模块，需新计划。见[尝试记录](../evidence/03-status/status-docs/attempt.md)。
 
 2026-10-20：新增权威契约调查与真实取数/原件补采；API/SQLite/页面已接入新不可变来源核验，不改旧包。02当前供应商日K契约与单日真实响应已补，SSE量额对照冲突保留；03仅盘后阶段显示，04已补6/6分红分页/181公告索引/两份实施原件与期间链，完整状态/全行动旧义务仍未知。详见[本轮验收](../evidence/04-actions/authority-20261020/acceptance.md)及各票authority-20261020/research.md，待双轴审查，不以METHOD或未证覆盖关闭。
+
+2026-10-20：本轮有限补充双轴通过，最终5新测试/30相关回归、构建3.26s、Chrome17.0s；观察元数据专用选择器排除研究/封存输入。完整门槛仍缺，Completion保持partial，未解锁依赖。
