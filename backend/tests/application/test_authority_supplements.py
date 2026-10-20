@@ -110,3 +110,28 @@ def test_daily_choices_and_commands_exclude_research_before_fact_replay(tmp_path
         def forbidden(*args,**kwargs):raise AssertionError('Research input replay must never be reached')
         monkeypatch.setattr(client.app.state.authority_supplements.evidence,'replay',forbidden)
         assert client.post('/api/market/source-authority',json={'kind':'DAILY','snapshot_id':snap['snapshot_id'],'idempotency_key':'research'}).status_code==403
+
+
+def test_missing_reference_refuses_without_saving_and_preserves_archived_replay(tmp_path, monkeypatch):
+    with TestClient(create_app(tmp_path/'data', runtime_role='API')) as client:
+        command = {'kind': 'STATUS_PHASE', 'idempotency_key': 'saved-before-reference-loss'}
+        response = client.post('/api/market/source-authority', json=command)
+        assert response.status_code == 201, response.text
+        saved = response.json()
+        original_reference = authority.REFERENCE
+        for missing, expected in [
+            ('sources.json', 'AUTHORITY_MANIFEST_UNAVAILABLE'),
+            ('phase_client.raw', 'AUTHORITY_ORIGINAL_UNAVAILABLE:phase_client'),
+        ]:
+            copied = tmp_path / missing
+            shutil.copytree(original_reference, copied, ignore=shutil.ignore_patterns(missing))
+            monkeypatch.setattr(authority, 'REFERENCE', copied)
+            refused = client.post('/api/market/source-authority', json={
+                'kind': 'STATUS_PHASE', 'idempotency_key': 'missing-' + missing,
+            })
+            assert refused.status_code == 409, refused.text
+            assert refused.json()['detail'] == expected
+            assert client.get('/api/market/source-authority/' + saved['assessment_id']).json() == saved
+            assert client.post('/api/market/source-authority', json=command).json() == saved
+            assert client.get('/api/market/source-authority?instrument=SSE:600362').json() == [saved]
+            assert client.get('/api/account').json()['version'] == 0

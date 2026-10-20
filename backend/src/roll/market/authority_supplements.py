@@ -35,12 +35,18 @@ def reference():
 
 
 def checked_reference(directory, manifest):
-    body = (directory / 'sources.json').read_bytes()
+    try:
+        body = (directory / 'sources.json').read_bytes()
+    except OSError as exc:
+        raise HTTPException(409, 'AUTHORITY_MANIFEST_UNAVAILABLE') from exc
     if hashlib.sha256(body).hexdigest() != manifest:
         raise HTTPException(409, 'AUTHORITY_MANIFEST_CORRUPT')
     catalog = json.loads(body); bodies = {}
     for role, item in catalog['sources'].items():
-        raw = (directory / item['path']).read_bytes()
+        try:
+            raw = (directory / item['path']).read_bytes()
+        except OSError as exc:
+            raise HTTPException(409, 'AUTHORITY_ORIGINAL_UNAVAILABLE:' + role) from exc
         if len(raw) != item['bytes'] or hashlib.sha256(raw).hexdigest() != item['sha256']:
             raise HTTPException(409, 'AUTHORITY_ORIGINAL_CORRUPT:' + role)
         bodies[role] = raw
