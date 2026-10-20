@@ -19,6 +19,8 @@ from roll.market import daily_sessions
 
 REFERENCE = Path(__file__).parent / 'reference/authority-20261020'
 MANIFEST = '6a81b945a9e782f7ff25cebc1faf905e0d88f72ee85cda2ac1b630445abb65e7'
+ACTION_REFERENCE = Path(__file__).parent / 'reference/action-older-20261020'
+ACTION_MANIFEST = '9963f062c418c07e2e905c9cf3c720e77750392b88223023615837dac816a483'
 PHASES = dict(zip('IAHDF', ['开市前', '集中撮合', '连续交易', '闭市', '停牌']))
 
 
@@ -104,6 +106,20 @@ def action_documents(bodies):
                 'record_date': '2025-11-27', 'ex_date': '2025-11-28', 'scheduled_payment_date': '2025-11-28', 'cash_cny_per_share': '0.4'},
                {'notice_number': '2026-027', 'period': '2025_ANNUAL_FINAL', 'role': 'annual_notice',
                 'record_date': '2026-07-16', 'ex_date': '2026-07-17', 'scheduled_payment_date': '2026-07-17', 'cash_cny_per_share': '0.6'}]
+    if 'annual_2024_notice' in bodies:
+        older = compact_pdf(bodies['annual_2024_notice'])
+        anchors = ['600362', '2025-026', '2024年年度权益分派实施公告', '2025/7/21', '2025/7/22',
+                   '每股现金红利0.70元', '0.6965', '不实施资本公积金转增股本,也不送股']
+        if not all(term in older for term in anchors):
+            raise HTTPException(409, 'ISSUER_NOTICE_ANCHOR_MISMATCH')
+        if not any(r['SSEDATE'] == '2025-07-15' and '2024年年度权益分派实施公告' in r['TITLE'] for r in titles):
+            raise HTTPException(409, 'NOTICE_ANNOUNCEMENT_INDEX_MISMATCH')
+        notices.append({'notice_number': '2025-026', 'period': '2024_ANNUAL_FINAL', 'role': 'annual_2024_notice',
+                        'record_date': '2025-07-21', 'ex_date': '2025-07-22',
+                        'scheduled_payment_date': '2025-07-22', 'cash_cny_per_share': '0.70',
+                        'ex_reference_cash_cny_per_share': '0.6965',
+                        'ex_reference_cash_basis': 'ISSUER_REPORTED_DILUTED_REFERENCE_NOT_ACCOUNT_DIVIDEND',
+                        'original_pdf_pages': [2, 3]})
     for n in notices:
         if not any(r['A_REG_DATE'] == n['record_date'].replace('-', '') and r['A_DIV_DATE'] == n['ex_date'].replace('-', '') and
                    Decimal(r['A_BEFR_TAX_DIV']) == Decimal(n['cash_cny_per_share']) for r in rows):
@@ -167,7 +183,13 @@ class AuthoritySupplements:
         if row:
             if json.loads(row[1])['request'] != request: raise HTTPException(409, 'AUTHORITY_IDEMPOTENCY_CONFLICT')
             return self.get(row[0])
-        catalog, bodies, mapping = (checked_reference(daily_sessions.REFERENCE, daily_sessions.MANIFEST) if command.kind == 'DAILY_SESSION' else reference()); stamp = now()
+        if command.kind == 'DAILY_SESSION':
+            catalog, bodies, mapping = checked_reference(daily_sessions.REFERENCE, daily_sessions.MANIFEST)
+        elif command.kind == 'ACTION_DOCUMENTS':
+            catalog, bodies, mapping = checked_reference(ACTION_REFERENCE, ACTION_MANIFEST)
+        else:
+            catalog, bodies, mapping = reference()
+        stamp = now()
         if any(datetime.fromisoformat(r['received_at']) > datetime.fromisoformat(stamp) for r in catalog['sources'].values()):
             raise HTTPException(409, 'AUTHORITY_REFERENCE_NOT_YET_KNOWN')
         dependencies = []; kind = 'REAL_SAVED_SOURCE_OBSERVATION'

@@ -75,7 +75,7 @@ def test_actual_document_phase_and_lifecycle_do_not_grant_full_coverage(tmp_path
         assert phase['source_reported_date']=='2026-10-19' and phase['fp_phase_display']=='闭市'
         assert not phase['complete_status_verified'] and not phase['negative_coverage_verified']
         assert actions['returned_count']==6 and actions['missing_reported_rows']==0 and actions['announcement_count']==181
-        assert len(actions['notices'])==2 and all(n['payment_fulfilled'] is None and n['cancelled'] is None for n in actions['notices'])
+        assert len(actions['notices'])==3 and all(n['payment_fulfilled'] is None and n['cancelled'] is None for n in actions['notices'])
         assert actions['notices'][1]['scheduled_payment_date']=='2026-07-17'
         assert not actions['complete_action_coverage'] and not actions['pending_older_obligations_complete']
         original=client.get('/api/data/archives/'+outputs[1]['references'][0]['archive_sha256'])
@@ -135,3 +135,38 @@ def test_missing_reference_refuses_without_saving_and_preserves_archived_replay(
             assert client.post('/api/market/source-authority', json=command).json() == saved
             assert client.get('/api/market/source-authority?instrument=SSE:600362').json() == [saved]
             assert client.get('/api/account').json()['version'] == 0
+
+
+def test_older_action_supplement_preserves_v1_and_distinguishes_cash_from_reference(tmp_path, monkeypatch):
+    data = tmp_path / 'data'
+    with TestClient(create_app(data, runtime_role='API')) as client:
+        with monkeypatch.context() as legacy:
+            legacy.setattr(authority, 'ACTION_REFERENCE', authority.REFERENCE)
+            legacy.setattr(authority, 'ACTION_MANIFEST', authority.MANIFEST)
+            old = client.post('/api/market/source-authority', json={
+                'kind': 'ACTION_DOCUMENTS', 'idempotency_key': 'legacy',
+            }).json()
+        assert len(old['details']['notices']) == 2
+        command = {'kind': 'ACTION_DOCUMENTS', 'idempotency_key': 'older-supplement'}
+        response = client.post('/api/market/source-authority', json=command)
+        assert response.status_code == 201, response.text
+        saved = response.json()
+        notice = next(n for n in saved['details']['notices'] if n['notice_number'] == '2025-026')
+        assert notice['cash_cny_per_share'] == '0.70'
+        assert notice['ex_reference_cash_cny_per_share'] == '0.6965'
+        assert notice['record_date'] == '2025-07-21'
+        assert notice['ex_date'] == notice['scheduled_payment_date'] == '2025-07-22'
+        assert notice['payment_fulfilled'] is None and notice['cancelled'] is None
+        assert not saved['details']['pending_older_obligations_complete']
+        assert not saved['details']['revision_cancellation_inventory_complete']
+        assert not saved['system_usable'] and saved['network_calls'] == 0
+        assert client.post('/api/market/source-authority', json=command).json() == saved
+        assert client.get('/api/market/source-authority/' + old['assessment_id']).json() == old
+        assert client.get('/api/account').json()['version'] == 0
+    with TestClient(create_app(data, runtime_role='API')) as client:
+        assert client.get('/api/market/source-authority/' + old['assessment_id']).json() == old
+        assert client.get('/api/market/source-authority/' + saved['assessment_id']).json() == saved
+        original = client.app.state.authority_supplements.evidence.raw(notice['document_version_sha256'])
+        original.write_bytes(b'corrupt METHOD fixture only')
+        assert client.get('/api/market/source-authority/' + saved['assessment_id']).status_code == 409
+        assert client.get('/api/market/source-authority/' + old['assessment_id']).json() == old
