@@ -2,7 +2,7 @@
 
 依据：[实施规格](../spec.md) v1.0。顺序：**01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12**。
 
-所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**07**。01—06已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)、[05证据](../evidence/05/README.md)和[06证据](../evidence/06/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。06提供显式双快照三类比较、固定旧路径反推/有序模型对照、独立信息时效和不可变恢复；合成比较不冒充真实报价或市场因果。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
+所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**08**。01—07已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)、[05证据](../evidence/05/README.md)、[06证据](../evidence/06/README.md)和[07证据](../evidence/07/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。06提供显式双快照三类比较、固定旧路径反推/有序模型对照、独立信息时效和不可变恢复；合成比较不冒充真实报价或市场因果。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
 
 | 顺序 | 任务 | 依赖 | Completion |
 | --- | --- | --- | --- |
@@ -12,7 +12,7 @@
 | 04 | [接入可复算条件估值计算器](04-conditional-valuation-engine.md) | 03 | complete |
 | 05 | [连接经营驱动、正常化与经济审核](05-operating-drivers-and-review.md) | 04 | complete |
 | 06 | [实现三类变化与信息状态比较](06-daily-change-decomposition.md) | 05 | complete |
-| 07 | [将持续投研与估值融入每日使用](07-daily-research-integration.md) | 06 | not-started |
+| 07 | [将持续投研与估值融入每日使用](07-daily-research-integration.md) | 06 | complete |
 | 08 | [实现投研与估值完整报告流水线](08-report-template-and-pipeline.md) | 07 | not-started |
 | 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | not-started |
 | 10 | [交付独立公司研报入口及共享联动](10-report-workflow-ui.md) | 09 | not-started |
@@ -35,3 +35,5 @@
 - 08—10：独立完整研报可用切片。
 - 11：概率研究输入和协议，不自动训练或改概率。
 - 12：真实联合交付与恢复验证。
+
+07已交付[每日切片与完整证据](../evidence/07/README.md)：真实JCC共享经营/量价同屏，多公司历史隔离，原worker存档/来源状态、规范财务字段适配与失败重试，实际浏览器/恢复均已验收。当前JCC估值缺口与05当前用途限制保留；宽回归失败和修复后的36项窄回归分列，不称全部宽回归全绿。两个真实盘后周期留12，整体仍in-progress，08尚未实施。

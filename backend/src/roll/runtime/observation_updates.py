@@ -36,6 +36,7 @@ class UpdateSettings(BaseModel):
     news_postclose: bool = False
     financial_postclose: bool = False
     market_postclose: bool = False
+    research_postclose: bool = False
     news_refresh: bool = False
     classify: bool = False
     profile: Literal['legacy', 'finbert-adaptation-01'] = 'legacy'
@@ -45,8 +46,9 @@ class UpdateRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     idempotency_key: str = Field(min_length=1, max_length=128)
     basis: str = Field(min_length=1, max_length=2000)
-    kind: Literal['FINANCIAL', 'NEWS', 'MARKET']
+    kind: Literal['FINANCIAL', 'NEWS', 'MARKET', 'RESEARCH']
     refresh_sources: bool = False
+    retry_rejected: bool = False
 
 
 class ObservationUpdates:
@@ -67,11 +69,12 @@ class ObservationUpdates:
                     db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(job), row[0]))
 
     def settings(self, instrument):
-        if instrument != 'SSE:600362':
-            raise HTTPException(409, 'OBSERVATION_SOURCE_SCOPE_UNSUPPORTED')
         with self.ledger.connection() as db:
+            if instrument != 'SSE:600362' and not db.execute('SELECT 1 FROM market_watch WHERE instrument=?', (instrument,)).fetchone() and instrument not in {p['instrument'] for p in self.ledger.account(db=db)['positions']}:
+                raise HTTPException(409, 'OBSERVATION_NOT_IN_HOLDINGS_OR_WATCHLIST')
             row = db.execute('SELECT value FROM observation_update_settings WHERE instrument=?', (instrument,)).fetchone()
-        return {'financial_postclose': False, 'market_postclose': False, **json.loads(row[0])} if row else {'instrument': instrument, 'revision': 1, 'enabled': False,
+        return {'financial_postclose': False, 'market_postclose': False, 'research_postclose': False, **json.loads(row[0])} if row else {'instrument': instrument, 'revision': 1, 'enabled': False,
+            'research_postclose': False,
             'financial_postclose': False, 'market_postclose': False,
             'news_postclose': False, 'news_refresh': False, 'classify': False, 'profile': 'legacy',
             'basis': '新增观察默认暂停，需显式配置；不改变来源开关或外部通知渠道', 'changed_at': None}
@@ -94,12 +97,21 @@ class ObservationUpdates:
 
     def submit(self, instrument, command, scheduled=None):
         settings = self.settings(instrument)
+        if command.kind != 'RESEARCH' and instrument != 'SSE:600362':
+            raise HTTPException(409, 'OBSERVATION_SOURCE_SCOPE_UNSUPPORTED')
+        if command.kind == 'RESEARCH':
+            if instrument not in {m['instrument'] for m in self.reviews.market.listing()['members']}:
+                raise HTTPException(409, 'RESEARCH_NOT_IN_HOLDINGS_OR_WATCHLIST')
+            identity = self.research.resolve(instrument)
+            if identity['status'] != 'RESOLVED':
+                raise HTTPException(409, {'code': 'COMPANY_IDENTITY_'+identity['status'], 'candidates': identity.get('candidates', [])})
         hashed = digest(command.model_dump())
+        legacy_hash = digest(command.model_dump(exclude={'retry_rejected'})) if not command.retry_rejected else None
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
             row = db.execute('SELECT command_hash,value FROM observation_update_jobs WHERE instrument=? AND key=?', (instrument, command.idempotency_key)).fetchone()
             if row:
-                if row[0] != hashed:
+                if row[0] not in {hashed, legacy_hash}:
                     raise HTTPException(409, 'OBSERVATION_UPDATE_IDEMPOTENCY_CONFLICT')
                 return json.loads(row[1])
             if not settings['enabled']:
@@ -147,6 +159,7 @@ class ObservationUpdates:
             'forecast_backfill': False, 'external_notifications': 'IN_APP_ONLY_NO_CHANNEL_ACTIVATION'}
 
     def schedule(self, clock):
+        self.schedule_research(clock)
         local = clock.astimezone(SHANGHAI)
         settings = self.settings('SSE:600362')
         if not settings['enabled'] or (local.hour, local.minute) < (15, 5):
@@ -169,6 +182,25 @@ class ObservationUpdates:
             self.submit('SSE:600362', UpdateRequest(idempotency_key=key, kind=kind,
                 refresh_sources=settings['news_refresh'], basis='已登记15:05观察检查点；当前在线观察，不补造离线预测'),
                 scheduled=datetime.combine(day, datetime.min.time().replace(hour=15, minute=5), SHANGHAI).isoformat())
+
+    def schedule_research(self, clock):
+        local = clock.astimezone(SHANGHAI)
+        if (local.hour, local.minute) < (15, 5):
+            return
+        # Only today's online checkpoint; the existing worker owns this bounded queue.
+        for member in self.reviews.market.listing()['members']:
+            instrument = member['instrument']
+            settings = self.settings(instrument)
+            if not settings['enabled'] or not settings.get('research_postclose'):
+                continue
+            if self.reviews.market.rules.calendar(instrument.split(':')[0], local.date(), clock)['is_trading_day'] is not True:
+                continue
+            try:
+                self.submit(instrument, UpdateRequest(kind='RESEARCH', idempotency_key='research-postclose:'+local.date().isoformat(),
+                    refresh_sources=settings['news_refresh'], basis='当前在线15:05公司研究检查点；不补造离线采集'),
+                    scheduled=datetime.combine(local.date(), wall_time(15,5), SHANGHAI).isoformat())
+            except HTTPException as error:
+                self.health_write('RESEARCH:'+instrument, dict(error=error.detail, at=now(), retry_after=(clock+timedelta(minutes=5)).isoformat()))
 
     def health_write(self, key, value):
         with self.ledger.connection() as db:
@@ -197,12 +229,18 @@ class ObservationUpdates:
                 job = None
                 for identifier, raw in rows:
                     value = json.loads(raw)
-                    if not self.settings(value['instrument'])['enabled']:
+                    try:
+                        configured = self.settings(value['instrument'])
+                    except HTTPException:
+                        configured = {'enabled': False}
+                    if not configured['enabled']:
                         value.update(status='CANCELLED', finished_at=now(), error='OBSERVATION_UPDATES_PAUSED')
                         db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(value), identifier))
                         continue
-                    health = db.execute('SELECT value FROM observation_update_health WHERE id=?', (value['command']['kind'],)).fetchone()
-                    if health and datetime.fromisoformat(json.loads(health[0])['retry_after']) > clock:
+                    health_key = value['command']['kind']+':'+value['instrument'] if value['command']['kind']=='RESEARCH' else value['command']['kind']
+                    health = db.execute('SELECT value FROM observation_update_health WHERE id=?', (health_key,)).fetchone()
+                    explicit_archive_retry = value['command']['kind']=='RESEARCH' and not value['scheduled_checkpoint'] and not value['command']['refresh_sources']
+                    if health and not explicit_archive_retry and datetime.fromisoformat(json.loads(health[0])['retry_after']) > clock:
                         continue
                     job = value
                     job.update(status='RUNNING', started_at=now(), host_owner=self.reviews.owner)
@@ -216,16 +254,23 @@ class ObservationUpdates:
             self.health_write('MODULE', {'error': type(error).__name__, 'at': now(), 'retry_after': (clock+timedelta(minutes=5)).isoformat()})
 
     async def execute(self, job, stop):
-        task = asyncio.create_task(self.prepare(job))
+        health_key = job['command']['kind']+':'+job['instrument'] if job['command']['kind']=='RESEARCH' else job['command']['kind']
+        cancel = threading.Event()
+        task = asyncio.create_task(self.prepare(job, cancel) if job['command']['kind']=='RESEARCH' else self.prepare(job))
         started = time.monotonic()
         reason = None
         while not task.done():
             await asyncio.wait({task}, timeout=.1)
-            if stop.is_set() or self.get(job['job_id'])['status'] == 'CANCELLED' or not self.settings(job['instrument'])['enabled']:
+            try:
+                enabled = self.settings(job['instrument'])['enabled']
+            except HTTPException:
+                enabled = False
+            if stop.is_set() or self.get(job['job_id'])['status'] == 'CANCELLED' or not enabled:
                 reason = 'CANCELLED_OR_PAUSED'
-            elif time.monotonic()-started > TIMEOUT:
+            elif time.monotonic()-started > (150 if job['command']['kind']=='RESEARCH' else TIMEOUT):
                 reason = 'RESOURCE_DEADLINE_EXCEEDED'
             if reason:
+                cancel.set()
                 task.cancel()
                 break
         try:
@@ -254,7 +299,7 @@ class ObservationUpdates:
                 db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(job), job['job_id']))
                 db.commit()
             if prepared['errors']:
-                self.health_write(job['command']['kind'], {'error': prepared['errors'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
+                self.health_write(health_key, {'error': prepared['errors'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
         except (Exception, asyncio.CancelledError) as error:
             with self.ledger.connection() as db:
                 db.execute('BEGIN IMMEDIATE')
@@ -269,7 +314,7 @@ class ObservationUpdates:
                 db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(current), job['job_id']))
                 db.commit()
             if current['status'] == 'FAILED' or reason == 'RESOURCE_DEADLINE_EXCEEDED':
-                self.health_write(job['command']['kind'], {'error': current['error'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
+                self.health_write(health_key, {'error': current['error'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
 
     async def refresh(self, service, job, source_id, receipts, errors):
         if not job['command']['refresh_sources']:
@@ -301,10 +346,55 @@ class ObservationUpdates:
         except Exception as error:
             errors.append(source_id+':'+str(getattr(error, 'detail', type(error).__name__))[:200])
 
-    async def prepare(self, job):
+    async def prepare(self, job, cancel=None):
         instrument, kind = job['instrument'], job['command']['kind']
         receipts, errors, payload = [], [], {}
         evidence = []
+        if kind == 'RESEARCH':
+            identity = self.research.resolve(instrument)
+            if identity['status'] != 'RESOLVED':
+                raise HTTPException(409, 'COMPANY_IDENTITY_'+identity['status'])
+            company_id = identity['company']['company_id']
+            if job['command']['refresh_sources']:
+                if instrument == 'SSE:600362':
+                    for service in (self.financial, self.supplement, self.news):
+                        await self.refresh(service, job, 'akshare-news-em' if service is self.news else 'akshare-financial-em', receipts, errors)
+                else:
+                    errors.append('PUBLIC_SOURCE_SCOPE_UNSUPPORTED_FOR_SELECTED_COMPANY')
+            payload = await asyncio.to_thread(self.research.refresh_daily, company_id, job['job_id'], None, job['command'].get('retry_rejected', False))
+            payload = dict(payload)
+            if payload['check']['status'] != 'SUCCESS':
+                errors.extend('ARCHIVE:'+e['scope']+':'+e['code'] for e in payload['check']['errors'])
+            if payload['archive_failures']['unresolved_record_count']:
+                errors.append('ARCHIVE_RECORD_GAPS_REMAIN:'+str(payload['archive_failures']['unresolved_record_count']))
+            if payload['financial_adaptation']['unresolved_material_count']:
+                errors.append('FINANCIAL_BASIS_GAPS_REMAIN:'+str(payload['financial_adaptation']['unresolved_material_count']))
+            if payload['financial_adaptation']['remaining_material_count']:
+                errors.append('FINANCIAL_ADAPTATION_BACKLOG:'+str(payload['financial_adaptation']['remaining_material_count']))
+            if payload.get('gap'):
+                errors.append('RESEARCH_GAP:'+payload['gap'])
+            if payload['analysis_input_id']:
+                from roll.research.company.model_runtime import AnalysisRuntime
+                run = await asyncio.to_thread(AnalysisRuntime(self.research).execute, payload['analysis_input_id'], cancel, 90)
+                payload.update(analysis_run_id=run['run_id'], model_executed=run.get('model_executed', False))
+                if run['status'] in ('COMPLETE','PARTIAL') and run.get('snapshot_id'):
+                    accepted = self.research.analysis_snapshot(run['snapshot_id'])
+                    if accepted['company_id'] != company_id or accepted['input_id'] != payload['analysis_input_id']:
+                        raise HTTPException(409, 'OPERATING_ANALYSIS_SNAPSHOT_BINDING_INVALID')
+                    payload['snapshot_id'] = accepted['snapshot_id']
+                elif run['status'] == 'COMPLETE':
+                    errors.append('OPERATING_ANALYSIS:SNAPSHOT_MISSING')
+                if run['status'] != 'COMPLETE':
+                    errors.append('OPERATING_ANALYSIS:'+run['status'])
+            payload['network_check_performed'] = any(r.get('network_calls', 0)>0 for r in receipts)
+            payload['network_receipts'] = receipts
+            receipts.append(dict(source='saved-archive-catalog', check_id=payload['check']['check_id'], status=payload['check']['status'], refresh='ARCHIVES_ONLY_NOT_PUBLIC_CHECK'))
+            materials = self.research.materials(company_id, limit=200)
+            input_value = ['RESEARCH', company_id, payload['snapshot_id'], materials['total'], sorted(m['material_id'] for m in materials['materials'])]
+            return dict(instrument=instrument, kind=kind, version=VERSION, known_by=now(), payload=payload,
+                input_sha256=digest(input_value), semantic_sha256=digest(input_value), meaningful=bool(payload['snapshot_id']),
+                receipts=receipts, errors=errors, evidence_kind='METHOD_CASE' if any(m['source_kind']=='METHOD_CASE' for m in materials['materials']) else 'SOURCE_PROVENANCE_UNVERIFIED',
+                forecast_archive_created=False, system_usable=False, capability='RESEARCH_LIMITED')
         if kind == 'MARKET':
             # Existing bounded source adapters; no model input admission required.
             if job['command']['refresh_sources']:

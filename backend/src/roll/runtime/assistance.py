@@ -19,6 +19,7 @@ from roll.research.exploratory import backtest
 class AssistanceCommand(BaseModel):
     model_config = ConfigDict(extra='forbid')
     end_date: str | None = None
+    instrument: str = Field(default='SSE:600362', pattern=r'^(SSE|SZSE):\d{6}$')
 
 
 class ReflectionCommand(BaseModel):
@@ -29,8 +30,9 @@ class ReflectionCommand(BaseModel):
 class Assistance:
     worker = None
 
-    def __init__(self, ledger):
+    def __init__(self, ledger, market=None, research=None):
         self.ledger = ledger
+        self.market, self.research = market, research
         self.lock = threading.Lock()
         self.active = {}
         with ledger.connection() as db:
@@ -49,10 +51,11 @@ class Assistance:
         with self.ledger.connection() as db:
             db.execute('INSERT OR REPLACE INTO assistance_runs VALUES(?,?)', (run['run_id'], encode(run)))
 
-    def history(self):
+    def history(self, instrument=None):
         with self.ledger.connection() as db:
-            result = [json.loads(r[0]) for r in db.execute('SELECT value FROM assistance_runs ORDER BY rowid DESC LIMIT 30')]
-        return [{k: r.get(k) for k in ['run_id', 'started_at', 'finished_at', 'status', 'phase', 'as_of', 'error']} for r in result]
+            result = [json.loads(r[0]) for r in db.execute("SELECT value FROM assistance_runs WHERE ? IS NULL OR COALESCE(json_extract(value,'$.instrument'),'SSE:600362')=? ORDER BY rowid DESC LIMIT 30", (instrument, instrument))]
+        return [{**{k: r.get(k) for k in ['run_id', 'started_at', 'finished_at', 'status', 'phase', 'as_of', 'error', 'company_id', 'company_name']},
+                 'instrument': r.get('instrument', 'SSE:600362'), 'legacy_scope': 'instrument' not in r} for r in result]
 
     def get(self, identifier):
         with self.ledger.connection() as db:
@@ -71,6 +74,17 @@ class Assistance:
         return result
 
     def start(self, command):
+        research_view, company_id, company_name = None, None, command.instrument
+        if self.market:
+            if command.instrument not in {m['instrument'] for m in self.market.listing()['members']}:
+                raise HTTPException(409, 'ASSISTANCE_INSTRUMENT_NOT_IN_HOLDINGS_OR_WATCHLIST')
+        if self.research:
+            identity = self.research.resolve(command.instrument)
+            if identity['status'] == 'AMBIGUOUS':
+                raise HTTPException(409, {'code': 'COMPANY_IDENTITY_AMBIGUOUS', 'candidates': identity['candidates']})
+            if identity['status'] == 'RESOLVED':
+                company_id, company_name = identity['company']['company_id'], identity['company']['legal_name']
+                research_view = self.research.daily_view(company_id)
         local_now = datetime.now(ZoneInfo('Asia/Shanghai'))
         today = local_now.date()
         latest = today if local_now.hour >= 18 else today-timedelta(days=1)
@@ -91,6 +105,8 @@ class Assistance:
                     old.update(status='INTERRUPTED', finished_at=now())
                     db.execute('UPDATE assistance_runs SET value=? WHERE id=?', (encode(old), old['run_id']))
             run = {'run_id': str(uuid4()), 'kind': 'RESEARCH_ASSISTANCE', 'task_kind': 'RESEARCH_ASSESSMENT',
+                'instrument': command.instrument, 'stock_symbol': ('sh.' if command.instrument.startswith('SSE:') else 'sz.')+command.instrument.split(':')[1],
+                'company_id': company_id, 'company_name': company_name, 'research': research_view,
                 'status': 'RUNNING', 'phase': 'SOURCES', 'started_at': now(), 'as_of': end.isoformat(),
                 'start_date': (end-timedelta(days=120)).isoformat(), 'sources': [], 'gaps': [], 'archives': [], 'tools': [],
                 'host_owner': {'pid': os.getpid(), 'creation_ticks': process_creation(os.getpid())},
@@ -109,7 +125,7 @@ class Assistance:
         return self.get(run['run_id'])
 
     def source(self, run, symbol, cancel):
-        stock = symbol == 'sh.600362'
+        stock = symbol == run.get('stock_symbol', 'sh.600362')
         fields = FIELDS if stock else 'date,code,open,high,low,close,preclose,volume,amount,pctChg'
         wire, result = acquire({'auth_mode': 'PUBLIC', 'group': 'DAILY', 'symbol': symbol, 'fields': fields,
             'start_date': run['start_date'], 'end_date': run['as_of']}, time.monotonic()+30, cancel, 2*1024*1024, 5)
@@ -120,10 +136,16 @@ class Assistance:
         if days != sorted(set(days)):
             raise ValueError('SOURCE_DUPLICATE_OR_UNORDERED_DAYS')
         digest = hashlib.sha256(wire).hexdigest()
-        directory = self.ledger.path.parent/'assistance-raw'
-        directory.mkdir(exist_ok=True)
-        (directory/(digest+'.bin')).write_bytes(wire)
+        archive = None
+        if self.research:
+            archive = self.research.evidence.archive(wire, 'ASSISTANCE_DAILY_ORIGINAL',
+                received_at=result['received_at'], source_id=symbol, provider='BaoStock PUBLIC')
+        else:
+            directory = self.ledger.path.parent/'assistance-raw'
+            directory.mkdir(exist_ok=True)
+            (directory/(digest+'.bin')).write_bytes(wire)
         return {'source_id': symbol, 'provider': 'BaoStock PUBLIC', 'received_at': result['received_at'],
+                'raw_archive': archive,
                 'sha256': digest, 'sdk_version': result['sdk_distribution_version'], 'rows': mapped,
                 'first_date': days[0], 'last_date': days[-1], 'row_count': len(mapped),
                 'adjustment': 'RAW', 'price_unit': 'CNY' if stock else 'INDEX_POINT', 'volume_unit': 'SHARE',
@@ -131,7 +153,8 @@ class Assistance:
 
     def execute(self, run, cancel):
         try:
-            for symbol in ['sh.600362', 'sh.000001', 'sh.000300', 'sz.399006']:
+            stock_symbol = run.get('stock_symbol', 'sh.600362')
+            for symbol in [stock_symbol, 'sh.000001', 'sh.000300', 'sz.399006']:
                 if cancel.is_set():
                     raise ValueError('CANCELLED')
                 try:
@@ -139,7 +162,7 @@ class Assistance:
                 except Exception:
                     run['gaps'].append({'source_id': symbol, 'code': 'SOURCE_UNAVAILABLE'})
                 self.save(run)
-            stock = next((s for s in run['sources'] if s['source_id'] == 'sh.600362'), None)
+            stock = next((s for s in run['sources'] if s['source_id'] == stock_symbol), None)
             if not stock:
                 raise ValueError('CRITICAL_STOCK_PRICE_UNAVAILABLE')
             market = next((s for s in run['sources'] if s['source_id'] == 'sh.000001'), None)
@@ -152,7 +175,12 @@ class Assistance:
             else:
                 run['gaps'].append({'code': 'PRICE_CALENDAR_COVERAGE_UNVERIFIED_BACKTEST_REFUSED'})
             valid_until = (datetime.fromisoformat(stock['last_date'])+timedelta(days=1, hours=15)).isoformat()+'+08:00'
-            material = {'as_of': stock['last_date'], 'valid_until': valid_until, 'account_context': 'UNKNOWN',
+            material = {'as_of': now(), 'request_started_at': run.get('started_at'), 'market_data_as_of': stock['last_date'],
+                'price_requested_through': run['as_of'], 'historical_pit': False,
+                'time_scope': '当前实际取得材料与所请求历史价格覆盖并列；不是当时可得证据重建',
+                'valid_until': valid_until, 'account_context': 'UNKNOWN',
+                'instrument': run.get('instrument', 'SSE:600362'), 'company_name': run.get('company_name'),
+                'company_research': run.get('research'), 'company_research_source_id': 'shared-company-snapshot',
                 'sources': [{**s, 'rows': s['rows'][-25:]} for s in run['sources']], 'gaps': run['gaps'],
                 'backtest': {'source_id': 'backtest', **{k: v for k, v in run.get('backtest', {}).items() if k not in {'strategy', 'buy_hold'}}}}
             material['display_scope'] = '模型仅接收每源最后25行及回测摘要；完整日线、成交和净值另存于同一记录，不代表模型复核了全部历史。'

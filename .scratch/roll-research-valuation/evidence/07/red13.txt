@@ -1,0 +1,50 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_selected_watch_company_keeps_assistance_history_prices_and_shared_core_isolated _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red13/test_selected_watch_company_ke0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002743EDC6190>
+
+    def test_selected_watch_company_keeps_assistance_history_prices_and_shared_core_isolated(tmp_path, monkeypatch):
+        import time
+        from roll.runtime.assistance import Assistance, AssistanceCommand
+        from roll.market.directory import WatchCommand
+        from test_assistance import prices
+        research = service(tmp_path)
+        issuer = research.register(company())
+        first = published(research, issuer)
+        other = research.register(company('�ڶ��ҹ�˾', ['�ڶ���˾'], [dict(exchange='SZSE', code='000848', share_class='A', currency='CNY')]))
+        second = published(research, other)
+        market = research.evidence.market
+        market.watch(WatchCommand(instrument='SZSE:000848', operation='ADD', expected_list_version=market.listing()['version']))
+        def acquire(request, *args):
+            from datetime import date, timedelta
+            rows = prices()
+            for index, row in enumerate(rows):
+                row['code'] = request['symbol']
+                row['date'] = (date.fromisoformat(request['end_date'])-timedelta(days=44-index)).isoformat()
+            assert 'adjustflag' in request['fields'] if request['symbol'] == 'sz.000848' else True
+            return b'synthetic daily rows', dict(received_at='2026-02-15T00:00:00+00:00', sdk_distribution_version='fixture', fixture_rows=rows)
+        monkeypatch.setattr('roll.runtime.assistance.acquire', acquire)
+        monkeypatch.setattr('roll.runtime.assistance.rows', lambda result: result['fixture_rows'])
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE', raising=False)
+        assistance = Assistance(research.ledger, market=market, research=research)
+        run = assistance.start(AssistanceCommand(instrument='SZSE:000848'))
+        for _ in range(100):
+            saved = assistance.get(run['run_id'])
+            if saved['status'] != 'RUNNING':
+                break
+            time.sleep(.02)
+        assert saved['company_id'] == other['company_id']
+        assert saved['research']['snapshot']['snapshot_id'] == second['snapshot_id']
+        assert saved['material']['company_research']['snapshot']['snapshot_id'] != first['snapshot_id']
+        assert saved['sources'][0]['source_id'] == 'sz.000848'
+        assert saved['sources'][0]['price_unit'] == 'CNY'
+>       assert saved['sources'][0]['raw_archive']['sha256'] == saved['sources'][0]['sha256']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'raw_archive'
+
+backend\tests\company_research\test_daily_research.py:78: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_selected_watch_company_keeps_assistance_history_prices_and_shared_core_isolated
+1 failed, 7 deselected in 7.30s

@@ -1,0 +1,94 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_selected_watch_company_keeps_assistance_history_prices_and_shared_core_isolated _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red05/test_selected_watch_company_ke0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BF20275E00>
+
+    def test_selected_watch_company_keeps_assistance_history_prices_and_shared_core_isolated(tmp_path, monkeypatch):
+        import time
+        from roll.runtime.assistance import Assistance, AssistanceCommand
+        from roll.market.directory import WatchCommand
+        from test_assistance import prices
+        research = service(tmp_path)
+        issuer = research.register(company())
+        first = published(research, issuer)
+        other = research.register(company('�ڶ��ҹ�˾', ['�ڶ���˾'], [dict(exchange='SZSE', code='000848', share_class='A', currency='CNY')]))
+        second = published(research, other)
+        market = research.evidence.market
+        market.watch(WatchCommand(instrument='SZSE:000848', operation='ADD', expected_list_version=market.listing()['version']))
+        def acquire(request, *args):
+            from datetime import date, timedelta
+            rows = prices()
+            for index, row in enumerate(rows):
+                row['code'] = request['symbol']
+                row['date'] = (date.fromisoformat(request['end_date'])-timedelta(days=44-index)).isoformat()
+            assert 'adjustflag' in request['fields'] if request['symbol'] == 'sz.000848' else True
+            return b'synthetic daily rows', dict(received_at='2026-02-15T00:00:00+00:00', sdk_distribution_version='fixture', fixture_rows=rows)
+        monkeypatch.setattr('roll.runtime.assistance.acquire', acquire)
+        monkeypatch.setattr('roll.runtime.assistance.rows', lambda result: result['fixture_rows'])
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE', raising=False)
+        assistance = Assistance(research.ledger, market=market, research=research)
+>       run = assistance.start(AssistanceCommand(instrument='SZSE:000848'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_daily_research.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\runtime\assistance.py:87: in start
+    research_view = self.research.daily_view(company_id)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\service.py:518: in daily_view
+    return daily_view(self, company_id, snapshot_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+research = <roll.research.company.service.CompanyResearch object at 0x000001BF204957F0>
+company_id = '1786e2a6-9044-48e7-b0d3-06860c9dc3b0', snapshot_id = None
+
+    def daily_view(research, company_id, snapshot_id=None):
+        company = research.company(company_id)
+        if snapshot_id:
+            snapshot = research.analysis_snapshot(snapshot_id)
+            if snapshot['company_id'] != company_id:
+                fail('CROSS_COMPANY_REFERENCE', 'Daily view requires the selected company snapshot')
+        else:
+            with research.ledger.connection() as db:
+                snapshot = research.analysis.latest(company_id, db)
+        missing = dict(status='UNAVAILABLE', scenarios=[], reason='���޹̶���ͨ�������Լ��Ĺ�ֵ�����ྭӪ�о�����չʾ')
+        unavailable = dict(status='NOT_COMPARABLE', reason='����������ȷ�Ĺ������ջ�ɱȱ���')
+        changes = {k: dict(unavailable) for k in ['OPERATING_EVIDENCE', 'PRICE', 'VALUATION_ASSUMPTION_OR_METHOD']}
+        if not snapshot:
+            return dict(company=company, snapshot=None, attention_reasons=[], catalysts=[], risks=[],
+                        valuation=missing, changes=changes, information_state=None, change_set_id=None,
+                        gap='���޹����������գ���ȡ�ÿ�׷�����ϲ���ɾ�Ӫ����')
+        reviews = snapshot.get('economic_review_ids', [])
+        presentation = research.valuation_presentation(reviews[0], 'CURRENT_PRICING') if len(reviews) == 1 else missing
+        change = None
+        if snapshot['parent_snapshot_id']:
+            change = research.compare_snapshots(ChangeSetCommand(old_snapshot_id=snapshot['parent_snapshot_id'],
+                new_snapshot_id=snapshot['snapshot_id'], idempotency_key='daily:'+snapshot['snapshot_id']))
+            changes = change['changes']
+        core = snapshot['core']
+        if not presentation.get('usable_range'):
+            # Raw diagnostic arithmetic remains at the explicit change-set endpoint.
+            # It is never a quick current valuation or part of the model's price packet.
+            changes = {**changes, **{k: {a: b for a, b in changes[k].items() if a in {'status', 'reason', 'changed', 'old_snapshot_id', 'new_snapshot_id'}}
+                for k in ['PRICE', 'VALUATION_ASSUMPTION_OR_METHOD']}}
+        return dict(company=company, snapshot=snapshot, attention_reasons=core['attention_reasons'],
+                    catalysts=[h['next_validation_event'] for h in core['hypotheses']],
+                    risks=[*core['counterevidence'], *[dict(text=c, fact_version_ids=h['counter_fact_version_ids'])
+                        for h in core['hypotheses'] for c in h['invalidation_conditions']]],
+                    valuation=presentation, changes=changes, change_set_id=change['change_set_id'] if change else None,
+                    information_state=research.changes.information(snapshot, now(), 604800),
+                    gap=core['valuation_unavailable_reason'],
+                    evidence=[research.material(i, company_id) for i in snapshot['material_ids']],
+                    conflicts=research.analysis_input(snapshot['input_id'])['payload']['conflicts'],
+>                   latest_checks=research.checks(company_id, limit=20)['checks'],
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    conflict_note='��Ӫ���������۸����۵�ֱ������������޻����ݲ�һ��ʱ���н��ͣ�δ��������֤���ϳ�Ϊʤ��')
+E       KeyError: 'checks'
+
+backend\src\roll\research\company\daily.py:103: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_selected_watch_company_keeps_assistance_history_prices_and_shared_core_isolated
+1 failed, 3 deselected in 7.16s

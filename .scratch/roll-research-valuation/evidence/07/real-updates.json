@@ -1,0 +1,1400 @@
+{
+  "data_directory": "D:/dsh-proj/Roll/.scratch/rv07-real01",
+  "jcc_archive_first": {
+    "cache_reused": false,
+    "command": {
+      "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+      "idempotency_key": "rv07-actual-jcc-archive1",
+      "kind": "RESEARCH",
+      "refresh_sources": false,
+      "retry_rejected": false
+    },
+    "created_at": "2026-10-26T20:00:25.631131+00:00",
+    "error": null,
+    "errors": [],
+    "external_notification_enabled": false,
+    "finished_at": "2026-10-26T20:00:25.845550+00:00",
+    "forecast_archive_created": false,
+    "host_owner": {
+      "creation_ticks": 134375183762933081,
+      "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+      "pid": 4376
+    },
+    "instrument": "SSE:600362",
+    "job_id": "fd40eed6-c756-4b03-bda4-258fc344f43c",
+    "namespace": "OBSERVATION_ONLY",
+    "observation_id": "bc70ea62-3af9-42fd-91ee-4a962a89f1a2",
+    "result": [
+      {
+        "check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+        "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+        "source": "saved-archive-catalog",
+        "status": "SUCCESS"
+      }
+    ],
+    "scheduled_checkpoint": null,
+    "settings": {
+      "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+      "changed_at": "2026-10-26T20:00:25.340387+00:00",
+      "classify": false,
+      "enabled": true,
+      "financial_postclose": false,
+      "instrument": "SSE:600362",
+      "market_postclose": false,
+      "news_postclose": false,
+      "news_refresh": false,
+      "profile": "legacy",
+      "research_postclose": false,
+      "revision": 2
+    },
+    "started_at": "2026-10-26T20:00:25.744297+00:00",
+    "status": "COMPLETE"
+  },
+  "jcc_archive_repeated": {
+    "cache_reused": true,
+    "command": {
+      "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+      "idempotency_key": "rv07-actual-jcc-archive2",
+      "kind": "RESEARCH",
+      "refresh_sources": false,
+      "retry_rejected": false
+    },
+    "created_at": "2026-10-26T20:00:26.235662+00:00",
+    "error": null,
+    "errors": [],
+    "external_notification_enabled": false,
+    "finished_at": "2026-10-26T20:00:26.407749+00:00",
+    "forecast_archive_created": false,
+    "host_owner": {
+      "creation_ticks": 134375183762933081,
+      "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+      "pid": 4376
+    },
+    "instrument": "SSE:600362",
+    "job_id": "7a75e25d-bb66-4754-9c01-f314ea018e8c",
+    "namespace": "OBSERVATION_ONLY",
+    "observation_id": "bc70ea62-3af9-42fd-91ee-4a962a89f1a2",
+    "result": [
+      {
+        "check_id": "b3cd2acd-4e36-488f-ac38-91b1b7b91a68",
+        "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+        "source": "saved-archive-catalog",
+        "status": "SUCCESS"
+      }
+    ],
+    "scheduled_checkpoint": null,
+    "settings": {
+      "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+      "changed_at": "2026-10-26T20:00:25.340387+00:00",
+      "classify": false,
+      "enabled": true,
+      "financial_postclose": false,
+      "instrument": "SSE:600362",
+      "market_postclose": false,
+      "news_postclose": false,
+      "news_refresh": false,
+      "profile": "legacy",
+      "research_postclose": false,
+      "revision": 2
+    },
+    "started_at": "2026-10-26T20:00:26.312900+00:00",
+    "status": "COMPLETE"
+  },
+  "lulu_scope_failure": {
+    "cache_reused": false,
+    "command": {
+      "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+      "idempotency_key": "rv07-actual-lulu-source-scope1",
+      "kind": "RESEARCH",
+      "refresh_sources": true,
+      "retry_rejected": false
+    },
+    "created_at": "2026-10-26T20:00:26.778877+00:00",
+    "error": null,
+    "errors": [
+      "PUBLIC_SOURCE_SCOPE_UNSUPPORTED_FOR_SELECTED_COMPANY"
+    ],
+    "external_notification_enabled": false,
+    "finished_at": "2026-10-26T20:00:26.958004+00:00",
+    "forecast_archive_created": false,
+    "host_owner": {
+      "creation_ticks": 134375183762933081,
+      "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+      "pid": 4376
+    },
+    "instrument": "SZSE:000848",
+    "job_id": "40a8dbac-6415-424e-b8b0-013ed2ad9f26",
+    "namespace": "OBSERVATION_ONLY",
+    "observation_id": "518ca3bf-b790-4ec4-96f0-48e7c4fa036d",
+    "result": [
+      {
+        "check_id": "c26fbe8d-0999-4ca7-8dfd-ac71f541b454",
+        "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+        "source": "saved-archive-catalog",
+        "status": "SUCCESS"
+      }
+    ],
+    "scheduled_checkpoint": null,
+    "settings": {
+      "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+      "changed_at": "2026-10-26T20:00:25.508674+00:00",
+      "classify": false,
+      "enabled": true,
+      "financial_postclose": false,
+      "instrument": "SZSE:000848",
+      "market_postclose": false,
+      "news_postclose": false,
+      "news_refresh": false,
+      "profile": "legacy",
+      "research_postclose": false,
+      "revision": 2
+    },
+    "started_at": "2026-10-26T20:00:26.862806+00:00",
+    "status": "PARTIAL"
+  },
+  "lulu_archive_only_retry": {
+    "cache_reused": true,
+    "command": {
+      "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+      "idempotency_key": "rv07-actual-lulu-archive-retry1",
+      "kind": "RESEARCH",
+      "refresh_sources": false,
+      "retry_rejected": false
+    },
+    "created_at": "2026-10-26T20:00:27.457122+00:00",
+    "error": null,
+    "errors": [],
+    "external_notification_enabled": false,
+    "finished_at": "2026-10-26T20:00:27.634722+00:00",
+    "forecast_archive_created": false,
+    "host_owner": {
+      "creation_ticks": 134375183762933081,
+      "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+      "pid": 4376
+    },
+    "instrument": "SZSE:000848",
+    "job_id": "00897e13-3013-4ba2-ba7d-68861eb1fc52",
+    "namespace": "OBSERVATION_ONLY",
+    "observation_id": "518ca3bf-b790-4ec4-96f0-48e7c4fa036d",
+    "result": [
+      {
+        "check_id": "01ebf4ff-a624-4b72-8200-a47e27095cc3",
+        "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+        "source": "saved-archive-catalog",
+        "status": "SUCCESS"
+      }
+    ],
+    "scheduled_checkpoint": null,
+    "settings": {
+      "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+      "changed_at": "2026-10-26T20:00:25.508674+00:00",
+      "classify": false,
+      "enabled": true,
+      "financial_postclose": false,
+      "instrument": "SZSE:000848",
+      "market_postclose": false,
+      "news_postclose": false,
+      "news_refresh": false,
+      "profile": "legacy",
+      "research_postclose": false,
+      "revision": 2
+    },
+    "started_at": "2026-10-26T20:00:27.556198+00:00",
+    "status": "COMPLETE"
+  },
+  "current_daily_view": {
+    "company": {
+      "accounting_standard": "CAS",
+      "aliases": [
+        "江西铜业"
+      ],
+      "change_reason": "Initial registration",
+      "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+      "content_sha256": "5efcd9aeef0d7290f30f91c12a94eb1a9a523454e90941d6c1825debae4c4fe2",
+      "created_at": "2026-10-26T16:42:15.987677+00:00",
+      "identity_basis": "Issuer original identity PDF page 2; original SHA verified; PRC GAAP HKEX repost",
+      "industry": "NON_FINANCIAL",
+      "jurisdiction": "CN",
+      "legal_name": "江西铜业股份有限公司",
+      "listings": [
+        {
+          "code": "600362",
+          "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+          "content_sha256": "a5228e81a52fdfa27dd0eb8ec4d766a5b14f9b58a5376b2a5cd4ad3f949fd2d4",
+          "created_at": "2026-10-26T16:42:15.987448+00:00",
+          "currency": "CNY",
+          "exchange": "SSE",
+          "identity_basis": "Issuer original identity PDF page 2; original SHA verified; PRC GAAP HKEX repost",
+          "listing_id": "SSE:600362",
+          "market_identity_reference": null,
+          "schema_version": 1,
+          "share_class": "A",
+          "valid_from": null,
+          "version_id": "975d9ded-593e-43a1-a069-308277ace77f"
+        },
+        {
+          "code": "00358",
+          "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+          "content_sha256": "3da69f2b478ff4f0b046e3616c12a9c94b2d6bb4b9c944df6a5fbe354279c1f2",
+          "created_at": "2026-10-26T16:42:15.987610+00:00",
+          "currency": "HKD",
+          "exchange": "HKEX",
+          "identity_basis": "Issuer original identity PDF page 2; original SHA verified; PRC GAAP HKEX repost",
+          "listing_id": "HKEX:00358",
+          "market_identity_reference": null,
+          "schema_version": 1,
+          "share_class": "H",
+          "valid_from": null,
+          "version_id": "0797bf18-5b0d-4d93-9ae7-9e28387da229"
+        }
+      ],
+      "parent_version_id": null,
+      "revision": 1,
+      "schema_version": 1,
+      "version_id": "81edadbe-3173-4e32-b45f-0dd506fba34f",
+      "year_end": "12-31"
+    },
+    "snapshot": {
+      "as_of": "2026-10-26T16:47:13.200480+00:00",
+      "candidate_archive": {
+        "bytes": 7268,
+        "kind": "COMPANY_ANALYSIS_CANDIDATE",
+        "path": "raw/eefe367afb0b87db134b6ac8e4c75154e3091cdfd8fac990257cf9a464910349.raw",
+        "sha256": "eefe367afb0b87db134b6ac8e4c75154e3091cdfd8fac990257cf9a464910349"
+      },
+      "candidate_id": "b01dd47d-705b-5431-b160-efeeba23b56a",
+      "candidate_sha256": "eefe367afb0b87db134b6ac8e4c75154e3091cdfd8fac990257cf9a464910349",
+      "check_ids": [],
+      "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+      "content_sha256": "cb425e14ab8963f3fe4ba42b533be9af4b5ddcb117ce98e954cd640aae194ceb",
+      "core": {
+        "attention_reasons": [
+          {
+            "fact_version_ids": [
+              "5b053f8b-98c5-4029-a78b-8b05d46f93ec"
+            ],
+            "gap_reason": "缺少实际加工费及成本数据，无法判断当前盈利方向。",
+            "judgment_status": "EVIDENCE_BOUND",
+            "text": "外购铜精矿采购价涉及金属价格与加工费，需区分铜价变化和冶炼加工收益。"
+          },
+          {
+            "fact_version_ids": [
+              "e4fd4896-a981-43fe-bb4b-31842b358f0e",
+              "84cae999-d6a3-4817-886e-af994411139f"
+            ],
+            "gap_reason": "未提供净外汇敞口、库存周转和资金占用金额。",
+            "judgment_status": "EVIDENCE_BOUND",
+            "text": "美元结算及价格上涨带来的资金占用风险值得跟踪，但风险披露不代表损失已经发生。"
+          }
+        ],
+        "business_structure": [
+          {
+            "fact_version_ids": [
+              "f9fce16b-9e31-42be-87e7-587ddd1d773b"
+            ],
+            "gap_reason": "没有各业务收入、利润及资产分拆。",
+            "judgment_status": "EVIDENCE_BOUND",
+            "text": "江西铜业股份有限公司集团业务涵盖铜和黄金采选、冶炼与加工，稀散金属提取加工、硫化工及贸易；产业链描述不是财务分部表。"
+          },
+          {
+            "fact_version_ids": [
+              "1721d4d2-16ef-46d3-b088-ee7a66739491",
+              "0a782094-dedf-4186-a55b-eba5973191b5",
+              "4093d9ff-4554-4449-a0d5-6eb3a57eb034"
+            ],
+            "gap_reason": "缺少口径调节表，不能直接串联收入与产销量。",
+            "judgment_status": "EVIDENCE_BOUND",
+            "text": "2025年自产铜精矿含铜统计含第一量子当年权益产量；主营业务分类统计含贸易，产销量分析表不含贸易。权益产量不能直接视为并表矿山产量。"
+          },
+          {
+            "fact_version_ids": [
+              "5bc42bd2-11b4-4a2c-9f3d-cc80899b0947"
+            ],
+            "gap_reason": "未披露贸易、金融单位独立盈利及风险敞口。",
+            "judgment_status": "EVIDENCE_BOUND",
+            "text": "管理层将贸易、金融单位定位为服务主业和资源调配的协同环节，其贡献尚无法量化。"
+          }
+        ],
+        "counterevidence": [
+          {
+            "fact_version_ids": [
+              "84cae999-d6a3-4817-886e-af994411139f"
+            ],
+            "gap_reason": "仅有管理措施，无法判断实施效果。",
+            "judgment_status": "EVIDENCE_BOUND",
+            "text": "公司披露采购销售安排及库存管理措施，可能缓释资金占用压力；不能据此认定风险已消除。"
+          },
+          {
+            "fact_version_ids": [
+              "15b7cd87-e435-49d7-8995-c7faa12aaa55"
+            ],
+            "gap_reason": "未提供计划执行结果。",
+            "judgment_status": "EVIDENCE_BOUND",
+            "text": "公司明确2026年经营目标不是生产预测，且可能调整，不能用计划证明增长或假设成立。"
+          }
+        ],
+        "hypotheses": [
+          {
+            "business": "外购铜精矿冶炼",
+            "change_reason": "沿用既有假设；无新增事实，明确条件不变时的传导检验及证据局限。",
+            "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+            "content_sha256": "2e39e03ea8e0dbcb196816a8262ad4cccb83a3f8408bb3f9f4b19e6e2ae7e440",
+            "counter_fact_version_ids": [],
+            "created_at": "2026-10-26T16:48:08.803851+00:00",
+            "gaps": [
+              "缺少实际TC/RC、采购结构、成本及副产品收益，无法判断当前利润方向。",
+              "无直接反证，采购机制本身不能证明利润传导已经发生。"
+            ],
+            "horizon": "下一份提供采购及冶炼经营明细的报告期。",
+            "hypothesis_id": "d3598ebf-180b-5ada-8daf-7f282f8afb32",
+            "invalidation_conditions": [
+              "可比条件下，加工费下降被成本或副产品收益持续抵消，未压缩单位利润。",
+              "后续合同显示该采购机制已不适用。"
+            ],
+            "judgment_status": "CONDITIONAL",
+            "key": "jcc_smelting_processing_fee_transmission",
+            "next_validation_event": {
+              "date": null,
+              "date_fact_version_ids": [],
+              "date_unknown_reason": "包内没有具体披露日期。",
+              "description": "后续定期报告或专项披露提供实际加工费与冶炼盈利桥接时检验。"
+            },
+            "observation_metrics": [
+              "外购铜精矿实际TC/RC：分别统计进口和国内采购，保留合同期间、原币及计费单位。",
+              "外购原料冶炼单位毛利与成本、副产品收益桥接：同期间同金属量口径，剔除贸易及自产矿贡献。"
+            ],
+            "overlapping_evidence_roles": [],
+            "parent_version_id": "8fa8f322-e56f-4954-8e9b-e71af6db5a8e",
+            "previous_version_id": "8fa8f322-e56f-4954-8e9b-e71af6db5a8e",
+            "revision": 2,
+            "schema_version": 1,
+            "statement": "其他条件可比时，外购铜精矿加工费下降可能压缩冶炼单位利润；铜价上涨本身不足以证明该业务获益。",
+            "support_fact_version_ids": [
+              "5b053f8b-98c5-4029-a78b-8b05d46f93ec"
+            ],
+            "version_id": "c005ce99-46f9-40a8-a977-b8257021d5ec"
+          },
+          {
+            "business": "进口铜矿原料与海外投资",
+            "change_reason": "沿用既有假设；无新增事实，保留总额美元结算与净敞口的区别。",
+            "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+            "content_sha256": "6bbc7dbe666a716f830e44a2926961a8c1bb119bb421432047fbb279491bb133",
+            "counter_fact_version_ids": [],
+            "created_at": "2026-10-26T16:48:08.804043+00:00",
+            "gaps": [
+              "缺少美元资产负债、收支匹配、套保与汇兑损益数据。",
+              "无直接反证；美元结算不能确定净敞口或实际损益方向。"
+            ],
+            "horizon": "下一份提供外汇风险及损益明细的报告期。",
+            "hypothesis_id": "8bb28107-e8ad-5c37-ac88-c5259854878a",
+            "invalidation_conditions": [
+              "自然对冲或套保消除相关净敞口，汇率波动未形成可识别净损益影响。"
+            ],
+            "judgment_status": "CONDITIONAL",
+            "key": "jcc_usd_net_exposure",
+            "next_validation_event": {
+              "date": null,
+              "date_fact_version_ids": [],
+              "date_unknown_reason": "包内没有外汇风险更新的具体日期。",
+              "description": "后续财务附注披露币种敞口、套保与汇兑损益时检验。"
+            },
+            "observation_metrics": [
+              "进口原料及海外投资美元资产负债和预计收支：保留原币、金额单位、期限及并表或权益投资边界。",
+              "同期间套保前后净敞口、汇兑与对冲损益：区分损益和其他综合收益，注明折算币种及单位。"
+            ],
+            "overlapping_evidence_roles": [],
+            "parent_version_id": "23306caf-c89d-46bc-af6d-a5dfdcc6edec",
+            "previous_version_id": "23306caf-c89d-46bc-af6d-a5dfdcc6edec",
+            "revision": 2,
+            "schema_version": 1,
+            "statement": "若美元收支存在未有效对冲的净敞口，汇率波动可能影响相关业务盈利；不能仅凭美元结算判定损失。",
+            "support_fact_version_ids": [
+              "e4fd4896-a981-43fe-bb4b-31842b358f0e"
+            ],
+            "version_id": "e32adbf2-b16b-448c-a566-784b99326b69"
+          },
+          {
+            "business": "原料采购、库存与营运资金",
+            "change_reason": "首次建立；依据资金占用风险及管理措施提出可检验的条件性假设。",
+            "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+            "content_sha256": "ad84fedfffc72cadda480a2b317ea7c5ff56569adfc64a58cfb8f334a8cfce53",
+            "counter_fact_version_ids": [
+              "84cae999-d6a3-4817-886e-af994411139f"
+            ],
+            "created_at": "2026-10-26T16:48:08.804147+00:00",
+            "gaps": [
+              "缺少采购价格、实物库存、结算周期及营运资金序列。",
+              "管理措施可能缓释压力，但尚无成效证据，无法判断当前方向。"
+            ],
+            "horizon": "下一份提供库存及营运资金明细的报告期。",
+            "hypothesis_id": "fed47bf1-e4f8-5c54-99de-8d54e6e17c92",
+            "invalidation_conditions": [
+              "同口径价格上涨期间，周转改善或供应商信用等持续抵消价格效应，未增加净资金占用。"
+            ],
+            "judgment_status": "CONDITIONAL",
+            "key": "jcc_price_working_capital_transmission",
+            "next_validation_event": {
+              "date": null,
+              "date_fact_version_ids": [],
+              "date_unknown_reason": "包内仅有一般披露程序，没有相关报告日程。",
+              "description": "后续报告披露库存量价、结算周期与经营现金流桥接时检验。"
+            },
+            "observation_metrics": [
+              "原料采购及生产业务库存和在制品：区分实物量、账面金额与跌价准备，保留产品单位、币种及并表范围，贸易库存单列。",
+              "同期间应收、应付、预付款及经营现金流：按生产与贸易拆分，注明币种和金额单位，分解价格、数量及结算周期影响。"
+            ],
+            "overlapping_evidence_roles": [
+              "84cae999-d6a3-4817-886e-af994411139f"
+            ],
+            "parent_version_id": null,
+            "previous_version_id": null,
+            "revision": 1,
+            "schema_version": 1,
+            "statement": "在实物规模和结算周期可比时，原料及产品价格上涨可能增加营运资金占用；库存周转与采购销售安排改善可能缓释该压力。",
+            "support_fact_version_ids": [
+              "84cae999-d6a3-4817-886e-af994411139f"
+            ],
+            "version_id": "d20eebdd-7293-4973-b16f-10d89a8bf14b"
+          }
+        ],
+        "insufficient_hypotheses_reason": null,
+        "limitations": [
+          "仅使用冻结包内2025年报选摘，未审阅完整报告，未获取后续经营数据。",
+          "来源引用和结构检查不等于独立事实核实；精确披露时间未知，不具历史时点可用性。",
+          "不同统计范围不是已解决的可比口径；未注明的单位、币种及分部边界保持未知。",
+          "以上为条件性经营假设，不是披露事实、概率判断、已验证预测或收益承诺。"
+        ],
+        "valuation_unavailable_reason": "缺少完整分部财务、现金流、资本开支及贸易、金融和权益投资调节基础；本阶段不作估值或新增数值预测。"
+      },
+      "core_sha256": "cce09e5c244b4a6cdf4293477c6d46d804de46ee4801ce8f5a60f05a4623fc52",
+      "created_at": "2026-10-26T16:48:08.804298+00:00",
+      "fact_version_ids": [
+        "f9fce16b-9e31-42be-87e7-587ddd1d773b",
+        "5b053f8b-98c5-4029-a78b-8b05d46f93ec",
+        "1721d4d2-16ef-46d3-b088-ee7a66739491",
+        "0a782094-dedf-4186-a55b-eba5973191b5",
+        "4093d9ff-4554-4449-a0d5-6eb3a57eb034",
+        "5bc42bd2-11b4-4a2c-9f3d-cc80899b0947",
+        "e4fd4896-a981-43fe-bb4b-31842b358f0e",
+        "84cae999-d6a3-4817-886e-af994411139f",
+        "15b7cd87-e435-49d7-8995-c7faa12aaa55",
+        "c2e8647c-ec05-43ee-9c22-71ff36112c25"
+      ],
+      "generated_at": "2026-10-26T16:48:08.804279+00:00",
+      "hypothesis_version_ids": [
+        "c005ce99-46f9-40a8-a977-b8257021d5ec",
+        "e32adbf2-b16b-448c-a566-784b99326b69",
+        "d20eebdd-7293-4973-b16f-10d89a8bf14b"
+      ],
+      "independent_origin_root_ids": [
+        "jiangxi-copper:2025:prc-gaap-annual"
+      ],
+      "input_archive": {
+        "bytes": 25341,
+        "kind": "COMPANY_ANALYSIS_INPUT",
+        "path": "raw/1b95569677a9f0999a69ba90414efc77b586ffe4b824747301144dc0d0976bec.raw",
+        "sha256": "1b95569677a9f0999a69ba90414efc77b586ffe4b824747301144dc0d0976bec"
+      },
+      "input_id": "6bfbbd20-e68d-4758-a5cc-37998b4a3eee",
+      "input_sha256": "1b95569677a9f0999a69ba90414efc77b586ffe4b824747301144dc0d0976bec",
+      "material_ids": [
+        "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7"
+      ],
+      "model_id": "gpt-6.1-sol",
+      "parent_snapshot_id": "90c3e7b9-56f9-4ad6-a39a-7c343a1a95f6",
+      "prompt": {
+        "output_schema_sha256": "5ef5f7cdfc92d734bc2358bf30d58f6f0fd979a462183b172a6a0ea26777f105",
+        "template_id": "company-operating-analysis-v1",
+        "template_sha256": "40f788064b164694e3135eab6fc8071e47dad3c695bfd41d99229d3c3bbf3f51"
+      },
+      "purposes": [
+        "DAILY",
+        "REPORT"
+      ],
+      "quote_ids": [],
+      "raw_output_archive": {
+        "bytes": 8047,
+        "kind": "COMPANY_ANALYSIS_MODEL_OUTPUT",
+        "path": "raw/e3b0ed564d77a69e6bf43e63a365a749bac1f7453a4d70273c2c2fd2d82ffa72.raw",
+        "sha256": "e3b0ed564d77a69e6bf43e63a365a749bac1f7453a4d70273c2c2fd2d82ffa72"
+      },
+      "rejections": [],
+      "schema_version": 1,
+      "snapshot_id": "e28c866f-5fa5-458d-a48a-1ed1869d40ea",
+      "status": "PUBLISHED",
+      "valuation_ids": [],
+      "verification": "STRUCTURE_AND_REFERENCES_CHECKED_NOT_FACTUAL_ENDORSEMENT"
+    },
+    "attention_reasons": [
+      {
+        "fact_version_ids": [
+          "5b053f8b-98c5-4029-a78b-8b05d46f93ec"
+        ],
+        "gap_reason": "缺少实际加工费及成本数据，无法判断当前盈利方向。",
+        "judgment_status": "EVIDENCE_BOUND",
+        "text": "外购铜精矿采购价涉及金属价格与加工费，需区分铜价变化和冶炼加工收益。"
+      },
+      {
+        "fact_version_ids": [
+          "e4fd4896-a981-43fe-bb4b-31842b358f0e",
+          "84cae999-d6a3-4817-886e-af994411139f"
+        ],
+        "gap_reason": "未提供净外汇敞口、库存周转和资金占用金额。",
+        "judgment_status": "EVIDENCE_BOUND",
+        "text": "美元结算及价格上涨带来的资金占用风险值得跟踪，但风险披露不代表损失已经发生。"
+      }
+    ],
+    "catalysts": [
+      {
+        "date": null,
+        "date_fact_version_ids": [],
+        "date_unknown_reason": "包内没有具体披露日期。",
+        "description": "后续定期报告或专项披露提供实际加工费与冶炼盈利桥接时检验。"
+      },
+      {
+        "date": null,
+        "date_fact_version_ids": [],
+        "date_unknown_reason": "包内没有外汇风险更新的具体日期。",
+        "description": "后续财务附注披露币种敞口、套保与汇兑损益时检验。"
+      },
+      {
+        "date": null,
+        "date_fact_version_ids": [],
+        "date_unknown_reason": "包内仅有一般披露程序，没有相关报告日程。",
+        "description": "后续报告披露库存量价、结算周期与经营现金流桥接时检验。"
+      }
+    ],
+    "risks": [
+      {
+        "fact_version_ids": [
+          "84cae999-d6a3-4817-886e-af994411139f"
+        ],
+        "gap_reason": "仅有管理措施，无法判断实施效果。",
+        "judgment_status": "EVIDENCE_BOUND",
+        "text": "公司披露采购销售安排及库存管理措施，可能缓释资金占用压力；不能据此认定风险已消除。",
+        "kind": "COUNTEREVIDENCE_CLAIM",
+        "verified_fact": false
+      },
+      {
+        "fact_version_ids": [
+          "15b7cd87-e435-49d7-8995-c7faa12aaa55"
+        ],
+        "gap_reason": "未提供计划执行结果。",
+        "judgment_status": "EVIDENCE_BOUND",
+        "text": "公司明确2026年经营目标不是生产预测，且可能调整，不能用计划证明增长或假设成立。",
+        "kind": "COUNTEREVIDENCE_CLAIM",
+        "verified_fact": false
+      },
+      {
+        "text": "可比条件下，加工费下降被成本或副产品收益持续抵消，未压缩单位利润。",
+        "kind": "INVALIDATION_CONDITION",
+        "verified_fact": false,
+        "hypothesis_version_id": "c005ce99-46f9-40a8-a977-b8257021d5ec",
+        "hypothesis_statement": "其他条件可比时，外购铜精矿加工费下降可能压缩冶炼单位利润；铜价上涨本身不足以证明该业务获益。",
+        "fact_version_ids": []
+      },
+      {
+        "text": "后续合同显示该采购机制已不适用。",
+        "kind": "INVALIDATION_CONDITION",
+        "verified_fact": false,
+        "hypothesis_version_id": "c005ce99-46f9-40a8-a977-b8257021d5ec",
+        "hypothesis_statement": "其他条件可比时，外购铜精矿加工费下降可能压缩冶炼单位利润；铜价上涨本身不足以证明该业务获益。",
+        "fact_version_ids": []
+      },
+      {
+        "text": "自然对冲或套保消除相关净敞口，汇率波动未形成可识别净损益影响。",
+        "kind": "INVALIDATION_CONDITION",
+        "verified_fact": false,
+        "hypothesis_version_id": "e32adbf2-b16b-448c-a566-784b99326b69",
+        "hypothesis_statement": "若美元收支存在未有效对冲的净敞口，汇率波动可能影响相关业务盈利；不能仅凭美元结算判定损失。",
+        "fact_version_ids": []
+      },
+      {
+        "text": "同口径价格上涨期间，周转改善或供应商信用等持续抵消价格效应，未增加净资金占用。",
+        "kind": "INVALIDATION_CONDITION",
+        "verified_fact": false,
+        "hypothesis_version_id": "d20eebdd-7293-4973-b16f-10d89a8bf14b",
+        "hypothesis_statement": "在实物规模和结算周期可比时，原料及产品价格上涨可能增加营运资金占用；库存周转与采购销售安排改善可能缓释该压力。",
+        "fact_version_ids": [
+          "84cae999-d6a3-4817-886e-af994411139f"
+        ]
+      }
+    ],
+    "valuation": {
+      "status": "UNAVAILABLE",
+      "scenarios": [],
+      "reason": "尚无固定且通过适用性检查的估值；其余经营研究继续展示"
+    },
+    "changes": {
+      "OPERATING_EVIDENCE": {
+        "evidence_changed": false,
+        "facts": [],
+        "hypothesis_revision_changed": true,
+        "hypothesis_revisions": [
+          {
+            "after": {
+              "business": "进口铜矿原料与海外投资",
+              "change_reason": "沿用既有假设；无新增事实，保留总额美元结算与净敞口的区别。",
+              "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+              "content_sha256": "6bbc7dbe666a716f830e44a2926961a8c1bb119bb421432047fbb279491bb133",
+              "counter_fact_version_ids": [],
+              "created_at": "2026-10-26T16:48:08.804043+00:00",
+              "gaps": [
+                "缺少美元资产负债、收支匹配、套保与汇兑损益数据。",
+                "无直接反证；美元结算不能确定净敞口或实际损益方向。"
+              ],
+              "horizon": "下一份提供外汇风险及损益明细的报告期。",
+              "hypothesis_id": "8bb28107-e8ad-5c37-ac88-c5259854878a",
+              "invalidation_conditions": [
+                "自然对冲或套保消除相关净敞口，汇率波动未形成可识别净损益影响。"
+              ],
+              "judgment_status": "CONDITIONAL",
+              "key": "jcc_usd_net_exposure",
+              "next_validation_event": {
+                "date": null,
+                "date_fact_version_ids": [],
+                "date_unknown_reason": "包内没有外汇风险更新的具体日期。",
+                "description": "后续财务附注披露币种敞口、套保与汇兑损益时检验。"
+              },
+              "observation_metrics": [
+                "进口原料及海外投资美元资产负债和预计收支：保留原币、金额单位、期限及并表或权益投资边界。",
+                "同期间套保前后净敞口、汇兑与对冲损益：区分损益和其他综合收益，注明折算币种及单位。"
+              ],
+              "overlapping_evidence_roles": [],
+              "parent_version_id": "23306caf-c89d-46bc-af6d-a5dfdcc6edec",
+              "previous_version_id": "23306caf-c89d-46bc-af6d-a5dfdcc6edec",
+              "revision": 2,
+              "schema_version": 1,
+              "statement": "若美元收支存在未有效对冲的净敞口，汇率波动可能影响相关业务盈利；不能仅凭美元结算判定损失。",
+              "support_fact_version_ids": [
+                "e4fd4896-a981-43fe-bb4b-31842b358f0e"
+              ],
+              "version_id": "e32adbf2-b16b-448c-a566-784b99326b69"
+            },
+            "before": {
+              "business": "进口铜矿原料与海外投资",
+              "change_reason": "首次建立；以美元结算风险为依据，区分总额结算与净风险敞口。",
+              "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+              "content_sha256": "bb8a74d5703e1f0f4a5e3aa50c092fcdb9a1bc95b8115a76094efce77fa796fa",
+              "counter_fact_version_ids": [],
+              "created_at": "2026-10-26T16:43:42.771409+00:00",
+              "gaps": [
+                "没有美元资产负债、外汇收支匹配、套保及汇兑损益数据。",
+                "无直接反证；美元结算事实不足以判断净敞口和实际损益方向。"
+              ],
+              "horizon": "下一份提供外汇风险及损益明细的报告期。",
+              "hypothesis_id": "8bb28107-e8ad-5c37-ac88-c5259854878a",
+              "invalidation_conditions": [
+                "自然对冲或套保使相关净外汇敞口接近消除，汇率波动未形成可识别的净损益影响。"
+              ],
+              "judgment_status": "CONDITIONAL",
+              "key": "jcc_usd_net_exposure",
+              "next_validation_event": {
+                "date": null,
+                "date_fact_version_ids": [],
+                "date_unknown_reason": "包内没有外汇风险更新或定期报告的具体日期。",
+                "description": "后续财务附注披露币种敞口、套保和汇兑损益时检验。"
+              },
+              "observation_metrics": [
+                "集团进口原料及海外投资美元资产、负债和预计收支：保留原币金额、期限及并表或权益投资边界。",
+                "同期间套保前后净敞口、汇兑损益与相关对冲损益：区分损益和其他综合收益，注明折算币种及单位。"
+              ],
+              "parent_version_id": null,
+              "previous_version_id": null,
+              "revision": 1,
+              "schema_version": 1,
+              "statement": "若美元收支存在未有效对冲的净敞口，汇率波动可能影响相关业务盈利；不能仅凭美元结算判定损失。",
+              "support_fact_version_ids": [
+                "e4fd4896-a981-43fe-bb4b-31842b358f0e"
+              ],
+              "version_id": "23306caf-c89d-46bc-af6d-a5dfdcc6edec"
+            },
+            "hypothesis_id": "8bb28107-e8ad-5c37-ac88-c5259854878a"
+          },
+          {
+            "after": {
+              "business": "外购铜精矿冶炼",
+              "change_reason": "沿用既有假设；无新增事实，明确条件不变时的传导检验及证据局限。",
+              "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+              "content_sha256": "2e39e03ea8e0dbcb196816a8262ad4cccb83a3f8408bb3f9f4b19e6e2ae7e440",
+              "counter_fact_version_ids": [],
+              "created_at": "2026-10-26T16:48:08.803851+00:00",
+              "gaps": [
+                "缺少实际TC/RC、采购结构、成本及副产品收益，无法判断当前利润方向。",
+                "无直接反证，采购机制本身不能证明利润传导已经发生。"
+              ],
+              "horizon": "下一份提供采购及冶炼经营明细的报告期。",
+              "hypothesis_id": "d3598ebf-180b-5ada-8daf-7f282f8afb32",
+              "invalidation_conditions": [
+                "可比条件下，加工费下降被成本或副产品收益持续抵消，未压缩单位利润。",
+                "后续合同显示该采购机制已不适用。"
+              ],
+              "judgment_status": "CONDITIONAL",
+              "key": "jcc_smelting_processing_fee_transmission",
+              "next_validation_event": {
+                "date": null,
+                "date_fact_version_ids": [],
+                "date_unknown_reason": "包内没有具体披露日期。",
+                "description": "后续定期报告或专项披露提供实际加工费与冶炼盈利桥接时检验。"
+              },
+              "observation_metrics": [
+                "外购铜精矿实际TC/RC：分别统计进口和国内采购，保留合同期间、原币及计费单位。",
+                "外购原料冶炼单位毛利与成本、副产品收益桥接：同期间同金属量口径，剔除贸易及自产矿贡献。"
+              ],
+              "overlapping_evidence_roles": [],
+              "parent_version_id": "8fa8f322-e56f-4954-8e9b-e71af6db5a8e",
+              "previous_version_id": "8fa8f322-e56f-4954-8e9b-e71af6db5a8e",
+              "revision": 2,
+              "schema_version": 1,
+              "statement": "其他条件可比时，外购铜精矿加工费下降可能压缩冶炼单位利润；铜价上涨本身不足以证明该业务获益。",
+              "support_fact_version_ids": [
+                "5b053f8b-98c5-4029-a78b-8b05d46f93ec"
+              ],
+              "version_id": "c005ce99-46f9-40a8-a977-b8257021d5ec"
+            },
+            "before": {
+              "business": "外购铜精矿冶炼",
+              "change_reason": "首次建立；依据采购定价机制提出条件性假设，而非认定利润变化已经发生。",
+              "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+              "content_sha256": "d21d535b7589ee84fcb05c099c7bffd0126bf63fe5dc564d32b8770d89148233",
+              "counter_fact_version_ids": [],
+              "created_at": "2026-10-26T16:43:42.771196+00:00",
+              "gaps": [
+                "没有实际TC/RC、境内外采购占比、冶炼成本及副产品收益；无法判断当前利润方向。",
+                "包内没有直接反证或可用于量化检验的历史序列。"
+              ],
+              "horizon": "下一份包含采购及冶炼经营明细的报告期。",
+              "hypothesis_id": "d3598ebf-180b-5ada-8daf-7f282f8afb32",
+              "invalidation_conditions": [
+                "可比采购条件下，加工费变化被成本或副产品收益持续抵消，未传导至外购原料冶炼单位利润。",
+                "后续合同显示披露的采购定价机制已不适用。"
+              ],
+              "judgment_status": "CONDITIONAL",
+              "key": "jcc_smelting_processing_fee_transmission",
+              "next_validation_event": {
+                "date": null,
+                "date_fact_version_ids": [],
+                "date_unknown_reason": "包内仅披露一般信息披露程序，没有具体报告日期。",
+                "description": "后续定期报告或专项披露提供实际加工费及冶炼盈利桥接时检验。"
+              },
+              "observation_metrics": [
+                "外购铜精矿冶炼业务实际TC/RC：分别保留进口与国内采购、合同期间、原币和计费单位。",
+                "同报告期外购原料冶炼单位毛利及成本桥接：剔除贸易与自产矿贡献，统一产品及金属量口径。"
+              ],
+              "parent_version_id": null,
+              "previous_version_id": null,
+              "revision": 1,
+              "schema_version": 1,
+              "statement": "在其他条件可比时，外购铜精矿加工费下降可能压缩冶炼单位利润；铜价上涨本身不足以证明该业务获益。",
+              "support_fact_version_ids": [
+                "5b053f8b-98c5-4029-a78b-8b05d46f93ec"
+              ],
+              "version_id": "8fa8f322-e56f-4954-8e9b-e71af6db5a8e"
+            },
+            "hypothesis_id": "d3598ebf-180b-5ada-8daf-7f282f8afb32"
+          },
+          {
+            "after": {
+              "business": "原料采购、库存与营运资金",
+              "change_reason": "首次建立；依据资金占用风险及管理措施提出可检验的条件性假设。",
+              "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+              "content_sha256": "ad84fedfffc72cadda480a2b317ea7c5ff56569adfc64a58cfb8f334a8cfce53",
+              "counter_fact_version_ids": [
+                "84cae999-d6a3-4817-886e-af994411139f"
+              ],
+              "created_at": "2026-10-26T16:48:08.804147+00:00",
+              "gaps": [
+                "缺少采购价格、实物库存、结算周期及营运资金序列。",
+                "管理措施可能缓释压力，但尚无成效证据，无法判断当前方向。"
+              ],
+              "horizon": "下一份提供库存及营运资金明细的报告期。",
+              "hypothesis_id": "fed47bf1-e4f8-5c54-99de-8d54e6e17c92",
+              "invalidation_conditions": [
+                "同口径价格上涨期间，周转改善或供应商信用等持续抵消价格效应，未增加净资金占用。"
+              ],
+              "judgment_status": "CONDITIONAL",
+              "key": "jcc_price_working_capital_transmission",
+              "next_validation_event": {
+                "date": null,
+                "date_fact_version_ids": [],
+                "date_unknown_reason": "包内仅有一般披露程序，没有相关报告日程。",
+                "description": "后续报告披露库存量价、结算周期与经营现金流桥接时检验。"
+              },
+              "observation_metrics": [
+                "原料采购及生产业务库存和在制品：区分实物量、账面金额与跌价准备，保留产品单位、币种及并表范围，贸易库存单列。",
+                "同期间应收、应付、预付款及经营现金流：按生产与贸易拆分，注明币种和金额单位，分解价格、数量及结算周期影响。"
+              ],
+              "overlapping_evidence_roles": [
+                "84cae999-d6a3-4817-886e-af994411139f"
+              ],
+              "parent_version_id": null,
+              "previous_version_id": null,
+              "revision": 1,
+              "schema_version": 1,
+              "statement": "在实物规模和结算周期可比时，原料及产品价格上涨可能增加营运资金占用；库存周转与采购销售安排改善可能缓释该压力。",
+              "support_fact_version_ids": [
+                "84cae999-d6a3-4817-886e-af994411139f"
+              ],
+              "version_id": "d20eebdd-7293-4973-b16f-10d89a8bf14b"
+            },
+            "before": null,
+            "hypothesis_id": "fed47bf1-e4f8-5c54-99de-8d54e6e17c92"
+          }
+        ],
+        "meaning": "Evidence and hypothesis revisions only; absence of new evidence is not proof of unchanged operations",
+        "new_fact_version_ids": [],
+        "reference_conflicts": {
+          "new": [],
+          "old": []
+        },
+        "removed_fact_version_ids": []
+      },
+      "PRICE": {
+        "new_snapshot_id": "e28c866f-5fa5-458d-a48a-1ed1869d40ea",
+        "old_snapshot_id": "90c3e7b9-56f9-4ad6-a39a-7c343a1a95f6",
+        "reason": "Exactly one valuation and controlled review must be pinned by each snapshot",
+        "status": "NOT_COMPARABLE"
+      },
+      "VALUATION_ASSUMPTION_OR_METHOD": {
+        "new_snapshot_id": "e28c866f-5fa5-458d-a48a-1ed1869d40ea",
+        "old_snapshot_id": "90c3e7b9-56f9-4ad6-a39a-7c343a1a95f6",
+        "reason": "Exactly one valuation and controlled review must be pinned by each snapshot",
+        "status": "NOT_COMPARABLE"
+      }
+    },
+    "change_set_id": "2162b5b0-5405-4fe1-b708-7d975a4860a2",
+    "information_state": {
+      "research_as_of": "2026-10-26T16:47:13.200480+00:00",
+      "knowledge_as_of": "2026-10-26T16:47:13.200480+00:00",
+      "context_bound_at": null,
+      "research_basis_generated_at": "2026-10-26T16:48:08.804279+00:00",
+      "checks": [],
+      "check_state": "NOT_CHECKED",
+      "material_dates": [
+        {
+          "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T16:42:15.997066+00:00",
+          "consumable_at": "2026-10-26T16:42:16.042705+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        }
+      ],
+      "research_verification_refreshed": false
+    },
+    "gap": "缺少完整分部财务、现金流、资本开支及贸易、金融和权益投资调节基础；本阶段不作估值或新增数值预测。",
+    "evidence": [
+      {
+        "archive": {
+          "bytes": 4116411,
+          "kind": "COMPANY_RESEARCH_ORIGINAL",
+          "path": "raw/4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303.raw",
+          "sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303"
+        },
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "consumable_at": "2026-10-26T16:42:16.042705+00:00",
+        "content_sha256": "deaac9d3d504b4841035e974a0c5a2b06d60d0af81e4cf5e911c7738ae36aede",
+        "created_at": "2026-10-26T16:42:16.042738+00:00",
+        "currency": null,
+        "declared_origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "disclosed_at": null,
+        "historical_pit_eligible": false,
+        "license_note": "Source rights not established; private research use",
+        "limitations": [
+          "REAL_LOCAL_ORIGINAL_NOT_FRESH_NETWORK_ACQUISITION",
+          "PRECISE_DISCLOSURE_UNKNOWN_NOT_HISTORICAL_PIT",
+          "PRC_GAAP_GROUP_FINANCIAL_SCOPE_NARRATIVE_NOT_INDIVIDUAL_AUDIT_ENDORSEMENT",
+          "SELECTED_EXCERPTS_NOT_FULL_REPORT_REVIEW",
+          "INDUSTRIAL_TRADE_FINANCE_ASSOCIATES_NOT_A_COMPLETE_FCFF_BASIS"
+        ],
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "media_type": "application/pdf",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "raw_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "schema_version": 1,
+        "scope": null,
+        "source_id": "issuer-hkex-2025-cas",
+        "source_kind": "USER_IMPORT",
+        "source_url": "https://www.hkexnews.hk/listedco/listconews/sehk/2026/0327/2026032700133_c.pdf",
+        "subject_name": "江西铜业股份有限公司",
+        "table": null,
+        "unit": null,
+        "unknown_fields": [
+          "disclosed_at",
+          "unit",
+          "currency",
+          "scope",
+          "page",
+          "table"
+        ],
+        "upstream": null,
+        "verification": "IDENTITY_METADATA_AND_BYTES_CHECKED_NOT_FACTUAL_ENDORSEMENT"
+      }
+    ],
+    "facts": [
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "业务结构披露",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "967300a7282f76db99bcec72216c7877af5000687e9f4461865c48ea65cfb036",
+        "consumable_at": "2026-10-26T16:42:16.210127+00:00",
+        "content_sha256": "ba39bcd0cf51ee7fe79e10b5eaa2e5b88fa66fcc81ca552f07734d0c1d6d3dd2",
+        "created_at": "2026-10-26T16:42:16.210154+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "967300a7282f76db99bcec72216c7877af5000687e9f4461865c48ea65cfb036",
+        "fact_id": "967300a7282f76db99bcec72216c7877af5000687e9f4461865c48ea65cfb036",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_BUSINESS_STRUCTURE:0",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 22; printed 11",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "本集团业务简介；管理层披露，不是单一矿山或冶炼业务的财务分部表",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "本集团的主要业务涵盖了铜和黄金的采选、冶炼与加工；稀散金属的提取与加工；硫化工及\n贸易等领域，并且在铜以及相关有色金属领域建立了集勘探、采矿、选矿、冶炼、加工于一体的\n完整产业链，是中国重要的铜、金、银和硫化工生产基地。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "f9fce16b-9e31-42be-87e7-587ddd1d773b"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "铜精矿采购定价机制披露",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "c9726a4a15a0e7668202ce1b104d291ce8f041d65fcc8256e4fc1b389aa96836",
+        "consumable_at": "2026-10-26T16:42:16.297585+00:00",
+        "content_sha256": "a3f2e9024c4522dfec4db9863a8ff375a2bc6330298f64e89852703ab0ad9bac",
+        "created_at": "2026-10-26T16:42:16.297608+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "c9726a4a15a0e7668202ce1b104d291ce8f041d65fcc8256e4fc1b389aa96836",
+        "fact_id": "c9726a4a15a0e7668202ce1b104d291ce8f041d65fcc8256e4fc1b389aa96836",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_PROCUREMENT_PRICE_TERMS:0",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 23; printed 12",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "原材料铜精矿采购定价表；国外与国内采购分别表述",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "国外采购参照LME 铜价、LBMA\n金、银价格，并在上述金属价\n格基础上扣减TC/RC 作为采购\n价格，TC/RC 则通过交易双方\n谈判确定；国内采购参照上海\n期货交易所铜价，并在交易所\n均价或点价的基础上扣减相应\n加工费或乘以相应计价系数。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "5b053f8b-98c5-4029-a78b-8b05d46f93ec"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "产量、贸易及金融业务口径边界",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "caed6bb33c5e9039851442e979716949291fe2265ac00dbbaca90224e896f443",
+        "consumable_at": "2026-10-26T16:42:16.411111+00:00",
+        "content_sha256": "83d44009dac33b2c5e897380bb348eaf813aed313557dccbf57061b6c3f43fb6",
+        "created_at": "2026-10-26T16:42:16.411143+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "caed6bb33c5e9039851442e979716949291fe2265ac00dbbaca90224e896f443",
+        "fact_id": "caed6bb33c5e9039851442e979716949291fe2265ac00dbbaca90224e896f443",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_OPERATING_SCOPE_BOUNDARIES:0",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 26; printed 15",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "2025年产量统计、主营业务统计和产销量表口径注释；另含贸易/金融单位的定性描述",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "注：上述“自产铜精矿含铜”2025 年统计口径含第一量子当年权益产量。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "1721d4d2-16ef-46d3-b088-ee7a66739491"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "产量、贸易及金融业务口径边界",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "f2baebc789e8be2ee27e3a707ce73586b3a3ae4182280ef0c1887a89732c2ad5",
+        "consumable_at": "2026-10-26T16:42:16.539996+00:00",
+        "content_sha256": "6b39d0bd5d05b7ca0237a5fc4e29d0fb0f45770106bb9c7db171ca67c99ec186",
+        "created_at": "2026-10-26T16:42:16.540020+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "f2baebc789e8be2ee27e3a707ce73586b3a3ae4182280ef0c1887a89732c2ad5",
+        "fact_id": "f2baebc789e8be2ee27e3a707ce73586b3a3ae4182280ef0c1887a89732c2ad5",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_OPERATING_SCOPE_BOUNDARIES:1",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 30; printed 19",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "2025年产量统计、主营业务统计和产销量表口径注释；另含贸易/金融单位的定性描述",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "主营业务分行业、分产品、分地区、分销售模式情况的说明 \n以上统计范围含贸易",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "0a782094-dedf-4186-a55b-eba5973191b5"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "产量、贸易及金融业务口径边界",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "da1a89ed9d5184549ef8613684dcf2f9e548974932ca6ce8e989cef8fbd91f2b",
+        "consumable_at": "2026-10-26T16:42:16.691326+00:00",
+        "content_sha256": "7f8a9b5e090ae008116e95f524586190423c7cc27963989f075836e39c4e05d3",
+        "created_at": "2026-10-26T16:42:16.691351+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "da1a89ed9d5184549ef8613684dcf2f9e548974932ca6ce8e989cef8fbd91f2b",
+        "fact_id": "da1a89ed9d5184549ef8613684dcf2f9e548974932ca6ce8e989cef8fbd91f2b",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_OPERATING_SCOPE_BOUNDARIES:2",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 31; printed 20",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "2025年产量统计、主营业务统计和产销量表口径注释；另含贸易/金融单位的定性描述",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "上述“产销量情况分析表”统计范围不含贸易",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "4093d9ff-4554-4449-a0d5-6eb3a57eb034"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "产量、贸易及金融业务口径边界",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "94fa60fdf64847bd4e4629e99cc73012032500b91e3f9711f79369f77d14a238",
+        "consumable_at": "2026-10-26T16:42:16.797852+00:00",
+        "content_sha256": "5087b11fb080144afc2052f7530c0d09075cbdfbcf1b1792366a0a5ac71d2eb5",
+        "created_at": "2026-10-26T16:42:16.797873+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "94fa60fdf64847bd4e4629e99cc73012032500b91e3f9711f79369f77d14a238",
+        "fact_id": "94fa60fdf64847bd4e4629e99cc73012032500b91e3f9711f79369f77d14a238",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_OPERATING_SCOPE_BOUNDARIES:3",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 26; printed 15",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "2025年产量统计、主营业务统计和产销量表口径注释；另含贸易/金融单位的定性描述",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "贸易、金融单位聚焦主业、服务主业，强化产业链上下游协同，提升国内外资\n源调配能力，为公司生产经营目标的实现提供了有力支撑。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "5bc42bd2-11b4-4a2c-9f3d-cc80899b0947"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "进口原料/海外投资汇率及价格上涨资金占用风险披露",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "44431fdb36c0f699476b0490902f62145e18ae7e65df3a0b56a67b1a6fd7e5d4",
+        "consumable_at": "2026-10-26T16:42:16.885460+00:00",
+        "content_sha256": "676b2b4bf62fca89617229bc0576f98c14cbca9e53843a11156d3ebbed171f63",
+        "created_at": "2026-10-26T16:42:16.885484+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "44431fdb36c0f699476b0490902f62145e18ae7e65df3a0b56a67b1a6fd7e5d4",
+        "fact_id": "44431fdb36c0f699476b0490902f62145e18ae7e65df3a0b56a67b1a6fd7e5d4",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_DISCLOSED_FX_AND_WORKING_CAPITAL_RISKS:0",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 49; printed 38",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "管理层风险章节；集团进口铜矿原料及海外投资的美元结算、资金库存管理",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "本集团购自国际矿业公司或大型贸易商的进口铜矿原料和海外投资普遍采用美元结算，且随\n着集团海外业务的拓展，外汇收支将更加频繁。因此，若汇率发生较大波动或集团未能有效地控\n制汇率波动的风险，则可能导致集团产生汇兑损失，进而对集团的盈利能力带来一定负面影响。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "e4fd4896-a981-43fe-bb4b-31842b358f0e"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "进口原料/海外投资汇率及价格上涨资金占用风险披露",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "9cef3b9fe62d1d1b80fe37332d5a38a46016a2e29d6e4025eda59cddd9bfac74",
+        "consumable_at": "2026-10-26T16:42:16.970604+00:00",
+        "content_sha256": "a6024e8bbb120eb385544aafa75ee445b913f602262f418088c344adfba95d04",
+        "created_at": "2026-10-26T16:42:16.970628+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "9cef3b9fe62d1d1b80fe37332d5a38a46016a2e29d6e4025eda59cddd9bfac74",
+        "fact_id": "9cef3b9fe62d1d1b80fe37332d5a38a46016a2e29d6e4025eda59cddd9bfac74",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_DISCLOSED_FX_AND_WORKING_CAPITAL_RISKS:1",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 50; printed 39",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "管理层风险章节；集团进口铜矿原料及海外投资的美元结算、资金库存管理",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "（3）强化财务管理水平，加强资金管理，并合理安排本公司原料采购、产品销售\n以减少产品价格上升对公司流动资金大量占用的风险； （4） 加强库存和在制品的管理， 最大限度\n地降低库存，使库存保持在一个合理的水平，减少资金占用。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "84cae999-d6a3-4817-886e-af994411139f"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "2026经营计划的披露边界及报告验证渠道锚点",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "9e27eaa49df4f41dd7dabc36bdd1133c4d06d6a81b5567fee843a3720a31295e",
+        "consumable_at": "2026-10-26T16:42:17.061429+00:00",
+        "content_sha256": "c66db5c2ff0cd835dc00bdba34dca2e399d9e9cdb2c8d879365c660a0cf5d19b",
+        "created_at": "2026-10-26T16:42:17.061453+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "9e27eaa49df4f41dd7dabc36bdd1133c4d06d6a81b5567fee843a3720a31295e",
+        "fact_id": "9e27eaa49df4f41dd7dabc36bdd1133c4d06d6a81b5567fee843a3720a31295e",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_PLAN_LIMIT_AND_DISCLOSURE_ANCHOR:0",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 48; printed 37",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "2025年报中的2026经营计划免责声明和公司信息披露程序；不是新的预测或披露日程",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "（该经\n营目标不代表公司对 2026 年度生产的预测， 能否实现取决于宏观经济环境、 市场需求状况等多种\n因素，存在很大的不确定性，本集团将根据市场变动情况，适时调整生产经营计划）。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "15b7cd87-e435-49d7-8995-c7faa12aaa55"
+      },
+      {
+        "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+        "business": "2026经营计划的披露边界及报告验证渠道锚点",
+        "change_reason": "Verbatim page excerpt; host exact substring and excerpt SHA check; not independent factual verification",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "conflict_group_id": "bd804fb150460b2feb9f31397930e708a6c375c853ce1efcb37909dc07316b3a",
+        "consumable_at": "2026-10-26T16:42:17.142740+00:00",
+        "content_sha256": "7490f6433cc557edfdf4b29d1b0a71d69a824a95bd937460c4161f9eb393792f",
+        "created_at": "2026-10-26T16:42:17.142763+00:00",
+        "currency": null,
+        "derivation": null,
+        "entity_id": "bd804fb150460b2feb9f31397930e708a6c375c853ce1efcb37909dc07316b3a",
+        "fact_id": "bd804fb150460b2feb9f31397930e708a6c375c853ce1efcb37909dc07316b3a",
+        "kind": "DISCLOSED",
+        "material_id": "ba117f9a-d3f6-4ded-b143-588d6f4aa7e7",
+        "metric": "JCC25_PLAN_LIMIT_AND_DISCLOSURE_ANCHOR:1",
+        "origin_root_id": "jiangxi-copper:2025:prc-gaap-annual",
+        "page": "PDF 63; printed 52",
+        "parent_version_id": null,
+        "period_end": "2025-12-31",
+        "period_start": "2025-01-01",
+        "received_at": "2026-10-26T16:42:15.997066+00:00",
+        "revision": 1,
+        "schema_version": 1,
+        "scope": "2025年报中的2026经营计划免责声明和公司信息披露程序；不是新的预测或披露日程",
+        "source_disclosed_at": null,
+        "supersedes": null,
+        "table": "2025年度报告正文（共91页部分）",
+        "unit": null,
+        "unknown_fields": [
+          "unit",
+          "currency"
+        ],
+        "value": "4.信息披露与透明度方面： 公司建立了内部信息收集、 整理、 审定和披露工作程序， 严格按照\n境内外监管机构要求做好定期报告、临时报告的编制与披露工作，积极通过电话会、现场调研、\nE 互动等方式保持与投资者的沟通，在合法合规的前提下，使公司运行更加公开、透明、高效。",
+        "value_type": "TEXT",
+        "verification": "SOURCE_REFERENCE_AND_STRUCTURE_CHECKED_NOT_FACTUAL_ENDORSEMENT",
+        "version_id": "c2e8647c-ec05-43ee-9c22-71ff36112c25"
+      }
+    ],
+    "conflicts": [],
+    "latest_checks": [
+      {
+        "attempt_id": "912c775f-037d-47b5-bdc5-8a3335330703",
+        "check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "completed_scopes": [
+          "FINANCIAL_NEXT20_UNIMPORTED",
+          "NEWS_NEXT20_UNIMPORTED"
+        ],
+        "content_sha256": "0b6c26ffd9bc4a0b3ec466052b23f3707d025c4ceca8b78cc52911b28dcda490",
+        "created_at": "2026-10-26T20:00:25.777324+00:00",
+        "errors": [],
+        "failed_scopes": [],
+        "finished_at": "2026-10-26T20:00:25.795059+00:00",
+        "host_owner": {
+          "creation_ticks": 134375183762933081,
+          "pid": 4376
+        },
+        "idempotency_key": "fd40eed6-c756-4b03-bda4-258fc344f43c",
+        "last_success_at": "2026-10-26T20:00:25.795059+00:00",
+        "last_success_check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+        "material_ids": [],
+        "meaning": "本次已核查范围未取得新证据；不代表经营未变",
+        "new_material_count": 0,
+        "requested_scopes": [
+          "FINANCIAL_NEXT20_UNIMPORTED",
+          "NEWS_NEXT20_UNIMPORTED"
+        ],
+        "retry_state": "NO_AUTOMATIC_RETRY",
+        "schema_version": 1,
+        "source_id": "saved-archive-catalog",
+        "source_receipts": [],
+        "started_at": "2026-10-26T20:00:25.777073+00:00",
+        "status": "SUCCESS"
+      },
+      {
+        "attempt_id": "25c507bb-b433-42e7-b24d-288c8219066d",
+        "check_id": "b3cd2acd-4e36-488f-ac38-91b1b7b91a68",
+        "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+        "completed_scopes": [
+          "FINANCIAL_NEXT20_UNIMPORTED",
+          "NEWS_NEXT20_UNIMPORTED"
+        ],
+        "content_sha256": "ef3a8c02f06db46723a84f13e61dbbece29e135877ad7a9ed2a904905f9f5902",
+        "created_at": "2026-10-26T20:00:26.344125+00:00",
+        "errors": [],
+        "failed_scopes": [],
+        "finished_at": "2026-10-26T20:00:26.361418+00:00",
+        "host_owner": {
+          "creation_ticks": 134375183762933081,
+          "pid": 4376
+        },
+        "idempotency_key": "7a75e25d-bb66-4754-9c01-f314ea018e8c",
+        "last_success_at": "2026-10-26T20:00:26.361418+00:00",
+        "last_success_check_id": "b3cd2acd-4e36-488f-ac38-91b1b7b91a68",
+        "material_ids": [],
+        "meaning": "本次已核查范围未取得新证据；不代表经营未变",
+        "new_material_count": 0,
+        "requested_scopes": [
+          "FINANCIAL_NEXT20_UNIMPORTED",
+          "NEWS_NEXT20_UNIMPORTED"
+        ],
+        "retry_state": "NO_AUTOMATIC_RETRY",
+        "schema_version": 1,
+        "source_id": "saved-archive-catalog",
+        "source_receipts": [],
+        "started_at": "2026-10-26T20:00:26.343951+00:00",
+        "status": "SUCCESS"
+      }
+    ],
+    "conflict_note": "经营假设与量价辅助观点分别保留；方向、期限或依据不一致时并列解释，未经独立验证不合成为胜率"
+  },
+  "account_version": 0,
+  "actual_postclose_cycles_observed": 0,
+  "scope": "Manual actual archived source checks; no public-source refresh succeeded, no new operating facts/model rerun"
+}

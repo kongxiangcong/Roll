@@ -46,8 +46,18 @@ def validate_references(db):
         require(check['company_id'] in company_ids)
         for material_id in check['material_ids']:
             require(material_id in materials and materials[material_id]['company_id'] == check['company_id'])
-    for row in db.execute('SELECT result FROM company_research_commands'):
-        verified(json.loads(row[0]))
+    for scope, raw in db.execute('SELECT scope,result FROM company_research_commands'):
+        command_result = verified(json.loads(raw))
+        if scope.startswith('daily-update:'):
+            company_id = command_result['company_id']
+            require(scope == 'daily-update:'+company_id and company_id in company_ids)
+            check = command_result['check']
+            saved = db.execute('SELECT value FROM company_research_checks WHERE check_id=?', (check['check_id'],)).fetchone()
+            require(saved and verified(json.loads(saved[0])) == check and check['company_id'] == company_id)
+            for field, table, key in [('snapshot_id','snapshots','snapshot_id'),('analysis_input_id','inputs','input_id')]:
+                if command_result.get(field):
+                    saved = db.execute(f'SELECT value FROM company_research_{table} WHERE {key}=?', (command_result[field],)).fetchone()
+                    require(saved and verified(json.loads(saved[0]))['company_id'] == company_id)
     from .analysis_integrity import validate_analysis
     validate_analysis(db, archives, materials, facts, companies)
 
@@ -57,3 +67,11 @@ def validate_references(db):
     validate_economics(db, archives)
     from .change_integrity import validate_changes
     validate_changes(db, archives)
+    if 'company_research_financial_adaptations' in names:
+        for row in db.execute('SELECT value FROM company_research_financial_adaptations'):
+            adaptation=verified(json.loads(row[0]))
+            material=materials.get(adaptation['material_id'])
+            require(material and material['company_id']==adaptation['company_id'])
+            for identifier in adaptation['fact_version_ids']:
+                fact=facts.get(identifier)
+                require(fact and fact['company_id']==adaptation['company_id'] and fact['material_id']==adaptation['material_id'])

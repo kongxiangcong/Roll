@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_verified_existing_financial_fields_automatically_enter_the_frozen_daily_input _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red14/test_verified_existing_financi0')
+
+    def test_verified_existing_financial_fields_automatically_enter_the_frozen_daily_input(tmp_path):
+        from fastapi.testclient import TestClient
+        from roll.app import create_app
+        from test_company_research_sources import setup
+        from test_financial_statements import statements
+        with TestClient(create_app(tmp_path,runtime_role='API')) as client:
+            issuer=setup(client,'akshare-financial-em')
+            research=client.app.state.company_research
+            snapshot=published(research,issuer)
+            client.app.state.financial_statements.worker=statements
+            run=client.post('/api/market/financial/SSE:600362/statements/collect',json=dict(idempotency_key='daily-native',basis='METHOD deterministic existing financial fields')).json()
+            assert run['status']=='COMPLETE',run
+            update=research.refresh_daily(issuer['company_id'],'native-financial')
+>           assert update['analysis_input_id'] is not None
+E           assert None is not None
+
+backend\tests\company_research\test_daily_research.py:279: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_verified_existing_financial_fields_automatically_enter_the_frozen_daily_input
+1 failed, 8 deselected in 8.38s

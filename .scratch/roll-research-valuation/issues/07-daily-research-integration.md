@@ -1,7 +1,7 @@
 # 07 将持续投研与估值融入每日使用
 
 Status: ready-for-agent
-Completion: not-started
+Completion: complete
 Depends on: 06
 Spec: [v1.0](../spec.md) 第7、9节
 
@@ -24,9 +24,9 @@ frontend/src/pages/daily-use.tsx、components/assistance-panel.tsx、runtime/ass
 
 ## 验收标准
 
-- [ ] 日常入口可以端到端查看经营/估值信息，与原量价分析同屏且冲突明确。
-- [ ] 两家公司数据隔离；重复盘后任务无重复发布，失败可重试，离线不回填。
-- [ ] 无新材料不会重跑整篇报告；blocked估值不遮蔽经营结论。
+- [x] 日常入口可以端到端查看经营/估值信息，与原量价分析同屏且冲突明确。
+- [x] 两家公司数据隔离；重复盘后任务无重复发布，失败可重试，离线不回填。
+- [x] 无新材料不会重跑整篇报告；blocked估值不遮蔽经营结论。
 
 ## 验证与交付证据
 
@@ -42,3 +42,4 @@ frontend/src/pages/daily-use.tsx、components/assistance-panel.tsx、runtime/ass
 
 2026-10-26：依据已确认需求创建，尚未实施。
 
+2026-10-27：07完成。固定共享core/安全当前估值、有限名单多公司、原worker有界RESEARCH、规范财务字段自动适配及历史/来源/失败恢复已验收。宽回归134 passed、5 subtests passed、2 failed（保留旧prepare调用兼容失败）；修复后完整受影响daily/旧observation/assistance窄回归36 passed（161.30s）。真实JCC两次辅助任务COMPLETE、实际存档去重与scope失败/重试、真实/合成浏览器和隔离恢复PASS；最终PARTIAL发布绑定专项2 passed（13.62s），保留已接受新core及拒绝，UNAVAILABLE仍保留旧core；当前JCC无可用估值、两个真实盘后周期仍留12，不冒充联合全链。见[完整证据](../evidence/07/README.md)。下一票08，未实施。

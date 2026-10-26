@@ -23,7 +23,7 @@ class AnalysisRuntime:
             db.execute('INSERT INTO company_research_analysis_runs VALUES(?,?,?) ON CONFLICT(run_id) DO UPDATE SET value=excluded.value',
                        (run['run_id'], run['company_id'], encode(value)))
 
-    def execute(self, input_id):
+    def execute(self, input_id, cancel=None, timeout_seconds=180):
         from roll.agents.codex_process import execute, owner_alive, process_creation
         packet = self.research.analysis_input(input_id)
         with self.research.transaction() as db:
@@ -35,7 +35,7 @@ class AnalysisRuntime:
                    'task_kind': 'COMPANY_OPERATING_ANALYSIS', 'backend': 'CODEX', 'model': os.environ.get('ROLL_CODEX_MODEL', 'gpt-6.1-sol'),
                    'status': 'RUNNING', 'started_at': now(), 'archives': [], 'tools': [],
                    'evidence_kind': 'METHOD_CASE' if self.worker else 'REAL_MODEL_ANALYSIS',
-                   'formal_authority': False, 'limits': {'timeout_seconds': 180, 'runtime_operations': 8, 'tool_calls': 0},
+                   'formal_authority': False, 'limits': {'timeout_seconds': min(180, max(1, timeout_seconds)), 'runtime_operations': 8, 'tool_calls': 0},
                    'host_owner': {'pid': os.getpid(), 'creation_ticks': process_creation(os.getpid())}}
             root = Path(__file__).parents[2]
             files = ['research/company/analysis.py', 'research/company/candidates.py', 'research/company/model_runtime.py',
@@ -47,7 +47,7 @@ class AnalysisRuntime:
                 run.update(status='COMPLETE', reused=True, model_executed=False,
                            snapshot_id=saved['snapshot_id'], finished_at=now())
             else:
-                run['model_executed'] = True
+                run['model_executed'] = False
             self.research.analysis.insert(db, 'analysis_runs', 'run_id', record(run))
         if run.get('reused'):
             return self.research.analysis_run(run['run_id'])
@@ -58,7 +58,8 @@ class AnalysisRuntime:
             auth = json.loads(Path(configured).read_text(encoding='utf-8'))
             if auth.get('auth_mode') != 'chatgpt' or not auth.get('tokens'):
                 raise ValueError('CHATGPT_AUTH_REQUIRED')
-            execute(self, run, packet, threading.Event(), auth)
+            run['model_executed'] = True
+            execute(self, run, packet, cancel or threading.Event(), auth)
         except (OSError, ValueError, HTTPException) as error:
             code = error.detail.get('code') if isinstance(error, HTTPException) and isinstance(error.detail, dict) else None
             run.update(status='UNAVAILABLE' if isinstance(error, OSError) else 'FAILED',

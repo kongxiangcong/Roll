@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_daily_view_pins_shared_core_without_hiding_research_when_valuation_missing _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red06/test_daily_view_pins_shared_co0')
+
+    def test_daily_view_pins_shared_core_without_hiding_research_when_valuation_missing(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        view = research.daily_view(issuer['company_id'], snapshot['snapshot_id'])
+        assert view['snapshot'] == research.analysis_snapshot(snapshot['snapshot_id'], 'REPORT')
+        assert view['attention_reasons'][0]['text'].startswith('Refining business')
+        assert view['valuation']['status'] == 'UNAVAILABLE'
+        assert view['valuation']['scenarios'] == []
+        assert view['information_state']['research_verification_refreshed'] is False
+        assert set(view['changes']) == {'OPERATING_EVIDENCE', 'PRICE', 'VALUATION_ASSUMPTION_OR_METHOD'}
+        assert view['catalysts'][0]['date'] is None
+>       assert view['risks'][0]['kind'] == 'INVALIDATION_CONDITION'
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'kind'
+
+backend\tests\company_research\test_daily_research.py:34: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_daily_view_pins_shared_core_without_hiding_research_when_valuation_missing
+1 failed, 3 deselected in 6.62s
