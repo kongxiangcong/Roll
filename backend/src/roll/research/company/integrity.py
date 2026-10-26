@@ -53,3 +53,5 @@ def validate_references(db):
 
     from .valuation_integrity import validate_valuations
     validate_valuations(db, archives, companies)
+    from .economic_integrity import validate_economics
+    validate_economics(db, archives)

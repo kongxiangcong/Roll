@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-26T18:16:26.202652+00:00",
+  "purpose": "TICKET05_WACC_SOURCE_SUPPORT_NOT_ECONOMIC_APPROVAL",
+  "research_scope": "CURRENTLY_OBTAINED_RESEARCH_OF_2025_12_31_VALUE_ANCHOR_NOT_HISTORICAL_PIT",
+  "sources": [
+    {
+      "filename": "chinabond-20251231.html",
+      "url": "https://yield.chinabond.com.cn/cbweb-pbc-web/pbc/historyQuery?endDate=2025-12-31&gjqx=0&locale=cn_ZH&qxId=ycqx&startDate=2025-12-31",
+      "source": "RISKFREE_OWNER",
+      "request_started_at": "2026-10-26T18:08:17.077776+00:00",
+      "status": "SUCCESS",
+      "obtained_at": "2026-10-26T18:08:19.517529+00:00",
+      "http_status": 200,
+      "final_url": "https://yield.chinabond.com.cn/cbweb-pbc-web/pbc/historyQuery?endDate=2025-12-31&gjqx=0&locale=cn_ZH&qxId=ycqx&startDate=2025-12-31",
+      "bytes": 7594,
+      "sha256": "9fbcc1c050668694645f07b39b2797799e3c80beb0ef04a1c676ddc6547d3953"
+    },
+    {
+      "filename": "damodaran-country-premiums-jan2026.html",
+      "url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datafile/ctryprem.html",
+      "source": "ERP_AUTHOR_OWNER",
+      "request_started_at": "2026-10-26T18:08:19.517593+00:00",
+      "status": "SUCCESS",
+      "obtained_at": "2026-10-26T18:08:21.776108+00:00",
+      "http_status": 200,
+      "final_url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datafile/ctryprem.html",
+      "bytes": 277049,
+      "sha256": "ea30d57fc0858072c520930e2e5b8a5e5affdce81f7f2e1f9054efab79959dbc"
+    },
+    {
+      "filename": "damodaran-global-betas-jan2026.html",
+      "url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datafile/BetasGlobal.html",
+      "source": "SECTOR_BETA_AUTHOR_OWNER",
+      "request_started_at": "2026-10-26T18:08:21.776449+00:00",
+      "status": "SUCCESS",
+      "obtained_at": "2026-10-26T18:08:23.733097+00:00",
+      "http_status": 200,
+      "final_url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datafile/BetasGlobal.html",
+      "bytes": 171990,
+      "sha256": "d90ac7bd26a137d29e6012a3c9639384145d3245563fd6de9f255527a7e1fa67"
+    },
+    {
+      "filename": "damodaran-current-data-methods.html",
+      "url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datacurrent.html",
+      "source": "AUTHOR_METHODS_INDEX",
+      "request_started_at": "2026-10-26T18:08:23.733241+00:00",
+      "status": "SUCCESS",
+      "obtained_at": "2026-10-26T18:08:25.356823+00:00",
+      "http_status": 200,
+      "final_url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datacurrent.html",
+      "bytes": 59212,
+      "sha256": "a8214c92d0c562b548b5293e571de23e4ad8c95fa3760f2625c2a2eca45a29a1"
+    },
+    {
+      "filename": "damodaran-variable-definitions.html",
+      "url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/definitions.html",
+      "source": "AUTHOR_METHODS_DEFINITIONS",
+      "request_started_at": "2026-10-26T18:12:16.135249+00:00",
+      "status": "SUCCESS",
+      "obtained_at": "2026-10-26T18:12:17.952928+00:00",
+      "http_status": 200,
+      "final_url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/definitions.html",
+      "bytes": 104742,
+      "sha256": "08a2b4f46aa8bdda52fc9a5a7e17384121cd63e930aeb56da508f0e3ac7a6e77"
+    }
+  ],
+  "riskfree_input": {
+    "source_filename": "chinabond-20251231.html",
+    "observation_date": "2025-12-31",
+    "curve": "中债国债收益率曲线",
+    "tenor_years": 10,
+    "source_row": [
+      "中债国债收益率曲线",
+      "2025-12-31",
+      "1.2657",
+      "1.3398",
+      "1.3372",
+      "1.3830",
+      "1.6309",
+      "1.7359",
+      "1.8473",
+      "2.2674"
+    ],
+    "reported_percent": "1.8473",
+    "annual_rate": "0.018473",
+    "currency": "CNY",
+    "basis": "OBSERVED_SOVEREIGN_YIELD_BENCHMARK",
+    "selection_status": "Using it as a default-free rf is an ASSUMED proxy convention; not a proof of zero sovereign credit risk",
+    "original_2026_R1": "chinabond-20261023.html retained unchanged; not used as same-day2025 input"
+  },
+  "company_market_input": {
+    "observation_date": "2025-12-31",
+    "market_cap_reported": "86.7亿",
+    "market_equity_CNY_approx": "8670000000",
+    "precision": "Provider displayed0.1亿元 increments; rounding algorithm unspecified, not an exact raw amount",
+    "raw_close_price": null,
+    "returned_price_value": "8.5",
+    "returned_price_labels": [
+      "收盘价(定点复权)",
+      "收盘价(不前推)"
+    ],
+    "raw_close_blocked_reason": "ADJUSTMENT_MODE_NOT_EXPLICITLY_CONFIRMED_RAW_AFTER_ONE_CLARIFICATION",
+    "source_filenames": [
+      "provider-wacc-market-data.json",
+      "provider-wacc-price-clarification.json"
+    ],
+    "precise_tool_received_at": null,
+    "recorded_at_only": true
+  },
+  "erp_proxy": {
+    "author": "Aswath Damodaran,NYU Stern",
+    "source_filename": "damodaran-country-premiums-jan2026.html",
+    "last_updated": "2026-01-05",
+    "country": "China",
+    "rating": "A1",
+    "adjusted_sovereign_default_spread": "0.0060",
+    "country_risk_premium": "0.0091",
+    "total_equity_risk_premium": "0.0514",
+    "mature_market_erp_derived": "0.0423",
+    "mature_erp_formula": "0.0514-0.0091=0.0423",
+    "basis": "AUTHOR_MODEL_ESTIMATE_NOT_OBSERVED_REALIZED_PREMIUM",
+    "method": "Author estimates mature implied equity premium from stock-index cash flows; country premium is rating/CDS-based default spread scaled for relative equity/bond volatility, then added to mature ERP",
+    "limitations": [
+      "Jan5 2026 estimate published after Dec31 value anchor; current research use, no historicalPIT claim",
+      "Total China ERP already includes country premium; do not add country premium again to beta-times-total-ERP convention",
+      "Dimensionless equity premium estimate does not imply underlying USD absolute datasets are CNY cashflows",
+      "Source offers rating-based and CDS-based alternatives; only rating-based total5.14% used here, not silently blend4.99% CDS alternative"
+    ]
+  },
+  "beta_proxy": {
+    "author": "Aswath Damodaran,NYU Stern",
+    "source_filename": "damodaran-global-betas-jan2026.html",
+    "analysis_as_of_month": "2026-01",
+    "industry": "Beverage (Soft)",
+    "region": "GLOBAL",
+    "firm_count": 94,
+    "source_levered_beta": "0.59",
+    "source_debt_equity_ratio": "0.1872",
+    "source_unlevered_beta": "0.52",
+    "source_cash_corrected_unlevered_beta": "0.54",
+    "chosen_proxy_if_adopted": "0.54 operating asset beta, then relever to company financial leverage",
+    "classification_basis": "Issuer2025 annualp16 plant beverages99.95% of revenue; nonalcoholic beverage sector proxy, not group profit divided by partial volume",
+    "method_source_filename": "damodaran-variable-definitions.html",
+    "company_beta_observed": null,
+    "company_beta_blocked_reason": "Provider query did not return a beta with explicit window/frequency/benchmark; no default1 assigned",
+    "individual_regression_window_frequency_benchmark": null,
+    "limitations": [
+      "Global sector proxy is not an estimate observed for000848 itself",
+      "HTML does not disclose every constituent regression window/frequency/index; retain unknown",
+      "Differences in geography, product mix, brand/channel and country risks remain",
+      "Author full update indexJan9 2026 generally uses latestTTM financial inputs through precedingQ3; not an as-known-Dec31 original dataset"
+    ]
+  },
+  "capital_weights_if_adopted": {
+    "market_equity_proxy_CNY": "8670000000",
+    "bank_debt_book_CNY": "586181038.07",
+    "lease_debt_book_CNY": "6147416.98",
+    "financial_debt_book_proxy_CNY": "592328455.05",
+    "debt_source": "LULU2025 annualp137 and146",
+    "debt_market_proxy_policy": "Nontraded bank/lease carrying balances used as proxy for market debt; not observed market debt price",
+    "excluded_from_wacc_financial_debt": [
+      "Trade/contract operating payables",
+      "Capital project payables equity-bridge adjustment if separately accounted",
+      "Restricted-share repurchase obligations policy must not be double-counted"
+    ],
+    "equity_weight": "0.9360497246535182943657901284479670823310",
+    "debt_weight": "0.06395027534648170563420987155203291766902",
+    "D_over_E": "0.06831931430795847750865051903114186851211",
+    "is_target_policy": false,
+    "limitations": [
+      "Weights follow approximate observed market equity and book-debt proxy, not an unsourced90/10 target",
+      "Raw price exactness unresolved but direct provider historical market-cap estimate available",
+      "Sensitivity to market-cap display precision and book-versus-market debt remains"
+    ]
+  },
+  "beta_relevering_if_adopted": {
+    "asset_beta_proxy": "0.54",
+    "marginal_tax": "0.25",
+    "D_over_E": "0.06831931430795847750865051903114186851211",
+    "equity_beta_derived": "0.5676693222947231833910034602076124567474",
+    "formula": "beta_L=beta_asset*(1+(1-tax)*D/E)",
+    "assumptions": [
+      "Zero debt beta as in standard unlever/relever approximation",
+      "Tax shield and debt/lease policy valid for scope",
+      "Applying global sector asset beta to this company is explicit research proxy, not empirical company estimate"
+    ]
+  },
+  "sovereign_default_convention": {
+    "not_a_recommendation": true,
+    "domestic_yield_proxy": "0.018473",
+    "author_rating_default_spread": "0.0060",
+    "arithmetic_default_adjusted_proxy_if_model_chosen": "0.012473",
+    "formula": "0.018473-0.0060=0.012473",
+    "limitations": [
+      "Do not silently subtract a credit spread obtained under another convention/currency; adoption itself needs a documented model choice",
+      "If using China totalERP0.0514, do not add CRP0.0091 a second time",
+      "These alternatives do not prove one correctWACC or authorize a usable valuation range"
+    ]
+  },
+  "unobtained_or_blocked": [
+    "Exact unadjusted historical closing price",
+    "Unrounded market-cap original numeric amount",
+    "Company-specific beta with fully specified estimation window,frequency and benchmark",
+    "Observed market debt value",
+    "Unique company equity risk premium or issuer-disclosed target market capital weights"
+  ],
+  "query_bounds": "3 source classes only: official datedCNYyield; connected one-company historical market data with one raw-price clarification; NYU authorERP/beta/method family. No newcompany,key,training,account orSEALED data."
+}

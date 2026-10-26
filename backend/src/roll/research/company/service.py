@@ -82,6 +82,8 @@ class CompanyResearch:
         self.analysis = AnalysisState(self)
         from .valuation import ValuationState
         self.valuations = ValuationState(self)
+        from .economics import EconomicState
+        self.economics = EconomicState(self)
 
     @contextmanager
     def transaction(self):
@@ -548,3 +550,15 @@ class CompanyResearch:
 
     def valuation_bundle(self, identifier):
         return self.valuations.bundle(identifier)
+
+    def calculate_operating_valuation(self, command):
+        return self.economics.calculate(command)
+
+    def operating_model(self, identifier):
+        return self.economics.read('operating_models', 'operating_model_id', identifier)
+
+    def economic_review(self, identifier):
+        return self.economics.read('economic_reviews', 'review_id', identifier)
+
+    def valuation_presentation(self, identifier, purpose='CURRENT_PRICING'):
+        return self.economics.presentation(identifier, purpose)

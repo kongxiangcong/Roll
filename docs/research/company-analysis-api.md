@@ -25,3 +25,5 @@
 `analysis_snapshot(snapshot_id, purpose='DAILY'|'REPORT')`与`GET /snapshots/{id}?purpose=...`始终返回同一规范化核心payload及hash。已发布快照无修改入口；更新创建新输入和父子版本。快照明确保存估值为空的原因，不假装04/05已执行。离线重放读取保存原文与快照，不重新调用模型冒充原文再现。
 
 新增表、输入/候选/原文归档均纳入既有备份；备份校验结构hash、同公司事实/材料/假设/父版本/输入/归档引用。03真实模型与隔离恢复证据见[验收记录](../../.scratch/roll-research-valuation/evidence/03/README.md)。生产任务不需要开发者PDF路径。
+
+05新增[受控经济审核](company-economic-review.md)的宿主enrichment子快照：复用原冻结输入/事实/假设与核心研究，不重跑模型，固定估值、经营模型及审核版本；原03快照仍不可变。DAILY/REPORT使用该固定子快照与safe presentation，不分别取最新估值。当前用途的时效检查可阻断旧价格，但不会改写历史快照/报告。

@@ -64,7 +64,16 @@ def validate_analysis(db, archives, materials, facts, companies):
         packet = inputs.get(snapshot['input_id'])
         require(packet and packet['company_id'] == snapshot['company_id'])
         require(snapshot['input_sha256'] == packet['packet_sha256'] and snapshot['input_archive'] == packet['input_archive'])
-        require(snapshot['parent_snapshot_id'] == packet['parent_snapshot_id'] and snapshot['parent_snapshot_id'] != snapshot['snapshot_id'])
+        if snapshot.get('enrichment_kind') == 'ECONOMIC_REVIEW':
+            parent = snapshots.get(snapshot['parent_snapshot_id'])
+            require(parent and parent['company_id'] == snapshot['company_id'] and parent['input_id'] == snapshot['input_id'])
+            require(all(snapshot[k] == parent[k] for k in ['fact_version_ids', 'hypothesis_version_ids', 'candidate_id', 'candidate_sha256', 'input_sha256']))
+            core = {k: v for k, v in snapshot['core'].items() if k not in {'valuation', 'valuation_unavailable_reason'}}
+            parent_core = {k: v for k, v in parent['core'].items() if k not in {'valuation', 'valuation_unavailable_reason'}}
+            require(core == parent_core)
+        else:
+            require(snapshot['parent_snapshot_id'] == packet['parent_snapshot_id'])
+        require(snapshot['parent_snapshot_id'] != snapshot['snapshot_id'])
         require(snapshot['fact_version_ids'] == packet['fact_version_ids'] and snapshot['material_ids'] == packet['material_ids'])
         require(fingerprint(snapshot['core']) == snapshot['core_sha256'])
         archive(snapshot['candidate_archive'])

@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_business_text_cannot_be_used_as_quantitative_discount_rate_source ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red10/test_business_text_cannot_be_u0')
+
+    def test_business_text_cannot_be_used_as_quantitative_discount_rate_source(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        command.economic_basis['wacc']['references'] = command.config['metadata']['sources']
+        result = research.calculate_operating_valuation(command)
+        review = research.economic_review(result['review_id'])
+>       assert review['status'] == 'blocked'
+E       AssertionError: assert 'conditional' == 'blocked'
+E         
+E         - blocked
+E         + conditional
+
+backend\tests\company_research\test_economic_review.py:268: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_business_text_cannot_be_used_as_quantitative_discount_rate_source
+1 failed, 10 deselected in 6.99s

@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_missing_critical_assumption_rationale_is_blocked_instead_of_usable_conditional _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red11/test_missing_critical_assumpti0')
+
+    def test_missing_critical_assumption_rationale_is_blocked_instead_of_usable_conditional(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        command.economic_basis.pop('assumption_basis', None)
+        result = research.calculate_operating_valuation(command)
+        view = research.valuation_presentation(result['review_id'], 'BASELINE_RESEARCH')
+>       assert view['review']['status'] == 'blocked' and view['usable_range'] is False
+E       AssertionError: assert ('conditional' == 'blocked'
+E         
+E         - blocked
+E         + conditional)
+
+backend\tests\company_research\test_economic_review.py:332: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_missing_critical_assumption_rationale_is_blocked_instead_of_usable_conditional
+1 failed, 20 deselected in 7.20s

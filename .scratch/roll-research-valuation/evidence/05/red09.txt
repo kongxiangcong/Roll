@@ -1,0 +1,21 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_financial_applicability_preserves_research_without_executing_fcff ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red09/test_financial_applicability_p0')
+
+    def test_financial_applicability_preserves_research_without_executing_fcff(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, original = operating_request(research)
+        command.economic_basis['applicability']['category'] = 'FINANCIAL'
+        result = research.calculate_operating_valuation(command)
+        review = research.economic_review(result['review_id'])
+        assert review['applicability'] == 'NOT_APPLICABLE' and review['status'] == 'blocked'
+>       assert result['valuation_id'] is None
+E       AssertionError: assert '12ade8c0-2282-4458-9997-a31834aca629' is None
+
+backend\tests\company_research\test_economic_review.py:238: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_financial_applicability_preserves_research_without_executing_fcff
+1 failed, 9 deselected in 6.85s

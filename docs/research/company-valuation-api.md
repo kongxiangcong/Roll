@@ -2,6 +2,8 @@
 
 Ticket04 adds `CompanyResearch.calculate_valuation(ValuationCommand)` at `/api/company-research/valuations`. It never writes account valuation, forecasts, permissions, decisions or execution intents. Every saved output is **unreviewed**, `usable_range=false`. Unsupported economic assumptions remain diagnostic until ticket05 provides operating drivers, normalization and controlled economic review.
 
+Ticket05 now supplies a [separate operating model, economic review and safe presentation](company-economic-review.md). It does not mutate04 inputs/results or relax their numeric-origin checks. Summaries use a pinned review ID and explicit presentation purpose; raw calculator prices remain diagnostics.
+
 ## Public boundary
 
 - `POST /valuations`: `snapshot_id`, `config`, `assumptions`, `provenance`, optional `parent_version_id`, `change_reason`, `idempotency_key`.
