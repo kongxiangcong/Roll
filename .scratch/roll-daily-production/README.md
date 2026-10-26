@@ -20,3 +20,5 @@
 
 5. [回放正确性与研究报告](05-research-replay/spec.md)
 6. [独立验证执行器](06-independent-validation/spec.md)
+
+阶段 5/6 工程实现与联合回归已完成。分别见 [阶段 5 验收](05-research-replay/acceptance.md) 与 [阶段 6 验收](06-independent-validation/acceptance.md)；真实原件报告、前向成熟证据及目标主机/浏览器验收仍有明确待办，未宣称取得统计 PASS。

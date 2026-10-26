@@ -1,0 +1,62 @@
+{
+  "evidence_kind": "METHOD_CASE",
+  "namespace": "METHOD_CASE",
+  "validation_verdict": "FAIL",
+  "final_look_count": 1,
+  "result_fingerprint": "0c7aaa2a3854b5523535f968486baafe62c5d2ebd8b3a9981be5b3995445f676",
+  "capability": "NOT_GRANTED",
+  "system_usable": false,
+  "origin": "Extracted from actual disposable METHOD API test SQLite; not real-market evidence",
+  "gates": {
+    "G1": {
+      "status": "INCONCLUSIVE",
+      "reasons": [
+        "NO_INDEPENDENT_REAL_SAMPLES"
+      ]
+    },
+    "G2": {
+      "status": "PASS",
+      "reasons": []
+    },
+    "G3": {
+      "status": "INCONCLUSIVE",
+      "reasons": [
+        "INDEPENDENT_SUPPORT_AND_SAMPLING_ASSUMPTIONS_NOT_VERIFIED"
+      ]
+    },
+    "G4": {
+      "status": "FAIL",
+      "reasons": [
+        "MINIMUM_DECISION_COVERAGE_NOT_MET"
+      ]
+    },
+    "G5": {
+      "status": "INCONCLUSIVE",
+      "reasons": [
+        "FROZEN_ROBUSTNESS_PACKAGE_NOT_ADMITTED"
+      ]
+    },
+    "G6": {
+      "status": "INCONCLUSIVE",
+      "reasons": [
+        "REAL_FORWARD_COVERAGE_INCOMPLETE_OR_METHOD_ONLY"
+      ]
+    },
+    "G7": {
+      "status": "INCONCLUSIVE",
+      "reasons": [
+        "MATURE_FORWARD_SUPPORT_INSUFFICIENT_OR_ASSUMPTIONS_UNVERIFIED"
+      ]
+    }
+  },
+  "maturity_counts": {
+    "mature": 1,
+    "unmatured": 0,
+    "unscorable": 0
+  },
+  "baselines": [
+    "CASH",
+    "MA5_MA20",
+    "START_HOLD"
+  ]
+}

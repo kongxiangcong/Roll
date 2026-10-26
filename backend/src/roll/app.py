@@ -685,6 +685,28 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     forward.action_windows=action_windows
     app.state.forward=forward
 
+    from roll.research.independent_validation import IndependentValidation, IndependentCommand
+    independent_validation=IndependentValidation(forward)
+    app.state.independent_validation=independent_validation
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/independent-validation/admission')
+    def independent_admission(freeze_id:str):return independent_validation.admission(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/independent-validation/plan',status_code=201)
+    def independent_register(freeze_id:str,command:IndependentCommand):return independent_validation.register(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/independent-validation/plan')
+    def independent_plan(freeze_id:str):return independent_validation.plan(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/independent-validation',status_code=201)
+    def independent_execute(freeze_id:str):return independent_validation.create(freeze_id)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/independent-validation')
+    def independent_get(freeze_id:str):return independent_validation.get(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/independent-validation/replay')
+    def independent_replay(freeze_id:str):return independent_validation.replay(freeze_id)
+
     @app.post('/api/research/complete-freezes/{freeze_id}/forward',status_code=201)
     def forward_register(freeze_id:str,command:ForwardCommand):return forward.register(freeze_id,command)
 
