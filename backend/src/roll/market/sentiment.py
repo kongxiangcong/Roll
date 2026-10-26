@@ -41,7 +41,9 @@ class Sentiment:
                 raise ValueError('SENTIMENT_RESEARCH_TASK_NOT_VERIFIED')
             if value.get('object_version')!=OBJECT_VERSION or value.get('object_sha256')!=hashlib.sha256(Path(__file__).with_name('sentiment_object.py').read_bytes()).hexdigest():
                 raise ValueError('SENTIMENT_OBJECT_FINGERPRINT_MISMATCH')
-        model=Path(value['model_directory']).resolve()
+        override=os.environ.get('ROLL_SENTIMENT_MODEL_DIR' if profile=='legacy' else 'ROLL_SENTIMENT_RESEARCH_MODEL_DIR')
+        model=Path(override or value['model_directory']).resolve()
+        if override:value={**value,'model_directory':str(model)}
         for item in value['artifacts']:
             path=(model/item['path']).resolve()
             if not path.is_relative_to(model) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=item['sha256']:

@@ -45,7 +45,12 @@ from roll.market.sse_company_actions import CompanyActionPages
 from roll.market.sse_action_assessments import ActionAssessments,ActionAssessmentCommand,ActionPacketCommand
 from roll.market.action_window import ActionWindows,ActionWindowCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
-from roll.market.sse_daily import DatedDaily, DailyPacketCommand
+try:
+    from roll.market.sse_daily import DatedDaily, DailyPacketCommand
+except ModuleNotFoundError as error:
+    if error.name != 'roll.market.sse_daily':
+        raise
+    from roll.runtime.unavailable_daily import DatedDaily, DailyPacketCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
@@ -1725,6 +1730,11 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return {"service": "RUNNING", "storage": "READABLE", "market": "FINITE_REQUEST_ADAPTER_AVAILABLE",
                 "backend": "NOT_CONFIGURED", "reason": "本机账户与有限市场取证接口在线；实际覆盖、缺口及时效逐请求核对，模型接入尚未配置"}
 
+    @app.get("/api/runtime/release")
+    def release_identity():
+        from roll.runtime.release import identity
+        return identity()
+
     @app.get("/api/health")
     def health():
         return {"status": "ok","runtime_role":runtime_role,"environment":"test" if os.environ.get("ROLL_ENV")=="test" else "local"}
@@ -1913,4 +1923,6 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
             if len(raw)>256*1024*1024:raise HTTPException(413,'恢复包压缩大小最多256MiB')
         return await asyncio.to_thread(backups.stage_restore,bytes(raw))
 
+    from roll.runtime.release import mount_web
+    mount_web(app)
     return app

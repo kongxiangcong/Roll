@@ -4,7 +4,7 @@
 
 ## 启动和停止
 
-在仓库根目录执行 `./scripts/start-roll.ps1`，打开 http://127.0.0.1:5173，默认进入「日常使用」。
+在仓库根目录执行 `./scripts/start-roll.ps1`，打开 http://127.0.0.1:8010，默认进入「日常使用」。
 
 `./scripts/start-roll.ps1 -Status` 检查 API、worker 和网页。沿用 `%LOCALAPPDATA%\Roll`；在沙箱或重定向环境中应显式传入 `-DataDirectory <实际账户目录>`，避免误用另一份空账户。
 
@@ -30,3 +30,5 @@
 行情和事实观察并不代表实时交易状态、完整公司行动或经过验证的买卖建议。缺失信息只限制依赖它的分析。当前版本不启动训练、不生成真实成交、不授予模型资格。
 
 验收范围与实际结果见 [日常闭环验收](../.scratch/roll-daily-use/acceptance.md)。
+
+日常版锁定安装与构建、版本诊断、恢复步骤见 [发布与运行](daily-production.md)。
