@@ -4,6 +4,8 @@ import {ObservationUpdatesPanel} from '../components/observation-updates-panel';
 import {FinancialObservationPanel} from '../components/financial-observation-panel';
 import {NewsPanel} from '../components/news-panel';
 import {ReviewPanel} from '../components/review-panel';
+import {DailyReportPanel} from '../components/daily-report-panel';
+import '../styles/daily-report.css';
 import {SyncFill} from './sync-fill';
 
 export function DailyUse({account,onRefresh,onNavigate}:{account:Account;onRefresh:()=>void;onNavigate:(page:string)=>void}){
@@ -12,7 +14,7 @@ export function DailyUse({account,onRefresh,onNavigate}:{account:Account;onRefre
   const [selected,setSelected]=useState(''),[error,setError]=useState('');
   useEffect(()=>{let active=true;request<{members:typeof members}>('/market/list').then(v=>{if(active){setMembers(v.members);setSelected(old=>v.members.some(m=>m.instrument===old)?old:v.members[0]?.instrument??'');}}).catch(e=>{if(active)setError(String(e));});return()=>{active=false;};},[account.version]);
   const member=members.find(m=>m.instrument===selected);
-  const supported=/^(SSE:6|SZSE:[03])\d{5}$/.test(selected);
+  const supported=/^(SSE:(60|68)|SZSE:(00|30))\d{4}$/.test(selected);
   return <section className="daily-use" aria-label="持仓与自选日常使用">
     <h1>持仓与自选 · 日常使用</h1>
     <label>观察证券<select aria-label="观察证券" value={selected} onChange={e=>{setSelected(e.target.value);setRecording(false);}}>{members.map(m=><option key={m.instrument} value={m.instrument}>{m.identity.name??m.instrument} · {m.holding?'持仓':'自选'}</option>)}</select></label>
@@ -29,6 +31,7 @@ export function DailyUse({account,onRefresh,onNavigate}:{account:Account;onRefre
     {recording&&<SyncFill account={account} mode="FILL" key={selected} defaultCode={selected.split(':')[1]} onDone={()=>{onRefresh();setRecording(false);}}/>}
     {supported&&<ObservationUpdatesPanel key={selected} instrument={selected} expanded/>}
     {selected&&!supported&&<p>该证券采集器尚未适配；账户与历史仍可查看。</p>}
+    <DailyReportPanel/>
     <ReviewPanel/>
     {supported&&<FinancialObservationPanel key={selected} instrument={selected}/>}
     {supported&&<NewsPanel key={selected} instrument={selected}/>}

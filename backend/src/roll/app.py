@@ -1529,6 +1529,28 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     reviews.notifications = notifications
     from roll.runtime.observation_updates import ObservationUpdates,UpdateSettings,UpdateRequest
     observation_updates=ObservationUpdates(reviews,financial,financial_statements,financial_observations,news,sentiment,sentiment_series,prospective.sources,notifications)
+    from roll.runtime.daily_reports import DailyReports, NoteCommand, BreadthCommand
+    daily_reports=DailyReports(ledger,market,reviews,valuations,observation_updates,financial_observations,news)
+    app.state.daily_reports=daily_reports
+
+    @app.get('/api/daily-reports')
+    def daily_report_history():return daily_reports.history()
+
+    @app.post('/api/daily-reports',status_code=201)
+    def daily_report_publish():return daily_reports.publish()
+
+    @app.get('/api/daily-reports/notes')
+    def daily_report_notes():return daily_reports.notes()
+
+    @app.post('/api/daily-reports/notes',status_code=201)
+    def daily_report_note(command:NoteCommand):return daily_reports.note(command)
+
+    @app.post('/api/daily-reports/breadth',status_code=201)
+    def daily_report_breadth(command:BreadthCommand):return daily_reports.import_breadth(command)
+
+    @app.get('/api/daily-reports/{identifier}')
+    def daily_report_get(identifier:str):return daily_reports.get(identifier)
+
     reviews.observation_updates=observation_updates
     app.state.observation_updates=observation_updates
 

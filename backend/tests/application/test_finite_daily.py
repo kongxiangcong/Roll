@@ -10,7 +10,7 @@ from test_observation_updates import start, wait
 def test_symbols_are_exchange_bound():
     assert symbols('SSE:600000')==('600000','SH600000','600000.SH')
     assert symbols('SZSE:000001')==('000001','SZ000001','000001.SZ')
-    for invalid in ['SSE:000001','SZSE:600362','BSE:830001','600362','SSE:600362/../../']:
+    for invalid in ['SSE:000001','SZSE:399001','SZSE:600362','BSE:830001','600362','SSE:600362/../../']:
         with pytest.raises(ValueError):symbols(invalid)
 
 
