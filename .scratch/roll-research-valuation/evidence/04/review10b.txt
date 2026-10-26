@@ -1,0 +1,67 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_service_ah_market_basis_uses_matching_frozen_numeric_facts _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv04-review10b/test_service_ah_market_basis_u0')
+
+    def test_service_ah_market_basis_uses_matching_frozen_numeric_facts(tmp_path):
+        from test_shared_evidence import service, material_input
+        from test_analysis_snapshots import candidate
+        from roll.research.company import FactCommand, AnalysisCommand, MaterialCommand
+        from datetime import datetime, timezone
+        research = service(tmp_path)
+        command, old = valuation_request(research)
+        anchor = research.fact(old["fact_version_ids"][0])
+        basis = market_basis()
+        basis[0]["listing_id"] = "SSE:600362"; basis[1]["listing_id"] = "HKEX:00358"
+        fact_ids = [anchor["version_id"]]
+        for index, row in enumerate(basis):
+            values = [("shares", row["shares"], "million_shares", None, row["listing_id"]),
+                      ("price", row["price"], "price_per_share", row["currency"], row["listing_id"])]
+            if row.get("fx"): values.append(("fx/rate", .9, "ratio", None, "HKD->CNY"))
+            for field, value, unit, currency, scope in values:
+                metadata = material_input(old["company_id"])
+                metadata.update(unit=unit, currency=currency, scope=scope, source_id=f"method-market-{index}-{field}",
+                                origin_root_id=f"method-market-{index}-{field}", period_start="2026-10-26", period_end="2026-10-26")
+                material = research.import_material(MaterialCommand(**metadata), f"METHOD {scope} {field} {value}".encode())
+                fact = research.add_fact(FactCommand(company_id=old["company_id"], material_id=material["material_id"],
+                    metric=row["listing_id"] + ":" + field, business="LISTED_CAPITAL", value=str(value),
+                    unit=unit, currency=currency, scope=scope, period_start="2026-10-26", period_end="2026-10-26",
+                    change_reason="METHOD market basis reference"))
+                fact_ids.append(fact["version_id"])
+                ref = [fact["version_id"]]
+                if field == "fx/rate": row["fx"]["source_refs"] = ref
+                else: row["share_refs" if field == "shares" else "price_refs"] = ref
+                command.provenance[f"reverse/market_basis/{index}/{field}"] = dict(kind="DISCLOSED", references=ref,
+                    unit=unit, currency=currency, scope=scope, period="2026-10-26/2026-10-26")
+        packet = research.freeze_analysis(AnalysisCommand(company_id=old["company_id"], as_of=datetime.now(timezone.utc).isoformat(),
+            fact_version_ids=fact_ids, parent_snapshot_id=old["snapshot_id"]))
+        snapshot = research.apply_analysis_candidate(packet["input_id"], candidate(packet, anchor, hypotheses=[], insufficient_hypotheses_reason="Reuse facts for calculator-only diagnostic"))
+        command.snapshot_id = snapshot["snapshot_id"]
+        command.config["reverse"] = dict(scenario="base", market_basis=basis)
+>       saved = research.calculate_valuation(command)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_valuation.py:328: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:538: in calculate_valuation
+    return self.valuations.calculate(command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\valuation.py:176: in calculate
+    validate_provenance(command, snapshot, {f['version_id']: f for f in packet['payload']['facts']})
+backend\src\roll\research\company\valuation.py:39: in validate_provenance
+    fail('UNKNOWN_CITATION', 'Assumption anchors must be frozen in this snapshot')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'UNKNOWN_CITATION'
+reason = 'Assumption anchors must be frozen in this snapshot', status = 422
+context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'UNKNOWN_CITATION', 'reason': 'Assumption anchors must be frozen in this snapshot', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_service_ah_market_basis_uses_matching_frozen_numeric_facts
+1 failed, 10 deselected in 7.34s

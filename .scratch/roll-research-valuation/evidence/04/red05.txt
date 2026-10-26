@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_market_basis_uses_shanghai_trading_day_exact_cutoff_and_identity_fx ___
+
+    def test_market_basis_uses_shanghai_trading_day_exact_cutoff_and_identity_fx():
+        from roll.research.company.calculator import calculate
+        cfg = config(); identity = issuer()
+        identity["listings"].append(dict(listing_id="HKEX:00001", share_class="H", currency="HKD"))
+        cfg["reverse"] = dict(scenario="base", market_basis=market_basis())
+        cfg["metadata"]["as_of"] = "2026-10-26T08:00:00+00:00"
+        # Same local trading date, but the price is still in the future at cutoff.
+        cfg["reverse"]["market_basis"][1]["priced_at"] = "2026-10-26T08:01:00+00:00"
+>       assert calculate(cfg, identity)["reverse"]["error"]["code"] == "AH_BASIS_INCOMPLETE"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'error'
+
+backend\tests\company_research\test_valuation.py:174: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_market_basis_uses_shanghai_trading_day_exact_cutoff_and_identity_fx
+1 failed, 4 deselected in 1.22s

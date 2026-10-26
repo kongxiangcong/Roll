@@ -1,0 +1,35 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+___ test_reverse_uses_frozen_ah_identity_and_complete_same_day_class_basis ____
+
+    def test_reverse_uses_frozen_ah_identity_and_complete_same_day_class_basis():
+        from roll.research.company.calculator import calculate
+        identity = issuer()
+        identity["listings"].append(dict(listing_id="HKEX:00001", share_class="H", currency="HKD"))
+        cfg = config()
+        cfg["metadata"]["listing_structure"] = "A"  # Caller cannot conceal H listing.
+        cfg["reverse"] = dict(scenario="base", price=10)
+        refused = calculate(cfg, identity)
+        assert refused["reverse"]["error"]["code"] == "AH_BASIS_INCOMPLETE"
+        assert refused["scenarios"][0]["per_share"] == pytest.approx(8)
+        cfg["reverse"] = dict(scenario="base", market_basis=market_basis(),
+                              steady_margins=[.1], base_revenue=1000,
+                              comparable_margin_basis="Same consolidated FCFF/revenue at steady state")
+        result = calculate(cfg, identity)["reverse"]
+        # Equity = 60*10 + 40*20*.9 = 1320; EV = 1520.
+        # (1520 - 100/1.1 - 100/1.21) * 1.21 * .1 = 162.92.
+        assert result["market_equity_value"] == pytest.approx(1320)
+        assert result["terminal_fcf_required"] == pytest.approx(162.92)
+        assert result["terminal_year"] == 3
+        assert result["rows"][0]["terminal_revenue_required"] == pytest.approx(1629.2)
+>       assert result["rows"][0]["revenue_cagr_to_terminal_year"] == pytest.approx(.1767004887)
+E       assert 0.17667935510860522 == 0.1767004887 �� 1.8e-07
+E         
+E         comparison failed
+E         Obtained: 0.17667935510860522
+E         Expected: 0.1767004887 �� 1.8e-07
+
+backend\tests\company_research\test_valuation.py:64: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_reverse_uses_frozen_ah_identity_and_complete_same_day_class_basis
+1 failed, 1 passed in 1.22s

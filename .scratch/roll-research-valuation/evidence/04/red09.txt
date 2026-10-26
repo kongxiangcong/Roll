@@ -1,0 +1,33 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_optional_sensitivity_keeps_valid_cells_and_the_base_diagnostic _____
+
+    def test_optional_sensitivity_keeps_valid_cells_and_the_base_diagnostic():
+        from roll.research.company.calculator import calculate
+        cfg = config()
+        cfg["sensitivity"] = dict(scenario="base", wacc=[.1, .02], terminal_g=[0, .02])
+>       result = calculate(cfg, issuer())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_valuation.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\calculator.py:110: in calculate
+    result = algorithm.run(cfg)
+             ^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\valuation_reference\fundamental_valuation.py:206: in run
+    rates(w, growth)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+wacc = 0.02, g = 0.02
+
+    def rates(wacc, g):
+        number(wacc, "wacc", 0, True)
+        number(g, "terminal_g", -1, True)
+        if wacc <= g:
+>           raise ValueError("wacc must exceed terminal_g")
+E           ValueError: wacc must exceed terminal_g
+
+backend\src\roll\research\company\valuation_reference\fundamental_valuation.py:39: ValueError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_optional_sensitivity_keeps_valid_cells_and_the_base_diagnostic
+1 failed, 9 deselected in 1.24s

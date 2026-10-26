@@ -1,0 +1,18 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_research_valuation_is_snapshot_bound_immutable_and_replayed_offline ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv04-green04/test_research_valuation_is_sna0')
+
+    def test_research_valuation_is_snapshot_bound_immutable_and_replayed_offline(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, snapshot = valuation_request(research)
+>       result = research.calculate_valuation(command)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CompanyResearch' object has no attribute 'calculate_valuation'
+
+backend\tests\company_research\test_valuation.py:139: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_research_valuation_is_snapshot_bound_immutable_and_replayed_offline
+1 failed, 3 deselected in 6.31s

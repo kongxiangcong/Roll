@@ -6,7 +6,7 @@ from typing import Literal
 from fastapi import APIRouter, Response, Query
 from pydantic import Field
 
-from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand, AnalysisCommand
+from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand, AnalysisCommand, ValuationCommand
 from .service import fail
 
 
@@ -123,5 +123,25 @@ def router(research):
     @routes.get('/companies/{company_id}/snapshots')
     def snapshots(company_id: str, limit: int = Query(100, ge=1, le=200), offset: int = Query(0, ge=0)):
         return research.analysis_snapshots(company_id, limit, offset)
+
+    @routes.post('/valuations', status_code=201)
+    def calculate_valuation(command: ValuationCommand):
+        return research.calculate_valuation(command)
+
+    @routes.get('/valuation-inputs/{version_id}')
+    def valuation_input(version_id: str):
+        return research.valuation_input(version_id)
+
+    @routes.get('/valuations/{valuation_id}')
+    def valuation(valuation_id: str):
+        return research.valuation(valuation_id)
+
+    @routes.get('/valuations/{valuation_id}/bundle')
+    def valuation_bundle(valuation_id: str):
+        return research.valuation_bundle(valuation_id)
+
+    @routes.post('/valuations/{valuation_id}/replay')
+    def replay_valuation(valuation_id: str):
+        return research.replay_valuation(valuation_id)
 
     return routes

@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_numeric_origin_cannot_relabel_assumptions_as_disclosures_or_derivations _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv04-red07/test_numeric_origin_cannot_rel0')
+
+    def test_numeric_origin_cannot_relabel_assumptions_as_disclosures_or_derivations(tmp_path):
+        from test_shared_evidence import service
+        from fastapi import HTTPException
+        research = service(tmp_path)
+        command, _ = valuation_request(research)
+        for kind in ["DISCLOSED", "DERIVED"]:
+            bad = command.model_copy(deep=True)
+            bad.provenance["scenarios/0/fcf/0"]["kind"] = kind
+>           with pytest.raises(HTTPException) as exc: research.calculate_valuation(bad)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_valuation.py:231: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_numeric_origin_cannot_relabel_assumptions_as_disclosures_or_derivations
+1 failed, 6 deselected in 6.58s

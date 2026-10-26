@@ -99,3 +99,13 @@ class AnalysisCommand(Command):
     parent_snapshot_id: str | None = None
     purpose: Literal['DAILY', 'REPORT', 'SHARED'] = 'SHARED'
     evidence_gap_reason: str | None = Field(default=None, max_length=2000)
+
+
+class ValuationCommand(Command):
+    snapshot_id: str = Field(min_length=1, max_length=128)
+    config: dict
+    assumptions: list[dict] = Field(min_length=1, max_length=100)
+    provenance: dict
+    parent_version_id: str | None = None
+    change_reason: str = Field(min_length=1, max_length=2000)
+    idempotency_key: str = Field(min_length=1, max_length=128)
