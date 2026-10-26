@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_group_revenue_cannot_use_segment_margin_source_as_reviewed_group_cashflow _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-red10/test_group_revenue_cannot_use_0')
+
+    def test_group_revenue_cannot_use_segment_margin_source_as_reviewed_group_cashflow(tmp_path):
+        from test_shared_evidence import service, material_input
+        from test_economic_review import operating_request
+        from test_analysis_snapshots import candidate
+        from roll.research.company import MaterialCommand, FactCommand, AnalysisCommand
+        from datetime import datetime, timezone
+        research = service(tmp_path)
+        command, snapshot = operating_request(research)
+        mat = material_input(snapshot['company_id']); mat.update(unit='ratio', currency=None, scope='PARTIAL_SEGMENT')
+        material = research.import_material(MaterialCommand(**mat), b'METHOD partial segment margin0.2 cannot multiply consolidated revenue')
+        fact = research.add_fact(FactCommand(company_id=snapshot['company_id'], material_id=material['material_id'], metric='operating_margin', business='PARTIAL_SEGMENT', value='.2', unit='ratio', currency=None, scope='PARTIAL_SEGMENT', period_start='2025-01-01', period_end='2025-12-31', change_reason='METHOD partial margin source'))
+        packet = research.freeze_analysis(AnalysisCommand(company_id=snapshot['company_id'], as_of=datetime.now(timezone.utc).isoformat(), fact_version_ids=snapshot['fact_version_ids']+[fact['version_id']], parent_snapshot_id=snapshot['snapshot_id']))
+        draft = candidate(packet, research.fact(snapshot['fact_version_ids'][0])); draft['hypotheses'][0]['previous_version_id']=snapshot['hypothesis_version_ids'][0]
+        current = research.apply_analysis_candidate(packet['input_id'], draft)
+        command.snapshot_id=current['snapshot_id']; command.assumptions[0]['hypothesis_version_ids']=current['hypothesis_version_ids']
+        for year in range(2):
+            # Labeling the forecast CONSOLIDATED does not reconcile a partial source.
+            command.economic_basis['assumption_basis'][f'drivers/scenarios/0/years/{year}/operating_margin']['support_fact_version_ids']=[fact['version_id']]
+        result = research.calculate_operating_valuation(command)
+>       assert research.economic_review(result['review_id'])['status'] == 'blocked'
+E       AssertionError: assert 'conditional' == 'blocked'
+E         
+E         - blocked
+E         + conditional
+
+backend\tests\company_research\test_changes.py:315: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_group_revenue_cannot_use_segment_margin_source_as_reviewed_group_cashflow
+1 failed, 16 deselected in 8.53s

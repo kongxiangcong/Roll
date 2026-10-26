@@ -1,0 +1,76 @@
+FF.                                                                      [100%]
+================================== FAILURES ===================================
+_ test_pure_operating_method_and_mixed_changes_keep_order_and_interactions[0.22-0.1-10-expected_steps0-0] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-red05/test_pure_operating_method_and0')
+margin = 0.22, rate = 0.1, price = 10, expected_steps = [300, 450, 450, 450]
+interaction = 0
+
+    @pytest.mark.parametrize('margin,rate,price,expected_steps,interaction', [
+        (.22, .1, 10, [300, 450, 450, 450], 0),
+        (.2, .08, 10, [300, 300, 300, 675], 0),
+        (.22, .08, 12.5, [300, 450, 200, 612.5], 37.5)])
+    def test_pure_operating_method_and_mixed_changes_keep_order_and_interactions(tmp_path, margin, rate, price, expected_steps, interaction):
+        from test_shared_evidence import service
+        from test_economic_review import operating_request
+        from roll.research.company import ResearchContextCommand, ChangeSetCommand
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        initial = research.calculate_operating_valuation(command)
+        snap = research.analysis_snapshot(initial['snapshot_id'])
+        old = research.freeze_research_context(ResearchContextCommand(snapshot_id=snap['snapshot_id'], quotes=quote_basis(research, snap, 10), change_reason='METHOD baseline quote'))
+        changed = command.model_copy(deep=True)
+        changed.snapshot_id = old['snapshot_id']; changed.idempotency_key = 'new-method'
+        changed.config['wacc'] = rate
+        changed.economic_basis['wacc']['equity_risk_premium'] = rate - .04
+        for row in changed.drivers['scenarios'][0]['years']: row['operating_margin'] = margin
+        changed.economic_basis['terminal']['roic'] = margin * 1.5
+        changed.change_reason = 'METHOD explicit operating/rate assumption revision, no new operating evidence'
+        newer = research.calculate_operating_valuation(changed)
+        current = research.analysis_snapshot(newer['snapshot_id'])
+        new = research.freeze_research_context(ResearchContextCommand(snapshot_id=current['snapshot_id'], quotes=quote_basis(research, current, price), change_reason='METHOD comparison quote'))
+        result = research.compare_snapshots(ChangeSetCommand(old_snapshot_id=old['snapshot_id'], new_snapshot_id=new['snapshot_id'], idempotency_key='mixed', presentation_purpose='BASELINE_RESEARCH'))
+        assert result['changes']['OPERATING_EVIDENCE']['evidence_changed'] is False
+>       assert result['changes']['PRICE']['changed'] is (price != 10)
+E       assert True is (10 != 10)
+
+backend\tests\company_research\test_changes.py:146: AssertionError
+_ test_pure_operating_method_and_mixed_changes_keep_order_and_interactions[0.2-0.08-10-expected_steps1-0] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-red05/test_pure_operating_method_and1')
+margin = 0.2, rate = 0.08, price = 10, expected_steps = [300, 300, 300, 675]
+interaction = 0
+
+    @pytest.mark.parametrize('margin,rate,price,expected_steps,interaction', [
+        (.22, .1, 10, [300, 450, 450, 450], 0),
+        (.2, .08, 10, [300, 300, 300, 675], 0),
+        (.22, .08, 12.5, [300, 450, 200, 612.5], 37.5)])
+    def test_pure_operating_method_and_mixed_changes_keep_order_and_interactions(tmp_path, margin, rate, price, expected_steps, interaction):
+        from test_shared_evidence import service
+        from test_economic_review import operating_request
+        from roll.research.company import ResearchContextCommand, ChangeSetCommand
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        initial = research.calculate_operating_valuation(command)
+        snap = research.analysis_snapshot(initial['snapshot_id'])
+        old = research.freeze_research_context(ResearchContextCommand(snapshot_id=snap['snapshot_id'], quotes=quote_basis(research, snap, 10), change_reason='METHOD baseline quote'))
+        changed = command.model_copy(deep=True)
+        changed.snapshot_id = old['snapshot_id']; changed.idempotency_key = 'new-method'
+        changed.config['wacc'] = rate
+        changed.economic_basis['wacc']['equity_risk_premium'] = rate - .04
+        for row in changed.drivers['scenarios'][0]['years']: row['operating_margin'] = margin
+        changed.economic_basis['terminal']['roic'] = margin * 1.5
+        changed.change_reason = 'METHOD explicit operating/rate assumption revision, no new operating evidence'
+        newer = research.calculate_operating_valuation(changed)
+        current = research.analysis_snapshot(newer['snapshot_id'])
+        new = research.freeze_research_context(ResearchContextCommand(snapshot_id=current['snapshot_id'], quotes=quote_basis(research, current, price), change_reason='METHOD comparison quote'))
+        result = research.compare_snapshots(ChangeSetCommand(old_snapshot_id=old['snapshot_id'], new_snapshot_id=new['snapshot_id'], idempotency_key='mixed', presentation_purpose='BASELINE_RESEARCH'))
+        assert result['changes']['OPERATING_EVIDENCE']['evidence_changed'] is False
+>       assert result['changes']['PRICE']['changed'] is (price != 10)
+E       assert True is (10 != 10)
+
+backend\tests\company_research\test_changes.py:146: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_pure_operating_method_and_mixed_changes_keep_order_and_interactions[0.22-0.1-10-expected_steps0-0]
+FAILED backend\tests\company_research\test_changes.py::test_pure_operating_method_and_mixed_changes_keep_order_and_interactions[0.2-0.08-10-expected_steps1-0]
+2 failed, 1 passed, 4 deselected in 23.31s

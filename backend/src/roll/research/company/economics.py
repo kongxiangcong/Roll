@@ -179,6 +179,26 @@ def build_model(command, snapshot, packet):
     return cashflows, derived, normalizations
 
 
+def operating_scope_issues(request, packet):
+    """The v1 host produces consolidated FCFF; partial inputs need a prior sourced group derivation."""
+    facts = {f['version_id']: f for f in packet['payload']['facts']}
+    audits = request['economic_basis'].get('assumption_basis', {})
+    issues = []
+    for path, origin in request['drivers']['provenance'].items():
+        if not (path.startswith('scenarios/') or path.startswith('basis/terminal/roic')):
+            continue
+        if origin['scope'] != 'CONSOLIDATED':
+            issues.append(path + ': forecast scope is not consolidated')
+            continue
+        if origin['kind'] == 'ASSUMED':
+            audit = audits.get('drivers/' + path, {})
+            roles = assumption_source_roles('drivers/' + path, request['config'])
+            relevant = [facts[i] for i in audit.get('support_fact_version_ids', []) if i in facts and facts[i]['value_type'] == 'NUMBER' and any(role in facts[i]['metric'].casefold() for role in roles)]
+            if not any(f['scope'] == 'CONSOLIDATED' for f in relevant):
+                issues.append(path + ': no relevant consolidated numeric source or explicit consolidated derivation')
+    return issues
+
+
 def economic_checks(command, snapshot, packet, cashflows, normalizations, classification_context=None):
     """Checks return evidence and gaps, never caller-supplied status upgrades."""
     basis, cfg = command.economic_basis, command.config
@@ -189,6 +209,10 @@ def economic_checks(command, snapshot, packet, cashflows, normalizations, classi
         refs = references or []
         checks.append(dict(check_id=key, status='PASS' if ok else 'BLOCKED', reason=reason,
                            fact_version_ids=refs, missing_path=None if ok else 'Supply or reconcile ' + key))
+
+    scope_issues = operating_scope_issues(command.model_dump(), packet)
+    check('operating_scope', not scope_issues,
+          'Consolidated revenue, margins, drivers and capital require consistent consolidated sources; ' + '; '.join(scope_issues), list(facts))
 
     audits = basis.get('assumption_basis', {})
     fact_lookup = {f['version_id']: f for f in packet['payload']['facts']}
@@ -465,6 +489,8 @@ class EconomicState:
             return dict(review=review, status='blocked', usable_range=False, scenarios=[], purpose=purpose, limitations=review['limitations'], diagnostic_valuation_id=None)
         raw = self.research.valuation(review['valuation_id'])
         model = self.research.operating_model(review['operating_model_id'])
+        source_packet = self.research.analysis_input(self.research.analysis_snapshot(model['snapshot_id'])['input_id'])
+        scope_issues = operating_scope_issues(model['request'], source_packet)
         if raw['content_sha256'] != review['valuation_sha256']:
             fail('RESEARCH_REFERENCE_INVALID', 'Review and valuation hash differ', 409)
         basis = model['request']['economic_basis'].get('valuation_basis')
@@ -492,10 +518,12 @@ class EconomicState:
                     current_gaps.append('Newer company financial disclosure acquired since baseline; refresh current applicability without changing the saved snapshot')
         else:
             current_gaps.append('Valuation, financial and equity bridge temporal basis not verified')
+        if scope_issues:
+            current_gaps.append('Consolidated operating scope is not reconciled: ' + '; '.join(scope_issues))
         policy_supported = review['policy_version'] == 'economic-review-2'
         if not policy_supported:
             current_gaps.append('Saved legacy review policy is diagnostic; rerun controlled review under the supported policy')
-        usable = review['usable_range'] and policy_supported and not (purpose == 'CURRENT_PRICING' and current_gaps)
+        usable = review['usable_range'] and policy_supported and not scope_issues and not (purpose == 'CURRENT_PRICING' and current_gaps)
         return dict(review=review, status=review['status'] if usable else 'blocked', usable_range=usable, purpose=purpose,
                     scenarios=copy.deepcopy(raw['result']['scenarios']) if usable else [], valuation_basis=basis,
                     knowledge_as_of=self.research.analysis_snapshot(model['snapshot_id'])['as_of'],

@@ -6,7 +6,7 @@ from typing import Literal
 from fastapi import APIRouter, Response, Query
 from pydantic import Field
 
-from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand, AnalysisCommand, ValuationCommand, OperatingValuationCommand
+from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand, AnalysisCommand, ValuationCommand, OperatingValuationCommand, ResearchContextCommand, ChangeSetCommand
 from .service import fail
 
 
@@ -163,5 +163,21 @@ def router(research):
     @routes.get('/economic-reviews/{review_id}/presentation')
     def valuation_presentation(review_id: str, purpose: Literal['CURRENT_PRICING', 'BASELINE_RESEARCH'] = 'CURRENT_PRICING'):
         return research.valuation_presentation(review_id, purpose)
+
+    @routes.post('/contexts', status_code=201)
+    def research_context(command: ResearchContextCommand):
+        return research.freeze_research_context(command)
+
+    @routes.post('/change-sets', status_code=201)
+    def compare_snapshots(command: ChangeSetCommand):
+        return research.compare_snapshots(command)
+
+    @routes.get('/change-sets/{change_set_id}')
+    def change_set(change_set_id: str):
+        return research.change_set(change_set_id)
+
+    @routes.post('/change-sets/{change_set_id}/replay')
+    def replay_change_set(change_set_id: str):
+        return research.replay_change_set(change_set_id)
 
     return routes
