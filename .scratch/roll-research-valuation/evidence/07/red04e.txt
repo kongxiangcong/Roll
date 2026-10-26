@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_research_updates_use_existing_worker_queue_with_company_scope_and_explicit_retry _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red04e/test_research_updates_use_exis0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000291CFC7DCD0>
+
+    def test_research_updates_use_existing_worker_queue_with_company_scope_and_explicit_retry(tmp_path, monkeypatch):
+        from roll.app import create_app
+        from fastapi.testclient import TestClient
+        from roll.market.directory import WatchCommand
+        from datetime import datetime, timezone
+        import threading
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE', raising=False)
+        app = create_app(tmp_path, runtime_role='API')
+        research = app.state.company_research
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        other = research.register(company('�ڶ��ҹ�˾', ['�ڶ���˾'], [dict(exchange='SZSE', code='000848', share_class='A', currency='CNY')]))
+        app.state.market.watch(WatchCommand(instrument='SZSE:000848', operation='ADD', expected_list_version=app.state.market.listing()['version']))
+        with TestClient(app) as client:
+            base = '/api/observation-updates/SZSE:000848'
+>           settings = client.get(base).json()['settings']
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'settings'
+
+backend\tests\company_research\test_daily_research.py:112: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_research_updates_use_existing_worker_queue_with_company_scope_and_explicit_retry
+1 failed, 3 deselected in 7.62s

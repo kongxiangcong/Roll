@@ -88,6 +88,10 @@ def router(research):
     def checks(company_id: str, limit: int = Query(100, ge=1, le=500), offset: int = Query(0, ge=0)):
         return research.checks(company_id, limit, offset)
 
+    @routes.get('/companies/{company_id}/daily')
+    def daily(company_id: str, snapshot_id: str | None = None):
+        return research.daily_view(company_id, snapshot_id)
+
     @routes.post('/analysis/inputs', status_code=201)
     def freeze_analysis(command: AnalysisCommand):
         return research.freeze_analysis(command)

@@ -1,0 +1,42 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_partial_model_publication_is_bound_to_the_new_accepted_snapshot_and_keeps_rejections _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red20/test_partial_model_publication0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000139698A23F0>
+
+    def test_partial_model_publication_is_bound_to_the_new_accepted_snapshot_and_keeps_rejections(tmp_path,monkeypatch):
+        import json,threading
+        from datetime import datetime,timezone
+        from roll.app import create_app
+        from roll.market.directory import WatchCommand
+        from roll.runtime.observation_updates import UpdateSettings,UpdateRequest
+        worker=tmp_path/'method-partial-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt']);fid=p['evidence']['facts'][-1]['version_id']
+    claim=dict(text='Refining source evidence requires review',fact_version_ids=[fid],gap_reason=None)
+    bad=dict(key='invalid',previous_version_id=None,business='REFINING',statement='Unsupported hypothesis',horizon='Next disclosure',observation_metrics=['disclosed operations'],support_fact_version_ids=['unknown-fact'],counter_fact_version_ids=[],invalidation_conditions=['New contrary disclosure'],next_validation_event=dict(description='Next disclosure',date=None,date_unknown_reason='No disclosed date',date_fact_version_ids=[]),gaps=['Missing support'],change_reason='METHOD invalid citation')
+    candidate=dict(company_id=p['company_id'],input_sha256=p['packet_sha256'],business_structure=[claim],attention_reasons=[claim],counterevidence=[],hypotheses=[bad],insufficient_hypotheses_reason='METHOD partial candidate',limitations=['Synthetic boundary output, no actual model'],valuation_unavailable_reason='No valuation evidence')
+    print(json.dumps(dict(kind='thread',model='gpt-6.1-sol',provider='METHOD',thread_id='method-partial',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=json.dumps(candidate),error_info=None)),flush=True)
+    ''',encoding='utf-8')
+        auth=tmp_path/'method-auth.json'
+        auth.write_text(json.dumps(dict(auth_mode='chatgpt',tokens=dict(access_token='METHOD_CASE_NOT_REAL_CREDENTIAL'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth))
+        app=create_app(tmp_path/'data',runtime_role='API');research=app.state.company_research;updates=app.state.observation_updates;market=app.state.market
+        issuer=research.register(company());old=published(research,issuer)
+        evidence(research,issuer,'New disclosed interruption challenges refining stability')
+        research.analysis_worker=worker
+        market.watch(WatchCommand(instrument='SSE:600362',operation='ADD',expected_list_version=market.listing()['version']))
+        updates.configure('SSE:600362',UpdateSettings(enabled=True,expected_revision=1,basis='METHOD partial boundary output'))
+        job=updates.submit('SSE:600362',UpdateRequest(kind='RESEARCH',idempotency_key='partial-model',basis='METHOD accepted partial research'))
+        updates.work(datetime.now(timezone.utc),threading.Event())
+        saved=updates.get(job['job_id']);assert saved['status']=='PARTIAL',saved
+        payload=updates.listing('SSE:600362')['observations'][0]['payload']
+>       assert payload['snapshot_id']!=old['snapshot_id']
+E       AssertionError: assert '5707be5a-7262-44b2-a98f-cdddaa44136f' != '5707be5a-7262-44b2-a98f-cdddaa44136f'
+
+backend\tests\company_research\test_daily_research.py:420: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_partial_model_publication_is_bound_to_the_new_accepted_snapshot_and_keeps_rejections
+1 failed, 14 deselected in 10.10s

@@ -86,6 +86,8 @@ class CompanyResearch:
         self.economics = EconomicState(self)
         from .changes import ChangeState
         self.changes = ChangeState(self)
+        from .financial_facts import initialize
+        initialize(self)
 
     @contextmanager
     def transaction(self):
@@ -469,18 +471,28 @@ class CompanyResearch:
                 entries = supplier(scope)
                 if not isinstance(entries, list) or len(entries) > 20:
                     raise ValueError('SOURCE_RESULT_LIMIT')
+                completed = 0
                 for entry in entries:
-                    material_command = entry if isinstance(entry, ExistingSourceCommand) else entry[0]
-                    if material_command.company_id != command.company_id:
-                        fail('CROSS_COMPANY_REFERENCE', 'Supplier material belongs to another company')
-                    if isinstance(entry, ExistingSourceCommand):
-                        material = self.import_existing(entry)
-                        value['source_receipts'].append({**entry.model_dump(), 'scope': scope, 'material_id': material['material_id']})
-                    else:
-                        material_command, content = entry
-                        material = self._material(material_command, content, 'METHOD_CASE')
-                    value['material_ids'].append(material['material_id'])
-                value['completed_scopes'].append(scope)
+                    try:
+                        material_command = entry if isinstance(entry, ExistingSourceCommand) else entry[0]
+                        if material_command.company_id != command.company_id:
+                            fail('CROSS_COMPANY_REFERENCE', 'Supplier material belongs to another company')
+                        if isinstance(entry, ExistingSourceCommand):
+                            material = self.import_existing(entry)
+                            value['source_receipts'].append({**entry.model_dump(), 'scope': scope, 'material_id': material['material_id']})
+                        else:
+                            material_command, content = entry
+                            material = self._material(material_command, content, 'METHOD_CASE')
+                        value['material_ids'].append(material['material_id'])
+                        completed += 1
+                    except Exception as error:
+                        if scope not in value['failed_scopes']:
+                            value['failed_scopes'].append(scope)
+                        code = error.detail.get('code') if isinstance(error, HTTPException) and isinstance(error.detail, dict) else 'SOURCE_TIMEOUT' if isinstance(error, TimeoutError) else 'SOURCE_UNAVAILABLE'
+                        identity = {'record_id':entry.record_id, 'source_type':entry.source_type} if isinstance(entry, ExistingSourceCommand) else {}
+                        value['errors'].append({'scope':scope, 'code':code, 'error_type':type(error).__name__, **identity})
+                if completed or not entries:
+                    value['completed_scopes'].append(scope)
             except Exception as error:
                 value['failed_scopes'].append(scope)
                 code = error.detail.get('code') if isinstance(error, HTTPException) and isinstance(error.detail, dict) else 'SOURCE_TIMEOUT' if isinstance(error, TimeoutError) else 'SOURCE_UNAVAILABLE'
@@ -512,6 +524,14 @@ class CompanyResearch:
 
     def freeze_analysis(self, command):
         return self.analysis.freeze(command)
+
+    def daily_view(self, company_id, snapshot_id=None):
+        from .daily import daily_view
+        return daily_view(self, company_id, snapshot_id)
+
+    def refresh_daily(self, company_id, key, supplier=None, retry_rejected=False):
+        from .daily import refresh_daily
+        return refresh_daily(self, company_id, key, supplier, retry_rejected)
 
     def analysis_input(self, identifier):
         return self.analysis.read('inputs', 'input_id', identifier)

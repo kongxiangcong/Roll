@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_existing_observation_idempotency_survives_the_new_optional_retry_field _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red19/test_existing_observation_idem0')
+
+    def test_existing_observation_idempotency_survives_the_new_optional_retry_field(tmp_path):
+        from fastapi.testclient import TestClient
+        from roll.app import create_app
+        from roll.accounts.ledger import encode
+        import json,hashlib
+        with TestClient(create_app(tmp_path,runtime_role='API')) as client:
+            base='/api/observation-updates/SSE:600362'
+            assert client.post(base+'/settings',json=dict(enabled=True,expected_revision=1,basis='METHOD legacy command')).status_code==200
+            old=dict(idempotency_key='legacy-news',basis='METHOD old stored request',kind='NEWS',refresh_sources=False)
+            created=client.post(base+'/requests',json=old).json()
+            # Legacy persisted command: the optional07 retry field did not exist.
+            created['command']=old
+            with client.app.state.ledger.connection() as db:
+                db.execute('UPDATE observation_update_jobs SET command_hash=?,value=? WHERE id=?',
+                    (hashlib.sha256(encode(old).encode()).hexdigest(),json.dumps(created),created['job_id']))
+            repeated=client.post(base+'/requests',json=old)
+>           assert repeated.status_code==201,repeated.text
+E           AssertionError: {"detail":"OBSERVATION_UPDATE_IDEMPOTENCY_CONFLICT"}
+E           assert 409 == 201
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+backend\tests\company_research\test_daily_research.py:388: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_existing_observation_idempotency_survives_the_new_optional_retry_field
+1 failed, 13 deselected in 7.60s
