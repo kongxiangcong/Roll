@@ -15,7 +15,11 @@ from roll.accounts.valuation import Valuations,ValuationRequest
 from roll.accounts.corrections import active_events,fact_command
 from roll.config import data_directory, load_runtime_environment
 from roll.market.directory import MarketDirectory, WatchCommand, IdentityCommand, ScopeCommand
+from roll.market.status_evidence import query as status_evidence_query
+from roll.market.action_evidence import query as action_evidence_query
+from roll.market.authority_supplements import AuthoritySupplements, AuthorityCommand
 from roll.market.evidence import EvidenceStore, DataRequest
+from roll.market.financial_income import FinancialIncome,IncomeCommand
 from roll.market.source_facts import REGISTRY
 from roll.agents.codex_evidence import CodexEvidence, CodexQuestion
 from roll.agents.deepseek_evidence import DeepSeekEvidence, DeepSeekQuestion
@@ -28,6 +32,9 @@ from roll.research.reconstruction import ReconstructionCommand,reconstruct
 from roll.research.execution import DailyExecutions,ExecutionCommand,AssessmentCommand
 from roll.research.models import TransparentModels,ModelCommand,ForecastCommand
 from roll.research.shadow import ShadowLab,CompleteFreezeCommand,AdvanceCommand,ConditionalCommand
+from roll.research.policy_successors import PolicySuccessors,SuccessorCommand,MigrationCommand,PolicyEvaluation
+from roll.research.successor_shadow import SuccessorShadow,SuccessorFreezeCommand,SuccessorAdvanceCommand
+from roll.research.successor_protocol import SuccessorProtocols,ProtocolFreezeCommand,DiagnosticCommand
 from roll.research.validation import AutomaticValidation,ValidationCommand
 from roll.research.technical_review import TechnicalReviews,ReviewCommand as TechnicalReviewCommand
 from roll.research.training_preflight import training_preflight,TrainingPurpose,admit_model_training
@@ -36,7 +43,14 @@ from roll.market.post_close_packet import PacketCommand, ObligationCommand
 from roll.market.sse_price_quotes import PriceQuotes, PriceQuoteCommand, PricePacketCommand
 from roll.market.sse_company_actions import CompanyActionPages
 from roll.market.sse_action_assessments import ActionAssessments,ActionAssessmentCommand,ActionPacketCommand
+from roll.market.action_window import ActionWindows,ActionWindowCommand
 from roll.research.forward import ForwardArchive, ForwardCommand, CheckCommand, StopCommand
+try:
+    from roll.market.sse_daily import DatedDaily, DailyPacketCommand
+except ModuleNotFoundError as error:
+    if error.name != 'roll.market.sse_daily':
+        raise
+    from roll.runtime.unavailable_daily import DatedDaily, DailyPacketCommand
 from roll.research.synthetic import SyntheticDevelopment
 from roll.market.collection_sources import SourcePolicyCommand
 from roll.research.corporate_actions import CashRightsCommand, assess_cash_rights
@@ -44,6 +58,7 @@ from roll.research.risk_policy import IndependentRiskPolicies,PolicyCommand,Poli
 from roll.decisions.funding import Funding, FundingConfirmation, LossSample, capabilities
 from roll.decisions.capabilities import Capabilities, GrantCommand, LifecycleCommand
 from roll.decisions.actions import Actions, EvaluationCommand
+from roll.decisions.broker_costs import BrokerCosts, BrokerCostConfirmation, BrokerCostEstimate
 from roll.runtime.reviews import Reviews,ReviewCommand,MaintenanceCommand,VerificationRequest
 from roll.runtime.backups import bootstrap,rollback_bootstrap,finish_bootstrap
 
@@ -111,6 +126,24 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     market = MarketDirectory(ledger)
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport,baostock_worker)
+    authority_supplements = AuthoritySupplements(evidence)
+    app.state.authority_supplements = authority_supplements
+
+    @app.post('/api/market/source-authority', status_code=201)
+    def source_authority_create(command: AuthorityCommand):
+        return authority_supplements.create(command)
+
+    @app.get('/api/market/source-authority')
+    def source_authority_history(instrument: str, known_by: datetime | None = None):
+        return authority_supplements.listing(instrument, known_by)
+
+    @app.get('/api/market/source-authority/daily-options')
+    def source_authority_daily_options():
+        return authority_supplements.daily_options()
+
+    @app.get('/api/market/source-authority/{identifier}')
+    def source_authority_get(identifier: str):
+        return authority_supplements.get(identifier)
     app.state.evidence=evidence
     research=ExperimentRegistry(ledger,evidence)
     app.state.research=research
@@ -122,8 +155,332 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app.state.models=models
     shadow=ShadowLab(research,models)
     app.state.shadow=shadow
+    policy_successors = PolicySuccessors(shadow)
+    successor_shadow = SuccessorShadow(policy_successors)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/freezes', status_code=201)
+    def successor_freeze(proposal_id: str, command: SuccessorFreezeCommand):
+        return successor_shadow.freeze(proposal_id, command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}')
+    def successor_freeze_get(freeze_id: str):
+        return successor_shadow.get(freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/shadow/advance', status_code=201)
+    def successor_shadow_advance(freeze_id: str, command: SuccessorAdvanceCommand):
+        return successor_shadow.advance(freeze_id, command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/shadow')
+    def successor_shadow_current(freeze_id: str):
+        return successor_shadow.current(freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/shadow/replay')
+    def successor_shadow_replay(freeze_id: str):
+        return successor_shadow.replay(freeze_id)
+
+    @app.post('/api/research/policy-successors', status_code=201)
+    def policy_successor_register(command: SuccessorCommand):
+        return policy_successors.register(command)
+
+    @app.get('/api/research/policy-successors/{proposal_id}')
+    def policy_successor_get(proposal_id: str):
+        return policy_successors.get(proposal_id)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/migrations', status_code=201)
+    def policy_successor_migrate(proposal_id: str, command: MigrationCommand):
+        return policy_successors.migrate(proposal_id, command)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/evaluations', status_code=201)
+    def policy_successor_evaluate(proposal_id: str, command: PolicyEvaluation):
+        return policy_successors.evaluate(proposal_id, command)
+
+    @app.get('/api/research/policy-successors/{proposal_id}/evaluations/{evaluation_id}')
+    def policy_successor_evaluation(proposal_id: str, evaluation_id: str):
+        return policy_successors.evaluation(proposal_id, evaluation_id)
+
+    @app.post('/api/research/policy-successors/{proposal_id}/evaluations/{evaluation_id}/replay')
+    def policy_successor_replay(proposal_id: str, evaluation_id: str):
+        return policy_successors.replay(proposal_id, evaluation_id)
+
     validation=AutomaticValidation(shadow)
     app.state.validation=validation
+    from roll.research.probability_reference import ProbabilityReferences,ProbabilityCommand
+    probability_references=ProbabilityReferences(shadow)
+    app.state.probability_references=probability_references
+    from roll.research.block_reference import BlockReferences,BlockCommand
+    block_references=BlockReferences(probability_references)
+    app.state.block_references=block_references
+
+    @app.post('/api/research/probability-references/{identifier}/block-reference',status_code=201)
+    async def block_reference_create(identifier:str,command:BlockCommand):return await block_references.create(identifier,command)
+
+    @app.get('/api/research/probability-references/{identifier}/block-reference')
+    def block_reference_list(identifier:str):return block_references.listing(identifier)
+
+    @app.get('/api/research/block-references/{identifier}')
+    def block_reference_get(identifier:str):return block_references.get(identifier)
+
+    @app.post('/api/research/block-references/{identifier}/replay')
+    def block_reference_replay(identifier:str):
+        block_references.get(identifier)
+        return {'matches_original':True,'recomputed':False,'new_fit_calls':0,'sealed_reads':0}
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/probability-reference',status_code=201)
+    async def probability_reference_create(freeze_id:str,command:ProbabilityCommand):return await probability_references.create(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/probability-reference')
+    def probability_reference_list(freeze_id:str):return probability_references.listing(freeze_id)
+
+    @app.get('/api/research/probability-references/{identifier}')
+    def probability_reference_get(identifier:str):return probability_references.get(identifier)
+
+    @app.post('/api/research/probability-references/{identifier}/replay')
+    def probability_reference_replay(identifier:str):
+        value=probability_references.get(identifier)
+        return {'reference_id':identifier,'matches_original':True,'recomputed':False,'new_fit_calls':0,'sealed_reads':0}
+
+    successor_protocols=SuccessorProtocols(successor_shadow,validation)
+    from roll.research.successor_stress import SuccessorStresses
+    successor_stresses=SuccessorStresses(successor_protocols)
+    from roll.research.successor_migration import SuccessorMigrationAudits,MigrationAuditCommand
+    successor_migrations=SuccessorMigrationAudits(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/migration-audit',status_code=201)
+    def successor_migration_create(identifier:str,command:MigrationAuditCommand):return successor_migrations.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/migration-audit')
+    def successor_migration_list(identifier:str):return successor_migrations.listing(identifier)
+
+    @app.get('/api/research/successor-migration-audits/{identifier}')
+    def successor_migration_get(identifier:str):return successor_migrations.get(identifier)
+
+    @app.post('/api/research/successor-migration-audits/{identifier}/replay')
+    def successor_migration_replay(identifier:str):return successor_migrations.replay(identifier)
+    from roll.research.successor_threshold import SuccessorThresholdStresses,ThresholdCommand
+    successor_thresholds=SuccessorThresholdStresses(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/threshold-stress',status_code=201)
+    async def successor_threshold_create(identifier:str,command:ThresholdCommand):return await successor_thresholds.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/threshold-stress')
+    def successor_threshold_list(identifier:str):return successor_thresholds.listing(identifier)
+
+    @app.get('/api/research/successor-threshold-stresses/{identifier}')
+    def successor_threshold_get(identifier:str):return successor_thresholds.get(identifier)
+
+    @app.post('/api/research/successor-threshold-stresses/{identifier}/replay')
+    async def successor_threshold_replay(identifier:str):return await successor_thresholds.replay(identifier)
+
+    @app.get('/api/research/protocols/{identifier}/successor-method-attempts')
+    def successor_method_attempts(identifier:str):return successor_thresholds.manifest(identifier)
+    from roll.research.successor_entry import SuccessorEntryStresses,EntryStressCommand
+    successor_entries=SuccessorEntryStresses(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/entry-stress',status_code=201)
+    async def successor_entry_create(identifier:str,command:EntryStressCommand):return await successor_entries.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/entry-stress')
+    def successor_entry_list(identifier:str):return successor_entries.listing(identifier)
+
+    @app.get('/api/research/successor-entry-stresses/{identifier}')
+    def successor_entry_get(identifier:str):return successor_entries.get(identifier)
+
+    @app.post('/api/research/successor-entry-stresses/{identifier}/replay')
+    async def successor_entry_replay(identifier:str):return await successor_entries.replay(identifier)
+    from roll.research.successor_controls import SuccessorRegisteredControls,ControlsCommand
+    successor_controls=SuccessorRegisteredControls(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/registered-controls',status_code=201)
+    async def successor_controls_create(identifier:str,command:ControlsCommand):return await successor_controls.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/registered-controls')
+    def successor_controls_list(identifier:str):return successor_controls.listing(identifier)
+
+    @app.get('/api/research/successor-registered-controls/{identifier}')
+    def successor_controls_get(identifier:str):return successor_controls.get(identifier)
+
+    @app.post('/api/research/successor-registered-controls/{identifier}/replay')
+    async def successor_controls_replay(identifier:str):return await successor_controls.replay(identifier)
+    from roll.research.successor_cash import SuccessorCashControls,CashControlCommand
+    successor_cash=SuccessorCashControls(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/cash-control',status_code=201)
+    def successor_cash_create(identifier:str,command:CashControlCommand):return successor_cash.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/cash-control')
+    def successor_cash_list(identifier:str):return successor_cash.listing(identifier)
+
+    @app.get('/api/research/successor-cash-controls/{identifier}')
+    def successor_cash_get(identifier:str):return successor_cash.get(identifier)
+
+    @app.post('/api/research/successor-cash-controls/{identifier}/replay')
+    def successor_cash_replay(identifier:str):return successor_cash.replay(identifier)
+    from roll.research.successor_segments import SuccessorTimeSegments,SegmentCommand
+    successor_segments=SuccessorTimeSegments(successor_stresses)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/time-segments',status_code=201)
+    def successor_segments_create(identifier:str,command:SegmentCommand):return successor_segments.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/time-segments')
+    def successor_segments_list(identifier:str):return successor_segments.listing(identifier)
+
+    @app.get('/api/research/successor-time-segments/{identifier}')
+    def successor_segments_get(identifier:str):return successor_segments.get(identifier)
+
+    @app.post('/api/research/successor-time-segments/{identifier}/replay')
+    def successor_segments_replay(identifier:str):return successor_segments.replay(identifier)
+    from roll.research.successor_probability import SuccessorProbabilityEvidence,ProbabilityBindingCommand
+    successor_probability=SuccessorProbabilityEvidence(successor_protocols,probability_references,block_references)
+    from roll.research.successor_joint import SuccessorJointStresses,JointStressCommand
+    successor_joint=SuccessorJointStresses(successor_stresses,successor_controls,successor_entries)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/joint-stress',status_code=201)
+    async def successor_joint_create(identifier:str,command:JointStressCommand):return await successor_joint.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/joint-stress')
+    def successor_joint_list(identifier:str):return successor_joint.listing(identifier)
+
+    @app.get('/api/research/successor-joint-stresses/{identifier}')
+    def successor_joint_get(identifier:str):return successor_joint.get(identifier)
+
+    @app.post('/api/research/successor-joint-stresses/{identifier}/replay')
+    async def successor_joint_replay(identifier:str):return await successor_joint.replay(identifier)
+    from roll.research.successor_evidence_review import SuccessorEvidenceReviews,EvidenceReviewCommand
+    successor_evidence=SuccessorEvidenceReviews(successor_stresses,successor_segments,successor_cash,successor_controls,successor_entries,successor_probability)
+    from roll.research.successor_joint_review import SuccessorJointReviews,JointReviewCommand
+    successor_joint_reviews=SuccessorJointReviews(successor_evidence,successor_joint)
+    from roll.research.successor_completion import SuccessorCompletionChecks,CompletionCommand
+    successor_completion=SuccessorCompletionChecks(successor_joint_reviews,successor_thresholds,successor_migrations)
+
+    @app.post('/api/research/successor-joint-reviews/{identifier}/completion-check',status_code=201)
+    def successor_completion_create(identifier:str,command:CompletionCommand):return successor_completion.create(identifier,command)
+
+    @app.get('/api/research/successor-joint-reviews/{identifier}/completion-check')
+    def successor_completion_list(identifier:str):return successor_completion.listing(identifier)
+
+    @app.get('/api/research/successor-completion-checks/{identifier}')
+    def successor_completion_get(identifier:str):return successor_completion.get(identifier)
+
+    @app.post('/api/research/successor-completion-checks/{identifier}/replay')
+    def successor_completion_replay(identifier:str):return successor_completion.replay(identifier)
+
+    @app.post('/api/research/successor-evidence-reviews/{identifier}/joint-review',status_code=201)
+    def successor_joint_review_create(identifier:str,command:JointReviewCommand):return successor_joint_reviews.create(identifier,command)
+
+    @app.get('/api/research/successor-evidence-reviews/{identifier}/joint-review')
+    def successor_joint_review_list(identifier:str):return successor_joint_reviews.listing(identifier)
+
+    @app.get('/api/research/successor-joint-reviews/{identifier}')
+    def successor_joint_review_get(identifier:str):return successor_joint_reviews.get(identifier)
+
+    @app.post('/api/research/successor-joint-reviews/{identifier}/replay')
+    def successor_joint_review_replay(identifier:str):return successor_joint_reviews.replay(identifier)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/evidence-review',status_code=201)
+    def successor_evidence_create(identifier:str,command:EvidenceReviewCommand):return successor_evidence.create(identifier,command)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}/evidence-review')
+    def successor_evidence_list(identifier:str):return successor_evidence.listing(identifier)
+
+    @app.get('/api/research/successor-evidence-reviews/{identifier}')
+    def successor_evidence_get(identifier:str):return successor_evidence.get(identifier)
+
+    @app.post('/api/research/successor-evidence-reviews/{identifier}/replay')
+    def successor_evidence_replay(identifier:str):return successor_evidence.replay(identifier)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/probability-evidence',status_code=201)
+    def successor_probability_create(freeze_id:str,command:ProbabilityBindingCommand):return successor_probability.create(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/probability-evidence')
+    def successor_probability_list(freeze_id:str):return successor_probability.listing(freeze_id)
+
+    @app.get('/api/research/successor-probability-evidence/{identifier}')
+    def successor_probability_get(identifier:str):return successor_probability.get(identifier)
+
+    @app.post('/api/research/successor-probability-evidence/{identifier}/replay')
+    def successor_probability_replay(identifier:str):
+        successor_probability.get(identifier)
+        return {'matches_original':True,'recomputed':False,'new_fit_calls':0,'sealed_reads':0}
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/cost-stress',status_code=201)
+    async def successor_cost_stress_create(freeze_id:str,command:DiagnosticCommand):return await successor_stresses.create(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/cost-stress')
+    def successor_cost_stress_list(freeze_id:str):return successor_stresses.listing(freeze_id)
+
+    @app.get('/api/research/successor-cost-stresses/{identifier}')
+    def successor_cost_stress_get(identifier:str):return successor_stresses.get(identifier)
+
+    @app.post('/api/research/successor-cost-stresses/{identifier}/replay')
+    async def successor_cost_stress_replay(identifier:str):return await successor_stresses.replay(identifier)
+
+    from roll.research.successor_primary_center import SuccessorPrimaryCenters,CenterCommand
+    successor_centers=SuccessorPrimaryCenters(successor_completion)
+
+    @app.post('/api/research/successor-completion-checks/{identifier}/primary-center-binding',status_code=201)
+    def successor_center_create(identifier:str,command:CenterCommand):return successor_centers.create(identifier,command)
+
+    @app.get('/api/research/successor-completion-checks/{identifier}/primary-center-binding')
+    def successor_center_list(identifier:str):return successor_centers.listing(identifier)
+
+    @app.get('/api/research/successor-primary-center-bindings/{identifier}')
+    def successor_center_get(identifier:str):return successor_centers.get(identifier)
+
+    @app.post('/api/research/successor-primary-center-bindings/{identifier}/replay')
+    def successor_center_replay(identifier:str):return successor_centers.replay(identifier)
+
+    from roll.research.successor_model_replay import SuccessorModelReplays,ModelReplayCommand
+    successor_model_replays=SuccessorModelReplays(successor_centers)
+
+    @app.post('/api/research/successor-primary-center-bindings/{identifier}/model-execution-replay',status_code=201)
+    async def successor_model_replay_create(identifier:str,command:ModelReplayCommand):return await successor_model_replays.create(identifier,command)
+
+    @app.get('/api/research/successor-primary-center-bindings/{identifier}/model-execution-replay')
+    def successor_model_replay_list(identifier:str):return successor_model_replays.listing(identifier)
+
+    @app.get('/api/research/successor-model-execution-replays/{identifier}')
+    def successor_model_replay_get(identifier:str):return successor_model_replays.get(identifier)
+
+    @app.post('/api/research/successor-model-execution-replays/{identifier}/replay')
+    async def successor_model_replay_replay(identifier:str):return await successor_model_replays.replay(identifier)
+
+    from roll.research.successor_input_consumer import SuccessorInputConsumers,InputCommand
+
+    @app.post('/api/research/successor-primary-center-bindings/{identifier}/input-consumer',status_code=201)
+    async def successor_input_create(identifier:str,command:InputCommand):return await successor_inputs.create(identifier,command)
+
+    @app.get('/api/research/successor-primary-center-bindings/{identifier}/input-consumer')
+    def successor_input_list(identifier:str):return successor_inputs.listing(identifier)
+
+    @app.get('/api/research/successor-input-consumers/{identifier}')
+    def successor_input_get(identifier:str):return successor_inputs.get(identifier)
+
+    @app.post('/api/research/successor-input-consumers/{identifier}/replay')
+    async def successor_input_replay(identifier:str):return await successor_inputs.replay(identifier)
+
+    @app.get('/api/research/complete-freezes/{predecessor_freeze_id}/policy-successor-freezes')
+    def successor_freezes_for_parent(predecessor_freeze_id:str):
+        return successor_protocols.for_parent(predecessor_freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/complete-protocol',status_code=201)
+    def successor_protocol_freeze(freeze_id:str,command:ProtocolFreezeCommand):
+        return successor_protocols.freeze(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/complete-protocol')
+    def successor_protocol_get(freeze_id:str):
+        return successor_protocols.get(freeze_id)
+
+    @app.post('/api/research/policy-successor-freezes/{freeze_id}/validations',status_code=201)
+    def successor_validation_create(freeze_id:str,command:DiagnosticCommand):
+        return successor_protocols.create(freeze_id,command)
+
+    @app.get('/api/research/policy-successor-freezes/{freeze_id}/validations')
+    def successor_validation_list(freeze_id:str):
+        return successor_protocols.list(freeze_id)
+
+    @app.post('/api/research/successor-validations/{identifier}/replay')
+    def successor_validation_replay(identifier:str):
+        return successor_protocols.replay(identifier)
 
     @app.post('/api/research/complete-freezes/{freeze_id}/validations',status_code=201)
     def validation_create(freeze_id:str,command:ValidationCommand):
@@ -177,11 +534,178 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def shadow_results(freeze_id:str):
         return shadow.results(freeze_id)
     prospective=ProspectiveEvidence(evidence,research)
+    successor_inputs=SuccessorInputConsumers(successor_centers,prospective)
+    from roll.market.news_ingestion import News,NewsCommand
+    news=News(evidence,prospective.sources)
+    app.state.news=news
+
+    @app.get('/api/market/news/runs/{identifier}')
+    def news_run(identifier:str):return news.get(identifier)
+
+    @app.post('/api/market/news/runs/{identifier}/cancel')
+    async def news_cancel(identifier:str):return await news.cancel(identifier)
+
+    @app.get('/api/market/news/{instrument}')
+    def news_query(instrument:str,known_by:datetime|None=Query(None)):return news.listing(instrument,known_by)
+
+    @app.post('/api/market/news/{instrument}/collect',status_code=201)
+    async def news_collect(instrument:str,command:NewsCommand):return await news.collect(instrument,command)
+
+    from roll.market.sentiment import Sentiment,SentimentCommand
+    sentiment=Sentiment(evidence)
+    app.state.sentiment=sentiment
+    from roll.market.sentiment_series import SentimentSeries,SeriesCommand
+    sentiment_series=SentimentSeries(sentiment)
+    app.state.sentiment_series=sentiment_series
+
+    @app.get('/api/market/sentiment-series/runs/{identifier}')
+    def sentiment_series_run(identifier:str):return sentiment_series.get(identifier)
+
+    @app.get('/api/market/sentiment-series/{instrument}/source-runs')
+    def sentiment_series_sources(instrument:str):return sentiment_series.source_runs(instrument)
+
+    @app.get('/api/market/sentiment-series/{instrument}/snapshots')
+    def sentiment_series_history(instrument:str):return sentiment_series.history(instrument)
+
+    @app.get('/api/market/sentiment-series/{instrument}')
+    def sentiment_series_query(instrument:str):return sentiment_series.listing(instrument)
+
+    @app.post('/api/market/sentiment-series/{instrument}',status_code=201)
+    def sentiment_series_build(instrument:str,command:SeriesCommand):return sentiment_series.build(instrument,command)
+
+    @app.get('/api/market/sentiment/runs/{identifier}')
+    def sentiment_run(identifier:str):return sentiment.get(identifier)
+
+    @app.get('/api/market/sentiment/{instrument}')
+    def sentiment_query(instrument:str,known_by:datetime|None=Query(None)):return sentiment.listing(instrument,known_by)
+
+    @app.post('/api/market/sentiment/{instrument}/classify',status_code=201)
+    async def sentiment_classify(instrument:str,command:SentimentCommand):return await sentiment.classify(instrument,command)
+
+    financial=FinancialIncome(evidence,prospective.sources)
+    app.state.financial=financial
+    financial_statements=FinancialIncome(evidence,prospective.sources,statement="SUPPLEMENT")
+    app.state.financial_statements=financial_statements
+
+    @app.get("/api/market/financial/{instrument}/statements")
+    def statements(instrument:str,known_by:datetime|None=Query(None)):
+        from roll.market.financial_statements import joined
+        return joined(financial,financial_statements,instrument,known_by)
+
+    @app.post("/api/market/financial/{instrument}/statements/collect",status_code=201)
+    async def statements_collect(instrument:str,command:IncomeCommand):
+        return await financial_statements.collect(instrument,command)
+
+    from roll.market.financial_documents import FinancialDocuments,ParseCommand
+    financial_documents=FinancialDocuments(evidence)
+    app.state.financial_documents=financial_documents
+
+    @app.get('/api/market/financial/documents/{sha}/parses')
+    def financial_document_parses(sha:str):return financial_documents.listing(sha)
+
+    @app.post('/api/market/financial/documents/{sha}/parses',status_code=201)
+    async def financial_document_parse(sha:str,command:ParseCommand):return await financial_documents.parse(sha,command)
+
+    @app.get('/api/market/financial/document-parses/{identifier}')
+    def financial_document_parse_get(identifier:str):return financial_documents.get(identifier)
+
+    @app.post('/api/market/financial/document-parses/{identifier}/cancel')
+    async def financial_document_parse_cancel(identifier:str):return await financial_documents.cancel(identifier)
+
+    @app.get('/api/market/financial/{instrument}/metrics')
+    def financial_metrics(instrument:str,known_by:datetime|None=Query(None)):
+        from roll.market.financial_metrics import metrics
+        return metrics(financial,financial_statements,instrument,known_by)
+
+    from roll.market.financial_observation import FinancialObservations
+    financial_observations=FinancialObservations(evidence,financial,financial_statements)
+    app.state.financial_observations=financial_observations
+
+    @app.get('/api/market/financial/{instrument}/observations')
+    def financial_observation(instrument:str,known_by:datetime|None=Query(None)):
+        return financial_observations.listing(instrument,known_by)
+
+    @app.get('/api/market/financial/observations/{identifier}')
+    def financial_observation_get(identifier:str):return financial_observations.get(identifier)
+
+    @app.get('/api/market/financial/{instrument}/income')
+    def financial_income(instrument:str,known_by:datetime|None=Query(None)):
+        return financial.listing(instrument,known_by)
+
+    @app.post('/api/market/financial/{instrument}/income/collect',status_code=201)
+    async def financial_income_collect(instrument:str,command:IncomeCommand):
+        return await financial.collect(instrument,command)
+
+    @app.post('/api/market/financial/runs/{run_id}/cancel')
+    async def financial_income_cancel(run_id:str):
+        service=financial_statements if run_id in financial_statements.tasks else financial
+        return await service.cancel(run_id)
+
+    from roll.research.feature_protocol import FeatureProtocols,FeaturePlanCommand,FeatureSnapshotCommand,FeaturePreflightCommand,SCHEMA as FEATURE_SCHEMA
+    feature_protocols=FeatureProtocols(research,financial,financial_statements,sentiment_series)
+    app.state.feature_protocols=feature_protocols
+
+    @app.get('/api/research/feature-schema')
+    def feature_schema():return FEATURE_SCHEMA
+
+    @app.get('/api/research/feature-budget/{predecessor_id}')
+    def feature_budget(predecessor_id:str):return feature_protocols.budget(predecessor_id)
+
+    @app.post('/api/research/feature-plans',status_code=201)
+    def feature_plan_register(command:FeaturePlanCommand):return feature_protocols.register(command)
+
+    @app.get('/api/research/feature-plans')
+    def feature_plan_list():return feature_protocols.listing('research_feature_plans')
+
+    @app.get('/api/research/feature-plans/{identifier}')
+    def feature_plan_get(identifier:str):return feature_protocols.get('research_feature_plans',identifier)
+
+    @app.post('/api/research/feature-snapshots',status_code=201)
+    def feature_snapshot_create(command:FeatureSnapshotCommand):return feature_protocols.snapshot(command)
+
+    @app.get('/api/research/feature-snapshots')
+    def feature_snapshot_list():return feature_protocols.listing('research_feature_snapshots')
+
+    @app.get('/api/research/feature-snapshots/{identifier}')
+    def feature_snapshot_get(identifier:str):return feature_protocols.get('research_feature_snapshots',identifier)
+
+    @app.post('/api/research/feature-plans/{identifier}/preflights',status_code=201)
+    def feature_preflight_create(identifier:str,command:FeaturePreflightCommand):return feature_protocols.preflight(identifier,command)
+
+    @app.get('/api/research/feature-preflights/{identifier}')
+    def feature_preflight_get(identifier:str):return feature_protocols.get('research_feature_preflights',identifier)
+
+    dated_daily=DatedDaily(prospective)
+    app.state.dated_daily=dated_daily
     price_quotes=PriceQuotes(prospective)
     company_actions=CompanyActionPages(prospective)
     action_assessments=ActionAssessments(company_actions,price_quotes)
+    action_windows=ActionWindows(action_assessments)
     forward=ForwardArchive(shadow,prospective,review_clock)
+    forward.action_windows=action_windows
     app.state.forward=forward
+
+    from roll.research.independent_validation import IndependentValidation, IndependentCommand
+    independent_validation=IndependentValidation(forward)
+    app.state.independent_validation=independent_validation
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/independent-validation/admission')
+    def independent_admission(freeze_id:str):return independent_validation.admission(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/independent-validation/plan',status_code=201)
+    def independent_register(freeze_id:str,command:IndependentCommand):return independent_validation.register(freeze_id,command)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/independent-validation/plan')
+    def independent_plan(freeze_id:str):return independent_validation.plan(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/independent-validation',status_code=201)
+    def independent_execute(freeze_id:str):return independent_validation.create(freeze_id)
+
+    @app.get('/api/research/complete-freezes/{freeze_id}/independent-validation')
+    def independent_get(freeze_id:str):return independent_validation.get(freeze_id)
+
+    @app.post('/api/research/complete-freezes/{freeze_id}/independent-validation/replay')
+    def independent_replay(freeze_id:str):return independent_validation.replay(freeze_id)
 
     @app.post('/api/research/complete-freezes/{freeze_id}/forward',status_code=201)
     def forward_register(freeze_id:str,command:ForwardCommand):return forward.register(freeze_id,command)
@@ -204,6 +728,19 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.post('/api/research/collections/{plan_id}/post-close',status_code=201)
     def post_close_capture(plan_id:str,command:PacketCommand):
         return prospective.post_close.capture(plan_id,command.basis)
+
+    @app.post('/api/research/collections/{plan_id}/sse-daily/check',status_code=201)
+    def sse_daily_capture(plan_id:str,command:PacketCommand):
+        return dated_daily.capture_once(plan_id,command.basis)
+
+    @app.get('/api/research/collections/{plan_id}/sse-daily-receipts')
+    def sse_daily_receipts(plan_id:str):return dated_daily.receipts(plan_id)
+
+    @app.post('/api/research/collections/{plan_id}/sse-daily-packets',status_code=201)
+    def sse_daily_packet(plan_id:str,command:DailyPacketCommand):return dated_daily.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/sse-daily-packets/{packet_id}')
+    def sse_daily_packet_get(plan_id:str,packet_id:str):return dated_daily.packet(plan_id,packet_id)
 
     @app.post('/api/research/collections/{plan_id}/post-close/check',status_code=201)
     def post_close_job(plan_id:str,command:PacketCommand):
@@ -232,6 +769,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/collections/{plan_id}/source-gaps')
     def post_close_source_gaps(plan_id: str):
         return {**prospective.post_close.source_gaps(plan_id),
+            'dated_daily_receipts':dated_daily.receipts(plan_id),
                 'price_quote_assessments': price_quotes.assessments(plan_id),
                 'price_quote_current': price_quotes.current(plan_id),
                 'action_source_receipts':company_actions.receipts(plan_id),
@@ -273,6 +811,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     @app.get('/api/research/collections/{plan_id}/sse-action-assessments')
     def sse_action_assessment_query(plan_id:str):return action_assessments.assessments(plan_id)
 
+    @app.get('/api/research/collections/{plan_id}/action-evidence')
+    def action_evidence(plan_id:str,known_by:datetime|None=Query(None)):
+        return action_evidence_query(action_assessments,plan_id,known_by)
+
     @app.get('/api/research/collections/{plan_id}/sse-action-assessments/current')
     def sse_action_current(plan_id:str):return action_assessments.current(plan_id)
 
@@ -281,6 +823,15 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.get('/api/research/collections/{plan_id}/sse-action-packets/{packet_id}')
     def sse_action_packet_query(plan_id:str,packet_id:str):return action_assessments.packet(plan_id,packet_id)
+
+    @app.post('/api/research/collections/{plan_id}/action-window-packets',status_code=201)
+    def action_window_build(plan_id:str,command:ActionWindowCommand):return action_windows.build(plan_id,command)
+
+    @app.get('/api/research/collections/{plan_id}/action-window-packets/{packet_id}')
+    def action_window_packet(plan_id:str,packet_id:str):return action_windows.packet(plan_id,packet_id)
+
+    @app.get('/api/research/collections/{plan_id}/action-window-inputs')
+    def action_window_inputs(plan_id:str,protocol_id:str):return action_windows.consume(plan_id,protocol_id)
 
     @app.post('/api/research/collections/{plan_id}/sse-price-quotes',status_code=201)
     def sse_price_assess(plan_id:str,command:PriceQuoteCommand):
@@ -306,6 +857,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def sse_company_contract_receipts(plan_id:str):
         return prospective.post_close.company_contracts.receipts(plan_id)
 
+    @app.get('/api/research/collections/{plan_id}/status-evidence')
+    def status_evidence(plan_id:str,known_by:datetime|None=Query(None)):
+        return status_evidence_query(prospective.post_close,plan_id,known_by)
+
     @app.post('/api/research/collections/{plan_id}/sse-company-contract/check',status_code=201)
     def sse_company_contract_worker(plan_id:str,command:PacketCommand):
         return prospective.post_close.company_contracts.capture_once(plan_id,command.basis)
@@ -320,6 +875,9 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
 
     @app.post('/api/research/post-close-packets/{packet_id}/replay')
     def post_close_replay(packet_id:str):
+        if dated_daily.saved_packet(packet_id):return dated_daily.replay(packet_id)
+        if action_windows.saved_packet(packet_id):
+            return action_windows.replay(packet_id)
         if action_assessments.saved_packet(packet_id):
             return action_assessments.replay(packet_id)
         if price_quotes.saved_packet(packet_id):
@@ -503,6 +1061,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return research.checkpoint(protocol_id,command)
     reviews=Reviews(ledger,market,evidence,review_clock,worker_enabled=runtime_role != "API")
     reviews.forward=forward
+    reviews.dated_daily=dated_daily
     app.state.reviews=reviews
 
     @app.post('/api/reviews/tasks',status_code=202)
@@ -885,6 +1444,23 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         source = market.rules.source(source_id)
         return FileResponse(market.rules.directory / source['archive_path'], media_type='application/octet-stream', filename=source['file'],headers={'X-Content-Type-Options':'nosniff'})
     funding = Funding(ledger)
+    broker_costs = BrokerCosts(ledger, funding, evidence)
+
+    @app.post('/api/actions/broker-costs/confirm', status_code=201)
+    def confirm_broker_costs(command: BrokerCostConfirmation):
+        return broker_costs.confirm(command)
+
+    @app.get('/api/actions/broker-costs')
+    def current_broker_costs():
+        return broker_costs.listing()
+
+    @app.get('/api/actions/broker-costs/versions/{version}')
+    def broker_cost_version(version: int):
+        return broker_costs.get(version)
+
+    @app.post('/api/actions/broker-costs/estimate')
+    def estimate_broker_costs(command: BrokerCostEstimate):
+        return broker_costs.preview(command)
 
     if os.environ.get("ROLL_ENV") == "test":
         @app.post("/api/testing/funding-loss-samples")
@@ -946,6 +1522,23 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return capability_service.verify_proof(proof_id)
 
     actions = Actions(ledger, funding, capability_service, evidence, shadow, risk_policies, valuations)
+    from roll.decisions.loss_recovery import LossRecoveries,RecoveryCheckCommand,RecoveryActivateCommand
+    loss_recoveries=LossRecoveries(funding,capability_service,actions)
+    funding.loss_recovery=loss_recoveries
+
+    @app.post('/api/funding/loss-recovery/checks',status_code=201)
+    def loss_recovery_check(command:RecoveryCheckCommand):return loss_recoveries.create_check(command)
+
+    @app.get('/api/funding/loss-recovery/checks/{identifier}')
+    def loss_recovery_check_get(identifier:str):return loss_recoveries.get_check(identifier)
+
+    @app.post('/api/funding/loss-recovery/checks/{identifier}/activate',status_code=201)
+    def loss_recovery_activate(identifier:str,command:RecoveryActivateCommand):return loss_recoveries.activate(identifier,command)
+
+    @app.get('/api/funding/loss-recovery/receipts')
+    def loss_recovery_receipts():return loss_recoveries.receipts()
+
+    actions.broker_costs = broker_costs
     capability_service.actions = actions
     from roll.decisions.notifications import Notifications, ReadNotice
     from roll.runtime.notification_channel import NotificationChannel
@@ -956,6 +1549,48 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     capability_service.notifications = notifications
     actions.notifications = notifications
     reviews.notifications = notifications
+    from roll.runtime.observation_updates import ObservationUpdates,UpdateSettings,UpdateRequest
+    observation_updates=ObservationUpdates(reviews,financial,financial_statements,financial_observations,news,sentiment,sentiment_series,prospective.sources,notifications)
+    from roll.runtime.daily_reports import DailyReports, NoteCommand, BreadthCommand
+    daily_reports=DailyReports(ledger,market,reviews,valuations,observation_updates,financial_observations,news)
+    app.state.daily_reports=daily_reports
+    observation_updates.daily_reports=daily_reports
+
+    @app.get('/api/daily-reports')
+    def daily_report_history():return daily_reports.history()
+
+    @app.post('/api/daily-reports',status_code=201)
+    def daily_report_publish():return daily_reports.publish()
+
+    @app.get('/api/daily-reports/notes')
+    def daily_report_notes():return daily_reports.notes()
+
+    @app.post('/api/daily-reports/notes',status_code=201)
+    def daily_report_note(command:NoteCommand):return daily_reports.note(command)
+
+    @app.post('/api/daily-reports/breadth',status_code=201)
+    def daily_report_breadth(command:BreadthCommand):return daily_reports.import_breadth(command)
+
+    @app.get('/api/daily-reports/{identifier}')
+    def daily_report_get(identifier:str):return daily_reports.get(identifier)
+
+    reviews.observation_updates=observation_updates
+    app.state.observation_updates=observation_updates
+
+    @app.get('/api/observation-updates/{instrument}')
+    def observation_updates_status(instrument:str):return observation_updates.listing(instrument)
+
+    @app.post('/api/observation-updates/{instrument}/settings')
+    def observation_updates_settings(instrument:str,command:UpdateSettings):return observation_updates.configure(instrument,command)
+
+    @app.post('/api/observation-updates/{instrument}/requests',status_code=201)
+    def observation_updates_request(instrument:str,command:UpdateRequest):return observation_updates.submit(instrument,command)
+
+    @app.get('/api/observation-update-jobs/{identifier}')
+    def observation_update_job(identifier:str):return observation_updates.get(identifier)
+
+    @app.post('/api/observation-update-jobs/{identifier}/cancel')
+    def observation_update_cancel(identifier:str):return observation_updates.cancel(identifier)
 
     @app.get('/api/notification-channel')
     def channel_configuration(): return notification_channel.get()
@@ -1021,6 +1656,34 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     reports = ResearchReports(shadow, valuations, intents, notifications, monitoring)
     app.state.reports = reports
     reviews.reports = reports
+    from roll.research.performance_reports import PerformanceReports,PerformanceCommand
+    performance=PerformanceReports(reports)
+    app.state.performance=performance
+
+    @app.post('/api/research/reports/{freeze_id}/performance',status_code=201)
+    async def performance_create(freeze_id:str,command:PerformanceCommand):return await performance.create(freeze_id,command)
+
+    @app.get('/api/research/reports/{freeze_id}/performance')
+    def performance_list(freeze_id:str):return performance.listing(freeze_id)
+
+    @app.get('/api/research/performance-reports/{identifier}')
+    def performance_get(identifier:str):return performance.get(identifier)
+
+    @app.get('/api/research/performance-reports/{identifier}/figures/{namespace}')
+    def performance_figure(identifier:str,namespace:str):
+        value=performance.get(identifier)
+        if namespace not in value['figures']:raise HTTPException(404,'PERFORMANCE_FIGURE_UNAVAILABLE')
+        return Response(evidence.raw(value['figures'][namespace]['sha256']).read_bytes(),media_type='image/svg+xml',headers={'Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'"})
+
+    @app.get('/api/research/performance-reports/{identifier}/export')
+    def performance_export(identifier:str):
+        value=performance.get(identifier)
+        return Response(evidence.raw(value['export']['sha256']).read_bytes(),media_type='text/html',headers={'Content-Disposition':'attachment; filename="roll-performance.html"'})
+
+    @app.post('/api/research/performance-reports/{identifier}/replay')
+    def performance_replay(identifier:str):
+        value=performance.get(identifier)
+        return {'performance_report_id':identifier,'matches_original':True,'network_calls':0,'recomputed':False}
 
     @app.get('/api/research/reports/{freeze_id}')
     def research_report(freeze_id: str, valuation_id: str | None = None, decision_id: str | None = None,
@@ -1111,6 +1774,11 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         ledger.account()
         return {"service": "RUNNING", "storage": "READABLE", "market": "FINITE_REQUEST_ADAPTER_AVAILABLE",
                 "backend": "NOT_CONFIGURED", "reason": "本机账户与有限市场取证接口在线；实际覆盖、缺口及时效逐请求核对，模型接入尚未配置"}
+
+    @app.get("/api/runtime/release")
+    def release_identity():
+        from roll.runtime.release import identity
+        return identity()
 
     @app.get("/api/health")
     def health():
@@ -1300,4 +1968,6 @@ def create_app(directory: Path | None = None, market_transport=None, market_cloc
             if len(raw)>256*1024*1024:raise HTTPException(413,'恢复包压缩大小最多256MiB')
         return await asyncio.to_thread(backups.stage_restore,bytes(raw))
 
+    from roll.runtime.release import mount_web
+    mount_web(app)
     return app

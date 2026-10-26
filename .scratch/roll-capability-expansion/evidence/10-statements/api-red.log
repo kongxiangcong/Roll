@@ -1,0 +1,46 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_saved_three_statements_join_full_identities_and_replay _________
+
+self = <starlette.datastructures.State object at 0x0000021D10A56CF0>
+key = 'financial_statements'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+>           return self._state[key]
+                   ^^^^^^^^^^^^^^^^
+E           KeyError: 'financial_statements'
+
+backend\.venv\Lib\site-packages\starlette\datastructures.py:683: KeyError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r10r/test_saved_three_statements_jo0')
+
+    def test_saved_three_statements_join_full_identities_and_replay(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            base='/api/market/financial/SSE:600362'
+            client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':client.get('/api/market/list').json()['version']})
+            policy=next(p for p in client.get('/api/research/collection-sources').json() if p['id']=='akshare-financial-em')
+            client.post('/api/research/collection-sources/akshare-financial-em/policy',json={'enabled':True,'expected_revision':policy['revision'],'basis':'METHOD isolated three statements'})
+>           client.app.state.financial_statements.worker=statements
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_financial_statements.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x0000021D10A56CF0>
+key = 'financial_statements'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'financial_statements'
+
+backend\.venv\Lib\site-packages\starlette\datastructures.py:686: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_statements.py::test_saved_three_statements_join_full_identities_and_replay
+1 failed in 7.61s

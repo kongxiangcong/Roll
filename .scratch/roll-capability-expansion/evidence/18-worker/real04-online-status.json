@@ -1,0 +1,619 @@
+{
+  "settings": {
+    "basis": "Explicit isolated real worker acceptance; saved facts only; no source HTTP",
+    "changed_at": "2026-10-19T15:30:35.955646+00:00",
+    "classify": false,
+    "enabled": true,
+    "instrument": "SSE:600362",
+    "news_postclose": false,
+    "news_refresh": false,
+    "profile": "finbert-adaptation-01",
+    "revision": 2
+  },
+  "jobs": [
+    {
+      "cache_reused": true,
+      "command": {
+        "basis": "Bounded actual online worker over saved non-holdout archives",
+        "idempotency_key": "real-same-input",
+        "kind": "NEWS",
+        "refresh_sources": false
+      },
+      "created_at": "2026-10-19T15:30:46.851149+00:00",
+      "error": null,
+      "errors": [],
+      "external_notification_enabled": false,
+      "finished_at": "2026-10-19T15:30:47.123885+00:00",
+      "forecast_archive_created": false,
+      "host_owner": {
+        "creation_ticks": 134368974360570692,
+        "nonce": "37ef718d-1249-4a8e-9da2-422515e7944a",
+        "pid": 50912
+      },
+      "instrument": "SSE:600362",
+      "job_id": "42716f03-1203-474d-926c-4a66381b0568",
+      "namespace": "OBSERVATION_ONLY",
+      "observation_id": "ab59da5f-ee08-48f8-b760-17aa058a097a",
+      "result": [
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-news-em"
+        }
+      ],
+      "scheduled_checkpoint": null,
+      "settings": {
+        "basis": "Explicit isolated real worker acceptance; saved facts only; no source HTTP",
+        "changed_at": "2026-10-19T15:30:35.955646+00:00",
+        "classify": false,
+        "enabled": true,
+        "instrument": "SSE:600362",
+        "news_postclose": false,
+        "news_refresh": false,
+        "profile": "finbert-adaptation-01",
+        "revision": 2
+      },
+      "started_at": "2026-10-19T15:30:46.948571+00:00",
+      "status": "COMPLETE"
+    },
+    {
+      "cache_reused": false,
+      "command": {
+        "basis": "Bounded actual online worker over saved non-holdout archives",
+        "idempotency_key": "real-worker-FINANCIAL",
+        "kind": "FINANCIAL",
+        "refresh_sources": false
+      },
+      "created_at": "2026-10-19T15:30:35.986039+00:00",
+      "error": null,
+      "errors": [],
+      "external_notification_enabled": false,
+      "finished_at": "2026-10-19T15:30:41.163045+00:00",
+      "forecast_archive_created": false,
+      "host_owner": {
+        "creation_ticks": 134368974360570692,
+        "nonce": "37ef718d-1249-4a8e-9da2-422515e7944a",
+        "pid": 50912
+      },
+      "instrument": "SSE:600362",
+      "job_id": "21f664c5-d4e1-4fe9-8b10-8b0cf80bf01a",
+      "namespace": "OBSERVATION_ONLY",
+      "observation_id": "88cdfcca-26a7-456f-b026-d0a590edc74a",
+      "result": [
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-financial-em"
+        },
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-financial-em"
+        }
+      ],
+      "scheduled_checkpoint": null,
+      "settings": {
+        "basis": "Explicit isolated real worker acceptance; saved facts only; no source HTTP",
+        "changed_at": "2026-10-19T15:30:35.955646+00:00",
+        "classify": false,
+        "enabled": true,
+        "instrument": "SSE:600362",
+        "news_postclose": false,
+        "news_refresh": false,
+        "profile": "finbert-adaptation-01",
+        "revision": 2
+      },
+      "started_at": "2026-10-19T15:30:40.977221+00:00",
+      "status": "COMPLETE"
+    },
+    {
+      "cache_reused": false,
+      "command": {
+        "basis": "Bounded actual online worker over saved non-holdout archives",
+        "idempotency_key": "real-worker-NEWS",
+        "kind": "NEWS",
+        "refresh_sources": false
+      },
+      "created_at": "2026-10-19T15:30:35.971550+00:00",
+      "error": null,
+      "errors": [],
+      "external_notification_enabled": false,
+      "finished_at": "2026-10-19T15:30:40.845184+00:00",
+      "forecast_archive_created": false,
+      "host_owner": {
+        "creation_ticks": 134368974360570692,
+        "nonce": "37ef718d-1249-4a8e-9da2-422515e7944a",
+        "pid": 50912
+      },
+      "instrument": "SSE:600362",
+      "job_id": "55e50b58-97b5-4cbc-a1d8-a30bc1573aa6",
+      "namespace": "OBSERVATION_ONLY",
+      "observation_id": "ab59da5f-ee08-48f8-b760-17aa058a097a",
+      "result": [
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-news-em"
+        }
+      ],
+      "scheduled_checkpoint": null,
+      "settings": {
+        "basis": "Explicit isolated real worker acceptance; saved facts only; no source HTTP",
+        "changed_at": "2026-10-19T15:30:35.955646+00:00",
+        "classify": false,
+        "enabled": true,
+        "instrument": "SSE:600362",
+        "news_postclose": false,
+        "news_refresh": false,
+        "profile": "finbert-adaptation-01",
+        "revision": 2
+      },
+      "started_at": "2026-10-19T15:30:40.609559+00:00",
+      "status": "COMPLETE"
+    }
+  ],
+  "observations": [
+    {
+      "capability": "RESEARCH_LIMITED",
+      "created_at": "2026-10-19T15:30:41.162818+00:00",
+      "errors": [],
+      "evidence_kind": "REAL_SAVED_OBSERVATION",
+      "forecast_archive_created": false,
+      "input_sha256": "8300fa574b74c10a9b85d51c749dfdcc614bcb8413683cadc1b915fe5058d72d",
+      "instrument": "SSE:600362",
+      "kind": "FINANCIAL",
+      "known_by": "2026-10-19T15:30:41.154150+00:00",
+      "meaningful": true,
+      "observation_id": "88cdfcca-26a7-456f-b026-d0a590edc74a",
+      "payload": {
+        "financial_observation_id": "e237da46-4060-43b0-8bba-f2a996409df0",
+        "source_known_by": "2026-10-17T17:38:23.644236+00:00",
+        "status": "FRESH"
+      },
+      "receipts": [
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-financial-em"
+        },
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-financial-em"
+        }
+      ],
+      "semantic_sha256": "07414a2a4a654becd2047725c013245020e51e154327565787a81f9ba4e97dac",
+      "system_usable": false,
+      "version": "observation-worker-v1"
+    },
+    {
+      "capability": "RESEARCH_LIMITED",
+      "created_at": "2026-10-19T15:30:40.845034+00:00",
+      "errors": [],
+      "evidence_kind": "REAL_SAVED_OBSERVATION",
+      "forecast_archive_created": false,
+      "input_sha256": "d566eee41b576b5b0bcf79e496139e17f5f58b35d3e4fe204d925f17879beccd",
+      "instrument": "SSE:600362",
+      "kind": "NEWS",
+      "known_by": "2026-10-19T15:30:40.836580+00:00",
+      "meaningful": true,
+      "observation_id": "ab59da5f-ee08-48f8-b760-17aa058a097a",
+      "payload": {
+        "classification_run_id": null,
+        "saved_fact_count": 22,
+        "series_id": null,
+        "source_available_through": "2026-10-19T14:10:40.751352+00:00",
+        "unique_event_count": 22
+      },
+      "receipts": [
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-news-em"
+        }
+      ],
+      "semantic_sha256": "309adde03a9e248a4fb7cecd3f4aa50d4b78b42c7397bb2a18314f4901991123",
+      "system_usable": false,
+      "version": "observation-worker-v1"
+    }
+  ],
+  "health": {},
+  "sources": [
+    {
+      "adapter_version": "akshare-1.19.1-news-raw-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "Explicit isolated one-shot new news source acceptance under spec ID-04; zero retry",
+      "changed_at": "2026-10-15T15:10:18.435345+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "AKSHARE",
+      "failure_threshold": 3,
+      "group": "NEWS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "akshare-news-em",
+      "license": "AKShare MIT; Trafilatura Apache-2.0; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "AKShare 东财单股新闻",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 2,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Recent search page only; actual SDK pageSize10; no complete history/entity assertion",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-15T15:10:24.273508+00:00",
+        "last_code": "PARTIAL",
+        "last_run_id": "6be246a9-99e3-4b98-acc4-975239877353",
+        "last_success_at": "2026-10-15T15:10:24.273508+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "akshare-1.19.1-income-raw-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-15新增利润表来源，按单证券显式启用",
+      "changed_at": "2026-10-15T15:10:17.574500+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": false,
+      "engine": "AKSHARE",
+      "failure_threshold": 3,
+      "group": "FINANCIAL",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "akshare-financial-em",
+      "license": "AKShare 1.19.1 MIT; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "AKShare 东财利润表",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Source-bound statement proof or explicit UNKNOWN; no historical PIT claim",
+      "upstream": "EASTMONEY",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    }
+  ],
+  "checkpoint": "Asia/Shanghai 15:05; online current session only",
+  "timeout_seconds": 45,
+  "offline_coverage": {
+    "sessions": [
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134365507977133420,
+          "nonce": "58f2cbcd-4374-4679-85cd-d236c736f79a",
+          "pid": 32792
+        },
+        "last_seen_at": "2026-10-15T15:13:29.242004+00:00",
+        "session_id": "04266585-0fc0-4033-9e26-62ca015bfd6c",
+        "started_at": "2026-10-15T15:13:21.634961+00:00"
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134365511182068111,
+          "nonce": "3a8b3684-4b77-4b1d-99ce-8313d9394f04",
+          "pid": 2500
+        },
+        "last_seen_at": "2026-10-15T15:18:51.007896+00:00",
+        "session_id": "a06108aa-6ac0-4eb4-83ab-23ad61ce1c18",
+        "started_at": "2026-10-15T15:18:43.390865+00:00"
+      },
+      {
+        "close_reason": "NORMAL_CLOSE_NO_ALWAYS_ON_REQUIREMENT",
+        "ended_at": "2026-10-17T16:47:50.336091+00:00",
+        "host_owner": {
+          "creation_ticks": 134367292657122066,
+          "nonce": "87a7d571-973b-47b4-be28-e56ea31a09b2",
+          "pid": 43104
+        },
+        "last_seen_at": "2026-10-17T16:47:50.309440+00:00",
+        "session_id": "5dd5c23f-aee7-45f5-9730-3d4d064c1620",
+        "started_at": "2026-10-17T16:47:49.884450+00:00",
+        "worker_error": null
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134367292803246330,
+          "nonce": "596a45cb-c8b2-41c1-a34b-901eda1fd545",
+          "pid": 40896
+        },
+        "last_seen_at": "2026-10-17T16:48:11.156921+00:00",
+        "session_id": "0e3ea6e6-767e-436c-8960-dc34f07e5644",
+        "started_at": "2026-10-17T16:48:04.081546+00:00"
+      },
+      {
+        "close_reason": "NORMAL_CLOSE_NO_ALWAYS_ON_REQUIREMENT",
+        "ended_at": "2026-10-17T18:13:40.857711+00:00",
+        "host_owner": {
+          "creation_ticks": 134367344014497046,
+          "nonce": "e63449df-a2da-43c5-b6ed-c57128f762fc",
+          "pid": 38632
+        },
+        "last_seen_at": "2026-10-17T18:13:40.788869+00:00",
+        "session_id": "92d6235a-fb78-47cd-acac-e7bf4de0c38d",
+        "started_at": "2026-10-17T18:13:27.817652+00:00",
+        "worker_error": null
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134367344731799499,
+          "nonce": "af91a980-e932-4c08-8ad2-773ea36e7aef",
+          "pid": 26700
+        },
+        "last_seen_at": "2026-10-17T18:15:37.451006+00:00",
+        "session_id": "ed692223-4ab5-4d65-b51a-45c2300c3ae3",
+        "started_at": "2026-10-17T18:14:35.960282+00:00"
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134367345602035739,
+          "nonce": "fb3464f6-d059-4469-a444-cc3943125be5",
+          "pid": 38296
+        },
+        "last_seen_at": "2026-10-17T18:16:03.720524+00:00",
+        "session_id": "3169bb9e-fde4-4fb6-9e21-ede31c5b5f76",
+        "started_at": "2026-10-17T18:16:02.626832+00:00"
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134367345778664979,
+          "nonce": "fd5a9580-5a8d-43f6-8175-1d532b207d4a",
+          "pid": 4540
+        },
+        "last_seen_at": "2026-10-17T18:16:26.901738+00:00",
+        "session_id": "480d26aa-b50e-4741-95c9-698efcf5d4fd",
+        "started_at": "2026-10-17T18:16:20.258797+00:00"
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134367690782390288,
+          "nonce": "fb706407-3bbc-4c4d-9c11-9be8bced5278",
+          "pid": 21496
+        },
+        "last_seen_at": "2026-10-18T03:51:39.582035+00:00",
+        "session_id": "a5e0ff71-ce22-41ad-ae59-17858b5113c4",
+        "started_at": "2026-10-18T03:51:26.294477+00:00"
+      },
+      {
+        "close_reason": "NORMAL_CLOSE_NO_ALWAYS_ON_REQUIREMENT",
+        "ended_at": "2026-10-18T03:53:33.961496+00:00",
+        "host_owner": {
+          "creation_ticks": 134367691480348362,
+          "nonce": "4e267dc2-4b89-4e87-b3d5-aa41760443d3",
+          "pid": 10360
+        },
+        "last_seen_at": "2026-10-18T03:53:33.903341+00:00",
+        "session_id": "2d46f460-8028-4664-9228-0ab255a8261c",
+        "started_at": "2026-10-18T03:52:32.264970+00:00",
+        "worker_error": null
+      },
+      {
+        "close_reason": "NORMAL_CLOSE_NO_ALWAYS_ON_REQUIREMENT",
+        "ended_at": "2026-10-18T03:56:34.812505+00:00",
+        "host_owner": {
+          "creation_ticks": 134367693707011394,
+          "nonce": "09f3ce1a-5a25-4757-899c-7e70660168f8",
+          "pid": 39160
+        },
+        "last_seen_at": "2026-10-18T03:56:34.726235+00:00",
+        "session_id": "2d69e372-c3d2-4d28-a7b2-c10cd84abf06",
+        "started_at": "2026-10-18T03:56:15.594976+00:00",
+        "worker_error": null
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134367694216388969,
+          "nonce": "e45067bc-730a-4ddd-9099-5532722331ce",
+          "pid": 2220
+        },
+        "last_seen_at": "2026-10-18T03:57:14.166624+00:00",
+        "session_id": "63d5f585-2268-4a00-8109-ddaffbf67c40",
+        "started_at": "2026-10-18T03:57:06.576248+00:00"
+      },
+      {
+        "close_reason": "NORMAL_CLOSE_NO_ALWAYS_ON_REQUIREMENT",
+        "ended_at": "2026-10-19T15:30:47.268559+00:00",
+        "host_owner": {
+          "creation_ticks": 134368974360570692,
+          "nonce": "37ef718d-1249-4a8e-9da2-422515e7944a",
+          "pid": 50912
+        },
+        "last_seen_at": "2026-10-19T15:30:47.204873+00:00",
+        "session_id": "ba5af112-3eec-454a-96ce-ab01096c6d10",
+        "started_at": "2026-10-19T15:30:40.505841+00:00",
+        "worker_error": null
+      },
+      {
+        "ended_at": null,
+        "host_owner": {
+          "creation_ticks": 134368974475298458,
+          "nonce": "4acc7751-982d-492f-87bb-34d60c3fbb1c",
+          "pid": 51728
+        },
+        "last_seen_at": "2026-10-19T15:30:52.091308+00:00",
+        "session_id": "90dbaa8a-b053-4890-b046-71c405315f6e",
+        "started_at": "2026-10-19T15:30:52.076974+00:00"
+      }
+    ],
+    "gaps": [
+      {
+        "end": "2026-10-15T15:18:43.390865+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "04266585-0fc0-4033-9e26-62ca015bfd6c",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "a06108aa-6ac0-4eb4-83ab-23ad61ce1c18",
+        "start": "2026-10-15T15:13:29.242004+00:00"
+      },
+      {
+        "end": "2026-10-17T16:47:49.884450+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "a06108aa-6ac0-4eb4-83ab-23ad61ce1c18",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "5dd5c23f-aee7-45f5-9730-3d4d064c1620",
+        "start": "2026-10-15T15:18:51.007896+00:00"
+      },
+      {
+        "end": "2026-10-17T16:48:04.081546+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "5dd5c23f-aee7-45f5-9730-3d4d064c1620",
+        "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+        "session_id": "0e3ea6e6-767e-436c-8960-dc34f07e5644",
+        "start": "2026-10-17T16:47:50.336091+00:00"
+      },
+      {
+        "end": "2026-10-17T18:13:27.817652+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "0e3ea6e6-767e-436c-8960-dc34f07e5644",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "92d6235a-fb78-47cd-acac-e7bf4de0c38d",
+        "start": "2026-10-17T16:48:11.156921+00:00"
+      },
+      {
+        "end": "2026-10-17T18:14:35.960282+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "92d6235a-fb78-47cd-acac-e7bf4de0c38d",
+        "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+        "session_id": "ed692223-4ab5-4d65-b51a-45c2300c3ae3",
+        "start": "2026-10-17T18:13:40.857711+00:00"
+      },
+      {
+        "end": "2026-10-17T18:16:02.626832+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "ed692223-4ab5-4d65-b51a-45c2300c3ae3",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "3169bb9e-fde4-4fb6-9e21-ede31c5b5f76",
+        "start": "2026-10-17T18:15:37.451006+00:00"
+      },
+      {
+        "end": "2026-10-17T18:16:20.258797+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "3169bb9e-fde4-4fb6-9e21-ede31c5b5f76",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "480d26aa-b50e-4741-95c9-698efcf5d4fd",
+        "start": "2026-10-17T18:16:03.720524+00:00"
+      },
+      {
+        "end": "2026-10-18T03:51:26.294477+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "480d26aa-b50e-4741-95c9-698efcf5d4fd",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "a5e0ff71-ce22-41ad-ae59-17858b5113c4",
+        "start": "2026-10-17T18:16:26.901738+00:00"
+      },
+      {
+        "end": "2026-10-18T03:52:32.264970+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "a5e0ff71-ce22-41ad-ae59-17858b5113c4",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "2d46f460-8028-4664-9228-0ab255a8261c",
+        "start": "2026-10-18T03:51:39.582035+00:00"
+      },
+      {
+        "end": "2026-10-18T03:56:15.594976+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "2d46f460-8028-4664-9228-0ab255a8261c",
+        "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+        "session_id": "2d69e372-c3d2-4d28-a7b2-c10cd84abf06",
+        "start": "2026-10-18T03:53:33.961496+00:00"
+      },
+      {
+        "end": "2026-10-18T03:57:06.576248+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "2d69e372-c3d2-4d28-a7b2-c10cd84abf06",
+        "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+        "session_id": "63d5f585-2268-4a00-8109-ddaffbf67c40",
+        "start": "2026-10-18T03:56:34.812505+00:00"
+      },
+      {
+        "end": "2026-10-19T15:30:40.505841+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "63d5f585-2268-4a00-8109-ddaffbf67c40",
+        "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+        "session_id": "ba5af112-3eec-454a-96ce-ab01096c6d10",
+        "start": "2026-10-18T03:57:14.166624+00:00"
+      },
+      {
+        "end": "2026-10-19T15:30:52.076974+00:00",
+        "expired_opportunities_sent": false,
+        "forward_predictions_reconstructed": false,
+        "monitoring_fault": false,
+        "previous_session_id": "ba5af112-3eec-454a-96ce-ab01096c6d10",
+        "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+        "session_id": "90dbaa8a-b053-4890-b046-71c405315f6e",
+        "start": "2026-10-19T15:30:47.268559+00:00"
+      }
+    ],
+    "promise": "ACTUAL_OBSERVATIONS_ONLY_NO_ALWAYS_ON_REQUIREMENT",
+    "forward_predictions_reconstructed": false,
+    "expired_opportunities_sent": false
+  },
+  "worker": {
+    "worker_limit": 1,
+    "worker_state": "RUNNING",
+    "last_worker_error": null,
+    "worker": {
+      "heartbeat_at": "2026-10-19T15:30:52.091096+00:00",
+      "host_owner": {
+        "creation_ticks": 134368974475298458,
+        "nonce": "4acc7751-982d-492f-87bb-34d60c3fbb1c",
+        "pid": 51728
+      }
+    },
+    "technical_limits": {
+      "attempts": 3,
+      "backoff_seconds": [
+        1,
+        2
+      ],
+      "timeout_seconds": 8,
+      "http_calls_per_attempt": 8,
+      "recursive_tasks": 0
+    },
+    "backlog": 0,
+    "running": 0
+  },
+  "forecast_backfill": false,
+  "external_notifications": "IN_APP_ONLY_NO_CHANNEL_ACTIVATION"
+}

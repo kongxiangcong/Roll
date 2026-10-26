@@ -1,0 +1,13 @@
+{
+  "method_id": "successor-model-replay-v1",
+  "scope": "Independent METHOD replay of saved AFTER_CALIBRATOR_FIT_IN_SAMPLE predictions on the entire archived CAL calendar; never append to manual successor frames",
+  "calendar": "Original saved v1 shadow input, full CAL interval, original ordered dates; integer slots are reversible METHOD aliases only",
+  "predictions": "Exact saved float decimal representation, matched unique observation date/model hash; absent predictions stay absent; no fit/predict/SEALED",
+  "bars": "Original RAW SHARE METHOD facts, decimal prices preserved without rounding; previous close from preceding full calendar fact and original feature context; unknown input stays unknown",
+  "baseline": "Only explicitly empty starting positions; original cash/policy/costs/rules/horizon; no automatic liquidation or shifted original migration deadlines",
+  "maximum_sessions": 200,
+  "worker_seconds": 30,
+  "maximum_input_bytes": 8388608,
+  "maximum_output_bytes": 8388608,
+  "qualification": "In-sample CAL diagnostic only; no independent validation, G5 PASS, source admission, complete freeze or real forward start"
+}

@@ -1,0 +1,24 @@
+{
+  "attempt_id": "DOCLING-MODEL-ATTEMPT-01",
+  "status": "PLANNED_ONCE",
+  "created_at": "2026-10-17T16:57:08.774Z",
+  "purpose": "Prefetch official Docling layout and TableFormer weights plus copy bundled RapidOCR ONNX models into the isolated artifacts directory, then run offline conversion on archived PDFs.",
+  "models": [
+    "layout",
+    "tableformer",
+    "rapidocr (bundled in rapidocr 3.10.0, copied to artifacts)"
+  ],
+  "source_hosts": [
+    "huggingface.co",
+    "cdn-lfs.huggingface.co",
+    "cdn-lfs-us-1.huggingface.co"
+  ],
+  "network_route": "Machine HTTPS proxy http://127.0.0.1:7890; no mirror; no retries.",
+  "limits": {
+    "maximum_seconds": 300,
+    "maximum_download_bytes": 1610612736,
+    "retries": 0
+  },
+  "artifacts_directory": "D:/dsh-proj/Roll/.scratch/rce-runtime/docling-cache/artifacts",
+  "post_download": "Set offline/HF_HUB_OFFLINE for conversion; no processing-time network."
+}

@@ -1,0 +1,3521 @@
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-19T14:01:25.588430+00:00",
+  "model": {
+    "name": "Roll Chinese FinBERT bounded adaptation01",
+    "label_mapping": {
+      "0": "NEUTRAL",
+      "1": "POSITIVE",
+      "2": "NEGATIVE"
+    }
+  },
+  "evaluation_freeze_sha256": "e7b26b8563da7770d0285b5126e2da37064932a622b03bbee9224a241f72e78c",
+  "network_calls": 0,
+  "training": false,
+  "old_holdout_loaded": false,
+  "rows": [
+    {
+      "id": "D001",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2023-02-15",
+      "label": "POSITIVE",
+      "input_sha256": "f2efd386a1270d4f6d44ff63658301347db317146628c0d4bd5600a010762fac",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00016145168046932667,
+        "POSITIVE": 0.9997697472572327,
+        "NEGATIVE": 6.87957726768218e-05
+      },
+      "confidence": 0.9997697472572327,
+      "latency_seconds": 0.12888619996374473
+    },
+    {
+      "id": "D002",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-02-16",
+      "label": "NEUTRAL",
+      "input_sha256": "a952aae59563bcb75da4f582c32a22514966485228ac6551cb787567572dbb0e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9997666478157043,
+        "POSITIVE": 0.00020608487830031663,
+        "NEGATIVE": 2.7339472580933943e-05
+      },
+      "confidence": 0.9997666478157043,
+      "latency_seconds": 0.12774339999305084
+    },
+    {
+      "id": "D003",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-02-17",
+      "label": "NEUTRAL",
+      "input_sha256": "d250608f0f01e67f291291c11fdc50647eb5376ddebd22a82423097968ebbba5",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.001085204421542585,
+        "POSITIVE": 0.9988495111465454,
+        "NEGATIVE": 6.52915914542973e-05
+      },
+      "confidence": 0.9988495111465454,
+      "latency_seconds": 0.10244829999282956
+    },
+    {
+      "id": "D004",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-02-22",
+      "label": "NEUTRAL",
+      "input_sha256": "35f42617735ef025b6dc2df204ff50d0f231ecc85984aaee62bfab3ca75e5bf6",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998655319213867,
+        "POSITIVE": 9.777734521776438e-05,
+        "NEGATIVE": 3.671724334708415e-05
+      },
+      "confidence": 0.9998655319213867,
+      "latency_seconds": 0.07773369998903945
+    },
+    {
+      "id": "D005",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-02-23",
+      "label": "NEUTRAL",
+      "input_sha256": "c01cdf02ea82a4f7f55c24c4647b18072607d683e8412dd493bd6284f4b84be7",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998655319213867,
+        "POSITIVE": 9.784002759261057e-05,
+        "NEGATIVE": 3.664098403532989e-05
+      },
+      "confidence": 0.9998655319213867,
+      "latency_seconds": 0.07239440002012998
+    },
+    {
+      "id": "D007",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2023-02-27",
+      "label": "NEGATIVE",
+      "input_sha256": "31b75bc8769fa1a1cc24749f2636e2b83dfcb159218adfb44520893cdea2c05d",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.13472883135546e-05,
+        "POSITIVE": 6.634766032220796e-05,
+        "NEGATIVE": 0.9999022483825684
+      },
+      "confidence": 0.9999022483825684,
+      "latency_seconds": 0.0765186000498943
+    },
+    {
+      "id": "D008",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-02-27",
+      "label": "NEUTRAL",
+      "input_sha256": "50bcb91e4981b1679b7398912ab2882018459b05affe176dfc4c77c160c3064c",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998651742935181,
+        "POSITIVE": 9.673415479483083e-05,
+        "NEGATIVE": 3.8068621506681666e-05
+      },
+      "confidence": 0.9998651742935181,
+      "latency_seconds": 0.11096269998233765
+    },
+    {
+      "id": "D009",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2023-02-27",
+      "label": "NEGATIVE",
+      "input_sha256": "0b52f148df0c9980f091354919d1c71ec4b8a3c7e8da3cf4ce8d1a2f81c9f9cd",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.139948967145756e-05,
+        "POSITIVE": 6.178108014864847e-05,
+        "NEGATIVE": 0.9999067783355713
+      },
+      "confidence": 0.9999067783355713,
+      "latency_seconds": 0.1194536000257358
+    },
+    {
+      "id": "D010",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2023-02-27",
+      "label": "NEGATIVE",
+      "input_sha256": "bff5eb63c9a0237cdb1c8034abdfa119e28e1812f83dabc661ef6ccf7f52fca9",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.174810262862593e-05,
+        "POSITIVE": 6.470074731623754e-05,
+        "NEGATIVE": 0.9999035596847534
+      },
+      "confidence": 0.9999035596847534,
+      "latency_seconds": 0.09542189998319373
+    },
+    {
+      "id": "D017",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-04-12",
+      "label": "NEUTRAL",
+      "input_sha256": "d771a4ff76b7ca7c26dbb2beaa0e1560b5d1cfb0ad3fd8315affa06e2a7d3d22",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9997408986091614,
+        "POSITIVE": 0.00023239261645358056,
+        "NEGATIVE": 2.6754079954116605e-05
+      },
+      "confidence": 0.9997408986091614,
+      "latency_seconds": 0.08909869997296482
+    },
+    {
+      "id": "D018",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q1",
+      "label": "NEUTRAL",
+      "input_sha256": "0a91e3a78069fb08417ceb5e3bbc1fa486acefde0fdeb8bb53c25175b6d29006",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998348951339722,
+        "POSITIVE": 0.00012997085286770016,
+        "NEGATIVE": 3.520376776577905e-05
+      },
+      "confidence": 0.9998348951339722,
+      "latency_seconds": 0.1144765000208281
+    },
+    {
+      "id": "D019",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q1",
+      "label": "POSITIVE",
+      "input_sha256": "f129cb6118937f7cebb11f9d529d036e9c89987b2337829e2fccf24876d9169a",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00019148272986058146,
+        "POSITIVE": 0.9997405409812927,
+        "NEGATIVE": 6.796747038606554e-05
+      },
+      "confidence": 0.9997405409812927,
+      "latency_seconds": 0.10523429996101186
+    },
+    {
+      "id": "D020",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q1",
+      "label": "POSITIVE",
+      "input_sha256": "3312ae31cb10030d417bfd38022541bbade9a87b0a462cd228a236619888e4f7",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00017643343016970903,
+        "POSITIVE": 0.9997575879096985,
+        "NEGATIVE": 6.602771463803947e-05
+      },
+      "confidence": 0.9997575879096985,
+      "latency_seconds": 0.08976260002236813
+    },
+    {
+      "id": "D021",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q1",
+      "label": "POSITIVE",
+      "input_sha256": "65359aeb5fa48c6078cbac8e70abc78b3a6f7bfb0f4efa5703722920487fc3a9",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00019644445274025202,
+        "POSITIVE": 0.9997355341911316,
+        "NEGATIVE": 6.807597674196586e-05
+      },
+      "confidence": 0.9997355341911316,
+      "latency_seconds": 0.09443120000651106
+    },
+    {
+      "id": "D022",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q1",
+      "label": "POSITIVE",
+      "input_sha256": "fb22e86f5f1b32436a9a8ca0691b07be022422eeea585364be70e5c2ee538a07",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.000199442045413889,
+        "POSITIVE": 0.9997380375862122,
+        "NEGATIVE": 6.251321610761806e-05
+      },
+      "confidence": 0.9997380375862122,
+      "latency_seconds": 0.10750300000654534
+    },
+    {
+      "id": "D023",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-04-24",
+      "label": "NEUTRAL",
+      "input_sha256": "3de0bf01eeebf9b06a0c4cc2245f477573bed46c4c4aef99ef35e766a84d1287",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998800754547119,
+        "POSITIVE": 7.119508518371731e-05,
+        "NEGATIVE": 4.8742898798082024e-05
+      },
+      "confidence": 0.9998800754547119,
+      "latency_seconds": 0.09541629999876022
+    },
+    {
+      "id": "D024",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-04-24",
+      "label": "NEUTRAL",
+      "input_sha256": "cdc65c060319fec1ff9ed462fea37a01c31cb248138249a2f42f255ad18e18e8",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998878240585327,
+        "POSITIVE": 6.992374255787581e-05,
+        "NEGATIVE": 4.221381095703691e-05
+      },
+      "confidence": 0.9998878240585327,
+      "latency_seconds": 0.12515659997006878
+    },
+    {
+      "id": "D025",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-04-25",
+      "label": "NEUTRAL",
+      "input_sha256": "0530d56324619ce850a31ce37e1278d945439d688fd60939d6a17c768ef03663",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999882698059082,
+        "POSITIVE": 7.899070624262094e-05,
+        "NEGATIVE": 3.8298850995488465e-05
+      },
+      "confidence": 0.999882698059082,
+      "latency_seconds": 0.09107740002218634
+    },
+    {
+      "id": "D026",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-04-25",
+      "label": "NEUTRAL",
+      "input_sha256": "dca795b365f104d640081070dfadd84f8119c82ce1e0b00bd48826faf658971a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998781681060791,
+        "POSITIVE": 7.153060869313776e-05,
+        "NEGATIVE": 5.0314392865402624e-05
+      },
+      "confidence": 0.9998781681060791,
+      "latency_seconds": 0.06742279999889433
+    },
+    {
+      "id": "D027",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q1",
+      "label": "POSITIVE",
+      "input_sha256": "2a73e496b09ab8acc46bf50d6e6a601b2c59aff90792206b0561de2083831072",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00019556125334929675,
+        "POSITIVE": 0.9997413754463196,
+        "NEGATIVE": 6.305739952949807e-05
+      },
+      "confidence": 0.9997413754463196,
+      "latency_seconds": 0.09505140001419932
+    },
+    {
+      "id": "D029",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-04-25",
+      "label": "POSITIVE",
+      "input_sha256": "586b745df17c9d62897189575bb854ec8b55a97bd3c476a07ef8db7e7e884f1d",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00017436449707020074,
+        "POSITIVE": 0.999754011631012,
+        "NEGATIVE": 7.168656884459779e-05
+      },
+      "confidence": 0.999754011631012,
+      "latency_seconds": 0.09260929998708889
+    },
+    {
+      "id": "D030",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-AGM-2022",
+      "label": "NEUTRAL",
+      "input_sha256": "5f9986aeb956ca58d4f00b00bd6f2f5c017a167077dcc813e93cc76f44a0cb09",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998798370361328,
+        "POSITIVE": 7.329367508646101e-05,
+        "NEGATIVE": 4.681361315306276e-05
+      },
+      "confidence": 0.9998798370361328,
+      "latency_seconds": 0.09552760003134608
+    },
+    {
+      "id": "D031",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-05-17",
+      "label": "NEUTRAL",
+      "input_sha256": "d427e05abb1d8f50f0f9b8f3dfa3cf2c1f4982d3a711aba692b27f2b8bbf02e3",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998779296875,
+        "POSITIVE": 8.096114470390603e-05,
+        "NEGATIVE": 4.112873648409732e-05
+      },
+      "confidence": 0.9998779296875,
+      "latency_seconds": 0.11478149995673448
+    },
+    {
+      "id": "D032",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-AGM-2022",
+      "label": "NEUTRAL",
+      "input_sha256": "69e095cb936a1d3ac49d3e3bea5d05ef86e5461e6dbc2b82aa00347c4eee218b",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999876856803894,
+        "POSITIVE": 7.734358950983733e-05,
+        "NEGATIVE": 4.5794637117069215e-05
+      },
+      "confidence": 0.999876856803894,
+      "latency_seconds": 0.07246290001785383
+    },
+    {
+      "id": "D033",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-06-02",
+      "label": "NEUTRAL",
+      "input_sha256": "2d9ba3c0726a6856730bab6fb57ddb0cf2363a2569f9026b10f0a5fcc6c30453",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998764991760254,
+        "POSITIVE": 7.808990631019697e-05,
+        "NEGATIVE": 4.545154661173001e-05
+      },
+      "confidence": 0.9998764991760254,
+      "latency_seconds": 0.08379450003849342
+    },
+    {
+      "id": "D034",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-06-02",
+      "label": "NEUTRAL",
+      "input_sha256": "e6ef745183f7fce2744a67551da2d59c7984b8399a249ddd52e5367e45fd35cb",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998726844787598,
+        "POSITIVE": 6.965990905882791e-05,
+        "NEGATIVE": 5.773665543529205e-05
+      },
+      "confidence": 0.9998726844787598,
+      "latency_seconds": 0.0821081000030972
+    },
+    {
+      "id": "D035",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-06-02",
+      "label": "NEUTRAL",
+      "input_sha256": "2c5432dfa45667dc4c61c2970e842b44c46237ee83589be3b379037b42d4bc37",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998792409896851,
+        "POSITIVE": 7.103050302248448e-05,
+        "NEGATIVE": 4.975905176252127e-05
+      },
+      "confidence": 0.9998792409896851,
+      "latency_seconds": 0.08277700003236532
+    },
+    {
+      "id": "D036",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-06-09",
+      "label": "NEUTRAL",
+      "input_sha256": "2751cab0831953bfbb01bfdfd741ce5b88b86765fcc5565721196e7cb7303a13",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998871088027954,
+        "POSITIVE": 7.414432184305042e-05,
+        "NEGATIVE": 3.870364525937475e-05
+      },
+      "confidence": 0.9998871088027954,
+      "latency_seconds": 0.10023179999552667
+    },
+    {
+      "id": "D037",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-AGM-2022",
+      "label": "NEUTRAL",
+      "input_sha256": "0ab94c5d56615ed1b707c8c2e6cf1d474b23260dfd97bab39c9f417dafe47189",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998852014541626,
+        "POSITIVE": 7.39710740162991e-05,
+        "NEGATIVE": 4.0765087760519236e-05
+      },
+      "confidence": 0.9998852014541626,
+      "latency_seconds": 0.06796499999472871
+    },
+    {
+      "id": "D038",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-06-12",
+      "label": "NEUTRAL",
+      "input_sha256": "a64e8715288c973b64227545ec4bf6486081b996e0064891ebda86b87e30cf89",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998868703842163,
+        "POSITIVE": 7.459965127054602e-05,
+        "NEGATIVE": 3.844853927148506e-05
+      },
+      "confidence": 0.9998868703842163,
+      "latency_seconds": 0.11420040001394227
+    },
+    {
+      "id": "D046",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-07-26",
+      "label": "POSITIVE",
+      "input_sha256": "b6ca23e90ad2df657f8d5d480f556cd7b59681e527f4304ec56e1f0c945bdfa7",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00018879010167438537,
+        "POSITIVE": 0.999708354473114,
+        "NEGATIVE": 0.00010280033166054636
+      },
+      "confidence": 0.999708354473114,
+      "latency_seconds": 0.08565860003000125
+    },
+    {
+      "id": "D047",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-07-26",
+      "label": "POSITIVE",
+      "input_sha256": "d1e48ab27645c6ced9a6b0edaa3786eb3a3e963a244dca6fccc321facb6b6b43",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.000331132672727108,
+        "POSITIVE": 0.9995723366737366,
+        "NEGATIVE": 9.652541484683752e-05
+      },
+      "confidence": 0.9995723366737366,
+      "latency_seconds": 0.07119139999849722
+    },
+    {
+      "id": "D048",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-08-19",
+      "label": "NEUTRAL",
+      "input_sha256": "72db60a70cdd122b00498d3a87734a76bca3f03f8e93583210bf378edff62b7a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998807907104492,
+        "POSITIVE": 8.221594180213287e-05,
+        "NEGATIVE": 3.694153929245658e-05
+      },
+      "confidence": 0.9998807907104492,
+      "latency_seconds": 0.09006830002181232
+    },
+    {
+      "id": "D049",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-08-22",
+      "label": "NEUTRAL",
+      "input_sha256": "5c55dc9a831f6884646e435f639d71e150039b09b9a4c62a3875a277eb5f9310",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999876856803894,
+        "POSITIVE": 8.770932618062943e-05,
+        "NEGATIVE": 3.53569230355788e-05
+      },
+      "confidence": 0.999876856803894,
+      "latency_seconds": 0.07906449999427423
+    },
+    {
+      "id": "D059",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-10-23",
+      "label": "NEUTRAL",
+      "input_sha256": "36f0430fb7bc0129efc4d7b3c0deb1b8ce5fcae39eb6f6ad0502d5b8de7a6ee5",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998195767402649,
+        "POSITIVE": 0.00011075502698076889,
+        "NEGATIVE": 6.97627110639587e-05
+      },
+      "confidence": 0.9998195767402649,
+      "latency_seconds": 0.08932989998720586
+    },
+    {
+      "id": "D060",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-10-25",
+      "label": "NEUTRAL",
+      "input_sha256": "c4c91774fad07b4148a58cbcbfe3b4ce56bcdabd5e415c33234016d46aa9f83a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998811483383179,
+        "POSITIVE": 8.194497058866546e-05,
+        "NEGATIVE": 3.696675048558973e-05
+      },
+      "confidence": 0.9998811483383179,
+      "latency_seconds": 0.08561360003659502
+    },
+    {
+      "id": "D061",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "a1aa46524a1e50f4cc950b329c8df41cbdc796132d905b0cda133065d0a7aa93",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998341798782349,
+        "POSITIVE": 0.0001190068869618699,
+        "NEGATIVE": 4.684867599280551e-05
+      },
+      "confidence": 0.9998341798782349,
+      "latency_seconds": 0.06941890000598505
+    },
+    {
+      "id": "D062",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "73f1fab4db0e92987140a9b8456bff45c9ce461257a0ff37b992cd08caebd6e3",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998698234558105,
+        "POSITIVE": 9.762923582457006e-05,
+        "NEGATIVE": 3.254318653489463e-05
+      },
+      "confidence": 0.9998698234558105,
+      "latency_seconds": 0.10405610001180321
+    },
+    {
+      "id": "D063",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "916d07b4bd0d06c068c7f1b5bcf17ae55983da50441605399e372a5f51783495",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998600482940674,
+        "POSITIVE": 0.00010355288395658135,
+        "NEGATIVE": 3.633415326476097e-05
+      },
+      "confidence": 0.9998600482940674,
+      "latency_seconds": 0.11077189998468384
+    },
+    {
+      "id": "D064",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "POSITIVE",
+      "input_sha256": "bd1ae98a3b6a316e5a359fa6d4e3bcaf93b87b19abbcd9b4e24bd132f884046b",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00020849841530434787,
+        "POSITIVE": 0.9997264742851257,
+        "NEGATIVE": 6.506522186100483e-05
+      },
+      "confidence": 0.9997264742851257,
+      "latency_seconds": 0.07460450002690777
+    },
+    {
+      "id": "D065",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "5149cf98917398d83599c4fe45c496f394e547807effcaf2c9a34e6e87ffbc18",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998118281364441,
+        "POSITIVE": 0.00015823323337826878,
+        "NEGATIVE": 2.9857219487894326e-05
+      },
+      "confidence": 0.9998118281364441,
+      "latency_seconds": 0.1278972000000067
+    },
+    {
+      "id": "D066",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-10-27",
+      "label": "NEUTRAL",
+      "input_sha256": "9e651cc5899069393a6b8807898929f11365b49a5733fae74cbab59113e12b7e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998595714569092,
+        "POSITIVE": 7.70775368437171e-05,
+        "NEGATIVE": 6.33455638308078e-05
+      },
+      "confidence": 0.9998595714569092,
+      "latency_seconds": 0.0678607999579981
+    },
+    {
+      "id": "D067",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "POSITIVE",
+      "input_sha256": "d416fe6a25fb1da6540425b27d1043bb856ed59203e8210b3d23ef9da26b6332",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00020127450989093632,
+        "POSITIVE": 0.9997363686561584,
+        "NEGATIVE": 6.228667916730046e-05
+      },
+      "confidence": 0.9997363686561584,
+      "latency_seconds": 0.08701949997339398
+    },
+    {
+      "id": "D068",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "POSITIVE",
+      "input_sha256": "616adbb100d1ed67eba80a934dfa9acdd402ecdc61d1071ec09e070801f040ed",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00018687653937377036,
+        "POSITIVE": 0.9997479319572449,
+        "NEGATIVE": 6.521061004605144e-05
+      },
+      "confidence": 0.9997479319572449,
+      "latency_seconds": 0.08553170005325228
+    },
+    {
+      "id": "D069",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "POSITIVE",
+      "input_sha256": "b7f5850c4393c4efbf4ddf710905cb01dfad9f25f93ee6d82402b819c02635fc",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0002001695684157312,
+        "POSITIVE": 0.999739944934845,
+        "NEGATIVE": 5.981230424367823e-05
+      },
+      "confidence": 0.999739944934845,
+      "latency_seconds": 0.08100619999459013
+    },
+    {
+      "id": "D070",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-10-30",
+      "label": "NEUTRAL",
+      "input_sha256": "e798856b45c0ae06d5f8e600468bfaa5ed3f351b3e33e194c9a1372ea67a3f4b",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998408555984497,
+        "POSITIVE": 7.994432235136628e-05,
+        "NEGATIVE": 7.915246533229947e-05
+      },
+      "confidence": 0.9998408555984497,
+      "latency_seconds": 0.09830990002956241
+    },
+    {
+      "id": "D071",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "POSITIVE",
+      "input_sha256": "51303166966d9f70eb54acac42a5519ded894c3a5dc6954db2ca2db2d780bc16",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00019010936375707388,
+        "POSITIVE": 0.9997416138648987,
+        "NEGATIVE": 6.8317873228807e-05
+      },
+      "confidence": 0.9997416138648987,
+      "latency_seconds": 0.08837640000274405
+    },
+    {
+      "id": "D072",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-11-09",
+      "label": "NEUTRAL",
+      "input_sha256": "9bfa28a87d1380e38e8275a19fce728d11b3018aa2729020d7fc4da8198812f8",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999868631362915,
+        "POSITIVE": 8.903503476176411e-05,
+        "NEGATIVE": 4.235042433720082e-05
+      },
+      "confidence": 0.999868631362915,
+      "latency_seconds": 0.07037249999120831
+    },
+    {
+      "id": "D073",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-11-10",
+      "label": "NEUTRAL",
+      "input_sha256": "04f2b26068c22ec41f3193a7351d5a6575b6064b25d0324ecb28d54ca4f1c2e2",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998867511749268,
+        "POSITIVE": 7.125193951651454e-05,
+        "NEGATIVE": 4.190431354800239e-05
+      },
+      "confidence": 0.9998867511749268,
+      "latency_seconds": 0.08540589996846393
+    },
+    {
+      "id": "D074",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-11-10",
+      "label": "NEUTRAL",
+      "input_sha256": "8ada87cd392653a9b5d2b3bacf85b541d8c5524c87520f319a69792a52da183e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998823404312134,
+        "POSITIVE": 8.119548147078604e-05,
+        "NEGATIVE": 3.641721559688449e-05
+      },
+      "confidence": 0.9998823404312134,
+      "latency_seconds": 0.07470399996964261
+    },
+    {
+      "id": "D075",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-11-11",
+      "label": "NEUTRAL",
+      "input_sha256": "0f58d81279a071791f6aa606348a5fd90fee1a173cc89c67d5e4da5d80983cd1",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999879002571106,
+        "POSITIVE": 7.901309436419979e-05,
+        "NEGATIVE": 4.194253051537089e-05
+      },
+      "confidence": 0.999879002571106,
+      "latency_seconds": 0.179866700025741
+    },
+    {
+      "id": "D076",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-11-16",
+      "label": "NEGATIVE",
+      "input_sha256": "c8d8ff5b77f246fc35074b7b5e437c1f999e4edad66b89af9221980c93bd429c",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 6.992249836912379e-05,
+        "POSITIVE": 9.435347601538524e-05,
+        "NEGATIVE": 0.999835729598999
+      },
+      "confidence": 0.999835729598999,
+      "latency_seconds": 0.09592600003816187
+    },
+    {
+      "id": "D077",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-11-16",
+      "label": "NEGATIVE",
+      "input_sha256": "29bfe1b13d80a3943190a8bf2a5d90cc9317d6b97d3d61ea8a042808b88b237c",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 8.6699437815696e-05,
+        "POSITIVE": 0.00011894089402630925,
+        "NEGATIVE": 0.9997944235801697
+      },
+      "confidence": 0.9997944235801697,
+      "latency_seconds": 0.08950130001176149
+    },
+    {
+      "id": "D078",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2023-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "b94baadc08d50be7256a1e443c7c54ae26010d0e3cec6c6495183ddf02c46a30",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999875545501709,
+        "POSITIVE": 8.270765101769939e-05,
+        "NEGATIVE": 4.172312401351519e-05
+      },
+      "confidence": 0.999875545501709,
+      "latency_seconds": 0.10446169995702803
+    },
+    {
+      "id": "D079",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2023-12-04",
+      "label": "POSITIVE",
+      "input_sha256": "9e8fe27766be8d3f82d612c75c2e618c3a264471ad1c842408fa22aed3ae8762",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0001453826844226569,
+        "POSITIVE": 0.9997726082801819,
+        "NEGATIVE": 8.199283183785155e-05
+      },
+      "confidence": 0.9997726082801819,
+      "latency_seconds": 0.12090450001414865
+    },
+    {
+      "id": "D080",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-12-05",
+      "label": "NEUTRAL",
+      "input_sha256": "161f2643747cf993f0d9d873e9b7e2dbe3deb55c13bd0f76eac7c916b2ec1b15",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998822212219238,
+        "POSITIVE": 8.011852332856506e-05,
+        "NEGATIVE": 3.767832095036283e-05
+      },
+      "confidence": 0.9998822212219238,
+      "latency_seconds": 0.17407010000897571
+    },
+    {
+      "id": "D081",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2023-12-12",
+      "label": "NEUTRAL",
+      "input_sha256": "331778ed694ee2c243d51fda8ebc2e9f107de58a577e383355d78d5f406e7a87",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999864935874939,
+        "POSITIVE": 9.946586942533031e-05,
+        "NEGATIVE": 3.566831583157182e-05
+      },
+      "confidence": 0.999864935874939,
+      "latency_seconds": 0.22299839998595417
+    },
+    {
+      "id": "D082",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-02-19",
+      "label": "NEUTRAL",
+      "input_sha256": "5fd8ebbceb078439d84b923f2da97e2e233ec9b7c8c58ada8998addf6667c6f1",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998760223388672,
+        "POSITIVE": 7.768689829390496e-05,
+        "NEGATIVE": 4.623032873496413e-05
+      },
+      "confidence": 0.9998760223388672,
+      "latency_seconds": 0.11405859998194501
+    },
+    {
+      "id": "D083",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-02-20",
+      "label": "NEUTRAL",
+      "input_sha256": "076135170072a1bcd092b3c1ca70efcdfd61931aa8f9e0bcd605d54b1333b283",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998793601989746,
+        "POSITIVE": 7.374968117801473e-05,
+        "NEGATIVE": 4.6802386350464076e-05
+      },
+      "confidence": 0.9998793601989746,
+      "latency_seconds": 0.11640900000929832
+    },
+    {
+      "id": "D084",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-02-20",
+      "label": "NEUTRAL",
+      "input_sha256": "41154121dad5178ee1d72f8401ecb4ea7598e49f8868e67e9c09b0a02e825116",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998321533203125,
+        "POSITIVE": 0.00010831484541995451,
+        "NEGATIVE": 5.947679892415181e-05
+      },
+      "confidence": 0.9998321533203125,
+      "latency_seconds": 0.13725930004147813
+    },
+    {
+      "id": "D085",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-02-20",
+      "label": "NEUTRAL",
+      "input_sha256": "79b6b1f81897d90a65501da0271531c733a2dd70570056192231bf5b5919cf09",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998378753662109,
+        "POSITIVE": 9.104268247028813e-05,
+        "NEGATIVE": 7.102363451849669e-05
+      },
+      "confidence": 0.9998378753662109,
+      "latency_seconds": 0.09141769999405369
+    },
+    {
+      "id": "D086",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-02-21",
+      "label": "POSITIVE",
+      "input_sha256": "deb0a2e582909f910bd0d3c31fc3f79baa42cca8e5929af46e0099d4e9edfb7b",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0010402249172329903,
+        "POSITIVE": 0.9988988637924194,
+        "NEGATIVE": 6.080594175728038e-05
+      },
+      "confidence": 0.9988988637924194,
+      "latency_seconds": 0.1674833000288345
+    },
+    {
+      "id": "D087",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-02-22",
+      "label": "NEUTRAL",
+      "input_sha256": "09c1e66fb116dffaf45b4d0e47117962fd9367b0771e791ba9756cd8d9fe9eb9",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998754262924194,
+        "POSITIVE": 7.580182136734948e-05,
+        "NEGATIVE": 4.87589422846213e-05
+      },
+      "confidence": 0.9998754262924194,
+      "latency_seconds": 0.10828420001780614
+    },
+    {
+      "id": "D088",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-02-23",
+      "label": "NEUTRAL",
+      "input_sha256": "f2a273dd8cb0aa08a41bdab77044c87a3c9be56cf8bfa0972833adc8a29423f5",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998669624328613,
+        "POSITIVE": 9.19577432796359e-05,
+        "NEGATIVE": 4.105625339434482e-05
+      },
+      "confidence": 0.9998669624328613,
+      "latency_seconds": 0.3029465999570675
+    },
+    {
+      "id": "D090",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-03-01",
+      "label": "NEUTRAL",
+      "input_sha256": "d36cc47bd01529b7b30d1c726dbbb724d42a752591f0b45e3e516a4dc57eb06c",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998629093170166,
+        "POSITIVE": 7.294573151739314e-05,
+        "NEGATIVE": 6.40748767182231e-05
+      },
+      "confidence": 0.9998629093170166,
+      "latency_seconds": 0.07232610002392903
+    },
+    {
+      "id": "D091",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-03-01",
+      "label": "NEUTRAL",
+      "input_sha256": "c7740dae0f2d05ea1e780b03584f86fd4f070cf5b4976292cfc536e6ab45de4a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998795986175537,
+        "POSITIVE": 8.972063369583338e-05,
+        "NEGATIVE": 3.059445589315146e-05
+      },
+      "confidence": 0.9998795986175537,
+      "latency_seconds": 0.11124050000216812
+    },
+    {
+      "id": "D092",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-03-01",
+      "label": "NEUTRAL",
+      "input_sha256": "1b098abdbdf9759481c899aee89b42e5da21788b7b875c8cad55d2d0b9c16f97",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998779296875,
+        "POSITIVE": 9.110869723372161e-05,
+        "NEGATIVE": 3.104897405137308e-05
+      },
+      "confidence": 0.9998779296875,
+      "latency_seconds": 0.08881129999645054
+    },
+    {
+      "id": "D093",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-03-01",
+      "label": "NEUTRAL",
+      "input_sha256": "faa0340bd06cd0bc99627ebb58f68e4f752d58a1b2f6dd4483e016c9e97fa581",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998782873153687,
+        "POSITIVE": 7.573852053610608e-05,
+        "NEGATIVE": 4.601239925250411e-05
+      },
+      "confidence": 0.9998782873153687,
+      "latency_seconds": 0.060210200026631355
+    },
+    {
+      "id": "D094",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q1",
+      "label": "NEUTRAL",
+      "input_sha256": "727a14680613d20f274b3747f49e48c0d22557fb5b29ba79d14efee77528f86f",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998376369476318,
+        "POSITIVE": 0.00011984555749222636,
+        "NEGATIVE": 4.247627657605335e-05
+      },
+      "confidence": 0.9998376369476318,
+      "latency_seconds": 0.06374589999904856
+    },
+    {
+      "id": "D095",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-04-26",
+      "label": "NEUTRAL",
+      "input_sha256": "87d42bbddea81675a24641c5e3b7948f7327ee19453e0c298e499106e004e865",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998693466186523,
+        "POSITIVE": 7.679632835788652e-05,
+        "NEGATIVE": 5.393401443143375e-05
+      },
+      "confidence": 0.9998693466186523,
+      "latency_seconds": 0.0611648999620229
+    },
+    {
+      "id": "D096",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q1",
+      "label": "NEGATIVE",
+      "input_sha256": "d21e3a1d0cb58b5210adb62ce366bf51a2038287e027c156d5ba2bd2c4b503af",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00019810692174360156,
+        "POSITIVE": 5.353635424398817e-05,
+        "NEGATIVE": 0.9997484087944031
+      },
+      "confidence": 0.9997484087944031,
+      "latency_seconds": 0.11920449999161065
+    },
+    {
+      "id": "D097",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-04-26",
+      "label": "NEUTRAL",
+      "input_sha256": "c21abe76aa1d8da966c8f6ceec79e5483f0d3e6d94ded1e7c51fde5d14484ebb",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998841285705566,
+        "POSITIVE": 7.669944898225367e-05,
+        "NEGATIVE": 3.918852235074155e-05
+      },
+      "confidence": 0.9998841285705566,
+      "latency_seconds": 0.12318090000189841
+    },
+    {
+      "id": "D098",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q1",
+      "label": "POSITIVE",
+      "input_sha256": "c6c649788973cbdd0e99fc9b36ac6ace7ecbd152d288746407e8d55f49420ac6",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00019571575103327632,
+        "POSITIVE": 0.9997289776802063,
+        "NEGATIVE": 7.531294249929488e-05
+      },
+      "confidence": 0.9997289776802063,
+      "latency_seconds": 0.07990419998532161
+    },
+    {
+      "id": "D099",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q1",
+      "label": "POSITIVE",
+      "input_sha256": "06f76f388552fbee4f041581887b7fbbeb98ae9e07ef8aa6b04416d8a4e86ad6",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0001875758171081543,
+        "POSITIVE": 0.9997397065162659,
+        "NEGATIVE": 7.272275252034888e-05
+      },
+      "confidence": 0.9997397065162659,
+      "latency_seconds": 0.09577419998822734
+    },
+    {
+      "id": "D100",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q1",
+      "label": "NEGATIVE",
+      "input_sha256": "baf1250cf01338031fbf60a5a0f67e61cb0295200c69aaf39d811e86b3f3287c",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.3589494705665857e-05,
+        "POSITIVE": 6.182415381772444e-05,
+        "NEGATIVE": 0.9999046325683594
+      },
+      "confidence": 0.9999046325683594,
+      "latency_seconds": 0.09463419998064637
+    },
+    {
+      "id": "D101",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-04-29",
+      "label": "NEUTRAL",
+      "input_sha256": "2aa4e14367d205d595747f4ecfe7ec9340bc5a3bfd6bdde5906efbcc69779570",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999882698059082,
+        "POSITIVE": 7.858870958443731e-05,
+        "NEGATIVE": 3.8730722735635936e-05
+      },
+      "confidence": 0.999882698059082,
+      "latency_seconds": 0.12343520001741126
+    },
+    {
+      "id": "D102",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-04-29",
+      "label": "NEUTRAL",
+      "input_sha256": "55d3ac3e2382cff4f52bb16f0e4de989ece16c42209ef56e221f9edf687628b3",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999883770942688,
+        "POSITIVE": 7.805674977134913e-05,
+        "NEGATIVE": 3.8161950214998797e-05
+      },
+      "confidence": 0.999883770942688,
+      "latency_seconds": 0.10053409996908158
+    },
+    {
+      "id": "D103",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-04-30",
+      "label": "NEUTRAL",
+      "input_sha256": "5f2f4c7ce22234c5f461c5bed4f29c539149562ffe0065fefb1627c98c9cad99",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998871088027954,
+        "POSITIVE": 7.605549762956798e-05,
+        "NEGATIVE": 3.677624772535637e-05
+      },
+      "confidence": 0.9998871088027954,
+      "latency_seconds": 0.1982240999932401
+    },
+    {
+      "id": "D104",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-04-30",
+      "label": "NEUTRAL",
+      "input_sha256": "172f9c6d7fbf196b6564182822ac53df25c2106190446145ff0465f0d24fd60a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998838901519775,
+        "POSITIVE": 8.089517359621823e-05,
+        "NEGATIVE": 3.515831849654205e-05
+      },
+      "confidence": 0.9998838901519775,
+      "latency_seconds": 0.25717810000060126
+    },
+    {
+      "id": "D105",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-04-30",
+      "label": "NEUTRAL",
+      "input_sha256": "c64969da84b18754c36d6c0cf184fca755980aeb05584425d753f5b7c6f30243",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998821020126343,
+        "POSITIVE": 7.98465043772012e-05,
+        "NEGATIVE": 3.798669058596715e-05
+      },
+      "confidence": 0.9998821020126343,
+      "latency_seconds": 0.21401850000256673
+    },
+    {
+      "id": "D106",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-06-08",
+      "label": "NEUTRAL",
+      "input_sha256": "79e8cd871559de728d822251696bfab19c0abe56286a03d799fd1e6cca9283c3",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998822212219238,
+        "POSITIVE": 7.951823499752209e-05,
+        "NEGATIVE": 3.8204569136723876e-05
+      },
+      "confidence": 0.9998822212219238,
+      "latency_seconds": 0.13080629997421056
+    },
+    {
+      "id": "D107",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-11",
+      "label": "NEGATIVE",
+      "input_sha256": "1eb808445d4a9fdaa835539f28c12167ae9c6771752759ec3c0b694a9546adfc",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.098530578427017e-05,
+        "POSITIVE": 6.859289715066552e-05,
+        "NEGATIVE": 0.9999004602432251
+      },
+      "confidence": 0.9999004602432251,
+      "latency_seconds": 0.10806290002074093
+    },
+    {
+      "id": "D108",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-11",
+      "label": "NEGATIVE",
+      "input_sha256": "ef7c814af708b4bbf842934bb7aa32732eb386b552138d76443982763b1b29a8",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.222087980248034e-05,
+        "POSITIVE": 6.733377085765824e-05,
+        "NEGATIVE": 0.9999004602432251
+      },
+      "confidence": 0.9999004602432251,
+      "latency_seconds": 0.0930864000110887
+    },
+    {
+      "id": "D109",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-13",
+      "label": "NEGATIVE",
+      "input_sha256": "046947a19b97eb56164740964d1b571ea39f9fd2a9d3c17b9cff8551ae7a02ca",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.130158438580111e-05,
+        "POSITIVE": 6.826366734458134e-05,
+        "NEGATIVE": 0.9999004602432251
+      },
+      "confidence": 0.9999004602432251,
+      "latency_seconds": 0.07478680001804605
+    },
+    {
+      "id": "D110",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-06-13",
+      "label": "NEUTRAL",
+      "input_sha256": "e21adca396eff0f7d408cb9382708fb2ce34749ec854c83e0c23e43619418616",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998843669891357,
+        "POSITIVE": 6.892943201819435e-05,
+        "NEGATIVE": 4.676853131968528e-05
+      },
+      "confidence": 0.9998843669891357,
+      "latency_seconds": 0.058899099996779114
+    },
+    {
+      "id": "D111",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-06-14",
+      "label": "NEUTRAL",
+      "input_sha256": "2b74e2540302d40a62e639e7c5bf2fe47d74e174ac3601be831e9a8cc6bc0de2",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998828172683716,
+        "POSITIVE": 7.88678735261783e-05,
+        "NEGATIVE": 3.828483386314474e-05
+      },
+      "confidence": 0.9998828172683716,
+      "latency_seconds": 0.11599959997693077
+    },
+    {
+      "id": "D112",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-17",
+      "label": "NEGATIVE",
+      "input_sha256": "50f0388c89da27b1093c49cef058da84614b81ec639daa0860596dd017c441da",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.132617712253705e-05,
+        "POSITIVE": 6.769636092940345e-05,
+        "NEGATIVE": 0.9999009370803833
+      },
+      "confidence": 0.9999009370803833,
+      "latency_seconds": 0.08172860002378002
+    },
+    {
+      "id": "D113",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-18",
+      "label": "POSITIVE",
+      "input_sha256": "f22e3792a390fa03b687f8dda62f840273f741aef5e35f8908dbf92b54b7bd7c",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00015041534788906574,
+        "POSITIVE": 0.9997678399085999,
+        "NEGATIVE": 8.174649701686576e-05
+      },
+      "confidence": 0.9997678399085999,
+      "latency_seconds": 0.1052802000194788
+    },
+    {
+      "id": "D114",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-19",
+      "label": "POSITIVE",
+      "input_sha256": "39f01ae56b0698d5c3ee823de83ae5b2b3279e7bcd7ba9fb7f6933e7e92d185d",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014928988821338862,
+        "POSITIVE": 0.99977046251297,
+        "NEGATIVE": 8.017032814677805e-05
+      },
+      "confidence": 0.99977046251297,
+      "latency_seconds": 0.13529639999615029
+    },
+    {
+      "id": "D115",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-24",
+      "label": "NEGATIVE",
+      "input_sha256": "b39454117b64564904a7d3f499776b9ab0b948805a9e0da8d6caf9102290cc35",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.14910284942016e-05,
+        "POSITIVE": 6.710318848490715e-05,
+        "NEGATIVE": 0.9999014139175415
+      },
+      "confidence": 0.9999014139175415,
+      "latency_seconds": 0.09428750001825392
+    },
+    {
+      "id": "D116",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-06-26",
+      "label": "NEGATIVE",
+      "input_sha256": "a25fbb82dbc668fecdc7b4d410dae6c2ead6a51706123c90dc3f43acca718818",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.0777522624703124e-05,
+        "POSITIVE": 6.909584772074595e-05,
+        "NEGATIVE": 0.9999001026153564
+      },
+      "confidence": 0.9999001026153564,
+      "latency_seconds": 0.09784770000260323
+    },
+    {
+      "id": "D117",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-06-28",
+      "label": "NEUTRAL",
+      "input_sha256": "2bc51580d8209fb0d3d9415167197f740a642d59826390b8f1222121b6ac495c",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0014882292598485947,
+        "POSITIVE": 0.9984493255615234,
+        "NEGATIVE": 6.23474334133789e-05
+      },
+      "confidence": 0.9984493255615234,
+      "latency_seconds": 0.09871560003375635
+    },
+    {
+      "id": "D120",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-08-30",
+      "label": "POSITIVE",
+      "input_sha256": "0541ac98c81e47a7f5b571da28a5d16be3d1a9e63cb1dc949aaa6fa3c7d05fc3",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014961579290684313,
+        "POSITIVE": 0.9997691512107849,
+        "NEGATIVE": 8.130196511046961e-05
+      },
+      "confidence": 0.9997691512107849,
+      "latency_seconds": 0.10026070004096255
+    },
+    {
+      "id": "D121",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-08-30",
+      "label": "POSITIVE",
+      "input_sha256": "514d14c579038dbfed94b305db1f41a85ba4090fa7c145c6203a2d0c5ac05672",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014784236554987729,
+        "POSITIVE": 0.9997698664665222,
+        "NEGATIVE": 8.233942207880318e-05
+      },
+      "confidence": 0.9997698664665222,
+      "latency_seconds": 0.07086059998255223
+    },
+    {
+      "id": "D122",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "3c3e693dcc698d1d241cd42b2857fddbb5c2b00dc7a5b2ef63a0a3a561e2b9e0",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998862743377686,
+        "POSITIVE": 7.394230487989262e-05,
+        "NEGATIVE": 3.9847589505370706e-05
+      },
+      "confidence": 0.9998862743377686,
+      "latency_seconds": 0.09311430004891008
+    },
+    {
+      "id": "D123",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "10abf9000b77d467513949139013bbcabc362ae6ab6ff0effcb204ab94eef9c0",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998087286949158,
+        "POSITIVE": 0.0001551990571897477,
+        "NEGATIVE": 3.607479447964579e-05
+      },
+      "confidence": 0.9998087286949158,
+      "latency_seconds": 0.07216819998575374
+    },
+    {
+      "id": "D124",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2024-10-29",
+      "label": "NEGATIVE",
+      "input_sha256": "bbb5b7ad74832f9bae3d1ee0d0142082266d7fe15d52f47717b71ba32174926d",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.115429717581719e-05,
+        "POSITIVE": 6.901634333189577e-05,
+        "NEGATIVE": 0.9998998641967773
+      },
+      "confidence": 0.9998998641967773,
+      "latency_seconds": 0.08681710000382736
+    },
+    {
+      "id": "D125",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q3",
+      "label": "POSITIVE",
+      "input_sha256": "8f70242c2e7b5f221d7db3a573d3263cca02f772bde5328b95381abe57302975",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0001865542435552925,
+        "POSITIVE": 0.9997479319572449,
+        "NEGATIVE": 6.554956053150818e-05
+      },
+      "confidence": 0.9997479319572449,
+      "latency_seconds": 0.07679159997496754
+    },
+    {
+      "id": "D126",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-REPORT-2024-Q3",
+      "label": "NEGATIVE",
+      "input_sha256": "2b439a42bc5a17a80ff36aaaa22d34dd7fa8ce27d0fe1e1fdbc4f30a7897900b",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 5.68251489312388e-05,
+        "POSITIVE": 5.930955376243219e-05,
+        "NEGATIVE": 0.9998838901519775
+      },
+      "confidence": 0.9998838901519775,
+      "latency_seconds": 0.08757420000620186
+    },
+    {
+      "id": "D127",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-10-30",
+      "label": "NEGATIVE",
+      "input_sha256": "b057d29122b9cb74a22b9b7261ff9b898b630583891438da1e727de0523fb2f5",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.18123638862744e-05,
+        "POSITIVE": 6.437640695367008e-05,
+        "NEGATIVE": 0.9999037981033325
+      },
+      "confidence": 0.9999037981033325,
+      "latency_seconds": 0.05622670002048835
+    },
+    {
+      "id": "D128",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-10-30",
+      "label": "NEGATIVE",
+      "input_sha256": "305ba77714a9cfaa799b841daaa2420f48c0326feb94a80593e5afcdfe926b2e",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1661169487051666e-05,
+        "POSITIVE": 6.501097959699109e-05,
+        "NEGATIVE": 0.9999033212661743
+      },
+      "confidence": 0.9999033212661743,
+      "latency_seconds": 0.08109420002438128
+    },
+    {
+      "id": "D129",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-10-30",
+      "label": "NEGATIVE",
+      "input_sha256": "b12663b8d6ea7037b0949609a4f3cfc0aff34403cecaeb8a7d32b0d8588848d8",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.28261885442771e-05,
+        "POSITIVE": 5.608125502476469e-05,
+        "NEGATIVE": 0.9999110698699951
+      },
+      "confidence": 0.9999110698699951,
+      "latency_seconds": 0.08874450001167133
+    },
+    {
+      "id": "D130",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-10-30",
+      "label": "NEGATIVE",
+      "input_sha256": "914f4820723350fc754af50c05611d9c60fbab2928d3ddd7cffbae54c318cbf4",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.315516369184479e-05,
+        "POSITIVE": 6.040932930773124e-05,
+        "NEGATIVE": 0.9999064207077026
+      },
+      "confidence": 0.9999064207077026,
+      "latency_seconds": 0.12067489995388314
+    },
+    {
+      "id": "D131",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-10-30",
+      "label": "NEGATIVE",
+      "input_sha256": "7f762f3cb199b696c64b94ef68fb709c8fb5b0585e3d73dc9109c8eecf8934f9",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.209890564903617e-05,
+        "POSITIVE": 6.46262415102683e-05,
+        "NEGATIVE": 0.9999033212661743
+      },
+      "confidence": 0.9999033212661743,
+      "latency_seconds": 0.06087950000073761
+    },
+    {
+      "id": "D132",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-10-30",
+      "label": "NEGATIVE",
+      "input_sha256": "56fc026ee3205cfd9af9be58117b325a078f51ae374406df20f0784178e3e363",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.013189234479796e-05,
+        "POSITIVE": 6.526482320623472e-05,
+        "NEGATIVE": 0.9999046325683594
+      },
+      "confidence": 0.9999046325683594,
+      "latency_seconds": 0.0772995000006631
+    },
+    {
+      "id": "D133",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-10-31",
+      "label": "NEGATIVE",
+      "input_sha256": "401cdf50a7286d11f8a55edcbb7b4c603122e96f4c8d25e438c725f58a2f28fa",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.2918112992774695e-05,
+        "POSITIVE": 6.255547486944124e-05,
+        "NEGATIVE": 0.9999045133590698
+      },
+      "confidence": 0.9999045133590698,
+      "latency_seconds": 0.06707230000756681
+    },
+    {
+      "id": "D134",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-20",
+      "label": "NEGATIVE",
+      "input_sha256": "3d4089db3dfc95d8d1dabdbb15f66157618fb4321bc0e840c42d03ad1c774fd3",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.310498141217977e-05,
+        "POSITIVE": 6.356365338433534e-05,
+        "NEGATIVE": 0.9999033212661743
+      },
+      "confidence": 0.9999033212661743,
+      "latency_seconds": 0.060798199963755906
+    },
+    {
+      "id": "D135",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-23",
+      "label": "NEGATIVE",
+      "input_sha256": "345b3e4012586e2a4333a97b3a0925f4330ac71d1b0a944ca5836fd557c12102",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.180653220624663e-05,
+        "POSITIVE": 6.370306800818071e-05,
+        "NEGATIVE": 0.9999045133590698
+      },
+      "confidence": 0.9999045133590698,
+      "latency_seconds": 0.07005609996849671
+    },
+    {
+      "id": "D136",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-23",
+      "label": "POSITIVE",
+      "input_sha256": "18ed464ed74830013e552a80da696f2806174fa84cc20de14de19ef13b322351",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.000146628386573866,
+        "POSITIVE": 0.9997720122337341,
+        "NEGATIVE": 8.13740334706381e-05
+      },
+      "confidence": 0.9997720122337341,
+      "latency_seconds": 0.06917029997566715
+    },
+    {
+      "id": "D137",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-23",
+      "label": "POSITIVE",
+      "input_sha256": "c9628dd1e7fcbb8549490b0e4efe6afa3cf9dc316f9226f27f7700aff81bcf94",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014507172454614192,
+        "POSITIVE": 0.999776303768158,
+        "NEGATIVE": 7.860628102207556e-05
+      },
+      "confidence": 0.999776303768158,
+      "latency_seconds": 0.08963179995771497
+    },
+    {
+      "id": "D138",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-24",
+      "label": "POSITIVE",
+      "input_sha256": "8fab4b71c3498b9201c6bd32586f0f9567137fb584858aa48647446c4fbf9e2f",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0001494085881859064,
+        "POSITIVE": 0.9997679591178894,
+        "NEGATIVE": 8.260014146799222e-05
+      },
+      "confidence": 0.9997679591178894,
+      "latency_seconds": 0.06375629996182397
+    },
+    {
+      "id": "D139",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-24",
+      "label": "POSITIVE",
+      "input_sha256": "b687e79b3671bd4a75757d99af42850203150a547d510cf344d6ba9789784159",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014677116996608675,
+        "POSITIVE": 0.9997745156288147,
+        "NEGATIVE": 7.877912139520049e-05
+      },
+      "confidence": 0.9997745156288147,
+      "latency_seconds": 0.08298479998484254
+    },
+    {
+      "id": "D140",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-25",
+      "label": "POSITIVE",
+      "input_sha256": "da00e084b893afb8f9fa493d593e4785a2880750c83108d596bceed9500bc50e",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014636636478826404,
+        "POSITIVE": 0.9997753500938416,
+        "NEGATIVE": 7.833791460143402e-05
+      },
+      "confidence": 0.9997753500938416,
+      "latency_seconds": 0.05435589997796342
+    },
+    {
+      "id": "D141",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-26",
+      "label": "POSITIVE",
+      "input_sha256": "ff75fafbe877e2bd912b16dc927144ca5df372fb08c1feb544ac4a9d74cc1496",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014840053336229175,
+        "POSITIVE": 0.9997692704200745,
+        "NEGATIVE": 8.240646275226027e-05
+      },
+      "confidence": 0.9997692704200745,
+      "latency_seconds": 0.06957230000989512
+    },
+    {
+      "id": "D142",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-26",
+      "label": "NEGATIVE",
+      "input_sha256": "0ffaf7bef698e5ad21d91bdefa857f07d49d05677f1dd10bf630ca56bbb85668",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.301063406979665e-05,
+        "POSITIVE": 6.327156006591395e-05,
+        "NEGATIVE": 0.999903678894043
+      },
+      "confidence": 0.999903678894043,
+      "latency_seconds": 0.07100970001192763
+    },
+    {
+      "id": "D143",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-27",
+      "label": "NEGATIVE",
+      "input_sha256": "1aa207926116c6a509ca9cfc96c06713f5361c3a7a968598cfc851502b2b66c3",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.4231423342134804e-05,
+        "POSITIVE": 6.28504203632474e-05,
+        "NEGATIVE": 0.9999029636383057
+      },
+      "confidence": 0.9999029636383057,
+      "latency_seconds": 0.0788520000060089
+    },
+    {
+      "id": "D144",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-30",
+      "label": "NEGATIVE",
+      "input_sha256": "1a9280a18fecb3eb908c086b7ba472084e1e0b8503b8cfce41dc853e732fe845",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.254166949773207e-05,
+        "POSITIVE": 6.333328929031268e-05,
+        "NEGATIVE": 0.9999041557312012
+      },
+      "confidence": 0.9999041557312012,
+      "latency_seconds": 0.07321360002970323
+    },
+    {
+      "id": "D145",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-30",
+      "label": "POSITIVE",
+      "input_sha256": "4bab26e21e51d73a140c69ec62ff197df72f29af7243fa67b76ccb1c20bf903a",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014856952475383878,
+        "POSITIVE": 0.9997686743736267,
+        "NEGATIVE": 8.268839155789465e-05
+      },
+      "confidence": 0.9997686743736267,
+      "latency_seconds": 0.08219400001689792
+    },
+    {
+      "id": "D146",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-30",
+      "label": "POSITIVE",
+      "input_sha256": "955758ef2f975d6ee36e9637da951c2e650e84503f54d45ae7ea259835e7a302",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014561663556378335,
+        "POSITIVE": 0.9997754693031311,
+        "NEGATIVE": 7.892629218986258e-05
+      },
+      "confidence": 0.9997754693031311,
+      "latency_seconds": 0.0763079000171274
+    },
+    {
+      "id": "D147",
+      "split": "DEVELOPMENT",
+      "event_id": "COMPANY-MARKET-SESSION-2024-12-31",
+      "label": "POSITIVE",
+      "input_sha256": "330e990513b4dd4a3d4519674e6a3ce62b3ad7f1debd7a6b1dd9743aace2278f",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0001777676516212523,
+        "POSITIVE": 0.9997535347938538,
+        "NEGATIVE": 6.864753231639042e-05
+      },
+      "confidence": 0.9997535347938538,
+      "latency_seconds": 0.10058959998423234
+    },
+    {
+      "id": "P001",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-07",
+      "label": "POSITIVE",
+      "input_sha256": "186a329d7bd889c2ea43a015caf9a3ce2a3f533e431e6e2b8f5047485093d0cd",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014668611402157694,
+        "POSITIVE": 0.999771773815155,
+        "NEGATIVE": 8.15141320344992e-05
+      },
+      "confidence": 0.999771773815155,
+      "latency_seconds": 0.07046000001719221
+    },
+    {
+      "id": "P004",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-11",
+      "label": "POSITIVE",
+      "input_sha256": "557260c6b6ff61e581702f0e09299ffb3ece4f71ef260922ced69b0cb2f08c78",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.000149393395986408,
+        "POSITIVE": 0.9997692704200745,
+        "NEGATIVE": 8.144492312567309e-05
+      },
+      "confidence": 0.9997692704200745,
+      "latency_seconds": 0.0955987999914214
+    },
+    {
+      "id": "P005",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-11",
+      "label": "POSITIVE",
+      "input_sha256": "f96c39da177670df9b40e3f56de55bdbd8f11a82e34ca36e725b5e641ed5a470",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0001602064585313201,
+        "POSITIVE": 0.9997586607933044,
+        "NEGATIVE": 8.1171965575777e-05
+      },
+      "confidence": 0.9997586607933044,
+      "latency_seconds": 0.1217859000316821
+    },
+    {
+      "id": "P006",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-11",
+      "label": "POSITIVE",
+      "input_sha256": "3e43b5695eba0d6337a14e5f15f64791007565dd93ed62287f1bf9412de4f99a",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014927209122106433,
+        "POSITIVE": 0.9997676014900208,
+        "NEGATIVE": 8.322572830365971e-05
+      },
+      "confidence": 0.9997676014900208,
+      "latency_seconds": 0.07984889997169375
+    },
+    {
+      "id": "P008",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-14",
+      "label": "POSITIVE",
+      "input_sha256": "53459e0b97d2f63f4d678a2a1131c4c4b5f110c06742fc4fa65d02de18b00d39",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014873946201987565,
+        "POSITIVE": 0.999769389629364,
+        "NEGATIVE": 8.186310151359066e-05
+      },
+      "confidence": 0.999769389629364,
+      "latency_seconds": 0.08813869999721646
+    },
+    {
+      "id": "P011",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-09",
+      "label": "POSITIVE",
+      "input_sha256": "bb64a2fd68fbc4de4833fe12e64e7d81c062b09a6fcb37181cf3138569acaabe",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014714764256495982,
+        "POSITIVE": 0.999771773815155,
+        "NEGATIVE": 8.099463593680412e-05
+      },
+      "confidence": 0.999771773815155,
+      "latency_seconds": 0.05499999999301508
+    },
+    {
+      "id": "P013",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-10",
+      "label": "POSITIVE",
+      "input_sha256": "0ffcae06f78b5f1a6bcd52c63b4536a42934a97c1bc70d7236ffc888f009ff61",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014915461360942572,
+        "POSITIVE": 0.9997698664665222,
+        "NEGATIVE": 8.106626773951575e-05
+      },
+      "confidence": 0.9997698664665222,
+      "latency_seconds": 0.07305819995235652
+    },
+    {
+      "id": "P014",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-10",
+      "label": "POSITIVE",
+      "input_sha256": "8b5ea6ab8de0f7ad194c4b00ced4ad87762ca7f06d7985edd7647ffd33c1773c",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014605667092837393,
+        "POSITIVE": 0.9997734427452087,
+        "NEGATIVE": 8.058657112997025e-05
+      },
+      "confidence": 0.9997734427452087,
+      "latency_seconds": 0.07550959999207407
+    },
+    {
+      "id": "P015",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-10",
+      "label": "POSITIVE",
+      "input_sha256": "9efae4714c8f4f8a02c61da15072af750270c9f6bc050a358af6b8442eea8f54",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014532290515489876,
+        "POSITIVE": 0.9997771382331848,
+        "NEGATIVE": 7.757401908747852e-05
+      },
+      "confidence": 0.9997771382331848,
+      "latency_seconds": 0.06789140001637861
+    },
+    {
+      "id": "P017",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-14",
+      "label": "POSITIVE",
+      "input_sha256": "76790d26c34d04a38470f9913dde05bf9e4180a8555250cee0f091e5c55393c6",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00015027537301648408,
+        "POSITIVE": 0.9997696280479431,
+        "NEGATIVE": 8.00690904725343e-05
+      },
+      "confidence": 0.9997696280479431,
+      "latency_seconds": 0.08303019998129457
+    },
+    {
+      "id": "P018",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-14",
+      "label": "POSITIVE",
+      "input_sha256": "e069f7f8c95ed5fa084f57fd70d4a54fe40deb8fdc00b7e96b6ca4fd0530ed95",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00016261126438621432,
+        "POSITIVE": 0.9997603297233582,
+        "NEGATIVE": 7.706048199906945e-05
+      },
+      "confidence": 0.9997603297233582,
+      "latency_seconds": 0.09420499997213483
+    },
+    {
+      "id": "P019",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-14",
+      "label": "POSITIVE",
+      "input_sha256": "0e0088d07eee250288b5117d52bfe8e1486ba57b1eb35134d828a90e95214fb7",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014490804460365325,
+        "POSITIVE": 0.9997764229774475,
+        "NEGATIVE": 7.862016354920343e-05
+      },
+      "confidence": 0.9997764229774475,
+      "latency_seconds": 0.06986699998378754
+    },
+    {
+      "id": "P022",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-17",
+      "label": "POSITIVE",
+      "input_sha256": "39afac2626de7aac1794ddd5150287828ef94fc1abb3da553da3cd39c4327fee",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00015016763063613325,
+        "POSITIVE": 0.9997685551643372,
+        "NEGATIVE": 8.127788896672428e-05
+      },
+      "confidence": 0.9997685551643372,
+      "latency_seconds": 0.0735073999967426
+    },
+    {
+      "id": "P024",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-18",
+      "label": "POSITIVE",
+      "input_sha256": "4ed7b7afc5d457b3cd6227f063948a33e1a67429060a55d01cba050fe4b30f90",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014889449812471867,
+        "POSITIVE": 0.9997686743736267,
+        "NEGATIVE": 8.246176003012806e-05
+      },
+      "confidence": 0.9997686743736267,
+      "latency_seconds": 0.07171360001666471
+    },
+    {
+      "id": "P025",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-18",
+      "label": "POSITIVE",
+      "input_sha256": "83d2558d49f7be6d3b4e556b2018ee8645133ae7030351804cb47caf25bc4ddc",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00019531337602529675,
+        "POSITIVE": 0.9997442364692688,
+        "NEGATIVE": 6.042487802915275e-05
+      },
+      "confidence": 0.9997442364692688,
+      "latency_seconds": 0.08701580000342801
+    },
+    {
+      "id": "P026",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-06-06",
+      "label": "POSITIVE",
+      "input_sha256": "29a766e1d074f51853bb90f5793c53be2a9a5fb16b1cd58550add76eace6ffb2",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014677000581286848,
+        "POSITIVE": 0.9997722506523132,
+        "NEGATIVE": 8.10134515631944e-05
+      },
+      "confidence": 0.9997722506523132,
+      "latency_seconds": 0.0736144999973476
+    },
+    {
+      "id": "P027",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-06-06",
+      "label": "POSITIVE",
+      "input_sha256": "b033211f89b9a3549f1311ad26ff20ba29c13f473be49cf3379359e02e646d0f",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014629277575295419,
+        "POSITIVE": 0.9997760653495789,
+        "NEGATIVE": 7.775799895171076e-05
+      },
+      "confidence": 0.9997760653495789,
+      "latency_seconds": 0.07656260003568605
+    },
+    {
+      "id": "P029",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-06-11",
+      "label": "POSITIVE",
+      "input_sha256": "15a3fd5970bc8611d69fddfc7a7a52632046da4116c4ebc2293fcd289a0df33b",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014713704877067357,
+        "POSITIVE": 0.9997712969779968,
+        "NEGATIVE": 8.151292422553524e-05
+      },
+      "confidence": 0.9997712969779968,
+      "latency_seconds": 0.05793409998295829
+    },
+    {
+      "id": "P031",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-06-12",
+      "label": "POSITIVE",
+      "input_sha256": "c36de9d7fb02d4fe2fc175faa1cf94c0eb373c2e87b8c73740cf3fe6ec8f3ad8",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014901346003171057,
+        "POSITIVE": 0.9997691512107849,
+        "NEGATIVE": 8.186159539036453e-05
+      },
+      "confidence": 0.9997691512107849,
+      "latency_seconds": 0.0596335000009276
+    },
+    {
+      "id": "P034",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-08-04",
+      "label": "POSITIVE",
+      "input_sha256": "bdf20e6681aab3f0be5098025adf96ae7a64902ff9c4121e869e08d23ca698d5",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014854826440569013,
+        "POSITIVE": 0.9997685551643372,
+        "NEGATIVE": 8.29078271635808e-05
+      },
+      "confidence": 0.9997685551643372,
+      "latency_seconds": 0.06928950001019984
+    },
+    {
+      "id": "P036",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-08-05",
+      "label": "POSITIVE",
+      "input_sha256": "73e88047877fc97cbe60c99248bc2e255e70dd587e4f281663fdfded463940c2",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00015705027908552438,
+        "POSITIVE": 0.9997681975364685,
+        "NEGATIVE": 7.477298640878871e-05
+      },
+      "confidence": 0.9997681975364685,
+      "latency_seconds": 0.06577910005580634
+    },
+    {
+      "id": "P037",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-08-05",
+      "label": "POSITIVE",
+      "input_sha256": "0222c639931f976e183fddc43edd7072ff238e3843c00de55915034b6a85015b",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014896175707690418,
+        "POSITIVE": 0.9997683167457581,
+        "NEGATIVE": 8.272764534922317e-05
+      },
+      "confidence": 0.9997683167457581,
+      "latency_seconds": 0.0911624999716878
+    },
+    {
+      "id": "P039",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-08-06",
+      "label": "POSITIVE",
+      "input_sha256": "4543d815cd54f3ccf6a0edf821fb001f3a7c40da6ae47f2bc2708a26e3dec9ca",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014996752724982798,
+        "POSITIVE": 0.9997692704200745,
+        "NEGATIVE": 8.077220263658091e-05
+      },
+      "confidence": 0.9997692704200745,
+      "latency_seconds": 0.08951720001641661
+    },
+    {
+      "id": "P040",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-08-06",
+      "label": "POSITIVE",
+      "input_sha256": "79d752a2b55b9763851731708bd86a924e41b0efd820f5174805c8b93cb081d0",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0001495985488872975,
+        "POSITIVE": 0.9997749924659729,
+        "NEGATIVE": 7.542228559032083e-05
+      },
+      "confidence": 0.9997749924659729,
+      "latency_seconds": 0.10268820001510903
+    },
+    {
+      "id": "P041",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-08-06",
+      "label": "POSITIVE",
+      "input_sha256": "0f31547f8642ee975852e601126ce61fbb7d112f455a65cff69d171bbdf85733",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014655134873464704,
+        "POSITIVE": 0.999772846698761,
+        "NEGATIVE": 8.057399827521294e-05
+      },
+      "confidence": 0.999772846698761,
+      "latency_seconds": 0.07323079998604953
+    },
+    {
+      "id": "P042",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-08-06",
+      "label": "POSITIVE",
+      "input_sha256": "cb8cb2c66e8864c276c24fe91e3244fdb2ff29d9fdabc26aabeafc1ff5fba66b",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014518960961140692,
+        "POSITIVE": 0.9997768998146057,
+        "NEGATIVE": 7.789923256495968e-05
+      },
+      "confidence": 0.9997768998146057,
+      "latency_seconds": 0.07411399995908141
+    },
+    {
+      "id": "P043",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-09-26",
+      "label": "POSITIVE",
+      "input_sha256": "cbebfca5a5cda4a8ed5da10adaf134ba64298761260ded7096dfe3e91f66cc39",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014670898963231593,
+        "POSITIVE": 0.9997722506523132,
+        "NEGATIVE": 8.105517190415412e-05
+      },
+      "confidence": 0.9997722506523132,
+      "latency_seconds": 0.08119860000442713
+    },
+    {
+      "id": "P045",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-09-29",
+      "label": "POSITIVE",
+      "input_sha256": "9318e1f1b2b401f9ab0b049f698dd13db53aeb42ce9178b1f2a51611036b8470",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014674453996121883,
+        "POSITIVE": 0.9997722506523132,
+        "NEGATIVE": 8.102302672341466e-05
+      },
+      "confidence": 0.9997722506523132,
+      "latency_seconds": 0.07634169998345897
+    },
+    {
+      "id": "P047",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-09-30",
+      "label": "POSITIVE",
+      "input_sha256": "023aefa4f2bd6cd3352e848164e38033ca4f0d9c2dceb62a87589acdc476b804",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00014768894470762461,
+        "POSITIVE": 0.9997720122337341,
+        "NEGATIVE": 8.032205369090661e-05
+      },
+      "confidence": 0.9997720122337341,
+      "latency_seconds": 0.08807679999154061
+    },
+    {
+      "id": "P048",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-09-30",
+      "label": "POSITIVE",
+      "input_sha256": "d78b5a3c3a34a39d1aa481c7af68cbcc12eb2ff9c39da25e6848b1d92a5ae582",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.000160986150149256,
+        "POSITIVE": 0.9997689127922058,
+        "NEGATIVE": 7.013480353634804e-05
+      },
+      "confidence": 0.9997689127922058,
+      "latency_seconds": 0.10058339999523014
+    },
+    {
+      "id": "U001",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-01-18",
+      "label": "NEUTRAL",
+      "input_sha256": "3d0530d25f723c41326ac1b08871480120aca5c00419c7f43f1e21e5449d5e94",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998682737350464,
+        "POSITIVE": 8.229971717810258e-05,
+        "NEGATIVE": 4.946129411109723e-05
+      },
+      "confidence": 0.9998682737350464,
+      "latency_seconds": 0.10861019999720156
+    },
+    {
+      "id": "U002",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-01-18",
+      "label": "NEUTRAL",
+      "input_sha256": "f3866b1b918a6c35df127bfb9c7a672ccf0fa6888400cb5d3e5ecc45926edf04",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998824596405029,
+        "POSITIVE": 7.961774099385366e-05,
+        "NEGATIVE": 3.788746107602492e-05
+      },
+      "confidence": 0.9998824596405029,
+      "latency_seconds": 0.09277260000817478
+    },
+    {
+      "id": "U003",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-01-18",
+      "label": "NEUTRAL",
+      "input_sha256": "033dc950cbc2db8369a9e554cf89760a3f6d304787b1a3f1d488adfe9e01843e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998713731765747,
+        "POSITIVE": 7.977129280334339e-05,
+        "NEGATIVE": 4.889770207228139e-05
+      },
+      "confidence": 0.9998713731765747,
+      "latency_seconds": 0.09276829997543246
+    },
+    {
+      "id": "U007",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-11",
+      "label": "NEUTRAL",
+      "input_sha256": "3f24aa47df39614918735ebf71b74d7bbbddf4087b53118bdb2dccceb42197e3",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998626708984375,
+        "POSITIVE": 8.388653077417985e-05,
+        "NEGATIVE": 5.345013050828129e-05
+      },
+      "confidence": 0.9998626708984375,
+      "latency_seconds": 0.09778940002433956
+    },
+    {
+      "id": "U008",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-11",
+      "label": "NEUTRAL",
+      "input_sha256": "dfa215af5de5c075442a7c75d9bb0afd253e281260d1ac2ea645b3a661bad484",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998816251754761,
+        "POSITIVE": 8.039347449084744e-05,
+        "NEGATIVE": 3.7970876292092726e-05
+      },
+      "confidence": 0.9998816251754761,
+      "latency_seconds": 0.1039693999919109
+    },
+    {
+      "id": "U009",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-13",
+      "label": "NEUTRAL",
+      "input_sha256": "23bd67eef8caf57cbae621b19b246a5aa43f82972e4c5dcd74d8077f079a2c3e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999870777130127,
+        "POSITIVE": 8.718198660062626e-05,
+        "NEGATIVE": 4.2090567148989066e-05
+      },
+      "confidence": 0.999870777130127,
+      "latency_seconds": 0.11747679999098182
+    },
+    {
+      "id": "U011",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-28",
+      "label": "NEUTRAL",
+      "input_sha256": "f1a87664d6809f1a1c089ff9e0a910251fc7ac7e27597a55f9e3c13813faf7fa",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998857975006104,
+        "POSITIVE": 7.468663534382358e-05,
+        "NEGATIVE": 3.939535599783994e-05
+      },
+      "confidence": 0.9998857975006104,
+      "latency_seconds": 0.12140760000329465
+    },
+    {
+      "id": "U012",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-28",
+      "label": "NEUTRAL",
+      "input_sha256": "cb6c140fd0ceadab4af8ceb282c3e8c0287cd6ae63e4c1e3d314c441bdab05e2",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998564720153809,
+        "POSITIVE": 8.478640665998682e-05,
+        "NEGATIVE": 5.877975854673423e-05
+      },
+      "confidence": 0.9998564720153809,
+      "latency_seconds": 0.08035519998520613
+    },
+    {
+      "id": "U013",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-28",
+      "label": "NEUTRAL",
+      "input_sha256": "837f99bc76e5817cfe94e15d387ffabcde9434f49f4053b2044a88d8a52a2067",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999876856803894,
+        "POSITIVE": 7.471324352081865e-05,
+        "NEGATIVE": 4.8335990868508816e-05
+      },
+      "confidence": 0.999876856803894,
+      "latency_seconds": 0.12800560001051053
+    },
+    {
+      "id": "U015",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-28",
+      "label": "NEUTRAL",
+      "input_sha256": "4a63bc30a98fd92d957039d23edd8bd0b6cfa71f1844c497934c366506d2734e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9997226595878601,
+        "POSITIVE": 0.00024375376233365387,
+        "NEGATIVE": 3.35696131514851e-05
+      },
+      "confidence": 0.9997226595878601,
+      "latency_seconds": 0.0890217000269331
+    },
+    {
+      "id": "U019",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-REPORT-2024-FY",
+      "label": "NEUTRAL",
+      "input_sha256": "b68e54009b8d5e391972d2667d94134091b375bda198bf0f9e48458a0569618f",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998815059661865,
+        "POSITIVE": 7.695921522099525e-05,
+        "NEGATIVE": 4.1430157580180094e-05
+      },
+      "confidence": 0.9998815059661865,
+      "latency_seconds": 0.08171990001574159
+    },
+    {
+      "id": "U020",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-03-28",
+      "label": "NEUTRAL",
+      "input_sha256": "7c6fa1512657f10aa60c3f427bd7faa6f619ca7659fdaeb8a4ee2b0d8dbbe448",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998747110366821,
+        "POSITIVE": 7.010617991909385e-05,
+        "NEGATIVE": 5.5219425121322274e-05
+      },
+      "confidence": 0.9998747110366821,
+      "latency_seconds": 0.09781250002561137
+    },
+    {
+      "id": "U021",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-PARENT-H-SHARE-PURCHASE-2025",
+      "label": "NEUTRAL",
+      "input_sha256": "e982f07e5731eb9a47deae6bff720dabf3c9c39568f84516f57ce182c3103e8c",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999883770942688,
+        "POSITIVE": 8.406481356360018e-05,
+        "NEGATIVE": 3.223635576432571e-05
+      },
+      "confidence": 0.999883770942688,
+      "latency_seconds": 0.0937497999984771
+    },
+    {
+      "id": "U028",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-AGM-2024",
+      "label": "NEUTRAL",
+      "input_sha256": "adaa05cc65ba38b527cbbe29f26ecf6ffa045b2c20abef0f5fc4945a3f303e1e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998888969421387,
+        "POSITIVE": 6.74440452712588e-05,
+        "NEGATIVE": 4.364609412732534e-05
+      },
+      "confidence": 0.9998888969421387,
+      "latency_seconds": 0.09581279999110848
+    },
+    {
+      "id": "U031",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-06-09",
+      "label": "NEUTRAL",
+      "input_sha256": "a0e2725ede7bec390ae4c819a0db782e830dd7c2d3a28781a0b7ae667aad5154",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998723268508911,
+        "POSITIVE": 7.912884029792622e-05,
+        "NEGATIVE": 4.854957660427317e-05
+      },
+      "confidence": 0.9998723268508911,
+      "latency_seconds": 0.0900147000211291
+    },
+    {
+      "id": "U033",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-06-13",
+      "label": "NEUTRAL",
+      "input_sha256": "d00bdc5d5c658799f94f73e46c590e530a4ad3d3394ba1e858e053b6bf0c3722",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998065829277039,
+        "POSITIVE": 9.67302403296344e-05,
+        "NEGATIVE": 9.663213859312236e-05
+      },
+      "confidence": 0.9998065829277039,
+      "latency_seconds": 0.09963459998834878
+    },
+    {
+      "id": "U034",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-BOARD10-2025-06-13",
+      "label": "NEUTRAL",
+      "input_sha256": "734bb05c0b02a7bd2babd62c1606f824fcbc22bac7d8f17b3993e1c90dd66d97",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998818635940552,
+        "POSITIVE": 8.42515000840649e-05,
+        "NEGATIVE": 3.3869575418066233e-05
+      },
+      "confidence": 0.9998818635940552,
+      "latency_seconds": 0.14038699999218807
+    },
+    {
+      "id": "U035",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-BOARD10-2025-06-13",
+      "label": "NEUTRAL",
+      "input_sha256": "200681b2e89aa1f2408cb41f3e02cb103a3c94ee5cda9126bf032f0311564c97",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998688697814941,
+        "POSITIVE": 8.72267410159111e-05,
+        "NEGATIVE": 4.390011235955171e-05
+      },
+      "confidence": 0.9998688697814941,
+      "latency_seconds": 0.12450850004097447
+    },
+    {
+      "id": "U036",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-BOARD10-2025-06-13",
+      "label": "NEUTRAL",
+      "input_sha256": "eb22e8b96ffd6e971065695b8bda4c762c9e1dce3fd0694eaa12369afd6e8273",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998809099197388,
+        "POSITIVE": 8.556822285754606e-05,
+        "NEGATIVE": 3.3538221032358706e-05
+      },
+      "confidence": 0.9998809099197388,
+      "latency_seconds": 0.22703539999201894
+    },
+    {
+      "id": "U037",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2025-08-02",
+      "label": "NEUTRAL",
+      "input_sha256": "0a5241c4bd112b59dcb3dea9acdbab6fc3df171d4d3269ff7b5dad0d1bbedfca",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998618364334106,
+        "POSITIVE": 9.628872066969052e-05,
+        "NEGATIVE": 4.181129770586267e-05
+      },
+      "confidence": 0.9998618364334106,
+      "latency_seconds": 0.10532339999917895
+    },
+    {
+      "id": "U041",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-REPORT-2025-Q3",
+      "label": "NEUTRAL",
+      "input_sha256": "6698503fd0e601bf0d49deaa945005bf37902a40769e3a2d10434b4338194fe5",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999864935874939,
+        "POSITIVE": 9.58231175900437e-05,
+        "NEGATIVE": 3.926220961147919e-05
+      },
+      "confidence": 0.999864935874939,
+      "latency_seconds": 0.10462850000476465
+    },
+    {
+      "id": "U043",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2026-01-15",
+      "label": "NEUTRAL",
+      "input_sha256": "0bb63dfd584ab74bb66ec64d9126ddb718e71879a73d52b3252eb28a70b8730c",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998883008956909,
+        "POSITIVE": 7.683857984375209e-05,
+        "NEGATIVE": 3.475125049590133e-05
+      },
+      "confidence": 0.9998883008956909,
+      "latency_seconds": 0.11415750003652647
+    },
+    {
+      "id": "U047",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2026-03-12",
+      "label": "NEUTRAL",
+      "input_sha256": "9070d2d9c26e94d38b5410996d9a6ade31eca36a23633fabc1c3efce473f1620",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998470544815063,
+        "POSITIVE": 0.00010363204637542367,
+        "NEGATIVE": 4.931606963509694e-05
+      },
+      "confidence": 0.9998470544815063,
+      "latency_seconds": 0.17606520000845194
+    },
+    {
+      "id": "U049",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-REPORT-2026-Q1",
+      "label": "NEUTRAL",
+      "input_sha256": "76efbb243fe2b2ba1a7168f6495afdfdff53245754abb0aad4801c1512f9689a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998797178268433,
+        "POSITIVE": 8.409703150391579e-05,
+        "NEGATIVE": 3.611019201343879e-05
+      },
+      "confidence": 0.9998797178268433,
+      "latency_seconds": 0.10666799999307841
+    },
+    {
+      "id": "U083",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-CHAIR-RETIREMENT-2026-07-07",
+      "label": "NEUTRAL",
+      "input_sha256": "a6b48da1570c3b77a253a233084c6b269572fe7be5f71b9f3b8290e385a98872",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998472929000854,
+        "POSITIVE": 6.260297959670424e-05,
+        "NEGATIVE": 9.014588431455195e-05
+      },
+      "confidence": 0.9998472929000854,
+      "latency_seconds": 0.09421569999540225
+    },
+    {
+      "id": "U096",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-AGM-2025",
+      "label": "NEUTRAL",
+      "input_sha256": "b2e29c432196dff3ec9cf5ec63df4dc0f6720992f461549b5b12d045ae0be673",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999883770942688,
+        "POSITIVE": 7.879532495280728e-05,
+        "NEGATIVE": 3.7474295822903514e-05
+      },
+      "confidence": 0.999883770942688,
+      "latency_seconds": 0.07919479999691248
+    },
+    {
+      "id": "U110",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2026-07-29",
+      "label": "NEUTRAL",
+      "input_sha256": "0b71b6a86f9900db962748491f14573bcb5b2ce7ec217e719c09e5ff75487672",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998890161514282,
+        "POSITIVE": 7.10621607140638e-05,
+        "NEGATIVE": 3.990968980360776e-05
+      },
+      "confidence": 0.9998890161514282,
+      "latency_seconds": 0.10974790004547685
+    },
+    {
+      "id": "U116",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2026-08-13",
+      "label": "NEUTRAL",
+      "input_sha256": "210f2dec44b384e85624b9f2c60b3fdaf21e0d9399610c00c365b8444ccaf7a0",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999889612197876,
+        "POSITIVE": 6.996134470682591e-05,
+        "NEGATIVE": 4.036568134324625e-05
+      },
+      "confidence": 0.999889612197876,
+      "latency_seconds": 0.11373560002539307
+    },
+    {
+      "id": "U117",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2026-08-14",
+      "label": "NEUTRAL",
+      "input_sha256": "fab36c26f94238afc7e66a55343bee2545995572cc248afca19ca8ce294b14fe",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9998888969421387,
+        "POSITIVE": 7.018409814918414e-05,
+        "NEGATIVE": 4.092494782526046e-05
+      },
+      "confidence": 0.9998888969421387,
+      "latency_seconds": 0.11421900003915653
+    },
+    {
+      "id": "U141",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-DISCLOSURE-BUNDLE-2026-09-17",
+      "label": "NEUTRAL",
+      "input_sha256": "deed45e5611841ec67e9d8fe945b409302cbc69af53f6232eae182fa05a8b2cd",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.999869704246521,
+        "POSITIVE": 7.870236004237086e-05,
+        "NEGATIVE": 5.1650167733896524e-05
+      },
+      "confidence": 0.999869704246521,
+      "latency_seconds": 0.09812799998326227
+    },
+    {
+      "id": "X001",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-2月7日长盛新兴成长混合-2025-02-07",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X002",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-上证180碳效率指数-2025-02-07",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X006",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-金价持续走高 黄金ETF（518850）规模-2025-02-10",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X007",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-规模同类最大的港股红利指数-2025-02-10",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X009",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-规模同类最大的港股红利指数-2025-02-11",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X011",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-中证工业有色金属主题指数-2025-02-11",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X014",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-上证180碳效率指数-2025-02-11",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X017",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-金价在连续创下新高后出现回落，黄金ETF基金(159937)昨日吸金超6亿元-2025-02-12",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X018",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-上证原材料行业分层等权重指数-2025-02-12",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X020",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-中证工业有色金属主题指数-2025-02-13",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X022",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-上证大宗商品股票指数-2025-02-14",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X025",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-现货黄金上周五高位下跌，黄金ETF基金(159937)显著回调，近11日吸金超10亿元-2025-02-17",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X026",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-永赢中证沪深港黄金产业股票ETF发起联接-2025-02-18",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X027",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-永赢中证沪深港黄金产业股票ETF发起联接-2025-02-18",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X028",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-历次牛市涨跌规律：10年前捂股贵州茅台和定投爆发力强的低价股，现在是什么光景？真正的生钱之道-2025-02-18",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X029",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-中证工业有色金属主题指数-2025-02-18",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X031",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-有色金属行业及产业链月报(2025年2月)：金属铜、铝价小幅走低 生产需求持续缓慢回暖-2025-02-19",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X033",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-华菱线缆-2025-02-19",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X034",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-中证工业有色金属主题指数-2025-02-19",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X036",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-广发睿升混合-2025-02-22",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X037",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-广发睿升混合-2025-02-22",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X050",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-两家国企，撑起一个IPO-2025-04-08",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X059",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-中国瑞林在A股上市，募资净额约5.32亿元-2025-04-09",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X060",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-恒邦股份-2025-04-10",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X065",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-恒邦股份单日涨幅超6% 贵金属冶炼企业披露最新股东数据-2025-04-10",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X066",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-广发睿升混合-2025-04-11",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X067",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-广发睿升混合-2025-04-11",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X070",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-中证港股通有色金属综合指数-2025-04-14",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X071",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-中证贵金属产业指数-2025-04-14",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "X072",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-OBJECT-上证中部崛起龙头企业指数-2025-04-14",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "N001",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-19",
+      "label": "NEGATIVE",
+      "input_sha256": "8ecc50c1b88d2b0a843d763810be2a293a21a6042dda67b17467ad80def48892",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 4.1498456994304433e-05,
+        "POSITIVE": 5.4821237426949665e-05,
+        "NEGATIVE": 0.999903678894043
+      },
+      "confidence": 0.999903678894043,
+      "latency_seconds": 0.09291130001656711
+    },
+    {
+      "id": "N002",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-24",
+      "label": "NEGATIVE",
+      "input_sha256": "990fe1363f8ebaa166c3a5d828341954ca2056b49e3517aede7bc4642a5941be",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.70896996173542e-05,
+        "POSITIVE": 6.0012902395101264e-05,
+        "NEGATIVE": 0.9999028444290161
+      },
+      "confidence": 0.9999028444290161,
+      "latency_seconds": 0.08866209996631369
+    },
+    {
+      "id": "N003",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-24",
+      "label": "NEGATIVE",
+      "input_sha256": "9fdaca5a72c190819277ebbe7af2fe45cb247122c96b777920802d785ce9e9b4",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.876369373756461e-05,
+        "POSITIVE": 5.539272024179809e-05,
+        "NEGATIVE": 0.9999058246612549
+      },
+      "confidence": 0.9999058246612549,
+      "latency_seconds": 0.12292770005296916
+    },
+    {
+      "id": "N004",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-20",
+      "label": "NEGATIVE",
+      "input_sha256": "3d18bb718a69a520579e8858ee96e1fc8d7c35af4208904a6417efcbd65b3374",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.2337058655684814e-05,
+        "POSITIVE": 6.342776759993285e-05,
+        "NEGATIVE": 0.9999042749404907
+      },
+      "confidence": 0.9999042749404907,
+      "latency_seconds": 0.08521599997766316
+    },
+    {
+      "id": "N005",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-18",
+      "label": "NEGATIVE",
+      "input_sha256": "25db7be0ef2679c10c0f64e6693eaf2ca25eea267dfe2ed302805b52d10f45fe",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.191066934959963e-05,
+        "POSITIVE": 6.393742660293356e-05,
+        "NEGATIVE": 0.9999041557312012
+      },
+      "confidence": 0.9999041557312012,
+      "latency_seconds": 0.07449129997985438
+    },
+    {
+      "id": "N006",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-17",
+      "label": "NEGATIVE",
+      "input_sha256": "4584797922233e2e99b1fb1fa9989d6acdfdf2b97dfed4b8ba03948bc46ecacd",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1501629564445466e-05,
+        "POSITIVE": 6.32900046184659e-05,
+        "NEGATIVE": 0.9999052286148071
+      },
+      "confidence": 0.9999052286148071,
+      "latency_seconds": 0.07104229996912181
+    },
+    {
+      "id": "N007",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-16",
+      "label": "NEGATIVE",
+      "input_sha256": "0769e6fab770716a219510a586ec15cb1b9b6a08df6c8393792b861c48ae8526",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.278422082075849e-05,
+        "POSITIVE": 6.330115138553083e-05,
+        "NEGATIVE": 0.9999039173126221
+      },
+      "confidence": 0.9999039173126221,
+      "latency_seconds": 0.07779219996882603
+    },
+    {
+      "id": "N008",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-16",
+      "label": "NEGATIVE",
+      "input_sha256": "88c6b849b36d341f494b44f2e11a4c89eefac4b73f821f5a6cd31bea183cef3d",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1762556318426505e-05,
+        "POSITIVE": 6.53421157039702e-05,
+        "NEGATIVE": 0.9999028444290161
+      },
+      "confidence": 0.9999028444290161,
+      "latency_seconds": 0.08168529998511076
+    },
+    {
+      "id": "N009",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-15",
+      "label": "NEGATIVE",
+      "input_sha256": "4a6671e8c33ce67e45bc03ebcb6f9c959db453ceaea1c5c72a799087050d8b40",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.2989413739414886e-05,
+        "POSITIVE": 6.351336924126372e-05,
+        "NEGATIVE": 0.9999034404754639
+      },
+      "confidence": 0.9999034404754639,
+      "latency_seconds": 0.06028640002477914
+    },
+    {
+      "id": "N010",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-06-13",
+      "label": "NEGATIVE",
+      "input_sha256": "50abcb8418ce7596b63e836ea636f9f02bcd0947257ac059995bb40894a3f3b8",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.3167543733725324e-05,
+        "POSITIVE": 6.276411295402795e-05,
+        "NEGATIVE": 0.9999040365219116
+      },
+      "confidence": 0.9999040365219116,
+      "latency_seconds": 0.06187209999188781
+    },
+    {
+      "id": "N011",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-11-21",
+      "label": "NEGATIVE",
+      "input_sha256": "266897b49ac1f6f6e221157d4ecfe5b49289a89c2d082ab73160f8f301c0c738",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.212415685993619e-05,
+        "POSITIVE": 6.394753290805966e-05,
+        "NEGATIVE": 0.9999039173126221
+      },
+      "confidence": 0.9999039173126221,
+      "latency_seconds": 0.07277899998007342
+    },
+    {
+      "id": "N012",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-13",
+      "label": "NEGATIVE",
+      "input_sha256": "5f28cdebd3340d307918f7c5064cc36744ad47e03abeb73c7c1bc2270aa09f25",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.184660818078555e-05,
+        "POSITIVE": 6.321837281575426e-05,
+        "NEGATIVE": 0.9999048709869385
+      },
+      "confidence": 0.9999048709869385,
+      "latency_seconds": 0.061712299997452646
+    },
+    {
+      "id": "N013",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-13",
+      "label": "NEGATIVE",
+      "input_sha256": "275e30b142d8d40c5d0602221e68f9d3da6a0b0c3d68d7c2e5ae8af7d0f7fdac",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.969497629441321e-05,
+        "POSITIVE": 5.6616769143147394e-05,
+        "NEGATIVE": 0.999903678894043
+      },
+      "confidence": 0.999903678894043,
+      "latency_seconds": 0.06255769997369498
+    },
+    {
+      "id": "N014",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-12",
+      "label": "NEGATIVE",
+      "input_sha256": "708564e54ec1d503948b375d14f7ea1724a5d46074749bd653f19b94046c3150",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1114501325646415e-05,
+        "POSITIVE": 6.354959623422474e-05,
+        "NEGATIVE": 0.9999053478240967
+      },
+      "confidence": 0.9999053478240967,
+      "latency_seconds": 0.0562758999876678
+    },
+    {
+      "id": "N015",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-12",
+      "label": "NEGATIVE",
+      "input_sha256": "29e9663b4d91c21a9b2471fc5597a9183654aa9a47d84ed30f5a89a79cc5f493",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.118160384474322e-05,
+        "POSITIVE": 6.645987741649151e-05,
+        "NEGATIVE": 0.9999023675918579
+      },
+      "confidence": 0.9999023675918579,
+      "latency_seconds": 0.06824529997538775
+    },
+    {
+      "id": "N016",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-13",
+      "label": "NEGATIVE",
+      "input_sha256": "9a2338eef4e773ff971ba6f9747eec4990c6b42e768556229f44aa85c5538527",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.3017258829204366e-05,
+        "POSITIVE": 6.29820060566999e-05,
+        "NEGATIVE": 0.9999040365219116
+      },
+      "confidence": 0.9999040365219116,
+      "latency_seconds": 0.057230799982789904
+    },
+    {
+      "id": "N017",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-12",
+      "label": "NEGATIVE",
+      "input_sha256": "3b1ff3d1e26b4def65683095d5431e07f9f349662fa920ed52278d6027fb0aae",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1698993552709e-05,
+        "POSITIVE": 6.401449354598299e-05,
+        "NEGATIVE": 0.9999042749404907
+      },
+      "confidence": 0.9999042749404907,
+      "latency_seconds": 0.05708290002075955
+    },
+    {
+      "id": "N018",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-02-12",
+      "label": "NEGATIVE",
+      "input_sha256": "0eea8fbc98bfb43c5c37c013679ec5edbd52b4d08532bf45b85bfe0a6b081399",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.098449087701738e-05,
+        "POSITIVE": 6.708273576805368e-05,
+        "NEGATIVE": 0.9999018907546997
+      },
+      "confidence": 0.9999018907546997,
+      "latency_seconds": 0.06870080000953749
+    },
+    {
+      "id": "N019",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-06-10",
+      "label": "NEGATIVE",
+      "input_sha256": "d58fabbed88bc8fce6178b6c483afc724c6e905f828f898eeaf11b12448ae990",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.288075822638348e-05,
+        "POSITIVE": 6.317197403404862e-05,
+        "NEGATIVE": 0.9999039173126221
+      },
+      "confidence": 0.9999039173126221,
+      "latency_seconds": 0.06098870001733303
+    },
+    {
+      "id": "N020",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-11",
+      "label": "NEGATIVE",
+      "input_sha256": "77dbbcbfaa412b140420f4bf2183a1038c0a057b6f86367670d909ced794e19c",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.297458533779718e-05,
+        "POSITIVE": 6.30562863079831e-05,
+        "NEGATIVE": 0.9999039173126221
+      },
+      "confidence": 0.9999039173126221,
+      "latency_seconds": 0.07181709998985752
+    },
+    {
+      "id": "N021",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-09",
+      "label": "NEGATIVE",
+      "input_sha256": "2d32426c8c1fb510ae99872c129e7f20eb5b82fef8cc57bc9768788e15169ff3",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.212609590264037e-05,
+        "POSITIVE": 6.462604505941272e-05,
+        "NEGATIVE": 0.9999032020568848
+      },
+      "confidence": 0.9999032020568848,
+      "latency_seconds": 0.06838009995408356
+    },
+    {
+      "id": "N022",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-04-30",
+      "label": "NEGATIVE",
+      "input_sha256": "d3456e6544bcbef42ec7fe01461c5302fae8bcc5b7c31dc29d29b2262754d6ce",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.181038118782453e-05,
+        "POSITIVE": 6.376474630087614e-05,
+        "NEGATIVE": 0.9999043941497803
+      },
+      "confidence": 0.9999043941497803,
+      "latency_seconds": 0.07621209998615086
+    },
+    {
+      "id": "N023",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-04-30",
+      "label": "NEGATIVE",
+      "input_sha256": "84bbc0b43d365c051ea2a77297bc549aff3a3a3e9086d6dfb18a7930c54b8b05",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1596799090038985e-05,
+        "POSITIVE": 0.00010786661005113274,
+        "NEGATIVE": 0.9998605251312256
+      },
+      "confidence": 0.9998605251312256,
+      "latency_seconds": 0.11261620000004768
+    },
+    {
+      "id": "N024",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-04-30",
+      "label": "NEGATIVE",
+      "input_sha256": "db423b52eec28455dcd8077ce99553c6ec1c83e786f67f40d88b4bed52aa6cde",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.135844963253476e-05,
+        "POSITIVE": 6.598623440368101e-05,
+        "NEGATIVE": 0.999902606010437
+      },
+      "confidence": 0.999902606010437,
+      "latency_seconds": 0.07977329997811466
+    },
+    {
+      "id": "N025",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-09",
+      "label": "NEGATIVE",
+      "input_sha256": "894da265dd560f2a351f52bdca7d6275d4f999d036cb2bc493c6c8a7cb8e3ab0",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1097239116206765e-05,
+        "POSITIVE": 6.637855403823778e-05,
+        "NEGATIVE": 0.9999024868011475
+      },
+      "confidence": 0.9999024868011475,
+      "latency_seconds": 0.075208299967926
+    },
+    {
+      "id": "N026",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-04-08",
+      "label": "NEGATIVE",
+      "input_sha256": "7ec5d42d20ef6635a7369ab8775cec373643eda13aaf29702abd97d0e8310824",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.1698134989710525e-05,
+        "POSITIVE": 6.343573477352038e-05,
+        "NEGATIVE": 0.9999048709869385
+      },
+      "confidence": 0.9999048709869385,
+      "latency_seconds": 0.06687310000415891
+    },
+    {
+      "id": "N027",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2025-11-21",
+      "label": "NEGATIVE",
+      "input_sha256": "25ba94ca03e870d519b175c37ac1671f1409f038a10f3315b51e846c91761098",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.206522160326131e-05,
+        "POSITIVE": 5.794423123006709e-05,
+        "NEGATIVE": 0.9999099969863892
+      },
+      "confidence": 0.9999099969863892,
+      "latency_seconds": 0.10158519999822602
+    },
+    {
+      "id": "N028",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-09",
+      "label": "NEGATIVE",
+      "input_sha256": "02b063e0aa22c382ec19e93dab590739b31d4d9cb2fd00f1ff357a2cd0042e3f",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.101463516941294e-05,
+        "POSITIVE": 6.271890015341341e-05,
+        "NEGATIVE": 0.9999063014984131
+      },
+      "confidence": 0.9999063014984131,
+      "latency_seconds": 0.07015879999380559
+    },
+    {
+      "id": "N029",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-09",
+      "label": "NEGATIVE",
+      "input_sha256": "29839fa58132bb07e62b63ac33252542e614e1f158a11634ba56764a1c1ad137",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.0878371035214514e-05,
+        "POSITIVE": 6.67607964714989e-05,
+        "NEGATIVE": 0.9999023675918579
+      },
+      "confidence": 0.9999023675918579,
+      "latency_seconds": 0.08411950001027435
+    },
+    {
+      "id": "N030",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-03-09",
+      "label": "NEGATIVE",
+      "input_sha256": "8c153c2c7f3d526b2f06dc9f333ffe878ea32df820639bdbf349bb66e9afe20f",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 3.3927590266102925e-05,
+        "POSITIVE": 6.162469799164683e-05,
+        "NEGATIVE": 0.9999043941497803
+      },
+      "confidence": 0.9999043941497803,
+      "latency_seconds": 0.07225590001326054
+    }
+  ],
+  "loading_info": {
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "cold_start_seconds": 14.668802499945741,
+  "packages": {
+    "torch": "2.10.0",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "safetensors": "0.8.0"
+  },
+  "peak_working_set_bytes": 818380800,
+  "elapsed_seconds": 34.555145299993455,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "logical_cpus": 16,
+    "threads": 2,
+    "device": "CPU",
+    "precision": "float32"
+  }
+}

@@ -1,0 +1,25 @@
+import {test,expect} from '@playwright/test';
+const freeze='76286d80-4c5d-4262-b97d-ecb856f181f4';
+test('arch report keeps full source calendar separate from analytic METHOD verification',async({page})=>{
+  await page.goto('/#research='+freeze);
+  const report=page.getByRole('region',{name:'保存的研究报告',exact:true});
+  await expect(report).toBeVisible();
+  await report.getByText('概率计算独立库核验',{exact:true}).click();
+  await report.getByRole('button',{name:'核对已保存CAL概率',exact:true}).click();
+  await expect(report.getByText('scikit-learn 1.9.1 · NOT_GRANTED',{exact:true})).toBeVisible({timeout:30000});
+  await report.getByText('区块统计独立库核验',{exact:true}).click();
+  await report.getByRole('button',{name:'核对保存样本的区块统计',exact:true}).click();
+  await expect(report.getByText('arch 8.0.0 · NOT_GRANTED',{exact:true})).toBeVisible({timeout:40000});
+  await expect(report.getByText('日历评分缺失，不能计算区间',{exact:true})).toHaveCount(8);
+  await expect(report.getByRole('cell',{name:'数值一致',exact:true})).toHaveCount(6);
+  await report.getByRole('button',{name:'校验保存的区块核验工件',exact:true}).click();
+  await expect(report.getByText('区块原工件校验一致 · 未重新抽样',{exact:true})).toBeVisible();
+  await page.reload();await report.getByText('概率计算独立库核验',{exact:true}).click();
+  await report.getByRole('button',{name:'查看保存的概率核验',exact:true}).click();
+  await report.getByText('区块统计独立库核验',{exact:true}).click();
+  await report.getByRole('button',{name:'查看保存的区块核验',exact:true}).click();
+  await expect(report.getByText('arch 8.0.0 · NOT_GRANTED',{exact:true})).toBeVisible();
+  await page.setViewportSize({width:390,height:844});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/21-block/mobile.png',fullPage:true});
+});

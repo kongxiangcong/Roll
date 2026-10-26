@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [2172]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8149 (Press CTRL+C to quit)
+[WebServer] (node:4088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-performance.spec.ts:5:1 › saved research performance renders four namespaces and offline chart export (10.0s)
+
+
+  1) tests\e2e\expansion-performance.spec.ts:5:1 › saved research performance renders four namespaces and offline chart export 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: '保存的研究报告', exact: true }).getByText('QuantStats绩效图与离线报告', { exact: true })[22m
+
+
+       7 |   const report=page.getByRole('region',{name:'保存的研究报告',exact:true});
+       8 |   await expect(report).toBeVisible();
+    >  9 |   await report.getByText('QuantStats绩效图与离线报告',{exact:true}).click();
+         |                                                             ^
+      10 |   await report.getByRole('button',{name:'生成保存版本的绩效图',exact:true}).click();
+      11 |   await expect(report.getByText('SHADOW · 首个保存收盘至末次收盘',{exact:true})).toBeVisible({timeout:45000});
+      12 |   await expect(report.getByText('33个保存时点 · 2026-06-08 至 2026-07-23',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-performance.spec.ts:9:61
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\19-performance\browser-results\expansion-performance-save-15f3c-es-and-offline-chart-export\error-context.md
+
+  1 failed
+    tests\e2e\expansion-performance.spec.ts:5:1 › saved research performance renders four namespaces and offline chart export 

@@ -1,0 +1,47 @@
+[WebServer] INFO:     Started server process [22104]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8181 (Press CTRL+C to quit)
+[WebServer] (node:23492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:28288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-metrics.spec.ts:3:1 › saved actual financial metrics expose formulas and versions without acquisition (1.4s)
+
+
+  1) tests\e2e\expansion-metrics.spec.ts:3:1 › saved actual financial metrics expose formulas and versions without acquisition 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('公式：operating_cash_flow / consolidated_net_profit', { exact: true })
+    Expected: visible
+    Error: strict mode violation: getByText('公式：operating_cash_flow / consolidated_net_profit', { exact: true }) resolved to 5 elements:
+        1) <p>公式：operating_cash_flow / consolidated_net_profit</p> aka getByRole('paragraph').filter({ hasText: '公式：operating_cash_flow /' })
+        2) <p>公式：operating_cash_flow / consolidated_net_profit</p> aka getByText('公式：operating_cash_flow /').nth(1)
+        3) <p>公式：operating_cash_flow / consolidated_net_profit</p> aka getByText('公式：operating_cash_flow /').nth(2)
+        4) <p>公式：operating_cash_flow / consolidated_net_profit</p> aka getByText('公式：operating_cash_flow /').nth(3)
+        5) <p>公式：operating_cash_flow / consolidated_net_profit</p> aka getByText('公式：operating_cash_flow /').nth(4)
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('公式：operating_cash_flow / consolidated_net_profit', { exact: true })[22m
+
+
+      12 |  const link=page.getByRole('link',{name:'指标输入原件',exact:true}).first();expect((await request.get((await link.getAttribute('href'))!)).status()).toBe(200);
+      13 |  await page.getByText('集团经营现金／集团净利：0.611974倍',{exact:true}).click();
+    > 14 |  await expect(page.getByText('公式：operating_cash_flow / consolidated_net_profit',{exact:true})).toBeVisible();
+         |                                                                                                ^
+      15 |  await page.reload();await page.getByRole('button',{name:'持仓与关注',exact:true}).click();await page.getByText('确定性财务指标',{exact:true}).click();await page.getByRole('button',{name:'查询财务指标',exact:true}).click();
+      16 |  await expect(page.getByText('指标 2026-06-30 · 营收307154938743 · 归母净利8631822608',{exact:true})).toBeVisible();
+      17 |  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();expect(acquisitions).toBe(0);
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-metrics.spec.ts:14:96
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\11-metrics\browser-results\expansion-metrics-saved-ac-d862d-ersions-without-acquisition\error-context.md
+
+  1 failed
+    tests\e2e\expansion-metrics.spec.ts:3:1 › saved actual financial metrics expose formulas and versions without acquisition 

@@ -1,0 +1,38 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_three_statement_anomalies_are_visible_without_overwriting_originals ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r10ar/test_three_statement_anomalies0')
+
+    def test_three_statement_anomalies_are_visible_without_overwriting_originals(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            base='/api/market/financial/SSE:600362'
+            client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':client.get('/api/market/list').json()['version']})
+            policy=next(p for p in client.get('/api/research/collection-sources').json() if p['id']=='akshare-financial-em')
+            client.post('/api/research/collection-sources/akshare-financial-em/policy',json={'enabled':True,'expected_revision':policy['revision'],'basis':'METHOD isolated anomalies'})
+            for name,field,value in [('imbalance','TOTAL_LIABILITIES',-1),('missing','TOTAL_EQUITY',None),('currency','CURRENCY','USD'),('period','REPORT_DATE','2026-03-31 00:00:00')]:
+                async def changed(instrument,output):
+                    m=await statements(instrument,output);body=json.loads((output/'01.raw').read_bytes());body['data'][0][field]=value
+                    raw=json.dumps(body).encode();(output/'01.raw').write_bytes(raw);m['captures'][0]['sha256']=hashlib.sha256(raw).hexdigest()
+                    if name=='period':m['date_selections']['BALANCE']=['2026-03-31']
+                    return m
+                client.app.state.financial_statements.worker=changed
+                run=client.post(base+'/statements/collect',json={'idempotency_key':name,'basis':'METHOD explicit malformed source variant'}).json()
+                assert run['status']=='COMPLETE',run
+                balance=next(f for f in run['facts'] if f['statement']=='BALANCE')
+                assert balance['original_fields'][field]==value
+                group=next(g for g in client.get(base+'/statements').json()['groups'] if g['versions'].get('BALANCE')==balance['fact_id'])
+>               if name=='imbalance':assert group['balance_check']=={'status':'REQUIRES_REVIEW','difference':'192017045264','tolerance':'1.5'}
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: assert {'difference'...erance': None} == {'difference'...rance': '1.5'}
+E                 
+E                 Differing items:
+E                 {'tolerance': None} != {'tolerance': '1.5'}
+E                 {'status': 'UNKNOWN'} != {'status': 'REQUIRES_REVIEW'}
+E                 {'difference': None} != {'difference': '192017045264'}
+E                 Use -v to get more diff
+
+backend\tests\application\test_financial_statements.py:74: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_statements.py::test_three_statement_anomalies_are_visible_without_overwriting_originals
+1 failed in 7.80s

@@ -1,0 +1,18 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______________ test_metrics_quarters_ttm_ratios_and_asof_replay _______________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r11r/test_metrics_quarters_ttm_rati0')
+
+    def test_metrics_quarters_ttm_ratios_and_asof_replay(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+>           base=prepare(client);response=client.get(base+'/metrics');assert response.status_code==200,response.text
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_financial_metrics.py:26: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_financial_metrics.py::test_metrics_quarters_ttm_ratios_and_asof_replay
+1 failed in 8.51s

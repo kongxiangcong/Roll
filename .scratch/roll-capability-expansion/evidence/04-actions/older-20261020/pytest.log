@@ -1,0 +1,54 @@
+..F...F...                                                               [100%]
+================================== FAILURES ===================================
+_____ test_actual_document_phase_and_lifecycle_do_not_grant_full_coverage _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r-action-older-test01/test_actual_document_phase_and0')
+
+    def test_actual_document_phase_and_lifecycle_do_not_grant_full_coverage(tmp_path):
+        with TestClient(create_app(tmp_path, runtime_role='API')) as client:
+            outputs=[]
+            for kind in ['STATUS_PHASE','ACTION_DOCUMENTS']:
+                response=client.post('/api/market/source-authority',json={'kind':kind,'idempotency_key':kind})
+>               assert response.status_code==201,response.text
+E               AssertionError: {"detail":"ISSUER_NOTICE_ANCHOR_MISMATCH"}
+E               assert 409 == 201
+E                +  where 409 = <Response [409 Conflict]>.status_code
+
+backend\tests\application\test_authority_supplements.py:70: AssertionError
+------------------------------ Captured log call ------------------------------
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/DKWJAN+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(31, 0, 2211364004048), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/UGWYKE+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(29, 0, 2211364004688), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/TQQAUW+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(31, 0, 2211361814560), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+_ test_older_action_supplement_preserves_v1_and_distinguishes_cash_from_reference _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r-action-older-test01/test_older_action_supplement_p0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000202E0DF5040>
+
+    def test_older_action_supplement_preserves_v1_and_distinguishes_cash_from_reference(tmp_path, monkeypatch):
+        data = tmp_path / 'data'
+        with TestClient(create_app(data, runtime_role='API')) as client:
+            with monkeypatch.context() as legacy:
+                legacy.setattr(authority, 'ACTION_REFERENCE', authority.REFERENCE)
+                legacy.setattr(authority, 'ACTION_MANIFEST', authority.MANIFEST)
+                old = client.post('/api/market/source-authority', json={
+                    'kind': 'ACTION_DOCUMENTS', 'idempotency_key': 'legacy',
+                }).json()
+            assert len(old['details']['notices']) == 2
+            command = {'kind': 'ACTION_DOCUMENTS', 'idempotency_key': 'older-supplement'}
+            response = client.post('/api/market/source-authority', json=command)
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"detail":"ISSUER_NOTICE_ANCHOR_MISMATCH"}
+E           assert 409 == 201
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+backend\tests\application\test_authority_supplements.py:152: AssertionError
+------------------------------ Captured log call ------------------------------
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/DKWJAN+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(31, 0, 2211396518256), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/UGWYKE+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(29, 0, 2211395887968), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/DKWJAN+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(31, 0, 2210277240912), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/UGWYKE+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(29, 0, 2210277242704), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+WARNING  pypdf._cmap:_utils.py:504 fontTools is required to fully parse the encoding of a CFF Type1 font in font dictionary {'/BaseFont': '/TQQAUW+TimesLTStd-Roman', '/Encoding': '/WinAnsiEncoding', '/FirstChar': 40, '/FontDescriptor': IndirectObject(31, 0, 2210234445856), '/LastChar': 119, '/Subtype': '/Type1', '/Type': '/Font', '/Widths': [333, 333, 0, 0, 0, 0, 250, 0, 500, 500, 500, 500, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444, 0, 444, 0, 0, 0, 0, 0, 0, 0, 778, 500, 500, 0, 0, 0, 389, 0, 0, 0, 722]}, but is not installed. Consider installing fontTools if you encounter encoding problems.
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_authority_supplements.py::test_actual_document_phase_and_lifecycle_do_not_grant_full_coverage
+FAILED backend\tests\application\test_authority_supplements.py::test_older_action_supplement_preserves_v1_and_distinguishes_cash_from_reference
+2 failed, 8 passed in 65.77s (0:01:05)

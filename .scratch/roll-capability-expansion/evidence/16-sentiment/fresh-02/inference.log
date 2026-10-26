@@ -1,0 +1,47 @@
+W1019 08:29:07.748000 11872 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]
+Loading weights:  21%|██        | 42/201 [00:00<00:00, 375.22it/s]
+Loading weights:  40%|███▉      | 80/201 [00:00<00:00, 349.58it/s]
+Loading weights: 100%|██████████| 201/201 [00:00<00:00, 710.60it/s]
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-19T00:28:19.489665+00:00",
+  "model": {
+    "id": "yiyanghkust/finbert-tone-chinese",
+    "revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    "weights_sha256": "0c25b105902f90d1e039d511944af4f49d1490f6698e701f2704a714ca74e66b",
+    "label_mapping": {
+      "0": "NEUTRAL",
+      "1": "POSITIVE",
+      "2": "NEGATIVE"
+    }
+  },
+  "evaluation_freeze_sha256": "9da74ac48a62528f95ff60dc534d2725a410277671327368cd08c43c71db6e5f",
+  "network_calls": 0,
+  "training": false,
+  "old_holdout_loaded": false,
+  "loading_info": {
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "cold_start_seconds": 55.97426899999846,
+  "packages": {
+    "torch": "2.10.0",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "safetensors": "0.8.0"
+  },
+  "peak_working_set_bytes": 806080512,
+  "elapsed_seconds": 63.042242800001986,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "logical_cpus": 16,
+    "threads": 2,
+    "device": "CPU",
+    "precision": "float32"
+  }
+}

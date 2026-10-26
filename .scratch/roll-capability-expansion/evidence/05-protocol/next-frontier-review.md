@@ -1,0 +1,15 @@
+# Next offline frontier: baseline consumer
+
+**A descriptive comparator consumer is legitimate; harmonizing the old comparator exits to v2 is not.** [Spec ID-05](../../spec.md) requires inherited economic objectives/rules, while [05](../../issues/05-policy-freeze-validation.md) still lacks its common-baseline consumer. Different comparator holding rules are intentional controls, not automatically a defect. Nevertheless, “same window/cash/cap” must not be renamed realized-risk matching or G4 PASS.
+
+Exact existing definitions:
+
+- `backend/src/roll/research/design.py:28-30`: CASH is same initial capital/no interest/zero exposure; START_HOLD same start/budget/lot/rules/initial cap/no reset; MA5_MA20 fixed crossover/same execution-cost-rules/cap.
+- `backend/src/roll/research/shadow.py:341-346`: frozen comparator contract specifies START_HOLD **NO_AUTOMATIC_EXIT**, fixed lot rather than target exposure; MA requires 21 complete calendar slots, original fixed quantity, NEXT_OPEN and original exit policy.
+- `shadow.py:211-231`: old simulator implements the crossing and observation-index+20 maturity; fills use `exit_date=None` for START_HOLD at line157. `successor_shadow.py:119-120` instead assigns new lots entry-session+20. Do not silently change either engine or claim identical holding/execution semantics. The predecessor freeze's actual archived contract/fingerprints, not current defaults alone, must authorize reuse.
+
+The proposed three-comparator METHOD report can be useful **if it preserves those exact old definitions**, lists candidate/comparator differences and refuses formal comparability. Missing integer slots must remain holes; MA requires its full preceding history, and unknown cannot become a zero signal return. Any surrogate date mapping needed by the old engine must be explicitly reversible METHOD indexing, never exchange calendar or source authority. It may consume the same copied capital/costs/rules only as a new registered diagnostic, not mutate old frozen artifacts.
+
+**Smallest safe next behavior:** implement only the already registered CASH control first. For an archived empty-position v2 baseline, save/retrieve/replay a constant initial-cash trajectory on the complete <=200 declared slot span, zero exposure/interest, and candidate-minus-CASH descriptive intervals on exactly that span. Retain unknown candidate NAV and exact prefix identity; do not compress holes, reset capital or infer risk matching. Reject nonempty initial positions for this bounded first contract rather than liquidating them implicitly. Expose coverage and exposure contrast in the existing successor panel. This is a positive common-baseline consumer component, entirely offline and parameter-free, while 05 remains partial.
+
+Use an additive diagnostic module/method/routes/UI, unchanged engines and immutable archives. Real-input authority and independent support still prevent formal completion; they do not block this engineering slice. No implementation, tests or network performed.

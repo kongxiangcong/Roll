@@ -1,0 +1,22 @@
+"""Manual source review recorded before training; no model or cue-derived labels."""
+import json,hashlib
+from collections import Counter
+from pathlib import Path
+p=Path(__file__).resolve().parent
+rows=json.loads((p/'training-annotation-pool.json').read_bytes())['rows']
+# All 436 projected texts were read in order. These explicit ID decisions record that review.
+positive="59 61 62 65 66 67 68 73 74 75 85 91 99 108 118 121 122 123 124 125 126 127 128 132 134 138 146 147 148 149 150 151 160 161 162 163 164 165 166 167 168 170 175 176 178 179 180 181 182 183 184 185 188 189 193 197 198 200 208 215 219 229 230 231 232 233 234 235 236 237 238 240 241 242 243 244 245 247 248 249 250 251 252 253 254 257 260 262 263 273 275 276 282 283 288 292 293 294 295 296 298 299 302 307 308 310 317 318 319 320 322 323 324 330 331 332 333 334 336 337 340 341 343 347 348 352 356 357 358 359 360 362 363 364 365 369 374 378 379 380 381 383 397 398 401 410 416 417 418 433"
+negative="49 69 70 72 139 144 145 157 169 173 177 186 187 190 191 192 194 195 196 199 201 202 204 205 206 207 209 210 211 212 213 214 217 218 225 255 256 259 261 264 265 266 267 268 269 270 277 278 281 286 289 290 291 301 303 304 305 313 314 328 338 366 376 377 384 395 396 400 402 413 431"
+# Ambiguous direction, incomplete source proposition, mixed signals, incidental former executive,
+# different issuer/group object, or unsupported adverse interpretation: never forced into N/U.
+excluded={19:'Environmental situation title does not disclose actual proposition',57:'Former executive now public official; company object uncertain',58:'Former executive now public official; company object uncertain',60:'Promotional fund-flow tone ambiguous',63:'Positive earnings and price reversal mixed',98:'Transaction estimated gain without comparable baseline',130:'Question-form earnings expectation incomplete',137:'Profit growth and no dividend mixed',140:'Revenue grows but adjusted profit declines',156:'Official meeting with group executive; listed issuer uncertain',158:'Short-term decline and long-term growth mixed',159:'Impairment opinion title alone not adverse tone',174:'Supplier promotion about group unclear issuer',221:'Question about another company shareholder',222:'Truncated question about another company',223:'Ratio warning lacks operative context',224:'Conflicts with same-period net profit reports; cannot resolve from snippet',239:'Question about asset injection into another issuer',271:'Target price raised and rating lowered',272:'Target price raised and rating lowered',297:'Unanswered question with negation',321:'Impairment opinion title alone',325:'Truncated proposition without complete direction',335:'Truncated question about another company project',367:'Positive forecast and negative current price mixed',368:'Positive forecast and negative current price mixed',385:'Question about shareholders of another issuer',386:'Financial subsidiary of parent group; issuer object unclear',388:'Oscillation forecast and investment event do not provide single tone',415:'Impairment opinion title alone'}
+P={int(v) for v in positive.split()};N={int(v) for v in negative.split()}
+assert not P&N and not (P|N)&set(excluded)
+for i,r in enumerate(rows,1):
+    r['annotation_origin']='AGENT_NON_INDEPENDENT_BEFORE_MODEL_OUTPUT'
+    r['label']='UNCERTAIN' if i in excluded else 'POSITIVE' if i in P else 'NEGATIVE' if i in N else 'NEUTRAL'
+    r['label_rationale']=excluded.get(i, 'Explicit target price/profit growth or favorable text assertion' if i in P else 'Explicit target price/profit decline or unfavorable text assertion' if i in N else 'Projected source text asserts procedure, ownership, amount, appointment or disclosure without directional comparison; label covers only this snippet, not full article')
+    r['include_eligible']=i not in excluded
+report={'phase':'LABELS_BEFORE_ANY_MODEL_OUTPUT','review_scope':'436 actual projected source snippets individually read; source titles and summaries preserved. No independent human labels. No claim of full-article annotation.','pool_sha256':hashlib.sha256((p/'training-annotation-pool.json').read_bytes()).hexdigest(),'counts':dict(Counter(r['label'] for r in rows)),'eligible_unique_inputs':sum(r['include_eligible'] for r in rows),'rows':rows}
+(p/'training-annotations.json').write_bytes(json.dumps(report,ensure_ascii=False,indent=2).encode())
+print(report['counts'],report['eligible_unique_inputs'])

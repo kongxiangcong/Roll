@@ -1,0 +1,35 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+import {pathToFileURL} from 'node:url';
+import {resolve} from 'node:path';
+const freeze='76286d80-4c5d-4262-b97d-ecb856f181f4';
+
+test('saved research performance renders four namespaces and offline chart export',async({page,context})=>{
+  await page.goto('/#research='+freeze);
+  const report=page.getByRole('region',{name:'保存的研究报告',exact:true});
+  await expect(report).toBeVisible();
+  await report.getByText('QuantStats绩效图与离线报告',{exact:true}).click();
+  await report.getByRole('button',{name:'生成保存版本的绩效图',exact:true}).click();
+  await expect(report.getByText('SHADOW · 首个保存收盘至末次收盘',{exact:true})).toBeVisible({timeout:45000});
+  await expect(report.getByText('33个保存时点 · 2026-06-08 至 2026-07-23',{exact:true})).toBeVisible();
+  await expect(report.getByText('年化收益：窗口不足，未计算',{exact:true})).toBeVisible();
+  await expect(report.getByRole('columnheader',{name:'已保存影子基准',exact:true})).toBeVisible();
+  await expect(report.getByRole('cell',{name:'同一完整收盘窗口',exact:true})).toHaveCount(3);
+  await expect(report.getByRole('img',{name:'SHADOW累计收益、回撤与观察月度收益'})).toBeVisible();
+  const promise=page.waitForEvent('download');
+  await report.getByRole('link',{name:'导出离线绩效报告',exact:true}).click();
+  const file=await promise;
+  const text=readFileSync((await file.path())!,'utf8');
+  expect(text).toContain('0.0.86');expect(text).toContain('<svg');expect(text).toContain('NOT_GRANTED');
+  expect(text).toContain('Saved baseline CASH');expect(text).toContain('Saved baseline START_HOLD');expect(text).toContain('Saved baseline MA5_MA20');
+  const preview=resolve('../.scratch/roll-capability-expansion/evidence/19-baselines/offline-preview.html');await file.saveAs(preview);
+  const offline=await context.newPage();await offline.goto(pathToFileURL(preview).href);
+  await expect(offline.getByRole('heading',{name:'Roll saved performance · NOT_GRANTED',exact:true})).toBeVisible();
+  await offline.screenshot({path:'../.scratch/roll-capability-expansion/evidence/19-baselines/export.png',fullPage:true});await offline.close();
+  await page.reload();await report.getByText('QuantStats绩效图与离线报告',{exact:true}).click();
+  await report.getByRole('button',{name:'查看保存的绩效图',exact:true}).click();
+  await expect(report.getByText('33个保存时点 · 2026-06-08 至 2026-07-23',{exact:true})).toBeVisible();
+  await page.setViewportSize({width:390,height:844});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/19-baselines/mobile.png',fullPage:true});
+});

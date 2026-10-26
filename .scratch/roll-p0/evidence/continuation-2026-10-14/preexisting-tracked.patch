@@ -1,0 +1,41 @@
+diff --git a/.scratch/roll-p0/execution-status.md b/.scratch/roll-p0/execution-status.md
+index 44abd3f..a165b94 100644
+--- a/.scratch/roll-p0/execution-status.md
++++ b/.scratch/roll-p0/execution-status.md
+@@ -14,6 +14,8 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴
+ 
+ ## 当前前沿
+ 
++2026-10-14基础版试用：用户授权启动并继续剩余工程，已沿用本机既有账户目录启动API8010/网页5173/独立worker，真实页面可见且正式判断关闭。新增一条命令启动和只读状态检查入口，隔离实际启动、进程重用、端口冲突及环境还原验证完成；测试进程关闭，用户服务保留。未修改运行中产品与冻结依赖。31仅增加交付切片，25/27政策、30完整来源、28实际外发及32—34真实条件保持原状态，见[基础版启动与验证](evidence/basic-launch-2026-10-14/acceptance.md)。
++
+ 2026-10-12最终清理：10个精确实施工作树已清理，10个接受分支保留；完整运行材料、Root依赖/15保护/3许可工件/原19字节核验一致，原42项非本票untracked入口未改。3802项新增遗漏闭合（3687公开双端保存、113测试私有元数据排除、2来源UNKNOWN私有同卷rename保留且不读/hash/copy）；业务/来源进程停止0（先前自有只读预检中止2）、SQL连接0、实际provider/外发/新业务验收0。原失败诊断保留。见[最终清理收据](evidence/continuation-2026-10-11/final-cleanup/acceptance.md)。各票Completion和真实条件仍按下列当前账本，未宣称全规格PASS。
+ 
+ 2026-10-11最终工程对账：四项P2及prepare并发残差已独立修复接受，29工程complete；31干净锁定安装、当前五入口/无交易与按需休市复盘、两项当前15检索预算、三进程/备份恢复及三个P95已有独立有限收据。P95分别221.6225ms、1079.4350ms、0.5617275s，记录环境下均通过；本地评估为1个METHOD冻结scope＋29拒绝＋5背景，非完整真实资格。239条均已手工对账，没有新239行为全跑或全规格PASS。25缺冻结政策及生产费用/有效期输入、27正向LOSS规则、30完整来源合同仍partial，31据先决条件保持partial；28站内/配置/内部链完成，实际外发0待用户配置。32—34真实前向起点/自然终点/资格未成立，FITTED_UNVALIDATED/NOT_GRANTED保持。95dd已批准包真实Codex技术审阅仅一次，内部双轴审阅不新增ReviewRecord；DeepSeek后续排除。
+diff --git a/.scratch/roll-p0/issues/31-engineering-delivery.md b/.scratch/roll-p0/issues/31-engineering-delivery.md
+index 52e133b..0c1b5f1 100644
+--- a/.scratch/roll-p0/issues/31-engineering-delivery.md
++++ b/.scratch/roll-p0/issues/31-engineering-delivery.md
+@@ -27,6 +27,8 @@
+ 
+ ## Comments
+ 
++2026-10-14 基础版试用启动：沿用既有本地账户，API、独立worker和网页健康，真实浏览器打开五入口，正式判断未启用。补 `scripts/start-roll.ps1` 的顺序启动、进程身份复用、端口冲突拒绝、私有日志和 `-Status`；隔离实际三进程/重复启动/环境还原/端口冲突验证完成，测试进程已停止，用户服务保持运行。具体首轮失败与修复、实际边界见[本轮记录](../evidence/basic-launch-2026-10-14/acceptance.md)。31仍partial，25/27政策、30完整来源、28实发与32—34真实条件不由此关闭；未修改运行中产品或冻结研究依赖。
++
+ 2026-10-07：按已确认拆分发布；尚未实施或验收。本票的直接前置涵盖全部工程分支；不要求 33 已到真实研究终点才完成工程交付，也不以策略必须 PASS 作为安装交付条件。
+ 
+ 2026-10-07：按已确认的 PRD 覆盖审查补充正文/附录需求与条款级证据收口；沿用 34 票及原依赖，新增文档要求尚未实施或验收。
+diff --git a/README.md b/README.md
+index 3732f97..4320069 100644
+--- a/README.md
++++ b/README.md
+@@ -12,6 +12,10 @@
+ 
+ ## 启动（Windows PowerShell）
+ 
++依赖已安装后，在仓库根目录执行 `./scripts/start-roll.ps1`，即可依次启动 API、后台 worker 和网页；打开 [本机 Roll](http://127.0.0.1:5173)。执行 `./scripts/start-roll.ps1 -Status` 查看三者状态。脚本沿用 `%LOCALAPPDATA%\Roll` 的账户数据，重复执行复用已登记进程，遇到未登记的端口占用会停止并说明原因，不结束其他进程。
++
++需要 Codex 取证时，可显式传入 `-CodexAuthFile "$env:USERPROFILE\.codex\auth.json"`；只设置认证文件位置，不读取或展示凭据内容。自定义运行目录用 `-DataDirectory`，独立私有配置用 `-EnvironmentFile`。配置变更需要按[本机运行说明](docs/local-worker-delivery.md)停止原宿主再启动，重复执行脚本不会改写正在运行进程的配置。进程回执和日志保存在运行目录的 `logs/`，关闭网页不会停止服务。以下保留首次安装和手动启动步骤。
++
+ 需要 Python 3.12+、uv、Node.js 22.12+。已验收环境见 `.scratch/roll-p0/evidence/01/acceptance.md`。
+ 
+ 在 `backend` 目录：

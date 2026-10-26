@@ -1,0 +1,27 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_default_state_parity_with_migration_add_early_sell_horizon_and_unknowns _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05ef/test_default_state_parity_with0')
+
+    def test_default_state_parity_with_migration_add_early_sell_horizon_and_unknowns(tmp_path):
+        from roll.research.successor_entry_engine import simulate
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path);proposal=register(client,previous).json()
+            receipt=migration(client,proposal,'SSE:600519',100,4).json()
+            frozen=freeze_successor(client,proposal,[position('SSE:600519',100,receipt,4)]).json()
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id'];commands=[]
+            for day in (1,2,3,4,5,6,7,9,10):
+                command=frame(day,'0.40' if day in (6,7) else '0.80',expected_revision=len(commands))
+                if day==3:command['bars'][0]['market_state']='UNKNOWN'
+                response=client.post(base+'/shadow/advance',json=command);assert response.status_code==201,response.text
+                commands.append(command);assert simulate(frozen,commands)==response.json()
+            events=response.json()['events']
+>           assert any(e['kind']=='BUY_FILL' and e['session']==2 for e in events)
+E           assert False
+E            +  where False = any(<generator object test_default_state_parity_with_migration_add_early_sell_horizon_and_unknowns.<locals>.<genexpr> at 0x0000025F157D2F60>)
+
+backend\tests\application\test_successor_entry_stress.py:69: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_entry_stress.py::test_default_state_parity_with_migration_add_early_sell_horizon_and_unknowns
+1 failed, 1 passed in 50.25s

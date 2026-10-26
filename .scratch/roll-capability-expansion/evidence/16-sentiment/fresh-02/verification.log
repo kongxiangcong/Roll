@@ -1,0 +1,24 @@
+{
+  "status": "VERIFIED",
+  "model_calls": 100,
+  "primary_rows": 120,
+  "frozen_files_unchanged": true,
+  "raw_and_pdf_hashes_verified": 31,
+  "production_reference_unchanged": true,
+  "independent_arithmetic_matches": true,
+  "failed_gates": [
+    "negative_recall"
+  ],
+  "negative_diagnostic": {
+    "EXPLICIT_PRICE_DECLINE": {
+      "NEGATIVE": 11,
+      "ABSTAIN_LOW_CONFIDENCE": 1,
+      "NEUTRAL": 4
+    },
+    "ASSET_IMPAIRMENT_TITLE": {
+      "NEUTRAL": 14
+    }
+  },
+  "no_new_inference": true,
+  "not_a_new_accuracy_experiment": true
+}

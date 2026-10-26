@@ -1,0 +1,11 @@
+{
+  "method_id": "SUCCESSOR_EMPTY_BASELINE_CASH_CONTROL_V1",
+  "baseline": "Only an explicitly empty initial position set; same original cash, no liquidation assumption, interest, trades, fees or exposure",
+  "calendar": "Full declared METHOD slots including original starting slot and every integer through saved prefix; missing candidate NAV remains unknown",
+  "maximum_declared_session_span": 200,
+  "comparison": "Descriptive candidate-minus-CASH interval return only; CASH zero exposure is not a risk-matched invested benchmark",
+  "qualification": "No PASS; known candidate hard risk FAIL is retained, otherwise G4 INCONCLUSIVE; other registered baselines and independent support remain missing",
+  "new_fit_calls": 0,
+  "sealed_reads": 0,
+  "network_calls": 0
+}

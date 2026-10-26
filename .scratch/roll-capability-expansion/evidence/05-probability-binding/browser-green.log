@@ -1,0 +1,45 @@
+[WebServer] INFO:     Started server process [27368]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8154 (Press CTRL+C to quit)
+[WebServer] (node:9120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:15864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-probability-binding.spec.ts:3:1 › successor binds archived same-cutoff CAL support without independent validation claim (14.9s)
+
+
+  1) tests\e2e\expansion-probability-binding.spec.ts:3:1 › successor binds archived same-cutoff CAL support without independent validation claim 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  getByText('成熟唯一 20 · 已选成熟 0 · 缺失或未知日历 20', { exact: true })
+    Expected: [32m2[39m
+    Received: [31m0[39m
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 5000ms[22m
+    [2m  - waiting for getByText('成熟唯一 20 · 已选成熟 0 · 缺失或未知日历 20', { exact: true })[22m
+    [2m    8 × locator resolved to 0 elements[22m
+    [2m      - unexpected value "0"[22m
+
+
+      15 |   await expect(page.getByRole('button',{name:'保存后继概率证据绑定',exact:true})).toBeEnabled();await page.getByRole('button',{name:'保存后继概率证据绑定',exact:true}).click();
+      16 |   await expect(page.getByText('G3 INCONCLUSIVE · 独立校准未验证 · NOT_GRANTED',{exact:true})).toBeVisible();
+    > 17 |   await expect(page.getByText('成熟唯一 20 · 已选成熟 0 · 缺失或未知日历 20',{exact:true})).toHaveCount(2);
+         |                                                                              ^
+      18 |   await page.getByRole('button',{name:'校验后继概率绑定工件',exact:true}).click();await expect(page.getByText('概率绑定原工件校验一致 · 未重新评分',{exact:true})).toBeVisible();
+      19 |   await page.reload();await open();await page.getByRole('button',{name:'查看保存的概率绑定',exact:true}).click();await expect(page.getByText('G3 INCONCLUSIVE · 独立校准未验证 · NOT_GRANTED',{exact:true})).toBeVisible();
+      20 |   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-probability-binding/mobile.png',fullPage:true});
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-probability-binding.spec.ts:17:78
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\05-probability-binding\browser-results\expansion-probability-bind-22322-ndependent-validation-claim\error-context.md
+
+  1 failed
+    tests\e2e\expansion-probability-binding.spec.ts:3:1 › successor binds archived same-cutoff CAL support without independent validation claim 

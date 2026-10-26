@@ -1,0 +1,20 @@
+{
+  "instrument": "SSE:600362",
+  "api": "akshare.stock_profit_sheet_by_report_em",
+  "sdk_version": "1.19.1",
+  "wheel_sha256": "8ab82d4a468d2c384df02de470df3a44e8b899fd8cfe116bceff52dd7b804df9",
+  "sdk_source_sha256": "e9cb438a5e033e9ba2d14c0341528b1aeec3f162fb2c0e5cbff41a6bc293348e",
+  "license": "MIT",
+  "source_upstream": "EASTMONEY",
+  "max_calls": 8,
+  "total_timeout_seconds": 18,
+  "max_decoded_bytes": 8388608,
+  "retries": 0,
+  "redirects": 0,
+  "source_host": "emweb.securities.eastmoney.com",
+  "paths": ["Index", "lrbDateAjaxNew", "lrbAjaxNew"],
+  "period_selection": "LATEST_FIVE_DISTINCT_REPORT_PERIODS",
+  "transport_adaptation": "archive full date-index original, give SDK an explicitly derived latest-five-period JSON view; statement response remains unmodified",
+  "dataframe_is_upstream_original": false,
+  "actual_call_status": "NOT_RUN"
+}

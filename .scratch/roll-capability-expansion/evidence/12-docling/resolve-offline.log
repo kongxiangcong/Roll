@@ -1,0 +1,22 @@
+WARN docling-ibm-models==4.0.2 needs to be downloaded from a registry
+WARN docling-ibm-models needs to be downloaded from a registry
+  × No solution found when resolving dependencies:
+  ╰─▶ Because docling-ibm-models==4.0.2 needs to be downloaded from a registry
+      and only the following versions of docling-ibm-models are available:
+          docling-ibm-models<=4.0.2
+          docling-ibm-models==4.0.3
+      we can conclude that docling-ibm-models>=4.0.2,<4.0.3 cannot be used.
+      (1)
+
+      Because transformers was not found in the cache and
+      docling-ibm-models==4.0.3 depends on transformers>=4.42.0,<6.0.0, we can
+      conclude that docling-ibm-models==4.0.3 cannot be used.
+      And because we know from (1) that docling-ibm-models>=4.0.2,<4.0.3
+      cannot be used, we can conclude that docling-ibm-models>=4.0.2 cannot
+      be used.
+      And because docling-slim[models-local]==2.139.0
+      depends on docling-ibm-models>=4.0.2 and you require
+      docling-slim[models-local]==2.139.0, we can conclude that your
+      requirements are unsatisfiable.
+
+hint: Packages were unavailable because the network was disabled. When the network is disabled, registry packages may only be read from the cache.

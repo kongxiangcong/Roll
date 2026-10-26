@@ -1,0 +1,128 @@
+{
+  "snapshot_id": "3a4db05f-fe8f-4a47-b5f1-11f37abbd155",
+  "version": "financial-sentiment-feature-protocol-v1",
+  "instrument": "SSE:600362",
+  "created_at": "2026-10-19T15:48:21.344680+00:00",
+  "known_by": "2026-10-01T15:06:00+08:00",
+  "basis": "Actual saved-source feature observation; no retrospective prediction claim or training",
+  "schema": {
+    "financial_version": "financial-metrics-v1",
+    "financial_fields": [
+      "revenue_yoy",
+      "parent_net_profit_yoy",
+      "gross_margin",
+      "net_margin",
+      "cash_profit_ratio",
+      "debt_ratio"
+    ],
+    "financial_selection": "LATEST_REPORT_ACTUALLY_AVAILABLE_AT_CUTOFF; SAME_SCOPE_UNIT_CURRENCY_AND_FORMULA",
+    "sentiment_fields": [
+      "positive_share",
+      "negative_share",
+      "neutral_share",
+      "rejection_share",
+      "coverage",
+      "event_support"
+    ],
+    "sentiment_aggregation": "LATEST_REACHED_RECORDED_CHECKPOINT_UNIQUE_NEW_EVENTS_INCLUDING_REJECTED",
+    "neutral": "UNSUPPORTED_OR_NO_OBSERVATIONS_IS_NULL_NEVER_ZERO",
+    "missing": "NULL_WITH_REASON_NO_IMPUTATION_NO_SELECTIVE_DELETION",
+    "cutoff": "SOURCE_AND_CLASSIFICATION_AND_SERIES_KNOWN_BY_NOT_AFTER_CUTOFF",
+    "price_volume": "INHERIT_EXISTING_BASELINE_ARCHIVES_NOT_RECOMPUTED_HERE"
+  },
+  "financial": {
+    "revenue_yoy": {
+      "status": "UNKNOWN",
+      "value": null,
+      "reason": "NO_AVAILABLE_FINANCIAL_PERIOD"
+    },
+    "parent_net_profit_yoy": {
+      "status": "UNKNOWN",
+      "value": null,
+      "reason": "NO_AVAILABLE_FINANCIAL_PERIOD"
+    },
+    "gross_margin": {
+      "status": "UNKNOWN",
+      "value": null,
+      "reason": "NO_AVAILABLE_FINANCIAL_PERIOD"
+    },
+    "net_margin": {
+      "status": "UNKNOWN",
+      "value": null,
+      "reason": "NO_AVAILABLE_FINANCIAL_PERIOD"
+    },
+    "cash_profit_ratio": {
+      "status": "UNKNOWN",
+      "value": null,
+      "reason": "NO_AVAILABLE_FINANCIAL_PERIOD"
+    },
+    "debt_ratio": {
+      "status": "UNKNOWN",
+      "value": null,
+      "reason": "NO_AVAILABLE_FINANCIAL_PERIOD"
+    }
+  },
+  "calculation_sources": {
+    "financial_metrics.py": "77c89b6b42699423ed5b7f120cd47aa43786a68b39bd5e584968a60c4b83fae9",
+    "financial_statements.py": "da89bce2ba708b4589bb2f83daf4905dcbde8c7c47f133c18414d939b0823aa2",
+    "sentiment_series.py": "8a2c7f3986fd72a43e5624450b880c9ca6f2282e7f5a4160fa55c04961539b23",
+    "sentiment_object.py": "54c8da1ea55ade13b1135a26d6f7278d45ad3b340ecf5d54e2efc60b732e3a15",
+    "sentiment_contract.py": "23e3b40fbf71cc92e12dc5e31d2240583e53761110a2f2f5f5c7b68820f3cd3b"
+  },
+  "report_period": null,
+  "financial_source_versions": {},
+  "sentiment": {
+    "positive_share": {
+      "value": null,
+      "reason": "NO_SELECTED_SENTIMENT_SERIES"
+    },
+    "negative_share": {
+      "value": null,
+      "reason": "NO_SELECTED_SENTIMENT_SERIES"
+    },
+    "neutral_share": {
+      "value": null,
+      "reason": "NO_SELECTED_SENTIMENT_SERIES"
+    },
+    "rejection_share": {
+      "value": null,
+      "reason": "NO_SELECTED_SENTIMENT_SERIES"
+    },
+    "coverage": {
+      "value": null,
+      "reason": "NO_SELECTED_SENTIMENT_SERIES"
+    },
+    "event_support": {
+      "value": null,
+      "reason": "NO_SELECTED_SENTIMENT_SERIES"
+    }
+  },
+  "source_series_id": null,
+  "source_series_sha256": null,
+  "sentiment_reference_sha256": null,
+  "sentiment_contract": null,
+  "sentiment_labels_supported": [],
+  "sentiment_quality_gate_passed": false,
+  "consumed_checkpoint": null,
+  "evidence_kind": "SOURCE_PROVENANCE_UNVERIFIED",
+  "limitations": [
+    "HISTORICAL_ORIGINAL_REVISIONS_NOT_PROVEN",
+    "BASE_PRETRAINING_CORPUS_INTERVAL_UNKNOWN",
+    "LABEL_MATURITY_NOT_BOUND",
+    "PRICE_VOLUME_BASELINE_ARTIFACT_NOT_BOUND",
+    "NOT_A_HISTORICAL_FORECAST_OR_TRAINING_GRANT"
+  ],
+  "historical_pit_eligible": false,
+  "real_fit_admitted": false,
+  "model_calls": 0,
+  "network_calls": 0,
+  "system_usable": false,
+  "capability": "NOT_GRANTED",
+  "archive": {
+    "sha256": "cd0aec32b30f68e0742b91145e31770fdf80d24c00254dd8e3fbe9a22b0ba376",
+    "path": "raw/cd0aec32b30f68e0742b91145e31770fdf80d24c00254dd8e3fbe9a22b0ba376.raw",
+    "bytes": 3227,
+    "kind": "RESEARCH_FEATURE_CONTRACT",
+    "evidence_kind": "SOURCE_PROVENANCE_UNVERIFIED"
+  }
+}

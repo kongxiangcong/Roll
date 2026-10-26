@@ -1,0 +1,20 @@
+{
+  "attempt_id": "DAILY-SESSION-CURRENT-CHECK-20261020-02",
+  "maximum_requests": 2,
+  "maximum_transfer_seconds": 30,
+  "maximum_bytes": 2097152,
+  "retries": 0,
+  "redirects": 0,
+  "commands": [
+    {
+      "role": "daily_2026-10-20",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-20&TX_DATE_MON=&TX_DATE_YEAR="
+    },
+    {
+      "role": "reported_block_20261020",
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_XXPL_JYXXPL_DZJYXX_L_1&stockId=600362&startDate=2026-10-20&endDate=2026-10-20&isPagination=true&pageHelp.pageSize=25&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.endPage=1&pageHelp.cacheSize=1"
+    }
+  ],
+  "reason": "Newcurrentday snap cannot join prior-day statistic; two exact samecurrentday stat/block requests only; prior7requests closed, no retries",
+  "known_before_results": "current_snapdate20261020,hostafter17:30supplier ingestion and15:30exchangeclose"
+}

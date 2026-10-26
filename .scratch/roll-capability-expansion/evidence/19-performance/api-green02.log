@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_performance_report_preserves_saved_window_and_replays_without_runtime __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r19g2/test_performance_report_preser0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000243F6B208A0>
+
+    def test_performance_report_preserves_saved_window_and_replays_without_runtime(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        monkeypatch.setenv('ROLL_QUANTSTATS_PYTHON',str(ROOT/'.scratch/rce-runtime/quantstats/Scripts/python.exe'))
+        with TestClient(create_app(copy_donor(tmp_path/'data'),runtime_role='API')) as client:
+            legacy=client.get('/api/research/reports/'+FREEZE).json()
+            base='/api/research/reports/'+FREEZE+'/performance'
+            command={'expected_shadow_revision':legacy['platform']['state']['revision'],'idempotency_key':'performance-once','basis':'METHOD saved 193-file donor; no new research computation'}
+            result=client.post(base,json=command)
+>           assert result.status_code==201,result.text
+E           AssertionError: {"detail":"QUANTSTATS_RENDER_FAILED; saved stderr 47dabf79-c353-4e1b-83e3-d5a08a434f6b"}
+E           assert 409 == 201
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+backend\tests\application\test_performance_report.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_performance_report.py::test_performance_report_preserves_saved_window_and_replays_without_runtime
+1 failed in 41.24s

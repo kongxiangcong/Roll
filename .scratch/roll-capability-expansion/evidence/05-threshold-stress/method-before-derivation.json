@@ -1,0 +1,13 @@
+{
+  "method_id": "successor-threshold-stress-v1",
+  "grid": ["0.55", "0.60", "0.65"],
+  "mapping": "Entry threshold only; support threshold, reversal cooldown, quantity, costs, lot horizons and all input probabilities fixed. Base0.60 must match every original prefix full state",
+  "scope": "METHOD_DECLARED_SLOTS, partition:null; not DEVELOPMENT/CALIBRATION/SEALED data, no new prediction or fit",
+  "audit": "Separate family METHOD THRESHOLD events and immutable terminal runs; commit each START before worker, retain failures/cancellations and recover dead-owner starts as INTERRUPTED; old training attempt manifest unchanged",
+  "decision": "All three values reported without winner selection. Known absolute drawdown/exposure failure retained, otherwise G5 INCONCLUSIVE, never PASS",
+  "maximum_frames": 200,
+  "maximum_declared_session_span": 200,
+  "worker_seconds": 30,
+  "maximum_input_bytes": 8388608,
+  "maximum_output_bytes": 8388608
+}

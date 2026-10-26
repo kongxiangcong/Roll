@@ -1,0 +1,43 @@
+...F                                                                     [100%]
+================================== FAILURES ===================================
+_ test_news_dead_owner_restores_received_entities_and_headlines_without_retry _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r14lock/test_news_dead_owner_restores_0')
+
+    def test_news_dead_owner_restores_received_entities_and_headlines_without_retry(tmp_path):
+        from fastapi.testclient import TestClient
+        from roll.app import create_app
+        profile=tmp_path/'profile'
+        script='''
+    import json,os
+    from pathlib import Path
+    from fastapi.testclient import TestClient
+    from roll.app import create_app
+    from test_news_ingestion import news_fixture
+    with TestClient(create_app(Path(os.environ['METHOD_PROFILE']))) as c:
+     v=c.get('/api/market/list').json()['version'];c.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':v})
+     p=next(p for p in c.get('/api/research/collection-sources').json() if p['id']=='akshare-news-em');c.post('/api/research/collection-sources/akshare-news-em/policy',json={'enabled':True,'expected_revision':p['revision'],'basis':'METHOD dead-owner proof'})
+     async def die(instrument,output):
+      m=news_fixture(output);(output/'capture.json').write_text(json.dumps(m),encoding='utf-8');os._exit(7)
+     c.app.state.news.worker=die
+     c.post('/api/market/news/SSE:600362/collect',json={'idempotency_key':'interrupted','basis':'METHOD interrupted capture, zero network'})
+    '''
+        env=os.environ.copy();env.update(METHOD_PROFILE=str(profile),PYTHONPATH=os.pathsep.join([str(ROOT/'backend/src'),str(ROOT/'backend/tests/application')]))
+        result=subprocess.run([str(ROOT/'backend/.venv/Scripts/python.exe'),'-X','utf8','-B','-c',script],env=env,capture_output=True,timeout=30)
+        assert result.returncode==7,result.stderr.decode(errors='replace')
+        from concurrent.futures import ThreadPoolExecutor
+        from threading import Barrier
+        barrier=Barrier(2)
+        def initialize():
+            barrier.wait(10)
+            with TestClient(create_app(profile)) as c:return c.get('/api/market/news/SSE:600362').json()
+        with ThreadPoolExecutor(2) as pool:
+            futures=[pool.submit(initialize) for _ in range(2)];recovered=[f.result(30) for f in futures]
+>       assert all(len(v['facts'])==2 and len(v['runs'][0]['facts'])==2 for v in recovered)
+E       assert False
+E        +  where False = all(<generator object test_news_dead_owner_restores_received_entities_and_headlines_without_retry.<locals>.<genexpr> at 0x0000028BC54E7AE0>)
+
+backend\tests\recovery\test_news_sdk_process.py:59: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\recovery\test_news_sdk_process.py::test_news_dead_owner_restores_received_entities_and_headlines_without_retry
+1 failed, 3 passed in 29.14s

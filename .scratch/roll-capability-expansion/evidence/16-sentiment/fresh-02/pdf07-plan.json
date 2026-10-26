@@ -1,0 +1,40 @@
+{
+  "attempt_id": "SENTIMENT-FRESH-PDF-07",
+  "date": "2026-10-19 Asia/Shanghai",
+  "purpose": "Archive verified issuer PDFs for genuine revision chain and denial context, no model inference; indexes do not substitute full source text.",
+  "requests": [
+    {
+      "announcement_id": "63213186",
+      "url": "https://static.cninfo.com.cn/finalpage/2013-10-30/63213186.PDF",
+      "title": "2013年第三季度报告"
+    },
+    {
+      "announcement_id": "63261941",
+      "url": "https://static.cninfo.com.cn/finalpage/2013-11-13/63261941.PDF",
+      "title": "2013年第三季度报告(修订版)"
+    },
+    {
+      "announcement_id": "63261942",
+      "url": "https://static.cninfo.com.cn/finalpage/2013-11-13/63261942.PDF",
+      "title": "关于2013年第三季度报告更正公告"
+    },
+    {
+      "announcement_id": "62167749",
+      "url": "https://static.cninfo.com.cn/finalpage/2013-03-01/62167749.PDF",
+      "title": "关于媒体对本公司德兴铜矿环境保护报道的有关说明公告"
+    },
+    {
+      "announcement_id": "1201010731",
+      "url": "https://static.cninfo.com.cn/finalpage/2015-05-14/1201010731.PDF",
+      "title": "关于2014年年度股东大会更正补充公告"
+    }
+  ],
+  "limits": {
+    "maximum_requests": 5,
+    "maximum_seconds": 18,
+    "maximum_bytes": 8388608,
+    "retries": 0,
+    "redirects": 0
+  },
+  "projection": "Preserve raw PDFs and page text. Only issuer-resolved paragraphs may add verified issuer identity prefix; keep exact original paragraph as source text with page locator. No sentiment paraphrasing, negation removal or numeric edits. New paragraph choices and labels frozen before inference; entire revision chain remains one event group."
+}

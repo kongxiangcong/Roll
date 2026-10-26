@@ -1,0 +1,31 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -419,6 +419,20 @@
+     @app.post('/api/research/successor-model-execution-replays/{identifier}/replay')
+     async def successor_model_replay_replay(identifier:str):return await successor_model_replays.replay(identifier)
+ 
++    from roll.research.successor_input_consumer import SuccessorInputConsumers,InputCommand
++
++    @app.post('/api/research/successor-primary-center-bindings/{identifier}/input-consumer',status_code=201)
++    async def successor_input_create(identifier:str,command:InputCommand):return await successor_inputs.create(identifier,command)
++
++    @app.get('/api/research/successor-primary-center-bindings/{identifier}/input-consumer')
++    def successor_input_list(identifier:str):return successor_inputs.listing(identifier)
++
++    @app.get('/api/research/successor-input-consumers/{identifier}')
++    def successor_input_get(identifier:str):return successor_inputs.get(identifier)
++
++    @app.post('/api/research/successor-input-consumers/{identifier}/replay')
++    async def successor_input_replay(identifier:str):return await successor_inputs.replay(identifier)
++
+     @app.get('/api/research/complete-freezes/{predecessor_freeze_id}/policy-successor-freezes')
+     def successor_freezes_for_parent(predecessor_freeze_id:str):
+         return successor_protocols.for_parent(predecessor_freeze_id)
+@@ -495,6 +509,7 @@
+     def shadow_results(freeze_id:str):
+         return shadow.results(freeze_id)
+     prospective=ProspectiveEvidence(evidence,research)
++    successor_inputs=SuccessorInputConsumers(successor_centers,prospective)
+     financial=FinancialIncome(evidence,prospective.sources)
+     app.state.financial=financial
+ 

@@ -1,0 +1,12 @@
+{
+  "attempt_id": "CIIS-WINDOWS-TRUST-01",
+  "reason": "Separate explicit environment repair after Python CA chainfailure; curlSchannel uses Windows trusted certificate store, never disables verification",
+  "requests_maximum": 4,
+  "seconds_maximum": 60,
+  "bytes_maximum": 16777216,
+  "retries": 0,
+  "redirects": 0,
+  "first_url": "https://www.ciis.com.hk/hongkong/sc/historicaldata/his_introduction/index.shtml",
+  "additional_rule": "at most3 sample URLs directly linked by authenticated firstpage; otherissuer schema research only, no product input",
+  "login_contact_purchase": false
+}

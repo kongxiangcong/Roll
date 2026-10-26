@@ -1,0 +1,16 @@
+{
+  "method_id": "SUCCESSOR_ORIGINAL_REGISTERED_METHOD_CONTROLS_V1",
+  "controls": ["CASH", "START_HOLD", "MA5_MA20"],
+  "source": "Only saved METHOD frames with explicit empty initial positions. Full declared slots, no filled bars or real calendar claims.",
+  "adapter": "Reversible METHOD_SLOT labels index legacy pure simulation only. Legacy completion/status tokens are interface aliases, never source authority.",
+  "rules": "Original registered comparator algorithms unchanged: START_HOLD has no automatic exit, MA uses observation+20 slots, candidate v2 new lots use entry+20 slots. Do not harmonize timing.",
+  "matching": "Same synthetic initial cash, scope, lot quantity, costs and exposure cap; explicit timing/risk contrasts, no risk-matching qualification",
+  "maximum_declared_session_span": 200,
+  "worker_seconds": 30,
+  "maximum_output_bytes": 8388608,
+  "maximum_input_bytes": 8388608,
+  "qualification": "Known hard risk failure retained, otherwise G4 INCONCLUSIVE; no PASS, assumptions or independent validity granted",
+  "network_calls": 0,
+  "new_fit_calls": 0,
+  "sealed_reads": 0
+}

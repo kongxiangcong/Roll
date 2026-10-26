@@ -1,0 +1,21 @@
+{
+  "status": "APPROVED_ONCE",
+  "instrument": "SSE:600362",
+  "purpose": "one separate balance/cash-flow production-chain acceptance, old income observations copied byte-for-byte without network",
+  "data_directory": "D:/dsh-proj/Roll/.scratch/r10real",
+  "income_profile": "D:/dsh-proj/Roll/.scratch/r09real",
+  "max_calls": 8,
+  "total_timeout_seconds": 18,
+  "max_bytes": 8388608,
+  "retries": 0,
+  "redirects": 0,
+  "endpoints": [
+    "Index",
+    "zcfzbDateAjaxNew",
+    "zcfzbAjaxNew",
+    "xjllbDateAjaxNew",
+    "xjllbAjaxNew"
+  ],
+  "close_after": "success or any failure; no automatic retry",
+  "user_approval": "允许这一次三表验收（推荐）"
+}

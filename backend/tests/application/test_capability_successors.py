@@ -1,12 +1,13 @@
 from fastapi.testclient import TestClient
 from roll.app import create_app
 from capability_method_app import save_package
-from test_actions import action_package, prepare
+from test_actions import prepare
+from test_capability_monitoring import monitored_package
 
 
 def test_revoked_record_stays_closed_when_current_checks_admit_an_explicit_successor(tmp_path, monkeypatch):
     monkeypatch.setenv('ROLL_ENV', 'test')
-    package = action_package()
+    package = monitored_package()
     file = save_package(tmp_path / 'qualification.json', package)
     with TestClient(create_app(tmp_path / 'data', capability_method_file=file)) as client:
         prepare(client, package)

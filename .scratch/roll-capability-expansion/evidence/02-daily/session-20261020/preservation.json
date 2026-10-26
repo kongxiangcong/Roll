@@ -1,0 +1,35 @@
+{
+  "fixed_commit": "dd505baea514dcfaa2308e1cca3255a60c9adc3e",
+  "branch": "codex/roll-capability-expansion",
+  "checks": {
+    "backend/src/roll/research/models.py": true,
+    "backend/src/roll/research/execution.py": true,
+    "backend/src/roll/research/reconstruction.py": true,
+    "backend/src/roll/research/datasets.py": true,
+    "backend/src/roll/research/design.py": true,
+    "backend/src/roll/research/historical_costs.py": true,
+    "backend/src/roll/research/corporate_actions.py": true,
+    "backend/src/roll/research/registry.py": true,
+    "backend/src/roll/research/training_preflight.py": true,
+    "backend/src/roll/market/rules.py": true,
+    "backend/src/roll/research/reference/reconstruction/sources.json": true,
+    "backend/src/roll/research/reference/cash-rights/sources.json": true,
+    "reviews_inherited_bytes_preserved": true
+  },
+  "remaining_tracked_dirty": [
+    ".scratch/roll-capability-expansion/evidence/03-status/mobile.png",
+    ".scratch/roll-capability-expansion/evidence/04-actions/mobile.png",
+    ".scratch/roll-capability-expansion/evidence/14-news/browser-results.json",
+    ".scratch/roll-capability-expansion/evidence/14-news/mobile.png",
+    ".scratch/roll-p0/execution-status.md",
+    ".scratch/roll-p0/issues/30-forward-archive-deadline.md",
+    ".scratch/roll-p0/issues/31-engineering-delivery.md",
+    ".scratch/roll-p0/issues/32-first-real-forward-archive.md",
+    "README.md",
+    "backend/src/roll/market/collection_sources.py",
+    "backend/src/roll/runtime/reviews.py",
+    "scripts/collect_prospective.py"
+  ],
+  "index_empty": true,
+  "inherited_untracked_not_removed": true
+}

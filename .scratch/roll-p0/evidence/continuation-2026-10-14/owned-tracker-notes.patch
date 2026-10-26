@@ -1,0 +1,66 @@
+diff --git a/.scratch/roll-p0/execution-status.md b/.scratch/roll-p0/execution-status.md
+index 44abd3f..bdd58ab 100644
+--- a/.scratch/roll-p0/execution-status.md
++++ b/.scratch/roll-p0/execution-status.md
+@@ -14,6 +14,8 @@ implement-spec 采用票级分支/工作树实现、集成分支合并及双轴
+ 
+ ## 当前前沿
+ 
++2026-10-14继续工程：已实现后继研究政策/独立冻结/连续METHOD及批次迁移、源绑定券商费用与设置回执重试、公司行动协议窗口实际消费。独立API固定阶段19/6/3通过，Chrome及最终构建通过，审阅三项P2已修复闭合。旧v1接受保留；20新增v2及25/27/30/31仍有明确协议/验证/生产派发/有效期、LOSS与完整来源责任，真实资格/起点未升级。原未提交修改保留。见[本轮验收](evidence/continuation-2026-10-14/acceptance.md)。
++
+ 2026-10-12最终清理：10个精确实施工作树已清理，10个接受分支保留；完整运行材料、Root依赖/15保护/3许可工件/原19字节核验一致，原42项非本票untracked入口未改。3802项新增遗漏闭合（3687公开双端保存、113测试私有元数据排除、2来源UNKNOWN私有同卷rename保留且不读/hash/copy）；业务/来源进程停止0（先前自有只读预检中止2）、SQL连接0、实际provider/外发/新业务验收0。原失败诊断保留。见[最终清理收据](evidence/continuation-2026-10-11/final-cleanup/acceptance.md)。各票Completion和真实条件仍按下列当前账本，未宣称全规格PASS。
+ 
+ 2026-10-11最终工程对账：四项P2及prepare并发残差已独立修复接受，29工程complete；31干净锁定安装、当前五入口/无交易与按需休市复盘、两项当前15检索预算、三进程/备份恢复及三个P95已有独立有限收据。P95分别221.6225ms、1079.4350ms、0.5617275s，记录环境下均通过；本地评估为1个METHOD冻结scope＋29拒绝＋5背景，非完整真实资格。239条均已手工对账，没有新239行为全跑或全规格PASS。25缺冻结政策及生产费用/有效期输入、27正向LOSS规则、30完整来源合同仍partial，31据先决条件保持partial；28站内/配置/内部链完成，实际外发0待用户配置。32—34真实前向起点/自然终点/资格未成立，FITTED_UNVALIDATED/NOT_GRANTED保持。95dd已批准包真实Codex技术审阅仅一次，内部双轴审阅不新增ReviewRecord；DeepSeek后续排除。
+diff --git a/.scratch/roll-p0/issues/20-policy-continuous-shadow.md b/.scratch/roll-p0/issues/20-policy-continuous-shadow.md
+index ee7cdf0..f0f5e97 100644
+--- a/.scratch/roll-p0/issues/20-policy-continuous-shadow.md
++++ b/.scratch/roll-p0/issues/20-policy-continuous-shadow.md
+@@ -6,7 +6,7 @@
+ 
+ **Status:** ready-for-agent
+ 
+-**Completion:** complete
++**Completion:** partial
+ 
+ **Primary acceptance:** AT-39、AT-62、AT-63、AT-74。
+ 
+@@ -37,3 +37,6 @@
+ 2026-10-11 独立合并验收：修正合入 `b321f40a16bcf7a9ad3d392b7088508f9cce6edb` 后，另建隔离METHOD运行目录，公开API确认非空基线多日持仓守恒、重叠拒绝/成熟诊断、实际账户更新后影子不变、四命名空间分列、重启重放及两类归档损坏拒绝全部通过。12个19模型指纹依赖源码SHA256与长度不变；原版/修正版浏览器运行资料分别保全，各312文件零差异。`Completion: complete` 仅表示本票工程交付，不表示真实统计PASS、前向验证或正式资格。见[独立合并验收](../evidence/continuation-2026-10-11/merge20.md)。
+ 
+ 2026-10-11 最终内部规格审阅边界：本票已接受的冻结 BUY/REFUSE 研究政策、连续影子及四命名空间工程结果保持。25 所需 ADD/HOLD/判断型 WAIT、反向/冷却和版本化持仓迁移仍无已登记冻结政策，不能从本票 complete 推导其实现或真实授权。政策扩展须先有明确版本化契约及验证，当前不创造金融规则；25 整票回 partial，31 保留该先决缺口。见[最终双轴审阅](../evidence/continuation-2026-10-11/final-review/review.md)第5项。
++
++
++2026-10-14 本轮继续工程独立接受：新增后继研究政策、不可变迁移及原持仓/ADD批次各自期限，独立政策/模拟冻结和连续 METHOD 影子。迁移后续数量、损坏帧、UNKNOWN/错过交易日、OPEN暴露及两项期限P2均完成公共入口验证和审阅闭合。既有v1接受证据保留；新增v2仍缺完整经济/统计协议、对应验证器和合格后生产派发，不能把 policy_and_simulation_frozen 解释为完整实验。Completion据扩展责任改partial，UNVALIDATED/NOT_GRANTED，旧实际模型/预算不变。见[本轮独立验收](../evidence/continuation-2026-10-14/acceptance.md)。
+diff --git a/.scratch/roll-p0/issues/25-current-actions.md b/.scratch/roll-p0/issues/25-current-actions.md
+index adbff60..a5f8fb1 100644
+--- a/.scratch/roll-p0/issues/25-current-actions.md
++++ b/.scratch/roll-p0/issues/25-current-actions.md
+@@ -60,3 +60,6 @@
+ 2026-10-11 最终双轴审阅修复（等待独立复验）：修正 host 当前展示真值，已接受 METHOD/action 发布仍保持严格 source binding；缺冻结风险费用在29报告保留 None/UNKNOWN。四项内部工程修复不解决本票既存政策/生产费用与有效期输入 partial，不补金融政策或改变冻结 producer。见 [本轮回执](../evidence/final-review-fix/acceptance.md)。
+ 
+ 2026-10-11四项P2已独立接受并合入67afeadc、收据076e67d5；能力投影/风险报告/不可变回执/折叠选择修复不关闭本票未登记政策及生产费用/有效期责任，Completion仍partial。[独立回执](../evidence/continuation-2026-10-11/final-singlefix-independent/acceptance.md)。
++
++
++2026-10-14 本轮继续工程独立接受：券商费用原文、版本/账户/资金/期限、公共估算与ACTUAL捕获/发布/当前复核已接通；设置默认折叠、确认丢响应后原回执重试及历史/手机布局通过。后继研究ADD/HOLD/WAIT/EXIT、反向冷却、显式批次迁移及连续METHOD已交付并修复独立P2。没有新正式资格。生产有效期/用途时效政策和v2完整验证/生产派发仍缺，Completion保持partial，不能用费用有效区间替代动作有效期。见[本轮独立验收](../evidence/continuation-2026-10-14/acceptance.md)。
+diff --git a/.scratch/roll-p0/issues/30-forward-archive-deadline.md b/.scratch/roll-p0/issues/30-forward-archive-deadline.md
+index 665fc61..7e72e3e 100644
+--- a/.scratch/roll-p0/issues/30-forward-archive-deadline.md
++++ b/.scratch/roll-p0/issues/30-forward-archive-deadline.md
+@@ -68,3 +68,6 @@
+ 2026-10-11 第八价格切片独立接受：固定3d541869 no-ff合4cc5b21（已含accepted25），4独立METHOD publicAPI/SQLite cases passed50.37秒；首轮longpath4failed2.42秒为owned harness初始化诊断保留，短目录重跑无产品修改。合后固定409B/Decimal/前驱+assessment IDs/旧新包/重启1passed9.08秒；28通知路由合同共存，时间链缺少必需IDs422。保护15/旧cae/原19字节checksum、固定HTML/JS与新price root rawGit保持，1762files185392709B双端SHA/length0diff且保存SQLite未open。自身443files58501210B另加root56files8634460B仓库外保全，CIM exact own0；新HTTP/model/fit/forecast/SEALED/账户资金/资格/真实前向/通知0。第一项未勾选、Completion partial；行动SQL next-slice仅未执行提案，未带第九未跟踪准备文件、未push/cleanup。见[第八独立收据](../evidence/continuation-2026-10-11/ticket30-price-independent/acceptance.md)。
+ 
+ 2026-10-11 第九有限行动source/consumer独立接受：stable14b008267 no-ff合5073f486，3独立offline公开API/真实SQLite cases passed36.62秒，无本轮harness失败；只从登记37文件复制新的owned实际profile才连接，原actual及保存DB未连接，禁止transport0calls，重复/重启复用原receipt及已关闭预算。FH明确5/6缺1、SG0负覆盖false、日期范围UNKNOWN、0.6单位/权威ID版本/履行UNKNOWN；固定空/非空ACTION_SUCCESSOR同cutoff/重启/旧新包0网络重放，clientflag422、未知/重复ID及四依赖损坏409，旧包不改。15保护/原19 checksum、旧cae8/price11a、冻结collector635054和newc8ea/rawGit/mapping保持；owner1512files162091056B双端0diff，自身368files49390035B仓库外逐件保全/exactCIM0。实际预算总2/CLOSED不再HTTP，新增模型/fit/forecast/SEALED/资金/资格/实际前向/通知0。第一项未勾选、Completion partial；未延续分页/新source，第九后停止扩展，具体内部及权威来源缺口保留。仅receipt+本comment scopedcommit，不改root status/trace/README、不push/cleanup。见[第九独立收据](../evidence/continuation-2026-10-11/ticket30-action-independent/acceptance.md)。
++
++
++2026-10-14 本轮继续工程独立接受：新增不可变ACTION_WINDOW_SUCCESSOR及公共协议窗口消费者，显式绑定保存行动包/assessment/source IDs/义务审计，把候选和报告缺失行数接到原日线行及前向只读路径。原采集/解析/参考件指纹、旧包和重放保持，零新外部取数，不推定公告身份/支付/完整状态或DAILY/session。独立合后验证含固定IDs/损坏/重启；完整来源依据仍不足，Completion保持partial，真实前向起点不成立。见[本轮独立验收](../evidence/continuation-2026-10-14/acceptance.md)。
+diff --git a/.scratch/roll-p0/issues/31-engineering-delivery.md b/.scratch/roll-p0/issues/31-engineering-delivery.md
+index 52e133b..edf26b1 100644
+--- a/.scratch/roll-p0/issues/31-engineering-delivery.md
++++ b/.scratch/roll-p0/issues/31-engineering-delivery.md
+@@ -52,3 +52,6 @@
+ 
+ 
+ 2026-10-12 root最终精确清理接受：10实施工作树移除、接受分支保留，Root依赖/保护/原19与全保存运行件字节一致，2来源未确认私有文件仅同卷rename保留，未读取/hash/copy其内容；原未覆盖及定位失败完整留存。[清理收据](../evidence/continuation-2026-10-11/final-cleanup/acceptance.md)。无新增业务测试、provider、实际发送、SQLite连接、真实前向或资格。31 Completion保持partial；239账本及25/27/28/30、32—34缺口不因清理升级。仅本地记录提交，不推送。
++
++
++2026-10-14 本轮继续工程独立接受：本轮实际实现政策/连续影子、费用与设置、公司行动窗口消费，按票级工作树合入并执行独立API19/6/3三个固定阶段、真实Chrome与最终TypeScript/Vite构建；两轴审阅提出的三项迁移/批次P2及输入完整性缺口已闭合。不是只做启动记录，也不宣称全239条/90AT或整套P0完成。20/25新政策验证/派发/有效期、27LOSS、30完整来源、28真实外发及32—34仍按责任保留。原启动切片和未提交内容保留；仅暂存本轮自己的记录。见[本轮独立验收](../evidence/continuation-2026-10-14/acceptance.md)。

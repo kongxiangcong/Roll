@@ -1,0 +1,18 @@
+{
+  "attempt_id": "SENTIMENT-CHECKPOINT-DISCOVERY-02",
+  "date": "2026-10-18 Asia/Shanghai",
+  "purpose": "Verify currently published FinBERT2 Chinese sentiment checkpoints before any weight download; preserve earlier closed attempts.",
+  "limits": {"maximum_requests": 8, "maximum_seconds": 75, "maximum_bytes": 4194304, "retries": 0, "redirects": 0},
+  "requests": [
+    "https://huggingface.co/api/models?search=FinBERT2&limit=100&full=true",
+    "https://huggingface.co/api/models?author=valuesimplex-ai-lab&limit=100&full=true",
+    "https://api.github.com/repos/valuesimplex/FinBERT/git/trees/main?recursive=1",
+    "https://huggingface.co/valuesimplex-ai-lab/FinBERT2-base/raw/main/config.json",
+    "https://huggingface.co/valuesimplex-ai-lab/FinBERT2-large/raw/main/config.json",
+    "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/Fin-labeler/runclassify.sh",
+    "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/Fin-labeler/sequence_inference.py",
+    "https://raw.githubusercontent.com/valuesimplex/FinBERT/main/README.md"
+  ],
+  "environment": "Existing backend Python; public metadata only, no credentials or external inference.",
+  "decision": "A base model or random classifier head is not a sentiment checkpoint. Download weights only under a separate fixed plan once Chinese sentiment task, labels, license and provenance are verified. No training or substitute acceptance is inferred."
+}

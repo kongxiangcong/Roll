@@ -1,0 +1,17 @@
+{
+  "attempt_id": "SENTIMENT-CORPUS-02",
+  "status": "PLANNED_ONCE",
+  "created_at": "2026-10-17T18:03:19.633Z",
+  "purpose": "Collect up to 150 recent headlines mentioning the company name 江西铜业 from the same public Eastmoney search upstream, to complement the code-keyword corpus for a limited sentiment evaluation.",
+  "upstream": "search-api-web.eastmoney.com/search/jsonp",
+  "keyword": "江西铜业",
+  "limits": {
+    "maximum_requests": 3,
+    "maximum_seconds": 18,
+    "maximum_decoded_bytes": 8388608,
+    "retries": 0,
+    "redirects": 0
+  },
+  "scope": "SSE:600362 only; headline and list summary; no bodies",
+  "policy": "Same upstream is not independent; only a limited, non-independent evaluation."
+}

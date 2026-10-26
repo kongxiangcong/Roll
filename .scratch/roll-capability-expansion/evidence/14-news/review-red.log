@@ -1,0 +1,94 @@
+.FFF                                                                     [100%]
+================================== FAILURES ===================================
+______ test_news_body_timeout_empty_corruption_and_cancel_keep_originals ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r14reviewred/test_news_body_timeout_empty_c0')
+
+    def test_news_body_timeout_empty_corruption_and_cancel_keep_originals(tmp_path):
+        import asyncio,threading,time
+        from concurrent.futures import ThreadPoolExecutor
+        with TestClient(create_app(tmp_path)) as client:
+            version=client.get('/api/market/list').json()['version'];client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':version})
+            policy=next(p for p in client.get('/api/research/collection-sources').json() if p['id']=='akshare-news-em');client.post('/api/research/collection-sources/akshare-news-em/policy',json={'enabled':True,'expected_revision':policy['revision'],'basis':'Explicit METHOD test scope'})
+            async def timeout(instrument,output):
+                manifest=news_fixture(output);(output/'02.raw').unlink();manifest['captures'][1].update(original_complete=False,status_code=None)
+                manifest['items'][0].update(body_status='BODY_FETCH_FAILED',text=None,errors=['TimeoutError']);return manifest
+            client.app.state.news.worker=timeout;base='/api/market/news/SSE:600362';command={'idempotency_key':'body-timeout','basis':'METHOD body timeout must preserve headlines'}
+            result=client.post(base+'/collect',json=command).json();assert result['status']=='PARTIAL' and len(result['facts'])==2
+            assert result['facts'][0]['body_text'] is None and result['facts'][0]['body_sha256'] is None and len(result['originals'])==1
+            async def empty(instrument,output):
+                manifest=news_fixture(output);raw=b'{"result":{"cmsArticleWebOld":[]}}';(output/'01.raw').write_bytes(raw)
+                manifest['captures']=manifest['captures'][:1];manifest['captures'][0]['sha256']=hashlib.sha256(raw).hexdigest();manifest['items']=[];return manifest
+            client.app.state.news.worker=empty;result=client.post(base+'/collect',json={**command,'idempotency_key':'empty'}).json();assert result['status']=='EMPTY' and result['facts']==[]
+            async def corrupt(instrument,output):
+                manifest=news_fixture(output);(output/'02.raw').write_bytes(b'corrupt');return manifest
+            client.app.state.news.worker=corrupt;result=client.post(base+'/collect',json={**command,'idempotency_key':'corrupt'}).json()
+>           assert result['status']=='PARTIAL' and len(result['facts'])==2
+E           AssertionError: assert ('FAILED' == 'PARTIAL'
+E             
+E             - PARTIAL
+E             + FAILED)
+
+backend\tests\application\test_news_ingestion.py:71: AssertionError
+_ test_actual_sdk_raw_first_body_allowlist_redirect_and_no_cookie_forwarding __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r14reviewred/test_actual_sdk_raw_first_body0')
+
+    def test_actual_sdk_raw_first_body_allowlist_redirect_and_no_cookie_forwarding(tmp_path):
+        rows=[{'code':code,'title':'METHOD 江西铜业'+str(i),'content':'METHOD 摘要','date':'2026-10-14 12:00:00','mediaName':'METHOD媒体'} for i,code in enumerate(['20261014123456','20261014123457','127.0.0.1'])]
+        raw='jQuery35101792940631092459_1764599530165('+json.dumps({'result':{'cmsArticleWebOld':rows}},ensure_ascii=False)+')'
+        entries=[{'role':'LIST','url':'https://search-api-web.eastmoney.com/search/jsonp','body':raw},
+                 {'role':'BODY','url':'https://finance.eastmoney.com/a/20261014123456.html','body':'<html><article>METHOD full body.</article></html>'},
+                 {'role':'BODY','url':'https://finance.eastmoney.com/a/20261014123457.html','status_code':302,'body':'METHOD redirect to private address must not be followed'}]
+        fixture=tmp_path/'fixture.json';fixture.write_text(json.dumps(entries),encoding='utf-8');output=tmp_path/'capture'
+        env={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','TEMP','TMP'}};env['ROLL_ENV']='test'
+        result=subprocess.run([str(ROOT/'.scratch/rce-runtime/akshare/Scripts/python.exe'),'-B',str(ROOT/'backend/src/roll/market/akshare_news_process.py')],input=json.dumps({'instrument':'SSE:600362','output_directory':str(output),'fixture':str(fixture)}).encode(),env=env,capture_output=True,timeout=25)
+        assert result.returncode==0,result.stderr.decode(errors='replace')
+        manifest=json.loads((output/'capture.json').read_text(encoding='utf-8'))
+        assert manifest['status']=='CAPTURED',manifest
+        assert manifest['transport_kind']=='METHOD_FIXTURE_ZERO_HTTP' and not manifest['sdk_hardcoded_cookie_forwarded']
+>       assert all(c.get('request_cookie_sent') is False for c in manifest['captures'])
+E       assert False
+E        +  where False = all(<generator object test_actual_sdk_raw_first_body_allowlist_redirect_and_no_cookie_forwarding.<locals>.<genexpr> at 0x000002386834F780>)
+
+backend\tests\recovery\test_news_sdk_process.py:21: AssertionError
+_ test_news_dead_owner_restores_received_entities_and_headlines_without_retry _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r14reviewred/test_news_dead_owner_restores_0')
+
+    def test_news_dead_owner_restores_received_entities_and_headlines_without_retry(tmp_path):
+        from fastapi.testclient import TestClient
+        from roll.app import create_app
+        profile=tmp_path/'profile'
+        script='''
+    import json,os
+    from pathlib import Path
+    from fastapi.testclient import TestClient
+    from roll.app import create_app
+    from test_news_ingestion import news_fixture
+    with TestClient(create_app(Path(os.environ['METHOD_PROFILE']))) as c:
+     v=c.get('/api/market/list').json()['version'];c.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':v})
+     p=next(p for p in c.get('/api/research/collection-sources').json() if p['id']=='akshare-news-em');c.post('/api/research/collection-sources/akshare-news-em/policy',json={'enabled':True,'expected_revision':p['revision'],'basis':'METHOD dead-owner proof'})
+     async def die(instrument,output):
+      m=news_fixture(output);(output/'capture.json').write_text(json.dumps(m),encoding='utf-8');os._exit(7)
+     c.app.state.news.worker=die
+     c.post('/api/market/news/SSE:600362/collect',json={'idempotency_key':'interrupted','basis':'METHOD interrupted capture, zero network'})
+    '''
+        env=os.environ.copy();env.update(METHOD_PROFILE=str(profile),PYTHONPATH=os.pathsep.join([str(ROOT/'backend/src'),str(ROOT/'backend/tests/application')]))
+        result=subprocess.run([str(ROOT/'backend/.venv/Scripts/python.exe'),'-X','utf8','-B','-c',script],env=env,capture_output=True,timeout=30)
+        assert result.returncode==7,result.stderr.decode(errors='replace')
+        with TestClient(create_app(profile)) as c:
+            listing=c.get('/api/market/news/SSE:600362').json();assert not listing['active_run_ids']
+>           run=listing['runs'][0];assert run['status']=='INTERRUPTED' and len(run['originals'])==2
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: assert ('INTERRUPTED' == 'INTERRUPTED'
+E             
+E               INTERRUPTED and 0 == 2)
+E            +  where 0 = len([])
+
+backend\tests\recovery\test_news_sdk_process.py:53: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_news_ingestion.py::test_news_body_timeout_empty_corruption_and_cancel_keep_originals
+FAILED backend\tests\recovery\test_news_sdk_process.py::test_actual_sdk_raw_first_body_allowlist_redirect_and_no_cookie_forwarding
+FAILED backend\tests\recovery\test_news_sdk_process.py::test_news_dead_owner_restores_received_entities_and_headlines_without_retry
+3 failed, 1 passed in 25.29s

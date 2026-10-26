@@ -175,6 +175,8 @@ class Reviews:
             if self.monitoring:
                 try:self.monitoring.check_post_close(self.clock())
                 except HTTPException as error:self.worker_error={'code':'CAPABILITY_MONITORING_RETRY_REQUIRED','message':str(error.detail),'occurred_at':now()}
+            if getattr(self, 'observation_updates', None) and (not self.capabilities or self.capabilities.lifecycle()['observations_allowed']):
+                self.observation_updates.work(self.clock(), self.stop)
             if self.forward and (not self.capabilities or self.capabilities.lifecycle()['observations_allowed']):self.forward.work()
             self.stop.wait(.05)
 

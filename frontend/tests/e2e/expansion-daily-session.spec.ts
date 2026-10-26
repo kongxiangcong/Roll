@@ -1,0 +1,25 @@
+import {test,expect} from '@playwright/test';
+test('actual two-day session components retain residuals and failed block query without promoting full daily',async({page,request})=>{
+ const before=await (await request.get('/api/account')).json();const posts:string[]=[];
+ page.on('request',r=>{if(r.method()==='POST')posts.push(r.url());});
+ await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+ await page.getByText('来源契约与新补充原件',{exact:true}).click();await page.getByRole('button',{name:'查询来源契约补充',exact:true}).click();
+ const choices=await (await request.get('/api/market/source-authority/daily-options')).json();expect(choices).toHaveLength(1);
+ await page.getByLabel('契约核验日线版本',{exact:true}).selectOption(choices[0].snapshot_id);
+ await page.getByRole('button',{name:'核对会话量额差异',exact:true}).click();const region=page.getByRole('region',{name:'日线会话量额对照'});
+ await expect(region.getByText(/实际保存来源观察/)).toBeVisible();
+ await expect(region.getByText(/同日盘后分量 3800股 \/ 148542.000元/)).toBeVisible();
+ await expect(region.getByText(/统计显示减分量合计：22.0股 \/ -10.3800元/)).toBeVisible();
+ await expect(region.getByText(/同日盘后分量 21800股 \/ 829926.000元/)).toBeVisible();
+ await expect(region.getByText(/来源失败，不能当零笔/)).toBeVisible();
+ await expect(region.getByText(/不生成完整日K或授予评分用途/)).toBeVisible();
+ await region.getByText('原件与契约',{exact:true}).click();const originals=region.getByRole('link',{name:'保存原件',exact:true});expect(await originals.count()).toBe(16);
+ const raw=await request.get((await originals.nth(4).getAttribute('href'))!);expect(raw.ok()).toBeTruthy();expect((await raw.json()).date).toBe(20261020);
+ await region.getByText('原件与契约',{exact:true}).click();
+ await page.getByLabel('补充依据系统已知截至（上海时间）',{exact:true}).fill('2026-10-19T23:00');await page.getByRole('button',{name:'查询来源契约补充',exact:true}).click();
+ await expect(region).toHaveCount(0);await expect(page.getByRole('button',{name:'核对会话量额差异',exact:true})).toBeDisabled();
+ await page.getByLabel('补充依据系统已知截至（上海时间）',{exact:true}).fill('');await page.getByRole('button',{name:'查询来源契约补充',exact:true}).click();await expect(region).toHaveCount(1);
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/02-daily/session-20261020/mobile.png',fullPage:true});
+ expect(posts).toHaveLength(1);expect(posts[0]).toContain('/market/source-authority');expect(await (await request.get('/api/account')).json()).toEqual(before);
+});

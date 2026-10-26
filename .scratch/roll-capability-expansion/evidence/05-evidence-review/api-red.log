@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_review_binds_saved_components_and_rejects_mixed_prefixes ________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05vr/test_review_binds_saved_compon0')
+
+    def test_review_binds_saved_components_and_rejects_mixed_prefixes(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path);proposal=register(client,previous).json();frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Saved component review'}).json()
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            protocol=client.post(base+'/complete-protocol',json={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'parameters','basis':'Before METHOD components'}).json()
+            for day in range(1,4):assert client.post(base+'/shadow/advance',json=frame(day)).status_code==201
+            stress=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':protocol['complete_protocol_fingerprint'],'expected_revision':3,'idempotency_key':'source','basis':'Saved source'}).json()
+            component_base='/api/research/successor-cost-stresses/'+stress['stress_id']
+            ids={};records={}
+            for name,path,key in [('segments','time-segments','segmentation_id'),('cash','cash-control','control_id'),('controls','registered-controls','comparison_id'),('entry','entry-stress','diagnostic_id')]:
+                response=client.post(component_base+'/'+path,json={'idempotency_key':name,'basis':'Same source immutable METHOD component'})
+                assert response.status_code==201,response.text
+                records[name]=response.json();ids[name+'_id']=response.json()[key]
+            route=component_base+'/evidence-review';command={**ids,'idempotency_key':'review','basis':'Keep source identity, failures and missing conditions'}
+>           response=client.post(route,json=command);assert response.status_code==201,response.text
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_successor_evidence_review.py:23: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_evidence_review.py::test_review_binds_saved_components_and_rejects_mixed_prefixes
+1 failed in 24.48s

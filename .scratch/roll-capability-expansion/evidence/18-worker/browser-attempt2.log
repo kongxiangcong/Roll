@@ -1,0 +1,43 @@
+[WebServer] INFO:     Started server process [21480]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:18228 (Press CTRL+C to quit)
+[WebServer] (node:45240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:4676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-observation-worker.spec.ts:2:1 › real online receipts, source pause, queued cancellation and station-only settings (7.2s)
+
+
+  1) tests\e2e\expansion-observation-worker.spec.ts:2:1 › real online receipts, source pause, queued cancellation and station-only settings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)[22m
+
+
+      20 |  await expect(panel.getByText(/FINANCIAL · QUEUED/)).toBeVisible();
+      21 |  await panel.getByRole('button',{name:/取消观察任务/}).click();
+    > 22 |  await expect(panel.getByText(/FINANCIAL · CANCELLED/)).toBeVisible();
+         |                                                         ^
+      23 |  await panel.getByText('查看原worker与离线覆盖回执',{exact:true}).click();
+      24 |  await expect(panel.getByText(/NORMAL_OFFLINE_NO_COVERAGE_PROMISED/)).toBeVisible();
+      25 |  await panel.locator('summary').filter({hasText:'NEWS · 实际保存来源观察'}).click();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-observation-worker.spec.ts:22:57
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\18-worker\browser-results\expansion-observation-work-16687-n-and-station-only-settings\error-context.md
+
+  1 failed
+    tests\e2e\expansion-observation-worker.spec.ts:2:1 › real online receipts, source pause, queued cancellation and station-only settings 

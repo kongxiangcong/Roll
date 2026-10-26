@@ -1,0 +1,28 @@
+{
+  "attempt_id": "TRAIN03-CONTRACT-SINA",
+  "status": "FAILED_CLOSED",
+  "started_at": "2026-10-19T12:58:14.550396+00:00",
+  "requests": [
+    {
+      "url": "https://search.sina.com.cn/?q=%E6%B1%9F%E8%A5%BF%E9%93%9C%E4%B8%9A&c=news&range=title&num=50&ie=utf-8",
+      "status_code": 301,
+      "file": "sina-search.html",
+      "bytes": 93,
+      "sha256": "b68cc2f0532228344c43297a5b4f3e23f073be0a3093bd4284616efcb4429d40"
+    }
+  ],
+  "bytes": 93,
+  "transfer_seconds": 1.8951582000008784,
+  "prior_calls": 13,
+  "prior_bytes": 806772,
+  "prior_transfer_seconds": 13.626503900042735,
+  "retries": 0,
+  "redirects": 0,
+  "error_type": "RuntimeError",
+  "error_code": "HTTP_301",
+  "cumulative": {
+    "requests": 14,
+    "bytes": 806865,
+    "transfer_seconds": 15.521662100043613
+  }
+}

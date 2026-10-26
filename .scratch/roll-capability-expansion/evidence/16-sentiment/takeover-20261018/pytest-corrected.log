@@ -1,0 +1,219 @@
+F.....FFFF                                                               [100%]
+================================== FAILURES ===================================
+_____________ test_limited_sentiment_persists_rejects_and_replays _____________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-corrected-data/test_limited_sentiment_persist0')
+
+    def test_limited_sentiment_persists_rejects_and_replays(tmp_path):
+>       with TestClient(create_app(tmp_path)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_sentiment.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1776: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:120: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-correc...t0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.6e9f4323-32b4-476d-a690-1d6e4ac23eb0.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\roll-capability-expansion\\evidence\\16-sentiment\\takeover-20261018\\pytest-corrected-data\\test_limited_sentiment_persist0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.6e9f4323-32b4-476d-a690-1d6e4ac23eb0.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+____________ test_news_events_reprints_revisions_alias_and_restart ____________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-corrected-data/test_news_events_reprints_revi0')
+
+    def test_news_events_reprints_revisions_alias_and_restart(tmp_path):
+        first=[('20261014123451','江西铜业签署重大合同','公司与控股股东签署合同，涉及金额100亿元。'),
+               ('20261014123452','江西铜业签署重大合同','公司与控股股东签署合同，涉及金额100亿元。'),
+               ('20261014123454','有色金属行业资金流出榜：中钨高新等10股净流出资金超亿元','600362 中钨高新 000657'),
+               ('20261014123455','PCB概念上涨，7股主力资金净流入超亿元','600362')]
+        second=[('20261014123451','江西铜业签署重大合同','公司与控股股东签署合同，涉及金额120亿元。')]
+>       with TestClient(create_app(tmp_path)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_news_events.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1776: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:120: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-correc...i0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.7d87ed6c-886f-4bfb-b05f-71aca6e7eaf3.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\roll-capability-expansion\\evidence\\16-sentiment\\takeover-20261018\\pytest-corrected-data\\test_news_events_reprints_revi0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.7d87ed6c-886f-4bfb-b05f-71aca6e7eaf3.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+_______ test_alias_conflict_keeps_uncertain_and_does_not_pick_a_company _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-corrected-data/test_alias_conflict_keeps_unce0')
+
+    def test_alias_conflict_keeps_uncertain_and_does_not_pick_a_company(tmp_path):
+        rows=[('20261014123461','江西铜业签署重大合同','公司公告签署重大合同。')]
+>       with TestClient(create_app(tmp_path)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_news_events.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1776: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:120: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-correc...e0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.83813f36-33df-4ca1-b627-36a22e7e5286.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\roll-capability-expansion\\evidence\\16-sentiment\\takeover-20261018\\pytest-corrected-data\\test_alias_conflict_keeps_unce0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.83813f36-33df-4ca1-b627-36a22e7e5286.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+______ test_news_original_full_text_headline_gap_idempotency_and_restart ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-corrected-data/test_news_original_full_text_h0')
+
+    def test_news_original_full_text_headline_gap_idempotency_and_restart(tmp_path):
+        calls=[]
+        async def supplier(instrument,output):calls.append(instrument);return news_fixture(output)
+>       with TestClient(create_app(tmp_path)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_news_ingestion.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1776: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:120: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-correc...h0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.acf91309-0f36-4e7c-94c2-fd8ec7481403.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\roll-capability-expansion\\evidence\\16-sentiment\\takeover-20261018\\pytest-corrected-data\\test_news_original_full_text_h0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.acf91309-0f36-4e7c-94c2-fd8ec7481403.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+______ test_news_body_timeout_empty_corruption_and_cancel_keep_originals ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-corrected-data/test_news_body_timeout_empty_c0')
+
+    def test_news_body_timeout_empty_corruption_and_cancel_keep_originals(tmp_path):
+        import asyncio,threading,time
+        from concurrent.futures import ThreadPoolExecutor
+>       with TestClient(create_app(tmp_path)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^
+
+tests\application\test_news_ingestion.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\roll\app.py:1776: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\app.py:120: in _create_app
+    market = MarketDirectory(ledger)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+src\roll\market\directory.py:42: in __init__
+    self.rules = RuleCalendar(ledger)
+                 ^^^^^^^^^^^^^^^^^^^^
+src\roll\market\rules.py:96: in __init__
+    with temporary.open('xb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/16-sentiment/takeover-20261018/pytest-correc...c0/raw/7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.160b6696-1879-4b44-80a7-a02e2249cffe.tmp')
+mode = 'xb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\dsh-proj\\Roll\\.scratch\\roll-capability-expansion\\evidence\\16-sentiment\\takeover-20261018\\pytest-corrected-data\\test_news_body_timeout_empty_c0\\raw\\7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c.html.160b6696-1879-4b44-80a7-a02e2249cffe.tmp'
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/application/test_sentiment.py::test_limited_sentiment_persists_rejects_and_replays
+FAILED tests/application/test_news_events.py::test_news_events_reprints_revisions_alias_and_restart
+FAILED tests/application/test_news_events.py::test_alias_conflict_keeps_uncertain_and_does_not_pick_a_company
+FAILED tests/application/test_news_ingestion.py::test_news_original_full_text_headline_gap_idempotency_and_restart
+FAILED tests/application/test_news_ingestion.py::test_news_body_timeout_empty_corruption_and_cancel_keep_originals
+5 failed, 5 passed in 4.00s

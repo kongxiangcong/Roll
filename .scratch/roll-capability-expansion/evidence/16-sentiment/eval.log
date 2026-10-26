@@ -1,0 +1,63 @@
+W1018 02:07:22.846000 23428 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 201/201 [00:00<00:00, 19550.92it/s]
+{
+  "model": "IDEA-CCNL/Erlangshen-Roberta-110M-Sentiment",
+  "license": "apache-2.0",
+  "weights_sha256": "a1d1328c759c50726db6617c75abb5c260b12377bee7ecd003c8a201b526e38e",
+  "labels_total": 120,
+  "binary_labeled": 69,
+  "abstain": 11,
+  "metrics_all_binary": {
+    "recall": {
+      "POSITIVE": 1.0,
+      "NEGATIVE": 0.625
+    },
+    "precision": {
+      "POSITIVE": 0.8823529411764706,
+      "NEGATIVE": 1.0
+    },
+    "f1": {
+      "POSITIVE": 0.9375,
+      "NEGATIVE": 0.7692307692307693
+    },
+    "macro_f1": 0.8533653846153846
+  },
+  "metrics_all_usable": {
+    "recall": {
+      "POSITIVE": 1.0,
+      "NEGATIVE": 0.625
+    },
+    "precision": {
+      "POSITIVE": 0.5056179775280899,
+      "NEGATIVE": 0.5
+    },
+    "f1": {
+      "POSITIVE": 0.6716417910447761,
+      "NEGATIVE": 0.5555555555555556
+    },
+    "macro_f1": 0.6135986733001658
+  },
+  "confusion": {
+    "NEUTRAL->POSITIVE": 17,
+    "NEUTRAL->ABSTAIN_LOW_CONFIDENCE": 1,
+    "POSITIVE->POSITIVE": 45,
+    "IRRELEVANT->POSITIVE": 21,
+    "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 8,
+    "IRRELEVANT->NEGATIVE": 10,
+    "IRRELEVANT->ABSTAIN_LOW_CONFIDENCE": 2,
+    "NEGATIVE->POSITIVE": 6,
+    "NEGATIVE->NEGATIVE": 10
+  },
+  "latency_p50": 0.2063,
+  "latency_p95": 0.2634,
+  "frozen_thresholds": {
+    "macro_f1": 0.6,
+    "positive_recall": 0.55,
+    "negative_recall": 0.55,
+    "abstain_coverage": 0.35,
+    "p95_seconds": 3.0
+  },
+  "passed": true
+}

@@ -1,0 +1,113 @@
+Downloading layout model...                             model_downloader.py:175
+Fetching model docling-project/docling-layout-heron     hf_model_download.py:32
+(revision: main)...                                                            
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\httpx\_urlparse.py", line 409, in normalize_port
+    port_as_int = int(port)
+ValueError: invalid literal for int() with base 10: ':1]'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Scripts\docling-tools.exe\__main__.py", line 6, in <module>
+    sys.exit(app())
+             ~~~^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\main.py", line 1154, in __call__
+    raise e
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\main.py", line 1137, in __call__
+    return get_command(self)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\_click\core.py", line 807, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\core.py", line 1193, in main
+    return _main(
+        self,
+    ...<6 lines>...
+        **extra,
+    )
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\core.py", line 183, in _main
+    rv = self.invoke(ctx)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\core.py", line 1115, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\core.py", line 1115, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\_click\core.py", line 746, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\_click\core.py", line 489, in invoke
+    return callback(*args, **kwargs)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\typer\main.py", line 1515, in wrapper
+    return callback(**use_params)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\docling\cli\models.py", line 269, in download
+    output_dir = download_models(
+        output_dir=output_dir,
+    ...<27 lines>...
+        ],
+    )
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\docling\utils\model_downloader.py", line 184, in download_models
+    download_hf_model(
+    ~~~~~~~~~~~~~~~~~^
+        repo_id=repo_id,
+        ^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        progress=progress,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\docling\models\utils\hf_model_download.py", line 34, in download_hf_model
+    download_path = snapshot_download(
+        repo_id=repo_id,
+    ...<2 lines>...
+        revision=revision,
+    )
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\utils\_http.py", line 266, in _inner
+    return fn(*args, **kwargs)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\_snapshot_download.py", line 277, in snapshot_download
+    repo_info = api.repo_info(repo_id=repo_id, repo_type=repo_type, revision=revision)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\hf_api.py", line 3643, in repo_info
+    return method(
+        repo_id,
+    ...<4 lines>...
+        files_metadata=files_metadata,
+    )
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\hf_api.py", line 3322, in model_info
+    r = get_session().get(path, headers=headers, timeout=timeout, params=params)
+        ~~~~~~~~~~~^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\utils\_http.py", line 407, in get_session
+    _GLOBAL_CLIENT = _GLOBAL_CLIENT_FACTORY()
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\huggingface_hub\utils\_http.py", line 335, in default_client_factory
+    return httpx.Client(
+           ~~~~~~~~~~~~^
+        event_hooks={"request": [hf_request_event_hook]},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        follow_redirects=True,
+        ^^^^^^^^^^^^^^^^^^^^^^
+        timeout=None,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\httpx\_client.py", line 698, in __init__
+    URLPattern(key): None
+    ~~~~~~~~~~^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\httpx\_utils.py", line 172, in __init__
+    url = URL(pattern)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\httpx\_urls.py", line 117, in __init__
+    self._uri_reference = urlparse(url, **kwargs)
+                          ~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\httpx\_urlparse.py", line 321, in urlparse
+    parsed_port: int | None = normalize_port(port, scheme)
+                              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\docling\Lib\site-packages\httpx\_urlparse.py", line 411, in normalize_port
+    raise InvalidURL(f"Invalid port: {port!r}")
+httpx.InvalidURL: Invalid port: ':1]'

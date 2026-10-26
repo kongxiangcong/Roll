@@ -1,0 +1,18 @@
+{
+  "attempt_id": "SENTIMENT-CHECKPOINT-DISCOVERY-06",
+  "date": "2026-10-18 Asia/Shanghai",
+  "purpose": "Pin Chinese FinBERT alternative task and labels for the pending user scope decision; metadata only",
+  "limits": {
+    "maximum_requests": 2,
+    "maximum_seconds": 75,
+    "maximum_bytes": 4194304,
+    "retries": 0,
+    "redirects": 0
+  },
+  "requests": [
+    "https://huggingface.co/yiyanghkust/finbert-tone-chinese/raw/e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d/README.md",
+    "https://huggingface.co/yiyanghkust/finbert-tone-chinese/raw/e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d/config.json"
+  ],
+  "environment": "Host network via existing environment proxy; public metadata only; separate attempt after sandbox ProxyError, no changes to closed attempt 02.",
+  "decision": "A base model or random classifier head is not a sentiment checkpoint. Download weights only under a separate fixed plan once Chinese sentiment task, labels, license and provenance are verified. No training or substitute acceptance is inferred."
+}

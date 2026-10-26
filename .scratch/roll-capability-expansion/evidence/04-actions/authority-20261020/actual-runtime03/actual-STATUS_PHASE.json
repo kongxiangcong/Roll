@@ -1,0 +1,237 @@
+{
+  "assessment_id": "75fe603d-9205-4c97-a0f1-280af689575c",
+  "request": {
+    "kind": "STATUS_PHASE",
+    "snapshot_id": null,
+    "instrument": "SSE:600362",
+    "idempotency_key": "actual-authority-STATUS_PHASE"
+  },
+  "instrument": "SSE:600362",
+  "kind": "STATUS_PHASE",
+  "created_at": "2026-10-20T00:26:40.559459+00:00",
+  "reference_version": "source-authority-supplement-20261020-v1",
+  "reference_manifest_sha256": "6a81b945a9e782f7ff25cebc1faf905e0d88f72ee85cda2ac1b630445abb65e7",
+  "evidence_kind": "REAL_SAVED_SOURCE_OBSERVATION",
+  "details": {
+    "source_reported_date": "2026-10-19",
+    "source_reported_time": 162901,
+    "fp_phase_original": "D0      ",
+    "fp_phase_display": "闭市",
+    "source_current_for_host_date": false,
+    "complete_status_verified": false,
+    "negative_coverage_verified": false,
+    "gaps": [
+      "DISPLAY_FIRST_CHARACTER_ONLY_NOT_COMPLETE_STATUS",
+      "STATUS_EFFECTIVE_TIME_AND_NEGATIVE_COVERAGE_UNPROVEN"
+    ]
+  },
+  "references": [
+    {
+      "role": "bao_home",
+      "path": "bao_home.raw",
+      "sha256": "6a931ebea4ff858c46cf89e6c8f448b755cceab10071a35265b576ff09545884",
+      "bytes": 10167,
+      "url": "https://www.baostock.com/helpdocs/api/markdown/home.md",
+      "received_at": "2026-10-20T00:11:35.151409+00:00",
+      "method": "POST",
+      "status": 200,
+      "archive_sha256": "6a931ebea4ff858c46cf89e6c8f448b755cceab10071a35265b576ff09545884"
+    },
+    {
+      "role": "bao_daily",
+      "path": "bao_daily.raw",
+      "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac",
+      "bytes": 12485,
+      "url": "https://www.baostock.com/helpdocs/api/markdown/stockKData.md",
+      "received_at": "2026-10-20T00:11:36.744788+00:00",
+      "method": "POST",
+      "status": 200,
+      "archive_sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac"
+    },
+    {
+      "role": "bao_factors",
+      "path": "bao_factors.raw",
+      "sha256": "6820224b59a62b5e96b3347e0342263f0f9fb448a00a5c4ce1e61d2857b8984b",
+      "bytes": 2789,
+      "url": "https://www.baostock.com/helpdocs/api/markdown/factorInfo.md",
+      "received_at": "2026-10-20T00:11:38.560127+00:00",
+      "method": "POST",
+      "status": 200,
+      "archive_sha256": "6820224b59a62b5e96b3347e0342263f0f9fb448a00a5c4ce1e61d2857b8984b"
+    },
+    {
+      "role": "phase_client",
+      "path": "phase_client.raw",
+      "sha256": "5e30aa03c402eecc759de04b4b683548355a144861bc8cc814018150c6a6070e",
+      "bytes": 63991,
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_common_2021.js",
+      "received_at": "2026-10-20T00:08:38.799523+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "5e30aa03c402eecc759de04b4b683548355a144861bc8cc814018150c6a6070e"
+    },
+    {
+      "role": "phase_snap",
+      "path": "phase_snap.raw",
+      "sha256": "6a96cead1b5f1f76d59149872218c874797117c48163f98221f66fb3193018aa",
+      "bytes": 404,
+      "url": "https://yunhq.sse.com.cn:32042/v1/sh1/snap/600362?select=name,last,chg_rate,change,amount,volume,open,prev_close,ask,bid,high,low,tradephase,turnover_ratio,totalValue,amp_rate,circulating,up_limit,down_limit,fp_volume,fp_amount,cpxxprodusta,cpxxlmttype,fp_phase",
+      "received_at": "2026-10-20T00:11:26.484062+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "6a96cead1b5f1f76d59149872218c874797117c48163f98221f66fb3193018aa"
+    },
+    {
+      "role": "company_client",
+      "path": "company_client.raw",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "bytes": 277193,
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js",
+      "received_at": "2026-10-20T00:11:11.902666+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f"
+    },
+    {
+      "role": "company_page",
+      "path": "company_page.raw",
+      "sha256": "d374164f4824cc4f9c1e97241934ff063099b10dd36431a9a6bc5ff472a2d90f",
+      "bytes": 38654,
+      "url": "https://www.sse.com.cn/assortment/stock/list/info/company/index.shtml?COMPANY_CODE=600362",
+      "received_at": "2026-10-20T00:08:00.968288+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "d374164f4824cc4f9c1e97241934ff063099b10dd36431a9a6bc5ff472a2d90f"
+    },
+    {
+      "role": "dividend_1",
+      "path": "dividend_1.raw",
+      "sha256": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e",
+      "bytes": 5548,
+      "url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L&CONDITION_ZBA=1&CONDITION_ZBB=",
+      "received_at": "2026-10-20T00:08:40.731377+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e"
+    },
+    {
+      "role": "dividend_2",
+      "path": "dividend_2.raw",
+      "sha256": "f1882cf8257766c0db7b72ed2f7bdedb4b5482ffbf684eae205f1060665bbf1b",
+      "bytes": 1520,
+      "url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=2&pageHelp.beginPage=2&pageHelp.cacheSize=1&pageHelp.endPage=2&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_FH_L&CONDITION_ZBA=1&CONDITION_ZBB=",
+      "received_at": "2026-10-20T00:08:43.915368+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "f1882cf8257766c0db7b72ed2f7bdedb4b5482ffbf684eae205f1060665bbf1b"
+    },
+    {
+      "role": "send_share_1",
+      "path": "send_share_1.raw",
+      "sha256": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52",
+      "bytes": 496,
+      "url": "https://query.sse.com.cn/commonQuery.do?isPagination=true&pageHelp.pageSize=5&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1&COMPANY_CODE=600362&IS_STAR=0&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_LRFP_SG_L",
+      "received_at": "2026-10-20T00:08:47.022759+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52"
+    },
+    {
+      "role": "announcements_1",
+      "path": "announcements_1.raw",
+      "sha256": "e4240812210a80aeda2586a8aea61689ae3b1384815a1776e61095bf465ea955",
+      "bytes": 260768,
+      "url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do?isPagination=true&productId=600362&keyWord=&securityType=0101&reportType2=&reportType=ALL&beginDate=2025-01-01&endDate=2026-10-20&pageHelp.pageSize=100&pageHelp.pageCount=50&pageHelp.pageNo=1&pageHelp.beginPage=1&pageHelp.cacheSize=1&pageHelp.endPage=1",
+      "received_at": "2026-10-20T00:09:27.737036+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "e4240812210a80aeda2586a8aea61689ae3b1384815a1776e61095bf465ea955"
+    },
+    {
+      "role": "announcements_2",
+      "path": "announcements_2.raw",
+      "sha256": "701e28cfad644c7029e14b65812817a28983ad40c8756c67fd2c7b5a6baf2444",
+      "bytes": 208282,
+      "url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do?isPagination=true&productId=600362&keyWord=&securityType=0101&reportType2=&reportType=ALL&beginDate=2025-01-01&endDate=2026-10-20&pageHelp.pageSize=100&pageHelp.pageCount=50&pageHelp.pageNo=2&pageHelp.beginPage=2&pageHelp.cacheSize=1&pageHelp.endPage=2",
+      "received_at": "2026-10-20T00:09:57.056443+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "701e28cfad644c7029e14b65812817a28983ad40c8756c67fd2c7b5a6baf2444"
+    },
+    {
+      "role": "interim_notice",
+      "path": "interim_notice.raw",
+      "sha256": "991efe20772ae0c4ee1580ce2c0a8566d45178f6c9fc9ba348653d5152f77471",
+      "bytes": 702187,
+      "url": "https://www.hkexnews.hk/listedco/listconews/sehk/2025/1120/2025112001186_c.pdf",
+      "received_at": "2026-10-20T00:08:22.028530+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "991efe20772ae0c4ee1580ce2c0a8566d45178f6c9fc9ba348653d5152f77471"
+    },
+    {
+      "role": "annual_notice",
+      "path": "annual_notice.raw",
+      "sha256": "cb0f30999cae5bae3b8a18d0a8365e300751f874db028316cb58ebd914cc1213",
+      "bytes": 154132,
+      "url": "https://static.cninfo.com.cn/finalpage/2026-07-10/1225416956.PDF",
+      "received_at": "2026-10-20T00:11:42.534725+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "cb0f30999cae5bae3b8a18d0a8365e300751f874db028316cb58ebd914cc1213"
+    },
+    {
+      "role": "annual_report",
+      "path": "annual_report.raw",
+      "sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+      "bytes": 4116411,
+      "url": "https://www.hkexnews.hk/listedco/listconews/sehk/2026/0327/2026032700133_c.pdf",
+      "received_at": "2026-10-20T00:11:44.997505+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303"
+    },
+    {
+      "role": "sse_daily_comparison",
+      "path": "sse_daily_comparison.raw",
+      "sha256": "1c4ce7b610ad84b966ebee62c7a29e1490ed5907d2a30607cabc505d1f4abd74",
+      "bytes": 1147,
+      "url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-19&TX_DATE_MON=&TX_DATE_YEAR=",
+      "received_at": "2026-10-20T00:08:37.264692+00:00",
+      "method": "GET",
+      "status": 200,
+      "archive_sha256": "1c4ce7b610ad84b966ebee62c7a29e1490ed5907d2a30607cabc505d1f4abd74"
+    }
+  ],
+  "dependency_hashes": [
+    "1c4ce7b610ad84b966ebee62c7a29e1490ed5907d2a30607cabc505d1f4abd74",
+    "20243b376bad269c47fffb63cd38034caa0c619eadaf85e9532741ec9a0aa91e",
+    "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac",
+    "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+    "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+    "5e30aa03c402eecc759de04b4b683548355a144861bc8cc814018150c6a6070e",
+    "6820224b59a62b5e96b3347e0342263f0f9fb448a00a5c4ce1e61d2857b8984b",
+    "6a81b945a9e782f7ff25cebc1faf905e0d88f72ee85cda2ac1b630445abb65e7",
+    "6a931ebea4ff858c46cf89e6c8f448b755cceab10071a35265b576ff09545884",
+    "6a96cead1b5f1f76d59149872218c874797117c48163f98221f66fb3193018aa",
+    "701e28cfad644c7029e14b65812817a28983ad40c8756c67fd2c7b5a6baf2444",
+    "991efe20772ae0c4ee1580ce2c0a8566d45178f6c9fc9ba348653d5152f77471",
+    "b498844359a5f0bd6b2dbddaa1b02b1a9d55e04f708cdb93b14cfb776d553f52",
+    "cb0f30999cae5bae3b8a18d0a8365e300751f874db028316cb58ebd914cc1213",
+    "d374164f4824cc4f9c1e97241934ff063099b10dd36431a9a6bc5ff472a2d90f",
+    "e4240812210a80aeda2586a8aea61689ae3b1384815a1776e61095bf465ea955",
+    "f1882cf8257766c0db7b72ed2f7bdedb4b5482ffbf684eae205f1060665bbf1b"
+  ],
+  "network_calls": 0,
+  "account_events_added": 0,
+  "system_usable": false,
+  "capability": "NOT_GRANTED",
+  "historical_pit_claim": false,
+  "archive": {
+    "sha256": "c5620e9a1911668225d037c1a86e2db7cb5cd133d0f55e30c4f027e7deb3be40",
+    "path": "raw/c5620e9a1911668225d037c1a86e2db7cb5cd133d0f55e30c4f027e7deb3be40.raw",
+    "bytes": 9559,
+    "kind": "SOURCE_AUTHORITY_ASSESSMENT",
+    "evidence_kind": "REAL_SAVED_SOURCE_OBSERVATION"
+  }
+}

@@ -1,0 +1,1 @@
+Five unused CNINFO pages3-7 of the existing training-only2018-2022 query, page30, issuer identity verified, ascending time. Maximum5 requests/30seconds/4MiB, no retries/redirects. Preserve original titles and metadata; exact duplicate inputs and old reporting-event cycles excluded before training. No source/model gate changed.

@@ -1,0 +1,37 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_news_original_full_text_headline_gap_idempotency_and_restart ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r14green/test_news_original_full_text_h0')
+
+    def test_news_original_full_text_headline_gap_idempotency_and_restart(tmp_path):
+        calls=[]
+        async def supplier(instrument,output):calls.append(instrument);return news_fixture(output)
+>       with TestClient(create_app(tmp_path)) as client:
+                        ^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_news_ingestion.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\app.py:1752: in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:514: in _create_app
+    from roll.market.news_ingestion import News,NewsCommand
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    """Finite recent news observations with raw-first capture and offline derivation."""
+    import asyncio,hashlib,json,os
+    from datetime import datetime
+    from pathlib import Path
+    from uuid import uuid4
+    from fastapi import HTTPException
+    from pydantic import BaseModel,ConfigDict,Field
+    from roll.accounts.ledger import encode,now
+    from roll.agents.codex_process import owner_alive,process_creation
+>   from roll.market.scope import ScopeCommand
+E   ModuleNotFoundError: No module named 'roll.market.scope'
+
+backend\src\roll\market\news_ingestion.py:10: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_news_ingestion.py::test_news_original_full_text_headline_gap_idempotency_and_restart
+1 failed in 7.70s

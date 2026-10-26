@@ -1,0 +1,91 @@
+{
+  "version": "docling-runtime-v1",
+  "status": "VERIFIED",
+  "parser_version": "2.139.0",
+  "verified_at": "2026-10-17T17:09:02.748Z",
+  "packages": {
+    "docling-slim": "2.139.0",
+    "docling-core": "2.101.1",
+    "docling-ibm-models": "4.0.3",
+    "docling-parse": "7.22.3",
+    "torch": "2.10.0",
+    "torchvision": "0.25.0",
+    "transformers": "5.20.1",
+    "rapidocr": "3.10.0",
+    "onnxruntime": "1.31.0",
+    "numpy": "2.5.4",
+    "pypdfium2": "5.14.0"
+  },
+  "ocr_models": {
+    "det_model_path": "rapidocr/PP-OCRv6_det_small.onnx",
+    "cls_model_path": "rapidocr/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+    "rec_model_path": "rapidocr/PP-OCRv6_rec_small.onnx"
+  },
+  "artifacts": [
+    {
+      "path": "Lib/site-packages/docling/__init__.py",
+      "sha256": "e91015144f62533383d579d01a3f219c6ede99ab09f02d12e343801421bdce89"
+    },
+    {
+      "path": "Lib/site-packages/docling/document_converter.py",
+      "sha256": "50f0af029f7ae04f925f769e1ec4c004dae842f6032d24df70dc8c459b772977"
+    },
+    {
+      "path": "Lib/site-packages/docling/datamodel/pipeline_options.py",
+      "sha256": "289d4af8a623ed0d99f5d803365e154f719c4fdf4af433b93d45d016a84d6055"
+    },
+    {
+      "path": "Lib/site-packages/docling_parse/pdf_parser.py",
+      "sha256": "b2c3dea309a8990065c55d4dcab9f56a51dd7a85d17c2e09eff18fce90e5f0a3"
+    },
+    {
+      "path": "Lib/site-packages/rapidocr/models/PP-OCRv6_det_small.onnx",
+      "sha256": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f"
+    },
+    {
+      "path": "models/docling-project--docling-layout-heron/model.safetensors",
+      "sha256": "00333a43451945aaf89db8ca9c0a17e75d1537c17db60fdb91aa95f4c7929e0c"
+    },
+    {
+      "path": "models/docling-project--docling-models/model_artifacts/tableformer/accurate/tableformer_accurate.safetensors",
+      "sha256": "2a7d6c924b3cd12fb99a09280ca9c33a89c5d60b93253617d2e088c1a40374d9"
+    },
+    {
+      "path": "models/rapidocr/PP-OCRv6_rec_small.onnx",
+      "sha256": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884"
+    }
+  ],
+  "licenses": {
+    "docling-slim": "MIT",
+    "docling-core": "MIT",
+    "docling-ibm-models": "MIT",
+    "docling-parse": "MIT",
+    "torch": "BSD-3-Clause",
+    "torchvision": "BSD",
+    "transformers": "Apache-2.0",
+    "rapidocr": "Apache-2.0",
+    "onnxruntime": "MIT",
+    "numpy": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+    "pypdfium2": "BSD-3-Clause, Apache-2.0, dependency licenses"
+  },
+  "model_sources": {
+    "layout": "docling-project/docling-layout-heron",
+    "tableformer": "docling-project/docling-models (accurate)",
+    "ocr": "rapidocr 3.10.0 bundled PP-OCRv6 small (Chinese/English)"
+  },
+  "runtime_limits": {
+    "pdf_bytes": 16777216,
+    "pages_per_request": 8,
+    "seconds": 120,
+    "memory_bytes": 2147483648,
+    "threads": 2,
+    "network": false
+  },
+  "install_evidence": "evidence/12-docling/dependency-attempt02-*.json",
+  "model_evidence": "evidence/12-docling/model-prefetch02.log",
+  "model_licenses": {
+    "layout": "Apache-2.0",
+    "tableformer": "CDLA-Permissive-2.0",
+    "ocr": "Apache-2.0 (rapidocr package; PP-OCRv6 model weights distributed with it)"
+  }
+}

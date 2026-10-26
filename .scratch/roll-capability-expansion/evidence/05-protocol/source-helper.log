@@ -1,0 +1,41 @@
+[WebServer] INFO:     Started server process [29684]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8032 (Press CTRL+C to quit)
+[WebServer] (node:9544) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:24456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\expansion-action.spec.ts:3:1 › action versions retain truncated inventory and unknown fulfillment through original links (2.0s)
+  x  2 tests\e2e\expansion-status.spec.ts:3:1 › single stock status exposes reported listing and cutoff while keeping full status unknown (862ms)
+
+
+  1) tests\e2e\expansion-status.spec.ts:3:1 › single stock status exposes reported listing and cutoff while keeping full status unknown 
+
+    Error: locator.fill: Error: strict mode violation: getByRole('article', { name: 'SSE:600362', exact: true }).getByLabel('系统已知截至（留空查询当前）') resolved to 2 elements:
+        1) <input value="" type="datetime-local"/> aka getByRole('textbox', { name: '系统已知截至（留空查询当前）' })
+        2) <input value="" type="datetime-local"/> aka getByLabel('行动系统已知截至（留空查询当前）')
+
+    Call log:
+    [2m  - waiting for getByRole('article', { name: 'SSE:600362', exact: true }).getByLabel('系统已知截至（留空查询当前）')[22m
+
+
+      17 |   const raw=stock.getByRole('link',{name:'公司信息原件'});
+      18 |   expect((await request.get((await raw.getAttribute('href'))!)).ok()).toBeTruthy();
+    > 19 |   await stock.getByLabel('系统已知截至（留空查询当前）').fill('2026-10-14T17:59');
+         |                                            ^
+      20 |   await stock.getByRole('button',{name:'查询保存的状态依据'}).click();
+      21 |   await expect(stock.getByText('来源报告：上市',{exact:false})).not.toBeVisible();
+      22 |   await expect(stock.getByRole('status').filter({hasText:'完整交易状态未知'})).toBeVisible();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-status.spec.ts:19:44
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\05-protocol\source-helper-results\expansion-status-single-st-a7aeb-keeping-full-status-unknown\error-context.md
+
+  1 failed
+    tests\e2e\expansion-status.spec.ts:3:1 › single stock status exposes reported listing and cutoff while keeping full status unknown 
+  1 passed (15.3s)

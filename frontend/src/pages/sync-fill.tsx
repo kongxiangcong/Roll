@@ -5,9 +5,9 @@ import {Intent,IntentList} from '../components/execution-intents';
 const dateInput=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);
 const blankToNull=(value:string)=>value.trim()===''?null:value.trim();
 const diffLabels:Record<string,string>={cash_balance:'账面现金',positions:'持仓与取得成本',conservative_available:'估计保守可用资金',broker_available:'已核对券商可用资金',net_result_state:'费用与结果状态'};
-export function SyncFill({account,mode,onDone}:{account:Account;mode:'FILL'|'FEE_ADJUSTMENT';onDone:()=>void}){
+export function SyncFill({account,mode,onDone,defaultCode=''}:{account:Account;mode:'FILL'|'FEE_ADJUSTMENT';onDone:()=>void;defaultCode?:string}){
   const [effective,setEffective]=useState(dateInput),[source,setSource]=useState('用户核对成交回报');
-  const [market,setMarket]=useState('SSE'),[code,setCode]=useState(''),[direction,setDirection]=useState('BUY');
+  const [market,setMarket]=useState('SSE'),[code,setCode]=useState(defaultCode),[direction,setDirection]=useState('BUY');
   const [quantity,setQuantity]=useState(''),[price,setPrice]=useState(''),[fillId,setFillId]=useState(''),[orderId,setOrderId]=useState('');
   const [behavior,setBehavior]=useState('NO_RECOMMENDATION'),[feeStatus,setFeeStatus]=useState('KNOWN');
   const [fee,setFee]=useState(''),[reserve,setReserve]=useState(''),[basis,setBasis]=useState(''),[available,setAvailable]=useState('');

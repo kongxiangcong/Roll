@@ -1,0 +1,209 @@
+{
+  "source": "D:\\dsh-proj\\Roll\\.scratch\\roll-capability-expansion\\evidence\\16-sentiment\\eval-reject-results.json",
+  "source_sha256": "7390286b9a97e55455c2fccd1590feee93ebe3e309410403335015b009f84e63",
+  "method": "All truth-labeled rows remain in recall denominators; false positives include neutral/irrelevant truth. Binary macro-F1 is named separately from four-class support.",
+  "gate_thresholds": {
+    "macro_f1": 0.6,
+    "positive_recall": 0.55,
+    "negative_recall": 0.55,
+    "non_directional_rejection": 0.8,
+    "abstain_coverage": 0.35,
+    "p95_seconds": 3.0
+  },
+  "passed": false,
+  "latency_p95": 0.3687,
+  "splits": {
+    "design": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 45,
+          "tp": 41,
+          "fn": 4,
+          "fp": 11,
+          "recall": 0.9111111111111111,
+          "precision": 0.7884615384615384,
+          "f1": 0.845360824742268,
+          "abstained": 4
+        },
+        "NEGATIVE": {
+          "support": 24,
+          "tp": 6,
+          "fn": 18,
+          "fp": 0,
+          "recall": 0.25,
+          "precision": 1.0,
+          "f1": 0.4,
+          "abstained": 17
+        },
+        "NEUTRAL": {
+          "support": 18,
+          "tp": 0,
+          "fn": 18,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 12
+        },
+        "IRRELEVANT": {
+          "support": 33,
+          "tp": 0,
+          "fn": 33,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 29
+        }
+      },
+      "macro_f1": 0.622680412371134,
+      "positive_recall": 0.9111111111111111,
+      "negative_recall": 0.25,
+      "confusion": {
+        "NEUTRAL->ABSTAIN_NO_DIRECTIONAL_CUE": 11,
+        "NEUTRAL->ABSTAIN_LOW_CONFIDENCE": 1,
+        "POSITIVE->POSITIVE": 41,
+        "IRRELEVANT->ABSTAIN_MARKET_INDEX": 9,
+        "NEUTRAL->POSITIVE": 6,
+        "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 2,
+        "NEGATIVE->ABSTAIN_MARKET_INDEX": 15,
+        "IRRELEVANT->ABSTAIN_NO_DIRECTIONAL_CUE": 9,
+        "IRRELEVANT->ABSTAIN_FUND_FLOW": 11,
+        "IRRELEVANT->POSITIVE": 4,
+        "POSITIVE->ABSTAIN_NO_DIRECTIONAL_CUE": 1,
+        "POSITIVE->ABSTAIN_MARKET_INDEX": 3,
+        "NEGATIVE->NEGATIVE": 6,
+        "NEGATIVE->POSITIVE": 1
+      }
+    },
+    "holdout": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 8,
+          "tp": 5,
+          "fn": 3,
+          "fp": 6,
+          "recall": 0.625,
+          "precision": 0.45454545454545453,
+          "f1": 0.5263157894736842,
+          "abstained": 3
+        },
+        "NEGATIVE": {
+          "support": 6,
+          "tp": 0,
+          "fn": 6,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 1
+        },
+        "NEUTRAL": {
+          "support": 0,
+          "tp": 0,
+          "fn": 0,
+          "fp": 0,
+          "recall": null,
+          "precision": null,
+          "f1": null,
+          "abstained": 0
+        },
+        "IRRELEVANT": {
+          "support": 16,
+          "tp": 0,
+          "fn": 16,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 15
+        }
+      },
+      "macro_f1": 0.2631578947368421,
+      "positive_recall": 0.625,
+      "negative_recall": 0.0,
+      "confusion": {
+        "POSITIVE->POSITIVE": 5,
+        "POSITIVE->ABSTAIN_MARKET_INDEX": 3,
+        "IRRELEVANT->ABSTAIN_MARKET_INDEX": 14,
+        "NEGATIVE->POSITIVE": 5,
+        "IRRELEVANT->POSITIVE": 1,
+        "IRRELEVANT->ABSTAIN_NO_DIRECTIONAL_CUE": 1,
+        "NEGATIVE->ABSTAIN_MARKET_INDEX": 1
+      }
+    },
+    "combined": {
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "per_class": {
+        "POSITIVE": {
+          "support": 53,
+          "tp": 46,
+          "fn": 7,
+          "fp": 17,
+          "recall": 0.8679245283018868,
+          "precision": 0.7301587301587301,
+          "f1": 0.7931034482758621,
+          "abstained": 7
+        },
+        "NEGATIVE": {
+          "support": 30,
+          "tp": 6,
+          "fn": 24,
+          "fp": 0,
+          "recall": 0.2,
+          "precision": 1.0,
+          "f1": 0.3333333333333333,
+          "abstained": 18
+        },
+        "NEUTRAL": {
+          "support": 18,
+          "tp": 0,
+          "fn": 18,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 12
+        },
+        "IRRELEVANT": {
+          "support": 49,
+          "tp": 0,
+          "fn": 49,
+          "fp": 0,
+          "recall": 0.0,
+          "precision": null,
+          "f1": 0.0,
+          "abstained": 44
+        }
+      },
+      "macro_f1": 0.5632183908045977,
+      "positive_recall": 0.8679245283018868,
+      "negative_recall": 0.2,
+      "confusion": {
+        "NEUTRAL->ABSTAIN_NO_DIRECTIONAL_CUE": 11,
+        "NEUTRAL->ABSTAIN_LOW_CONFIDENCE": 1,
+        "POSITIVE->POSITIVE": 46,
+        "IRRELEVANT->ABSTAIN_MARKET_INDEX": 23,
+        "NEUTRAL->POSITIVE": 6,
+        "NEGATIVE->ABSTAIN_LOW_CONFIDENCE": 2,
+        "NEGATIVE->ABSTAIN_MARKET_INDEX": 16,
+        "IRRELEVANT->ABSTAIN_NO_DIRECTIONAL_CUE": 10,
+        "IRRELEVANT->ABSTAIN_FUND_FLOW": 11,
+        "IRRELEVANT->POSITIVE": 5,
+        "POSITIVE->ABSTAIN_NO_DIRECTIONAL_CUE": 1,
+        "POSITIVE->ABSTAIN_MARKET_INDEX": 6,
+        "NEGATIVE->NEGATIVE": 6,
+        "NEGATIVE->POSITIVE": 6
+      }
+    }
+  },
+  "limitations": [
+    "NON_INDEPENDENT_AGENT_LABELS",
+    "DESIGN_HOLDOUT_TIME_OVERLAP",
+    "SEMANTIC_EVENT_ISOLATION_NOT_ESTABLISHED",
+    "NO_NEUTRAL_HOLDOUT_SUPPORT",
+    "OLD_HOLDOUT_ALREADY_EXAMINED"
+  ]
+}

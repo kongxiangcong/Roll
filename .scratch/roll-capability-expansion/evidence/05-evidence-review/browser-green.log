@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [13428]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8159 (Press CTRL+C to quit)
+[WebServer] (node:31052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:29732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-cost-stress.spec.ts:2:1 › successor saved prefix cost sensitivity stays METHOD and replays (2.0m)
+
+
+  1) tests\e2e\expansion-cost-stress.spec.ts:2:1 › successor saved prefix cost sensitivity stays METHOD and replays 
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for getByLabel('汇总时间分段证据', { exact: true })[22m
+
+
+      26 |   await page.getByRole('button',{name:'重放保存的入场压力',exact:true}).click();await expect(page.getByText('入场压力原前缀重放一致',{exact:true})).toBeVisible({timeout:35000});
+      27 |   await page.getByText('当前保存证据与验证缺口',{exact:true}).click();await page.getByRole('button',{name:'读取可绑定证据',exact:true}).click();
+    > 28 |   for(const label of ['汇总时间分段证据','汇总CASH控制证据','汇总原登记基准证据','汇总入场压力证据'])await page.getByLabel(label,{exact:true}).selectOption({index:1});
+         |                                                                                                                 ^
+      29 |   await page.getByRole('button',{name:'保存选定证据的验证汇总',exact:true}).click();await expect(page.getByText('METHOD证据汇总 · 前缀3 · INCONCLUSIVE · NOT_GRANTED',{exact:true})).toBeVisible();
+      30 |   await expect(page.getByText('已绑定 5 类保存证据；完整实验未冻结，真实前向未启动。',{exact:true})).toBeVisible();
+      31 |   await page.getByRole('button',{name:'重放保存的证据汇总',exact:true}).click();await expect(page.getByText('证据汇总原工件重放一致',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-cost-stress.spec.ts:28:113
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\05-evidence-review\browser-results\expansion-cost-stress-succ-ff53b-ty-stays-METHOD-and-replays\error-context.md
+
+  1 failed
+    tests\e2e\expansion-cost-stress.spec.ts:2:1 › successor saved prefix cost sensitivity stays METHOD and replays 

@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-19T14:01:21.229886+00:00",
+  "before_any_new_candidate_output": true,
+  "status": "FINAL_WEIGHTS_AND_EVALUATION_FROZEN",
+  "files": {
+    "training-freeze.json": "e5598d0eff66b8b250fd185b3121adffc6d0351bce95f171340cd6f171f3f12c",
+    "development.json": "03604de744c87d86257bc509330ae09215a2c6586e02273843da4d410ed1b924",
+    "primary.json": "5b79b51b3a3eea174d3a5d6bc62cdaa3b5fca482099def550dd96fce9c6c6459",
+    "object_contract.py": "54c8da1ea55ade13b1135a26d6f7278d45ad3b340ecf5d54e2efc60b732e3a15",
+    "protocol.md": "95ab75cb9843ab762f473e721f7f96d1fde7b24e32886eb0b4d9b7090a5f751f",
+    "infer.py": "f238fe102b07a29d3456bacfaf5d6665b66f3678af16423dd4eef2fb5a1cbd32",
+    "score.py": "6bb1b6396790ba6f6aa9d7421b7450474fb8012e89f4e24f9bbb6910438e043a",
+    "training-result.json": "e3af875203e136421eae182ba545c129a5cc88804f91d86048515a82df8592de"
+  },
+  "model_artifacts": [
+    {
+      "path": "config.json",
+      "bytes": 1175,
+      "sha256": "e76f693b88cca4269f28684e70cc759f7388df342ebb32d042e42667b6ff3a6a"
+    },
+    {
+      "path": "model.safetensors",
+      "bytes": 409103316,
+      "sha256": "d3ba72cd79ea77b0285745909d40ae2a43512b0baa4c5b9328a10fd8eceb69da"
+    },
+    {
+      "path": "tokenizer.json",
+      "bytes": 439372,
+      "sha256": "2fd943d7c063d731de5967c3c503a5a9e2546a613cf7f8f45b918d324cdd2188"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 460,
+      "sha256": "a9ed690ea693e325785b71f2be7cde566ff893d87957717abb960dc3914e10e9"
+    }
+  ],
+  "training_rows_loaded_by_inference": false,
+  "primary_runs_allowed": 1,
+  "old_holdout_loaded": false
+}

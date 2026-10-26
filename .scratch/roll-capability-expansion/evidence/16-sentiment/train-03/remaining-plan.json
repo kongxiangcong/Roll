@@ -1,0 +1,229 @@
+{
+  "attempt_id": "TRAIN03-REMAINING-13-CLOSED",
+  "prior_receipts": [
+    "acquisition-receipt.json",
+    "contract-html-receipt.json",
+    "contract-js-receipt.json",
+    "sina-contract-receipt.json",
+    "sina-canonical-receipt.json",
+    "sina-js-receipt.json",
+    "sina-advanced-receipt.json",
+    "sina-results-receipt.json",
+    "sina-history01-receipt.json"
+  ],
+  "commands": [
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 2,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1514736000,
+        "etime": 1672502399
+      },
+      "minimum_date": "2018-01-01",
+      "maximum_date": "2022-12-31",
+      "period": "TRAIN"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 3,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1514736000,
+        "etime": 1672502399
+      },
+      "minimum_date": "2018-01-01",
+      "maximum_date": "2022-12-31",
+      "period": "TRAIN"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 4,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1514736000,
+        "etime": 1672502399
+      },
+      "minimum_date": "2018-01-01",
+      "maximum_date": "2022-12-31",
+      "period": "TRAIN"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 5,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1514736000,
+        "etime": 1672502399
+      },
+      "minimum_date": "2018-01-01",
+      "maximum_date": "2022-12-31",
+      "period": "TRAIN"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 下跌",
+        "tp": "news",
+        "sort": 1,
+        "page": 1,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1672502400,
+        "etime": 1735660799
+      },
+      "minimum_date": "2023-01-01",
+      "maximum_date": "2024-12-31",
+      "period": "DEVELOPMENT"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 下跌",
+        "tp": "news",
+        "sort": 1,
+        "page": 2,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1672502400,
+        "etime": 1735660799
+      },
+      "minimum_date": "2023-01-01",
+      "maximum_date": "2024-12-31",
+      "period": "DEVELOPMENT"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 上涨",
+        "tp": "news",
+        "sort": 1,
+        "page": 1,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1672502400,
+        "etime": 1735660799
+      },
+      "minimum_date": "2023-01-01",
+      "maximum_date": "2024-12-31",
+      "period": "DEVELOPMENT"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 上涨",
+        "tp": "news",
+        "sort": 1,
+        "page": 2,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1672502400,
+        "etime": 1735660799
+      },
+      "minimum_date": "2023-01-01",
+      "maximum_date": "2024-12-31",
+      "period": "DEVELOPMENT"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 下跌",
+        "tp": "news",
+        "sort": 1,
+        "page": 1,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1735660800,
+        "etime": 1792339199
+      },
+      "minimum_date": "2025-01-01",
+      "maximum_date": "2026-10-18",
+      "period": "HOLDOUT"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 下跌",
+        "tp": "news",
+        "sort": 1,
+        "page": 2,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1735660800,
+        "etime": 1792339199
+      },
+      "minimum_date": "2025-01-01",
+      "maximum_date": "2026-10-18",
+      "period": "HOLDOUT"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 上涨",
+        "tp": "news",
+        "sort": 1,
+        "page": 1,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1735660800,
+        "etime": 1792339199
+      },
+      "minimum_date": "2025-01-01",
+      "maximum_date": "2026-10-18",
+      "period": "HOLDOUT"
+    },
+    {
+      "url": "https://search.sina.com.cn/api/advanced",
+      "params": {
+        "q": "江西铜业 上涨",
+        "tp": "news",
+        "sort": 1,
+        "page": 2,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1735660800,
+        "etime": 1792339199
+      },
+      "minimum_date": "2025-01-01",
+      "maximum_date": "2026-10-18",
+      "period": "HOLDOUT"
+    },
+    {
+      "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+      "form": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2018-01-01~2022-12-31",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "2",
+        "pageSize": "30"
+      },
+      "invalid50_page1_sha256": "ea9ceb042d722b2aa287cea97fb5eba049088223b3040efe2c639e4e62a72779"
+    }
+  ],
+  "shared_total_cap": {
+    "requests": 32,
+    "bytes": 16777216,
+    "transfer_seconds": 120
+  },
+  "no_retries_or_automatic_redirects": true
+}

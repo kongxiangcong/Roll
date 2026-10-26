@@ -1,0 +1,117 @@
+{
+  "adapter_version": "08-market-v1",
+  "archives": [
+    {
+      "auth_mode": "PUBLIC",
+      "bytes": 257,
+      "decoded_bytes": 299,
+      "decoded_hash": "23570753a867f3bd72b8224b1e2b3a412fc97576a02d939f0d7180d0b51225b5",
+      "evidence_kind": "REAL_ACQUISITION",
+      "kind": "RAW_SOCKET_RESPONSE",
+      "path": "raw/f5f365275abbf403d842e28d52ceee73a0b9e7befd11f82fe36ad8c5f7996cc9.raw",
+      "received_at": "2026-10-20T00:13:38.562852+00:00",
+      "sha256": "f5f365275abbf403d842e28d52ceee73a0b9e7befd11f82fe36ad8c5f7996cc9",
+      "source_id": "baostock-daily",
+      "source_url": "tcp://public-api.baostock.com:10030",
+      "wire_semantics": "SDK_QUERY_RECV_BYTES_LOGIN_EXCLUDED"
+    },
+    {
+      "auth_mode": "PUBLIC",
+      "bytes": 457,
+      "decoded_bytes": 299,
+      "evidence_kind": "REAL_ACQUISITION",
+      "kind": "SDK_DECODED_RESPONSE",
+      "path": "raw/23570753a867f3bd72b8224b1e2b3a412fc97576a02d939f0d7180d0b51225b5.raw",
+      "received_at": "2026-10-20T00:13:38.562852+00:00",
+      "sha256": "23570753a867f3bd72b8224b1e2b3a412fc97576a02d939f0d7180d0b51225b5",
+      "source_id": "baostock-daily",
+      "source_url": "tcp://public-api.baostock.com:10030",
+      "wire_hash": "f5f365275abbf403d842e28d52ceee73a0b9e7befd11f82fe36ad8c5f7996cc9"
+    }
+  ],
+  "coverage": [
+    {
+      "full_history_verified": false,
+      "group": "DAILY",
+      "instrument": "SSE:600362",
+      "raw_hash": "f5f365275abbf403d842e28d52ceee73a0b9e7befd11f82fe36ad8c5f7996cc9",
+      "request_end": "2026-10-19",
+      "request_start": "2026-10-19",
+      "returned_rows": 1,
+      "truncation": "BOUNDED_QUERY_NOT_HISTORICAL_COMPLETENESS_OR_PIT_CERTIFICATION"
+    }
+  ],
+  "created_at": "2026-10-20T00:13:40.028881+00:00",
+  "evidence_kind": "REAL_ACQUISITION",
+  "facts": [
+    {
+      "adjustment": "RAW",
+      "adjustment_version": null,
+      "amount_yuan": "762858168.3800",
+      "available_at": "2026-10-20T00:13:38.562852+00:00",
+      "available_basis": "FIRST_ACTUAL_RECEIPT_IN_THIS_RUNTIME",
+      "calendar_source": {
+        "id": "sse-calendar-2026",
+        "sha256": "7ea10c16202c4748f0ad5bcdfe6ee07b85b5462589504604b17c9d63865e7d8c"
+      },
+      "close": "39.0900",
+      "completion_state": "COMPLETE_REPORTED_HISTORICAL",
+      "currency": "CNY",
+      "errors": [],
+      "event_cutoff_eligibility": "WITHIN_REQUESTED_EVENT_WINDOW",
+      "evidence_kind": "REAL_ACQUISITION",
+      "fetched_at": "2026-10-20T00:13:38.562852+00:00",
+      "group": "DAILY",
+      "high": "39.4600",
+      "historical_limitations": [
+        "PROVIDER_CURRENT_REVISION_NOT_PROVEN_POINT_IN_TIME",
+        "FIRST_RECEIPT_AFTER_REQUEST_CUTOFF_NOT_PAST_AVAILABLE_PROOF"
+      ],
+      "instrument": "SSE:600362",
+      "low": "38.7800",
+      "model_daily_input_allowed": true,
+      "open": "39.0000",
+      "point_in_time_input_allowed": false,
+      "preclose_basis": "PROVIDER_REFERENCE_MAY_BE_EX_RIGHTS_NOT_PREVIOUS_RAW_CLOSE",
+      "preclose_reported": "39.4300",
+      "published_at": null,
+      "quality": "BASIC_CHECKED_SINGLE_SOURCE",
+      "raw_hash": "f5f365275abbf403d842e28d52ceee73a0b9e7befd11f82fe36ad8c5f7996cc9",
+      "received_at": "2026-10-20T00:13:38.562852+00:00",
+      "reported_is_st": "0",
+      "reported_tradestatus": "1",
+      "revision_id": "f5f365275abbf403d842e28d52ceee73a0b9e7befd11f82fe36ad8c5f7996cc9",
+      "session_state": "TRADING_DAY",
+      "source_id": "baostock-daily",
+      "source_url": "tcp://public-api.baostock.com:10030",
+      "source_volume_unit": "SHARE",
+      "time_precision": "DATE",
+      "trade_date": "2026-10-19",
+      "unit_basis": "https://www.baostock.com/mainContent?file=stockKData.md",
+      "volume_reported": "19499178",
+      "volume_shares": "19499178",
+      "volume_unit": "SHARE"
+    }
+  ],
+  "formal_judgment": "DISABLED",
+  "gaps": [],
+  "namespace": "ACTUAL",
+  "observations": [],
+  "parquet": {
+    "adapter_version": "08-market-v1",
+    "bytes": 11630,
+    "kind": "NORMALIZED_PARQUET",
+    "path": "parquet/fd27209abe766d0344b016cd26679f206d9d6fa6b205389de130a4f7ba7b1fe4.parquet",
+    "sha256": "fd27209abe766d0344b016cd26679f206d9d6fa6b205389de130a4f7ba7b1fe4"
+  },
+  "request_id": "8d4d36a8-c956-47c6-b868-b3d692efd094",
+  "requested_cutoff": "2026-10-20T00:13:33.322124+00:00",
+  "requested_groups": [
+    "DAILY"
+  ],
+  "requested_instruments": [
+    "SSE:600362"
+  ],
+  "run_id": "554975ba-065a-4d45-82af-279d0f6c24b6",
+  "snapshot_id": "111c3440-b7de-4cae-b0ae-1e67aeba1cf1"
+}

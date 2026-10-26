@@ -1,0 +1,12 @@
+{
+  "method_id": "successor-primary-center-v1",
+  "scope": "Read-only exact frozen primary artifact identity for the registered penalty=1 and lookback_sessions=20 centers; not a neighbor prediction or stress result",
+  "centers": {"penalty": "1", "lookback_sessions": 20},
+  "feature_input_closes": 21,
+  "feature_return_intervals": 20,
+  "required_partitions": ["DEVELOPMENT", "CALIBRATION"],
+  "maximum_examples": 2000,
+  "maximum_input_bytes": 8388608,
+  "prediction_policy": "Archive before/after CAL identity only; no predict or fit call; manual METHOD execution signals never become fitted predictions",
+  "qualification": "No independent validation, neighbor stress, complete experiment freeze, real start or PASS"
+}

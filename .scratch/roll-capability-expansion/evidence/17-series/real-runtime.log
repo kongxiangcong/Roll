@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\roll-capability-expansion\evidence\17-series\run-real-series.py", line 28, in <module>
+    with TestClient(create_app(target,runtime_role='API')) as client:
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\backend\src\roll\app.py", line 1794, in create_app
+    app=_create_app(directory,market_transport,market_clock,codex_worker,deepseek_endpoint,review_clock,baostock_worker,technical_review_method_file,capability_method_file,runtime_role,notification_transport)
+  File "D:\dsh-proj\Roll\backend\src\roll\app.py", line 1411, in _create_app
+    capability_service = Capabilities(ledger, funding, technical_reviews, valuations, capability_method_file, lambda: app.state.backups.recovery())
+  File "D:\dsh-proj\Roll\backend\src\roll\decisions\capabilities.py", line 173, in __init__
+    self.journal.initialize()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\dsh-proj\Roll\backend\src\roll\decisions\lifecycle_journal.py", line 33, in initialize
+    db.execute('INSERT INTO capability_journal_origin VALUES(1,?)', (sha(value),))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: capability_journal_origin.id

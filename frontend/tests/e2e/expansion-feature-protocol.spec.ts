@@ -1,0 +1,26 @@
+import {test,expect} from '@playwright/test';
+test('real saved financial features, unavailable sentiment and historical gap are immutable',async({page,request})=>{
+ const snapshots=await (await request.get('/api/research/feature-snapshots')).json();
+ const current=snapshots.find((s:{report_period:string|null})=>s.report_period!==null);
+ const old=snapshots.find((s:{report_period:string|null})=>s.report_period===null);
+ expect(current.evidence_kind).toBe('REAL_SAVED_FEATURE_OBSERVATION');expect(current.real_fit_admitted).toBe(false);
+ let writes=0;page.on('request',r=>{if(r.method()==='POST')writes++;});
+ await page.goto('/');await page.getByRole('button',{name:'历史记录',exact:true}).click();await page.getByRole('button',{name:'研究登记',exact:true}).click();
+ await page.getByText('财务情绪特征与消融协议',{exact:true}).click();await page.getByRole('button',{name:'查询特征协议与快照',exact:true}).click();
+ await expect(page.getByRole('button',{name:'登记关联特征协议',exact:true})).toBeDisabled();
+ await page.getByLabel('已保存特征快照',{exact:true}).selectOption(current.snapshot_id);
+ const result=page.getByRole('region',{name:'可得特征快照'});
+ await expect(result.getByText(/实际保存来源特征.*报告期 2026-06-30/)).toBeVisible();
+ await expect(result.getByText(/^资产负债率：65\.475577/)).toBeVisible();
+ await expect(result.getByText(/^现金利润比：0\.611974/)).toBeVisible();
+ await expect(result.getByText(/^正向占比：缺失 · VERSION_NOT_AVAILABLE/)).toBeVisible();
+ await expect(result.getByText(/^中性占比：缺失/)).toBeVisible();
+ await page.getByLabel('已保存特征快照',{exact:true}).selectOption(old.snapshot_id);
+ await expect(result.getByText(/报告期 缺失/)).toBeVisible();await expect(result.getByText(/^营收同比：缺失/)).toBeVisible();
+ await page.getByLabel('已保存特征快照',{exact:true}).selectOption(current.snapshot_id);
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/22-features/desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/22-features/mobile.png',fullPage:true});
+ expect(await (await request.get('/api/research/feature-snapshots/'+current.snapshot_id)).json()).toEqual(current);
+ expect((await (await request.get('/api/account')).json()).version).toBe(0);expect(writes).toBe(0);
+});

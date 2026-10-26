@@ -116,7 +116,7 @@ def test_live_peer_prevents_any_restore_replacement_until_all_hosts_stopped(tmp_
     restored=Server(directory)
     try:
         assert restored.client.get('/api/account').json()==original
-        assert restored.client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
+        assert restored.client.get('/api/capabilities').json()['runtime_state']=='RECOVERY_LOCK'
         assert restored.client.get('/api/runtime/backups/status').json()['pending_restore'] is None
     finally:restored.stop()
 
@@ -143,7 +143,7 @@ def test_offline_cli_restores_physical_database_damage_with_complete_original_bu
     try:
         assert new.client.get('/api/account').json()==original
         assert new.client.post('/api/account/confirm',json=command).json()==receipt
-        assert new.client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
+        assert new.client.get('/api/capabilities').json()['runtime_state']=='RECOVERY_LOCK'
     finally:new.stop()
 
 
@@ -181,6 +181,6 @@ def test_actual_restore_crash_never_clears_lock_or_duplicates_confirmed_facts(tm
         assert client.post('/api/account/confirm',json=csv_command).json()==csv_receipt
         assert client.get('/api/account').json()['cash_balance']==original['cash_balance']
         assert client.get('/api/account/csv/files/'+uploaded['file']['sha256']).content==output.getvalue().encode()
-        assert client.get('/api/capabilities').json()['state']=='RECOVERY_LOCK'
+        assert client.get('/api/capabilities').json()['runtime_state']=='RECOVERY_LOCK'
         assert client.get('/api/runtime/backups/status').json()['last_restore']['state']=='APPLIED'
     finally:restored.stop()

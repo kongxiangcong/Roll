@@ -1,0 +1,23 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -217,6 +217,20 @@
+     successor_protocols=SuccessorProtocols(successor_shadow,validation)
+     from roll.research.successor_stress import SuccessorStresses
+     successor_stresses=SuccessorStresses(successor_protocols)
++    from roll.research.successor_segments import SuccessorTimeSegments,SegmentCommand
++    successor_segments=SuccessorTimeSegments(successor_stresses)
++
++    @app.post('/api/research/successor-cost-stresses/{identifier}/time-segments',status_code=201)
++    def successor_segments_create(identifier:str,command:SegmentCommand):return successor_segments.create(identifier,command)
++
++    @app.get('/api/research/successor-cost-stresses/{identifier}/time-segments')
++    def successor_segments_list(identifier:str):return successor_segments.listing(identifier)
++
++    @app.get('/api/research/successor-time-segments/{identifier}')
++    def successor_segments_get(identifier:str):return successor_segments.get(identifier)
++
++    @app.post('/api/research/successor-time-segments/{identifier}/replay')
++    def successor_segments_replay(identifier:str):return successor_segments.replay(identifier)
+     from roll.research.successor_probability import SuccessorProbabilityEvidence,ProbabilityBindingCommand
+     successor_probability=SuccessorProbabilityEvidence(successor_protocols,probability_references,block_references)
+ 

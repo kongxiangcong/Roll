@@ -1,0 +1,1917 @@
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-19T00:28:19.489665+00:00",
+  "model": {
+    "id": "yiyanghkust/finbert-tone-chinese",
+    "revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    "weights_sha256": "0c25b105902f90d1e039d511944af4f49d1490f6698e701f2704a714ca74e66b",
+    "label_mapping": {
+      "0": "NEUTRAL",
+      "1": "POSITIVE",
+      "2": "NEGATIVE"
+    }
+  },
+  "evaluation_freeze_sha256": "9da74ac48a62528f95ff60dc534d2725a410277671327368cd08c43c71db6e5f",
+  "network_calls": 0,
+  "training": false,
+  "old_holdout_loaded": false,
+  "rows": [
+    {
+      "id": "04-12",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-07",
+      "label": "POSITIVE",
+      "input_sha256": "8bd80837e3c36354ab02893b370e622073b875615cb2e966183dfdf2dece9d03",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.08201566338539124,
+        "POSITIVE": 0.9169274568557739,
+        "NEGATIVE": 0.001056915963999927
+      },
+      "confidence": 0.9169274568557739,
+      "latency_seconds": 0.07830370002193376
+    },
+    {
+      "id": "04-25",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-04",
+      "label": "POSITIVE",
+      "input_sha256": "6647d85e6c0e3f505a361a8293236a679439fb5f9c7c2777eec97ed62e103740",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.015603601932525635,
+        "POSITIVE": 0.9836251139640808,
+        "NEGATIVE": 0.0007712311926297843
+      },
+      "confidence": 0.9836251139640808,
+      "latency_seconds": 0.060546600027009845
+    },
+    {
+      "id": "04-38",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-27",
+      "label": "POSITIVE",
+      "input_sha256": "0b4fd372204f04aad2d6f4eb2aba6bd4fa3047638a636b1f2abc5c4c923de096",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0038049581926316023,
+        "POSITIVE": 0.9954124093055725,
+        "NEGATIVE": 0.0007827231893315911
+      },
+      "confidence": 0.9954124093055725,
+      "latency_seconds": 0.05327139998553321
+    },
+    {
+      "id": "04-46",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-23",
+      "label": "POSITIVE",
+      "input_sha256": "ee4e17b3d8debb0804f552d400196d230c3c78c5972dfd6249084d8542fda9b2",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.021192261949181557,
+        "POSITIVE": 0.9779637455940247,
+        "NEGATIVE": 0.0008440159144811332
+      },
+      "confidence": 0.9779637455940247,
+      "latency_seconds": 0.05963020003400743
+    },
+    {
+      "id": "04-47",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-21",
+      "label": "POSITIVE",
+      "input_sha256": "0ba635edba71b663b4bfd4ac4a583311767db23a1be61ba9858a34f3843f3dd4",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00885771680623293,
+        "POSITIVE": 0.9903035759925842,
+        "NEGATIVE": 0.0008387433481402695
+      },
+      "confidence": 0.9903035759925842,
+      "latency_seconds": 0.06468060001498088
+    },
+    {
+      "id": "04-79",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-22",
+      "label": "POSITIVE",
+      "input_sha256": "59d480d15d94ba73587c3c03c27eb0ac5288bdce3d3fb92424982c5e4a695def",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0030002302955836058,
+        "POSITIVE": 0.9965642094612122,
+        "NEGATIVE": 0.0004355038399808109
+      },
+      "confidence": 0.9965642094612122,
+      "latency_seconds": 0.07202819996746257
+    },
+    {
+      "id": "04-82",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-14",
+      "label": "POSITIVE",
+      "input_sha256": "665ebaf9685c5a8a0f4447537ece00370c1f372448069eaf3273af5b31ef3cc3",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0029063739348202944,
+        "POSITIVE": 0.9963515996932983,
+        "NEGATIVE": 0.0007420019246637821
+      },
+      "confidence": 0.9963515996932983,
+      "latency_seconds": 0.061591100005898625
+    },
+    {
+      "id": "04-137",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-02",
+      "label": "POSITIVE",
+      "input_sha256": "2a54470c38a9487ff5000d4aac714c08eb9e781e7d3a386875f50aa3bc439614",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.004390321206301451,
+        "POSITIVE": 0.995215892791748,
+        "NEGATIVE": 0.00039381824899464846
+      },
+      "confidence": 0.995215892791748,
+      "latency_seconds": 0.05279970000265166
+    },
+    {
+      "id": "04-167",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-29",
+      "label": "POSITIVE",
+      "input_sha256": "30acb3a4e1c053ba5f991dd1d614da5cf7fe4b4ad7df6198d1e8eb082f0c26b5",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0033149863593280315,
+        "POSITIVE": 0.9959143996238708,
+        "NEGATIVE": 0.000770599755924195
+      },
+      "confidence": 0.9959143996238708,
+      "latency_seconds": 0.05208560003666207
+    },
+    {
+      "id": "04-198",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-22",
+      "label": "POSITIVE",
+      "input_sha256": "24cb0389c5b40ac58c017e500885f19fe073d628fe7e2764d1f7580604e3b437",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0863964855670929,
+        "POSITIVE": 0.912531852722168,
+        "NEGATIVE": 0.0010716458782553673
+      },
+      "confidence": 0.912531852722168,
+      "latency_seconds": 0.07144210004480556
+    },
+    {
+      "id": "04-199",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-18",
+      "label": "POSITIVE",
+      "input_sha256": "2b9ae6d03285619f100880cbf78f023f1affeaa537eab40246a9ff3351db3b5c",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.01603984646499157,
+        "POSITIVE": 0.983132004737854,
+        "NEGATIVE": 0.0008281742339022458
+      },
+      "confidence": 0.983132004737854,
+      "latency_seconds": 0.054407799965702
+    },
+    {
+      "id": "04-206",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-17",
+      "label": "POSITIVE",
+      "input_sha256": "b014c685728c649a4c69c914626a784ed671d2624e21a9448a64bc31c4549e41",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00414610281586647,
+        "POSITIVE": 0.9949944019317627,
+        "NEGATIVE": 0.0008594086393713951
+      },
+      "confidence": 0.9949944019317627,
+      "latency_seconds": 0.05048259999603033
+    },
+    {
+      "id": "04-251",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-15",
+      "label": "POSITIVE",
+      "input_sha256": "c13fd901b7954fdc70ed3418ad63737ade616a55b124167449ce2326f9cfa914",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0038191687781363726,
+        "POSITIVE": 0.9953852295875549,
+        "NEGATIVE": 0.0007956514600664377
+      },
+      "confidence": 0.9953852295875549,
+      "latency_seconds": 0.051243299967609346
+    },
+    {
+      "id": "04-244",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-15",
+      "label": "POSITIVE",
+      "input_sha256": "8bae2727e6b7490a4b4f3e6a9162ca495bd09a284b6ef90bf924790b1166e26e",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0114702507853508,
+        "POSITIVE": 0.9877386093139648,
+        "NEGATIVE": 0.0007911593420431018
+      },
+      "confidence": 0.9877386093139648,
+      "latency_seconds": 0.05719630001112819
+    },
+    {
+      "id": "04-283",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-12",
+      "label": "POSITIVE",
+      "input_sha256": "337a00b3554e56d3f34b6cc050098c0010af33a34fe05aa0dbb41ba3ce3a96a3",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.016920756548643112,
+        "POSITIVE": 0.9822090864181519,
+        "NEGATIVE": 0.000870062387548387
+      },
+      "confidence": 0.9822090864181519,
+      "latency_seconds": 0.06028350000269711
+    },
+    {
+      "id": "04-343",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-05",
+      "label": "POSITIVE",
+      "input_sha256": "9e7fa4d94e267768b5a50c287c62d3ccba56418189ce1985f822cb0b6b1e22d2",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.003319589886814356,
+        "POSITIVE": 0.9959003329277039,
+        "NEGATIVE": 0.0007801676401868463
+      },
+      "confidence": 0.9959003329277039,
+      "latency_seconds": 0.05857179994927719
+    },
+    {
+      "id": "04-353",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-03",
+      "label": "POSITIVE",
+      "input_sha256": "23ca6d86d04549a6c97a4026fe7869013f2fd40eeefc9e73e3447146699becd6",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0019584111869335175,
+        "POSITIVE": 0.9975066781044006,
+        "NEGATIVE": 0.000534942839294672
+      },
+      "confidence": 0.9975066781044006,
+      "latency_seconds": 0.06437300000106916
+    },
+    {
+      "id": "04-271",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-07",
+      "label": "POSITIVE",
+      "input_sha256": "eaa9cc0364faf65fe53fe508a3bd6946ed7896dbc17a54dda81935667e2aaa04",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.001758316531777382,
+        "POSITIVE": 0.9978495836257935,
+        "NEGATIVE": 0.0003920944582205266
+      },
+      "confidence": 0.9978495836257935,
+      "latency_seconds": 0.08484210004098713
+    },
+    {
+      "id": "04-332",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-04-29",
+      "label": "POSITIVE",
+      "input_sha256": "d7f02e1e3b3a7841a7c8c539d550a17354b16a7e8601b4ddf1f9b41987716978",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.26544782519340515,
+        "POSITIVE": 0.7323954105377197,
+        "NEGATIVE": 0.0021567712537944317
+      },
+      "confidence": 0.7323954105377197,
+      "latency_seconds": 0.05730949999997392
+    },
+    {
+      "id": "04-409",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-20",
+      "label": "POSITIVE",
+      "input_sha256": "77aa962c033410db1bfab46d5121b8fa840164bc9dd456edce0f42bd410c4fcb",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.003210417926311493,
+        "POSITIVE": 0.9960466027259827,
+        "NEGATIVE": 0.0007429808028973639
+      },
+      "confidence": 0.9960466027259827,
+      "latency_seconds": 0.057627900037914515
+    },
+    {
+      "id": "04-418",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-13",
+      "label": "POSITIVE",
+      "input_sha256": "6ca8e68a26436e17ffef6f923fc8e3be1c7fe152bf21e5733d145b324bd21716",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.19672052562236786,
+        "POSITIVE": 0.8013498783111572,
+        "NEGATIVE": 0.0019295556703582406
+      },
+      "confidence": 0.8013498783111572,
+      "latency_seconds": 0.06563950004056096
+    },
+    {
+      "id": "04-421",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-12",
+      "label": "POSITIVE",
+      "input_sha256": "a58ef7dfa71e85d3c5099722b1f77feff81d30692b0ea20af29a6eb5c7775cf4",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.011397384107112885,
+        "POSITIVE": 0.9876717329025269,
+        "NEGATIVE": 0.0009308374719694257
+      },
+      "confidence": 0.9876717329025269,
+      "latency_seconds": 0.07154020003508776
+    },
+    {
+      "id": "04-426",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-14",
+      "label": "POSITIVE",
+      "input_sha256": "8cd6821121875581960346f42b20a5a6c33f45f3861d8b89ede5cf3658a999ee",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0045026009902358055,
+        "POSITIVE": 0.9951015114784241,
+        "NEGATIVE": 0.00039591346285305917
+      },
+      "confidence": 0.9951015114784241,
+      "latency_seconds": 0.07742769998731092
+    },
+    {
+      "id": "04-470",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-04-23",
+      "label": "POSITIVE",
+      "input_sha256": "73b4594b25978bf7e5997a2513a119042a0c55fc0fa913a0f2d72bcc51cc7a8d",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.010775524191558361,
+        "POSITIVE": 0.9882204532623291,
+        "NEGATIVE": 0.0010040492052212358
+      },
+      "confidence": 0.9882204532623291,
+      "latency_seconds": 0.06218129995977506
+    },
+    {
+      "id": "04-13",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-07",
+      "label": "POSITIVE",
+      "input_sha256": "275e1fa78c7886fb60111bcedd97664bed6d1f2b9f59e91944441995cb22e15c",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.004104069899767637,
+        "POSITIVE": 0.9950849413871765,
+        "NEGATIVE": 0.000811016361694783
+      },
+      "confidence": 0.9950849413871765,
+      "latency_seconds": 0.07095900003332645
+    },
+    {
+      "id": "04-18",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-07",
+      "label": "POSITIVE",
+      "input_sha256": "633c274c1099166c26e825919a2460a1c0cd4e3af0be2950d5d2a1d8c501dff1",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.003321720054373145,
+        "POSITIVE": 0.9960092306137085,
+        "NEGATIVE": 0.0006690591690130532
+      },
+      "confidence": 0.9960092306137085,
+      "latency_seconds": 0.07721249997848645
+    },
+    {
+      "id": "04-55",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-18",
+      "label": "POSITIVE",
+      "input_sha256": "116e7ae1b205e3fef948d9db029b0232757185cb3f7d96a6d0b88bbdbf890b73",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.26567625999450684,
+        "POSITIVE": 0.7336307764053345,
+        "NEGATIVE": 0.0006928684888407588
+      },
+      "confidence": 0.7336307764053345,
+      "latency_seconds": 0.08405399997718632
+    },
+    {
+      "id": "04-75",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-15",
+      "label": "POSITIVE",
+      "input_sha256": "18db06a973502b4776c27f9289ca2601e51f780c7d7fdfc9682754af44075bdb",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0017706749495118856,
+        "POSITIVE": 0.9979249238967896,
+        "NEGATIVE": 0.0003043970500584692
+      },
+      "confidence": 0.9979249238967896,
+      "latency_seconds": 0.07966580003267154
+    },
+    {
+      "id": "04-87",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-14",
+      "label": "POSITIVE",
+      "input_sha256": "e79b99f1ba5fa2082057afbbea25e43832a7a28979fb267c6befd64fcaef3b17",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.011600155383348465,
+        "POSITIVE": 0.9875104427337646,
+        "NEGATIVE": 0.0008894045604392886
+      },
+      "confidence": 0.9875104427337646,
+      "latency_seconds": 0.07948879996547475
+    },
+    {
+      "id": "03-701",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-17",
+      "label": "POSITIVE",
+      "input_sha256": "784bfca28b5f09a9552344448ce1cbea7538841ce385c31cdefb3ac0809dc588",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0034964787773787975,
+        "POSITIVE": 0.9957084655761719,
+        "NEGATIVE": 0.0007950059371069074
+      },
+      "confidence": 0.9957084655761719,
+      "latency_seconds": 0.0700094000203535
+    },
+    {
+      "id": "03-686",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-18",
+      "label": "NEGATIVE",
+      "input_sha256": "a82622e6422a2d4c8b4cce317ba2796055454acab7cf15e480c75f44183f0057",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.012323902919888496,
+        "POSITIVE": 0.002530337544158101,
+        "NEGATIVE": 0.9851458072662354
+      },
+      "confidence": 0.9851458072662354,
+      "latency_seconds": 0.06213849998312071
+    },
+    {
+      "id": "04-11",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-10",
+      "label": "NEGATIVE",
+      "input_sha256": "493872157bdd5c9ef8a2aa6b566b92a24d555a9a6cf06d24c487dfe40f01ab86",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.011283866129815578,
+        "POSITIVE": 0.002407471416518092,
+        "NEGATIVE": 0.9863086342811584
+      },
+      "confidence": 0.9863086342811584,
+      "latency_seconds": 0.05146200000308454
+    },
+    {
+      "id": "04-31",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-08-03",
+      "label": "NEGATIVE",
+      "input_sha256": "c8126c45f223ea69a0b8d377c3a4f28fca01ea714ac38796710b9f17475d1f27",
+      "prediction": "ABSTAIN_LOW_CONFIDENCE",
+      "probabilities": {
+        "NEUTRAL": 0.4779791235923767,
+        "POSITIVE": 0.007173460908234119,
+        "NEGATIVE": 0.5148473978042603
+      },
+      "confidence": 0.5148473978042603,
+      "latency_seconds": 0.05094499996630475
+    },
+    {
+      "id": "04-36",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-23",
+      "label": "NEGATIVE",
+      "input_sha256": "1e832b00b0ec97c230829507e5e5f83d550e8b80ada7e801d7375df3827745d3",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.8977092504501343,
+        "POSITIVE": 0.005347267724573612,
+        "NEGATIVE": 0.09694354236125946
+      },
+      "confidence": 0.8977092504501343,
+      "latency_seconds": 0.08626800001366064
+    },
+    {
+      "id": "04-108",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-13",
+      "label": "NEGATIVE",
+      "input_sha256": "083e10a02211689bf9e0ce37190e2ee0cff30a436c34fc015e3a0e0beaa555c2",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9967340230941772,
+        "POSITIVE": 0.002091199392452836,
+        "NEGATIVE": 0.001174820470623672
+      },
+      "confidence": 0.9967340230941772,
+      "latency_seconds": 0.05693099997006357
+    },
+    {
+      "id": "04-118",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-18",
+      "label": "NEGATIVE",
+      "input_sha256": "5d74f5cb8703f994b9375bf4778739dbd4240c575acca5982d1aa9d79328ef6a",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.00207852222956717,
+        "POSITIVE": 0.0007548832218162715,
+        "NEGATIVE": 0.9971665740013123
+      },
+      "confidence": 0.9971665740013123,
+      "latency_seconds": 0.06321809999644756
+    },
+    {
+      "id": "04-128",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-07-09",
+      "label": "NEGATIVE",
+      "input_sha256": "2a6d5f01debdc668efe9bf90fd565ba553f72f12b48ab61a4837825b32fc5497",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.786401093006134,
+        "POSITIVE": 0.026351099833846092,
+        "NEGATIVE": 0.18724790215492249
+      },
+      "confidence": 0.786401093006134,
+      "latency_seconds": 0.05813690001377836
+    },
+    {
+      "id": "04-174",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-25",
+      "label": "NEGATIVE",
+      "input_sha256": "56d1f3b37ec289db95ecb010ef357107e761b30438c155da07665cb018f55cc1",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.012053323909640312,
+        "POSITIVE": 0.002486689481884241,
+        "NEGATIVE": 0.9854599833488464
+      },
+      "confidence": 0.9854599833488464,
+      "latency_seconds": 0.05596450000302866
+    },
+    {
+      "id": "04-180",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-24",
+      "label": "NEGATIVE",
+      "input_sha256": "172c9798185067a91e254dfadf502b39ea24c49d44b0200429b7cfaa00335213",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.01941104792058468,
+        "POSITIVE": 0.002908638445660472,
+        "NEGATIVE": 0.9776803851127625
+      },
+      "confidence": 0.9776803851127625,
+      "latency_seconds": 0.06456299999263138
+    },
+    {
+      "id": "04-193",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-22",
+      "label": "NEGATIVE",
+      "input_sha256": "d0e3dc6f848d5ea12b8f7d8a68decebe6d795ef8e815aaaeb09cec22ed922ea2",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.014508572407066822,
+        "POSITIVE": 0.002701843623071909,
+        "NEGATIVE": 0.9827895164489746
+      },
+      "confidence": 0.9827895164489746,
+      "latency_seconds": 0.05710450001060963
+    },
+    {
+      "id": "04-293",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-11",
+      "label": "NEGATIVE",
+      "input_sha256": "3c15a9c1b674884c099f11d204bf95e122bc0210d11ac816b9582568041e25bc",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9977701902389526,
+        "POSITIVE": 0.0012566158547997475,
+        "NEGATIVE": 0.0009731845930218697
+      },
+      "confidence": 0.9977701902389526,
+      "latency_seconds": 0.05425450002076104
+    },
+    {
+      "id": "04-294",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-05",
+      "label": "NEGATIVE",
+      "input_sha256": "466846ce9f42d5b04c915e4882e8250465a8b721a825a33493c9aac9b16172e8",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.013791215606033802,
+        "POSITIVE": 0.0018133465200662613,
+        "NEGATIVE": 0.9843953847885132
+      },
+      "confidence": 0.9843953847885132,
+      "latency_seconds": 0.07530859997496009
+    },
+    {
+      "id": "04-313",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-09",
+      "label": "NEGATIVE",
+      "input_sha256": "7704fa1690aa943e18a1879325097e4e224e9354d33b6bbd6b1de38b855408a8",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.012409077025949955,
+        "POSITIVE": 0.0017895750934258103,
+        "NEGATIVE": 0.9858013987541199
+      },
+      "confidence": 0.9858013987541199,
+      "latency_seconds": 0.06425719999242574
+    },
+    {
+      "id": "04-314",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-08",
+      "label": "NEGATIVE",
+      "input_sha256": "fe1bb76fe476d0ef505872c6bbfe9aed14c462beec386d1e7df016de38ae28e4",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.009192601777613163,
+        "POSITIVE": 0.0019090012647211552,
+        "NEGATIVE": 0.9888984560966492
+      },
+      "confidence": 0.9888984560966492,
+      "latency_seconds": 0.050647799973376095
+    },
+    {
+      "id": "04-395",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-27",
+      "label": "NEGATIVE",
+      "input_sha256": "f38d0a0821c277e5a7b5871c5b7ec46e3c073e50860ed2ba686d8165018ebff9",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.0065109748393297195,
+        "POSITIVE": 0.0013586870627477765,
+        "NEGATIVE": 0.9921303391456604
+      },
+      "confidence": 0.9921303391456604,
+      "latency_seconds": 0.051824199967086315
+    },
+    {
+      "id": "04-406",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "COMPANY-MARKET-SESSION-2026-05-18",
+      "label": "NEGATIVE",
+      "input_sha256": "b828965bbccc2d2f19b275288b4f2ab5a0905e8c8c64d147efc9c4bf636a24bb",
+      "prediction": "NEGATIVE",
+      "probabilities": {
+        "NEUTRAL": 0.010541316121816635,
+        "POSITIVE": 0.0022355022374540567,
+        "NEGATIVE": 0.9872231483459473
+      },
+      "confidence": 0.9872231483459473,
+      "latency_seconds": 0.06405879999510944
+    },
+    {
+      "id": "CNI-1205949979",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2019-03-28",
+      "label": "NEGATIVE",
+      "input_sha256": "581eae7ac54d3019fca8467e94f6dec6634baf11191ea43688f45a7451de608d",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9932079911231995,
+        "POSITIVE": 0.0012787843588739634,
+        "NEGATIVE": 0.0055131930857896805
+      },
+      "confidence": 0.9932079911231995,
+      "latency_seconds": 0.06601389998104423
+    },
+    {
+      "id": "CNI-1206730940",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2019-08-30",
+      "label": "NEGATIVE",
+      "input_sha256": "e298654c21f89647e440c02e5cc01e785bd952bd6f6043c50d4f88874a79c924",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9904691576957703,
+        "POSITIVE": 0.0013406816869974136,
+        "NEGATIVE": 0.008190106600522995
+      },
+      "confidence": 0.9904691576957703,
+      "latency_seconds": 0.07442150003043935
+    },
+    {
+      "id": "CNI-1207432726",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2020-03-31",
+      "label": "NEGATIVE",
+      "input_sha256": "d4e772f4b7d7e32ae1a042e0bb2f68b19c22fd1062e96f4e7c65d4b231809a5c",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.992099940776825,
+        "POSITIVE": 0.0012824401492252946,
+        "NEGATIVE": 0.006617547944188118
+      },
+      "confidence": 0.992099940776825,
+      "latency_seconds": 0.06345859996508807
+    },
+    {
+      "id": "CNI-1207667974",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2020-04-29",
+      "label": "NEGATIVE",
+      "input_sha256": "58d1b3d0ec0e4676efa5474bf1c6db0ab4c1c2cf0656c2a1dc1ecf76629ca5e4",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9924291968345642,
+        "POSITIVE": 0.0013906504027545452,
+        "NEGATIVE": 0.006180156022310257
+      },
+      "confidence": 0.9924291968345642,
+      "latency_seconds": 0.059278399974573404
+    },
+    {
+      "id": "CNI-1208325593",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2020-08-29",
+      "label": "NEGATIVE",
+      "input_sha256": "0eb7b17e19c9caab7ed116fc4ae4d6db83cc168a300ec61ff82370c451927e69",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9936810731887817,
+        "POSITIVE": 0.0013101031072437763,
+        "NEGATIVE": 0.0050087482668459415
+      },
+      "confidence": 0.9936810731887817,
+      "latency_seconds": 0.07737780001480132
+    },
+    {
+      "id": "CNI-1208662992",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2020-10-31",
+      "label": "NEGATIVE",
+      "input_sha256": "855cf171adcaddfe26c5a9e6a99dcf92432dd79fd900ad9d8ee9db4b059b6878",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9945828318595886,
+        "POSITIVE": 0.0012331507168710232,
+        "NEGATIVE": 0.004183946643024683
+      },
+      "confidence": 0.9945828318595886,
+      "latency_seconds": 0.07156989997019991
+    },
+    {
+      "id": "CNI-1209481070",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2021-03-30",
+      "label": "NEGATIVE",
+      "input_sha256": "cf5e910c1affa7120fc59183aecc739094706ea3c1bfb7aa703ffbcfcb7a968e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9962490200996399,
+        "POSITIVE": 0.001734979567117989,
+        "NEGATIVE": 0.002015940612182021
+      },
+      "confidence": 0.9962490200996399,
+      "latency_seconds": 0.09772680001333356
+    },
+    {
+      "id": "CNI-1210900078",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2021-08-28",
+      "label": "NEGATIVE",
+      "input_sha256": "2daf42d6c8a978104d9b82dbb123a71744c95aa4ded7bdbb35df06da96a72e2b",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9958925247192383,
+        "POSITIVE": 0.0017079244134947658,
+        "NEGATIVE": 0.0023995169904083014
+      },
+      "confidence": 0.9958925247192383,
+      "latency_seconds": 0.07158180000260472
+    },
+    {
+      "id": "CNI-1212685857",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2022-03-26",
+      "label": "NEGATIVE",
+      "input_sha256": "7e616ee7334bce83214d518c92f74d49bebad6516a324ac8cc9c480d2316900e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9958468079566956,
+        "POSITIVE": 0.0017600543797016144,
+        "NEGATIVE": 0.0023931064642965794
+      },
+      "confidence": 0.9958468079566956,
+      "latency_seconds": 0.06950370001140982
+    },
+    {
+      "id": "CNI-1214405245",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2022-08-26",
+      "label": "NEGATIVE",
+      "input_sha256": "cfb36eb68ebdb408f99b70fdafa7363a7d092fb4a38ebad773ba6945a316f162",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.995884120464325,
+        "POSITIVE": 0.0015820626867935061,
+        "NEGATIVE": 0.002533758757635951
+      },
+      "confidence": 0.995884120464325,
+      "latency_seconds": 0.07807779998984188
+    },
+    {
+      "id": "CNI-1216220924",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2023-03-25",
+      "label": "NEGATIVE",
+      "input_sha256": "628593f54c05298770a52a44dfaeed7d3e076f77c4d8010422d90e38cff21fb4",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9959346055984497,
+        "POSITIVE": 0.00160238950047642,
+        "NEGATIVE": 0.0024628916289657354
+      },
+      "confidence": 0.9959346055984497,
+      "latency_seconds": 0.06913600000552833
+    },
+    {
+      "id": "CNI-1217649497",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2023-08-26",
+      "label": "NEGATIVE",
+      "input_sha256": "f107a8d469ddfde5a8814a75795d0a1f9bde4ff37b2e8f330353dd9f1afce248",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9958190321922302,
+        "POSITIVE": 0.0015416464302688837,
+        "NEGATIVE": 0.002639294369146228
+      },
+      "confidence": 0.9958190321922302,
+      "latency_seconds": 0.07325690001016483
+    },
+    {
+      "id": "CNI-1219426052",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2024-03-28",
+      "label": "NEGATIVE",
+      "input_sha256": "f065061087768f031234046574b819bae737cb96d69e3bce8503574b9c985970",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.99616938829422,
+        "POSITIVE": 0.0016243247082456946,
+        "NEGATIVE": 0.002206331817433238
+      },
+      "confidence": 0.99616938829422,
+      "latency_seconds": 0.07486990001052618
+    },
+    {
+      "id": "CNI-1221024137",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2024-08-29",
+      "label": "NEGATIVE",
+      "input_sha256": "c3a577c00c193a749100e96a13b5ec9d8bef4f8fe69c795b56119ad0374faee8",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9957349300384521,
+        "POSITIVE": 0.0015589555259793997,
+        "NEGATIVE": 0.0027061859145760536
+      },
+      "confidence": 0.9957349300384521,
+      "latency_seconds": 0.07930789998499677
+    },
+    {
+      "id": "CNI-1202351798",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2016-FUNDRAISING-REVISIONS",
+      "label": "NEUTRAL",
+      "input_sha256": "4316916dfcc2393972b1efba9147b50df5283986c29d9fb99295f395a9de85cf",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9967314004898071,
+        "POSITIVE": 0.002128439722582698,
+        "NEGATIVE": 0.0011402482632547617
+      },
+      "confidence": 0.9967314004898071,
+      "latency_seconds": 0.06553160003386438
+    },
+    {
+      "id": "CNI-1202351800",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2016-FUNDRAISING-REVISIONS",
+      "label": "NEUTRAL",
+      "input_sha256": "e7b88143fc4e3df0f5e9bf93f8f0cf9a25efcbb8a04e6d55649c689112ca5156",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9949186444282532,
+        "POSITIVE": 0.0031671274919062853,
+        "NEGATIVE": 0.001914230058901012
+      },
+      "confidence": 0.9949186444282532,
+      "latency_seconds": 0.07863579998956993
+    },
+    {
+      "id": "CNI-1202552172",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2016-08-10",
+      "label": "NEUTRAL",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "CNI-1203572165",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2016-FUNDRAISING-REVISIONS",
+      "label": "NEUTRAL",
+      "input_sha256": "6f4fe37d104df9c8f4ef45c01d0779c2f16aa69dbf67b5f03c9f741120c91742",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9967893958091736,
+        "POSITIVE": 0.002183021977543831,
+        "NEGATIVE": 0.0010275444947183132
+      },
+      "confidence": 0.9967893958091736,
+      "latency_seconds": 0.06662189995404333
+    },
+    {
+      "id": "CNI-1203572166",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2016-FUNDRAISING-REVISIONS",
+      "label": "NEUTRAL",
+      "input_sha256": "cd4b1991e1d5e33e6b3d24080c49fb97e427a7dea562140f8c6f8a9c7826da27",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9965715408325195,
+        "POSITIVE": 0.0018389197066426277,
+        "NEGATIVE": 0.0015895965043455362
+      },
+      "confidence": 0.9965715408325195,
+      "latency_seconds": 0.07227850001072511
+    },
+    {
+      "id": "CNI-1203572167",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2016-FUNDRAISING-REVISIONS",
+      "label": "NEUTRAL",
+      "input_sha256": "f4e5dec2b537f22c415805354bf1e30570324eaa4c862aee8782c8150f798b87",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9955405592918396,
+        "POSITIVE": 0.0029807810205966234,
+        "NEGATIVE": 0.0014785813400521874
+      },
+      "confidence": 0.9955405592918396,
+      "latency_seconds": 0.10292089998256415
+    },
+    {
+      "id": "CNI-1203572168",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2016-FUNDRAISING-REVISIONS",
+      "label": "NEUTRAL",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "CNI-1203897243",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2017-08-30",
+      "label": "NEUTRAL",
+      "input_sha256": "ba1121dde98775029ced7779e9d238cb8289cce657f91d86b26e03966f5e3f41",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9958915710449219,
+        "POSITIVE": 0.0023341719061136246,
+        "NEGATIVE": 0.0017742683412507176
+      },
+      "confidence": 0.9958915710449219,
+      "latency_seconds": 0.06612660002429038
+    },
+    {
+      "id": "CNI-1205099331",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2018-REPORT-REVISION-BUNDLE",
+      "label": "NEUTRAL",
+      "input_sha256": "93c0326b01b12be2cbeff3d1f7eafeecc5aef623b5cf4d30788ff90a6fd272d6",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9964505434036255,
+        "POSITIVE": 0.0019996927585452795,
+        "NEGATIVE": 0.0015497928252443671
+      },
+      "confidence": 0.9964505434036255,
+      "latency_seconds": 0.06432170001789927
+    },
+    {
+      "id": "CNI-1205099333",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2018-REPORT-REVISION-BUNDLE",
+      "label": "NEUTRAL",
+      "input_sha256": "3e8fd571725abc0d5b8579b80397e3849e0b488bcd8b805b59d8258b6b913b2d",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9966256618499756,
+        "POSITIVE": 0.0019011502154171467,
+        "NEGATIVE": 0.0014731748960912228
+      },
+      "confidence": 0.9966256618499756,
+      "latency_seconds": 0.06027269997866824
+    },
+    {
+      "id": "CNI-1205099335",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-2018-REPORT-REVISION-BUNDLE",
+      "label": "NEUTRAL",
+      "input_sha256": "7609b67d8f056e735a4091d1dddffd3c3e1c2c5ec3dc1ed7859882b0f520ed71",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9965195655822754,
+        "POSITIVE": 0.0019325781613588333,
+        "NEGATIVE": 0.0015478631248697639
+      },
+      "confidence": 0.9965195655822754,
+      "latency_seconds": 0.05722830002196133
+    },
+    {
+      "id": "CNI-1205613239",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2018-11-17",
+      "label": "NEUTRAL",
+      "input_sha256": "ba1121dde98775029ced7779e9d238cb8289cce657f91d86b26e03966f5e3f41",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9958915710449219,
+        "POSITIVE": 0.0023341719061136246,
+        "NEGATIVE": 0.0017742683412507176
+      },
+      "confidence": 0.9958915710449219,
+      "latency_seconds": 0.06704049999825656
+    },
+    {
+      "id": "CNI-1205781833",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2019-01-19",
+      "label": "NEUTRAL",
+      "input_sha256": "427df8583d64fb8d980d3b382b2a49d0a0720218c143fcaf80600ad6f3f9e047",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9963307976722717,
+        "POSITIVE": 0.0018307333812117577,
+        "NEGATIVE": 0.0018385201692581177
+      },
+      "confidence": 0.9963307976722717,
+      "latency_seconds": 0.06907819997286424
+    },
+    {
+      "id": "CNI-1205781834",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2019-01-19",
+      "label": "NEUTRAL",
+      "input_sha256": "e8e3da6df35ac128f1147f26d49a5cdb64aa17381887c60f006f114a351f04fe",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9966979026794434,
+        "POSITIVE": 0.0017773864092305303,
+        "NEGATIVE": 0.0015247775008901954
+      },
+      "confidence": 0.9966979026794434,
+      "latency_seconds": 0.07280650001484901
+    },
+    {
+      "id": "CNI-1206094729",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2019-04-25",
+      "label": "NEUTRAL",
+      "input_sha256": "ba1121dde98775029ced7779e9d238cb8289cce657f91d86b26e03966f5e3f41",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9958915710449219,
+        "POSITIVE": 0.0023341719061136246,
+        "NEGATIVE": 0.0017742683412507176
+      },
+      "confidence": 0.9958915710449219,
+      "latency_seconds": 0.06895039998926222
+    },
+    {
+      "id": "CNI-1207208058",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2019-12-31",
+      "label": "NEUTRAL",
+      "input_sha256": "ba1121dde98775029ced7779e9d238cb8289cce657f91d86b26e03966f5e3f41",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9958915710449219,
+        "POSITIVE": 0.0023341719061136246,
+        "NEGATIVE": 0.0017742683412507176
+      },
+      "confidence": 0.9958915710449219,
+      "latency_seconds": 0.07570669997949153
+    },
+    {
+      "id": "CNI-1208664534",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2020-10-31",
+      "label": "NEUTRAL",
+      "input_sha256": "c4eb644b2586fe3c7a8db5d5de6694b0f641f29389da121ff56abdc9448b5c53",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9964712858200073,
+        "POSITIVE": 0.0020568817853927612,
+        "NEGATIVE": 0.001471935654990375
+      },
+      "confidence": 0.9964712858200073,
+      "latency_seconds": 0.07942560000810772
+    },
+    {
+      "id": "CNI-1209410530",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2021-03-19",
+      "label": "NEUTRAL",
+      "input_sha256": "77848a2cb485443397b7cdf70096001a023d672500a65bf6c7c4c7ac6d386b4c",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9963374137878418,
+        "POSITIVE": 0.0021388414315879345,
+        "NEGATIVE": 0.0015237891348078847
+      },
+      "confidence": 0.9963374137878418,
+      "latency_seconds": 0.08327529998496175
+    },
+    {
+      "id": "CNI-1209410536",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2021-03-19",
+      "label": "NEUTRAL",
+      "input_sha256": "1c2fc84d44dd38bcc93fe3b129a07c768a7959c25e72faf9da8b0dd3358d3083",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9963045120239258,
+        "POSITIVE": 0.0022379758302122355,
+        "NEGATIVE": 0.0014575637178495526
+      },
+      "confidence": 0.9963045120239258,
+      "latency_seconds": 0.09334969997871667
+    },
+    {
+      "id": "CNI-1209410539",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2021-03-19",
+      "label": "NEUTRAL",
+      "input_sha256": "87a2dc324620e17715d4ca7ce825253a7db93ce1c6920233a85cc64179269711",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9965569972991943,
+        "POSITIVE": 0.002163465367630124,
+        "NEGATIVE": 0.0012795403599739075
+      },
+      "confidence": 0.9965569972991943,
+      "latency_seconds": 0.10286609997274354
+    },
+    {
+      "id": "CNI-1210301354",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2021-06-22",
+      "label": "NEUTRAL",
+      "input_sha256": "35943283b19ad1ebcf74c9a98ee5149037ae8793f3e6b1af8333898122d82404",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9969396591186523,
+        "POSITIVE": 0.0018944235052913427,
+        "NEGATIVE": 0.0011659780284389853
+      },
+      "confidence": 0.9969396591186523,
+      "latency_seconds": 0.074414600036107
+    },
+    {
+      "id": "CNI-1224607184",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "c68bbe0e45acf92f4d4ff02971551f63784a8b6eb72b69a12dfa64b68f4201bd",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9953175783157349,
+        "POSITIVE": 0.0019169390434399247,
+        "NEGATIVE": 0.002765499986708164
+      },
+      "confidence": 0.9953175783157349,
+      "latency_seconds": 0.10171000001719221
+    },
+    {
+      "id": "CNI-1224607190",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "9760909bf940dc5176ea871ec6e4901fafd632781818c1a43d8e47df0d61b35e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.994026780128479,
+        "POSITIVE": 0.0027184055652469397,
+        "NEGATIVE": 0.0032547328155487776
+      },
+      "confidence": 0.994026780128479,
+      "latency_seconds": 0.07985649997135624
+    },
+    {
+      "id": "CNI-1224607191",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "247684b4093203f7f4f4f67a0e7793722b5fba7d8709720571a3708d0ad30eee",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9936426877975464,
+        "POSITIVE": 0.002758451271802187,
+        "NEGATIVE": 0.0035988502204418182
+      },
+      "confidence": 0.9936426877975464,
+      "latency_seconds": 0.08040010003605857
+    },
+    {
+      "id": "CNI-1224607192",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "5f913cb28c5db4331d83e6f7081adf48b0fdab59ec45c6d3038852bb0525a49b",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9950466156005859,
+        "POSITIVE": 0.0024487797636538744,
+        "NEGATIVE": 0.0025046486407518387
+      },
+      "confidence": 0.9950466156005859,
+      "latency_seconds": 0.07952710002427921
+    },
+    {
+      "id": "CNI-1224607195",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "2616833b64b7f7dee7bf68c8111792bf0a787403d5344837073f0ca507c0011e",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9947145581245422,
+        "POSITIVE": 0.0027593327686190605,
+        "NEGATIVE": 0.002526060678064823
+      },
+      "confidence": 0.9947145581245422,
+      "latency_seconds": 0.09390169999096543
+    },
+    {
+      "id": "CNI-1224607196",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "CNI-1224607197",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "0257583b4e03984e9e5c38a44ac8ad86a84ec83d4cafe8609f296e367ba343c1",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9955897331237793,
+        "POSITIVE": 0.00229096133261919,
+        "NEGATIVE": 0.0021192911081016064
+      },
+      "confidence": 0.9955897331237793,
+      "latency_seconds": 0.07333390001440421
+    },
+    {
+      "id": "CNI-1224607198",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "ea007bb2cb20d3037a14672110d53ade0b19221e0d79f04fee25dbcba5a10692",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9955307841300964,
+        "POSITIVE": 0.0023445640690624714,
+        "NEGATIVE": 0.00212468090467155
+      },
+      "confidence": 0.9955307841300964,
+      "latency_seconds": 0.075810200010892
+    },
+    {
+      "id": "CNI-1224607199",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ISSUER-EVENT-2025-08-29",
+      "label": "NEUTRAL",
+      "input_sha256": "06434129334508c0a8180fbe4bfd45ce75d3a36d39bd5f3ccbd557ef05e92881",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.994541347026825,
+        "POSITIVE": 0.002843516645953059,
+        "NEGATIVE": 0.0026151107158511877
+      },
+      "confidence": 0.994541347026825,
+      "latency_seconds": 0.08702889998676255
+    },
+    {
+      "id": "03-0",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-民生健康-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-1",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-东兴证券-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-3",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-信达证券-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-5",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-民士达-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-7",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-爱施德-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-9",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-苏奥传感-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-12",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-芯朋微-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-13",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-风语筑-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-19",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-金洲管道-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-20",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-民生健康-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-23",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-泰瑞机器-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-24",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-圣农发展-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-26",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-金宏气体-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-27",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-中铝国际-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "03-28",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "OTHER-先达股份-2026Q3",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-39",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ETF-517520-20260730",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-49",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ETF-159157-20260723",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-67",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-中航混改精选A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-68",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-永赢鑫盛混合A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-71",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-嘉实新起点混合A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-72",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-博时浦惠一年持有期混合A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-73",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-博时匠心优选混合A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-74",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-中海混改红利混合A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-76",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-工银国企改革股票-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-77",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-银华稳健增利灵活配置混合发起式A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-80",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-安信周期优选股票型发起A-2026Q2",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-105",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "FUND-FLOW-20260722",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-32",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "SUPPLIER-SENHE-IPO-20260805",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-40",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ETF-517520-20260730",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "04-50",
+      "split": "HOLDOUT_PRIMARY",
+      "event_id": "ETF-159157-20260723",
+      "label": "IRRELEVANT",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "CNI-62261185",
+      "split": "DEVELOPMENT",
+      "event_id": "YONGPING-2013-STOP-RECOVERY",
+      "label": "NEGATIVE",
+      "input_sha256": "16d7656d36bb9ca94b57dd2862199e2734e4c0bca069c962e12375ee177ecb92",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.8347518444061279,
+        "POSITIVE": 0.0032199372071772814,
+        "NEGATIVE": 0.1620282530784607
+      },
+      "confidence": 0.8347518444061279,
+      "latency_seconds": 0.07309439999517053
+    },
+    {
+      "id": "CNI-62318978",
+      "split": "DEVELOPMENT",
+      "event_id": "YONGPING-2013-STOP-RECOVERY",
+      "label": "POSITIVE",
+      "input_sha256": "60e39111db7313a148814d91914b8935b65e7a6ecefd5199b2249fc6d8421c5b",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.995281994342804,
+        "POSITIVE": 0.001829063519835472,
+        "NEGATIVE": 0.0028888822998851538
+      },
+      "confidence": 0.995281994342804,
+      "latency_seconds": 0.06415779999224469
+    },
+    {
+      "id": "CNI-62167749",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-EVENT-2013-03-01",
+      "label": "NEUTRAL",
+      "input_sha256": "1f9688e804e3cae35df9b168d19247d4396c4080e4f2e5aa8c05cdc19a61e538",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.968906581401825,
+        "POSITIVE": 0.0037376785185188055,
+        "NEGATIVE": 0.027355821803212166
+      },
+      "confidence": 0.968906581401825,
+      "latency_seconds": 0.14099480002187192
+    },
+    {
+      "id": "CNI-62182678",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-EVENT-2013-03-05",
+      "label": "NEUTRAL",
+      "input_sha256": "681bedef23c1a61fe1a65110ec13590b0614a4c258f54d16a93dd16254e48ba7",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9967376589775085,
+        "POSITIVE": 0.001854332978837192,
+        "NEGATIVE": 0.001408006064593792
+      },
+      "confidence": 0.9967376589775085,
+      "latency_seconds": 0.07282090000808239
+    },
+    {
+      "id": "CNI-62430657",
+      "split": "DEVELOPMENT",
+      "event_id": "AGM-2012-RESCHEDULE",
+      "label": "NEUTRAL",
+      "input_sha256": "ae26815eb2034d6a0742b00f36786853fa049c6b609ac05962b6bf53f9462b41",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9944387674331665,
+        "POSITIVE": 0.002790113678202033,
+        "NEGATIVE": 0.0027711938600987196
+      },
+      "confidence": 0.9944387674331665,
+      "latency_seconds": 0.06365030002780259
+    },
+    {
+      "id": "CNI-62516096",
+      "split": "DEVELOPMENT",
+      "event_id": "AGM-2012-RESCHEDULE",
+      "label": "NEUTRAL",
+      "input_sha256": "e98b959799e93f4bce6618ff8457052a0cfaaed88a04c3c1597758782c117cbb",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9903781414031982,
+        "POSITIVE": 0.002449656371027231,
+        "NEGATIVE": 0.007172191981226206
+      },
+      "confidence": 0.9903781414031982,
+      "latency_seconds": 0.07221109996316954
+    },
+    {
+      "id": "CNI-62583965",
+      "split": "DEVELOPMENT",
+      "event_id": "AGM-2012-RESCHEDULE",
+      "label": "NEUTRAL",
+      "input_sha256": "a00934946d0bbbbc7ce1dbb1045ad9dd87f3f19e3c14ffce96593d412a114fe3",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9964848756790161,
+        "POSITIVE": 0.0022453090641647577,
+        "NEGATIVE": 0.0012698288774117827
+      },
+      "confidence": 0.9964848756790161,
+      "latency_seconds": 0.08105049998266622
+    },
+    {
+      "id": "CNI-63041127",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-EVENT-2013-09-03",
+      "label": "NEUTRAL",
+      "input_sha256": "0b1f98bbce54958bb51ed1f4d3d1b8d70b393f970859d8e37448d1c127f0d235",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.996712327003479,
+        "POSITIVE": 0.0018355821957811713,
+        "NEGATIVE": 0.0014521237462759018
+      },
+      "confidence": 0.996712327003479,
+      "latency_seconds": 0.09479239996289834
+    },
+    {
+      "id": "CNI-63213186",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-2013Q3-CORRECTION",
+      "label": "NEUTRAL",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prediction": "ABSTAIN_NO_COMPANY_OBJECT",
+      "probabilities": null,
+      "confidence": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "CNI-63261941",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-2013Q3-CORRECTION",
+      "label": "NEUTRAL",
+      "input_sha256": "6d64ff5a58f62a9091281a51f222542a1393003dbe3f5e2a22843d9ee2c0dc4f",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9962636828422546,
+        "POSITIVE": 0.0019818367436528206,
+        "NEGATIVE": 0.001754534663632512
+      },
+      "confidence": 0.9962636828422546,
+      "latency_seconds": 0.06377409998094663
+    },
+    {
+      "id": "CNI-63261942",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-2013Q3-CORRECTION",
+      "label": "NEUTRAL",
+      "input_sha256": "df1e2189f1e5e71b772b420bbd0d2ba1f051f71d8e65559e8f4d2703e095910a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9966316819190979,
+        "POSITIVE": 0.001679950044490397,
+        "NEGATIVE": 0.0016883620992302895
+      },
+      "confidence": 0.9966316819190979,
+      "latency_seconds": 0.0640764000127092
+    },
+    {
+      "id": "CNI-1200654155",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-EVENT-2015-02-27",
+      "label": "NEUTRAL",
+      "input_sha256": "a5a023e685cdd177f40eeb1c29075283e42dabf66531bd48a14a55e7cd17180a",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9966919422149658,
+        "POSITIVE": 0.0013343539321795106,
+        "NEGATIVE": 0.0019736881367862225
+      },
+      "confidence": 0.9966919422149658,
+      "latency_seconds": 0.06467430002521724
+    },
+    {
+      "id": "CNI-1201010731",
+      "split": "DEVELOPMENT",
+      "event_id": "ISSUER-EVENT-2015-05-14",
+      "label": "NEUTRAL",
+      "input_sha256": "00b5cf472490ca9d2ec971cbb27b8aa9736c995eb320e47e9298cec6087f8a51",
+      "prediction": "NEUTRAL",
+      "probabilities": {
+        "NEUTRAL": 0.9967446327209473,
+        "POSITIVE": 0.0018865697784349322,
+        "NEGATIVE": 0.0013688269536942244
+      },
+      "confidence": 0.9967446327209473,
+      "latency_seconds": 0.08099659997969866
+    },
+    {
+      "id": "04-145",
+      "split": "HOLDOUT_STRESS",
+      "event_id": "COMPANY-MARKET-SESSION-2026-06-02",
+      "label": "POSITIVE",
+      "input_sha256": "2a54470c38a9487ff5000d4aac714c08eb9e781e7d3a386875f50aa3bc439614",
+      "prediction": "POSITIVE",
+      "probabilities": {
+        "NEUTRAL": 0.004390321206301451,
+        "POSITIVE": 0.995215892791748,
+        "NEGATIVE": 0.00039381824899464846
+      },
+      "confidence": 0.995215892791748,
+      "latency_seconds": 0.05405879998579621
+    }
+  ],
+  "loading_info": {
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "cold_start_seconds": 55.97426899999846,
+  "packages": {
+    "torch": "2.10.0",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "safetensors": "0.8.0"
+  },
+  "peak_working_set_bytes": 806080512,
+  "elapsed_seconds": 63.042242800001986,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "logical_cpus": 16,
+    "threads": 2,
+    "device": "CPU",
+    "precision": "float32"
+  }
+}

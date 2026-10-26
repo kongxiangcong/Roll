@@ -1,0 +1,598 @@
+{
+  "status": "AUTHORIZED_BEFORE_ACQUISITION",
+  "reason": "Original32 HTTP exhausted; strict fixed-period raw training243<400 and development82<120. Training authorization remains valid, but further external acquisition needs new budget.",
+  "endpoint": "https://search.sina.com.cn/api/advanced",
+  "contract_refs": [
+    "sina-advanced.js",
+    "sina-results.js",
+    "sina-history01.raw"
+  ],
+  "limits": {
+    "maximum_requests": 64,
+    "maximum_transfer_seconds": 240,
+    "maximum_bytes": 33554432,
+    "retries": 0,
+    "automatic_redirects": 0
+  },
+  "commands": [
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-01-01",
+      "maximum_date": "2018-02-14",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-02-15",
+      "maximum_date": "2018-04-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-04-02",
+      "maximum_date": "2018-05-16",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-05-17",
+      "maximum_date": "2018-07-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-07-02",
+      "maximum_date": "2018-08-16",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-08-17",
+      "maximum_date": "2018-09-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-10-01",
+      "maximum_date": "2018-11-15",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2018-11-16",
+      "maximum_date": "2018-12-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-01-01",
+      "maximum_date": "2019-02-14",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-02-15",
+      "maximum_date": "2019-04-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-04-02",
+      "maximum_date": "2019-05-17",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-05-18",
+      "maximum_date": "2019-07-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-07-02",
+      "maximum_date": "2019-08-16",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-08-17",
+      "maximum_date": "2019-10-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-10-02",
+      "maximum_date": "2019-11-15",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2019-11-16",
+      "maximum_date": "2019-12-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-01-01",
+      "maximum_date": "2020-02-15",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-02-16",
+      "maximum_date": "2020-03-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-04-01",
+      "maximum_date": "2020-05-16",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-05-17",
+      "maximum_date": "2020-07-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-07-02",
+      "maximum_date": "2020-08-15",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-08-16",
+      "maximum_date": "2020-09-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-10-01",
+      "maximum_date": "2020-11-14",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-11-15",
+      "maximum_date": "2020-12-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2020-12-31",
+      "maximum_date": "2021-02-14",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-02-15",
+      "maximum_date": "2021-03-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-04-01",
+      "maximum_date": "2021-05-16",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-05-17",
+      "maximum_date": "2021-07-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-07-02",
+      "maximum_date": "2021-08-15",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-08-16",
+      "maximum_date": "2021-09-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-10-01",
+      "maximum_date": "2021-11-15",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-11-16",
+      "maximum_date": "2021-12-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2021-12-31",
+      "maximum_date": "2022-02-14",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2022-02-15",
+      "maximum_date": "2022-04-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2022-04-02",
+      "maximum_date": "2022-05-16",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2022-05-17",
+      "maximum_date": "2022-07-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2022-07-02",
+      "maximum_date": "2022-08-16",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2022-08-17",
+      "maximum_date": "2022-09-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2022-10-01",
+      "maximum_date": "2022-11-15",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "TRAIN",
+      "keyword": "江西铜业",
+      "minimum_date": "2022-11-16",
+      "maximum_date": "2022-12-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2023-01-01",
+      "maximum_date": "2023-03-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2023-03-02",
+      "maximum_date": "2023-05-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2023-05-02",
+      "maximum_date": "2023-07-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2023-07-02",
+      "maximum_date": "2023-08-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2023-09-01",
+      "maximum_date": "2023-10-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2023-11-01",
+      "maximum_date": "2023-12-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2024-01-01",
+      "maximum_date": "2024-03-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2024-03-02",
+      "maximum_date": "2024-05-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2024-05-02",
+      "maximum_date": "2024-07-01",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2024-07-02",
+      "maximum_date": "2024-08-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2024-09-01",
+      "maximum_date": "2024-10-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "DEVELOPMENT",
+      "keyword": "江西铜业",
+      "minimum_date": "2024-11-01",
+      "maximum_date": "2024-12-31",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-01-01",
+      "maximum_date": "2025-02-23",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-02-24",
+      "maximum_date": "2025-04-19",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-04-20",
+      "maximum_date": "2025-06-13",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-06-14",
+      "maximum_date": "2025-08-06",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-08-07",
+      "maximum_date": "2025-09-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-10-01",
+      "maximum_date": "2025-11-24",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2025-11-25",
+      "maximum_date": "2026-01-17",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2026-01-18",
+      "maximum_date": "2026-03-13",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2026-03-14",
+      "maximum_date": "2026-05-07",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2026-05-08",
+      "maximum_date": "2026-06-30",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2026-07-01",
+      "maximum_date": "2026-08-24",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    },
+    {
+      "period": "HOLDOUT",
+      "keyword": "江西铜业",
+      "minimum_date": "2026-08-25",
+      "maximum_date": "2026-10-18",
+      "page": 1,
+      "page_size": 20,
+      "sort": 1
+    }
+  ],
+  "policy": "Only calendar strata, no model output selection; no keyword/model/rule/threshold tuning; no budget addition on error; stop on auth/captcha or public code error. Old evaluated material and events excluded; raw rows are not gold labels. Preserve TRAIN<=2022, DEV2023-24, HOLDOUT>=2025. Training still400/dev120/primary120; primary4x30 and >=10events/class. Training remains max2epochs/60minutes and one setting/one new holdout.",
+  "approved_plan_sha256": "e44ac22ad14a3162c5c436191175c3b3f48baf13d7eda8634b1f1d988f1ff3bf",
+  "authorization": "User explicitly approved the one64-request corpus supplement; original training authorization unchanged."
+}

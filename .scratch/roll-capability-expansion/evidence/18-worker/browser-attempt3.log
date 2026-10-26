@@ -1,0 +1,46 @@
+[WebServer] INFO:     Started server process [23052]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:18228 (Press CTRL+C to quit)
+[WebServer] (node:43852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:43812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-observation-worker.spec.ts:2:1 › real online receipts, source pause, queued cancellation and station-only settings (1.8s)
+
+
+  1) tests\e2e\expansion-observation-worker.spec.ts:2:1 › real online receipts, source pause, queued cancellation and station-only settings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('region', { name: '日常观察状态' }).getByText(/NORMAL_OFFLINE_NO_COVERAGE_PROMISED/)
+    Expected: visible
+    Error: strict mode violation: getByRole('region', { name: '日常观察状态' }).getByText(/NORMAL_OFFLINE_NO_COVERAGE_PROMISED/) resolved to 4 elements:
+        1) <p>2026-10-17T18:13:40.857711+00:00 至 2026-10-17T18:…</p> aka getByText('2026-10-17T18:13:40.857711+00')
+        2) <p>2026-10-18T03:53:33.961496+00:00 至 2026-10-18T03:…</p> aka getByText('2026-10-18T03:53:33.961496+00')
+        3) <p>2026-10-18T03:56:34.812505+00:00 至 2026-10-18T03:…</p> aka getByText('2026-10-18T03:56:34.812505+00')
+        4) <p>2026-10-19T15:14:29.513025+00:00 至 2026-10-19T15:…</p> aka getByText('2026-10-19T15:14:29.513025+00')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '日常观察状态' }).getByText(/NORMAL_OFFLINE_NO_COVERAGE_PROMISED/)[22m
+
+
+      22 |  await expect(panel.getByText(/FINANCIAL · CANCELLED/)).toBeVisible();
+      23 |  await panel.getByText('查看原worker与离线覆盖回执',{exact:true}).click();
+    > 24 |  await expect(panel.getByText(/NORMAL_OFFLINE_NO_COVERAGE_PROMISED/)).toBeVisible();
+         |                                                                       ^
+      25 |  await panel.locator('summary').filter({hasText:'NEWS · 实际保存来源观察'}).click();
+      26 |  await expect(panel.getByText(/已保存新闻 22 条.*本次仅事实观察/)).toBeVisible();
+      27 |  await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/18-worker/desktop.png',fullPage:true});
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-observation-worker.spec.ts:24:71
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\18-worker\browser-results\expansion-observation-work-16687-n-and-station-only-settings\error-context.md
+
+  1 failed
+    tests\e2e\expansion-observation-worker.spec.ts:2:1 › real online receipts, source pause, queued cancellation and station-only settings 

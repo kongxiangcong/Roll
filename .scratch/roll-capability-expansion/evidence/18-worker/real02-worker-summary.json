@@ -1,0 +1,294 @@
+{
+  "status": "COMPLETE",
+  "evidence_kind": "REAL_ONLINE_SAVED_SOURCE_OBSERVATION",
+  "data_directory": "D:\\dsh-proj\\Roll\\.scratch\\r18-runtime02",
+  "source_db_sha256": {
+    "D:\\dsh-proj\\Roll\\.scratch\\r17-runtime04": "4c2d2e2b9bf73b04fc168ae4710b6fd2a28e06730ab8402b0ede377dd400f5e0",
+    "D:\\dsh-proj\\Roll\\.scratch\\r13real": "fae0217b283ac7b79e70b6699b54f8139e29ec5bdfcda7ff05e3d6324405358b"
+  },
+  "source_files_unchanged": true,
+  "actual_clock": true,
+  "provider_override": false,
+  "model_override": false,
+  "network_calls": 0,
+  "model_calls": 0,
+  "model_policy": "explicit facts-only successor after retained bounded inference timeout; no real classification success claimed",
+  "account_before": 0,
+  "account_after": 0,
+  "second_worker_rejected": true,
+  "process_restarts": 1,
+  "jobs": {
+    "NEWS": {
+      "cache_reused": false,
+      "command": {
+        "basis": "Bounded actual online worker over saved non-holdout archives",
+        "idempotency_key": "real-worker-NEWS",
+        "kind": "NEWS",
+        "refresh_sources": false
+      },
+      "created_at": "2026-10-19T15:14:18.650343+00:00",
+      "error": null,
+      "errors": [],
+      "external_notification_enabled": false,
+      "finished_at": "2026-10-19T15:14:23.142422+00:00",
+      "forecast_archive_created": false,
+      "host_owner": {
+        "creation_ticks": 134368964587302793,
+        "nonce": "09966b30-143d-4f96-b73d-b73e4f45476f",
+        "pid": 14804
+      },
+      "instrument": "SSE:600362",
+      "job_id": "99975edd-5cab-4dd8-bbc1-27574f0d6e74",
+      "namespace": "OBSERVATION_ONLY",
+      "observation_id": "14dede42-4f55-4943-9101-e4be45cdc7de",
+      "result": [
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-news-em"
+        }
+      ],
+      "scheduled_checkpoint": null,
+      "settings": {
+        "basis": "Explicit isolated real worker acceptance; saved facts only; no source HTTP",
+        "changed_at": "2026-10-19T15:14:18.632913+00:00",
+        "classify": false,
+        "enabled": true,
+        "instrument": "SSE:600362",
+        "news_postclose": false,
+        "news_refresh": false,
+        "profile": "finbert-adaptation-01",
+        "revision": 2
+      },
+      "started_at": "2026-10-19T15:14:22.901865+00:00",
+      "status": "COMPLETE"
+    },
+    "FINANCIAL": {
+      "cache_reused": false,
+      "command": {
+        "basis": "Bounded actual online worker over saved non-holdout archives",
+        "idempotency_key": "real-worker-FINANCIAL",
+        "kind": "FINANCIAL",
+        "refresh_sources": false
+      },
+      "created_at": "2026-10-19T15:14:18.664629+00:00",
+      "error": null,
+      "errors": [],
+      "external_notification_enabled": false,
+      "finished_at": "2026-10-19T15:14:23.476938+00:00",
+      "forecast_archive_created": false,
+      "host_owner": {
+        "creation_ticks": 134368964587302793,
+        "nonce": "09966b30-143d-4f96-b73d-b73e4f45476f",
+        "pid": 14804
+      },
+      "instrument": "SSE:600362",
+      "job_id": "b810f1fe-b5db-4944-bbed-3c27b13401e7",
+      "namespace": "OBSERVATION_ONLY",
+      "observation_id": "47675362-0161-46f8-872b-dea6b866cdfd",
+      "result": [
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-financial-em"
+        },
+        {
+          "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+          "source": "akshare-financial-em"
+        }
+      ],
+      "scheduled_checkpoint": null,
+      "settings": {
+        "basis": "Explicit isolated real worker acceptance; saved facts only; no source HTTP",
+        "changed_at": "2026-10-19T15:14:18.632913+00:00",
+        "classify": false,
+        "enabled": true,
+        "instrument": "SSE:600362",
+        "news_postclose": false,
+        "news_refresh": false,
+        "profile": "finbert-adaptation-01",
+        "revision": 2
+      },
+      "started_at": "2026-10-19T15:14:23.269827+00:00",
+      "status": "COMPLETE"
+    }
+  },
+  "cached_repeat": {
+    "cache_reused": true,
+    "command": {
+      "basis": "Bounded actual online worker over saved non-holdout archives",
+      "idempotency_key": "real-same-input",
+      "kind": "NEWS",
+      "refresh_sources": false
+    },
+    "created_at": "2026-10-19T15:14:29.101267+00:00",
+    "error": null,
+    "errors": [],
+    "external_notification_enabled": false,
+    "finished_at": "2026-10-19T15:14:29.388356+00:00",
+    "forecast_archive_created": false,
+    "host_owner": {
+      "creation_ticks": 134368964587302793,
+      "nonce": "09966b30-143d-4f96-b73d-b73e4f45476f",
+      "pid": 14804
+    },
+    "instrument": "SSE:600362",
+    "job_id": "1c5c813d-017a-4229-9039-59c5d1e515d2",
+    "namespace": "OBSERVATION_ONLY",
+    "observation_id": "14dede42-4f55-4943-9101-e4be45cdc7de",
+    "result": [
+      {
+        "refresh": "NOT_REQUESTED_SAVED_FACTS_ONLY",
+        "source": "akshare-news-em"
+      }
+    ],
+    "scheduled_checkpoint": null,
+    "settings": {
+      "basis": "Explicit isolated real worker acceptance; saved facts only; no source HTTP",
+      "changed_at": "2026-10-19T15:14:18.632913+00:00",
+      "classify": false,
+      "enabled": true,
+      "instrument": "SSE:600362",
+      "news_postclose": false,
+      "news_refresh": false,
+      "profile": "finbert-adaptation-01",
+      "revision": 2
+    },
+    "started_at": "2026-10-19T15:14:29.202917+00:00",
+    "status": "COMPLETE"
+  },
+  "notice_count": 2,
+  "external_transmissions": 0,
+  "forecast_archive_created": false,
+  "original_worker_gaps": [
+    {
+      "end": "2026-10-15T15:18:43.390865+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "04266585-0fc0-4033-9e26-62ca015bfd6c",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "a06108aa-6ac0-4eb4-83ab-23ad61ce1c18",
+      "start": "2026-10-15T15:13:29.242004+00:00"
+    },
+    {
+      "end": "2026-10-17T16:47:49.884450+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "a06108aa-6ac0-4eb4-83ab-23ad61ce1c18",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "5dd5c23f-aee7-45f5-9730-3d4d064c1620",
+      "start": "2026-10-15T15:18:51.007896+00:00"
+    },
+    {
+      "end": "2026-10-17T16:48:04.081546+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "5dd5c23f-aee7-45f5-9730-3d4d064c1620",
+      "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+      "session_id": "0e3ea6e6-767e-436c-8960-dc34f07e5644",
+      "start": "2026-10-17T16:47:50.336091+00:00"
+    },
+    {
+      "end": "2026-10-17T18:13:27.817652+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "0e3ea6e6-767e-436c-8960-dc34f07e5644",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "92d6235a-fb78-47cd-acac-e7bf4de0c38d",
+      "start": "2026-10-17T16:48:11.156921+00:00"
+    },
+    {
+      "end": "2026-10-17T18:14:35.960282+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "92d6235a-fb78-47cd-acac-e7bf4de0c38d",
+      "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+      "session_id": "ed692223-4ab5-4d65-b51a-45c2300c3ae3",
+      "start": "2026-10-17T18:13:40.857711+00:00"
+    },
+    {
+      "end": "2026-10-17T18:16:02.626832+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "ed692223-4ab5-4d65-b51a-45c2300c3ae3",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "3169bb9e-fde4-4fb6-9e21-ede31c5b5f76",
+      "start": "2026-10-17T18:15:37.451006+00:00"
+    },
+    {
+      "end": "2026-10-17T18:16:20.258797+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "3169bb9e-fde4-4fb6-9e21-ede31c5b5f76",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "480d26aa-b50e-4741-95c9-698efcf5d4fd",
+      "start": "2026-10-17T18:16:03.720524+00:00"
+    },
+    {
+      "end": "2026-10-18T03:51:26.294477+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "480d26aa-b50e-4741-95c9-698efcf5d4fd",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "a5e0ff71-ce22-41ad-ae59-17858b5113c4",
+      "start": "2026-10-17T18:16:26.901738+00:00"
+    },
+    {
+      "end": "2026-10-18T03:52:32.264970+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "a5e0ff71-ce22-41ad-ae59-17858b5113c4",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "2d46f460-8028-4664-9228-0ab255a8261c",
+      "start": "2026-10-18T03:51:39.582035+00:00"
+    },
+    {
+      "end": "2026-10-18T03:56:15.594976+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "2d46f460-8028-4664-9228-0ab255a8261c",
+      "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+      "session_id": "2d69e372-c3d2-4d28-a7b2-c10cd84abf06",
+      "start": "2026-10-18T03:53:33.961496+00:00"
+    },
+    {
+      "end": "2026-10-18T03:57:06.576248+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "2d69e372-c3d2-4d28-a7b2-c10cd84abf06",
+      "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+      "session_id": "63d5f585-2268-4a00-8109-ddaffbf67c40",
+      "start": "2026-10-18T03:56:34.812505+00:00"
+    },
+    {
+      "end": "2026-10-19T15:14:22.797903+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "63d5f585-2268-4a00-8109-ddaffbf67c40",
+      "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+      "session_id": "1922c3cc-bddb-4ed5-b966-b21d7fc626f5",
+      "start": "2026-10-18T03:57:14.166624+00:00"
+    },
+    {
+      "end": "2026-10-19T15:14:34.317170+00:00",
+      "expired_opportunities_sent": false,
+      "forward_predictions_reconstructed": false,
+      "monitoring_fault": false,
+      "previous_session_id": "1922c3cc-bddb-4ed5-b966-b21d7fc626f5",
+      "reason": "NORMAL_OFFLINE_NO_COVERAGE_PROMISED",
+      "session_id": "cf6128c3-b48a-4d71-bf54-271498440081",
+      "start": "2026-10-19T15:14:29.513025+00:00"
+    }
+  ],
+  "at": "2026-10-19T15:14:35.924288+00:00"
+}

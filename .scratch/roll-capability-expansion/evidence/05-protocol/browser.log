@@ -1,0 +1,35 @@
+[WebServer] INFO:     Started server process [9220]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8032 (Press CTRL+C to quit)
+[WebServer] (node:30816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:31224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-protocol.spec.ts:3:1 › linked successor design freezes before frames and preserves diagnostic prefix (2.9s)
+
+
+  1) tests\e2e\expansion-protocol.spec.ts:3:1 › linked successor design freezes before frames and preserves diagnostic prefix 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      25 |   await expect(page.getByRole('status').filter({hasText:'前缀3重放一致'})).toBeVisible();
+      26 |   await page.setViewportSize({width:390,height:844});
+    > 27 |   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+         |                                                                                     ^
+      28 |   await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/05-protocol/mobile.png',fullPage:true});
+      29 | });
+      30 |
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-protocol.spec.ts:27:85
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\05-protocol\browser-results\expansion-protocol-linked--f80fb-preserves-diagnostic-prefix\error-context.md
+
+  1 failed
+    tests\e2e\expansion-protocol.spec.ts:3:1 › linked successor design freezes before frames and preserves diagnostic prefix 

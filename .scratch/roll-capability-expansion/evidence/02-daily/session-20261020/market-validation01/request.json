@@ -1,0 +1,54 @@
+{
+  "instruments": [
+    "SSE:600362"
+  ],
+  "groups": [
+    "DAILY"
+  ],
+  "purpose": "OBSERVATION",
+  "start_date": "2026-10-13",
+  "end_date": "2026-10-20",
+  "cutoff": "2026-10-20T11:13:02.474671+00:00",
+  "required_fields": [],
+  "max_decoded_bytes": 8388608,
+  "max_total_decoded_bytes": 8388608,
+  "timeout_seconds": 18,
+  "max_calls": 3,
+  "daily_source": "BAOSTOCK",
+  "quote_source": "TENCENT",
+  "adjustment_source": "EASTMONEY",
+  "status_source": "QUOTE",
+  "calendar_source": "BAOSTOCK",
+  "baostock_auth_mode": "PUBLIC",
+  "request_id": "1e1b5f76-1198-4913-ad12-89b4e419343b",
+  "cutoff_basis": "EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF",
+  "scope": {
+    "allowed": true,
+    "instruments": [
+      "SSE:600362"
+    ],
+    "purpose": "OBSERVATION",
+    "list_version": 2,
+    "account_version": 0,
+    "model_qualification": "NOT_GRANTED",
+    "trading_capability": "NONE"
+  },
+  "identity_context": {
+    "SSE:600362": {
+      "board": "UNKNOWN",
+      "code": "600362",
+      "exchange": "SSE",
+      "instrument_type": "UNKNOWN",
+      "name": null
+    }
+  },
+  "created_at": "2026-10-20T11:13:02.484042+00:00",
+  "technical_limits": {
+    "max_calls": 3,
+    "timeout_seconds": 18,
+    "max_response_bytes": 16777216,
+    "max_decoded_bytes": 8388608,
+    "max_total_decoded_bytes": 8388608,
+    "retries": 0
+  }
+}

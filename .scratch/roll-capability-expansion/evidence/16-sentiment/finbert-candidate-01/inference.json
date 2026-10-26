@@ -1,0 +1,2057 @@
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-18T15:59:15.780190+00:00",
+  "model": "yiyanghkust/finbert-tone-chinese",
+  "revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "license": "apache-2.0",
+  "artifacts": [
+    {
+      "path": "config.json",
+      "bytes": 1041,
+      "sha256": "4b9eb1fc46e979f0177934b4ce798591a86fb5817459854a83e0ba0517f12ec2",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "vocab.txt",
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 1243,
+      "sha256": "cfcc4a4dd9757a0ebb06c5ec8056d7dd4cb1eda36ca3609e4cfa7922c3b9f003",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "special_tokens_map.json",
+      "bytes": 125,
+      "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "README.md",
+      "bytes": 1333,
+      "sha256": "24acec05c89a61bd1afa360d9913b0b043be61e5602c24eff832d14fd96d5ea6",
+      "lfs_sha256_verified": false
+    },
+    {
+      "path": "model.safetensors",
+      "bytes": 409103316,
+      "sha256": "0c25b105902f90d1e039d511944af4f49d1490f6698e701f2704a714ca74e66b",
+      "lfs_sha256_verified": true
+    }
+  ],
+  "freeze_manifest_sha256": "f04a6379236043536cffc32aa529a1463e23362f1fb794f1b148805cedb6658c",
+  "network_calls": 0,
+  "training": false,
+  "rows": [
+    {
+      "index": 0,
+      "group_id": "2027-2029-related-party-contract",
+      "split": "HOLDOUT",
+      "label": "NEUTRAL",
+      "input_sha256": "8ec41c10c6d5f7c1b49ebc6ef218406f0814d94b57daa8869f8edbb860769d31",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.997189462184906,
+      "probabilities": {
+        "NEUTRAL": 0.997189462184906,
+        "POSITIVE": 0.0023302356712520123,
+        "NEGATIVE": 0.00048029975732788444
+      },
+      "latency_seconds": 0.21017790003679693
+    },
+    {
+      "index": 1,
+      "group_id": "2027-2029-related-party-contract",
+      "split": "HOLDOUT",
+      "label": "NEUTRAL",
+      "input_sha256": "b24e2c124704c670a0bad40f61aea7a9a9f80417baecb42e66675328fa769b0f",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.996405839920044,
+      "probabilities": {
+        "NEUTRAL": 0.996405839920044,
+        "POSITIVE": 0.002959773875772953,
+        "NEGATIVE": 0.0006344630382955074
+      },
+      "latency_seconds": 0.1744262999854982
+    },
+    {
+      "index": 2,
+      "group_id": "corporate-event-2",
+      "split": "HOLDOUT",
+      "label": "NEUTRAL",
+      "input_sha256": "07d97b3ba8a333f303c894fc9e7afddeb281dbe6b2544072d05a0f6487b6ddd6",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.900863528251648,
+      "probabilities": {
+        "NEUTRAL": 0.900863528251648,
+        "POSITIVE": 0.003824691753834486,
+        "NEGATIVE": 0.095311738550663
+      },
+      "latency_seconds": 0.15511910000350326
+    },
+    {
+      "index": 3,
+      "group_id": "corporate-event-3",
+      "split": "HOLDOUT",
+      "label": "NEUTRAL",
+      "input_sha256": "cc97239fc218ea99af051a5da836e5efc437cefe0bf092729b92a241b71d8564",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9504392147064209,
+      "probabilities": {
+        "NEUTRAL": 0.048897527158260345,
+        "POSITIVE": 0.9504392147064209,
+        "NEGATIVE": 0.0006632486474700272
+      },
+      "latency_seconds": 0.1519681999925524
+    },
+    {
+      "index": 4,
+      "group_id": "market-session-2026-09-22",
+      "split": "HOLDOUT",
+      "label": "POSITIVE",
+      "input_sha256": "a64ca39a48938b9f6527cc7c7166bef9d22ee8b59cd4b1364ec8fbde893bafa9",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9983147382736206,
+      "probabilities": {
+        "NEUTRAL": 0.001341493334621191,
+        "POSITIVE": 0.9983147382736206,
+        "NEGATIVE": 0.00034384289756417274
+      },
+      "latency_seconds": 0.20872789999702945
+    },
+    {
+      "index": 5,
+      "group_id": "market-session-2026-10-16",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "ec1b5ba0b8ec32769b0ac0a69014e5fdc552e2041a2e1a98578e7545e9d63d23",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 6,
+      "group_id": "corporate-event-6",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "1282a676830f5bcc0cf40ef48d10f599a5a35fecc2661dab186b577d2c353333",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9973616003990173,
+      "probabilities": {
+        "NEUTRAL": 0.9973616003990173,
+        "POSITIVE": 0.00222361134365201,
+        "NEGATIVE": 0.00041480432264506817
+      },
+      "latency_seconds": 0.09443800000008196
+    },
+    {
+      "index": 7,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "3294ce80a9ca82b2b168fb0aad6f91ff68141f27046b6c87ef98aa536b2e8bb1",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9867250919342041,
+      "probabilities": {
+        "NEUTRAL": 0.011941468343138695,
+        "POSITIVE": 0.0013334680115804076,
+        "NEGATIVE": 0.9867250919342041
+      },
+      "latency_seconds": 0.19686609995551407
+    },
+    {
+      "index": 8,
+      "group_id": "market-session-2026-10-15",
+      "split": "HOLDOUT",
+      "label": "NEGATIVE",
+      "input_sha256": "aaefc21d8ad7be668a30d8268ddeba0d7b699864c612790a13a5a497a3b494c8",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 10,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "a14742829a86a4f02a621377d7f80c967bc49b83e9d81e58377e96e132c22efe",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9984914064407349,
+      "probabilities": {
+        "NEUTRAL": 0.0011652068933472037,
+        "POSITIVE": 0.9984914064407349,
+        "NEGATIVE": 0.0003433676029089838
+      },
+      "latency_seconds": 0.14150899997912347
+    },
+    {
+      "index": 11,
+      "group_id": "corporate-event-11",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "b22804ae8993aa8e8e5a3bc6f16c5bcc92584fd75b80d08360f6536dbe4b10ed",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9633983373641968,
+      "probabilities": {
+        "NEUTRAL": 0.035959042608737946,
+        "POSITIVE": 0.9633983373641968,
+        "NEGATIVE": 0.0006425408646464348
+      },
+      "latency_seconds": 0.11594709998462349
+    },
+    {
+      "index": 12,
+      "group_id": "corporate-event-12",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "9329fbabe2cb4ac1efb0d37966aea46533500ee831a0ed039f66b1629dfa591b",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9973727464675903,
+      "probabilities": {
+        "NEUTRAL": 0.9973727464675903,
+        "POSITIVE": 0.0017007156275212765,
+        "NEGATIVE": 0.0009265092667192221
+      },
+      "latency_seconds": 0.12161999999079853
+    },
+    {
+      "index": 13,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "b088440bb01166f9df339d2624204800d408016620798619303ddcb08be9efe3",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9988008737564087,
+      "probabilities": {
+        "NEUTRAL": 0.0008878051303327084,
+        "POSITIVE": 0.9988008737564087,
+        "NEGATIVE": 0.000311386858811602
+      },
+      "latency_seconds": 0.19144349999260157
+    },
+    {
+      "index": 14,
+      "group_id": "corporate-event-14",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "1302b4e52a4aa8569b2cfa747e901cce21bccdaca87c229901bf4c691e3d1cb9",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9963552951812744,
+      "probabilities": {
+        "NEUTRAL": 0.9963552951812744,
+        "POSITIVE": 0.003158793319016695,
+        "NEGATIVE": 0.00048591248923912644
+      },
+      "latency_seconds": 0.18247090000659227
+    },
+    {
+      "index": 17,
+      "group_id": "market-session-2026-10-12",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "9219910dfcb6c63e0ee900b69c38d4335c62d4d400a4c7c4b7e420f3d74cd28c",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 20,
+      "group_id": "corporate-event-20",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "e7f769286136e2b1efd296b4dc3bb2dedb5f5ef137e0c4bb1fac0b1b67ba6a17",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9757065773010254,
+      "probabilities": {
+        "NEUTRAL": 0.9757065773010254,
+        "POSITIVE": 0.0024114137049764395,
+        "NEGATIVE": 0.021882014349102974
+      },
+      "latency_seconds": 0.15501400001812726
+    },
+    {
+      "index": 24,
+      "group_id": "secretary-departure-20260831",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "226379e865a9c3b461553177b5aa36990a2e92c74d834f7fbad59bc32e355b7c",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9970744848251343,
+      "probabilities": {
+        "NEUTRAL": 0.9970744848251343,
+        "POSITIVE": 0.0015964193735271692,
+        "NEGATIVE": 0.001329135848209262
+      },
+      "latency_seconds": 0.19714180001756176
+    },
+    {
+      "index": 25,
+      "group_id": "secretary-departure-20260831",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "c1af32571b5564b88a391a93d450c365aa4b29bbd51ef4e6d70fb734870ba510",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9974133372306824,
+      "probabilities": {
+        "NEUTRAL": 0.9974133372306824,
+        "POSITIVE": 0.0014199670404195786,
+        "NEGATIVE": 0.001166798872873187
+      },
+      "latency_seconds": 0.24089989997446537
+    },
+    {
+      "index": 28,
+      "group_id": "corporate-event-28",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "9dc307ba2c30dd869dfb5623d387196ce46dc5d2188b89be3254617c38cfdf89",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9883036613464355,
+      "probabilities": {
+        "NEUTRAL": 0.011293548159301281,
+        "POSITIVE": 0.9883036613464355,
+        "NEGATIVE": 0.00040277757216244936
+      },
+      "latency_seconds": 0.1661533999722451
+    },
+    {
+      "index": 29,
+      "group_id": "secretary-departure-20260831",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "96f8a02eb6de322e408c5db7caf84969cd7fa47977d1c3854a9b89d6fd81c5eb",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9976792931556702,
+      "probabilities": {
+        "NEUTRAL": 0.9976792931556702,
+        "POSITIVE": 0.0010832370026037097,
+        "NEGATIVE": 0.0012374819489195943
+      },
+      "latency_seconds": 0.1817468000226654
+    },
+    {
+      "index": 30,
+      "group_id": "market-session-2026-10-09",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "9dcbc3ab29601c235b9b6d6719f666e06745b88d992c20d5849a243e70f5cad7",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 31,
+      "group_id": "market-session-2026-10-13",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "aa9bb89998e23a8727b12f3392a742ed3c468b4a1b6764082794156d54e2890e",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 32,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "3f7f5aec1d5ccb89021261042fe8faf56f4f70c9fa900e1c83d7ad0371ecd918",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9789648652076721,
+      "probabilities": {
+        "NEUTRAL": 0.020386209711432457,
+        "POSITIVE": 0.9789648652076721,
+        "NEGATIVE": 0.0006489428342320025
+      },
+      "latency_seconds": 0.16946659999666736
+    },
+    {
+      "index": 33,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "d44adf5a9d83b648f1bfa5f99962cb2b27338b9a3267e4fc29d263b2952b0b69",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992296695709229,
+      "probabilities": {
+        "NEUTRAL": 0.00043533003190532327,
+        "POSITIVE": 0.9992296695709229,
+        "NEGATIVE": 0.0003349635808262974
+      },
+      "latency_seconds": 0.15064950002124533
+    },
+    {
+      "index": 34,
+      "group_id": "2027-2029-related-party-contract",
+      "split": "HOLDOUT",
+      "label": "NEUTRAL",
+      "input_sha256": "c1b820916ce5cfa8d0c63e2331134e87dfa1d8368ae90fcc3c76273f736a612f",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9955421090126038,
+      "probabilities": {
+        "NEUTRAL": 0.9955421090126038,
+        "POSITIVE": 0.0026761568151414394,
+        "NEGATIVE": 0.0017816756153479218
+      },
+      "latency_seconds": 0.190439099969808
+    },
+    {
+      "index": 35,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "51c9fc8ca8410f14272f1b10a3a2328f24f08ca3afaeed66e9e5e1b24b719dbd",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9967836141586304,
+      "probabilities": {
+        "NEUTRAL": 0.0028882911428809166,
+        "POSITIVE": 0.9967836141586304,
+        "NEGATIVE": 0.0003280258970335126
+      },
+      "latency_seconds": 0.1616247000056319
+    },
+    {
+      "index": 36,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "da88f09d7409bc059d15e3cc27306a8ca11aca5b66305aa4091a7a6065b57a4c",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9971911311149597,
+      "probabilities": {
+        "NEUTRAL": 0.002449342515319586,
+        "POSITIVE": 0.9971911311149597,
+        "NEGATIVE": 0.00035961411776952446
+      },
+      "latency_seconds": 0.1023558999877423
+    },
+    {
+      "index": 37,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "00e265d07f569ce86c29fb57812c438e2147cf3fc7583c925b3fa6e73df8de1b",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991902709007263,
+      "probabilities": {
+        "NEUTRAL": 0.0004514109168667346,
+        "POSITIVE": 0.9991902709007263,
+        "NEGATIVE": 0.0003582579083740711
+      },
+      "latency_seconds": 0.18951880000531673
+    },
+    {
+      "index": 38,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "db5ac2a62d42b10db1c3167e83a22a297c01128354faa961a64217ebe73d74e2",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992126226425171,
+      "probabilities": {
+        "NEUTRAL": 0.000448218866949901,
+        "POSITIVE": 0.9992126226425171,
+        "NEGATIVE": 0.00033914210507646203
+      },
+      "latency_seconds": 0.20261999999638647
+    },
+    {
+      "index": 39,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "aa0c99f252b7c99c2b1a1ff738266671d036f704fe6ba1285e73ee57ad3a4ff8",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "ABSTAIN_LOW_CONFIDENCE",
+      "confidence": 0.5367119908332825,
+      "probabilities": {
+        "NEUTRAL": 0.46237868070602417,
+        "POSITIVE": 0.5367119908332825,
+        "NEGATIVE": 0.0009093368425965309
+      },
+      "latency_seconds": 0.10615140001755208
+    },
+    {
+      "index": 40,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "5b464c744bcfe8212ce47242474ad70c5f257558b381fd0f68333a940b50bfc4",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991637468338013,
+      "probabilities": {
+        "NEUTRAL": 0.0005098663386888802,
+        "POSITIVE": 0.9991637468338013,
+        "NEGATIVE": 0.00032639005803503096
+      },
+      "latency_seconds": 0.1974787000217475
+    },
+    {
+      "index": 41,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "e9e1ea6d1796aa771c0f2ccaf43ebad569e57cc268df26bacf3fd77a71d70202",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.999131977558136,
+      "probabilities": {
+        "NEUTRAL": 0.0005412001046352088,
+        "POSITIVE": 0.999131977558136,
+        "NEGATIVE": 0.0003268534492235631
+      },
+      "latency_seconds": 0.21617050003260374
+    },
+    {
+      "index": 42,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "17b095f110139a1c208d85707973474221af0e2f248a9fa7991bfdcfbcba4db3",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992213249206543,
+      "probabilities": {
+        "NEUTRAL": 0.0004491868894547224,
+        "POSITIVE": 0.9992213249206543,
+        "NEGATIVE": 0.00032943638507276773
+      },
+      "latency_seconds": 0.16864459996577352
+    },
+    {
+      "index": 43,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "4317b5c9f60769f80b1dac16cf19fd23ba179a1ffe7959b0ce8af3d705b15b1e",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9969726800918579,
+      "probabilities": {
+        "NEUTRAL": 0.002682408317923546,
+        "POSITIVE": 0.9969726800918579,
+        "NEGATIVE": 0.00034495204454287887
+      },
+      "latency_seconds": 0.15343539998866618
+    },
+    {
+      "index": 44,
+      "group_id": "market-session-2026-10-09",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "6879a344b54348f73403ee81fd3109b1a367020e6f81c638496c9db2cb2f9976",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 45,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "fc4ed1a722e511dd32fb80292e5145548de7b0b115ea98696aca1f259b6ead86",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992246627807617,
+      "probabilities": {
+        "NEUTRAL": 0.0004563730617519468,
+        "POSITIVE": 0.9992246627807617,
+        "NEGATIVE": 0.0003189995186403394
+      },
+      "latency_seconds": 0.20287569996435195
+    },
+    {
+      "index": 46,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "7dfa0c15c273ee749116cd7c16e59c82550d8c5c765015828ce034bbec59dce3",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991176724433899,
+      "probabilities": {
+        "NEUTRAL": 0.0005413528997451067,
+        "POSITIVE": 0.9991176724433899,
+        "NEGATIVE": 0.0003410529170650989
+      },
+      "latency_seconds": 0.19786070002010092
+    },
+    {
+      "index": 47,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "0db528d57dd13db7940d0115204ebfbc00439f3dcdc2995684e822508ce50c5f",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.999147891998291,
+      "probabilities": {
+        "NEUTRAL": 0.000503180141095072,
+        "POSITIVE": 0.999147891998291,
+        "NEGATIVE": 0.00034888568916358054
+      },
+      "latency_seconds": 0.15933459997177124
+    },
+    {
+      "index": 48,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "176b991f6e0dda467eabf058eaa0145e676d4dd229dbdcfd57eeb38bec3e9d81",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992237091064453,
+      "probabilities": {
+        "NEUTRAL": 0.0004406002990435809,
+        "POSITIVE": 0.9992237091064453,
+        "NEGATIVE": 0.00033568686922080815
+      },
+      "latency_seconds": 0.22796539997216314
+    },
+    {
+      "index": 49,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "f74e1c5a5d5ed8fa7ded3135d5fdb596f76face1c98b9cfa994882e31fcc2edd",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992063641548157,
+      "probabilities": {
+        "NEUTRAL": 0.0004525507683865726,
+        "POSITIVE": 0.9992063641548157,
+        "NEGATIVE": 0.0003411083889659494
+      },
+      "latency_seconds": 0.1984463999979198
+    },
+    {
+      "index": 50,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "f820056bb311a5f19d2c59672e9e8ef33894301e6226826cc9e60b8920d9a804",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991865754127502,
+      "probabilities": {
+        "NEUTRAL": 0.0004734300309792161,
+        "POSITIVE": 0.9991865754127502,
+        "NEGATIVE": 0.00033995689591392875
+      },
+      "latency_seconds": 0.19973920000484213
+    },
+    {
+      "index": 51,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "84a451089542707e5e93cfca5bca54c1939b9fa303565d157d5ef411b709c47b",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9910520911216736,
+      "probabilities": {
+        "NEUTRAL": 0.0076664225198328495,
+        "POSITIVE": 0.001281470526009798,
+        "NEGATIVE": 0.9910520911216736
+      },
+      "latency_seconds": 0.23807030002353713
+    },
+    {
+      "index": 52,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "32aae24d6e51044a7ce6a2bde086ffe4d7e4bd98230ce1e7c34fe0ed97f04804",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991497993469238,
+      "probabilities": {
+        "NEUTRAL": 0.0005392481689341366,
+        "POSITIVE": 0.9991497993469238,
+        "NEGATIVE": 0.0003110459365416318
+      },
+      "latency_seconds": 0.2240493999561295
+    },
+    {
+      "index": 53,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "ba47518c8aa44d2f86b1b0076210b7c650952369b14184429866c5d52bf5d284",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991876482963562,
+      "probabilities": {
+        "NEUTRAL": 0.00047625493607483804,
+        "POSITIVE": 0.9991876482963562,
+        "NEGATIVE": 0.0003361431008670479
+      },
+      "latency_seconds": 0.19786329998169094
+    },
+    {
+      "index": 54,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "f714ae6301a75b3d07b2af1040fca5bbe555f66f1d3a2d7245b27f6ec506fd4f",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.998370349407196,
+      "probabilities": {
+        "NEUTRAL": 0.0013639897806569934,
+        "POSITIVE": 0.998370349407196,
+        "NEGATIVE": 0.00026568217435851693
+      },
+      "latency_seconds": 0.23734290001448244
+    },
+    {
+      "index": 55,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "c28a5779c0889b7efb334af8f4c5319b58a201561f8d1864e0f25204cfdc5396",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991957545280457,
+      "probabilities": {
+        "NEUTRAL": 0.0004331963136792183,
+        "POSITIVE": 0.9991957545280457,
+        "NEGATIVE": 0.0003710034361574799
+      },
+      "latency_seconds": 0.19618090003496036
+    },
+    {
+      "index": 56,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "ca54bb83db3146f956e6a66bfe16a390fe63fcd0b63504fed19a1f7e2b3a0b6b",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992140531539917,
+      "probabilities": {
+        "NEUTRAL": 0.0004650586924981326,
+        "POSITIVE": 0.9992140531539917,
+        "NEGATIVE": 0.00032087808358483016
+      },
+      "latency_seconds": 0.2081190000171773
+    },
+    {
+      "index": 57,
+      "group_id": "market-session-2026-09-29",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "ee922626b0d1b36e494f2dad5d8e168a403e1a7199ab1f2a0828f47d6f5cda4f",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 58,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "32b1a4e6111564346ca96508cd768d2a9cee49878605e7d7a416e87220e45f21",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9971840977668762,
+      "probabilities": {
+        "NEUTRAL": 0.000313703203573823,
+        "POSITIVE": 0.002502226736396551,
+        "NEGATIVE": 0.9971840977668762
+      },
+      "latency_seconds": 0.19622859999071807
+    },
+    {
+      "index": 59,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "d837dab70509bfd68deaa801f02c463167d817f4b29b434ae5bc2fd4ea27ac6b",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991206526756287,
+      "probabilities": {
+        "NEUTRAL": 0.0005460637039504945,
+        "POSITIVE": 0.9991206526756287,
+        "NEGATIVE": 0.00033324953983537853
+      },
+      "latency_seconds": 0.21675399999367073
+    },
+    {
+      "index": 60,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "1e34ef846d92b4d41b8851746c17bd00960b3d2a4b2ef66b66ace934046eaf11",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.999066174030304,
+      "probabilities": {
+        "NEUTRAL": 0.0005800816579721868,
+        "POSITIVE": 0.999066174030304,
+        "NEGATIVE": 0.0003537031006999314
+      },
+      "latency_seconds": 0.23045839997939765
+    },
+    {
+      "index": 61,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "5024647cdcb4ecdfb47f41fb77b92807e6367901255ee3b53cffa89a77a7d7e0",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.8269110918045044,
+      "probabilities": {
+        "NEUTRAL": 0.10629391670227051,
+        "POSITIVE": 0.8269110918045044,
+        "NEGATIVE": 0.06679493933916092
+      },
+      "latency_seconds": 0.15513529995223507
+    },
+    {
+      "index": 62,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "47c91ece6db6cc4c5a425b182db334753a6f349a87a8e1e7931123f499b883ad",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9773352146148682,
+      "probabilities": {
+        "NEUTRAL": 0.02213643118739128,
+        "POSITIVE": 0.9773352146148682,
+        "NEGATIVE": 0.0005283327773213387
+      },
+      "latency_seconds": 0.23032299999613315
+    },
+    {
+      "index": 63,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "020828947c6cb563ecccaec6352ade111a707b03674a92c2d85337b67a337c3a",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9983254075050354,
+      "probabilities": {
+        "NEUTRAL": 0.001339784823358059,
+        "POSITIVE": 0.9983254075050354,
+        "NEGATIVE": 0.00033477312535978854
+      },
+      "latency_seconds": 0.1777218999923207
+    },
+    {
+      "index": 64,
+      "group_id": "2027-2029-related-party-contract",
+      "split": "HOLDOUT",
+      "label": "NEUTRAL",
+      "input_sha256": "8c2d13534f7ef067f7f9f40054c56bd65aa9eef18da7732b148616fb7412ca49",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9954164028167725,
+      "probabilities": {
+        "NEUTRAL": 0.9954164028167725,
+        "POSITIVE": 0.003625529119744897,
+        "NEGATIVE": 0.0009580839541740716
+      },
+      "latency_seconds": 0.20533019996946678
+    },
+    {
+      "index": 65,
+      "group_id": "market-session-2026-09-28",
+      "split": "HOLDOUT",
+      "label": "NEGATIVE",
+      "input_sha256": "43c61e367d4e490a9d9d08f155f2a862811b9c28532e53be1f59d8d99f7863d9",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 66,
+      "group_id": "market-session-2026-09-29",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "be1f8fc389eb149d4fef93d5848ce9c57ef6de4b4f8412d2bc3dd4defc720b7b",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9952114224433899,
+      "probabilities": {
+        "NEUTRAL": 0.9952114224433899,
+        "POSITIVE": 0.0037482576444745064,
+        "NEGATIVE": 0.0010403910418972373
+      },
+      "latency_seconds": 0.1637652000063099
+    },
+    {
+      "index": 68,
+      "group_id": "market-session-2026-09-28",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "e9bd70853dd6c0afe15902b1c365cb3e88ee8b9e4ca766437a9ce35c6278dd76",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 69,
+      "group_id": "market-session-2026-09-22",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "e7815dbf85742fa361b56778847724cdf6ba1ee8a8e2cbaa6be6a0f5418f8513",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 70,
+      "group_id": "market-session-2026-09-30",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "4b42cfc146bb11cf511b6220de7e7f57184482af399dcf1640b173981f104357",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 71,
+      "group_id": "market-session-2026-09-22",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "14fbf760193570b3251e7125dc089c2c3fbcf3ebeb78adecf467d857c53162c5",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 73,
+      "group_id": "market-session-2026-09-24",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "a143ef4f54aba46c7e161c6f8cd4899355efcc3958d873372e7d5c83bd4526b1",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 74,
+      "group_id": "corporate-event-74",
+      "split": "DEVELOPMENT",
+      "label": "NEUTRAL",
+      "input_sha256": "b6aa59701b96f8a669fb8992cd491425bfab6afb310c41879cf60fe89fd311a1",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "NEUTRAL",
+      "confidence": 0.997075080871582,
+      "probabilities": {
+        "NEUTRAL": 0.997075080871582,
+        "POSITIVE": 0.002470903331413865,
+        "NEGATIVE": 0.0004540019144769758
+      },
+      "latency_seconds": 0.0919265000266023
+    },
+    {
+      "index": 75,
+      "group_id": "market-session-2026-09-23",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "cc863adb4fe859b8524590caa5ca0d7f2e0a8fbb3cc650d4d9b6cc75f9d43eaa",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 76,
+      "group_id": "market-session-2026-09-23",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "407a7e0ea4458ae4db776ec9b1b7870e1575476239ee5adda7a2e76ac3a31d71",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9983360171318054,
+      "probabilities": {
+        "NEUTRAL": 0.0011974661611020565,
+        "POSITIVE": 0.9983360171318054,
+        "NEGATIVE": 0.0004664708685595542
+      },
+      "latency_seconds": 0.17834909999510273
+    },
+    {
+      "index": 77,
+      "group_id": "market-session-2026-09-24",
+      "split": "HOLDOUT",
+      "label": "NEGATIVE",
+      "input_sha256": "70b5e42e40299362215d9d428882937ea065012ffbb00fdcaa8b2ed2b83b2b07",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 78,
+      "group_id": "market-session-2026-09-18",
+      "split": "HOLDOUT",
+      "label": "POSITIVE",
+      "input_sha256": "689b556d25ec74e670b9aa9a566083333faeea780973c6b7736a59e1faea3f80",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 79,
+      "group_id": "market-session-2026-09-16",
+      "split": "HOLDOUT",
+      "label": "NEGATIVE",
+      "input_sha256": "65ac59a2ac6f5a86841fde92e147c9ee1ab5bf695d4d3a9ae7d1045f1952438b",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 80,
+      "group_id": "market-session-2026-09-24",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "43806b796e61cf9940048bae9ae623803acc0c7fcfdf7f6d6ba264bc9a8547d8",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 81,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "85b3569a3a52943c57eb937d18961c471fb3e126789ff79f9455066eb32a52dd",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9770409464836121,
+      "probabilities": {
+        "NEUTRAL": 0.021142490208148956,
+        "POSITIVE": 0.0018165550427511334,
+        "NEGATIVE": 0.9770409464836121
+      },
+      "latency_seconds": 0.11498770001344383
+    },
+    {
+      "index": 82,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "615c440dd1090d403e71ecf9626a2c967ecbf71490de61937f34ba2b1fa5bbd9",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9443444609642029,
+      "probabilities": {
+        "NEUTRAL": 0.05308244749903679,
+        "POSITIVE": 0.0025731336791068316,
+        "NEGATIVE": 0.9443444609642029
+      },
+      "latency_seconds": 0.10944670002209023
+    },
+    {
+      "index": 83,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "8798e4549399ae23a2dc401f228902d289058e09f8888176ac6ead4634967b07",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.8461148738861084,
+      "probabilities": {
+        "NEUTRAL": 0.8461148738861084,
+        "POSITIVE": 0.004718151409178972,
+        "NEGATIVE": 0.14916692674160004
+      },
+      "latency_seconds": 0.11476969998329878
+    },
+    {
+      "index": 84,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "dbe89d18f00598187690692962bbb29ad5733fe57c1258b3de86ef7c9a6d54d3",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9962170720100403,
+      "probabilities": {
+        "NEUTRAL": 0.003213180461898446,
+        "POSITIVE": 0.9962170720100403,
+        "NEGATIVE": 0.0005697908345609903
+      },
+      "latency_seconds": 0.13704800000414252
+    },
+    {
+      "index": 85,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "ded2de687293737d15afc00da41bfeaf37da9b3090514554fad831cb42c5aa1c",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 86,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "64a19bf43c971448f8bffbeb529377632614a04dca6f9d4fb6d8dcf334031cc5",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 87,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "1b0de5e5f99305b6ac20a035c47f32353478191db6e98e4ca48d500ac52b5c38",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 88,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "40b980abff16706d46cec04d5ff34d55ba8a7a32c2033039f6355b7dddd6e69a",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9918310046195984,
+      "probabilities": {
+        "NEUTRAL": 0.9918310046195984,
+        "POSITIVE": 0.0034592808224260807,
+        "NEGATIVE": 0.004709702916443348
+      },
+      "latency_seconds": 0.15411139995558187
+    },
+    {
+      "index": 89,
+      "group_id": "market-session-2026-09-17",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "a835ac56cecdd9cb84cd48ae38dfb444dc20ea12802b65eee25f599d0e78d953",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9906822443008423,
+      "probabilities": {
+        "NEUTRAL": 0.9906822443008423,
+        "POSITIVE": 0.0034645642153918743,
+        "NEGATIVE": 0.005853171925991774
+      },
+      "latency_seconds": 0.1895908999722451
+    },
+    {
+      "index": 90,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "907872a2223ebbd18686d2346df5f24a60da7dd03be1111e22f2757b4f3511e9",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 91,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "f2b46b2f29c3dbd42b6f14f733cbc5b8f43363f73cfe774d8311dadb09ecdc41",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 92,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "b1bc1429bc847a548244ecbc3ddd5882cc7a0376474340a49a3c080d1a938160",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 93,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "4930c9984cf16e080c5391cbf5e5dd1d6be43e76eba7f691a7762eae7d913725",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 94,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "7757435209729f0784c01eb17fe0fad624352d2bdfcfc943b1f412b2ee0ab7cd",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.973499596118927,
+      "probabilities": {
+        "NEUTRAL": 0.02123027853667736,
+        "POSITIVE": 0.005270144436508417,
+        "NEGATIVE": 0.973499596118927
+      },
+      "latency_seconds": 0.22395229997346178
+    },
+    {
+      "index": 95,
+      "group_id": "market-session-2026-09-23",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "754fc45154cbb4be638d9c9f2425986d2d6aa42bc7c99e687e6406f0cf1d6578",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 96,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "39c6e43ce99cd5c32b1f48993884c8aa14d5b3e85f866df052c5a1475f561241",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 97,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "151651562296c6df699126458789b4763035035e5f3e893fbda78810a9f77f0d",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 98,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "74603a1af63cadfb1de41b9f6c4d2fdcbbb61395683a4f1448cb234fe69c537d",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 99,
+      "group_id": "market-session-2026-09-18",
+      "split": "HOLDOUT",
+      "label": "POSITIVE",
+      "input_sha256": "ba6b1ebb4feb16c200e2a91379c5944e66b2a951201a10a245352dfe487d4dce",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9973582625389099,
+      "probabilities": {
+        "NEUTRAL": 0.0007700822316110134,
+        "POSITIVE": 0.0018716711783781648,
+        "NEGATIVE": 0.9973582625389099
+      },
+      "latency_seconds": 0.19747380004264414
+    },
+    {
+      "index": 100,
+      "group_id": "market-session-2026-09-17",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "8f1a37a9b22214d6ea6cf796c1ae7f2f8e5cd70ea5d138e0ba53a9a8f205656a",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9949888586997986,
+      "probabilities": {
+        "NEUTRAL": 0.9949888586997986,
+        "POSITIVE": 0.004262799397110939,
+        "NEGATIVE": 0.0007483632070943713
+      },
+      "latency_seconds": 0.19942690001334995
+    },
+    {
+      "index": 101,
+      "group_id": "copper-foil-spinoff-and-listing-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "209f33f48a07a889e85df3e0c9039986143dc7c3accf70f4c26b495677bf8b6e",
+      "association": "COMPANY_SUBJECT",
+      "prediction": "POSITIVE",
+      "confidence": 0.9259045124053955,
+      "probabilities": {
+        "NEUTRAL": 0.07360411435365677,
+        "POSITIVE": 0.9259045124053955,
+        "NEGATIVE": 0.0004913702723570168
+      },
+      "latency_seconds": 0.2508280999609269
+    },
+    {
+      "index": 102,
+      "group_id": "market-session-2026-09-16",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "d36c8fc535df2c38230f38f031010cb1b4785ea179ed37c942ed9c9350da5cda",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 103,
+      "group_id": "market-session-2026-09-17",
+      "split": "HOLDOUT",
+      "label": "IRRELEVANT",
+      "input_sha256": "9263e0f6f4e85ba332e0c8d054daf7228394491f5ac1d0cbfc0d413fbf595a39",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 104,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "81320423fc02ef9647d06990634c6bc80d83912bb21e5f2472366226a5715549",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 105,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "af8b43bdedf14cd605bb49aba523929f27c78733b4af8ff1376845ff0e2a1eed",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_LOW_CONFIDENCE",
+      "confidence": 0.6227928400039673,
+      "probabilities": {
+        "NEUTRAL": 0.6227928400039673,
+        "POSITIVE": 0.3766712248325348,
+        "NEGATIVE": 0.0005359358619898558
+      },
+      "latency_seconds": 0.24540300003718585
+    },
+    {
+      "index": 106,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "dba40cb216119cc7686195708644599e352d1a7f43c8d8edd34e548e18012979",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 107,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "f52b7cff2130fa22099dd94bfa7d5cbd5234671c274463cfa9a08c2649667b70",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 108,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "e0b1ef847d148e3c63ed64cb054c700a5b18904d7ab9caa9e2f7cd3eabe2cdc1",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.990991473197937,
+      "probabilities": {
+        "NEUTRAL": 0.0077368696220219135,
+        "POSITIVE": 0.0012716787168756127,
+        "NEGATIVE": 0.990991473197937
+      },
+      "latency_seconds": 0.23456030001398176
+    },
+    {
+      "index": 109,
+      "group_id": "market-session-2026-09-15",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "d8ea2652c2997fd36ab7cf541da09c0392c67c8a4f29eabea8934364bc1f0437",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 110,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "ef498cd41633865cae7e4fc7bc98ab1608d8d53dcac9302c33484508291b01d0",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.713809072971344,
+      "probabilities": {
+        "NEUTRAL": 0.1327357441186905,
+        "POSITIVE": 0.713809072971344,
+        "NEGATIVE": 0.15345515310764313
+      },
+      "latency_seconds": 0.09732669999357313
+    },
+    {
+      "index": 111,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "375ce88d320a5143f242042a43485e7d6bf88b8bbe9dbcd5eef39c09d9207e92",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9967918992042542,
+      "probabilities": {
+        "NEUTRAL": 0.00283764093182981,
+        "POSITIVE": 0.9967918992042542,
+        "NEGATIVE": 0.0003705137933138758
+      },
+      "latency_seconds": 0.12597740005003288
+    },
+    {
+      "index": 112,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "61028876311cc8674258ec37eceea27f0f58cd1a51efd71e7ae5e910c5ad74e3",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9966216087341309,
+      "probabilities": {
+        "NEUTRAL": 0.0030525350011885166,
+        "POSITIVE": 0.9966216087341309,
+        "NEGATIVE": 0.0003259212535340339
+      },
+      "latency_seconds": 0.14261959999566898
+    },
+    {
+      "index": 113,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "8766875b08f6da2be7c5fb384f5827f69ee213db2360e58879ce8124e4a6193c",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9313015937805176,
+      "probabilities": {
+        "NEUTRAL": 0.06779477000236511,
+        "POSITIVE": 0.9313015937805176,
+        "NEGATIVE": 0.000903553154785186
+      },
+      "latency_seconds": 0.13061520003248006
+    },
+    {
+      "index": 114,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "9b8d9c5b8616689cc462faf02b97bf38b1d44d6292b38c578a1c1d7f43ecfcdd",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 115,
+      "group_id": "market-session-2026-09-15",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "c416dd3cf2dacf0852836c0b940cc9a2b459f4bd518b6331c3486333fea2a1d2",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 116,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "f69117dd04c16fc3f3865d3428b5b6478bba5351e9b174c559eaddafada66d82",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9624208211898804,
+      "probabilities": {
+        "NEUTRAL": 0.0370224192738533,
+        "POSITIVE": 0.9624208211898804,
+        "NEGATIVE": 0.0005568303167819977
+      },
+      "latency_seconds": 0.15481229999568313
+    },
+    {
+      "index": 117,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "e1ac1e839a854be5325cca52cdb80b5994496c53e20788abf816b5e7c8a6b3e4",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9937792420387268,
+      "probabilities": {
+        "NEUTRAL": 0.0057226913049817085,
+        "POSITIVE": 0.9937792420387268,
+        "NEGATIVE": 0.0004980756784789264
+      },
+      "latency_seconds": 0.14176969998516142
+    },
+    {
+      "index": 118,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "d28337427f4aaaad190d6db88e34797fedb7aa897e9d929f418c5cdb6f82e3e8",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9806345701217651,
+      "probabilities": {
+        "NEUTRAL": 0.017711147665977478,
+        "POSITIVE": 0.0016542377416044474,
+        "NEGATIVE": 0.9806345701217651
+      },
+      "latency_seconds": 0.20095750002656132
+    },
+    {
+      "index": 119,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "e3b9ce9b657e706cc782a4560a41f405c65626c6a5dbfc5676cea1580f435a77",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 120,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "3b7fc848d01dc343d1889fed1960b990b33fbe0bb16592e316cfa4096e2ee819",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9976091384887695,
+      "probabilities": {
+        "NEUTRAL": 0.0020242189057171345,
+        "POSITIVE": 0.9976091384887695,
+        "NEGATIVE": 0.0003666968841571361
+      },
+      "latency_seconds": 0.16441269998904318
+    },
+    {
+      "index": 121,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "4ae2366f7ae24c06ceee88800055301c04494b37d96a0ee4ca6104c86328d67c",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 122,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "ecb2a0199a7434a9f78baf78e0f11bb91f60350c386aed59d3d4a1fca820c9cc",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 123,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "275d4c4b5ed267b8f93b3a5df83389deb128e5934c33645c756598741fdb842a",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 124,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "72b265572a2afc96c234b0d2b98cc4b522d4bf35be0233836769a2edeabaabb0",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 125,
+      "group_id": "market-session-2026-09-09",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "b6621a437daff7679907966398e6b623a9a9dd98148fc1d1d622752f1016ebd9",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992440938949585,
+      "probabilities": {
+        "NEUTRAL": 0.0004105731495656073,
+        "POSITIVE": 0.9992440938949585,
+        "NEGATIVE": 0.0003453484387136996
+      },
+      "latency_seconds": 0.18617570004425943
+    },
+    {
+      "index": 126,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "372e0f22842c1434e8c4352f267acef703848274ec61fe34bbb828c65cdc9659",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 127,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "ed2a4d61757649518f70528a5e1856e51fb50a22a071f21ae101fa9128ec1d78",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 128,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "e737a506b4e90a643b726841f3466c39138b2836467a636640e7c9d70bbe5b70",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9969205856323242,
+      "probabilities": {
+        "NEUTRAL": 0.002408185973763466,
+        "POSITIVE": 0.9969205856323242,
+        "NEGATIVE": 0.0006712040049023926
+      },
+      "latency_seconds": 0.20092529995599762
+    },
+    {
+      "index": 129,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "1201e484de6eb83737f8ccc1328eadca51f0c23554a1b31ac75733d69d8daecc",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 130,
+      "group_id": "same-etf-demand-story-20260909",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "22a22126e5ab7a0fd94ae7dd7da4528ff47473ad36125f85b6281fe4db49c659",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 131,
+      "group_id": "same-etf-demand-story-20260909",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "62774dabb34b084ac3fc7679e15088de4f772095d3b06cd328b8a16c1108fd20",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 132,
+      "group_id": "market-session-2026-09-14",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "eca14e15cfc7b5e906983807aad8dc65315babdd22e1ba6d0b82878ebea3a29c",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 133,
+      "group_id": "2026H1-results-and-recaps",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "f5c34d763f1e87942e170d70ae01c3aa9db78e19bb8471b82eb86412cc002acc",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9992638230323792,
+      "probabilities": {
+        "NEUTRAL": 0.0004301021108403802,
+        "POSITIVE": 0.9992638230323792,
+        "NEGATIVE": 0.00030598643934354186
+      },
+      "latency_seconds": 0.17041350004728884
+    },
+    {
+      "index": 134,
+      "group_id": "market-session-2026-09-13",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "7ad75a0cb9f760ed0a05f085a4efd2954e480a4d70532ae5a5fa7658f5841e66",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.85354083776474,
+      "probabilities": {
+        "NEUTRAL": 0.14597132802009583,
+        "POSITIVE": 0.85354083776474,
+        "NEGATIVE": 0.00048781625810079277
+      },
+      "latency_seconds": 0.15503810002701357
+    },
+    {
+      "index": 135,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "ceeceff4c3b54fd8f0251be69f9c7503c67fccfed48bec08e4577e9ab381617e",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 136,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "f544fa223c94bea37e30d8ec0f60447846243b46601ee78bc97e483c5866350e",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 137,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "d691f0fc7e229e6e735c3619c18ec7562bdb70d61c3126af8678fe2036026214",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9078059196472168,
+      "probabilities": {
+        "NEUTRAL": 0.06341125071048737,
+        "POSITIVE": 0.9078059196472168,
+        "NEGATIVE": 0.028782790526747704
+      },
+      "latency_seconds": 0.21484899998176843
+    },
+    {
+      "index": 138,
+      "group_id": "corporate-event-138",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "59ebc02b77b4d0191d2aa22b95b31e3cabc1f254f77a28ab2e0a86aa91b0556a",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9963751435279846,
+      "probabilities": {
+        "NEUTRAL": 0.9963751435279846,
+        "POSITIVE": 0.0027464854065328836,
+        "NEGATIVE": 0.0008783403900451958
+      },
+      "latency_seconds": 0.2460414000088349
+    },
+    {
+      "index": 139,
+      "group_id": "market-session-2026-09-09",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "a6c297714a74003f4ff25f91baac5f66c06ca35bf386de5d752a37069c64a7a3",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 140,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "930278c3d39eb81f60cacf4f2ac834967ab1092c3722240bdf15765c3e7440eb",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 141,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "6623c53093a4cf39a5718ef3988e0001b9419f141fab5aa9f68fb02ef1703c54",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.7013900279998779,
+      "probabilities": {
+        "NEUTRAL": 0.28902533650398254,
+        "POSITIVE": 0.00958463829010725,
+        "NEGATIVE": 0.7013900279998779
+      },
+      "latency_seconds": 0.19734740001149476
+    },
+    {
+      "index": 142,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "30dfe307693e9d5ef762a54ba4bed7e0da3f2b8da96fe0ffda3a25605bbcabdb",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEGATIVE",
+      "confidence": 0.9958264231681824,
+      "probabilities": {
+        "NEUTRAL": 0.003460522973909974,
+        "POSITIVE": 0.0007130824960768223,
+        "NEGATIVE": 0.9958264231681824
+      },
+      "latency_seconds": 0.20426880003651604
+    },
+    {
+      "index": 143,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "8b99ddc1fe6e3a8bd68c7ae3a6b9468286d508be68f7e4e0d28f804e15468c46",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "POSITIVE",
+      "confidence": 0.9991806149482727,
+      "probabilities": {
+        "NEUTRAL": 0.0005102711147628725,
+        "POSITIVE": 0.9991806149482727,
+        "NEGATIVE": 0.00030911382054910064
+      },
+      "latency_seconds": 0.2529223000165075
+    },
+    {
+      "index": 144,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "fa516e27c508127dcbceaaba95cf282a6a99e7ac151426fdd9b91a4daff71e13",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 145,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "POSITIVE",
+      "input_sha256": "c063fa36ad838782778242367c31e4c765ed105862d68fbcb176641f4f9c923d",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "NEUTRAL",
+      "confidence": 0.9975341558456421,
+      "probabilities": {
+        "NEUTRAL": 0.9975341558456421,
+        "POSITIVE": 0.0019099958008155227,
+        "NEGATIVE": 0.0005558059783652425
+      },
+      "latency_seconds": 0.16260729997884482
+    },
+    {
+      "index": 146,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "66a93d96d196bf89097967786dace05390a78f2ff679d277aa6cbf909d1c8c7f",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 147,
+      "group_id": "market-session-2026-09-11",
+      "split": "DEVELOPMENT",
+      "label": "NEGATIVE",
+      "input_sha256": "f918717aa2a9c07bf26567391ebf164275089174c49675cff8bae8ca6f0794cc",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_LOW_CONFIDENCE",
+      "confidence": 0.5487411618232727,
+      "probabilities": {
+        "NEUTRAL": 0.5487411618232727,
+        "POSITIVE": 0.08087684959173203,
+        "NEGATIVE": 0.37038201093673706
+      },
+      "latency_seconds": 0.19882250000955537
+    },
+    {
+      "index": 148,
+      "group_id": "market-session-2026-09-08",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "e7c052afda021880022f9d44faba84fa0f595902390064f890fbac515b71c2a5",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    },
+    {
+      "index": 149,
+      "group_id": "market-session-2026-09-09",
+      "split": "DEVELOPMENT",
+      "label": "IRRELEVANT",
+      "input_sha256": "d80d7b72c28b005860e184fb8c293511544b2c1e84b9e985f358ac8faf2da146",
+      "association": "COMPANY_MENTIONED",
+      "prediction": "ABSTAIN_MARKET_INDEX",
+      "confidence": null,
+      "probabilities": null,
+      "latency_seconds": null
+    }
+  ],
+  "loading_info": {
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "cold_start_seconds": 12.032651799963787,
+  "packages": {
+    "torch": "2.10.0",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "safetensors": "0.8.0"
+  },
+  "peak_working_set_bytes": 821559296,
+  "elapsed_seconds": 26.812732799968217,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "logical_cpus": 16,
+    "torch_threads": 2,
+    "device": "CPU",
+    "precision": "float32"
+  }
+}

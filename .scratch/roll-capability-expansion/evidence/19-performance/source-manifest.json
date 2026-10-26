@@ -1,0 +1,28 @@
+{
+  "version": "0.0.86",
+  "license_expression": "Apache-2.0",
+  "python": "3.13.12",
+  "sources": {
+    "__init__.py": "30ba66794db18975bb8fbea2d3260cd6a6234bb5a6a4d991aa34ebce1b9d2628",
+    "stats.py": "07b3ceeec1a06f90fddb33ec6b089f7f8dbfa2a4cd6b6d6affb7e0acd0f51503",
+    "utils.py": "cd1aed9b93033ef349d5965fb046fd05f30d0a307637a2ff6de84b248fa41b4c",
+    "reports.py": "254e2541e6b2f3bb03c01c2cfb9728aaaef4892fbabf4efb0687914f373daf51"
+  },
+  "wheel_sha256": "4cfb157c8228cbb47681d6a81767d465fbc2bdf529643dd7e836479d2165efd6",
+  "usage": [
+    "stats.comp",
+    "stats.compsum",
+    "stats.to_drawdown_series",
+    "stats.max_drawdown",
+    "stats.monthly_returns(prepare_returns=False)"
+  ],
+  "preprocessing_guards": [
+    "finite positive NAV only",
+    "saved calendar exact; missing leaves unavailable",
+    "no _match_dates or _prepare_returns",
+    "normalized NAV price series anchored at100 for drawdown",
+    "monthly synthetic unobserved zeros filtered",
+    "first raw return null; annualization below252 suppressed"
+  ],
+  "network": "socket + requests + curl_cffi request + download_returns denied"
+}

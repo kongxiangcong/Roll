@@ -1,0 +1,43 @@
+{
+  "status": "FAILED_CLOSED",
+  "started_at": "2026-10-19T13:30:23.109508+00:00",
+  "attempt_id": "SENTIMENT-TRAIN-SUPPLEMENT-05",
+  "requests": [
+    {
+      "number": 1,
+      "command": {
+        "period": "TRAIN",
+        "keyword": "江西铜业",
+        "minimum_date": "2020-12-31",
+        "maximum_date": "2021-02-14",
+        "page": 2,
+        "page_size": 20,
+        "sort": 1,
+        "prior_window_number": 25
+      },
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 2,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1609344000,
+        "etime": 1613318399
+      },
+      "at": "2026-10-19T13:30:23.109688+00:00",
+      "transfer_seconds": 5.056860999960918
+    }
+  ],
+  "bytes": 0,
+  "transfer_seconds": 5.056860999960918,
+  "retries": 0,
+  "automatic_redirects": 0,
+  "model_calls": 0,
+  "training_runs": 0,
+  "error_type": "ReadTimeout",
+  "error_code": "TRANSPORT_OR_PARSE_FAILURE",
+  "elapsed_seconds": 5.056975100014824,
+  "returned": 0,
+  "remaining_requests": 19
+}

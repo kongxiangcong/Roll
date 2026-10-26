@@ -1,0 +1,51 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+___ test_blocked_original_horizon_cannot_sell_added_lot_on_a_later_session ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/t20-policy-successor/.scratch/successor-shadow-spec-red/test_blocked_original_horizon_0')
+
+    def test_blocked_original_horizon_cannot_sell_added_lot_on_a_later_session(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            frozen = predecessor(client, tmp_path)
+            proposal = register(client, frozen).json()
+            receipt = migration(client, proposal, 'SSE:600519', 100, 3).json()
+            baseline = position('SSE:600519', 100, receipt, 3)
+            baseline['sellable_quantity'] = 0
+            successor = freeze_successor(client, proposal, [baseline]).json()
+            path = '/api/research/policy-successor-freezes/'+successor['successor_freeze_id']
+            for session in [1, 2, 3]:
+                response = client.post(path+'/shadow/advance', json=frame(session))
+                assert response.status_code == 201, response.text
+            response = client.post(path+'/shadow/advance', json=frame(4))
+            assert response.status_code == 201, response.text
+            state = response.json()
+>           assert [(event['kind'], event['quantity']) for event in state['events']] == [('BUY_FILL', 100)]
+E           AssertionError: assert [('BUY_FILL',...L_FILL', 100)] == [('BUY_FILL', 100)]
+E             
+E             Left contains one more item: ('SELL_FILL', 100)
+E             Use -v to get more diff
+
+backend\tests\application\test_successor_shadow.py:178: AssertionError
+_ test_successor_freeze_refuses_split_baseline_instead_of_rewriting_added_horizon _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/t20-policy-successor/.scratch/successor-shadow-spec-red/test_successor_freeze_refuses_0')
+
+    def test_successor_freeze_refuses_split_baseline_instead_of_rewriting_added_horizon(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            frozen = predecessor(client, tmp_path)
+            proposal = register(client, frozen).json()
+            receipt = migration(client, proposal, 'SSE:600519', 100, 20).json()
+            split = position('SSE:600519', 100, receipt)
+            split['original_remaining_quantity'] = 0
+            split['added_lots'] = [{'lot_id': 'research-added', 'quantity': 100, 'entry_session': 4, 'exit_session': 24}]
+            response = freeze_successor(client, proposal, [split], starting_session=5)
+>           assert response.status_code == 422, response.text
+E           AssertionError: {"successor_freeze_id":"00ca4e83-c0c5-4951-8f99-62920b427ee8","proposal_id":"7f1f04a8-9a5e-48fb-8489-41a7ec186e04","predecessor_freeze_id":"7b111122-5ddc-4862-9aa1-f0a2ebaa7b7f","predecessor_complete_protocol_fingerprint":"c844592716a9b1b96bc63342304bcd266cf26e97c221b8739ddb8e7cd9133f82","policy":{"entry_threshold":"0.60","horizon":"HORIZON_SESSION20_CLOSE","joint_budget":"reserve_upper_price_plus_fees_before_fills; no leverage or simultaneous opportunity sums","low_support_exit":"PROPOSED_EXIT_BELOW_SUPPORT","maximum_gross_exposure":"0.50","migration":"EXPLICIT_POSITION_BINDING_KEEP_ORIGINAL_EXIT_SESSION","one_new_entry":true,"ordering":"risk_reductions_then_existing_positions_then_descending_probability_then_instrument_then_forecast_id","planned_sale_proceeds":"NEVER_AVAILABLE","predecessor_entry_ordering":"descending_probability_then_instrument_then_forecast_id","reversal_cooldown_completed_sessions":1,"support_threshold":"0.60","target_quantity":"200","version":"20-policy-v2-proposal"},"policy_fingerprint":"38c68fac8af27c7043b16cb557fa6867f735ce390be7689dbc661a0f9892eaa5","model_freeze_manifest":{"bytes":8290,"kind":"RESEARCH_MODEL_FREEZE_MANIFEST","path":"raw/70f829fc92a79cf65777e24b60d3b5a7cbfd9867befe53e314fba98bb3f85246.raw","research_namespace":"HISTORICAL","sha256":"70f829fc92a79cf65777e24b60d3b5a7cbfd9867befe53e314fba98bb3f85246"},"model_artifact_fingerprints":{"calibrator":"65d19653698e6bc945b4d74e1d71c490b2c3133c15047426fa3a3899f4b73f74","code":"9c9e8b701dd4db90486654b7d44781dc317cf52fa37574214d6d2b7989e9e3db","data":"13e513e3e2ebb8a3441562974de11e267f662b11e285139699e0bff578db43af","features_and_inputs":"889d2a03bd5ca2ba8a5bcc1ca16e6d3faef1d9ad013dae08dd7a3d7e3b6eb040","model":"fe5c5a30bcc3acad4a643fd8f1348954b1020d22b74a151a448d7beddbe8d7cc","protocol":"d482001c91cf59aa202f50f92539f2b424214d2e37858cfacb59fcd868b083ac"},"costs":{"broker_actual_commission":"UNKNOWN","commission_includes_regulatory_fees":true,"commission_scenario_rate":"0.0003","currency":"CNY","effective_scope":"SSE MAIN ordinary A-share study scenario. Official pages currently displayed; 2023-08-28 stamp reduction separately archived. Exact broker tariff and continuous historical stability remain unproven; not official account expense facts.","evidence":[{"bytes":45558,"effective_scope":"Page current display; no invented exact update day or historical stability proof","evidence_kind":"REAL_AUTHORITY_PAGE","file":"sse-cost-investor.html","http_status":200,"id":"sse-cost-investor","permission":"Public source retrieval; no broker client tariff authority","received_at":"2026-10-07T19:14:28.006335+00:00","sha256":"f5d95746ec6f8dc7d5c9f057b230ba56eae67dce05dbae06fe62a0bdad98f0db","started_at":"2026-10-07T19:14:26.877488+00:00","url":"https://one.sse.com.cn/onething/gptz/"},{"bytes":41658,"effective_scope":"SSE January2026 charge table current display; A/B share handling charged to members, not a separate duplicate investor commission charge","evidence_kind":"REAL_AUTHORITY_PAGE","file":"sse-charge-2026.html","http_status":200,"id":"sse-charge-2026","page_update":"2026-01","page_update_precision":"MONTH_ONLY","permission":"Public source retrieval; no broker client tariff authority","received_at":"2026-10-07T19:14:28.323015+00:00","sha256":"021afe9404902d1a316ba06880a8a08a97afcd8b805fea938cdc05fa75b3637c","started_at":"2026-10-07T19:14:28.007071+00:00","url":"https://www.sse.com.cn/services/tradingservice/charge/ssecharge/"},{"bytes":27791,"effective_from":"2023-08-28","effective_precision":"DAY_EXPLICIT_NOTICE_2023_NO39","effective_scope":"Securities transaction stamp tax halved from 2023-08-28; archived official notice, sell side rate corroborated by SSE investor page","evidence_kind":"REAL_AUTHORITY_PAGE","file":"stamp-tax-2023.html","http_status":200,"id":"stamp-tax-2023","permission":"Public source retrieval; no broker client tariff authority","received_at":"2026-10-07T19:14:28.685996+00:00","sha256":"a487bb4f65b1a9431979339d20ddff3db0c4fb082bc29f63b7e50896211229bf","started_at":"2026-10-07T19:14:28.323867+00:00","url":"https://shanxi.chinatax.gov.cn/web/detail/sx-11400-545-1780448"}],"extra_regulatory_charge":"0","minimum_commission_yuan":"5","rounding":"Decimal to yuan cents at fee boundary; retain underlying raw precision","slippage_each_side_rate":"0.0005","stamp_sell_rate":"0.0005","transfer_each_side_rate":"0.00001","unknown_policy":"Unknown actual fee never becomes0; use explicit scenario intervals in research and retain formal cost-input restriction.","version":"17-cost-v1"},"rules":{"SSE:600519":{"buy_increment":"100","buy_minimum":"100","close_time":"15:00:00","company_actions":"CONFIRMED_NONE","normal_price_limit_percent":"10","price_tick_yuan":"0.01","resale":"NEXT_TRADING_DAY","rule_scope":"METHOD_CASE_ONLY","state":"CONFIRMED_NORMAL"}},"design":{"forecast_execution":"NEXT_CONSECUTIVE_DECLARED_SESSION_OPEN_ONLY","migration_horizon_execution":"KEEP_ORIGINAL_LOT_HORIZON_CLOSE","new_lot_horizon_sessions":20,"missing_session":"NO_DISTANT_BAR_FILL_NO_RETROSPECTIVE_PREDICTION","fees":"INHERITED_RESEARCH_SCENARIO_NOT_ACTUAL_BROKER_TARIFF","cash_flow_policy":"NO_EXTERNAL_FLOWS","input_authority":"UNTRUSTED_METHOD_SNAPSHOT","validation":"NEW_POLICY_ECONOMIC_AND_INDEPENDENT_CALIBRATION_NOT_CHECKED"},"source_fingerprint":"83a9ea44deb4c377f0bfadebe0765e6d5132cd6af3a546c935f321ad24d5cec4","design_fingerprint":"40450b5118a7a7e2e05633a9a82533de355edcc4793480e2b8846e62445386d4","baseline":{"starting_session":5,"cash_yuan":"10000.00","positions":[{"position_id":"pos-SSE:600519","instrument":"SSE:600519","quantity":100,"sellable_quantity":100,"original_exit_session":20,"migration_id":"e05b0abe-9b08-4808-a9af-bb8aed49c30b","original_remaining_quantity":0,"added_lots":[{"lot_id":"research-added","quantity":100,"entry_session":4,"exit_session":24}]}]},"migrations":{"e05b0abe-9b08-4808-a9af-bb8aed49c30b":{"basis":"Explicit prospective research position migration","effective_session":2,"instrument":"SSE:600519","migration_id":"e05b0abe-9b08-4808-a9af-bb8aed49c30b","namespace":"RESEARCH_POLICY_PROPOSAL","original_exit_session":20,"policy_fingerprint":"38c68fac8af27c7043b16cb557fa6867f735ce390be7689dbc661a0f9892eaa5","position_id":"pos-SSE:600519","proposal_id":"7f1f04a8-9a5e-48fb-8489-41a7ec186e04","quantity":100,"registered_at":"2026-10-14T13:58:30.878311+00:00","system_usable":false}},"namespace":"SUCCESSOR_RESEARCH_FREEZE","system_usable":false,"capability":"NOT_GRANTED","validation_status":"UNVALIDATED","validation_verdict":"INCONCLUSIVE","complete_experiment_frozen":false,"policy_and_simulation_frozen":true,"basis":"Isolated METHOD continuous successor; not formal qualification","registered_at":"2026-10-14T13:58:31.079368+00:00","successor_fingerprint":"5cf9bc4e4326e122ef35e3b799a81a2fa135fcb91fa1fb5dc0a60a5db63752ca"}
+E           assert 201 == 422
+E            +  where 201 = <Response [201 Created]>.status_code
+
+backend\tests\application\test_successor_shadow.py:194: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_shadow.py::test_blocked_original_horizon_cannot_sell_added_lot_on_a_later_session
+FAILED backend\tests\application\test_successor_shadow.py::test_successor_freeze_refuses_split_baseline_instead_of_rewriting_added_horizon
+2 failed, 5 deselected in 47.02s

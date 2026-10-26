@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_registered_controls_keep_original_exit_rules_and_full_method_window ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r05br/test_registered_controls_keep_0')
+
+    def test_registered_controls_keep_original_exit_rules_and_full_method_window(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path);proposal=register(client,previous).json();frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Original registered controls, no new strategy search'}).json()
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            protocol=client.post(base+'/complete-protocol',json={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'parameters','basis':'Before all METHOD observations'}).json()
+            for day in range(1,46):
+                command=frame(day)
+                if day>=22:command['bars'][0].update(open_yuan='11.00',high_yuan='11.00',low_yuan='10.50',close_yuan='11.00',reference_close_yuan='10.00' if day==22 else '11.00')
+                response=client.post(base+'/shadow/advance',json=command)
+                assert response.status_code==201,response.text
+            state=client.get(base+'/shadow').json()
+            stress=client.post(base+'/cost-stress',json={'expected_complete_protocol_fingerprint':protocol['complete_protocol_fingerprint'],'expected_revision':45,'idempotency_key':'cost-source','basis':'Saved original trajectory only'}).json()
+            route='/api/research/successor-cost-stresses/'+stress['stress_id']+'/registered-controls';command={'idempotency_key':'controls','basis':'Same source/cash/costs/cap; preserve old comparator timing, no risk qualification'}
+            response=client.post(route,json=command)
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_successor_registered_controls.py:23: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_registered_controls.py::test_registered_controls_keep_original_exit_rules_and_full_method_window
+1 failed in 25.31s

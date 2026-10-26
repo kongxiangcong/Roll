@@ -1,0 +1,128 @@
+{
+  "attempt_id": "SENTIMENT-FRESH-CORPUS-03",
+  "started_at": "2026-10-19T00:13:07.852020+00:00",
+  "status": "CAPTURED_CLOSED",
+  "requests": [
+    {
+      "number": 1,
+      "command": {
+        "keyword": "江西铜业 净利润 下降",
+        "page": 1
+      },
+      "received_at": "2026-10-19T00:13:07.886316+00:00",
+      "status_code": 200,
+      "file": "01.raw",
+      "bytes": 53328,
+      "sha256": "1978f0d3997464fad0d6467194c8780d73e0bfa81606d92f73a30535b6788cdc",
+      "returned": 100
+    },
+    {
+      "number": 2,
+      "command": {
+        "keyword": "江西铜业 亏损",
+        "page": 1
+      },
+      "received_at": "2026-10-19T00:13:09.355619+00:00",
+      "status_code": 200,
+      "file": "02.raw",
+      "bytes": 57352,
+      "sha256": "042535f45362d39304c52a519ea14c92a372fbab69ab5137aaba4a2cae5ca317",
+      "returned": 100
+    },
+    {
+      "number": 3,
+      "command": {
+        "keyword": "江西铜业 净利润 增长",
+        "page": 1
+      },
+      "received_at": "2026-10-19T00:13:09.884724+00:00",
+      "status_code": 200,
+      "file": "03.raw",
+      "bytes": 54401,
+      "sha256": "76cf5e053d8bf07f0f011cc0c169e50f3c6278c6cbe058c2e1fd67d35258bb4b",
+      "returned": 100
+    },
+    {
+      "number": 4,
+      "command": {
+        "keyword": "江西铜业 投产",
+        "page": 1
+      },
+      "received_at": "2026-10-19T00:13:10.383981+00:00",
+      "status_code": 200,
+      "file": "04.raw",
+      "bytes": 55589,
+      "sha256": "1f14a2339f6883e062bb2e99572d62afdb8b30fcd2bbd5b27a046734491d1903",
+      "returned": 100
+    },
+    {
+      "number": 5,
+      "command": {
+        "keyword": "江西铜业 董事会 公告",
+        "page": 1
+      },
+      "received_at": "2026-10-19T00:13:10.911706+00:00",
+      "status_code": 200,
+      "file": "05.raw",
+      "bytes": 57850,
+      "sha256": "4eb11edf0e835b1fee3dfc29fbf4c4294c39ce1cd476dcb1b56fdfa145d9eea3",
+      "returned": 100
+    },
+    {
+      "number": 6,
+      "command": {
+        "keyword": "江西铜业 更正",
+        "page": 1
+      },
+      "received_at": "2026-10-19T00:13:11.326166+00:00",
+      "status_code": 200,
+      "file": "06.raw",
+      "bytes": 60197,
+      "sha256": "f81d1725dff58e94e6583bcd56ae411c6f220738217fc4eca776a0029c9d6364",
+      "returned": 100
+    },
+    {
+      "number": 7,
+      "command": {
+        "keyword": "江西铜业 澄清",
+        "page": 1
+      },
+      "received_at": "2026-10-19T00:13:11.715748+00:00",
+      "status_code": 200,
+      "file": "07.raw",
+      "bytes": 59434,
+      "sha256": "1e9db2dffe7a6590a0d764f78310de9fdde9b200b8a2280780127b0e44be8a45",
+      "returned": 100
+    },
+    {
+      "number": 8,
+      "command": {
+        "keyword": "江西铜业",
+        "page": 4
+      },
+      "received_at": "2026-10-19T00:13:12.226498+00:00",
+      "status_code": 200,
+      "file": "08.raw",
+      "bytes": 55437,
+      "sha256": "26f897cc6383cd810954905ae2387584b4ff5adcddd46aec9958033f98c99ba9",
+      "returned": 100
+    }
+  ],
+  "bytes": 453588,
+  "retries": 0,
+  "redirects": 0,
+  "elapsed_seconds": 4.895,
+  "returned": 800,
+  "new_unique": 731,
+  "excluded": 69,
+  "old_corpus_sources": [
+    {
+      "path": "corpus-attempt/corpus.json",
+      "sha256": "e898fda3fc66dff6eda9d8c9cfbba3891c2c405441913aab473bb505a92f590f"
+    },
+    {
+      "path": "corpus-name-attempt/corpus.json",
+      "sha256": "e8f3e27576569597fb6239fc304e8658a8d7ffff132a9c5a6b8249fcec53a398"
+    }
+  ]
+}

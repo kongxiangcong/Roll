@@ -1,0 +1,25 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -524,6 +524,22 @@
+     async def statements_collect(instrument:str,command:IncomeCommand):
+         return await financial_statements.collect(instrument,command)
+ 
++    from roll.market.financial_documents import FinancialDocuments,ParseCommand
++    financial_documents=FinancialDocuments(evidence)
++    app.state.financial_documents=financial_documents
++
++    @app.get('/api/market/financial/documents/{sha}/parses')
++    def financial_document_parses(sha:str):return financial_documents.listing(sha)
++
++    @app.post('/api/market/financial/documents/{sha}/parses',status_code=201)
++    async def financial_document_parse(sha:str,command:ParseCommand):return await financial_documents.parse(sha,command)
++
++    @app.get('/api/market/financial/document-parses/{identifier}')
++    def financial_document_parse_get(identifier:str):return financial_documents.get(identifier)
++
++    @app.post('/api/market/financial/document-parses/{identifier}/cancel')
++    async def financial_document_parse_cancel(identifier:str):return await financial_documents.cancel(identifier)
++
+     @app.get('/api/market/financial/{instrument}/metrics')
+     def financial_metrics(instrument:str,known_by:datetime|None=Query(None)):
+         from roll.market.financial_metrics import metrics

@@ -1,0 +1,26 @@
+{
+  "attempt_id": "SENTIMENT-FINBERT-DOWNLOAD-01",
+  "started_at": "2026-10-18T15:48:27.218998+00:00",
+  "requests": [
+    {
+      "host": "huggingface.co",
+      "artifact": "pinned-model-metadata.raw",
+      "bytes": 2211,
+      "status": 200
+    },
+    {
+      "host": "huggingface.co",
+      "artifact": "model.safetensors",
+      "bytes": 0,
+      "status": 302
+    }
+  ],
+  "artifacts": [],
+  "bytes": 2211,
+  "status": "FAILED",
+  "error_type": "RuntimeError",
+  "error_code": "UNAPPROVED_HOST",
+  "elapsed_seconds": 3.413,
+  "closed": true,
+  "retries": 0
+}

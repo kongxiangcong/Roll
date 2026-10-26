@@ -1,0 +1,98 @@
+ M .scratch/roll-p0/execution-status.md
+ M .scratch/roll-p0/issues/30-forward-archive-deadline.md
+ M .scratch/roll-p0/issues/31-engineering-delivery.md
+ M .scratch/roll-p0/issues/32-first-real-forward-archive.md
+ M README.md
+ M backend/src/roll/app.py
+ M backend/src/roll/market/collection_sources.py
+ M backend/src/roll/runtime/reviews.py
+ M scripts/collect_prospective.py
+?? .scratch/local-commit-20261011/
+?? .scratch/real-forward-20261014/
+?? .scratch/roll-capability-expansion/
+?? .scratch/roll-p0/evidence/19-framework-2026-10-10/regression-01/
+?? .scratch/roll-p0/evidence/19-framework-2026-10-10/test-run-03/
+?? .scratch/roll-p0/evidence/19-framework-2026-10-10/test-run-04/
+?? .scratch/roll-p0/evidence/19-framework-2026-10-10/test-run-05/
+?? .scratch/roll-p0/evidence/19-framework-2026-10-10/test-run-06/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/baseline-full-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/focused-final2-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/focused-temp-1/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-final-0-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-final-1-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-final-2-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-final-3-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-frozen-0-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-frozen-1-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-frozen-2-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/full-frozen-3-temp/
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/negative-real-integrity/.startup.lock
+?? .scratch/roll-p0/evidence/19-reconstruction-2026-10-10/negative-real-integrity/backups/
+?? .scratch/roll-p0/evidence/19-workbuddy-sync-2026-10-10/test-run-2/
+?? .scratch/roll-p0/evidence/19-workbuddy-sync-2026-10-10/test-run-final/
+?? .scratch/roll-p0/evidence/basic-launch-2026-10-14/
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z-after.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z-before.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z-preflight.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z-result.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z-state-change-audit.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z-stderr.log
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z-summary.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-11T080557Z.md
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-after.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-audit.py
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-before.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-preflight.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-result.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-state-change-audit.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-stderr.log
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z-summary.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-12T080740Z.md
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-after.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-audit.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-backup-revalidation.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-before.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-preflight.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-result.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-stderr.log
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z-summary.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-13T173153Z.md
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-after.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-audit.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-backup-revalidation.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-before.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-preflight.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-result.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-stderr.log
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z-summary.json
+?? .scratch/roll-p0/evidence/cnequity-integration-2026-10-10/collection-log/2026-10-14T122227Z.md
+?? .scratch/roll-p0/evidence/continuation-2026-10-11/baseline-elevated/
+?? .scratch/roll-p0/evidence/continuation-2026-10-14/preexisting-untracked.txt
+?? .scratch/roll-p0/evidence/continuation-2026-10-14/ui-isolated-data/
+?? .scratch/roll-p0/evidence/continuation-2026-10-14/ui-isolated-data02/
+?? .scratch/roll-p0/evidence/real-forward-2026-10-14/
+?? .scratch/sfi01/
+?? .scratch/startup-20261014/
+?? .scratch/t14-integrated-02/
+?? .scratch/t14-policy-independent/
+?? .scratch/t14-policy-specfix-independent/
+?? .scratch/t25-closed-independent/
+?? .scratch/t29-independent-api/
+?? .scratch/t29i-root/
+?? .scratch/t29i-run02/
+?? .scratch/t29i-short/
+?? .scratch/t30a9-independent-method/
+?? .scratch/t30a9-independent/
+?? .scratch/t30p-green1/
+?? .scratch/t30p-red1/
+?? .scratch/t30q8-independent/
+?? .scratch/t30q8-root-composition/
+?? .workbuddy/
+?? backend/src/roll/market/sse_daily.py
+?? backend/tests/application/test_sse_daily.py
+?? backend/tests/recovery/test_sse_daily_process.py
+?? docs/post-close-operation.md
+?? docs/research/
+?? scripts/forward_readiness.py
+?? scripts/start-roll.ps1
+?? t30w-red/

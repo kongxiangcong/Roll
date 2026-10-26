@@ -1,0 +1,183 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_successor_protocol_binds_family_before_frames_and_replays_validation_prefix _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/05-protocol/prefix-red-data/test_successor_protocol_binds_0')
+
+    def test_successor_protocol_binds_family_before_frames_and_replays_validation_prefix(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path)
+            proposal=register(client,previous).json()
+            frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Preregister same-family successor policy before METHOD frames'}).json()
+            command={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],
+                'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'complete-v2','basis':'Inherit fixed objectives, no new fitting or protected evidence'}
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            response=client.post(base+'/complete-protocol',json=command)
+            assert response.status_code==201,response.text
+            complete=response.json()
+            assert complete['complete_experiment_frozen'] is False and complete['protocol_parameters_frozen'] is True
+            assert complete['design']['primary_objective']==previous['design']['primary_objective']
+            assert complete['design']['statistics']==previous['design']['statistics']
+            assert complete['capability']=='NOT_GRANTED' and complete['evidence_kind']=='METHOD_CASE'
+            assert client.post(base+'/complete-protocol',json=command).json()==complete
+            for session in range(1,4):
+                assert client.post(base+'/shadow/advance',json=frame(session)).status_code==201
+            checked=client.post(base+'/validations',json={'expected_complete_protocol_fingerprint':complete['complete_protocol_fingerprint'],'expected_revision':3,'idempotency_key':'validate-3','basis':'METHOD prefix diagnostic only'})
+            assert checked.status_code==201,checked.text
+            result=checked.json()
+            assert result['validation_verdict']=='INCONCLUSIVE'
+            assert result['method_checks']['replay_matches'] is True
+            assert result['method_checks']['statistical_arithmetic_passed'] is True
+            assert result['shadow_revision']==3 and result['system_usable'] is False
+            declined=frame(4)
+            declined['bars'][0].update(open_yuan='1.00',high_yuan='1.10',low_yuan='0.90',close_yuan='1.00',reference_close_yuan='1.00')
+            assert client.post(base+'/shadow/advance',json=declined).status_code==201
+            failed=client.post(base+'/validations',json={'expected_complete_protocol_fingerprint':complete['complete_protocol_fingerprint'],'expected_revision':4,'idempotency_key':'validate-4','basis':'Retain METHOD hard drawdown failure'}).json()
+            assert failed['validation_verdict']=='FAIL' and failed['gates']['G4']['status']=='FAIL'
+            assert failed['economics']['maximum_drawdown']>0.10
+            replay=client.post('/api/research/successor-validations/'+result['validation_id']+'/replay')
+            assert replay.status_code==200,replay.text
+            assert replay.json()['matches_original'] is True and replay.json()['shadow_revision']==3
+            assert client.get('/api/research/complete-freezes/'+previous['freeze_id']).json()==previous
+            assert client.get('/api/account').json()['version']==0
+            alternate=register(client,previous,version='20-policy-v2-alternate',idempotency_key='register-alternate').json()
+            alternative=freeze_successor(client,alternate).json()
+            reused=client.post('/api/research/policy-successor-freezes/'+alternative['successor_freeze_id']+'/complete-protocol',json={
+                **command,'expected_successor_fingerprint':alternative['successor_fingerprint'],'idempotency_key':'complete-alternate'})
+            assert reused.status_code==409,reused.text
+            zero=register(client,previous,version='20-policy-v2-zero',idempotency_key='register-zero').json()
+            empty=freeze_successor(client,zero,cash_yuan='0.00').json()
+            denied=client.post('/api/research/policy-successor-freezes/'+empty['successor_freeze_id']+'/complete-protocol',json={
+                **command,'expected_successor_fingerprint':empty['successor_fingerprint'],'idempotency_key':'complete-zero'})
+            assert denied.status_code==409 and 'EMPTY_ZERO_VALUE_BASELINE' in denied.json()['detail']['gaps']
+            with client.app.state.ledger.connection() as db:
+                db.execute("UPDATE research_successor_frames SET value='{}' WHERE freeze_id=? AND revision=4",(frozen['successor_freeze_id'],))
+                db.commit()
+>           independent=client.post('/api/research/successor-validations/'+result['validation_id']+'/replay')
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\application\test_successor_protocol.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\.venv\Lib\site-packages\httpx2\_client.py:1204: in post
+    return self.request(
+backend\.venv\Lib\site-packages\starlette\testclient.py:463: in request
+    return super().request(
+backend\.venv\Lib\site-packages\httpx2\_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\httpx2\_client.py:980: in send
+    response = self._send_handling_auth(
+backend\.venv\Lib\site-packages\httpx2\_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+backend\.venv\Lib\site-packages\httpx2\_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\httpx2\_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\starlette\testclient.py:360: in handle_request
+    raise exc
+backend\.venv\Lib\site-packages\starlette\testclient.py:357: in handle_request
+    portal.call(self.app, scope, receive, send)
+backend\.venv\Lib\site-packages\anyio\from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+backend\.venv\Lib\site-packages\anyio\from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\fastapi\applications.py:1163: in __call__
+    await super().__call__(scope, receive, send)
+backend\.venv\Lib\site-packages\starlette\applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+backend\.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+backend\.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+backend\.venv\Lib\site-packages\starlette\middleware\base.py:197: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:1414: in local_recovery_access
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\starlette\middleware\base.py:173: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+backend\.venv\Lib\site-packages\starlette\middleware\base.py:149: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+backend\.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+backend\.venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+backend\.venv\Lib\site-packages\starlette\routing.py:676: in __call__
+    await self.middleware_stack(scope, receive, send)
+backend\.venv\Lib\site-packages\fastapi\routing.py:2734: in app
+    await route.handle(scope, receive, send)
+backend\.venv\Lib\site-packages\fastapi\routing.py:1281: in handle
+    await super().handle(scope, receive, send)
+backend\.venv\Lib\site-packages\starlette\routing.py:282: in handle
+    await self.app(scope, receive, send)
+backend\.venv\Lib\site-packages\fastapi\routing.py:158: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+backend\.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+backend\.venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+backend\.venv\Lib\site-packages\fastapi\routing.py:144: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\fastapi\routing.py:706: in app
+    raw_response = await run_endpoint_function(
+backend\.venv\Lib\site-packages\fastapi\routing.py:354: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\starlette\concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\anyio\to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:2706: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:1100: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\app.py:206: in successor_validation_replay
+    return successor_protocols.replay(identifier)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\successor_protocol.py:204: in replay
+    frozen,frames=self.prefix(value['successor_freeze_id'],value['shadow_revision'])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\successor_protocol.py:158: in prefix
+    with self.ledger.connection() as db:frames=self.successor.frames(freeze_id,db,frozen)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <roll.research.successor_shadow.SuccessorShadow object at 0x0000019AD3787E00>
+freeze_id = '5ca4f63b-9ae9-4f9c-8725-07fc84d8eb8a'
+db = <sqlite3.Connection object at 0x0000019AB3606B60>
+frozen = {'baseline': {'cash_yuan': '10000.00', 'positions': [], 'starting_session': 0}, 'basis': 'Isolated METHOD continuous successor; not formal qualification', 'capability': 'NOT_GRANTED', 'complete_experiment_frozen': False, ...}
+
+    def frames(self, freeze_id, db, frozen):
+        frames = []
+        for revision, command_hash, raw in db.execute(
+                'SELECT revision,command_hash,value FROM research_successor_frames WHERE freeze_id=? ORDER BY revision', (freeze_id,)):
+            value = json.loads(raw)
+>           if (revision != len(frames)+1 or value['command']['expected_revision'] != len(frames) or
+                                             ^^^^^^^^^^^^^^^^
+                    fingerprint(value['command']) != value['input_fingerprint'] or command_hash != value['input_fingerprint']):
+E                   KeyError: 'command'
+
+backend\src\roll\research\successor_shadow.py:325: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_protocol.py::test_successor_protocol_binds_family_before_frames_and_replays_validation_prefix
+1 failed in 19.54s

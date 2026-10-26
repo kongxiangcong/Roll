@@ -1,0 +1,38 @@
+[WebServer] INFO:     Started server process [17972]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8150 (Press CTRL+C to quit)
+[WebServer] (node:4476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:28224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-probability.spec.ts:4:1 › research report compares saved CAL scores without new fitting (10.0s)
+
+
+  1) tests\e2e\expansion-probability.spec.ts:4:1 › research report compares saved CAL scores without new fitting 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: '保存的研究报告', exact: true }).getByText('概率计算独立库核验', { exact: true })[22m
+
+
+       6 |   const report=page.getByRole('region',{name:'保存的研究报告',exact:true});
+       7 |   await expect(report).toBeVisible();
+    >  8 |   await report.getByText('概率计算独立库核验',{exact:true}).click();
+         |                                                    ^
+       9 |   await report.getByRole('button',{name:'核对已保存CAL概率',exact:true}).click();
+      10 |   await expect(report.getByText('scikit-learn 1.9.1 · NOT_GRANTED',{exact:true})).toBeVisible({timeout:30000});
+      11 |   await expect(report.getByText('校准前 · 数值一致',{exact:true})).toBeVisible();
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-probability.spec.ts:8:52
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\20-probability\browser-results\expansion-probability-rese-2aa23--scores-without-new-fitting\error-context.md
+
+  1 failed
+    tests\e2e\expansion-probability.spec.ts:4:1 › research report compares saved CAL scores without new fitting 

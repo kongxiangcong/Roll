@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_successor_protocol_binds_family_before_frames_and_replays_validation_prefix _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/05-protocol/red-data/test_successor_protocol_binds_0')
+
+    def test_successor_protocol_binds_family_before_frames_and_replays_validation_prefix(tmp_path):
+        with TestClient(create_app(tmp_path)) as client:
+            previous=predecessor(client,tmp_path)
+            proposal=register(client,previous).json()
+            frozen=freeze_successor(client,proposal).json()
+            parent=client.get('/api/research/protocols/'+previous['protocol_id']).json()
+            child=client.post('/api/research/protocols',json={'dataset_id':parent['dataset_id'],'predecessor_id':parent['protocol_id'],'basis':'Preregister same-family successor policy before METHOD frames'}).json()
+            command={'protocol_id':child['protocol_id'],'expected_protocol_fingerprint':child['protocol_fingerprint'],
+                'expected_successor_fingerprint':frozen['successor_fingerprint'],'idempotency_key':'complete-v2','basis':'Inherit fixed objectives, no new fitting or protected evidence'}
+            base='/api/research/policy-successor-freezes/'+frozen['successor_freeze_id']
+            response=client.post(base+'/complete-protocol',json=command)
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_successor_protocol.py:18: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_successor_protocol.py::test_successor_protocol_binds_family_before_frames_and_replays_validation_prefix
+1 failed in 16.70s

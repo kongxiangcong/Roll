@@ -1,0 +1,27 @@
+import {test,expect} from '@playwright/test';
+test('real saved-source contracts retain daily conflict, dated phase and planned payment boundaries',async({page,request})=>{
+ const posts:string[]=[];page.on('request',r=>{if(r.method()==='POST')posts.push(r.url());});
+ const before=await (await request.get('/api/account')).json();
+ await page.goto('/');await page.getByRole('button',{name:'持仓与关注',exact:true}).click();
+ await page.getByText('来源契约与新补充原件',{exact:true}).click();await page.getByRole('button',{name:'查询来源契约补充',exact:true}).click();
+ const daily=page.getByRole('region',{name:'日线用途核验'});
+ await expect(daily.getByText(/供应商已完成日原价用途：成立/)).toBeVisible();
+ await expect(daily.getByText(/76300.67万元/)).toBeVisible();await expect(daily.getByText(/差异未解决/)).toBeVisible();
+ const phase=page.getByRole('region',{name:'盘后阶段显示依据'});
+ await expect(phase.getByText(/来源报告日期 2026-10-19 · 盘后阶段 闭市/)).toBeVisible();
+ const actions=page.getByRole('region',{name:'公司行动公告链'});
+ await expect(actions.getByText(/分红查询 6\/6条 · 缺行 0/)).toBeVisible();
+ await expect(actions.getByText(/公告 2026-027.*约定发放2026-07-17，实际到账未确认/)).toBeVisible();
+ await actions.getByText('原件与契约',{exact:true}).click();
+ const originals=actions.getByRole('link',{name:'保存原件',exact:true});expect(await originals.count()).toBeGreaterThan(10);
+ const pdf=await request.get((await originals.nth(13).getAttribute('href'))!);expect(pdf.ok()).toBeTruthy();expect((await pdf.body()).subarray(0,5).toString()).toBe('%PDF-');
+ await actions.getByText('原件与契约',{exact:true}).click();
+ await page.getByRole('button',{name:'保存阶段显示依据',exact:true}).click();await expect(page.getByRole('region',{name:'盘后阶段显示依据'})).toHaveCount(2);
+ await page.getByLabel('补充依据系统已知截至（上海时间）',{exact:true}).fill('2026-10-19T23:00');
+ await page.getByRole('button',{name:'查询来源契约补充',exact:true}).click();await expect(page.getByRole('region',{name:'日线用途核验'})).toHaveCount(0);
+ await page.getByLabel('补充依据系统已知截至（上海时间）',{exact:true}).fill('');await page.getByRole('button',{name:'查询来源契约补充',exact:true}).click();
+ await expect(page.getByRole('region',{name:'日线用途核验'})).toHaveCount(1);
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+ await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/04-actions/authority-20261020/mobile.png',fullPage:true});
+ expect(posts).toHaveLength(1);expect(posts[0]).toContain('/market/source-authority');expect(await (await request.get('/api/account')).json()).toEqual(before);
+});

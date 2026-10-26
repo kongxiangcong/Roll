@@ -1,0 +1,245 @@
+{
+  "attempt_id": "SENTIMENT-TRAIN-CORPUS-09",
+  "started_at": "2026-10-19T12:54:19.550283+00:00",
+  "status": "CAPTURED_CLOSED",
+  "requests": [
+    {
+      "number": 1,
+      "kind": "NEWS_TITLE",
+      "command": {
+        "keyword": "江西铜业",
+        "page": 1,
+        "scope": "title"
+      },
+      "at": "2026-10-19T12:54:19.550450+00:00",
+      "status_code": 200,
+      "file": "01.raw",
+      "bytes": 59949,
+      "sha256": "b009232d31bda1aa9073cdebecd42c7bf210b565df58263e470627a943319556",
+      "transfer_seconds": 1.54362949996721,
+      "returned": 100,
+      "title_hit_ratio": 1.0
+    },
+    {
+      "number": 2,
+      "kind": "NEWS_TITLE",
+      "command": {
+        "keyword": "江西铜业股份",
+        "page": 1,
+        "scope": "title"
+      },
+      "at": "2026-10-19T12:54:21.095587+00:00",
+      "status_code": 200,
+      "file": "02.raw",
+      "bytes": 8405,
+      "sha256": "2453be1467f5f579157daa340698ea1ec2524ab3a32820d88be33dfc7cc35bfe",
+      "transfer_seconds": 0.338211800029967,
+      "returned": 16,
+      "title_hit_ratio": 1.0
+    },
+    {
+      "number": 3,
+      "kind": "NEWS_TITLE",
+      "command": {
+        "keyword": "江西铜业",
+        "page": 2,
+        "scope": "title"
+      },
+      "at": "2026-10-19T12:54:21.433976+00:00",
+      "status_code": 200,
+      "file": "03.raw",
+      "bytes": 11756,
+      "sha256": "b2dfc80d020026dea02ff31ba472905ccb4a38321932043786c38692dea17cd5",
+      "transfer_seconds": 0.34611550002591684,
+      "returned": 19,
+      "title_hit_ratio": 1.0
+    },
+    {
+      "number": 4,
+      "kind": "NEWS_TITLE",
+      "command": {
+        "keyword": "江西铜业",
+        "page": 3,
+        "scope": "title"
+      },
+      "at": "2026-10-19T12:54:21.780353+00:00",
+      "status_code": 200,
+      "file": "04.raw",
+      "bytes": 167,
+      "sha256": "8cdf112be2f9fa9c0f01440381f65904f7754e83e334822a72a8e7e18b623b3a",
+      "transfer_seconds": 0.3342650000122376,
+      "returned": 0,
+      "title_hit_ratio": null
+    },
+    {
+      "number": 5,
+      "kind": "NEWS_TITLE",
+      "command": {
+        "keyword": "江西铜业股份",
+        "page": 2,
+        "scope": "title"
+      },
+      "at": "2026-10-19T12:54:22.114743+00:00",
+      "status_code": 200,
+      "file": "05.raw",
+      "bytes": 167,
+      "sha256": "c5b5abfcc4292ec86ff9e3f9b939c618c98743cb376076e7f608e0c46705f76e",
+      "transfer_seconds": 0.3463837999734096,
+      "returned": 0,
+      "title_hit_ratio": null
+    },
+    {
+      "number": 6,
+      "kind": "CNINFO_INDEX",
+      "command": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2018-01-01~2022-12-31",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "1",
+        "pageSize": "50"
+      },
+      "at": "2026-10-19T12:54:22.461150+00:00",
+      "status_code": 200,
+      "file": "06.raw",
+      "bytes": 20323,
+      "sha256": "ea9ceb042d722b2aa287cea97fb5eba049088223b3040efe2c639e4e62a72779",
+      "transfer_seconds": 1.7081315999967046,
+      "returned": 30,
+      "declared_total": 428
+    },
+    {
+      "number": 7,
+      "kind": "CNINFO_INDEX",
+      "command": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2018-01-01~2022-12-31",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "2",
+        "pageSize": "50"
+      },
+      "at": "2026-10-19T12:54:24.169584+00:00",
+      "status_code": 200,
+      "file": "07.raw",
+      "bytes": 20323,
+      "sha256": "ea9ceb042d722b2aa287cea97fb5eba049088223b3040efe2c639e4e62a72779",
+      "transfer_seconds": 0.5718050000141375,
+      "returned": 30,
+      "declared_total": 428
+    },
+    {
+      "number": 8,
+      "kind": "CNINFO_INDEX",
+      "command": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2023-01-01~2024-12-31",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "1",
+        "pageSize": "50"
+      },
+      "at": "2026-10-19T12:54:24.741631+00:00",
+      "status_code": 200,
+      "file": "08.raw",
+      "bytes": 21338,
+      "sha256": "cfde19e18ac8327c1d1f486b23c2234bbb5c2328074bf722def5adfcd3cc8996",
+      "transfer_seconds": 2.514181600010488,
+      "returned": 30,
+      "declared_total": 160
+    },
+    {
+      "number": 9,
+      "kind": "CNINFO_INDEX",
+      "command": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2023-01-01~2024-12-31",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "2",
+        "pageSize": "50"
+      },
+      "at": "2026-10-19T12:54:27.256056+00:00",
+      "status_code": 200,
+      "file": "09.raw",
+      "bytes": 21338,
+      "sha256": "cfde19e18ac8327c1d1f486b23c2234bbb5c2328074bf722def5adfcd3cc8996",
+      "transfer_seconds": 0.5544977000099607,
+      "returned": 30,
+      "declared_total": 160
+    },
+    {
+      "number": 10,
+      "kind": "CNINFO_INDEX",
+      "command": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2025-01-01~2026-10-18",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "1",
+        "pageSize": "50"
+      },
+      "at": "2026-10-19T12:54:27.810908+00:00",
+      "status_code": 200,
+      "file": "10.raw",
+      "bytes": 21677,
+      "sha256": "8f499a67074d6643ae4867990aa8a18d91f889d504a8ab198f817d22e1e3a029",
+      "transfer_seconds": 0.568274500023108,
+      "returned": 30,
+      "declared_total": 181
+    },
+    {
+      "number": 11,
+      "kind": "CNINFO_INDEX",
+      "command": {
+        "stock": "600362,gssh0600362",
+        "column": "sse",
+        "tabName": "fulltext",
+        "seDate": "2025-01-01~2026-10-18",
+        "searchkey": "",
+        "sortName": "time",
+        "sortType": "asc",
+        "pageNum": "2",
+        "pageSize": "50"
+      },
+      "at": "2026-10-19T12:54:28.379528+00:00",
+      "status_code": 200,
+      "file": "11.raw",
+      "bytes": 21677,
+      "sha256": "8f499a67074d6643ae4867990aa8a18d91f889d504a8ab198f817d22e1e3a029",
+      "transfer_seconds": 0.7876140999724157,
+      "returned": 30,
+      "declared_total": 181
+    }
+  ],
+  "bytes": 207120,
+  "transfer_seconds": 9.613110100035556,
+  "retries": 0,
+  "redirects": 0,
+  "title_scope_eligible": {
+    "江西铜业": true,
+    "江西铜业股份": true
+  },
+  "elapsed_seconds": 9.624307400023099,
+  "returned": 315,
+  "unique": 209,
+  "duplicates": 106,
+  "remaining_requests": 21,
+  "remaining_bytes": 16570096,
+  "remaining_transfer_seconds": 110.38688989996444
+}

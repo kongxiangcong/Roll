@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_reported_suspension_dates_do_not_certify_resumption_or_full_status ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/03-status/suspension-red-data/test_reported_suspension_dates0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B6322DD220>
+
+    def test_reported_suspension_dates_do_not_certify_resumption_or_full_status(tmp_path,monkeypatch):
+        from test_sse_current_suspension import page,clocks
+        stamp='2026-10-12T15:06:00+08:00'
+        clocks(monkeypatch,stamp)
+        with TestClient(create_app(tmp_path,market_transport=httpx.MockTransport(lambda r:httpx.Response(200,json=page())),runtime_role='API')) as client:
+            plan=client.post('/api/research/collections',json={'instrument':'SSE:600362','basis':'Isolated suspension query'}).json()
+            base='/api/research/collections/'+plan['plan_id']
+            captured=client.post(base+'/sse-suspension',json={'basis':'Explicit METHOD suspension query'})
+            assert captured.status_code==201,captured.text
+            query=client.get(base+'/status-evidence',params={'known_by':stamp}).json()
+            assert query['state']=='UNKNOWN'
+>           event=query['suspension_observations'][0]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           IndexError: list index out of range
+
+backend\tests\application\test_status_evidence_query.py:50: IndexError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_status_evidence_query.py::test_reported_suspension_dates_do_not_certify_resumption_or_full_status
+1 failed in 7.20s

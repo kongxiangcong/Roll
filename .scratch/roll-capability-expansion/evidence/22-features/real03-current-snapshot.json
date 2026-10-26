@@ -1,0 +1,434 @@
+{
+  "snapshot_id": "475a6614-1a0f-41ab-aba9-2257099ccbfa",
+  "version": "financial-sentiment-feature-protocol-v1",
+  "instrument": "SSE:600362",
+  "created_at": "2026-10-19T15:54:43.006864+00:00",
+  "known_by": "2026-10-19T15:54:34.931346+00:00",
+  "basis": "Actual saved-source feature observation; no retrospective prediction claim or training",
+  "schema": {
+    "financial_version": "financial-metrics-v1",
+    "financial_fields": [
+      "revenue_yoy",
+      "parent_net_profit_yoy",
+      "gross_margin",
+      "net_margin",
+      "cash_profit_ratio",
+      "debt_ratio"
+    ],
+    "financial_selection": "LATEST_REPORT_ACTUALLY_AVAILABLE_AT_CUTOFF; SAME_SCOPE_UNIT_CURRENCY_AND_FORMULA",
+    "sentiment_fields": [
+      "positive_share",
+      "negative_share",
+      "neutral_share",
+      "rejection_share",
+      "coverage",
+      "event_support"
+    ],
+    "sentiment_aggregation": "LATEST_REACHED_RECORDED_CHECKPOINT_UNIQUE_NEW_EVENTS_INCLUDING_REJECTED",
+    "sentiment_share_precision": 28,
+    "sentiment_units": "SHARES_AND_COVERAGE_ARE_RATIOS_0_TO_1; EVENT_SUPPORT_IS_COUNT",
+    "neutral": "UNSUPPORTED_OR_NO_OBSERVATIONS_IS_NULL_NEVER_ZERO",
+    "missing": "NULL_WITH_REASON_NO_IMPUTATION_NO_SELECTIVE_DELETION",
+    "cutoff": "SOURCE_AND_CLASSIFICATION_AND_SERIES_KNOWN_BY_NOT_AFTER_CUTOFF",
+    "price_volume": "INHERIT_EXISTING_BASELINE_ARCHIVES_NOT_RECOMPUTED_HERE"
+  },
+  "financial": {
+    "revenue_yoy": {
+      "status": "KNOWN",
+      "value": "19.534663",
+      "formula": "(current_YTD - prior_year_YTD) / prior_year_YTD * 100",
+      "reason": null,
+      "unit": "PERCENT",
+      "source_fact_ids": [
+        "36d2f05a-8a65-4d89-bf72-7191d3e0ff4a",
+        "40f4c5e5-694e-4e16-8688-2391c338d60b"
+      ],
+      "absolute_change": "50196051858"
+    },
+    "parent_net_profit_yoy": {
+      "status": "KNOWN",
+      "value": "106.772704",
+      "formula": "(current_YTD - prior_year_YTD) / prior_year_YTD * 100",
+      "reason": null,
+      "unit": "PERCENT",
+      "source_fact_ids": [
+        "36d2f05a-8a65-4d89-bf72-7191d3e0ff4a",
+        "40f4c5e5-694e-4e16-8688-2391c338d60b"
+      ],
+      "absolute_change": "4457276133"
+    },
+    "gross_margin": {
+      "status": "KNOWN",
+      "value": "5.823553",
+      "formula": "(operating_revenue - operating_cost) / operating_revenue * 100",
+      "reason": null,
+      "unit": "PERCENT",
+      "source_fact_ids": [
+        "36d2f05a-8a65-4d89-bf72-7191d3e0ff4a"
+      ]
+    },
+    "net_margin": {
+      "status": "KNOWN",
+      "value": "3.093153",
+      "formula": "consolidated_net_profit / operating_revenue * 100",
+      "reason": null,
+      "unit": "PERCENT",
+      "source_fact_ids": [
+        "36d2f05a-8a65-4d89-bf72-7191d3e0ff4a"
+      ]
+    },
+    "cash_profit_ratio": {
+      "status": "KNOWN",
+      "value": "0.611974",
+      "formula": "operating_cash_flow / consolidated_net_profit",
+      "reason": null,
+      "unit": "RATIO",
+      "source_fact_ids": [
+        "3d102373-c81d-4de8-b90a-f1d3b3d57a9e",
+        "36d2f05a-8a65-4d89-bf72-7191d3e0ff4a"
+      ]
+    },
+    "debt_ratio": {
+      "status": "KNOWN",
+      "value": "65.475577",
+      "formula": "liabilities / assets * 100",
+      "reason": null,
+      "unit": "PERCENT",
+      "source_fact_ids": [
+        "515bab85-4a8f-4923-b1c0-e827fd3015e5"
+      ]
+    }
+  },
+  "calculation_sources": {
+    "financial_metrics.py": "77c89b6b42699423ed5b7f120cd47aa43786a68b39bd5e584968a60c4b83fae9",
+    "financial_statements.py": "da89bce2ba708b4589bb2f83daf4905dcbde8c7c47f133c18414d939b0823aa2",
+    "sentiment_series.py": "8a2c7f3986fd72a43e5624450b880c9ca6f2282e7f5a4160fa55c04961539b23",
+    "sentiment_object.py": "54c8da1ea55ade13b1135a26d6f7278d45ad3b340ecf5d54e2efc60b732e3a15",
+    "sentiment_contract.py": "23e3b40fbf71cc92e12dc5e31d2240583e53761110a2f2f5f5c7b68820f3cd3b",
+    "feature_protocol.py": "5408d12fb97abfd3ab0ca7b20e7a160ea5c7ffad3b02b22fc73d73e00bb4fb6e"
+  },
+  "report_period": "2026-06-30",
+  "financial_source_versions": {
+    "36d2f05a-8a65-4d89-bf72-7191d3e0ff4a": {
+      "statement": "INCOME",
+      "report_period": "2026-06-30",
+      "version": 1,
+      "statement_scope": "CONSOLIDATED",
+      "currency": "CNY",
+      "unit": "YUAN",
+      "period_basis": "YEAR_TO_DATE",
+      "raw_sha256": "06c52947d5c822ac625a9bb92f78d070a39a7e56e809c8f8e69d7f36dfbca4cc",
+      "semantic_document": {
+        "bytes": 1047816,
+        "kind": "FINANCIAL_STATEMENT_SEMANTICS",
+        "page": 62,
+        "path": "raw/9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb.pdf",
+        "received_at": "2026-10-15T00:32:02.411171+00:00",
+        "reference_basis": "Visually checked issuer consolidated income statement header, CNY yuan, year-to-date period and exact revenue. 2025-H1 uses 2026-H1 comparative, not original historical availability.",
+        "sha256": "9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-26/1225505938.PDF"
+      },
+      "available_at": "2026-10-15T12:22:11.962934+00:00"
+    },
+    "fd532f7b-f920-4b1a-806e-c86267529262": {
+      "statement": "INCOME",
+      "report_period": "2026-03-31",
+      "version": 1,
+      "statement_scope": "CONSOLIDATED",
+      "currency": "CNY",
+      "unit": "YUAN",
+      "period_basis": "YEAR_TO_DATE",
+      "raw_sha256": "06c52947d5c822ac625a9bb92f78d070a39a7e56e809c8f8e69d7f36dfbca4cc",
+      "semantic_document": {
+        "bytes": 173652,
+        "kind": "FINANCIAL_STATEMENT_SEMANTICS",
+        "page": 10,
+        "path": "raw/58cbbf83ee5f8ad44030bb502701cb35760437af4dccdfe338c0aff2a802cafb.pdf",
+        "received_at": "2026-10-15T00:32:02.435043+00:00",
+        "reference_basis": "Visually checked issuer consolidated income statement header, CNY yuan, year-to-date period and exact revenue. 2025-H1 uses 2026-H1 comparative, not original historical availability.",
+        "sha256": "58cbbf83ee5f8ad44030bb502701cb35760437af4dccdfe338c0aff2a802cafb",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-04-29/1225226781.PDF"
+      },
+      "available_at": "2026-10-15T12:22:12.019460+00:00"
+    },
+    "e02d54e1-e49c-47aa-bbda-806b65aa7ebf": {
+      "statement": "INCOME",
+      "report_period": "2025-12-31",
+      "version": 1,
+      "statement_scope": "CONSOLIDATED",
+      "currency": "CNY",
+      "unit": "YUAN",
+      "period_basis": "YEAR_TO_DATE",
+      "raw_sha256": "06c52947d5c822ac625a9bb92f78d070a39a7e56e809c8f8e69d7f36dfbca4cc",
+      "semantic_document": {
+        "bytes": 3593578,
+        "kind": "FINANCIAL_STATEMENT_SEMANTICS",
+        "page": 103,
+        "path": "raw/034233ef8b8b392497ed6ad592ca04219eb71c4d4c93aa13a9ed3272e14b2caa.pdf",
+        "received_at": "2026-10-15T00:32:02.340890+00:00",
+        "reference_basis": "Visually checked issuer consolidated income statement header, CNY yuan, year-to-date period and exact revenue. 2025-H1 uses 2026-H1 comparative, not original historical availability.",
+        "sha256": "034233ef8b8b392497ed6ad592ca04219eb71c4d4c93aa13a9ed3272e14b2caa",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-03-27/1225034758.PDF"
+      },
+      "available_at": "2026-10-15T12:22:12.086123+00:00"
+    },
+    "772e1235-fed1-46a5-a586-5612d2679de6": {
+      "statement": "INCOME",
+      "report_period": "2025-09-30",
+      "version": 1,
+      "statement_scope": "CONSOLIDATED",
+      "currency": "CNY",
+      "unit": "YUAN",
+      "period_basis": "YEAR_TO_DATE",
+      "raw_sha256": "06c52947d5c822ac625a9bb92f78d070a39a7e56e809c8f8e69d7f36dfbca4cc",
+      "semantic_document": {
+        "bytes": 199739,
+        "kind": "FINANCIAL_STATEMENT_SEMANTICS",
+        "page": 10,
+        "path": "raw/b373067f9e97b9cdf6d712b76f65f6f2898486a19b32f371faa456849629ce71.pdf",
+        "received_at": "2026-10-15T00:32:02.471885+00:00",
+        "reference_basis": "Visually checked issuer consolidated income statement header, CNY yuan, year-to-date period and exact revenue. 2025-H1 uses 2026-H1 comparative, not original historical availability.",
+        "sha256": "b373067f9e97b9cdf6d712b76f65f6f2898486a19b32f371faa456849629ce71",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2025-10-29/1224753941.PDF"
+      },
+      "available_at": "2026-10-15T12:22:12.345668+00:00"
+    },
+    "40f4c5e5-694e-4e16-8688-2391c338d60b": {
+      "statement": "INCOME",
+      "report_period": "2025-06-30",
+      "version": 1,
+      "statement_scope": "CONSOLIDATED",
+      "currency": "CNY",
+      "unit": "YUAN",
+      "period_basis": "YEAR_TO_DATE",
+      "raw_sha256": "06c52947d5c822ac625a9bb92f78d070a39a7e56e809c8f8e69d7f36dfbca4cc",
+      "semantic_document": {
+        "bytes": 1047816,
+        "kind": "FINANCIAL_STATEMENT_SEMANTICS",
+        "page": 62,
+        "path": "raw/9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb.pdf",
+        "received_at": "2026-10-15T00:32:02.411171+00:00",
+        "reference_basis": "Visually checked issuer consolidated income statement header, CNY yuan, year-to-date period and exact revenue. 2025-H1 uses 2026-H1 comparative, not original historical availability.",
+        "sha256": "9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-26/1225505938.PDF"
+      },
+      "available_at": "2026-10-15T12:22:12.394680+00:00"
+    },
+    "3d102373-c81d-4de8-b90a-f1d3b3d57a9e": {
+      "statement": "CASH_FLOW",
+      "report_period": "2026-06-30",
+      "version": 1,
+      "statement_scope": "CONSOLIDATED",
+      "currency": "CNY",
+      "unit": "YUAN",
+      "period_basis": "YEAR_TO_DATE",
+      "raw_sha256": "70118eed8b355fda806ad96363c61e2f2eee77bd10f097298d6e945d5bba46ef",
+      "semantic_document": {
+        "bytes": 1047816,
+        "kind": "FINANCIAL_STATEMENT_SEMANTICS",
+        "page": 66,
+        "path": "raw/9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb.pdf",
+        "received_at": "2026-10-15T00:32:02.411171+00:00",
+        "reference_basis": "Visually verified issuer consolidated statement pages59-61 /66-67;人民币元, 2026-06-30 point-in-time /2026年1-6月 cumulative. Exact displayed amounts, integer yuan rounding. No proof for other periods.",
+        "sha256": "9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-26/1225505938.PDF"
+      },
+      "available_at": "2026-10-15T13:23:27.600859+00:00"
+    },
+    "515bab85-4a8f-4923-b1c0-e827fd3015e5": {
+      "statement": "BALANCE",
+      "report_period": "2026-06-30",
+      "version": 1,
+      "statement_scope": "CONSOLIDATED",
+      "currency": "CNY",
+      "unit": "YUAN",
+      "period_basis": "POINT_IN_TIME",
+      "raw_sha256": "bc8fe49fc3124c0372dfb8448643a18f5d797b5db598c7e8dd83b7f9fa2d4a27",
+      "semantic_document": {
+        "bytes": 1047816,
+        "kind": "FINANCIAL_STATEMENT_SEMANTICS",
+        "page": 59,
+        "path": "raw/9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb.pdf",
+        "received_at": "2026-10-15T00:32:02.411171+00:00",
+        "reference_basis": "Visually verified issuer consolidated statement pages59-61 /66-67;人民币元, 2026-06-30 point-in-time /2026年1-6月 cumulative. Exact displayed amounts, integer yuan rounding. No proof for other periods.",
+        "sha256": "9c9b7c9efe8f51b16d52c1872bd770a44f0a5107998d648db63cd9633ba6d4eb",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-26/1225505938.PDF"
+      },
+      "available_at": "2026-10-15T13:23:27.583414+00:00"
+    },
+    "e5259d94-3982-4fbb-8e86-c33fd90722e3": {
+      "statement": "CASH_FLOW",
+      "report_period": "2026-03-31",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "70118eed8b355fda806ad96363c61e2f2eee77bd10f097298d6e945d5bba46ef",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.608956+00:00"
+    },
+    "6d4ecc13-fb59-4e40-8fb8-6c51c090593a": {
+      "statement": "BALANCE",
+      "report_period": "2026-03-31",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "bc8fe49fc3124c0372dfb8448643a18f5d797b5db598c7e8dd83b7f9fa2d4a27",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.594047+00:00"
+    },
+    "c22b9034-989d-4209-8f0f-39f6e354c586": {
+      "statement": "CASH_FLOW",
+      "report_period": "2025-12-31",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "70118eed8b355fda806ad96363c61e2f2eee77bd10f097298d6e945d5bba46ef",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.609154+00:00"
+    },
+    "ca4735f5-1d21-4507-94b5-296167efadbf": {
+      "statement": "BALANCE",
+      "report_period": "2025-12-31",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "bc8fe49fc3124c0372dfb8448643a18f5d797b5db598c7e8dd83b7f9fa2d4a27",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.594430+00:00"
+    },
+    "0eb4449e-02fd-4511-a697-6e48be66c5ef": {
+      "statement": "CASH_FLOW",
+      "report_period": "2025-09-30",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "70118eed8b355fda806ad96363c61e2f2eee77bd10f097298d6e945d5bba46ef",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.609370+00:00"
+    },
+    "f760d57a-618c-4cba-bb2c-e256684c1d5a": {
+      "statement": "BALANCE",
+      "report_period": "2025-09-30",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "bc8fe49fc3124c0372dfb8448643a18f5d797b5db598c7e8dd83b7f9fa2d4a27",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.594740+00:00"
+    },
+    "57fd7538-fe36-40f5-90ed-cda231bd6521": {
+      "statement": "CASH_FLOW",
+      "report_period": "2025-06-30",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "70118eed8b355fda806ad96363c61e2f2eee77bd10f097298d6e945d5bba46ef",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.609543+00:00"
+    },
+    "57a11b62-f359-4f3b-a12c-5a8303221156": {
+      "statement": "BALANCE",
+      "report_period": "2025-06-30",
+      "version": 1,
+      "statement_scope": "UNKNOWN",
+      "currency": "CNY",
+      "unit": "UNKNOWN",
+      "period_basis": "UNKNOWN",
+      "raw_sha256": "bc8fe49fc3124c0372dfb8448643a18f5d797b5db598c7e8dd83b7f9fa2d4a27",
+      "semantic_document": null,
+      "available_at": "2026-10-15T13:23:27.594976+00:00"
+    }
+  },
+  "sentiment": {
+    "positive_share": {
+      "value": null,
+      "reason": "VERSION_NOT_AVAILABLE"
+    },
+    "negative_share": {
+      "value": null,
+      "reason": "VERSION_NOT_AVAILABLE"
+    },
+    "neutral_share": {
+      "value": null,
+      "reason": "VERSION_NOT_AVAILABLE"
+    },
+    "rejection_share": {
+      "value": null,
+      "reason": "VERSION_NOT_AVAILABLE"
+    },
+    "coverage": {
+      "value": null,
+      "reason": "VERSION_NOT_AVAILABLE"
+    },
+    "event_support": {
+      "value": null,
+      "reason": "VERSION_NOT_AVAILABLE"
+    }
+  },
+  "source_series_id": "8705a0f7-638c-425b-8e08-777beaddad3e",
+  "source_series_sha256": "52bcb2be54d7581ba9c7ba7f13c19b543cc0ec94e3244650bff6dc93b2a52227",
+  "sentiment_reference_sha256": "09eb7838a8a7867a36aa373b802728b379fc5efafbac39b4b68feb0d1501a880",
+  "sentiment_contract": {
+    "classification_version": "sentiment-classification-v2-three-class",
+    "news_association_version": 1,
+    "news_grouping_version": 1,
+    "reference_sha256": "09eb7838a8a7867a36aa373b802728b379fc5efafbac39b4b68feb0d1501a880",
+    "reject_layer": "sentiment-object-v2.1-shared-predicate",
+    "profile": "finbert-adaptation-01",
+    "labels_supported": [
+      "POSITIVE",
+      "NEGATIVE",
+      "NEUTRAL"
+    ],
+    "checkpoint": {
+      "id": "POST_CLOSE_1505_V1",
+      "namespace": "SAVED_RESEARCH_OBSERVATION",
+      "source_close_boundary": "15:00:00",
+      "time": "15:05:00",
+      "timezone": "Asia/Shanghai"
+    },
+    "series_version": "sentiment-event-series-v2"
+  },
+  "sentiment_labels_supported": [
+    "POSITIVE",
+    "NEGATIVE",
+    "NEUTRAL"
+  ],
+  "sentiment_quality_gate_passed": true,
+  "consumed_checkpoint": "2026-10-19T15:05:00+08:00",
+  "evidence_kind": "REAL_SAVED_FEATURE_OBSERVATION",
+  "limitations": [
+    "HISTORICAL_ORIGINAL_REVISIONS_NOT_PROVEN",
+    "BASE_PRETRAINING_CORPUS_INTERVAL_UNKNOWN",
+    "LABEL_MATURITY_NOT_BOUND",
+    "PRICE_VOLUME_BASELINE_ARTIFACT_NOT_BOUND",
+    "NOT_A_HISTORICAL_FORECAST_OR_TRAINING_GRANT"
+  ],
+  "historical_pit_eligible": false,
+  "real_fit_admitted": false,
+  "model_calls": 0,
+  "network_calls": 0,
+  "system_usable": false,
+  "capability": "NOT_GRANTED",
+  "archive": {
+    "sha256": "5f1071c27fa7135b44a0dca31469f9cd888e3712401a93f7633bd461c2a404da",
+    "path": "raw/5f1071c27fa7135b44a0dca31469f9cd888e3712401a93f7633bd461c2a404da.raw",
+    "bytes": 14193,
+    "kind": "RESEARCH_FEATURE_CONTRACT",
+    "evidence_kind": "REAL_SAVED_FEATURE_OBSERVATION"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "status": "CAPTURED_CLOSED",
+  "started_at": "2026-10-19T14:06:11.969997+00:00",
+  "attempt_id": "SENTIMENT-RUNTIME-SOURCE-01",
+  "requests": [
+    {
+      "number": 1,
+      "command": {
+        "period": "RUNTIME_NOT_PRIMARY",
+        "keyword": "江西铜业",
+        "minimum_date": "2025-05-01",
+        "maximum_date": "2025-05-31",
+        "page": 1,
+        "page_size": 20,
+        "sort": 1
+      },
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 1,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1746028800,
+        "etime": 1748707199
+      },
+      "at": "2026-10-19T14:06:11.970211+00:00",
+      "http_status": 200,
+      "file": "01.raw",
+      "sha256": "6bff92036f87f06e1bc8deacfcf13883837576c1ad5232f96065311beac889c3",
+      "bytes": 24296,
+      "code": 0,
+      "returned": 20,
+      "reported_size": 20,
+      "declared_total": 180,
+      "transfer_seconds": 2.0509859999874607
+    }
+  ],
+  "bytes": 24296,
+  "transfer_seconds": 2.0509859999874607,
+  "retries": 0,
+  "automatic_redirects": 0,
+  "model_calls": 0,
+  "training_runs": 0,
+  "elapsed_seconds": 2.051076000032481,
+  "returned": 20,
+  "remaining_requests": 0
+}

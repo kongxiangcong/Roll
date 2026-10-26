@@ -1,0 +1,146 @@
+{
+  "config": {
+    "configFile": "D:\\dsh-proj\\Roll\\frontend\\playwright.expansion-observation-worker.config.ts",
+    "rootDir": "D:/dsh-proj/Roll/frontend/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/dsh-proj/Roll/.scratch/roll-capability-expansion/evidence/18-worker/browser-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/dsh-proj/Roll/frontend/tests/e2e",
+        "testIgnore": [
+          "market-overflow.spec.ts"
+        ],
+        "testMatch": [
+          "expansion-observation-worker.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../.scratch/roll-capability-expansion/evidence/18-worker/browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "expansion-observation-worker.spec.ts",
+      "file": "expansion-observation-worker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real online receipts, source pause, queued cancellation and station-only settings",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 7244,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)\u001b[22m\n\n    at D:\\dsh-proj\\Roll\\frontend\\tests\\e2e\\expansion-observation-worker.spec.ts:22:57",
+                    "location": {
+                      "file": "D:\\dsh-proj\\Roll\\frontend\\tests\\e2e\\expansion-observation-worker.spec.ts",
+                      "column": 57,
+                      "line": 22
+                    },
+                    "snippet": "  20 |  await expect(panel.getByText(/FINANCIAL · QUEUED/)).toBeVisible();\n  21 |  await panel.getByRole('button',{name:/取消观察任务/}).click();\n> 22 |  await expect(panel.getByText(/FINANCIAL · CANCELLED/)).toBeVisible();\n     |                                                         ^\n  23 |  await panel.getByText('查看原worker与离线覆盖回执',{exact:true}).click();\n  24 |  await expect(panel.getByText(/NORMAL_OFFLINE_NO_COVERAGE_PROMISED/)).toBeVisible();\n  25 |  await panel.locator('summary').filter({hasText:'NEWS · 实际保存来源观察'}).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\dsh-proj\\Roll\\frontend\\tests\\e2e\\expansion-observation-worker.spec.ts",
+                        "column": 57,
+                        "line": 22
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: '日常观察状态' }).getByText(/FINANCIAL · CANCELLED/)\u001b[22m\n\n\n  20 |  await expect(panel.getByText(/FINANCIAL · QUEUED/)).toBeVisible();\n  21 |  await panel.getByRole('button',{name:/取消观察任务/}).click();\n> 22 |  await expect(panel.getByText(/FINANCIAL · CANCELLED/)).toBeVisible();\n     |                                                         ^\n  23 |  await panel.getByText('查看原worker与离线覆盖回执',{exact:true}).click();\n  24 |  await expect(panel.getByText(/NORMAL_OFFLINE_NO_COVERAGE_PROMISED/)).toBeVisible();\n  25 |  await panel.locator('summary').filter({hasText:'NEWS · 实际保存来源观察'}).click();\n    at D:\\dsh-proj\\Roll\\frontend\\tests\\e2e\\expansion-observation-worker.spec.ts:22:57"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T15:17:26.861Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\dsh-proj\\Roll\\.scratch\\roll-capability-expansion\\evidence\\18-worker\\browser-results\\expansion-observation-work-16687-n-and-station-only-settings\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\dsh-proj\\Roll\\frontend\\tests\\e2e\\expansion-observation-worker.spec.ts",
+                    "column": 57,
+                    "line": 22
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "a0ee855ba7b3727393db-356a3abf0f8aeb41da09",
+          "file": "expansion-observation-worker.spec.ts",
+          "line": 2,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-19T15:17:11.186Z",
+    "duration": 25638.344,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

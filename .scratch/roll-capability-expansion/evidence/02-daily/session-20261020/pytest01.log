@@ -1,0 +1,23 @@
+F.......                                                                 [100%]
+================================== FAILURES ===================================
+_ test_two_real_saved_days_component_arithmetic_keeps_residuals_and_timeout_unknown _
+
+    def test_two_real_saved_days_component_arithmetic_keeps_residuals_and_timeout_unknown():
+        catalog,bodies=source()
+        rows=[fact('2026-10-19','19499178','762858168.3800'),fact('2026-10-20','36143433','1370825452.9800')]
+        original=copy.deepcopy(rows)
+        result=daily_sessions.assess(rows,bodies,catalog);a,b=result['session_rows']
+        assert rows==original and result['qualified_total_bar'] is None
+>       assert a['fp_volume_shares']=='3800' and a['fp_amount_cny']=='148542.0'
+E       AssertionError: assert ('3800' == '3800'
+E         
+E           3800 and '148542.000' == '148542.0'
+E         
+E         - 148542.0
+E         + 148542.000
+E         ?         ++)
+
+tests\application\test_daily_sessions.py:26: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_daily_sessions.py::test_two_real_saved_days_component_arithmetic_keeps_residuals_and_timeout_unknown
+1 failed, 7 passed in 46.86s

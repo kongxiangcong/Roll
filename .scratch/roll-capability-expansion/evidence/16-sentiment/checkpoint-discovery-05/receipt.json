@@ -1,0 +1,48 @@
+{
+  "attempt_id": "SENTIMENT-CHECKPOINT-DISCOVERY-05",
+  "status": "CLOSED_NO_RETRY",
+  "elapsed_seconds": 1.702,
+  "bytes": 9438,
+  "requests": [
+    {
+      "request": 1,
+      "url": "https://huggingface.co/api/models/bardsai/finance-sentiment-zh-base",
+      "received_at": "2026-10-18T03:49:35.708384+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 3626,
+      "sha256": "a59065bfbcd55a108be5d7186e8b422c70089528982770f2f6e894ec73758cda",
+      "file": "01.raw"
+    },
+    {
+      "request": 2,
+      "url": "https://huggingface.co/bardsai/finance-sentiment-zh-base/raw/main/README.md",
+      "received_at": "2026-10-18T03:49:36.628424+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 3114,
+      "sha256": "1d64dbddcffbdce073da55ac7d21c482be48182e99dc548f5cfc609e0db066e9",
+      "file": "02.raw"
+    },
+    {
+      "request": 3,
+      "url": "https://huggingface.co/bardsai/finance-sentiment-zh-base/raw/main/config.json",
+      "received_at": "2026-10-18T03:49:36.932523+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 1041,
+      "sha256": "0f88be850df39ddc3c5a34b3ee166d65d1bbe7ffff36c42d23d07b90805f2502",
+      "file": "03.raw"
+    },
+    {
+      "request": 4,
+      "url": "https://huggingface.co/api/models/yiyanghkust/finbert-tone-chinese",
+      "received_at": "2026-10-18T03:49:37.172712+00:00",
+      "status_code": 200,
+      "link": null,
+      "bytes": 1657,
+      "sha256": "20fd214a9f821368b6d42a3a5b2811e0965034a8d6e0bf6d2636ef06c87c84a1",
+      "file": "04.raw"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_probability_reference_reads_saved_calibration_without_new_fit ______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r20r/test_probability_reference_rea0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E533819480>
+
+    def test_probability_reference_reads_saved_calibration_without_new_fit(tmp_path,monkeypatch):
+        monkeypatch.setenv('ROLL_ENV','test')
+        monkeypatch.setenv('ROLL_SKLEARN_PYTHON',str(ROOT/'.scratch/rce-runtime/probability/Scripts/python.exe'))
+        with TestClient(create_app(copy_donor(tmp_path/'data'),runtime_role='API')) as client:
+            frozen=client.get('/api/research/complete-freezes/'+FREEZE).json()
+            model=client.get('/api/research/models/'+frozen['model_run_id']).json()
+            attempts=client.get('/api/research/protocols/'+frozen['protocol_id']+'/attempts').json()
+            base='/api/research/complete-freezes/'+FREEZE+'/probability-reference'
+            command={'expected_complete_protocol_fingerprint':frozen['complete_protocol_fingerprint'],'idempotency_key':'probability-once','basis':'METHOD compare only archived CAL vectors; no fit or new validation'}
+            response=client.post(base,json=command)
+>           assert response.status_code==201,response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\application\test_probability_reference.py:17: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_probability_reference.py::test_probability_reference_reads_saved_calibration_without_new_fit
+1 failed in 11.15s

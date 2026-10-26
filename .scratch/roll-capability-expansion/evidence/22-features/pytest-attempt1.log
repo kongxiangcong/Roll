@@ -1,0 +1,31 @@
+F...                                                                     [100%]
+================================== FAILURES ===================================
+_ test_linked_registration_snapshot_preflight_replay_preserves_original_model_and_seal _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/r22-pytest01/test_linked_registration_snaps0')
+
+    def test_linked_registration_snapshot_preflight_replay_preserves_original_model_and_seal(tmp_path):
+        original_code=code_fingerprint()
+        with TestClient(create_app(tmp_path,runtime_role='API')) as client:
+            previous=parent(client,tmp_path);prepare(client)
+            frozen,command=plan(client,previous)
+            assert frozen['variants']==['BASELINE','FINANCIAL','SENTIMENT','BOTH']
+            child=client.get(BASE+'/protocols/'+frozen['protocol_id']).json()
+            assert child['predecessor_id']==previous['protocol_id'] and child['dataset_id']==previous['dataset_id']
+            assert frozen['inherited_design']==previous['design']
+            assert frozen['calibration_allocation']['primary']=='FINANCIAL'
+            assert frozen['inherited_design']['horizon_sessions']==20
+            assert frozen['inherited_design']['stopping']['maximum_natural_months']==3
+            assert client.get(BASE+'/protocols/'+previous['protocol_id']).json()==previous
+            assert client.post(BASE+'/feature-plans',json=command).json()==frozen
+            observed,snapshot_command=snapshot(client)
+>           assert observed['financial']['debt_ratio']['value']=='65.481882'
+E           AssertionError: assert '65.475577' == '65.481882'
+E             
+E             - 65.481882
+E             + 65.475577
+
+tests\application\test_feature_protocol.py:64: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_feature_protocol.py::test_linked_registration_snapshot_preflight_replay_preserves_original_model_and_seal
+1 failed, 3 passed in 35.54s

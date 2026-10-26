@@ -2,6 +2,7 @@ import {useEffect,useState} from 'react';
 import {request} from '../api';
 import {ForwardPanel} from '../components/forward-panel';
 import {ResearchReport} from '../components/research-report';
+import {SuccessorProtocolPanel} from '../components/successor-protocol-panel';
 type Frozen={freeze_id:string;model_run_id:string;evidence_kind:string;complete_protocol_fingerprint:string;baseline:{cash_yuan:string};calibrator_fit_status:string;validation_gaps:string[]};
 type Opportunity={forecast_id:string;action:string;reasons:string[];execution_status:string;counterfactual?:{diagnostic_only:boolean}};
 type State={revision:number;through_date:string|null;cash_yuan:string;nav_yuan?:string|null;reserved_cash_yuan:string;positions:{instrument:string;quantity:string}[];opportunities:Opportunity[];comparators?:Record<string,{nav_yuan:string|null;cash_yuan:string}>};
@@ -24,7 +25,8 @@ export function Shadow({protocolId,firstDate}:{protocolId:string;firstDate?:stri
     {results&&<><div className="research-results"><article aria-label="ACTUAL 真实账户"><h4>ACTUAL · 真实账户</h4><p>版本 {results.ACTUAL.version} · 现金 {results.ACTUAL.cash_balance??'未知'}</p></article><article aria-label="HISTORICAL 历史诊断"><h4>HISTORICAL · 历史诊断</h4><p>{results.HISTORICAL.evidence_kind} · {results.HISTORICAL.data_use??'方法工程'}</p><p>逐机会结果含重叠期限，只作预测与筛选诊断。</p></article><article aria-label="SHADOW 连续影子"><h4>SHADOW · 连续影子</h4><p>版本 {results.SHADOW.revision} · 截止 {results.SHADOW.through_date??'尚未推进'}</p><p>现金 {results.SHADOW.cash_yuan} · 预留 {results.SHADOW.reserved_cash_yuan} · 净值 {results.SHADOW.nav_yuan??'尚无估值'}</p><p>持仓 {results.SHADOW.positions.map(p=>`${p.instrument} ${p.quantity}股`).join('、')||'无'}</p></article><article aria-label="ACCOUNT_CONDITIONAL 一次账户条件诊断"><h4>ACCOUNT_CONDITIONAL · 一次账户条件诊断</h4><p>{results.ACCOUNT_CONDITIONAL.length} 项，按各自真实账户快照保存，不计连续策略收益。</p>{results.ACCOUNT_CONDITIONAL.map(d=><p key={d.diagnostic_id}>账户快照版本 {d.account_version} · 历史价格截止 {d.price_as_of_date}</p>)}</article></div>
     {results.SHADOW.comparators&&<table><caption>同资金、规则与费用的连续基线</caption><thead><tr><th>策略</th><th>现金</th><th>净值</th></tr></thead><tbody>{Object.entries(results.SHADOW.comparators).map(([name,s])=><tr key={name}><td>{name}</td><td>{s.cash_yuan}</td><td>{s.nav_yuan??'未知'}</td></tr>)}</tbody></table>}
     <ul>{results.SHADOW.opportunities.map(o=><li key={o.forecast_id}>{o.action} · {o.execution_status} · {o.reasons.join('、')||'符合冻结政策'} {o.counterfactual?'· 成熟反事实仅作诊断':''}</li>)}</ul></>}
-    {selected&&<ForwardPanel freezeId={selected.freeze_id} evidenceKind={selected.evidence_kind}/>}
+    {selected&&<ForwardPanel key={selected.freeze_id} freezeId={selected.freeze_id} evidenceKind={selected.evidence_kind} fingerprint={selected.complete_protocol_fingerprint}/>}
+    {selected&&<SuccessorProtocolPanel key={selected.freeze_id} parentFreezeId={selected.freeze_id} parentProtocolId={protocolId}/>}
     {selected&&<ResearchReport freezeId={selected.freeze_id}/>}
     {notice&&<p role="status">{notice}</p>}{error&&<p role="alert">{error}</p>}
   </section>;

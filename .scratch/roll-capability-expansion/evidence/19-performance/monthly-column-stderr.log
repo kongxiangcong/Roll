@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'Jun'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\backend\src\roll\research\performance_process.py", line 92, in <module>
+    result=render(command)
+  File "D:\dsh-proj\Roll\backend\src\roll\research\performance_process.py", line 71, in render
+    monthly_rows.append({'month':month,'value':float(monthly.loc[str(stamp.year),stamp.strftime('%b')]),
+                                                     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\pandas\core\indexing.py", line 1199, in __getitem__
+    return self.obj._get_value(*key, takeable=self._takeable)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\pandas\core\frame.py", line 4489, in _get_value
+    series = self._get_item(col)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\pandas\core\frame.py", line 4969, in _get_item
+    loc = self.columns.get_loc(item)
+  File "D:\dsh-proj\Roll\.scratch\rce-runtime\quantstats\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'Jun'

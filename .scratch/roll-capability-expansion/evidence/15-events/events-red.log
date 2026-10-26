@@ -1,0 +1,35 @@
+F.                                                                       [100%]
+================================== FAILURES ===================================
+____________ test_news_events_reprints_revisions_alias_and_restart ____________
+
+tmp_path = WindowsPath('C:/Users/72449/AppData/Local/Temp/pytest-of-72449/pytest-396/test_news_events_reprints_revi0')
+
+    def test_news_events_reprints_revisions_alias_and_restart(tmp_path):
+        first=[('20261014123451','江西铜业签署重大合同','公司与控股股东签署合同，涉及金额100亿元。'),
+               ('20261014123452','江西铜业签署重大合同','公司与控股股东签署合同，涉及金额100亿元。'),
+               ('20261014123454','有色金属行业资金流出榜：中钨高新等10股净流出资金超亿元','600362 中钨高新 000657'),
+               ('20261014123455','PCB概念上涨，7股主力资金净流入超亿元','600362')]
+        second=[('20261014123451','江西铜业签署重大合同','公司与控股股东签署合同，涉及金额120亿元。')]
+        with TestClient(create_app(tmp_path)) as client:
+            register(client,'SSE:600362','江西铜业股份有限公司','600362')
+            register(client,'SZSE:000657','中钨高新','000657')
+            enable_news(client)
+            async def first_supplier(instrument,output):return rows_fixture(first,output)
+            async def second_supplier(instrument,output):return rows_fixture(second,output)
+            client.app.state.news.worker=first_supplier
+            base='/api/market/news/SSE:600362'
+            saved1=client.post(base+'/collect',json={'idempotency_key':'events-one','basis':'METHOD event grouping fixture'}).json()
+            assert saved1['status']=='PARTIAL' and len(saved1['facts'])==4
+            client.app.state.news.worker=second_supplier
+            saved2=client.post(base+'/collect',json={'idempotency_key':'events-two','basis':'METHOD revision fixture'}).json()
+            assert saved2['status']=='PARTIAL' and len(saved2['facts'])==1
+            listing=client.get(base).json()
+            assert listing['facts'][0]['association']['classification']=='COMPANY_SUBJECT'
+>           assert listing['unique_event_count']==4,listing['events']
+E           AssertionError: [{'available_at': '2026-10-17T16:34:03.022114+00:00', 'classification': 'UNRELATED', 'event_id': 'aa6df4e0-d2d8-5d25-b...96-387a-443a-8d3a-0bd92888b5a8', 'b46f5a66-f597-4fe0-b8f8-57252e183c09', '0fd1951a-9403-4ad7-841d-ee8bc2cdbf65'], ...}]
+E           assert 3 == 4
+
+tests\application\test_news_events.py:55: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/application/test_news_events.py::test_news_events_reprints_revisions_alias_and_restart
+1 failed, 1 passed in 14.35s

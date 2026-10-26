@@ -1,0 +1,181 @@
+{
+  "status": "CAPTURED_CLOSED",
+  "started_at": "2026-10-19T13:37:14.450593+00:00",
+  "attempt_id": "SENTIMENT-TRAIN-SUPPLEMENT-06",
+  "requests": [
+    {
+      "number": 1,
+      "command": {
+        "period": "HOLDOUT",
+        "keyword": "江西铜业",
+        "minimum_date": "2025-01-01",
+        "maximum_date": "2025-02-23",
+        "page": 3,
+        "page_size": 20,
+        "sort": 1,
+        "prior_window_number": 53
+      },
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 3,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1735660800,
+        "etime": 1740326399
+      },
+      "at": "2026-10-19T13:37:14.450840+00:00",
+      "http_status": 200,
+      "file": "01.raw",
+      "sha256": "e7451a2b034b3678b2e5c1476d296b1a06fb08ec16118ac2234ae964b64d1b05",
+      "bytes": 22498,
+      "code": 0,
+      "returned": 20,
+      "reported_size": 20,
+      "declared_total": 285,
+      "transfer_seconds": 5.235258699976839
+    },
+    {
+      "number": 2,
+      "command": {
+        "period": "HOLDOUT",
+        "keyword": "江西铜业",
+        "minimum_date": "2025-02-24",
+        "maximum_date": "2025-04-19",
+        "page": 3,
+        "page_size": 20,
+        "sort": 1,
+        "prior_window_number": 54
+      },
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 3,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1740326400,
+        "etime": 1745078399
+      },
+      "at": "2026-10-19T13:37:19.686138+00:00",
+      "http_status": 200,
+      "file": "02.raw",
+      "sha256": "3642f5ea4b9bf46a58c686183bf4024127147ee3aba8487966f497cf562f576f",
+      "bytes": 22517,
+      "code": 0,
+      "returned": 20,
+      "reported_size": 20,
+      "declared_total": 384,
+      "transfer_seconds": 0.8744119000039063
+    },
+    {
+      "number": 3,
+      "command": {
+        "period": "HOLDOUT",
+        "keyword": "江西铜业",
+        "minimum_date": "2025-04-20",
+        "maximum_date": "2025-06-13",
+        "page": 3,
+        "page_size": 20,
+        "sort": 1,
+        "prior_window_number": 55
+      },
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 3,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1745078400,
+        "etime": 1749830399
+      },
+      "at": "2026-10-19T13:37:20.560604+00:00",
+      "http_status": 200,
+      "file": "03.raw",
+      "sha256": "0db456db71c6a57b47f011cce8d07dcca0d93fe8280b5f9353b71222e38d07e9",
+      "bytes": 22802,
+      "code": 0,
+      "returned": 20,
+      "reported_size": 20,
+      "declared_total": 370,
+      "transfer_seconds": 0.6920668000238948
+    },
+    {
+      "number": 4,
+      "command": {
+        "period": "HOLDOUT",
+        "keyword": "江西铜业",
+        "minimum_date": "2025-10-01",
+        "maximum_date": "2025-11-24",
+        "page": 3,
+        "page_size": 20,
+        "sort": 1,
+        "prior_window_number": 58
+      },
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 3,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1759248000,
+        "etime": 1763999999
+      },
+      "at": "2026-10-19T13:37:21.252719+00:00",
+      "http_status": 200,
+      "file": "04.raw",
+      "sha256": "98cca90ce2d3891c23a1d12a98cd5ada32ef37298fb81574a49e904c901b499b",
+      "bytes": 22412,
+      "code": 0,
+      "returned": 20,
+      "reported_size": 20,
+      "declared_total": 638,
+      "transfer_seconds": 0.6679795000236481
+    },
+    {
+      "number": 5,
+      "command": {
+        "period": "HOLDOUT",
+        "keyword": "江西铜业",
+        "minimum_date": "2026-01-18",
+        "maximum_date": "2026-03-13",
+        "page": 3,
+        "page_size": 20,
+        "sort": 1,
+        "prior_window_number": 60
+      },
+      "params": {
+        "q": "江西铜业",
+        "tp": "news",
+        "sort": 1,
+        "page": 3,
+        "size": 20,
+        "from": "advanced_search",
+        "stime": 1768665600,
+        "etime": 1773417599
+      },
+      "at": "2026-10-19T13:37:21.920755+00:00",
+      "http_status": 200,
+      "file": "05.raw",
+      "sha256": "aa34ed91e1a8a311f62efcc67821aca2934ba32b7d674c38ede343c1952bc3c2",
+      "bytes": 22357,
+      "code": 0,
+      "returned": 20,
+      "reported_size": 20,
+      "declared_total": 809,
+      "transfer_seconds": 1.9489508000551723
+    }
+  ],
+  "bytes": 112586,
+  "transfer_seconds": 9.41866770008346,
+  "retries": 0,
+  "automatic_redirects": 0,
+  "model_calls": 0,
+  "training_runs": 0,
+  "elapsed_seconds": 9.419017499953043,
+  "returned": 100,
+  "remaining_requests": 0
+}

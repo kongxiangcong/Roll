@@ -1,0 +1,14 @@
+--- a/backend/src/roll/app.py
++++ b/backend/src/roll/app.py
+@@ -524,6 +524,11 @@
+     async def statements_collect(instrument:str,command:IncomeCommand):
+         return await financial_statements.collect(instrument,command)
+ 
++    @app.get('/api/market/financial/{instrument}/metrics')
++    def financial_metrics(instrument:str,known_by:datetime|None=Query(None)):
++        from roll.market.financial_metrics import metrics
++        return metrics(financial,financial_statements,instrument,known_by)
++
+     @app.get('/api/market/financial/{instrument}/income')
+     def financial_income(instrument:str,known_by:datetime|None=Query(None)):
+         return financial.listing(instrument,known_by)

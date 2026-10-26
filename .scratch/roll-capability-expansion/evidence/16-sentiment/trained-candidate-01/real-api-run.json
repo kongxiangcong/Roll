@@ -1,0 +1,425 @@
+{
+  "run_id": "e35499f2-3cb6-445e-bfcb-b482ddee235e",
+  "instrument": "SSE:600362",
+  "basis": "User-authorized actual local classification of12 hash-verified archived source snippets; no training/primary rows or METHOD worker",
+  "status": "COMPLETE",
+  "started_at": "2026-10-19T14:10:41.514549+00:00",
+  "finished_at": "2026-10-19T14:11:04.054651+00:00",
+  "reference_sha256": "09eb7838a8a7867a36aa373b802728b379fc5efafbac39b4b68feb0d1501a880",
+  "reference": {
+    "status": "VERIFIED",
+    "profile": "finbert-adaptation-01",
+    "enabled_by_default": false,
+    "task": "CHINESE_FINANCIAL_SENTIMENT_3_CLASS",
+    "model": "Roll Chinese FinBERT adaptation01 (base yiyanghkust/finbert-tone-chinese@e91b1a3a)",
+    "license": "apache-2.0",
+    "base_model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    "model_directory": "D:\\dsh-proj\\Roll\\.scratch\\rce-runtime\\sentiment\\Roll-FinBERT-adaptation-01",
+    "weights_sha256": "d3ba72cd79ea77b0285745909d40ae2a43512b0baa4c5b9328a10fd8eceb69da",
+    "packages": {
+      "torch": "2.10.0",
+      "transformers": "5.20.1",
+      "tokenizers": "0.23.3",
+      "safetensors": "0.8.0"
+    },
+    "artifacts": [
+      {
+        "path": "config.json",
+        "bytes": 1175,
+        "sha256": "e76f693b88cca4269f28684e70cc759f7388df342ebb32d042e42667b6ff3a6a"
+      },
+      {
+        "path": "model.safetensors",
+        "bytes": 409103316,
+        "sha256": "d3ba72cd79ea77b0285745909d40ae2a43512b0baa4c5b9328a10fd8eceb69da"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 439372,
+        "sha256": "2fd943d7c063d731de5967c3c503a5a9e2546a613cf7f8f45b918d324cdd2188"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 460,
+        "sha256": "a9ed690ea693e325785b71f2be7cde566ff893d87957717abb960dc3914e10e9"
+      }
+    ],
+    "object_version": "sentiment-object-v2.1-shared-predicate",
+    "object_sha256": "54c8da1ea55ade13b1135a26d6f7278d45ad3b340ecf5d54e2efc60b732e3a15",
+    "input_scope": "Archived title/excerpt, explicit company clauses, max800 chars/tokenizer256; full article bodies are not substituted",
+    "confidence_floor": 0.65,
+    "label_mapping": {
+      "0": "NEUTRAL",
+      "1": "POSITIVE",
+      "2": "NEGATIVE"
+    },
+    "capability": "RESEARCH_LIMITED",
+    "system_usable": false,
+    "evaluation": {
+      "dataset": "120 primary challenge snippets,30 each P/N/U/I;400 train<=2022,120 development2023-2024,120 primary>=2025; single frozen trained candidate",
+      "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+      "primary": {
+        "metric_scope": "ALL_LABELED_ROWS_ABSTENTION_IS_FALSE_NEGATIVE",
+        "per_class": {
+          "POSITIVE": {
+            "support": 30,
+            "tp": 30,
+            "fn": 0,
+            "fp": 0,
+            "recall": 1.0,
+            "precision": 1.0,
+            "f1": 1.0,
+            "abstained": 0,
+            "event_groups": 17
+          },
+          "NEGATIVE": {
+            "support": 30,
+            "tp": 30,
+            "fn": 0,
+            "fp": 0,
+            "recall": 1.0,
+            "precision": 1.0,
+            "f1": 1.0,
+            "abstained": 0,
+            "event_groups": 19
+          },
+          "NEUTRAL": {
+            "support": 30,
+            "tp": 30,
+            "fn": 0,
+            "fp": 0,
+            "recall": 1.0,
+            "precision": 1.0,
+            "f1": 1.0,
+            "abstained": 0,
+            "event_groups": 21
+          },
+          "IRRELEVANT": {
+            "support": 30,
+            "tp": 0,
+            "fn": 30,
+            "fp": 0,
+            "recall": 0.0,
+            "precision": null,
+            "f1": 0.0,
+            "abstained": 30,
+            "event_groups": 27
+          }
+        },
+        "positive_recall": 1.0,
+        "negative_recall": 1.0,
+        "confusion": {
+          "POSITIVE->POSITIVE": 30,
+          "NEUTRAL->NEUTRAL": 30,
+          "IRRELEVANT->ABSTAIN_NO_COMPANY_OBJECT": 30,
+          "NEGATIVE->NEGATIVE": 30
+        },
+        "binary_macro_f1": 1.0,
+        "three_class_macro_f1": 1.0,
+        "total_rejection": 0.25,
+        "irrelevant_rejection": 1.0
+      },
+      "gates": {
+        "binary_macro_f1": {
+          "actual": 1.0,
+          "threshold": 0.6,
+          "operator": ">=",
+          "passed": true
+        },
+        "positive_recall": {
+          "actual": 1.0,
+          "threshold": 0.55,
+          "operator": ">=",
+          "passed": true
+        },
+        "negative_recall": {
+          "actual": 1.0,
+          "threshold": 0.55,
+          "operator": ">=",
+          "passed": true
+        },
+        "three_class_macro_f1": {
+          "actual": 1.0,
+          "threshold": 0.6,
+          "operator": ">=",
+          "passed": true
+        },
+        "neutral_recall": {
+          "actual": 1.0,
+          "threshold": 0.55,
+          "operator": ">=",
+          "passed": true
+        },
+        "irrelevant_rejection": {
+          "actual": 1.0,
+          "threshold": 0.8,
+          "operator": ">=",
+          "passed": true
+        },
+        "maximum_total_rejection": {
+          "actual": 0.25,
+          "threshold": 0.35,
+          "operator": "<=",
+          "passed": true
+        },
+        "maximum_cpu_p95_seconds": {
+          "actual": 0.12450850004097447,
+          "threshold": 3.0,
+          "operator": "<=",
+          "passed": true
+        }
+      },
+      "passed_frozen_gates": true,
+      "limitations": [
+        "Non-independent agent labels",
+        "Only one issuer, stratified snippet challenge; not natural news flow coverage",
+        "Unknown overlap with base model original private training data",
+        "PDF correction body read as source evidence; labels still concern frozen snippet inputs",
+        "Distinct nonempty projected inputs; irrelevant rows have empty projection but distinct full source texts",
+        "Perfect primary score is limited to this pre-registered snippet challenge and is not independent validation of general effectiveness."
+      ],
+      "training_freeze_sha256": "e5598d0eff66b8b250fd185b3121adffc6d0351bce95f171340cd6f171f3f12c",
+      "evaluation_sha256": "f0341d338ac6ab5d36885041f4210bc29ffdc31c53dc52f05ee11b84f83a6477",
+      "inference_sha256": "6ef7ae098f711832493a32f54c25d57df260bbe27fdf08c826aea1c79d7c14fc",
+      "primary_p95_seconds": 0.12450850004097447
+    }
+  },
+  "profile": "finbert-adaptation-01",
+  "reject_layer": "sentiment-object-v2.1-shared-predicate",
+  "classification_version": "sentiment-classification-v2-three-class",
+  "evidence_kind": "REAL_LOCAL_CLASSIFICATION",
+  "facts": [
+    {
+      "fact_id": "db675c6c-d8f8-5682-8d89-77897a9468d6",
+      "title": "江西铜业跌0.89%，成交额1.79亿元，后市是否有机会？",
+      "media": "新浪证券-红岸工作室",
+      "event_id": "9b96a4f6-9567-54d6-acd1-e597288d6061",
+      "association": "COMPANY_SUBJECT",
+      "text_sha256": "9d3cd5cd89e3f213d7aeae0bfdef9ecd772ffc2a3ea9b04a03f77d033470e047",
+      "label": "NEGATIVE",
+      "confidence": 0.9999043941497803,
+      "reject_reason": null,
+      "prob_positive": 6.268900324357674e-05,
+      "prob_negative": 0.9999043941497803,
+      "prob_neutral": 3.2892781746340916e-05,
+      "model_input_text": "江西铜业跌0.89%",
+      "latency_seconds": 0.11781630001496524,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "727ecd76a5a197c0f2fe7f2933b5b28c2c5673f0076e08a9956f43e64df1b702"
+    },
+    {
+      "fact_id": "1d144b9b-be47-5a7a-b48b-b52a1adc5bda",
+      "title": "江西铜业涨0.47%，成交额1.95亿元，后市是否有机会？",
+      "media": "新浪证券-红岸工作室",
+      "event_id": "8b779335-7bc0-5531-a3f6-eabb35d80a5d",
+      "association": "COMPANY_SUBJECT",
+      "text_sha256": "d749b51a1734d33b7169a534baa56956d1a1efa3a8db22fd5424917a1c853753",
+      "label": "POSITIVE",
+      "confidence": 0.9997684359550476,
+      "reject_reason": null,
+      "prob_positive": 0.9997684359550476,
+      "prob_negative": 8.232775871874765e-05,
+      "prob_neutral": 0.00014922197442501783,
+      "model_input_text": "江西铜业涨0.47%",
+      "latency_seconds": 0.09210060001350939,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "19c0ffc4c2df4e1a24a8a2760069d9cf7c91d15a4e65999586ffc66e048aada6"
+    },
+    {
+      "fact_id": "1a49476a-41a7-5426-929c-035d4beb99c0",
+      "title": "江西铜业涨0.28%，成交额1.43亿元，后市是否有机会？",
+      "media": "新浪证券-红岸工作室",
+      "event_id": "c9c9d75d-40c8-5909-9163-1a436f082d19",
+      "association": "COMPANY_SUBJECT",
+      "text_sha256": "ac17f19f090f6ab47c55879d33e6c868c7962a2aa4cf38db2d17506ebb02b860",
+      "label": "POSITIVE",
+      "confidence": 0.9997683167457581,
+      "reject_reason": null,
+      "prob_positive": 0.9997683167457581,
+      "prob_negative": 8.184809848899022e-05,
+      "prob_neutral": 0.00014982413267716765,
+      "model_input_text": "江西铜业涨0.28%",
+      "latency_seconds": 0.1107039000489749,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "5337a52e401aefef6f9976a475611e1b209481baf740715ebdf549b1ddb1748e"
+    },
+    {
+      "fact_id": "cd6d8178-ec2a-577c-a615-d86e25a62ebe",
+      "title": "上证180碳效率指数下跌0.15%，前十大权重包含中国中免等",
+      "media": "金融界网站",
+      "event_id": "18df8772-745b-55d3-a9da-87e296fb6221",
+      "association": "UNCERTAIN",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "144271f3cbe133a8e9485acd272f5f77ca9658d496f49cce5d2c5f03df5d01f7"
+    },
+    {
+      "fact_id": "ab033012-0537-5c5f-9a64-b0e966051294",
+      "title": "大宗商品ETF（510170）跌0.57%，成交额69.52万元",
+      "media": "新浪基金∞工作室",
+      "event_id": "ff11c1ce-1c99-5e47-8da3-4a080e0b6fee",
+      "association": "UNCERTAIN",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "bbfb02efcf8c55035683cd41a584b971a10c20a540cba7eae01c204f81216e19"
+    },
+    {
+      "fact_id": "da086718-6c8e-501a-81d8-15fef8a53fe6",
+      "title": "工业有色ETF（560860）跌0.85%，半日成交额1266.30万元",
+      "media": "新浪基金∞工作室",
+      "event_id": "33949e27-7185-5f0e-a411-596db0ecd943",
+      "association": "UNCERTAIN",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "699604df10f124126c3dc7c095bf907626156f81b2d7ac50df2bd2ad45dd4b19"
+    },
+    {
+      "fact_id": "29cf5a38-a214-53e1-adac-a0ef9f30ce11",
+      "title": "大宗商品ETF（510170）跌0.34%，半日成交额26.96万元",
+      "media": "新浪基金∞工作室",
+      "event_id": "42dbaa67-d441-5e9c-a815-5282744379a0",
+      "association": "UNCERTAIN",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "1ba93780b65ce7ac032c773e4c312388903cee9f63a07f6bdee47b5167222482"
+    },
+    {
+      "fact_id": "6d3d8e8d-b9a9-533d-8f12-6902da6f7a8e",
+      "title": "大宗商品ETF（510170）开盘跌0.11%，重仓股赤峰黄金涨1.28%，紫金矿业涨0.67%",
+      "media": "新浪基金∞工作室",
+      "event_id": "c2396838-409a-5beb-bdf6-9d367ebd7e88",
+      "association": "UNCERTAIN",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "c0a7e39818e7396afcb98493ce1f3c0b6d664c3466b7ab34f22a2a8c9997518c"
+    },
+    {
+      "fact_id": "6c082b43-1351-5bc5-ac9d-b3936442eaae",
+      "title": "江西铜业股份(00358.HK)10月28日举行董事会会议考虑及批准第三季度业绩",
+      "media": "格隆汇",
+      "event_id": "dd38fe5a-879d-5b27-9014-41900261bd51",
+      "association": "COMPANY_SUBJECT",
+      "text_sha256": "03df2d18a3c284563fc5ebf3db64cb36f6ddc71aea4b0f05a44d05e59e788818",
+      "label": "NEUTRAL",
+      "confidence": 0.9998679161071777,
+      "reject_reason": null,
+      "prob_positive": 9.710163431009278e-05,
+      "prob_negative": 3.492300311336294e-05,
+      "prob_neutral": 0.9998679161071777,
+      "model_input_text": "江西铜业股份(00358.HK)10月28日举行董事会会议考虑及批准第三季度业绩",
+      "latency_seconds": 0.15075100003741682,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "76bec01a94b0bc89368bb48807ad5adf026e38abd6da580b2e50aa8fb2291f47"
+    },
+    {
+      "fact_id": "92a16e50-3d21-5f39-8f46-aee13fb40aa2",
+      "title": "江西铜业股份(00358)月报表截至二零二六年九月三十日止股份发行人的证券变动月报表",
+      "media": "新浪港股-好仓工作室",
+      "event_id": "f2f949e1-6206-5ebc-913c-28c5c996d6d5",
+      "association": "COMPANY_SUBJECT",
+      "text_sha256": "8b0a89a379aaf68188b1487f963fbfc3f3394dcf1460a2a8bf3222f6cce003a1",
+      "label": "NEUTRAL",
+      "confidence": 0.9998811483383179,
+      "reject_reason": null,
+      "prob_positive": 7.751457451377064e-05,
+      "prob_negative": 4.134591290494427e-05,
+      "prob_neutral": 0.9998811483383179,
+      "model_input_text": "江西铜业股份(00358)月报表截至二零二六年九月三十日止股份发行人的证券变动月报表；【江西铜业股份：9月股本及股份数量无变动】江西铜业股份公告称",
+      "latency_seconds": 0.17520580004202202,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "732a81515c767ce19018a7d33d556be6a8b27b18db3ac6991a8bd6112e478c33"
+    },
+    {
+      "fact_id": "d0695195-5035-51a1-90e7-5184f8584905",
+      "title": "美迪西：关于2026年第一次临时股东会通知的更正公告",
+      "media": "证券日报",
+      "event_id": "c79473b7-d1e3-5ae4-a6e4-1b32499e45b4",
+      "association": "UNCERTAIN",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "a3f1b62da053f032d4efc2a36c60c89d2bab5df6340760dbe1aeac49913b50ab"
+    },
+    {
+      "fact_id": "d19394b8-a030-56b7-86a1-00e516d09707",
+      "title": "湖北广电：关于公司董事辞职公告的更正公告",
+      "media": "证券日报",
+      "event_id": "49d7ae9a-3402-5255-9b61-b90385eaeeaf",
+      "association": "UNCERTAIN",
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "label": null,
+      "confidence": null,
+      "reject_reason": "ABSTAIN_NO_COMPANY_OBJECT",
+      "prob_positive": null,
+      "prob_negative": null,
+      "prob_neutral": null,
+      "model_input_text": "",
+      "latency_seconds": null,
+      "model_input_version": "sentiment-object-v2.1-shared-predicate",
+      "source_input_sha256": "9eef300cf02f8ba6c68ab1e516a5648a31dd3fff7a48dc909fdd539c5aff6bab"
+    }
+  ],
+  "errors": [],
+  "network_calls": 0,
+  "system_usable": false,
+  "capability": "RESEARCH_LIMITED",
+  "counts": {
+    "NEGATIVE": 1,
+    "POSITIVE": 2,
+    "ABSTAIN_NO_COMPANY_OBJECT": 7,
+    "NEUTRAL": 2
+  },
+  "reject_counts": {
+    "ABSTAIN_NO_COMPANY_OBJECT": 7
+  },
+  "covered": 5,
+  "total": 12,
+  "coverage": 0.4167
+}

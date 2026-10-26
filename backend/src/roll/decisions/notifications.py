@@ -64,6 +64,16 @@ class Notifications:
                      'source': source, 'known_at': evaluation['registered_at'], 'merged': prior is not None}
             db.execute('INSERT OR IGNORE INTO notification_events VALUES(?,?,?)', (event_id, identifier, encode(event)))
 
+    def observation_updated(self, db, observation):
+        key = 'OBSERVATION:'+observation['instrument']+':'+observation['kind']+':'+observation['semantic_sha256']
+        at = observation['created_at']
+        value = {'notification_id':str(uuid4()),'category':'STAGE_SUMMARY','severity':'NORMAL',
+                 'source':{'kind':'OBSERVATION_UPDATE','id':observation['observation_id'],'version':observation['version']},
+                 'title':'行情观察已更新' if observation['kind']=='MARKET' else '财报新闻观察已更新','message':observation['instrument']+' 的已保存观察有变化，请查看来源覆盖和研究限制。',
+                 'occurred_at':at,'known_at':at,'expires_at':(datetime.fromisoformat(at)+timedelta(hours=8)).isoformat(),
+                 'evidence_kind':observation['evidence_kind'],'in_app_only':True}
+        db.execute('INSERT OR IGNORE INTO notification_records VALUES(?,?,?)', (value['notification_id'],key,encode(value)))
+
     def review_completed(self, db, task, result):
         # A completed local observation may produce at most one stage summary
         # per trading-date. There is no forced daily/offline notification.
@@ -317,6 +327,7 @@ class Notifications:
 
     def send_eligibility(self, notice, db, recovery):
         reasons = ['EXPIRED'] if datetime.fromisoformat(notice['expires_at']) <= datetime.fromisoformat(now()) else []
+        if notice.get('in_app_only'):reasons.append('IN_APP_OBSERVATION_NO_EXTERNAL_CHANNEL')
         source = notice['source']
         links = [json.loads(r[0]) for r in db.execute('SELECT value FROM notification_events WHERE notification_id=? ORDER BY rowid', (notice['notification_id'],))]
         source = next((e['source'] for e in reversed(links) if e['event_type'] == 'SOURCE_ASSOCIATED'), source)

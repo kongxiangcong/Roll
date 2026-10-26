@@ -1,0 +1,92 @@
+{
+  "run_id": "8c698391-e93c-4e1b-858b-5d5cd2926392",
+  "status": "COMPLETE",
+  "evidence_kind": "REAL_LOCAL_CLASSIFICATION",
+  "counts": {
+    "ABSTAIN_FUND_FLOW": 3,
+    "ABSTAIN_NO_DIRECTIONAL_CUE": 5,
+    "POSITIVE": 2
+  },
+  "reject_counts": {
+    "ABSTAIN_FUND_FLOW": 3,
+    "ABSTAIN_NO_DIRECTIONAL_CUE": 5
+  },
+  "coverage": 0.2,
+  "model": "IDEA-CCNL/Erlangshen-Roberta-110M-Sentiment",
+  "weights_sha256": "a1d1328c759c50726db6617c75abb5c260b12377bee7ecd003c8a201b526e38e",
+  "network_calls": 0,
+  "account_before": 0,
+  "account_after": 0,
+  "facts": [
+    {
+      "title": "有色金属行业资金流出榜：云南锗业等10股净流出资金超亿元",
+      "label": null,
+      "reject": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "association": "INDUSTRY_BACKGROUND"
+    },
+    {
+      "title": "从周期资源迈向战略资源 沪市有色行业长期价值凸显",
+      "label": null,
+      "reject": "ABSTAIN_NO_DIRECTIONAL_CUE",
+      "confidence": null,
+      "association": "COMPANY_MENTIONED"
+    },
+    {
+      "title": "江西铜业与控股股东重签关联交易合同，三年采购预计上限超520亿元",
+      "label": null,
+      "reject": "ABSTAIN_NO_DIRECTIONAL_CUE",
+      "confidence": null,
+      "association": "COMPANY_SUBJECT"
+    },
+    {
+      "title": "快速拉升！600362、603979、601212封死涨停",
+      "label": "POSITIVE",
+      "reject": null,
+      "confidence": 0.9969342947006226,
+      "association": "COMPANY_SUBJECT"
+    },
+    {
+      "title": "PCB概念上涨1.92%，7股主力资金净流入超亿元",
+      "label": null,
+      "reject": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "association": "UNRELATED"
+    },
+    {
+      "title": "资源禀赋构筑供给壁垒 新兴产业打开长期需求 沪市有色龙头“家底”有多厚？",
+      "label": null,
+      "reject": "ABSTAIN_NO_DIRECTIONAL_CUE",
+      "confidence": null,
+      "association": "COMPANY_MENTIONED"
+    },
+    {
+      "title": "江西铜业：拟与控股股东签订2027-2029年度日常关联交易合同",
+      "label": null,
+      "reject": "ABSTAIN_NO_DIRECTIONAL_CUE",
+      "confidence": null,
+      "association": "COMPANY_SUBJECT"
+    },
+    {
+      "title": "PCB概念下跌2.48%，23股主力资金净流出超亿元",
+      "label": null,
+      "reject": "ABSTAIN_FUND_FLOW",
+      "confidence": null,
+      "association": "UNRELATED"
+    },
+    {
+      "title": "江西铜业600362.SH)：2026年中报净利润为86.32亿元、同比较去年同期上涨106.77%",
+      "label": "POSITIVE",
+      "reject": null,
+      "confidence": 0.9513322710990906,
+      "association": "COMPANY_SUBJECT"
+    },
+    {
+      "title": "8.96亿元资金今日流入有色金属股",
+      "label": null,
+      "reject": "ABSTAIN_NO_DIRECTIONAL_CUE",
+      "confidence": null,
+      "association": "INDUSTRY_BACKGROUND"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+[WebServer] INFO:     Started server process [472]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8054 (Press CTRL+C to quit)
+[WebServer] (node:18304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:6516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\expansion-news.spec.ts:2:1 › METHOD news keeps excerpt separate from archived body and persists headline gaps (6.2s)
+
+
+  1) tests\e2e\expansion-news.spec.ts:2:1 › METHOD news keeps excerpt separate from archived body and persists headline gaps 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  getByRole('region', { name: '新闻 METHOD 江西铜业公告', exact: true }).getByText('列表摘要不是正文', { exact: true })
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: '新闻 METHOD 江西铜业公告', exact: true }).getByText('列表摘要不是正文', { exact: true })[22m
+    [2m    9 × locator resolved to <p>列表摘要不是正文</p>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      4 |  await page.getByRole('button',{name:'有限采集近期新闻',exact:true}).click();
+      5 |  const body=page.getByRole('region',{name:'新闻 METHOD 江西铜业公告',exact:true});await expect(body.getByText('METHOD工程证据',{exact:true})).toBeVisible();
+    > 6 |  await expect(body.getByText('METHOD archived full article.',{exact:true})).toBeVisible();await expect(body.getByText('列表摘要不是正文',{exact:true})).toBeVisible();
+        |                                                                                                                                                 ^
+      7 |  const gap=page.getByRole('region',{name:'新闻 METHOD 标题保留',exact:true});await expect(gap.getByText('正文缺口：NOT_FETCHED_BODY_BUDGET',{exact:true})).toBeVisible();
+      8 |  const raw=body.getByRole('link',{name:'正文HTML原件',exact:true});expect((await request.get((await raw.getAttribute('href'))!)).status()).toBe(200);
+      9 |  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();await page.screenshot({path:'../.scratch/roll-capability-expansion/evidence/14-news/mobile.png',fullPage:true});
+        at D:\dsh-proj\Roll\frontend\tests\e2e\expansion-news.spec.ts:6:145
+
+    Error Context: ..\.scratch\roll-capability-expansion\evidence\14-news\browser-results\expansion-news-METHOD-news-6606f--and-persists-headline-gaps\error-context.md
+
+  1 failed
+    tests\e2e\expansion-news.spec.ts:2:1 › METHOD news keeps excerpt separate from archived body and persists headline gaps 

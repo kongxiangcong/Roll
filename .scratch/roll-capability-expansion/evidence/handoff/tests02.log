@@ -1,0 +1,13 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.6.0 -- D:\dsh-proj\Roll\backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\dsh-proj\Roll\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 3 items
+
+backend\tests\application\test_sse_daily.py::test_daily_original_decimal_units_and_restart_once PASSED [ 33%]
+backend\tests\application\test_sse_daily.py::test_pinned_daily_packet_replay_keeps_old_packet_and_original_ids PASSED [ 66%]
+backend\tests\application\test_policy_successors.py::test_successor_registration_is_immutable_predecessor_bound_and_never_formal PASSED [100%]
+
+============================= 3 passed in 35.84s ==============================

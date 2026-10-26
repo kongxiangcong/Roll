@@ -1,0 +1,23 @@
+{
+  "request": {
+    "instruments": [
+      "SSE:600362"
+    ],
+    "groups": [
+      "DAILY"
+    ],
+    "purpose": "OBSERVATION",
+    "start_date": "2026-10-13",
+    "end_date": "2026-10-20",
+    "daily_source": "BAOSTOCK",
+    "baostock_auth_mode": "PUBLIC",
+    "timeout_seconds": 18,
+    "max_calls": 3,
+    "max_decoded_bytes": 8388608,
+    "max_total_decoded_bytes": 8388608
+  },
+  "raw_and_decoded_maximum_bytes": 8388608,
+  "fallbacks": 0,
+  "retries": 0,
+  "authorization": "bounded user continuation; fixed SDK budget inherited from acquisition-plan"
+}

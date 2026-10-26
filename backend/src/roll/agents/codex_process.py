@@ -38,6 +38,26 @@ SOURCES = {'MOUTAI_OFFICIAL': {'instrument': 'SSE:600519',
 
 
 def process_creation(pid):
+    if sys.platform == 'linux':
+        # Boot identity + kernel start ticks distinguish PID reuse and reboot.
+        try:
+            if int(pid) <= 0:return None
+            proc=Path(f'/proc/{int(pid)}')
+            namespace=os.readlink('/proc/self/ns/pid')
+            def matches(path):
+                try:
+                    status=(path/'status').read_text()
+                    ids=next(line.split()[1:] for line in status.splitlines() if line.startswith('NSpid:'))
+                    return int(ids[-1])==int(pid) and os.readlink(path/'ns/pid')==namespace
+                except (OSError,StopIteration,ValueError):return False
+            if not matches(proc):
+                proc=next((p for p in Path('/proc').iterdir() if p.name.isdigit() and matches(p)),None)
+                if proc is None:return None
+            fields=(proc/'stat').read_text().rsplit(')',1)[1].split()
+            if fields[0] in {'Z','X'}:return None
+            boot=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+            return boot+':'+fields[19]
+        except (OSError,ValueError,IndexError):return None
     kernel=ctypes.WinDLL('kernel32',use_last_error=True)
     kernel.OpenProcess.restype=wintypes.HANDLE
     kernel.GetProcessTimes.argtypes=[wintypes.HANDLE,*([ctypes.POINTER(wintypes.FILETIME)]*4)]

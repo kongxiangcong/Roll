@@ -1,0 +1,26 @@
+{
+  "attempt_id": "SENTIMENT-TRAIN-CORPUS-09",
+  "authorization": "User approved one bounded training proposal on 2026-10-19; inherited plan fresh-02/next-step.md",
+  "news_url": "https://search-api-web.eastmoney.com/search/jsonp",
+  "news_keywords": [
+    "江西铜业",
+    "江西铜业股份"
+  ],
+  "cninfo_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+  "cninfo_intervals": [
+    "2018-01-01~2022-12-31",
+    "2023-01-01~2024-12-31",
+    "2025-01-01~2026-10-18"
+  ],
+  "limits": {
+    "maximum_requests": 32,
+    "maximum_transfer_seconds": 120,
+    "maximum_bytes": 16777216,
+    "retries": 0,
+    "redirects": 0
+  },
+  "planned_index_maximum": 26,
+  "reserved_pdf_maximum": 6,
+  "conditional_pagination": "title-hit>=80%, stop on empty; no fallback or repeated page",
+  "closed_budgets_not_reopened": true
+}
