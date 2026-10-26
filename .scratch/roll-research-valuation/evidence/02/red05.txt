@@ -1,0 +1,16 @@
+....FF                                                                   [100%]
+================================== FAILURES ===================================
+_ test_fact_basis_mismatch_is_rejected_and_repeated_checks_do_not_invent_new_material _
+backend\tests\company_research\test_shared_evidence.py:120: in test_fact_basis_mismatch_is_rejected_and_repeated_checks_do_not_invent_new_material
+    with pytest.raises(HTTPException) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+_________ test_storage_corruption_is_refused_by_public_record_readers _________
+backend\tests\company_research\test_shared_evidence.py:146: in test_storage_corruption_is_refused_by_public_record_readers
+    with pytest.raises(HTTPException) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_fact_basis_mismatch_is_rejected_and_repeated_checks_do_not_invent_new_material
+FAILED backend\tests\company_research\test_shared_evidence.py::test_storage_corruption_is_refused_by_public_record_readers
+2 failed, 4 passed in 27.07s

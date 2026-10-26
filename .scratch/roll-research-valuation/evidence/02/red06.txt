@@ -1,0 +1,9 @@
+......F                                                                  [100%]
+================================== FAILURES ===================================
+_ test_existing_market_source_is_reused_without_network_or_promoting_method_origin _
+backend\tests\company_research\test_shared_evidence.py:156: in test_existing_market_source_is_reused_without_network_or_promoting_method_origin
+    from roll.research.company import ExistingSourceCommand
+E   ImportError: cannot import name 'ExistingSourceCommand' from 'roll.research.company' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket02\backend\src\roll\research\company\__init__.py)
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_existing_market_source_is_reused_without_network_or_promoting_method_origin
+1 failed, 6 passed in 29.56s

@@ -1,0 +1,9 @@
+...F                                                                     [100%]
+================================== FAILURES ===================================
+__ test_checks_distinguish_no_new_evidence_partial_failure_and_last_success ___
+backend\tests\company_research\test_shared_evidence.py:88: in test_checks_distinguish_no_new_evidence_partial_failure_and_last_success
+    from roll.research.company import CheckCommand, MaterialCommand
+E   ImportError: cannot import name 'CheckCommand' from 'roll.research.company' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket02\backend\src\roll\research\company\__init__.py)
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_checks_distinguish_no_new_evidence_partial_failure_and_last_success
+1 failed, 3 passed in 14.83s

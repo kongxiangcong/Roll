@@ -142,6 +142,10 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     market = MarketDirectory(ledger)
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport,baostock_worker)
+    from roll.research.company import CompanyResearch
+    from roll.research.company.api import router as company_research_router
+    app.state.company_research = CompanyResearch(evidence)
+    app.include_router(company_research_router(app.state.company_research))
     authority_supplements = AuthoritySupplements(evidence)
     app.state.authority_supplements = authority_supplements
 

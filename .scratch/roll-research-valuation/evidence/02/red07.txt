@@ -1,0 +1,11 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_company_research_api_import_and_download_are_independent_of_account_confirmation _
+backend\tests\company_research\test_shared_evidence.py:186: in test_company_research_api_import_and_download_are_independent_of_account_confirmation
+    assert registered.status_code == 201, registered.text
+E   AssertionError: {"detail":"Not Found"}
+E   assert 404 == 201
+E    +  where 404 = <Response [404 Not Found]>.status_code
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_company_research_api_import_and_download_are_independent_of_account_confirmation
+1 failed, 7 deselected in 10.67s

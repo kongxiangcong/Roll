@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_source_checks_can_reuse_existing_receipts_without_counting_unchanged_captures_as_new _
+backend\tests\company_research\test_shared_evidence.py:285: in test_source_checks_can_reuse_existing_receipts_without_counting_unchanged_captures_as_new
+    assert captures[0]["status"] == captures[1]["status"] == "SUCCESS"
+E   AssertionError: assert 'FAILED' == 'SUCCESS'
+E     
+E     - SUCCESS
+E     + FAILED
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_source_checks_can_reuse_existing_receipts_without_counting_unchanged_captures_as_new
+1 failed, 11 deselected in 8.85s

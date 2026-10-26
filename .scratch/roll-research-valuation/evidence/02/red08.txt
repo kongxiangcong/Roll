@@ -1,0 +1,10 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_backup_restore_retains_shared_records_and_refuses_corrupt_structured_input _
+backend\tests\company_research\test_shared_evidence.py:228: in test_backup_restore_retains_shared_records_and_refuses_corrupt_structured_input
+    with pytest.raises(HTTPException) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_backup_restore_retains_shared_records_and_refuses_corrupt_structured_input
+1 failed, 8 deselected in 10.43s
