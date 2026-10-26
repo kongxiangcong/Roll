@@ -1,0 +1,10 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_public_lists_expose_pagination_without_losing_resolution_or_fact_conflicts _
+backend\tests\company_research\test_shared_evidence.py:254: in test_public_lists_expose_pagination_without_losing_resolution_or_fact_conflicts
+    assert research.companies(limit=1)["has_more"] is True
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: CompanyResearch.companies() got an unexpected keyword argument 'limit'
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_public_lists_expose_pagination_without_losing_resolution_or_fact_conflicts
+1 failed, 10 deselected in 7.88s

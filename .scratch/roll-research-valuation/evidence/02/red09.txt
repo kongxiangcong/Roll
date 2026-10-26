@@ -1,0 +1,24 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_existing_balance_and_cash_flow_retain_point_in_time_and_duration_basis _
+backend\tests\application\test_company_research_sources.py:31: in test_existing_balance_and_cash_flow_retain_point_in_time_and_duration_basis
+    assert results["BALANCE"]["period_start"] == results["BALANCE"]["period_end"] == "2026-06-30"
+E   AssertionError: assert '2026-01-01' == '2026-06-30'
+E     
+E     - 2026-06-30
+E     ?       ^ -
+E     + 2026-01-01
+E     ?       ^  +
+_ test_news_association_body_receipt_and_existing_reprint_root_are_preserved __
+backend\tests\application\test_company_research_sources.py:51: in test_news_association_body_receipt_and_existing_reprint_root_are_preserved
+    assert material["upstream"]["original_received_at"] == "2026-10-15T02:00:00+00:00"
+E   AssertionError: assert '2026-10-15T01:00:00+00:00' == '2026-10-15T02:00:00+00:00'
+E     
+E     - 2026-10-15T02:00:00+00:00
+E     ?             ^
+E     + 2026-10-15T01:00:00+00:00
+E     ?             ^
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_company_research_sources.py::test_existing_balance_and_cash_flow_retain_point_in_time_and_duration_basis
+FAILED backend\tests\application\test_company_research_sources.py::test_news_association_body_receipt_and_existing_reprint_root_are_preserved
+2 failed in 14.86s

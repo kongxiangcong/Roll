@@ -111,6 +111,9 @@ def host_source_references(db,value):
 
 def references(db,directory):
     names=tables(db);result={}
+    if 'company_research_companies' in names:
+        from roll.research.company.integrity import validate_references
+        validate_references(db)
     if 'evidence_archives' in names:
         for row in db.execute('SELECT sha256,value FROM evidence_archives'):
             item=json.loads(row[1]);result[item['path']]={'path':item['path'],'sha256':row[0],'kind':item['kind']}

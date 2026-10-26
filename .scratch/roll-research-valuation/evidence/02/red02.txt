@@ -1,0 +1,9 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_import_retains_unknown_disclosure_and_same_original_is_shared_after_restart _
+backend\tests\company_research\test_shared_evidence.py:43: in test_import_retains_unknown_disclosure_and_same_original_is_shared_after_restart
+    from roll.research.company import MaterialCommand
+E   ImportError: cannot import name 'MaterialCommand' from 'roll.research.company' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket02\backend\src\roll\research\company\__init__.py)
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_import_retains_unknown_disclosure_and_same_original_is_shared_after_restart
+1 failed, 1 passed in 6.61s
