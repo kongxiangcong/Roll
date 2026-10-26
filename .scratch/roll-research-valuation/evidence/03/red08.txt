@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_one_disclosure_can_contain_both_risk_and_mitigation_without_double_counting_sources _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red08/test_one_disclosure_can_contai0')
+
+    def test_one_disclosure_can_contain_both_risk_and_mitigation_without_double_counting_sources(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer, 'Higher prices consume working capital; inventory controls may offset this pressure')
+        packet = freeze(research, issuer, fact)
+        draft = candidate(packet, fact)
+        draft['hypotheses'][0].update(counter_fact_version_ids=[fact['version_id']],
+            gaps=['Risk and mitigation are clauses in the same disclosure, not independent evidence'])
+        saved = research.apply_analysis_candidate(packet['input_id'], draft)
+>       assert len(saved['core']['hypotheses']) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+backend\tests\company_research\test_analysis_snapshots.py:193: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_one_disclosure_can_contain_both_risk_and_mitigation_without_double_counting_sources
+1 failed, 7 deselected in 5.75s

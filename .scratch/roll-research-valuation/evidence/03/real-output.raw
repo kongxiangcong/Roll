@@ -1,0 +1,112 @@
+{
+  "attention_reasons": [
+    {
+      "fact_version_ids": ["5b053f8b-98c5-4029-a78b-8b05d46f93ec"],
+      "gap_reason": "缺少实际加工费及成本数据，无法判断当前盈利方向。",
+      "text": "外购铜精矿采购价涉及金属价格与加工费，需区分铜价变化和冶炼加工收益。"
+    },
+    {
+      "fact_version_ids": ["e4fd4896-a981-43fe-bb4b-31842b358f0e", "84cae999-d6a3-4817-886e-af994411139f"],
+      "gap_reason": "未提供净外汇敞口、库存周转和资金占用金额。",
+      "text": "美元结算及价格上涨带来的资金占用风险值得跟踪，但风险披露不代表损失已经发生。"
+    }
+  ],
+  "business_structure": [
+    {
+      "fact_version_ids": ["f9fce16b-9e31-42be-87e7-587ddd1d773b"],
+      "gap_reason": "没有各业务收入、利润及资产分拆。",
+      "text": "江西铜业股份有限公司集团业务涵盖铜和黄金采选、冶炼与加工，稀散金属提取加工、硫化工及贸易；产业链描述不是财务分部表。"
+    },
+    {
+      "fact_version_ids": ["1721d4d2-16ef-46d3-b088-ee7a66739491", "0a782094-dedf-4186-a55b-eba5973191b5", "4093d9ff-4554-4449-a0d5-6eb3a57eb034"],
+      "gap_reason": "缺少口径调节表，不能直接串联收入与产销量。",
+      "text": "2025年自产铜精矿含铜统计含第一量子当年权益产量；主营业务分类统计含贸易，产销量分析表不含贸易。权益产量不能直接视为并表矿山产量。"
+    },
+    {
+      "fact_version_ids": ["5bc42bd2-11b4-4a2c-9f3d-cc80899b0947"],
+      "gap_reason": "未披露贸易、金融单位独立盈利及风险敞口。",
+      "text": "管理层将贸易、金融单位定位为服务主业和资源调配的协同环节，其贡献尚无法量化。"
+    }
+  ],
+  "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+  "counterevidence": [
+    {
+      "fact_version_ids": ["84cae999-d6a3-4817-886e-af994411139f"],
+      "gap_reason": "仅有管理措施，无法判断实施效果。",
+      "text": "公司披露采购销售安排及库存管理措施，可能缓释资金占用压力；不能据此认定风险已消除。"
+    },
+    {
+      "fact_version_ids": ["15b7cd87-e435-49d7-8995-c7faa12aaa55"],
+      "gap_reason": "未提供计划执行结果。",
+      "text": "公司明确2026年经营目标不是生产预测，且可能调整，不能用计划证明增长或假设成立。"
+    }
+  ],
+  "hypotheses": [
+    {
+      "business": "外购铜精矿冶炼",
+      "change_reason": "沿用既有假设；无新增事实，明确条件不变时的传导检验及证据局限。",
+      "counter_fact_version_ids": [],
+      "gaps": ["缺少实际TC/RC、采购结构、成本及副产品收益，无法判断当前利润方向。", "无直接反证，采购机制本身不能证明利润传导已经发生。"],
+      "horizon": "下一份提供采购及冶炼经营明细的报告期。",
+      "invalidation_conditions": ["可比条件下，加工费下降被成本或副产品收益持续抵消，未压缩单位利润。", "后续合同显示该采购机制已不适用。"],
+      "key": "jcc_smelting_processing_fee_transmission",
+      "next_validation_event": {
+        "date": null,
+        "date_fact_version_ids": [],
+        "date_unknown_reason": "包内没有具体披露日期。",
+        "description": "后续定期报告或专项披露提供实际加工费与冶炼盈利桥接时检验。"
+      },
+      "observation_metrics": ["外购铜精矿实际TC/RC：分别统计进口和国内采购，保留合同期间、原币及计费单位。", "外购原料冶炼单位毛利与成本、副产品收益桥接：同期间同金属量口径，剔除贸易及自产矿贡献。"],
+      "previous_version_id": "8fa8f322-e56f-4954-8e9b-e71af6db5a8e",
+      "statement": "其他条件可比时，外购铜精矿加工费下降可能压缩冶炼单位利润；铜价上涨本身不足以证明该业务获益。",
+      "support_fact_version_ids": ["5b053f8b-98c5-4029-a78b-8b05d46f93ec"]
+    },
+    {
+      "business": "进口铜矿原料与海外投资",
+      "change_reason": "沿用既有假设；无新增事实，保留总额美元结算与净敞口的区别。",
+      "counter_fact_version_ids": [],
+      "gaps": ["缺少美元资产负债、收支匹配、套保与汇兑损益数据。", "无直接反证；美元结算不能确定净敞口或实际损益方向。"],
+      "horizon": "下一份提供外汇风险及损益明细的报告期。",
+      "invalidation_conditions": ["自然对冲或套保消除相关净敞口，汇率波动未形成可识别净损益影响。"],
+      "key": "jcc_usd_net_exposure",
+      "next_validation_event": {
+        "date": null,
+        "date_fact_version_ids": [],
+        "date_unknown_reason": "包内没有外汇风险更新的具体日期。",
+        "description": "后续财务附注披露币种敞口、套保与汇兑损益时检验。"
+      },
+      "observation_metrics": ["进口原料及海外投资美元资产负债和预计收支：保留原币、金额单位、期限及并表或权益投资边界。", "同期间套保前后净敞口、汇兑与对冲损益：区分损益和其他综合收益，注明折算币种及单位。"],
+      "previous_version_id": "23306caf-c89d-46bc-af6d-a5dfdcc6edec",
+      "statement": "若美元收支存在未有效对冲的净敞口，汇率波动可能影响相关业务盈利；不能仅凭美元结算判定损失。",
+      "support_fact_version_ids": ["e4fd4896-a981-43fe-bb4b-31842b358f0e"]
+    },
+    {
+      "business": "原料采购、库存与营运资金",
+      "change_reason": "首次建立；依据资金占用风险及管理措施提出可检验的条件性假设。",
+      "counter_fact_version_ids": ["84cae999-d6a3-4817-886e-af994411139f"],
+      "gaps": ["缺少采购价格、实物库存、结算周期及营运资金序列。", "管理措施可能缓释压力，但尚无成效证据，无法判断当前方向。"],
+      "horizon": "下一份提供库存及营运资金明细的报告期。",
+      "invalidation_conditions": ["同口径价格上涨期间，周转改善或供应商信用等持续抵消价格效应，未增加净资金占用。"],
+      "key": "jcc_price_working_capital_transmission",
+      "next_validation_event": {
+        "date": null,
+        "date_fact_version_ids": [],
+        "date_unknown_reason": "包内仅有一般披露程序，没有相关报告日程。",
+        "description": "后续报告披露库存量价、结算周期与经营现金流桥接时检验。"
+      },
+      "observation_metrics": ["原料采购及生产业务库存和在制品：区分实物量、账面金额与跌价准备，保留产品单位、币种及并表范围，贸易库存单列。", "同期间应收、应付、预付款及经营现金流：按生产与贸易拆分，注明币种和金额单位，分解价格、数量及结算周期影响。"],
+      "previous_version_id": null,
+      "statement": "在实物规模和结算周期可比时，原料及产品价格上涨可能增加营运资金占用；库存周转与采购销售安排改善可能缓释该压力。",
+      "support_fact_version_ids": ["84cae999-d6a3-4817-886e-af994411139f"]
+    }
+  ],
+  "input_sha256": "1b95569677a9f0999a69ba90414efc77b586ffe4b824747301144dc0d0976bec",
+  "insufficient_hypotheses_reason": null,
+  "limitations": [
+    "仅使用冻结包内2025年报选摘，未审阅完整报告，未获取后续经营数据。",
+    "来源引用和结构检查不等于独立事实核实；精确披露时间未知，不具历史时点可用性。",
+    "不同统计范围不是已解决的可比口径；未注明的单位、币种及分部边界保持未知。",
+    "以上为条件性经营假设，不是披露事实、概率判断、已验证预测或收益承诺。"
+  ],
+  "valuation_unavailable_reason": "缺少完整分部财务、现金流、资本开支及贸易、金融和权益投资调节基础；本阶段不作估值或新增数值预测。"
+}

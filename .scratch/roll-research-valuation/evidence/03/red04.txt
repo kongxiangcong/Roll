@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_freeze_preserves_existing_conflict_heads_and_rejects_unanchored_event_dates _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red04/test_freeze_preserves_existing0')
+
+    def test_freeze_preserves_existing_conflict_heads_and_rejects_unanchored_event_dates(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer)
+        _, counterfact = evidence(research, issuer, 'Alternative issuer text contests refining stability')
+        packet = freeze(research, issuer, fact)
+>       assert {f['version_id'] for f in packet['payload']['facts']} == {fact['version_id'], counterfact['version_id']}
+E       AssertionError: assert {'c3cc0d3f-85...6a2de57b9272'} == {'8cb20375-1d...6a2de57b9272'}
+E         
+E         Extra items in the right set:
+E         '8cb20375-1d6e-4a8b-9d22-4dd1f64f7000'
+E         Use -v to get more diff
+
+backend\tests\company_research\test_analysis_snapshots.py:107: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_freeze_preserves_existing_conflict_heads_and_rejects_unanchored_event_dates
+1 failed, 3 deselected in 9.65s

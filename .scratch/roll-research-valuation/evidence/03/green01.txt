@@ -1,0 +1,44 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_frozen_input_publishes_one_immutable_snapshot_for_both_consumers ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-green01/test_frozen_input_publishes_on0')
+
+    def test_frozen_input_publishes_one_immutable_snapshot_for_both_consumers(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        original, fact = evidence(research, issuer)
+        packet = freeze(research, issuer, fact)
+        later, _ = evidence(research, issuer, 'Later material must not leak into frozen input')
+        saved = research.apply_analysis_candidate(packet['input_id'], candidate(packet, fact))
+        assert saved['status'] == 'PUBLISHED' and saved['parent_snapshot_id'] is None
+        assert saved['material_ids'] == [original['material_id']] and later['material_id'] not in saved['material_ids']
+>       daily = research.analysis_snapshot(saved['snapshot_id'], purpose='DAILY')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_analysis_snapshots.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:516: in analysis_snapshot
+    return self.analysis.snapshot(identifier, purpose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\analysis.py:118: in snapshot
+    return self.read('snapshots', 'snapshot_id', identifier)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\analysis.py:26: in read
+    result = verified(json.loads(row[0]))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\service.py:31: in verified
+    fail('RESEARCH_RECORD_CORRUPT', 'Stored record hash does not match', 409)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'RESEARCH_RECORD_CORRUPT', reason = 'Stored record hash does not match'
+status = 409, context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 409: {'code': 'RESEARCH_RECORD_CORRUPT', 'reason': 'Stored record hash does not match', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_frozen_input_publishes_one_immutable_snapshot_for_both_consumers
+1 failed in 7.14s

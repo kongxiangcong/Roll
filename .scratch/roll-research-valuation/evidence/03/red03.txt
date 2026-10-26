@@ -1,0 +1,21 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_model_failure_preserves_frozen_evidence_and_sanitized_failure_without_a_snapshot _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red03/test_model_failure_preserves_f0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E6E9C1BA0>
+
+    def test_model_failure_preserves_frozen_evidence_and_sanitized_failure_without_a_snapshot(tmp_path, monkeypatch):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer)
+        packet = freeze(research, issuer, fact)
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE', str(tmp_path / 'missing-auth.json'))
+>       run = research.run_analysis(packet['input_id'])
+              ^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CompanyResearch' object has no attribute 'run_analysis'. Did you mean: 'freeze_analysis'?
+
+backend\tests\company_research\test_analysis_snapshots.py:93: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_model_failure_preserves_frozen_evidence_and_sanitized_failure_without_a_snapshot
+1 failed, 2 deselected in 6.72s

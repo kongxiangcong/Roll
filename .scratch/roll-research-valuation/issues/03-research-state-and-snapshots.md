@@ -1,7 +1,7 @@
 # 03 实现经营假设及共享分析快照
 
 Status: ready-for-agent
-Completion: not-started
+Completion: complete
 Depends on: 02
 Spec: [v1.0](../spec.md) 第4、5节
 
@@ -24,9 +24,9 @@ runtime/assistance.py、agents/assistance_runtime.py、现有CODEX进程与来�
 
 ## 验收标准
 
-- [ ] 新事实能关联某项假设的支持/反驳，旧版可查；没有证据时显示无法判断。
-- [ ] 运行中新增材料不会混入已绑定快照；同快照的消费者返回一致核心结论。
-- [ ] 恶意来源指令不改变工具权限；错误公司/无效引用拒绝，其他可用结果保留。
+- [x] 新事实能关联某项假设的支持/反驳，旧版可查；没有证据时显示无法判断。
+- [x] 运行中新增材料不会混入已绑定快照；同快照的消费者返回一致核心结论。
+- [x] 恶意来源指令不改变工具权限；错误公司/无效引用拒绝，其他可用结果保留。
 
 ## 验证与交付证据
 
@@ -42,3 +42,4 @@ runtime/assistance.py、agents/assistance_runtime.py、现有CODEX进程与来�
 
 2026-10-26：依据已确认需求创建，尚未实施。
 
+2026-10-27：03已完成；9轮TDD和安全回归、最终受影响51 passed in262.29s；真实CODEX两次（首PARTIAL保留、最终COMPLETE三项经营假设及父子版本），原文/hash/隔离审计/备份与离线重放见[03证据](../evidence/03/README.md)。04依赖可解除，未实施后票。

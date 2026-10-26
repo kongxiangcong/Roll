@@ -25,3 +25,5 @@
 两种用途的 `materials(company_id, purpose='DAILY'/'REPORT')` 读取同一材料记录。当前导入不取得STRICT_HISTORICAL_AS_OF资格；今天接收旧报告仍是今天接收。经营状态、资料过期策略与三类变化计算留给03/06票，不在核查回执中编造经营结论。
 
 新增表纳入现有SQLite备份，原件纳入evidence_archives附件枚举。备份枚举还核验新增结构记录hash、跨公司/版本及原件引用；公共读取拒绝hash不符的记录。已完成隔离备份导出/恢复和公用服务重开验证。具体命令、红绿记录和真实本地PDF导入回执见[02证据](../../.scratch/roll-research-valuation/evidence/02/README.md)。
+
+03经营假设与共享快照入口见[company-analysis-api.md](company-analysis-api.md)。02证据入口及来源分类保持原语义。

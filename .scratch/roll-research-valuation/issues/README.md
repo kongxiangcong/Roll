@@ -2,13 +2,13 @@
 
 依据：[实施规格](../spec.md) v1.0。顺序：**01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12**。
 
-所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**03**。01合同与02共享证据已完成，见[01证据](../evidence/01/README.md)和[02证据](../evidence/02/README.md)；经营分析及后续功能尚未实现。
+所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**04**。01合同、02共享证据及03经营假设/共同快照已完成，见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)和[03证据](../evidence/03/README.md)；条件估值及后续功能尚未实现。
 
 | 顺序 | 任务 | 依赖 | Completion |
 | --- | --- | --- | --- |
 | 01 | [冻结双工作流合同与参考能力映射](01-contracts-and-source-map.md) | 无 | complete |
 | 02 | [实现公司身份、共享证据与核查记录](02-shared-evidence-and-identity.md) | 01 | complete |
-| 03 | [实现经营假设及共享分析快照](03-research-state-and-snapshots.md) | 02 | not-started |
+| 03 | [实现经营假设及共享分析快照](03-research-state-and-snapshots.md) | 02 | complete |
 | 04 | [接入可复算条件估值计算器](04-conditional-valuation-engine.md) | 03 | not-started |
 | 05 | [连接经营驱动、正常化与经济审核](05-operating-drivers-and-review.md) | 04 | not-started |
 | 06 | [实现三类变化与信息状态比较](06-daily-change-decomposition.md) | 05 | not-started |

@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_stale_candidate_is_archived_but_cannot_overwrite_published_parent ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red07/test_stale_candidate_is_archiv0')
+
+    def test_stale_candidate_is_archived_but_cannot_overwrite_published_parent(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer)
+        first_packet = freeze(research, issuer, fact)
+        stale_packet = freeze(research, issuer, fact)
+        saved = research.apply_analysis_candidate(first_packet['input_id'], candidate(first_packet, fact))
+        with pytest.raises(HTTPException) as error:
+            research.apply_analysis_candidate(stale_packet['input_id'], candidate(stale_packet, fact))
+        assert error.value.detail['code'] == 'INPUT_CHANGED'
+>       attempts = research.analysis_candidates(stale_packet['input_id'])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CompanyResearch' object has no attribute 'analysis_candidates'. Did you mean: 'apply_analysis_candidate'?
+
+backend\tests\company_research\test_analysis_snapshots.py:177: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_stale_candidate_is_archived_but_cannot_overwrite_published_parent
+1 failed, 6 deselected in 5.74s

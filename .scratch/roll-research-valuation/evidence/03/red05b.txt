@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_snapshot_api_is_shared_and_requires_no_account_confirmation _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red05b/test_snapshot_api_is_shared_an0')
+
+    def test_snapshot_api_is_shared_and_requires_no_account_confirmation(tmp_path):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from roll.research.company.api import router
+        research = service(tmp_path)
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer)
+        app = FastAPI()
+        app.include_router(router(research))
+        with TestClient(app) as client:
+            response = client.post('/api/company-research/analysis/inputs', json=dict(company_id=issuer['company_id'],
+                as_of=datetime.now(timezone.utc).isoformat(), fact_version_ids=[fact['version_id']]))
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\company_research\test_analysis_snapshots.py:129: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_snapshot_api_is_shared_and_requires_no_account_confirmation
+1 failed, 4 deselected in 7.06s

@@ -91,3 +91,11 @@ class ExistingSourceCommand(Command):
     source_type: Literal['FINANCIAL_FACT', 'NEWS_FACT', 'MARKET_SNAPSHOT']
     record_id: str = Field(min_length=1, max_length=128)
     fact_index: int = Field(default=0, ge=0, le=1000)
+
+class AnalysisCommand(Command):
+    company_id: str = Field(min_length=1, max_length=128)
+    as_of: str
+    fact_version_ids: list[str] = Field(default_factory=list, max_length=80)
+    parent_snapshot_id: str | None = None
+    purpose: Literal['DAILY', 'REPORT', 'SHARED'] = 'SHARED'
+    evidence_gap_reason: str | None = Field(default=None, max_length=2000)

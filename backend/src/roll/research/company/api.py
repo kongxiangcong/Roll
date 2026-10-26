@@ -6,7 +6,7 @@ from typing import Literal
 from fastapi import APIRouter, Response, Query
 from pydantic import Field
 
-from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand
+from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand, AnalysisCommand
 from .service import fail
 
 
@@ -16,6 +16,10 @@ class ResolveCommand(Command):
 
 class MaterialImport(MaterialCommand):
     content_base64: str = Field(min_length=1, max_length=24 * 1024 * 1024)
+
+
+class CandidateSubmission(Command):
+    candidate: dict
 
 
 def router(research):
@@ -83,5 +87,41 @@ def router(research):
     @routes.get('/companies/{company_id}/checks')
     def checks(company_id: str, limit: int = Query(100, ge=1, le=500), offset: int = Query(0, ge=0)):
         return research.checks(company_id, limit, offset)
+
+    @routes.post('/analysis/inputs', status_code=201)
+    def freeze_analysis(command: AnalysisCommand):
+        return research.freeze_analysis(command)
+
+    @routes.get('/analysis/inputs/{input_id}')
+    def analysis_input(input_id: str):
+        return research.analysis_input(input_id)
+
+    @routes.post('/analysis/inputs/{input_id}/candidates', status_code=201)
+    def apply_candidate(input_id: str, command: CandidateSubmission):
+        return research.apply_analysis_candidate(input_id, command.candidate)
+
+    @routes.get('/analysis/inputs/{input_id}/candidates')
+    def candidates(input_id: str, limit: int = Query(100, ge=1, le=200), offset: int = Query(0, ge=0)):
+        return research.analysis_candidates(input_id, limit, offset)
+
+    @routes.post('/analysis/inputs/{input_id}/run')
+    def run_analysis(input_id: str):
+        return research.run_analysis(input_id)
+
+    @routes.get('/analysis/runs/{run_id}')
+    def analysis_run(run_id: str):
+        return research.analysis_run(run_id)
+
+    @routes.get('/hypotheses/{version_id}')
+    def hypothesis(version_id: str):
+        return research.operating_hypothesis(version_id)
+
+    @routes.get('/snapshots/{snapshot_id}')
+    def snapshot(snapshot_id: str, purpose: Literal['DAILY', 'REPORT'] = 'DAILY'):
+        return research.analysis_snapshot(snapshot_id, purpose)
+
+    @routes.get('/companies/{company_id}/snapshots')
+    def snapshots(company_id: str, limit: int = Query(100, ge=1, le=200), offset: int = Query(0, ge=0)):
+        return research.analysis_snapshots(company_id, limit, offset)
 
     return routes
