@@ -19,7 +19,9 @@ Updated 2026-10-27 (Asia/Shanghai). This file records checkout/coordination poin
 | 05 | 4802c99db488e1a675e3320bf2477023c71bdc02 | evidence/05/README.md; 94 tests and 5 subtests passed; sourced baseline conditional case, current-pricing blocked, real recovery/replay and 10 source blobs verified |
 | 06 | 51707ae12a200b37c6f508ef8dee770191adb23a | evidence/06/README.md; 111 tests and 5 subtests passed; explicit context/change sets, independent check/material ages, fixed-order comparisons and recovery replay |
 
-Tickets01–06 are merged; next frontier is07. Ticket07 onward has not started. The real05 case is explicitly BASELINE_RESEARCH (2025 value anchor, current acquisition, non-PIT); CURRENT_PRICING remains blocked. No A6 full chain has been claimed. The06 operating-scope guard preserves that real same-scope conditional case, independently checked from rv05-real-restored01; no model/network or account change.
+Tickets01–06 are merged. Ticket07 is active on codex/rv-ticket07 at D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket07, based on1e493f043a8a042b29a5d170272c953c6afc848e; do not duplicate its edits. Tickets08–12 have not started. The real05 case is explicitly BASELINE_RESEARCH (2025 value anchor, current acquisition, non-PIT); CURRENT_PRICING remains blocked. No A6 full chain has been claimed. The06 operating-scope guard preserves that real same-scope conditional case, independently checked from rv05-real-restored01; no model/network or account change.
+
+07 read-only entrance notes: C:/Users/72449/.codex/visualizations/2026/10/26/01a178d3-3ac6-7763-8382-1200d54806f8/rv07-exploration.md. Root browser inventory confirmed Chrome and the in-app browser are available via cua_repl; no tab/services have been started yet. Kimi bridge start failed on its external log ACL; use the available in-app browser for the authorized local flow. Do not install browser extensions or modify unrelated browser tabs. The07 implementer owns its isolated services/data setup and will provide URL/ports for independent root walkthrough.
 
 ## Retained materials and worktrees
 
