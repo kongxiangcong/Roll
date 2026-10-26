@@ -69,6 +69,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
                 application.state.backups.start()
             yield
         finally:
+            await asyncio.to_thread(application.state.assistance.close)
             await asyncio.to_thread(application.state.research.close)
             await asyncio.to_thread(application.state.reviews.close)
             await asyncio.to_thread(application.state.codex.close)
@@ -81,6 +82,26 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     app = FastAPI(title="Roll", version="0.1.0", lifespan=lifespan)
     ledger = Ledger(directory or data_directory())
     app.state.ledger = ledger
+    from roll.runtime.assistance import Assistance, AssistanceCommand, ReflectionCommand
+    assistance = Assistance(ledger)
+    app.state.assistance = assistance
+
+    @app.post('/api/assistance/runs', status_code=202)
+    def assistance_start(command: AssistanceCommand):
+        return assistance.start(command)
+
+    @app.get('/api/assistance/runs')
+    def assistance_history():
+        return assistance.history()
+
+    @app.get('/api/assistance/runs/{identifier}')
+    def assistance_get(identifier: str):
+        return assistance.get(identifier)
+
+    @app.post('/api/assistance/runs/{identifier}/reflections', status_code=201)
+    def assistance_reflect(identifier: str, command: ReflectionCommand):
+        return assistance.reflect(identifier, command.text)
+
     imports = CsvImports(ledger)
 
     @app.post('/api/research/cash-rights/assess')

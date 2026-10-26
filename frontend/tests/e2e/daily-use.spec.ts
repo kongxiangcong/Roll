@@ -7,8 +7,10 @@ test('daily use records Jiangxi buy and sell without model qualification',async(
   }}})).json();
   expect((await request.post('/api/account/confirm',{data:{draft_id:draft.draft_id,idempotency_key:'daily-baseline'}})).ok()).toBeTruthy();
   await page.goto('/');
-  await expect(page.getByRole('heading',{name:'江西铜业 · 日常使用'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'江西铜业 日常使用'})).toBeVisible();
+  await page.getByRole('tab',{name:'事实与来源'}).click();
   await expect(page.getByRole('region',{name:'日常观察状态'})).toBeVisible();
+  await page.getByRole('tab',{name:'研究判断'}).click();
   for(const [direction,price,day] of [['BUY','10.00','08'],['SELL','11.00','09']]){
     await page.getByRole('button',{name:'记录实际买卖',exact:true}).click();
     await expect(page.getByLabel('成交证券代码')).toHaveValue('600362');
@@ -24,7 +26,7 @@ test('daily use records Jiangxi buy and sell without model qualification',async(
     await page.getByRole('button',{name:'回到今天'}).click();
   }
   await page.reload();
-  await expect(page.getByRole('heading',{name:'江西铜业 · 日常使用'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'江西铜业 日常使用'})).toBeVisible();
   const account=await (await request.get('/api/account')).json();
   expect(account.cash_balance).toBe('100290.00');
   expect(account.fills).toHaveLength(2);

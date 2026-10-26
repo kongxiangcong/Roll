@@ -15,6 +15,7 @@ CLEANING_VERSION = 'prospective-cleaning-v1'
 SOURCES = [
     {'id': 'akshare-news-em', 'name': 'AKShare 东财单股新闻', 'upstream': 'EASTMONEY', 'group': 'NEWS', 'engine': 'AKSHARE'},
     {'id': 'akshare-financial-em', 'name': 'AKShare 东财利润表', 'upstream': 'EASTMONEY', 'group': 'FINANCIAL', 'engine': 'AKSHARE'},
+    {'id': 'sse-dated-daily-statistic', 'name': '上交所指定交易日日线统计', 'upstream': 'SSE', 'group': 'DAILY', 'engine': 'ROLL'},
     {'id': 'sse-company-client-contract', 'name': '上交所公司行情字段原件', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
     {'id': 'sse-closing-board', 'name': '上交所盘后原始快照', 'upstream': 'SSE', 'group': 'DAILY', 'engine': 'ROLL'},
     {'id': 'sse-suspension-date', 'name': '上交所指定日期停牌观察', 'upstream': 'SSE', 'group': 'STATUS', 'engine': 'ROLL'},
@@ -71,6 +72,11 @@ class CollectionSources:
                     policy.update(enabled=False,basis='2026-10-15新增利润表来源，按单证券显式启用',
                         adapter_version='akshare-1.19.1-income-raw-v1',license='AKShare 1.19.1 MIT; upstream data rights separate',
                         unit_scope='Source-bound statement proof or explicit UNKNOWN; no historical PIT claim')
+                if spec['id']=='sse-dated-daily-statistic':
+                    policy.update(enabled=False, basis='2026-10-14新增独立日线来源，按计划显式启用', max_calls=1,
+                        timeout_seconds=15, max_bytes=1024*1024, adapter_version='sse-dated-daily-v1',
+                        unit_scope='Official dated daily statistic; full status/actions/session authority separate',
+                        license='Roll adaptation; upstream data rights separate')
                 if spec['id']=='sse-closing-board':
                     policy.update(basis='2026-10-11授权继续30宿主producer工程与公开来源核验',max_calls=1,
                         timeout_seconds=15,adapter_version='source-bound-post-close-v1',
