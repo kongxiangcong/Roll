@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_candidate_rejects_invalid_citations_locally_and_revisions_preserve_old_hypothesis _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red02/test_candidate_rejects_invalid0')
+
+    def test_candidate_rejects_invalid_citations_locally_and_revisions_preserve_old_hypothesis(tmp_path):
+        import copy
+        research = service(tmp_path)
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer)
+        packet = freeze(research, issuer, fact)
+        draft = candidate(packet, fact)
+        bad = copy.deepcopy(draft['hypotheses'][0])
+        bad.update(key='fabricated', support_fact_version_ids=['unknown-source'])
+        draft['hypotheses'].append(bad)
+        saved = research.apply_analysis_candidate(packet['input_id'], draft)
+>       assert len(saved['core']['hypotheses']) == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([{'business': 'REFINING', 'change_reason': 'Initial evidence based hypothesis', 'company_id': '3e6a9fc4-be30-4355-9f6f...30-4355-9f6f-7156791035fc', 'content_sha256': 'a89c0e654e0390b4e90bf159f6a0a4727af005fbb6a7389093de2f2f40dcddc1', ...}])
+
+backend\tests\company_research\test_analysis_snapshots.py:69: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_candidate_rejects_invalid_citations_locally_and_revisions_preserve_old_hypothesis
+1 failed, 1 deselected in 6.29s

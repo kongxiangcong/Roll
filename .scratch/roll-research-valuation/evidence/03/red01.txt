@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_frozen_input_publishes_one_immutable_snapshot_for_both_consumers ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red01/test_frozen_input_publishes_on0')
+
+    def test_frozen_input_publishes_one_immutable_snapshot_for_both_consumers(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        original, fact = evidence(research, issuer)
+>       packet = freeze(research, issuer, fact)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_analysis_snapshots.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+research = <roll.research.company.service.CompanyResearch object at 0x00000260BADB9A90>
+issuer = {'accounting_standard': 'CAS', 'aliases': ['����ͭҵ'], 'change_reason': 'Initial registration', 'company_id': 'b3aa1ca9-c30a-4fb1-ab19-935bd7f9d227', ...}
+fact = {'archive_sha256': 'e5ae6033b3b54dd6fcda71559907f3087b4492d3267d7e24d818a1a22e2cf43a', 'business': 'REFINING', 'change_reason': 'Read disclosed business text', 'company_id': 'b3aa1ca9-c30a-4fb1-ab19-935bd7f9d227', ...}
+kw = {}
+
+    def freeze(research, issuer, fact, **kw):
+>       from roll.research.company import AnalysisCommand
+E       ImportError: cannot import name 'AnalysisCommand' from 'roll.research.company' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket03\backend\src\roll\research\company\__init__.py)
+
+backend\tests\company_research\test_analysis_snapshots.py:18: ImportError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_frozen_input_publishes_one_immutable_snapshot_for_both_consumers
+1 failed in 10.75s

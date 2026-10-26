@@ -48,3 +48,5 @@ def validate_references(db):
             require(material_id in materials and materials[material_id]['company_id'] == check['company_id'])
     for row in db.execute('SELECT result FROM company_research_commands'):
         verified(json.loads(row[0]))
+    from .analysis_integrity import validate_analysis
+    validate_analysis(db, archives, materials, facts, companies)

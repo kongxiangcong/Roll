@@ -175,3 +175,10 @@ backend/src/roll/market/financial_reference/*.pdf binary
 # Preserve ticket02 captured test/real-import receipts, including Windows output bytes.
 .scratch/roll-research-valuation/evidence/02/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 .scratch/roll-research-valuation/evidence/02/*.json -text whitespace=cr-at-eol
+# Preserve ticket03 original model text and captured Windows process evidence.
+.scratch/roll-research-valuation/evidence/03/**/*.raw binary
+.scratch/roll-research-valuation/evidence/03/*.raw binary
+.scratch/roll-research-valuation/evidence/03/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/03/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/03/**/*.json -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/03/*.json -text whitespace=cr-at-eol

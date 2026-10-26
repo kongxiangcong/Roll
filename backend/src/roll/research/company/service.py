@@ -38,8 +38,9 @@ def page_bounds(limit, offset, maximum=1000):
 
 
 class CompanyResearch:
-    def __init__(self, evidence):
+    def __init__(self, evidence, analysis_worker=None):
         self.evidence, self.ledger = evidence, evidence.ledger
+        self.analysis_worker = analysis_worker
         with self.ledger.connection() as db:
             db.executescript('''
                 BEGIN IMMEDIATE;
@@ -76,6 +77,9 @@ class CompanyResearch:
                                  errors=[{'code': 'HOST_INTERRUPTED', 'scope': s} for s in value['requested_scopes']],
                                  meaning='本次未完成核查；重启保留已有材料，不补写成功', retry_state='EXPLICIT_NEW_ATTEMPT_REQUIRED')
                     db.execute('UPDATE company_research_checks SET value=? WHERE check_id=?', (encode(record(value)), row[0]))
+
+        from .analysis import AnalysisState
+        self.analysis = AnalysisState(self)
 
     @contextmanager
     def transaction(self):
@@ -499,3 +503,31 @@ class CompanyResearch:
                 'total': total, 'limit': limit, 'offset': offset, 'has_more': offset + limit < total,
                 'last_checked_at': last['finished_at'] if last else None,
                 'meaning': '核查状态独立于经营判断；最后成功按来源与请求范围分别保存'}
+
+    def freeze_analysis(self, command):
+        return self.analysis.freeze(command)
+
+    def analysis_input(self, identifier):
+        return self.analysis.read('inputs', 'input_id', identifier)
+
+    def apply_analysis_candidate(self, input_id, candidate):
+        return self.analysis.apply(input_id, candidate)
+
+    def analysis_snapshot(self, identifier, purpose='DAILY'):
+        return self.analysis.snapshot(identifier, purpose)
+
+    def analysis_snapshots(self, company_id, limit=100, offset=0):
+        return self.analysis.snapshots(company_id, limit, offset)
+
+    def operating_hypothesis(self, version_id):
+        return self.analysis.read('hypotheses', 'version_id', version_id)
+
+    def run_analysis(self, input_id):
+        from .model_runtime import AnalysisRuntime
+        return AnalysisRuntime(self).execute(input_id)
+
+    def analysis_run(self, run_id):
+        return self.analysis.read('analysis_runs', 'run_id', run_id)
+
+    def analysis_candidates(self, input_id, limit=100, offset=0):
+        return self.analysis.candidates(input_id, limit, offset)
