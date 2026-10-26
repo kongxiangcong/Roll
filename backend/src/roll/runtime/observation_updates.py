@@ -13,6 +13,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.agents.codex_process import owner_alive
 from roll.market.rules import SHANGHAI
+from roll.market.observation_symbols import symbols
+from roll.market.directory import ScopeCommand
 from roll.market.news_ingestion import NewsCommand
 from roll.market.financial_income import IncomeCommand
 from roll.market.evidence import DataRequest
@@ -67,8 +69,8 @@ class ObservationUpdates:
                     db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(job), row[0]))
 
     def settings(self, instrument):
-        if instrument != 'SSE:600362':
-            raise HTTPException(409, 'OBSERVATION_SOURCE_SCOPE_UNSUPPORTED')
+        try: symbols(instrument)
+        except ValueError as error: raise HTTPException(409, str(error))
         with self.ledger.connection() as db:
             row = db.execute('SELECT value FROM observation_update_settings WHERE instrument=?', (instrument,)).fetchone()
         return {'financial_postclose': False, 'market_postclose': False, **json.loads(row[0])} if row else {'instrument': instrument, 'revision': 1, 'enabled': False,
@@ -94,6 +96,7 @@ class ObservationUpdates:
 
     def submit(self, instrument, command, scheduled=None):
         settings = self.settings(instrument)
+        self.reviews.market.check_scope(ScopeCommand(instruments=[instrument], purpose='OBSERVATION'))
         hashed = digest(command.model_dump())
         with self.ledger.connection() as db:
             db.execute('BEGIN IMMEDIATE')
@@ -139,7 +142,7 @@ class ObservationUpdates:
         with self.ledger.connection() as db:
             jobs = [json.loads(row[0]) for row in db.execute('SELECT value FROM observation_update_jobs WHERE instrument=? ORDER BY rowid DESC LIMIT 100', (instrument,))]
             observations = [json.loads(row[0]) for row in db.execute('SELECT value FROM background_observations WHERE instrument=? ORDER BY rowid DESC LIMIT 30', (instrument,))]
-            health = {row[0]: json.loads(row[1]) for row in db.execute('SELECT id,value FROM observation_update_health')}
+            health = {row[0].removeprefix(instrument+':'): json.loads(row[1]) for row in db.execute('SELECT id,value FROM observation_update_health') if row[0].startswith(instrument+':') or row[0]=='MODULE'}
         return {'settings': settings, 'jobs': jobs, 'observations': observations, 'health': health,
             'sources': [source for source in self.sources.listing() if source['id'] in ('akshare-news-em', 'akshare-financial-em', 'sohu-daily', 'sina-quote')],
             'checkpoint': 'Asia/Shanghai 15:05; online current session only', 'timeout_seconds': TIMEOUT,
@@ -148,27 +151,31 @@ class ObservationUpdates:
 
     def schedule(self, clock):
         local = clock.astimezone(SHANGHAI)
-        settings = self.settings('SSE:600362')
-        if not settings['enabled'] or (local.hour, local.minute) < (15, 5):
+        if (local.hour, local.minute) < (15, 5):
             return
         day = local.date()
-        calendar = self.news.evidence.market.rules.calendar('SSE', day, clock)
-        if calendar['is_trading_day'] is not True:
-            return
-        for kind, enabled, prefix in (
-            ('NEWS', settings['news_postclose'], 'postclose:'),
-            ('FINANCIAL', settings.get('financial_postclose', False), 'financial-postclose:'),
-            ('MARKET', settings.get('market_postclose', False), 'market-postclose:'),
-        ):
-            if not enabled:
-                continue
-            key = prefix+day.isoformat()
-            with self.ledger.connection() as db:
-                if db.execute('SELECT 1 FROM observation_update_jobs WHERE instrument=? AND key=?', ('SSE:600362', key)).fetchone():
-                    continue
-            self.submit('SSE:600362', UpdateRequest(idempotency_key=key, kind=kind,
-                refresh_sources=settings['news_refresh'], basis='已登记15:05观察检查点；当前在线观察，不补造离线预测'),
-                scheduled=datetime.combine(day, datetime.min.time().replace(hour=15, minute=5), SHANGHAI).isoformat())
+        for member in self.reviews.market.listing()['members']:
+            instrument = member['instrument']
+            try: settings = self.settings(instrument)
+            except HTTPException: continue
+            if not settings['enabled']: continue
+            calendar = self.news.evidence.market.rules.calendar(instrument.split(':')[0], day, clock)
+            if calendar['is_trading_day'] is not True: continue
+            for kind, enabled, prefix in (
+                ('NEWS', settings['news_postclose'], 'postclose:'),
+                ('FINANCIAL', settings.get('financial_postclose', False), 'financial-postclose:'),
+                ('MARKET', settings.get('market_postclose', False), 'market-postclose:'),
+            ):
+                if not enabled: continue
+                key = prefix+day.isoformat()
+                with self.ledger.connection() as db:
+                    if db.execute('SELECT 1 FROM observation_update_jobs WHERE instrument=? AND key=?', (instrument, key)).fetchone(): continue
+                try:
+                    self.submit(instrument, UpdateRequest(idempotency_key=key, kind=kind,
+                        refresh_sources=settings['news_refresh'], basis='已登记盘后观察检查点；当前在线观察，不补造离线预测'),
+                        scheduled=datetime.combine(day, wall_time(15, 5), SHANGHAI).isoformat())
+                except HTTPException as error:
+                    if error.status_code not in (403, 409): raise
 
     def health_write(self, key, value):
         with self.ledger.connection() as db:
@@ -191,17 +198,18 @@ class ObservationUpdates:
         # Called only by the existing worker loop after it validates its lease.
         try:
             self.schedule(clock)
+            members = {m['instrument'] for m in self.reviews.market.listing()['members']}
             with self.ledger.connection() as db:
                 db.execute('BEGIN IMMEDIATE')
                 rows = db.execute("SELECT id,value FROM observation_update_jobs WHERE json_extract(value,'$.status')='QUEUED' ORDER BY rowid").fetchall()
                 job = None
                 for identifier, raw in rows:
                     value = json.loads(raw)
-                    if not self.settings(value['instrument'])['enabled']:
+                    if value['instrument'] not in members or not self.settings(value['instrument'])['enabled']:
                         value.update(status='CANCELLED', finished_at=now(), error='OBSERVATION_UPDATES_PAUSED')
                         db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(value), identifier))
                         continue
-                    health = db.execute('SELECT value FROM observation_update_health WHERE id=?', (value['command']['kind'],)).fetchone()
+                    health = db.execute('SELECT value FROM observation_update_health WHERE id=?', (value['instrument']+':'+value['command']['kind'],)).fetchone()
                     if health and datetime.fromisoformat(json.loads(health[0])['retry_after']) > clock:
                         continue
                     job = value
@@ -254,7 +262,7 @@ class ObservationUpdates:
                 db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(job), job['job_id']))
                 db.commit()
             if prepared['errors']:
-                self.health_write(job['command']['kind'], {'error': prepared['errors'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
+                self.health_write(job['instrument']+':'+job['command']['kind'], {'error': prepared['errors'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
         except (Exception, asyncio.CancelledError) as error:
             with self.ledger.connection() as db:
                 db.execute('BEGIN IMMEDIATE')
@@ -269,7 +277,7 @@ class ObservationUpdates:
                 db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(current), job['job_id']))
                 db.commit()
             if current['status'] == 'FAILED' or reason == 'RESOURCE_DEADLINE_EXCEEDED':
-                self.health_write(job['command']['kind'], {'error': current['error'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
+                self.health_write(job['instrument']+':'+job['command']['kind'], {'error': current['error'], 'at': now(), 'retry_after': (datetime.fromisoformat(now())+timedelta(minutes=5)).isoformat()})
 
     async def refresh(self, service, job, source_id, receipts, errors):
         if not job['command']['refresh_sources']:
@@ -303,6 +311,7 @@ class ObservationUpdates:
 
     async def prepare(self, job):
         instrument, kind = job['instrument'], job['command']['kind']
+        self.reviews.market.check_scope(ScopeCommand(instruments=[instrument], purpose='OBSERVATION'))
         receipts, errors, payload = [], [], {}
         evidence = []
         if kind == 'MARKET':

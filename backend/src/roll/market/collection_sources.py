@@ -136,7 +136,13 @@ class CollectionSources:
         policy = self.policy(source_id)
         if policy is None:
             return None
-        if instrument not in policy['scope']:
+        if source_id in {'akshare-news-em','akshare-financial-em','sohu-daily','sina-quote'}:
+            from roll.market.observation_symbols import symbols
+            try: symbols(instrument)
+            except ValueError: return 'SOURCE_SCOPE_NOT_ALLOWED'
+            if instrument not in {m['instrument'] for m in self.evidence.market.listing()['members']}:
+                return 'SOURCE_SCOPE_NOT_ALLOWED'
+        elif instrument not in policy['scope']:
             return 'SOURCE_SCOPE_NOT_ALLOWED'
         if not policy['enabled']:
             return 'SOURCE_DISABLED'

@@ -11,16 +11,16 @@ export function ObservationUpdatesPanel({instrument,expanded=false}:{instrument:
  const [value,setValue]=useState<Value|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[refresh,setRefresh]=useState(expanded);
  const base=`/observation-updates/${encodeURIComponent(instrument)}`;
  useEffect(()=>{
-   if(!expanded||instrument!=='SSE:600362')return;
+   if(!expanded)return;
    let active=true;
    const update=()=>void request<Value>(base).then(result=>{if(active){setValue(result);setError('');}}).catch(e=>{if(active)setError(String(e));});
    update();const timer=setInterval(update,5000);
    return()=>{active=false;clearInterval(timer);};
  },[base,expanded,instrument]);
- if(instrument!=='SSE:600362')return null;
+
  async function query(){setValue(await request<Value>(base));}
  async function action(work:()=>Promise<void>){setBusy(true);setError('');try{await work();await query();}catch(e){setError(String(e));}finally{setBusy(false);}}
- async function configure(change:Partial<Settings>){if(!value)return;const s=value.settings;await request(base+'/settings',{enabled:s.enabled,news_postclose:s.news_postclose,financial_postclose:s.financial_postclose??false,market_postclose:s.market_postclose??false,news_refresh:s.news_refresh,classify:s.classify,profile:s.profile,...change,expected_revision:s.revision,basis:'用户显式配置现有worker上的单股日常观察'});}
+ async function configure(change:Partial<Settings>){if(!value)return;const s=value.settings;await request(base+'/settings',{enabled:s.enabled,news_postclose:s.news_postclose,financial_postclose:s.financial_postclose??false,market_postclose:s.market_postclose??false,news_refresh:s.news_refresh,classify:s.classify,profile:s.profile,...change,expected_revision:s.revision,basis:'用户显式配置现有worker上的所选证券日常观察'});}
  async function enqueue(kind:string){await request(base+'/requests',{kind,refresh_sources:refresh,idempotency_key:crypto.randomUUID(),basis:'用户按需请求财报新闻观察；不启动预测、训练或交易'});}
  return <details className="status-evidence" open={expanded||undefined}><summary>日常财报新闻观察</summary>
   <p>程序运行时可在交易日15:05后更新行情、财报与新闻；也可随时手动刷新。关闭网页后后台继续运行，关机期间不会采集；重启后记录实际更新时点。行情只取近90天，财务复用当日缓存。只发站内变化摘要。</p>

@@ -1,3 +1,4 @@
+from roll.market.observation_symbols import symbols
 """Three-statement observations sharing the income acquisition and immutable versions."""
 from datetime import date,datetime
 from decimal import Decimal
@@ -31,11 +32,11 @@ def normalize(service,instrument,run,manifest,captures):
         if not selected or len(set(selected))!=len(rows):raise ValueError('FINANCIAL_PERIOD_SELECTION_MISMATCH')
         seen=set()
         for row in rows:
-            if row.get('SECUCODE')!='600362.SH' or instrument!='SSE:600362':raise ValueError('FINANCIAL_ROW_INSTRUMENT_MISMATCH')
+            if row.get('SECUCODE')!=symbols(instrument)[2]:raise ValueError('FINANCIAL_ROW_INSTRUMENT_MISMATCH')
             period=str(row.get('REPORT_DATE',''))[:10];date.fromisoformat(period)
             if period not in selected or period in seen:raise ValueError('FINANCIAL_PERIOD_DUPLICATED_OR_UNREQUESTED')
             seen.add(period);values={name:decimal_text(row.get(field)) for name,field in fields.items()}
-            proof=next((p for p in proofs if p['statement']==statement and p['report_period']==period and
+            proof=next((p for p in proofs if instrument=='SSE:600362' and p['statement']==statement and p['report_period']==period and
                 p['reported_update_date']==str(row.get('UPDATE_DATE',''))[:10] and (p['values']['assets']==values['assets'] if statement=='BALANCE' else p['values']==values) and row.get('CURRENCY')=='CNY'),None)
             document=None;available=now()
             if proof:
