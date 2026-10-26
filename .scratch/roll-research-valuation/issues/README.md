@@ -2,7 +2,7 @@
 
 依据：[实施规格](../spec.md) v1.0。顺序：**01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12**。
 
-所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**06**。01—05已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)和[05证据](../evidence/05/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
+所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**07**。01—06已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)、[05证据](../evidence/05/README.md)和[06证据](../evidence/06/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。06提供显式双快照三类比较、固定旧路径反推/有序模型对照、独立信息时效和不可变恢复；合成比较不冒充真实报价或市场因果。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
 
 | 顺序 | 任务 | 依赖 | Completion |
 | --- | --- | --- | --- |
@@ -11,7 +11,7 @@
 | 03 | [实现经营假设及共享分析快照](03-research-state-and-snapshots.md) | 02 | complete |
 | 04 | [接入可复算条件估值计算器](04-conditional-valuation-engine.md) | 03 | complete |
 | 05 | [连接经营驱动、正常化与经济审核](05-operating-drivers-and-review.md) | 04 | complete |
-| 06 | [实现三类变化与信息状态比较](06-daily-change-decomposition.md) | 05 | not-started |
+| 06 | [实现三类变化与信息状态比较](06-daily-change-decomposition.md) | 05 | complete |
 | 07 | [将持续投研与估值融入每日使用](07-daily-research-integration.md) | 06 | not-started |
 | 08 | [实现投研与估值完整报告流水线](08-report-template-and-pipeline.md) | 07 | not-started |
 | 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | not-started |

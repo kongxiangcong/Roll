@@ -36,6 +36,10 @@ class AnalysisState:
         for field in ['input_archive', 'candidate_archive', 'raw_output_archive', 'candidate_output_archive']:
             if result.get(field):
                 self.research.evidence.raw(result[field]['sha256'])
+        if result.get('context_archive'):
+            raw = self.research.evidence.raw(result['context_archive']['sha256']).read_bytes()
+            if json.loads(raw) != result['context']:
+                fail('ARTIFACT_CORRUPT', 'Research context differs from canonical archive', 409)
         return result
 
     def insert(self, db, table, key, value):

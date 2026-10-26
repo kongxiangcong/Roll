@@ -64,13 +64,18 @@ def validate_analysis(db, archives, materials, facts, companies):
         packet = inputs.get(snapshot['input_id'])
         require(packet and packet['company_id'] == snapshot['company_id'])
         require(snapshot['input_sha256'] == packet['packet_sha256'] and snapshot['input_archive'] == packet['input_archive'])
-        if snapshot.get('enrichment_kind') == 'ECONOMIC_REVIEW':
+        if snapshot.get('enrichment_kind') in {'ECONOMIC_REVIEW', 'RESEARCH_CONTEXT'}:
             parent = snapshots.get(snapshot['parent_snapshot_id'])
             require(parent and parent['company_id'] == snapshot['company_id'] and parent['input_id'] == snapshot['input_id'])
             require(all(snapshot[k] == parent[k] for k in ['fact_version_ids', 'hypothesis_version_ids', 'candidate_id', 'candidate_sha256', 'input_sha256']))
             core = {k: v for k, v in snapshot['core'].items() if k not in {'valuation', 'valuation_unavailable_reason'}}
             parent_core = {k: v for k, v in parent['core'].items() if k not in {'valuation', 'valuation_unavailable_reason'}}
             require(core == parent_core)
+            if snapshot.get('enrichment_kind') == 'RESEARCH_CONTEXT':
+                require(snapshot['core'] == parent['core'] and snapshot['as_of'] == snapshot['context']['bound_at'] and snapshot['as_of'] >= parent['as_of'])
+                require(snapshot['research_basis_as_of'] == parent.get('research_basis_as_of', parent['as_of']))
+                require(snapshot['research_basis_generated_at'] == parent.get('research_basis_generated_at', parent['generated_at']))
+                require(snapshot['valuation_ids'] == parent['valuation_ids'] and snapshot.get('economic_review_ids') == parent.get('economic_review_ids'))
         else:
             require(snapshot['parent_snapshot_id'] == packet['parent_snapshot_id'])
         require(snapshot['parent_snapshot_id'] != snapshot['snapshot_id'])

@@ -114,3 +114,18 @@ class ValuationCommand(Command):
 class OperatingValuationCommand(ValuationCommand):
     drivers: dict
     economic_basis: dict
+
+
+class ChangeSetCommand(Command):
+    old_snapshot_id: str = Field(min_length=1, max_length=128)
+    new_snapshot_id: str = Field(min_length=1, max_length=128)
+    presentation_purpose: Literal['CURRENT_PRICING', 'BASELINE_RESEARCH'] = 'CURRENT_PRICING'
+    source_max_age_seconds: int = Field(default=604800, ge=0, le=31536000)
+    idempotency_key: str = Field(min_length=1, max_length=128)
+
+
+class ResearchContextCommand(Command):
+    snapshot_id: str = Field(min_length=1, max_length=128)
+    check_ids: list[str] = Field(default_factory=list, max_length=100)
+    quotes: list[dict] = Field(default_factory=list, max_length=20)
+    change_reason: str = Field(min_length=1, max_length=2000)

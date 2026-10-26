@@ -27,3 +27,5 @@
 新增表、输入/候选/原文归档均纳入既有备份；备份校验结构hash、同公司事实/材料/假设/父版本/输入/归档引用。03真实模型与隔离恢复证据见[验收记录](../../.scratch/roll-research-valuation/evidence/03/README.md)。生产任务不需要开发者PDF路径。
 
 05新增[受控经济审核](company-economic-review.md)的宿主enrichment子快照：复用原冻结输入/事实/假设与核心研究，不重跑模型，固定估值、经营模型及审核版本；原03快照仍不可变。DAILY/REPORT使用该固定子快照与safe presentation，不分别取最新估值。当前用途的时效检查可阻断旧价格，但不会改写历史快照/报告。
+
+06 adds [frozen research context and change sets](company-change-api.md): a context child binds actual check/quote availability and advances its overall knowledge cutoff, separately retaining the original research basis/generated dates and pinned05 review/valuation IDs. Parent records and core operating conclusions remain immutable.

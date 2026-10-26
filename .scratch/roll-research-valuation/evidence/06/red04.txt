@@ -1,0 +1,37 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_price_only_fixes_old_paths_and_parameters_and_uses_all_listing_sources _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-red04/test_price_only_fixes_old_path0')
+
+    def test_price_only_fixes_old_paths_and_parameters_and_uses_all_listing_sources(tmp_path):
+        from test_shared_evidence import service
+        from test_economic_review import operating_request
+        from roll.research.company import ChangeSetCommand, ResearchContextCommand
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        value = research.calculate_operating_valuation(command)
+        original = research.analysis_snapshot(value['snapshot_id'])
+>       old = research.freeze_research_context(ResearchContextCommand(snapshot_id=original['snapshot_id'], quotes=quote_basis(research, original, 10), change_reason='METHOD old quote'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_changes.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:575: in freeze_research_context
+    return self.changes.freeze_context(command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\changes.py:32: in freeze_context
+    fail('QUOTE_BASIS_INVALID', 'Quote binding is not supported')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'QUOTE_BASIS_INVALID', reason = 'Quote binding is not supported'
+status = 422, context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'QUOTE_BASIS_INVALID', 'reason': 'Quote binding is not supported', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_price_only_fixes_old_paths_and_parameters_and_uses_all_listing_sources
+1 failed, 3 deselected in 8.40s

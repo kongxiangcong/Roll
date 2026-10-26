@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_backup_refuses_rehashed_context_quote_that_differs_from_its_source_fact _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-red09/test_backup_refuses_rehashed_c0')
+
+    def test_backup_refuses_rehashed_context_quote_that_differs_from_its_source_fact(tmp_path):
+        import json
+        from test_shared_evidence import service
+        from roll.research.company import ResearchContextCommand
+        from roll.research.company.service import record
+        from roll.accounts.ledger import encode
+        from roll.runtime.backups import Backups
+        from fastapi import HTTPException
+        research = service(tmp_path)
+        _, snapshot, _ = research_pair(research)
+        bound = research.freeze_research_context(ResearchContextCommand(snapshot_id=snapshot['snapshot_id'], quotes=quote_basis(research, snapshot), change_reason='METHOD source binding check'))
+        damaged = {k: copy.deepcopy(v) for k,v in bound.items() if k != 'content_sha256'}
+        damaged['context']['quotes'][0]['row']['price'] = 999
+        # Simulate external corruption with recomputed JSON/archive hashes. Observable seam is backup validation.
+        with research.transaction() as db:
+            archive = research.evidence.archive(encode(damaged['context']).encode(), 'COMPANY_RESEARCH_CONTEXT', db=db)
+            damaged['context_archive'] = json.loads(db.execute('SELECT value FROM evidence_archives WHERE sha256=?', (archive['sha256'],)).fetchone()[0])
+            db.execute('UPDATE company_research_snapshots SET value=? WHERE snapshot_id=?', (encode(record(damaged)), bound['snapshot_id']))
+>       with pytest.raises(HTTPException) as exc:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_changes.py:287: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_backup_refuses_rehashed_context_quote_that_differs_from_its_source_fact
+1 failed, 15 deselected in 6.52s

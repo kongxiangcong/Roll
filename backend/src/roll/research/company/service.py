@@ -84,6 +84,8 @@ class CompanyResearch:
         self.valuations = ValuationState(self)
         from .economics import EconomicState
         self.economics = EconomicState(self)
+        from .changes import ChangeState
+        self.changes = ChangeState(self)
 
     @contextmanager
     def transaction(self):
@@ -562,3 +564,15 @@ class CompanyResearch:
 
     def valuation_presentation(self, identifier, purpose='CURRENT_PRICING'):
         return self.economics.presentation(identifier, purpose)
+
+    def compare_snapshots(self, command):
+        return self.changes.compare(command)
+
+    def change_set(self, identifier):
+        return self.changes.read(identifier)
+
+    def freeze_research_context(self, command):
+        return self.changes.freeze_context(command)
+
+    def replay_change_set(self, identifier):
+        return self.changes.replay(identifier)

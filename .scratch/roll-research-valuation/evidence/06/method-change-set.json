@@ -1,0 +1,4133 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-26T19:12:06.437623+00:00",
+  "change_set_id": "3291f76e-2d09-40c4-91e4-96c4222fad94",
+  "company_id": "26715f34-8f5c-4ebb-b69d-1cca773e6ee2",
+  "request": {
+    "old_snapshot_id": "d2848ce4-43e8-43cd-81d7-c2eb0e2f5cb6",
+    "new_snapshot_id": "5a8fa21e-ccab-41f8-96a4-2505bbb9d2c2",
+    "presentation_purpose": "BASELINE_RESEARCH",
+    "source_max_age_seconds": 604800,
+    "idempotency_key": "method-mixed"
+  },
+  "old_snapshot_id": "d2848ce4-43e8-43cd-81d7-c2eb0e2f5cb6",
+  "new_snapshot_id": "5a8fa21e-ccab-41f8-96a4-2505bbb9d2c2",
+  "old_snapshot_sha256": "aa529c7b595bc9838c4c29c8e41a7778954954bbc610bb62b2b5a479f57a3a39",
+  "new_snapshot_sha256": "158954fd39eaef6dd058b7c91373c7d9542ef06cd7994aee148c3324b87dfda2",
+  "changes": {
+    "OPERATING_EVIDENCE": {
+      "new_fact_version_ids": [],
+      "removed_fact_version_ids": [],
+      "facts": [],
+      "hypothesis_revisions": [],
+      "evidence_changed": false,
+      "hypothesis_revision_changed": false,
+      "reference_conflicts": {
+        "old": [],
+        "new": []
+      },
+      "meaning": "Evidence and hypothesis revisions only; absence of new evidence is not proof of unchanged operations"
+    },
+    "PRICE": {
+      "status": "COMPARABLE",
+      "reason": "All operating paths, bridge and valuation parameters fixed at the old version; conditional requirements are not unique market beliefs",
+      "old_snapshot_id": "d2848ce4-43e8-43cd-81d7-c2eb0e2f5cb6",
+      "new_snapshot_id": "5a8fa21e-ccab-41f8-96a4-2505bbb9d2c2",
+      "changed": true,
+      "fixed_old_config": {
+        "cash_flow_basis": "FCFF",
+        "equity_bridge": [
+          {
+            "amount": 300,
+            "name": "debt",
+            "source": "disclosed-anchor",
+            "treatment": "deduct"
+          },
+          {
+            "amount": -100,
+            "name": "cash",
+            "source": "disclosed-anchor",
+            "treatment": "add"
+          }
+        ],
+        "metadata": {
+          "amount_unit": "million",
+          "as_of": "2026-10-26",
+          "assumptions": [
+            "research-path",
+            "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+            "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+          ],
+          "company": "江西铜业股份有限公司",
+          "currency": "CNY",
+          "shares_unit": "million_shares",
+          "sources": [
+            "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+          ]
+        },
+        "scenarios": [
+          {
+            "fcf": [
+              150.0,
+              150.0
+            ],
+            "name": "base"
+          }
+        ],
+        "shares": 100,
+        "terminal_g": 0,
+        "wacc": 0.1
+      },
+      "diagnostic_only": true,
+      "usable_range": false,
+      "economic_review_upgraded": false,
+      "old_market_equity": 1000,
+      "new_market_equity": 1250.0,
+      "old_market_basis": [
+        {
+          "currency": "CNY",
+          "listing_id": "SSE:600362",
+          "price": 10,
+          "price_basis": "RAW_NOMINAL",
+          "price_refs": [
+            "73211f8f-34ca-4ec9-a4f3-d19903fced7a"
+          ],
+          "priced_at": "2026-10-26T19:12:04.088728+00:00",
+          "share_refs": [
+            "b269503e-6274-41e5-891c-9ece4a6512b9"
+          ],
+          "shares": 60,
+          "shares_as_of": "2026-10-27",
+          "shares_unit": "million_shares",
+          "fx_to_model": 1,
+          "market_equity_value": 600,
+          "formula": "class_shares * class_price * fx_to_model"
+        },
+        {
+          "currency": "HKD",
+          "fx": {
+            "as_of": "2026-10-27",
+            "from_currency": "HKD",
+            "rate": 1,
+            "source_refs": [
+              "17820352-235a-4f5c-8bc3-bee8e2cbb184"
+            ],
+            "to_currency": "CNY"
+          },
+          "listing_id": "HKEX:00358",
+          "price": 10,
+          "price_basis": "RAW_NOMINAL",
+          "price_refs": [
+            "d32831a7-22b7-4a0d-83b6-7e50ac6f5958"
+          ],
+          "priced_at": "2026-10-26T19:12:04.088728+00:00",
+          "share_refs": [
+            "8928d704-84a9-4f5e-afc2-9fbdf77c5c4b"
+          ],
+          "shares": 40,
+          "shares_as_of": "2026-10-27",
+          "shares_unit": "million_shares",
+          "fx_to_model": 1,
+          "market_equity_value": 400,
+          "formula": "class_shares * class_price * fx_to_model"
+        }
+      ],
+      "new_market_basis": [
+        {
+          "currency": "CNY",
+          "listing_id": "SSE:600362",
+          "price": 12.5,
+          "price_basis": "RAW_NOMINAL",
+          "price_refs": [
+            "63b25d74-5617-49e9-a803-73083963e49d"
+          ],
+          "priced_at": "2026-10-26T19:12:04.659424+00:00",
+          "share_refs": [
+            "b269503e-6274-41e5-891c-9ece4a6512b9"
+          ],
+          "shares": 60,
+          "shares_as_of": "2026-10-27",
+          "shares_unit": "million_shares",
+          "fx_to_model": 1,
+          "market_equity_value": 750.0,
+          "formula": "class_shares * class_price * fx_to_model"
+        },
+        {
+          "currency": "HKD",
+          "fx": {
+            "as_of": "2026-10-27",
+            "from_currency": "HKD",
+            "rate": 1,
+            "source_refs": [
+              "17820352-235a-4f5c-8bc3-bee8e2cbb184"
+            ],
+            "to_currency": "CNY"
+          },
+          "listing_id": "HKEX:00358",
+          "price": 12.5,
+          "price_basis": "RAW_NOMINAL",
+          "price_refs": [
+            "db9ed14f-693e-4ac7-9d78-bc22cde3acc6"
+          ],
+          "priced_at": "2026-10-26T19:12:04.659424+00:00",
+          "share_refs": [
+            "8928d704-84a9-4f5e-afc2-9fbdf77c5c4b"
+          ],
+          "shares": 40,
+          "shares_as_of": "2026-10-27",
+          "shares_unit": "million_shares",
+          "fx_to_model": 1,
+          "market_equity_value": 500.0,
+          "formula": "class_shares * class_price * fx_to_model"
+        }
+      ],
+      "old_conditions": [
+        {
+          "scenario": "base",
+          "fixed_explicit_fcff": [
+            150.0,
+            150.0
+          ],
+          "market_enterprise_value": 1200,
+          "terminal_year": 3,
+          "terminal_fcf_required": 113.70000000000003,
+          "rows": [],
+          "status": "conditional_terminal_requirement"
+        }
+      ],
+      "new_conditions": [
+        {
+          "scenario": "base",
+          "fixed_explicit_fcff": [
+            150.0,
+            150.0
+          ],
+          "market_enterprise_value": 1450.0,
+          "terminal_year": 3,
+          "terminal_fcf_required": 143.95000000000002,
+          "rows": [],
+          "status": "conditional_terminal_requirement"
+        }
+      ],
+      "market_cause_identified": false
+    },
+    "VALUATION_ASSUMPTION_OR_METHOD": {
+      "status": "COMPARABLE",
+      "reason": "Parameter/model changes are not operating evidence",
+      "old_snapshot_id": "d2848ce4-43e8-43cd-81d7-c2eb0e2f5cb6",
+      "new_snapshot_id": "5a8fa21e-ccab-41f8-96a4-2505bbb9d2c2",
+      "before": {
+        "valuation_id": "5d5cc16f-b418-4d6a-8f50-f10e3e7a181a",
+        "algorithm": {
+          "adapted_sha256": "c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9",
+          "calculator_sha256": "036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251",
+          "files": [
+            {
+              "archive": {
+                "bytes": 11556,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251.raw",
+                "sha256": "036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251"
+              },
+              "path": "calculator.py"
+            },
+            {
+              "archive": {
+                "bytes": 16957,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6.raw",
+                "sha256": "c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6"
+              },
+              "path": "valuation.py"
+            },
+            {
+              "archive": {
+                "bytes": 603,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/3f6c3f84681c2d30bdb522332bf4925c9198569bdf76221341376e9043746b81.raw",
+                "sha256": "3f6c3f84681c2d30bdb522332bf4925c9198569bdf76221341376e9043746b81"
+              },
+              "path": "valuation_replay.py"
+            },
+            {
+              "archive": {
+                "bytes": 13854,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9.raw",
+                "sha256": "c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9"
+              },
+              "path": "valuation_reference/fundamental_valuation.py"
+            },
+            {
+              "archive": {
+                "bytes": 13550,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8.raw",
+                "sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8"
+              },
+              "path": "valuation_reference/original_fundamental_valuation.py"
+            },
+            {
+              "archive": {
+                "bytes": 3534,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca.raw",
+                "sha256": "fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca"
+              },
+              "path": "valuation_reference/LICENSE"
+            },
+            {
+              "archive": {
+                "bytes": 1084,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484.raw",
+                "sha256": "dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484"
+              },
+              "path": "valuation_reference/equity-research-LICENSE.txt"
+            },
+            {
+              "archive": {
+                "bytes": 1028,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a.raw",
+                "sha256": "707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a"
+              },
+              "path": "valuation_reference/THIRD_PARTY_NOTICES.md"
+            }
+          ],
+          "method_id": "fcff-wacc-year-end",
+          "original_sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8",
+          "version": "roll-diagnostic-1"
+        },
+        "config": {
+          "cash_flow_basis": "FCFF",
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "scenarios": [
+            {
+              "fcf": [
+                150.0,
+                150.0
+              ],
+              "name": "base"
+            }
+          ],
+          "shares": 100,
+          "terminal_g": 0,
+          "wacc": 0.1
+        },
+        "model_request": {
+          "assumptions": [
+            {
+              "anchor_fact_version_ids": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43",
+                "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570",
+                "e5f5e8b7-9553-4303-b046-6a11aa9e9646",
+                "5d34901b-d0f2-48ff-ac33-baaec852eaae",
+                "3249e54f-188d-4def-b8ac-27f78e5d235d",
+                "a6a07d96-d114-4b90-b7e5-3326d5da5626",
+                "757fc117-1c36-4f96-87dd-cd72214a0c4f",
+                "0c7b1e93-73b2-4342-940e-ea6de6e31360",
+                "57db6957-e219-4abe-b228-eef885d81143",
+                "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390",
+                "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d",
+                "e5452a0c-4f06-4116-af91-f0113e4d4a8f",
+                "c599c7b3-b11d-4b18-97b7-7de1d50e9576",
+                "e6ea00b8-dfdc-4606-bf20-49cf166ab239",
+                "dc323842-6346-482b-ba93-ad59556ed8cd",
+                "91c18b8b-41f4-4275-8ffe-60513a078dd8",
+                "e9f18398-2307-4ae0-af5c-19ed46692417",
+                "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+              ],
+              "assumption_id": "research-path",
+              "hypothesis_version_ids": [
+                "0320831c-b9c3-46ef-b0e8-add6ee36baf2"
+              ],
+              "statement": "Illustrative explicit forecast; no economic suitability claimed"
+            }
+          ],
+          "change_reason": "Initial diagnostic",
+          "config": {
+            "cash_flow_basis": "FCFF",
+            "equity_bridge": [
+              {
+                "amount": 300,
+                "name": "debt",
+                "source": "disclosed-anchor",
+                "treatment": "deduct"
+              },
+              {
+                "amount": -100,
+                "name": "cash",
+                "source": "disclosed-anchor",
+                "treatment": "add"
+              }
+            ],
+            "metadata": {
+              "amount_unit": "million",
+              "as_of": "2026-10-26",
+              "assumptions": [
+                "research-path"
+              ],
+              "company": "江西铜业股份有限公司",
+              "currency": "CNY",
+              "shares_unit": "million_shares",
+              "sources": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ]
+            },
+            "shares": 100,
+            "terminal_g": 0,
+            "wacc": 0.1
+          },
+          "drivers": {
+            "normalizations": [],
+            "provenance": {
+              "basis/terminal/roic": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/beta": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/cost_of_debt": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/debt_weight": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/equity_risk_premium": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/equity_weight": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/risk_free": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/tax_rate": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/base_revenue": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2025-01-01/2025-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/delta_working_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/depreciation": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/growth_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/invested_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/maintenance_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/operating_margin": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/0/revenue_growth": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/0/tax_rate": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/1/delta_working_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/depreciation": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/growth_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/invested_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/maintenance_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/operating_margin": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/1/revenue_growth": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/1/tax_rate": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              }
+            },
+            "scenarios": [
+              {
+                "base_revenue": 1000,
+                "name": "base",
+                "years": [
+                  {
+                    "delta_working_capital": 0,
+                    "depreciation": 20,
+                    "growth_capex": 0,
+                    "invested_capital": 500,
+                    "maintenance_capex": 20,
+                    "operating_margin": 0.2,
+                    "period": "2026-01-01/2026-12-31",
+                    "revenue_growth": 0,
+                    "tax_rate": 0.25
+                  },
+                  {
+                    "delta_working_capital": 0,
+                    "depreciation": 20,
+                    "growth_capex": 0,
+                    "invested_capital": 500,
+                    "maintenance_capex": 20,
+                    "operating_margin": 0.2,
+                    "period": "2027-01-01/2027-12-31",
+                    "revenue_growth": 0,
+                    "tax_rate": 0.25
+                  }
+                ]
+              }
+            ]
+          },
+          "economic_basis": {
+            "applicability": {
+              "category": "NON_FINANCIAL",
+              "reason": "METHOD ordinary industrial issuer",
+              "references": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ]
+            },
+            "assumption_basis": {
+              "config/equity_bridge/0/amount": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "3249e54f-188d-4def-b8ac-27f78e5d235d"
+                ]
+              },
+              "config/equity_bridge/1/amount": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "5d34901b-d0f2-48ff-ac33-baaec852eaae"
+                ]
+              },
+              "config/shares": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "a6a07d96-d114-4b90-b7e5-3326d5da5626"
+                ]
+              },
+              "config/terminal_g": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+                ]
+              },
+              "config/wacc": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+                ]
+              },
+              "drivers/basis/terminal/roic": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+                ]
+              },
+              "drivers/basis/wacc/beta": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "dc323842-6346-482b-ba93-ad59556ed8cd"
+                ]
+              },
+              "drivers/basis/wacc/cost_of_debt": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e9f18398-2307-4ae0-af5c-19ed46692417"
+                ]
+              },
+              "drivers/basis/wacc/debt_weight": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "3249e54f-188d-4def-b8ac-27f78e5d235d"
+                ]
+              },
+              "drivers/basis/wacc/equity_risk_premium": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "91c18b8b-41f4-4275-8ffe-60513a078dd8"
+                ]
+              },
+              "drivers/basis/wacc/equity_weight": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "3249e54f-188d-4def-b8ac-27f78e5d235d"
+                ]
+              },
+              "drivers/basis/wacc/risk_free": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+                ]
+              },
+              "drivers/basis/wacc/tax_rate": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+                ]
+              },
+              "drivers/scenarios/0/base_revenue": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e5f5e8b7-9553-4303-b046-6a11aa9e9646"
+                ]
+              },
+              "drivers/scenarios/0/years/0/delta_working_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+                ]
+              },
+              "drivers/scenarios/0/years/0/depreciation": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+                ]
+              },
+              "drivers/scenarios/0/years/0/growth_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "57db6957-e219-4abe-b228-eef885d81143"
+                ]
+              },
+              "drivers/scenarios/0/years/0/invested_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+                ]
+              },
+              "drivers/scenarios/0/years/0/maintenance_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+                ]
+              },
+              "drivers/scenarios/0/years/0/operating_margin": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+                ]
+              },
+              "drivers/scenarios/0/years/0/revenue_growth": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+                ]
+              },
+              "drivers/scenarios/0/years/0/tax_rate": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+                ]
+              },
+              "drivers/scenarios/0/years/1/delta_working_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+                ]
+              },
+              "drivers/scenarios/0/years/1/depreciation": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+                ]
+              },
+              "drivers/scenarios/0/years/1/growth_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "57db6957-e219-4abe-b228-eef885d81143"
+                ]
+              },
+              "drivers/scenarios/0/years/1/invested_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+                ]
+              },
+              "drivers/scenarios/0/years/1/maintenance_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+                ]
+              },
+              "drivers/scenarios/0/years/1/operating_margin": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+                ]
+              },
+              "drivers/scenarios/0/years/1/revenue_growth": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+                ]
+              },
+              "drivers/scenarios/0/years/1/tax_rate": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+                ]
+              }
+            },
+            "bridge": {
+              "components": [
+                {
+                  "amount": 300,
+                  "category": "DEBT",
+                  "component_id": "debt",
+                  "economic_id": "debt",
+                  "included_in_fcff": false,
+                  "reason": "Deduct debt",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "amount": -100,
+                  "category": "CASH",
+                  "component_id": "cash",
+                  "economic_id": "cash",
+                  "included_in_fcff": false,
+                  "reason": "Unrestricted nonoperating cash only",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                }
+              ],
+              "exclusions": [
+                {
+                  "category": "RESTRICTED_CASH",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "category": "NCI",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "category": "NONOPERATING_ASSETS",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "category": "ASSOCIATES",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                }
+              ],
+              "overlap_reason": "Each component excluded from operating earnings and other bridge rows",
+              "references": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ],
+              "shares_reason": "METHOD total diluted shares"
+            },
+            "limitations": [
+              "METHOD forecast assumptions; no investment recommendation"
+            ],
+            "terminal": {
+              "maintenance_reason": "Maintenance capex equals depreciation in steady state",
+              "references": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ],
+              "roic": 0.3
+            },
+            "valuation_basis": {
+              "bridge_as_of": "2025-12-31",
+              "current_pricing_gaps": [],
+              "financial_period_end": "2025-12-31",
+              "latest_known_financial_period_end": "2025-12-31",
+              "valuation_basis_date": "2025-12-31"
+            },
+            "wacc": {
+              "as_of": "2026-10-26",
+              "beta": 1,
+              "cost_of_debt": 0.05,
+              "currency": "CNY",
+              "debt_weight": 0,
+              "equity_risk_premium": 0.06,
+              "equity_weight": 1,
+              "references": [
+                "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+              ],
+              "risk_free": 0.04,
+              "tax_rate": 0.25,
+              "tax_shield_reason": "Debt weight zero; no tax shield benefit"
+            }
+          },
+          "idempotency_key": "v1",
+          "parent_version_id": null,
+          "provenance": {
+            "equity_bridge/0/amount": {
+              "currency": "CNY",
+              "kind": "ASSUMED",
+              "period": "2025-01-01/2025-12-31",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "million"
+            },
+            "equity_bridge/1/amount": {
+              "currency": "CNY",
+              "kind": "ASSUMED",
+              "period": "2025-01-01/2025-12-31",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "million"
+            },
+            "shares": {
+              "currency": null,
+              "kind": "ASSUMED",
+              "period": "2025-01-01/2025-12-31",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "million_shares"
+            },
+            "terminal_g": {
+              "currency": null,
+              "kind": "ASSUMED",
+              "period": "2026-2028",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "ratio"
+            },
+            "wacc": {
+              "currency": null,
+              "kind": "ASSUMED",
+              "period": "2026-2028",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "ratio"
+            }
+          },
+          "snapshot_id": "072b8aff-7e71-461e-89c7-082ee08fda6f"
+        },
+        "output": {
+          "applicability": "CONDITIONAL",
+          "bridge_conservation": [
+            {
+              "deductions_net": 200,
+              "enterprise_value": 1499.9999999999998,
+              "formula": "enterprise_value - sum(signed_bridge_amounts)",
+              "name": "base",
+              "parent_equity_value": 1299.9999999999998
+            }
+          ],
+          "cash_flow_basis": "FCFF",
+          "discount_timing": "year_end",
+          "equity_adjustment": 200,
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "listing_structure": "A+H",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "review": {
+            "limitations": [
+              "Diagnostic only: operating drivers and economic suitability require controlled review"
+            ],
+            "status": "unreviewed"
+          },
+          "scenario_range": [
+            12.999999999999998,
+            12.999999999999998
+          ],
+          "scenarios": [
+            {
+              "enterprise_value": 1499.9999999999998,
+              "equity_value": 1299.9999999999998,
+              "fcff": [
+                150.0,
+                150.0
+              ],
+              "name": "base",
+              "per_share": 12.999999999999998,
+              "pv_explicit": 260.33057851239664,
+              "pv_terminal": 1239.6694214876031,
+              "terminal_fcf_next_year": 150.0,
+              "terminal_share_of_ev": 0.8264462809917356
+            }
+          ],
+          "schema_version": 2,
+          "usable_range": false,
+          "warnings": [
+            "Conditional scenario range, not a statistical confidence interval.",
+            "Sources and economic assumptions require human verification.",
+            "base: EV is nonpositive or terminal contribution exceeds 75%; review terminal assumptions"
+          ],
+          "weight_meaning": "RESEARCH_ASSUMPTIONS_NOT_EVENT_PROBABILITIES"
+        }
+      },
+      "after": {
+        "valuation_id": "32bd9f28-1e51-424f-a74e-c687bc5f164b",
+        "algorithm": {
+          "adapted_sha256": "c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9",
+          "calculator_sha256": "036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251",
+          "files": [
+            {
+              "archive": {
+                "bytes": 11556,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251.raw",
+                "sha256": "036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251"
+              },
+              "path": "calculator.py"
+            },
+            {
+              "archive": {
+                "bytes": 16957,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6.raw",
+                "sha256": "c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6"
+              },
+              "path": "valuation.py"
+            },
+            {
+              "archive": {
+                "bytes": 603,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/3f6c3f84681c2d30bdb522332bf4925c9198569bdf76221341376e9043746b81.raw",
+                "sha256": "3f6c3f84681c2d30bdb522332bf4925c9198569bdf76221341376e9043746b81"
+              },
+              "path": "valuation_replay.py"
+            },
+            {
+              "archive": {
+                "bytes": 13854,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9.raw",
+                "sha256": "c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9"
+              },
+              "path": "valuation_reference/fundamental_valuation.py"
+            },
+            {
+              "archive": {
+                "bytes": 13550,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8.raw",
+                "sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8"
+              },
+              "path": "valuation_reference/original_fundamental_valuation.py"
+            },
+            {
+              "archive": {
+                "bytes": 3534,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca.raw",
+                "sha256": "fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca"
+              },
+              "path": "valuation_reference/LICENSE"
+            },
+            {
+              "archive": {
+                "bytes": 1084,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484.raw",
+                "sha256": "dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484"
+              },
+              "path": "valuation_reference/equity-research-LICENSE.txt"
+            },
+            {
+              "archive": {
+                "bytes": 1028,
+                "kind": "COMPANY_VALUATION_ALGORITHM",
+                "path": "raw/707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a.raw",
+                "sha256": "707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a"
+              },
+              "path": "valuation_reference/THIRD_PARTY_NOTICES.md"
+            }
+          ],
+          "method_id": "fcff-wacc-year-end",
+          "original_sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8",
+          "version": "roll-diagnostic-1"
+        },
+        "config": {
+          "cash_flow_basis": "FCFF",
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:0",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "scenarios": [
+            {
+              "fcf": [
+                165.0,
+                165.0
+              ],
+              "name": "base"
+            }
+          ],
+          "shares": 100,
+          "terminal_g": 0,
+          "wacc": 0.08
+        },
+        "model_request": {
+          "assumptions": [
+            {
+              "anchor_fact_version_ids": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43",
+                "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570",
+                "e5f5e8b7-9553-4303-b046-6a11aa9e9646",
+                "5d34901b-d0f2-48ff-ac33-baaec852eaae",
+                "3249e54f-188d-4def-b8ac-27f78e5d235d",
+                "a6a07d96-d114-4b90-b7e5-3326d5da5626",
+                "757fc117-1c36-4f96-87dd-cd72214a0c4f",
+                "0c7b1e93-73b2-4342-940e-ea6de6e31360",
+                "57db6957-e219-4abe-b228-eef885d81143",
+                "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390",
+                "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d",
+                "e5452a0c-4f06-4116-af91-f0113e4d4a8f",
+                "c599c7b3-b11d-4b18-97b7-7de1d50e9576",
+                "e6ea00b8-dfdc-4606-bf20-49cf166ab239",
+                "dc323842-6346-482b-ba93-ad59556ed8cd",
+                "91c18b8b-41f4-4275-8ffe-60513a078dd8",
+                "e9f18398-2307-4ae0-af5c-19ed46692417",
+                "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+              ],
+              "assumption_id": "research-path",
+              "hypothesis_version_ids": [
+                "0320831c-b9c3-46ef-b0e8-add6ee36baf2"
+              ],
+              "statement": "Illustrative explicit forecast; no economic suitability claimed"
+            }
+          ],
+          "change_reason": "METHOD explicit scenario/rate revision, not a market explanation",
+          "config": {
+            "cash_flow_basis": "FCFF",
+            "equity_bridge": [
+              {
+                "amount": 300,
+                "name": "debt",
+                "source": "disclosed-anchor",
+                "treatment": "deduct"
+              },
+              {
+                "amount": -100,
+                "name": "cash",
+                "source": "disclosed-anchor",
+                "treatment": "add"
+              }
+            ],
+            "metadata": {
+              "amount_unit": "million",
+              "as_of": "2026-10-26",
+              "assumptions": [
+                "research-path"
+              ],
+              "company": "江西铜业股份有限公司",
+              "currency": "CNY",
+              "shares_unit": "million_shares",
+              "sources": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ]
+            },
+            "shares": 100,
+            "terminal_g": 0,
+            "wacc": 0.08
+          },
+          "drivers": {
+            "normalizations": [],
+            "provenance": {
+              "basis/terminal/roic": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/beta": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/cost_of_debt": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/debt_weight": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/equity_risk_premium": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/equity_weight": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/risk_free": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "basis/wacc/tax_rate": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-2028",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/base_revenue": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2025-01-01/2025-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/delta_working_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/depreciation": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/growth_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/invested_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/maintenance_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/0/operating_margin": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/0/revenue_growth": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/0/tax_rate": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2026-01-01/2026-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/1/delta_working_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/depreciation": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/growth_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/invested_capital": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/maintenance_capex": {
+                "currency": "CNY",
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "million"
+              },
+              "scenarios/0/years/1/operating_margin": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/1/revenue_growth": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              },
+              "scenarios/0/years/1/tax_rate": {
+                "currency": null,
+                "kind": "ASSUMED",
+                "period": "2027-01-01/2027-12-31",
+                "references": [
+                  "research-path"
+                ],
+                "scope": "CONSOLIDATED",
+                "unit": "ratio"
+              }
+            },
+            "scenarios": [
+              {
+                "base_revenue": 1000,
+                "name": "base",
+                "years": [
+                  {
+                    "delta_working_capital": 0,
+                    "depreciation": 20,
+                    "growth_capex": 0,
+                    "invested_capital": 500,
+                    "maintenance_capex": 20,
+                    "operating_margin": 0.22,
+                    "period": "2026-01-01/2026-12-31",
+                    "revenue_growth": 0,
+                    "tax_rate": 0.25
+                  },
+                  {
+                    "delta_working_capital": 0,
+                    "depreciation": 20,
+                    "growth_capex": 0,
+                    "invested_capital": 500,
+                    "maintenance_capex": 20,
+                    "operating_margin": 0.22,
+                    "period": "2027-01-01/2027-12-31",
+                    "revenue_growth": 0,
+                    "tax_rate": 0.25
+                  }
+                ]
+              }
+            ]
+          },
+          "economic_basis": {
+            "applicability": {
+              "category": "NON_FINANCIAL",
+              "reason": "METHOD ordinary industrial issuer",
+              "references": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ]
+            },
+            "assumption_basis": {
+              "config/equity_bridge/0/amount": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "3249e54f-188d-4def-b8ac-27f78e5d235d"
+                ]
+              },
+              "config/equity_bridge/1/amount": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "5d34901b-d0f2-48ff-ac33-baaec852eaae"
+                ]
+              },
+              "config/shares": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "a6a07d96-d114-4b90-b7e5-3326d5da5626"
+                ]
+              },
+              "config/terminal_g": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+                ]
+              },
+              "config/wacc": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+                ]
+              },
+              "drivers/basis/terminal/roic": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+                ]
+              },
+              "drivers/basis/wacc/beta": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "dc323842-6346-482b-ba93-ad59556ed8cd"
+                ]
+              },
+              "drivers/basis/wacc/cost_of_debt": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e9f18398-2307-4ae0-af5c-19ed46692417"
+                ]
+              },
+              "drivers/basis/wacc/debt_weight": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "3249e54f-188d-4def-b8ac-27f78e5d235d"
+                ]
+              },
+              "drivers/basis/wacc/equity_risk_premium": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "91c18b8b-41f4-4275-8ffe-60513a078dd8"
+                ]
+              },
+              "drivers/basis/wacc/equity_weight": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "3249e54f-188d-4def-b8ac-27f78e5d235d"
+                ]
+              },
+              "drivers/basis/wacc/risk_free": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+                ]
+              },
+              "drivers/basis/wacc/tax_rate": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+                ]
+              },
+              "drivers/scenarios/0/base_revenue": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e5f5e8b7-9553-4303-b046-6a11aa9e9646"
+                ]
+              },
+              "drivers/scenarios/0/years/0/delta_working_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+                ]
+              },
+              "drivers/scenarios/0/years/0/depreciation": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+                ]
+              },
+              "drivers/scenarios/0/years/0/growth_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "57db6957-e219-4abe-b228-eef885d81143"
+                ]
+              },
+              "drivers/scenarios/0/years/0/invested_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+                ]
+              },
+              "drivers/scenarios/0/years/0/maintenance_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+                ]
+              },
+              "drivers/scenarios/0/years/0/operating_margin": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+                ]
+              },
+              "drivers/scenarios/0/years/0/revenue_growth": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+                ]
+              },
+              "drivers/scenarios/0/years/0/tax_rate": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+                ]
+              },
+              "drivers/scenarios/0/years/1/delta_working_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+                ]
+              },
+              "drivers/scenarios/0/years/1/depreciation": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+                ]
+              },
+              "drivers/scenarios/0/years/1/growth_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "57db6957-e219-4abe-b228-eef885d81143"
+                ]
+              },
+              "drivers/scenarios/0/years/1/invested_capital": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+                ]
+              },
+              "drivers/scenarios/0/years/1/maintenance_capex": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+                ]
+              },
+              "drivers/scenarios/0/years/1/operating_margin": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+                ]
+              },
+              "drivers/scenarios/0/years/1/revenue_growth": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+                ]
+              },
+              "drivers/scenarios/0/years/1/tax_rate": {
+                "counter_fact_version_ids": [],
+                "limitations": [],
+                "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+                "support_fact_version_ids": [
+                  "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+                ]
+              }
+            },
+            "bridge": {
+              "components": [
+                {
+                  "amount": 300,
+                  "category": "DEBT",
+                  "component_id": "debt",
+                  "economic_id": "debt",
+                  "included_in_fcff": false,
+                  "reason": "Deduct debt",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "amount": -100,
+                  "category": "CASH",
+                  "component_id": "cash",
+                  "economic_id": "cash",
+                  "included_in_fcff": false,
+                  "reason": "Unrestricted nonoperating cash only",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                }
+              ],
+              "exclusions": [
+                {
+                  "category": "RESTRICTED_CASH",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "category": "NCI",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "category": "NONOPERATING_ASSETS",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                },
+                {
+                  "category": "ASSOCIATES",
+                  "reason": "METHOD absent",
+                  "references": [
+                    "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+                  ]
+                }
+              ],
+              "overlap_reason": "Each component excluded from operating earnings and other bridge rows",
+              "references": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ],
+              "shares_reason": "METHOD total diluted shares"
+            },
+            "limitations": [
+              "METHOD forecast assumptions; no investment recommendation"
+            ],
+            "terminal": {
+              "maintenance_reason": "Maintenance capex equals depreciation in steady state",
+              "references": [
+                "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+              ],
+              "roic": 0.33
+            },
+            "valuation_basis": {
+              "bridge_as_of": "2025-12-31",
+              "current_pricing_gaps": [],
+              "financial_period_end": "2025-12-31",
+              "latest_known_financial_period_end": "2025-12-31",
+              "valuation_basis_date": "2025-12-31"
+            },
+            "wacc": {
+              "as_of": "2026-10-26",
+              "beta": 1,
+              "cost_of_debt": 0.05,
+              "currency": "CNY",
+              "debt_weight": 0,
+              "equity_risk_premium": 0.04,
+              "equity_weight": 1,
+              "references": [
+                "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+              ],
+              "risk_free": 0.04,
+              "tax_rate": 0.25,
+              "tax_shield_reason": "Debt weight zero; no tax shield benefit"
+            }
+          },
+          "idempotency_key": "method-mixed",
+          "parent_version_id": null,
+          "provenance": {
+            "equity_bridge/0/amount": {
+              "currency": "CNY",
+              "kind": "ASSUMED",
+              "period": "2025-01-01/2025-12-31",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "million"
+            },
+            "equity_bridge/1/amount": {
+              "currency": "CNY",
+              "kind": "ASSUMED",
+              "period": "2025-01-01/2025-12-31",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "million"
+            },
+            "shares": {
+              "currency": null,
+              "kind": "ASSUMED",
+              "period": "2025-01-01/2025-12-31",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "million_shares"
+            },
+            "terminal_g": {
+              "currency": null,
+              "kind": "ASSUMED",
+              "period": "2026-2028",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "ratio"
+            },
+            "wacc": {
+              "currency": null,
+              "kind": "ASSUMED",
+              "period": "2026-2028",
+              "references": [
+                "research-path"
+              ],
+              "scope": "CONSOLIDATED",
+              "unit": "ratio"
+            }
+          },
+          "snapshot_id": "d2848ce4-43e8-43cd-81d7-c2eb0e2f5cb6"
+        },
+        "output": {
+          "applicability": "CONDITIONAL",
+          "bridge_conservation": [
+            {
+              "deductions_net": 200,
+              "enterprise_value": 2062.5,
+              "formula": "enterprise_value - sum(signed_bridge_amounts)",
+              "name": "base",
+              "parent_equity_value": 1862.5
+            }
+          ],
+          "cash_flow_basis": "FCFF",
+          "discount_timing": "year_end",
+          "equity_adjustment": 200,
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:0",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "listing_structure": "A+H",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "review": {
+            "limitations": [
+              "Diagnostic only: operating drivers and economic suitability require controlled review"
+            ],
+            "status": "unreviewed"
+          },
+          "scenario_range": [
+            18.625,
+            18.625
+          ],
+          "scenarios": [
+            {
+              "enterprise_value": 2062.5,
+              "equity_value": 1862.5,
+              "fcff": [
+                165.0,
+                165.0
+              ],
+              "name": "base",
+              "per_share": 18.625,
+              "pv_explicit": 294.238683127572,
+              "pv_terminal": 1768.2613168724279,
+              "terminal_fcf_next_year": 165.0,
+              "terminal_share_of_ev": 0.8573388203017832
+            }
+          ],
+          "schema_version": 2,
+          "usable_range": false,
+          "warnings": [
+            "Conditional scenario range, not a statistical confidence interval.",
+            "Sources and economic assumptions require human verification.",
+            "base: EV is nonpositive or terminal contribution exceeds 75%; review terminal assumptions"
+          ],
+          "weight_meaning": "RESEARCH_ASSUMPTIONS_NOT_EVENT_PROBABILITIES"
+        }
+      },
+      "diagnostic_only": true,
+      "usable_range": false,
+      "economic_review_upgraded": false,
+      "changed": true,
+      "old_parameters": {
+        "cash_flow_basis": "FCFF",
+        "equity_bridge": [
+          {
+            "amount": 300,
+            "name": "debt",
+            "source": "disclosed-anchor",
+            "treatment": "deduct"
+          },
+          {
+            "amount": -100,
+            "name": "cash",
+            "source": "disclosed-anchor",
+            "treatment": "add"
+          }
+        ],
+        "shares": 100,
+        "terminal_g": 0,
+        "wacc": 0.1
+      },
+      "new_parameters": {
+        "cash_flow_basis": "FCFF",
+        "equity_bridge": [
+          {
+            "amount": 300,
+            "name": "debt",
+            "source": "disclosed-anchor",
+            "treatment": "deduct"
+          },
+          {
+            "amount": -100,
+            "name": "cash",
+            "source": "disclosed-anchor",
+            "treatment": "add"
+          }
+        ],
+        "shares": 100,
+        "terminal_g": 0,
+        "wacc": 0.08
+      }
+    }
+  },
+  "information_state": {
+    "evaluated_at": "2026-10-26T19:12:06.362123+00:00",
+    "old": {
+      "research_as_of": "2026-10-26T19:12:04.376503+00:00",
+      "knowledge_as_of": "2026-10-26T19:12:05.326744+00:00",
+      "context_bound_at": "2026-10-26T19:12:05.326744+00:00",
+      "research_basis_generated_at": "2026-10-26T19:12:05.067236+00:00",
+      "checks": [],
+      "check_state": "NOT_CHECKED",
+      "material_dates": [
+        {
+          "material_id": "4cf29155-fb59-477f-85d7-468020618255",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:03.665916+00:00",
+          "consumable_at": "2026-10-26T19:12:03.675206+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "a39e4d16-55c9-48b4-b84f-b34a0ad8131f",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:03.835839+00:00",
+          "consumable_at": "2026-10-26T19:12:03.849859+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "bdfc958d-0a86-4889-927a-0322d8112ba2",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:04.026001+00:00",
+          "consumable_at": "2026-10-26T19:12:04.035381+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "54901c13-9bb0-4e8e-bfea-a10d165901a6",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:04.104804+00:00",
+          "consumable_at": "2026-10-26T19:12:04.113624+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "3640daf0-504d-41ae-a6e5-045c10fd5de0",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:04.230333+00:00",
+          "consumable_at": "2026-10-26T19:12:04.238181+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        }
+      ],
+      "research_verification_refreshed": false
+    },
+    "new": {
+      "research_as_of": "2026-10-26T19:12:04.376503+00:00",
+      "knowledge_as_of": "2026-10-26T19:12:05.872166+00:00",
+      "context_bound_at": "2026-10-26T19:12:05.872166+00:00",
+      "research_basis_generated_at": "2026-10-26T19:12:05.067236+00:00",
+      "checks": [],
+      "check_state": "NOT_CHECKED",
+      "material_dates": [
+        {
+          "material_id": "4cf29155-fb59-477f-85d7-468020618255",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:03.665916+00:00",
+          "consumable_at": "2026-10-26T19:12:03.675206+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "a39e4d16-55c9-48b4-b84f-b34a0ad8131f",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:03.835839+00:00",
+          "consumable_at": "2026-10-26T19:12:03.849859+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "bdfc958d-0a86-4889-927a-0322d8112ba2",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:04.026001+00:00",
+          "consumable_at": "2026-10-26T19:12:04.035381+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "54901c13-9bb0-4e8e-bfea-a10d165901a6",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:04.104804+00:00",
+          "consumable_at": "2026-10-26T19:12:04.113624+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        },
+        {
+          "material_id": "3640daf0-504d-41ae-a6e5-045c10fd5de0",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "disclosed_at": null,
+          "received_at": "2026-10-26T19:12:04.230333+00:00",
+          "consumable_at": "2026-10-26T19:12:04.238181+00:00",
+          "age_basis": "REPORT_PERIOD_END",
+          "material_age_days": 300,
+          "disclosure_age_days": null,
+          "meaning": "Report-period and disclosure ages; acquisition/check time does not refresh source content"
+        }
+      ],
+      "research_verification_refreshed": false
+    }
+  },
+  "pinned_presentations": [
+    {
+      "review": {
+        "applicability": "CONDITIONAL",
+        "archive": {
+          "bytes": 14759,
+          "kind": "COMPANY_ECONOMIC_REVIEWS",
+          "path": "raw/956af4fd1a35953a9647f037c29965cbfd4b4b3c2ed14f95f0b0e26324d5eec8.raw",
+          "sha256": "956af4fd1a35953a9647f037c29965cbfd4b4b3c2ed14f95f0b0e26324d5eec8"
+        },
+        "authority": "HOST_DETERMINISTIC_CHECKS",
+        "checks": [
+          {
+            "check_id": "operating_scope",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43",
+              "757fc117-1c36-4f96-87dd-cd72214a0c4f",
+              "a6a07d96-d114-4b90-b7e5-3326d5da5626",
+              "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d",
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570",
+              "e5452a0c-4f06-4116-af91-f0113e4d4a8f",
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576",
+              "91c18b8b-41f4-4275-8ffe-60513a078dd8",
+              "e9f18398-2307-4ae0-af5c-19ed46692417",
+              "dc323842-6346-482b-ba93-ad59556ed8cd",
+              "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4",
+              "0c7b1e93-73b2-4342-940e-ea6de6e31360",
+              "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390",
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239",
+              "57db6957-e219-4abe-b228-eef885d81143",
+              "5d34901b-d0f2-48ff-ac33-baaec852eaae",
+              "e5f5e8b7-9553-4303-b046-6a11aa9e9646",
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "missing_path": null,
+            "reason": "Consolidated revenue, margins, drivers and capital require consistent consolidated sources; ",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/shares",
+            "fact_version_ids": [
+              "a6a07d96-d114-4b90-b7e5-3326d5da5626"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/equity_bridge/0/amount",
+            "fact_version_ids": [
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/equity_bridge/1/amount",
+            "fact_version_ids": [
+              "5d34901b-d0f2-48ff-ac33-baaec852eaae"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/wacc",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/terminal_g",
+            "fact_version_ids": [
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/base_revenue",
+            "fact_version_ids": [
+              "e5f5e8b7-9553-4303-b046-6a11aa9e9646"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/operating_margin",
+            "fact_version_ids": [
+              "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/revenue_growth",
+            "fact_version_ids": [
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/depreciation",
+            "fact_version_ids": [
+              "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/maintenance_capex",
+            "fact_version_ids": [
+              "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/delta_working_capital",
+            "fact_version_ids": [
+              "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/invested_capital",
+            "fact_version_ids": [
+              "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/tax_rate",
+            "fact_version_ids": [
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/growth_capex",
+            "fact_version_ids": [
+              "57db6957-e219-4abe-b228-eef885d81143"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/operating_margin",
+            "fact_version_ids": [
+              "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/revenue_growth",
+            "fact_version_ids": [
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/depreciation",
+            "fact_version_ids": [
+              "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/maintenance_capex",
+            "fact_version_ids": [
+              "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/delta_working_capital",
+            "fact_version_ids": [
+              "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/invested_capital",
+            "fact_version_ids": [
+              "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/tax_rate",
+            "fact_version_ids": [
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/growth_capex",
+            "fact_version_ids": [
+              "57db6957-e219-4abe-b228-eef885d81143"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/risk_free",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/beta",
+            "fact_version_ids": [
+              "dc323842-6346-482b-ba93-ad59556ed8cd"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/equity_risk_premium",
+            "fact_version_ids": [
+              "91c18b8b-41f4-4275-8ffe-60513a078dd8"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/cost_of_debt",
+            "fact_version_ids": [
+              "e9f18398-2307-4ae0-af5c-19ed46692417"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/equity_weight",
+            "fact_version_ids": [
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/debt_weight",
+            "fact_version_ids": [
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/tax_rate",
+            "fact_version_ids": [
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/terminal/roic",
+            "fact_version_ids": [
+              "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "temporal_basis",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "Financial baseline and declared bridge dates must match the frozen revenue/shares/bridge numeric-provenance periods",
+            "status": "PASS"
+          },
+          {
+            "check_id": "applicability",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "METHOD ordinary industrial issuer",
+            "status": "PASS"
+          },
+          {
+            "check_id": "evidence_references",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Applicability must cite frozen evidence",
+            "status": "PASS"
+          },
+          {
+            "check_id": "wacc_evidence",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "missing_path": null,
+            "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "terminal_evidence",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "bridge_evidence",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "wacc_source_values",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "missing_path": null,
+            "reason": "Riskfree and any debt/tax-shield rate require matching dated numeric source facts; beta/ERP/target weights remain explicit assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "wacc_construction",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "missing_path": null,
+            "reason": "WACC = (risk_free + beta * ERP) * equity_weight + pretax_debt_cost * (1-tax) * debt_weight",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/0/growth_reinvestment",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/1/growth_reinvestment",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/1/capital_rollforward",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "Opening invested capital rolls forward by prior net reinvestment",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/terminal_reinvestment",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Final steady reinvestment/NOPAT = g/ROIC; terminal FCFF grows from an after-reinvestment base",
+            "status": "PASS"
+          },
+          {
+            "check_id": "normalization",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "Each adjustment is applied once; before + delta = after; original basis and evidence retained",
+            "status": "PASS"
+          },
+          {
+            "check_id": "equity_bridge",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Diluted shares and mutually exclusive operating/nonoperating treatments need reconciliation",
+            "status": "PASS"
+          }
+        ],
+        "company_id": "26715f34-8f5c-4ebb-b69d-1cca773e6ee2",
+        "content_sha256": "28035cf169dabd46ad1f6d0d0d6f95a388ed5756b58aa88bd87375d87bceead7",
+        "created_at": "2026-10-26T19:12:05.053054+00:00",
+        "limitations": [
+          "METHOD forecast assumptions; no investment recommendation"
+        ],
+        "meaning": "Economic consistency only; no return validation or trading authority",
+        "operating_model_id": "a21045cd-ccda-5b45-8397-da7d604d1ddd",
+        "operating_model_sha256": "886b9a41b51e1ef96e4c7b1e2aa88cdca771fb552c9e65fb4d8d297f49acf456",
+        "policy_archive": {
+          "bytes": 44474,
+          "kind": "COMPANY_ECONOMIC_ALGORITHM",
+          "path": "raw/a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d.raw",
+          "sha256": "a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d"
+        },
+        "policy_version": "economic-review-2",
+        "review_id": "f05b9505-a242-4618-aafe-e23de6c18734",
+        "reviewed_at": "2026-10-26T19:12:05.053032+00:00",
+        "schema_version": 1,
+        "source_snapshot_id": "072b8aff-7e71-461e-89c7-082ee08fda6f",
+        "status": "conditional",
+        "usable_range": true,
+        "valuation_id": "5d5cc16f-b418-4d6a-8f50-f10e3e7a181a",
+        "valuation_sha256": "2484a32c33ef3ae6c0ddbcb6efd9d27b493769570fbe985eb540b8f947cfeaea"
+      },
+      "status": "conditional",
+      "usable_range": true,
+      "purpose": "BASELINE_RESEARCH",
+      "scenarios": [
+        {
+          "enterprise_value": 1499.9999999999998,
+          "equity_value": 1299.9999999999998,
+          "fcff": [
+            150.0,
+            150.0
+          ],
+          "name": "base",
+          "per_share": 12.999999999999998,
+          "pv_explicit": 260.33057851239664,
+          "pv_terminal": 1239.6694214876031,
+          "terminal_fcf_next_year": 150.0,
+          "terminal_share_of_ev": 0.8264462809917356
+        }
+      ],
+      "valuation_basis": {
+        "bridge_as_of": "2025-12-31",
+        "current_pricing_gaps": [],
+        "financial_period_end": "2025-12-31",
+        "latest_known_financial_period_end": "2025-12-31",
+        "valuation_basis_date": "2025-12-31"
+      },
+      "knowledge_as_of": "2026-10-26T19:12:04.376503+00:00",
+      "current_pricing_gaps": [
+        "Equity bridge older than180 days; refresh required for current pricing"
+      ],
+      "conditions": [
+        {
+          "anchor_fact_version_ids": [
+            "f3d0cab0-41ef-4860-b7a4-76a1b7885c43",
+            "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570",
+            "e5f5e8b7-9553-4303-b046-6a11aa9e9646",
+            "5d34901b-d0f2-48ff-ac33-baaec852eaae",
+            "3249e54f-188d-4def-b8ac-27f78e5d235d",
+            "a6a07d96-d114-4b90-b7e5-3326d5da5626",
+            "757fc117-1c36-4f96-87dd-cd72214a0c4f",
+            "0c7b1e93-73b2-4342-940e-ea6de6e31360",
+            "57db6957-e219-4abe-b228-eef885d81143",
+            "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390",
+            "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d",
+            "e5452a0c-4f06-4116-af91-f0113e4d4a8f",
+            "c599c7b3-b11d-4b18-97b7-7de1d50e9576",
+            "e6ea00b8-dfdc-4606-bf20-49cf166ab239",
+            "dc323842-6346-482b-ba93-ad59556ed8cd",
+            "91c18b8b-41f4-4275-8ffe-60513a078dd8",
+            "e9f18398-2307-4ae0-af5c-19ed46692417",
+            "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+          ],
+          "assumption_id": "research-path",
+          "hypothesis_version_ids": [
+            "0320831c-b9c3-46ef-b0e8-add6ee36baf2"
+          ],
+          "statement": "Illustrative explicit forecast; no economic suitability claimed"
+        }
+      ],
+      "evaluated_at": null,
+      "later_disclosure_fact_version_ids": [],
+      "limitations": [
+        "METHOD forecast assumptions; no investment recommendation"
+      ],
+      "diagnostic_valuation_id": "5d5cc16f-b418-4d6a-8f50-f10e3e7a181a",
+      "operating_model_id": "a21045cd-ccda-5b45-8397-da7d604d1ddd"
+    },
+    {
+      "review": {
+        "applicability": "CONDITIONAL",
+        "archive": {
+          "bytes": 14759,
+          "kind": "COMPANY_ECONOMIC_REVIEWS",
+          "path": "raw/452a1d6bf28676a8c68392e7d8b1f8d9a22d23533ff028b97c78f8c24674b08d.raw",
+          "sha256": "452a1d6bf28676a8c68392e7d8b1f8d9a22d23533ff028b97c78f8c24674b08d"
+        },
+        "authority": "HOST_DETERMINISTIC_CHECKS",
+        "checks": [
+          {
+            "check_id": "operating_scope",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43",
+              "757fc117-1c36-4f96-87dd-cd72214a0c4f",
+              "a6a07d96-d114-4b90-b7e5-3326d5da5626",
+              "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d",
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570",
+              "e5452a0c-4f06-4116-af91-f0113e4d4a8f",
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576",
+              "91c18b8b-41f4-4275-8ffe-60513a078dd8",
+              "e9f18398-2307-4ae0-af5c-19ed46692417",
+              "dc323842-6346-482b-ba93-ad59556ed8cd",
+              "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4",
+              "0c7b1e93-73b2-4342-940e-ea6de6e31360",
+              "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390",
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239",
+              "57db6957-e219-4abe-b228-eef885d81143",
+              "5d34901b-d0f2-48ff-ac33-baaec852eaae",
+              "e5f5e8b7-9553-4303-b046-6a11aa9e9646",
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "missing_path": null,
+            "reason": "Consolidated revenue, margins, drivers and capital require consistent consolidated sources; ",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/shares",
+            "fact_version_ids": [
+              "a6a07d96-d114-4b90-b7e5-3326d5da5626"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/equity_bridge/0/amount",
+            "fact_version_ids": [
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/equity_bridge/1/amount",
+            "fact_version_ids": [
+              "5d34901b-d0f2-48ff-ac33-baaec852eaae"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/wacc",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/config/terminal_g",
+            "fact_version_ids": [
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/base_revenue",
+            "fact_version_ids": [
+              "e5f5e8b7-9553-4303-b046-6a11aa9e9646"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/operating_margin",
+            "fact_version_ids": [
+              "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/revenue_growth",
+            "fact_version_ids": [
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/depreciation",
+            "fact_version_ids": [
+              "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/maintenance_capex",
+            "fact_version_ids": [
+              "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/delta_working_capital",
+            "fact_version_ids": [
+              "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/invested_capital",
+            "fact_version_ids": [
+              "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/tax_rate",
+            "fact_version_ids": [
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/0/growth_capex",
+            "fact_version_ids": [
+              "57db6957-e219-4abe-b228-eef885d81143"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/operating_margin",
+            "fact_version_ids": [
+              "e5452a0c-4f06-4116-af91-f0113e4d4a8f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/revenue_growth",
+            "fact_version_ids": [
+              "e6ea00b8-dfdc-4606-bf20-49cf166ab239"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/depreciation",
+            "fact_version_ids": [
+              "757fc117-1c36-4f96-87dd-cd72214a0c4f"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/maintenance_capex",
+            "fact_version_ids": [
+              "0c7b1e93-73b2-4342-940e-ea6de6e31360"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/delta_working_capital",
+            "fact_version_ids": [
+              "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/invested_capital",
+            "fact_version_ids": [
+              "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/tax_rate",
+            "fact_version_ids": [
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/scenarios/0/years/1/growth_capex",
+            "fact_version_ids": [
+              "57db6957-e219-4abe-b228-eef885d81143"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/risk_free",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/beta",
+            "fact_version_ids": [
+              "dc323842-6346-482b-ba93-ad59556ed8cd"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/equity_risk_premium",
+            "fact_version_ids": [
+              "91c18b8b-41f4-4275-8ffe-60513a078dd8"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/cost_of_debt",
+            "fact_version_ids": [
+              "e9f18398-2307-4ae0-af5c-19ed46692417"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/equity_weight",
+            "fact_version_ids": [
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/debt_weight",
+            "fact_version_ids": [
+              "3249e54f-188d-4def-b8ac-27f78e5d235d"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/wacc/tax_rate",
+            "fact_version_ids": [
+              "c599c7b3-b11d-4b18-97b7-7de1d50e9576"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "assumption/drivers/basis/terminal/roic",
+            "fact_version_ids": [
+              "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+            ],
+            "limitations": [],
+            "missing_path": null,
+            "reason": "METHOD explicit steady-state or capital-policy assumption anchored to the named quantitative input; supported only for the worked example",
+            "status": "PASS"
+          },
+          {
+            "check_id": "temporal_basis",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "Financial baseline and declared bridge dates must match the frozen revenue/shares/bridge numeric-provenance periods",
+            "status": "PASS"
+          },
+          {
+            "check_id": "applicability",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "METHOD ordinary industrial issuer",
+            "status": "PASS"
+          },
+          {
+            "check_id": "evidence_references",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Applicability must cite frozen evidence",
+            "status": "PASS"
+          },
+          {
+            "check_id": "wacc_evidence",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "missing_path": null,
+            "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "terminal_evidence",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "bridge_evidence",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "wacc_source_values",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "missing_path": null,
+            "reason": "Riskfree and any debt/tax-shield rate require matching dated numeric source facts; beta/ERP/target weights remain explicit assumptions",
+            "status": "PASS"
+          },
+          {
+            "check_id": "wacc_construction",
+            "fact_version_ids": [
+              "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570"
+            ],
+            "missing_path": null,
+            "reason": "WACC = (risk_free + beta * ERP) * equity_weight + pretax_debt_cost * (1-tax) * debt_weight",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/0/growth_reinvestment",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/1/growth_reinvestment",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/1/capital_rollforward",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "Opening invested capital rolls forward by prior net reinvestment",
+            "status": "PASS"
+          },
+          {
+            "check_id": "base/terminal_reinvestment",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Final steady reinvestment/NOPAT = g/ROIC; terminal FCFF grows from an after-reinvestment base",
+            "status": "PASS"
+          },
+          {
+            "check_id": "normalization",
+            "fact_version_ids": [],
+            "missing_path": null,
+            "reason": "Each adjustment is applied once; before + delta = after; original basis and evidence retained",
+            "status": "PASS"
+          },
+          {
+            "check_id": "equity_bridge",
+            "fact_version_ids": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "missing_path": null,
+            "reason": "Diluted shares and mutually exclusive operating/nonoperating treatments need reconciliation",
+            "status": "PASS"
+          }
+        ],
+        "company_id": "26715f34-8f5c-4ebb-b69d-1cca773e6ee2",
+        "content_sha256": "abbfa0857a8032ef6dc03b3b78800cfc033f35f2373298ca5190582141eeaa4a",
+        "created_at": "2026-10-26T19:12:05.612117+00:00",
+        "limitations": [
+          "METHOD forecast assumptions; no investment recommendation"
+        ],
+        "meaning": "Economic consistency only; no return validation or trading authority",
+        "operating_model_id": "8dccec51-aa3c-5cfa-9661-42b8c97bf722",
+        "operating_model_sha256": "3fd6a113e222c092783a4e4465a5e3035587eb94e34b92c929739460e1773f8e",
+        "policy_archive": {
+          "bytes": 44474,
+          "kind": "COMPANY_ECONOMIC_ALGORITHM",
+          "path": "raw/a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d.raw",
+          "sha256": "a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d"
+        },
+        "policy_version": "economic-review-2",
+        "review_id": "01aef007-0bd2-4f34-acf5-af09f5b1db7f",
+        "reviewed_at": "2026-10-26T19:12:05.612096+00:00",
+        "schema_version": 1,
+        "source_snapshot_id": "d2848ce4-43e8-43cd-81d7-c2eb0e2f5cb6",
+        "status": "conditional",
+        "usable_range": true,
+        "valuation_id": "32bd9f28-1e51-424f-a74e-c687bc5f164b",
+        "valuation_sha256": "027b1fa1480fe7c7c8fe2b83b0c6f0644fda81d45137bc3e755b1817c55165f0"
+      },
+      "status": "conditional",
+      "usable_range": true,
+      "purpose": "BASELINE_RESEARCH",
+      "scenarios": [
+        {
+          "enterprise_value": 2062.5,
+          "equity_value": 1862.5,
+          "fcff": [
+            165.0,
+            165.0
+          ],
+          "name": "base",
+          "per_share": 18.625,
+          "pv_explicit": 294.238683127572,
+          "pv_terminal": 1768.2613168724279,
+          "terminal_fcf_next_year": 165.0,
+          "terminal_share_of_ev": 0.8573388203017832
+        }
+      ],
+      "valuation_basis": {
+        "bridge_as_of": "2025-12-31",
+        "current_pricing_gaps": [],
+        "financial_period_end": "2025-12-31",
+        "latest_known_financial_period_end": "2025-12-31",
+        "valuation_basis_date": "2025-12-31"
+      },
+      "knowledge_as_of": "2026-10-26T19:12:05.326744+00:00",
+      "current_pricing_gaps": [
+        "Equity bridge older than180 days; refresh required for current pricing"
+      ],
+      "conditions": [
+        {
+          "anchor_fact_version_ids": [
+            "f3d0cab0-41ef-4860-b7a4-76a1b7885c43",
+            "5ac7d854-a7c7-41dc-a6ba-82a1e61e9570",
+            "e5f5e8b7-9553-4303-b046-6a11aa9e9646",
+            "5d34901b-d0f2-48ff-ac33-baaec852eaae",
+            "3249e54f-188d-4def-b8ac-27f78e5d235d",
+            "a6a07d96-d114-4b90-b7e5-3326d5da5626",
+            "757fc117-1c36-4f96-87dd-cd72214a0c4f",
+            "0c7b1e93-73b2-4342-940e-ea6de6e31360",
+            "57db6957-e219-4abe-b228-eef885d81143",
+            "f9bf6c0f-e2b0-4c89-875f-b9a37b87c390",
+            "42f9d2cb-2991-4f6a-ac0f-023e0f80bf0d",
+            "e5452a0c-4f06-4116-af91-f0113e4d4a8f",
+            "c599c7b3-b11d-4b18-97b7-7de1d50e9576",
+            "e6ea00b8-dfdc-4606-bf20-49cf166ab239",
+            "dc323842-6346-482b-ba93-ad59556ed8cd",
+            "91c18b8b-41f4-4275-8ffe-60513a078dd8",
+            "e9f18398-2307-4ae0-af5c-19ed46692417",
+            "aa4301d4-2d70-4aae-a11b-3fe3f5f6a0c4"
+          ],
+          "assumption_id": "research-path",
+          "hypothesis_version_ids": [
+            "0320831c-b9c3-46ef-b0e8-add6ee36baf2"
+          ],
+          "statement": "Illustrative explicit forecast; no economic suitability claimed"
+        }
+      ],
+      "evaluated_at": null,
+      "later_disclosure_fact_version_ids": [],
+      "limitations": [
+        "METHOD forecast assumptions; no investment recommendation"
+      ],
+      "diagnostic_valuation_id": "32bd9f28-1e51-424f-a74e-c687bc5f164b",
+      "operating_model_id": "8dccec51-aa3c-5cfa-9661-42b8c97bf722"
+    }
+  ],
+  "quick_summary": {
+    "valuation_scenarios": [
+      {
+        "enterprise_value": 2062.5,
+        "equity_value": 1862.5,
+        "fcff": [
+          165.0,
+          165.0
+        ],
+        "name": "base",
+        "per_share": 18.625,
+        "pv_explicit": 294.238683127572,
+        "pv_terminal": 1768.2613168724279,
+        "terminal_fcf_next_year": 165.0,
+        "terminal_share_of_ev": 0.8573388203017832
+      }
+    ],
+    "purpose": "BASELINE_RESEARCH",
+    "market_cause_identified": false
+  },
+  "counterfactual": {
+    "status": "COMPARABLE",
+    "order": [
+      "OPERATING_PATH",
+      "PRICE",
+      "VALUATION_PARAMETERS_OR_METHOD"
+    ],
+    "market_cause_identified": false,
+    "steps": [
+      {
+        "replacement": "BASELINE",
+        "config": {
+          "cash_flow_basis": "FCFF",
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "scenarios": [
+            {
+              "fcf": [
+                150.0,
+                150.0
+              ],
+              "name": "base"
+            }
+          ],
+          "shares": 100,
+          "terminal_g": 0,
+          "wacc": 0.1
+        },
+        "market_equity": 1000,
+        "output": {
+          "schema_version": 2,
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "listing_structure": "A+H"
+          },
+          "cash_flow_basis": "FCFF",
+          "review": {
+            "status": "unreviewed",
+            "limitations": [
+              "Diagnostic only: operating drivers and economic suitability require controlled review"
+            ]
+          },
+          "equity_adjustment": 200,
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "discount_timing": "year_end",
+          "scenarios": [
+            {
+              "name": "base",
+              "fcff": [
+                150.0,
+                150.0
+              ],
+              "enterprise_value": 1499.9999999999998,
+              "equity_value": 1299.9999999999998,
+              "per_share": 12.999999999999998,
+              "pv_explicit": 260.33057851239664,
+              "terminal_fcf_next_year": 150.0,
+              "pv_terminal": 1239.6694214876031,
+              "terminal_share_of_ev": 0.8264462809917356
+            }
+          ],
+          "scenario_range": [
+            12.999999999999998,
+            12.999999999999998
+          ],
+          "warnings": [
+            "Conditional scenario range, not a statistical confidence interval.",
+            "Sources and economic assumptions require human verification.",
+            "base: EV is nonpositive or terminal contribution exceeds 75%; review terminal assumptions"
+          ],
+          "usable_range": false,
+          "applicability": "CONDITIONAL",
+          "bridge_conservation": [
+            {
+              "name": "base",
+              "enterprise_value": 1499.9999999999998,
+              "deductions_net": 200,
+              "parent_equity_value": 1299.9999999999998,
+              "formula": "enterprise_value - sum(signed_bridge_amounts)"
+            }
+          ],
+          "weight_meaning": "RESEARCH_ASSUMPTIONS_NOT_EVENT_PROBABILITIES"
+        },
+        "model_equity_minus_market": {
+          "base": 299.9999999999998
+        }
+      },
+      {
+        "replacement": "OPERATING_PATH",
+        "config": {
+          "cash_flow_basis": "FCFF",
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "scenarios": [
+            {
+              "fcf": [
+                165.0,
+                165.0
+              ],
+              "name": "base"
+            }
+          ],
+          "shares": 100,
+          "terminal_g": 0,
+          "wacc": 0.1
+        },
+        "market_equity": 1000,
+        "output": {
+          "schema_version": 2,
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "listing_structure": "A+H"
+          },
+          "cash_flow_basis": "FCFF",
+          "review": {
+            "status": "unreviewed",
+            "limitations": [
+              "Diagnostic only: operating drivers and economic suitability require controlled review"
+            ]
+          },
+          "equity_adjustment": 200,
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "discount_timing": "year_end",
+          "scenarios": [
+            {
+              "name": "base",
+              "fcff": [
+                165.0,
+                165.0
+              ],
+              "enterprise_value": 1650.0,
+              "equity_value": 1450.0,
+              "per_share": 14.5,
+              "pv_explicit": 286.3636363636364,
+              "terminal_fcf_next_year": 165.0,
+              "pv_terminal": 1363.6363636363635,
+              "terminal_share_of_ev": 0.8264462809917354
+            }
+          ],
+          "scenario_range": [
+            14.5,
+            14.5
+          ],
+          "warnings": [
+            "Conditional scenario range, not a statistical confidence interval.",
+            "Sources and economic assumptions require human verification.",
+            "base: EV is nonpositive or terminal contribution exceeds 75%; review terminal assumptions"
+          ],
+          "usable_range": false,
+          "applicability": "CONDITIONAL",
+          "bridge_conservation": [
+            {
+              "name": "base",
+              "enterprise_value": 1650.0,
+              "deductions_net": 200,
+              "parent_equity_value": 1450.0,
+              "formula": "enterprise_value - sum(signed_bridge_amounts)"
+            }
+          ],
+          "weight_meaning": "RESEARCH_ASSUMPTIONS_NOT_EVENT_PROBABILITIES"
+        },
+        "model_equity_minus_market": {
+          "base": 450.0
+        },
+        "gap_change": {
+          "base": 150.00000000000023
+        }
+      },
+      {
+        "replacement": "PRICE",
+        "config": {
+          "cash_flow_basis": "FCFF",
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "scenarios": [
+            {
+              "fcf": [
+                165.0,
+                165.0
+              ],
+              "name": "base"
+            }
+          ],
+          "shares": 100,
+          "terminal_g": 0,
+          "wacc": 0.1
+        },
+        "market_equity": 1250.0,
+        "output": {
+          "schema_version": 2,
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:0",
+              "operating:a21045cd-ccda-5b45-8397-da7d604d1ddd:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "listing_structure": "A+H"
+          },
+          "cash_flow_basis": "FCFF",
+          "review": {
+            "status": "unreviewed",
+            "limitations": [
+              "Diagnostic only: operating drivers and economic suitability require controlled review"
+            ]
+          },
+          "equity_adjustment": 200,
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "discount_timing": "year_end",
+          "scenarios": [
+            {
+              "name": "base",
+              "fcff": [
+                165.0,
+                165.0
+              ],
+              "enterprise_value": 1650.0,
+              "equity_value": 1450.0,
+              "per_share": 14.5,
+              "pv_explicit": 286.3636363636364,
+              "terminal_fcf_next_year": 165.0,
+              "pv_terminal": 1363.6363636363635,
+              "terminal_share_of_ev": 0.8264462809917354
+            }
+          ],
+          "scenario_range": [
+            14.5,
+            14.5
+          ],
+          "warnings": [
+            "Conditional scenario range, not a statistical confidence interval.",
+            "Sources and economic assumptions require human verification.",
+            "base: EV is nonpositive or terminal contribution exceeds 75%; review terminal assumptions"
+          ],
+          "usable_range": false,
+          "applicability": "CONDITIONAL",
+          "bridge_conservation": [
+            {
+              "name": "base",
+              "enterprise_value": 1650.0,
+              "deductions_net": 200,
+              "parent_equity_value": 1450.0,
+              "formula": "enterprise_value - sum(signed_bridge_amounts)"
+            }
+          ],
+          "weight_meaning": "RESEARCH_ASSUMPTIONS_NOT_EVENT_PROBABILITIES"
+        },
+        "model_equity_minus_market": {
+          "base": 200.0
+        },
+        "gap_change": {
+          "base": -250.0
+        }
+      },
+      {
+        "replacement": "VALUATION_PARAMETERS_OR_METHOD",
+        "config": {
+          "cash_flow_basis": "FCFF",
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:0",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ]
+          },
+          "scenarios": [
+            {
+              "fcf": [
+                165.0,
+                165.0
+              ],
+              "name": "base"
+            }
+          ],
+          "shares": 100,
+          "terminal_g": 0,
+          "wacc": 0.08
+        },
+        "market_equity": 1250.0,
+        "output": {
+          "schema_version": 2,
+          "metadata": {
+            "amount_unit": "million",
+            "as_of": "2026-10-26",
+            "assumptions": [
+              "research-path",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:0",
+              "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:1"
+            ],
+            "company": "江西铜业股份有限公司",
+            "currency": "CNY",
+            "shares_unit": "million_shares",
+            "sources": [
+              "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+            ],
+            "listing_structure": "A+H"
+          },
+          "cash_flow_basis": "FCFF",
+          "review": {
+            "status": "unreviewed",
+            "limitations": [
+              "Diagnostic only: operating drivers and economic suitability require controlled review"
+            ]
+          },
+          "equity_adjustment": 200,
+          "equity_bridge": [
+            {
+              "amount": 300,
+              "name": "debt",
+              "source": "disclosed-anchor",
+              "treatment": "deduct"
+            },
+            {
+              "amount": -100,
+              "name": "cash",
+              "source": "disclosed-anchor",
+              "treatment": "add"
+            }
+          ],
+          "discount_timing": "year_end",
+          "scenarios": [
+            {
+              "name": "base",
+              "fcff": [
+                165.0,
+                165.0
+              ],
+              "enterprise_value": 2062.5,
+              "equity_value": 1862.5,
+              "per_share": 18.625,
+              "pv_explicit": 294.238683127572,
+              "terminal_fcf_next_year": 165.0,
+              "pv_terminal": 1768.2613168724279,
+              "terminal_share_of_ev": 0.8573388203017832
+            }
+          ],
+          "scenario_range": [
+            18.625,
+            18.625
+          ],
+          "warnings": [
+            "Conditional scenario range, not a statistical confidence interval.",
+            "Sources and economic assumptions require human verification.",
+            "base: EV is nonpositive or terminal contribution exceeds 75%; review terminal assumptions"
+          ],
+          "usable_range": false,
+          "applicability": "CONDITIONAL",
+          "bridge_conservation": [
+            {
+              "name": "base",
+              "enterprise_value": 2062.5,
+              "deductions_net": 200,
+              "parent_equity_value": 1862.5,
+              "formula": "enterprise_value - sum(signed_bridge_amounts)"
+            }
+          ],
+          "weight_meaning": "RESEARCH_ASSUMPTIONS_NOT_EVENT_PROBABILITIES"
+        },
+        "model_equity_minus_market": {
+          "base": 612.5
+        },
+        "gap_change": {
+          "base": 412.5
+        }
+      }
+    ],
+    "interaction": {
+      "base": 37.49999999999977
+    },
+    "interaction_reference": {
+      "config": {
+        "cash_flow_basis": "FCFF",
+        "equity_bridge": [
+          {
+            "amount": 300,
+            "name": "debt",
+            "source": "disclosed-anchor",
+            "treatment": "deduct"
+          },
+          {
+            "amount": -100,
+            "name": "cash",
+            "source": "disclosed-anchor",
+            "treatment": "add"
+          }
+        ],
+        "metadata": {
+          "amount_unit": "million",
+          "as_of": "2026-10-26",
+          "assumptions": [
+            "research-path",
+            "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:0",
+            "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:1"
+          ],
+          "company": "江西铜业股份有限公司",
+          "currency": "CNY",
+          "shares_unit": "million_shares",
+          "sources": [
+            "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+          ]
+        },
+        "scenarios": [
+          {
+            "fcf": [
+              150.0,
+              150.0
+            ],
+            "name": "base"
+          }
+        ],
+        "shares": 100,
+        "terminal_g": 0,
+        "wacc": 0.08
+      },
+      "output": {
+        "schema_version": 2,
+        "metadata": {
+          "amount_unit": "million",
+          "as_of": "2026-10-26",
+          "assumptions": [
+            "research-path",
+            "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:0",
+            "operating:8dccec51-aa3c-5cfa-9661-42b8c97bf722:0:1"
+          ],
+          "company": "江西铜业股份有限公司",
+          "currency": "CNY",
+          "shares_unit": "million_shares",
+          "sources": [
+            "f3d0cab0-41ef-4860-b7a4-76a1b7885c43"
+          ],
+          "listing_structure": "A+H"
+        },
+        "cash_flow_basis": "FCFF",
+        "review": {
+          "status": "unreviewed",
+          "limitations": [
+            "Diagnostic only: operating drivers and economic suitability require controlled review"
+          ]
+        },
+        "equity_adjustment": 200,
+        "equity_bridge": [
+          {
+            "amount": 300,
+            "name": "debt",
+            "source": "disclosed-anchor",
+            "treatment": "deduct"
+          },
+          {
+            "amount": -100,
+            "name": "cash",
+            "source": "disclosed-anchor",
+            "treatment": "add"
+          }
+        ],
+        "discount_timing": "year_end",
+        "scenarios": [
+          {
+            "name": "base",
+            "fcff": [
+              150.0,
+              150.0
+            ],
+            "enterprise_value": 1875.0,
+            "equity_value": 1675.0,
+            "per_share": 16.75,
+            "pv_explicit": 267.4897119341564,
+            "terminal_fcf_next_year": 150.0,
+            "pv_terminal": 1607.5102880658435,
+            "terminal_share_of_ev": 0.8573388203017832
+          }
+        ],
+        "scenario_range": [
+          16.75,
+          16.75
+        ],
+        "warnings": [
+          "Conditional scenario range, not a statistical confidence interval.",
+          "Sources and economic assumptions require human verification.",
+          "base: EV is nonpositive or terminal contribution exceeds 75%; review terminal assumptions"
+        ],
+        "usable_range": false,
+        "applicability": "CONDITIONAL",
+        "bridge_conservation": [
+          {
+            "name": "base",
+            "enterprise_value": 1875.0,
+            "deductions_net": 200,
+            "parent_equity_value": 1675.0,
+            "formula": "enterprise_value - sum(signed_bridge_amounts)"
+          }
+        ],
+        "weight_meaning": "RESEARCH_ASSUMPTIONS_NOT_EVENT_PROBABILITIES"
+      }
+    },
+    "diagnostic_only": true,
+    "meaning": "Model-internal counterfactual; allocation depends on replacement order, is not unique market causation, and does not upgrade economic review"
+  },
+  "comparison_policy_sources": [
+    {
+      "path": "changes.py",
+      "archive": {
+        "bytes": 24146,
+        "kind": "COMPANY_COMPARISON_POLICY",
+        "path": "raw/df17b8b482a25f3a0794876c1441d34b992d522c961da5063d85ede78ae08bea.raw",
+        "sha256": "df17b8b482a25f3a0794876c1441d34b992d522c961da5063d85ede78ae08bea"
+      }
+    },
+    {
+      "path": "change_calculator.py",
+      "archive": {
+        "bytes": 932,
+        "kind": "COMPANY_COMPARISON_POLICY",
+        "path": "raw/1750620f3801c2cf1835fd342fd661bef02e3ddbab1282e56492899a4373fe34.raw",
+        "sha256": "1750620f3801c2cf1835fd342fd661bef02e3ddbab1282e56492899a4373fe34"
+      }
+    }
+  ],
+  "archive": {
+    "bytes": 102958,
+    "kind": "COMPANY_RESEARCH_CHANGE_SET",
+    "path": "raw/8c4e6b72c7b1f80785bfcd5ccd8d844793d80f9cc36bb28df916ea1829ed67ab.raw",
+    "sha256": "8c4e6b72c7b1f80785bfcd5ccd8d844793d80f9cc36bb28df916ea1829ed67ab"
+  },
+  "content_sha256": "55a287f0465ea8063df5dd38ecd52eb72c50b814f47200af5f066e074e053820"
+}
