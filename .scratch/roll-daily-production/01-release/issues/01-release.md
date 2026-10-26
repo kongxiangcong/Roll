@@ -2,6 +2,7 @@
 
 Status: ready-for-agent
 Execution: resolved
+Acceptance: core-verified; target-environment-checks-pending
 Type: task
 Spec: ../spec.md#r1
 Blocked by: 无阶段内依赖

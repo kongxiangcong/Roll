@@ -106,6 +106,16 @@ foreach ($path in $python, $webIndex) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Missing dependency: $path. Follow README installation instructions." }
 }
 
+$manifestPath = Join-Path $webDist 'release.json'
+if (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Missing release manifest. Run scripts/install-roll.ps1.' }
+$manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+$lockHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $sourceRoot 'frontend/package-lock.json')).Hash.ToLowerInvariant()
+$indexHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $webIndex).Hash.ToLowerInvariant()
+if ($manifest.frontend_lock_sha256 -ne $lockHash -or $manifest.index_sha256 -ne $indexHash) { throw 'Build/lock fingerprint mismatch. Rebuild frontend.' }
+if (Get-Command git -ErrorAction SilentlyContinue) {
+    $head = & git -C $sourceRoot rev-parse HEAD
+    if ($LASTEXITCODE -eq 0 -and $manifest.source_commit -ne $head) { throw 'Frontend build belongs to another commit. Run scripts/install-roll.ps1.' }
+}
 if (-not $AksharePython -and -not $env:ROLL_AKSHARE_PYTHON) {
     $candidate = Join-Path $sourceRoot '.scratch/rce-runtime/akshare/Scripts/python.exe'
     if (Test-Path -LiteralPath $candidate -PathType Leaf) { $AksharePython = $candidate }

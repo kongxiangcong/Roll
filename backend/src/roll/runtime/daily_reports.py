@@ -158,6 +158,8 @@ class DailyReports:
     def publish(self):
         stamp = datetime.fromisoformat(now()); day = stamp.astimezone(SHANGHAI).date().isoformat()
         listing = self.market.listing(); account = self.ledger.account(listing['account_version'])
+        if account.get('confirmed_at') and datetime.fromisoformat(account['confirmed_at'])>stamp:
+            raise HTTPException(409,'ACCOUNT_CHANGED_RETRY_REPORT')
         rows, observations, gaps, versions = self.reviews.facts_at(listing, stamp)
         news, financial, jobs, failures = {}, {}, {}, []
         for member in listing['members']:
@@ -198,7 +200,7 @@ class DailyReports:
         with self.ledger.connection() as db:
             breadths=[json.loads(r[0]) for r in db.execute('SELECT value FROM daily_breadth ORDER BY rowid DESC')]
         breadth=next((b for b in breadths if b['trade_date']==day),{'status':'UNKNOWN','advancing_percent':None,'coverage_percent':None,'reason':'NO_FULL_MARKET_SOURCE; WATCHLIST_IS_NOT_MARKET_BREADTH'})
-        notes = self.notes()
+        notes = [n for n in self.notes() if datetime.fromisoformat(n['recorded_at'])<=stamp]
         inputs={'version':VERSION,'day':day,'account':account,'listing':listing,'market_rows':rows,
                 'market_versions':versions,'observations':observations,'gaps':gaps,'news':news,'financial':financial,
                 'jobs':jobs,'indices':metrics,'breadth':breadth,'notes':notes,'module_errors':failures}
@@ -237,7 +239,7 @@ class DailyReports:
                 delta=Decimal(after)-Decimal(before)
                 flow=(Decimal(account.get('external_cash_in','0'))-Decimal(old['inputs']['account'].get('external_cash_in','0')))-(Decimal(account.get('external_cash_out','0'))-Decimal(old['inputs']['account'].get('external_cash_out','0')))
                 change.update(net_asset_change=str(delta),external_net_flow=str(flow),investment_change_after_flow=str(delta-flow))
-        result={'report_id':str(uuid4()),'day':day,'created_at':stamp.isoformat(),'known_by':stamp.isoformat(),
+        result={'report_id':str(uuid4()),'day':day,'created_at':now(),'known_by':stamp.isoformat(),
                 'inputs':inputs,'input_sha256':digest(inputs),'valuation':valuation,'account_change':change,
                 'new_events':new_events,'conditions':conditions,'module_errors':report_errors,
                 'status':'PARTIAL' if gaps or failures or breadth['status']!='IMPORTED' else 'AVAILABLE',

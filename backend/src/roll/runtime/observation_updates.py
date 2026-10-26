@@ -24,6 +24,9 @@ from roll.market.sentiment_series import SeriesCommand, VERSION as SERIES_VERSIO
 VERSION = 'observation-worker-v1'
 TIMEOUT = 45
 MODEL_TIMEOUT = 30
+MAX_DAILY_ATTEMPTS = 3
+RETRY_MINUTES = 15
+RETRY_END = wall_time(21, 0)
 
 
 def digest(value):
@@ -94,7 +97,7 @@ class ObservationUpdates:
             db.commit()
         return value
 
-    def submit(self, instrument, command, scheduled=None):
+    def submit(self, instrument, command, scheduled=None, attempt=1, retry_of=None):
         settings = self.settings(instrument)
         self.reviews.market.check_scope(ScopeCommand(instruments=[instrument], purpose='OBSERVATION'))
         hashed = digest(command.model_dump())
@@ -111,7 +114,7 @@ class ObservationUpdates:
                 raise HTTPException(409, 'OBSERVATION_UPDATE_QUEUE_BOUND_EXCEEDED')
             job = {'job_id': str(uuid4()), 'instrument': instrument, 'command': command.model_dump(),
                 'settings': settings, 'status': 'QUEUED', 'created_at': now(), 'started_at': None, 'finished_at': None,
-                'scheduled_checkpoint': scheduled, 'observation_id': None, 'error': None,
+                'scheduled_checkpoint': scheduled, 'scheduled_attempt': attempt, 'retry_of': retry_of, 'observation_id': None, 'error': None,
                 'namespace': 'OBSERVATION_ONLY', 'forecast_archive_created': False, 'external_notification_enabled': False}
             db.execute('INSERT INTO observation_update_jobs VALUES(?,?,?,?,?)', (job['job_id'], instrument, command.idempotency_key, hashed, encode(job)))
             db.commit()
@@ -142,16 +145,17 @@ class ObservationUpdates:
         with self.ledger.connection() as db:
             jobs = [json.loads(row[0]) for row in db.execute('SELECT value FROM observation_update_jobs WHERE instrument=? ORDER BY rowid DESC LIMIT 100', (instrument,))]
             observations = [json.loads(row[0]) for row in db.execute('SELECT value FROM background_observations WHERE instrument=? ORDER BY rowid DESC LIMIT 30', (instrument,))]
-            health = {row[0].removeprefix(instrument+':'): json.loads(row[1]) for row in db.execute('SELECT id,value FROM observation_update_health') if row[0].startswith(instrument+':') or row[0]=='MODULE'}
+            health = {row[0].removeprefix(instrument+':'): json.loads(row[1]) for row in db.execute('SELECT id,value FROM observation_update_health') if row[0].startswith(instrument+':') or row[0] in ('MODULE','REPORT')}
         return {'settings': settings, 'jobs': jobs, 'observations': observations, 'health': health,
             'sources': [source for source in self.sources.listing() if source['id'] in ('akshare-news-em', 'akshare-financial-em', 'sohu-daily', 'sina-quote')],
-            'checkpoint': 'Asia/Shanghai 15:05; online current session only', 'timeout_seconds': TIMEOUT,
+            'checkpoint': 'Asia/Shanghai 15:05–21:00; current session only',
+            'retry_policy': {'max_daily_attempts': MAX_DAILY_ATTEMPTS, 'minimum_minutes': RETRY_MINUTES, 'until': '21:00 Asia/Shanghai'}, 'timeout_seconds': TIMEOUT,
             'offline_coverage': self.reviews.coverage(), 'worker': self.reviews.health(),
             'forecast_backfill': False, 'external_notifications': 'IN_APP_ONLY_NO_CHANNEL_ACTIVATION'}
 
     def schedule(self, clock):
         local = clock.astimezone(SHANGHAI)
-        if (local.hour, local.minute) < (15, 5):
+        if local.time().replace(tzinfo=None) < wall_time(15, 5) or local.time().replace(tzinfo=None) > RETRY_END:
             return
         day = local.date()
         for member in self.reviews.market.listing()['members']:
@@ -167,13 +171,30 @@ class ObservationUpdates:
                 ('MARKET', settings.get('market_postclose', False), 'market-postclose:'),
             ):
                 if not enabled: continue
-                key = prefix+day.isoformat()
+                base_key = prefix+day.isoformat()
                 with self.ledger.connection() as db:
-                    if db.execute('SELECT 1 FROM observation_update_jobs WHERE instrument=? AND key=?', (instrument, key)).fetchone(): continue
+                    prior = [json.loads(row[0]) for row in db.execute(
+                        'SELECT value FROM observation_update_jobs WHERE instrument=? AND (key=? OR key LIKE ?) ORDER BY rowid',
+                        (instrument, base_key, base_key+':retry:%'))]
+                attempt = len(prior)+1
+                if attempt > MAX_DAILY_ATTEMPTS: continue
+                if prior:
+                    last = prior[-1]
+                    if last['status'] in ('QUEUED','RUNNING'): continue
+                    if last['status']=='CANCELLED' and last.get('error')!='RESOURCE_DEADLINE_EXCEEDED': continue
+                    ready = last.get('source_ready', last['status']=='COMPLETE' and not any(r.get('status')=='PARTIAL' for r in last.get('result',[])))
+                    if ready: continue
+                    finished = last.get('finished_at')
+                    if not finished or clock < datetime.fromisoformat(finished)+timedelta(minutes=RETRY_MINUTES): continue
+                    # Respect provider pause/cooldown; a later worker tick can revisit.
+                    sources = {'NEWS':['akshare-news-em'], 'FINANCIAL':['akshare-financial-em'], 'MARKET':['sohu-daily','sina-quote']}[kind]
+                    if settings['news_refresh'] and any(self.sources.access(source,instrument) for source in sources): continue
+                key = base_key if attempt==1 else base_key+':retry:'+str(attempt)
                 try:
                     self.submit(instrument, UpdateRequest(idempotency_key=key, kind=kind,
                         refresh_sources=settings['news_refresh'], basis='已登记盘后观察检查点；当前在线观察，不补造离线预测'),
-                        scheduled=datetime.combine(day, wall_time(15, 5), SHANGHAI).isoformat())
+                        scheduled=datetime.combine(day, wall_time(15, 5), SHANGHAI).isoformat(),
+                        attempt=attempt,retry_of=prior[-1]['job_id'] if prior else None)
                 except HTTPException as error:
                     if error.status_code not in (403, 409): raise
 
@@ -219,6 +240,19 @@ class ObservationUpdates:
                 db.commit()
             if job:
                 asyncio.run(self.execute(job, stop))
+            if getattr(self, 'daily_reports', None) and not stop.is_set():
+                # Existing lease owns this loop. Snapshot only after a task, or
+                # once a minute while enabled; unchanged inputs reuse the report.
+                local=clock.astimezone(SHANGHAI)
+                due=local.time().replace(tzinfo=None)>=wall_time(15,5)
+                if job or due and time.monotonic()-getattr(self,'last_report_check',0)>=60:
+                    self.last_report_check=time.monotonic()
+                    with self.ledger.connection() as db:
+                        enabled=db.execute("SELECT 1 FROM observation_update_settings WHERE json_extract(value,'$.enabled')=1 LIMIT 1").fetchone()
+                    if enabled:
+                        try: self.daily_reports.publish()
+                        except Exception as error:
+                            self.health_write('REPORT', {'error':str(getattr(error,'detail',type(error).__name__)), 'at':now(), 'retry_after':(clock+timedelta(minutes=1)).isoformat()})
         except Exception as error:
             # This optional module cannot stop market/account/forward task chains.
             self.health_write('MODULE', {'error': type(error).__name__, 'at': now(), 'retry_after': (clock+timedelta(minutes=5)).isoformat()})
@@ -258,7 +292,7 @@ class ObservationUpdates:
                     if observation['meaningful']:
                         self.notifications.observation_updated(db, observation)
                 job.update(status='PARTIAL' if prepared['errors'] else 'COMPLETE', finished_at=now(), observation_id=observation['observation_id'],
-                    cache_reused=row is not None, result=prepared['receipts'], errors=prepared['errors'])
+                    cache_reused=row is not None, result=prepared['receipts'], errors=prepared['errors'], source_ready=prepared.get('source_ready',False), readiness=prepared.get('readiness','UNKNOWN'))
                 db.execute('UPDATE observation_update_jobs SET value=? WHERE id=?', (encode(job), job['job_id']))
                 db.commit()
             if prepared['errors']:
@@ -296,7 +330,8 @@ class ObservationUpdates:
         fresh = completed and (
             current-completed < timedelta(minutes=15) if source_id == 'akshare-news-em'
             else current.astimezone(SHANGHAI).date() == completed.astimezone(SHANGHAI).date())
-        if complete and fresh:
+        retry_partial = job.get('scheduled_attempt',1)>1 and complete and complete['status']=='PARTIAL'
+        if complete and fresh and not retry_partial:
             receipts.append({'source': source_id, 'run_id': complete['run_id'], 'status': complete['status'],
                 'refresh': 'CACHE_FRESH_BY_ACTUAL_SOURCE_RUN', 'source_finished_at': complete['finished_at']})
             return
@@ -397,7 +432,17 @@ class ObservationUpdates:
                     errors.append('SENTIMENT:'+str(getattr(error, 'detail', type(error).__name__))[:200])
             meaningful = bool(facts)
         input_value += [payload.get('classification_run_id') is not None] if kind == 'NEWS' else []
-        return {'instrument': instrument, 'kind': kind, 'version': VERSION, 'known_by': now(), 'payload': payload,
+        source_ready=not errors and not any(r.get('status')=='PARTIAL' for r in receipts)
+        if kind=='MARKET':
+            target=datetime.fromisoformat(job.get('scheduled_checkpoint') or now()).astimezone(SHANGHAI).date().isoformat()
+            last=(payload.get('market') or {}).get('last_complete_daily') or {}
+            source_ready=source_ready and last.get('trade_date')==target
+        elif kind=='FINANCIAL':
+            source_ready=source_ready and payload.get('status') not in ('MISSING',None)
+        elif not payload.get('saved_fact_count'):
+            source_ready=source_ready and any(r.get('status')=='EMPTY' for r in receipts)
+        return {'source_ready':source_ready,'readiness':'READY' if source_ready else 'SOURCE_INCOMPLETE_OR_NOT_CURRENT',
+            'instrument': instrument, 'kind': kind, 'version': VERSION, 'known_by': now(), 'payload': payload,
             'input_sha256': digest(input_value), 'semantic_sha256': digest(meaning), 'meaningful': meaningful,
             'receipts': receipts, 'errors': errors, 'evidence_kind': 'METHOD_CASE' if 'METHOD_CASE' in evidence else 'REAL_SAVED_OBSERVATION' if evidence and all(value in ('REAL_ACQUISITION', 'REAL_ARCHIVE_IMPORT', 'REAL_LOCAL_CLASSIFICATION') for value in evidence) else 'SOURCE_PROVENANCE_UNVERIFIED',
             'forecast_archive_created': False, 'system_usable': False, 'capability': 'RESEARCH_LIMITED'}

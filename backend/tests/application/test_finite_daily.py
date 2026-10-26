@@ -48,3 +48,25 @@ def test_two_holdings_watch_and_local_failure_restart(tmp_path):
         assert len(c.get('/api/observation-updates/SSE:600000').json()['jobs'])==1
     with TestClient(create_app(tmp_path,runtime_role='API')) as c:
         for j in results:assert c.get('/api/observation-update-jobs/'+j['job_id']).json()==j
+
+
+def test_financial_rows_cannot_borrow_another_issuers_semantic_proof(tmp_path):
+    import json,hashlib
+    from test_financial_income import CAPTURE
+    with TestClient(create_app(tmp_path,runtime_role='API')) as c:
+        register(c,'SZSE:000001','平安银行','000001')
+        policy=next(p for p in c.get('/api/research/collection-sources').json() if p['id']=='akshare-financial-em')
+        c.post('/api/research/collection-sources/akshare-financial-em/policy',json={'enabled':True,'expected_revision':policy['revision'],'basis':'METHOD multi issuer'})
+        async def supplier(instrument,output):
+            manifest=json.loads((CAPTURE/'capture.json').read_text())
+            for item in manifest['captures']:
+                (output/item['raw_file']).write_bytes((CAPTURE/item['raw_file']).read_bytes())
+            content=json.loads((output/'03.raw').read_bytes())
+            for row in content['data']:row['SECUCODE']='000001.SZ'
+            (output/'03.raw').write_text(json.dumps(content))
+            manifest['captures'][2]['sha256']=hashlib.sha256((output/'03.raw').read_bytes()).hexdigest()
+            return manifest
+        c.app.state.financial.worker=supplier
+        value=c.post('/api/market/financial/SZSE:000001/income/collect',json={'idempotency_key':'second-issuer','basis':'METHOD'}).json()
+        assert value['status'] in {'COMPLETE','PARTIAL'},value
+        assert value['facts'] and all(f['instrument']=='SZSE:000001' and f['unit']=='UNKNOWN' and f['semantic_document'] is None for f in value['facts'])

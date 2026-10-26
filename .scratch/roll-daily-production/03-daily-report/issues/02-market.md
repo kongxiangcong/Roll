@@ -2,6 +2,7 @@
 
 Status: ready-for-agent
 Execution: resolved
+Acceptance: core-verified; target-environment-checks-pending
 Type: task
 Spec: ../spec.md#r2
 Blocked by: 前阶段完成；前一ticket完成

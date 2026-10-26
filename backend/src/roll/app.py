@@ -1532,6 +1532,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     from roll.runtime.daily_reports import DailyReports, NoteCommand, BreadthCommand
     daily_reports=DailyReports(ledger,market,reviews,valuations,observation_updates,financial_observations,news)
     app.state.daily_reports=daily_reports
+    observation_updates.daily_reports=daily_reports
 
     @app.get('/api/daily-reports')
     def daily_report_history():return daily_reports.history()
