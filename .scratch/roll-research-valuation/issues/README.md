@@ -2,11 +2,11 @@
 
 依据：[实施规格](../spec.md) v1.0。顺序：**01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12**。
 
-所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**01**。本轮未开始开发。
+所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**02**。01合同与来源映射已完成，见[验收证据](../evidence/01/README.md)；后续功能尚未实现。
 
 | 顺序 | 任务 | 依赖 | Completion |
 | --- | --- | --- | --- |
-| 01 | [冻结双工作流合同与参考能力映射](01-contracts-and-source-map.md) | 无 | not-started |
+| 01 | [冻结双工作流合同与参考能力映射](01-contracts-and-source-map.md) | 无 | complete |
 | 02 | [实现公司身份、共享证据与核查记录](02-shared-evidence-and-identity.md) | 01 | not-started |
 | 03 | [实现经营假设及共享分析快照](03-research-state-and-snapshots.md) | 02 | not-started |
 | 04 | [接入可复算条件估值计算器](04-conditional-valuation-engine.md) | 03 | not-started |
@@ -35,4 +35,3 @@
 - 08—10：独立完整研报可用切片。
 - 11：概率研究输入和协议，不自动训练或改概率。
 - 12：真实联合交付与恢复验证。
-
