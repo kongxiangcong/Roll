@@ -1,0 +1,14 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_report_request_freezes_shared_core_and_template_without_account _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red01/test_report_request_freezes_sh0')
+
+    def test_report_request_freezes_shared_core_and_template_without_account(tmp_path):
+>       from roll.research.company.reports import ReportCommand
+E       ModuleNotFoundError: No module named 'roll.research.company.reports'
+
+backend\tests\company_research\test_report_pipeline.py:7: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_report_request_freezes_shared_core_and_template_without_account
+1 failed in 3.05s

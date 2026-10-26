@@ -88,6 +88,8 @@ class CompanyResearch:
         self.changes = ChangeState(self)
         from .financial_facts import initialize
         initialize(self)
+        from .reports import ReportState
+        self.reports = ReportState(self)
 
     @contextmanager
     def transaction(self):

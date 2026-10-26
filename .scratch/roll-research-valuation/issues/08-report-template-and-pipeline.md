@@ -1,7 +1,7 @@
 # 08 实现投研与估值完整报告流水线
 
 Status: ready-for-agent
-Completion: not-started
+Completion: in-progress
 Depends on: 07
 Spec: [v1.0](../spec.md) 第8、9节
 
@@ -42,3 +42,6 @@ deep-dive-research模板、check_gates.py和已有CODEX/worker；不能通过绝
 
 2026-10-26：依据已确认需求创建，尚未实施。
 
+2026-10-27：08实现及有界来源/章节/恢复工程测试已保存到[08证据](../evidence/08/README.md)，但尚未完成真实最终报告验收。host03独立修订复用8份原输出，旧9section/9run/固定input完全保留；仅缺9/10/REVIEW/CHALLENGE四章。其确切公开及派生研究payload已经本地/独立审计，启动被automatic approval review拒绝，理由为用户未明确授权该特定payload发送到OpenAI。root已请求人类确认，目前pending-human；没有启动新worker、换工具绕过或临时发布缺章报告。Completion保持in-progress，09依赖未解除。
+
+追加未完成项：最终验收前还需以真实类别来源回执替代quality临时统一缺口台账，并补资料充分时A/B/C/H的有源附录装配路径；不能仅补四次章调用即宣称完整能力。当前16算法源与四个待执行wire冻结，若修算法必须追加版本、保留旧输入/输出。

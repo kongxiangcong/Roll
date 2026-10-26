@@ -13,7 +13,7 @@
 | 05 | [连接经营驱动、正常化与经济审核](05-operating-drivers-and-review.md) | 04 | complete |
 | 06 | [实现三类变化与信息状态比较](06-daily-change-decomposition.md) | 05 | complete |
 | 07 | [将持续投研与估值融入每日使用](07-daily-research-integration.md) | 06 | complete |
-| 08 | [实现投研与估值完整报告流水线](08-report-template-and-pipeline.md) | 07 | not-started |
+| 08 | [实现投研与估值完整报告流水线](08-report-template-and-pipeline.md) | 07 | in-progress |
 | 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | not-started |
 | 10 | [交付独立公司研报入口及共享联动](10-report-workflow-ui.md) | 09 | not-started |
 | 11 | [提供研究特征快照与增量验证协议](11-probability-research-interface.md) | 10 | not-started |
@@ -36,4 +36,4 @@
 - 11：概率研究输入和协议，不自动训练或改概率。
 - 12：真实联合交付与恢复验证。
 
-07已交付[每日切片与完整证据](../evidence/07/README.md)：真实JCC共享经营/量价同屏，多公司历史隔离，原worker存档/来源状态、规范财务字段适配与失败重试，实际浏览器/恢复均已验收。当前JCC估值缺口与05当前用途限制保留；宽回归失败和修复后的36项窄回归分列，不称全部宽回归全绿。两个真实盘后周期留12，整体仍in-progress，08尚未实施。
+07已交付[每日切片与完整证据](../evidence/07/README.md)：真实JCC共享经营/量价同屏，多公司历史隔离，原worker存档/来源状态、规范财务字段适配与失败重试，实际浏览器/恢复均已验收。当前JCC估值缺口与05当前用途限制保留；宽回归失败和修复后的36项窄回归分列，不称全部宽回归全绿。两个真实盘后周期留12，整体仍in-progress，08正在实施与真实部分报告验收；失败和追加修订分账见08证据，未完成前不进入09。

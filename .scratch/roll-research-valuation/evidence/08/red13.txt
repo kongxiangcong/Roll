@@ -1,0 +1,34 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_model_markdown_subheads_are_kept_below_host_owned_structure _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red13/test_model_markdown_subheads_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002279438A3F0>
+
+    def test_model_markdown_subheads_are_kept_below_host_owned_structure(tmp_path,monkeypatch):
+        import json
+        from roll.research.company.reports import ReportCommand
+        worker=tmp_path/'method-subhead-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt'])
+    v=dict(section_id=p['section_id'],input_sha256=p['input_sha256'],paragraphs=[dict(text='## Company view\\nEvidence remains incomplete.',fact_version_ids=[])],gaps=[])
+    print(json.dumps(dict(kind='thread',model=c['model'],provider='METHOD',thread_id='method',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=json.dumps(v),error_info=None)),flush=True)
+    ''',encoding='utf-8')
+        auth=tmp_path/'method-auth.json';auth.write_text(json.dumps(dict(auth_mode='chatgpt',tokens=dict(access_token='METHOD_ONLY'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth))
+        research=service(tmp_path/'data');research.reports.worker=worker
+        issuer=research.register(company());snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='subhead'))
+        for _ in range(5):job=research.reports.advance(job['job_id'])
+        section=research.reports.sections(job)[0]
+>       assert section['status']=='COMPLETE'
+E       AssertionError: assert 'FAILED' == 'COMPLETE'
+E         
+E         - COMPLETE
+E         + FAILED
+
+backend\tests\company_research\test_report_pipeline.py:364: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_model_markdown_subheads_are_kept_below_host_owned_structure
+1 failed, 14 deselected in 7.84s

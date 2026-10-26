@@ -67,6 +67,8 @@ def validate_references(db):
     validate_economics(db, archives)
     from .change_integrity import validate_changes
     validate_changes(db, archives)
+    from .report_integrity import validate_reports
+    validate_reports(db, archives)
     if 'company_research_financial_adaptations' in names:
         for row in db.execute('SELECT value FROM company_research_financial_adaptations'):
             adaptation=verified(json.loads(row[0]))

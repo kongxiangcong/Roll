@@ -1,0 +1,21 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_frozen_chapter_payload_can_be_reviewed_locally_without_auth_or_model __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red15/test_frozen_chapter_payload_ca0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000200AEFAA3F0>
+
+    def test_frozen_chapter_payload_can_be_reviewed_locally_without_auth_or_model(tmp_path,monkeypatch):
+        from roll.research.company.reports import ReportCommand
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(tmp_path/'absent-auth.json'))
+        research=service(tmp_path);issuer=research.register(company());snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='preview'))
+        for _ in range(4):job=research.reports.advance(job['job_id'])
+>       preview=research.reports.chapter_preview(job['job_id'],'1')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ReportState' object has no attribute 'chapter_preview'
+
+backend\tests\company_research\test_report_pipeline.py:403: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_frozen_chapter_payload_can_be_reviewed_locally_without_auth_or_model
+1 failed, 18 deselected in 8.07s

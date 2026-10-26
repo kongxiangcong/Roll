@@ -1,0 +1,52 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_economic_coverage_distinguishes_explicit_baseline_and_valid_method_non_applicability[False] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red16/test_economic_coverage_disting0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000233FF48A3F0>
+financial = False
+
+    @pytest.mark.parametrize('financial',[False,True])
+    def test_economic_coverage_distinguishes_explicit_baseline_and_valid_method_non_applicability(tmp_path,monkeypatch,financial):
+        from test_economic_review import operating_request
+        from roll.research.company.reports import ReportCommand
+        from roll.accounts.ledger import now
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research=service(tmp_path);command,_=operating_request(research)
+        if financial:command.economic_basis['applicability']['category']='FINANCIAL'
+        result=research.calculate_operating_valuation(command)
+>       job=research.reports.start(ReportCommand(company_id=result['company_id'],snapshot_id=result['snapshot_id'],as_of=now(),source_mode='REUSE',idempotency_key='econ-purpose',valuation_purpose='BASELINE_RESEARCH'))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ReportCommand
+E       valuation_purpose
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='BASELINE_RESEARCH', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+backend\tests\company_research\test_report_pipeline.py:421: ValidationError
+_ test_economic_coverage_distinguishes_explicit_baseline_and_valid_method_non_applicability[True] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red16/test_economic_coverage_disting1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000233E2E003E0>
+financial = True
+
+    @pytest.mark.parametrize('financial',[False,True])
+    def test_economic_coverage_distinguishes_explicit_baseline_and_valid_method_non_applicability(tmp_path,monkeypatch,financial):
+        from test_economic_review import operating_request
+        from roll.research.company.reports import ReportCommand
+        from roll.accounts.ledger import now
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research=service(tmp_path);command,_=operating_request(research)
+        if financial:command.economic_basis['applicability']['category']='FINANCIAL'
+        result=research.calculate_operating_valuation(command)
+>       job=research.reports.start(ReportCommand(company_id=result['company_id'],snapshot_id=result['snapshot_id'],as_of=now(),source_mode='REUSE',idempotency_key='econ-purpose',valuation_purpose='BASELINE_RESEARCH'))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ReportCommand
+E       valuation_purpose
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='BASELINE_RESEARCH', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+backend\tests\company_research\test_report_pipeline.py:421: ValidationError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_economic_coverage_distinguishes_explicit_baseline_and_valid_method_non_applicability[False]
+FAILED backend\tests\company_research\test_report_pipeline.py::test_economic_coverage_distinguishes_explicit_baseline_and_valid_method_non_applicability[True]
+2 failed, 19 deselected in 13.03s

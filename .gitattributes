@@ -205,3 +205,15 @@ backend/src/roll/research/company/valuation_reference/THIRD_PARTY_NOTICES.md -te
 # Ticket07 captured Windows commands and actual/synthetic execution receipts.
 .scratch/roll-research-valuation/evidence/07/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 .scratch/roll-research-valuation/evidence/07/*.json -text whitespace=cr-at-eol
+
+# Ticket08 bundled template authority and exact captured verification bytes.
+backend/src/roll/research/company/report_reference/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/08/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/08/*.json -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/08/captured/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Preserve frozen host source bytes used by ticket08 runtime/revalidation archives.
+backend/src/roll/research/company/report*.py -text whitespace=cr-at-eol
+backend/src/roll/agents/company_report_runtime.py -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/08/preview*/** -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/08/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

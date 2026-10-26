@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_revision_keeps_parent_and_frozen_input_and_uses_distinct_code_provenance _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red19/test_revision_keeps_parent_and0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025228672520>
+
+    def test_revision_keeps_parent_and_frozen_input_and_uses_distinct_code_provenance(tmp_path,monkeypatch):
+        from roll.research.company.report_revisions import RevisionCommand
+        from roll.research.company.report_template import SECTIONS
+        from roll.research.company.report_archive import archive
+        from roll.research.company.service import record
+        from roll.accounts.ledger import encode
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research,parent,packet,fact=packet_with_fact(tmp_path)
+        # Reload the immutable fixture rather than the local rendering-only mutations above.
+        packet=research.reports.input(parent['input_id'])
+        commands={sid:research.reports.chapter_preview(parent['job_id'],sid) for sid in SECTIONS}
+        plan=record(dict(parent_job_id=parent['job_id'],input_id=packet['input_id'],input_sha256=packet['packet_sha256'],model=packet['model'],generation_code_hashes=packet['code_hashes'],commands={sid:dict(sha256=c['command_sha256'],archive=archive(research.evidence,encode(c['command']).encode(),'METHOD_COMMAND')) for sid,c in commands.items()}))
+        digest=archive(research.evidence,encode(plan).encode(),'METHOD_PLAN')['sha256']
+        cancelled=research.reports.cancel(parent['job_id']);original=research.reports.input(packet['input_id'])
+        command=RevisionCommand(parent_job_id=parent['job_id'],command_plan_sha256=digest,idempotency_key='revision')
+>       job=research.reports.revise(command)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ReportState' object has no attribute 'revise'
+
+backend\tests\company_research\test_report_revisions.py:57: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_revisions.py::test_revision_keeps_parent_and_frozen_input_and_uses_distinct_code_provenance
+1 failed, 5 deselected in 9.30s
