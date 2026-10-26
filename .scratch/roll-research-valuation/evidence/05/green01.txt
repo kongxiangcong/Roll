@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_operating_drivers_build_fcff_and_conditional_view_without_mutating_diagnostic _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-green01/test_operating_drivers_build_f0')
+
+    def test_operating_drivers_build_fcff_and_conditional_view_without_mutating_diagnostic(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, original = operating_request(research)
+        result = research.calculate_operating_valuation(command)
+>       model = research.operating_model(result['operating_model_id'])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_economic_review.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:558: in operating_model
+    return self.economics.read('operating_models', 'operating_model_id', identifier)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\economics.py:158: in read
+    fail('ARTIFACT_CORRUPT', 'Economic record differs from canonical archive', 409)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'ARTIFACT_CORRUPT'
+reason = 'Economic record differs from canonical archive', status = 409
+context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 409: {'code': 'ARTIFACT_CORRUPT', 'reason': 'Economic record differs from canonical archive', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_operating_drivers_build_fcff_and_conditional_view_without_mutating_diagnostic
+1 failed in 6.95s

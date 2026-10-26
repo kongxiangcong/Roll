@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\run_real_cases.py", line 211, in <module>
+    main()
+    ~~~~^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\run_real_cases.py", line 193, in main
+    result = research.calculate_operating_valuation(command)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\research\company\service.py", line 555, in calculate_operating_valuation
+    return self.economics.calculate(command)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\research\company\economics.py", line 348, in calculate
+    raw = self.research.calculate_valuation(raw_command)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\research\company\service.py", line 540, in calculate_valuation
+    return self.valuations.calculate(command)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\research\company\valuation.py", line 176, in calculate
+    validate_provenance(command, snapshot, {f['version_id']: f for f in packet['payload']['facts']})
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\research\company\valuation.py", line 62, in validate_provenance
+    fail('FACT_VALUE_MISMATCH', 'Numeric value, unit, currency, scope or period differs from frozen fact', path=path)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\research\company\service.py", line 17, in fail
+    raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+fastapi.exceptions.HTTPException: 422: {'code': 'FACT_VALUE_MISMATCH', 'reason': 'Numeric value, unit, currency, scope or period differs from frozen fact', 'context': {'path': 'shares'}, 'retryable': False}

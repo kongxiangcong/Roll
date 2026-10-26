@@ -1,0 +1,407 @@
+{
+  "kind": "REAL_JCC_EVIDENCE_GAPS_WITH_SYMBOLIC_METHOD_NUMBERS",
+  "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+  "original03store_modified": false,
+  "result": {
+    "schema_version": 1,
+    "created_at": "2026-10-26T18:37:05.884354+00:00",
+    "company_id": "45bee610-8ab0-49e2-8c68-0a62e45d2d74",
+    "operating_model_id": "c451d141-9676-5372-bed5-5e4422df1971",
+    "valuation_id": "a0d65e1b-de1f-4409-82ab-192c93658f04",
+    "review_id": "63cde881-58ec-4061-b280-7a80b0a832d4",
+    "snapshot_id": "2a42bcc7-6902-494a-9b26-e91289c7f676",
+    "content_sha256": "4773811f8154a1f392043845783a899d74880eb507878012cfdc34c536487f53"
+  },
+  "view": {
+    "review": {
+      "applicability": "CONDITIONAL",
+      "archive": {
+        "bytes": 11705,
+        "kind": "COMPANY_ECONOMIC_REVIEWS",
+        "path": "raw/1654f7be427da1c13b54566353b47cbcaded7df5b1683e472adcfffc2f3edfda.raw",
+        "sha256": "1654f7be427da1c13b54566353b47cbcaded7df5b1683e472adcfffc2f3edfda"
+      },
+      "authority": "HOST_DETERMINISTIC_CHECKS",
+      "checks": [
+        {
+          "check_id": "assumption/config/shares",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for config/shares",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/config/equity_bridge/0/amount",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for config/equity_bridge/0/amount",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/config/equity_bridge/1/amount",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for config/equity_bridge/1/amount",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/config/wacc",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for config/wacc",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/config/terminal_g",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for config/terminal_g",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/base_revenue",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/base_revenue",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/revenue_growth",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/revenue_growth",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/invested_capital",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/invested_capital",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/delta_working_capital",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/delta_working_capital",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/growth_capex",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/growth_capex",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/maintenance_capex",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/maintenance_capex",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/operating_margin",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/operating_margin",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/tax_rate",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/tax_rate",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/scenarios/0/years/0/depreciation",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/scenarios/0/years/0/depreciation",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/wacc/risk_free",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/wacc/risk_free",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/wacc/beta",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/wacc/beta",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/wacc/equity_risk_premium",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/wacc/equity_risk_premium",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/wacc/cost_of_debt",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/wacc/cost_of_debt",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/wacc/equity_weight",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/wacc/equity_weight",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/wacc/debt_weight",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/wacc/debt_weight",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/wacc/tax_rate",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/wacc/tax_rate",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "assumption/drivers/basis/terminal/roic",
+          "fact_version_ids": [],
+          "limitations": [],
+          "missing_path": "Supply relevant sourced economic rationale for drivers/basis/terminal/roic",
+          "reason": "Explicit forecast assumption retained; detailed economic evidence audit incomplete",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "temporal_basis",
+          "fact_version_ids": [],
+          "missing_path": null,
+          "reason": "Financial baseline and declared bridge dates must match the frozen revenue/shares/bridge numeric-provenance periods",
+          "status": "PASS"
+        },
+        {
+          "check_id": "applicability",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "Deliberately ordinary-category claim to test frozen-source guard cannot be bypassed",
+          "status": "PASS"
+        },
+        {
+          "check_id": "evidence_references",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "Applicability must cite frozen evidence",
+          "status": "PASS"
+        },
+        {
+          "check_id": "wacc_evidence",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+          "status": "PASS"
+        },
+        {
+          "check_id": "terminal_evidence",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+          "status": "PASS"
+        },
+        {
+          "check_id": "bridge_evidence",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+          "status": "PASS"
+        },
+        {
+          "check_id": "wacc_source_values",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": "Supply or reconcile wacc_source_values",
+          "reason": "Riskfree and any debt/tax-shield rate require matching dated numeric source facts; beta/ERP/target weights remain explicit assumptions",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "wacc_construction",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "WACC = (risk_free + beta * ERP) * equity_weight + pretax_debt_cost * (1-tax) * debt_weight",
+          "status": "PASS"
+        },
+        {
+          "check_id": "symbolic-guard-only/0/growth_reinvestment",
+          "fact_version_ids": [],
+          "missing_path": null,
+          "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+          "status": "PASS"
+        },
+        {
+          "check_id": "symbolic-guard-only/terminal_reinvestment",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "Final steady reinvestment/NOPAT = g/ROIC; terminal FCFF grows from an after-reinvestment base",
+          "status": "PASS"
+        },
+        {
+          "check_id": "normalization",
+          "fact_version_ids": [],
+          "missing_path": null,
+          "reason": "Each adjustment is applied once; before + delta = after; original basis and evidence retained",
+          "status": "PASS"
+        },
+        {
+          "check_id": "cycle_normalization",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736",
+            "8a9cf4a0-df39-4762-8308-f3343988f880",
+            "330354e4-7f26-4c22-b501-443d558dec9a",
+            "7fae1cc6-71f0-4446-9b02-031ba88a5611",
+            "bd392b06-9a04-4a08-a527-27cceef55c13"
+          ],
+          "missing_path": "Supply or reconcile cycle_normalization",
+          "reason": "Cyclicals need sourced peak/trough, multi-year complete-cycle rationale and applied normalizations; a two-year mean is insufficient",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "segment_basis",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736",
+            "8a9cf4a0-df39-4762-8308-f3343988f880",
+            "330354e4-7f26-4c22-b501-443d558dec9a",
+            "7fae1cc6-71f0-4446-9b02-031ba88a5611",
+            "bd392b06-9a04-4a08-a527-27cceef55c13"
+          ],
+          "missing_path": "Supply or reconcile segment_basis",
+          "reason": "Complex groups need sourced segment revenue/profit/capital totals reconciled to consolidated scope and financial/associate treatment",
+          "status": "BLOCKED"
+        },
+        {
+          "check_id": "equity_bridge",
+          "fact_version_ids": [
+            "90f1147a-9cee-4212-8814-d21d1fcfc736"
+          ],
+          "missing_path": null,
+          "reason": "Diluted shares and mutually exclusive operating/nonoperating treatments need reconciliation",
+          "status": "PASS"
+        }
+      ],
+      "company_id": "45bee610-8ab0-49e2-8c68-0a62e45d2d74",
+      "content_sha256": "8c0c9682e7e27a16bb38644be748c74f610e327054d61eaa617f2b672142e626",
+      "created_at": "2026-10-26T18:37:05.867122+00:00",
+      "limitations": [
+        "ALL NUMBERS ARE SYMBOLIC METHOD INPUTS FOR THE GATE TEST, NOT JCC FINANCIAL FACTS OR FORECASTS",
+        "Two years are not a complete copper cycle; no segment profit/capital or associate reconciliation; no usable range"
+      ],
+      "meaning": "Economic consistency only; no return validation or trading authority",
+      "operating_model_id": "c451d141-9676-5372-bed5-5e4422df1971",
+      "operating_model_sha256": "835ba426273dfaf7c9f2ae60ea76cb4bc3126eed45c29cc0566faadc48230407",
+      "policy_archive": {
+        "bytes": 42647,
+        "kind": "COMPANY_ECONOMIC_ALGORITHM",
+        "path": "raw/36482c5b98acbcfa8fb36b88ed42cd97bf9e69106b662e1b73fa401bb854a09f.raw",
+        "sha256": "36482c5b98acbcfa8fb36b88ed42cd97bf9e69106b662e1b73fa401bb854a09f"
+      },
+      "policy_version": "economic-review-2",
+      "review_id": "63cde881-58ec-4061-b280-7a80b0a832d4",
+      "reviewed_at": "2026-10-26T18:37:05.867100+00:00",
+      "schema_version": 1,
+      "source_snapshot_id": "1d5b4113-e126-437d-a04e-8830159a320d",
+      "status": "blocked",
+      "usable_range": false,
+      "valuation_id": "a0d65e1b-de1f-4409-82ab-192c93658f04",
+      "valuation_sha256": "ce62f6eeabf5a0f10c594f74c3b008ee5ba9b3d708180893d8e01de029c5324a"
+    },
+    "status": "blocked",
+    "usable_range": false,
+    "purpose": "BASELINE_RESEARCH",
+    "scenarios": [],
+    "valuation_basis": {
+      "bridge_as_of": "2025-12-31",
+      "current_pricing_gaps": [
+        "Full copper cycle, industrial/trading/financial segments, equity production, associates and restricted cash remain unreconciled"
+      ],
+      "financial_period_end": "2025-12-31",
+      "latest_known_financial_period_end": "2025-12-31",
+      "valuation_basis_date": "2025-12-31"
+    },
+    "knowledge_as_of": "2026-10-26T18:37:05.156720+00:00",
+    "current_pricing_gaps": [
+      "Full copper cycle, industrial/trading/financial segments, equity production, associates and restricted cash remain unreconciled",
+      "Equity bridge older than180 days; refresh required for current pricing"
+    ],
+    "conditions": [
+      {
+        "anchor_fact_version_ids": [
+          "90f1147a-9cee-4212-8814-d21d1fcfc736",
+          "93334688-8d0b-4e45-b9b5-29ad3f7f50ac",
+          "8a9cf4a0-df39-4762-8308-f3343988f880",
+          "330354e4-7f26-4c22-b501-443d558dec9a",
+          "7fae1cc6-71f0-4446-9b02-031ba88a5611",
+          "bd392b06-9a04-4a08-a527-27cceef55c13",
+          "49f6ec8a-228a-4680-872f-1a8217a47813",
+          "382f25f5-575f-4c60-9e88-642b8082d341",
+          "a3e5bff3-3cb4-48da-89eb-6e5661fdaab4",
+          "012896dc-808f-4b5c-8619-2885ffdb35ee"
+        ],
+        "assumption_id": "symbolic-gate-test",
+        "hypothesis_version_ids": [],
+        "statement": "ALL NUMBERS ARE SYMBOLIC METHOD INPUTS FOR THE GATE TEST, NOT JCC FINANCIAL FACTS OR FORECASTS"
+      }
+    ],
+    "evaluated_at": null,
+    "later_disclosure_fact_version_ids": [],
+    "limitations": [
+      "ALL NUMBERS ARE SYMBOLIC METHOD INPUTS FOR THE GATE TEST, NOT JCC FINANCIAL FACTS OR FORECASTS",
+      "Two years are not a complete copper cycle; no segment profit/capital or associate reconciliation; no usable range"
+    ],
+    "diagnostic_valuation_id": "a0d65e1b-de1f-4409-82ab-192c93658f04",
+    "operating_model_id": "c451d141-9676-5372-bed5-5e4422df1971"
+  },
+  "real_source_count": 1,
+  "numeric_financial_forecast": false,
+  "model_calls": 0,
+  "network_calls": 0
+}

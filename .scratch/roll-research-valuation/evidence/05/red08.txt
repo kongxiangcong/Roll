@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_missing_temporal_basis_cannot_be_presented_as_current_usable_prices ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red08/test_missing_temporal_basis_ca0')
+
+    def test_missing_temporal_basis_cannot_be_presented_as_current_usable_prices(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        result = research.calculate_operating_valuation(command)
+        assert research.valuation_presentation(result['review_id'], 'BASELINE_RESEARCH')['usable_range']
+        current = research.valuation_presentation(result['review_id'])
+>       assert current['status'] == 'blocked' and current['usable_range'] is False and current['scenarios'] == []
+E       AssertionError: assert ('conditional' == 'blocked'
+E         
+E         - blocked
+E         + conditional)
+
+backend\tests\company_research\test_economic_review.py:226: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_missing_temporal_basis_cannot_be_presented_as_current_usable_prices
+1 failed, 8 deselected in 7.18s

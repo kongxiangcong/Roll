@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_operating_drivers_build_fcff_and_conditional_view_without_mutating_diagnostic _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red01/test_operating_drivers_build_f0')
+
+    def test_operating_drivers_build_fcff_and_conditional_view_without_mutating_diagnostic(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+>       command, original = operating_request(research)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_economic_review.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+research = <roll.research.company.service.CompanyResearch object at 0x000001B9D9BB1BE0>
+
+    def operating_request(research):
+        from test_valuation import valuation_request
+>       from roll.research.company import OperatingValuationCommand
+E       ImportError: cannot import name 'OperatingValuationCommand' from 'roll.research.company' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\research\company\__init__.py)
+
+backend\tests\company_research\test_economic_review.py:7: ImportError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_operating_drivers_build_fcff_and_conditional_view_without_mutating_diagnostic
+1 failed in 10.21s

@@ -1,0 +1,50 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_volume_price_drivers_and_year_end_reinvestment_fund_next_year_growth __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red07/test_volume_price_drivers_and_0')
+
+    def test_volume_price_drivers_and_year_end_reinvestment_fund_next_year_growth(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        command.config.update(wacc=.2, terminal_g=.1)
+        command.economic_basis['wacc']['equity_risk_premium'] = .16
+        years = command.drivers['scenarios'][0]['years']
+        years[0]['growth_capex'] = 50
+        years[1].update(growth_capex=55, invested_capital=550)
+        for yi, row in enumerate(years):
+            p = command.drivers['provenance'].pop(f'scenarios/0/years/{yi}/revenue_growth')
+            row.pop('revenue_growth')
+            row['revenue_driver'] = dict(volume_growth=0 if yi == 0 else .1, price_growth=0)
+            for field in ['volume_growth', 'price_growth']:
+                command.drivers['provenance'][f'scenarios/0/years/{yi}/revenue_driver/{field}'] = dict(p)
+>       result = research.calculate_operating_valuation(command)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_economic_review.py:207: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:555: in calculate_operating_valuation
+    return self.economics.calculate(command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\economics.py:294: in calculate
+    cashflows, derived, normalizations = build_model(command, snapshot, packet)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\economics.py:71: in build_model
+    input_provenance(value, drivers['provenance'][path], facts, assumptions,
+backend\src\roll\research\company\economics.py:34: in input_provenance
+    fail('UNIT_MISMATCH', 'Operating input scale or currency differs from model')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'UNIT_MISMATCH'
+reason = 'Operating input scale or currency differs from model', status = 422
+context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'UNIT_MISMATCH', 'reason': 'Operating input scale or currency differs from model', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_volume_price_drivers_and_year_end_reinvestment_fund_next_year_growth
+1 failed, 7 deselected in 6.99s

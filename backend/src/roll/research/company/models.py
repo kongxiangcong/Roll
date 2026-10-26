@@ -109,3 +109,8 @@ class ValuationCommand(Command):
     parent_version_id: str | None = None
     change_reason: str = Field(min_length=1, max_length=2000)
     idempotency_key: str = Field(min_length=1, max_length=128)
+
+
+class OperatingValuationCommand(ValuationCommand):
+    drivers: dict
+    economic_basis: dict

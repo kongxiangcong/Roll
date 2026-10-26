@@ -6,7 +6,7 @@ from typing import Literal
 from fastapi import APIRouter, Response, Query
 from pydantic import Field
 
-from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand, AnalysisCommand, ValuationCommand
+from .models import Command, CompanyCommand, MaterialCommand, FactCommand, ConflictResolution, ExistingSourceCommand, AnalysisCommand, ValuationCommand, OperatingValuationCommand
 from .service import fail
 
 
@@ -136,6 +136,10 @@ def router(research):
     def valuation(valuation_id: str):
         return research.valuation(valuation_id)
 
+    @routes.get('/valuations/{valuation_id}/presentation')
+    def diagnostic_presentation(valuation_id: str, purpose: Literal['CURRENT_PRICING', 'BASELINE_RESEARCH'] = 'CURRENT_PRICING'):
+        return research.valuation_presentation(valuation_id, purpose)
+
     @routes.get('/valuations/{valuation_id}/bundle')
     def valuation_bundle(valuation_id: str):
         return research.valuation_bundle(valuation_id)
@@ -143,5 +147,21 @@ def router(research):
     @routes.post('/valuations/{valuation_id}/replay')
     def replay_valuation(valuation_id: str):
         return research.replay_valuation(valuation_id)
+
+    @routes.post('/operating-valuations', status_code=201)
+    def operating_valuation(command: OperatingValuationCommand):
+        return research.calculate_operating_valuation(command)
+
+    @routes.get('/operating-models/{model_id}')
+    def operating_model(model_id: str):
+        return research.operating_model(model_id)
+
+    @routes.get('/economic-reviews/{review_id}')
+    def economic_review(review_id: str):
+        return research.economic_review(review_id)
+
+    @routes.get('/economic-reviews/{review_id}/presentation')
+    def valuation_presentation(review_id: str, purpose: Literal['CURRENT_PRICING', 'BASELINE_RESEARCH'] = 'CURRENT_PRICING'):
+        return research.valuation_presentation(review_id, purpose)
 
     return routes
