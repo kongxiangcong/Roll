@@ -13,3 +13,10 @@
 ## 实施结果
 
 阶段1—4的8张ticket均已实现（Execution: resolved）。核心验证通过，目标环境验收仍待执行，详见[验收记录](acceptance.md)。分阶段提交：阶段1 `2e41d0b`；阶段2 `a18d657`；阶段3 `fd2cf58`；阶段4为本目录后续提交。
+
+## 后续阶段 5—6
+
+基于阶段 1—4 的远端树，独立分支 `codex/roll-research-validation`。
+
+5. [回放正确性与研究报告](05-research-replay/spec.md)
+6. [独立验证执行器](06-independent-validation/spec.md)
