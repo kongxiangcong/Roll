@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_reverse_uses_frozen_ah_identity_and_complete_same_day_class_basis ____
+
+    def test_reverse_uses_frozen_ah_identity_and_complete_same_day_class_basis():
+        from roll.research.company.calculator import calculate
+        identity = issuer()
+        identity["listings"].append(dict(listing_id="HKEX:00001", share_class="H", currency="HKD"))
+        cfg = config()
+        cfg["metadata"]["listing_structure"] = "A"  # Caller cannot conceal H listing.
+        cfg["reverse"] = dict(scenario="base", price=10)
+        refused = calculate(cfg, identity)
+>       assert refused["reverse"]["error"]["code"] == "AH_BASIS_INCOMPLETE"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'error'
+
+backend\tests\company_research\test_valuation.py:52: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_reverse_uses_frozen_ah_identity_and_complete_same_day_class_basis
+1 failed, 1 deselected in 1.19s

@@ -80,6 +80,8 @@ class CompanyResearch:
 
         from .analysis import AnalysisState
         self.analysis = AnalysisState(self)
+        from .valuation import ValuationState
+        self.valuations = ValuationState(self)
 
     @contextmanager
     def transaction(self):
@@ -531,3 +533,18 @@ class CompanyResearch:
 
     def analysis_candidates(self, input_id, limit=100, offset=0):
         return self.analysis.candidates(input_id, limit, offset)
+
+    def calculate_valuation(self, command):
+        return self.valuations.calculate(command)
+
+    def valuation_input(self, identifier):
+        return self.valuations.read('valuation_inputs', 'version_id', identifier)
+
+    def valuation(self, identifier):
+        return self.valuations.result(identifier)
+
+    def replay_valuation(self, identifier):
+        return self.valuations.replay(identifier)
+
+    def valuation_bundle(self, identifier):
+        return self.valuations.bundle(identifier)

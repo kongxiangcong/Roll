@@ -1,7 +1,7 @@
 # 04 接入可复算条件估值计算器
 
 Status: ready-for-agent
-Completion: not-started
+Completion: complete
 Depends on: 03
 Spec: [v1.0](../spec.md) 第6节
 
@@ -24,10 +24,10 @@ deep-dive-research/scripts/fundamental_valuation.py、tests/test_fundamental_val
 
 ## 验收标准
 
-- [ ] 固定前N年、反推N+1年的语义与公式一致；有无正终值需求分别处理。
-- [ ] 拒绝单位混用、非有限输入、WACC≤g等；早期负现金流可处理，终值不适用有错误原因。
-- [ ] A+H不得A价乘全股本；受限现金/债务/少数股东权益桥接可复核。
-- [ ] 保存结果可独立复算，原上游测试与新增边界均通过，许可完整。
+- [x] 固定前N年、反推N+1年的语义与公式一致；有无正终值需求分别处理。
+- [x] 拒绝单位混用、非有限输入、WACC≤g等；早期负现金流可处理，终值不适用有错误原因。
+- [x] A+H不得A价乘全股本；受限现金/债务/少数股东权益桥接可复核。
+- [x] 保存结果可独立复算，原上游测试与新增边界均通过，许可完整。
 
 ## 验证与交付证据
 
@@ -43,3 +43,5 @@ deep-dive-research/scripts/fundamental_valuation.py、tests/test_fundamental_val
 
 2026-10-26：依据已确认需求创建，尚未实施。
 
+
+2026-10-27：04完成；[验收证据](../evidence/04/README.md)和[API说明](../../../docs/research/company-valuation-api.md)。72 passed/5 subtests，独立离线bundle/hash/备份恢复通过。所有结果强制unreviewed、usable_range=false；经营驱动/正常化经济检查交05，无模型/网络/UI调用。本票不代表整体联合验收完成。

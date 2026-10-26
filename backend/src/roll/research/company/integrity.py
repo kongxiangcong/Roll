@@ -50,3 +50,6 @@ def validate_references(db):
         verified(json.loads(row[0]))
     from .analysis_integrity import validate_analysis
     validate_analysis(db, archives, materials, facts, companies)
+
+    from .valuation_integrity import validate_valuations
+    validate_valuations(db, archives, companies)

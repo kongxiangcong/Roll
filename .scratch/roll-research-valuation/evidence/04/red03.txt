@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_calculator_diagnostics_limits_bridge_and_normalized_epv _________
+
+    def test_calculator_diagnostics_limits_bridge_and_normalized_epv():
+>       from roll.research.company.calculator import calculate, perpetuity
+E       ImportError: cannot import name 'perpetuity' from 'roll.research.company.calculator' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket04\backend\src\roll\research\company\calculator.py)
+
+backend\tests\company_research\test_valuation.py:75: ImportError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_calculator_diagnostics_limits_bridge_and_normalized_epv
+1 failed, 2 deselected in 1.27s

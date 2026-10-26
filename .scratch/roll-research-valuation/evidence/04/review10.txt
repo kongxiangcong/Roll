@@ -1,0 +1,45 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_service_ah_market_basis_uses_matching_frozen_numeric_facts _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv04-review10/test_service_ah_market_basis_u0')
+
+    def test_service_ah_market_basis_uses_matching_frozen_numeric_facts(tmp_path):
+        from test_shared_evidence import service
+        from test_analysis_snapshots import candidate
+        from roll.research.company import FactCommand, AnalysisCommand
+        from datetime import datetime, timezone
+        research = service(tmp_path)
+        command, old = valuation_request(research)
+        anchor = research.fact(old["fact_version_ids"][0])
+        basis = market_basis()
+        basis[0]["listing_id"] = "SSE:600362"; basis[1]["listing_id"] = "HKEX:00358"
+        fact_ids = [anchor["version_id"]]
+        for index, row in enumerate(basis):
+            values = [("shares", row["shares"], "million_shares", None, row["listing_id"]),
+                      ("price", row["price"], "price_per_share", row["currency"], row["listing_id"])]
+            if row.get("fx"): values.append(("fx/rate", .9, "ratio", None, "HKD->CNY"))
+            for field, value, unit, currency, scope in values:
+>               fact = research.add_fact(FactCommand(company_id=old["company_id"], material_id=anchor["material_id"],
+                    metric=row["listing_id"] + ":" + field, business="LISTED_CAPITAL", value=str(value),
+                    unit=unit, currency=currency, scope=scope, period_start="2026-10-26", period_end="2026-10-26",
+                    change_reason="METHOD market basis reference"))
+
+backend\tests\company_research\test_valuation.py:309: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:335: in add_fact
+    fail('FACT_BASIS_MISMATCH', 'Fact differs from declared material basis; explicit derived basis required', fields=mismatches)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'FACT_BASIS_MISMATCH'
+reason = 'Fact differs from declared material basis; explicit derived basis required'
+status = 422, context = {'fields': ['unit', 'currency', 'scope']}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'FACT_BASIS_MISMATCH', 'reason': 'Fact differs from declared material basis; explicit derived basis required', 'context': {'fields': ['unit', 'currency', 'scope']}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_service_ah_market_basis_uses_matching_frozen_numeric_facts
+1 failed, 10 deselected in 6.52s

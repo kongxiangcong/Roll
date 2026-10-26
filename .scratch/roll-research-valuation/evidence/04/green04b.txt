@@ -1,0 +1,81 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_research_valuation_is_snapshot_bound_immutable_and_replayed_offline ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv04-green04b/test_research_valuation_is_sna0')
+
+    def test_research_valuation_is_snapshot_bound_immutable_and_replayed_offline(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, snapshot = valuation_request(research)
+        result = research.calculate_valuation(command)
+        assert result["result"]["scenarios"][0]["per_share"] == pytest.approx(8)
+        assert result["result"]["usable_range"] is False
+        assert result["snapshot_id"] == snapshot["snapshot_id"]
+        assert research.analysis_snapshot(snapshot["snapshot_id"]) == snapshot
+>       frozen = research.valuation_input(result["input_version_id"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_valuation.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:541: in valuation_input
+    return self.valuations.read('valuation_inputs', 'version_id', identifier)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\valuation.py:112: in read
+    if json.loads(raw) != expected:
+       ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+s = WindowsPath('D:/dsh-proj/Roll/.scratch/rv04-green04b/test_research_valuation_is_sna0/raw/9593ce09d981faeed5281fe76fc78c0416d9933a903555a23dca59581d76ddfc.raw')
+cls = None, object_hook = None, parse_float = None, parse_int = None
+parse_constant = None, object_pairs_hook = None, kw = {}
+
+    def loads(s, *, cls=None, object_hook=None, parse_float=None,
+            parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+        """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
+        containing a JSON document) to a Python object.
+    
+        ``object_hook`` is an optional function that will be called with the
+        result of any object literal decode (a ``dict``). The return value of
+        ``object_hook`` will be used instead of the ``dict``. This feature
+        can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+    
+        ``object_pairs_hook`` is an optional function that will be called with
+        the result of any object literal decoded with an ordered list of pairs.
+        The return value of ``object_pairs_hook`` will be used instead of the
+        ``dict``.  This feature can be used to implement custom decoders.  If
+        ``object_hook`` is also defined, the ``object_pairs_hook`` takes
+        priority.
+    
+        ``parse_float``, if specified, will be called with the string
+        of every JSON float to be decoded. By default this is equivalent to
+        float(num_str). This can be used to use another datatype or parser
+        for JSON floats (e.g. decimal.Decimal).
+    
+        ``parse_int``, if specified, will be called with the string
+        of every JSON int to be decoded. By default this is equivalent to
+        int(num_str). This can be used to use another datatype or parser
+        for JSON integers (e.g. float).
+    
+        ``parse_constant``, if specified, will be called with one of the
+        following strings: -Infinity, Infinity, NaN.
+        This can be used to raise an exception if invalid JSON numbers
+        are encountered.
+    
+        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+        kwarg; otherwise ``JSONDecoder`` is used.
+        """
+        if isinstance(s, str):
+            if s.startswith('\ufeff'):
+                raise JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
+                                      s, 0)
+        else:
+            if not isinstance(s, (bytes, bytearray)):
+>               raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+                                f'not {s.__class__.__name__}')
+E               TypeError: the JSON object must be str, bytes or bytearray, not WindowsPath
+
+C:\Users\72449\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\json\__init__.py:345: TypeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_research_valuation_is_snapshot_bound_immutable_and_replayed_offline
+1 failed, 3 deselected in 6.64s

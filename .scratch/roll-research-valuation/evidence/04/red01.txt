@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_calculator_unweighted_full_paths_and_parent_equity_bridge ________
+
+    def test_calculator_unweighted_full_paths_and_parent_equity_bridge():
+>       from roll.research.company.calculator import calculate
+E       ModuleNotFoundError: No module named 'roll.research.company.calculator'
+
+backend\tests\company_research\test_valuation.py:20: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_valuation.py::test_calculator_unweighted_full_paths_and_parent_equity_bridge
+1 failed in 1.31s
