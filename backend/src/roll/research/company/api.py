@@ -24,6 +24,66 @@ class CandidateSubmission(Command):
 
 def router(research):
     routes = APIRouter(prefix='/api/company-research', tags=['company-research'])
+    from .reports import ReportCommand
+
+    from .report_revisions import RevisionCommand
+
+    @routes.post('/report-revisions',status_code=201)
+    def report_revision(command:RevisionCommand):
+        return research.reports.revise(command)
+
+    @routes.get('/report-revisions/{revision_id}')
+    def read_report_revision(revision_id:str):
+        return research.reports.revision(revision_id)
+
+    @routes.post('/reports',status_code=201)
+    def report_request(command:ReportCommand):
+        return research.reports.start(command)
+
+    @routes.get('/jobs/{job_id}')
+    def report_job(job_id:str):
+        return research.reports.get(job_id)
+
+    @routes.get('/jobs/{job_id}/chapters/{section_id}/preview')
+    def chapter_preview(job_id:str,section_id:str):
+        return research.reports.chapter_preview(job_id,section_id)
+
+    @routes.post('/jobs/{job_id}/cancel')
+    def cancel_report(job_id:str):
+        return research.reports.cancel(job_id)
+
+    @routes.post('/jobs/{job_id}/retry')
+    def retry_report(job_id:str):
+        return research.reports.retry(job_id)
+
+    @routes.get('/companies/{company_id}/reports')
+    def company_reports(company_id:str,limit:int=Query(50,ge=1,le=200),offset:int=Query(0,ge=0)):
+        return research.reports.list(company_id,limit,offset)
+
+    @routes.get('/reports/{report_id}')
+    def company_report(report_id:str):
+        return research.reports.read(report_id)
+
+    @routes.get('/report-inputs/{input_id}')
+    def report_input(input_id:str):
+        return research.reports.input(input_id)
+
+    @routes.get('/report-sections/{section_id}')
+    def report_section(section_id:str):
+        return research.analysis.read('report_sections','section_version_id',section_id)
+
+    @routes.get('/report-runs/{run_id}')
+    def report_run(run_id:str):
+        return research.analysis.read('report_runs','run_id',run_id)
+
+    @routes.get('/report-charts/{chart_sha256}')
+    def report_chart(chart_sha256:str):
+        with research.ledger.connection() as db:
+            bound=db.execute("SELECT 1 FROM company_research_report_inputs i,json_each(i.value,'$.payload.charts') c WHERE json_extract(c.value,'$.chart_id')=? LIMIT 1",(chart_sha256,)).fetchone()
+        if not bound:
+            fail('REPORT_CHART_NOT_FOUND','Chart is not bound to a frozen report input',404)
+        return Response(research.evidence.raw(chart_sha256).read_bytes(),media_type='image/svg+xml',
+            headers={'X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox"})
 
     @routes.post('/companies', status_code=201)
     def register(command: CompanyCommand):

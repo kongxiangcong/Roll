@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_model_gap_cannot_inject_active_content_and_exact_command_is_archived __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red06/test_model_gap_cannot_inject_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002033015A3F0>
+
+    def test_model_gap_cannot_inject_active_content_and_exact_command_is_archived(tmp_path,monkeypatch):
+        import json
+        from roll.research.company.reports import ReportCommand
+        worker=tmp_path/'method-report-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt'])
+    assert c['tools']==[]
+    print(json.dumps({'kind':'thread','model':c['model'],'provider':'METHOD','thread_id':'method','instruction_sources':[]}),flush=True)
+    print(json.dumps({'kind':'completed','status':'completed','output':json.dumps({'section_id':p['section_id'],'input_sha256':p['input_sha256'],'paragraphs':[{'text':'Evidence is incomplete','fact_version_ids':[]}],'gaps':['<script>arbitrary_code()</script>']})}),flush=True)
+    ''',encoding='utf-8')
+        auth=tmp_path/'method-auth.json'
+        auth.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_NOT_A_REAL_CREDENTIAL'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth))
+        research=service(tmp_path/'data');research.reports.worker=worker
+        issuer=research.register(company());snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],
+            as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='model'))
+        for _ in range(5):job=research.reports.advance(job['job_id'])
+        section=research.reports.sections(job)[0]
+>       assert section['status']=='FAILED'
+E       AssertionError: assert 'COMPLETE' == 'FAILED'
+E         
+E         - FAILED
+E         + COMPLETE
+
+backend\tests\company_research\test_report_pipeline.py:160: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_model_gap_cannot_inject_active_content_and_exact_command_is_archived
+1 failed, 5 deselected in 7.65s

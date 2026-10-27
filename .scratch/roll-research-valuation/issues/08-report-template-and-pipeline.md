@@ -1,7 +1,7 @@
 # 08 实现投研与估值完整报告流水线
 
 Status: ready-for-agent
-Completion: not-started
+Completion: complete
 Depends on: 07
 Spec: [v1.0](../spec.md) 第8、9节
 
@@ -24,9 +24,9 @@ deep-dive-research模板、check_gates.py和已有CODEX/worker；不能通过绝
 
 ## 验收标准
 
-- [ ] 报告实际含十节及新增估值子章节，引用可回原件；不是把日报扩写冒充深研。
-- [ ] 同快照核心结果与日报一致；模板检查失败明确哪些章节未通过。
-- [ ] 任务重试不混合模型/输入版本，不重复发布；无账户也能执行。
+- [x] 报告实际含十节及新增估值子章节，引用可回原件；不是把日报扩写冒充深研。
+- [x] 同快照核心结果与日报一致；模板检查失败明确哪些章节未通过。
+- [x] 任务重试不混合模型/输入版本，不重复发布；无账户也能执行。
 
 ## 验证与交付证据
 
@@ -42,3 +42,12 @@ deep-dive-research模板、check_gates.py和已有CODEX/worker；不能通过绝
 
 2026-10-26：依据已确认需求创建，尚未实施。
 
+2026-10-27：08实现及有界来源/章节/恢复工程测试已保存到[08证据](../evidence/08/README.md)，但尚未完成真实最终报告验收。host03独立修订复用8份原输出，旧9section/9run/固定input完全保留；仅缺9/10/REVIEW/CHALLENGE四章。其确切公开及派生研究payload已经本地/独立审计，启动被automatic approval review拒绝，理由为用户未明确授权该特定payload发送到OpenAI。root已请求人类确认，目前pending-human；没有启动新worker、换工具绕过或临时发布缺章报告。Completion保持in-progress，09依赖未解除。
+
+追加未完成项：最终验收前还需以真实类别来源回执替代quality临时统一缺口台账，并补资料充分时A/B/C/H的有源附录装配路径；不能仅补四次章调用即宣称完整能力。当前16算法源与四个待执行wire冻结，若修算法必须追加版本、保留旧输入/输出。
+
+2026-10-27补记：08.4来源账本/有源A/B/C/H与恢复工程检查已通过（13项及受影响30项），17源码、同四份wire、8raw离线复核与恢复均保留。但root收尾发现四部分结论/速览节奏仍常量缺口，以及未知scope图表边界，正在追加08.5收口。人类四章授权仍pending，不以此替代必要本地工作，未验收、不进入09。
+
+2026-10-27追加：08.5本地摘要/实质覆盖修复已完成并冻结18源码；49项受影响回归与最终14项正负覆盖验证通过，同4wire不变、八raw离线复核与32源码/12command双阶段恢复通过。当前任务cf414530…QUEUED/CHAPTERS下一9，详见[05检查点](../evidence/08/checkpoint05.md)。尚待明确人类外发授权、四真实章、实际发布/发布后恢复与验收，Completion保持in-progress/pending-human，未进入09。
+
+2026-10-27最终验收：收到明确人类四请求授权后，四新真实CODEX章全部COMPLETE；12个host section齐全，已发布report b9cfb2a0-8f93-516a-a4cd-7b7801fd7911。94规则52PASS/18FAIL/2UNKNOWN/22不适用，真实缺口使研究报告保持PARTIAL，当前定价blocked、历史基准conditional，不升级财务或账户权限。公开备份恢复到全新rv08-published-restored05，原/恢复记录和Markdown完全相同、32源码/12wire、account0。root独立读取实际结构与恢复回执后认可08实现验收，Completion改complete，09成为下一票但未由本票实施。详见[最终证据](../evidence/08/final05.md)。历史pending/失败记录保留，授权范围/执行日期未倒填。

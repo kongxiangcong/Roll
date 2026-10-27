@@ -23,7 +23,7 @@ class AnalysisRuntime:
             db.execute('INSERT INTO company_research_analysis_runs VALUES(?,?,?) ON CONFLICT(run_id) DO UPDATE SET value=excluded.value',
                        (run['run_id'], run['company_id'], encode(value)))
 
-    def execute(self, input_id, cancel=None, timeout_seconds=180):
+    def execute(self, input_id, cancel=None, timeout_seconds=180, model=None):
         from roll.agents.codex_process import execute, owner_alive, process_creation
         packet = self.research.analysis_input(input_id)
         with self.research.transaction() as db:
@@ -32,7 +32,7 @@ class AnalysisRuntime:
                 if prior['status'] == 'RUNNING' and owner_alive(prior):
                     fail('ANALYSIS_ALREADY_RUNNING', 'A bounded model attempt already owns this company input', 409)
             run = {'run_id': str(uuid4()), 'company_id': packet['company_id'], 'input_id': input_id,
-                   'task_kind': 'COMPANY_OPERATING_ANALYSIS', 'backend': 'CODEX', 'model': os.environ.get('ROLL_CODEX_MODEL', 'gpt-6.1-sol'),
+                   'task_kind': 'COMPANY_OPERATING_ANALYSIS', 'backend': 'CODEX', 'model': model or os.environ.get('ROLL_CODEX_MODEL', 'gpt-6.1-sol'),
                    'status': 'RUNNING', 'started_at': now(), 'archives': [], 'tools': [],
                    'evidence_kind': 'METHOD_CASE' if self.worker else 'REAL_MODEL_ANALYSIS',
                    'formal_authority': False, 'limits': {'timeout_seconds': min(180, max(1, timeout_seconds)), 'runtime_operations': 8, 'tool_calls': 0},

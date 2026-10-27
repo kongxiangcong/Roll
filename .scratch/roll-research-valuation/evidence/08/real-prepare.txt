@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket08\.scratch\roll-research-valuation\evidence\08\prepare_real.py", line 49, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket08\.scratch\roll-research-valuation\evidence\08\prepare_real.py", line 37, in main
+    job=research.reports.start(ReportCommand(company_id=company['company_id'],snapshot_id=snapshot['snapshot_id'],
+                               ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        as_of=now(),source_mode='REFRESH' if plans else 'REUSE',sources=plans,idempotency_key='rv08-real-report01'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\backend\.venv\Lib\site-packages\pydantic\main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 2 validation errors for ReportCommand
+sources.0.material.source_url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.13/v/string_type
+sources.1.material.source_url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.13/v/string_type

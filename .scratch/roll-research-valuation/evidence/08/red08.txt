@@ -1,0 +1,41 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_report_comparison_keeps_peer_facts_in_their_own_company_context _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red08/test_report_comparison_keeps_p0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026F5078A520>
+
+    def test_report_comparison_keeps_peer_facts_in_their_own_company_context(tmp_path,monkeypatch):
+        from roll.research.company.reports import ReportCommand
+        from roll.research.company import MaterialCommand,FactCommand,AnalysisCommand
+        from test_analysis_snapshots import candidate
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research=service(tmp_path)
+        issuer=research.register(company());main=published(research,issuer)
+        peer=research.register(company('����ͬҵ���޹�˾',['����ͬҵ'],[dict(exchange='HKEX',code='00345',share_class='H',currency='HKD')]))
+        from test_shared_evidence import material_input
+        metadata=material_input(peer['company_id']);metadata.update(subject_name=peer['legal_name'],source_url='https://issuer.example/peer.json',media_type='application/json')
+        material=research.import_material(MaterialCommand(**metadata),b'{"revenue":100,"gross_margin":0.3}')
+        facts=[]
+        for metric,value,unit in [('revenue','100','HKD_MILLION'),('gross_margin','0.3','ratio')]:
+>           facts.append(research.add_fact(FactCommand(company_id=peer['company_id'],material_id=material['material_id'],metric=metric,business='PLANT_BEVERAGE',value=value,
+                unit=unit,currency='HKD' if metric=='revenue' else None,scope='CONSOLIDATED',period_start='2025-01-01',period_end='2025-12-31',table=metric,change_reason='METHOD exact peer raw JSON')))
+
+backend\tests\company_research\test_report_pipeline.py:220: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:343: in add_fact
+    fail('FACT_BASIS_MISMATCH', 'Fact differs from declared material basis; explicit derived basis required', fields=mismatches)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'FACT_BASIS_MISMATCH'
+reason = 'Fact differs from declared material basis; explicit derived basis required'
+status = 422, context = {'fields': ['unit', 'currency']}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'FACT_BASIS_MISMATCH', 'reason': 'Fact differs from declared material basis; explicit derived basis required', 'context': {'fields': ['unit', 'currency']}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_report_comparison_keeps_peer_facts_in_their_own_company_context
+1 failed, 7 deselected in 6.65s

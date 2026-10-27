@@ -1,0 +1,35 @@
+......F                                                                  [100%]
+================================== FAILURES ===================================
+_ test_revalidation_quarantines_bound_raw_location_without_changing_failed_attempt _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-review20/test_revalidation_quarantines_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002857F1D3E10>
+
+    def test_revalidation_quarantines_bound_raw_location_without_changing_failed_attempt(tmp_path,monkeypatch):
+        import json
+        from roll.accounts.ledger import encode
+        from roll.research.company.report_template import SECTIONS
+        from roll.research.company.report_archive import archive
+        from roll.research.company.service import record
+        from roll.research.company.report_revisions import RevisionCommand
+        research,parent,packet,fact=packet_with_fact(tmp_path/'data')
+        packet=research.reports.input(parent['input_id'])
+        worker=tmp_path/'method-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt'])
+    print(json.dumps({'kind':'thread','model':c['model'],'provider':'METHOD','thread_id':'method','instruction_sources':[]}),flush=True)
+    print(json.dumps({'kind':'completed','status':'completed','output':json.dumps({'section_id':p['section_id'],'input_sha256':p['input_sha256'],'paragraphs':[{'text':'��˾�����ʰٷ�֮��ʮ��','fact_version_ids':[]},{'text':'�о�����˶ԡ�','fact_version_ids':[]}],'gaps':[]})}),flush=True)
+    ''',encoding='utf-8')
+        auth=tmp_path/'method-auth.json';auth.write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'access_token':'METHOD_NOT_A_REAL_CREDENTIAL'}}))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth));research.reports.worker=worker
+        parent=research.reports.advance(parent['job_id']);old_section=research.reports.sections(parent)[0]
+>       assert old_section['status']=='FAILED'
+E       AssertionError: assert 'UNAVAILABLE' == 'FAILED'
+E         
+E         - FAILED
+E         + UNAVAILABLE
+
+backend\tests\company_research\test_report_revisions.py:101: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_revisions.py::test_revalidation_quarantines_bound_raw_location_without_changing_failed_attempt
+1 failed, 6 passed in 46.14s

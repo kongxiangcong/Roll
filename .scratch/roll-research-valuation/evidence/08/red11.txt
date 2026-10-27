@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_risk_workpaper_uses_host_arithmetic_and_does_not_self_approve_clear ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red11/test_risk_workpaper_uses_host_0')
+
+    def test_risk_workpaper_uses_host_arithmetic_and_does_not_self_approve_clear(tmp_path):
+        from roll.research.company import MaterialCommand,FactCommand,AnalysisCommand
+        from roll.research.company.reports import ReportCommand
+        from roll.accounts.ledger import now
+        from test_shared_evidence import material_input
+        from test_analysis_snapshots import candidate
+        research=service(tmp_path);issuer=research.register(company())
+        metadata=material_input(issuer['company_id']);metadata.update(media_type='application/json')
+        material=research.import_material(MaterialCommand(**metadata),b'{"goodwill":40,"equity":100}')
+        facts=[]
+        for metric,value in [('goodwill','40'),('equity','100')]:
+            facts.append(research.add_fact(FactCommand(company_id=issuer['company_id'],material_id=material['material_id'],metric=metric,business='FINANCIAL_STATEMENT',
+                value=value,unit='CNY_MILLION',currency='CNY',scope='CONSOLIDATED',period_start='2025-01-01',period_end='2025-12-31',table='/'+metric,change_reason='METHOD literal raw JSON')))
+        packet=research.freeze_analysis(AnalysisCommand(company_id=issuer['company_id'],as_of=now(),fact_version_ids=[f['version_id'] for f in facts]))
+        snapshot=research.apply_analysis_candidate(packet['input_id'],candidate(packet,facts[0]))
+>       job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of=now(),source_mode='REUSE',idempotency_key='risk',
+            risk_workpaper=[dict(number=7,fact_version_ids=[f['version_id'] for f in facts],candidate_outcome='CLEAR',reason='METHOD candidate incorrectly says clear')]))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ReportCommand
+E       risk_workpaper
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=[{'number': 7, 'fact_vers...ncorrectly says clear'}], input_type=list]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+backend\tests\company_research\test_report_pipeline.py:297: ValidationError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_risk_workpaper_uses_host_arithmetic_and_does_not_self_approve_clear
+1 failed, 10 deselected in 6.45s
