@@ -16,11 +16,14 @@ def unit_label(fact, materials=()):
     elif unit in {'million shares','million_shares'}:return '百万股'
     elif unit=='100_million_shares':return '亿股'
     elif unit=='ratio':return '比值（原始小数，不统一换算百分比）'
+    elif currency is None and unit in {'ton','tons','tonne','tonnes','吨','万吨','千吨','barrel','桶','台','件','人','employee','employees','m3','立方米','kWh','千瓦时','MW','兆瓦','index','指数点','%','percent','bp'}:
+        return {'ton':'吨','tons':'吨','tonne':'吨','tonnes':'吨','barrel':'桶','employee':'人','employees':'人','m3':'立方米','kWh':'千瓦时','MW':'兆瓦','index':'指数点','percent':'百分比（原值）','bp':'基点（原值）'}.get(unit,unit)
     elif not unit or unit=='unit':unit='单位/尺度未知'
     return str(unit)+(('（'+str(currency)+'）') if currency else '（币种不适用或未知）')
 
 
 def literal(fact,materials=()):
+    if fact['value_type']=='TEXT':return cell(fact['value'])
     return cell(fact['value'])+' '+cell(unit_label(fact,materials))
 
 
@@ -70,7 +73,7 @@ def typed_packet(packet):
         shares=unit_label(dict(unit=meta['shares_unit'],currency=None))
         per_share=money+' / '+shares
         sub=value['payload']['valuation_subsections']
-        sub['2']='固定正常化调整；比率为小数口径；金额单位与来源见逐项依据。\n'+table(
+        sub['2']=('固定正常化调整；比率为小数口径；金额单位与来源见逐项依据。\n' if model['normalization_schedule'] else '固定模型未列正常化调整，直接采用其基础口径；不代表已独立证明无需调整。\n')+table(
             ['调整项','目标','调整前','调整后','差额','单位/币种/范围','依据'],[[r['adjustment_id'],r['target'],r['before'],r['after'],r['delta'],
             unit_label(r.get('provenance',{}).get('before',{}))+' / '+str(r.get('provenance',{}).get('before',{}).get('scope')),r['reason']] for r in model['normalization_schedule']])
         sub['3']='固定年度研究假设；各金额列单位：'+money+'。范围沿用固定模型；未重算现金流。\n'+table(
@@ -87,4 +90,6 @@ def typed_packet(packet):
             else:result+='；'+str(presentation.get('reason') or presentation.get('current_pricing_gaps') or presentation.get('limitations'))
             return result
         sub['5']='当前定价用途：\n'+summary(value['payload']['valuation_presentation'])+'\n\n历史基准条件研究（非历史PIT）：\n'+summary(binding['baseline'])
+    from .report_summary import valuation_context
+    valuation_context(value['payload'])
     return value

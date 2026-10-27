@@ -50,7 +50,7 @@ class ReportRuntime:
             knowledge_frozen_at=payload['knowledge_frozen_at'], historical_pit_eligible=False,
             source_gaps=payload['source_gaps'],source_check_receipts=payload['acquisition'],
             unincorporated_material_ids=payload['unincorporated_material_ids'])
-        if packet['template']['version'] in {'08.3','08.4'}:
+        if packet['template']['version'] in {'08.3','08.4','08.5'}:
             from .report_revisions import context_summary
             prompt['fixed_valuation_context']=context_summary(packet)
         command = dict(model=job['model'], tools=[], output_schema=OUTPUT, instructions=INSTRUCTIONS, prompt=encode(prompt))
@@ -114,7 +114,9 @@ class ReportRuntime:
             self.save(run)
         if not rendered:
             rendered = '本章尚未完成有效模型写作；'+run['status']+'。已保存冻结输入与尝试，不能以占位内容视为研究完成。'
-        section = record(dict(section_version_id=str(uuid4()),company_id=job['company_id'],job_id=job['job_id'],
+        from .report_summary import observations
+        summary=observations(run['candidate'],packet,run['candidate_output_archive']['sha256']) if run['status']=='COMPLETE' and run.get('candidate_output_archive') else []
+        section = record(dict(observations=summary,section_version_id=str(uuid4()),company_id=job['company_id'],job_id=job['job_id'],
             input_id=packet['input_id'],input_sha256=packet['packet_sha256'],section_id=sid,run_id=run['run_id'],
             host_revision_id=job.get('host_revision_id'),status=run['status'],rendered=rendered,reference_ids=refs, model=run.get('resolved_model',run['model']),
             evidence_kind=run['evidence_kind'],

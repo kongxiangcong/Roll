@@ -326,15 +326,16 @@ class ReportState:
             sub['5']='当前定价用途：\n'+valuation_summary(presentation)+'\n\n历史财务基准条件研究（非历史PIT，非当前可用价格或置信区间）：\n'+valuation_summary(baseline)
             raw=self.research.valuation(review['valuation_id']) if review['valuation_id'] else None
             if raw:
+                binding['fixed_result_context']=dict(result=raw['result'],valuation_id=raw['valuation_id'],valuation_sha256=raw['content_sha256'],result_archive=raw['result_archive'])
                 binding['fixed_calculation_reference']=dict(valuation_id=raw['valuation_id'],content_sha256=raw['content_sha256'],
                     input_sha256=raw['input_sha256'],result_archive=raw['result_archive'],algorithm=raw['algorithm'])
             if raw and baseline.get('usable_range'):
                 result=raw['result']
                 sub['6']='固定计算结果中的终值依赖；超过四分之三触发复核提示，不等于自动无效。没有重算新敏感性。\n'+table(['情景','终值占企业价值比例'],[[s['name'],s['terminal_share_of_ev']] for s in result['scenarios']])
-                sub['6']+='\n\n'+('固定敏感性网格及输入来源见附录J。' if result.get('sensitivity') else '敏感性网格：UNKNOWN；原固定输入未配置，不能填造网格。')
+                sub['6']+='\n\n'+'敏感性状态与有效单元按原结果逐项核查；不以列表非空当作成功。'
                 sub['7']='固定前期现金流路径的反向要求，仅在原件同口径价格/各股类股数/汇率满足时有效，不是市场因果。\n'+(
-                    table(['项目','固定结果'],list(result['reverse'].items())) if result.get('reverse') else 'UNKNOWN：原固定输入未提供合格反向条件；当前用途仍blocked。')
-            sub['8']='未取得已核对同业/资产/历史分位外部对照；原现金流与同源EPV不构成独立验证。缺口保留UNKNOWN。'
+                    table(['项目','固定结果'],list(result['reverse'].items())) if result.get('reverse') else '原固定输入未请求或未形成合格反向条件；当前经济用途按独立固定呈现判断。')
+            sub['8']='外部对照按已绑定同行/资产/历史资料分别呈现，不从同源EPV推定独立验证。'
             from collections import Counter
             checks=Counter(c.get('status','UNKNOWN') for c in review['checks'])
             sub['9']='固定经济审核 '+cell(review['status'])+'；逐项检查及原件依据见附录J。计算成功不等于收益或正式资格。\n'+table(['检查结论','项数'],list(checks.items()))+'\n\n'+valuation_summary(presentation)
@@ -354,11 +355,13 @@ class ReportState:
         text=' '.join(str(f['value']) for f in classification).casefold()
         cycle_required=any(word in text for word in ['lme','commodity','mining','铜价','铜周期','tc/rc','采矿','大宗商品']) or (
             len(reviews)==1 and fixed_request['economic_basis']['applicability']['category'] in {'CYCLICAL','CYCLICAL_GROUP'})
-        qualified=[p for p in peers if {'revenue','gross_margin'}<={re.sub(r'_20\d\d$','',f['metric']) for f in p['facts']}
-            and all(f['kind']=='DISCLOSED' and (f['page'] or f['table']) for f in p['facts'])]
-        intl=sum(any(i['exchange']=='HKEX' for i in p['company']['listings']) or p['company']['jurisdiction']!='CN' for p in qualified)
+        from .report_data import qualified_peer
+        qualified={}
+        for peer in peers:
+            if qualified_peer(peer):qualified.setdefault(peer['company']['company_id'],peer)
+        intl=sum(any(i['exchange']=='HKEX' for i in p['company']['listings']) or p['company']['jurisdiction']!='CN' for p in qualified.values())
         data['coverage'].update(peer_count=len(qualified),international_peer_count=intl,
-            peer_complete=len(qualified)>=5 and intl>=2 and all(p['comparison_basis'] for p in qualified))
+            peer_complete=len(qualified)>=5 and intl>=2 and all(p['comparison_basis'] for p in qualified.values()))
         payload = dict(company=company, snapshot=snapshot, core_sha256=snapshot['core_sha256'] if snapshot else None,
             facts=facts, materials=materials, references=references, peers=peers,peer_facts=peer_facts,landmines=landmines, market='HK' if need==38 else 'A',
             request_cutoff=job['request_cutoff'], material_report_cutoff=job['request_cutoff'],parent_job_id=job.get('parent_job_id'),
@@ -370,6 +373,8 @@ class ReportState:
             cycle_required=cycle_required,classification_fact_version_ids=[f['version_id'] for f in classification],
             screening_archive=screening_archive,
             unincorporated_material_ids=[m['material_id'] for m in materials if m['material_id'] not in {f['material_id'] for f in facts}])
+        from .report_summary import parts
+        payload['part_conclusions']=parts(payload)
         from .report_coverage import capture
         payload['source_coverage']=capture(self.research,job,payload)
         from .report_values import typed_packet

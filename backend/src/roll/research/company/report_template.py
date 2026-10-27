@@ -9,7 +9,7 @@ from .report_archive import archive
 
 ROOT = Path(__file__).with_name('report_reference')
 TEMPLATE_ID = 'roll-company-research-v1'
-TEMPLATE_VERSION = '08.4'
+TEMPLATE_VERSION = '08.5'
 SECTIONS = {
     '1': ('公司判定', '行业、盈利特征、定价权、周期位置。四层判定含观察视角，说明判据和反证。'),
     '2': ('业务与单位经济', '量价、产品地区结构、成本、最小单位经济、客户供应商账期、人效。禁止集团利润除局部产量；缺数据写具体缺口和条件。'),
@@ -32,7 +32,7 @@ VALUATION_SECTIONS = ['方法适用性', '事实与正常化口径', '年度经�
 APPENDICES = {'A': '沿革与资本事件', 'B': '股权与治理', 'C': '产能技术渠道人员', 'D': '逐项排雷',
     'E': '可比公司', 'F': '图表索引', 'G': '关键数字与原件', 'H': '术语与首次解释', 'I': '免责声明',
     'J': '估值输入、模型与审核', 'K': '版本与任务引用索引'}
-RUNTIME_FILES=['research/company/report_coverage.py','research/company/report_revisions.py','research/company/report_values.py','research/company/reports.py','research/company/report_runtime.py','research/company/report_template.py',
+RUNTIME_FILES=['research/company/report_summary.py','research/company/report_coverage.py','research/company/report_revisions.py','research/company/report_values.py','research/company/reports.py','research/company/report_runtime.py','research/company/report_template.py',
     'research/company/report_quality.py','research/company/report_sources.py','research/company/report_data.py',
     'research/company/report_quotes.py','research/company/report_quote_worker.py','agents/company_report_runtime.py',
     'research/company/report_workpapers.py',
@@ -116,10 +116,9 @@ def assemble(packet, sections, job_id):
     by_id = {s['section_id']: s for s in sections}
     from .report_coverage import build,appendix,glossary
     source_book=payload.get('source_coverage') or build(payload)
-    out = ['# '+cell(company['legal_name'])+' 深度研究与条件估值', DISCLAIMER, '# 速览',
-        '研究信息尚有缺口；以下结论以固定共享快照及注明的经营条件为限。',
-        '财务信息质量：UNKNOWN；股价节奏坐标：缺同口径长期价格与盈利时序。',
-        '最大证伪点：逐项经营假设的未来失效条件仍待验证。']
+    from .report_summary import overview,parts
+    out = ['# '+cell(company['legal_name'])+' 深度研究与条件估值', DISCLAIMER, '# 速览',overview(payload,sections)]
+    part_summaries=parts(payload,sections)
     if snapshot:
         for reason in [*snapshot['core']['business_structure'],*snapshot['core']['attention_reasons']]:
             out.append(cell(reason['text']))
@@ -136,7 +135,7 @@ def assemble(packet, sections, job_id):
     for sid in [str(i) for i in range(1, 11)]:
         if sid in {'1','4','6','8'}:
             part, title = {'1': ('一','生意模式'), '4': ('二','外部条件'), '6': ('三','财务与风险'), '8': ('四','尺子与边界')}[sid]
-            out.extend(['# 第'+part+'部分 '+title, payload['part_conclusions'].get(sid, '证据覆盖不足，相关结论须保留条件和未完成项。')])
+            out.extend(['# 第'+part+'部分 '+title, part_summaries[sid]])
         out.append('## '+sid+'. '+SECTIONS[sid][0])
         if sid == '9':
             for number, title in enumerate(VALUATION_SECTIONS, 1):
@@ -167,7 +166,7 @@ def assemble(packet, sections, job_id):
         elif key == 'G':
             out.extend(['|关键数字/事实版本|值与单位/币种/范围/期间|原件坐标|来源|', '|---|---|---|---|'])
             for ref in payload['references']:
-                out.append('|'+cell(ref['metric']+' / '+ref['fact_version_id']+' / '+source_book['fact_source_roles'].get(ref['fact_version_id'],'PEER_COMPANY' if ref['role']=='PEER_COMPANY' else 'SOURCE_ROLE_UNVERIFIED'))+'|'+cell(str(ref['value'])+' '+str(ref['unit'])+' / '+str(ref['currency'])+' / '+str(ref['scope'])+' / '+ref['period_end'])+'|'+cell(str(ref['page'])+' / '+str(ref['table'])+' / '+ref['coordinate_kind'])+'|['+ref['raw_sha256'][:12]+']('+ref['original_api']+')|')
+                out.append('|'+cell(ref['metric']+' / '+ref['fact_version_id']+' / '+source_book['fact_source_roles'].get(ref['fact_version_id'],'PEER_COMPANY' if ref['role'] in {'PEER','PEER_COMPANY'} else 'SOURCE_ROLE_UNVERIFIED'))+'|'+cell(str(ref['value'])+' '+str(ref['unit'])+' / '+str(ref['currency'])+' / '+str(ref['scope'])+' / '+ref['period_end'])+'|'+cell(str(ref['page'])+' / '+str(ref['table'])+' / '+ref['coordinate_kind'])+'|['+ref['raw_sha256'][:12]+']('+ref['original_api']+')|')
         elif key == 'F' and payload['charts']:
             out.extend(['|编号|标题|正文位置|来源与数据|','|---|---|---|---|'])
             out.extend('|'+str(index)+'|'+chart['title']+'|第'+chart['section_id']+'节|'+','.join(chart['fact_version_ids'])+'|' for index,chart in enumerate(payload['charts'],1))

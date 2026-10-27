@@ -13,7 +13,7 @@ from .service import record,verified,fingerprint,fail
 from .report_archive import archive
 from .report_template import SECTIONS,code_hashes,reference_text,table,cell
 
-VERSION='08.4'
+VERSION='08.5'
 COMPILER='fixed-packet-context-2'
 
 
@@ -144,10 +144,17 @@ class ReportRevisions:
             commands[sid]=dict(sha256=registered['sha256'],archive=registered,origin='ORIGINAL_EXACT_COMMAND' if sid in reusable else COMPILER,original_sha256=item['sha256'])
         from .report_coverage import capture
         source_coverage=capture(self.research,parent,packet['payload'])
+        calculation_context=None
+        fixed=packet['payload']['valuation_binding'].get('fixed_calculation_reference')
+        if fixed:
+            raw=self.research.valuation(fixed['valuation_id'])
+            if raw['content_sha256']!=fixed['content_sha256'] or raw['input_sha256']!=fixed['input_sha256'] or raw['result_archive']!=fixed['result_archive']:
+                fail('RESEARCH_REFERENCE_INVALID','Fixed calculation source differs from its frozen reference',409)
+            calculation_context=dict(result=raw['result'],valuation_id=raw['valuation_id'],valuation_sha256=raw['content_sha256'],result_archive=raw['result_archive'])
         hashes=code_hashes();root=Path(__file__).parents[2]
         revision=record(dict(revision_id=str(uuid4()),company_id=parent['company_id'],parent_job_id=parent['job_id'],
             input_id=packet['input_id'],input_sha256=packet['packet_sha256'],core_sha256=packet['payload']['core_sha256'],
-            previous_host_revision_id=command.previous_host_revision_id,host_version=VERSION,source_coverage=source_coverage,compiler_version=COMPILER,original_plan_sha256=command.command_plan_sha256,
+            previous_host_revision_id=command.previous_host_revision_id,host_version=VERSION,source_coverage=source_coverage,fixed_result_context=calculation_context,compiler_version=COMPILER,original_plan_sha256=command.command_plan_sha256,
             generation_code_hashes=packet['code_hashes'],execution_code_hashes=hashes,
             execution_algorithm_archives={name:archive(self.research.evidence,(root/name).read_bytes(),'REPORT_REVISION_ALGORITHM_SOURCE') for name in hashes},
             commands=commands,reusable=reusable,findings=[f.model_dump()|dict(disposition='QUARANTINE',factual_endorsement=False) for f in command.findings],
@@ -169,7 +176,10 @@ class ReportRevisions:
         from .report_runtime import ReportRuntime
         run=self.research.analysis.read('report_runs','run_id',source['run_id']);candidate=read_json(self.research,source['output_archive']['sha256'])
         rendered,refs=self.render(candidate,packet,sid,revision,source['output_archive']['sha256'])
-        section=record(dict(section_version_id=str(uuid4()),company_id=job['company_id'],job_id=job['job_id'],input_id=packet['input_id'],
+        from .report_summary import observations
+        excluded=[f['index'] for f in revision['findings'] if f['section_id']==sid and f['location']=='PARAGRAPH']
+        summary=observations(candidate,packet,source['output_archive']['sha256'],excluded)
+        section=record(dict(observations=summary,section_version_id=str(uuid4()),company_id=job['company_id'],job_id=job['job_id'],input_id=packet['input_id'],
             input_sha256=packet['packet_sha256'],section_id=sid,run_id=source['run_id'],source_section_version_id=source['section_version_id'],
             host_revision_id=revision['revision_id'],status='COMPLETE',rendered=rendered,reference_ids=refs,model=run['resolved_model'],
             evidence_kind='METHOD_CASE' if run['evidence_kind']=='METHOD_CASE' else 'REAL_MODEL_OUTPUT_REVALIDATED',command_archive=run['command_archive'],output_archive=source['output_archive'],
@@ -192,5 +202,6 @@ class ReportRevisions:
         value=copy.deepcopy(packet);revision=self.get(job['host_revision_id']);value['report_id']=str(uuid5(NAMESPACE_URL,'roll-company-report:'+job['job_id']))
         value['host_revision']=revision
         if revision.get('source_coverage'):value['payload']['source_coverage']=revision['source_coverage']
+        if revision.get('fixed_result_context'):value['payload']['valuation_binding']['fixed_result_context']=revision['fixed_result_context']
         from .report_values import typed_packet
         return typed_packet(value)

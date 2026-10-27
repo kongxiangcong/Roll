@@ -1,0 +1,47 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_accepted_source_observations_and_price_series_reach_summary_without_rewriting_core _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red32/test_accepted_source_observati0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002D55913E8B0>
+
+    def test_accepted_source_observations_and_price_series_reach_summary_without_rewriting_core(tmp_path,monkeypatch):
+        import json
+        from roll.accounts.ledger import now
+        from roll.research.company import MaterialCommand,FactCommand,AnalysisCommand
+        from test_shared_evidence import material_input
+        from test_analysis_snapshots import candidate
+        research=service(tmp_path/'data');issuer=research.register(company())
+        meta=material_input(issuer['company_id']);meta.update(unit=None,currency=None,scope=None,media_type='application/json',period_start='2023-01-01',period_end='2025-12-31')
+        original=research.import_material(MaterialCommand(**meta),b'{"METHOD":"disclosed refining business and annual price/earnings observations, not real market evidence"}')
+        anchor=research.add_fact(FactCommand(company_id=issuer['company_id'],material_id=original['material_id'],metric='business_structure',business='REFINING',value='METHOD disclosed refining business',value_type='TEXT',unit=None,currency=None,scope='CONSOLIDATED',period_start='2025-01-01',period_end='2025-12-31',table='/METHOD',change_reason='METHOD source anchor'))
+        facts=[anchor]
+        for metric in ['stock_price','eps']:
+            for year in range(2023,2026):
+                facts.append(research.add_fact(FactCommand(company_id=issuer['company_id'],material_id=original['material_id'],metric=metric,business='LISTING',value='1',unit='CNY/share',currency='CNY',scope='SSE:600362:A',period_start=f'{year}-01-01',period_end=f'{year}-12-31',table=f'/{metric}/{year}',change_reason='METHOD same annual listing basis; no real return claim')))
+        packet=research.freeze_analysis(AnalysisCommand(company_id=issuer['company_id'],as_of=now(),fact_version_ids=[f['version_id'] for f in facts]));snapshot=research.apply_analysis_candidate(packet['input_id'],candidate(packet,anchor))
+        worker=tmp_path/'method-summary-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt']);f=next(f for f in p['evidence']['facts'] if f['metric']=='business_structure');fid=f['version_id']
+    rows=[('����','��¶ҵ�����Ϊ�����˲��ҵ��ê��'),('����','ҵ��������������ԭ������֧�֡�'),('���֤α��','�����ԭ����ҵ���������о�����ʧЧ��'),('�ɼ۽���','��������ֻ��֧��ʱ��˶ԣ���δ�жϵ���ʱ����')]
+    v=dict(section_id=p['section_id'],input_sha256=p['input_sha256'],paragraphs=[dict(text='#### '+h+'\\n'+t,fact_version_ids=[fid]) for h,t in rows],gaps=['METHOD only; independent verification is absent'])
+    print(json.dumps(dict(kind='thread',model=c['model'],provider='METHOD',thread_id='method',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=json.dumps(v))),flush=True)
+    ''',encoding='utf-8')
+        auth=tmp_path/'method-auth.json';auth.write_text(json.dumps(dict(auth_mode='chatgpt',tokens=dict(access_token='METHOD_ONLY'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth));research.reports.worker=worker
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of=now(),source_mode='REUSE',idempotency_key='source-summary'))
+        for _ in range(22):
+            job=research.reports.advance(job['job_id'])
+            if job['report_id']:break
+        sections=research.reports.sections(job)
+>       assert len(sections)==12 and all(s['status']=='COMPLETE' for s in sections),sections
+E       AssertionError: [{'command_archive': {'bytes': 90187, 'kind': 'REPORT_CHAPTER_EXACT_COMMAND', 'path': 'raw/79a4922b2df7a31bfbcd67a4c74...a2a215f07fc2687556d06c78f9e5ff9d04c39a966568f112ea17db39', 'created_at': '2026-10-27T01:22:05.067940+00:00', ...}, ...]
+E       assert (12 == 12 and False)
+E        +  where 12 = len([{'command_archive': {'bytes': 90187, 'kind': 'REPORT_CHAPTER_EXACT_COMMAND', 'path': 'raw/79a4922b2df7a31bfbcd67a4c74...a2a215f07fc2687556d06c78f9e5ff9d04c39a966568f112ea17db39', 'created_at': '2026-10-27T01:22:05.067940+00:00', ...}, ...])
+E        +  and   False = all(<generator object test_accepted_source_observations_and_price_series_reach_summary_without_rewriting_core.<locals>.<genexpr> at 0x000002D5593B3C60>)
+
+backend\tests\company_research\test_report_summary.py:94: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_summary.py::test_accepted_source_observations_and_price_series_reach_summary_without_rewriting_core
+1 failed in 13.31s

@@ -1,0 +1,36 @@
+FF.                                                                      [100%]
+================================== FAILURES ===================================
+_ test_unknown_or_incompatible_industry_data_cannot_count_five_years[unknown_scope_label] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red34/test_unknown_or_incompatible_i0')
+mode = 'unknown_scope_label'
+
+    @pytest.mark.parametrize('mode',['null','text','unknown_scope','mixed_scope','unknown_scope_label','unknown_unit_label'])
+    def test_unknown_or_incompatible_industry_data_cannot_count_five_years(tmp_path,mode):
+        from roll.research.company.report_data import prepare_data
+        research=service(tmp_path);issuer=research.register(company());facts,materials=series(research,issuer,mode)
+        result=prepare_data(research.evidence,facts,materials)
+>       assert result['coverage']['industry_complete'] is False
+E       assert True is False
+
+backend\tests\company_research\test_report_substance.py:27: AssertionError
+_ test_unknown_or_incompatible_industry_data_cannot_count_five_years[unknown_unit_label] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red34/test_unknown_or_incompatible_i1')
+mode = 'unknown_unit_label'
+
+    @pytest.mark.parametrize('mode',['null','text','unknown_scope','mixed_scope','unknown_scope_label','unknown_unit_label'])
+    def test_unknown_or_incompatible_industry_data_cannot_count_five_years(tmp_path,mode):
+        from roll.research.company.report_data import prepare_data
+        research=service(tmp_path);issuer=research.register(company());facts,materials=series(research,issuer,mode)
+        result=prepare_data(research.evidence,facts,materials)
+        assert result['coverage']['industry_complete'] is False
+>       assert all(n<5 for n in result['coverage']['industry_years'].values())
+E       assert False
+E        +  where False = all(<generator object test_unknown_or_incompatible_industry_data_cannot_count_five_years.<locals>.<genexpr> at 0x000002689A3817D0>)
+
+backend\tests\company_research\test_report_substance.py:28: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_substance.py::test_unknown_or_incompatible_industry_data_cannot_count_five_years[unknown_scope_label]
+FAILED backend\tests\company_research\test_report_substance.py::test_unknown_or_incompatible_industry_data_cannot_count_five_years[unknown_unit_label]
+2 failed, 1 passed, 7 deselected in 16.78s

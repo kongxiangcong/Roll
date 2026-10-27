@@ -11,7 +11,7 @@ def validate_reports(db,archives):
     jobs=load('jobs','job_id');inputs=load('report_inputs','input_id')
     sections=load('report_sections','section_version_id');reports=load('reports','report_id');runs=load('report_runs','run_id')
     revisions=load('report_revisions','revision_id') if db.execute("SELECT 1 FROM sqlite_master WHERE name='company_research_report_revisions'").fetchone() else {}
-    checks=load('checks','check_id')
+    checks=load('checks','check_id');valuations=load('valuations','valuation_id')
     snapshots=load('snapshots','snapshot_id');materials=load('materials','material_id');facts=load('facts','version_id')
     def require(ok):
         if not ok:
@@ -44,10 +44,13 @@ def validate_reports(db,archives):
         for rows in book['appendix_rows'].values():
             for row in rows:
                 fact=selected_facts.get(row['fact_version_id']);require(fact and fact['material_id']==row['material_id'] and fact['value']==row['text'] and any(p['fact_version_id']==fact['version_id'] for p in book['quote_proofs']))
+    def calculation_context(ctx,company_id):
+        raw=valuations.get(ctx['valuation_id']);require(raw and raw['company_id']==company_id and ctx['valuation_sha256']==raw['content_sha256'] and ctx['result']==raw['result'] and ctx['result_archive']==raw['result_archive']);archive(ctx['result_archive'])
     for packet in inputs.values():
         job=jobs.get(packet['job_id']); payload=packet['payload'];snapshot=payload['snapshot']
         require(job and packet['company_id']==job['company_id'] and fingerprint(payload)==packet['packet_sha256'])
         archive(packet['input_archive'])
+        if payload['valuation_binding'].get('fixed_result_context'):calculation_context(payload['valuation_binding']['fixed_result_context'],packet['company_id'])
         if payload.get('source_coverage'):source_book(payload['source_coverage'],payload,packet['job_id'])
         if snapshot:
             require(snapshots.get(snapshot['snapshot_id'])==snapshot and snapshot['company_id']==packet['company_id'] and payload['core_sha256']==snapshot['core_sha256'])
@@ -78,8 +81,10 @@ def validate_reports(db,archives):
         require(revision['input_sha256']==packet['packet_sha256'] and revision['core_sha256']==packet['payload']['core_sha256'] and revision['generation_code_hashes']==packet['code_hashes'])
         if revision.get('previous_host_revision_id'):
             previous=revisions.get(revision['previous_host_revision_id']);require(previous and previous['parent_job_id']==revision['parent_job_id'] and previous['input_id']==revision['input_id'] and previous['original_plan_sha256']==revision['original_plan_sha256'])
+        if revision.get('fixed_result_context'):
+            calculation_context(revision['fixed_result_context'],packet['company_id'])
         if revision.get('source_coverage'):source_book(revision['source_coverage'],packet['payload'],revision['parent_job_id'])
-        require(revision['original_plan_sha256'] in archives and revision['host_version'] in {'08.3','08.4'})
+        require(revision['original_plan_sha256'] in archives and revision['host_version'] in {'08.3','08.4','08.5'})
         for name,value in revision['execution_algorithm_archives'].items():
             archive(value);require(revision['execution_code_hashes'][name]==value['sha256'])
         for sid,value in revision['commands'].items():
@@ -114,6 +119,8 @@ def validate_reports(db,archives):
         else:
             require(run['job_id']==section['job_id'])
         require(set(section['reference_ids'])<=set(f['version_id'] for f in [*packet['payload']['facts'],*packet['payload']['peer_facts']]))
+        for observation in section.get('observations',[]):
+            require(section['status']=='COMPLETE' and section['output_archive'] and observation['output_sha256']==section['output_archive']['sha256'] and set(observation['fact_version_ids'])<=set(section['reference_ids']) and 0<=observation['paragraph_index']<30)
         archive(section['command_archive'])
         if section['output_archive']:
             archive(section['output_archive'])

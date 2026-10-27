@@ -1,0 +1,62 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_invalid_sensitivity_is_not_success_and_absent_reverse_does_not_force_blocked _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red31/test_invalid_sensitivity_is_no0')
+
+    def test_invalid_sensitivity_is_not_success_and_absent_reverse_does_not_force_blocked(tmp_path):
+        import copy
+        from test_economic_review import operating_request
+        from roll.accounts.ledger import now
+        from roll.research.company.report_values import typed_packet
+        research=service(tmp_path);command,_=operating_request(research)
+        command.config['sensitivity']=dict(scenario='base',wacc=[.01],terminal_g=[.02])
+>       result=research.calculate_operating_valuation(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_report_summary.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:579: in calculate_operating_valuation
+    return self.economics.calculate(command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\economics.py:446: in calculate
+    raw = self.research.calculate_valuation(raw_command)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\service.py:564: in calculate_valuation
+    return self.valuations.calculate(command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\valuation.py:176: in calculate
+    validate_provenance(command, snapshot, {f['version_id']: f for f in packet['payload']['facts']})
+backend\src\roll\research\company\valuation.py:47: in validate_provenance
+    fail('PROVENANCE_REQUIRED', 'Every numeric leaf needs unit, currency, scope, period and references')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'PROVENANCE_REQUIRED'
+reason = 'Every numeric leaf needs unit, currency, scope, period and references'
+status = 422, context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'PROVENANCE_REQUIRED', 'reason': 'Every numeric leaf needs unit, currency, scope, period and references', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+_ test_supplied_peer_context_is_presented_in98_without_independent_value_claim _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red31/test_supplied_peer_context_is_0')
+
+    def test_supplied_peer_context_is_presented_in98_without_independent_value_claim(tmp_path):
+        from roll.accounts.ledger import now
+        research=service(tmp_path);issuer=research.register(company());main=published(research,issuer)
+        peer=research.register(company('�ṩ���ϵĺϳ�ͬҵ',['����ͬҵ'],[dict(exchange='HKEX',code='00345',share_class='H',currency='HKD')]))
+        other=published(research,peer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=main['snapshot_id'],as_of=now(),source_mode='REUSE',idempotency_key='context98',peer_snapshot_ids=[other['snapshot_id']],peer_comparison_basis={other['snapshot_id']:'METHOD explicit business context only; financial period, currencies and scope still need independent reconciliation'}))
+        for _ in range(4):job=research.reports.advance(job['job_id'])
+        packet=research.reports.input(job['input_id']);body=packet['payload']['valuation_subsections']['8']
+>       assert peer['legal_name'] in body
+E       AssertionError: assert '�ṩ���ϵĺϳ�ͬҵ' in 'δȡ���㹻ͬ�ھ����ݣ�����UNKNOWN�����������򾭼��жϡ�'
+
+backend\tests\company_research\test_report_summary.py:55: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_summary.py::test_invalid_sensitivity_is_not_success_and_absent_reverse_does_not_force_blocked
+FAILED backend\tests\company_research\test_report_summary.py::test_supplied_peer_context_is_presented_in98_without_independent_value_claim
+2 failed, 1 deselected in 12.78s
