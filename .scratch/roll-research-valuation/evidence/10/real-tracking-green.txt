@@ -1,0 +1,167 @@
+- banner:
+  - generic: Roll 账户镜像
+  - navigation "主导航":
+    - button "日常使用"
+    - button "公司研报"
+    - button "今天"
+    - button "持仓与关注"
+    - button "同步账户"
+    - button "历史记录"
+    - button "设置"
+- main:
+  - region "独立公司研报":
+    - heading "公司研报" [level=1]
+    - paragraph: 独立研究不需要账户确认或策略资格。报告与每日研究共用固定公司分析快照。
+    - text: 公司名称或代码
+    - textbox "公司名称或代码": 承德露露股份公司
+    - button "解析公司"
+    - heading "承德露露股份公司" [level=2]
+    - paragraph: SZSE:000848 CNY
+    - heading "公司研究跟踪" [level=3]
+    - paragraph: 固定跟踪快照：7a430e8b-4172-4598-af21-6fe8600b6b93
+    - link "打开同快照研报":
+      - /url: "#company-report=54abcc3d-67c2-453e-83b4-8fdc92b7a292&snapshot=7a430e8b-4172-4598-af21-6fe8600b6b93"
+    - text: 跟踪证券
+    - combobox "跟踪证券":
+      - option "请选择证券"
+      - option "SZSE:000848 · CNY" [selected]
+    - region "持续公司研究":
+      - heading "经营研究与条件估值" [level=3]
+      - paragraph: 独立报告共享研究只读查看；持续来源检查需在持仓与关注登记后从日常页使用。
+      - paragraph: 承德露露股份公司 · 当前估值：blocked · 暂无可用当前估值区间
+      - paragraph:
+        - link "打开同快照公司研报":
+          - /url: "#company-report=54abcc3d-67c2-453e-83b4-8fdc92b7a292&snapshot=7a430e8b-4172-4598-af21-6fe8600b6b93"
+      - heading "关注理由" [level=4]
+      - list
+      - heading "经营证据变化" [level=4]
+      - paragraph: 证据引用未新增变化；假设修订未新增变化。无新增不能说明经营未变。
+      - heading "价格变化与条件要求" [level=4]
+      - paragraph: NOT_COMPARABLE；Exactly one valuation and controlled review must be pinned by each snapshot
+      - heading "估值假设或方法变化" [level=4]
+      - paragraph: NOT_COMPARABLE；Exactly one valuation and controlled review must be pinned by each snapshot
+      - heading "现价要求" [level=4]
+      - paragraph: 当前用途缺少通过审核的估值依据；不据诊断数字形成价格区间。2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current；Latest known financial period and equity bridge not incorporated；Equity bridge older than180 days; refresh required for current pricing；A newer frozen financial disclosure is known but not incorporated；Newer company financial disclosure acquired since baseline; refresh current applicability without changing the saved snapshot
+      - heading "下一验证事件与催化" [level=4]
+      - paragraph: 尚无有据验证日期或催化，不补造日程。
+      - heading "反证与下行风险" [level=4]
+      - paragraph: 材料不足，无法完整判断下行风险。
+      - heading "与量价判断的冲突" [level=4]
+      - paragraph: 经营假设与量价辅助观点分别保留；方向、期限或依据不一致时并列解释，未经独立验证不合成为胜率经营观点不带胜率；下方量价观点的方向和有效期单列。此处不自动把证据不足解释为中性，也不把两类观点相加。
+      - paragraph: 经营依据截至 2026-10-26T18:35:27.267742+00:00 · 共享知识截至 2026-10-26T18:35:27.267742+00:00 · 原研究生成 2026-10-26T18:35:28.902148+00:00。页面读取和核查日期不刷新旧观点。
+      - text: 共享研究历史版本
+      - combobox "共享研究历史版本":
+        - option "2026-10-26T18:35:27.267742+00:00 · c54935d7"
+        - option "2026-10-26T18:35:27.267742+00:00 · 7a430e8b" [selected]
+      - generic "展开经营假设、证据、估值限制与版本" [active]
+      - paragraph: 可用假设不足原因：This deterministic ticket05 case reuses public financial evidence; no new model-generated hypothesis set
+      - paragraph: 快照 7a430e8b-4172-4598-af21-6fe8600b6b93 · 核心指纹 37b71966590cb1cb8d0c2898c4bace4c7ec1bc3b216018d2f941204f22dcac1d
+      - list:
+        - listitem: Dated financial baseline; see operating-model conditions and newer filing gap
+      - paragraph: LULU_2025 · USER_IMPORT · 资料期 2025-01-01 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:25.426214+00:00 · 可消费 2026-10-26T18:35:25.454027+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+      - paragraph: Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT；unit=unit means whole CNY with unchanged numeric scale; share means individual shares
+      - paragraph: LULU_2025 · USER_IMPORT · 资料期 2025-12-31 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:25.812169+00:00 · 可消费 2026-10-26T18:35:25.835705+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/600f0c90-3e6e-40d3-8a2a-140c0cb8853f/original
+      - paragraph: Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT；unit=unit means whole CNY with unchanged numeric scale; share means individual shares
+      - paragraph: LULU_2025 · USER_IMPORT · 资料期 2025-12-31 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:25.971650+00:00 · 可消费 2026-10-26T18:35:25.995355+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/63990df7-0677-4584-b464-4e9c94f20c54/original
+      - paragraph: Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT；unit=unit means whole CNY with unchanged numeric scale; share means individual shares
+      - paragraph: LULU_2025 · USER_IMPORT · 资料期 2024-01-01 至 2024-12-31 · 披露 未知 · 取得 2026-10-26T18:35:26.189210+00:00 · 可消费 2026-10-26T18:35:26.210304+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/9108e940-ad3b-45f6-818c-df1f499d966e/original
+      - paragraph: Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT；unit=unit means whole CNY with unchanged numeric scale; share means individual shares
+      - paragraph: LULU_2025 · USER_IMPORT · 资料期 2025-01-01 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:26.433922+00:00 · 可消费 2026-10-26T18:35:26.455407+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+      - paragraph: Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT；unit=unit means whole CNY with unchanged numeric scale; share means individual shares
+      - paragraph: chinabond-20251231.html · USER_IMPORT · 资料期 2025-12-31 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:26.541647+00:00 · 可消费 2026-10-26T18:35:26.552712+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/d3a74f66-0f0e-458d-bd6a-667429fdfd02/original
+      - paragraph: Applied external macro/industry/provider source, not issuer disclosure; actual current import, no historical PIT
+      - paragraph: damodaran-country-premiums-jan2026.html · USER_IMPORT · 资料期 2026-01-05 至 2026-01-05 · 披露 未知 · 取得 2026-10-26T18:35:26.590713+00:00 · 可消费 2026-10-26T18:35:26.621500+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/63fb965f-3172-432d-a9bc-5b00b7b9ef99/original
+      - paragraph: Applied external macro/industry/provider source, not issuer disclosure; actual current import, no historical PIT
+      - paragraph: damodaran-global-betas-jan2026.html · USER_IMPORT · 资料期 2026-01-01 至 2026-01-31 · 披露 未知 · 取得 2026-10-26T18:35:26.658977+00:00 · 可消费 2026-10-26T18:35:26.682554+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/78b2b32c-fa67-4b91-a4be-58eec3dd5827/original
+      - paragraph: Applied external macro/industry/provider source, not issuer disclosure; actual current import, no historical PIT
+      - paragraph: provider-wacc-market-data.json · USER_IMPORT · 资料期 2025-12-31 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:26.724705+00:00 · 可消费 2026-10-26T18:35:26.735765+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/01afb81b-0b36-488c-89dc-b98e42865a1a/original
+      - paragraph: Applied external macro/industry/provider source, not issuer disclosure; actual current import, no historical PIT
+      - paragraph: LULU_2026_Q3_MIRROR · USER_IMPORT · 资料期 2026-01-01 至 2026-09-30 · 披露 未知 · 取得 2026-10-26T18:35:26.772566+00:00 · 可消费 2026-10-26T18:35:26.799864+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/d53f7008-73b7-4c07-a2ac-8b27dc4d3669/original
+      - paragraph: Issuer original hosted by mirror; authorship/announcement checked against statutory media, no claim of identical CNINFO bytes；Only exact report date known, actual current import, no historical PIT
+      - paragraph: LULU_2025 · USER_IMPORT · 资料期 2025-01-01 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:27.146386+00:00 · 可消费 2026-10-26T18:35:27.167664+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/a2aebbb9-f1f8-4c15-b3e2-6e3929f2802b/original
+      - paragraph: Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT；unit=unit means whole CNY with unchanged numeric scale; share means individual shares
+      - paragraph: LULU_2025 · USER_IMPORT · 资料期 2025-12-31 至 2025-12-31 · 披露 未知 · 取得 2026-10-26T18:35:27.208654+00:00 · 可消费 2026-10-26T18:35:27.233656+00:00
+      - link "查看原件":
+        - /url: /api/company-research/materials/28d9e7b2-7319-495c-9faa-053c291ece0d/original
+      - paragraph: Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT；unit=unit means whole CNY with unchanged numeric scale; share means individual shares
+      - paragraph: 事实版本 9d4b1c09-9223-4b2c-b7cc-274a42048b4d · revenue_2025 · 3173554539.83 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 68
+      - paragraph: 事实版本 0177067a-6d57-46a4-b98e-d0f804df10c1 · cost_of_goods_2025 · 1753701457.45 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 68
+      - paragraph: 事实版本 c44ce8df-bd62-41f6-8881-bbfca303405d · taxes_and_surcharges_2025 · 30799768.40 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 69
+      - paragraph: 事实版本 003390a4-ef1e-4e0f-ba50-3342ffb91a5d · selling_expenses_2025 · 533807702.43 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 69
+      - paragraph: 事实版本 03b51fdc-9cde-4324-9dc2-7049d6b66cc7 · administrative_expenses_2025 · 43881550.74 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 69
+      - paragraph: 事实版本 5d2d1693-821c-4cfd-a0e0-1b8051d1d229 · research_expenses_2025 · 9155934.68 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 69
+      - paragraph: 事实版本 b5bfe69d-8f56-4e74-a54f-30c805e500fa · reported_operating_profit_2025 · 832768950.67 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 69
+      - paragraph: 事实版本 cbcd489d-8096-4433-b359-2d9a2b8eca97 · interest_income_accrual_2025 · 41712443.76 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 69
+      - paragraph: 事实版本 51bf4241-9eb3-41fc-8b34-15b591181b74 · cfo_2025 · 1012283571.60 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 71
+      - paragraph: 事实版本 1f2656ad-e301-4f06-971b-1fe81b00f6ce · cash_capex_2025 · 184906387.79 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 71
+      - paragraph: 事实版本 c30b8fbb-40a5-4db5-832d-099229b50708 · fixed_asset_depreciation_2025 · 40942075.33 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 d98d3c60-338b-4eea-8e52-5908accdd4dd · rou_depreciation_2025 · 2027215.75 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 020ab1c1-c077-466a-bc5f-2224fc32e21d · intangible_amortization_2025 · 3312604.67 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 b22cca12-8061-4b87-94d5-dc422dcddb63 · deferred_expense_amortization_2025 · 1045038.50 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 02f51ec5-5c98-48e7-b620-d185a9a78e18 · cash_total_2025 · 4032137003.56 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 119
+      - paragraph: 事实版本 8385dee3-e572-4e09-8860-26e69108baa8 · cash_at_related_finance_company_2025 · 3123918306.63 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 119
+      - paragraph: 事实版本 64209081-038d-4324-8b8d-2066a023607e · bank_loans_including_current_2025 · 586181038.07 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 146
+      - paragraph: 事实版本 ff7650e5-c879-45a5-967c-bcdac4dedd87 · lease_liabilities_including_current_2025 · 6147416.98 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 146
+      - paragraph: 事实版本 a2b06827-8a0b-4b90-9254-fc3df6c55108 · restricted_share_repurchase_obligation_2025 · 44520000.00 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 135
+      - paragraph: 事实版本 6e02c4d0-a15a-488d-87b0-0c2f777952a4 · share_count_2025 · 1020000074.00 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / share / 币种未知 · 材料 63990df7-0677-4584-b464-4e9c94f20c54 页 50
+      - paragraph: 事实版本 943c4d34-ae46-4c17-8d37-d6f4f12d7ecb · restricted_cash_declared_2025 · 0 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 119
+      - paragraph: 事实版本 71f77529-6e52-4808-8471-1165ac0ca616 · cash_recon_inventory_decrease_2025 · 20243434.06 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 90420d5b-ec8d-4ef0-87cd-649359ecafb5 · cash_recon_operating_receivables_decrease_2025 · 1135722.14 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 2391133f-98ac-44d8-9928-027fe405eb55 · cash_recon_operating_payables_increase_2025 · 255537261.40 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 eea63c62-a966-48ec-8013-dd286a35f33b · goods_payables_2025 · 469745247.84 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 134
+      - paragraph: 事实版本 017ee892-e81f-49d6-aa85-547d1009ff0f · capital_project_payables_2025 · 81382374.46 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 134
+      - paragraph: 事实版本 a9c21a21-6ee3-4564-ba12-90a0554a2ebd · revenue_2024 · 3287292242.27 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 68
+      - paragraph: 事实版本 a4c03793-fc74-43fb-8074-7ec295deeae3 · cost_of_goods_2024 · 1941394035.54 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 68
+      - paragraph: 事实版本 40397dbf-ffea-4555-8419-79097bc1a8ce · taxes_and_surcharges_2024 · 29243315.57 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 69
+      - paragraph: 事实版本 0b29aa4a-ea08-45ab-a173-132dce785e40 · selling_expenses_2024 · 418383805.70 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 69
+      - paragraph: 事实版本 d0e3884c-3c54-4564-b399-e344158aa4f3 · administrative_expenses_2024 · 55365343.77 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 69
+      - paragraph: 事实版本 68194232-a8ce-4ce4-8678-3fdda82876a9 · research_expenses_2024 · 15783776.88 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 69
+      - paragraph: 事实版本 ed35a805-ee19-49af-b522-e2aafceffd33 · cfo_2024 · 630404373.97 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 71
+      - paragraph: 事实版本 c52886dc-8672-484d-9b86-cb3a162844e6 · cash_capex_2024 · 215067739.84 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 71
+      - paragraph: 事实版本 741985a1-01b6-4cf5-ac1d-1f29dad6e0e4 · business_structure · The issuer manufactures and sells plant protein beverages; beverage revenue and other revenue are separately disclosed. Related finance-company deposits are not a consolidated finance business. · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / 单位未知 / 币种未知 · 材料 2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303 页 10/16/148
+      - paragraph: 事实版本 b03f71e4-228a-4bbf-9cf3-5579b879de54 · associate_boundary · 本公司对合营企业或联营企业投资已全额计提减值。No economic recovery value is independently established. · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / 单位未知 / 币种未知 · 材料 2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303 页 149
+      - paragraph: 事实版本 15ef32ac-8489-4bf3-8d80-cfb6d3a76449 · noncash_asset_boundary · All reported nonblank current assets4232193507.86 plus noncurrent assets1078778070.07 equal total5310971577.93. Residual carrying amount for blank financial-investment rows is0, not an appraisal or proof of no recoverable economic value. · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / 单位未知 / 币种未知 · 材料 2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303 页 64-65
+      - paragraph: 事实版本 8c09dc5c-e6aa-4481-a285-81310a53f312 · cny_10y_govt_yield_20251231 · .018473 · 期间 2025-12-31 至 2025-12-31 · 范围 CNY_GOVT_10Y / ratio / 币种未知 · 材料 d3a74f66-0f0e-458d-bd6a-667429fdfd02 页 Frozen source row documented in source-research.md
+      - paragraph: 事实版本 bfc29237-e59c-4d35-85dc-13aef3f7db0e · china_equity_risk_premium · .0514 · 期间 2026-01-05 至 2026-01-05 · 范围 CHINA_ERP / ratio / 币种未知 · 材料 63fb965f-3172-432d-a9bc-5b00b7b9ef99 页 Frozen source row documented in source-research.md
+      - paragraph: 事实版本 37f5583e-ecce-4ef1-80fe-f45b6e33973e · global_soft_beverage_cash_corrected_unlevered_beta · .54 · 期间 2026-01-01 至 2026-01-31 · 范围 GLOBAL_SOFT_BEVERAGES_JAN2026 / ratio / 币种未知 · 材料 78b2b32c-fa67-4b91-a4be-58eec3dd5827 页 Frozen source row documented in source-research.md
+      - paragraph: 事实版本 a43c7e7e-e43c-47cd-81a7-ae0a21847ebb · approx_market_equity_value_20251231 · 8670000000 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 01afb81b-0b36-488c-89dc-b98e42865a1a 页 Frozen source row documented in source-research.md
+      - paragraph: 事实版本 1a171fae-762e-4905-aac1-9e3a781c6e2f · latest_financial_disclosure · 承德露露股份公司2026年第三季度报告 · 期间 2026-01-01 至 2026-09-30 · 范围 CONSOLIDATED / 单位未知 / 币种未知 · 材料 d53f7008-73b7-4c07-a2ac-8b27dc4d3669 页 1/9
+      - paragraph: 事实版本 234fdf0d-22b2-4385-a6c2-4e33023ce546 · core_profit_2025 · 802208126.13 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 68-69
+      - paragraph: 事实版本 4d866f20-e882-4e5f-b95e-8c3f4c8258a1 · core_profit_2024 · 827121964.81 · 期间 2024-01-01 至 2024-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 9108e940-ad3b-45f6-818c-df1f499d966e 页 68-69
+      - paragraph: 事实版本 d1ea0138-f4d3-42b8-b8c3-6a23f7f00272 · da_2025 · 47326934.25 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 f742975e-e181-4df4-b313-d6bb50219412 页 146
+      - paragraph: 事实版本 4f2772fd-fb3c-41b3-8331-ee16a83ff411 · bridge_debt_2025 · 718230829.51 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 135/146
+      - paragraph: 事实版本 13f02bda-b8d7-4cfe-ad23-972f95b31889 · total_equity_2025 · 3490498161.46 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 66
+      - paragraph: 事实版本 e63eb52e-e053-409f-abd9-cff14f906be4 · no_disclosed_material_commitment_2025 · 截至2025年12月31日，本公司无需要披露的重要承诺事项。 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / 单位未知 / 币种未知 · 材料 2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303 页 155
+      - paragraph: 事实版本 e928d6b0-c483-4801-a8d9-e6c06bbb010f · nci_2025 · 0 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / unit / CNY · 材料 600f0c90-3e6e-40d3-8a2a-140c0cb8853f 页 66/148
+      - paragraph: 事实版本 5abbce78-c69f-40a4-a82b-3ddb07851dca · statutory_tax_rate · .25 · 期间 2025-01-01 至 2025-12-31 · 范围 CONSOLIDATED / ratio / 币种未知 · 材料 a2aebbb9-f1f8-4c15-b3e2-6e3929f2802b 页 119
+      - paragraph: 事实版本 27b316af-9845-46b1-b579-781f5c9fa1f6 · guaranteed_debt_rate · .0299 · 期间 2025-12-31 至 2025-12-31 · 范围 CONSOLIDATED / ratio / 币种未知 · 材料 28d9e7b2-7319-495c-9faa-053c291ece0d 页 137
+      - generic: "[ { \"material_id\": \"f742975e-e181-4df4-b313-d6bb50219412\", \"period_start\": \"2025-01-01\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:25.426214+00:00\", \"consumable_at\": \"2026-10-26T18:35:25.454027+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"600f0c90-3e6e-40d3-8a2a-140c0cb8853f\", \"period_start\": \"2025-12-31\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:25.812169+00:00\", \"consumable_at\": \"2026-10-26T18:35:25.835705+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"63990df7-0677-4584-b464-4e9c94f20c54\", \"period_start\": \"2025-12-31\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:25.971650+00:00\", \"consumable_at\": \"2026-10-26T18:35:25.995355+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"9108e940-ad3b-45f6-818c-df1f499d966e\", \"period_start\": \"2024-01-01\", \"period_end\": \"2024-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:26.189210+00:00\", \"consumable_at\": \"2026-10-26T18:35:26.210304+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 665, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303\", \"period_start\": \"2025-01-01\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:26.433922+00:00\", \"consumable_at\": \"2026-10-26T18:35:26.455407+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"d3a74f66-0f0e-458d-bd6a-667429fdfd02\", \"period_start\": \"2025-12-31\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:26.541647+00:00\", \"consumable_at\": \"2026-10-26T18:35:26.552712+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"63fb965f-3172-432d-a9bc-5b00b7b9ef99\", \"period_start\": \"2026-01-05\", \"period_end\": \"2026-01-05\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:26.590713+00:00\", \"consumable_at\": \"2026-10-26T18:35:26.621500+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 295, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"78b2b32c-fa67-4b91-a4be-58eec3dd5827\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-01-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:26.658977+00:00\", \"consumable_at\": \"2026-10-26T18:35:26.682554+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 269, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"01afb81b-0b36-488c-89dc-b98e42865a1a\", \"period_start\": \"2025-12-31\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:26.724705+00:00\", \"consumable_at\": \"2026-10-26T18:35:26.735765+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"d53f7008-73b7-4c07-a2ac-8b27dc4d3669\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-09-30\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:26.772566+00:00\", \"consumable_at\": \"2026-10-26T18:35:26.799864+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 27, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"a2aebbb9-f1f8-4c15-b3e2-6e3929f2802b\", \"period_start\": \"2025-01-01\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:27.146386+00:00\", \"consumable_at\": \"2026-10-26T18:35:27.167664+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" }, { \"material_id\": \"28d9e7b2-7319-495c-9faa-053c291ece0d\", \"period_start\": \"2025-12-31\", \"period_end\": \"2025-12-31\", \"disclosed_at\": null, \"received_at\": \"2026-10-26T18:35:27.208654+00:00\", \"consumable_at\": \"2026-10-26T18:35:27.233656+00:00\", \"age_basis\": \"REPORT_PERIOD_END\", \"material_age_days\": 300, \"disclosure_age_days\": null, \"meaning\": \"Report-period and disclosure ages; acquisition/check time does not refresh source content\" } ]"
+      - paragraph: 事实口径冲突 0 项；保留两侧版本。
+      - generic: "[]"
+      - link "固定共享快照 JSON":
+        - /url: /api/company-research/snapshots/7a430e8b-4172-4598-af21-6fe8600b6b93
+      - link "固定三类变化与诊断明细":
+        - /url: /api/company-research/change-sets/52352368-ac3b-4a92-b4e6-15a7e49e0938
+      - generic "资料核查状态与材料年龄"

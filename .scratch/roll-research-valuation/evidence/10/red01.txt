@@ -1,0 +1,14 @@
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 3000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: '公司研报', exact: true })
+
+    at D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket10\frontend\scripts\company-report-check.mjs:20:58 {
+  name: 'TimeoutError'
+}
+
+Node.js v25.8.1

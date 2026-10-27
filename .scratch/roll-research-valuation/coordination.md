@@ -1,8 +1,18 @@
 # Implementation coordination checkpoint
 
-Updated 2026-10-27 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
+Updated 2026-10-28 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
 
-## Current resume state —09 accepted locally, ready for merger
+## Current resume state — ticket10 accepted, next11
+
+Updated2026-10-28 Asia/Shanghai.01–09 already merged;10complete on codex/rv-ticket10 at D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket10, ready for merger after final commit. Root's independent UI note and all actual evidence are evidence/10/README.md.11–12 not started, whole objective remains incomplete. Strict order continues, no PR requested.
+
+-10adds independent report navigation/identity/date/source strategy, new task status/cancel/retry/reload, safe text/table preview, immutable09 delivery/history/downloads, same snapshot report↔read-only company tracking. Default daily update regression passed. Final public METHOD UI regression green08-active-job and build-final08 passed; original failures retained. Last bug fixed: historical job read does not overwrite new-job recovery pointer.
+-Realstore D:/dsh-proj/Roll/.scratch/rv10-real01 cloned via publicBackups09, source09unchanged. Original report b9cfb2a0-8f93-516a-a4cd-7b7801fd7911/jobcf414530 remainsPARTIAL/PUBLISHED, snapshot7a430e8b/core37b719... unchanged; realIAB input000848→explicitreuse→originaltask→preview→actualMD/PDF downloads→filehistory→samecore tracking passed. Historical08realCODEX/source evidence reused, NO10newCODEX orsource request. MD397091...32720/PDFb135d59...ddf408 raw bytes match09.
+-Real browser newjob2c427d2d-0dda-4f5d-9c6f-ea7de8303995:QUEUED/cancel/retry/finalCANCELLED,0sections,inputnull,account0. This is task-control proof, not new model generation. Do not activate a worker for this cancelled test. Actual postclose cycles remain0.
+-OwnAPI-only8030 launcher45612/listener25036 and Vite5210 PID50308 retain precise ticks/source/store receipts in10evidence for future cleanup; noworker/.env/authload. Original07/08/09/production services untouched. Temporary10 IAB tabclosed and viewportreset; root independenttabalso closed. Dependencyjunction frontend/node_modules points at originaltarget; unlink entry only during authorized final cleanup.
+-11next: public read-only economicfeature snapshots/availability/protocol; no training/oldbudget/SEALED/account changes.12still needs real jointA1–A10 and actualcycles; no full/FULL claim from10PARTIAL reuse. After all tickets execute required two-axis review frombaselineebe3fc8 and safe owned-worktree cleanup.
+
+## Earlier resume state —09 accepted locally, ready for merger
 
 - Ticket09 implementation/acceptance complete on codex/rv-ticket09, D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket09, based on integration ef040a8f.01–08 already merged; root must merge09 final submitted tip before starting10. Whole objective still01→12;10–12 not started. Original dirty checkout preserved.
 - Evidence09/README.md, commands.md, real03-receipt.json and visual-qa03.json are current. Final delivery e3e6e93c-0a17-4bfc-92af-82b86aa86487, immutable08 report b9cfb2a0-8f93-516a-a4cd-7b7801fd7911, PDF45pages/rawSHAb135d59a72287ea6f998fd591882cc28de078f745741b7bc6d225ec1d7ddf408. OriginalMD397091...32720/core37b719.../PARTIAL unchanged.01/02 earlier layout failures/versions remain archived.

@@ -1,0 +1,65 @@
+- banner:
+  - generic: Roll 账户镜像
+  - navigation "主导航":
+    - button "日常使用"
+    - button "公司研报"
+    - button "今天"
+    - button "持仓与关注"
+    - button "同步账户"
+    - button "历史记录"
+    - button "设置"
+- main:
+  - region "独立公司研报":
+    - heading "公司研报" [level=1]
+    - paragraph: 独立研究不需要账户确认或策略资格。报告与每日研究共用固定公司分析快照。
+    - text: 公司名称或代码
+    - textbox "公司名称或代码": 承德露露股份公司
+    - button "解析公司"
+    - heading "承德露露股份公司" [level=2]
+    - paragraph: SZSE:000848 CNY
+    - heading "公司研究跟踪" [level=3]
+    - paragraph: 固定跟踪快照：7a430e8b-4172-4598-af21-6fe8600b6b93
+    - link "打开同快照研报":
+      - /url: "#company-report=54abcc3d-67c2-453e-83b4-8fdc92b7a292&snapshot=7a430e8b-4172-4598-af21-6fe8600b6b93"
+    - text: 跟踪证券
+    - combobox "跟踪证券":
+      - option "请选择证券"
+      - option "SZSE:000848 · CNY" [selected]
+    - region "持续公司研究":
+      - heading "经营研究与条件估值" [level=3]
+      - paragraph: 共享研究按固定版本展示，与下方原量价辅助和探索回测同屏。估值缺口不阻断经营研究。
+      - alert: "Error: OBSERVATION_NOT_IN_HOLDINGS_OR_WATCHLIST"
+      - paragraph: 承德露露股份公司 · 当前估值：blocked · 暂无可用当前估值区间
+      - paragraph:
+        - link "打开同快照公司研报":
+          - /url: "#company-report=54abcc3d-67c2-453e-83b4-8fdc92b7a292&snapshot=7a430e8b-4172-4598-af21-6fe8600b6b93"
+      - heading "关注理由" [level=4]
+      - list
+      - heading "经营证据变化" [level=4]
+      - paragraph: 证据引用未新增变化；假设修订未新增变化。无新增不能说明经营未变。
+      - heading "价格变化与条件要求" [level=4]
+      - paragraph: NOT_COMPARABLE；Exactly one valuation and controlled review must be pinned by each snapshot
+      - heading "估值假设或方法变化" [level=4]
+      - paragraph: NOT_COMPARABLE；Exactly one valuation and controlled review must be pinned by each snapshot
+      - heading "现价要求" [level=4]
+      - paragraph: 当前用途缺少通过审核的估值依据；不据诊断数字形成价格区间。2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current；Latest known financial period and equity bridge not incorporated；Equity bridge older than180 days; refresh required for current pricing；A newer frozen financial disclosure is known but not incorporated；Newer company financial disclosure acquired since baseline; refresh current applicability without changing the saved snapshot
+      - heading "下一验证事件与催化" [level=4]
+      - paragraph: 尚无有据验证日期或催化，不补造日程。
+      - heading "反证与下行风险" [level=4]
+      - paragraph: 材料不足，无法完整判断下行风险。
+      - heading "与量价判断的冲突" [level=4]
+      - paragraph: 经营假设与量价辅助观点分别保留；方向、期限或依据不一致时并列解释，未经独立验证不合成为胜率经营观点不带胜率；下方量价观点的方向和有效期单列。此处不自动把证据不足解释为中性，也不把两类观点相加。
+      - paragraph: 经营依据截至 2026-10-26T18:35:27.267742+00:00 · 共享知识截至 2026-10-26T18:35:27.267742+00:00 · 原研究生成 2026-10-26T18:35:28.902148+00:00。页面读取和核查日期不刷新旧观点。
+      - text: 共享研究历史版本
+      - combobox "共享研究历史版本":
+        - option "2026-10-26T18:35:27.267742+00:00 · c54935d7"
+        - option "2026-10-26T18:35:27.267742+00:00 · 7a430e8b" [selected]
+      - generic "展开经营假设、证据、估值限制与版本"
+      - generic "资料核查状态与材料年龄"
+      - checkbox "同时按原来源策略请求公网刷新（仅现有支持范围，缓存/失败逐项保留）"
+      - text: 同时按原来源策略请求公网刷新（仅现有支持范围，缓存/失败逐项保留）
+      - checkbox "修正来源或身份依据后，显式重查已拒绝或失败的存档记录"
+      - text: 修正来源或身份依据后，显式重查已拒绝或失败的存档记录
+      - button "检查已归档材料并更新研究"
+      - button "读取最新共享版本"
+      - paragraph: 默认仅检查已归档材料。每类每次最多20条；无新增事实不重跑经营分析，不生成完整研报。新材料缺少结构化事实时明确保留待提取缺口。

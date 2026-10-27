@@ -1,0 +1,95 @@
+[]
+Roll 账户镜像
+日常使用
+公司研报
+今天
+持仓与关注
+同步账户
+历史记录
+设置
+公司研报
+
+独立研究不需要账户确认或策略资格。报告与每日研究共用固定公司分析快照。
+
+公司名称或代码
+解析公司
+METHOD乙公司
+
+SZSE:000848 CNY
+
+研究范围与新任务
+
+现在整理的旧资料属于当前重建，不冒充当时已知。复用已有材料仍可能调用模型生成新章节；仅查看已有报告不会启动模型。
+
+报告截至时间
+资料策略
+复用已归档材料
+按已配置来源刷新
+
+刷新只覆盖现有来源配置；未配置或未完成的范围会明确保留缺口。
+
+固定共享快照
+按任务资料形成／复用最新共享版本
+
+尚无共享分析快照，可提交研究任务；来源或模型不可用时会保留局部结果。
+
+启动新报告任务
+任务进度
+
+任务状态：PARTIAL · 阶段：PUBLISHED
+
+任务 method-job-published · 截至 未记录 · 固定快照 尚未形成 · 已保存章节 0
+
+任务失败：{"code":"CODEX_NOT_CONFIGURED","detail":"METHOD模型未配置"}
+
+已保存阶段与时间
+报告历史与预览
+报告历史版本
+2026-10-26T08:05:00Z · PARTIAL
+已发布报告 · PARTIAL
+
+报告与文件版本固定保存；章节生成成功不等于事实核实。当前取得旧资料不代表严格历史时点可得。
+
+报告发布时间 2026-10-26T08:05:00Z · 共享快照 method-snapshot-b · 核心指纹 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+
+当前显示已有报告；新任务尚未发布时不会混入该报告正文。
+
+复用此报告并查看生成任务
+
+打开同快照公司跟踪
+
+资料缺口与质量检查（1 项未通过或未知）
+文件交付历史
+method-d · COMPLETE
+
+文件状态：COMPLETE
+
+下载 Markdown
+下载 PDF
+下载 交付清单
+生成新 PDF 交付版本
+
+排版重试只生成新文件版本，不重新研究、不覆盖旧文件。
+
+METHOD完整结构预览
+第九节估值条件
+
+当前定价 blocked
+
+<script>globalThis.__unsafe=true</script>
+
+项目	值
+资料缺口	保持未知
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByText('任务状态：QUEUED') to be visible
+
+    at D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket10\frontend\scripts\company-report-check.mjs:82:52 {
+  name: 'TimeoutError'
+}
+
+Node.js v25.8.1
