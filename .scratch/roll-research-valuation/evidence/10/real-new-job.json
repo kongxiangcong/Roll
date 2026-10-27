@@ -1,0 +1,45 @@
+{
+  "as_of": "2026-10-27T15:47:00.000Z",
+  "attempts": 1,
+  "cancel_requested_at": "2026-10-27T15:47:36.875568+00:00",
+  "checkpoints": [
+    {
+      "at": "2026-10-27T15:47:36.431256+00:00",
+      "attempt": 1,
+      "stage": "EXPLICIT_RETRY"
+    }
+  ],
+  "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+  "content_sha256": "bd904d6d94eaf3cc867c698337219703cdee89225e7fa8ced9564bbe239c077c",
+  "created_at": "2026-10-27T15:47:35.470235+00:00",
+  "errors": [],
+  "historical_pit_eligible": false,
+  "host_owner": null,
+  "idempotency_key": "1e9380b1-60de-46a5-9c28-9ab5ed5ed8f7",
+  "input_id": null,
+  "job_id": "2c427d2d-0dda-4f5d-9c6f-ea7de8303995",
+  "model": "gpt-6.1-sol",
+  "parent_report_id": null,
+  "peer_comparison_basis": {},
+  "peer_snapshot_ids": [],
+  "report_id": null,
+  "request_cutoff": "2026-10-27T15:47:00.000Z",
+  "request_sha256": "1b2c08050f44fff7438cc9d4521d964fbe8590545b6ffa43318582d7ef95f4e3",
+  "requested_at": "2026-10-27T15:47:35.470193+00:00",
+  "risk_workpaper": [],
+  "schema_version": 1,
+  "section_ids": [],
+  "snapshot_id": "7a430e8b-4172-4598-af21-6fe8600b6b93",
+  "source_mode": "REUSE",
+  "source_quotes": [],
+  "sources": [],
+  "stage": "ACQUISITION",
+  "status": "CANCELLED",
+  "template_binding": {
+    "gate_map_sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401",
+    "manifest_sha256": "d00b827b702487e69254a4f8d2d9508bf71bfcf363f8c0fa24351b82a6b4682f",
+    "template_id": "roll-company-research-v1",
+    "version": "08.5"
+  },
+  "workflow": "REPORT"
+}

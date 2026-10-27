@@ -1,0 +1,322 @@
+- banner:
+  - generic: Roll 账户镜像
+  - navigation "主导航":
+    - button "日常使用"
+    - button "公司研报"
+    - button "今天"
+    - button "持仓与关注"
+    - button "同步账户"
+    - button "历史记录"
+    - button "设置"
+- main:
+  - region "独立公司研报":
+    - heading "公司研报" [level=1]
+    - paragraph: 独立研究不需要账户确认或策略资格。报告与每日研究共用固定公司分析快照。
+    - text: 公司名称或代码
+    - textbox "公司名称或代码": 承德露露股份公司
+    - button "解析公司"
+    - heading "承德露露股份公司" [level=2]
+    - paragraph: SZSE:000848 CNY
+    - region "报告生成":
+      - heading "研究范围与新任务" [level=3]
+      - paragraph: 现在整理的旧资料属于当前重建，不冒充当时已知。复用已有材料仍可能调用模型生成新章节；仅查看已有报告不会启动模型。
+      - text: 报告截至时间
+      - textbox "报告截至时间": 2026-10-27T23:47
+      - text: 资料策略
+      - combobox "资料策略":
+        - option "复用已归档材料" [selected]
+        - option "按已配置来源刷新"
+      - paragraph: 刷新只覆盖现有来源配置；未配置或未完成的范围会明确保留缺口。
+      - text: 固定共享快照
+      - combobox "固定共享快照":
+        - option "按任务资料形成／复用最新共享版本"
+        - option "2026-10-26T18:35:27.267742+00:00 · c54935d7"
+        - option "2026-10-26T18:35:27.267742+00:00 · 7a430e8b" [selected]
+      - button "启动新报告任务"
+    - region "报告任务进度":
+      - heading "任务进度" [level=3]
+      - paragraph: 任务状态：PARTIAL · 阶段：PUBLISHED
+      - paragraph: 任务 cf414530-5dee-45d3-af28-0e7e3f9321ae · 截至 2026-10-26T22:14:45.094830+00:00 · 固定快照 7a430e8b-4172-4598-af21-6fe8600b6b93 · 已保存章节 12
+      - generic "已保存阶段与时间"
+    - region "报告历史":
+      - heading "报告历史与预览" [level=3]
+      - text: 报告历史版本
+      - combobox "报告历史版本":
+        - option "2026-10-27T14:40:02.356740+00:00 · PARTIAL" [selected]
+      - region "固定报告预览":
+        - heading "已发布报告 · PARTIAL" [level=3]
+        - paragraph: 报告与文件版本固定保存；章节生成成功不等于事实核实。当前取得旧资料不代表严格历史时点可得。
+        - paragraph: 报告发布时间 2026-10-27T14:40:02.356740+00:00 · 共享快照 7a430e8b-4172-4598-af21-6fe8600b6b93 · 核心指纹 37b71966590cb1cb8d0c2898c4bace4c7ec1bc3b216018d2f941204f22dcac1d
+        - paragraph: 当前显示已有报告；新任务尚未发布时不会混入该报告正文。
+        - button "复用此报告并查看生成任务" [active]
+        - paragraph:
+          - link "打开同快照公司跟踪":
+            - /url: "#company-research=54abcc3d-67c2-453e-83b4-8fdc92b7a292&snapshot=7a430e8b-4172-4598-af21-6fe8600b6b93"
+        - generic "资料缺口与质量检查（28 项未通过或未知）"
+        - text: 文件交付历史
+        - combobox "文件交付历史":
+          - option "2026-10-27T15:14:44.016189+00:00 · COMPLETE" [selected]
+          - option "2026-10-27T15:05:31.459483+00:00 · COMPLETE"
+          - option "2026-10-27T15:02:17.921127+00:00 · COMPLETE"
+        - paragraph: 文件状态：COMPLETE
+        - link "下载 Markdown":
+          - /url: /api/company-research/report-deliveries/e3e6e93c-0a17-4bfc-92af-82b86aa86487/files/markdown
+        - link "下载 PDF":
+          - /url: /api/company-research/report-deliveries/e3e6e93c-0a17-4bfc-92af-82b86aa86487/files/pdf
+        - link "下载 交付清单":
+          - /url: /api/company-research/report-deliveries/e3e6e93c-0a17-4bfc-92af-82b86aa86487/files/manifest
+        - link "下载 引用索引":
+          - /url: /api/company-research/report-deliveries/e3e6e93c-0a17-4bfc-92af-82b86aa86487/files/references
+        - link "下载 固定估值底稿":
+          - /url: /api/company-research/report-deliveries/e3e6e93c-0a17-4bfc-92af-82b86aa86487/files/valuation
+        - link "下载 固定输入":
+          - /url: /api/company-research/report-deliveries/e3e6e93c-0a17-4bfc-92af-82b86aa86487/files/input
+        - button "生成新 PDF 交付版本"
+        - paragraph: 排版重试只生成新文件版本，不重新研究、不覆盖旧文件。
+        - article "报告正文":
+          - heading "承德露露股份公司 深度研究与条件估值" [level=1]
+          - paragraph:
+            - text: 本报告基于公开信息整理，用于帮助理解该公司及其所处行业，
+            - strong: 不构成任何投资建议
+            - text: ，也不提供买入、卖出或目标价判断。报告中的分析框架与事实判断仅供研究参考，投资者应自行核实并独立决策，据此操作风险自担。报告不保证所引信息的完整性与时效性；标注“待核实”的内容尤需进一步验证。
+          - heading "速览" [level=1]
+          - paragraph: 财务信息质量：UNKNOWN（独立质量核查尚未形成；已披露事项及逐项证据见第七节）。
+          - paragraph:
+            - text: 一句话：The issuer discloses plant beverage manufacturing and separately reports cash, debt and cash-flow information.
+            - link "原件 10/16/148":
+              - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+          - paragraph:
+            - text: 周期坐标：承德露露的经营边界是植物蛋白饮料制造与销售，而非关联财务公司的金融业务。
+            - link "原件 10/16/148":
+              - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+          - heading "核心经营模型" [level=2]
+          - table:
+            - rowgroup:
+              - row "业务/研究层次 固定内容 当年数及口径 报表作用/传导边界 固定引用":
+                - columnheader "业务/研究层次"
+                - columnheader "固定内容"
+                - columnheader "当年数及口径"
+                - columnheader "报表作用/传导边界"
+                - columnheader "固定引用"
+            - rowgroup:
+              - row "固定业务描述 The issuer discloses plant beverage manufacturing and separately reports cash, debt and cash-flow information. 分部当年数与利润贡献未核定 不能据整体财务数推定分部贡献 741985a1-01b6-4cf5-ac1d-1f29dad6e0e4":
+                - cell "固定业务描述"
+                - cell "The issuer discloses plant beverage manufacturing and separately reports cash, debt and cash-flow information."
+                - cell "分部当年数与利润贡献未核定"
+                - cell "不能据整体财务数推定分部贡献"
+                - cell "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4"
+          - paragraph: 未形成有源分部利润贡献排序；以上整体描述与研究假设不能替代分部归因，缺口不以财务属性数字表补齐。
+          - paragraph: 变量传导链尚无固定经营假设；第九节的估值研究条件不能替代经营贡献归因。
+          - paragraph:
+            - link "原件 10/16/148":
+              - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+          - table:
+            - rowgroup:
+              - row "必须带走的问题 固定阅读位置":
+                - columnheader "必须带走的问题"
+                - columnheader "固定阅读位置"
+            - rowgroup:
+              - row "靠什么赚钱及哪个变量决定 第一至三节":
+                - cell "靠什么赚钱及哪个变量决定"
+                - cell "第一至三节"
+              - row "外部供需和竞争如何影响经营 第四至五节":
+                - cell "外部供需和竞争如何影响经营"
+                - cell "第四至五节"
+              - row "哪些条件决定价值及何时失效 第六至十节":
+                - cell "哪些条件决定价值及何时失效"
+                - cell "第六至十节"
+          - paragraph: 股价节奏坐标：尚无可用的同口径价格与盈利时序，未判定反转、中继或见顶。
+          - heading "优势（有条件研究观察）" [level=2]
+          - paragraph:
+            - text: 正向核心经营利润支持公司具有商业化经营能力；反向证据是，二〇二五年核心经营利润低于二〇二四年，而销售费用高于二〇二四年。
+            - link "原件 68-69":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+            - link "原件 68-69":
+              - /url: /api/company-research/materials/9108e940-ad3b-45f6-818c-df1f499d966e/original
+            - link "原件 69":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+            - link "原件 69":
+              - /url: /api/company-research/materials/9108e940-ad3b-45f6-818c-df1f499d966e/original
+          - paragraph: 尚未形成三条各有来源的优势判断；不以重复事实或资料缺口凑数。
+          - heading "风险（有条件研究观察）" [level=2]
+          - paragraph: 尚未形成三条各有来源的风险判断；不以重复事实或资料缺口凑数。
+          - heading "最大证伪点与失效条件" [level=2]
+          - paragraph: 最大证伪点尚无有源强弱排序；以下只列固定假设的失效条件，不把第一条自动认作最薄弱的一环。
+          - heading "公司档案卡" [level=2]
+          - table:
+            - rowgroup:
+              - row "档案项 登记/披露与缺口":
+                - columnheader "档案项"
+                - columnheader "登记/披露与缺口"
+            - rowgroup:
+              - row "公司/代码 承德露露股份公司 / SZSE:000848":
+                - cell "公司/代码"
+                - cell "承德露露股份公司 / SZSE:000848"
+              - row "上市地/注册地 SZSE / CN":
+                - cell "上市地/注册地"
+                - cell "SZSE / CN"
+              - row "会计准则/年结日 PRC_GAAP / 12-31":
+                - cell "会计准则/年结日"
+                - cell "PRC_GAAP / 12-31"
+              - row "登记行业 NON_FINANCIAL":
+                - cell "登记行业"
+                - cell "NON_FINANCIAL"
+              - row "上市时间 未纳入已核对固定事实；不使用近似值或外部参数补位":
+                - cell "上市时间"
+                - cell "未纳入已核对固定事实；不使用近似值或外部参数补位"
+              - row "总股本 1020000074.00 股 / 2025-12-31 / 6e02c4d0-a15a-488d-87b0-0c2f777952a4":
+                - cell "总股本"
+                - cell "1020000074.00 股 / 2025-12-31 / 6e02c4d0-a15a-488d-87b0-0c2f777952a4"
+              - row "市值（注明时点） 未纳入已核对固定事实；不使用近似值或外部参数补位":
+                - cell "市值（注明时点）"
+                - cell "未纳入已核对固定事实；不使用近似值或外部参数补位"
+              - row "实控人 未纳入已核对固定事实；不使用近似值或外部参数补位":
+                - cell "实控人"
+                - cell "未纳入已核对固定事实；不使用近似值或外部参数补位"
+              - row "员工/人员结构 未纳入已核对固定事实；不使用近似值或外部参数补位":
+                - cell "员工/人员结构"
+                - cell "未纳入已核对固定事实；不使用近似值或外部参数补位"
+              - row "经营性资产 未纳入已核对固定事实；不使用近似值或外部参数补位":
+                - cell "经营性资产"
+                - cell "未纳入已核对固定事实；不使用近似值或外部参数补位"
+              - row "产能/技术原文 未纳入已核对固定事实；不使用近似值或外部参数补位":
+                - cell "产能/技术原文"
+                - cell "未纳入已核对固定事实；不使用近似值或外部参数补位"
+              - row "审计机构/事项 未纳入已核对固定事实；不使用近似值或外部参数补位":
+                - cell "审计机构/事项"
+                - cell "未纳入已核对固定事实；不使用近似值或外部参数补位"
+          - heading "尚未核实" [level=2]
+          - table:
+            - rowgroup:
+              - row "缺口 影响 下一渠道及条件":
+                - columnheader "缺口"
+                - columnheader "影响"
+                - columnheader "下一渠道及条件"
+            - rowgroup:
+              - row "PINNED_SHARED_CORE; 新取得但无结构化依据的材料不修改固定核心，后续新任务才能纳入分析 相关结论须保留条件，不能推定经营未变 对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照":
+                - cell "PINNED_SHARED_CORE; 新取得但无结构化依据的材料不修改固定核心，后续新任务才能纳入分析"
+                - cell "相关结论须保留条件，不能推定经营未变"
+                - cell "对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照"
+              - row "Dated financial baseline; see operating-model conditions and newer filing gap 相关结论须保留条件，不能推定经营未变 对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照":
+                - cell "Dated financial baseline; see operating-model conditions and newer filing gap"
+                - cell "相关结论须保留条件，不能推定经营未变"
+                - cell "对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照"
+              - row "2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current 相关结论须保留条件，不能推定经营未变 对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照":
+                - cell "2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current"
+                - cell "相关结论须保留条件，不能推定经营未变"
+                - cell "对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照"
+              - row "Latest known financial period and equity bridge not incorporated 相关结论须保留条件，不能推定经营未变 对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照":
+                - cell "Latest known financial period and equity bridge not incorporated"
+                - cell "相关结论须保留条件，不能推定经营未变"
+                - cell "对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照"
+              - row "Equity bridge older than180 days; refresh required for current pricing 相关结论须保留条件，不能推定经营未变 对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照":
+                - cell "Equity bridge older than180 days; refresh required for current pricing"
+                - cell "相关结论须保留条件，不能推定经营未变"
+                - cell "对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照"
+              - row "A newer frozen financial disclosure is known but not incorporated 相关结论须保留条件，不能推定经营未变 对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照":
+                - cell "A newer frozen financial disclosure is known but not incorporated"
+                - cell "相关结论须保留条件，不能推定经营未变"
+                - cell "对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照"
+              - row "Newer company financial disclosure acquired since baseline; refresh current applicability without changing the saved snapshot 相关结论须保留条件，不能推定经营未变 对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照":
+                - cell "Newer company financial disclosure acquired since baseline; refresh current applicability without changing the saved snapshot"
+                - cell "相关结论须保留条件，不能推定经营未变"
+                - cell "对应原始披露/统计与第十节；补齐同主体、期间和口径后形成新快照"
+          - paragraph: The issuer discloses plant beverage manufacturing and separately reports cash, debt and cash-flow information.
+          - paragraph: 以上经营结论绑定与每日研究相同的共享核心；完整引用版本见附录K。
+          - heading "已披露公司属性数字（不含反推临界值）" [level=2]
+          - table:
+            - rowgroup:
+              - row "指标 披露值 单位/币种 期间/范围":
+                - columnheader "指标"
+                - columnheader "披露值"
+                - columnheader "单位/币种"
+                - columnheader "期间/范围"
+            - rowgroup:
+              - row "cfo_2025 1012283571.60 元（CNY） 2025-12-31 / CONSOLIDATED":
+                - cell "cfo_2025"
+                - cell "1012283571.60"
+                - cell "元（CNY）"
+                - cell "2025-12-31 / CONSOLIDATED"
+              - row "revenue_2025 3173554539.83 元（CNY） 2025-12-31 / CONSOLIDATED":
+                - cell "revenue_2025"
+                - cell "3173554539.83"
+                - cell "元（CNY）"
+                - cell "2025-12-31 / CONSOLIDATED"
+              - row "total_equity_2025 3490498161.46 元（CNY） 2025-12-31 / CONSOLIDATED":
+                - cell "total_equity_2025"
+                - cell "3490498161.46"
+                - cell "元（CNY）"
+                - cell "2025-12-31 / CONSOLIDATED"
+          - heading "当前定价用途" [level=2]
+          - table:
+            - rowgroup:
+              - row "用途 经济状态 可用价格区间":
+                - columnheader "用途"
+                - columnheader "经济状态"
+                - columnheader "可用价格区间"
+            - rowgroup:
+              - row "CURRENT_PRICING blocked 不可用":
+                - cell "CURRENT_PRICING"
+                - cell "blocked"
+                - cell "不可用"
+          - paragraph: 不展示诊断价格：2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current；Latest known financial period and equity bridge not incorporated；Equity bridge older than180 days; refresh required for current pricing；A newer frozen financial disclosure is known but not incorporated；Newer company financial disclosure acquired since baseline; refresh current applicability without changing the saved snapshot
+          - heading "第一部分 生意模式" [level=1]
+          - paragraph:
+            - text: 第1节结论摘录：承德露露应归入大消费中的植物蛋白饮料制造企业，而非金融企业；盈利特征可暂以成熟经营、现金创造能力为观察重点，但不足以确认成熟价值型，更不能据此认定红利属性。
+            - link "原件 10/16/148":
+              - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+          - paragraph:
+            - text: 第2节结论摘录：承德露露通过制造、销售植物蛋白饮料取得收入，经营分析应围绕产品销售收入、生产成本与销售投入展开。
+            - link "原件 10/16/148":
+              - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+          - paragraph:
+            - text: 第3节结论摘录：收入下降、营业成本下降而销售费用上升，说明不能仅凭成本改善判断盈利趋势。
+            - link "原件 68":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+            - link "原件 68":
+              - /url: /api/company-research/materials/9108e940-ad3b-45f6-818c-df1f499d966e/original
+            - link "原件 68":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+            - link "原件 68":
+              - /url: /api/company-research/materials/9108e940-ad3b-45f6-818c-df1f499d966e/original
+            - link "原件 69":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+            - link "原件 69":
+              - /url: /api/company-research/materials/9108e940-ad3b-45f6-818c-df1f499d966e/original
+          - paragraph: 以上研究观察按固定核心与注明条件理解；有源引用不等于独立事实背书。
+          - heading "1. 公司判定" [level=2]
+          - paragraph:
+            - text: 承德露露应归入大消费中的植物蛋白饮料制造企业，而非金融企业；盈利特征可暂以成熟经营、现金创造能力为观察重点，但不足以确认成熟价值型，更不能据此认定红利属性。公司制造并销售植物蛋白饮料，关联财务公司存款不属于合并金融业务。分析重点因此是饮料需求、产品与渠道盈利及现金回收，而不是存贷款利差。
+            - link "原件 10/16/148 / 表号未知":
+              - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+          - heading "盈利特征：有持续经营利润，现金流改善不等于增长加速" [level=4]
+          - paragraph:
+            - text: 二〇二五年核心利润为802208126.13 元（CNY），二〇二四年为827121964.81 元（CNY），方向上不支持盈利加速的成长型判断。这里的核心利润已剔除财务、其他收益与减值影响，并非归母净利润。二〇二五年经营现金流净额为1012283571.60 元（CNY），但经营性应付款增加255537261.40 元（CNY）亦提供现金支持，不能将全部现金流表现视为可持续利润。缺少长期回报率和派息证据，成熟价值与红利标签均应保留条件。
+            - link "原件 68-69 / 表号未知":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+            - link "原件 68-69 / 表号未知":
+              - /url: /api/company-research/materials/9108e940-ad3b-45f6-818c-df1f499d966e/original
+            - link "原件 71 / 表号未知":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+            - link "原件 146 / 表号未知":
+              - /url: /api/company-research/materials/f742975e-e181-4df4-b313-d6bb50219412/original
+          - heading "定价权：国内消费市场是观察起点，品牌溢价尚未证实" [level=4]
+          - paragraph:
+            - text: 植物蛋白饮料业务适合先从终端需求、渠道折扣和产品结构观察价格形成；这只是业务分析假设，现有证据不足以确认国内收入占主导或公司拥有提价权。地区收入、出口敞口和实际成交价均未知，亦不能排除原料与包装成本受到国际市场影响。若后续发现海外销售或国际原料传导显著，应相应加强全球供需分析；业务归属本身不能替代定价权证据。
+            - link "原件 10/16/148 / 表号未知":
+              - /url: /api/company-research/materials/2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303/original
+          - heading "观察与质疑：主业现金持续性优先，存款可用性另行验证" [level=4]
+          - paragraph:
+            - text: 最值得检验的是饮料主业能否在不持续增加经营性应付款的情况下保持现金创造能力。另一项重要边界是关联财务公司存款：二〇二五年末余额为3123918306.63 元（CNY），不能因其存在便将公司重新归类为金融企业。同期披露的受限资金为0 元（CNY），是反对直接认定资金受限的证据，但不能单独证明随时可提取及交易对手风险充分可控；仍需核对存款协议、风险评估报告和后续实际提款情况。
+            - link "原件 119 / 表号未知":
+              - /url: /api/company-research/materials/600f0c90-3e6e-40d3-8a2a-140c0cb8853f/original
+            - link "原件 119 / 表号未知":
+              - /url: /api/company-research/materials/600f0c90-3e6e-40d3-8a2a-140c0cb8853f/original
+          - paragraph:
+            - text: 当前市场究竟由增长、分红还是风险折价主导定价，现有证据无法确认。已确认二〇二六年第三季度报告存在，但尚无相应结构化经营数据支持更新上述判据。年度基线仅能用于有条件研究，不代表历史时点已具备这些材料，也不能用于当前定价；当前定价用途继续拒绝。
+            - link "原件 1/9 / 表号未知":
+              - /url: /api/company-research/materials/d53f7008-73b7-4c07-a2ac-8b27dc4d3669/original
+          - paragraph: 未完成：盈利类型缺少至少五年的收入、利润、净资产收益率及分红连续性证据；已复用年度财务事实，未进行新增网络核验。下一步需从巨潮资讯历年年报取得同口径序列后，再确认成熟价值特征是否持续。
+          - paragraph: 未完成：国内定价仅为待验证的观察假设；缺少地区收入、出口、产品成交价及渠道合同。下一步需查年报分地区披露、投资者关系记录及公开销售政策，取得同产品同渠道口径后判断定价权。
+          - paragraph: 未完成：周期位置未知；缺少行业产销、价格、产能利用率与渠道库存的连续数据。下一步需向行业协会统计、公司经营披露及可核验渠道调查补证，不能用公司现金流调节项替代行业库存周期。
+          - paragraph: 未完成：已确认较新季度报告存
