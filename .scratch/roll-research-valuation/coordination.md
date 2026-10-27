@@ -2,7 +2,12 @@
 
 Updated 2026-10-27 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
 
-## Current resume state — local08.5 finished, explicit send permission pending
+## Human authorization received — current execution state
+
+- The human explicitly authorized the four audited requests via existing ChatGPT subscription CODEX to OpenAI, including the disclosed public information, derived forecast assumptions and research IDs. Exact message: “允许这四份请求通过现有 ChatGPT 订阅的 CODEX 发送到 OpenAI，包含已说明的公开资料、派生预测假设和研究 ID。减少审核次数，赶紧推进到开发完成，继续完成真实验证，并按顺序推进后续任务。” This supersedes earlier pending-human notes for these same four payloads only.
+- Root resumed /root/ticket08 with this exact trusted scope. Use the existing reviewed startup path, verify the frozen18source/4wire hashes and original core/input, execute only missing9/10/REVIEW/CHALLENGE, inspect real outcome, finish publication/recovery and08acceptance. No repeated human confirmation within this authorization. Any new automatic-review rejection must be handled on its actual reason without bypass.
+- Strict01→12 continues.01–07 merged,08active/not yet accepted,09–12unstarted. Local08.5 WIP9b05ad693086733a7026e7fcf54fb7fc22a0cfcf remains the resume source. Older pending-human statements below are historical.
+## Earlier resume state — before human authorization
 
 - Whole user objective remains the entire spec in strict01→12 order.01–07 merged;08 NOT accepted/merged;09–12 unstarted. No PR requested. Do not drop remaining work or skip dependencies. Integration is `codex/roll-research-valuation`; original dirty checkout is preserved.
 - Active08 checkout/branch: `D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket08` / `codex/rv-ticket08`. Safe final local WIP **9b05ad693086733a7026e7fcf54fb7fc22a0cfcf**, includes rootcoordination1623099b; root independently verified HEAD and clean status. Implementer `/root/ticket08` completed its local turn and can be resumed. Restore/evidence entry: `.scratch/roll-research-valuation/evidence/08/checkpoint05.md` in that checkout.
