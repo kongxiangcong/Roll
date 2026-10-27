@@ -1,0 +1,44 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_feature_backup_preserves_export_and_rejects_rehashed_foreign_snapshot __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv11-red05/test_feature_backup_preserves_0')
+
+    def test_feature_backup_preserves_export_and_rejects_rehashed_foreign_snapshot(tmp_path):
+        import json
+        from fastapi import HTTPException
+        from roll.accounts.ledger import encode
+        from roll.runtime.backups import Backups, restore_at_start
+        from roll.research.company.features import FeatureExportCommand
+        from roll.research.company.feature_protocol import FeatureProtocolCommand
+        from roll.research.company.service import record
+        research=service(tmp_path/'source')
+        issuer=research.register(company())
+        snapshot=published(research,issuer)
+        exported=research.features.export(FeatureExportCommand(snapshot_id=snapshot['snapshot_id'],
+            observation_at=current_time(),idempotency_key='backup'))
+        protocol=research.features.register_protocol(FeatureProtocolCommand(company_ids=[issuer['company_id']],
+            idempotency_key='backup-protocol',basis='METHOD no execution'))
+        backup=Backups(tmp_path/'source')
+        bundle=backup.export(backup.create()['backup_id'])
+        target=Backups(tmp_path/'restored');target.stage_restore(bundle);restore_at_start(target)
+        restored=service(tmp_path/'restored')
+        assert restored.features.read(exported['feature_snapshot_id'])==exported
+        assert restored.features.protocol(protocol['protocol_id'])==protocol
+        assert restored.features.coverage([exported['feature_snapshot_id']],protocol['protocol_id'])['status']=='INCONCLUSIVE'
+        # Simulate external corruption with coherent JSON/archive hash: original snapshot binding must still fail.
+        damaged={k:v for k,v in exported.items() if k not in {'content_sha256','export_archive'}}
+        damaged['snapshot_sha256']='0'*64
+        with research.transaction() as db:
+            descriptor=research.evidence.archive(encode(damaged).encode(),'COMPANY_RESEARCH_FEATURES',db=db)
+            descriptor=json.loads(db.execute('SELECT value FROM evidence_archives WHERE sha256=?',(descriptor['sha256'],)).fetchone()[0])
+            changed=record(dict(damaged,export_archive=descriptor))
+            db.execute('UPDATE company_research_feature_snapshots SET value=? WHERE feature_snapshot_id=?',(encode(changed),exported['feature_snapshot_id']))
+>       with pytest.raises(HTTPException) as invalid:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_research_features.py:156: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_research_features.py::test_feature_backup_preserves_export_and_rejects_rehashed_foreign_snapshot
+1 failed, 4 deselected in 20.10s

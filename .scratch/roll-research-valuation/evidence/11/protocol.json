@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-27T16:26:12.494787+00:00",
+  "company_ids": [
+    "54abcc3d-67c2-453e-83b4-8fdc92b7a292"
+  ],
+  "baseline_protocol_id": null,
+  "baseline_model_id": null,
+  "basis": "Read-only preregistration supplement; no baseline model, mature outcomes, fit permission or family budget is assumed",
+  "idempotency_key": "actual11-protocol-01",
+  "request_sha256": "3aada9240b222696e2e8673cdd51c3f2e633e3367f698c3589f1ec8c3b0bffac",
+  "protocol_id": "a514659e-04ea-46c1-9e31-df6d866417d8",
+  "design": {
+    "version": "company-feature-incremental-protocol-1",
+    "feature_definition_version": "company-research-features-1",
+    "hypothesis": "Source-timed operating candidates may add information to the SAME frozen price-volume baseline; no improvement assumed",
+    "event": "Bind original frozen positive20-session RAW round-trip net-return label; unresolved outcomes remain missing",
+    "horizon_sessions": 20,
+    "baseline": null,
+    "baseline_required": "ORIGINAL_FROZEN_PRICE_VOLUME_MODEL_AND_EXISTING_FAMILY",
+    "feature_fields": [
+      "hypothesis_revision_count",
+      "risk_condition_count",
+      "next_validation_days",
+      "current_requirement_gap"
+    ],
+    "variants": [
+      "FROZEN_BASELINE",
+      "BASELINE_PLUS_FIXED_COMPANY_CANDIDATES"
+    ],
+    "same_sample_controls": "Identical company/date/label/cost/execution cohort and timestamps; retain missing indicators; no selective complete-case deletion or stock/date search",
+    "time_out_windows": {
+      "inherit": null,
+      "rule": "Chronological development/calibration/out-of-time windows fixed BEFORE any labels;20-session purge and embargo; no shuffled split; unbound windows prohibit execution"
+    },
+    "scores": [
+      "BRIER",
+      "LOG_LOSS",
+      "CALIBRATION"
+    ],
+    "scoring": {
+      "brier": "mean((p-y)^2)",
+      "log_loss": "-mean(y*log(p)+(1-y)*log(1-p)); same predeclared numerical clipping as baseline",
+      "calibration": "Fixed five equal-width reliability bins; disclose support/uncertainty; missing outcomes are not negatives",
+      "comparison": "Paired same-sample differences versus original frozen baseline and development base rate; cluster dependent overlapping events and issuer disclosure roots"
+    },
+    "costs": {
+      "inherit": null,
+      "rule": "Same source-bound historical statutory/broker/slippage/corporate-action treatment as baseline; unknown is not zero; report fees and turnover"
+    },
+    "risk_exposure_controls": "Matched gross/net/industry/size/beta exposures, drawdown and turnover; separate timing from sector/exposure effects, no unqualified excess-return claim",
+    "maturity": {
+      "minimum_independent_mature_events": 200,
+      "minimum_per_occupied_reliability_bin": 20,
+      "label_rule": "Only actual completed20-session outcomes under identical frozen event; later revisions cannot alter historical features",
+      "independence": "Issuer/origin-root/reporting-period clusters; repeated quarterly reports/dailies/A-H listings do not add independent operating evidence"
+    },
+    "stopping": {
+      "inherited": null,
+      "budget": "Existing family residual budget INCLUDING prior failed/aborted attempts and reservations; NEVER reset or allocate here",
+      "no_new_fit_without": "Explicit fitting authorization AND frozen fully bound supplement AND unchanged original family budget gates",
+      "evidence_deadline": "Inherit original calendar deadline, never restart it for this entry",
+      "hard_stop": [
+        "PIT leakage",
+        "blocked valuation numeric leakage",
+        "corrupt references",
+        "budget exhausted",
+        "SEALED access attempted"
+      ],
+      "insufficient": "INCONCLUSIVE at insufficient support/deadline; preserve all failures, no retuning/search to obtain PASS"
+    },
+    "frozen_design_source": {
+      "path": "research/design.py",
+      "sha256": "7ee8a1be226fde5f1e56f2d2ee0f479b17b64355d4bae97fd3734dd6cbe76eb8"
+    },
+    "authority": "SUPPLEMENT_ONLY_NOT_AN_EXECUTOR_OR_NEW_EXPERIMENT_FAMILY"
+  },
+  "design_sha256": "1e72fcd70782d753bc0d3b7ef48b6ac2790eefdb25b1af256bdcc7ad8d6fff37",
+  "gaps": [
+    "ORIGINAL_FROZEN_PRICE_VOLUME_BASELINE_AND_PROTOCOL_UNBOUND"
+  ],
+  "status": "DRAFT_UNBOUND",
+  "training_started": false,
+  "sealed_read": false,
+  "budget_reserved": false,
+  "real_fit_admitted": false,
+  "export_archive": {
+    "bytes": 3854,
+    "kind": "COMPANY_FEATURE_PROTOCOL",
+    "path": "raw/305a4cf229f71d957db3c0d51097979dbb90aa71a6d8b697b147c632c3e7bfb3.json",
+    "sha256": "305a4cf229f71d957db3c0d51097979dbb90aa71a6d8b697b147c632c3e7bfb3"
+  },
+  "content_sha256": "59af52e5fc0897644df50fedba5f42330dec1f1712c933257ea221a1f3a3dfaf"
+}

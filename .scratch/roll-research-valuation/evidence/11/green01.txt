@@ -1,0 +1,48 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_fixed_features_keep_unknowns_and_sources_without_changing_shared_research _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv11-green01/test_fixed_features_keep_unkno0')
+
+    def test_fixed_features_keep_unknowns_and_sources_without_changing_shared_research(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        from roll.research.company.features import FeatureExportCommand
+        command = FeatureExportCommand(snapshot_id=snapshot['snapshot_id'], observation_at=current_time(),
+                                       purpose='CURRENT_RESEARCH', idempotency_key='first')
+        result = research.features.export(command)
+        assert result['features']['hypothesis_revision_count']['value'] == 0
+        assert result['features']['risk_condition_count']['value'] == 1
+        assert result['features']['next_validation_days']['value'] is None
+        assert result['features']['current_requirement_gap']['value'] is None
+        assert result['missing_mask']['next_validation_days'] is True
+        assert result['features']['next_validation_days']['missing_reason'] == 'VALIDATION_DATE_UNKNOWN'
+        assert result['features']['current_requirement_gap']['economic_status'] == 'unavailable'
+        assert result['available_at'] >= snapshot['generated_at']
+        assert result['source_roots'] == ['issuer-annual-2025']
+        assert result['training_started'] is False and result['sealed_read'] is False
+>       assert research.features.export(command) == result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_research_features.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\features.py:68: in export
+    return self.read(value['feature_snapshot_id'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\features.py:57: in read
+    fail('RESEARCH_REFERENCE_INVALID', 'Feature export differs from canonical archive', 409)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'RESEARCH_REFERENCE_INVALID'
+reason = 'Feature export differs from canonical archive', status = 409
+context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 409: {'code': 'RESEARCH_REFERENCE_INVALID', 'reason': 'Feature export differs from canonical archive', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_research_features.py::test_fixed_features_keep_unknowns_and_sources_without_changing_shared_research
+1 failed in 10.52s

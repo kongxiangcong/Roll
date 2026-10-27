@@ -1,7 +1,7 @@
 # 11 提供研究特征快照与增量验证协议
 
 Status: ready-for-agent
-Completion: not-started
+Completion: complete
 Depends on: 10
 Spec: [v1.0](../spec.md) 第10节
 
@@ -24,10 +24,10 @@ Spec: [v1.0](../spec.md) 第10节
 
 ## 验收标准
 
-- [ ] A9通过：情景权重/模型自信无法作为上涨概率字段，未知不填0。
-- [ ] 同一季报重复日报可追踪共同来源，独立样本支持不虚增。
-- [ ] 历史时点导出排除后来材料；不足返回可诊断INCONCLUSIVE而非伪造训练结果。
-- [ ] 原模型工件、CAL/SEALED和账户没有变更。
+- [x] A9通过：情景权重/模型自信无法作为上涨概率字段，未知不填0。
+- [x] 同一季报重复日报可追踪共同来源，独立样本支持不虚增。
+- [x] 历史时点导出排除后来材料；不足返回可诊断INCONCLUSIVE而非伪造训练结果。
+- [x] 原模型工件、CAL/SEALED和账户没有变更。
 
 ## 验证与交付证据
 
@@ -42,4 +42,6 @@ Spec: [v1.0](../spec.md) 第10节
 ## Comments
 
 2026-10-26：依据已确认需求创建，尚未实施。
+
+2026-10-28：11实现及只读验收完成，见[证据](../evidence/11/README.md)与[API合同](../../../docs/research/company-feature-api.md)。11项定向回归通过；真实固定露露三用途导出/概率字段拒绝/保护元数据对比/隔离恢复通过，全部候选因缺口或blocked保持null，成熟样本0、协议DRAFT_UNBOUND及coverage INCONCLUSIVE；没有拟合/模型/auth/SEALED/调度或旧预算写入。真实价格差正向场景、12完整联合验收与两个盘后周期未由本票替代。下一票12。
 

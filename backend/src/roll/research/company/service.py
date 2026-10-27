@@ -92,6 +92,8 @@ class CompanyResearch:
         self.reports = ReportState(self)
         from .report_deliveries import ReportDeliveries
         self.report_deliveries = ReportDeliveries(self)
+        from .features import ResearchFeatures
+        self.features = ResearchFeatures(self)
 
     @contextmanager
     def transaction(self):

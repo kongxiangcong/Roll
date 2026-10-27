@@ -2,7 +2,7 @@
 
 依据：[实施规格](../spec.md) v1.0。顺序：**01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12**。
 
-所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**11**。01—09已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)、[05证据](../evidence/05/README.md)、[06证据](../evidence/06/README.md)和[07证据](../evidence/07/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。06提供显式双快照三类比较、固定旧路径反推/有序模型对照、独立信息时效和不可变恢复；合成比较不冒充真实报价或市场因果。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
+所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**12**。01—11已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)、[05证据](../evidence/05/README.md)、[06证据](../evidence/06/README.md)和[07证据](../evidence/07/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。06提供显式双快照三类比较、固定旧路径反推/有序模型对照、独立信息时效和不可变恢复；合成比较不冒充真实报价或市场因果。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
 
 | 顺序 | 任务 | 依赖 | Completion |
 | --- | --- | --- | --- |
@@ -16,7 +16,7 @@
 | 08 | [实现投研与估值完整报告流水线](08-report-template-and-pipeline.md) | 07 | complete |
 | 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | complete |
 | 10 | [交付独立公司研报入口及共享联动](10-report-workflow-ui.md) | 09 | complete |
-| 11 | [提供研究特征快照与增量验证协议](11-probability-research-interface.md) | 10 | not-started |
+| 11 | [提供研究特征快照与增量验证协议](11-probability-research-interface.md) | 10 | complete |
 | 12 | [完成双工作流真实联合验收与交接](12-integrated-real-acceptance.md) | 11 | not-started |
 
 ## 执行规则
@@ -45,3 +45,5 @@
 09已完成[文件层交付与恢复](../evidence/09/README.md)：固定08 PARTIAL报告45页中文PDF，三个交付版本不改原件，6文件实际HTTP下载与新目录恢复SHA一致，8项受影响回归通过。最终45页与8页METHOD视觉检查分列。10网页工作流与12联合验收尚未完成。
 
 10已完成独立公司页面、任务控制、安全预览/下载/历史与固定快照只读联动，真实复用及新任务控制分账见[10证据](../evidence/10/README.md)。11为下一票，整体未完成。
+
+11已交付只读研究特征与原实验补充协议，真实缺失/blocked隔离、迟到与同季去重、保护对象及隔离恢复通过，见[11证据](../evidence/11/README.md)。0成熟样本和未绑定baseline保持DRAFT_UNBOUND/INCONCLUSIVE，没有拟合或改变原概率/旧预算/账户/SEALED。当前进入12，不据本票宣称完整正向链或实际盘后周期完成。
