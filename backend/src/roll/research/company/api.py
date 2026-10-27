@@ -25,6 +25,28 @@ class CandidateSubmission(Command):
 def router(research):
     routes = APIRouter(prefix='/api/company-research', tags=['company-research'])
     from .reports import ReportCommand
+    from .report_deliveries import DeliveryCommand
+
+    @routes.post('/report-deliveries',status_code=201)
+    def create_delivery(command:DeliveryCommand):
+        return research.report_deliveries.create(command)
+
+    @routes.get('/report-deliveries/{delivery_id}')
+    def read_delivery(delivery_id:str):
+        return research.report_deliveries.read(delivery_id)
+
+    @routes.get('/reports/{report_id}/deliveries')
+    def report_deliveries(report_id:str,limit:int=Query(50,ge=1,le=200),offset:int=Query(0,ge=0)):
+        return research.report_deliveries.list(report_id,limit,offset)
+
+    @routes.get('/report-deliveries/{delivery_id}/files/{artifact}')
+    def download_report_file(delivery_id:str,artifact:str):
+        raw,media,filename=research.report_deliveries.download(delivery_id,artifact)
+        return Response(raw,media_type=media,headers={
+            'Content-Disposition':f'attachment; filename="{filename}"',
+            'X-Content-Type-Options':'nosniff',
+            'Content-Security-Policy':"default-src 'none'; sandbox",
+        })
 
     from .report_revisions import RevisionCommand
 

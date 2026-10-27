@@ -152,3 +152,26 @@ def validate_reports(db,archives):
             require(job['input_id'] in inputs and (inputs[job['input_id']]['job_id']==job['job_id'] or (job.get('host_revision_id') and revision_binding(job,inputs[job['input_id']]))))
         if job['report_id']:
             require(job['report_id'] in reports and reports[job['report_id']]['job_id']==job['job_id'])
+    if db.execute("SELECT 1 FROM sqlite_master WHERE name='company_research_report_deliveries'").fetchone():
+        deliveries=load('report_deliveries','delivery_id')
+        for delivery in deliveries.values():
+            report=reports.get(delivery['report_id']);require(report is not None)
+            packet=inputs[report['input_id']]
+            require(delivery['report_sha256']==report['content_sha256'] and delivery['company_id']==report['company_id'])
+            require(all(delivery[k]==report[k] for k in ['core_sha256','snapshot_id','input_id','input_sha256','template','completeness','quality']))
+            expected={'markdown','input','references','valuation'}|({'pdf'} if delivery['status']=='COMPLETE' else set())
+            require(set(delivery['artifacts'])==expected and delivery['status'] in {'COMPLETE','PDF_FAILED','MARKDOWN_ONLY'})
+            require(delivery['artifacts']['markdown']==report['markdown_archive'] and delivery['artifacts']['input']==packet['input_archive'])
+            require((delivery['status']=='PDF_FAILED')==bool(delivery['render_error']))
+            for value in delivery['artifacts'].values():archive(value)
+            archive(delivery['manifest_archive'])
+            require(delivery['manifest_archive']['sha256']==fingerprint({k:v for k,v in delivery.items() if k not in {'manifest_archive','content_sha256'}}))
+            reference_index=dict(references=packet['payload']['references'],materials=packet['payload']['materials'],facts=packet['payload']['facts'],peer_facts=packet['payload']['peer_facts'])
+            require(delivery['artifacts']['references']['sha256']==fingerprint(reference_index))
+            valuation_index=dict(valuation_binding=packet['payload']['valuation_binding'],core=report['core'],core_sha256=report['core_sha256'],host_revision=revisions.get(report.get('host_revision_id')))
+            require(delivery['artifacts']['valuation']['sha256']==fingerprint(valuation_index))
+            if delivery['renderer']:
+                archive(delivery['renderer']['source_archive'])
+            if delivery['parent_delivery_id']:
+                parent=deliveries.get(delivery['parent_delivery_id'])
+                require(parent and parent['report_id']==report['report_id'] and parent['created_at']<delivery['created_at'])

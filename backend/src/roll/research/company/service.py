@@ -90,6 +90,8 @@ class CompanyResearch:
         initialize(self)
         from .reports import ReportState
         self.reports = ReportState(self)
+        from .report_deliveries import ReportDeliveries
+        self.report_deliveries = ReportDeliveries(self)
 
     @contextmanager
     def transaction(self):

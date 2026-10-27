@@ -2,7 +2,7 @@
 
 依据：[实施规格](../spec.md) v1.0。顺序：**01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12**。
 
-所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**09**。01—08已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)、[05证据](../evidence/05/README.md)、[06证据](../evidence/06/README.md)和[07证据](../evidence/07/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。06提供显式双快照三类比较、固定旧路径反推/有序模型对照、独立信息时效和不可变恢复；合成比较不冒充真实报价或市场因果。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
+所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**10**。01—09已完成，分别见[01证据](../evidence/01/README.md)、[02证据](../evidence/02/README.md)、[03证据](../evidence/03/README.md)、[04证据](../evidence/04/README.md)、[05证据](../evidence/05/README.md)、[06证据](../evidence/06/README.md)和[07证据](../evidence/07/README.md)。04原始结果保持unreviewed/usable_range=false；05另有宿主经营模型/经济审核及固定引用的共享子快照。06提供显式双快照三类比较、固定旧路径反推/有序模型对照、独立信息时效和不可变恢复；合成比较不冒充真实报价或市场因果。真实日期基准正向conditional、当前定价及江西铜业缺口blocked，不代表联合A6全链或整体功能完成。
 
 | 顺序 | 任务 | 依赖 | Completion |
 | --- | --- | --- | --- |
@@ -14,7 +14,7 @@
 | 06 | [实现三类变化与信息状态比较](06-daily-change-decomposition.md) | 05 | complete |
 | 07 | [将持续投研与估值融入每日使用](07-daily-research-integration.md) | 06 | complete |
 | 08 | [实现投研与估值完整报告流水线](08-report-template-and-pipeline.md) | 07 | complete |
-| 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | not-started |
+| 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | complete |
 | 10 | [交付独立公司研报入口及共享联动](10-report-workflow-ui.md) | 09 | not-started |
 | 11 | [提供研究特征快照与增量验证协议](11-probability-research-interface.md) | 10 | not-started |
 | 12 | [完成双工作流真实联合验收与交接](12-integrated-real-acceptance.md) | 11 | not-started |
@@ -41,3 +41,5 @@
 08此前待授权恢复入口为[08.5检查点](../evidence/08/checkpoint05.md)：必要本地摘要/数值覆盖修复及49+14项工程检查已完成，四份特定payload外发授权仍待人类；未发布、未验收、不解除09依赖。
 
 08已通过[最终真实PARTIAL实现验收](../evidence/08/final05.md)：四新CODEX完成、12host章节、固定core、94逐项规则、实际发布与32源码/12wire隔离恢复。真实资料缺口仍保留，未声称FULL或A6/A7联合真实链完成。09现可按依赖启动；09–12仍not-started，整体功能未完成。
+
+09已完成[文件层交付与恢复](../evidence/09/README.md)：固定08 PARTIAL报告45页中文PDF，三个交付版本不改原件，6文件实际HTTP下载与新目录恢复SHA一致，8项受影响回归通过。最终45页与8页METHOD视觉检查分列。10网页工作流与12联合验收尚未完成。

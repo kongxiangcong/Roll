@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_pdf_formats_blank_separated_report_tables_as_tables ___________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv09-red07/test_pdf_formats_blank_separat0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001693A2F7100>
+
+    def test_pdf_formats_blank_separated_report_tables_as_tables(tmp_path, monkeypatch):
+        from roll.research.company.report_deliveries import DeliveryCommand
+        from pypdf import PdfReader
+        from io import BytesIO
+        research,report=published_report(tmp_path,monkeypatch)
+        delivery=research.report_deliveries.create(DeliveryCommand(report_id=report['report_id'],idempotency_key='tables'))
+        assert delivery['status']=='COMPLETE',delivery
+        raw,_,_=research.report_deliveries.download(delivery['delivery_id'],'pdf')
+        text='\n'.join(p.extract_text() for p in PdfReader(BytesIO(raw)).pages)
+        assert '|---|' not in text
+        assert '|1|' not in text
+        assert '���˫��' in text and '��¼ D' in text
+        # The final two-column version index must not inherit the preceding
+        # three-column source-ledger grid after a blank-separated new header.
+        positions={}
+        for page in PdfReader(BytesIO(raw)).pages:
+            def visit(value,cm,tm,font,size):
+                for label in ['����','�̶��汾/ժҪ']:
+                    if value.strip()==label:
+                        positions[label]=cm[4]+tm[4]
+            page.extract_text(visitor_text=visit)
+>       assert set(positions)=={'����','�̶��汾/ժҪ'}
+E       AssertionError: assert set() == {'�̶��汾/ժҪ', '����'}
+E         
+E         Extra items in the right set:
+E         '����'
+E         '�̶��汾/ժҪ'
+E         Use -v to get more diff
+
+backend\tests\company_research\test_report_deliveries.py:142: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_deliveries.py::test_pdf_formats_blank_separated_report_tables_as_tables
+1 failed in 19.49s

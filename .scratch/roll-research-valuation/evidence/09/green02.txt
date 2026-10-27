@@ -1,0 +1,23 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+______ test_pdf_failure_retains_markdown_and_retry_creates_new_delivery _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv09-green02/test_pdf_failure_retains_markd0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018DF4C63360>
+
+    def test_pdf_failure_retains_markdown_and_retry_creates_new_delivery(tmp_path, monkeypatch):
+        from roll.research.company.report_deliveries import DeliveryCommand
+        research, report = published_report(tmp_path, monkeypatch)
+        monkeypatch.setenv('ROLL_REPORT_FONT', str(tmp_path/'missing.ttf'))
+        failed = research.report_deliveries.create(DeliveryCommand(report_id=report['report_id'], idempotency_key='missing-font'))
+        assert failed['status'] == 'PDF_FAILED'
+>       assert failed['render_error']['code'] == 'PDF_FONT_UNAVAILABLE'
+E       AssertionError: assert 'PDF_RENDER_FAILED' == 'PDF_FONT_UNAVAILABLE'
+E         
+E         - PDF_FONT_UNAVAILABLE
+E         + PDF_RENDER_FAILED
+
+backend\tests\company_research\test_report_deliveries.py:56: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_deliveries.py::test_pdf_failure_retains_markdown_and_retry_creates_new_delivery
+1 failed, 1 passed in 23.16s
