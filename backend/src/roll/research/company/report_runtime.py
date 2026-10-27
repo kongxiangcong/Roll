@@ -50,7 +50,7 @@ class ReportRuntime:
             knowledge_frozen_at=payload['knowledge_frozen_at'], historical_pit_eligible=False,
             source_gaps=payload['source_gaps'],source_check_receipts=payload['acquisition'],
             unincorporated_material_ids=payload['unincorporated_material_ids'])
-        if packet['template']['version']=='08.3':
+        if packet['template']['version'] in {'08.3','08.4'}:
             from .report_revisions import context_summary
             prompt['fixed_valuation_context']=context_summary(packet)
         command = dict(model=job['model'], tools=[], output_schema=OUTPUT, instructions=INSTRUCTIONS, prompt=encode(prompt))

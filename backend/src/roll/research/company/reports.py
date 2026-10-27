@@ -370,6 +370,8 @@ class ReportState:
             cycle_required=cycle_required,classification_fact_version_ids=[f['version_id'] for f in classification],
             screening_archive=screening_archive,
             unincorporated_material_ids=[m['material_id'] for m in materials if m['material_id'] not in {f['material_id'] for f in facts}])
+        from .report_coverage import capture
+        payload['source_coverage']=capture(self.research,job,payload)
         from .report_values import typed_packet
         payload=typed_packet(dict(payload=payload))['payload']
         archive = archived(self.research.evidence,encode(payload).encode(), 'REPORT_FROZEN_INPUT')

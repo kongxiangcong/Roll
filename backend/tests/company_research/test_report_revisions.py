@@ -58,7 +58,7 @@ def test_revision_keeps_parent_and_frozen_input_and_uses_distinct_code_provenanc
     assert research.reports.revise(command)==job
     revision=research.reports.revision(job['host_revision_id'])
     assert revision['generation_code_hashes']==packet['code_hashes']
-    assert revision['host_version']=='08.3' and revision['missing_model_calls']==12
+    assert revision['host_version']=='08.4' and revision['missing_model_calls']==12
     assert research.reports.get(parent['job_id'])==cancelled
     assert research.reports.input(packet['input_id'])==original
     preview=research.reports.chapter_preview(job['job_id'],'9')
@@ -164,7 +164,7 @@ def test_fresh_report_preview_includes_only_its_fixed_model_and_typed_host_table
         assert context['assumptions']==packet['payload']['valuation_binding']['fixed_operating_model']['assumptions']
         assert context['scenario_drivers'] and context['annual_cashflows']
         assert len(preview['command']['prompt'].encode())<262144 and preview['command']['tools']==[]
-    assert packet['template']['version']=='08.3'
+    assert packet['template']['version']=='08.4'
     assert '百万元（CNY）' in packet['payload']['valuation_subsections']['3']
     assert '百万股' in packet['payload']['valuation_subsections']['4']
     from roll.research.company.report_values import typed_packet

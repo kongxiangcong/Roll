@@ -40,3 +40,12 @@ CODEX wire范围含公开年报事实、中债/NYU参数、已注册provider历�
 除明确授权后4真实章及最终报告/发布后恢复外，还需在08最终验收前核对完整资料的正向覆盖路径：当前quality临时ledger七类别统一缺口措辞、A/B/C/H附录仍使用通用缺口内容，不能把它当逐类别真实取得/失败回执或资料齐全时的完整附录。当前真实样例这些内容确实未纳入固定底稿，PARTIAL正确；但不能仅补4章就宣称全能力/票已完成。该具体剩余实现工作已交root；当前16源码/4wire先保持冻结，任何后续改算法须追加新执行修订，旧产物保留。
 
 Completion保持in-progress，09未解依赖。该分支是安全WIP检查点，不是已验收实现，不请求merger合08。
+
+## 08.4 本地来源账本与附录修订检查点（尚未验收）
+
+- 新job `416d3883-f0a6-4454-a40d-3104c018ba0f`，revision `6008a00c-d3d9-4ed4-ad19-570430712ef2`；旧91以正常取消生命周期由新host版本取代，旧input/run/section/raw/16源码不改。17源码另归档，12command（含待发四份）与host03逐字节/SHA完全一致，仍未外发。
+- red25缺能力2失败；green25首次工程fixture把新取得事实倒填旧03 as_of而失败，green25b修fixture用真实now后2通过。review26 sandbox假async collector卡住，精确owned child PID停止，wrapper自行退出；原日志/临时数据保留。review26b=4通过/1fixture单位币种不匹配；red27纠正fixture后复现真正legacy默认issuer角色错误；green27=13通过/84.20s。regression28仅7覆盖+23原流水线，**30通过/194.94s**；没有重复177项宽回归。
+- 逐字原文可承接A/B/C主题，自定义术语和受控定义只列正文实际出现词与真实首次位置。仅有标签、抄录声明或原文“未披露”不升覆盖；原文核对不等独立事实背书。SourceCheck/quote/job绑定进入恢复，重算外层hash+新archive仍不能伪造来源job。
+- 真实固定露露sourcebook：本体两次明确父任务历史成功、本次0；外部估值4材料；五类NOT_CHECKED；A/B/C仍UNKNOWN。旧材料登记的中间FAILED与已绑定最终SUCCESS分列，不取无关latest。宏观参数不按旧默认issuer标签撑公司披露。
+- queued-restore04与revalidated-restore04在独立新目录完整恢复SourceBook/job/revision/input/章节，31份原/新源码、12command及account0一致，model/net/auth0。已纯离线复用8raw为新section，下一9章尚未advance；offline-preview04为未发布PARTIAL，不是验收。
+- 尚有必要本地收口：四部分结论/速览节奏常量，及未知scope绘图边界。将追加08.5，不改04档案；完成这些后仍须人类授权四份特定payload→OpenAI、真实章/质量/发布后恢复，才能决定08验收。09仍未解依赖。

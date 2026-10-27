@@ -11,16 +11,44 @@ def validate_reports(db,archives):
     jobs=load('jobs','job_id');inputs=load('report_inputs','input_id')
     sections=load('report_sections','section_version_id');reports=load('reports','report_id');runs=load('report_runs','run_id')
     revisions=load('report_revisions','revision_id') if db.execute("SELECT 1 FROM sqlite_master WHERE name='company_research_report_revisions'").fetchone() else {}
+    checks=load('checks','check_id')
     snapshots=load('snapshots','snapshot_id');materials=load('materials','material_id');facts=load('facts','version_id')
     def require(ok):
         if not ok:
             fail('RESEARCH_REFERENCE_INVALID','Report job, frozen input, chapter or publication binding is inconsistent',409)
     def archive(value):
         require(value and archives.get(value['sha256'])==value)
+    def source_book(book,payload,owner):
+        verified(book)
+        require(book['current_job_id']==owner and book['lineage'] and book['lineage'][0]==owner and len(book['lineage'])<=8)
+        for index,identifier in enumerate(book['lineage']):
+            require(identifier in jobs and jobs[identifier]['company_id']==payload['company']['company_id'])
+            if index:require(jobs[book['lineage'][index-1]].get('parent_job_id')==identifier)
+        selected_facts={f['version_id']:f for f in payload['facts']};selected_materials={m['material_id']:m for m in payload['materials']}
+        for category,row in book['categories'].items():
+            require(set(row['material_ids'])<=set(selected_materials))
+            for receipt in row['attempts']:
+                job=jobs.get(receipt['job_id']);require(job and receipt['job_id'] in book['lineage'])
+                if receipt.get('verified_check'):
+                    check=checks.get(receipt.get('check_id'));require(check and check==receipt['verified_check'] and check['company_id']==job['company_id'] and category in check['requested_scopes'])
+                    require(any(all(r.get(k)==receipt.get(k) for k in ['status','material_id','raw_sha256','started_at','finished_at']) for r in check['source_receipts']))
+                    if receipt['status']=='SUCCESS':
+                        material=selected_materials.get(receipt.get('material_id'));require(material and material['raw_sha256']==receipt.get('raw_sha256'))
+                else:
+                    require(receipt.get('origin_kind')=='REGISTERED_COLLECTOR_RUN' and any(all(r.get(k)==receipt.get(k) for k in ['source','run_id','status','source_status','started_at','finished_at']) for r in job.get('acquisition',{}).get('receipts',[])))
+        for proof in book['quote_proofs']:
+            fact=selected_facts.get(proof['fact_version_id']);material=selected_materials.get(proof['material_id']);job=jobs.get(proof['job_id'])
+            require(fact and material and job and proof['job_id'] in book['lineage'] and fact['material_id']==material['material_id'] and fact['metric']==proof['metric'] and fact['value']==proof['quote'] and material['raw_sha256']==proof['original_sha256'])
+            require(any(all(r.get(k)==proof.get(k) for k in ['fact_version_id','material_id','original_sha256','page','table','quote']) for r in job.get('quote_receipts',[])))
+            archive(proof['derived_text_archive'])
+        for rows in book['appendix_rows'].values():
+            for row in rows:
+                fact=selected_facts.get(row['fact_version_id']);require(fact and fact['material_id']==row['material_id'] and fact['value']==row['text'] and any(p['fact_version_id']==fact['version_id'] for p in book['quote_proofs']))
     for packet in inputs.values():
         job=jobs.get(packet['job_id']); payload=packet['payload'];snapshot=payload['snapshot']
         require(job and packet['company_id']==job['company_id'] and fingerprint(payload)==packet['packet_sha256'])
         archive(packet['input_archive'])
+        if payload.get('source_coverage'):source_book(payload['source_coverage'],payload,packet['job_id'])
         if snapshot:
             require(snapshots.get(snapshot['snapshot_id'])==snapshot and snapshot['company_id']==packet['company_id'] and payload['core_sha256']==snapshot['core_sha256'])
         for item in payload['facts']:
@@ -48,7 +76,10 @@ def validate_reports(db,archives):
     for revision in revisions.values():
         packet=inputs.get(revision['input_id']);require(packet is not None)
         require(revision['input_sha256']==packet['packet_sha256'] and revision['core_sha256']==packet['payload']['core_sha256'] and revision['generation_code_hashes']==packet['code_hashes'])
-        require(revision['original_plan_sha256'] in archives and revision['host_version']=='08.3')
+        if revision.get('previous_host_revision_id'):
+            previous=revisions.get(revision['previous_host_revision_id']);require(previous and previous['parent_job_id']==revision['parent_job_id'] and previous['input_id']==revision['input_id'] and previous['original_plan_sha256']==revision['original_plan_sha256'])
+        if revision.get('source_coverage'):source_book(revision['source_coverage'],packet['payload'],revision['parent_job_id'])
+        require(revision['original_plan_sha256'] in archives and revision['host_version'] in {'08.3','08.4'})
         for name,value in revision['execution_algorithm_archives'].items():
             archive(value);require(revision['execution_code_hashes'][name]==value['sha256'])
         for sid,value in revision['commands'].items():

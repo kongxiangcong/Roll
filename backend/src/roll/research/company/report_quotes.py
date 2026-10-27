@@ -18,7 +18,7 @@ class ReportQuote(Command):
     page: int = Field(ge=1,le=2000)
     quote: str = Field(min_length=20,max_length=2000)
     business: str = Field(min_length=1,max_length=160)
-    metric: Literal['business_structure','product_structure','operating_scope','operating_counterevidence'] = 'business_structure'
+    metric: Literal['business_structure','product_structure','operating_scope','operating_counterevidence','company_history','capital_event','ownership_structure','governance','capacity_technology','channel_structure','staff_structure','term_definition'] = 'business_structure'
 
     @model_validator(mode='after')
     def one_source(self):

@@ -68,7 +68,9 @@ def check_quality(packet, sections, markdown, scratch_root=None):
                 evidence=[detail],reason='冻结参考表达式的实际机械结果；不代表事实核实')
     payload=packet['payload']
     complete={s['section_id']:s for s in sections if s['status']=='COMPLETE'}
-    ledger='\n'.join('## '+name+'\n|项目|状态|依据与缺口|\n|---|---|---|\n|'+name+'|缺口|已试当前已配置来源；可继续查官方披露/统计；需要条件：具备同口径原件|' for name in namespace['LEDGER_SECTIONS'])
+    from .report_coverage import build
+    source_book=payload.get('source_coverage') or build(payload)
+    ledger=source_book['ledger_markdown']
     with tempfile.TemporaryDirectory(prefix='roll-report-quality-', dir=scratch_root) as directory:
         project=Path(directory)
         wd=project/'02-工作底稿';wd.mkdir()
@@ -79,7 +81,7 @@ def check_quality(packet, sections, markdown, scratch_root=None):
         (wd/'排雷表.md').write_text('\n'.join('|'+str(i['number'])+'|'+i['name']+'|'+i['outcome']+'|' for i in payload['landmines']),encoding='utf-8')
         (wd/'估值参照带.md').write_text(json.dumps(payload['valuation_presentation'],ensure_ascii=False),encoding='utf-8')
         count=len(re.findall(r'[\u4e00-\u9fff]',markdown))
-        selfcheck='\n'.join(['中文字 '+str(count),'字数不足：取数/有效章节尚未全部完成；不是认定公司本来信息少。']+
+        selfcheck='\n'.join(['中文字 '+str(count),('字数不足：取数/有效章节尚未全部完成；不是认定公司本来信息少。' if count<namespace['DRAFT_MIN_CJK'] else '字数达到原触发线；来源、经济与语义覆盖仍须分别检查。')]+
             ['章节 '+sid+'：'+('有受限候选，仍需核对事实' if sid in complete else '未完成有效候选') for sid in SECTIONS]+
             ['来源数据图数 '+str(len(payload['charts']))+'；未造图凑数','未知排雷项 '+str(sum(i['outcome']=='UNKNOWN' for i in payload['landmines']))])
         (wd/'成稿自检记录.md').write_text(selfcheck,encoding='utf-8')
@@ -129,6 +131,7 @@ def check_quality(packet, sections, markdown, scratch_root=None):
     host=[]
     def check(name,ok,reason):
         host.append(dict(rule_id='roll-'+name,severity='fail',applies=True,outcome='PASS' if ok else 'UNKNOWN',evidence=[reason],reason=reason))
+    check('sourceful-appendices',all(state=='PASS' for state in source_book['appendices'].values()),'A/B/C原文主题覆盖 '+str(source_book['appendices'])+'；无已绑定逐字证据不填完整')
     check('shared-core',payload['snapshot'] is not None,'固定snapshot/core，章节不能回写或另算')
     check('requested-source-and-analysis',payload['acquisition']['status'] not in {'FAILED','PARTIAL'} and not payload['pipeline_errors'],
         '请求来源状态 '+payload['acquisition']['status']+'；分析/引文/底稿阶段错误 '+str(payload['pipeline_errors'])+'；失败不刷新成功或旧观点核查时间')

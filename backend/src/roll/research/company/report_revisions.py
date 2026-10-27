@@ -13,7 +13,7 @@ from .service import record,verified,fingerprint,fail
 from .report_archive import archive
 from .report_template import SECTIONS,code_hashes,reference_text,table,cell
 
-VERSION='08.3'
+VERSION='08.4'
 COMPILER='fixed-packet-context-2'
 
 
@@ -31,6 +31,7 @@ class RevisionCommand(Command):
     parent_job_id:str
     command_plan_sha256:str=Field(pattern=r'^[0-9a-f]{64}$')
     idempotency_key:str=Field(min_length=1,max_length=128)
+    previous_host_revision_id:str|None=None
     findings:list[NegativeFinding]=Field(default_factory=list,max_length=40)
 
 
@@ -95,7 +96,13 @@ class ReportRevisions:
         parent=self.reports.get(command.parent_job_id)
         if parent['status'] not in {'CANCELLED','FAILED','PARTIAL','COMPLETE','INTERRUPTED'} or parent.get('host_revision_id'):
             fail('REVISION_PARENT_INVALID','Revision needs a terminal original generation job',409)
-        packet=self.reports.input(parent['input_id']);request=command.model_dump();request_sha=fingerprint(request)
+        packet=self.reports.input(parent['input_id']);request=command.model_dump()
+        if request['previous_host_revision_id'] is None:request.pop('previous_host_revision_id')
+        request_sha=fingerprint(request)
+        if command.previous_host_revision_id:
+            previous=self.get(command.previous_host_revision_id)
+            if previous['parent_job_id']!=parent['job_id'] or previous['input_id']!=packet['input_id'] or previous['original_plan_sha256']!=command.command_plan_sha256:
+                fail('REVISION_PARENT_INVALID','Previous host revision must share the same original generation/input/plan',409)
         with self.research.ledger.connection() as db:
             prior=db.execute("SELECT value FROM company_research_jobs WHERE company_id=? AND json_extract(value,'$.idempotency_key')=?",(parent['company_id'],command.idempotency_key)).fetchone()
         if prior:
@@ -135,10 +142,12 @@ class ReportRevisions:
             if len(wire)>262144:fail('REPORT_INPUT_TOO_LARGE','Revised command exceeds 256 KiB')
             registered=archive(self.research.evidence,wire,'REPORT_REVISION_EXACT_COMMAND')
             commands[sid]=dict(sha256=registered['sha256'],archive=registered,origin='ORIGINAL_EXACT_COMMAND' if sid in reusable else COMPILER,original_sha256=item['sha256'])
+        from .report_coverage import capture
+        source_coverage=capture(self.research,parent,packet['payload'])
         hashes=code_hashes();root=Path(__file__).parents[2]
         revision=record(dict(revision_id=str(uuid4()),company_id=parent['company_id'],parent_job_id=parent['job_id'],
             input_id=packet['input_id'],input_sha256=packet['packet_sha256'],core_sha256=packet['payload']['core_sha256'],
-            host_version=VERSION,compiler_version=COMPILER,original_plan_sha256=command.command_plan_sha256,
+            previous_host_revision_id=command.previous_host_revision_id,host_version=VERSION,source_coverage=source_coverage,compiler_version=COMPILER,original_plan_sha256=command.command_plan_sha256,
             generation_code_hashes=packet['code_hashes'],execution_code_hashes=hashes,
             execution_algorithm_archives={name:archive(self.research.evidence,(root/name).read_bytes(),'REPORT_REVISION_ALGORITHM_SOURCE') for name in hashes},
             commands=commands,reusable=reusable,findings=[f.model_dump()|dict(disposition='QUARANTINE',factual_endorsement=False) for f in command.findings],
@@ -182,5 +191,6 @@ class ReportRevisions:
     def presentation_packet(self,job,packet):
         value=copy.deepcopy(packet);revision=self.get(job['host_revision_id']);value['report_id']=str(uuid5(NAMESPACE_URL,'roll-company-report:'+job['job_id']))
         value['host_revision']=revision
+        if revision.get('source_coverage'):value['payload']['source_coverage']=revision['source_coverage']
         from .report_values import typed_packet
         return typed_packet(value)

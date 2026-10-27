@@ -1,0 +1,62 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+___ test_reuse_ledger_distinguishes_no_check_from_an_actual_failed_attempt ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red25/test_reuse_ledger_distinguishe0')
+
+    def test_reuse_ledger_distinguishes_no_check_from_an_actual_failed_attempt(tmp_path):
+        import httpx
+        research=service(tmp_path);issuer=research.register(company());snapshot=published(research,issuer)
+        def request(key,**extra):
+            job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of='2026-02-01T00:00:00+00:00',idempotency_key=key,**extra))
+            for _ in range(4):job=research.reports.advance(job['job_id'])
+            return job,research.reports.input(job['input_id'])
+        reused,packet=request('reuse-ledger',source_mode='REUSE')
+>       book=packet['payload']['source_coverage']
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'source_coverage'
+
+backend\tests\company_research\test_report_coverage.py:16: KeyError
+_ test_verified_source_quotes_enable_appendix_topics_without_model_self_certification _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red25/test_verified_source_quotes_en0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BC2045C770>
+
+    def test_verified_source_quotes_enable_appendix_topics_without_model_self_certification(tmp_path,monkeypatch):
+        from roll.research.company import MaterialCommand,AnalysisCommand
+        from test_analysis_snapshots import candidate
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research=service(tmp_path);issuer=research.register(company())
+        topics=['company_history','capital_event','ownership_structure','governance','capacity_technology','channel_structure','staff_structure']
+        quotes={topic:'METHOD '+topic+' ԭʼ��Ӫ�����������ģ������ڹ��̲��ԣ�δ������ʵ��������ʵ��' for topic in topics}
+        metadata=material_input(issuer['company_id']);material=research.import_material(MaterialCommand(**metadata),'\n'.join(quotes.values()).encode())
+>       source_job=research.reports.start(ReportCommand(company_id=issuer['company_id'],as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='appendix-quotes',source_quotes=[dict(material_id=material['material_id'],page=1,metric=topic,business='METHOD_ISSUER_DISCLOSURE',quote=text) for topic,text in quotes.items()]))
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 7 validation errors for ReportCommand
+E       source_quotes.0.metric
+E         Input should be 'business_structure', 'product_structure', 'operating_scope' or 'operating_counterevidence' [type=literal_error, input_value='company_history', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/literal_error
+E       source_quotes.1.metric
+E         Input should be 'business_structure', 'product_structure', 'operating_scope' or 'operating_counterevidence' [type=literal_error, input_value='capital_event', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/literal_error
+E       source_quotes.2.metric
+E         Input should be 'business_structure', 'product_structure', 'operating_scope' or 'operating_counterevidence' [type=literal_error, input_value='ownership_structure', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/literal_error
+E       source_quotes.3.metric
+E         Input should be 'business_structure', 'product_structure', 'operating_scope' or 'operating_counterevidence' [type=literal_error, input_value='governance', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/literal_error
+E       source_quotes.4.metric
+E         Input should be 'business_structure', 'product_structure', 'operating_scope' or 'operating_counterevidence' [type=literal_error, input_value='capacity_technology', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/literal_error
+E       source_quotes.5.metric
+E         Input should be 'business_structure', 'product_structure', 'operating_scope' or 'operating_counterevidence' [type=literal_error, input_value='channel_structure', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/literal_error
+E       source_quotes.6.metric
+E         Input should be 'business_structure', 'product_structure', 'operating_scope' or 'operating_counterevidence' [type=literal_error, input_value='staff_structure', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/literal_error
+
+backend\tests\company_research\test_report_coverage.py:40: ValidationError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_coverage.py::test_reuse_ledger_distinguishes_no_check_from_an_actual_failed_attempt
+FAILED backend\tests\company_research\test_report_coverage.py::test_verified_source_quotes_enable_appendix_topics_without_model_self_certification
+2 failed in 11.11s
