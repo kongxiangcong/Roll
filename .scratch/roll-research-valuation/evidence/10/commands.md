@@ -15,3 +15,5 @@
 - 初次sandbox New-Item junction被拒，沿同命令必要escalated成功。sandbox GetProcess/TCP/CIM探测不可信，escalated确认真实Vite5210 PID50308存活；重复启动报端口已占保留，未杀其它进程。API显式module路径正确。
 
 脚本company-report-check最终输出目录按import.meta.url解析，避免不同cwd将截图落在错误目录；早期regression05用repo cwd时的派生截图不作最终证据。程序测试均METHOD，不是新真实来源/模型。
+
+最终暂存字节proof因运行中的API/Vite stdout继续增长而中断；PowerShell未及时停止后续提交，465a251c已保留。没有修改代码/数据/结果，追加纠正提交仅将Git证据改为固定captured日志，4个live日志保留本地并明确忽略。log-capture-correction.json记录实际时间和原字节SHA。最终proof重新核对所有票范围暂存字节。

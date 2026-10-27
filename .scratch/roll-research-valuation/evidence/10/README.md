@@ -29,3 +29,5 @@
 API-only8030：显式PYTHONPATH指本工作树backend/src、明确store，serve_api.py记录module-paths；不加载.env/不启动worker。API launcher45612、实际listener25036及ticks见api-receipt.json。Vite5210 PID50308见web-receipt.json。为后续验证保持服务运行；原07/08/09/生产服务未改。临时IAB仅本票tab已关闭，390px临时viewport已恢复。
 
 资料/用途缺口保持：CURRENT_PRICING blocked、BASELINE_RESEARCH conditional、非严格历史PIT，真实行业/同行/图等不足。10只关闭本票工程与复用网页路径；11只读研究特征及12真实联合矩阵仍按序待做，整体功能未完成。用法见docs/research/company-report-workflow.md。
+
+日志证据收口：原始运行日志仍保留本地（明确gitignore），Git保存固定*.captured.log快照。首次暂存后live stdout增长的实际失败与纠正见log-capture-correction.json/commands.md；原提交保留，最终字节proof不把持续变化日志当不可变工件。
