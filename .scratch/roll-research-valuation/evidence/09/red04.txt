@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_backup_restores_delivery_bytes_and_rejects_rehashed_wrong_core _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv09-red04/test_backup_restores_delivery_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002740660AEA0>
+
+    def test_backup_restores_delivery_bytes_and_rejects_rehashed_wrong_core(tmp_path, monkeypatch):
+        import json
+        from roll.research.company.report_deliveries import DeliveryCommand
+        from roll.research.company.service import record
+        from roll.accounts.ledger import encode
+        from roll.runtime.backups import Backups, restore_at_start
+        research, report = published_report(tmp_path/'source', monkeypatch)
+        delivery=research.report_deliveries.create(DeliveryCommand(report_id=report['report_id'],idempotency_key='backup',render_pdf=False))
+        backup=Backups(tmp_path/'source')
+        bundle=backup.export(backup.create()['backup_id'])
+        target=Backups(tmp_path/'restored');target.stage_restore(bundle);restore_at_start(target)
+        recovered=service(tmp_path/'restored')
+        assert recovered.report_deliveries.read(delivery['delivery_id'])==delivery
+        for name in ['markdown','manifest','references','valuation','input']:
+            assert recovered.report_deliveries.download(delivery['delivery_id'],name)==research.report_deliveries.download(delivery['delivery_id'],name)
+        # Fault injection: coherent JSON hash does not authorize a different shared core.
+        changed={k:v for k,v in delivery.items() if k!='content_sha256'}
+        changed['core_sha256']='0'*64
+        with research.ledger.connection() as db:
+            db.execute('UPDATE company_research_report_deliveries SET value=? WHERE delivery_id=?',(encode(record(changed)),delivery['delivery_id']))
+>       with pytest.raises(HTTPException) as invalid:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_report_deliveries.py:116: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_deliveries.py::test_backup_restores_delivery_bytes_and_rejects_rehashed_wrong_core
+1 failed in 32.24s

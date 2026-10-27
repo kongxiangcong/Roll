@@ -2,6 +2,18 @@
 
 Updated 2026-10-27 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
 
+## Current resume state —09 accepted locally, ready for merger
+
+- Ticket09 implementation/acceptance complete on codex/rv-ticket09, D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket09, based on integration ef040a8f.01–08 already merged; root must merge09 final submitted tip before starting10. Whole objective still01→12;10–12 not started. Original dirty checkout preserved.
+- Evidence09/README.md, commands.md, real03-receipt.json and visual-qa03.json are current. Final delivery e3e6e93c-0a17-4bfc-92af-82b86aa86487, immutable08 report b9cfb2a0-8f93-516a-a4cd-7b7801fd7911, PDF45pages/rawSHAb135d59a72287ea6f998fd591882cc28de078f745741b7bc6d225ec1d7ddf408. OriginalMD397091...32720/core37b719.../PARTIAL unchanged.01/02 earlier layout failures/versions remain archived.
+- Actual fullAPI8029 six-file downloads and traversal rejection passed; backup0e55e47d-30c2-4fb2-9d5e-8decd0e8d2f1 restored into newD:/dsh-proj/Roll/.scratch/rv09-restored01, records and sixfile SHA equal/account0/model-sourceNetwork-auth0. Source09store rv09-real01 is a backup-derived isolated copy, not original08/07.
+- All final45pages visually reviewed via12 contact images, key96dpi screenshots retained; METHOD chart/65row/longURL8pages separate. Root checked final45 new-table split and prior key pages.8 affected public regression tests passed109.06s; red/failures retained. No new model, full backend suite or frontend changes.
+- API-only09 host stillRUNNING8029, noworker/web/model. Exact owned listener22232/launcher3376+start ticks/CLI in evidence09/api-receipt.json and rv09-real01/logs/api-receipt.json. serve_api.py passes explicitdirectory/runtime_roleAPI, modulepaths prove currentcheckout, no.env load.10 may use new isolatedstore/host or controlledhandoff, never blindly reuseold code.07 and08 owned services/original production untouched.
+- New APIs and portable font/dependency/runtime limits: docs/research/company-report-delivery-api.md. POST report-deliveries, GET delivery/history/files; render failures preserveMD and require explicit new-key/parentdelivery retry.10 must fetch filedelivery independently; old report.delivery_status remains immutable old status. Backenddeclaresreportlab4.4.9+lockedpillow; noCodexcachehardcodes.
+- Next10 then11/12 strictlyserial. Actualpostclosecycles unchanged0; realPARTIAL/sourcegap/METHOD cannot substitute fulljointA6/A7. Two-axisfinalcode-review and safeimplementationworktree cleanup still required afterall12.
+
+## Previous08 checkpoint (historical)
+
 ## 08 implementation accepted — 09 next
 
 - 08 final report `b9cfb2a0-8f93-516a-a4cd-7b7801fd7911`, job `cf414530-5dee-45d3-af28-0e7e3f9321ae`, host08.5: actual four authorized CODEX calls COMPLETE, twelve host sections COMPLETE, status PARTIAL/PUBLISHED. Original input/core retained; current pricing blocked and baseline conditional, no FULL or financial endorsement.

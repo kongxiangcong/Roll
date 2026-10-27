@@ -3,7 +3,9 @@
 Status: ready-for-agent
 Version: 1.0
 Date: 2026-10-26
-Implementation: in-progress (01–08 complete; 09 next)
+Implementation: in-progress (01–09 complete; 10 next)
+
+当前实施进展：01–09完成，10为下一票。09仅完成固定报告文件交付层：真实PARTIAL报告45页PDF、受控下载、不可变版本及隔离恢复，证据见evidence/09/README.md。既有资料/用途缺口保留；完整浏览器A7及A6/A8等联合验收仍未完成，功能整体in-progress。下文早期实施叙述的下一票以此行和执行索引为准。
 
 ## 1. 目标与依据
 

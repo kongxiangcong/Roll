@@ -1,7 +1,7 @@
 # 09 实现Markdown/PDF交付与版本恢复
 
 Status: ready-for-agent
-Completion: not-started
+Completion: complete
 Depends on: 08
 Spec: [v1.0](../spec.md) 第4、8、9节
 
@@ -23,9 +23,9 @@ deep-dive-research/scripts/md_to_pdf.py、Roll备份/文件归档/API。
 
 ## 验收标准
 
-- [ ] PDF目录、中文字体、分页、表格和图表可读，无截断乱码，引用/估值条件和缺口未丢失。
-- [ ] A2/A10文件层通过：新版本不改旧文件，隔离备份恢复后hash匹配。
-- [ ] 下载不能越界读取其他文件；渲染失败可重试且状态明确。
+- [x] PDF目录、中文字体、分页、表格和图表可读，无截断乱码，引用/估值条件和缺口未丢失。
+- [x] A2/A10文件层通过：新版本不改旧文件，隔离备份恢复后hash匹配。
+- [x] 下载不能越界读取其他文件；渲染失败可重试且状态明确。
 
 ## 验证与交付证据
 
@@ -40,4 +40,6 @@ deep-dive-research/scripts/md_to_pdf.py、Roll备份/文件归档/API。
 ## Comments
 
 2026-10-26：依据已确认需求创建，尚未实施。
+
+2026-10-27：已完成文件层验收，见[09最终证据](../evidence/09/README.md)。固定08真实PARTIAL报告导出45页中文PDF，六类文件实际HTTP下载/隔离恢复hash一致；旧两版保留，最终全45页和METHOD图表/长URL8页均视觉检查。8项受影响回归通过，原始失败留档。10网页输入/预览与12联合A6/A7仍未完成，不以09文件层通过替代。
 
