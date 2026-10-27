@@ -26,6 +26,36 @@ def router(research):
     routes = APIRouter(prefix='/api/company-research', tags=['company-research'])
     from .reports import ReportCommand
     from .report_deliveries import DeliveryCommand
+    from .features import FeatureExportCommand
+    from .feature_protocol import FeatureProtocolCommand
+
+    class FeatureCoverageCommand(Command):
+        feature_snapshot_ids: list[str] = Field(min_length=1,max_length=200)
+        protocol_id: str | None = None
+
+    @routes.get('/feature-schema')
+    def feature_schema():
+        return research.features.schema()
+
+    @routes.post('/feature-snapshots',status_code=201)
+    def export_company_features(command:FeatureExportCommand):
+        return research.features.export(command)
+
+    @routes.get('/feature-snapshots/{feature_snapshot_id}')
+    def read_company_features(feature_snapshot_id:str):
+        return research.features.read(feature_snapshot_id)
+
+    @routes.post('/feature-protocols',status_code=201)
+    def register_feature_protocol(command:FeatureProtocolCommand):
+        return research.features.register_protocol(command)
+
+    @routes.get('/feature-protocols/{protocol_id}')
+    def read_feature_protocol(protocol_id:str):
+        return research.features.protocol(protocol_id)
+
+    @routes.post('/feature-coverage')
+    def feature_coverage(command:FeatureCoverageCommand):
+        return research.features.coverage(command.feature_snapshot_ids,command.protocol_id)
 
     @routes.post('/report-deliveries',status_code=201)
     def create_delivery(command:DeliveryCommand):

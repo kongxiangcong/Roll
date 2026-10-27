@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_later_revision_is_missing_at_old_cutoff_and_repeat_quarter_does_not_add_support _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv11-red02/test_later_revision_is_missing0')
+
+    def test_later_revision_is_missing_at_old_cutoff_and_repeat_quarter_does_not_add_support(tmp_path):
+        from test_changes import research_pair
+        from roll.research.company import ResearchContextCommand
+        from roll.research.company.features import FeatureExportCommand
+        research = service(tmp_path)
+        old, new, _ = research_pair(research)
+        early = research.features.export(FeatureExportCommand(snapshot_id=new['snapshot_id'],
+            observation_at=old['as_of'], purpose='HISTORICAL_PIT', idempotency_key='early'))
+        assert all(f['value'] is None for f in early['features'].values())
+        assert early['features']['hypothesis_revision_count']['missing_reason'] == 'DEPENDENCY_NOT_AVAILABLE_AT_OBSERVATION'
+        current = research.features.export(FeatureExportCommand(snapshot_id=new['snapshot_id'],
+            observation_at=current_time(), idempotency_key='current'))
+        assert current['features']['hypothesis_revision_count']['value'] == 1
+        context = research.freeze_research_context(ResearchContextCommand(snapshot_id=new['snapshot_id'],
+            change_reason='METHOD repeat of same quarterly evidence'))
+        repeated = research.features.export(FeatureExportCommand(snapshot_id=context['snapshot_id'],
+            observation_at=current_time(), idempotency_key='repeat'))
+>       diagnostic = research.features.coverage([current['feature_snapshot_id'], repeated['feature_snapshot_id']])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ResearchFeatures' object has no attribute 'coverage'
+
+backend\tests\company_research\test_research_features.py:53: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_research_features.py::test_later_revision_is_missing_at_old_cutoff_and_repeat_quarter_does_not_add_support
+1 failed, 1 deselected in 11.11s

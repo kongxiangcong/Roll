@@ -2,7 +2,18 @@
 
 Updated 2026-10-28 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
 
-## Current resume state — ticket10 accepted, next11
+## Current resume state — ticket11 accepted, next12
+
+Updated2026-10-28 Asia/Shanghai.01–10 merged at7d7fab1841b314c0e88c9873ecc819e458f7ad4f;11complete oncodex/rv-ticket11 at D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket11, ready for merger after final commit.12not-started, whole spec remains incomplete. Strict01→12, no PR requested, original dirty checkout unchanged.
+
+-11adds source/version/actual-available company candidate exports, missingness/independent coverage, no-probability extra fields, original-family preregistration supplements and archive/reference validation.7new+4existing public regression checks passed11/92.22s. Red/green, fixture errors and precise owned-TestClient interruption retained; no full wide-suite claim.
+-Realstore rv11-real01 cloned via publicBackups from10. Final three exports88ba3432-f3dc-43cc-97da-4e882cb529d1 /122d71ec-efb2-4b39-a920-9e3f5124114d /2ac36d3e-fe19-401d-9e37-0b87ea64ff48, protocolef8171e6-4721-44fb-beb3-810815c73116 DRAFT_UNBOUND. All current Lulu candidates missing, gapblocked, no fake0risk;3observations/0independent mature samples, INCONCLUSIVE.6source roots are only citation scope. Original7a430 snapshot/core37b719/reportb9cf/deliverye3e6 unchanged. Protection metadata before/after same/account0/no model/source/auth/SEALED/fit.
+-Final backup6f64e924-ac81-46dd-bf5d-1fe0db02ad40/7179037bytes→newrv11-restored02, feature/protocol/coverage/archive and originalreport/delivery equal. First real01/restorefde3dd41/rv11-restored01 retained. Final11source includes Shanghai-calendar midnight fix/typed units/original material and disclosure ages; only own8031 API restarted, no worker.
+-Owned11 API-only8031 launcher51196/listener23712. Precise ticks/CLI/api02-receipt and module paths retained; services07/08/09/10/production untouched. Live logs remain externalstore/logs and are NOT tracked.
+-NEXT12: full realA1–A10 and actualpostclosecycles still outstanding; root read-only07 preflight at23:30Oct27 found switchesoff and manualchecks only, genuinecycles0/2. No fakeclock/manual/archive check substitute. Truepositive complete research/report coverage not upgraded by11METHOD or partial reuse. Root has externalrv12-postclose-preflight.md. No training/oldbudget reset/SEALED/newmodel authority is introduced.
+-After all tickets use required two-axis code-review frombaselineebe3fc8, fix inoneimplementer, then safe owned-process/worktree/junction cleanup, preservingintegration/realstores/originalWIP.
+
+## Earlier resume state — ticket10 historical
 
 Updated2026-10-28 Asia/Shanghai.01–09 already merged;10complete on codex/rv-ticket10 at D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket10, ready for merger after final commit. Root's independent UI note and all actual evidence are evidence/10/README.md.11–12 not started, whole objective remains incomplete. Strict order continues, no PR requested.
 

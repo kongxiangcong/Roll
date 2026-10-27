@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_blocked_valuation_never_exports_its_diagnostic_gap_or_probabilities ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv11-red03/test_blocked_valuation_never_e0')
+
+    def test_blocked_valuation_never_exports_its_diagnostic_gap_or_probabilities(tmp_path):
+        from pydantic import ValidationError
+        from test_economic_review import operating_request
+        from test_changes import quote_basis
+        from roll.research.company import ResearchContextCommand
+        from roll.research.company.features import FeatureExportCommand
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        result = research.calculate_operating_valuation(command)
+        snapshot = research.analysis_snapshot(result['snapshot_id'])
+        bound = research.freeze_research_context(ResearchContextCommand(snapshot_id=snapshot['snapshot_id'],
+            quotes=quote_basis(research, snapshot), change_reason='METHOD dated valuation and current quote'))
+        exported = research.features.export(FeatureExportCommand(snapshot_id=bound['snapshot_id'],
+            observation_at=current_time(), scenario='base', idempotency_key='blocked'))
+        gap = exported['features']['current_requirement_gap']
+>       assert gap['economic_status'] == 'blocked'
+E       AssertionError: assert 'unavailable' == 'blocked'
+E         
+E         - blocked
+E         + unavailable
+
+backend\tests\company_research\test_research_features.py:80: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_research_features.py::test_blocked_valuation_never_exports_its_diagnostic_gap_or_probabilities
+1 failed, 2 deselected in 14.11s
