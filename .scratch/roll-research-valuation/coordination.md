@@ -2,7 +2,14 @@
 
 Updated 2026-10-27 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
 
-## Human authorization received — current execution state
+## 08 implementation accepted — 09 next
+
+- 08 final report `b9cfb2a0-8f93-516a-a4cd-7b7801fd7911`, job `cf414530-5dee-45d3-af28-0e7e3f9321ae`, host08.5: actual four authorized CODEX calls COMPLETE, twelve host sections COMPLETE, status PARTIAL/PUBLISHED. Original input/core retained; current pricing blocked and baseline conditional, no FULL or financial endorsement.
+- Public post-publication restore to `.scratch/rv08-published-restored05` is exact for records/Markdown,32source archives/12commands/account0.94reference outcomes52PASS/18FAIL/2UNKNOWN/22N/A. Root independently checked actual structure and restore. Evidence08/final05.md and real05-final-receipt.json are current; prior pending-human notes below are historical.
+- 08 Completion complete,09 next/not-started; original WIP/failed attempts and preview raw/text SHA correction remain preserved. No source/algorithm change after18source freeze, no new regression after actual calls. Use explicit worktree backend/src PYTHONPATH with original launcher/venv; first mislaunch loaded old editable module and emitted no08calls, corrected via owned receipt stop/restart.
+- 09–12 require serial implementation; whole feature remains in-progress. Do not treat this PARTIAL real report, engineering sourceful coverage fixtures or manual05 core as joint A6/A7 full real-chain acceptance.
+
+## Human authorization checkpoint (historical; superseded by final acceptance above)
 
 - The human explicitly authorized the four audited requests via existing ChatGPT subscription CODEX to OpenAI, including the disclosed public information, derived forecast assumptions and research IDs. Exact message: “允许这四份请求通过现有 ChatGPT 订阅的 CODEX 发送到 OpenAI，包含已说明的公开资料、派生预测假设和研究 ID。减少审核次数，赶紧推进到开发完成，继续完成真实验证，并按顺序推进后续任务。” This supersedes earlier pending-human notes for these same four payloads only.
 - Root resumed /root/ticket08 with this exact trusted scope. Use the existing reviewed startup path, verify the frozen18source/4wire hashes and original core/input, execute only missing9/10/REVIEW/CHALLENGE, inspect real outcome, finish publication/recovery and08acceptance. No repeated human confirmation within this authorization. Any new automatic-review rejection must be handled on its actual reason without bypass.
