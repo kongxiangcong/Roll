@@ -18,4 +18,6 @@ Implementation and limited independent source checks passed before publishing; t
 
 ## Next reliability acceptance
 
+Design reference: [GS Quant review and single-symbol reliability acceptance](discussions/gs-quant-design-review.md) (2026-10-28; source reading only, no dependency adoption).
+
 Before broader rollout, run one explicitly authorized ordinary main-board security through a budget-limited real-source → archived input → fixed backtest → bounded assessment → restart/readback cycle, with account read-only. Verify symbol/date/RAW units, completeness, latency, errors, cancellation and preserved partial results. Record a reproducible acceptance result rather than treating UI/mock success as live operation or probability qualification. Independent prospective statistical validity remains a separate requirement.
