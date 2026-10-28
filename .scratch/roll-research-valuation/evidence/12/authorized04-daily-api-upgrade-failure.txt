@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket12\.scratch\roll-research-valuation\evidence\12\serve_daily.py", line 14, in <module>
+    app=roll.app.create_app(root,runtime_role='API')
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket12\backend\src\roll\app.py", line 1894, in create_app
+    backups,marker,previous=bootstrap(directory)
+                            ~~~~~~~~~^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket12\backend\src\roll\runtime\backups.py", line 525, in bootstrap
+    if live_hosts(directory):raise RuntimeError('UPGRADE_REQUIRES_STOP_ALL_LOCAL_HOSTS')
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: UPGRADE_REQUIRES_STOP_ALL_LOCAL_HOSTS
