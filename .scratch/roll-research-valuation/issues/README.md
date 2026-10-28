@@ -51,3 +51,5 @@
 12已实施实际联合验收检查点但未完成，见[覆盖矩阵](../evidence/12/coverage.md)。新增官方半年报/真实网页无auth任务/原文件下载/重启与隔离恢复均留真实证据；新PARTIAL不代替完整CODEX链，A6/A7/A8仍NOT_PASSED、当前自然周期0/2。最终review自动估值编排修复并入后继续按同合同验收，整体未关闭。
 
 12本地资本准备05已保存同原件完整diff与未执行新候选preview，见[证据](../evidence/12/capital-prep05/README.md)。不是新估值成功；原预算2/16及A6/A7/A8未通过不变。
+
+12同原件纠错06已真实运行BLOCKED并定点恢复，见[证据](../evidence/12/correction06/README.md)。当前3/16/纠错1；未追加12章或纠错2，整体仍未完成。

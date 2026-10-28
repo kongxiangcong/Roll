@@ -1,0 +1,557 @@
+{
+  "job_after": {
+    "schema_version": 1,
+    "created_at": "2026-10-28T02:24:56.827195+00:00",
+    "acquisition": {
+      "network_check_performed": false,
+      "reason": "显式REUSE已有资料",
+      "status": "NOT_REQUESTED"
+    },
+    "as_of": "2026-10-28T02:24:55.861696+00:00",
+    "attempts": 0,
+    "cancel_requested_at": null,
+    "checkpoints": [
+      {
+        "completed_at": "2026-10-28T02:39:23.994530+00:00",
+        "section_count": 0,
+        "stage": "ACQUISITION"
+      },
+      {
+        "completed_at": "2026-10-28T02:39:24.017429+00:00",
+        "section_count": 0,
+        "stage": "SHARED_FACTS"
+      },
+      {
+        "completed_at": "2026-10-28T02:39:24.044979+00:00",
+        "section_count": 0,
+        "stage": "ANALYSIS"
+      },
+      {
+        "stage": "VALUATION",
+        "completed_at": "2026-10-28T02:40:10.575985+00:00",
+        "section_count": 0
+      }
+    ],
+    "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+    "errors": [
+      {
+        "stage": "VALUATION",
+        "code": "BLOCKED",
+        "gaps": [
+          "经营资本口径未闭合：FY2025年报第134—135页其他应付款、保证金及往来款用途未完整拆分；电子债权凭证与商品应付款可能重叠。需补合同、融资条款及逐项对账，划分经营负债和融资负债，避免营运资金与权益桥接重复扣减。",
+          "必要经营现金及可加回现金未确定：现金总额和关联财务公司存款虽有披露，但缺最低经营现金需求、提款条款和回收能力依据。需补相关资料并支持可回收金额假设；披露受限现金为零不等于全部现金可分配。",
+          "资本开支和折旧不足以支持预测：已披露现金资本开支及推算折旧摊销，但缺维持/增长投资拆分、资产寿命、租赁更新、在建项目投产与产能利用资料。需补资产及项目滚动表，不能机械以折旧代替维护投资；闲置资产为固定资产子集，不可重复加回。",
+          "缺可支持两个实质差异情景的同口径经营数字：需补多年合并收入、成本费用、销量或价格、产能和资本效率资料，以及核心利润推算引用的完整原始数值与正常化调整依据。现有单年度收入及两年核心利润不足以支持增长、利润率和终值ROIC假设。",
+          "营运资金及投入资本尚无可复核基准和滚动路径：需补期初同口径余额，明确预付款用途、其他应收款净额分类、所得税与其他税费、资产补助和资本预付款政策，再建立资本滚动及终值再投资约束一致的年度路径；不得以现金流量表变动代替存量。",
+          "权益桥接未完整闭合：已有银行借款、租赁、回购义务、工程应付款、股数及少数股东来源，但供应链融资完整性、闲置资产和联营投资经济回收值仍未确定。需逐项有源计入或排除，并统一租赁、资本应付款和回购义务的一次性处理。",
+          "WACC资料可作为注明日期的基准研究锚，但尚缺全球软饮料beta对该公司的适用性、目标资本结构、担保贷款利率代表长期债务成本及税盾可用性的数字支持和反证；不能仅凭已有历史利率与行业参数生成折现率。",
+          "本次用途保持BASELINE_RESEARCH。需明确12月31日估值锚、财务及桥接日期；已知最新财务期间为2026-09-30，但冻结事实仅含报告标题。旧年末模型不能代表当前公允价，且版本1不支持期中stub；不得将旧余额滚动假设冒充已披露余额。",
+          "EPV缺维护再投资正常化依据；反向DCF缺同日上市类别股数及价格事实；敏感性缺已获支持的经营模型与参数区间。上述可选组件不单独阻断DCF，但目前关键经营资本与现金桥接缺口已使经营估值候选无法成立。"
+        ]
+      }
+    ],
+    "historical_pit_eligible": false,
+    "host_owner": {
+      "pid": 57548,
+      "creation_ticks": 134376287611351713
+    },
+    "idempotency_key": "rv12-capital05-local-preview-only",
+    "input_id": "6cd20695-4c28-4f02-951f-b8c76f139738",
+    "job_id": "ecf287d8-cfe4-4c18-8388-c95d59ac44e6",
+    "last_advanced_at": "2026-10-28T02:40:10.576003+00:00",
+    "model": "gpt-6.1-sol",
+    "parent_job_id": "9797a495-41a9-4a53-9781-70cc61428841",
+    "parent_report_id": null,
+    "peer_comparison_basis": {},
+    "peer_snapshot_ids": [],
+    "phase_started_at": "2026-10-28T02:39:24.087106+00:00",
+    "report_id": null,
+    "request_cutoff": "2026-10-28T02:24:55.861696+00:00",
+    "request_sha256": "1f536f181adee520180f77d0dd75b9df3b145a1bc5c9f5c64cdc474d0d54ff80",
+    "requested_at": "2026-10-28T02:24:56.827147+00:00",
+    "risk_workpaper": [],
+    "section_ids": [],
+    "snapshot_id": "50604854-d481-4f98-bc0c-33def10cfe4a",
+    "source_gaps": [
+      "PINNED_SHARED_CORE; 新取得但无结构化依据的材料不修改固定核心，后续新任务才能纳入分析",
+      "经营资本口径未闭合：FY2025年报第134—135页其他应付款、保证金及往来款用途未完整拆分；电子债权凭证与商品应付款可能重叠。需补合同、融资条款及逐项对账，划分经营负债和融资负债，避免营运资金与权益桥接重复扣减。",
+      "必要经营现金及可加回现金未确定：现金总额和关联财务公司存款虽有披露，但缺最低经营现金需求、提款条款和回收能力依据。需补相关资料并支持可回收金额假设；披露受限现金为零不等于全部现金可分配。",
+      "资本开支和折旧不足以支持预测：已披露现金资本开支及推算折旧摊销，但缺维持/增长投资拆分、资产寿命、租赁更新、在建项目投产与产能利用资料。需补资产及项目滚动表，不能机械以折旧代替维护投资；闲置资产为固定资产子集，不可重复加回。",
+      "缺可支持两个实质差异情景的同口径经营数字：需补多年合并收入、成本费用、销量或价格、产能和资本效率资料，以及核心利润推算引用的完整原始数值与正常化调整依据。现有单年度收入及两年核心利润不足以支持增长、利润率和终值ROIC假设。",
+      "营运资金及投入资本尚无可复核基准和滚动路径：需补期初同口径余额，明确预付款用途、其他应收款净额分类、所得税与其他税费、资产补助和资本预付款政策，再建立资本滚动及终值再投资约束一致的年度路径；不得以现金流量表变动代替存量。",
+      "权益桥接未完整闭合：已有银行借款、租赁、回购义务、工程应付款、股数及少数股东来源，但供应链融资完整性、闲置资产和联营投资经济回收值仍未确定。需逐项有源计入或排除，并统一租赁、资本应付款和回购义务的一次性处理。",
+      "WACC资料可作为注明日期的基准研究锚，但尚缺全球软饮料beta对该公司的适用性、目标资本结构、担保贷款利率代表长期债务成本及税盾可用性的数字支持和反证；不能仅凭已有历史利率与行业参数生成折现率。",
+      "本次用途保持BASELINE_RESEARCH。需明确12月31日估值锚、财务及桥接日期；已知最新财务期间为2026-09-30，但冻结事实仅含报告标题。旧年末模型不能代表当前公允价，且版本1不支持期中stub；不得将旧余额滚动假设冒充已披露余额。",
+      "EPV缺维护再投资正常化依据；反向DCF缺同日上市类别股数及价格事实；敏感性缺已获支持的经营模型与参数区间。上述可选组件不单独阻断DCF，但目前关键经营资本与现金桥接缺口已使经营估值候选无法成立。"
+    ],
+    "source_mode": "REUSE",
+    "source_quotes": [],
+    "sources": [],
+    "stage": "CHAPTERS",
+    "status": "QUEUED",
+    "template_binding": {
+      "gate_map_sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401",
+      "manifest_sha256": "d00b827b702487e69254a4f8d2d9508bf71bfcf363f8c0fa24351b82a6b4682f",
+      "template_id": "roll-company-research-v1",
+      "version": "08.5"
+    },
+    "valuation_purpose": "BASELINE_RESEARCH",
+    "workflow": "REPORT",
+    "valuation_build": {
+      "status": "BLOCKED",
+      "gaps": [
+        "经营资本口径未闭合：FY2025年报第134—135页其他应付款、保证金及往来款用途未完整拆分；电子债权凭证与商品应付款可能重叠。需补合同、融资条款及逐项对账，划分经营负债和融资负债，避免营运资金与权益桥接重复扣减。",
+        "必要经营现金及可加回现金未确定：现金总额和关联财务公司存款虽有披露，但缺最低经营现金需求、提款条款和回收能力依据。需补相关资料并支持可回收金额假设；披露受限现金为零不等于全部现金可分配。",
+        "资本开支和折旧不足以支持预测：已披露现金资本开支及推算折旧摊销，但缺维持/增长投资拆分、资产寿命、租赁更新、在建项目投产与产能利用资料。需补资产及项目滚动表，不能机械以折旧代替维护投资；闲置资产为固定资产子集，不可重复加回。",
+        "缺可支持两个实质差异情景的同口径经营数字：需补多年合并收入、成本费用、销量或价格、产能和资本效率资料，以及核心利润推算引用的完整原始数值与正常化调整依据。现有单年度收入及两年核心利润不足以支持增长、利润率和终值ROIC假设。",
+        "营运资金及投入资本尚无可复核基准和滚动路径：需补期初同口径余额，明确预付款用途、其他应收款净额分类、所得税与其他税费、资产补助和资本预付款政策，再建立资本滚动及终值再投资约束一致的年度路径；不得以现金流量表变动代替存量。",
+        "权益桥接未完整闭合：已有银行借款、租赁、回购义务、工程应付款、股数及少数股东来源，但供应链融资完整性、闲置资产和联营投资经济回收值仍未确定。需逐项有源计入或排除，并统一租赁、资本应付款和回购义务的一次性处理。",
+        "WACC资料可作为注明日期的基准研究锚，但尚缺全球软饮料beta对该公司的适用性、目标资本结构、担保贷款利率代表长期债务成本及税盾可用性的数字支持和反证；不能仅凭已有历史利率与行业参数生成折现率。",
+        "本次用途保持BASELINE_RESEARCH。需明确12月31日估值锚、财务及桥接日期；已知最新财务期间为2026-09-30，但冻结事实仅含报告标题。旧年末模型不能代表当前公允价，且版本1不支持期中stub；不得将旧余额滚动假设冒充已披露余额。",
+        "EPV缺维护再投资正常化依据；反向DCF缺同日上市类别股数及价格事实；敏感性缺已获支持的经营模型与参数区间。上述可选组件不单独阻断DCF，但目前关键经营资本与现金桥接缺口已使经营估值候选无法成立。"
+      ],
+      "run_id": "bf290081-a8b0-4441-82e4-21c7bf3aa3dc",
+      "source_snapshot_id": "50604854-d481-4f98-bc0c-33def10cfe4a"
+    },
+    "content_sha256": "40723550ca8bfe4ed01ca82e2cfe8478e1d20490eabc52088e1d4ebc1a9f6c6b"
+  },
+  "build": {
+    "status": "BLOCKED",
+    "gaps": [
+      "经营资本口径未闭合：FY2025年报第134—135页其他应付款、保证金及往来款用途未完整拆分；电子债权凭证与商品应付款可能重叠。需补合同、融资条款及逐项对账，划分经营负债和融资负债，避免营运资金与权益桥接重复扣减。",
+      "必要经营现金及可加回现金未确定：现金总额和关联财务公司存款虽有披露，但缺最低经营现金需求、提款条款和回收能力依据。需补相关资料并支持可回收金额假设；披露受限现金为零不等于全部现金可分配。",
+      "资本开支和折旧不足以支持预测：已披露现金资本开支及推算折旧摊销，但缺维持/增长投资拆分、资产寿命、租赁更新、在建项目投产与产能利用资料。需补资产及项目滚动表，不能机械以折旧代替维护投资；闲置资产为固定资产子集，不可重复加回。",
+      "缺可支持两个实质差异情景的同口径经营数字：需补多年合并收入、成本费用、销量或价格、产能和资本效率资料，以及核心利润推算引用的完整原始数值与正常化调整依据。现有单年度收入及两年核心利润不足以支持增长、利润率和终值ROIC假设。",
+      "营运资金及投入资本尚无可复核基准和滚动路径：需补期初同口径余额，明确预付款用途、其他应收款净额分类、所得税与其他税费、资产补助和资本预付款政策，再建立资本滚动及终值再投资约束一致的年度路径；不得以现金流量表变动代替存量。",
+      "权益桥接未完整闭合：已有银行借款、租赁、回购义务、工程应付款、股数及少数股东来源，但供应链融资完整性、闲置资产和联营投资经济回收值仍未确定。需逐项有源计入或排除，并统一租赁、资本应付款和回购义务的一次性处理。",
+      "WACC资料可作为注明日期的基准研究锚，但尚缺全球软饮料beta对该公司的适用性、目标资本结构、担保贷款利率代表长期债务成本及税盾可用性的数字支持和反证；不能仅凭已有历史利率与行业参数生成折现率。",
+      "本次用途保持BASELINE_RESEARCH。需明确12月31日估值锚、财务及桥接日期；已知最新财务期间为2026-09-30，但冻结事实仅含报告标题。旧年末模型不能代表当前公允价，且版本1不支持期中stub；不得将旧余额滚动假设冒充已披露余额。",
+      "EPV缺维护再投资正常化依据；反向DCF缺同日上市类别股数及价格事实；敏感性缺已获支持的经营模型与参数区间。上述可选组件不单独阻断DCF，但目前关键经营资本与现金桥接缺口已使经营估值候选无法成立。"
+    ],
+    "run_id": "bf290081-a8b0-4441-82e4-21c7bf3aa3dc",
+    "source_snapshot_id": "50604854-d481-4f98-bc0c-33def10cfe4a"
+  },
+  "run": {
+    "acquisition_usage": {
+      "archived_bytes": 0,
+      "http_calls": 0,
+      "model_tool_result_bytes": 0,
+      "received_bytes": 0
+    },
+    "archives": [],
+    "backend": "CODEX",
+    "bootstrap_audit": {
+      "auth_mode": "chatgpt",
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "bridge": {
+      "name": "bundled-code-mode-host",
+      "runtime": "Rust/V8, no Node bridge",
+      "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+      "version": "0.161.0"
+    },
+    "call_usage": {
+      "host_tool_calls": 0,
+      "http_calls": 0,
+      "model_requests": 0,
+      "runtime_operations": 0,
+      "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+      "total": 0
+    },
+    "candidate": {
+      "command_json": null,
+      "gaps": [
+        "经营资本口径未闭合：FY2025年报第134—135页其他应付款、保证金及往来款用途未完整拆分；电子债权凭证与商品应付款可能重叠。需补合同、融资条款及逐项对账，划分经营负债和融资负债，避免营运资金与权益桥接重复扣减。",
+        "必要经营现金及可加回现金未确定：现金总额和关联财务公司存款虽有披露，但缺最低经营现金需求、提款条款和回收能力依据。需补相关资料并支持可回收金额假设；披露受限现金为零不等于全部现金可分配。",
+        "资本开支和折旧不足以支持预测：已披露现金资本开支及推算折旧摊销，但缺维持/增长投资拆分、资产寿命、租赁更新、在建项目投产与产能利用资料。需补资产及项目滚动表，不能机械以折旧代替维护投资；闲置资产为固定资产子集，不可重复加回。",
+        "缺可支持两个实质差异情景的同口径经营数字：需补多年合并收入、成本费用、销量或价格、产能和资本效率资料，以及核心利润推算引用的完整原始数值与正常化调整依据。现有单年度收入及两年核心利润不足以支持增长、利润率和终值ROIC假设。",
+        "营运资金及投入资本尚无可复核基准和滚动路径：需补期初同口径余额，明确预付款用途、其他应收款净额分类、所得税与其他税费、资产补助和资本预付款政策，再建立资本滚动及终值再投资约束一致的年度路径；不得以现金流量表变动代替存量。",
+        "权益桥接未完整闭合：已有银行借款、租赁、回购义务、工程应付款、股数及少数股东来源，但供应链融资完整性、闲置资产和联营投资经济回收值仍未确定。需逐项有源计入或排除，并统一租赁、资本应付款和回购义务的一次性处理。",
+        "WACC资料可作为注明日期的基准研究锚，但尚缺全球软饮料beta对该公司的适用性、目标资本结构、担保贷款利率代表长期债务成本及税盾可用性的数字支持和反证；不能仅凭已有历史利率与行业参数生成折现率。",
+        "本次用途保持BASELINE_RESEARCH。需明确12月31日估值锚、财务及桥接日期；已知最新财务期间为2026-09-30，但冻结事实仅含报告标题。旧年末模型不能代表当前公允价，且版本1不支持期中stub；不得将旧余额滚动假设冒充已披露余额。",
+        "EPV缺维护再投资正常化依据；反向DCF缺同日上市类别股数及价格事实；敏感性缺已获支持的经营模型与参数区间。上述可选组件不单独阻断DCF，但目前关键经营资本与现金桥接缺口已使经营估值候选无法成立。"
+      ],
+      "input_sha256": "25dbcc172bf321dd071ff34fe63bb6a4743571196bf18da41757e49918ba5ccb",
+      "snapshot_id": "50604854-d481-4f98-bc0c-33def10cfe4a"
+    },
+    "candidate_output_archive": {
+      "bytes": 2929,
+      "kind": "OPERATING_VALUATION_CANDIDATE",
+      "path": "raw/c28fc33723e933e48bb231f4095a2bb3f293d8da1b5776800c99b8db8d1cc5f1.raw",
+      "sha256": "c28fc33723e933e48bb231f4095a2bb3f293d8da1b5776800c99b8db8d1cc5f1"
+    },
+    "command_archive": {
+      "bytes": 138783,
+      "kind": "OPERATING_VALUATION_COMMAND",
+      "path": "raw/692adaf2b2d7b89d98cea163827e2c752c5b29eaef4ad84ee80226386900f983.raw",
+      "sha256": "692adaf2b2d7b89d98cea163827e2c752c5b29eaef4ad84ee80226386900f983"
+    },
+    "command_sha256": "692adaf2b2d7b89d98cea163827e2c752c5b29eaef4ad84ee80226386900f983",
+    "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+    "content_sha256": "217c96949e9ae22adde3f28f8b7f51b2d7cfa70bb7a042ed3b10d95f8466c063",
+    "created_at": "2026-10-28T02:40:09.218894+00:00",
+    "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+    "elapsed_seconds": 43.6,
+    "evidence_kind": "CODEX_VALUATION_ATTEMPT",
+    "execution_code_hashes": {
+      "agents/codex_process.py": "e827bfbf152776a77bb0426c2f41042aa52d7367376de54e693eb818a9fa086a",
+      "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "agents/company_report_runtime.py": "9478e977d96551d97f30460223c223b5c0231ac75376ee37fe9ccee6e1506749",
+      "agents/company_valuation_runtime.py": "09f05279d77c0e82410edcc56970afc5aed761dea9ef0f5ff2ebc924d7b48ee7",
+      "research/company/calculator.py": "036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251",
+      "research/company/economics.py": "a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d",
+      "research/company/report_archive.py": "0bc6cd9be0a929d37f6231787952bc3715f7872a43b0c87cf029ec66831b4c86",
+      "research/company/report_coverage.py": "580246250ee83f48a0a2537fe643e7f260806ea0f6c3c7ee86062b525f68a7ed",
+      "research/company/report_data.py": "83bdfa853cef396b61e0f8574fc9c4c63eac32bb5e900870e59ef9cbc1a254a6",
+      "research/company/report_integrity.py": "1cc0640459630a64a5d8d96ed57d3e6578d42519fd4b225d2c1fb1909049e229",
+      "research/company/report_quality.py": "dca3ba28239c62c534c84c429e89dc597840e34eaa2b806e8b841419e9919c69",
+      "research/company/report_quote_worker.py": "e728167530941481745554f96611d72c69a3186bb77f027853d1c985ad418643",
+      "research/company/report_quotes.py": "6437a9672ec37c5ccd5e405e2382aae517126ce41206281c22a5000a6cc172c6",
+      "research/company/report_revisions.py": "249edb2f9e709712948ea68d343b728f38043041318d1d14295d250da50bdb35",
+      "research/company/report_runtime.py": "b568bae0793d0ed3458868663a44a6266a5730ff603320ed4ace3be84e5a02c1",
+      "research/company/report_sources.py": "b880a40ca146141a165e2f205a785ded5a1e19f66847a578b9a28e9cf6ba7321",
+      "research/company/report_summary.py": "b86ac571b10ef3ec2b914005c909d426185b23e42ef8297484df7dad7cef6fff",
+      "research/company/report_template.py": "d6b330c6496c998160a04abcab3c0c0f61801289996e573beee5668f7b71101a",
+      "research/company/report_valuation.py": "5bc5705880c64ae07f2dfac3d36080b971eec7e8617cdd80b3d5e10ec268f006",
+      "research/company/report_values.py": "aee80d28093293da837a6d4864556293b5ecb430e6373863ea2cf812d249cc10",
+      "research/company/report_workpapers.py": "31d1463add3841fc282a8b6124969a98edc13103eda5578550216f8a47fe7267",
+      "research/company/reports.py": "f4420ad1019c240fbec0656d36ced7739a13727869dbd23a8e334c7519d5e2eb",
+      "research/company/valuation.py": "c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6",
+      "research/company/valuation_candidate_contract.md": "1e9cf88f78a3d5c03cc78eb02a0b2f02c89db8b8424bff11bb38331a3823c318",
+      "research/company/valuation_reference/fundamental_valuation.py": "c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9"
+    },
+    "execution_sources": {
+      "agents/codex_process.py": {
+        "bytes": 36390,
+        "kind": "OPERATING_VALUATION_RUNTIME_SOURCE",
+        "path": "raw/e827bfbf152776a77bb0426c2f41042aa52d7367376de54e693eb818a9fa086a.raw",
+        "sha256": "e827bfbf152776a77bb0426c2f41042aa52d7367376de54e693eb818a9fa086a"
+      },
+      "agents/codex_worker.py": {
+        "bytes": 8545,
+        "kind": "REPORT_HOST_ALGORITHM_SOURCE",
+        "path": "raw/92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e.raw",
+        "sha256": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e"
+      },
+      "agents/company_report_runtime.py": {
+        "bytes": 3794,
+        "kind": "REPORT_HOST_ALGORITHM_SOURCE",
+        "path": "raw/9478e977d96551d97f30460223c223b5c0231ac75376ee37fe9ccee6e1506749.raw",
+        "sha256": "9478e977d96551d97f30460223c223b5c0231ac75376ee37fe9ccee6e1506749"
+      },
+      "agents/company_valuation_runtime.py": {
+        "bytes": 3238,
+        "kind": "OPERATING_VALUATION_RUNTIME_SOURCE",
+        "path": "raw/09f05279d77c0e82410edcc56970afc5aed761dea9ef0f5ff2ebc924d7b48ee7.raw",
+        "sha256": "09f05279d77c0e82410edcc56970afc5aed761dea9ef0f5ff2ebc924d7b48ee7"
+      },
+      "research/company/calculator.py": {
+        "bytes": 11556,
+        "kind": "COMPANY_VALUATION_ALGORITHM",
+        "path": "raw/036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251.raw",
+        "sha256": "036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251"
+      },
+      "research/company/economics.py": {
+        "bytes": 44474,
+        "kind": "OPERATING_VALUATION_RUNTIME_SOURCE",
+        "path": "raw/a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d.raw",
+        "sha256": "a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d"
+      },
+      "research/company/report_archive.py": {
+        "bytes": 374,
+        "kind": "REPORT_HOST_ALGORITHM_SOURCE",
+        "path": "raw/0bc6cd9be0a929d37f6231787952bc3715f7872a43b0c87cf029ec66831b4c86.raw",
+        "sha256": "0bc6cd9be0a929d37f6231787952bc3715f7872a43b0c87cf029ec66831b4c86"
+      },
+      "research/company/report_coverage.py": {
+        "bytes": 16614,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/580246250ee83f48a0a2537fe643e7f260806ea0f6c3c7ee86062b525f68a7ed.raw",
+        "sha256": "580246250ee83f48a0a2537fe643e7f260806ea0f6c3c7ee86062b525f68a7ed"
+      },
+      "research/company/report_data.py": {
+        "bytes": 6842,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/83bdfa853cef396b61e0f8574fc9c4c63eac32bb5e900870e59ef9cbc1a254a6.raw",
+        "sha256": "83bdfa853cef396b61e0f8574fc9c4c63eac32bb5e900870e59ef9cbc1a254a6"
+      },
+      "research/company/report_integrity.py": {
+        "bytes": 16480,
+        "kind": "REPORT_HOST_ALGORITHM_SOURCE",
+        "path": "raw/1cc0640459630a64a5d8d96ed57d3e6578d42519fd4b225d2c1fb1909049e229.raw",
+        "sha256": "1cc0640459630a64a5d8d96ed57d3e6578d42519fd4b225d2c1fb1909049e229"
+      },
+      "research/company/report_quality.py": {
+        "bytes": 12185,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/dca3ba28239c62c534c84c429e89dc597840e34eaa2b806e8b841419e9919c69.raw",
+        "sha256": "dca3ba28239c62c534c84c429e89dc597840e34eaa2b806e8b841419e9919c69"
+      },
+      "research/company/report_quote_worker.py": {
+        "bytes": 688,
+        "kind": "REPORT_HOST_ALGORITHM_SOURCE",
+        "path": "raw/e728167530941481745554f96611d72c69a3186bb77f027853d1c985ad418643.raw",
+        "sha256": "e728167530941481745554f96611d72c69a3186bb77f027853d1c985ad418643"
+      },
+      "research/company/report_quotes.py": {
+        "bytes": 4677,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/6437a9672ec37c5ccd5e405e2382aae517126ce41206281c22a5000a6cc172c6.raw",
+        "sha256": "6437a9672ec37c5ccd5e405e2382aae517126ce41206281c22a5000a6cc172c6"
+      },
+      "research/company/report_revisions.py": {
+        "bytes": 16321,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/249edb2f9e709712948ea68d343b728f38043041318d1d14295d250da50bdb35.raw",
+        "sha256": "249edb2f9e709712948ea68d343b728f38043041318d1d14295d250da50bdb35"
+      },
+      "research/company/report_runtime.py": {
+        "bytes": 12436,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/b568bae0793d0ed3458868663a44a6266a5730ff603320ed4ace3be84e5a02c1.raw",
+        "sha256": "b568bae0793d0ed3458868663a44a6266a5730ff603320ed4ace3be84e5a02c1"
+      },
+      "research/company/report_sources.py": {
+        "bytes": 8646,
+        "kind": "REPORT_HOST_ALGORITHM_SOURCE",
+        "path": "raw/b880a40ca146141a165e2f205a785ded5a1e19f66847a578b9a28e9cf6ba7321.raw",
+        "sha256": "b880a40ca146141a165e2f205a785ded5a1e19f66847a578b9a28e9cf6ba7321"
+      },
+      "research/company/report_summary.py": {
+        "bytes": 18710,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/b86ac571b10ef3ec2b914005c909d426185b23e42ef8297484df7dad7cef6fff.raw",
+        "sha256": "b86ac571b10ef3ec2b914005c909d426185b23e42ef8297484df7dad7cef6fff"
+      },
+      "research/company/report_template.py": {
+        "bytes": 18658,
+        "kind": "OPERATING_VALUATION_RUNTIME_SOURCE",
+        "path": "raw/d6b330c6496c998160a04abcab3c0c0f61801289996e573beee5668f7b71101a.raw",
+        "sha256": "d6b330c6496c998160a04abcab3c0c0f61801289996e573beee5668f7b71101a"
+      },
+      "research/company/report_valuation.py": {
+        "bytes": 9450,
+        "kind": "OPERATING_VALUATION_RUNTIME_SOURCE",
+        "path": "raw/5bc5705880c64ae07f2dfac3d36080b971eec7e8617cdd80b3d5e10ec268f006.raw",
+        "sha256": "5bc5705880c64ae07f2dfac3d36080b971eec7e8617cdd80b3d5e10ec268f006"
+      },
+      "research/company/report_values.py": {
+        "bytes": 8256,
+        "kind": "REPORT_REVISION_ALGORITHM_SOURCE",
+        "path": "raw/aee80d28093293da837a6d4864556293b5ecb430e6373863ea2cf812d249cc10.raw",
+        "sha256": "aee80d28093293da837a6d4864556293b5ecb430e6373863ea2cf812d249cc10"
+      },
+      "research/company/report_workpapers.py": {
+        "bytes": 10585,
+        "kind": "REPORT_HOST_ALGORITHM_SOURCE",
+        "path": "raw/31d1463add3841fc282a8b6124969a98edc13103eda5578550216f8a47fe7267.raw",
+        "sha256": "31d1463add3841fc282a8b6124969a98edc13103eda5578550216f8a47fe7267"
+      },
+      "research/company/reports.py": {
+        "bytes": 47372,
+        "kind": "OPERATING_VALUATION_RUNTIME_SOURCE",
+        "path": "raw/f4420ad1019c240fbec0656d36ced7739a13727869dbd23a8e334c7519d5e2eb.raw",
+        "sha256": "f4420ad1019c240fbec0656d36ced7739a13727869dbd23a8e334c7519d5e2eb"
+      },
+      "research/company/valuation.py": {
+        "bytes": 16957,
+        "kind": "COMPANY_VALUATION_ALGORITHM",
+        "path": "raw/c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6.raw",
+        "sha256": "c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6"
+      },
+      "research/company/valuation_candidate_contract.md": {
+        "bytes": 23413,
+        "kind": "OPERATING_VALUATION_RUNTIME_SOURCE",
+        "path": "raw/1e9cf88f78a3d5c03cc78eb02a0b2f02c89db8b8424bff11bb38331a3823c318.raw",
+        "sha256": "1e9cf88f78a3d5c03cc78eb02a0b2f02c89db8b8424bff11bb38331a3823c318"
+      },
+      "research/company/valuation_reference/fundamental_valuation.py": {
+        "bytes": 13854,
+        "kind": "COMPANY_VALUATION_ALGORITHM",
+        "path": "raw/c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9.raw",
+        "sha256": "c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9"
+      }
+    },
+    "finished_at": "2026-10-28T02:40:09.218844+00:00",
+    "formal_authority": false,
+    "host_owner": {
+      "creation_ticks": 134376287611351713,
+      "pid": 57548
+    },
+    "input_id": "8877427a-9073-47fc-954c-267023e5b028",
+    "input_sha256": "25dbcc172bf321dd071ff34fe63bb6a4743571196bf18da41757e49918ba5ccb",
+    "instruction_sources": [],
+    "job_id": "ecf287d8-cfe4-4c18-8388-c95d59ac44e6",
+    "limits": {
+      "runtime_operations": 8,
+      "timeout_seconds": 90,
+      "tool_calls": 0
+    },
+    "model": "gpt-6.1-sol",
+    "model_executed": true,
+    "model_provider": "openai",
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "observed_pids": [
+        57628,
+        38476,
+        24068,
+        42524
+      ],
+      "owner_nonce": "2065ee99-572a-4063-ad9a-49c0f22c12fa",
+      "pids_before_cleanup": [
+        57628,
+        38476,
+        24068,
+        42524
+      ],
+      "remaining_pids": [],
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-bf290081-a8b0-4441-82e4-21c7bf3aa3dc-1kr0ajef",
+      "temporary_directory_removed": true,
+      "worker_pid": 57628
+    },
+    "resolved_model": "gpt-6.1-sol",
+    "run_id": "bf290081-a8b0-4441-82e4-21c7bf3aa3dc",
+    "runtime_audit": {
+      "auth_mode": "chatgpt",
+      "disabled_skills": 38,
+      "effective_config": {
+        "approval_policy": "never",
+        "features": {
+          "api_key_cyber_access_programs": false,
+          "api_key_model_discovery": true,
+          "apps": false,
+          "auth_elicitation": true,
+          "background_paginated_rollout_migration": false,
+          "browser_use": false,
+          "browser_use_external": false,
+          "code_mode": false,
+          "code_mode_host": true,
+          "code_mode_only": false,
+          "codex_apps_mcp_2026_07_28": false,
+          "computer_use": false,
+          "goals": false,
+          "hooks": false,
+          "image_generation": false,
+          "in_app_browser": false,
+          "mcp_2026_07_28": false,
+          "memories": false,
+          "mentions_v2": true,
+          "multi_agent": false,
+          "multi_agent_v2": false,
+          "network_proxy": null,
+          "plugins": false,
+          "remote_control": false,
+          "remote_plugin": false,
+          "shell_snapshot": false,
+          "shell_tool": false,
+          "skill_mcp_dependency_install": false,
+          "tool_suggest": false,
+          "view_image": false,
+          "windows_sandbox_service": false
+        },
+        "layers": [
+          "user",
+          "system"
+        ],
+        "mcp_servers": 0,
+        "sandbox_mode": "read-only",
+        "skills_instructions": false,
+        "web_search": "disabled"
+      },
+      "enabled_skills": 0,
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "runtime_completion": {
+      "error_info": null,
+      "status": "completed"
+    },
+    "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+    "runtime_items": [
+      {
+        "id": "01a18060-9592-76b3-8be5-9ab956d3fb77",
+        "item_type": "userMessage",
+        "tool": null
+      },
+      {
+        "id": "msg_071eeb8238d3e913016ae160665a9c8198aa7ff9e033b3c5d9",
+        "item_type": "agentMessage",
+        "tool": null
+      }
+    ],
+    "runtime_thread_id": "01a18060-880b-7311-97c8-f266052a369a",
+    "runtime_turn_id": "01a18060-882a-7bc1-af42-bb93c783d42e",
+    "schema_version": 1,
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "source_snapshot_id": "50604854-d481-4f98-bc0c-33def10cfe4a",
+    "started_at": "2026-10-28T02:39:25.106513+00:00",
+    "status": "BLOCKED",
+    "task_kind": "COMPANY_OPERATING_VALUATION",
+    "token_usage": {
+      "last": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 0,
+        "inputTokens": 47490,
+        "outputTokens": 800,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 48290
+      },
+      "modelContextWindow": 475000,
+      "total": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 0,
+        "inputTokens": 47490,
+        "outputTokens": 800,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 48290
+      }
+    },
+    "tool_schema_fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "tools": []
+  },
+  "presentations": {},
+  "original_input_source_job_run_unchanged": true,
+  "source_network_calls": 0,
+  "global_worker_auth_changed": false,
+  "chapters_executed": 0,
+  "account_version": 0,
+  "finished_at": "2026-10-28T02:40:10.642869+00:00"
+}
