@@ -4,6 +4,8 @@
 
 本票新增实际来源、当前代码HTTP、真实网页新任务、重启及新目录恢复证据，详见[覆盖矩阵](coverage.md)、[最小差距与输入准备](readiness.md)、[运行/恢复交接](../../../../docs/research/company-research-usage.md)。未以旧证据目录整理、METHOD或新PARTIAL版本关闭本票。
 
+198dd652后的最新实际补充见[postcheckpoint02](postcheckpoint02.md)：隔离两JCC公共源启用/已安装runtime接线、真实手动采集12 recorded network_calls、22新fact/8口径gap/2新闻拒绝、无auth新analysis UNAVAILABLE、第二个真实恢复，以及仅本地编译未发送的一份JCC exact command待审阅。此手动结果不增加自然盘后0/2。
+
 ## 本次实际工作
 
 - [real-store.json](real-store.json)：公共Backups从rv11-real01恢复新rv12-real01；[daily-store.json](daily-store.json)另从rv07-real01恢复新rv12-daily01。原生产、07–11目录及服务不覆盖。
@@ -22,7 +24,7 @@
 
 首次新库JCC创建误传源库company_id触发404；第二次已完成实操作但回执字段误用status触发KeyError；修正使用公共completeness字段后的verify-live03完成。失败原文保留attempt01/02，重复请求用幂等键，不新增公司/材料版本。首API sandbox后台退出，无监听；实际host02经合法提升启动。Kimi日志ACL失败后用CUA IAB；首浏览器连接早于Vite启动、子代理visible参数不支持均未算UI成功。取消按钮点击发生在任务已经快速发布后，无匹配控制且未发生取消，不能宣称新任务取消验收成功。
 
-本票来源公网请求共3次PDF GET；网页新任务本身source_network_calls=0/model_calls=0。08既有真实CODEX和09既有45页PDF视觉验收分别引用原证据，不改称12新调用或新PDF生成。所有live stdout/stderr保留在隔离store/logs，未stage持续写入日志。
+主报告库来源公网有3次PDF GET；另daily副本实际手动probe的适配器回执记录12 network_calls，见postcheckpoint02。网页新任务本身source_network_calls=0/model_calls=0。08既有真实CODEX和09既有45页PDF视觉验收分别引用原证据，不改称12新调用或新PDF生成。所有live stdout/stderr保留在隔离store/logs，未stage持续写入日志。
 
 ## 仍未通过
 
