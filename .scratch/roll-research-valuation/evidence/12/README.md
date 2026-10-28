@@ -1,5 +1,7 @@
 # 12 联合真实验收检查点
 
+最新[07新资料准备](economic-prep07/README.md)：3新公开issuer PDF（官方年末risk/官方021/020新浪镜像），**不同于原固定资料包**；45facts/98267B/14selectedmaterials/exacta569预览未执行。42留/7省/3qualified TEXT、新source/date/限制/九gap矩阵完整；原51/49/资本38行/两Lulu run不改。slot4/correction2 target-only脚本准备，未reserve，当前仍3/16/纠错1。当前[readiness](readiness.md)/[coverage](coverage.md)已重写，P1已修和JCC真实COMPLETE不再混入待完成历史。
+
 最新[真实纠错06](correction06/README.md)：同原件资本子packet+合同1.1（相对05仅contract变化）exact692adaf2...f983已正常经review执行一次，43.6s/gpt-6.1-sol/openai→BLOCKED/null/9候选缺口。没有05/04新估值/审核/child，也未执行章节；真实新run/raw/wire与旧对象经新目录恢复一致。**当前预算3/16、纠错1/2**；05的2/16是执行前历史。12及A6/A7/A8仍blocked，未自动追加纠错。
 
 最新本地[资本准备05](capital-prep05/README.md)：仅同已批准FY25年报字面新增35数字/10原文，公开API新副本冻结49facts/98190B与QUEUED source-only候选预览，exactSHA74f156b5...5989。原12materials逐项same、原51facts/input/c549/9797不变，明确遗漏清单与真实经济分类未知。0新增外发/0纠错，批次仍2/16；未发布估值/章节/PDF，Completion及A6/A7/A8不升级。
