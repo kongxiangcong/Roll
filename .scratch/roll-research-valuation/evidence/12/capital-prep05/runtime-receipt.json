@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-10-28T02:27:29.7709885+00:00",
+  "runtime_role": "API",
+  "api_port": 8034,
+  "store": "D:/dsh-proj/Roll/.scratch/rv12-capital-prep01",
+  "launch_PYTHONPATH": "D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket12/backend/src",
+  "model_environment_removed": "ROLL_CODEX_* and ROLL_DEEPSEEK_* in serve_api.py",
+  "dotenv_loaded": false,
+  "worker_started": false,
+  "processes": [
+    {
+      "pid": 46480,
+      "parent_pid": 23668,
+      "start_ticks": 639287509057482754,
+      "command_line": "\"D:\\dsh-proj\\Roll\\backend\\.venv\\Scripts\\python.exe\" D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket12/.scratch/roll-research-valuation/evidence/12/capital-prep05/serve_api.py"
+    },
+    {
+      "pid": 2516,
+      "parent_pid": 46480,
+      "start_ticks": 639287509057670126,
+      "command_line": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 34396,
+      "parent_pid": 46480,
+      "start_ticks": 639287509058382194,
+      "command_line": "\"C:\\Users\\72449\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe\"  D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket12/.scratch/roll-research-valuation/evidence/12/capital-prep05/serve_api.py"
+    }
+  ]
+}

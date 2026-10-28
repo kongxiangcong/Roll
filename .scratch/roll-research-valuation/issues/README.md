@@ -49,3 +49,5 @@
 11已交付只读研究特征与原实验补充协议，真实缺失/blocked隔离、迟到与同季去重、保护对象及隔离恢复通过，见[11证据](../evidence/11/README.md)。0成熟样本和未绑定baseline保持DRAFT_UNBOUND/INCONCLUSIVE，没有拟合或改变原概率/旧预算/账户/SEALED。当前进入12，不据本票宣称完整正向链或实际盘后周期完成。
 
 12已实施实际联合验收检查点但未完成，见[覆盖矩阵](../evidence/12/coverage.md)。新增官方半年报/真实网页无auth任务/原文件下载/重启与隔离恢复均留真实证据；新PARTIAL不代替完整CODEX链，A6/A7/A8仍NOT_PASSED、当前自然周期0/2。最终review自动估值编排修复并入后继续按同合同验收，整体未关闭。
+
+12本地资本准备05已保存同原件完整diff与未执行新候选preview，见[证据](../evidence/12/capital-prep05/README.md)。不是新估值成功；原预算2/16及A6/A7/A8未通过不变。

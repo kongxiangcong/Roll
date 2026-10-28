@@ -1,0 +1,397 @@
+{
+  "old_command_sha256": "4d5ae801204adb12cc09f2c2f2b391bb99d58f639ef34b3db8dff019f67f48fe",
+  "new_command_sha256": "74f156b5a0a1ead86d14cccf0454a7c5f0115ed012e822e8c86a0fb564525989",
+  "nonprompt_fields_equal": {
+    "instructions": true,
+    "model": true,
+    "output_schema": true,
+    "tools": true
+  },
+  "same_contract": true,
+  "same_purpose": true,
+  "prompt_top_level_changes": [
+    "evidence",
+    "input_sha256",
+    "request_cutoff",
+    "snapshot"
+  ],
+  "request_cutoff": {
+    "old": "2026-10-28T00:50:00.000Z",
+    "new": "2026-10-28T02:24:55.861696+00:00"
+  },
+  "original_materials_identical": true,
+  "material_count": 12,
+  "new_materials": [],
+  "retained_original_fact_ids": [
+    "017ee892-e81f-49d6-aa85-547d1009ff0f",
+    "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+    "15ef32ac-8489-4bf3-8d80-cfb6d3a76449",
+    "1a171fae-762e-4905-aac1-9e3a781c6e2f",
+    "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+    "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+    "27b316af-9845-46b1-b579-781f5c9fa1f6",
+    "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+    "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+    "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+    "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+    "64209081-038d-4324-8b8d-2066a023607e",
+    "6e02c4d0-a15a-488d-87b0-0c2f777952a4",
+    "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4",
+    "8385dee3-e572-4e09-8860-26e69108baa8",
+    "8c09dc5c-e6aa-4481-a285-81310a53f312",
+    "943c4d34-ae46-4c17-8d37-d6f4f12d7ecb",
+    "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+    "a2b06827-8a0b-4b90-9254-fc3df6c55108",
+    "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+    "b03f71e4-228a-4bbf-9cf3-5579b879de54",
+    "bfc29237-e59c-4d35-85dc-13aef3f7db0e",
+    "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+    "e928d6b0-c483-4801-a8d9-e6c06bbb010f",
+    "eea63c62-a966-48ec-8013-dd286a35f33b",
+    "ff7650e5-c879-45a5-967c-bcdac4dedd87"
+  ],
+  "omitted_original": [
+    {
+      "version_id": "c44ce8df-bd62-41f6-8881-bbfca303405d",
+      "metric": "taxes_and_surcharges_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "0177067a-6d57-46a4-b98e-d0f804df10c1",
+      "metric": "cost_of_goods_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "03b51fdc-9cde-4324-9dc2-7049d6b66cc7",
+      "metric": "administrative_expenses_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "c52886dc-8672-484d-9b86-cb3a162844e6",
+      "metric": "cash_capex_2024",
+      "reason": "Prior-year cash investment is not a maintenance/growth split; current capex remains."
+    },
+    {
+      "version_id": "a4c03793-fc74-43fb-8074-7ec295deeae3",
+      "metric": "cost_of_goods_2024",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "cbcd489d-8096-4433-b359-2d9a2b8eca97",
+      "metric": "interest_income_accrual_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "c30b8fbb-40a5-4db5-832d-099229b50708",
+      "metric": "fixed_asset_depreciation_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "003390a4-ef1e-4e0f-ba50-3342ffb91a5d",
+      "metric": "selling_expenses_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "b22cca12-8061-4b87-94d5-dc422dcddb63",
+      "metric": "deferred_expense_amortization_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "0b29aa4a-ea08-45ab-a173-132dce785e40",
+      "metric": "selling_expenses_2024",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "68194232-a8ce-4ce4-8678-3fdda82876a9",
+      "metric": "research_expenses_2024",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "5d2d1693-821c-4cfd-a0e0-1b8051d1d229",
+      "metric": "research_expenses_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+      "metric": "reported_operating_profit_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "40397dbf-ffea-4555-8419-79097bc1a8ce",
+      "metric": "taxes_and_surcharges_2024",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "d0e3884c-3c54-4564-b399-e344158aa4f3",
+      "metric": "administrative_expenses_2024",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "d98d3c60-338b-4eea-8e52-5908accdd4dd",
+      "metric": "rou_depreciation_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+      "metric": "cash_recon_operating_receivables_decrease_2025",
+      "reason": "Cashflow reconciliation movement is not a working-capital stock; omitted, never relabelled."
+    },
+    {
+      "version_id": "a9c21a21-6ee3-4564-ba12-90a0554a2ebd",
+      "metric": "revenue_2024",
+      "reason": "Historical revenue detail omitted for size; normalized FY2024 core-profit figure with saved derivation remains."
+    },
+    {
+      "version_id": "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+      "metric": "total_equity_2025",
+      "reason": "Accounting equity is not economic operating capital; no shortcut from equity to invested capital."
+    },
+    {
+      "version_id": "51bf4241-9eb3-41fc-8b34-15b591181b74",
+      "metric": "cfo_2025",
+      "reason": "Historical CFO is not FCFF or NWC stock; source-only capital components and capex/DA preserved instead."
+    },
+    {
+      "version_id": "2391133f-98ac-44d8-9928-027fe405eb55",
+      "metric": "cash_recon_operating_payables_increase_2025",
+      "reason": "Cashflow reconciliation movement is not a working-capital stock; omitted, never relabelled."
+    },
+    {
+      "version_id": "020ab1c1-c077-466a-bc5f-2224fc32e21d",
+      "metric": "intangible_amortization_2025",
+      "reason": "Repeated historic expense/depreciation detail omitted for existing size bound; selected core-profit/DA derived facts retain their original saved audit derivations; original records stay unchanged."
+    },
+    {
+      "version_id": "e63eb52e-e053-409f-abd9-cff14f906be4",
+      "metric": "no_disclosed_material_commitment_2025",
+      "reason": "Absence of material disclosure cannot prove no future payments; full workpaper preserves literal source."
+    },
+    {
+      "version_id": "71f77529-6e52-4808-8471-1165ac0ca616",
+      "metric": "cash_recon_inventory_decrease_2025",
+      "reason": "Cashflow reconciliation movement is not a working-capital stock; omitted, never relabelled."
+    },
+    {
+      "version_id": "ed35a805-ee19-49af-b522-e2aafceffd33",
+      "metric": "cfo_2024",
+      "reason": "Historical CFO is not FCFF or NWC stock; no cashflow-to-stock substitution."
+    }
+  ],
+  "added_facts": [
+    {
+      "version_id": "cb0eff9f-1177-45f4-a236-85a1464d046f",
+      "metric": "corporate_income_tax_payable_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "137",
+      "value": "90981437.45"
+    },
+    {
+      "version_id": "653da753-9dfb-4d7e-afb5-c3d4e49fa6a8",
+      "metric": "rou_assets_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "130",
+      "value": "6342050.53"
+    },
+    {
+      "version_id": "5a8ef840-fbcb-428d-87be-9a1bd43e6c5a",
+      "metric": "other_payables_current_accounts_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "135",
+      "value": "53264000.48"
+    },
+    {
+      "version_id": "4758ecd9-8e9b-473c-8b85-65d05e885435",
+      "metric": "payroll_payables_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "136",
+      "value": "35059892.27"
+    },
+    {
+      "version_id": "9213dd9c-17bf-4020-8ea5-1e4e76637aad",
+      "metric": "accrued_deposit_interest_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "124",
+      "value": "5348188.74"
+    },
+    {
+      "version_id": "01f053ed-7a0f-482d-9c85-d7bbe613e3d1",
+      "metric": "tax_payables_total_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "137",
+      "value": "149084014.29"
+    },
+    {
+      "version_id": "234a414d-6ac3-4118-8a21-e9dbaf7bfda2",
+      "metric": "other_receivables_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "121",
+      "value": "391408.16"
+    },
+    {
+      "version_id": "496c2aed-254f-4636-81f2-f30313550ab1",
+      "metric": "fixed_assets_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "125",
+      "value": "632675601.10"
+    },
+    {
+      "version_id": "2997ab39-ae5a-405c-8d0b-d402fedd6d68",
+      "metric": "capital_prepayments_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "134",
+      "value": "12471016.13"
+    },
+    {
+      "version_id": "055e826a-c82c-4069-be94-03ca0508ddc9",
+      "metric": "deferred_grant_income_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "138",
+      "value": "1226771.04"
+    },
+    {
+      "version_id": "d5015e3f-4a5d-415c-a567-d7bd1f1d35dd",
+      "metric": "prepayments_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "64",
+      "value": "7863918.51"
+    },
+    {
+      "version_id": "3ad3bb32-55c9-4f76-a135-d0eff690faf1",
+      "metric": "accounts_payable_other_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "134",
+      "value": "67747538.13"
+    },
+    {
+      "version_id": "6f22712b-1750-48b1-9c41-bf2eec28b425",
+      "metric": "other_payables_deposits_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "135",
+      "value": "16264938.30"
+    },
+    {
+      "version_id": "7c41217e-7979-4220-a47b-98218dc4797e",
+      "metric": "inventory_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "64",
+      "value": "172257849.38"
+    },
+    {
+      "version_id": "cac909c9-03c1-41ab-bc6d-4408a68bcb7e",
+      "metric": "idle_fixed_assets_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "127",
+      "value": "48761907.82"
+    },
+    {
+      "version_id": "32681f4c-9b71-48a9-a6fd-a240087a4b0c",
+      "metric": "intangible_assets_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "131",
+      "value": "310133461.16"
+    },
+    {
+      "version_id": "2a1aa120-fce1-4cc8-af6e-aa4652070fb0",
+      "metric": "trade_receivables_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "64",
+      "value": "14167758.98"
+    },
+    {
+      "version_id": "c0a7eaad-7b89-43dc-9a3b-b1e6fad5b6e3",
+      "metric": "capital_source_boundary_10",
+      "material_id": "2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "132",
+      "value": "将露露系列商标作为使用寿命不确定的无形资产。"
+    },
+    {
+      "version_id": "82195d03-5e09-4c3a-947a-b278cb018cb8",
+      "metric": "cip_net_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "128",
+      "value": "99867565.77"
+    },
+    {
+      "version_id": "61e242f0-4b23-4e7d-83fc-9a6f5d90a1b1",
+      "metric": "pending_output_vat_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "137",
+      "value": "11563031.10"
+    },
+    {
+      "version_id": "0f6ccf9b-01f7-4261-b51d-39eda9de567f",
+      "metric": "capital_source_boundary_5",
+      "material_id": "2d4f1b11-f0e2-49d8-84f2-4f30b5aa5303",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "135",
+      "value": "应付账款增加主要系新增电子债权凭证支付方式所致。"
+    },
+    {
+      "version_id": "663d9182-3c23-4748-a7a8-a5696c4164ce",
+      "metric": "contract_liabilities_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "135",
+      "value": "205486274.28"
+    },
+    {
+      "version_id": "a8edfb2d-8951-446b-83dc-e0e884da293b",
+      "metric": "input_vat_credit_2025_stock",
+      "material_id": "600f0c90-3e6e-40d3-8a2a-140c0cb8853f",
+      "archive_sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b",
+      "kind": "DISCLOSED",
+      "page": "124",
+      "value": "27380.53"
+    }
+  ],
+  "omitted_new_workpaper": "selection-plan.json / omitted_new and qualitative_stored_not_selected; subset/unknown-classification/detail not lost from the new store or workpaper.",
+  "authority": "UNEXECUTED preview, source-only local publication, no approved economic classification or price",
+  "actual_budget": {
+    "used": 2,
+    "limit": 16,
+    "corrections_used": 0
+  },
+  "credentials_or_account_or_sealed": false
+}
