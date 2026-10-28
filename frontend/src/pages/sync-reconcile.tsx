@@ -8,8 +8,8 @@ type Difference={field:string;identity:string|null;mirror:string|null;broker:str
 type Candidate={root_event_id:string;target_event_id:string;reversed:boolean;command:{kind:string;payload:Record<string,unknown>}};
 type Check={state:string;allowed:boolean;missing_scope:string[];reasons:string[];next_step:string};
 const fields:Record<string,string>={instrument:'证券标识',fill_id:'券商分笔标识',order_id:'券商委托标识',cash_balance:'账面现金',broker_available:'券商可用资金',broker_frozen:'冻结资金',withdrawable:'可取资金',investment_income:'实际到账投资收入',investment_expenses:'独立税费扣款',quantity:'持仓数量',sellable_quantity:'可卖数量',outstanding_amount:'未结余额',amount:'实际金额',corrected_amount:'更正后金额',new_quantity:'变动后总数量',price:'成交价格',actual_fee_amount:'实际费用',fee_amount:'总支付中的费用',basis:'核对依据',broker_available_after:'本次后的券商可用',item_type:'权益类别',direction:'买卖方向',behavior_context:'成交情形'};
-export function SyncReconcile({account,onDone}:{account:Account;onDone:()=>void}){
-  const [mode,setMode]=useState<'ACCOUNT_DECLARATION'|'RECONCILIATION'|'CORRECTION'>('ACCOUNT_DECLARATION');
+export function SyncReconcile({account,onDone,onConfirmed,initialMode='ACCOUNT_DECLARATION'}:{account:Account;onDone:()=>void;onConfirmed?:()=>void;initialMode?:'ACCOUNT_DECLARATION'|'RECONCILIATION'|'CORRECTION'}){
+  const [mode,setMode]=useState<'ACCOUNT_DECLARATION'|'RECONCILIATION'|'CORRECTION'>(initialMode);
   const [at,setAt]=useState(local),[source,setSource]=useState('本人核对券商账户'),[record,setRecord]=useState<string>(()=>crypto.randomUUID()),[basis,setBasis]=useState(''),[changes,setChanges]=useState('NONE'),[scope,setScope]=useState(Object.keys(scopeLabels));
   const [values,setValues]=useState<Record<string,string>>(()=>Object.fromEntries(['cash_balance','broker_available','broker_frozen','withdrawable','investment_income','investment_expenses'].map(k=>[k,String((account as unknown as Record<string,unknown>)[k]??'')])));
   const [positions,setPositions]=useState(()=>account.positions.map(p=>({instrument:p.instrument,quantity:p.quantity,sellable_quantity:p.sellable_quantity??''})));
@@ -24,7 +24,8 @@ export function SyncReconcile({account,onDone}:{account:Account;onDone:()=>void}
     const payload=mode==='ACCOUNT_DECLARATION'?{...common,scope,changes,basis}:mode==='RECONCILIATION'?{...common,reason:basis,resolved_draft_ids:resolved,snapshot:{...Object.fromEntries(Object.entries(values).map(([k,v])=>[k,optional(v)])),positions:positions.map(p=>({...p,quantity:optional(p.quantity),sellable_quantity:optional(p.sellable_quantity)})),pending_items:pending.map(p=>({...p,outstanding_amount:optional(p.outstanding_amount)}))}}:{...common,target_event_id:target,reason:basis,replacement:reverse?null:{kind:candidates.find(c=>c.target_event_id===target)!.command.kind,payload:replacement}};
     setDraft(await request('/account/drafts',{kind:mode,expected_account_version:account.version,payload}));setKey(crypto.randomUUID());
   }catch(e){setError(String(e));}finally{setBusy(false);}}
-  async function confirm(){setBusy(true);setError('');try{setReceipt(await request('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key}));}catch(e){setError(String(e));}finally{setBusy(false);}}
+  function confirmed(receipt:Receipt){setReceipt(receipt);onConfirmed?.();}
+  async function confirm(){setBusy(true);setError('');try{confirmed(await request('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key}));}catch(e){setError(String(e));}finally{setBusy(false);}}
   async function useCheck(){try{setCheck(await request('/account/use-check',{purpose,required_as_of:new Date(at).toISOString()}));}catch(e){setError(String(e));}}
   if(receipt)return <section><h2>账户核对已确认，回执已保存</h2><p>账户版本 {receipt.account_version} · 回执 {receipt.receipt_id}</p><p>原事实与原版本保留；本次确认推进账户版本。</p><button onClick={onDone}>回到今天</button></section>;
   return <section><h2>账户核对与更正</h2><div>{[['ACCOUNT_DECLARATION','范围声明'],['RECONCILIATION','券商快照核对'],['CORRECTION','追加更正或冲正']].map(([v,l])=><button key={v} onClick={()=>{setMode(v as typeof mode);setDraft(null);setRecord(crypto.randomUUID());}}>{l}</button>)}</div>
