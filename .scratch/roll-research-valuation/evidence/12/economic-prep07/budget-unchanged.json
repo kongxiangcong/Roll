@@ -1,0 +1,42 @@
+{
+  "limit": 16,
+  "normal_limit": 14,
+  "correction_limit": 2,
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "LULU_VALUATION_FIRST",
+      "command_sha256": "4d5ae801204adb12cc09f2c2f2b391bb99d58f639ef34b3db8dff019f67f48fe",
+      "reserved_at": "2026-10-28T01:52:59.302062+00:00",
+      "status": "BLOCKED",
+      "run_id": "fff7d56d-2f44-4d46-9877-a56ab31c4489",
+      "model_executed": true,
+      "finished_at": "2026-10-28T01:53:38.720684+00:00"
+    },
+    {
+      "number": 2,
+      "kind": "JCC_OPERATING_FIRST",
+      "command_sha256": "a10d0bfd5249b96fc7cd9af37e2a99fc92e5e3cc0f25334339fe6e0d3a4f208f",
+      "reserved_at": "2026-10-28T01:55:03.218876+00:00",
+      "status": "COMPLETE",
+      "run_id": "a572ee2d-62da-428f-a655-a48c1e32d988",
+      "model_executed": true,
+      "finished_at": "2026-10-28T01:56:05.180120+00:00"
+    },
+    {
+      "number": 3,
+      "kind": "LULU_VALUATION_CORRECTION_1",
+      "is_correction": true,
+      "correction_number": 1,
+      "command_sha256": "692adaf2b2d7b89d98cea163827e2c752c5b29eaef4ad84ee80226386900f983",
+      "job_id": "ecf287d8-cfe4-4c18-8388-c95d59ac44e6",
+      "store": "D:\\dsh-proj\\Roll\\.scratch\\rv12-capital-prep01",
+      "reserved_at": "2026-10-28T02:39:24.080769+00:00",
+      "status": "BLOCKED",
+      "scope": "Same12originals/FY25literalcapitalchild49facts+existingcontract1.1clarification; original4d5input/run unchanged",
+      "run_id": "bf290081-a8b0-4441-82e4-21c7bf3aa3dc",
+      "model_executed": true,
+      "finished_at": "2026-10-28T02:40:10.666849+00:00"
+    }
+  ]
+}
