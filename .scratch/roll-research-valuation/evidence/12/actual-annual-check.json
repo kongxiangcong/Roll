@@ -1,0 +1,54 @@
+{
+  "check": {
+    "schema_version": 1,
+    "created_at": "2026-10-27T16:55:11.740709+00:00",
+    "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+    "source_id": "actual12-cninfo-annual2025",
+    "requested_scopes": [
+      "EXACT_ANNUAL_2025_PDF_BYTES"
+    ],
+    "idempotency_key": "actual12-annual-recheck",
+    "check_id": "21d9b5dd-3e8b-4d05-9f65-0e2442e76bbd",
+    "attempt_id": "e68cff1f-6e6e-4c90-ba94-f56ecb967797",
+    "status": "SUCCESS",
+    "started_at": "2026-10-27T16:55:11.740305+00:00",
+    "finished_at": "2026-10-27T16:55:12.093816+00:00",
+    "host_owner": {
+      "pid": 39684,
+      "creation_ticks": 134375937084415606
+    },
+    "last_success_check_id": "21d9b5dd-3e8b-4d05-9f65-0e2442e76bbd",
+    "last_success_at": "2026-10-27T16:55:12.093816+00:00",
+    "completed_scopes": [
+      "EXACT_ANNUAL_2025_PDF_BYTES"
+    ],
+    "failed_scopes": [],
+    "material_ids": [],
+    "new_material_count": 0,
+    "source_receipts": [],
+    "errors": [],
+    "retry_state": "NO_AUTOMATIC_RETRY",
+    "meaning": "本次已核查范围未取得新证据；不代表经营未变",
+    "content_sha256": "cb6e875f2d565c67e699b6f52e2249fcda4b608bc3b970c6923482ee5521479f"
+  },
+  "network_receipts": [
+    {
+      "scope": "EXACT_ANNUAL_2025_PDF_BYTES",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-04-28/1225208968.PDF",
+      "started_at": "2026-10-27T16:55:11.756648+00:00",
+      "finished_at": "2026-10-27T16:55:12.093725+00:00",
+      "status": 200,
+      "bytes": 1056117,
+      "sha256": "8c620b0b2a555f37552f3310731dff808f11d43d150f3e7bb28264c65995306b"
+    }
+  ],
+  "snapshot_id": "6b94c24a-f27a-4e5b-a6f9-57358d8242a6",
+  "core_sha256": "37b71966590cb1cb8d0c2898c4bace4c7ec1bc3b216018d2f941204f22dcac1d",
+  "research_basis_as_of": "2026-10-26T18:35:27.267742+00:00",
+  "daily_snapshot_id": "6b94c24a-f27a-4e5b-a6f9-57358d8242a6",
+  "old_report_snapshot_id": "7a430e8b-4172-4598-af21-6fe8600b6b93",
+  "original_report_unchanged": true,
+  "new_operating_inference": false,
+  "model_calls": 0,
+  "auth_read": false
+}

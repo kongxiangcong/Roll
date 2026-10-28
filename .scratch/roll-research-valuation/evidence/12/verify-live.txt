@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket12\.scratch\roll-research-valuation\evidence\12\verify_live.py", line 49, in <module>
+    jcc=post('/api/company-research/companies',command)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket12\.scratch\roll-research-valuation\evidence\12\verify_live.py", line 29, in post
+    response=client.post(path,json=value);response.raise_for_status();return response.json()
+                                          ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\dsh-proj\Roll\backend\.venv\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'http://127.0.0.1:8032/api/company-research/companies'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404

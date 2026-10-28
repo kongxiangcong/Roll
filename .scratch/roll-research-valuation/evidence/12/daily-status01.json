@@ -1,0 +1,1245 @@
+{
+  "observed_at": "2026-10-28T00:23:36.510933+00:00",
+  "records": {
+    "SSE:600362": {
+      "settings": {
+        "financial_postclose": false,
+        "market_postclose": false,
+        "research_postclose": true,
+        "basis": "Actual12 isolated natural postclose acceptance; existing bounded public sources where supported; no model auth; no offline/backfill or other postclose kinds",
+        "changed_at": "2026-10-27T16:56:41.556857+00:00",
+        "classify": false,
+        "enabled": true,
+        "instrument": "SSE:600362",
+        "news_postclose": false,
+        "news_refresh": true,
+        "profile": "legacy",
+        "revision": 4
+      },
+      "jobs": [
+        {
+          "cache_reused": true,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-final-jcc-archive2",
+            "kind": "RESEARCH",
+            "refresh_sources": false,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:18:10.446586+00:00",
+          "error": null,
+          "errors": [],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:18:10.973404+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375194361711303,
+            "nonce": "4505a604-62fd-49ac-89b6-99936e65a3ff",
+            "pid": 31404
+          },
+          "instrument": "SSE:600362",
+          "job_id": "660a0928-fa21-428f-b0f0-d7e1954b95fb",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "bc70ea62-3af9-42fd-91ee-4a962a89f1a2",
+          "result": [
+            {
+              "check_id": "c96977ef-f4db-4d4b-9a85-2164b9dc8656",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:18:09.751890+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SSE:600362",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 3
+          },
+          "started_at": "2026-10-26T20:18:10.558747+00:00",
+          "status": "COMPLETE"
+        },
+        {
+          "cache_reused": true,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-final-jcc-archive1",
+            "kind": "RESEARCH",
+            "refresh_sources": false,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:18:09.871749+00:00",
+          "error": null,
+          "errors": [],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:18:10.042111+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375194361711303,
+            "nonce": "4505a604-62fd-49ac-89b6-99936e65a3ff",
+            "pid": 31404
+          },
+          "instrument": "SSE:600362",
+          "job_id": "d11d34dd-88d8-455c-aa38-2974f7009067",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "bc70ea62-3af9-42fd-91ee-4a962a89f1a2",
+          "result": [
+            {
+              "check_id": "9391bd87-cd4e-4f10-b4f1-a03589ef3a42",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:18:09.751890+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SSE:600362",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 3
+          },
+          "started_at": "2026-10-26T20:18:09.909938+00:00",
+          "status": "COMPLETE"
+        },
+        {
+          "cache_reused": true,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-actual-jcc-archive2",
+            "kind": "RESEARCH",
+            "refresh_sources": false,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:00:26.235662+00:00",
+          "error": null,
+          "errors": [],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:00:26.407749+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375183762933081,
+            "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+            "pid": 4376
+          },
+          "instrument": "SSE:600362",
+          "job_id": "7a75e25d-bb66-4754-9c01-f314ea018e8c",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "bc70ea62-3af9-42fd-91ee-4a962a89f1a2",
+          "result": [
+            {
+              "check_id": "b3cd2acd-4e36-488f-ac38-91b1b7b91a68",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:00:25.340387+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SSE:600362",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 2
+          },
+          "started_at": "2026-10-26T20:00:26.312900+00:00",
+          "status": "COMPLETE"
+        },
+        {
+          "cache_reused": false,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-actual-jcc-archive1",
+            "kind": "RESEARCH",
+            "refresh_sources": false,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:00:25.631131+00:00",
+          "error": null,
+          "errors": [],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:00:25.845550+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375183762933081,
+            "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+            "pid": 4376
+          },
+          "instrument": "SSE:600362",
+          "job_id": "fd40eed6-c756-4b03-bda4-258fc344f43c",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "bc70ea62-3af9-42fd-91ee-4a962a89f1a2",
+          "result": [
+            {
+              "check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:00:25.340387+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SSE:600362",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 2
+          },
+          "started_at": "2026-10-26T20:00:25.744297+00:00",
+          "status": "COMPLETE"
+        }
+      ],
+      "observations": [
+        {
+          "capability": "RESEARCH_LIMITED",
+          "created_at": "2026-10-26T20:00:25.845299+00:00",
+          "errors": [],
+          "evidence_kind": "SOURCE_PROVENANCE_UNVERIFIED",
+          "forecast_archive_created": false,
+          "input_sha256": "174db53105ebf0729ad1bd8d34fdb4ff701a3e6f6e8e4cc6782718f73357880b",
+          "instrument": "SSE:600362",
+          "kind": "RESEARCH",
+          "known_by": "2026-10-26T20:00:25.835898+00:00",
+          "meaningful": true,
+          "observation_id": "bc70ea62-3af9-42fd-91ee-4a962a89f1a2",
+          "payload": {
+            "analysis_input_id": null,
+            "archive_scope": "检查已归档财务/新闻材料的下一批未纳入记录（每类最多20条，非完整历史核查）；未执行公网核查",
+            "check": {
+              "attempt_id": "912c775f-037d-47b5-bdc5-8a3335330703",
+              "check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+              "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+              "completed_scopes": [
+                "FINANCIAL_NEXT20_UNIMPORTED",
+                "NEWS_NEXT20_UNIMPORTED"
+              ],
+              "content_sha256": "0b6c26ffd9bc4a0b3ec466052b23f3707d025c4ceca8b78cc52911b28dcda490",
+              "created_at": "2026-10-26T20:00:25.777324+00:00",
+              "errors": [],
+              "failed_scopes": [],
+              "finished_at": "2026-10-26T20:00:25.795059+00:00",
+              "host_owner": {
+                "creation_ticks": 134375183762933081,
+                "pid": 4376
+              },
+              "idempotency_key": "fd40eed6-c756-4b03-bda4-258fc344f43c",
+              "last_success_at": "2026-10-26T20:00:25.795059+00:00",
+              "last_success_check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+              "material_ids": [],
+              "meaning": "本次已核查范围未取得新证据；不代表经营未变",
+              "new_material_count": 0,
+              "requested_scopes": [
+                "FINANCIAL_NEXT20_UNIMPORTED",
+                "NEWS_NEXT20_UNIMPORTED"
+              ],
+              "retry_state": "NO_AUTOMATIC_RETRY",
+              "schema_version": 1,
+              "source_id": "saved-archive-catalog",
+              "source_receipts": [],
+              "started_at": "2026-10-26T20:00:25.777073+00:00",
+              "status": "SUCCESS"
+            },
+            "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+            "content_sha256": "df2ce334f1d43c6cbaf32ae2a9f85f95879efa7988b5434527e6b9cc6cbdf785",
+            "created_at": "2026-10-26T20:00:25.811658+00:00",
+            "gap": null,
+            "model_executed": false,
+            "network_check_performed": false,
+            "network_receipts": [
+              {
+                "check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+                "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+                "source": "saved-archive-catalog",
+                "status": "SUCCESS"
+              }
+            ],
+            "schema_version": 1,
+            "snapshot_id": "e28c866f-5fa5-458d-a48a-1ed1869d40ea",
+            "status": "SAME_SNAPSHOT"
+          },
+          "receipts": [
+            {
+              "check_id": "f663b8e6-740e-4b7e-b54f-0b2c7218d184",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "semantic_sha256": "174db53105ebf0729ad1bd8d34fdb4ff701a3e6f6e8e4cc6782718f73357880b",
+          "system_usable": false,
+          "version": "observation-worker-v1"
+        }
+      ],
+      "health": {
+        "RESEARCH:SZSE:000848": {
+          "at": "2026-10-26T20:18:11.229658+00:00",
+          "error": [
+            "PUBLIC_SOURCE_SCOPE_UNSUPPORTED_FOR_SELECTED_COMPANY"
+          ],
+          "retry_after": "2026-10-26T20:23:11.229673+00:00"
+        }
+      },
+      "sources": [
+        {
+          "adapter_version": "akshare-1.19.1-news-raw-v1",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-15新增独立新闻来源，按单证券显式启用",
+          "changed_at": "2026-10-26T19:43:35.418309+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": false,
+          "engine": "AKSHARE",
+          "failure_threshold": 3,
+          "group": "NEWS",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "akshare-news-em",
+          "license": "AKShare MIT; Trafilatura Apache-2.0; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "AKShare 东财单股新闻",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Recent search page only; actual SDK pageSize10; no complete history/entity assertion",
+          "upstream": "EASTMONEY",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        },
+        {
+          "adapter_version": "akshare-1.19.1-income-raw-v1",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-15新增利润表来源，按单证券显式启用",
+          "changed_at": "2026-10-26T19:43:35.419113+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": false,
+          "engine": "AKSHARE",
+          "failure_threshold": 3,
+          "group": "FINANCIAL",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "akshare-financial-em",
+          "license": "AKShare 1.19.1 MIT; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "AKShare 东财利润表",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Source-bound statement proof or explicit UNKNOWN; no historical PIT claim",
+          "upstream": "EASTMONEY",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        },
+        {
+          "adapter_version": "ROLL_PROSPECTIVE",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+          "changed_at": "2026-10-26T19:43:35.423804+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": true,
+          "engine": "ROLL",
+          "failure_threshold": 3,
+          "group": "DAILY",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "sohu-daily",
+          "license": "Apache-2.0 code; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "搜狐日线",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+          "upstream": "SOHU",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        },
+        {
+          "adapter_version": "ROLL_PROSPECTIVE",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+          "changed_at": "2026-10-26T19:43:35.424626+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": true,
+          "engine": "ROLL",
+          "failure_threshold": 3,
+          "group": "QUOTE",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "sina-quote",
+          "license": "Apache-2.0 code; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "新浪报价与状态线索",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+          "upstream": "SINA",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        }
+      ],
+      "checkpoint": "Asia/Shanghai 15:05; online current session only",
+      "timeout_seconds": 45,
+      "offline_coverage": {
+        "sessions": [
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375174188650921,
+              "nonce": "11994aa2-a761-4eab-a12a-620aa5a51d77",
+              "pid": 46184
+            },
+            "last_seen_at": "2026-10-26T19:53:02.971748+00:00",
+            "session_id": "4b039fd0-b6c4-4494-b36b-d7f14fbb8be9",
+            "started_at": "2026-10-26T19:43:42.858221+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375179951371468,
+              "nonce": "0b68d624-d6e8-47e2-9608-de808bd0c3c7",
+              "pid": 52076
+            },
+            "last_seen_at": "2026-10-26T19:59:24.577379+00:00",
+            "session_id": "83a89e6b-039f-4378-8771-585df4e3bcf3",
+            "started_at": "2026-10-26T19:53:18.911215+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375183762933081,
+              "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+              "pid": 4376
+            },
+            "last_seen_at": "2026-10-26T20:17:02.973834+00:00",
+            "session_id": "f2d13ffc-5ec9-45dc-9a83-34890f3d484d",
+            "started_at": "2026-10-26T19:59:39.977499+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375194361711303,
+              "nonce": "4505a604-62fd-49ac-89b6-99936e65a3ff",
+              "pid": 31404
+            },
+            "last_seen_at": "2026-10-26T20:38:02.577656+00:00",
+            "session_id": "48c94dd7-5355-479d-8062-d728533da096",
+            "started_at": "2026-10-26T20:17:20.381713+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375207001251126,
+              "nonce": "be7df498-156c-4f15-8bd4-96d939c6bb1d",
+              "pid": 26048
+            },
+            "last_seen_at": "2026-10-27T16:47:13.950709+00:00",
+            "session_id": "624eee7a-c06a-4198-b8ad-10b78d742c99",
+            "started_at": "2026-10-26T20:38:23.761387+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375938151646080,
+              "nonce": "b2f7dfc8-67d1-428c-9b49-9befe7c76384",
+              "pid": 23368
+            },
+            "last_seen_at": "2026-10-28T00:23:36.216317+00:00",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "started_at": "2026-10-27T16:57:00.110555+00:00"
+          }
+        ],
+        "gaps": [
+          {
+            "end": "2026-10-26T19:53:18.911215+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "4b039fd0-b6c4-4494-b36b-d7f14fbb8be9",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "83a89e6b-039f-4378-8771-585df4e3bcf3",
+            "start": "2026-10-26T19:53:02.971748+00:00"
+          },
+          {
+            "end": "2026-10-26T19:59:39.977499+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "83a89e6b-039f-4378-8771-585df4e3bcf3",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "f2d13ffc-5ec9-45dc-9a83-34890f3d484d",
+            "start": "2026-10-26T19:59:24.577379+00:00"
+          },
+          {
+            "end": "2026-10-26T20:17:20.381713+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "f2d13ffc-5ec9-45dc-9a83-34890f3d484d",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "48c94dd7-5355-479d-8062-d728533da096",
+            "start": "2026-10-26T20:17:02.973834+00:00"
+          },
+          {
+            "end": "2026-10-26T20:38:23.761387+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "48c94dd7-5355-479d-8062-d728533da096",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "624eee7a-c06a-4198-b8ad-10b78d742c99",
+            "start": "2026-10-26T20:38:02.577656+00:00"
+          },
+          {
+            "end": "2026-10-27T16:57:00.110555+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "624eee7a-c06a-4198-b8ad-10b78d742c99",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "start": "2026-10-27T16:47:13.950709+00:00"
+          },
+          {
+            "end": "2026-10-27T23:43:21.591546+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "reason": "RUNNING_HEARTBEAT_GAP_UNOBSERVED",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "start": "2026-10-27T17:07:56.650401+00:00"
+          },
+          {
+            "end": "2026-10-28T00:20:24.344822+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "reason": "RUNNING_HEARTBEAT_GAP_UNOBSERVED",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "start": "2026-10-27T23:43:36.029689+00:00"
+          }
+        ],
+        "promise": "ACTUAL_OBSERVATIONS_ONLY_NO_ALWAYS_ON_REQUIREMENT",
+        "forward_predictions_reconstructed": false,
+        "expired_opportunities_sent": false
+      },
+      "worker": {
+        "worker_limit": 1,
+        "worker_state": "RUNNING",
+        "last_worker_error": null,
+        "worker": {
+          "heartbeat_at": "2026-10-28T00:23:36.216225+00:00",
+          "host_owner": {
+            "creation_ticks": 134375938151646080,
+            "nonce": "b2f7dfc8-67d1-428c-9b49-9befe7c76384",
+            "pid": 23368
+          }
+        },
+        "technical_limits": {
+          "attempts": 3,
+          "backoff_seconds": [
+            1,
+            2
+          ],
+          "timeout_seconds": 8,
+          "http_calls_per_attempt": 8,
+          "recursive_tasks": 0
+        },
+        "backlog": 0,
+        "running": 0
+      },
+      "forecast_backfill": false,
+      "external_notifications": "IN_APP_ONLY_NO_CHANNEL_ACTIVATION"
+    },
+    "SZSE:000848": {
+      "settings": {
+        "financial_postclose": false,
+        "market_postclose": false,
+        "research_postclose": true,
+        "basis": "Actual12 isolated natural postclose acceptance; existing bounded public sources where supported; no model auth; no offline/backfill or other postclose kinds",
+        "changed_at": "2026-10-27T16:56:41.581582+00:00",
+        "classify": false,
+        "enabled": true,
+        "instrument": "SZSE:000848",
+        "news_postclose": false,
+        "news_refresh": true,
+        "profile": "legacy",
+        "revision": 4
+      },
+      "jobs": [
+        {
+          "cache_reused": true,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-final-lulu-archive-retry1",
+            "kind": "RESEARCH",
+            "refresh_sources": false,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:18:11.714628+00:00",
+          "error": null,
+          "errors": [],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:18:11.949752+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375194361711303,
+            "nonce": "4505a604-62fd-49ac-89b6-99936e65a3ff",
+            "pid": 31404
+          },
+          "instrument": "SZSE:000848",
+          "job_id": "673bdc6a-a57d-45c2-b2d1-963b2d735dc2",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "518ca3bf-b790-4ec4-96f0-48e7c4fa036d",
+          "result": [
+            {
+              "check_id": "232afa1e-585a-403d-ab4d-d34fa392d50c",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:18:09.816642+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SZSE:000848",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 3
+          },
+          "started_at": "2026-10-26T20:18:11.843670+00:00",
+          "status": "COMPLETE"
+        },
+        {
+          "cache_reused": true,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-final-lulu-source-scope1",
+            "kind": "RESEARCH",
+            "refresh_sources": true,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:18:11.038821+00:00",
+          "error": null,
+          "errors": [
+            "PUBLIC_SOURCE_SCOPE_UNSUPPORTED_FOR_SELECTED_COMPANY"
+          ],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:18:11.226038+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375194361711303,
+            "nonce": "4505a604-62fd-49ac-89b6-99936e65a3ff",
+            "pid": 31404
+          },
+          "instrument": "SZSE:000848",
+          "job_id": "b5dd4296-78e4-4cea-9f7e-6613aec2efd2",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "518ca3bf-b790-4ec4-96f0-48e7c4fa036d",
+          "result": [
+            {
+              "check_id": "6cfd6d5d-19ae-42ea-8407-46ac00e15ae7",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:18:09.816642+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SZSE:000848",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 3
+          },
+          "started_at": "2026-10-26T20:18:11.127077+00:00",
+          "status": "PARTIAL"
+        },
+        {
+          "cache_reused": true,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-actual-lulu-archive-retry1",
+            "kind": "RESEARCH",
+            "refresh_sources": false,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:00:27.457122+00:00",
+          "error": null,
+          "errors": [],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:00:27.634722+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375183762933081,
+            "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+            "pid": 4376
+          },
+          "instrument": "SZSE:000848",
+          "job_id": "00897e13-3013-4ba2-ba7d-68861eb1fc52",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "518ca3bf-b790-4ec4-96f0-48e7c4fa036d",
+          "result": [
+            {
+              "check_id": "01ebf4ff-a624-4b72-8200-a47e27095cc3",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:00:25.508674+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SZSE:000848",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 2
+          },
+          "started_at": "2026-10-26T20:00:27.556198+00:00",
+          "status": "COMPLETE"
+        },
+        {
+          "cache_reused": false,
+          "command": {
+            "basis": "Actual07 archive catalog versus supported source scope, explicit bounded attempt",
+            "idempotency_key": "rv07-actual-lulu-source-scope1",
+            "kind": "RESEARCH",
+            "refresh_sources": true,
+            "retry_rejected": false
+          },
+          "created_at": "2026-10-26T20:00:26.778877+00:00",
+          "error": null,
+          "errors": [
+            "PUBLIC_SOURCE_SCOPE_UNSUPPORTED_FOR_SELECTED_COMPANY"
+          ],
+          "external_notification_enabled": false,
+          "finished_at": "2026-10-26T20:00:26.958004+00:00",
+          "forecast_archive_created": false,
+          "host_owner": {
+            "creation_ticks": 134375183762933081,
+            "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+            "pid": 4376
+          },
+          "instrument": "SZSE:000848",
+          "job_id": "40a8dbac-6415-424e-b8b0-013ed2ad9f26",
+          "namespace": "OBSERVATION_ONLY",
+          "observation_id": "518ca3bf-b790-4ec4-96f0-48e7c4fa036d",
+          "result": [
+            {
+              "check_id": "c26fbe8d-0999-4ca7-8dfd-ac71f541b454",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "scheduled_checkpoint": null,
+          "settings": {
+            "basis": "Actual07 isolated manual acceptance; postclose schedules remain off",
+            "changed_at": "2026-10-26T20:00:25.508674+00:00",
+            "classify": false,
+            "enabled": true,
+            "financial_postclose": false,
+            "instrument": "SZSE:000848",
+            "market_postclose": false,
+            "news_postclose": false,
+            "news_refresh": false,
+            "profile": "legacy",
+            "research_postclose": false,
+            "revision": 2
+          },
+          "started_at": "2026-10-26T20:00:26.862806+00:00",
+          "status": "PARTIAL"
+        }
+      ],
+      "observations": [
+        {
+          "capability": "RESEARCH_LIMITED",
+          "created_at": "2026-10-26T20:00:26.957901+00:00",
+          "errors": [
+            "PUBLIC_SOURCE_SCOPE_UNSUPPORTED_FOR_SELECTED_COMPANY"
+          ],
+          "evidence_kind": "SOURCE_PROVENANCE_UNVERIFIED",
+          "forecast_archive_created": false,
+          "input_sha256": "5b2b4df958ff111ab263583a090db65ef690d071b0bd7f691df5aa6edc048fc9",
+          "instrument": "SZSE:000848",
+          "kind": "RESEARCH",
+          "known_by": "2026-10-26T20:00:26.948822+00:00",
+          "meaningful": false,
+          "observation_id": "518ca3bf-b790-4ec4-96f0-48e7c4fa036d",
+          "payload": {
+            "analysis_input_id": null,
+            "archive_scope": "检查已归档财务/新闻材料的下一批未纳入记录（每类最多20条，非完整历史核查）；未执行公网核查",
+            "check": {
+              "attempt_id": "67961231-e99d-4361-a62b-5901d3ae45f7",
+              "check_id": "c26fbe8d-0999-4ca7-8dfd-ac71f541b454",
+              "company_id": "2fe51dd3-3e8f-4c1a-bfb4-d2af7a50a538",
+              "completed_scopes": [
+                "FINANCIAL_NEXT20_UNIMPORTED",
+                "NEWS_NEXT20_UNIMPORTED"
+              ],
+              "content_sha256": "da21081e4988ac9eb8df2340628e53abf755a4b19f643b628ff8610db447a55a",
+              "created_at": "2026-10-26T20:00:26.899279+00:00",
+              "errors": [],
+              "failed_scopes": [],
+              "finished_at": "2026-10-26T20:00:26.919601+00:00",
+              "host_owner": {
+                "creation_ticks": 134375183762933081,
+                "pid": 4376
+              },
+              "idempotency_key": "40a8dbac-6415-424e-b8b0-013ed2ad9f26",
+              "last_success_at": "2026-10-26T20:00:26.919601+00:00",
+              "last_success_check_id": "c26fbe8d-0999-4ca7-8dfd-ac71f541b454",
+              "material_ids": [],
+              "meaning": "本次已核查范围未取得新证据；不代表经营未变",
+              "new_material_count": 0,
+              "requested_scopes": [
+                "FINANCIAL_NEXT20_UNIMPORTED",
+                "NEWS_NEXT20_UNIMPORTED"
+              ],
+              "retry_state": "NO_AUTOMATIC_RETRY",
+              "schema_version": 1,
+              "source_id": "saved-archive-catalog",
+              "source_receipts": [],
+              "started_at": "2026-10-26T20:00:26.898900+00:00",
+              "status": "SUCCESS"
+            },
+            "company_id": "2fe51dd3-3e8f-4c1a-bfb4-d2af7a50a538",
+            "content_sha256": "51613e1707fc62ed31531105daa3066532fe732e2b7180fb4a25a0db972af4c4",
+            "created_at": "2026-10-26T20:00:26.931799+00:00",
+            "gap": null,
+            "model_executed": false,
+            "network_check_performed": false,
+            "network_receipts": [
+              {
+                "check_id": "c26fbe8d-0999-4ca7-8dfd-ac71f541b454",
+                "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+                "source": "saved-archive-catalog",
+                "status": "SUCCESS"
+              }
+            ],
+            "schema_version": 1,
+            "snapshot_id": null,
+            "status": "SAME_SNAPSHOT"
+          },
+          "receipts": [
+            {
+              "check_id": "c26fbe8d-0999-4ca7-8dfd-ac71f541b454",
+              "refresh": "ARCHIVES_ONLY_NOT_PUBLIC_CHECK",
+              "source": "saved-archive-catalog",
+              "status": "SUCCESS"
+            }
+          ],
+          "semantic_sha256": "5b2b4df958ff111ab263583a090db65ef690d071b0bd7f691df5aa6edc048fc9",
+          "system_usable": false,
+          "version": "observation-worker-v1"
+        }
+      ],
+      "health": {
+        "RESEARCH:SZSE:000848": {
+          "at": "2026-10-26T20:18:11.229658+00:00",
+          "error": [
+            "PUBLIC_SOURCE_SCOPE_UNSUPPORTED_FOR_SELECTED_COMPANY"
+          ],
+          "retry_after": "2026-10-26T20:23:11.229673+00:00"
+        }
+      },
+      "sources": [
+        {
+          "adapter_version": "akshare-1.19.1-news-raw-v1",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-15新增独立新闻来源，按单证券显式启用",
+          "changed_at": "2026-10-26T19:43:35.418309+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": false,
+          "engine": "AKSHARE",
+          "failure_threshold": 3,
+          "group": "NEWS",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "akshare-news-em",
+          "license": "AKShare MIT; Trafilatura Apache-2.0; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "AKShare 东财单股新闻",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Recent search page only; actual SDK pageSize10; no complete history/entity assertion",
+          "upstream": "EASTMONEY",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        },
+        {
+          "adapter_version": "akshare-1.19.1-income-raw-v1",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-15新增利润表来源，按单证券显式启用",
+          "changed_at": "2026-10-26T19:43:35.419113+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": false,
+          "engine": "AKSHARE",
+          "failure_threshold": 3,
+          "group": "FINANCIAL",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "akshare-financial-em",
+          "license": "AKShare 1.19.1 MIT; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "AKShare 东财利润表",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Source-bound statement proof or explicit UNKNOWN; no historical PIT claim",
+          "upstream": "EASTMONEY",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        },
+        {
+          "adapter_version": "ROLL_PROSPECTIVE",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+          "changed_at": "2026-10-26T19:43:35.423804+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": true,
+          "engine": "ROLL",
+          "failure_threshold": 3,
+          "group": "DAILY",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "sohu-daily",
+          "license": "Apache-2.0 code; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "搜狐日线",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+          "upstream": "SOHU",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        },
+        {
+          "adapter_version": "ROLL_PROSPECTIVE",
+          "authentication": "PUBLIC_NO_CREDENTIAL",
+          "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+          "changed_at": "2026-10-26T19:43:35.424626+00:00",
+          "cleaning_version": "prospective-cleaning-v1",
+          "commit": null,
+          "cooldown_seconds": 3600,
+          "enabled": true,
+          "engine": "ROLL",
+          "failure_threshold": 3,
+          "group": "QUOTE",
+          "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+          "id": "sina-quote",
+          "license": "Apache-2.0 code; upstream data rights separate",
+          "max_bytes": 8388608,
+          "max_calls": 8,
+          "name": "新浪报价与状态线索",
+          "qualification": "NOT_GRANTED",
+          "retries": 0,
+          "revision": 1,
+          "scope": [
+            "SSE:600362"
+          ],
+          "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+          "timeout_seconds": 18,
+          "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+          "upstream": "SINA",
+          "health": {
+            "state": "NOT_YET_ACQUIRED",
+            "consecutive_failures": 0
+          }
+        }
+      ],
+      "checkpoint": "Asia/Shanghai 15:05; online current session only",
+      "timeout_seconds": 45,
+      "offline_coverage": {
+        "sessions": [
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375174188650921,
+              "nonce": "11994aa2-a761-4eab-a12a-620aa5a51d77",
+              "pid": 46184
+            },
+            "last_seen_at": "2026-10-26T19:53:02.971748+00:00",
+            "session_id": "4b039fd0-b6c4-4494-b36b-d7f14fbb8be9",
+            "started_at": "2026-10-26T19:43:42.858221+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375179951371468,
+              "nonce": "0b68d624-d6e8-47e2-9608-de808bd0c3c7",
+              "pid": 52076
+            },
+            "last_seen_at": "2026-10-26T19:59:24.577379+00:00",
+            "session_id": "83a89e6b-039f-4378-8771-585df4e3bcf3",
+            "started_at": "2026-10-26T19:53:18.911215+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375183762933081,
+              "nonce": "8fc8d733-d52c-47b6-bfc7-798e4e9756dd",
+              "pid": 4376
+            },
+            "last_seen_at": "2026-10-26T20:17:02.973834+00:00",
+            "session_id": "f2d13ffc-5ec9-45dc-9a83-34890f3d484d",
+            "started_at": "2026-10-26T19:59:39.977499+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375194361711303,
+              "nonce": "4505a604-62fd-49ac-89b6-99936e65a3ff",
+              "pid": 31404
+            },
+            "last_seen_at": "2026-10-26T20:38:02.577656+00:00",
+            "session_id": "48c94dd7-5355-479d-8062-d728533da096",
+            "started_at": "2026-10-26T20:17:20.381713+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375207001251126,
+              "nonce": "be7df498-156c-4f15-8bd4-96d939c6bb1d",
+              "pid": 26048
+            },
+            "last_seen_at": "2026-10-27T16:47:13.950709+00:00",
+            "session_id": "624eee7a-c06a-4198-b8ad-10b78d742c99",
+            "started_at": "2026-10-26T20:38:23.761387+00:00"
+          },
+          {
+            "ended_at": null,
+            "host_owner": {
+              "creation_ticks": 134375938151646080,
+              "nonce": "b2f7dfc8-67d1-428c-9b49-9befe7c76384",
+              "pid": 23368
+            },
+            "last_seen_at": "2026-10-28T00:23:36.353514+00:00",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "started_at": "2026-10-27T16:57:00.110555+00:00"
+          }
+        ],
+        "gaps": [
+          {
+            "end": "2026-10-26T19:53:18.911215+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "4b039fd0-b6c4-4494-b36b-d7f14fbb8be9",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "83a89e6b-039f-4378-8771-585df4e3bcf3",
+            "start": "2026-10-26T19:53:02.971748+00:00"
+          },
+          {
+            "end": "2026-10-26T19:59:39.977499+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "83a89e6b-039f-4378-8771-585df4e3bcf3",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "f2d13ffc-5ec9-45dc-9a83-34890f3d484d",
+            "start": "2026-10-26T19:59:24.577379+00:00"
+          },
+          {
+            "end": "2026-10-26T20:17:20.381713+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "f2d13ffc-5ec9-45dc-9a83-34890f3d484d",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "48c94dd7-5355-479d-8062-d728533da096",
+            "start": "2026-10-26T20:17:02.973834+00:00"
+          },
+          {
+            "end": "2026-10-26T20:38:23.761387+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "48c94dd7-5355-479d-8062-d728533da096",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "624eee7a-c06a-4198-b8ad-10b78d742c99",
+            "start": "2026-10-26T20:38:02.577656+00:00"
+          },
+          {
+            "end": "2026-10-27T16:57:00.110555+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "previous_session_id": "624eee7a-c06a-4198-b8ad-10b78d742c99",
+            "reason": "PROCESS_OR_SLEEP_GAP_UNOBSERVED",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "start": "2026-10-27T16:47:13.950709+00:00"
+          },
+          {
+            "end": "2026-10-27T23:43:21.591546+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "reason": "RUNNING_HEARTBEAT_GAP_UNOBSERVED",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "start": "2026-10-27T17:07:56.650401+00:00"
+          },
+          {
+            "end": "2026-10-28T00:20:24.344822+00:00",
+            "expired_opportunities_sent": false,
+            "forward_predictions_reconstructed": false,
+            "monitoring_fault": false,
+            "reason": "RUNNING_HEARTBEAT_GAP_UNOBSERVED",
+            "session_id": "df6d8818-7208-4a74-8bfd-6e54bca47a60",
+            "start": "2026-10-27T23:43:36.029689+00:00"
+          }
+        ],
+        "promise": "ACTUAL_OBSERVATIONS_ONLY_NO_ALWAYS_ON_REQUIREMENT",
+        "forward_predictions_reconstructed": false,
+        "expired_opportunities_sent": false
+      },
+      "worker": {
+        "worker_limit": 1,
+        "worker_state": "RUNNING",
+        "last_worker_error": null,
+        "worker": {
+          "heartbeat_at": "2026-10-28T00:23:36.353382+00:00",
+          "host_owner": {
+            "creation_ticks": 134375938151646080,
+            "nonce": "b2f7dfc8-67d1-428c-9b49-9befe7c76384",
+            "pid": 23368
+          }
+        },
+        "technical_limits": {
+          "attempts": 3,
+          "backoff_seconds": [
+            1,
+            2
+          ],
+          "timeout_seconds": 8,
+          "http_calls_per_attempt": 8,
+          "recursive_tasks": 0
+        },
+        "backlog": 0,
+        "running": 0
+      },
+      "forecast_backfill": false,
+      "external_notifications": "IN_APP_ONLY_NO_CHANNEL_ACTIVATION"
+    }
+  },
+  "actual_scheduled_records": {
+    "SSE:600362": [],
+    "SZSE:000848": []
+  },
+  "manual_records_not_counted": true,
+  "worker_health_is_not_cycle_evidence": true
+}
