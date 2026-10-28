@@ -49,3 +49,5 @@ Spec: [v1.0](../spec.md) 第11、12节
 2026-10-28真实批次04：人类明确授权后实际2/16次，Lulu估值候选BLOCKED/未生成新估值，JCC经营分析COMPLETE并发布新共享core/真实网页可读；原报告/旧core不变，两次新输出必要隔离恢复通过。章节与纠错均0；自然周期0/2，Completion继续blocked。当前受控升级与来源policy/无auth持续worker恢复正常，精确证据见[authorized04](../evidence/12/authorized04.md)。
 
 2026-10-28 本地资本准备05：仅原FY25年报补字面stock与分类原文，公开新副本49facts/98190B、QUEUED/未执行候选SHA74f156b5...5989；原12材料/51事实/原任务不变，选择遗漏和真实未知均明示。参见[资本准备](../evidence/12/capital-prep05/README.md)。0新增model、预算仍2/16/纠错0，Completion blocked及真实缺口不变。
+
+2026-10-28 纠错06实际执行一次，exact692adaf2...f983/43.6s/gpt-6.1-sol/openai→BLOCKED/null，未进行05/04估值与12章。新增run/raw/wire/输入/任务针对性恢复通过；预算3/16、纠错1/2，Completion blocked及A6/A7/A8不变。见[真实纠错](../evidence/12/correction06/README.md)。

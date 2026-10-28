@@ -1,5 +1,7 @@
 # 12 联合真实验收检查点
 
+最新[真实纠错06](correction06/README.md)：同原件资本子packet+合同1.1（相对05仅contract变化）exact692adaf2...f983已正常经review执行一次，43.6s/gpt-6.1-sol/openai→BLOCKED/null/9候选缺口。没有05/04新估值/审核/child，也未执行章节；真实新run/raw/wire与旧对象经新目录恢复一致。**当前预算3/16、纠错1/2**；05的2/16是执行前历史。12及A6/A7/A8仍blocked，未自动追加纠错。
+
 最新本地[资本准备05](capital-prep05/README.md)：仅同已批准FY25年报字面新增35数字/10原文，公开API新副本冻结49facts/98190B与QUEUED source-only候选预览，exactSHA74f156b5...5989。原12materials逐项same、原51facts/input/c549/9797不变，明确遗漏清单与真实经济分类未知。0新增外发/0纠错，批次仍2/16；未发布估值/章节/PDF，Completion及A6/A7/A8不升级。
 
 2026-10-28 Asia/Shanghai。**Completion: blocked，整体未完成**。本票没有另改生产源码；统一review修复8dd639解决原P1/P3。人类已授权特定14+2批次，最新[authorized04](authorized04.md)记录实际2/16：Lulu exact候选BLOCKED、JCC exact经营分析COMPLETE/新core，Lulu章节与纠错均未执行；旧checkpoint03待授权叙述已被可信授权记录取代。新的经营研究、真实网页、受控升级及必要恢复分账，不用已有05估值复用或新BLOCKED替代A6/A7。
