@@ -1,0 +1,106 @@
+...FF                                                                    [100%]
+================================== FAILURES ===================================
+_ test_report_keeps_unusable_valuation_explicit_and_preserves_source[missing-capex-OPERATING_MODEL_INVALID] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv-fix-negative-green/test_report_keeps_unusable_val2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CD315EACF0>
+mode = 'missing-capex', expected = 'OPERATING_MODEL_INVALID'
+
+    @pytest.mark.parametrize('mode,expected', [('wrong-binding','INPUT_CHANGED'),
+        ('foreign-source','ASSUMPTION_INVALID'), ('missing-capex','OPERATING_MODEL_INVALID'),
+        ('unavailable','BLOCKED')])
+    def test_report_keeps_unusable_valuation_explicit_and_preserves_source(tmp_path, monkeypatch, mode, expected):
+        from roll.research.company.reports import ReportCommand
+        research = service(tmp_path / 'data')
+        candidate, source = operating_request(research)
+        payload = candidate.model_dump(exclude={'snapshot_id', 'idempotency_key', 'parent_version_id'})
+        payload['config']['metadata']['as_of'] = source['as_of']
+        payload['economic_basis']['wacc']['as_of'] = source['as_of'][:10]
+        payload['drivers']['scenarios'].append(dict(payload['drivers']['scenarios'][0], name='stress'))
+        for path, value in list(payload['drivers']['provenance'].items()):
+            if path.startswith('scenarios/0/'):
+                payload['drivers']['provenance'][path.replace('scenarios/0/', 'scenarios/1/')] = value
+        if mode == 'foreign-source':
+            payload['assumptions'][0]['anchor_fact_version_ids'] = ['other-company-fact']
+        if mode == 'missing-capex':
+            payload['drivers']['scenarios'][0]['years'][0].pop('maintenance_capex')
+        fixture = tmp_path / 'response.json'
+        fixture.write_text(json.dumps(dict(snapshot_id='other-snapshot' if mode == 'wrong-binding' else source['snapshot_id'],
+            input_sha256=source['content_sha256'], command_json=None if mode == 'unavailable' else json.dumps(payload),
+            gaps=['Missing sourced investment/capital/discount assumptions'] if mode == 'unavailable' else [])), encoding='utf-8')
+        worker = tmp_path / 'negative-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline())
+    print(json.dumps(dict(kind='thread',model=c['model'],provider='METHOD',thread_id='method',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=open(%r,encoding='utf-8').read())),flush=True)
+    ''' % str(fixture), encoding='utf-8')
+        auth = tmp_path / 'method-auth.json'
+        auth.write_text(json.dumps(dict(auth_mode='chatgpt', tokens=dict(access_token='METHOD_ONLY'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE', str(auth))
+        research.reports.worker = worker
+        job = research.reports.start(ReportCommand(company_id=source['company_id'], snapshot_id=source['snapshot_id'],
+            as_of=source['as_of'], source_mode='REUSE', idempotency_key=mode))
+        preview = research.reports.valuation_preview(job['job_id'])
+        assert preview['model_calls'] == preview['network_calls'] == 0
+        assert json.loads(preview['command']['prompt'])['valuation_purpose'] == 'CURRENT_PRICING'
+        for _ in range(4):
+            job = research.reports.advance(job['job_id'])
+        result = job['valuation_build']
+>       assert result['status'] in {'FAILED', 'BLOCKED'} and expected in result['gaps']
+E       AssertionError: assert ('FAILED' in {'BLOCKED', 'FAILED'} and 'OPERATING_MODEL_INVALID' in ['PROVENANCE_REQUIRED'])
+
+backend\tests\company_research\test_report_valuation.py:159: AssertionError
+_ test_report_keeps_unusable_valuation_explicit_and_preserves_source[unavailable-BLOCKED] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv-fix-negative-green/test_report_keeps_unusable_val3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CD315EA9C0>
+mode = 'unavailable', expected = 'BLOCKED'
+
+    @pytest.mark.parametrize('mode,expected', [('wrong-binding','INPUT_CHANGED'),
+        ('foreign-source','ASSUMPTION_INVALID'), ('missing-capex','OPERATING_MODEL_INVALID'),
+        ('unavailable','BLOCKED')])
+    def test_report_keeps_unusable_valuation_explicit_and_preserves_source(tmp_path, monkeypatch, mode, expected):
+        from roll.research.company.reports import ReportCommand
+        research = service(tmp_path / 'data')
+        candidate, source = operating_request(research)
+        payload = candidate.model_dump(exclude={'snapshot_id', 'idempotency_key', 'parent_version_id'})
+        payload['config']['metadata']['as_of'] = source['as_of']
+        payload['economic_basis']['wacc']['as_of'] = source['as_of'][:10]
+        payload['drivers']['scenarios'].append(dict(payload['drivers']['scenarios'][0], name='stress'))
+        for path, value in list(payload['drivers']['provenance'].items()):
+            if path.startswith('scenarios/0/'):
+                payload['drivers']['provenance'][path.replace('scenarios/0/', 'scenarios/1/')] = value
+        if mode == 'foreign-source':
+            payload['assumptions'][0]['anchor_fact_version_ids'] = ['other-company-fact']
+        if mode == 'missing-capex':
+            payload['drivers']['scenarios'][0]['years'][0].pop('maintenance_capex')
+        fixture = tmp_path / 'response.json'
+        fixture.write_text(json.dumps(dict(snapshot_id='other-snapshot' if mode == 'wrong-binding' else source['snapshot_id'],
+            input_sha256=source['content_sha256'], command_json=None if mode == 'unavailable' else json.dumps(payload),
+            gaps=['Missing sourced investment/capital/discount assumptions'] if mode == 'unavailable' else [])), encoding='utf-8')
+        worker = tmp_path / 'negative-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline())
+    print(json.dumps(dict(kind='thread',model=c['model'],provider='METHOD',thread_id='method',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=open(%r,encoding='utf-8').read())),flush=True)
+    ''' % str(fixture), encoding='utf-8')
+        auth = tmp_path / 'method-auth.json'
+        auth.write_text(json.dumps(dict(auth_mode='chatgpt', tokens=dict(access_token='METHOD_ONLY'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE', str(auth))
+        research.reports.worker = worker
+        job = research.reports.start(ReportCommand(company_id=source['company_id'], snapshot_id=source['snapshot_id'],
+            as_of=source['as_of'], source_mode='REUSE', idempotency_key=mode))
+        preview = research.reports.valuation_preview(job['job_id'])
+        assert preview['model_calls'] == preview['network_calls'] == 0
+        assert json.loads(preview['command']['prompt'])['valuation_purpose'] == 'CURRENT_PRICING'
+        for _ in range(4):
+            job = research.reports.advance(job['job_id'])
+        result = job['valuation_build']
+>       assert result['status'] in {'FAILED', 'BLOCKED'} and expected in result['gaps']
+E       AssertionError: assert ('BLOCKED' in {'BLOCKED', 'FAILED'} and 'BLOCKED' in ['Missing sourced investment/capital/discount assumptions'])
+
+backend\tests\company_research\test_report_valuation.py:159: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_valuation.py::test_report_keeps_unusable_valuation_explicit_and_preserves_source[missing-capex-OPERATING_MODEL_INVALID]
+FAILED backend\tests\company_research\test_report_valuation.py::test_report_keeps_unusable_valuation_explicit_and_preserves_source[unavailable-BLOCKED]
+2 failed, 3 passed in 78.44s (0:01:18)

@@ -190,6 +190,7 @@ print(json.dumps(dict(kind='completed',status='completed',output=json.dumps(v),e
         client.app.state.financial_statements.worker=statements
         research.reports.collectors=[research.reports.collectors[1]]
         research.analysis_worker=worker
+        research.reports.worker=worker  # Every model phase in this METHOD flow uses the local fake worker.
         response=client.post('/api/company-research/reports',json=dict(company_id=issuer['company_id'],as_of='2026-10-26T00:00:00+00:00',source_mode='REFRESH',idempotency_key='new-source'))
         assert response.status_code==201,response.text
         job=response.json()

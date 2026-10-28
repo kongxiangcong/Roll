@@ -100,6 +100,10 @@ def router(research):
     def chapter_preview(job_id:str,section_id:str):
         return research.reports.chapter_preview(job_id,section_id)
 
+    @routes.get('/jobs/{job_id}/valuation/preview')
+    def valuation_preview(job_id: str):
+        return research.reports.valuation_preview(job_id)
+
     @routes.post('/jobs/{job_id}/cancel')
     def cancel_report(job_id:str):
         return research.reports.cancel(job_id)

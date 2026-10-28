@@ -250,6 +250,23 @@ class ReportState:
         return dict(job_id=job_id,input_id=packet['input_id'],input_sha256=packet['packet_sha256'],section_id=section_id,
             command_sha256=hashlib.sha256(encode(command).encode()).hexdigest(),command=command,network_calls=0,model_calls=0)
 
+    def valuation_preview(self, job_id):
+        from .report_valuation import ReportValuationRuntime
+        job = self.get(job_id)
+        run_id = job.get('valuation_build', {}).get('run_id')
+        if run_id:
+            run = self.research.analysis_run(run_id)
+            command = json.loads(self.research.evidence.raw(run['command_archive']['sha256']).read_bytes())
+            if fingerprint(command) != run['command_sha256']:
+                fail('ARTIFACT_CORRUPT', 'Archived valuation command differs from its execution binding', 409)
+            return dict(job_id=job_id, snapshot_id=run['source_snapshot_id'], run_id=run_id,
+                        command=command, command_sha256=run['command_sha256'], model_calls=0, network_calls=0)
+        if not job['snapshot_id']:
+            fail('REPORT_INPUT_NOT_FROZEN', 'Valuation preview requires an accepted shared snapshot', 409)
+        command = ReportValuationRuntime(self).command(job)
+        return dict(job_id=job_id, snapshot_id=job['snapshot_id'], command=command,
+                    command_sha256=fingerprint(command), model_calls=0, network_calls=0)
+
     def freeze(self, job):
         from .report_template import ROOT, template_bundle, source_reference, code_hashes, table, valuation_summary, cell
         import re
@@ -510,6 +527,14 @@ class ReportState:
                 receipts.append(record(dict(index=index,result=result,archive=archive)))
                 if len(receipts)==len(job['risk_workpaper']):job['stage']='VALUATION'
             elif stage=='VALUATION':
+                from .report_valuation import ReportValuationRuntime
+                result = ReportValuationRuntime(self).execute_report(job, cancel)
+                job['valuation_build'] = result
+                if result.get('snapshot_id'):
+                    job['snapshot_id'] = result['snapshot_id']
+                if result.get('gaps'):
+                    job.setdefault('source_gaps', []).extend(result['gaps'])
+                    job['errors'].append(dict(stage='VALUATION', code=result['status'], gaps=result['gaps']))
                 packet = self.freeze(job)
                 job.update(input_id=packet['input_id'], stage='CHAPTERS')
             elif stage=='CHAPTERS':

@@ -33,6 +33,7 @@ APPENDICES = {'A': '沿革与资本事件', 'B': '股权与治理', 'C': '产能
     'E': '可比公司', 'F': '图表索引', 'G': '关键数字与原件', 'H': '术语与首次解释', 'I': '免责声明',
     'J': '估值输入、模型与审核', 'K': '版本与任务引用索引'}
 RUNTIME_FILES=['research/company/report_summary.py','research/company/report_coverage.py','research/company/report_revisions.py','research/company/report_values.py','research/company/reports.py','research/company/report_runtime.py','research/company/report_template.py',
+    'research/company/report_valuation.py','agents/company_valuation_runtime.py','research/company/valuation_candidate_contract.md',
     'research/company/report_quality.py','research/company/report_sources.py','research/company/report_data.py',
     'research/company/report_quotes.py','research/company/report_quote_worker.py','agents/company_report_runtime.py',
     'research/company/report_workpapers.py',

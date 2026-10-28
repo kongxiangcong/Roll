@@ -107,3 +107,11 @@ def validate_analysis(db, archives, materials, facts, companies):
         if run.get('snapshot_id'):
             snapshot = snapshots.get(run['snapshot_id'])
             require(snapshot and snapshot['input_id'] == run['input_id'] and snapshot['company_id'] == run['company_id'])
+        if run.get('task_kind') == 'COMPANY_OPERATING_VALUATION':
+            source = snapshots.get(run['source_snapshot_id'])
+            require(source and source['input_id'] == run['input_id'] and source['content_sha256'] == run['input_sha256'])
+            archive(run['command_archive'])
+            require(run['command_archive']['sha256'] == run['command_sha256'])
+            require(run['execution_code_hashes'] == {name: value['sha256'] for name, value in run['execution_sources'].items()})
+            for value in run['execution_sources'].values():
+                archive(value)

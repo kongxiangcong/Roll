@@ -2,7 +2,7 @@
 import {chromium} from '@playwright/test';
 import {mkdir} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
-const out=fileURLToPath(new URL('../../.scratch/roll-research-valuation/evidence/10/',import.meta.url));
+const out=process.env.ROLL_REPORT_CHECK_OUT??fileURLToPath(new URL('../../.scratch/roll-research-valuation/evidence/10/',import.meta.url));
 await mkdir(out,{recursive:true});
 const browser=await chromium.launch({channel:'chrome'});
 const page=await browser.newPage({viewport:{width:1365,height:900}});
@@ -12,6 +12,7 @@ const companies=[{company_id:'a',legal_name:'METHOD甲公司',identity_basis:'ME
 const report={report_id:'method-report-b',company_id:'b',job_id:'method-job-published',snapshot_id:'method-snapshot-b',core_sha256:'b'.repeat(64),generated_at:'2026-10-26T08:05:00Z',request_cutoff:'2026-10-26T08:00:00Z',completeness:'PARTIAL',quality:{rules:[{rule_id:'method-missing',outcome:'FAIL',reason:'METHOD同行资料缺口'}]}};
 let delivery={delivery_id:'method-delivery-b',report_id:report.report_id,status:'PDF_FAILED',render_error:{code:'PDF_FONT_UNAVAILABLE',detail:'METHOD字体缺失',retryable:true},artifacts:{markdown:{sha256:'m'}}};
 let job={job_id:'method-job-b',company_id:'b',status:'QUEUED',stage:'ACQUISITION',section_ids:[],errors:[],snapshot_id:null,report_id:null};
+const submitted=[];
 await page.route('**/api/**',route=>{
  const p=new URL(route.request().url()).pathname;
  if(p==='/api/account')return route.fulfill({json:{version:0,positions:[],permission_profile:[],cash_balance:null}});
@@ -21,7 +22,7 @@ await page.route('**/api/**',route=>{
  if(p==='/api/assistance/runs')return route.fulfill({json:[]});
  if(p==='/api/company-research/resolve')return route.fulfill({json:route.request().postDataJSON().query==='NO_SUCH'?{status:'NOT_FOUND'}:{status:'AMBIGUOUS',candidates:companies}});
  if(p==='/api/company-research/companies/b')return route.fulfill({json:companies[1]});
- if(p==='/api/company-research/reports'&&route.request().method()==='POST')return route.fulfill(route.request().postDataJSON().source_mode==='REFRESH'?{status:503,json:{detail:'SOURCE_NOT_CONFIGURED: METHOD无来源'}}:{json:job});
+ if(p==='/api/company-research/reports'&&route.request().method()==='POST'){submitted.push(route.request().postDataJSON());return route.fulfill(route.request().postDataJSON().source_mode==='REFRESH'?{status:503,json:{detail:'SOURCE_NOT_CONFIGURED: METHOD无来源'}}:{json:job});}
  if(p==='/api/company-research/jobs/method-job-b/cancel'){job={...job,status:'CANCELLED'};return route.fulfill({json:job});}
  if(p==='/api/company-research/jobs/method-job-b/retry'){job={...job,status:'QUEUED'};return route.fulfill({json:job});}
  if(p==='/api/company-research/jobs/method-job-b')return route.fulfill({json:job});
@@ -46,13 +47,17 @@ try{
  await page.getByRole('combobox',{name:'资料策略',exact:true}).selectOption('REFRESH');
  await page.getByRole('button',{name:'启动新报告任务',exact:true}).click();
  await page.getByRole('alert').filter({hasText:'SOURCE_NOT_CONFIGURED'}).waitFor();
+ if(submitted.at(-1).valuation_purpose!=='CURRENT_PRICING')throw Error('Default valuation purpose changed');
  await page.getByRole('combobox',{name:'资料策略',exact:true}).selectOption('REUSE');
  await page.getByLabel('报告截至时间',{exact:true}).fill('2099-01-01T12:00');
  await page.getByRole('button',{name:'启动新报告任务',exact:true}).click();
  await page.getByRole('alert').filter({hasText:'不能晚于当前时间'}).waitFor();
  await page.getByLabel('报告截至时间',{exact:true}).fill('2026-10-26T12:00');
+ await page.getByRole('combobox',{name:'估值研究用途',exact:true}).selectOption('BASELINE_RESEARCH');
+ await page.getByText('仅研究固定财务基准的条件价值；当前取得旧资料，非历史PIT，也不表示当前可用价格。',{exact:true}).waitFor();
  await page.getByRole('button',{name:'启动新报告任务',exact:true}).click();
  await page.getByText('任务状态：QUEUED',{exact:false}).waitFor();
+ if(submitted.at(-1).valuation_purpose!=='BASELINE_RESEARCH')throw Error('Explicit baseline purpose lost');
  await page.getByRole('heading',{name:'METHOD完整结构预览',exact:true}).waitFor();
  await page.getByText('资料缺口与质量检查（1 项未通过或未知）',{exact:true}).click();
  await page.getByText('METHOD同行资料缺口',{exact:false}).waitFor();

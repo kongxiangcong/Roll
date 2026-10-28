@@ -1,7 +1,7 @@
 // Synthetic public webpage flow. No fixtures are presented as real research.
 import {chromium} from '@playwright/test';
 import {mkdir} from 'node:fs/promises';
-const out='../.scratch/roll-research-valuation/evidence/07';
+const out=process.env.ROLL_DAILY_CHECK_OUT??'../.scratch/roll-research-valuation/evidence/07';
 await mkdir(out,{recursive:true});
 const browser=await chromium.launch({channel:'chrome'});
 const page=await browser.newPage({viewport:{width:1440,height:1000}});

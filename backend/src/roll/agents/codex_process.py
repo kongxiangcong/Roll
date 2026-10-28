@@ -191,6 +191,8 @@ def execute(host, run, request, cancel, auth):
         from roll.agents.company_analysis_runtime import command as task_command,tool as task_tool,publish as task_publish
     elif run.get('task_kind')=='COMPANY_REPORT_CHAPTER':
         from roll.agents.company_report_runtime import command as task_command,tool as task_tool,publish as task_publish
+    elif run.get('task_kind')=='COMPANY_OPERATING_VALUATION':
+        from roll.agents.company_valuation_runtime import command as task_command,tool as task_tool,publish as task_publish
     elif run.get('task_kind')=='TECHNICAL_REVIEW':
         from roll.agents.review_runtime import command as task_command,tool as task_tool,publish as task_publish
     elif run.get('task_kind') is None:task_command,task_tool,task_publish=command,tool,publish
