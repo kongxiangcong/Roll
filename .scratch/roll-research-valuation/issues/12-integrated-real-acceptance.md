@@ -1,7 +1,7 @@
 # 12 完成双工作流真实联合验收与交接
 
 Status: ready-for-agent
-Completion: not-started
+Completion: blocked
 Depends on: 11
 Spec: [v1.0](../spec.md) 第11、12节
 
@@ -43,3 +43,5 @@ Spec: [v1.0](../spec.md) 第11、12节
 
 2026-10-26：依据已确认需求创建，尚未实施。
 
+
+2026-10-28：实际联合检查点见[12证据](../evidence/12/README.md)、[A1–A10覆盖](../evidence/12/coverage.md)及[具体差距](../evidence/12/readiness.md)。已完成官方新资料取得、当前HTTP/真实网页新任务、无auth边界、重启与新目录恢复；11项METHOD通过，不当真实完整链。A6/A7真实完整链与A8两自然周期尚未通过，Completion保持blocked；最终review自动估值编排缺口由单独fix处理，修复合入后继续必要真实验收，不关闭本票。

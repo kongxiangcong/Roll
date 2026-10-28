@@ -3,11 +3,11 @@
 Status: ready-for-agent
 Version: 1.0
 Date: 2026-10-26
-Implementation: in-progress (01–11 complete; 12 next)
+Implementation: in-progress (01–11 complete; 12 blocked on incomplete real A6/A7/A8 acceptance)
 
 09阶段交付记录（当前状态以顶部Implementation和执行索引为准）：09仅完成固定报告文件交付层：真实PARTIAL报告45页PDF、受控下载、不可变版本及隔离恢复，证据见evidence/09/README.md。既有资料/用途缺口保留；完整浏览器A7及A6/A8等联合验收仍未完成，功能整体in-progress。下文早期实施叙述的下一票以此行和执行索引为准。
 
-当前实施进展：01–11完成，12为下一票。10完成独立报告网页、明确身份/时点、任务控制、预览下载及共享只读跟踪；11交付固定来源/实际可得时间的只读研究特征、缺失mask、原实验补充协议与INCONCLUSIVE覆盖诊断，真实导出/保护边界/隔离恢复及11项定向回归通过，没有拟合、概率/账户/旧预算/SEALED改变。真实报告仍PARTIAL、CURRENT_PRICING blocked，12联合验收与两实际盘后周期尚未完成；详见evidence/10/README.md及evidence/11/README.md。
+当前实施进展：01–11完成；12已实际实施联合检查点，A6/A7完整真实链及A8两自然周期仍未通过，Completion: blocked。官方新增材料、真实网页无auth新PARTIAL任务、重启与新目录恢复见evidence/12/README.md；最终review自动估值编排缺口另行修复后继续验证。10完成独立报告网页、明确身份/时点、任务控制、预览下载及共享只读跟踪；11交付固定来源/实际可得时间的只读研究特征、缺失mask、原实验补充协议与INCONCLUSIVE覆盖诊断，真实导出/保护边界/隔离恢复及11项定向回归通过，没有拟合、概率/账户/旧预算/SEALED改变。真实报告仍PARTIAL、CURRENT_PRICING blocked，12联合验收与两实际盘后周期尚未完成；详见evidence/10/README.md及evidence/11/README.md。
 
 ## 1. 目标与依据
 

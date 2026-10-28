@@ -79,3 +79,7 @@
 - Damodaran 增长教学页：https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/growth.htm 。增长、再投资与资本回报的一致性；只读原文，不能代替公司现金流拆分。
 - Campbell/Giglio/Polk，What Drives Booms and Busts in Value?，NBER Working Paper 31859（2023）：https://www.nber.org/papers/w31859 。检索摘要讨论现金流、折现率及波动消息；正文访问403，未复现，不作A股迁移证据。
 - Microsoft Qlib，main 文档：https://github.com/microsoft/qlib/blob/main/docs/component/data.rst 。只读当前文档，未固定提交或运行；可借鉴量化数据/实验组织，不建议整体迁移，也不补足Roll历史可得性与校准证据。
+
+## 2026-10-28 联合验收检查点
+
+01–11已实现；12新增官方来源取得/核查、当前API/真实网页新任务、固定core与旧版本不可变、实际重启和隔离恢复。无auth新任务的12个UNAVAILABLE不是12个真实生成章节；原报告及新报告均PARTIAL，当前估值仍blocked。具体[覆盖矩阵](../../../.scratch/roll-research-valuation/evidence/12/coverage.md)与[输入/编排差距](../../../.scratch/roll-research-valuation/evidence/12/readiness.md)保留A6/A7/A8 NOT_PASSED。自然周期当前0/2，已隔离接入原research盘后worker，不改时钟/不补造/不新建平台automation。最终review的自动估值编排缺失由单一fix实施者修复后继续真实验收；不宣称功能完成或概率提升。
