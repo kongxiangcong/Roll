@@ -17,7 +17,7 @@
 | 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | complete |
 | 10 | [交付独立公司研报入口及共享联动](10-report-workflow-ui.md) | 09 | complete |
 | 11 | [提供研究特征快照与增量验证协议](11-probability-research-interface.md) | 10 | complete |
-| 12 | [完成双工作流真实联合验收与交接](12-integrated-real-acceptance.md) | 11 | not-started |
+| 12 | [完成双工作流真实联合验收与交接](12-integrated-real-acceptance.md) | 11 | blocked |
 
 ## 执行规则
 
@@ -47,3 +47,5 @@
 10已完成独立公司页面、任务控制、安全预览/下载/历史与固定快照只读联动，真实复用及新任务控制分账见[10证据](../evidence/10/README.md)。11为下一票，整体未完成。
 
 11已交付只读研究特征与原实验补充协议，真实缺失/blocked隔离、迟到与同季去重、保护对象及隔离恢复通过，见[11证据](../evidence/11/README.md)。0成熟样本和未绑定baseline保持DRAFT_UNBOUND/INCONCLUSIVE，没有拟合或改变原概率/旧预算/账户/SEALED。当前进入12，不据本票宣称完整正向链或实际盘后周期完成。
+
+12已实施实际联合验收检查点但未完成，见[覆盖矩阵](../evidence/12/coverage.md)。新增官方半年报/真实网页无auth任务/原文件下载/重启与隔离恢复均留真实证据；新PARTIAL不代替完整CODEX链，A6/A7/A8仍NOT_PASSED、当前自然周期0/2。最终review自动估值编排修复并入后继续按同合同验收，整体未关闭。

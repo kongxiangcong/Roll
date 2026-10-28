@@ -1,0 +1,1779 @@
+{
+  "review": {
+    "applicability": "CONDITIONAL",
+    "archive": {
+      "bytes": 72757,
+      "kind": "COMPANY_ECONOMIC_REVIEWS",
+      "path": "raw/fec3c177e78f41e52383864ae3cc3497bfef18859b7fa7b44a88e1133799939a.raw",
+      "sha256": "fec3c177e78f41e52383864ae3cc3497bfef18859b7fa7b44a88e1133799939a"
+    },
+    "authority": "HOST_DETERMINISTIC_CHECKS",
+    "checks": [
+      {
+        "check_id": "assumption/config/equity_bridge/1/amount",
+        "fact_version_ids": [
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+          "8385dee3-e572-4e09-8860-26e69108baa8",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546"
+        ],
+        "limitations": [
+          "Quarter operating-expense proxy includes noncash costs; reserve adequacy and counterparty recovery not independently appraised"
+        ],
+        "missing_path": "Conditional use requires: Quarter operating-expense proxy includes noncash costs; reserve adequacy and counterparty recovery not independently appraised",
+        "reason": "Collectible cash4032137003.56 minus reserve(3173554539.83-802208126.13)/4=592836603.425; excess cash=3439300400.135. Finance income excluded from EBIT.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/config/wacc",
+        "fact_version_ids": [
+          "8c09dc5c-e6aa-4481-a285-81310a53f312",
+          "bfc29237-e59c-4d35-85dc-13aef3f7db0e",
+          "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb"
+        ],
+        "limitations": [
+          "Industry/country/rounded-capital proxies; see each constituent audit"
+        ],
+        "missing_path": "Conditional use requires: Industry/country/rounded-capital proxies; see each constituent audit",
+        "reason": "WACC=(RF+relevered beta*China totalERP)*wE + historical debt cost*(1-tax)*wD = 0.04603798052754006; no duplicate country premium.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/config/terminal_g",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Flat volume, price and mix must hold; optional expansion benefits excluded"
+        ],
+        "missing_path": "Conditional use requires: Flat volume, price and mix must hold; optional expansion benefits excluded",
+        "reason": "Zero nominal steady growth is a conservative no-expansion scenario, not extrapolation of2025 CFO release or a statement of actual future demand.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/base_revenue",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Model uses full consolidated revenue, not group profit divided by partial product tonnage"
+        ],
+        "missing_path": "Conditional use requires: Model uses full consolidated revenue, not group profit divided by partial product tonnage",
+        "reason": "Base revenue equals actual2025 consolidated revenue without scale conversion; flat fixed mix links volume/price growth to whole-group revenue.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/0/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/1/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/2/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/3/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/0/years/4/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/terminal/roic/baseline",
+        "fact_version_ids": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Steady capital-turnover and retained operating-cash reserve are assumptions; ROIC not independent validation"
+        ],
+        "missing_path": "Conditional use requires: Steady capital-turnover and retained operating-cash reserve are assumptions; ROIC not independent validation",
+        "reason": "Endogenous steady NOPAT/normalized capital proxy=0.7783414317101471; capital=parent equity+bridge obligations-excess cash, no growth net reinvestment required.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/base_revenue",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Model uses full consolidated revenue, not group profit divided by partial product tonnage"
+        ],
+        "missing_path": "Conditional use requires: Model uses full consolidated revenue, not group profit divided by partial product tonnage",
+        "reason": "Base revenue equals actual2025 consolidated revenue without scale conversion; flat fixed mix links volume/price growth to whole-group revenue.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/0/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/1/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/2/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/3/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/operating_margin",
+        "fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ],
+        "missing_path": "Conditional use requires: Core-profit definition, benchmark and stress are research choices; recurring impairments may differ",
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ],
+        "missing_path": "Conditional use requires: No tax-loss refund credited; future tax policy and deductions may differ",
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/depreciation",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ],
+        "missing_path": "Conditional use requires: Not a projection of future expansion commissioning or accelerated depreciation",
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/maintenance_capex",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ],
+        "missing_path": "Conditional use requires: Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once",
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/growth_capex",
+        "fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ],
+        "missing_path": "Conditional use requires: No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending",
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/delta_working_capital",
+        "fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ],
+        "missing_path": "Conditional use requires: Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation",
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/invested_capital",
+        "fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ],
+        "missing_path": "Conditional use requires: Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only",
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/revenue_driver/volume_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ],
+        "missing_path": "Conditional use requires: Scenario assumption, not a reported physical group volume series",
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/scenarios/1/years/4/revenue_driver/price_growth",
+        "fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ],
+        "missing_path": "Conditional use requires: Price/mix and seasonality may change; no retail per-can price claim",
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/terminal/roic/margin-stress",
+        "fact_version_ids": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "limitations": [
+          "Steady capital-turnover and retained operating-cash reserve are assumptions; ROIC not independent validation"
+        ],
+        "missing_path": "Conditional use requires: Steady capital-turnover and retained operating-cash reserve are assumptions; ROIC not independent validation",
+        "reason": "Endogenous steady NOPAT/normalized capital proxy=0.6805524324274052; capital=parent equity+bridge obligations-excess cash, no growth net reinvestment required.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/wacc/risk_free",
+        "fact_version_ids": [
+          "8c09dc5c-e6aa-4481-a285-81310a53f312"
+        ],
+        "limitations": [
+          "Government benchmark is a proxy; other defaultfree conventions change discount rate"
+        ],
+        "missing_path": "Conditional use requires: Government benchmark is a proxy; other defaultfree conventions change discount rate",
+        "reason": "Use dated2025-12-31 CNY10Y government yield1.8473% as riskfree benchmark proxy; no additional default-spread subtraction under this convention.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/wacc/beta",
+        "fact_version_ids": [
+          "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+          "64209081-038d-4324-8b8d-2066a023607e",
+          "ff7650e5-c879-45a5-967c-bcdac4dedd87"
+        ],
+        "limitations": [
+          "Jan2026 global94-firm industry proxy is not a measured000848 equity beta; marketE rounded and bookD proxies market debt"
+        ],
+        "missing_path": "Conditional use requires: Jan2026 global94-firm industry proxy is not a measured000848 equity beta; marketE rounded and bookD proxies market debt",
+        "reason": "Cash-corrected unlevered global soft-beverage beta0.54 * (1+(1-25%)*592328455.05/8670000000) = 0.5676693222947232; industry business-risk proxy relevered using issuer debt/equity proxy.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/wacc/equity_risk_premium",
+        "fact_version_ids": [
+          "bfc29237-e59c-4d35-85dc-13aef3f7db0e"
+        ],
+        "limitations": [
+          "After-anchor public source, current acquisition, not2025 historical PIT; country exposure scaling is a simplifying convention"
+        ],
+        "missing_path": "Conditional use requires: After-anchor public source, current acquisition, not2025 historical PIT; country exposure scaling is a simplifying convention",
+        "reason": "Author Jan5 2026 China rating-based totalERP5.14%=mature4.23%+country0.91%; use total once with beta-scaled common country exposure.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/wacc/cost_of_debt",
+        "fact_version_ids": [
+          "27b316af-9845-46b1-b579-781f5c9fa1f6"
+        ],
+        "limitations": [
+          "Proxy for forward debt cost, not a current quote or duration-matched bond yield"
+        ],
+        "missing_path": "Conditional use requires: Proxy for forward debt cost, not a current quote or duration-matched bond yield",
+        "reason": "Use disclosed2025 guaranteed-loan2.99% as conservative upper historical borrowing-cost proxy; credit-loan range2.44%-2.88%.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/wacc/equity_weight",
+        "fact_version_ids": [
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+          "64209081-038d-4324-8b8d-2066a023607e",
+          "ff7650e5-c879-45a5-967c-bcdac4dedd87"
+        ],
+        "limitations": [
+          "Rounded marketE and book interestD approximation; not arbitrary target weights"
+        ],
+        "missing_path": "Conditional use requires: Rounded marketE and book interestD approximation; not arbitrary target weights",
+        "reason": "E/(D+E)=8670000000/(592328455.05+8670000000)=0.9360497246535183; excludes repurchase and capital AP from interest-bearing WACC D.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/wacc/debt_weight",
+        "fact_version_ids": [
+          "64209081-038d-4324-8b8d-2066a023607e",
+          "ff7650e5-c879-45a5-967c-bcdac4dedd87",
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb"
+        ],
+        "limitations": [
+          "BookD proxies nontraded market debt; repurchase/capital AP only in bridge"
+        ],
+        "missing_path": "Conditional use requires: BookD proxies nontraded market debt; repurchase/capital AP only in bridge",
+        "reason": "D/(D+E)=592328455.05/(592328455.05+8670000000)=0.0639502753464817; only bank+capitalized-lease debt receives shield.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "assumption/drivers/basis/wacc/tax_rate",
+        "fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "limitations": [
+          "No automatic tax refund on losses; future shield usability is conditional"
+        ],
+        "missing_path": "Conditional use requires: No automatic tax refund on losses; future shield usability is conditional",
+        "reason": "Disclosed statutory25% rate applied to positive operating profit and assumed usable interest tax shield; current cash tax need not equal this accrual proxy.",
+        "status": "CONDITIONAL"
+      },
+      {
+        "check_id": "temporal_basis",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Financial baseline and declared bridge dates must match the frozen revenue/shares/bridge numeric-provenance periods",
+        "status": "PASS"
+      },
+      {
+        "check_id": "applicability",
+        "fact_version_ids": [
+          "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4"
+        ],
+        "missing_path": null,
+        "reason": "Manufacturing beverage subsidiaries; related finance-company deposits are counterparties, not consolidated financial operations",
+        "status": "PASS"
+      },
+      {
+        "check_id": "evidence_references",
+        "fact_version_ids": [
+          "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4"
+        ],
+        "missing_path": null,
+        "reason": "Applicability must cite frozen evidence",
+        "status": "PASS"
+      },
+      {
+        "check_id": "wacc_evidence",
+        "fact_version_ids": [
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "8c09dc5c-e6aa-4481-a285-81310a53f312",
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+          "27b316af-9845-46b1-b579-781f5c9fa1f6"
+        ],
+        "missing_path": null,
+        "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+        "status": "PASS"
+      },
+      {
+        "check_id": "terminal_evidence",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "missing_path": null,
+        "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+        "status": "PASS"
+      },
+      {
+        "check_id": "bridge_evidence",
+        "fact_version_ids": [
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "e928d6b0-c483-4801-a8d9-e6c06bbb010f",
+          "b03f71e4-228a-4bbf-9cf3-5579b879de54"
+        ],
+        "missing_path": null,
+        "reason": "Economic basis uses frozen evidence and explicit forecast assumptions",
+        "status": "PASS"
+      },
+      {
+        "check_id": "wacc_source_values",
+        "fact_version_ids": [
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "8c09dc5c-e6aa-4481-a285-81310a53f312",
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+          "27b316af-9845-46b1-b579-781f5c9fa1f6"
+        ],
+        "missing_path": null,
+        "reason": "Riskfree and any debt/tax-shield rate require matching dated numeric source facts; beta/ERP/target weights remain explicit assumptions",
+        "status": "PASS"
+      },
+      {
+        "check_id": "wacc_construction",
+        "fact_version_ids": [
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "8c09dc5c-e6aa-4481-a285-81310a53f312",
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+          "27b316af-9845-46b1-b579-781f5c9fa1f6"
+        ],
+        "missing_path": null,
+        "reason": "WACC = (risk_free + beta * ERP) * equity_weight + pretax_debt_cost * (1-tax) * debt_weight",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/0/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/1/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/1/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/2/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/2/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/3/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/3/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/4/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/4/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "baseline/terminal_reinvestment",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "missing_path": null,
+        "reason": "Final steady reinvestment/NOPAT = g/ROIC; terminal FCFF grows from an after-reinvestment base",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/0/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/1/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/1/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/2/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/2/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/3/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/3/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/4/growth_reinvestment",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "v1 stable capital turnover: year-end reinvestment funds next-year opening capital and revenue; first year uses unchanged baseline scale",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/4/capital_rollforward",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Opening invested capital rolls forward by prior net reinvestment",
+        "status": "PASS"
+      },
+      {
+        "check_id": "margin-stress/terminal_reinvestment",
+        "fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "missing_path": null,
+        "reason": "Final steady reinvestment/NOPAT = g/ROIC; terminal FCFF grows from an after-reinvestment base",
+        "status": "PASS"
+      },
+      {
+        "check_id": "normalization",
+        "fact_version_ids": [],
+        "missing_path": null,
+        "reason": "Each adjustment is applied once; before + delta = after; original basis and evidence retained",
+        "status": "PASS"
+      },
+      {
+        "check_id": "equity_bridge",
+        "fact_version_ids": [
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "e928d6b0-c483-4801-a8d9-e6c06bbb010f",
+          "b03f71e4-228a-4bbf-9cf3-5579b879de54"
+        ],
+        "missing_path": null,
+        "reason": "Diluted shares and mutually exclusive operating/nonoperating treatments need reconciliation",
+        "status": "PASS"
+      }
+    ],
+    "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+    "content_sha256": "b34edf86d109fd3c5205d5641474e61f4594528c91499a3e8fbbdf7c3dc62d73",
+    "created_at": "2026-10-26T18:35:28.881058+00:00",
+    "limitations": [
+      "Consolidated PRC-GAAP CNY yuan/SHARE; do not substitute parent-company values.",
+      "2025FY basis with actual 2026 acquisition is not historical PIT or a current balance.",
+      "2025 CFO includes276916417.60 cash WC release; do not extrapolate to perpetual FCFF.",
+      "Debt/lease and restricted-share repurchase obligations need consistent bridge and share policy.",
+      "AP includes capital-project payables; operating WC definitions and growth/reinvestment must be explicit.",
+      "D&A, lease renewals, capitalized leases, maintenance-vs-expansion require a consistent policy; project capex is not maintenance.",
+      "Related finance-company deposits are unrestricted by issuer disclosure, but are not independently verified risk-free/excess cash.",
+      "2026Q3 issuer announcement discovered; provider numeric data not yet verified against official-host rawPDF, do not hide negative YTD CFO or call annual cash bridge current.",
+      "No CODEX, training, probability, account or qualification change made.",
+      "BASELINE_RESEARCH only:2025 financial/bridge basis, actual current acquisition and discount-rate assumptions. Current pricing is blocked pending2026Q3 reconciliation, commitments and post-quarter share cancellation verification; Q3 cash/investment assets differ materially from2025.",
+      "Operating cash reserve and collectible related deposits are assumptions; no independent credit appraisal. Noncash financial investment book residual0 is not an appraised economic recovery value.",
+      "Core margin excludes gains and impairments by explicit definition;2024-margin benchmark and22% stress are assumptions, not forecasts or full-cycle normalization.",
+      "Capital employed includes explicitly retained operating cash and gross repurchase liability; stable capital-turnover/zero-growth model only. No price-implied reverse analysis, probabilities or expected-return assertion.",
+      "WACC uses CNY government-yield riskfree proxy without sovereign-spread subtraction, China totalERP includes country risk once, Jan2026 global industry asset-beta proxy relevered by approximate2025 marketE and book interestD. These are justified proxies with model risk, not a measured issuer beta/current market WACC; simplified common beta scaling of totalERP is explicit.",
+      "Reported2025 material commitment disclosure is none; recognized capital-project payables are deducted once. This does not imply no future replacement spending or optional project plans. Quarter operating-expense cash reserve is an assumption including noncash expenses."
+    ],
+    "meaning": "Economic consistency only; no return validation or trading authority",
+    "operating_model_id": "dad3b6dd-1629-53db-b6fd-3c7aae32a5eb",
+    "operating_model_sha256": "cfc17e7895d18839bafb96a7b8f4639450f6234030131fb8749ef2093d80c9c7",
+    "policy_archive": {
+      "bytes": 42647,
+      "kind": "COMPANY_ECONOMIC_ALGORITHM",
+      "path": "raw/36482c5b98acbcfa8fb36b88ed42cd97bf9e69106b662e1b73fa401bb854a09f.raw",
+      "sha256": "36482c5b98acbcfa8fb36b88ed42cd97bf9e69106b662e1b73fa401bb854a09f"
+    },
+    "policy_version": "economic-review-2",
+    "review_id": "c29b0d46-576b-4b36-afc5-4c9bef8eccde",
+    "reviewed_at": "2026-10-26T18:35:28.881036+00:00",
+    "schema_version": 1,
+    "source_snapshot_id": "c54935d7-760e-4dbd-9156-2f0b4a686a26",
+    "status": "conditional",
+    "usable_range": true,
+    "valuation_id": "6da4d05b-e2fc-4e99-b57d-f37f12e45109",
+    "valuation_sha256": "6b121d9af9b12bfe773374ba2133e20299b482417d76b5383ac9eef46ce01bcd"
+  },
+  "status": "blocked",
+  "usable_range": false,
+  "purpose": "CURRENT_PRICING",
+  "scenarios": [],
+  "valuation_basis": {
+    "bridge_as_of": "2025-12-31",
+    "current_pricing_gaps": [
+      "2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current"
+    ],
+    "financial_period_end": "2025-12-31",
+    "latest_known_financial_period_end": "2026-09-30",
+    "valuation_basis_date": "2025-12-31"
+  },
+  "knowledge_as_of": "2026-10-26T18:35:27.267742+00:00",
+  "current_pricing_gaps": [
+    "2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current",
+    "Latest known financial period and equity bridge not incorporated",
+    "Equity bridge older than180 days; refresh required for current pricing",
+    "A newer frozen financial disclosure is known but not incorporated",
+    "Newer company financial disclosure acquired since baseline; refresh current applicability without changing the saved snapshot"
+  ],
+  "conditions": [
+    {
+      "anchor_fact_version_ids": [
+        "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+        "0177067a-6d57-46a4-b98e-d0f804df10c1",
+        "c44ce8df-bd62-41f6-8881-bbfca303405d",
+        "003390a4-ef1e-4e0f-ba50-3342ffb91a5d",
+        "03b51fdc-9cde-4324-9dc2-7049d6b66cc7",
+        "5d2d1693-821c-4cfd-a0e0-1b8051d1d229",
+        "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+        "cbcd489d-8096-4433-b359-2d9a2b8eca97",
+        "51bf4241-9eb3-41fc-8b34-15b591181b74",
+        "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+        "c30b8fbb-40a5-4db5-832d-099229b50708",
+        "d98d3c60-338b-4eea-8e52-5908accdd4dd",
+        "020ab1c1-c077-466a-bc5f-2224fc32e21d",
+        "b22cca12-8061-4b87-94d5-dc422dcddb63",
+        "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+        "8385dee3-e572-4e09-8860-26e69108baa8",
+        "64209081-038d-4324-8b8d-2066a023607e",
+        "ff7650e5-c879-45a5-967c-bcdac4dedd87",
+        "a2b06827-8a0b-4b90-9254-fc3df6c55108",
+        "6e02c4d0-a15a-488d-87b0-0c2f777952a4",
+        "943c4d34-ae46-4c17-8d37-d6f4f12d7ecb",
+        "71f77529-6e52-4808-8471-1165ac0ca616",
+        "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+        "2391133f-98ac-44d8-9928-027fe405eb55",
+        "eea63c62-a966-48ec-8013-dd286a35f33b",
+        "017ee892-e81f-49d6-aa85-547d1009ff0f",
+        "a9c21a21-6ee3-4564-ba12-90a0554a2ebd",
+        "a4c03793-fc74-43fb-8074-7ec295deeae3",
+        "40397dbf-ffea-4555-8419-79097bc1a8ce",
+        "0b29aa4a-ea08-45ab-a173-132dce785e40",
+        "d0e3884c-3c54-4564-b399-e344158aa4f3",
+        "68194232-a8ce-4ce4-8678-3fdda82876a9",
+        "ed35a805-ee19-49af-b522-e2aafceffd33",
+        "c52886dc-8672-484d-9b86-cb3a162844e6",
+        "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4",
+        "b03f71e4-228a-4bbf-9cf3-5579b879de54",
+        "15ef32ac-8489-4bf3-8d80-cfb6d3a76449",
+        "8c09dc5c-e6aa-4481-a285-81310a53f312",
+        "bfc29237-e59c-4d35-85dc-13aef3f7db0e",
+        "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+        "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+        "1a171fae-762e-4905-aac1-9e3a781c6e2f",
+        "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+        "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+        "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+        "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+        "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+        "e63eb52e-e053-409f-abd9-cff14f906be4",
+        "e928d6b0-c483-4801-a8d9-e6c06bbb010f",
+        "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+        "27b316af-9845-46b1-b579-781f5c9fa1f6"
+      ],
+      "assumption_id": "dated-steady-state",
+      "hypothesis_version_ids": [],
+      "statement": "2025FY financial baseline, current knowledge; flat volume/price/mix, zero growth and working-capital change, normalized margins; no current-fair-price claim. Maintenance and lease renewals equal full D&A. Actual capex and WC cash release are not repeated. Operating cash reserve equals one quarter of the core operating-expense proxy including noncash costs, not actual cash expense; deposits assumed collectible. No new dilution; repurchase and capital AP obligations deducted once with gross reported shares."
+    }
+  ],
+  "evaluated_at": "2026-10-27T16:53:59.573882+00:00",
+  "later_disclosure_fact_version_ids": [
+    "1a171fae-762e-4905-aac1-9e3a781c6e2f"
+  ],
+  "limitations": [
+    "Consolidated PRC-GAAP CNY yuan/SHARE; do not substitute parent-company values.",
+    "2025FY basis with actual 2026 acquisition is not historical PIT or a current balance.",
+    "2025 CFO includes276916417.60 cash WC release; do not extrapolate to perpetual FCFF.",
+    "Debt/lease and restricted-share repurchase obligations need consistent bridge and share policy.",
+    "AP includes capital-project payables; operating WC definitions and growth/reinvestment must be explicit.",
+    "D&A, lease renewals, capitalized leases, maintenance-vs-expansion require a consistent policy; project capex is not maintenance.",
+    "Related finance-company deposits are unrestricted by issuer disclosure, but are not independently verified risk-free/excess cash.",
+    "2026Q3 issuer announcement discovered; provider numeric data not yet verified against official-host rawPDF, do not hide negative YTD CFO or call annual cash bridge current.",
+    "No CODEX, training, probability, account or qualification change made.",
+    "BASELINE_RESEARCH only:2025 financial/bridge basis, actual current acquisition and discount-rate assumptions. Current pricing is blocked pending2026Q3 reconciliation, commitments and post-quarter share cancellation verification; Q3 cash/investment assets differ materially from2025.",
+    "Operating cash reserve and collectible related deposits are assumptions; no independent credit appraisal. Noncash financial investment book residual0 is not an appraised economic recovery value.",
+    "Core margin excludes gains and impairments by explicit definition;2024-margin benchmark and22% stress are assumptions, not forecasts or full-cycle normalization.",
+    "Capital employed includes explicitly retained operating cash and gross repurchase liability; stable capital-turnover/zero-growth model only. No price-implied reverse analysis, probabilities or expected-return assertion.",
+    "WACC uses CNY government-yield riskfree proxy without sovereign-spread subtraction, China totalERP includes country risk once, Jan2026 global industry asset-beta proxy relevered by approximate2025 marketE and book interestD. These are justified proxies with model risk, not a measured issuer beta/current market WACC; simplified common beta scaling of totalERP is explicit.",
+    "Reported2025 material commitment disclosure is none; recognized capital-project payables are deducted once. This does not imply no future replacement spending or optional project plans. Quarter operating-expense cash reserve is an assumption including noncash expenses."
+  ],
+  "diagnostic_valuation_id": "6da4d05b-e2fc-4e99-b57d-f37f12e45109",
+  "operating_model_id": "dad3b6dd-1629-53db-b6fd-3c7aae32a5eb"
+}

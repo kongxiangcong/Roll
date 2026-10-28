@@ -2,7 +2,19 @@
 
 Updated 2026-10-28 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
 
-## Current resume state — ticket11 accepted, next12
+## Current resume state — ticket12 real acceptance checkpoint, blocked
+
+Updated2026-10-28 Asia/Shanghai.01–11 merged at7816d24af0c83e1f3a5b70f24dc055cf4ecb2b02.12worktree D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket12 /codex/rv-ticket12 adds actual evidence and operating docs, no production source change.12Completionblocked, whole spec incomplete. Strict01→12; no PR/push/training/SEALED/account/qualification authority introduced.
+
+- Current12 evidence/12/README.md,coverage.md,readiness.md. PublicBackups cloned11→newrv12-real01 and07→newrv12-daily01. Currentcode API8032/web5212 anddaily API8033, exactPID/ticks/CLI inprocess-receipt/api03/daily-worker/report-worker/web receipts. API8032 actually restarted once after exact owned identity checks; only its old3012/33604 stopped. All07–11/production services remain untouched.
+- Real official annual2025 re-GET matches8c620b0b...; newexchange2026halfyear831422B/139pages/da5795d5...cover checked andAPI material196c4aba...added. Exactannual recheck21d9b5dd...SUCCESS0new bindscontextchild6b94c24a...daily withsamecore37b719...and originalresearch dates; oldreportb9cf stillsnapshot7a430 unchanged. Newhalfyear isnot extracted economics/currentPIT. Read-only37Q3numeric anchors andDecimalcashidentity verified; specificcurrentunknowns/readypages retained.
+- ActualIAB browser2/tab2 input000848→oldreportpreview/job/history→oldMD/PDFdownloads→samecoretracking→newtask3bbfac4c...pinned6b94c24a→realnoauthworker→12UNAVAILABLE→PARTIAL/PUBLISHED newreport8625ead2...→newMDdownload/history/reload. model_calls0/authread0/newjobnetwork0. Twelveattemptsarenot12generatedchapters. Original6filesSHAunchanged/newreportdoesnotupgradeA6/A7. No newPDFauthoring; original45pagePDFsameb135d59...and09visualQA retained.
+- Publicbackup83b2df11...8883583B→newrv12-restored01:15originals/2snapshots/2reports/newjob/6filesexact+valuationreplay/account0. APIrestart7stablepublicobjects/newmaterialSHAequal. Protectedmetadata57d4a8...unchanged; emptyisolatedoldmodelsetsnotfullproductionaudit.
+- Naturalpostclosecurrent0/2. rv12-daily01bothwatchsettingsrevision4research_postclose=true/news_refresh=true/others3off/classifyfalse; existingprovidersswitches/budgetsretained. Pendingreport/assistance/observationqueues0. Existingworkerlauncher59176/child23368 explicitnoauth/no.env/realclock,sourcecheckswhereoriginaladaptersallow;newfactsneedingCODEXfailUNAVAILABLEwithoutsend. EarliestpotentialactualcheckpointsOct28/29 15:05Shanghai; nofakeclock/backfill/newplatformautomation. ARCHIVES_ONLY/unsupported/disablednotpubliccoveragepass.
+- Rootfinaltwo-axisreviewfixedebe3fc8...7816d24 foundP1newcompanyreportautomaticcontrolledvaluationorchestrationmissingandP3snapshotpaginationduplication. Unique/root/review_fix handlesbothonisolatedrv-review-fix.12mustnotpatchproductionconcurrentlyorblindlyrerunnewCODEX. Afterfixmerged,mergeintegrationtipandexplicitlyrestart12host/currentmoduleproofbeforeaffectedrealvalidation. A6sourcegapandimplementationgaparedistinct. Exactnewpayloadscope/hashesmustbepreparedifneeded;08fourpayloadauthorizationnotblanket.
+- CurrentjointMETHOD11passed77.26s; nofullsuiteorfrontendrebuild(noimplementationchange). Preserveearlierattemptfailuresandemptyabortedduplicate. Ownedservicesstillrelyon12worktree:donotcleanupbeforecontrolledhandofftointegration. Frontendnode_modulesjunctiontargetoriginaldependencies:unlinkentryonlywhenauthorized. Nooverallcompletionclaim.
+
+## Earlier resume state — ticket11 accepted, next12
 
 Updated2026-10-28 Asia/Shanghai.01–10 merged at7d7fab1841b314c0e88c9873ecc819e458f7ad4f;11complete oncodex/rv-ticket11 at D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket11, ready for merger after final commit.12not-started, whole spec remains incomplete. Strict01→12, no PR requested, original dirty checkout unchanged.
 
