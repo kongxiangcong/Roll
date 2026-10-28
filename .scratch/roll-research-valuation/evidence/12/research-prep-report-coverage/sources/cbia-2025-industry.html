@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<title>
+            中国饮料工业协会张金泽：“十四五”期间饮料行业展现强大韧性与创新活力，加速迈向现代化产业体系 - 中国饮料工业协会
+</title>
+
+    <meta name="description" content="中国饮料工业协会；会员综合服务理系统；标准化管理系统；行业数据统计系统；节水节能评价系统；饮料行业会议活动系统等功能">
+
+    <meta name="keywords" content="中国饮料工业协会张金泽：“十四五”期间饮料行业展现强大韧性与创新活力，加速迈向现代化产业体系">
+<link href="/static/css/lib/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/fonts.css" rel="stylesheet">
+<!-- Font Awesome 图标库 -->
+<link rel="stylesheet" href="/static/css/lib/fontawesome.min.css">
+<!-- Bootstrap Icons 图标库 -->
+<link rel="stylesheet" href="/static/css/lib/bootstrap-icons.min.css">
+<!-- AOS 动画库 -->
+<link href="/static/css/lib/aos.css" rel="stylesheet">
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="/static/css/lib/swiper-bundle.min.css">
+<!-- Slick CSS -->
+<link rel="stylesheet" href="/static/css/lib/slick.min.css">
+<link rel="stylesheet" href="/static/css/lib/slick-theme.min.css">
+
+<link href="/static/css/official-website.css" rel="stylesheet">
+<link href="/static/css/official-website750.css" rel="stylesheet" media="screen and (max-width: 1279px)">    <link rel="stylesheet" href="/static/css/social-share.css">
+</head>
+<body>
+<!-- 顶部导航 -->
+<div class="index-top-nav">
+    <div class="container">
+        <div class="index-top-nav-content">
+            <div class="index-welcome">欢迎访问中国饮料工业协会网站</div>
+            <div class="index-top-links">
+                <a href="#" class="index-top-link">手机版</a>
+                <span class="index-divider">|</span>
+                <a href="#" class="index-top-link">微信公众号</a>
+                <span class="index-divider">|</span>
+                <a href="/category/contact-us" class="index-top-link">联系我们</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Toast容器 -->
+    <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+
+     <!-- Toast居中弹窗容器 -->
+     <div id="centerModalContainer"></div>
+     
+    <!-- 移动端遮罩层 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="index-header1">
+    <!-- 主要头部区域 -->
+    <div class="index-header">
+        <div class="container">
+            <div class="index-header-content">
+                <!-- LOGO区域 -->
+                <div class="index-logo-section">
+                    <div class="index-logo">
+                        <a href="/home"><img src="/static/images/logo2.png" alt="中国饮料工业协会" class="index-logo-img"></a>
+                    </div>
+                </div>
+
+                <!-- 搜索和服务区域 -->
+                <div class="index-search-section">
+                    <!-- <form action="/search" method="get" class="index-search-box" id="searchForm">
+                        <input type="text" name="keyword" placeholder="请输入要搜索的内容" class="index-search-input" id="searchInput" value="" autocomplete="off">
+                        <button type="submit" class="index-search-btn">
+                            <img src="/static/images/index-search-box.svg" alt="搜索" width="16" height="16">
+                        </button>
+                    </form> -->
+                        <a href="/member/index" class="index-service-btn">
+                            <img src="/static/images/index-service-btn.svg" alt="服务" width="16" height="16">
+                            综合服务平台
+                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 手机端遮罩层 -->
+    <div class="index-mobile-overlay"></div>
+
+    <!-- 主导航菜单 -->
+    <nav class="index-main-nav">
+        <div class="container">
+            <!-- 手机端导航头部 -->
+            <div class="index-mobile-nav-header">
+                <div class="index-mobile-logo">
+                    <img src="/static/images/logo2.png" alt="中国饮料工业协会" class="index-mobile-logo-img">
+                </div>
+                <button class="index-mobile-menu-btn" aria-label="菜单">
+                    <span class="index-mobile-menu-line"></span>
+                    <span class="index-mobile-menu-line"></span>
+                    <span class="index-mobile-menu-line"></span>
+                </button>
+            </div>
+
+            <!-- 导航菜单 -->
+            <ul class="index-nav-menu">
+                                <!-- 首页特殊处理 -->
+                                <li class="index-nav-item ">
+                                    <a href="/home" class="index-nav-link">首页</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/about" class="index-nav-link">关于协会</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/party-work" class="index-nav-link">党建工作</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/activities" class="index-nav-link">行业活动</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/standards" class="index-nav-link">法规标准</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/cbst" class="index-nav-link">CBST</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/industry-insights" class="index-nav-link">统计评价</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/publications" class="index-nav-link">协会刊物</a>
+                                </li>
+                                <!-- 其他栏目  parentCategory?? && parentCategory.id == category.id || grandParentCategory?? && grandParentCategory.id == category.id -->
+                                <li class="index-nav-item ">
+                                        <a href="/category/members" class="index-nav-link">成为会员</a>
+                                </li>
+            </ul>
+        </div>
+    </nav>
+            </div>
+    <!-- 页面标题区域 -->
+
+
+<div class="page-header" style="background: url('/static/images/banner2.png') center;        background-size: cover;">
+    <div class="page-title-wrapper">
+
+    </div>
+</div>
+
+    <!-- 二级导航 -->
+<!-- 二级导航公共组件 -->
+
+    <div class="charter-detail-container" >
+        <div class="container">
+            <div class="charter-detail-breadcrumb">
+                <a href="/home">首页</a>
+                                / <a href="/category/id/78">质量安全</a>
+                                / <a href="/category/id/84">行业动态</a>
+                 / <span>中国饮料工业协会张金泽：“十四五”期间饮料行业展现强大韧性与创新活力，加速迈向现代化产业体系</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="about-who">
+        <div class="container">
+            <!-- 文章标题栏 -->
+            <div class="charter-detail-header">
+                <div class="charter-detail-meta">
+                    <h1 class="charter-detail-title">
+                            中国饮料工业协会张金泽：“十四五”期间饮料行业展现强大韧性与创新活力，加速迈向现代化产业体系
+                    </h1>
+                        <span class="charter-tag">行业动态</span>
+                    <span class="charter-date">发布时间：2026.04.17</span>
+
+                    <div class="charter-actions">
+<div class="social-share-buttons">
+    <button class="social-share-btn" data-share="wechat" title="分享到微信">
+        <img src="/static/images/wx.png" alt="微信分享">
+    </button>
+    <button class="social-share-btn" data-share="weibo" title="分享到微博">
+        <img src="/static/images/wb.png" alt="微博分享">
+    </button>
+</div>
+
+    <div id="socialQrcodeModal" class="social-qrcode-modal">
+        <div class="social-qrcode-overlay"></div>
+        <div class="social-qrcode-content">
+            <div class="social-qrcode-header">
+                <h3>微信扫码分享</h3>
+                <button class="social-qrcode-close">&times;</button>
+            </div>
+            <div class="social-qrcode-body">
+                <div id="socialQrcodeContainer" class="social-qrcode-container"></div>
+                <p class="social-qrcode-tip">使用微信扫一扫分享给好友</p>
+                <div class="social-qrcode-url">
+                    <input type="text" id="socialShareUrl" readonly value="">
+                    <button id="socialCopyUrlBtn" class="social-copy-btn">
+                        <i class="fas fa-copy"></i> 复制链接
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 文章内容 -->
+            <div class="charter-content-wrapper">
+                    <!-- 动态文章内容 -->
+                    <div class="charter-chapter">
+                        <div class="charter-content-ds">
+                            <div class="text" style="color: rgb(51, 51, 51); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-wrap-mode: wrap;"><div class="article_info" id="detail-content" style="font-size: 20px; line-height: 28px; word-break: break-all; text-align: justify;"><p style="text-indent: 2em;">来源：新华网&nbsp;&nbsp;2026-04-17&nbsp;</p><p style="text-align: justify; text-indent: 2em;">4月9日，以“聚力高质量·奋进十五五”为主题的中国饮料工业协会2025年年会在深圳召开。相关部委领导、专家学者、企业家等各界代表齐聚一堂，共同回顾“十四五”期间取得的创新实践与辉煌成就，系统总结行业发展的成果与经验，深入剖析当前面临的新形势、新机遇、新挑战，共同探讨“十五五”期间行业实现高质量发展的路径与举措。</p><p style="text-align: justify; text-indent: 2em;">中国饮料工业协会理事长张金泽在会上作主题报告时指出，“十四五”期间，面对复杂多变的宏观环境与持续升级的消费需求，中国饮料行业展现出强劲的发展韧性与创新活力，高质量发展根基更加牢固。展望“十五五”，行业将从“以价换量”转向“以质换利”，以科技自立自强和绿色低碳转型，加速迈向现代化产业体系。</p><p style="text-align: justify; text-indent: 2em;"><strong>数据背后的跨越：从规模扩张到结构重塑，行业根基更加牢固</strong></p><p style="text-align: justify; text-indent: 2em;">张金泽在报告中用一组关键数据勾勒出行业“十四五”的发展轨迹。2025年，中国饮料年产量达1.79亿吨，较“十三五”末增长9.65%，规模以上企业数量、行业营业收入及资产总额均实现稳健增长。其中，2024年总产量攀升至1.88亿吨，创下历史峰值。</p><p style="text-align: justify; text-indent: 2em;">比总量增长更具深意的是结构性变化。竞争格局上呈现巨头领跑、新军破局态势，赛道活力与竞争激烈度同步提升；同时，细分品类加速分化，健康化、功能化、多元化趋势愈发显著。</p><p style="text-align: justify; text-indent: 2em;">长期以来稳居首位的包装饮用水，其产量占比历史性跌至50%以下；碳酸饮料、果蔬汁类及其饮料增速放缓，高端化果汁带动营收明显提升；以茶饮料、植物饮料、功能性饮料为代表的其他品类占比持续攀升，成为拉动行业增长的“核心引擎”。张金泽总结道，行业已从“十一五”“十二五”时期的高速规模扩张，转向细分赛道加速分化、竞争格局重塑的高质量发展阶段，高质量发展根基更加牢固。</p><p style="text-align: justify; text-indent: 2em;">在产业布局方面，区域协同效应显著增强。四川省广元市、广东省佛山市三水区等饮料产业集群培育成效显著，长白山天然矿泉水、赣南脐橙果汁、广式凉茶等10余个地方特色食品产业入选国家重点培育名单。中、西部饮料产量占比逐步提升，东中西部产能梯度转移与协同互补格局初步形成。</p><p style="text-align: justify; text-indent: 2em;"><strong>创新与绿色双轮驱动：健康化转型加速，国产益生菌装上“中国芯”，PET瓶回收率超94%</strong></p><p style="text-align: justify; text-indent: 2em;">“十四五”期间，创新与绿色成为中国饮料行业转型升级的两大核心驱动力。行业积极践行“健康中国”战略和“三品”战略，通过横向拓展品种品类、纵向深耕细分市场，推动饮料由传统解渴功能向健康化、功能化、多元化全面转型，走出了一条“加减并举”的精准创新路径。</p><p style="text-align: justify; text-indent: 2em;">在“做减法”上，行业持续降低产品含糖量，成效显著。据中国饮料工业协会抽样调研显示，低糖、无糖产品在非水饮料中的产量占比已达30%，上新产品中低糖无糖产品数量更是超过五成。在“做加法”上，行业在原料来源、营养强化、功能提升等方面持续发力，电解质饮料、营养素饮料、基于药食同源理念开发的植物饮料等新品类蓬勃兴起，既满足了消费者日益多元的健康需求，也推动了产业附加值的持续提升。</p><p style="text-align: justify; text-indent: 2em;">尤为值得关注的是，具有自主知识产权的国产益生菌菌株实现了大规模产业化，为乳酸菌饮料装上了“中国芯”；微生物蛋白新赛道的开创，则为蛋白饮料原料供给提供了“中国方案”。</p><p style="text-align: justify; text-indent: 2em;">从制造装备来看，中国饮料装备业实现了从“跟跑”到“并跑”的跨越。吹贴灌旋一体机适用范围的不断拓展，推动了国产饮料生产系统高度集成化的突破；超高速吹灌旋一体机的成功研制，则攻克了超高速控制的关键难题；无菌包装技术、超高压杀菌等国产装备已实现多种主流工艺技术的产业化应用，成为国际市场上不可忽视的力量。</p><p style="text-align: justify; text-indent: 2em;">更重要的是，智能制造已从概念走向现实——基于机器视觉的智能分拣、5G+工业互联网深度融合催生的“黑灯工厂”、数字孪生与AI质检的规模化应用，让行业生产运营从自动化、信息化迈向智能化与柔性化。</p><p style="text-align: justify; text-indent: 2em;">在绿色低碳方面，行业积极响应国家“双碳”战略，将可持续发展理念融入生产经营全过程。张金泽提到，行业国家级“绿色工厂”保有量达57家，规模以上矿泉水企业基本完成“绿色矿山”建设，其中4处入选国家级“绿色矿山”，一批零碳工厂相继建成，碳中和产品陆续上市。通过分段清洗、冷却水回收利用等举措，行业节水水平较“十三五”末提升7.11%；通过余热回收、变频改造、低温热泵等节能技改项目，综合能耗平均下降3.28%。光伏发电、生物质燃料、储能系统等在行业内得到广泛应用，绿电使用比例显著提升。</p><p style="text-align: justify; text-indent: 2em;">在循环经济领域，PET饮料瓶回收利用率超过94%，饮料纸基复合包装资源化利用率达40.8%。绿色低碳，已从政策要求转化为行业的内生自觉和鲜明底色。</p><p style="text-align: justify; text-indent: 2em;">与此同时，行业构建起“中国饮料行业高质量发展评价体系”，通过量化数学模型形成综合指数，实现对行业发展水平的精准量化。标准体系从食品安全、检测方法、评价、工程设计等领域，首创性向温室气体核算、绿色制造和智改数转网联等新领域延伸，实现了从“技术跟随”到“标准引领”的跨越。</p><p style="text-align: justify; text-indent: 2em;"><strong>开放协作与责任担当：出口额增长超三成，食品安全合格率稳居高位</strong></p><p style="text-align: justify; text-indent: 2em;">“十四五”期间，行业坚持对内协同与对外开放双向发力。对内，行业打通产业链上下游堵点，从原料基地共建、包材联合研发到渠道跨界共创，构建起利益共享、风险共担的“共赢链”，龙头企业发挥链主作用、赋能中小企业，全链协同效率与抗风险能力显著增强。</p><p style="text-align: justify; text-indent: 2em;">对外，行业主动融入双循环格局，依托“一带一路”扩大开放合作，积极引进先进技术、装备与优质原料赋能产业升级，同时推动中国品牌与产品扬帆出海。其中果蔬汁、茶饮料、植物蛋白饮料、植物饮料等特色产品逐步在北美、东南亚、欧洲、日韩等市场打开局面，部分企业积极探索全球化生产布局。较“十三五”末，2025年行业出口额增长35.18%，对外开放水平实现稳步提升。</p><p style="text-align: justify; text-indent: 2em;">在履行社会责任方面，行业持续完善全链条质量安全管控体系，推动全过程可追溯、全环节严监管，广泛应用智能检测技术实现质量安全管控模式升级，食品安全监督抽检合格率大于99%，稳居高位。在脱贫攻坚和乡村振兴中，行业以特色农产品深加工带动农民增收；在重大自然灾害防控中，行业企业第一时间挺身而出、捐款捐物。“水教育”“净水计划”等覆盖科普、环保、教育、文化领域的公益项目持续落地，展现出负责任、有担当、有温度的行业形象。</p><p style="text-align: justify; text-indent: 2em;">展望“十五五”，张金泽指出，行业将锚定高质量发展首要任务，聚焦“健康中国”深化产品创新，聚焦科技与绿色打造新质生产力，聚焦标准与人才夯实产业根基，聚焦开放与协同加快品牌全球化布局，持续完善高质量发展评价指标体系，形成“目标—路径—评估—提升”的闭环机制。</p><p style="text-align: justify; text-indent: 2em;">“蓝图绘就千般景，扬帆破浪正当时。”张金泽在报告结尾号召全体“中国饮料人”，以更加昂扬的斗志、更加务实的作风，携手推动饮料行业在高质量发展的道路上阔步前行，为建设健康中国、美丽中国贡献智慧和力量。（钱琪莹）</p><br/></div></div><p><br/></p>
+                        </div>
+                    </div>
+                <!-- 文章导航 -->
+                <div class="charter-navigation">
+                    <div class="charter-nav-prev">
+                        <span class="nav-label">上一条：</span>
+                                <a href="/article/id/11667" class="nav-text">投资5亿元 农夫山泉轿子雪山项目二期签约</a>
+                    </div>
+                    <div class="charter-nav-next">
+                        <span class="nav-label">下一条：</span>
+                                <a href="/article/id/11521" class="nav-text">东鹏饮料发布2025年可持续发展报告 以绿色责任创新驱动高质...</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 页脚信息板块 -->
+<div class="index-footer-section" style="background-image: url('/static/images/footer-bj.png'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+    <div class="index-footer-content">
+        <!-- Footer布局 -->
+        <div class="footer-top-container">
+            <!-- 左侧 LOGO 区域 -->
+            <div class="footer-logo-section">
+                                    <img src="/static/images/logo2.png" alt="协会LOGO" class="footer-logo">
+            </div>
+
+            <!-- 中间：版权信息 -->
+            <div class="footer-center-section">
+                <div class="footer-copyright-info">
+                        <p>Copyright © 2025 中国饮料工业协会 All Rights Reserved</p>
+                        <p>地址：北京朝阳区东三环天元港中心B座1701/1702室</p>
+                        <p>电话：010-84464668</p>
+                        <p><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51010702002012" target="_blank" style="color:inherit;">京公安网备51010702002012</a></p>
+                        <p><a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" style="color:inherit;">京ICP备13005171号-1</a></p>
+                </div>
+            </div>
+
+            <!-- 右侧：二维码图标 + 友情链接 -->
+            <div class="footer-right-section">
+                <!-- 二维码图标 - 悬停显示 -->
+                <div class="footer-qr-icon-wrapper">
+                    <div class="footer-qr-icon-container">
+                        <svg class="footer-qr-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M664.250054 368.541681c10.015098 0 19.892049 0.732687 29.67281 1.795902-26.647917-122.810047-159.358451-214.077703-310.826188-214.077703-169.353083 0-308.085774 114.232694-308.085774 259.274068 0 83.708335 46.165436 152.460344 123.281791 205.78483l-30.80868 91.730191 107.688651-53.455469c38.558178 7.53665 69.459978 15.308661 107.924012 15.308661 9.66308 0 19.230993-0.470721 28.752858-1.225921-6.025227-20.36584-9.521864-41.723264-9.521864-63.862493C402.328693 476.632491 517.908137 368.541681 664.250054 368.541681zM498.62897 285.87389c23.200398 0 38.557154 15.120372 38.557154 38.061874 0 22.846334-15.356756 38.156018-38.557154 38.156018-23.107277 0-46.260603-15.309684-46.260603-38.156018C452.368366 300.994262 475.522716 285.87389 498.62897 285.87389zM283.016307 362.090758c-23.107277 0-46.402843-15.309684-46.402843-38.156018 0-22.941502 23.295566-38.061874 46.402843-38.061874 23.081695 0 38.46301 15.120372 38.46301 38.061874C321.479317 346.782098 306.098002 362.090758 283.016307 362.090758zM945.448458 606.151333c0-121.888048-123.258255-221.236753-261.683954-221.236753-146.57838 0-262.015505 99.348705-262.015505 221.236753 0 122.06508 115.437126 221.200938 262.015505 221.200938 30.66644 0 61.617359-7.609305 92.423993-15.262612l84.513836 45.786813-23.178909-76.17082C899.379213 735.776599 945.448458 674.90216 945.448458 606.151333zM598.803483 567.994292c-15.332197 0-30.807656-15.096836-30.807656-30.501688 0-15.190981 15.47546-30.477129 30.807656-30.477129 23.295566 0 38.558178 15.286148 38.558178 30.477129C637.361661 552.897456 622.099049 567.994292 598.803483 567.994292zM768.25071 567.994292c-15.213493 0-30.594809-15.096836-30.594809-30.501688 0-15.190981 15.381315-30.477129 30.594809-30.477129 23.107277 0 38.558178 15.286148 38.558178 30.477129C806.808888 552.897456 791.357987 567.994292 768.25071 567.994292z"/>
+                        </svg>
+                    </div>
+                    <p class="footer-qr-label">协会官方微信</p>
+                    <div class="footer-qr-popup">
+                            <img src="/file/2025/10/27/20251027185216_6710.jpg" alt="协会官方微信二维码">
+                        <p>扫码关注</p>
+                    </div>
+                </div>
+
+                <!-- 友情链接下拉菜单 -->
+                <div class="footer-links-dropdown">
+                    <select onchange="if(this.value) { var target = this.options[this.selectedIndex].getAttribute('data-target') || '_blank'; window.open(this.value, target); this.selectedIndex = 0; }">
+                        <option value="">友情链接</option>
+                        <option value="https://www.zyshgzb.gov.cn/" data-target="_blank" title="中共中央社会工作部">中共中央社会工作部</option>
+                        <option value="https://www.samr.gov.cn/" data-target="_blank" title="国家市场监督管理总局">国家市场监督管理总局</option>
+                        <option value="https://www.miit.gov.cn/" data-target="_blank" title="工业和信息化部">工业和信息化部</option>
+                        <option value="http://www.nhc.gov.cn/" data-target="_blank" title="国家卫生健康委员会">国家卫生健康委员会</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <link rel="stylesheet" href="/static/css/pagination.css">
+    </div>
+</div><!-- JavaScript 库 -->
+<script src="/static/js/jquery-3.6.0.min.js"></script>
+<script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+<script src="/static/js/lib/aos.js"></script>
+<script src="/static/js/toast.js"></script>
+<link href="/static/css/toast.css" rel="stylesheet">
+<!-- Swiper JS -->
+<script src="/static/js/lib/swiper-bundle.min.js"></script>
+<!-- Slick JS -->
+<script src="/static/js/lib/slick.min.js"></script>
+<!-- SuperSlide JS（品牌展示无缝滚动）-->
+<script src="/static/js/lib/jquery.SuperSlide.2.1.3.js"></script>
+<!-- 引入QRCode.js库 -->
+<script src="/static/js/qrcode.min.js"></script>
+
+<script>
+    // 初始化 AOS 动画
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic'
+    });
+
+    // 手机端导航菜单交互
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuBtn = document.querySelector('.index-mobile-menu-btn');
+        const navMenu = document.querySelector('.index-nav-menu');
+        const overlay = document.querySelector('.index-mobile-overlay');
+
+        if (mobileMenuBtn && navMenu && overlay) {
+            function openMenu() {
+                mobileMenuBtn.classList.add('active');
+                navMenu.classList.add('show');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
+            }
+
+            function closeMenu() {
+                mobileMenuBtn.classList.remove('active');
+                navMenu.classList.remove('show');
+                overlay.classList.remove('show');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }
+
+            // 点击汉堡按钮
+            mobileMenuBtn.addEventListener('click', function() {
+                if (navMenu.classList.contains('show')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            // 点击菜单项后关闭菜单
+            const navLinks = navMenu.querySelectorAll('.index-nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    closeMenu();
+                });
+            });
+
+            // 点击遮罩层关闭菜单
+            overlay.addEventListener('click', function() {
+                closeMenu();
+            });
+
+            // ESC键关闭菜单
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navMenu.classList.contains('show')) {
+                    closeMenu();
+                }
+            });
+        }
+
+        // 移动端页脚导航手风琴功能
+        function initFooterAccordion() {
+            const footerColumns = document.querySelectorAll('.footer-nav-column');
+
+            footerColumns.forEach(column => {
+                const header = column.querySelector('h4');
+                const ul = column.querySelector('ul');
+
+                if (header && ul) {
+                    header.addEventListener('click', function() {
+                        const isActive = column.classList.contains('active');
+
+                        // 关闭其他已展开的项
+                        footerColumns.forEach(otherColumn => {
+                            if (otherColumn !== column) {
+                                otherColumn.classList.remove('active');
+                            }
+                        });
+
+                        // 切换当前项状态
+                        if (isActive) {
+                            column.classList.remove('active');
+                        } else {
+                            column.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+
+        // 检查是否为移动端并初始化手风琴
+        if (window.innerWidth <= 750) {
+            initFooterAccordion();
+        }
+
+        // 监听窗口大小变化
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 750) {
+                initFooterAccordion();
+            } else {
+                // 桌面端移除所有active状态
+                const footerColumns = document.querySelectorAll('.footer-nav-column');
+                footerColumns.forEach(column => {
+                    column.classList.remove('active');
+                });
+            }
+        });
+    });
+
+    // 官网访问埋点上报(异步、不阻塞页面，失败静默忽略)
+    (function() {
+        try {
+            var path = encodeURIComponent(window.location.pathname + window.location.search);
+            var title = encodeURIComponent(document.title || '');
+            fetch('/api/website/track?path=' + path + '&title=' + title, { method: 'POST', keepalive: true });
+        } catch (e) {
+            // 忽略埋点上报失败，不影响页面正常使用
+        }
+    })();
+</script>    <script src="/static/js/social-share.js"></script>
+
+</body>
+</html>

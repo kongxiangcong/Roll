@@ -1,8 +1,8 @@
 # 持续投研与条件估值
 
-更新：2026-10-26。分组：分析能力。用户已同意主线并确认下述补强；已发布实施规格v1.0与顺序任务，尚未开发。
+更新：2026-10-28。分组：分析能力。用户已同意主线并确认下述补强；实施01–11完成，12联合真实验收保持blocked，整体未完成。P1自动估值编排/P3已修复；真实批次4/16、纠错2/2，Lulu三候选BLOCKED、JCC一次经营分析COMPLETE，未生成新的可用自动估值/完整报告/PDF。自然worker无auth健康，11:37:07+08实际周期0/2；A2/A6/A7/A8完整链未通过，见[当前覆盖矩阵](../../../.scratch/roll-research-valuation/evidence/12/coverage.md)。下文保留最初讨论依据，不作为当前实施状态。
 
-实施入口：[spec](../../../.scratch/roll-research-valuation/spec.md)、[12张tickets执行索引](../../../.scratch/roll-research-valuation/issues/README.md)。按01→12顺序执行；下一票01。规格默认完整研报含估值专章、网页及Markdown/PDF交付，单独估值导出不作为首版验收项。后续实施以spec及票为准，白板保留讨论依据。
+实施入口：[spec](../../../.scratch/roll-research-valuation/spec.md)、[12张tickets执行索引](../../../.scratch/roll-research-valuation/issues/README.md)。已按01→12顺序推进，当前12真实验收未关闭。规格默认完整研报含估值专章、网页及Markdown/PDF交付，单独估值导出不作为首版验收项。当前状态以spec及票为准，白板保留讨论依据，不以PARTIAL或来源准备替代FULL。
 
 ## 目标与边界
 

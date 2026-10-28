@@ -1,5 +1,7 @@
 # 12 联合真实验收检查点
 
+**当前最终实测：[08最后纠错](correction08/README.md)，4/16、纠错2/2。** 新3公开文件scope经正常审核放行，exacta569/139325B实际42.946s/gpt-6.1-sol/openai→BLOCKED/null/8候选判断，05/04未运行，无新估值/审核/child/12章/PDF。唯一新run/raw/wire/3新源及旧对象恢复通过，纠错用尽不重试。两国内peer原PDF及两国际web实际阅读/下载受限与行业背景已[另行本地归档](research-prep-report-coverage/README.md)，**未进活库/任何frozen input/wire/model**，第五peer/行业六类五年及FULL仍缺。下列07“未执行/3次”是准备阶段历史，当前以本段和readiness/coverage为准。12仍blocked。
+
 最新[07新资料准备](economic-prep07/README.md)：3新公开issuer PDF（官方年末risk/官方021/020新浪镜像），**不同于原固定资料包**；45facts/98267B/14selectedmaterials/exacta569预览未执行。42留/7省/3qualified TEXT、新source/date/限制/九gap矩阵完整；原51/49/资本38行/两Lulu run不改。slot4/correction2 target-only脚本准备，未reserve，当前仍3/16/纠错1。当前[readiness](readiness.md)/[coverage](coverage.md)已重写，P1已修和JCC真实COMPLETE不再混入待完成历史。
 
 最新[真实纠错06](correction06/README.md)：同原件资本子packet+合同1.1（相对05仅contract变化）exact692adaf2...f983已正常经review执行一次，43.6s/gpt-6.1-sol/openai→BLOCKED/null/9候选缺口。没有05/04新估值/审核/child，也未执行章节；真实新run/raw/wire与旧对象经新目录恢复一致。**当前预算3/16、纠错1/2**；05的2/16是执行前历史。12及A6/A7/A8仍blocked，未自动追加纠错。

@@ -51,3 +51,5 @@ Spec: [v1.0](../spec.md) 第11、12节
 2026-10-28 本地资本准备05：仅原FY25年报补字面stock与分类原文，公开新副本49facts/98190B、QUEUED/未执行候选SHA74f156b5...5989；原12材料/51事实/原任务不变，选择遗漏和真实未知均明示。参见[资本准备](../evidence/12/capital-prep05/README.md)。0新增model、预算仍2/16/纠错0，Completion blocked及真实缺口不变。
 
 2026-10-28 纠错06实际执行一次，exact692adaf2...f983/43.6s/gpt-6.1-sol/openai→BLOCKED/null，未进行05/04估值与12章。新增run/raw/wire/输入/任务针对性恢复通过；预算3/16、纠错1/2，Completion blocked及A6/A7/A8不变。见[真实纠错](../evidence/12/correction06/README.md)。
+
+2026-10-28 最后纠错08已正常审核后真实42.946s/BLOCKED/null，4/16、纠错2/2用尽，不发12章。新run/raw/wire/3新source与原对象公共恢复一致；peer/行业补充只作本地research-prep未入库/模型。11:37:07+08单只读daily健康/原noauth拥有者一致，实际自然周期0/2。Completion blocked保持，详见[08证据](../evidence/12/correction08/README.md)。

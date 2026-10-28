@@ -1,0 +1,329 @@
+{
+  "kind": "LOCAL_REPORT_COVERAGE_RESEARCH_NOT_APPROVED_INPUT",
+  "prepared_at": "2026-10-28T03:32:56.817177+00:00",
+  "query_count": 8,
+  "queries": [
+    "中国 饮料 产量 2021 2022 2023 2024 2025 统计局 site:stats.gov.cn",
+    "植物蛋白饮料 2020 2021 2022 2023 2024 中国饮料工业协会 产量",
+    "养元饮品 2025 年年度报告 site:sse.com.cn",
+    "欢乐家 2025 年年度报告 1225031908 site:cninfo.com.cn",
+    "养元饮品 2025 年年度报告 site:static.cninfo.com.cn",
+    "维维股份 2025 年年度报告 site:static.cninfo.com.cn",
+    "Vitasoy annual report 2024 2025 site:vitasoy.com",
+    "Oatly 2025 annual report 20-F site:investors.oatly.com"
+  ],
+  "read_local_contracts": [
+    "integration/spec.md §§7–9",
+    "docs/research/company-report-template-map.md appendix E and applicable quality gates",
+    "backend/src/roll/research/company/report_data.py numeric_basis/qualified_peer/INDUSTRY_METRICS",
+    "evidence08/primary-source-research.md and prior rv08-lulu-source-plan.md"
+  ],
+  "previous_inventory": "Lulu4FY+Q3+valuation macro sources; no completed peer raw/industry six-series; company five-year history is not industry history",
+  "acquisition_receipts": [
+    {
+      "requested_url": "https://static.cninfo.com.cn/finalpage/2026-04-25/1225192154.PDF",
+      "file_name": "yangyuan-2025.pdf",
+      "method": "GET",
+      "requested_at": "2026-10-28T03:28:09.818295+00:00",
+      "final_url": "https://static.cninfo.com.cn/finalpage/2026-04-25/1225192154.PDF",
+      "status": 200,
+      "received_at": "2026-10-28T03:28:24.442726+00:00",
+      "content_type": "application/pdf",
+      "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\26\\01a178d3-3ac6-7763-8382-1200d54806f8\\rv12-lulu-report-coverage-sources\\yangyuan-2025.pdf",
+      "bytes": 1407319,
+      "sha256": "8a8ce864e479f8c40b65048b39fa53f0ff4345579ca2447ea286f55765d1ee05",
+      "success": true
+    },
+    {
+      "requested_url": "https://static.cninfo.com.cn/finalpage/2026-03-26/1225031908.PDF",
+      "file_name": "huanlejia-2025.pdf",
+      "method": "GET",
+      "requested_at": "2026-10-28T03:28:09.819537+00:00",
+      "final_url": "https://static.cninfo.com.cn/finalpage/2026-03-26/1225031908.PDF",
+      "status": 200,
+      "received_at": "2026-10-28T03:28:52.288889+00:00",
+      "content_type": "application/pdf",
+      "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\26\\01a178d3-3ac6-7763-8382-1200d54806f8\\rv12-lulu-report-coverage-sources\\huanlejia-2025.pdf",
+      "bytes": 2314717,
+      "sha256": "f02871a91defbfc47bd87de8d5bb14ce730a7482a18564036d4eeb1c1410d37b",
+      "success": true
+    },
+    {
+      "requested_url": "https://www.vitasoy.com/wp-content/uploads/2025/07/EW00345-AR.pdf",
+      "file_name": "vitasoy-fy2024-25.pdf",
+      "method": "GET",
+      "requested_at": "2026-10-28T03:28:09.820406+00:00",
+      "final_url": "https://www.vitasoy.com/wp-content/uploads/2025/07/EW00345-AR.pdf",
+      "status": 200,
+      "received_at": "2026-10-28T03:28:12.379413+00:00",
+      "content_type": "text/html",
+      "success": false,
+      "error_type": "ValueError",
+      "error": "Not PDF",
+      "failed_at": "2026-10-28T03:28:12.379442+00:00"
+    },
+    {
+      "requested_url": "https://investors.oatly.com/static-files/7dc4d34c-ed75-44fe-a342-c034c8c0b7ab",
+      "file_name": "oatly-2025-20f.pdf",
+      "method": "GET",
+      "requested_at": "2026-10-28T03:28:09.821155+00:00",
+      "success": false,
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "failed_at": "2026-10-28T03:28:12.258381+00:00"
+    },
+    {
+      "requested_url": "https://filedownload-ytb.stats.gov.cn/attachment/4-2024年食品行业经济运行报告.pdf",
+      "file_name": "food-industry-2024.pdf",
+      "method": "GET",
+      "requested_at": "2026-10-28T03:28:12.259872+00:00",
+      "success": false,
+      "error_type": "URLError",
+      "error": "<urlopen error [WinError 10054] 远程主机强迫关闭了一个现有的连接。>",
+      "failed_at": "2026-10-28T03:28:18.134761+00:00"
+    },
+    {
+      "requested_url": "https://www.chinabeverage.org/article/id/11544",
+      "file_name": "cbia-2025-industry.html",
+      "method": "GET",
+      "requested_at": "2026-10-28T03:28:12.380609+00:00",
+      "final_url": "https://www.chinabeverage.org/article/id/11544",
+      "status": 200,
+      "received_at": "2026-10-28T03:28:15.191976+00:00",
+      "content_type": "text/html;charset=UTF-8",
+      "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\26\\01a178d3-3ac6-7763-8382-1200d54806f8\\rv12-lulu-report-coverage-sources\\cbia-2025-industry.html",
+      "bytes": 32552,
+      "sha256": "6329c7b727b62184695fb48a46b5633d5a9c3543fbf0b7fb7cc828bdacbef61a",
+      "success": true,
+      "content_status": "ASSOCIATION_HOSTED_REPRINT_ATTRIBUTED_TO_XINHUA_NOT_ORIGINAL_STATISTICAL_TABLE"
+    },
+    {
+      "requested_url": "https://www.vitasoy.com/reports-and-frameworks/",
+      "file_name": "vitasoy-reports.html",
+      "method": "GET",
+      "requested_at": "2026-10-28T03:28:15.194249+00:00",
+      "final_url": "https://www.vitasoy.com/reports-and-frameworks/",
+      "status": 200,
+      "received_at": "2026-10-28T03:28:16.376022+00:00",
+      "content_type": "text/html",
+      "path": "C:\\Users\\72449\\.codex\\visualizations\\2026\\10\\26\\01a178d3-3ac6-7763-8382-1200d54806f8\\rv12-lulu-report-coverage-sources\\vitasoy-reports.html",
+      "bytes": 212,
+      "sha256": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d",
+      "success": true,
+      "content_status": "ANTI_BOT_CHALLENGE_NOT_REPORT_INDEX",
+      "usable_source_content": false
+    }
+  ],
+  "peers": [
+    {
+      "name": "河北养元智汇饮品股份有限公司",
+      "listing": "SSE:603156",
+      "international": false,
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-04-25/1225192154.PDF",
+      "archive_status": "RAW_PDF_ACQUIRED_VERIFIED",
+      "raw_sha256": "8a8ce864e479f8c40b65048b39fa53f0ff4345579ca2447ea286f55765d1ee05",
+      "received_at": "2026-10-28T03:28:24.442726+00:00",
+      "disclosure_date": "2026-04-25",
+      "disclosure_date_basis": "CNINFO finalpage path; exact time unknown",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "scope": "CONSOLIDATED_PRODUCT_WALNUT_BEVERAGE",
+      "business": "核桃乳",
+      "revenue": "4430108242.33",
+      "revenue_unit": "元",
+      "currency": "CNY",
+      "gross_margin": "46.91",
+      "margin_unit": "%",
+      "physical_page": 27,
+      "printed_page": 27,
+      "accounting_standard": "PRC_GAAP",
+      "literal": "核桃乳 4,430,108,242.33 -17.55 2,351,917,955.71 -15.10 46.91 -1.53",
+      "limitations": [
+        "核桃乳不是杏仁露",
+        "集团还含功能性饮料868,606,338.92元，不能用集团42.52%毛利率替代核桃乳46.91%",
+        "本轮未转录完整多年利润/现金流或估值可比性审核"
+      ]
+    },
+    {
+      "name": "欢乐家食品集团股份有限公司",
+      "listing": "SZSE:300997",
+      "international": false,
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-03-26/1225031908.PDF",
+      "archive_status": "RAW_PDF_ACQUIRED_VERIFIED",
+      "raw_sha256": "f02871a91defbfc47bd87de8d5bb14ce730a7482a18564036d4eeb1c1410d37b",
+      "received_at": "2026-10-28T03:28:52.288889+00:00",
+      "disclosure_date": "2026-03-26",
+      "disclosure_date_basis": "CNINFO finalpage path; exact time unknown",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "scope": "CONSOLIDATED_PRODUCT_COCONUT_JUICE_BEVERAGE",
+      "business": "椰子汁饮料",
+      "revenue": "756407393.95",
+      "revenue_unit": "元",
+      "currency": "CNY",
+      "gross_margin": "36.39",
+      "margin_unit": "%",
+      "physical_page": 20,
+      "printed_page": 19,
+      "accounting_standard": "PRC_GAAP",
+      "literal": "椰子汁饮料 756,407,393.95 481,162,379.15 36.39%",
+      "limitations": [
+        "椰子汁是植物蛋白邻近品类，不是杏仁同产品",
+        "集团还含罐头及原料贸易等，不能拿集团15.0039亿元收入配椰子汁36.39%毛利率",
+        "同页披露2025/2024公司产销存，不是全国行业数据"
+      ]
+    },
+    {
+      "name": "Vitasoy International Holdings Limited",
+      "listing": "HKEX:00345",
+      "international": true,
+      "source_url": "https://www.vitasoy.com/wp-content/uploads/2025/07/EW00345-AR.pdf",
+      "owner_index": "https://www.vitasoy.com/reports-and-frameworks/",
+      "archive_status": "WEB_TOOL_OPENED_ORIGINAL_PDF_LOCAL_GET_RETURNED_NONPDF",
+      "raw_sha256": null,
+      "received_at": null,
+      "web_observed_this_session": true,
+      "research_transcription_recorded_at": "2026-10-28T03:32:56.817177+00:00",
+      "disclosure_date": null,
+      "report_date_basis": "FY2024/25 owner report; auditor dated2025-06-24, path2025/07; not treated as exact publication date",
+      "period_start": "2024-04-01",
+      "period_end": "2025-03-31",
+      "scope": "CONSOLIDATED_GROUP",
+      "business": "植物奶/茶/豆腐等跨地区集团",
+      "revenue": "6274",
+      "revenue_unit": "million",
+      "currency": "HKD",
+      "gross_margin": "51.3",
+      "margin_unit": "%",
+      "physical_page": 17,
+      "printed_page": 16,
+      "accounting_standard": "HKFRS",
+      "accounting_standard_physical_page": 134,
+      "accounting_standard_printed_page": 133,
+      "literal": "Group revenue ... HK$6,274 million; Gross profit margin ... 51.3%",
+      "limitations": [
+        "3月财年，非CY2025；不机械对齐露露全年",
+        "豆奶/燕麦等及茶/豆腐、内地香港澳新/东盟组合，集团毛利率不是纯植物蛋白分部",
+        "原表124印刷页另以HKD千元列精确收入6,273,585，不能与百万元摘要混尺度",
+        "本地未取得PDF bytes/SHA，不能导入为已归档原件"
+      ]
+    },
+    {
+      "name": "Oatly Group AB",
+      "listing": "NASDAQ:OTLY_ADS",
+      "international": true,
+      "source_url": "https://investors.oatly.com/static-files/7dc4d34c-ed75-44fe-a342-c034c8c0b7ab",
+      "owner_index": "https://investors.oatly.com/financials-filings",
+      "archive_status": "WEB_TOOL_OPENED_ORIGINAL_PDF_LOCAL_GET_HTTP403",
+      "raw_sha256": null,
+      "received_at": null,
+      "web_observed_this_session": true,
+      "research_transcription_recorded_at": "2026-10-28T03:32:56.817177+00:00",
+      "disclosure_date": "2026-03-13",
+      "disclosure_date_basis": "owner filing announcement and report signature; exact time unknown",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "scope": "CONSOLIDATED_GROUP",
+      "business": "全球燕麦饮料及相关替代乳产品",
+      "revenue": "862459",
+      "revenue_unit": "thousand",
+      "currency": "USD",
+      "gross_margin": "32.1",
+      "margin_unit": "%",
+      "physical_page": 74,
+      "printed_page": "71",
+      "accounting_standard": "IFRS_AS_ISSUED_BY_IASB",
+      "accounting_standard_physical_page": 6,
+      "literal": "Revenue 862,459 ... Gross profit 277,057 32.1% ... Operating loss (67,730)",
+      "limitations": [
+        "燕麦产品/餐饮渠道/全球市场、亏损阶段与露露不同",
+        "20-F不等于US_GAAP；封面明确IFRS",
+        "ADS2025变更为1ADS对应20普通股，不把ADS股数/价格直接同A股比较",
+        "本地403，没有raw PDF SHA，不算已归档原件"
+      ]
+    },
+    {
+      "name": "维维股份（既有待核候选）",
+      "listing_candidate": "SSE:600300",
+      "international": false,
+      "archive_status": "NOT_LOCATED_IN_BOUNDED_QUERY",
+      "source_url": null,
+      "raw_sha256": null,
+      "revenue": null,
+      "gross_margin": null,
+      "limitations": [
+        "第6条查询未找到强相关2025官方原件",
+        "未凭百科/财经写作确认可比性或数字，不计第五已完成peer",
+        "保留原SSE公告入口作后续人工明确范围，不再追加查询"
+      ]
+    }
+  ],
+  "industry": {
+    "qualified_five_year_series": false,
+    "required_metrics": [
+      "industry_production",
+      "industry_consumption",
+      "industry_imports",
+      "industry_exports",
+      "industry_inventory",
+      "industry_price"
+    ],
+    "years_required_each": 5,
+    "business_required": "same defined industry scope, no whole-beverage substitution",
+    "observed_context_only": [
+      {
+        "url": "https://www.chinabeverage.org/article/id/11544",
+        "publication_date": "2026-04-17",
+        "reported_years": [
+          2024,
+          2025
+        ],
+        "values": [
+          {
+            "year": 2024,
+            "value": "1.88",
+            "unit": "亿吨"
+          },
+          {
+            "year": 2025,
+            "value": "1.79",
+            "unit": "亿吨"
+          }
+        ],
+        "author_chain": "协会站明确来源新华网，转述协会会长发言",
+        "raw_sha256": "6329c7b727b62184695fb48a46b5633d5a9c3543fbf0b7fb7cc828bdacbef61a",
+        "admissible_as_primary_statistical_series": false,
+        "reason": "转载讲话/圆整数、全饮料、仅两年，无细分原始统计表"
+      }
+    ],
+    "failed_or_unverified": [
+      {
+        "url": "https://filedownload-ytb.stats.gov.cn/attachment/4-2024年食品行业经济运行报告.pdf",
+        "status": "DOWNLOAD_CONNECTION_RESET; web cache open timeout",
+        "raw_sha256": null,
+        "search_snippet_only": "2024饮料18816.9万吨、同比6.3%；未用作已审事实",
+        "reason": "official host does not independently establish author; no raw original acquired"
+      },
+      {
+        "candidate": "第三方植物蛋白规模/产量图",
+        "status": "EXCLUDED",
+        "reason": "预测/商业估计、引用其他机构或二手媒体；非本轮第一方统计数据"
+      }
+    ],
+    "still_missing": "2021–2025 same-scope plant-protein production/consumption/import/export/inventory/price and exact definitions; no zero/imputation/back-solving from CAGR"
+  },
+  "conclusions": {
+    "five_qualified_peers_complete": false,
+    "four_peer_report_entries_opened": true,
+    "two_international_entries_opened": true,
+    "locally_archived_peer_pdfs": 2,
+    "report_FULL_supported": false
+  },
+  "boundaries": {
+    "frozen_slot4_wire_changed": false,
+    "db_writes": 0,
+    "model_calls": 0,
+    "auth_read": false,
+    "new_outbound_model_authorization": false
+  }
+}
