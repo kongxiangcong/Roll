@@ -130,7 +130,9 @@ def test_research_updates_use_existing_worker_queue_with_company_scope_and_expli
         response = client.post(base+'/requests', json=command)
         assert response.status_code == 201, response.text
         job = response.json()
-        app.state.observation_updates.work(datetime.now(timezone.utc), threading.Event())
+        # This case exercises manual work, separately from natural scheduling.
+        manual_clock = datetime.fromisoformat('2026-10-28T00:00:00+00:00')
+        app.state.observation_updates.work(manual_clock, threading.Event())
         saved = client.get('/api/observation-update-jobs/'+job['job_id']).json()
         assert saved['status'] == 'COMPLETE', saved
         observation = client.get(base).json()['observations'][0]
@@ -140,10 +142,12 @@ def test_research_updates_use_existing_worker_queue_with_company_scope_and_expli
         assert client.post(base+'/requests', json=command).json()['job_id'] == saved['job_id']
         command['idempotency_key']='archive2'
         repeated = client.post(base+'/requests', json=command).json()
-        app.state.observation_updates.work(datetime.now(timezone.utc), threading.Event())
+        app.state.observation_updates.work(manual_clock, threading.Event())
         assert client.get('/api/observation-update-jobs/'+repeated['job_id']).json()['observation_id'] == saved['observation_id']
-        # Existing providers are accurately scoped; selecting another company does not broaden them.
-        assert client.post(base+'/requests', json={**command,'kind':'NEWS','idempotency_key':'wrong-scope'}).status_code == 409
+        # The merged finite-list provider now supports this watched A share.
+        news = client.post(base+'/requests', json={**command,'kind':'NEWS','idempotency_key':'watched-news'})
+        assert news.status_code == 201
+        assert news.json()['instrument'] == 'SZSE:000848'
         assert research.analysis_snapshot(snapshot['snapshot_id'])['company_id'] == issuer['company_id']
         assert client.get('/api/account').json()['version'] == 0
 
@@ -265,7 +269,7 @@ def test_new_fact_freezes_a_bounded_analysis_and_model_unavailability_preserves_
     assert payload['model_executed'] is False
     assert research.analysis_snapshot(snapshot['snapshot_id'])==snapshot
     assert research.analysis_snapshots(issuer['company_id'])['total']==1
-    assert 'RESEARCH:SSE:600362' in updates.listing('SSE:600362')['health']
+    assert 'RESEARCH' in updates.listing('SSE:600362')['health']
 
 
 def test_verified_existing_financial_fields_automatically_enter_the_frozen_daily_input(tmp_path):
@@ -375,6 +379,9 @@ def test_existing_observation_idempotency_survives_the_new_optional_retry_field(
     from roll.accounts.ledger import encode
     import json,hashlib
     with TestClient(create_app(tmp_path,runtime_role='API')) as client:
+        from roll.market.directory import WatchCommand
+        market = client.app.state.market
+        market.watch(WatchCommand(instrument='SSE:600362', operation='ADD', expected_list_version=market.listing()['version']))
         base='/api/observation-updates/SSE:600362'
         assert client.post(base+'/settings',json=dict(enabled=True,expected_revision=1,basis='METHOD legacy command')).status_code==200
         old=dict(idempotency_key='legacy-news',basis='METHOD old stored request',kind='NEWS',refresh_sources=False)

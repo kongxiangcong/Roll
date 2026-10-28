@@ -1,3 +1,7 @@
+try:
+    from roll.market.observation_symbols import symbols
+except ModuleNotFoundError:
+    from observation_symbols import symbols
 """Pinned SDK search with anonymous raw-first transport and a fixed article allowlist."""
 import contextlib,hashlib,ipaddress,json,os,socket,sys,time
 from datetime import datetime,timezone
@@ -15,7 +19,7 @@ def main(command):
         p=output/'capture.json.tmp';p.write_text(json.dumps(state,ensure_ascii=False,indent=2),encoding='utf-8');p.replace(output/'capture.json')
     save()
     try:
-        if command['instrument']!='SSE:600362':raise ValueError('NEWS_INSTRUMENT_SCOPE')
+        code, symbol, secucode = symbols(command['instrument'])
         import requests
         from curl_cffi import requests as curl_requests
         package=find_spec('akshare');source=Path(package.origin).parent/'news/news_stock.py'
@@ -66,13 +70,13 @@ def main(command):
             return response
         def sdk_get(url,params=None,**kwargs):
             p=json.loads(params['param']);page=p['param']['cmsArticleWebOld']
-            if p.get('keyword')!='600362' or p.get('type')!=['cmsArticleWebOld'] or page.get('pageIndex')!=1 or page.get('pageSize')!=10 or page.get('sort')!='default':raise ValueError('NEWS_SDK_QUERY_SCOPE')
+            if p.get('keyword')!=code or p.get('type')!=['cmsArticleWebOld'] or page.get('pageIndex')!=1 or page.get('pageSize')!=10 or page.get('sort')!='default':raise ValueError('NEWS_SDK_QUERY_SCOPE')
             # SDK contains historic example cookies. Deliberately discard all SDK headers.
             return fetch(url,'LIST',params)
         curl_requests.get=sdk_get
         with contextlib.redirect_stdout(sys.stderr):
             import akshare as ak
-            try:frame=ak.stock_news_em(symbol='600362');items=frame.to_dict(orient='records')
+            try:frame=ak.stock_news_em(symbol=code);items=frame.to_dict(orient='records')
             except (KeyError,ValueError):
                 if not state['captures'] or list_rows((output/'01.raw').read_bytes()):raise
                 items=[]

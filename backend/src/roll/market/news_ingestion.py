@@ -168,7 +168,7 @@ class News:
         facts=[]
         for row,item in zip(rows,items):
             fields=item['fields']
-            if fields.get('关键词')!='600362' or fields.get('新闻链接')!='http://finance.eastmoney.com/a/'+str(row['code'])+'.html':raise ValueError('NEWS_SDK_INSTRUMENT_OR_URL_MISMATCH')
+            if fields.get('关键词')!=run['instrument'].split(':')[1] or fields.get('新闻链接')!='http://finance.eastmoney.com/a/'+str(row['code'])+'.html':raise ValueError('NEWS_SDK_INSTRUMENT_OR_URL_MISMATCH')
             raw_index=run['originals'][0];body_sha=None;text=None;status=item.get('body_status','UNAVAILABLE');errors=list(item.get('errors',[]))
             ordinal=item.get('body_ordinal')
             if ordinal is not None:

@@ -1,0 +1,15 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.6.0 -- D:\dsh-proj\Roll\backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\dsh-proj\Roll\.scratch\worktrees\roll-unified\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 5 items
+
+backend\tests\application\test_finite_daily.py::test_two_holdings_watch_and_local_failure_restart PASSED [ 20%]
+backend\tests\company_research\test_daily_research.py::test_research_updates_use_existing_worker_queue_with_company_scope_and_explicit_retry PASSED [ 40%]
+backend\tests\company_research\test_daily_research.py::test_new_fact_freezes_a_bounded_analysis_and_model_unavailability_preserves_the_old_core PASSED [ 60%]
+backend\tests\company_research\test_daily_research.py::test_existing_observation_idempotency_survives_the_new_optional_retry_field PASSED [ 80%]
+backend\tests\application\test_merged_observation_health.py::test_legacy_cooldown_remains_visible_without_leaking_to_another_issuer PASSED [100%]
+
+======================== 5 passed in 98.49s (0:01:38) =========================

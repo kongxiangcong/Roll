@@ -110,6 +110,16 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
     costs=frozen['design']['costs'];policy=frozen['policy'];cash=Decimal(frozen['baseline']['cash_yuan'])
     positions=[{**p, 'quantity': p['quantity'], 'entry_date': p['acquired_on'], 'exit_date': None,
                 'cost_yuan': p['acquisition_cost_yuan'], 'forecast_id': 'BASELINE'} for p in frozen['baseline']['positions']]
+    # Legacy single-name freezes omitted instrument on cash events. Resolve that
+    # only when scope is unambiguous; never broadcast a cash event across names.
+    cash_events=[]
+    for original_event in inputs.get('cash_events',[]):
+        event=dict(original_event)
+        if not event.get('instrument'):
+            if len(frozen['scope']['instruments'])!=1:
+                raise ValueError('AMBIGUOUS_CASH_EVENT_INSTRUMENT')
+            event['instrument']=frozen['scope']['instruments'][0]
+        cash_events.append(event)
     pending=[];opportunities=[];events=[];curve=[];entitlements=[];realized=Decimal('0')
     rows={(r['trade_date'],r['instrument']):r for r in inputs['facts']}
     forecasts_by_day={}
@@ -167,14 +177,14 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
             price=(Decimal(row['close'])*(1-Decimal(costs['slippage_each_side_rate']))/tick).quantize(Decimal('1'),rounding=ROUND_HALF_UP)*tick
             previous=rows.get((days[index-1],position['instrument'])) if index else None
             if not previous:missing.append({'date':day,'reason':'EXIT_REFERENCE_MISSING'});continue
-            adjustment=sum(Decimal(e['gross_cash_yuan_per_eligible_share']) for e in inputs.get('cash_events',[]) if e['ex_date']==day)
+            adjustment=sum(Decimal(e['gross_cash_yuan_per_eligible_share']) for e in cash_events if e['ex_date']==day and e['instrument']==position['instrument'])
             limit=Decimal(rule['normal_price_limit_percent'])/100;reference=Decimal(previous['close'])-adjustment
             floor=Decimal(money(reference*(1-limit)));upper=Decimal(money(reference*(1+limit)))
             if not floor<=price<=upper or all(Decimal(row[k])==floor for k in ['open','high','low','close']):
                 missing.append({'date':day,'reason':'BLOCKED_EXIT_PRICE_BAND'});continue
             gross=price*Decimal(position['quantity']);received=gross-fee(gross,'SELL',position['instrument'],day);rights=Decimal('0');tax=Decimal('0')
             for entitlement in entitlements:
-                if entitlement['forecast_id']==position['forecast_id']:
+                if (entitlement['forecast_id'],entitlement['instrument'],entitlement['entry_date'])==(position['forecast_id'],position['instrument'],position['entry_date']):
                     withholding=Decimal(entitlement['gross'])*_holding_tax(date.fromisoformat(position['entry_date']),date.fromisoformat(day),True)
                     entitlement['tax']=money(withholding);tax+=Decimal(entitlement['tax']);rights+=Decimal(entitlement['gross'])
             received-=tax;cash+=received;realized+=received+rights-Decimal(position['cost_yuan'])
@@ -183,10 +193,10 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
             positions.remove(position)
         # Record-close holdings include today's fills and blocked exits, but exclude sold lots.
         # Previously registered rights survive a later sale until their frozen payment date.
-        for event in inputs.get('cash_events',[]):
+        for event in cash_events:
             if event['record_date']==day:
                 for position in positions:
-                    if event.get('instrument',position['instrument'])!=position['instrument']:continue
+                    if event['instrument']!=position['instrument']:continue
                     entitlements.append({'instrument':position['instrument'],'forecast_id':position['forecast_id'],
                         'entry_date':position['entry_date'],'payment_date':event['cash_payment_date'],
                         'gross':money(Decimal(position['quantity'])*Decimal(event['gross_cash_yuan_per_eligible_share'])),
@@ -226,7 +236,7 @@ def simulate(frozen, inputs, forecasts, through, comparator=None, execution_scen
             entry=days[index+offset] if index+offset<len(days) else None;maturity=days[index+20] if index+20<len(days) else None
             if not entry or not maturity:gaps.append('HORIZON_OUTSIDE_FROZEN_WINDOW')
             if not usable(row):gaps.append('MISSING_OR_UNKNOWN_OBSERVATION_INPUT')
-            adjustment=sum(Decimal(e['gross_cash_yuan_per_eligible_share']) for e in inputs.get('cash_events',[]) if e['ex_date']==entry)
+            adjustment=sum(Decimal(e['gross_cash_yuan_per_eligible_share']) for e in cash_events if e['ex_date']==entry and e['instrument']==symbol)
             upper=Decimal(money((anchor-adjustment)*(1+limit)));lower=money((anchor-adjustment)*(1-limit));gross=upper*Decimal(qty)
             reserve=gross+fee(gross,'BUY',symbol,entry) if entry else Decimal('0')
             orders.append({**candidate,'observation_date':day,'quantity':qty,'entry_date':entry,'maturity_date':maturity,

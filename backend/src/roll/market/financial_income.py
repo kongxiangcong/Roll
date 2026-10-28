@@ -1,3 +1,4 @@
+from roll.market.observation_symbols import symbols
 """Finite AKShare observations: original entities before immutable income versions."""
 import asyncio
 from datetime import date,datetime
@@ -145,12 +146,12 @@ class FinancialIncome:
         reference=json.loads((REFERENCE/'manifest.json').read_text())
         facts=[];seen=set()
         for row in rows:
-            if row.get('SECUCODE')!='600362.SH' or instrument!='SSE:600362':raise ValueError('FINANCIAL_ROW_INSTRUMENT_MISMATCH')
+            if row.get('SECUCODE')!=symbols(instrument)[2]:raise ValueError('FINANCIAL_ROW_INSTRUMENT_MISMATCH')
             period=str(row.get('REPORT_DATE',''))[:10];date.fromisoformat(period)
             if period not in selected or period in seen:raise ValueError('FINANCIAL_PERIOD_DUPLICATED_OR_UNREQUESTED')
             seen.add(period)
             values={name:decimal_text(row.get(field)) for name,field in FIELDS.items()}
-            proof=next((p for p in reference['periods'] if values['revenue'] is not None and p['report_period']==period and
+            proof=next((p for p in reference['periods'] if instrument=='SSE:600362' and values['revenue'] is not None and p['report_period']==period and
                 Decimal(p['revenue_yuan'])==Decimal(values['revenue']) and p['reported_update_date']==str(row.get('UPDATE_DATE',''))[:10]),None)
             document=None;available=now()
             if proof:

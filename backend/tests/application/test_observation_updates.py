@@ -15,6 +15,9 @@ BASE = '/api/observation-updates/SSE:600362'
 
 
 def configure(client, **extra):
+    listing=client.get('/api/market/list').json()
+    if 'SSE:600362' not in {m['instrument'] for m in listing['members']}:
+        assert client.post('/api/market/watch',json={'operation':'ADD','instrument':'SSE:600362','expected_list_version':listing['version']}).status_code==200
     settings = client.get(BASE).json()['settings']
     response = client.post(BASE+'/settings', json={'enabled': True, 'expected_revision': settings['revision'], 'basis': 'METHOD explicit background observation', **extra})
     assert response.status_code == 200, response.text
@@ -55,7 +58,7 @@ def seed_news(client):
 def test_existing_worker_cache_station_dedup_and_restart(tmp_path):
     with TestClient(create_app(tmp_path, runtime_role='API')) as client:
         assert client.get(BASE).json()['settings']['enabled'] is False
-        assert client.post(BASE+'/requests', json={'idempotency_key': 'paused', 'kind': 'NEWS', 'basis': 'METHOD'}).status_code == 409
+        assert client.post(BASE+'/requests', json={'idempotency_key': 'paused', 'kind': 'NEWS', 'basis': 'METHOD'}).status_code == 403
         prepare(client); seed_news(client); configure(client)
         first, command = submit(client, 'first'); financial, _ = submit(client, 'financial', 'FINANCIAL')
         start(client)
@@ -247,6 +250,10 @@ def test_consumer_checkpoint_advances_without_reaging_sources_or_notifying_twice
             calls.append(items)
             return {item['fact_id']: {'prob_positive': .9, 'prob_negative': .1} for item in items}
         client.app.state.sentiment.worker = model
+        # METHOD worker uses an explicit METHOD reference, not developer-local weights.
+        import json
+        reference=json.loads(sentiment.REFERENCE.read_text())
+        monkeypatch.setattr(client.app.state.sentiment,'reference',lambda profile: ('METHOD-reference',reference))
         stamp['value'] = '2026-10-15T15:06:00+08:00'
         job, _ = submit(client, 'first-checkpoint'); start(client)
         first = wait(client, job)

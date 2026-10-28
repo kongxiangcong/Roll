@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.6.0 -- D:\dsh-proj\Roll\backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\dsh-proj\Roll\.scratch\worktrees\roll-unified\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 10 items
+
+backend\tests\application\test_observation_updates.py::test_existing_worker_cache_station_dedup_and_restart PASSED [ 10%]
+backend\tests\application\test_observation_updates.py::test_model_failure_keeps_news_and_financial_work_independent PASSED [ 20%]
+backend\tests\application\test_observation_updates.py::test_model_fingerprint_failure_still_publishes_saved_news[fingerprint] PASSED [ 30%]
+backend\tests\application\test_observation_updates.py::test_model_fingerprint_failure_still_publishes_saved_news[timeout] PASSED [ 40%]
+backend\tests\application\test_observation_updates.py::test_source_pause_cache_and_deadline_cancellation_are_receipted PASSED [ 50%]
+backend\tests\application\test_observation_updates.py::test_postclose_clock_queues_current_day_once_without_catchup PASSED [ 60%]
+backend\tests\application\test_observation_updates.py::test_word_revision_does_not_duplicate_notice_or_use_preconfigured_external_channel PASSED [ 70%]
+backend\tests\application\test_observation_updates.py::test_expired_original_source_cache_refreshes_through_existing_worker_once PASSED [ 80%]
+backend\tests\application\test_observation_updates.py::test_consumer_checkpoint_advances_without_reaging_sources_or_notifying_twice PASSED [ 90%]
+backend\tests\application\test_observation_updates.py::test_persisted_cancel_wins_over_concurrent_prepare_failure PASSED [100%]
+
+======================= 10 passed in 149.92s (0:02:29) ========================

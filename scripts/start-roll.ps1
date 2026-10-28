@@ -17,7 +17,7 @@ $DataDirectory = [IO.Path]::GetFullPath($DataDirectory)
 $logDirectory = Join-Path $DataDirectory 'logs'
 $receiptPath = Join-Path $logDirectory "services-$ApiPort-$WebPort.json"
 $apiUrl = "http://127.0.0.1:$ApiPort"
-$webUrl = "http://127.0.0.1:$WebPort"
+$webUrl = $apiUrl # Production frontend is served by the API, same origin.
 if ($ApiPort -eq $WebPort) { throw 'API and web ports must differ.' }
 
 function Get-Listener([int]$Port) {
@@ -65,7 +65,7 @@ function Show-Status {
             $worker = Read-JsonUrl "$apiUrl/api/reviews/health"
         } catch { }
     }
-    if ((Test-Identity $receipt.web) -and (@(Get-Listener $WebPort).OwningProcess -contains $receipt.web.pid)) {
+    if ((Test-Identity $receipt.api) -and (@(Get-Listener $ApiPort).OwningProcess -contains $receipt.api.pid)) {
         try { $webReady = (Invoke-WebRequest $webUrl -UseBasicParsing -TimeoutSec 3).StatusCode -eq 200 } catch { }
     }
     [pscustomobject]@{
@@ -100,11 +100,22 @@ if ($Stop) {
 }
 
 $python = Join-Path $sourceRoot 'backend/.venv/Scripts/python.exe'
-$vite = Join-Path $sourceRoot 'frontend/node_modules/vite/bin/vite.js'
-foreach ($path in $python, $vite) {
+$webDist = Join-Path $sourceRoot 'frontend/dist'
+$webIndex = Join-Path $webDist 'index.html'
+foreach ($path in $python, $webIndex) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Missing dependency: $path. Follow README installation instructions." }
 }
-$node = (Get-Command node -ErrorAction Stop).Source
+
+$manifestPath = Join-Path $webDist 'release.json'
+if (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Missing release manifest. Run scripts/install-roll.ps1.' }
+$manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+$lockHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $sourceRoot 'frontend/package-lock.json')).Hash.ToLowerInvariant()
+$indexHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $webIndex).Hash.ToLowerInvariant()
+if ($manifest.frontend_lock_sha256 -ne $lockHash -or $manifest.index_sha256 -ne $indexHash) { throw 'Build/lock fingerprint mismatch. Rebuild frontend.' }
+if (Get-Command git -ErrorAction SilentlyContinue) {
+    $head = & git -C $sourceRoot rev-parse HEAD
+    if ($LASTEXITCODE -eq 0 -and $manifest.source_commit -ne $head) { throw 'Frontend build belongs to another commit. Run scripts/install-roll.ps1.' }
+}
 if (-not $AksharePython -and -not $env:ROLL_AKSHARE_PYTHON) {
     $candidate = Join-Path $sourceRoot '.scratch/rce-runtime/akshare/Scripts/python.exe'
     if (Test-Path -LiteralPath $candidate -PathType Leaf) { $AksharePython = $candidate }
@@ -122,17 +133,18 @@ foreach ($path in $EnvironmentFile, $CodexAuthFile) {
 New-Item -ItemType Directory -Force -Path $logDirectory | Out-Null
 # Serialize launch attempts for this account directory. The application still owns its worker lease.
 $launchLock = [IO.File]::Open((Join-Path $logDirectory 'launcher.lock'), 'OpenOrCreate', 'ReadWrite', 'None')
-$environmentNames = @('ROLL_ENV', 'ROLL_DATA_DIR', 'ROLL_RUNTIME_ROLE', 'ROLL_API_PORT', 'ROLL_ENV_FILE', 'ROLL_CODEX_AUTH_FILE', 'ROLL_AKSHARE_PYTHON', 'ROLL_TRAFILATURA_PYTHON')
+$environmentNames = @('ROLL_ENV', 'ROLL_DATA_DIR', 'ROLL_RUNTIME_ROLE', 'ROLL_API_PORT', 'ROLL_ENV_FILE', 'ROLL_CODEX_AUTH_FILE', 'ROLL_AKSHARE_PYTHON', 'ROLL_TRAFILATURA_PYTHON', 'ROLL_WEB_DIST')
 $previous = @{}
 foreach ($name in $environmentNames) { $previous[$name] = [Environment]::GetEnvironmentVariable($name, 'Process') }
 try {
-    foreach ($entry in @(@{ role='api'; port=$ApiPort }, @{ role='web'; port=$WebPort })) {
+    foreach ($entry in @(@{ role='api'; port=$ApiPort })) {
         foreach ($listener in (Get-Listener $entry.port)) {
             if (-not (Test-Identity $receipt[$entry.role]) -or $listener.OwningProcess -ne $receipt[$entry.role].pid) {
                 throw "Port $($entry.port) is already occupied by a process not recorded by this launcher. No process was stopped."
             }
         }
     }
+    $env:ROLL_WEB_DIST = $webDist
     $env:ROLL_ENV = 'local'
     $env:ROLL_DATA_DIR = $DataDirectory
     $env:ROLL_API_PORT = [string]$ApiPort
@@ -164,12 +176,7 @@ try {
     $workerHealth = Read-JsonUrl "$apiUrl/api/reviews/health"
     $receipt.worker = Get-Identity $workerHealth.worker.host_owner.pid
     Save-Receipt
-    if (-not (Test-Identity $receipt.web)) {
-        $process = Start-Process $node -ArgumentList @(('"'+$vite+'"'),'--host','127.0.0.1','--port',"$WebPort",'--strictPort') -WorkingDirectory (Join-Path $sourceRoot 'frontend') -WindowStyle Hidden -RedirectStandardOutput (Join-Path $logDirectory "web-$stamp.out.log") -RedirectStandardError (Join-Path $logDirectory "web-$stamp.err.log") -PassThru
-        $receipt.web = Get-Identity $process.Id
-        Save-Receipt
-    }
-    Wait-Service { (Invoke-WebRequest $webUrl -UseBasicParsing -TimeoutSec 3).StatusCode -eq 200 } 'Web'
+    Wait-Service { (Invoke-WebRequest $webUrl -UseBasicParsing -TimeoutSec 3).StatusCode -eq 200 } 'Built web'
     Show-Status
 } finally {
     foreach ($name in $environmentNames) {

@@ -1,5 +1,7 @@
 # Implementation coordination checkpoint
 
+Current human authorization: **MODEL SENDING PAUSED**. The latest reply to the prior batch question was “保持离线，暂不发送”, superseding earlier sending permission. Four actual requests remain recorded; no further CODEX/OpenAI candidate, correction or chapter request is authorized until a new explicit human grant. The branch-unification work used only Git/local synthetic verification and did not change this pause.
+
 Updated 2026-10-28 (Asia/Shanghai). This file records checkout/coordination pointers; task Completion in issues/README.md remains authoritative.
 
 ## Explicit authorization received — bounded real batch active

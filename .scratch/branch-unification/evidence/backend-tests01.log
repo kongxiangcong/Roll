@@ -1,0 +1,147 @@
+.......................F.....................F....F....F.                [100%]
+================================== FAILURES ===================================
+______________ test_two_holdings_watch_and_local_failure_restart ______________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/local-integration-20261028/pytest01/test_two_holdings_watch_and_lo0')
+
+    def test_two_holdings_watch_and_local_failure_restart(tmp_path):
+        with TestClient(create_app(tmp_path,runtime_role='API')) as c:
+            draft=c.post('/api/account/drafts',json={'kind':'BASELINE','expected_account_version':0,'payload':{
+                'effective_at':'2026-10-07T10:00:00+08:00','source':'METHOD finite daily',
+                'cash_balance':'100000','broker_available':None,'broker_frozen':None,'withdrawable':None,
+                'positions':[{'instrument':i,'quantity':'100','sellable_quantity':None,'reference_cost':'10'} for i in ['SSE:600362','SZSE:000001']], 'permission_profile':[]}})
+            assert draft.status_code==201,draft.text
+            assert c.post('/api/account/confirm',json={'draft_id':draft.json()['draft_id'],'idempotency_key':'baseline'}).status_code==200
+            register(c,'SSE:600000','浦发银行','600000');enable_news(c)
+            async def supplier(instrument,output):
+                if instrument=='SZSE:000001':raise ValueError('METHOD one issuer failed')
+                result=rows_fixture([('20261014123451',instrument+'新闻',instrument+'公开事实')],output)
+                for item in result['items']:item['fields']['关键词']=instrument.split(':')[1]
+                return result
+            c.app.state.news.worker=supplier
+            jobs=[]
+            for instrument in ['SSE:600362','SZSE:000001','SSE:600000']:
+                base='/api/observation-updates/'+instrument
+                assert c.post(base+'/settings',json={'enabled':True,'expected_revision':1,'basis':'METHOD','news_postclose':True}).status_code==200
+                response=c.post(base+'/requests',json={'idempotency_key':'same-key','kind':'NEWS','basis':'METHOD','refresh_sources':True})
+                assert response.status_code==201,response.text
+                jobs.append(response.json())
+            start(c)
+            results=[wait(c,j) for j in jobs]
+            assert [j['status'] for j in results]==['COMPLETE','PARTIAL','COMPLETE'],results
+            assert len({j['job_id'] for j in results})==3
+            assert c.get('/api/account').json()['version']==1
+>           assert c.post('/api/observation-updates/SSE:600999/requests',json={'idempotency_key':'outside','kind':'NEWS','basis':'METHOD'}).status_code==403
+E           AssertionError: assert 409 == 403
+E            +  where 409 = <Response [409 Conflict]>.status_code
+E            +    where <Response [409 Conflict]> = post('/api/observation-updates/SSE:600999/requests', json={'basis': 'METHOD', 'idempotency_key': 'outside', 'kind': 'NEWS'})
+E            +      where post = <starlette.testclient.TestClient object at 0x000001DB42553CB0>.post
+
+backend\tests\application\test_finite_daily.py:44: AssertionError
+_ test_research_updates_use_existing_worker_queue_with_company_scope_and_explicit_retry _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/local-integration-20261028/pytest01/test_research_updates_use_exis0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DB4468EDB0>
+
+    def test_research_updates_use_existing_worker_queue_with_company_scope_and_explicit_retry(tmp_path, monkeypatch):
+        from roll.app import create_app
+        from fastapi.testclient import TestClient
+        from roll.market.directory import WatchCommand
+        from datetime import datetime, timezone
+        import threading
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE', raising=False)
+        app = create_app(tmp_path, runtime_role='API')
+        research = app.state.company_research
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        other = research.register(company('第二家公司', ['第二公司'], [dict(exchange='SZSE', code='000848', share_class='A', currency='CNY')]))
+        app.state.market.watch(WatchCommand(instrument='SZSE:000848', operation='ADD', expected_list_version=app.state.market.listing()['version']))
+        with TestClient(app) as client:
+            base = '/api/observation-updates/SZSE:000848'
+            settings = client.get(base).json()['settings']
+            assert client.post(base+'/settings', json=dict(enabled=True, expected_revision=settings['revision'], basis='Synthetic research schedule', research_postclose=True)).status_code == 200
+            command = dict(kind='RESEARCH', idempotency_key='archive1', basis='Synthetic archive-only check', refresh_sources=False)
+            response = client.post(base+'/requests', json=command)
+            assert response.status_code == 201, response.text
+            job = response.json()
+            app.state.observation_updates.work(datetime.now(timezone.utc), threading.Event())
+            saved = client.get('/api/observation-update-jobs/'+job['job_id']).json()
+            assert saved['status'] == 'COMPLETE', saved
+            observation = client.get(base).json()['observations'][0]
+            assert observation['payload']['company_id'] == other['company_id']
+            assert observation['payload']['snapshot_id'] is None
+            assert observation['payload']['network_check_performed'] is False
+            assert client.post(base+'/requests', json=command).json()['job_id'] == saved['job_id']
+            command['idempotency_key']='archive2'
+            repeated = client.post(base+'/requests', json=command).json()
+            app.state.observation_updates.work(datetime.now(timezone.utc), threading.Event())
+>           assert client.get('/api/observation-update-jobs/'+repeated['job_id']).json()['observation_id'] == saved['observation_id']
+E           AssertionError: assert None == 'a5a58c12-68dc-4b40-88e0-729877909a43'
+
+backend\tests\company_research\test_daily_research.py:144: AssertionError
+_ test_new_fact_freezes_a_bounded_analysis_and_model_unavailability_preserves_the_old_core _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/local-integration-20261028/pytest01/test_new_fact_freezes_a_bounde0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DB443E4730>
+
+    def test_new_fact_freezes_a_bounded_analysis_and_model_unavailability_preserves_the_old_core(tmp_path, monkeypatch):
+        from roll.app import create_app
+        from roll.market.directory import WatchCommand
+        from roll.runtime.observation_updates import UpdateSettings, UpdateRequest
+        from datetime import datetime, timezone
+        import threading
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE', str(tmp_path/'unconfigured'))
+        app=create_app(tmp_path,runtime_role='API')
+        research,updates=app.state.company_research,app.state.observation_updates
+        issuer=research.register(company())
+        snapshot=published(research,issuer)
+        _,new_fact=evidence(research,issuer,'New disclosed interruption challenges refining stability')
+        market=app.state.market
+        market.watch(WatchCommand(instrument='SSE:600362',operation='ADD',expected_list_version=market.listing()['version']))
+        updates.configure('SSE:600362',UpdateSettings(enabled=True,expected_revision=1,basis='Synthetic explicit research'))
+        job=updates.submit('SSE:600362',UpdateRequest(kind='RESEARCH',idempotency_key='new-fact',basis='Synthetic model-unavailable update'))
+        updates.work(datetime.now(timezone.utc),threading.Event())
+        saved=updates.get(job['job_id'])
+        assert saved['status']=='PARTIAL'
+        observation=updates.listing('SSE:600362')['observations'][0]
+        payload=observation['payload']
+        packet=research.analysis_input(payload['analysis_input_id'])
+        assert new_fact['version_id'] in packet['fact_version_ids']
+        assert packet['parent_snapshot_id']==snapshot['snapshot_id']
+        assert research.analysis_run(payload['analysis_run_id'])['status']=='UNAVAILABLE'
+        assert payload['model_executed'] is False
+        assert research.analysis_snapshot(snapshot['snapshot_id'])==snapshot
+        assert research.analysis_snapshots(issuer['company_id'])['total']==1
+>       assert 'RESEARCH:SSE:600362' in updates.listing('SSE:600362')['health']
+E       AssertionError: assert 'RESEARCH:SSE:600362' in {'RESEARCH': {'at': '2026-10-28T14:03:44.444652+00:00', 'error': ['OPERATING_ANALYSIS:UNAVAILABLE'], 'retry_after': '2026-10-28T14:08:44.444676+00:00'}}
+
+backend\tests\company_research\test_daily_research.py:268: AssertionError
+_ test_existing_observation_idempotency_survives_the_new_optional_retry_field _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/local-integration-20261028/pytest01/test_existing_observation_idem0')
+
+    def test_existing_observation_idempotency_survives_the_new_optional_retry_field(tmp_path):
+        from fastapi.testclient import TestClient
+        from roll.app import create_app
+        from roll.accounts.ledger import encode
+        import json,hashlib
+        with TestClient(create_app(tmp_path,runtime_role='API')) as client:
+            base='/api/observation-updates/SSE:600362'
+            assert client.post(base+'/settings',json=dict(enabled=True,expected_revision=1,basis='METHOD legacy command')).status_code==200
+            old=dict(idempotency_key='legacy-news',basis='METHOD old stored request',kind='NEWS',refresh_sources=False)
+            created=client.post(base+'/requests',json=old).json()
+            # Legacy persisted command: the optional07 retry field did not exist.
+            created['command']=old
+            with client.app.state.ledger.connection() as db:
+                db.execute('UPDATE observation_update_jobs SET command_hash=?,value=? WHERE id=?',
+>                   (hashlib.sha256(encode(old).encode()).hexdigest(),json.dumps(created),created['job_id']))
+                                                                                          ^^^^^^^^^^^^^^^^^
+E               KeyError: 'job_id'
+
+backend\tests\company_research\test_daily_research.py:386: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_finite_daily.py::test_two_holdings_watch_and_local_failure_restart
+FAILED backend\tests\company_research\test_daily_research.py::test_research_updates_use_existing_worker_queue_with_company_scope_and_explicit_retry
+FAILED backend\tests\company_research\test_daily_research.py::test_new_fact_freezes_a_bounded_analysis_and_model_unavailability_preserves_the_old_core
+FAILED backend\tests\company_research\test_daily_research.py::test_existing_observation_idempotency_survives_the_new_optional_retry_field
+4 failed, 53 passed in 280.90s (0:04:40)

@@ -1,3 +1,7 @@
+try:
+    from roll.market.observation_symbols import symbols
+except ModuleNotFoundError:
+    from observation_symbols import symbols
 """Pinned AKShare API with bounded raw-first anonymous transport in its own process."""
 import contextlib
 from datetime import date,datetime,timezone
@@ -33,10 +37,10 @@ def main(command):
         source_file=Path(package.origin).parent/'stock_feature/stock_three_report_em.py' if package else None
         if version('akshare')!=SDK_VERSION or source_file is None or hashlib.sha256(source_file.read_bytes()).hexdigest()!=SDK_SOURCE_SHA:
             raise ValueError('AKSHARE_VERSION_OR_SOURCE_MISMATCH')
-        if command['instrument']!='SSE:600362':raise ValueError('AKSHARE_FINANCIAL_SCOPE_NOT_ACCEPTED')
+        code, symbol, secucode = symbols(command['instrument'])
         supplement=command.get('statement','INCOME')=='SUPPLEMENT'
         allowed={'Index','zcfzbDateAjaxNew','zcfzbAjaxNew','xjllbDateAjaxNew','xjllbAjaxNew'} if supplement else {'Index','lrbDateAjaxNew','lrbAjaxNew'}
-        symbol='SH600362';used=0;selected=[]
+        used=0;selected=[]
         original_init=requests.Session.__init__;original_send=requests.Session.send
         def anonymous(session,*args,**kwargs):
             original_init(session,*args,**kwargs);session.trust_env=False
