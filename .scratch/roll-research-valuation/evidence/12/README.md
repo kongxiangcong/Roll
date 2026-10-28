@@ -1,5 +1,7 @@
 # 12 联合真实验收检查点
 
+最新本地[资本准备05](capital-prep05/README.md)：仅同已批准FY25年报字面新增35数字/10原文，公开API新副本冻结49facts/98190B与QUEUED source-only候选预览，exactSHA74f156b5...5989。原12materials逐项same、原51facts/input/c549/9797不变，明确遗漏清单与真实经济分类未知。0新增外发/0纠错，批次仍2/16；未发布估值/章节/PDF，Completion及A6/A7/A8不升级。
+
 2026-10-28 Asia/Shanghai。**Completion: blocked，整体未完成**。本票没有另改生产源码；统一review修复8dd639解决原P1/P3。人类已授权特定14+2批次，最新[authorized04](authorized04.md)记录实际2/16：Lulu exact候选BLOCKED、JCC exact经营分析COMPLETE/新core，Lulu章节与纠错均未执行；旧checkpoint03待授权叙述已被可信授权记录取代。新的经营研究、真实网页、受控升级及必要恢复分账，不用已有05估值复用或新BLOCKED替代A6/A7。
 
 本票新增实际来源、当前代码HTTP、真实网页新任务、重启及新目录恢复证据，详见[覆盖矩阵](coverage.md)、[最小差距与输入准备](readiness.md)、[运行/恢复交接](../../../../docs/research/company-research-usage.md)。未以旧证据目录整理、METHOD或新PARTIAL版本关闭本票。

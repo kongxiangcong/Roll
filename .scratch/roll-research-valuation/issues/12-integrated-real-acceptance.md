@@ -47,3 +47,5 @@ Spec: [v1.0](../spec.md) 第11、12节
 2026-10-28：实际联合检查点见[12证据](../evidence/12/README.md)、[A1–A10覆盖](../evidence/12/coverage.md)及[具体差距](../evidence/12/readiness.md)。已完成官方新资料取得、当前HTTP/真实网页新任务、无auth边界、重启与新目录恢复；11项METHOD通过，不当真实完整链。A6/A7真实完整链与A8两自然周期尚未通过，Completion保持blocked；最终review自动估值编排缺口由单独fix处理，修复合入后继续必要真实验收，不关闭本票。
 
 2026-10-28真实批次04：人类明确授权后实际2/16次，Lulu估值候选BLOCKED/未生成新估值，JCC经营分析COMPLETE并发布新共享core/真实网页可读；原报告/旧core不变，两次新输出必要隔离恢复通过。章节与纠错均0；自然周期0/2，Completion继续blocked。当前受控升级与来源policy/无auth持续worker恢复正常，精确证据见[authorized04](../evidence/12/authorized04.md)。
+
+2026-10-28 本地资本准备05：仅原FY25年报补字面stock与分类原文，公开新副本49facts/98190B、QUEUED/未执行候选SHA74f156b5...5989；原12材料/51事实/原任务不变，选择遗漏和真实未知均明示。参见[资本准备](../evidence/12/capital-prep05/README.md)。0新增model、预算仍2/16/纠错0，Completion blocked及真实缺口不变。
