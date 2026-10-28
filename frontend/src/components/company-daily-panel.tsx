@@ -12,6 +12,11 @@ type Update={settings:Settings;jobs:{job_id:string;status:string;command:{kind:s
 const labels:Record<string,string>={OPERATING_EVIDENCE:'经营证据变化',PRICE:'价格变化与条件要求',VALUATION_ASSUMPTION_OR_METHOD:'估值假设或方法变化'};
 const json=(value:unknown)=>JSON.stringify(value,null,2);
 
+async function snapshotWindow(companyId:string){
+ const list=await request<{snapshots:Snapshot[];total:number}>(`/company-research/companies/${companyId}/snapshots?limit=100`);
+ return list.total>100?await request<{snapshots:Snapshot[]}>(`/company-research/companies/${companyId}/snapshots?limit=100&offset=${list.total-100}`):list;
+}
+
 function HypothesisEvidence({hypothesis,facts}:{hypothesis:Hypothesis;facts:Daily['facts']}){
  return <>{([['支持证据',hypothesis.support_fact_version_ids??[]],['反证证据',hypothesis.counter_fact_version_ids??[]]] as const).map(([label,ids])=><div key={label}><strong>{label}</strong>{ids.length?<ul>{ids.map(id=>{const fact=facts?.find(f=>f.version_id===id);return <li key={id}>{fact?`${fact.value}；页 ${fact.page??'未知'}；材料 ${fact.material_id}；事实版本 ${id}`:`事实版本 ${id}（尚未取得可显示原文）`}</li>;})}</ul>:<p>本版未引用该类证据；不表示风险不存在。</p>}</div>)}</>;
 }
@@ -29,8 +34,7 @@ export function CompanyDailyPanel({instrument,pinnedSnapshotId,readOnly=false}:{
    if(identity.status!=='RESOLVED'||!identity.company){setError(identity.status==='AMBIGUOUS'?'公司身份存在歧义，请在公司底稿明确选择；不自动套用任一公司研究':'该证券尚未登记公司身份；已有量价研究仍可使用，请先建立可追溯公司映射');return;}
    const id=identity.company.company_id;
    const daily=await request<Daily>(`/company-research/companies/${id}/daily${pinnedSnapshotId?'?snapshot_id='+encodeURIComponent(pinnedSnapshotId):''}`);
-   const list=await request<{snapshots:Snapshot[];total:number}>(`/company-research/companies/${id}/snapshots?limit=100`);
-   const latest=list.total>100?await request<{snapshots:Snapshot[]}>(`/company-research/companies/${id}/snapshots?limit=100&offset=${list.total-100}`):list;
+   const latest=await snapshotWindow(id);
    if(active&&current===generation.current){setCompanyId(id);setValue(daily);setSelected(daily.snapshot?.snapshot_id??'');setVersions(latest.snapshots);}
   })().catch(e=>{if(active)setError(String(e));});
   return()=>{active=false;++generation.current;};
@@ -40,7 +44,7 @@ export function CompanyDailyPanel({instrument,pinnedSnapshotId,readOnly=false}:{
   const read=()=>request<Update>(`/observation-updates/${encodeURIComponent(instrument)}`).then(v=>{if(active)setUpdates(v);}).catch(e=>{if(active)setError(String(e));});
   void read();const timer=setInterval(()=>void read(),3000);return()=>{active=false;clearInterval(timer);};
  },[companyId,instrument,readOnly]);
- async function load(id:string){const current=generation.current;setBusy(true);setError('');try{const v=await request<Daily>(`/company-research/companies/${companyId}/daily${id?'?snapshot_id='+encodeURIComponent(id):''}`);const list=await request<{snapshots:Snapshot[];total:number}>(`/company-research/companies/${companyId}/snapshots?limit=100`);const latest=list.total>100?await request<{snapshots:Snapshot[]}>(`/company-research/companies/${companyId}/snapshots?limit=100&offset=${list.total-100}`):list;if(current===generation.current){setValue(v);setSelected(v.snapshot?.snapshot_id??'');setVersions(latest.snapshots);}}catch(e){if(current===generation.current)setError(String(e));}finally{if(current===generation.current)setBusy(false);}}
+ async function load(id:string){const current=generation.current;setBusy(true);setError('');try{const v=await request<Daily>(`/company-research/companies/${companyId}/daily${id?'?snapshot_id='+encodeURIComponent(id):''}`);const latest=await snapshotWindow(companyId);if(current===generation.current){setValue(v);setSelected(v.snapshot?.snapshot_id??'');setVersions(latest.snapshots);}}catch(e){if(current===generation.current)setError(String(e));}finally{if(current===generation.current)setBusy(false);}}
  async function configure(change:Partial<Settings>){if(!updates)return;const s=updates.settings;await request(`/observation-updates/${encodeURIComponent(instrument)}/settings`,{enabled:s.enabled,research_postclose:s.research_postclose??false,news_postclose:s.news_postclose??false,financial_postclose:s.financial_postclose??false,market_postclose:s.market_postclose??false,news_refresh:s.news_refresh??false,classify:s.classify??false,profile:s.profile??'legacy',...change,expected_revision:s.revision,basis:'用户配置有限公司名单的日常研究检查；不授予交易权限'});setUpdates(await request<Update>(`/observation-updates/${encodeURIComponent(instrument)}`));}
  async function update(){const current=generation.current;setBusy(true);setError('');setMessage('');try{if(updates&&!updates.settings.enabled)await configure({enabled:true});const job=await request<{job_id:string}>(`/observation-updates/${encodeURIComponent(instrument)}/requests`,{kind:'RESEARCH',refresh_sources:refreshSources,retry_rejected:retryRejected,idempotency_key:crypto.randomUUID(),basis:'用户检查已归档材料并按新增事实更新固定共享分析'});if(current===generation.current)setMessage('已提交研究更新任务 '+job.job_id+'；完成后点击读取最新共享版本。');}catch(e){if(current===generation.current)setError(String(e));}finally{if(current===generation.current)setBusy(false);}}
  return <section className="company-daily" aria-label="持续公司研究">

@@ -1,0 +1,18 @@
+......F.....................................................             [100%]
+================================== FAILURES ===================================
+_ test_public_report_refresh_collects_financial_facts_and_binds_new_partial_shared_snapshot _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv-fix-regression/test_public_report_refresh_col0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C17F578490>
+
+    def test_public_report_refresh_collects_financial_facts_and_binds_new_partial_shared_snapshot(tmp_path,monkeypatch):
+        import json
+        from fastapi.testclient import TestClient
+        from roll.app import create_app
+>       from test_company_research_sources import setup
+E       ModuleNotFoundError: No module named 'test_company_research_sources'
+
+backend\tests\company_research\test_report_pipeline.py:174: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_public_report_refresh_collects_financial_facts_and_binds_new_partial_shared_snapshot
+1 failed, 59 passed in 428.50s (0:07:08)
