@@ -15,4 +15,6 @@
 |A9只读概率边界|11特征可得性/缺失/协议回归|本票live保护metadata摘要相同，原11真实导出null/INCONCLUSIVE/0成熟均保留|PASS所查隔离副本保护边界；原生产SEALED内容没读，空集合不能冒充全库审计；无训练或概率提升结论|
 |A10重启、隔离备份恢复、hash|既有公共Backups/service边界|本票restart7稳定记录+新增原件；新rv12-restored01恢复15原件/2报告/2snapshot/新job/6文件和计算重放|PASS本次实际重启/正常启动恢复边界，0模型/外源调用|
 
+最新04补充：人类授权后的Lulu候选真实BLOCKED，无新估值/章节/PDF；JCC单次真实COMPLETE发布新core，实际5213网页能显式读新版本并固定引用进入报告入口。两次真实raw/run/core的独立恢复通过；自然worker经正常升级守卫受控重启、真实离线区间保留，仍0/2。实际只用2/16，不能把source/model通过加总成A2/A6/A7/A8通过，见authorized04.md。
+
 01–11原票证据分别位于相邻目录；本票不是将它们加总成全功能通过。A6/A7/A8未通过使Completion保持blocked。

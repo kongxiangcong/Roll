@@ -1,6 +1,6 @@
 # 12 联合真实验收检查点
 
-2026-10-28 Asia/Shanghai。**Completion: blocked，整体未完成**。本票没有另改生产源码；统一review修复已合入8dd639，原P1/P3经两focused verification确认解决。当前真实新queued job、exact候选wire、静态差异与待人类授权边界见[checkpoint03](checkpoint03-pending-human.md)。尚未发送新增模型请求，不用已有05估值复用路径替代新自动估值实证。
+2026-10-28 Asia/Shanghai。**Completion: blocked，整体未完成**。本票没有另改生产源码；统一review修复8dd639解决原P1/P3。人类已授权特定14+2批次，最新[authorized04](authorized04.md)记录实际2/16：Lulu exact候选BLOCKED、JCC exact经营分析COMPLETE/新core，Lulu章节与纠错均未执行；旧checkpoint03待授权叙述已被可信授权记录取代。新的经营研究、真实网页、受控升级及必要恢复分账，不用已有05估值复用或新BLOCKED替代A6/A7。
 
 本票新增实际来源、当前代码HTTP、真实网页新任务、重启及新目录恢复证据，详见[覆盖矩阵](coverage.md)、[最小差距与输入准备](readiness.md)、[运行/恢复交接](../../../../docs/research/company-research-usage.md)。未以旧证据目录整理、METHOD或新PARTIAL版本关闭本票。
 

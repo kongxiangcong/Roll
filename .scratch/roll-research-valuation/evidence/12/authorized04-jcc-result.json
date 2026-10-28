@@ -1,0 +1,234 @@
+{
+  "reservation": {
+    "number": 2,
+    "kind": "JCC_OPERATING_FIRST",
+    "command_sha256": "a10d0bfd5249b96fc7cd9af37e2a99fc92e5e3cc0f25334339fe6e0d3a4f208f",
+    "reserved_at": "2026-10-28T01:55:03.218876+00:00",
+    "status": "RESERVED_COUNTS_EVEN_IF_FAILURE"
+  },
+  "run": {
+    "acquisition_usage": {
+      "archived_bytes": 0,
+      "http_calls": 0,
+      "model_tool_result_bytes": 0,
+      "received_bytes": 0
+    },
+    "archives": [],
+    "backend": "CODEX",
+    "bootstrap_audit": {
+      "auth_mode": "chatgpt",
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "bridge": {
+      "name": "bundled-code-mode-host",
+      "runtime": "Rust/V8, no Node bridge",
+      "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+      "version": "0.161.0"
+    },
+    "call_usage": {
+      "host_tool_calls": 0,
+      "http_calls": 0,
+      "model_requests": 0,
+      "runtime_operations": 0,
+      "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+      "total": 0
+    },
+    "candidate_output_archive": {
+      "bytes": 9714,
+      "kind": "COMPANY_ANALYSIS_MODEL_OUTPUT",
+      "path": "raw/a11b11505b7afa850f9651a02cb9312f62e7a4d8cb0c02a48ce20a0c126a83ea.raw",
+      "sha256": "a11b11505b7afa850f9651a02cb9312f62e7a4d8cb0c02a48ce20a0c126a83ea"
+    },
+    "candidate_output_sha256": "a11b11505b7afa850f9651a02cb9312f62e7a4d8cb0c02a48ce20a0c126a83ea",
+    "code_hashes": {
+      "agents/codex_process.py": "e827bfbf152776a77bb0426c2f41042aa52d7367376de54e693eb818a9fa086a",
+      "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+      "agents/company_analysis_runtime.py": "d2777dff77ecabdc147054928a22078b0180c1475f0fd390a8a4be3264565b3d",
+      "research/company/analysis.py": "1ec5ee095554eb5b7f4e9837d34b30296db185b24ebb1bac1d5c1ab9433906ac",
+      "research/company/candidates.py": "707f6e32e45d47dd2f3e118a09731bc847842f12ba5ac8d40c87e767c054ef05",
+      "research/company/model_runtime.py": "2ba53bdacd4d3ff99a23ca06654fc137a842f2250a29180eff923ec9dd0a8a21"
+    },
+    "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+    "content_sha256": "0f2386d7365f6bb10103cc5ea3add61608f0aeb3c935d358d92a52d1be606355",
+    "created_at": "2026-10-28T01:56:05.180155+00:00",
+    "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+    "elapsed_seconds": 61.871,
+    "evidence_kind": "REAL_MODEL_ANALYSIS",
+    "finished_at": "2026-10-28T01:56:05.180120+00:00",
+    "formal_authority": false,
+    "host_owner": {
+      "creation_ticks": 134376261004996003,
+      "pid": 56308
+    },
+    "input_id": "4b2f8962-30d7-447e-a9db-ae2f077b783f",
+    "instruction_sources": [],
+    "limits": {
+      "runtime_operations": 8,
+      "timeout_seconds": 90,
+      "tool_calls": 0
+    },
+    "model": "gpt-6.1-sol",
+    "model_executed": true,
+    "model_provider": "openai",
+    "process": {
+      "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+      "environment_keys": [
+        "CODEX_HOME",
+        "COMSPEC",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PATH",
+        "PYTHONUTF8",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "isolated_cwd": true,
+      "isolated_home": true,
+      "observed_pids": [
+        53708,
+        52156,
+        23500,
+        40736
+      ],
+      "owner_nonce": "65bb02ad-84c4-47ad-9c60-26ed9a6b1d53",
+      "pids_before_cleanup": [
+        53708,
+        52156,
+        40736
+      ],
+      "remaining_pids": [],
+      "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-a572ee2d-62da-428f-a655-a48c1e32d988-ys7c6p5_",
+      "temporary_directory_removed": true,
+      "worker_pid": 53708
+    },
+    "resolved_model": "gpt-6.1-sol",
+    "run_id": "a572ee2d-62da-428f-a655-a48c1e32d988",
+    "runtime_audit": {
+      "auth_mode": "chatgpt",
+      "disabled_skills": 38,
+      "effective_config": {
+        "approval_policy": "never",
+        "features": {
+          "api_key_cyber_access_programs": false,
+          "api_key_model_discovery": true,
+          "apps": false,
+          "auth_elicitation": true,
+          "background_paginated_rollout_migration": false,
+          "browser_use": false,
+          "browser_use_external": false,
+          "code_mode": false,
+          "code_mode_host": true,
+          "code_mode_only": false,
+          "codex_apps_mcp_2026_07_28": false,
+          "computer_use": false,
+          "goals": false,
+          "hooks": false,
+          "image_generation": false,
+          "in_app_browser": false,
+          "mcp_2026_07_28": false,
+          "memories": false,
+          "mentions_v2": true,
+          "multi_agent": false,
+          "multi_agent_v2": false,
+          "network_proxy": null,
+          "plugins": false,
+          "remote_control": false,
+          "remote_plugin": false,
+          "shell_snapshot": false,
+          "shell_tool": false,
+          "skill_mcp_dependency_install": false,
+          "tool_suggest": false,
+          "view_image": false,
+          "windows_sandbox_service": false
+        },
+        "layers": [
+          "user",
+          "system"
+        ],
+        "mcp_servers": 0,
+        "sandbox_mode": "read-only",
+        "skills_instructions": false,
+        "web_search": "disabled"
+      },
+      "enabled_skills": 0,
+      "initialize": {
+        "platformFamily": "windows",
+        "platformOs": "windows",
+        "serverInfo": null,
+        "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+      },
+      "sdk_versions": {
+        "openai-codex": "0.161.0",
+        "openai-codex-cli-bin": "0.161.0"
+      }
+    },
+    "runtime_completion": {
+      "error_info": null,
+      "status": "completed"
+    },
+    "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+    "runtime_items": [
+      {
+        "id": "01a18037-fa35-71d3-9e9e-33383968316f",
+        "item_type": "userMessage",
+        "tool": null
+      },
+      {
+        "id": "msg_0040845f71209f5d016ae156019ed081989c42ff95daf93ed8",
+        "item_type": "agentMessage",
+        "tool": null
+      }
+    ],
+    "runtime_thread_id": "01a18037-ea12-7382-8e59-6aaa18537df3",
+    "runtime_turn_id": "01a18037-ea2f-7243-bbf7-e630174a7981",
+    "schema_version": 1,
+    "sdk_runtime_version": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    },
+    "snapshot_id": "34f7ffea-f855-48b8-9a87-d1e33c4569b1",
+    "started_at": "2026-10-28T01:55:03.290340+00:00",
+    "status": "COMPLETE",
+    "task_kind": "COMPANY_OPERATING_ANALYSIS",
+    "token_usage": {
+      "last": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 0,
+        "inputTokens": 33659,
+        "outputTokens": 2928,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 36587
+      },
+      "modelContextWindow": 475000,
+      "total": {
+        "cacheWriteInputTokens": 0,
+        "cachedInputTokens": 0,
+        "inputTokens": 33659,
+        "outputTokens": 2928,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 36587
+      }
+    },
+    "tool_schema_fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "tools": []
+  },
+  "original_snapshot_unchanged": true,
+  "global_worker_auth_changed": false,
+  "source_network_calls": 0,
+  "account_version": 0,
+  "finished_at": "2026-10-28T01:56:05.245666+00:00"
+}
