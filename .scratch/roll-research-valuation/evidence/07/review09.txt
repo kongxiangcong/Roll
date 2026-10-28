@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_archive_batches_progress_beyond_twenty_without_rewriting_the_operating_snapshot _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-review09/test_archive_batches_progress_0')
+
+    def test_archive_batches_progress_beyond_twenty_without_rewriting_the_operating_snapshot(tmp_path):
+        import json
+        research = service(tmp_path)
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        # Seed the external legacy source store with explicitly synthetic archived records.
+        with research.ledger.connection() as db:
+            db.execute('CREATE TABLE financial_income_facts(id TEXT PRIMARY KEY,instrument TEXT,value TEXT)')
+        for index in range(25):
+            original = research.evidence.archive(f'METHOD statement source row {index}'.encode(), 'METHOD_ARCHIVE', source_url='https://issuer.example/statement')
+            upstream = dict(instrument='SSE:600362',source_id='fixture-financial',source_url='https://issuer.example/statement',
+                raw_sha256=original['sha256'],evidence_kind='METHOD_CASE',report_period='2025-12-31',statement='INCOME',
+                period_basis='YEAR_TO_DATE',unit='YUAN',currency='CNY',statement_scope='CONSOLIDATED',
+>               first_received_at=original['received_at'])
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'received_at'
+
+backend\tests\company_research\test_daily_research.py:192: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_archive_batches_progress_beyond_twenty_without_rewriting_the_operating_snapshot
+1 failed, 5 deselected in 6.49s

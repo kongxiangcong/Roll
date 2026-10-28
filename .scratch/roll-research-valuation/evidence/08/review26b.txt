@@ -1,0 +1,32 @@
+....F                                                                    [100%]
+================================== FAILURES ===================================
+_ test_external_valuation_legacy_default_role_cannot_support_issuer_coverage __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-review26b/test_external_valuation_legacy0')
+
+    def test_external_valuation_legacy_default_role_cannot_support_issuer_coverage(tmp_path):
+        from roll.research.company import MaterialCommand,FactCommand
+        from test_analysis_snapshots import freeze,candidate
+        research=service(tmp_path);issuer=research.register(company())
+        material=research.import_material(MaterialCommand(**material_input(issuer['company_id'])),b'METHOD external rate source; issuer subject is legacy metadata, not evidence of issuer disclosure')
+>       fact=research.add_fact(FactCommand(company_id=issuer['company_id'],material_id=material['material_id'],business='EXTERNAL_VALUATION_INPUT',metric='risk_free',value='.04',unit='ratio',currency=None,scope='CONSOLIDATED',period_start='2025-01-01',period_end='2025-12-31',page='JSON /rate',change_reason='METHOD external context'))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_report_coverage.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:343: in add_fact
+    fail('FACT_BASIS_MISMATCH', 'Fact differs from declared material basis; explicit derived basis required', fields=mismatches)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'FACT_BASIS_MISMATCH'
+reason = 'Fact differs from declared material basis; explicit derived basis required'
+status = 422, context = {'fields': ['unit', 'currency']}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'FACT_BASIS_MISMATCH', 'reason': 'Fact differs from declared material basis; explicit derived basis required', 'context': {'fields': ['unit', 'currency']}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_coverage.py::test_external_valuation_legacy_default_role_cannot_support_issuer_coverage
+1 failed, 4 passed in 29.57s

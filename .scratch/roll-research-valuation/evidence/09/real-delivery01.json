@@ -1,0 +1,2118 @@
+{
+  "artifacts": {
+    "input": {
+      "bytes": 609292,
+      "kind": "REPORT_FROZEN_INPUT",
+      "path": "raw/bdb2252f4f9aab4d24dfbd8b98d17a50dc603c579ee3092bd5a9ea59c2b6a77e.raw",
+      "sha256": "bdb2252f4f9aab4d24dfbd8b98d17a50dc603c579ee3092bd5a9ea59c2b6a77e"
+    },
+    "markdown": {
+      "bytes": 134450,
+      "kind": "COMPANY_REPORT_MARKDOWN",
+      "path": "raw/3970917631045c9c5a0ed88651849a8f2775b8a2d90711b8c0bdd2ebbc032720.raw",
+      "sha256": "3970917631045c9c5a0ed88651849a8f2775b8a2d90711b8c0bdd2ebbc032720"
+    },
+    "pdf": {
+      "bytes": 358980,
+      "kind": "REPORT_PDF",
+      "path": "raw/19effd8f4a01f6eaa6c46345d98ef9d86b4fe7acd444796db38a09c0facf5117.pdf",
+      "sha256": "19effd8f4a01f6eaa6c46345d98ef9d86b4fe7acd444796db38a09c0facf5117"
+    },
+    "references": {
+      "bytes": 142001,
+      "kind": "REPORT_REFERENCE_INDEX",
+      "path": "raw/e9efdd5cc0f16a0a108788bb920973db067ea0361a53d32a9a3b57b9f3b4b826.json",
+      "sha256": "e9efdd5cc0f16a0a108788bb920973db067ea0361a53d32a9a3b57b9f3b4b826"
+    },
+    "valuation": {
+      "bytes": 403222,
+      "kind": "REPORT_FIXED_VALUATION_INDEX",
+      "path": "raw/4a31a03d4f0feb793d0cb80fcfe111acf39eb907c7a86d1d66373b11f9acfd73.json",
+      "sha256": "4a31a03d4f0feb793d0cb80fcfe111acf39eb907c7a86d1d66373b11f9acfd73"
+    }
+  },
+  "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+  "completeness": "PARTIAL",
+  "content_sha256": "e3e70060cd042812520098febc710d9d01fa98eb9b5f6433394124875513db16",
+  "core_sha256": "37b71966590cb1cb8d0c2898c4bace4c7ec1bc3b216018d2f941204f22dcac1d",
+  "created_at": "2026-10-27T15:02:17.921127+00:00",
+  "delivery_id": "bad86a8b-68ce-4ad8-9cfa-35820cdfdcce",
+  "formal_authority": false,
+  "idempotency_key": "actual09-01",
+  "input_id": "33ee7a98-3a94-479a-8eca-131264e6a07a",
+  "input_sha256": "bdb2252f4f9aab4d24dfbd8b98d17a50dc603c579ee3092bd5a9ea59c2b6a77e",
+  "manifest_archive": {
+    "bytes": 62228,
+    "kind": "REPORT_DELIVERY_MANIFEST",
+    "path": "raw/b36268edae4a0af7deb8d3c22b9f12c4711f85dda2a545fed148a086e6a898e8.json",
+    "sha256": "b36268edae4a0af7deb8d3c22b9f12c4711f85dda2a545fed148a086e6a898e8"
+  },
+  "parent_delivery_id": null,
+  "quality": {
+    "completeness": "PARTIAL",
+    "host_rules": [
+      {
+        "applies": true,
+        "evidence": [
+          "A/B/C原文主题覆盖 {'A': 'UNKNOWN', 'B': 'UNKNOWN', 'C': 'UNKNOWN'}；无已绑定逐字证据不填完整"
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "A/B/C原文主题覆盖 {'A': 'UNKNOWN', 'B': 'UNKNOWN', 'C': 'UNKNOWN'}；无已绑定逐字证据不填完整",
+        "rule_id": "roll-sourceful-appendices",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "固定snapshot/core，章节不能回写或另算"
+        ],
+        "outcome": "PASS",
+        "reason": "固定snapshot/core，章节不能回写或另算",
+        "rule_id": "roll-shared-core",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "请求来源状态 NOT_REQUESTED；分析/引文/底稿阶段错误 []；失败不刷新成功或旧观点核查时间"
+        ],
+        "outcome": "PASS",
+        "reason": "请求来源状态 NOT_REQUESTED；分析/引文/底稿阶段错误 []；失败不刷新成功或旧观点核查时间",
+        "rule_id": "roll-requested-source-and-analysis",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "十章及投资人/质疑候选分别有实际受限生成记录；失败章逐项保留"
+        ],
+        "outcome": "PASS",
+        "reason": "十章及投资人/质疑候选分别有实际受限生成记录；失败章逐项保留",
+        "rule_id": "roll-chapters",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "速览、四部分十节、估值九子节、附录A–K由宿主组装"
+        ],
+        "outcome": "PASS",
+        "reason": "速览、四部分十节、估值九子节、附录A–K由宿主组装",
+        "rule_id": "roll-structure",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "数值只允许固定事实占位注入；页和JSON/表坐标区分，页码未知不伪造"
+        ],
+        "outcome": "PASS",
+        "reason": "数值只允许固定事实占位注入；页和JSON/表坐标区分，页码未知不伪造",
+        "rule_id": "roll-numeric-original-coordinates",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "数值单位/尺度必须由固定字段或原件单位证据支持；未知不能由币种猜尺度"
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "数值单位/尺度必须由固定字段或原件单位证据支持；未知不能由币种猜尺度",
+        "rule_id": "roll-literal-unit-evidence",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "明确用途 CURRENT_PRICING 按固定review安全呈现；基准条件研究非PIT，当前blocked仍不显示当前可用价格。"
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "明确用途 CURRENT_PRICING 按固定review安全呈现；基准条件研究非PIT，当前blocked仍不显示当前可用价格。",
+        "rule_id": "roll-economic-use",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "原件事实覆盖年数：{'industry_consumption': 0, 'industry_exports': 0, 'industry_imports': 0, 'industry_inventory': 0, 'industry_price': 0, 'industry_production': 0}；近五年产消进出口库存价格缺项保留UNKNOWN"
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "原件事实覆盖年数：{'industry_consumption': 0, 'industry_exports': 0, 'industry_imports': 0, 'industry_inventory': 0, 'industry_price': 0, 'industry_production': 0}；近五年产消进出口库存价格缺项保留UNKNOWN",
+        "rule_id": "roll-industry-history",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "有来源且披露口径同业 0、国际上市 0；未完成不能以候选名凑数"
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "有来源且披露口径同业 0、国际上市 0；未完成不能以候选名凑数",
+        "rule_id": "roll-peer-basis",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "实际生成同口径来源时序图 0；分布 []"
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "实际生成同口径来源时序图 0；分布 []",
+        "rule_id": "roll-real-charts",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "经济用途、行业时序、同业对照和每个有效章节来源分别核查；文字与机械通过不构成独立事实审计"
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "经济用途、行业时序、同业对照和每个有效章节来源分别核查；文字与机械通过不构成独立事实审计",
+        "rule_id": "roll-economic-and-factual-substance",
+        "severity": "fail"
+      },
+      {
+        "applies": true,
+        "evidence": [
+          {
+            "disposition": "QUARANTINE",
+            "fact_version_ids": [
+              "71f77529-6e52-4808-8471-1165ac0ca616"
+            ],
+            "factual_endorsement": false,
+            "index": 3,
+            "location": "PARAGRAPH",
+            "missing_basis": "仍缺会计政策或报表范围变动的原始披露；该金额也不能单独证明终端库存见底",
+            "output_sha256": "884788af372232002368d357983ac9722825b9c9a380cb69ddf568b1084cb6ac",
+            "reason": "存货现金流调节额不能证明报表口径发生变化，原段对此的解释缺乏依据",
+            "section_id": "1"
+          },
+          {
+            "disposition": "QUARANTINE",
+            "fact_version_ids": [
+              "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4",
+              "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+              "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+            ],
+            "factual_endorsement": false,
+            "index": 0,
+            "location": "PARAGRAPH",
+            "missing_basis": "固定假设和年度路径已列第九节；其合理性仍须原始经营证据核查，未形成新的共享经营假设集合",
+            "output_sha256": "135a2d62a0e4b8df118e46b0eafe4cbdd3883367ea683c826274094ac082d11a",
+            "reason": "该章节当时未取得模型参数，不能据此断定整份报告缺少预测假设和情景参数",
+            "section_id": "3"
+          },
+          {
+            "disposition": "QUARANTINE",
+            "fact_version_ids": [
+              "1a171fae-762e-4905-aac1-9e3a781c6e2f"
+            ],
+            "factual_endorsement": false,
+            "index": 6,
+            "location": "PARAGRAPH",
+            "missing_basis": "固定假设和年度路径已列第九节；其合理性仍须原始经营证据核查，未形成新的共享经营假设集合",
+            "output_sha256": "135a2d62a0e4b8df118e46b0eafe4cbdd3883367ea683c826274094ac082d11a",
+            "reason": "该章节当时未取得模型参数，不能据此断定整份报告缺少预测假设和情景参数",
+            "section_id": "3"
+          },
+          {
+            "disposition": "QUARANTINE",
+            "fact_version_ids": [],
+            "factual_endorsement": false,
+            "index": 0,
+            "location": "GAP",
+            "missing_basis": "固定假设和年度路径已列第九节；其合理性仍须原始经营证据核查，未形成新的共享经营假设集合",
+            "output_sha256": "135a2d62a0e4b8df118e46b0eafe4cbdd3883367ea683c826274094ac082d11a",
+            "reason": "该章节当时未取得模型参数，不能据此断定整份报告缺少预测假设和情景参数",
+            "section_id": "3"
+          }
+        ],
+        "outcome": "UNKNOWN",
+        "reason": "Retained raw model statements were quarantined; no factual endorsement",
+        "rule_id": "semantic-quarantine",
+        "severity": "fail"
+      }
+    ],
+    "reference_rules": [
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "ledger is None",
+            "if_line": 341
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-342",
+        "severity": "fail",
+        "source_gate": "Gate 1",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 342,
+        "source_name_expression": "\"取数台账存在\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "02-工作底稿/取数台账.md"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "取数台账存在",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-344",
+        "severity": "fail",
+        "source_gate": "Gate 1",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 344,
+        "source_name_expression": "\"取数台账存在\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "本体披露／行业时序／产业链／同业对照／估值序列／研报／官方监管"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "台账七类齐全",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-370",
+        "severity": "fail",
+        "source_gate": "Gate 1",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 370,
+        "source_name_expression": "\"台账七类齐全\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "各行状态已标"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "状态列无空位",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-372",
+        "severity": "fail",
+        "source_gate": "Gate 1",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 372,
+        "source_name_expression": "\"状态列无空位\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "缺「已试路径／可继续查渠道／需要条件」中至少一行：行业时序、产业链、同业对照、研报、官方监管"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "缺口三行齐全",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-373",
+        "severity": "fail",
+        "source_gate": "Gate 1",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 373,
+        "source_name_expression": "\"缺口三行齐全\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "按独立原件根计数，排除模板、派生工件、METHOD与缓存副本；实际 8"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "原始资料已落盘",
+        "outcome": "PASS",
+        "reason": "Roll原件档案适配；保留原规则等级",
+        "rule_id": "ddr-check-gates-378",
+        "severity": "fail",
+        "source_gate": "Gate 1",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 378,
+        "source_name_expression": "\"原始资料已落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "所有输入原件均引用共享材料档案；派生章节和提取内容不计原件"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "原始资料只有原件",
+        "outcome": "PASS",
+        "reason": "Roll原件档案适配；保留原规则等级",
+        "rule_id": "ddr-check-gates-383",
+        "severity": "warn",
+        "source_gate": "Gate 1",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 383,
+        "source_name_expression": "\"原始资料只有原件\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "draft is None",
+            "if_line": 430
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-431",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 431,
+        "source_name_expression": "\"成稿存在\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "中文字 23,346（触发线 15,000）"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "篇幅触发线",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-434",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 434,
+        "source_name_expression": "\"篇幅触发线\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "land is None",
+            "if_line": 439
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-440",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 440,
+        "source_name_expression": "f\"排雷表 {tag} {need} 项\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未知排雷项 28",
+          {
+            "bytes": 7521,
+            "kind": "REPORT_DERIVED_SCREENING_WORKPAPER",
+            "path": "raw/4103410d8005fbc6e2ce8b4a15c489b8245a1b1e3e6201ae77a2ecd38bb1a17f.raw",
+            "sha256": "4103410d8005fbc6e2ce8b4a15c489b8245a1b1e3e6201ae77a2ecd38bb1a17f"
+          }
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "排雷表 A 股 28 项",
+        "outcome": "UNKNOWN",
+        "reason": "逐项宿主/原披露依据核查；UNKNOWN行不计实质完成，HIT并不影响报告覆盖完成",
+        "rule_id": "ddr-check-gates-443",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 443,
+        "source_name_expression": "f\"排雷表 {tag} {need} 项\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未知排雷项 28",
+          {
+            "bytes": 7521,
+            "kind": "REPORT_DERIVED_SCREENING_WORKPAPER",
+            "path": "raw/4103410d8005fbc6e2ce8b4a15c489b8245a1b1e3e6201ae77a2ecd38bb1a17f.raw",
+            "sha256": "4103410d8005fbc6e2ce8b4a15c489b8245a1b1e3e6201ae77a2ecd38bb1a17f"
+          }
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "成稿附录 D 逐项成行",
+        "outcome": "UNKNOWN",
+        "reason": "逐项宿主/原披露依据核查；UNKNOWN行不计实质完成，HIT并不影响报告覆盖完成",
+        "rule_id": "ddr-check-gates-447",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 447,
+        "source_name_expression": "f\"成稿附录 D 逐项成行\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "0 家，其中国际同业 0 家（下限 5 家含国际 2 家）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "附录 E 可比公司",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-454",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 454,
+        "source_name_expression": "\"附录 E 可比公司\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "51 行"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "附录 G 溯源逐数字成行",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-459",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 459,
+        "source_name_expression": "\"附录 G 溯源逐数字成行\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "0 张（下限 8）；图太少，见 references/06 第五节"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "正文图数",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-464",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 464,
+        "source_name_expression": "\"正文图数\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "缺第 3、4、6、8 节的图（变量／周期位置／财务／股价复盘）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "必画图在位",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-468",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 468,
+        "source_name_expression": "\"必画图在位\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "0 行（正文图 0 张）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "附录 F 图表索引逐张成行",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-475",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 475,
+        "source_name_expression": "\"附录 F 图表索引逐张成行\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "关键结论 0 处｜风险 0 处"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "重点标成对",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-481",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 481,
+        "source_name_expression": "\"重点标成对\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "共 0 处（上限 30）"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "标注不超上限",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-482",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 482,
+        "source_name_expression": "\"标注不超上限\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "0 处（4~7）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "速览页标注密度",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-487",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 487,
+        "source_name_expression": "\"速览页标注密度\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "见 references/13 第十节"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "速览页股价节奏坐标",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-491",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 491,
+        "source_name_expression": "\"速览页股价节奏坐标\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "bk and BACKSOLVED_PAT.search(bk.group(1))",
+            "if_line": 496
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-497",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 497,
+        "source_name_expression": "\"必记数字不含反推值\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "速览必记数字未混入反推得来的临界值"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "必记数字不含反推值",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-501",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 501,
+        "source_name_expression": "\"必记数字不含反推值\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "关键结论 0 处｜风险 0 处（一侧过重）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "两侧标注相当",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-506",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 506,
+        "source_name_expression": "\"两侧标注相当\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": true,
+            "expression": "min(key, risk) == 0 or max(key, risk) / max(min(key, risk), 1) > 3",
+            "if_line": 505
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-509",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 509,
+        "source_name_expression": "\"两侧标注相当\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "见 references/11 第二节"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "多空对垒表",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-512",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 512,
+        "source_name_expression": "\"多空对垒表\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "见 references/11 第六节"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "未能回答的关键问题",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-514",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 514,
+        "source_name_expression": "\"未能回答的关键问题\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "见 references/11 第一节"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "速览页最大证伪点",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-516",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 516,
+        "source_name_expression": "\"速览页最大证伪点\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "见 references/09"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "四层判定表含专家角色",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-520",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 520,
+        "source_name_expression": "\"四层判定表含专家角色\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "02-工作底稿/估值参照带.md"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "估值参照带落盘",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-523",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 523,
+        "source_name_expression": "\"估值参照带落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "有估值参照带却没有 02-工作底稿/模型自检.md（见 references/12 第六节）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "模型自检落盘",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-528",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 528,
+        "source_name_expression": "\"模型自检落盘\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": true,
+            "expression": "ms is None",
+            "if_line": 527
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-533",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 533,
+        "source_name_expression": "\"模型自检落盘\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "cycle_hit",
+            "if_line": 539
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-541",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 541,
+        "source_name_expression": "\"参照带脚本复算留档\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "hpr is None",
+            "if_line": 547
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-548",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 548,
+        "source_name_expression": "\"历史股价复盘落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "宽表合计 1 行，中文字 1448；宽表仅 1 行（下限 3）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "历史股价复盘落盘",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-569",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 569,
+        "source_name_expression": "\"历史股价复盘落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "周期路径已写明（A 类／B 类）"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "周期路径已标明",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-577",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 577,
+        "source_name_expression": "\"周期路径已标明\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "措辞与底稿的路径判定一致"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "周期路径与措辞一致",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-589",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 589,
+        "source_name_expression": "\"周期路径与措辞一致\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "topped",
+            "if_line": 596
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-600",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 600,
+        "source_name_expression": "\"已涨完一轮须答见顶\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "topped2",
+            "if_line": 608
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-619",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 619,
+        "source_name_expression": "\"中继与见顶两侧对照\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "见顶结论带了增速与供给投放读数"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "见顶结论有增速与投放读数",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-629",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 629,
+        "source_name_expression": "\"见顶结论有增速与投放读数\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "成稿未出现按单位计量的自算数字"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "单位数核查",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-639",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 639,
+        "source_name_expression": "\"单位数核查\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": true,
+            "expression": "not unit_hits",
+            "if_line": 638
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-644",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 644,
+        "source_name_expression": "\"单位数核查\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": true,
+            "expression": "not unit_hits",
+            "if_line": 638
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-657",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 657,
+        "source_name_expression": "\"单位数核查\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": true,
+            "expression": "not unit_hits",
+            "if_line": 638
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-660",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 660,
+        "source_name_expression": "\"单位数核查\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": true,
+            "expression": "not unit_hits",
+            "if_line": 638
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-664",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 664,
+        "source_name_expression": "\"单位数核查\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "含字数／行数／标注处数的机械核对结果"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "自检记录是数字不是空话",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-670",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 670,
+        "source_name_expression": "\"自检记录是数字不是空话\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "0 处（上限 9）"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "破折号插入语",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-675",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 675,
+        "source_name_expression": "\"破折号插入语\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "加粗只用于词与短语"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无整句加粗",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-677",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 677,
+        "source_name_expression": "\"无整句加粗\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "过渡词未超次"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "过渡词各不超一次",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-680",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 680,
+        "source_name_expression": "\"过渡词各不超一次\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "本报告／本节／笔者 9 处"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "自我指涉克制",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-683",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 683,
+        "source_name_expression": "\"自我指涉克制\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见讲解文标记"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无讲解文标记",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-685",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 685,
+        "source_name_expression": "\"无讲解文标记\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "直引号 0 个"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "中文引号用全角",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-688",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 688,
+        "source_name_expression": "\"中文引号用全角\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "推导链／样本区间／假设清单／局限说明（见 references/05）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "参照带四项齐备",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-689",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 689,
+        "source_name_expression": "\"参照带四项齐备\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "超线：兑现×6（超 1.2/万字）、护城河×3（超 1.0/万字）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "无 AI 腔用词",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-704",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 704,
+        "source_name_expression": "\"无 AI 腔用词\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见主导侧／共振／双杀／双击"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无圈内行话",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-710",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 710,
+        "source_name_expression": "\"无圈内行话\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "倍数都跟着指标名"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "「倍数」不单用",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-715",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 715,
+        "source_name_expression": "\"「倍数」不单用\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "字母缩写都能找到中文名"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "缩写首次出现已展开",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-720",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 720,
+        "source_name_expression": "\"缩写首次出现已展开\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见状态行式的字段串"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无机器腔（状态行）",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-732",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 732,
+        "source_name_expression": "\"无机器腔（状态行）\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见取角与排章节的自述"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无过程自述",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-744",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 744,
+        "source_name_expression": "\"无过程自述\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "1 处（如「底稿」）：正文不把读者指去底稿、规则文档或别的文件——判据与结论写进正文，完整版放附录（references/00 第六节·报告要自足）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "正文不指向底稿与规则",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-763",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 763,
+        "source_name_expression": "\"正文不指向底稿与规则\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "位置结论未见进度式说法"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "位置结论带方向",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-777",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 777,
+        "source_name_expression": "\"位置结论带方向\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见编号式波次"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "不写编号式波次",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-783",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 783,
+        "source_name_expression": "\"不写编号式波次\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "表头未见圈内词"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "表头不用圈内词",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-795",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 795,
+        "source_name_expression": "\"表头不用圈内词\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "apx_h is None",
+            "if_line": 801
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-802",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 802,
+        "source_name_expression": "\"附录 H 术语表\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "7 行（下限 15）：正文用到的缩写、财务词、行业词要逐条成行，三列（术语 ／ 一句话解释 ／ 首次出现的位置）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "附录 H 术语表",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-814",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 814,
+        "source_name_expression": "\"附录 H 术语表\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "honor",
+            "if_line": 821
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-823",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 823,
+        "source_name_expression": "\"榜单类指标须核口径\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未出现 NPS／满意度／名次类表述"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "榜单类指标须核口径",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-827",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 827,
+        "source_name_expression": "\"榜单类指标须核口径\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "21 段超过 400 字（最长 908 字）：疑似一段多事，回去读一遍——该拆的按内容拆，同一件事被拆碎的还要并回去（references/02 第五节）"
+        ],
+        "mechanical_outcome": "FAIL",
+        "name": "段落体检",
+        "outcome": "FAIL",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-833",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 833,
+        "source_name_expression": "\"段落体检\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见“上表显示”类复述句"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "表格后不复述",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-840",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 840,
+        "source_name_expression": "\"表格后不复述\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见买入／卖出／目标价／仓位类表述"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无投资建议措辞",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-854",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 854,
+        "source_name_expression": "\"无投资建议措辞\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见评级／仓位类表述"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无软性越界措辞",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-856",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 856,
+        "source_name_expression": "\"无软性越界措辞\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "全文未出现底本对照"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "无方法论底本字段",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-859",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 859,
+        "source_name_expression": "\"无方法论底本字段\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "正文开头与附录 I 各一处"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "免责声明在位",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-860",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 860,
+        "source_name_expression": "\"免责声明在位\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见抽取副本行号式引用"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "引用坐标落在原件上",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-863",
+        "severity": "warn",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 863,
+        "source_name_expression": "\"引用坐标落在原件上\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "apx_i is None",
+            "if_line": 869
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-870",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 870,
+        "source_name_expression": "\"附录 I 是免责声明\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "附录 I 放的是免责声明，不是待核实清单"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "附录 I 是免责声明",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-874",
+        "severity": "fail",
+        "source_gate": "Gate 2",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 874,
+        "source_name_expression": "\"附录 I 是免责声明\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "text is None",
+            "if_line": 884
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-885",
+        "severity": "fail",
+        "source_gate": "Gate 3",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 885,
+        "source_name_expression": "\"投资人视角复核落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "中文字 1546"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "复核记录有实质内容",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-888",
+        "severity": "fail",
+        "source_gate": "Gate 3",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 888,
+        "source_name_expression": "\"复核记录有实质内容\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "表格行 9"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "逐条给结论与证据",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-890",
+        "severity": "fail",
+        "source_gate": "Gate 3",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 890,
+        "source_name_expression": "\"逐条给结论与证据\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见空泛通过语"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "非橡皮图章",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-892",
+        "severity": "fail",
+        "source_gate": "Gate 3",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 892,
+        "source_name_expression": "\"非橡皮图章\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "qtext is None",
+            "if_line": 897
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-898",
+        "severity": "fail",
+        "source_gate": "Gate 3.5",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 898,
+        "source_name_expression": "\"反向质疑落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "02-工作底稿/反向质疑.md"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "反向质疑落盘",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-900",
+        "severity": "fail",
+        "source_gate": "Gate 3.5",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 900,
+        "source_name_expression": "\"反向质疑落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "中文字 2054（下限 500）"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "质疑记录有实质内容",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-902",
+        "severity": "fail",
+        "source_gate": "Gate 3.5",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 902,
+        "source_name_expression": "\"质疑记录有实质内容\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "前提清单｜死因清单｜激励地图｜空头反证（第五问的产物是 02-工作底稿/单位数核查.md，在 Gate 2 核对）"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "四张表齐全",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-904",
+        "severity": "fail",
+        "source_gate": "Gate 3.5",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 904,
+        "source_name_expression": "\"四张表齐全\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "未见空泛通过语"
+        ],
+        "mechanical_outcome": "PASS",
+        "name": "非橡皮图章",
+        "outcome": "PASS",
+        "reason": "冻结参考表达式的实际机械结果；不代表事实核实",
+        "rule_id": "ddr-check-gates-909",
+        "severity": "fail",
+        "source_gate": "Gate 3.5",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 909,
+        "source_name_expression": "\"非橡皮图章\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "draft and honor_hits(draft)",
+            "if_line": 913
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-916",
+        "severity": "fail",
+        "source_gate": "Gate 3.5",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 916,
+        "source_name_expression": "\"榜单类指标核查落盘\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          {
+            "actual": false,
+            "expression": "draft and honor_hits(draft)",
+            "if_line": 913
+          }
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "实际条件选择另一分支；本调用点未执行，不记PASS",
+        "rule_id": "ddr-check-gates-924",
+        "severity": "fail",
+        "source_gate": "Gate 3.5",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 924,
+        "source_name_expression": "\"榜单类指标核查落盘\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "宿主路径相对于包定位；章节无任意文件读写"
+        ],
+        "outcome": "PASS",
+        "reason": "宿主路径相对于包定位；章节无任意文件读写",
+        "rule_id": "ddr-check-gates-960",
+        "severity": "fail",
+        "source_gate": "可移植性",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 960,
+        "source_name_expression": "\"无绝对路径与家目录路径\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "使用项目声明的Python依赖与既有CODEX探测"
+        ],
+        "outcome": "PASS",
+        "reason": "使用项目声明的Python依赖与既有CODEX探测",
+        "rule_id": "ddr-check-gates-962",
+        "severity": "fail",
+        "source_gate": "可移植性",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 962,
+        "source_name_expression": "\"不依赖本机私有运行时\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "没有注册或执行参考SKILL及其他skill"
+        ],
+        "outcome": "PASS",
+        "reason": "没有注册或执行参考SKILL及其他skill",
+        "rule_id": "ddr-check-gates-972",
+        "severity": "warn",
+        "source_gate": "可移植性",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 972,
+        "source_name_expression": "\"无其他 skill 硬依赖\""
+      },
+      {
+        "applies": false,
+        "evidence": [
+          "Roll应用不发布skill，frontmatter不适用"
+        ],
+        "outcome": "NOT_APPLICABLE",
+        "reason": "Roll应用不发布skill，frontmatter不适用",
+        "rule_id": "ddr-check-gates-977",
+        "severity": "fail",
+        "source_gate": "可移植性",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 977,
+        "source_name_expression": "\"SKILL.md frontmatter 合规\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "Roll公开报告API文档定义环境、边界与复现"
+        ],
+        "outcome": "PASS",
+        "reason": "Roll公开报告API文档定义环境、边界与复现",
+        "rule_id": "ddr-check-gates-978",
+        "severity": "fail",
+        "source_gate": "可移植性",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 978,
+        "source_name_expression": "\"README 在位\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "缺证据/模型不可用明确PARTIAL并保留错误与冻结输入"
+        ],
+        "outcome": "PASS",
+        "reason": "缺证据/模型不可用明确PARTIAL并保留错误与冻结输入",
+        "rule_id": "ddr-check-gates-979",
+        "severity": "fail",
+        "source_gate": "可移植性",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 979,
+        "source_name_expression": "\"降级路径已写明\""
+      },
+      {
+        "applies": true,
+        "evidence": [
+          "本次实际调用报告宿主check_quality入口并逐条登记"
+        ],
+        "outcome": "PASS",
+        "reason": "本次实际调用报告宿主check_quality入口并逐条登记",
+        "rule_id": "ddr-check-gates-980",
+        "severity": "fail",
+        "source_gate": "可移植性",
+        "source_hash": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb",
+        "source_line": 980,
+        "source_name_expression": "\"机械校验入口\""
+      }
+    ],
+    "scope": "MECHANICAL_AND_HOST_REFERENCE_CHECKS_NOT_INDEPENDENT_FACTUAL_AUDIT",
+    "self_check": "中文字 23346\n字数达到原触发线；来源、经济与语义覆盖仍须分别检查。\n章节 1：有受限候选，仍需核对事实\n章节 2：有受限候选，仍需核对事实\n章节 3：有受限候选，仍需核对事实\n章节 4：有受限候选，仍需核对事实\n章节 5：有受限候选，仍需核对事实\n章节 6：有受限候选，仍需核对事实\n章节 7：有受限候选，仍需核对事实\n章节 8：有受限候选，仍需核对事实\n章节 9：有受限候选，仍需核对事实\n章节 10：有受限候选，仍需核对事实\n章节 REVIEW：有受限候选，仍需核对事实\n章节 CHALLENGE：有受限候选，仍需核对事实\n来源数据图数 0；未造图凑数\n未知排雷项 28"
+  },
+  "render_error": null,
+  "renderer": {
+    "font_sha256": "1526ac24375f51f6eb73bc2d3f8072dbe4a80a3a65217677c9d9a84f67dab2ab",
+    "pages": 43,
+    "reportlab_version": "4.4.9",
+    "request_sha256": "bafd243895aadbc13db8edeb6e67506d14405fd1e470d8820c0de9773aa96a91",
+    "source_archive": {
+      "bytes": 9897,
+      "kind": "REPORT_PDF_RENDERER_SOURCE",
+      "path": "raw/ff25640016cf4be283440714d89211ad1bd82faa61469d943cf41f930bd70e05.py",
+      "sha256": "ff25640016cf4be283440714d89211ad1bd82faa61469d943cf41f930bd70e05"
+    },
+    "timeout_seconds": 45.0,
+    "version": "roll-report-pdf-1"
+  },
+  "report_id": "b9cfb2a0-8f93-516a-a4cd-7b7801fd7911",
+  "report_sha256": "3b2a1f7286b5a1addbf3444ad98dbe0ba656fad4881a5c3aa14e7276281b7a39",
+  "request_sha256": "67a2f03bd3c93e12105f509f3e23db585d78d1767f0a6f8cf703facfcbe9c5d2",
+  "schema_version": 1,
+  "snapshot_id": "7a430e8b-4172-4598-af21-6fe8600b6b93",
+  "status": "COMPLETE",
+  "template": {
+    "assets": [
+      {
+        "archive": {
+          "bytes": 60605,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/e70f979eed3ea3b2addf13dc48821527b2cdbd6d1465a7017f979d04993adb7f.raw",
+          "sha256": "e70f979eed3ea3b2addf13dc48821527b2cdbd6d1465a7017f979d04993adb7f"
+        },
+        "bytes": 60605,
+        "path": "references/00-铁律与偏好.md",
+        "sha256": "e70f979eed3ea3b2addf13dc48821527b2cdbd6d1465a7017f979d04993adb7f"
+      },
+      {
+        "archive": {
+          "bytes": 19808,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/1645853e07a15043e96ebadc5ed20d99456ac49f0a7ae6ea89435282a541488a.raw",
+          "sha256": "1645853e07a15043e96ebadc5ed20d99456ac49f0a7ae6ea89435282a541488a"
+        },
+        "bytes": 19808,
+        "path": "references/01-公司类型判定与模块装配.md",
+        "sha256": "1645853e07a15043e96ebadc5ed20d99456ac49f0a7ae6ea89435282a541488a"
+      },
+      {
+        "archive": {
+          "bytes": 31603,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/176425bcf992f5b186b50b5b45a0ee894526c7aa920dcdad7b3cf1879d6453fb.raw",
+          "sha256": "176425bcf992f5b186b50b5b45a0ee894526c7aa920dcdad7b3cf1879d6453fb"
+        },
+        "bytes": 31603,
+        "path": "references/02-问题链与报告结构.md",
+        "sha256": "176425bcf992f5b186b50b5b45a0ee894526c7aa920dcdad7b3cf1879d6453fb"
+      },
+      {
+        "archive": {
+          "bytes": 35992,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/55064344693c7924fe07c7821e770118f9ad345af23166c47408c9437b61abe1.raw",
+          "sha256": "55064344693c7924fe07c7821e770118f9ad345af23166c47408c9437b61abe1"
+        },
+        "bytes": 35992,
+        "path": "references/03-数据源地图.md",
+        "sha256": "55064344693c7924fe07c7821e770118f9ad345af23166c47408c9437b61abe1"
+      },
+      {
+        "archive": {
+          "bytes": 11972,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/84f962cff9e48ddaaf81f8c8b8fc736da34b9efbd3e3a0296f3a4fb9e463e104.raw",
+          "sha256": "84f962cff9e48ddaaf81f8c8b8fc736da34b9efbd3e3a0296f3a4fb9e463e104"
+        },
+        "bytes": 11972,
+        "path": "references/04-排雷清单.md",
+        "sha256": "84f962cff9e48ddaaf81f8c8b8fc736da34b9efbd3e3a0296f3a4fb9e463e104"
+      },
+      {
+        "archive": {
+          "bytes": 27993,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/43a52ef41952edc40e842d2720de458fb8cae2a1e728b58f610b16b4b34fc863.raw",
+          "sha256": "43a52ef41952edc40e842d2720de458fb8cae2a1e728b58f610b16b4b34fc863"
+        },
+        "bytes": 27993,
+        "path": "references/05-估值模型库.md",
+        "sha256": "43a52ef41952edc40e842d2720de458fb8cae2a1e728b58f610b16b4b34fc863"
+      },
+      {
+        "archive": {
+          "bytes": 35072,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/52ee35a3d71f1ed3585997136623429af5b96807e1e55e6e76018af9d6891fc0.raw",
+          "sha256": "52ee35a3d71f1ed3585997136623429af5b96807e1e55e6e76018af9d6891fc0"
+        },
+        "bytes": 35072,
+        "path": "references/06-成稿与PDF交付.md",
+        "sha256": "52ee35a3d71f1ed3585997136623429af5b96807e1e55e6e76018af9d6891fc0"
+      },
+      {
+        "archive": {
+          "bytes": 13025,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/8c0be63c3baca4ba774cd4e1a9e962f792c5c221186ed814df42f20e2cc7d415.raw",
+          "sha256": "8c0be63c3baca4ba774cd4e1a9e962f792c5c221186ed814df42f20e2cc7d415"
+        },
+        "bytes": 13025,
+        "path": "references/07-市场规模测算与分行业估值.md",
+        "sha256": "8c0be63c3baca4ba774cd4e1a9e962f792c5c221186ed814df42f20e2cc7d415"
+      },
+      {
+        "archive": {
+          "bytes": 39939,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/e64bb86cfcfda0333d5a6636ea0d7c15fc243878e1dbaf57d19a0e6e04acdac4.raw",
+          "sha256": "e64bb86cfcfda0333d5a6636ea0d7c15fc243878e1dbaf57d19a0e6e04acdac4"
+        },
+        "bytes": 39939,
+        "path": "references/08-产业周期与择时.md",
+        "sha256": "e64bb86cfcfda0333d5a6636ea0d7c15fc243878e1dbaf57d19a0e6e04acdac4"
+      },
+      {
+        "archive": {
+          "bytes": 23946,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/e26e1697fb24a7608011ba7679f566c4a5c9df520215ee1ee15db5543ca9eaa4.raw",
+          "sha256": "e26e1697fb24a7608011ba7679f566c4a5c9df520215ee1ee15db5543ca9eaa4"
+        },
+        "bytes": 23946,
+        "path": "references/09-行业专家视角.md",
+        "sha256": "e26e1697fb24a7608011ba7679f566c4a5c9df520215ee1ee15db5543ca9eaa4"
+      },
+      {
+        "archive": {
+          "bytes": 10150,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/aea40c1bba8ab44cf578715464bdc38d484f1ce59ada2ed3a20a6d0f50895558.raw",
+          "sha256": "aea40c1bba8ab44cf578715464bdc38d484f1ce59ada2ed3a20a6d0f50895558"
+        },
+        "bytes": 10150,
+        "path": "references/10-投资人视角复核.md",
+        "sha256": "aea40c1bba8ab44cf578715464bdc38d484f1ce59ada2ed3a20a6d0f50895558"
+      },
+      {
+        "archive": {
+          "bytes": 26592,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/7c0acfa7925edc7a7803a25e40bf2e9c27251b75ce89b91e16f732aa9b4f0f50.raw",
+          "sha256": "7c0acfa7925edc7a7803a25e40bf2e9c27251b75ce89b91e16f732aa9b4f0f50"
+        },
+        "bytes": 26592,
+        "path": "references/11-反向质疑与遗漏排查.md",
+        "sha256": "7c0acfa7925edc7a7803a25e40bf2e9c27251b75ce89b91e16f732aa9b4f0f50"
+      },
+      {
+        "archive": {
+          "bytes": 16844,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/df8636cadef85c8a192f770ea901d75aab7b086ca4ccca606d65bb3953672c54.raw",
+          "sha256": "df8636cadef85c8a192f770ea901d75aab7b086ca4ccca606d65bb3953672c54"
+        },
+        "bytes": 16844,
+        "path": "references/12-模型自检与交叉验证.md",
+        "sha256": "df8636cadef85c8a192f770ea901d75aab7b086ca4ccca606d65bb3953672c54"
+      },
+      {
+        "archive": {
+          "bytes": 22616,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/f8e7069ce8ffaaa96ec37d3824321abe5b33d7818415227dcb06a323c2277c10.raw",
+          "sha256": "f8e7069ce8ffaaa96ec37d3824321abe5b33d7818415227dcb06a323c2277c10"
+        },
+        "bytes": 22616,
+        "path": "references/13-历史股价复盘.md",
+        "sha256": "f8e7069ce8ffaaa96ec37d3824321abe5b33d7818415227dcb06a323c2277c10"
+      },
+      {
+        "archive": {
+          "bytes": 29966,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/84fe565c2f0d30aa9672727a9f40a3e54ab8c175bd3c46fab690e9b6ed768fcd.raw",
+          "sha256": "84fe565c2f0d30aa9672727a9f40a3e54ab8c175bd3c46fab690e9b6ed768fcd"
+        },
+        "bytes": 29966,
+        "path": "references/14-反AI文稿.md",
+        "sha256": "84fe565c2f0d30aa9672727a9f40a3e54ab8c175bd3c46fab690e9b6ed768fcd"
+      },
+      {
+        "archive": {
+          "bytes": 7182,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/915b618cf2b65059117ab86b775d9461849ba47b747541d6a9ea782fd4b33ac4.raw",
+          "sha256": "915b618cf2b65059117ab86b775d9461849ba47b747541d6a9ea782fd4b33ac4"
+        },
+        "bytes": 7182,
+        "path": "references/15-基本面估值计算与接入.md",
+        "sha256": "915b618cf2b65059117ab86b775d9461849ba47b747541d6a9ea782fd4b33ac4"
+      },
+      {
+        "archive": {
+          "bytes": 13550,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8.raw",
+          "sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8"
+        },
+        "bytes": 13550,
+        "path": "scripts/fundamental_valuation.py",
+        "sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8"
+      },
+      {
+        "archive": {
+          "bytes": 59614,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb.raw",
+          "sha256": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb"
+        },
+        "bytes": 59614,
+        "path": "scripts/check_gates.py",
+        "sha256": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb"
+      },
+      {
+        "archive": {
+          "bytes": 38086,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/02763189dc83c982d58068493727025ca6bbeb5d6684a607d3086556579eb0f1.raw",
+          "sha256": "02763189dc83c982d58068493727025ca6bbeb5d6684a607d3086556579eb0f1"
+        },
+        "bytes": 38086,
+        "path": "scripts/md_to_pdf.py",
+        "sha256": "02763189dc83c982d58068493727025ca6bbeb5d6684a607d3086556579eb0f1"
+      },
+      {
+        "archive": {
+          "bytes": 27055,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/a529b3e02bb9ecdbefbaf35520133ad2e7b3a31089025cb06b9dca71ddace8ec.raw",
+          "sha256": "a529b3e02bb9ecdbefbaf35520133ad2e7b3a31089025cb06b9dca71ddace8ec"
+        },
+        "bytes": 27055,
+        "path": "scripts/cycle_valuation.py",
+        "sha256": "a529b3e02bb9ecdbefbaf35520133ad2e7b3a31089025cb06b9dca71ddace8ec"
+      },
+      {
+        "archive": {
+          "bytes": 29227,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/bafae73fda326d60b001f3b768db1793f7eb0115e4e40b7acd113ca25272457b.raw",
+          "sha256": "bafae73fda326d60b001f3b768db1793f7eb0115e4e40b7acd113ca25272457b"
+        },
+        "bytes": 29227,
+        "path": "scripts/validate_jiangxi_copper.py",
+        "sha256": "bafae73fda326d60b001f3b768db1793f7eb0115e4e40b7acd113ca25272457b"
+      },
+      {
+        "archive": {
+          "bytes": 5954,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/0d442a2d7de957aca59b4c1f6f2ab441cec53d96c49ead97bbfda20f38aaec79.raw",
+          "sha256": "0d442a2d7de957aca59b4c1f6f2ab441cec53d96c49ead97bbfda20f38aaec79"
+        },
+        "bytes": 5954,
+        "path": "tests/test_fundamental_valuation.py",
+        "sha256": "0d442a2d7de957aca59b4c1f6f2ab441cec53d96c49ead97bbfda20f38aaec79"
+      },
+      {
+        "archive": {
+          "bytes": 1179,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/ec1a536535639af3d5c85cd7a3c876784f439f39e10c20f004b814cc9065b036.raw",
+          "sha256": "ec1a536535639af3d5c85cd7a3c876784f439f39e10c20f004b814cc9065b036"
+        },
+        "bytes": 1179,
+        "path": "examples/valuation-assumptions.json",
+        "sha256": "ec1a536535639af3d5c85cd7a3c876784f439f39e10c20f004b814cc9065b036"
+      },
+      {
+        "archive": {
+          "bytes": 6281,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/a5bffecf05f603814253347aef82aa7a116eb1d3679a9de297a1d466a922d730.raw",
+          "sha256": "a5bffecf05f603814253347aef82aa7a116eb1d3679a9de297a1d466a922d730"
+        },
+        "bytes": 6281,
+        "path": "examples/jiangxi-copper-2025-facts.json",
+        "sha256": "a5bffecf05f603814253347aef82aa7a116eb1d3679a9de297a1d466a922d730"
+      },
+      {
+        "archive": {
+          "bytes": 3534,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca.raw",
+          "sha256": "fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca"
+        },
+        "bytes": 3534,
+        "path": "LICENSE",
+        "sha256": "fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca"
+      },
+      {
+        "archive": {
+          "bytes": 1084,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484.raw",
+          "sha256": "dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484"
+        },
+        "bytes": 1084,
+        "path": "equity-research-LICENSE.txt",
+        "sha256": "dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484"
+      },
+      {
+        "archive": {
+          "bytes": 1028,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a.raw",
+          "sha256": "707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a"
+        },
+        "bytes": 1028,
+        "path": "THIRD_PARTY_NOTICES.md",
+        "sha256": "707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a"
+      }
+    ],
+    "gate_map_archive": {
+      "bytes": 61933,
+      "kind": "REPORT_GATE_MAP",
+      "path": "raw/6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401.raw",
+      "sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401"
+    },
+    "gate_map_sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401",
+    "manifest_sha256": "d00b827b702487e69254a4f8d2d9508bf71bfcf363f8c0fa24351b82a6b4682f",
+    "structure_sha256": "238f636c8f7952e3e3645a3b84ad61a6ef630029d6f6e9ea8a8d092405067f56",
+    "template_id": "roll-company-research-v1",
+    "version": "08.2"
+  }
+}

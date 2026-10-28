@@ -69,10 +69,30 @@ def test_critical_data_rejected(field, value):
 def test_unknown_model_reference_cannot_publish():
     material = {'sources': [{'source_id': 'sh.600362'}]}
     output = {'material_sha256': hashlib.sha256(encode(material).encode()).hexdigest(), 'bias': '中性', 'summary': 'fixture',
+              'research_comparison': {'snapshot_id': None, 'relationship': 'NO_RESEARCH', 'explanation': 'No company research in this packet'},
               'evidence': [{'source_id': 'invented', 'reason': 'fixture'}], 'counterevidence': ['fixture'],
               'change_conditions': ['fixture'], 'limitations': ['fixture']}
     with pytest.raises(ValueError, match='ASSESSMENT_UNKNOWN_CITATION'):
         publish(None, {}, material, {}, encode(output))
+
+
+def test_model_comparison_references_the_fixed_shared_snapshot_and_rejects_another_version():
+    material = {'sources': [{'source_id': 'sz.000848'}], 'as_of':'2026-10-27T03:00:00+08:00',
+        'market_data_as_of':'2026-10-26', 'valid_until':'2026-10-27T15:00:00+08:00',
+        'company_research': {'snapshot': {'snapshot_id':'fixed-version', 'core_sha256':'saved-core'}}}
+    output = dict(material_sha256=hashlib.sha256(encode(material).encode()).hexdigest(), bias='偏空',summary='Synthetic technical view',
+        evidence=[dict(source_id='sz.000848',reason='Synthetic price evidence')],counterevidence=['Synthetic countercase'],
+        change_conditions=['New verified evidence'], limitations=['Unverified research interpretation'],
+        research_comparison=dict(snapshot_id='other-version',relationship='TENSION',explanation='Synthetic operating conditions and short-term price direction differ'))
+    with pytest.raises(ValueError, match='ASSESSMENT_RESEARCH_SNAPSHOT_MISMATCH'):
+        publish(None, {}, material, {}, encode(output))
+    output['research_comparison']['snapshot_id']='fixed-version'
+    run={}
+    publish(None, run, material, {}, encode(output))
+    assert run['assessment']['research_comparison']['relationship']=='TENSION'
+    assert run['assessment']['basis_as_of']=='2026-10-27T03:00:00+08:00'
+    assert run['assessment']['market_data_as_of']=='2026-10-26'
+    assert material['company_research']['snapshot']['core_sha256']=='saved-core'
 
 
 def test_failure_keeps_results_and_restart_reflection(tmp_path, monkeypatch):

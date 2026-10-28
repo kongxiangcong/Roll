@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_concurrent_same_export_key_has_one_immutable_result ___________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv11-red06/test_concurrent_same_export_ke0')
+
+    def test_concurrent_same_export_key_has_one_immutable_result(tmp_path):
+        from concurrent.futures import ThreadPoolExecutor
+        from threading import Barrier
+        from roll.research.company.features import FeatureExportCommand
+        research=service(tmp_path)
+        issuer=research.register(company())
+        snapshot=published(research,issuer)
+        command=FeatureExportCommand(snapshot_id=snapshot['snapshot_id'],observation_at=current_time(),idempotency_key='concurrent')
+        barrier=Barrier(4)
+        def submit(_):
+            barrier.wait()
+            return research.features.export(command)
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            exports=list(pool.map(submit,range(4)))
+>       assert len({e['feature_snapshot_id'] for e in exports})==1
+E       AssertionError: assert 4 == 1
+E        +  where 4 = len({'0ce7b7cf-8b6f-42f1-b893-61ce9a1abcdc', '3fa38b94-74a4-4457-8b43-7f509db2a4ab', 'd6586ca6-b929-4f0e-ad33-4d0abd472114', 'f26d0737-4311-4c34-aa0e-ca524d6cad10'})
+
+backend\tests\company_research\test_research_features.py:175: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_research_features.py::test_concurrent_same_export_key_has_one_immutable_result
+1 failed, 5 deselected in 10.86s

@@ -1,0 +1,552 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 0,
+    "http_calls": 0,
+    "model_tool_result_bytes": 0,
+    "received_bytes": 0
+  },
+  "archives": [],
+  "backend": "CODEX",
+  "bootstrap_audit": {
+    "auth_mode": "chatgpt",
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "bridge": {
+    "name": "bundled-code-mode-host",
+    "runtime": "Rust/V8, no Node bridge",
+    "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+    "version": "0.161.0"
+  },
+  "call_usage": {
+    "host_tool_calls": 0,
+    "http_calls": 0,
+    "model_requests": 0,
+    "runtime_operations": 0,
+    "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+    "total": 0
+  },
+  "candidate_output_archive": {
+    "bytes": 7157,
+    "kind": "REPORT_CHAPTER_MODEL_OUTPUT",
+    "path": "raw/135a2d62a0e4b8df118e46b0eafe4cbdd3883367ea683c826274094ac082d11a.raw",
+    "sha256": "135a2d62a0e4b8df118e46b0eafe4cbdd3883367ea683c826274094ac082d11a"
+  },
+  "code_hashes": {
+    "agents/codex_process.py": "904cad5f9b33273351dedffb39008daff70297c6bf9d368a2faca665df5acc61",
+    "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+    "agents/company_report_runtime.py": "9478e977d96551d97f30460223c223b5c0231ac75376ee37fe9ccee6e1506749",
+    "research/company/report_archive.py": "0bc6cd9be0a929d37f6231787952bc3715f7872a43b0c87cf029ec66831b4c86",
+    "research/company/report_data.py": "084d5b22874ac8723d6479f67fff4ab31ec9e5a6bb4b6dc7dbd7b8f080b6ea23",
+    "research/company/report_integrity.py": "66c47b2895078d464664c527b8dacbfe94c01afd5c4ffbd78e180083d0f9f450",
+    "research/company/report_quality.py": "47d57d310c1d9f61e1190c8a86703ebeaea06c57c0065737b632affa808cf01a",
+    "research/company/report_quote_worker.py": "e728167530941481745554f96611d72c69a3186bb77f027853d1c985ad418643",
+    "research/company/report_quotes.py": "7ebec8202fabe6a3ba87e333be3e5b4c09a2bb38de1bf32c0a6bae0333745813",
+    "research/company/report_runtime.py": "1ee67d9511804f7ea7476e84f99ebe334effd7d9e939c15796a593f51ede91da",
+    "research/company/report_sources.py": "b880a40ca146141a165e2f205a785ded5a1e19f66847a578b9a28e9cf6ba7321",
+    "research/company/report_template.py": "6a35b7d51d8f61e50c7b7873f78653af62f05425e2bc3ab1021d88f6f11502b6",
+    "research/company/report_workpapers.py": "31d1463add3841fc282a8b6124969a98edc13103eda5578550216f8a47fe7267",
+    "research/company/reports.py": "805e872378081caba97166551ad90348c9df4d3ccbf8e8241a9f90d3bd170eda"
+  },
+  "command_archive": {
+    "bytes": 181451,
+    "kind": "REPORT_CHAPTER_EXACT_COMMAND",
+    "path": "raw/cc01b9fd6fc594e97627b677a490acc62990ede0115911e9f9ac00b3be5e6dab.raw",
+    "sha256": "cc01b9fd6fc594e97627b677a490acc62990ede0115911e9f9ac00b3be5e6dab"
+  },
+  "command_sha256": "cc01b9fd6fc594e97627b677a490acc62990ede0115911e9f9ac00b3be5e6dab",
+  "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+  "content_sha256": "006a558c091d8b1e2783d4992dc21e97f3595d718a02688e28070a03ebd1b734",
+  "created_at": "2026-10-26T22:32:15.617855+00:00",
+  "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+  "elapsed_seconds": 63.357,
+  "evidence_kind": "REAL_MODEL_CHAPTER",
+  "finished_at": "2026-10-26T22:32:15.617808+00:00",
+  "formal_authority": false,
+  "host_owner": {
+    "creation_ticks": 134375273676881515,
+    "pid": 23596
+  },
+  "input_id": "33ee7a98-3a94-479a-8eca-131264e6a07a",
+  "input_sha256": "bdb2252f4f9aab4d24dfbd8b98d17a50dc603c579ee3092bd5a9ea59c2b6a77e",
+  "instruction_sources": [],
+  "instructions_sha256": "0c7dd09e4028b8a902f8ea73517ae340239664d4f6b6f3205e6ab129a51eb045",
+  "job_id": "82629305-575a-45b7-bf25-d6b0b03de028",
+  "limits": {
+    "runtime_operations": 8,
+    "timeout_seconds": 90,
+    "tool_calls": 0
+  },
+  "model": "gpt-6.1-sol",
+  "model_executed": true,
+  "model_provider": "openai",
+  "output_schema_sha256": "f817c5191b7bb87d3f14f63efecc5d272e026f59c8738d77c9e4cdd8fa1e4fae",
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      28396,
+      58428,
+      58120,
+      22540
+    ],
+    "owner_nonce": "83d010aa-5332-452f-a338-b2338902cd8e",
+    "pids_before_cleanup": [
+      28396,
+      58428,
+      58120,
+      22540
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-085736ca-5ffb-4c47-9d78-6cdbecb30e9d-kttl1osr",
+    "temporary_directory_removed": true,
+    "worker_pid": 28396
+  },
+  "prompt_sha256": "a9166d3e94396f4fb3e1c2fdc445a974f949d9a4880f53fa09f08ec790dd417d",
+  "resolved_model": "gpt-6.1-sol",
+  "run_id": "085736ca-5ffb-4c47-9d78-6cdbecb30e9d",
+  "runtime_audit": {
+    "auth_mode": "chatgpt",
+    "disabled_skills": 38,
+    "effective_config": {
+      "approval_policy": "never",
+      "features": {
+        "api_key_cyber_access_programs": false,
+        "api_key_model_discovery": true,
+        "apps": false,
+        "auth_elicitation": true,
+        "background_paginated_rollout_migration": false,
+        "browser_use": false,
+        "browser_use_external": false,
+        "code_mode": false,
+        "code_mode_host": true,
+        "code_mode_only": false,
+        "codex_apps_mcp_2026_07_28": false,
+        "computer_use": false,
+        "goals": false,
+        "hooks": false,
+        "image_generation": false,
+        "in_app_browser": false,
+        "mcp_2026_07_28": false,
+        "memories": false,
+        "mentions_v2": true,
+        "multi_agent": false,
+        "multi_agent_v2": false,
+        "network_proxy": null,
+        "plugins": false,
+        "remote_control": false,
+        "remote_plugin": false,
+        "shell_snapshot": false,
+        "shell_tool": false,
+        "skill_mcp_dependency_install": false,
+        "tool_suggest": false,
+        "view_image": false,
+        "windows_sandbox_service": false
+      },
+      "layers": [
+        "user",
+        "system"
+      ],
+      "mcp_servers": 0,
+      "sandbox_mode": "read-only",
+      "skills_instructions": false,
+      "web_search": "disabled"
+    },
+    "enabled_skills": 0,
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "runtime_completion": {
+    "error_info": null,
+    "status": "completed"
+  },
+  "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+  "runtime_items": [
+    {
+      "id": "01a17a56-f592-71d3-8705-2bb34fe866c9",
+      "item_type": "userMessage",
+      "tool": null
+    },
+    {
+      "id": "msg_00debfa3807aecf2016adfd4b902c0819a870dc8f9d25d0f47",
+      "item_type": "agentMessage",
+      "tool": null
+    }
+  ],
+  "runtime_thread_id": "01a17a56-ea24-7833-a8fc-ca41b37bf607",
+  "runtime_turn_id": "01a17a56-ea5b-70d0-9af5-01b69150a100",
+  "schema_version": 1,
+  "sdk_runtime_version": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0"
+  },
+  "section_id": "3",
+  "started_at": "2026-10-26T22:31:12.131025+00:00",
+  "status": "COMPLETE",
+  "task_kind": "COMPANY_REPORT_CHAPTER",
+  "template": {
+    "assets": [
+      {
+        "archive": {
+          "bytes": 60605,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/e70f979eed3ea3b2addf13dc48821527b2cdbd6d1465a7017f979d04993adb7f.raw",
+          "sha256": "e70f979eed3ea3b2addf13dc48821527b2cdbd6d1465a7017f979d04993adb7f"
+        },
+        "bytes": 60605,
+        "path": "references/00-铁律与偏好.md",
+        "sha256": "e70f979eed3ea3b2addf13dc48821527b2cdbd6d1465a7017f979d04993adb7f"
+      },
+      {
+        "archive": {
+          "bytes": 19808,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/1645853e07a15043e96ebadc5ed20d99456ac49f0a7ae6ea89435282a541488a.raw",
+          "sha256": "1645853e07a15043e96ebadc5ed20d99456ac49f0a7ae6ea89435282a541488a"
+        },
+        "bytes": 19808,
+        "path": "references/01-公司类型判定与模块装配.md",
+        "sha256": "1645853e07a15043e96ebadc5ed20d99456ac49f0a7ae6ea89435282a541488a"
+      },
+      {
+        "archive": {
+          "bytes": 31603,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/176425bcf992f5b186b50b5b45a0ee894526c7aa920dcdad7b3cf1879d6453fb.raw",
+          "sha256": "176425bcf992f5b186b50b5b45a0ee894526c7aa920dcdad7b3cf1879d6453fb"
+        },
+        "bytes": 31603,
+        "path": "references/02-问题链与报告结构.md",
+        "sha256": "176425bcf992f5b186b50b5b45a0ee894526c7aa920dcdad7b3cf1879d6453fb"
+      },
+      {
+        "archive": {
+          "bytes": 35992,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/55064344693c7924fe07c7821e770118f9ad345af23166c47408c9437b61abe1.raw",
+          "sha256": "55064344693c7924fe07c7821e770118f9ad345af23166c47408c9437b61abe1"
+        },
+        "bytes": 35992,
+        "path": "references/03-数据源地图.md",
+        "sha256": "55064344693c7924fe07c7821e770118f9ad345af23166c47408c9437b61abe1"
+      },
+      {
+        "archive": {
+          "bytes": 11972,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/84f962cff9e48ddaaf81f8c8b8fc736da34b9efbd3e3a0296f3a4fb9e463e104.raw",
+          "sha256": "84f962cff9e48ddaaf81f8c8b8fc736da34b9efbd3e3a0296f3a4fb9e463e104"
+        },
+        "bytes": 11972,
+        "path": "references/04-排雷清单.md",
+        "sha256": "84f962cff9e48ddaaf81f8c8b8fc736da34b9efbd3e3a0296f3a4fb9e463e104"
+      },
+      {
+        "archive": {
+          "bytes": 27993,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/43a52ef41952edc40e842d2720de458fb8cae2a1e728b58f610b16b4b34fc863.raw",
+          "sha256": "43a52ef41952edc40e842d2720de458fb8cae2a1e728b58f610b16b4b34fc863"
+        },
+        "bytes": 27993,
+        "path": "references/05-估值模型库.md",
+        "sha256": "43a52ef41952edc40e842d2720de458fb8cae2a1e728b58f610b16b4b34fc863"
+      },
+      {
+        "archive": {
+          "bytes": 35072,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/52ee35a3d71f1ed3585997136623429af5b96807e1e55e6e76018af9d6891fc0.raw",
+          "sha256": "52ee35a3d71f1ed3585997136623429af5b96807e1e55e6e76018af9d6891fc0"
+        },
+        "bytes": 35072,
+        "path": "references/06-成稿与PDF交付.md",
+        "sha256": "52ee35a3d71f1ed3585997136623429af5b96807e1e55e6e76018af9d6891fc0"
+      },
+      {
+        "archive": {
+          "bytes": 13025,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/8c0be63c3baca4ba774cd4e1a9e962f792c5c221186ed814df42f20e2cc7d415.raw",
+          "sha256": "8c0be63c3baca4ba774cd4e1a9e962f792c5c221186ed814df42f20e2cc7d415"
+        },
+        "bytes": 13025,
+        "path": "references/07-市场规模测算与分行业估值.md",
+        "sha256": "8c0be63c3baca4ba774cd4e1a9e962f792c5c221186ed814df42f20e2cc7d415"
+      },
+      {
+        "archive": {
+          "bytes": 39939,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/e64bb86cfcfda0333d5a6636ea0d7c15fc243878e1dbaf57d19a0e6e04acdac4.raw",
+          "sha256": "e64bb86cfcfda0333d5a6636ea0d7c15fc243878e1dbaf57d19a0e6e04acdac4"
+        },
+        "bytes": 39939,
+        "path": "references/08-产业周期与择时.md",
+        "sha256": "e64bb86cfcfda0333d5a6636ea0d7c15fc243878e1dbaf57d19a0e6e04acdac4"
+      },
+      {
+        "archive": {
+          "bytes": 23946,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/e26e1697fb24a7608011ba7679f566c4a5c9df520215ee1ee15db5543ca9eaa4.raw",
+          "sha256": "e26e1697fb24a7608011ba7679f566c4a5c9df520215ee1ee15db5543ca9eaa4"
+        },
+        "bytes": 23946,
+        "path": "references/09-行业专家视角.md",
+        "sha256": "e26e1697fb24a7608011ba7679f566c4a5c9df520215ee1ee15db5543ca9eaa4"
+      },
+      {
+        "archive": {
+          "bytes": 10150,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/aea40c1bba8ab44cf578715464bdc38d484f1ce59ada2ed3a20a6d0f50895558.raw",
+          "sha256": "aea40c1bba8ab44cf578715464bdc38d484f1ce59ada2ed3a20a6d0f50895558"
+        },
+        "bytes": 10150,
+        "path": "references/10-投资人视角复核.md",
+        "sha256": "aea40c1bba8ab44cf578715464bdc38d484f1ce59ada2ed3a20a6d0f50895558"
+      },
+      {
+        "archive": {
+          "bytes": 26592,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/7c0acfa7925edc7a7803a25e40bf2e9c27251b75ce89b91e16f732aa9b4f0f50.raw",
+          "sha256": "7c0acfa7925edc7a7803a25e40bf2e9c27251b75ce89b91e16f732aa9b4f0f50"
+        },
+        "bytes": 26592,
+        "path": "references/11-反向质疑与遗漏排查.md",
+        "sha256": "7c0acfa7925edc7a7803a25e40bf2e9c27251b75ce89b91e16f732aa9b4f0f50"
+      },
+      {
+        "archive": {
+          "bytes": 16844,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/df8636cadef85c8a192f770ea901d75aab7b086ca4ccca606d65bb3953672c54.raw",
+          "sha256": "df8636cadef85c8a192f770ea901d75aab7b086ca4ccca606d65bb3953672c54"
+        },
+        "bytes": 16844,
+        "path": "references/12-模型自检与交叉验证.md",
+        "sha256": "df8636cadef85c8a192f770ea901d75aab7b086ca4ccca606d65bb3953672c54"
+      },
+      {
+        "archive": {
+          "bytes": 22616,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/f8e7069ce8ffaaa96ec37d3824321abe5b33d7818415227dcb06a323c2277c10.raw",
+          "sha256": "f8e7069ce8ffaaa96ec37d3824321abe5b33d7818415227dcb06a323c2277c10"
+        },
+        "bytes": 22616,
+        "path": "references/13-历史股价复盘.md",
+        "sha256": "f8e7069ce8ffaaa96ec37d3824321abe5b33d7818415227dcb06a323c2277c10"
+      },
+      {
+        "archive": {
+          "bytes": 29966,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/84fe565c2f0d30aa9672727a9f40a3e54ab8c175bd3c46fab690e9b6ed768fcd.raw",
+          "sha256": "84fe565c2f0d30aa9672727a9f40a3e54ab8c175bd3c46fab690e9b6ed768fcd"
+        },
+        "bytes": 29966,
+        "path": "references/14-反AI文稿.md",
+        "sha256": "84fe565c2f0d30aa9672727a9f40a3e54ab8c175bd3c46fab690e9b6ed768fcd"
+      },
+      {
+        "archive": {
+          "bytes": 7182,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/915b618cf2b65059117ab86b775d9461849ba47b747541d6a9ea782fd4b33ac4.raw",
+          "sha256": "915b618cf2b65059117ab86b775d9461849ba47b747541d6a9ea782fd4b33ac4"
+        },
+        "bytes": 7182,
+        "path": "references/15-基本面估值计算与接入.md",
+        "sha256": "915b618cf2b65059117ab86b775d9461849ba47b747541d6a9ea782fd4b33ac4"
+      },
+      {
+        "archive": {
+          "bytes": 13550,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8.raw",
+          "sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8"
+        },
+        "bytes": 13550,
+        "path": "scripts/fundamental_valuation.py",
+        "sha256": "64e56fc61487e3e61568f8580d9dfaf7546e5ff7c06da6e138512c1bc02aa1d8"
+      },
+      {
+        "archive": {
+          "bytes": 59614,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb.raw",
+          "sha256": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb"
+        },
+        "bytes": 59614,
+        "path": "scripts/check_gates.py",
+        "sha256": "7434fedc06fdc94b39c9f17b38887a07592f2a7bdfa046c989471d898d1fadcb"
+      },
+      {
+        "archive": {
+          "bytes": 38086,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/02763189dc83c982d58068493727025ca6bbeb5d6684a607d3086556579eb0f1.raw",
+          "sha256": "02763189dc83c982d58068493727025ca6bbeb5d6684a607d3086556579eb0f1"
+        },
+        "bytes": 38086,
+        "path": "scripts/md_to_pdf.py",
+        "sha256": "02763189dc83c982d58068493727025ca6bbeb5d6684a607d3086556579eb0f1"
+      },
+      {
+        "archive": {
+          "bytes": 27055,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/a529b3e02bb9ecdbefbaf35520133ad2e7b3a31089025cb06b9dca71ddace8ec.raw",
+          "sha256": "a529b3e02bb9ecdbefbaf35520133ad2e7b3a31089025cb06b9dca71ddace8ec"
+        },
+        "bytes": 27055,
+        "path": "scripts/cycle_valuation.py",
+        "sha256": "a529b3e02bb9ecdbefbaf35520133ad2e7b3a31089025cb06b9dca71ddace8ec"
+      },
+      {
+        "archive": {
+          "bytes": 29227,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/bafae73fda326d60b001f3b768db1793f7eb0115e4e40b7acd113ca25272457b.raw",
+          "sha256": "bafae73fda326d60b001f3b768db1793f7eb0115e4e40b7acd113ca25272457b"
+        },
+        "bytes": 29227,
+        "path": "scripts/validate_jiangxi_copper.py",
+        "sha256": "bafae73fda326d60b001f3b768db1793f7eb0115e4e40b7acd113ca25272457b"
+      },
+      {
+        "archive": {
+          "bytes": 5954,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/0d442a2d7de957aca59b4c1f6f2ab441cec53d96c49ead97bbfda20f38aaec79.raw",
+          "sha256": "0d442a2d7de957aca59b4c1f6f2ab441cec53d96c49ead97bbfda20f38aaec79"
+        },
+        "bytes": 5954,
+        "path": "tests/test_fundamental_valuation.py",
+        "sha256": "0d442a2d7de957aca59b4c1f6f2ab441cec53d96c49ead97bbfda20f38aaec79"
+      },
+      {
+        "archive": {
+          "bytes": 1179,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/ec1a536535639af3d5c85cd7a3c876784f439f39e10c20f004b814cc9065b036.raw",
+          "sha256": "ec1a536535639af3d5c85cd7a3c876784f439f39e10c20f004b814cc9065b036"
+        },
+        "bytes": 1179,
+        "path": "examples/valuation-assumptions.json",
+        "sha256": "ec1a536535639af3d5c85cd7a3c876784f439f39e10c20f004b814cc9065b036"
+      },
+      {
+        "archive": {
+          "bytes": 6281,
+          "kind": "REPORT_TEMPLATE_REFERENCE",
+          "path": "raw/a5bffecf05f603814253347aef82aa7a116eb1d3679a9de297a1d466a922d730.raw",
+          "sha256": "a5bffecf05f603814253347aef82aa7a116eb1d3679a9de297a1d466a922d730"
+        },
+        "bytes": 6281,
+        "path": "examples/jiangxi-copper-2025-facts.json",
+        "sha256": "a5bffecf05f603814253347aef82aa7a116eb1d3679a9de297a1d466a922d730"
+      },
+      {
+        "archive": {
+          "bytes": 3534,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca.raw",
+          "sha256": "fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca"
+        },
+        "bytes": 3534,
+        "path": "LICENSE",
+        "sha256": "fd1f83ae6fba20b61e0626c99f49eeb4db3282d9f518c568e459d00e2542a6ca"
+      },
+      {
+        "archive": {
+          "bytes": 1084,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484.raw",
+          "sha256": "dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484"
+        },
+        "bytes": 1084,
+        "path": "equity-research-LICENSE.txt",
+        "sha256": "dbf2c96de51d753ede9713ec2c399bdc82496b206feb90206a80302d40a89484"
+      },
+      {
+        "archive": {
+          "bytes": 1028,
+          "kind": "COMPANY_VALUATION_ALGORITHM",
+          "path": "raw/707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a.raw",
+          "sha256": "707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a"
+        },
+        "bytes": 1028,
+        "path": "THIRD_PARTY_NOTICES.md",
+        "sha256": "707412991755db7414f442436e56da947604cd79c959b84383849ae53b7c341a"
+      }
+    ],
+    "gate_map_archive": {
+      "bytes": 61933,
+      "kind": "REPORT_GATE_MAP",
+      "path": "raw/6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401.raw",
+      "sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401"
+    },
+    "gate_map_sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401",
+    "manifest_sha256": "d00b827b702487e69254a4f8d2d9508bf71bfcf363f8c0fa24351b82a6b4682f",
+    "structure_sha256": "238f636c8f7952e3e3645a3b84ad61a6ef630029d6f6e9ea8a8d092405067f56",
+    "template_id": "roll-company-research-v1",
+    "version": "08.2"
+  },
+  "token_usage": {
+    "last": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 0,
+      "inputTokens": 64672,
+      "outputTokens": 2234,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 66906
+    },
+    "modelContextWindow": 475000,
+    "total": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 0,
+      "inputTokens": 64672,
+      "outputTokens": 2234,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 66906
+    }
+  },
+  "tool_schema_fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "tools": []
+}

@@ -1,0 +1,44 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_backup_restores_frozen_report_and_rejects_rehashed_wrong_snapshot ____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red05/test_backup_restores_frozen_re0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000233785B62C0>
+
+    def test_backup_restores_frozen_report_and_rejects_rehashed_wrong_snapshot(tmp_path,monkeypatch):
+        import json
+        import pytest
+        from fastapi import HTTPException
+        from roll.runtime.backups import Backups,restore_at_start
+        from roll.research.company.service import record
+        from roll.research.company.reports import ReportCommand
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        directory=tmp_path/'source'
+        research=service(directory)
+        issuer=research.register(company())
+        snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],
+            as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='backup'))
+        for _ in range(22):
+            job=research.reports.advance(job['job_id'])
+            if job['report_id']:break
+        report=research.reports.read(job['report_id'])
+        backups=Backups(directory)
+        bundle=backups.export(backups.create()['backup_id'])
+        restore=Backups(tmp_path/'restored')
+        restore.stage_restore(bundle);restore_at_start(restore)
+        recovered=service(tmp_path/'restored')
+        assert recovered.reports.read(report['report_id'])==report
+        assert recovered.reports.markdown(report['report_id'])==research.reports.markdown(report['report_id'])
+        with research.ledger.connection() as db:
+            corrupt={k:v for k,v in report.items() if k!='content_sha256'}
+            corrupt['snapshot_id']='unregistered-snapshot'
+            db.execute('UPDATE company_research_reports SET value=? WHERE report_id=?',(json.dumps(record(corrupt)),report['report_id']))
+>       with pytest.raises(HTTPException) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_report_pipeline.py:136: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_backup_restores_frozen_report_and_rejects_rehashed_wrong_snapshot
+1 failed, 4 deselected in 18.38s

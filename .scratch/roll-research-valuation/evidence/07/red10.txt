@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_rejected_news_record_does_not_block_valid_records_and_explicit_recheck_is_possible _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red10/test_rejected_news_record_does0')
+
+    def test_rejected_news_record_does_not_block_valid_records_and_explicit_recheck_is_possible(tmp_path):
+        import json
+        from roll.accounts.ledger import now
+        research = service(tmp_path)
+        issuer = research.register(company())
+        published(research, issuer)
+        with research.ledger.connection() as db:
+            db.execute('CREATE TABLE news_facts(id TEXT PRIMARY KEY,instrument TEXT,value TEXT)')
+        for identifier,title in [('bad','�޹ع�˾����'),('good','����ͭҵ�ɷ����޹�˾��Ӫ��¶')]:
+            raw=research.evidence.archive(title.encode(), 'METHOD_NEWS', received_at=now(),source_url='https://finance.eastmoney.com/a/'+identifier+'.html')
+            fact=dict(fact_id=identifier,instrument='SSE:600362',source_id='fixture-news',title=title,excerpt=title,
+                url='https://finance.eastmoney.com/a/'+identifier+'.html',list_sha256=raw['sha256'],body_status='UNAVAILABLE',
+                evidence_kind='METHOD_CASE',first_received_at=raw['received_at'])
+            with research.ledger.connection() as db:
+                db.execute('INSERT INTO news_facts VALUES(?,?,?)',(identifier,'SSE:600362',json.dumps(fact)))
+        first=research.refresh_daily(issuer['company_id'],'bad-then-good')
+        assert first['check']['status']=='PARTIAL'
+>       assert first['check']['new_material_count']==1
+E       assert 0 == 1
+
+backend\tests\company_research\test_daily_research.py:223: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_rejected_news_record_does_not_block_valid_records_and_explicit_recheck_is_possible
+1 failed, 6 deselected in 6.59s

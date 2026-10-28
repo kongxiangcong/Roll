@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_verified_existing_financial_fields_automatically_enter_the_frozen_daily_input _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red15/test_verified_existing_financi0')
+
+    def test_verified_existing_financial_fields_automatically_enter_the_frozen_daily_input(tmp_path):
+        from fastapi.testclient import TestClient
+        from roll.app import create_app
+        from test_company_research_sources import setup
+        from test_financial_statements import statements
+        with TestClient(create_app(tmp_path,runtime_role='API')) as client:
+            issuer=setup(client,'akshare-financial-em')
+            research=client.app.state.company_research
+            snapshot=published(research,issuer)
+            client.app.state.financial_statements.worker=statements
+            run=client.post('/api/market/financial/SSE:600362/statements/collect',json=dict(idempotency_key='daily-native',basis='METHOD deterministic existing financial fields')).json()
+            assert run['status']=='COMPLETE',run
+            first_material=client.post('/api/company-research/materials/from-source',json=dict(company_id=issuer['company_id'],source_type='FINANCIAL_FACT',record_id=run['facts'][0]['fact_id']))
+            assert first_material.status_code==201,first_material.text
+            update=research.refresh_daily(issuer['company_id'],'native-financial')
+            assert update['analysis_input_id'] is not None
+            packet=research.analysis_input(update['analysis_input_id'])
+            native={f['metric']:f for f in packet['payload']['facts'] if f['business']=='FINANCIAL_STATEMENT'}
+>           assert native['assets']['value']=='293265142356'
+                   ^^^^^^^^^^^^^^^^
+E           KeyError: 'assets'
+
+backend\tests\company_research\test_daily_research.py:284: KeyError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_verified_existing_financial_fields_automatically_enter_the_frozen_daily_input
+1 failed, 8 deselected in 8.45s

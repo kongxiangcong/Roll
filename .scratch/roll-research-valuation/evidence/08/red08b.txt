@@ -1,0 +1,38 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_report_comparison_keeps_peer_facts_in_their_own_company_context _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red08b/test_report_comparison_keeps_p0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002529F966520>
+
+    def test_report_comparison_keeps_peer_facts_in_their_own_company_context(tmp_path,monkeypatch):
+        from roll.research.company.reports import ReportCommand
+        from roll.research.company import MaterialCommand,FactCommand,AnalysisCommand
+        from test_analysis_snapshots import candidate
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research=service(tmp_path)
+        issuer=research.register(company());main=published(research,issuer)
+        peer=research.register(company('����ͬҵ���޹�˾',['����ͬҵ'],[dict(exchange='HKEX',code='00345',share_class='H',currency='HKD')]))
+        from test_shared_evidence import material_input
+        metadata=material_input(peer['company_id']);metadata.update(subject_name=peer['legal_name'],source_url='https://issuer.example/peer.json',media_type='application/json')
+        material=research.import_material(MaterialCommand(**metadata),b'{"revenue":100,"gross_margin":0.3}')
+        facts=[]
+        for metric,value,unit in [('revenue','100','HKD_MILLION'),('gross_margin','0.3','ratio')]:
+            metadata.update(unit=unit,currency='HKD' if metric=='revenue' else None)
+            material=research.import_material(MaterialCommand(**metadata),b'{"revenue":100,"gross_margin":0.3}')
+            facts.append(research.add_fact(FactCommand(company_id=peer['company_id'],material_id=material['material_id'],metric=metric,business='PLANT_BEVERAGE',value=value,
+                unit=unit,currency='HKD' if metric=='revenue' else None,scope='CONSOLIDATED',period_start='2025-01-01',period_end='2025-12-31',table=metric,change_reason='METHOD exact peer raw JSON')))
+        from roll.accounts.ledger import now
+        packet=research.freeze_analysis(AnalysisCommand(company_id=peer['company_id'],as_of=now(),fact_version_ids=[f['version_id'] for f in facts]))
+        snapshot=research.apply_analysis_candidate(packet['input_id'],candidate(packet,facts[0]))
+>       job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=main['snapshot_id'],peer_snapshot_ids=[snapshot['snapshot_id']],
+            as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='peer'))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ReportCommand
+E       peer_snapshot_ids
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=['2cfc4762-daa5-4ced-9a79-59490fac4e11'], input_type=list]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+backend\tests\company_research\test_report_pipeline.py:227: ValidationError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_report_comparison_keeps_peer_facts_in_their_own_company_context
+1 failed, 7 deselected in 6.87s

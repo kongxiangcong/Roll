@@ -1,0 +1,23 @@
+F.......                                                                 [100%]
+================================== FAILURES ===================================
+___ test_core_backed_part_and_overview_do_not_default_to_missing_everywhere ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red30/test_core_backed_part_and_over0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000287EACAC3E0>
+
+    def test_core_backed_part_and_overview_do_not_default_to_missing_everywhere(tmp_path,monkeypatch):
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research=service(tmp_path);issuer=research.register(company());snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='overview'))
+        for _ in range(23):
+            job=research.reports.advance(job['job_id'])
+            if job['report_id']:break
+        md=research.reports.markdown(job['report_id']);overview=md.split('# ��һ����')[0]
+        for title in ['���ľ�Ӫģ��','����','����','��˾������','��δ��ʵ']:
+>           assert title in overview
+E           AssertionError: assert '���ľ�Ӫģ��' in '# ����ͭҵ�ɷ����޹�˾ ����о���������ֵ\n\n��������ڹ�����Ϣ���������ڰ�������ù�˾����������ҵ��**�������κ�Ͷ�ʽ���**��Ҳ���ṩ���롢������Ŀ����жϡ������еķ����������ʵ�жϽ����о��ο���Ͷ����Ӧ���к�ʵ����������...ǰ������;\n\n|��;|����״̬|���ü۸�����|\n|---|---|---|\n|CURRENT_PRICING|UNAVAILABLE|������|\n\n��չʾ��ϼ۸񣺹̶�������Ψһ���þ�����ˣ�δ��ȡ����latest��ֵ\n\n'
+
+backend\tests\company_research\test_report_summary.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_summary.py::test_core_backed_part_and_overview_do_not_default_to_missing_everywhere
+1 failed, 7 passed in 42.93s

@@ -1,0 +1,517 @@
+{
+  "at": "2026-10-27T16:56:41.606221+00:00",
+  "store": "D:\\dsh-proj\\Roll\\.scratch\\rv12-daily01",
+  "queue_counts": {
+    "company_research_jobs": 0,
+    "assistance_runs": 0,
+    "observation_update_jobs": 0
+  },
+  "settings": {
+    "SSE:600362": {
+      "basis": "Actual12 isolated natural postclose acceptance; existing bounded public sources where supported; no model auth; no offline/backfill or other postclose kinds",
+      "enabled": true,
+      "news_postclose": false,
+      "financial_postclose": false,
+      "market_postclose": false,
+      "research_postclose": true,
+      "news_refresh": true,
+      "classify": false,
+      "profile": "legacy",
+      "instrument": "SSE:600362",
+      "revision": 4,
+      "changed_at": "2026-10-27T16:56:41.556857+00:00"
+    },
+    "SZSE:000848": {
+      "basis": "Actual12 isolated natural postclose acceptance; existing bounded public sources where supported; no model auth; no offline/backfill or other postclose kinds",
+      "enabled": true,
+      "news_postclose": false,
+      "financial_postclose": false,
+      "market_postclose": false,
+      "research_postclose": true,
+      "news_refresh": true,
+      "classify": false,
+      "profile": "legacy",
+      "instrument": "SZSE:000848",
+      "revision": 4,
+      "changed_at": "2026-10-27T16:56:41.581582+00:00"
+    }
+  },
+  "actual_cycles_before": {
+    "SSE:600362": 0,
+    "SZSE:000848": 0
+  },
+  "source_listing": [
+    {
+      "id": "eastmoney-daily",
+      "groups": [
+        "DAILY"
+      ],
+      "host": "push2his.eastmoney.com",
+      "depth": "explicit bounded day interval; fqt=0/1 separate versions",
+      "unit_scope": "HAND conversion currently evidenced only confirmed SSE MAIN ordinary STOCK; remaining scopes UNKNOWN",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "sohu-daily",
+      "groups": [
+        "DAILY"
+      ],
+      "host": "q.stock.sohu.com",
+      "depth": "explicit single bounded day query; RAW only; actual rows recorded, no total/completeness proof",
+      "unit_scope": "Supplier historical table: HAND, amount TEN_THOUSAND_CNY; shares conversion confirmed SSE MAIN ordinary STOCK only; no status/calendar/actions/PIT proof",
+      "documentation": "https://q.stock.sohu.com/cn/600362/lshq.shtml",
+      "adapter_version": "sohu-raw-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "tencent-quote",
+      "groups": [
+        "QUOTE",
+        "STATUS"
+      ],
+      "host": "qt.gtimg.cn",
+      "depth": "last reported quote; upstream timestamp can be stale",
+      "unit_scope": "reported volume retained; packed amount field35 yuan; no volume conversion outside evidenced scope",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "tencent-index-daily",
+      "groups": [
+        "DAILY"
+      ],
+      "host": "web.ifzq.gtimg.cn",
+      "depth": "fixed background indices only; bounded maximum 800 bars; historical amount generally absent",
+      "unit_scope": "index aggregate volume unit UNKNOWN",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "tencent-daily",
+      "groups": [
+        "DAILY"
+      ],
+      "host": "web.ifzq.gtimg.cn",
+      "depth": "explicit request selection; maximum 800 bars; raw/day and qfqday strictly distinct; historical amount generally absent",
+      "unit_scope": "currently verified only confirmed SSE MAIN STOCK; other scopes UNKNOWN",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "eastmoney-actions",
+      "groups": [
+        "ADJUSTMENTS"
+      ],
+      "host": "datacenter-web.eastmoney.com",
+      "depth": "latest 5 report-period records, one page; announcement does not prove account receipt",
+      "unit_scope": "per-ten-share dividend source field; no cash-ledger authority",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "eastmoney-performance",
+      "groups": [
+        "PERFORMANCE"
+      ],
+      "host": "datacenter-web.eastmoney.com",
+      "depth": "latest 3 report-period records, one page; original report separately archived",
+      "unit_scope": "reported yuan and yuan/share; exact numeric JSON token Decimal",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "eastmoney-announcements",
+      "groups": [
+        "ANNOUNCEMENTS",
+        "PERFORMANCE",
+        "MAJOR_EVENTS",
+        "ADJUSTMENTS"
+      ],
+      "host": "np-anotice-stock.eastmoney.com",
+      "depth": "latest 30 metadata records, one page; at most one original per requested group",
+      "unit_scope": "supplier column code and explicit major-event/distribution title; no guessed company status",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "eastmoney-original",
+      "groups": [
+        "ANNOUNCEMENTS",
+        "PERFORMANCE",
+        "MAJOR_EVENTS",
+        "ADJUSTMENTS"
+      ],
+      "host": "np-cnotice-stock.eastmoney.com",
+      "depth": "client_source=web; article JSON and linked PDF; bounded first 3 pages of text",
+      "unit_scope": "disclosure date separate from provider display/index time",
+      "adapter_version": "07-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Unauthenticated public request actually tested; no commercial redistribution license asserted",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK"
+    },
+    {
+      "id": "sina-quote",
+      "groups": [
+        "QUOTE",
+        "STATUS"
+      ],
+      "host": "hq.sinajs.cn",
+      "adapter_version": "08-market-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "permission_basis": "Public supplier page/linked parser and actual quote GET; no commercial redistribution license asserted",
+      "depth": "last reported quote, Referer finance.sina.com.cn; no historic quote/PIT proof",
+      "unit_scope": {
+        "url": "https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7",
+        "sha256": "f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee",
+        "checked_at": "2026-10-07T17:33:23.799674+00:00",
+        "checked_at_basis": "ACTUAL_SOURCE_FILE_PERSISTED_SYSTEM_TIME",
+        "mapping": "supplier A-share parser volume=d[8], amount=d[9]; display volume hands uses shift=-2; amount label yuan",
+        "scope": "Actually tested confirmed SSE MAIN ordinary STOCK only; indices/other scopes not extrapolated"
+      },
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY_OR_BOUNDED_RESOLUTION_ALTERNATE"
+    },
+    {
+      "id": "fuyao-daily",
+      "groups": [
+        "DAILY"
+      ],
+      "host": "fuyao.aicubes.cn",
+      "adapter_version": "fuyao-rest-v1",
+      "authentication": "HOST_X_API_KEY",
+      "permission_basis": "User-provided key; actual scope acceptance recorded separately; no redistribution license asserted",
+      "depth": "Explicit bounded single instrument/window; history may be current revision; no total/completeness certification",
+      "unit_scope": "Official public prices: volume shares, turnover CNY; corporate actions pretax cash per share/date precision",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "historical_status_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY",
+      "documentation": "https://fuyao.aicubes.cn/llms-full.txt"
+    },
+    {
+      "id": "fuyao-index-daily",
+      "groups": [
+        "DAILY"
+      ],
+      "host": "fuyao.aicubes.cn",
+      "adapter_version": "fuyao-rest-v1",
+      "authentication": "HOST_X_API_KEY",
+      "permission_basis": "User-provided key; actual scope acceptance recorded separately; no redistribution license asserted",
+      "depth": "Explicit bounded single instrument/window; history may be current revision; no total/completeness certification",
+      "unit_scope": "Official public prices: volume shares, turnover CNY; corporate actions pretax cash per share/date precision",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "historical_status_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY",
+      "documentation": "https://fuyao.aicubes.cn/llms-full.txt"
+    },
+    {
+      "id": "fuyao-actions",
+      "groups": [
+        "ADJUSTMENTS"
+      ],
+      "host": "fuyao.aicubes.cn",
+      "adapter_version": "fuyao-rest-v1",
+      "authentication": "HOST_X_API_KEY",
+      "permission_basis": "User-provided key; actual scope acceptance recorded separately; no redistribution license asserted",
+      "depth": "Explicit bounded single instrument/window; history may be current revision; no total/completeness certification",
+      "unit_scope": "Official public prices: volume shares, turnover CNY; corporate actions pretax cash per share/date precision",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "historical_status_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY",
+      "documentation": "https://fuyao.aicubes.cn/llms-full.txt"
+    },
+    {
+      "id": "fuyao-quote",
+      "groups": [
+        "QUOTE",
+        "STATUS"
+      ],
+      "host": "fuyao.aicubes.cn",
+      "adapter_version": "fuyao-rest-v1",
+      "authentication": "HOST_X_API_KEY",
+      "permission_basis": "User-provided key; actual scope acceptance recorded separately; no redistribution license asserted",
+      "depth": "Explicit bounded single instrument/window; history may be current revision; no total/completeness certification",
+      "unit_scope": "Official public prices: volume shares, turnover CNY; corporate actions pretax cash per share/date precision",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "historical_status_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY",
+      "documentation": "https://fuyao.aicubes.cn/llms-full.txt"
+    },
+    {
+      "id": "baostock-daily",
+      "groups": [
+        "DAILY",
+        "STATUS"
+      ],
+      "host": "vip-api.baostock.com:10030",
+      "adapter_version": "baostock-sdk-0.9.4-v1",
+      "authentication": "EXPLICIT_API_KEY_VIP_OR_PUBLIC_ANONYMOUS_NO_FALLBACK",
+      "allowed_hosts": [
+        "vip-api.baostock.com:10030",
+        "public-api.baostock.com:10030"
+      ],
+      "permission_basis": "User-provided key; actual acceptance recorded separately",
+      "depth": "Explicit single stock/date range or operate year; bounded socket calls including login/pagination; zero retries",
+      "unit_scope": "RAW adjustflag3; shares/CNY; tradestatus/isST only; event date precision; no full special-status proof",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY",
+      "documentation": "https://www.baostock.com/mainContent?file=stockKData.md"
+    },
+    {
+      "id": "baostock-calendar",
+      "groups": [
+        "CALENDAR"
+      ],
+      "host": "vip-api.baostock.com:10030",
+      "adapter_version": "baostock-sdk-0.9.4-v1",
+      "authentication": "EXPLICIT_API_KEY_VIP_OR_PUBLIC_ANONYMOUS_NO_FALLBACK",
+      "allowed_hosts": [
+        "vip-api.baostock.com:10030",
+        "public-api.baostock.com:10030"
+      ],
+      "permission_basis": "User-provided key; actual acceptance recorded separately",
+      "depth": "Explicit single stock/date range or operate year; bounded socket calls including login/pagination; zero retries",
+      "unit_scope": "RAW adjustflag3; shares/CNY; tradestatus/isST only; event date precision; no full special-status proof",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY",
+      "documentation": "https://www.baostock.com/mainContent?file=stockKData.md"
+    },
+    {
+      "id": "baostock-adjustments",
+      "groups": [
+        "ADJUSTMENTS"
+      ],
+      "host": "vip-api.baostock.com:10030",
+      "adapter_version": "baostock-sdk-0.9.4-v1",
+      "authentication": "EXPLICIT_API_KEY_VIP_OR_PUBLIC_ANONYMOUS_NO_FALLBACK",
+      "allowed_hosts": [
+        "vip-api.baostock.com:10030",
+        "public-api.baostock.com:10030"
+      ],
+      "permission_basis": "User-provided key; actual acceptance recorded separately",
+      "depth": "Explicit single stock/date range or operate year; bounded socket calls including login/pagination; zero retries",
+      "unit_scope": "RAW adjustflag3; shares/CNY; tradestatus/isST only; event date precision; no full special-status proof",
+      "historical_revision_proof": "NOT_AVAILABLE",
+      "retries": 0,
+      "source_selection": "EXPLICIT_PRIMARY",
+      "documentation": "https://www.baostock.com/mainContent?file=stockKData.md"
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-26T19:43:35.426779+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-tdx-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 通达信日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "TDX",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-26T19:43:35.427471+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-26T19:43:35.428260+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "STATUS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-status",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财交易状态",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-26T19:43:35.428884+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "ADJUSTMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-actions",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财公司行为",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-26T19:43:35.429454+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "ANNOUNCEMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-cninfo-announcements",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 巨潮公告索引",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "CNINFO",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    }
+  ],
+  "worker_started": false,
+  "model_auth_configured": false,
+  "earliest_two_checkpoints": [
+    "2026-10-28T15:05:00+08:00",
+    "2026-10-29T15:05:00+08:00"
+  ],
+  "limitations": [
+    "JCC public refresh still subject to existing source switches, adapters and limits",
+    "Other company public scope unsupported is a gap; archive-only results do not prove public coverage",
+    "No clock override or new platform automation; actual completed outcomes still required"
+  ]
+}

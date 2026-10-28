@@ -1,0 +1,240 @@
+{
+  "format": "ROLL-RV03-SOURCE-EXCERPTS-1",
+  "extracted_at": "2026-10-26T16:32:36.660472+00:00",
+  "source": {
+    "path": "D:\\dsh-proj\\deep-dive-research\\outputs\\2026-10-23-江西铜业600362\\01-原始资料\\2025年报-HKEX.pdf",
+    "sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+    "bytes": 4116411,
+    "pdf_pages": 277,
+    "url": "https://www.hkexnews.hk/listedco/listconews/sehk/2026/0327/2026032700133_c.pdf",
+    "company": "江西铜业股份有限公司",
+    "a_listing": "SSE:600362",
+    "h_listing": "HKEX:00358",
+    "report_period_start": "2025-01-01",
+    "report_period_end": "2025-12-31",
+    "disclosed_at": null,
+    "prior_collection_date_recorded": "2026-10-23",
+    "prior_precise_received_at": null,
+    "accounting_scope": "中国企业会计准则；财务数据如非特别说明摘自本公司及子公司合并报表；经营叙述不是逐项财务审计证明",
+    "accounting_scope_quote": {
+      "pdf_page_1based": 14,
+      "printed_page": 3,
+      "printed_page_namespace": "2025年度报告正文（共91页部分）",
+      "verbatim_text": "本报告所涉及财务数据如非特别说明，均摘自经审计的按中国企业会计准则编制的本公司及\n其子公司（本集团）合并财务报表",
+      "display_text_whitespace_normalized": "本报告所涉及财务数据如非特别说明，均摘自经审计的按中国企业会计准则编制的本公司及 其子公司（本集团）合并财务报表",
+      "extracted_text_char_start": 52,
+      "extracted_text_char_end": 108,
+      "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+      "excerpt_sha256": "7bfafb245d612ded412c4857841535f4694471897c4a594c98c50165b6211d16",
+      "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+    },
+    "historical_pit_eligible": false
+  },
+  "extraction": {
+    "library": "pypdf",
+    "version": "6.19.0",
+    "source_bytes_verified": true,
+    "visual_layout_verified": false,
+    "whitespace_policy": "verbatim_text保留提取换行；display字段仅合并空白，未改写文字",
+    "limitations": [
+      "PDF第1页字体编码提取失真；本包不使用该页",
+      "仅为本地原件原文摘录，未联网刷新或独立核实发行人陈述",
+      "同一原始披露的多段摘录不构成多份独立证据"
+    ]
+  },
+  "items": [
+    {
+      "excerpt_id": "JCC25_BUSINESS_STRUCTURE",
+      "topic": "业务结构披露",
+      "source_scope": "本集团业务简介；管理层披露，不是单一矿山或冶炼业务的财务分部表",
+      "usable_for": [
+        "引用公司披露的采选—冶炼—加工及贸易业务覆盖范围"
+      ],
+      "unknown_or_excluded": [
+        "未据本段核实分业务利润或现金流",
+        "不能据此将集团利润除以局部产量"
+      ],
+      "quotes": [
+        {
+          "pdf_page_1based": 22,
+          "printed_page": 11,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "本集团的主要业务涵盖了铜和黄金的采选、冶炼与加工；稀散金属的提取与加工；硫化工及\n贸易等领域，并且在铜以及相关有色金属领域建立了集勘探、采矿、选矿、冶炼、加工于一体的\n完整产业链，是中国重要的铜、金、银和硫化工生产基地。",
+          "display_text_whitespace_normalized": "本集团的主要业务涵盖了铜和黄金的采选、冶炼与加工；稀散金属的提取与加工；硫化工及 贸易等领域，并且在铜以及相关有色金属领域建立了集勘探、采矿、选矿、冶炼、加工于一体的 完整产业链，是中国重要的铜、金、银和硫化工生产基地。",
+          "extracted_text_char_start": 1287,
+          "extracted_text_char_end": 1397,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "eb60e2a17948ab6fc6a2b4d19b5d35a2d56c3b5a2103646bab17f3c7146176b2",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        }
+      ]
+    },
+    {
+      "excerpt_id": "JCC25_PROCUREMENT_PRICE_TERMS",
+      "topic": "铜精矿采购定价机制披露",
+      "source_scope": "原材料铜精矿采购定价表；国外与国内采购分别表述",
+      "usable_for": [
+        "识别披露的LME/LBMA、TC/RC及国内期货参照条款"
+      ],
+      "unknown_or_excluded": [
+        "不提供未来金属价格或TC/RC预测",
+        "未提供同口径单位成本或利润敏感性"
+      ],
+      "quotes": [
+        {
+          "pdf_page_1based": 23,
+          "printed_page": 12,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "国外采购参照LME 铜价、LBMA\n金、银价格，并在上述金属价\n格基础上扣减TC/RC 作为采购\n价格，TC/RC 则通过交易双方\n谈判确定；国内采购参照上海\n期货交易所铜价，并在交易所\n均价或点价的基础上扣减相应\n加工费或乘以相应计价系数。",
+          "display_text_whitespace_normalized": "国外采购参照LME 铜价、LBMA 金、银价格，并在上述金属价 格基础上扣减TC/RC 作为采购 价格，TC/RC 则通过交易双方 谈判确定；国内采购参照上海 期货交易所铜价，并在交易所 均价或点价的基础上扣减相应 加工费或乘以相应计价系数。",
+          "extracted_text_char_start": 880,
+          "extracted_text_char_end": 1003,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "766292ef67a466670a1b6e7b21a0b17cd1927824b24353b60a11d486e55958c0",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        }
+      ]
+    },
+    {
+      "excerpt_id": "JCC25_OPERATING_SCOPE_BOUNDARIES",
+      "topic": "产量、贸易及金融业务口径边界",
+      "source_scope": "2025年产量统计、主营业务统计和产销量表口径注释；另含贸易/金融单位的定性描述",
+      "usable_for": [
+        "保留2025自产铜精矿指标含第一量子权益产量的明示限制",
+        "区分含贸易的主营业务统计与不含贸易的产销量表"
+      ],
+      "unknown_or_excluded": [
+        "不能把2025含权益产量与2024旧口径直接当作同口径增量",
+        "这些段落不提供工业/贸易/金融完整分部抵销及FCFF口径"
+      ],
+      "quotes": [
+        {
+          "pdf_page_1based": 26,
+          "printed_page": 15,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "注：上述“自产铜精矿含铜”2025 年统计口径含第一量子当年权益产量。",
+          "display_text_whitespace_normalized": "注：上述“自产铜精矿含铜”2025 年统计口径含第一量子当年权益产量。",
+          "extracted_text_char_start": 610,
+          "extracted_text_char_end": 645,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "4989c1b6a7cf582a0f38392b441f45e1be1789bbf4883e917d27f09a0c7bb360",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        },
+        {
+          "pdf_page_1based": 30,
+          "printed_page": 19,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "主营业务分行业、分产品、分地区、分销售模式情况的说明 \n以上统计范围含贸易",
+          "display_text_whitespace_normalized": "主营业务分行业、分产品、分地区、分销售模式情况的说明 以上统计范围含贸易",
+          "extracted_text_char_start": 894,
+          "extracted_text_char_end": 935,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "7eb3308362146fd7ba8cebb912918a7c1b37a1cc94d04a8b4cb59ca804236b5a",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        },
+        {
+          "pdf_page_1based": 31,
+          "printed_page": 20,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "上述“产销量情况分析表”统计范围不含贸易",
+          "display_text_whitespace_normalized": "上述“产销量情况分析表”统计范围不含贸易",
+          "extracted_text_char_start": 34,
+          "extracted_text_char_end": 54,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "5356ceee6a53d011f303262c7ce1e00cf23eae31e8bc04878c1d0e684d423ff8",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        },
+        {
+          "pdf_page_1based": 26,
+          "printed_page": 15,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "贸易、金融单位聚焦主业、服务主业，强化产业链上下游协同，提升国内外资\n源调配能力，为公司生产经营目标的实现提供了有力支撑。",
+          "display_text_whitespace_normalized": "贸易、金融单位聚焦主业、服务主业，强化产业链上下游协同，提升国内外资 源调配能力，为公司生产经营目标的实现提供了有力支撑。",
+          "extracted_text_char_start": 1044,
+          "extracted_text_char_end": 1107,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "8ecc706b2a7d2e2c085d4b3d1e4c78d63af7df0ba89d2169e9ab77e5252c1233",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        }
+      ]
+    },
+    {
+      "excerpt_id": "JCC25_DISCLOSED_FX_AND_WORKING_CAPITAL_RISKS",
+      "topic": "进口原料/海外投资汇率及价格上涨资金占用风险披露",
+      "source_scope": "管理层风险章节；集团进口铜矿原料及海外投资的美元结算、资金库存管理",
+      "usable_for": [
+        "保留公司已披露的汇率风险和商品价格上涨资金占用风险条件"
+      ],
+      "unknown_or_excluded": [
+        "不证明这些风险在当前观察日已发生或已消除",
+        "未提供净外币敞口、对冲有效性或可复算风险敏感性"
+      ],
+      "quotes": [
+        {
+          "pdf_page_1based": 49,
+          "printed_page": 38,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "本集团购自国际矿业公司或大型贸易商的进口铜矿原料和海外投资普遍采用美元结算，且随\n着集团海外业务的拓展，外汇收支将更加频繁。因此，若汇率发生较大波动或集团未能有效地控\n制汇率波动的风险，则可能导致集团产生汇兑损失，进而对集团的盈利能力带来一定负面影响。",
+          "display_text_whitespace_normalized": "本集团购自国际矿业公司或大型贸易商的进口铜矿原料和海外投资普遍采用美元结算，且随 着集团海外业务的拓展，外汇收支将更加频繁。因此，若汇率发生较大波动或集团未能有效地控 制汇率波动的风险，则可能导致集团产生汇兑损失，进而对集团的盈利能力带来一定负面影响。",
+          "extracted_text_char_start": 1301,
+          "extracted_text_char_end": 1429,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "04db137c5ddc103ead6a8d67649c1fbbd8ca9778594a1589d53ea23daedf35dd",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        },
+        {
+          "pdf_page_1based": 50,
+          "printed_page": 39,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "（3）强化财务管理水平，加强资金管理，并合理安排本公司原料采购、产品销售\n以减少产品价格上升对公司流动资金大量占用的风险； （4） 加强库存和在制品的管理， 最大限度\n地降低库存，使库存保持在一个合理的水平，减少资金占用。",
+          "display_text_whitespace_normalized": "（3）强化财务管理水平，加强资金管理，并合理安排本公司原料采购、产品销售 以减少产品价格上升对公司流动资金大量占用的风险； （4） 加强库存和在制品的管理， 最大限度 地降低库存，使库存保持在一个合理的水平，减少资金占用。",
+          "extracted_text_char_start": 291,
+          "extracted_text_char_end": 404,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "43cc5ea0d4cc4066b01b6815165cd1b667904e0c5b0acd9df1f00966c499ab26",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        }
+      ]
+    },
+    {
+      "excerpt_id": "JCC25_PLAN_LIMIT_AND_DISCLOSURE_ANCHOR",
+      "topic": "2026经营计划的披露边界及报告验证渠道锚点",
+      "source_scope": "2025年报中的2026经营计划免责声明和公司信息披露程序；不是新的预测或披露日程",
+      "usable_for": [
+        "明确经营目标不是公司对2026产出的预测",
+        "将定期/临时报告作为后续核实原文的渠道锚点"
+      ],
+      "unknown_or_excluded": [
+        "本材料未提供下一披露事件的确切名称或日期，必须保持未知",
+        "未把公司2026计划数录为预测或实际数",
+        "本次未核实2026后续披露或计划执行结果"
+      ],
+      "quotes": [
+        {
+          "pdf_page_1based": 48,
+          "printed_page": 37,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "（该经\n营目标不代表公司对 2026 年度生产的预测， 能否实现取决于宏观经济环境、 市场需求状况等多种\n因素，存在很大的不确定性，本集团将根据市场变动情况，适时调整生产经营计划）。",
+          "display_text_whitespace_normalized": "（该经 营目标不代表公司对 2026 年度生产的预测， 能否实现取决于宏观经济环境、 市场需求状况等多种 因素，存在很大的不确定性，本集团将根据市场变动情况，适时调整生产经营计划）。",
+          "extracted_text_char_start": 1408,
+          "extracted_text_char_end": 1501,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "08e02e64da3b6f17742cf65731ce267f5ddb1b5078f5d644e88e934b1d1e6f13",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        },
+        {
+          "pdf_page_1based": 63,
+          "printed_page": 52,
+          "printed_page_namespace": "2025年度报告正文（共91页部分）",
+          "verbatim_text": "4.信息披露与透明度方面： 公司建立了内部信息收集、 整理、 审定和披露工作程序， 严格按照\n境内外监管机构要求做好定期报告、临时报告的编制与披露工作，积极通过电话会、现场调研、\nE 互动等方式保持与投资者的沟通，在合法合规的前提下，使公司运行更加公开、透明、高效。",
+          "display_text_whitespace_normalized": "4.信息披露与透明度方面： 公司建立了内部信息收集、 整理、 审定和披露工作程序， 严格按照 境内外监管机构要求做好定期报告、临时报告的编制与披露工作，积极通过电话会、现场调研、 E 互动等方式保持与投资者的沟通，在合法合规的前提下，使公司运行更加公开、透明、高效。",
+          "extracted_text_char_start": 808,
+          "extracted_text_char_end": 945,
+          "source_sha256": "4493c7646001766896e6d4e3b97c702e9ee69423a86f8932df79e29bb75d5303",
+          "excerpt_sha256": "cfd1fc5d096c5fb8d8ad8510276d88702796ea761673ec8efd51c36f2d3a211e",
+          "verbatim_check": "EXACT_SUBSTRING_OF_PYPDF_EXTRACT_TEXT"
+        }
+      ]
+    }
+  ]
+}

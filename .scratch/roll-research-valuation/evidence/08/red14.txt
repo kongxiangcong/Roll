@@ -1,0 +1,74 @@
+F.F                                                                      [100%]
+================================== FAILURES ===================================
+_ test_chapter_comparisons_and_structural_counts_cannot_hide_chinese_financial_numbers[WACC > g is a method condition.-COMPLETE] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red14/test_chapter_comparisons_and_s0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000012CE83363F0>
+text = 'WACC > g is a method condition.', expected = 'COMPLETE'
+
+    @pytest.mark.parametrize('text,expected',[
+        ('WACC > g is a method condition.','COMPLETE'),
+        ('��Ҫ�������ݣ��ھ��½��ͷ�����','COMPLETE'),
+        ('�����ʰٷ�֮��ʮ����ֵ������Ԫ��','FAILED')])
+    def test_chapter_comparisons_and_structural_counts_cannot_hide_chinese_financial_numbers(tmp_path,monkeypatch,text,expected):
+        import json
+        from roll.research.company.reports import ReportCommand
+        worker=tmp_path/'method-number-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt'])
+    v=dict(section_id=p['section_id'],input_sha256=p['input_sha256'],paragraphs=[dict(text=TEXT,fact_version_ids=[])],gaps=[])
+    print(json.dumps(dict(kind='thread',model=c['model'],provider='METHOD',thread_id='method',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=json.dumps(v),error_info=None)),flush=True)
+    '''.replace('TEXT',repr(text)),encoding='utf-8')
+        auth=tmp_path/'method-auth.json';auth.write_text(json.dumps(dict(auth_mode='chatgpt',tokens=dict(access_token='METHOD_ONLY'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth))
+        research=service(tmp_path/'data');research.reports.worker=worker
+        issuer=research.register(company());snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='number'))
+        for _ in range(5):job=research.reports.advance(job['job_id'])
+        section=research.reports.sections(job)[0]
+>       assert section['status']==expected
+E       AssertionError: assert 'FAILED' == 'COMPLETE'
+E         
+E         - COMPLETE
+E         + FAILED
+
+backend\tests\company_research\test_report_pipeline.py:390: AssertionError
+_ test_chapter_comparisons_and_structural_counts_cannot_hide_chinese_financial_numbers[\u5229\u6da6\u7387\u767e\u5206\u4e4b\u56db\u5341\uff0c\u5e02\u503c\u4e09\u767e\u4ebf\u5143\u3002-FAILED] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red14/test_chapter_comparisons_and_s2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000012CE8568050>
+text = '�����ʰٷ�֮��ʮ����ֵ������Ԫ��', expected = 'FAILED'
+
+    @pytest.mark.parametrize('text,expected',[
+        ('WACC > g is a method condition.','COMPLETE'),
+        ('��Ҫ�������ݣ��ھ��½��ͷ�����','COMPLETE'),
+        ('�����ʰٷ�֮��ʮ����ֵ������Ԫ��','FAILED')])
+    def test_chapter_comparisons_and_structural_counts_cannot_hide_chinese_financial_numbers(tmp_path,monkeypatch,text,expected):
+        import json
+        from roll.research.company.reports import ReportCommand
+        worker=tmp_path/'method-number-worker.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt'])
+    v=dict(section_id=p['section_id'],input_sha256=p['input_sha256'],paragraphs=[dict(text=TEXT,fact_version_ids=[])],gaps=[])
+    print(json.dumps(dict(kind='thread',model=c['model'],provider='METHOD',thread_id='method',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=json.dumps(v),error_info=None)),flush=True)
+    '''.replace('TEXT',repr(text)),encoding='utf-8')
+        auth=tmp_path/'method-auth.json';auth.write_text(json.dumps(dict(auth_mode='chatgpt',tokens=dict(access_token='METHOD_ONLY'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth))
+        research=service(tmp_path/'data');research.reports.worker=worker
+        issuer=research.register(company());snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='number'))
+        for _ in range(5):job=research.reports.advance(job['job_id'])
+        section=research.reports.sections(job)[0]
+>       assert section['status']==expected
+E       AssertionError: assert 'COMPLETE' == 'FAILED'
+E         
+E         - FAILED
+E         + COMPLETE
+
+backend\tests\company_research\test_report_pipeline.py:390: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_chapter_comparisons_and_structural_counts_cannot_hide_chinese_financial_numbers[WACC > g is a method condition.-COMPLETE]
+FAILED backend\tests\company_research\test_report_pipeline.py::test_chapter_comparisons_and_structural_counts_cannot_hide_chinese_financial_numbers[\u5229\u6da6\u7387\u767e\u5206\u4e4b\u56db\u5341\uff0c\u5e02\u503c\u4e09\u767e\u4ebf\u5143\u3002-FAILED]
+2 failed, 1 passed, 15 deselected in 17.94s

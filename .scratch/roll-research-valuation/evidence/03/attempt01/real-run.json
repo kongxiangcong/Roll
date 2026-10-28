@@ -1,0 +1,210 @@
+{
+  "acquisition_usage": {
+    "archived_bytes": 0,
+    "http_calls": 0,
+    "model_tool_result_bytes": 0,
+    "received_bytes": 0
+  },
+  "archives": [],
+  "backend": "CODEX",
+  "bootstrap_audit": {
+    "auth_mode": "chatgpt",
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "bridge": {
+    "name": "bundled-code-mode-host",
+    "runtime": "Rust/V8, no Node bridge",
+    "sha256": "b6427cf79bfe3286c611fb0af76635d54cac8e1457f4cf5bda92126e20e0cc2a",
+    "version": "0.161.0"
+  },
+  "call_usage": {
+    "host_tool_calls": 0,
+    "http_calls": 0,
+    "model_requests": 0,
+    "runtime_operations": 0,
+    "scope": "PARENT_AND_ALL_HOST_ACQUISITION_CHILDREN",
+    "total": 0
+  },
+  "candidate_output_archive": {
+    "bytes": 9401,
+    "kind": "COMPANY_ANALYSIS_MODEL_OUTPUT",
+    "path": "raw/1bb388c15a0b7b4d191f566c6d3aa672b172c75e9fb5f336e214eb4b57e5f86e.raw",
+    "sha256": "1bb388c15a0b7b4d191f566c6d3aa672b172c75e9fb5f336e214eb4b57e5f86e"
+  },
+  "candidate_output_sha256": "1bb388c15a0b7b4d191f566c6d3aa672b172c75e9fb5f336e214eb4b57e5f86e",
+  "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+  "content_sha256": "e78185d21042e6720e4833f33945f657e59fc06a74fb941827fc12ad1838b324",
+  "created_at": "2026-10-26T16:43:42.821199+00:00",
+  "effective_config_fingerprint": "4739c87b7b50aa48d10b11ad6222ec781096922101e742f9b36b0e87d56376ac",
+  "elapsed_seconds": 85.385,
+  "finished_at": "2026-10-26T16:43:42.821162+00:00",
+  "formal_authority": false,
+  "host_owner": {
+    "creation_ticks": 134375065306176008,
+    "pid": 45924
+  },
+  "input_id": "74424c0b-8494-4da7-995a-038da9fb1385",
+  "instruction_sources": [],
+  "limits": {
+    "runtime_operations": 8,
+    "timeout_seconds": 180,
+    "tool_calls": 0
+  },
+  "model": "gpt-6.1-sol",
+  "model_provider": "openai",
+  "process": {
+    "containment": "WINDOWS_JOB_KILL_ON_CLOSE",
+    "environment_keys": [
+      "CODEX_HOME",
+      "COMSPEC",
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONUTF8",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR"
+    ],
+    "isolated_cwd": true,
+    "isolated_home": true,
+    "observed_pids": [
+      15584,
+      44200,
+      45160,
+      57508
+    ],
+    "owner_nonce": "55bde73b-622a-4e0b-abbc-49daea5d0c68",
+    "pids_before_cleanup": [
+      15584,
+      44200,
+      57508
+    ],
+    "remaining_pids": [],
+    "task_root": "C:\\Users\\72449\\AppData\\Local\\Temp\\roll-codex-task-5d29ce1f-0557-4f32-b70a-95af5d8935c0-x5i3d2yq",
+    "temporary_directory_removed": true,
+    "worker_pid": 15584
+  },
+  "resolved_model": "gpt-6.1-sol",
+  "run_id": "5d29ce1f-0557-4f32-b70a-95af5d8935c0",
+  "runtime_audit": {
+    "auth_mode": "chatgpt",
+    "disabled_skills": 38,
+    "effective_config": {
+      "approval_policy": "never",
+      "features": {
+        "api_key_cyber_access_programs": false,
+        "api_key_model_discovery": true,
+        "apps": false,
+        "auth_elicitation": true,
+        "background_paginated_rollout_migration": false,
+        "browser_use": false,
+        "browser_use_external": false,
+        "code_mode": false,
+        "code_mode_host": true,
+        "code_mode_only": false,
+        "codex_apps_mcp_2026_07_28": false,
+        "computer_use": false,
+        "goals": false,
+        "hooks": false,
+        "image_generation": false,
+        "in_app_browser": false,
+        "mcp_2026_07_28": false,
+        "memories": false,
+        "mentions_v2": true,
+        "multi_agent": false,
+        "multi_agent_v2": false,
+        "network_proxy": null,
+        "plugins": false,
+        "remote_control": false,
+        "remote_plugin": false,
+        "shell_snapshot": false,
+        "shell_tool": false,
+        "skill_mcp_dependency_install": false,
+        "tool_suggest": false,
+        "view_image": false,
+        "windows_sandbox_service": false
+      },
+      "layers": [
+        "user",
+        "system"
+      ],
+      "mcp_servers": 0,
+      "sandbox_mode": "read-only",
+      "skills_instructions": false,
+      "web_search": "disabled"
+    },
+    "enabled_skills": 0,
+    "initialize": {
+      "platformFamily": "windows",
+      "platformOs": "windows",
+      "serverInfo": null,
+      "userAgent": "roll_evidence/0.161.0 (Windows 10.0.26200; x86_64) unknown (roll_evidence; 0.161.0)"
+    },
+    "sdk_versions": {
+      "openai-codex": "0.161.0",
+      "openai-codex-cli-bin": "0.161.0"
+    }
+  },
+  "runtime_completion": {
+    "error_info": null,
+    "status": "completed"
+  },
+  "runtime_executable_sha256": "a0f89acca07a511734cac7fddee26b2106fab68918717bc90df16104a0760a30",
+  "runtime_items": [
+    {
+      "id": "01a17917-9d4f-7612-bcca-c3dc72e55537",
+      "item_type": "userMessage",
+      "tool": null
+    },
+    {
+      "id": "msg_00ec7b23a265669f016adf82f92d58819ba2777307a985e606",
+      "item_type": "agentMessage",
+      "tool": null
+    }
+  ],
+  "runtime_thread_id": "01a17917-8823-7d41-8f63-cc788a666206",
+  "runtime_turn_id": "01a17917-8954-7391-86cf-6f8395adeb79",
+  "schema_version": 1,
+  "sdk_runtime_version": {
+    "openai-codex": "0.161.0",
+    "openai-codex-cli-bin": "0.161.0"
+  },
+  "snapshot_id": "90c3e7b9-56f9-4ad6-a39a-7c343a1a95f6",
+  "started_at": "2026-10-26T16:42:17.393112+00:00",
+  "status": "PARTIAL",
+  "task_kind": "COMPANY_OPERATING_ANALYSIS",
+  "token_usage": {
+    "last": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 0,
+      "inputTokens": 10756,
+      "outputTokens": 2710,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 13466
+    },
+    "modelContextWindow": 475000,
+    "total": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 0,
+      "inputTokens": 10756,
+      "outputTokens": 2710,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 13466
+    }
+  },
+  "tool_schema_fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "tools": []
+}

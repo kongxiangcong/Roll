@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_missing_sources_produce_ten_sections_and_explicit_partial_gates _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-green02/test_missing_sources_produce_t0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C87E909F30>
+
+    def test_missing_sources_produce_ten_sections_and_explicit_partial_gates(tmp_path, monkeypatch):
+        from roll.research.company.reports import ReportCommand
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE', raising=False)
+        research = service(tmp_path)
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        job = research.reports.start(ReportCommand(company_id=issuer['company_id'], snapshot_id=snapshot['snapshot_id'],
+            as_of='2026-01-01T00:00:00+00:00', source_mode='REUSE', idempotency_key='partial'))
+        for _ in range(25):
+            job = research.reports.advance(job['job_id'])
+            if job['report_id']:
+                break
+>       assert job['status'] == 'PARTIAL', job
+E       AssertionError: {'acquisition': {'network_check_performed': False, 'reason': '��ʽREUSE��������', 'status': 'NOT_REQUESTED'}, 'as_of': '2026-01-01T00:00:00+00:00', 'attempts': 0, 'cancel_requested_at': None, ...}
+E       assert 'FAILED' == 'PARTIAL'
+E         
+E         - PARTIAL
+E         + FAILED
+
+backend\tests\company_research\test_report_pipeline.py:34: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_missing_sources_produce_ten_sections_and_explicit_partial_gates
+1 failed, 1 deselected in 9.24s

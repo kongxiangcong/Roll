@@ -1,0 +1,37 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_new_company_can_build_shared_business_research_from_verified_original_quote _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red10/test_new_company_can_build_sha0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002367F866520>
+
+    def test_new_company_can_build_shared_business_research_from_verified_original_quote(tmp_path,monkeypatch):
+        import json,httpx
+        from roll.research.company.reports import ReportCommand
+        worker=tmp_path/'method-source-analysis.py'
+        worker.write_text('''import json,sys
+    c=json.loads(sys.stdin.readline());p=json.loads(c['prompt']);fid=p['evidence']['facts'][0]['version_id']
+    claim=dict(text='The issuer discloses beverage manufacturing',fact_version_ids=[fid],gap_reason=None)
+    v=dict(company_id=p['company_id'],input_sha256=p['packet_sha256'],business_structure=[claim],attention_reasons=[claim],counterevidence=[],hypotheses=[],insufficient_hypotheses_reason='Single disclosed operating quote',limitations=['Unknown units and unverified forecasts'],valuation_unavailable_reason='No numeric valuation facts')
+    print(json.dumps(dict(kind='thread',model=c['model'],provider='METHOD',thread_id='method',instruction_sources=[])),flush=True)
+    print(json.dumps(dict(kind='completed',status='completed',output=json.dumps(v),error_info=None)),flush=True)
+    ''',encoding='utf-8')
+        auth=tmp_path/'method-auth.json';auth.write_text(json.dumps(dict(auth_mode='chatgpt',tokens=dict(access_token='METHOD_ONLY'))))
+        monkeypatch.setenv('ROLL_CODEX_AUTH_FILE',str(auth))
+        research=service(tmp_path/'data');research.analysis_worker=worker
+        issuer=research.register(company('����Ʒ��˾',['����Ʒ'],[dict(exchange='SZSE',code='000848',share_class='A',currency='CNY')]))
+        research.evidence.transport=httpx.MockTransport(lambda request:httpx.Response(200,content=b'The issuer manufactures plant beverages. No forward volume guidance.'))
+        material=dict(company_id=issuer['company_id'],source_id='issuer-primary',origin_root_id='primary-2025',source_url='https://static.cninfo.com.cn/finalpage/2026-01-01/primary.txt',
+            subject_name=issuer['legal_name'],media_type='text/plain',period_start='2025-01-01',period_end='2025-12-31')
+>       job=research.reports.start(ReportCommand(company_id=issuer['company_id'],as_of='2026-02-01T00:00:00+00:00',idempotency_key='new-business',
+            sources=[dict(material=material,category='������¶',identity_basis='METHOD explicit original issuer text')],
+            source_quotes=[dict(source_index=0,page=1,quote='The issuer manufactures plant beverages.',business='PLANT_BEVERAGE')]))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ReportCommand
+E       source_quotes
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=[{'source_index': 0, 'pag...ess': 'PLANT_BEVERAGE'}], input_type=list]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+backend\tests\company_research\test_report_pipeline.py:269: ValidationError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_new_company_can_build_shared_business_research_from_verified_original_quote
+1 failed, 9 deselected in 6.40s

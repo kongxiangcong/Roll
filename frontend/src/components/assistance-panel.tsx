@@ -1,28 +1,32 @@
 import {useEffect,useState} from 'react';
 import {request} from '../api';
+import {CompanyDailyPanel} from './company-daily-panel';
 
 type Trade={date:string;signal_date:string;side:string;quantity:number;price:number;fee:number};
 type Result={return_pct:number;max_drawdown_pct:number;trades:Trade[];nav:{date:string;nav:number}[];open_quantity:number};
-type Run={run_id:string;status:string;phase:string;started_at:string;as_of:string;error?:{code:string};
+type Run={run_id:string;instrument?:string;company_name?:string;research?:{snapshot?:{snapshot_id:string}};status:string;phase:string;started_at:string;as_of:string;error?:{code:string};
   sources?:{source_id:string;provider:string;first_date:string;last_date:string;row_count:number;price_unit:string;adjustment:string;received_at:string;sha256:string}[];
   gaps?:{source_id?:string;code:string}[];
-  assessment?:{bias:string;summary:string;valid_until:string;basis_as_of:string;evidence:{source_id:string;reason:string}[];counterevidence:string[];change_conditions:string[];limitations:string[]};
+  assessment?:{research_comparison?:{snapshot_id:string|null;relationship:string;explanation:string};bias:string;summary:string;valid_until:string;basis_as_of:string;market_data_as_of?:string;evidence:{source_id:string;reason:string}[];counterevidence:string[];change_conditions:string[];limitations:string[]};
   backtest?:{start:string;end:string;data_start:string;signal:string;assumptions:string[];strategy:Result;buy_hold:Result;excluded_before_action_free_tail:string[]};
   reflections?:{id:string;text:string;created_at:string}[]};
 const names:Record<string,string>={'sh.600362':'江西铜业','sh.000001':'上证指数','sh.000300':'沪深300','sz.399006':'创业板指'};
+const comparisonNames:Record<string,string>={AGREES:'同向',TENSION:'存在张力',NOT_COMPARABLE:'期限或口径不可比',NO_RESEARCH:'无共享研究依据'};
 
-export function AssistancePanel(){
+export function AssistancePanel({instrument='SSE:600362',companyName}:{instrument?:string;companyName?:string}){
   const [loading,setLoading]=useState(true);
   const [history,setHistory]=useState<Run[]>([]),[run,setRun]=useState<Run|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[note,setNote]=useState('');
-  const loadHistory=()=>request<Run[]>('/assistance/runs').then(setHistory);
+  const historyPath='/assistance/runs?instrument='+encodeURIComponent(instrument);
+  const loadHistory=()=>request<Run[]>(historyPath).then(setHistory);
   const select=(id:string)=>request<Run>('/assistance/runs/'+id).then(setRun).catch(e=>setError(String(e)));
-  useEffect(()=>{request<Run[]>('/assistance/runs').then(items=>{setHistory(items);return items[0]?select(items[0].run_id):undefined;}).catch(e=>setError(String(e))).finally(()=>setLoading(false));},[]);
+  useEffect(()=>{let active=true;request<Run[]>(historyPath).then(async items=>{if(!active)return;setHistory(items);if(items[0]){const saved=await request<Run>('/assistance/runs/'+items[0].run_id);if(active)setRun(saved);}}).catch(e=>{if(active)setError(String(e));}).finally(()=>{if(active)setLoading(false);});return()=>{active=false;};},[historyPath]);
   useEffect(()=>{if(run?.status!=='RUNNING')return;const timer=setInterval(()=>{void select(run.run_id);void loadHistory().catch(e=>setError(String(e)));},2000);return()=>clearInterval(timer);},[run?.run_id,run?.status]);
-  async function start(){setBusy(true);setError('');try{setRun(await request<Run>('/assistance/runs',{}));await loadHistory();}catch(e){setError(String(e));}finally{setBusy(false);}}
+  async function start(){setBusy(true);setError('');try{setRun(await request<Run>('/assistance/runs',{instrument}));await loadHistory();}catch(e){setError(String(e));}finally{setBusy(false);}}
   async function save(){if(!run||!note.trim())return;const submittedNote=note;setBusy(true);setError('');try{await request('/assistance/runs/'+run.run_id+'/reflections',{text:submittedNote.trim()});setNote(current=>current===submittedNote?'':current);await select(run.run_id);}catch(e){setError(String(e));}finally{setBusy(false);}}
   const a=run?.assessment,b=run?.backtest;
   return <section aria-label="研究辅助与探索回测" className="panel">
-    <div className="assistance-lead"><div><p className="wb-eyebrow">观点 · 反证 · 条件</p><h2>研究辅助与探索回测</h2><p>江西铜业与三大指数，基于真实日线形成辅助观点，比较固定规则的历史表现。</p></div><button className="assistance-start" onClick={start} disabled={loading||busy||run?.status==='RUNNING'}>{busy?'正在提交…':run?.status==='RUNNING'?'研究进行中':'开始研究与回测'}</button></div>
+    <div className="assistance-lead"><div><p className="wb-eyebrow">观点 · 反证 · 条件</p><h2>研究辅助与探索回测</h2><p>{companyName??instrument}与三大指数，基于真实日线形成辅助观点，比较固定规则的历史表现。</p></div><button className="assistance-start" onClick={start} disabled={loading||busy||run?.status==='RUNNING'||! /^(SSE|SZSE):/.test(instrument)}>{busy?'正在提交…':run?.status==='RUNNING'?'研究进行中':'开始研究与回测'}</button></div>
+    {! /^(SSE|SZSE):/.test(instrument)&&<p>此证券的量价来源尚未适配；经营研究仍可查看。</p>}<CompanyDailyPanel instrument={instrument} pinnedSnapshotId={run?.research?.snapshot?.snapshot_id}/>
     <p className="assistance-meta">辅助观点不具备正式交易资格；账户未知时只分析证券。结果自动保存，关闭页面不取消任务。</p>
     <details className="assistance-details"><summary>本次研究范围与数据时点</summary><p>18:00后请求当日已收盘数据，此前截至昨日；最多读取120个自然日，实际最新日期见来源覆盖。预计需要数分钟。探索回测采用固定均线规则，不是模型历史预测业绩。</p></details>
     {error&&<p role="alert">{error}</p>}
@@ -32,8 +36,8 @@ export function AssistancePanel(){
     {run&&<><p className="assistance-status" role="status">状态：{run.status} · 阶段：{run.phase} · 请求截至 {run.as_of}</p>
       {run.error&&<p role="alert">{run.error.code}；已获得的结果保留。</p>}
       {!!run.gaps?.length&&<ul>{run.gaps.map((g,i)=><li key={i}>{g.source_id}：{g.code}</li>)}</ul>}
-      {a?<><div className="assistance-verdict"><h3>辅助观点：{a.bias}</h3><p>{a.summary}</p><p>证据截至 {a.basis_as_of}；有效至 {new Date(a.valid_until).toLocaleString('zh-CN')} · {Date.now()>Date.parse(a.valid_until)?'已过期，请更新后再判断':'有效期内，新事实可使观点提前失效'}</p></div>
-        <h4>依据</h4><ul>{a.evidence.map((e,i)=><li key={i}>[{names[e.source_id]??e.source_id}] {e.reason}</li>)}</ul>
+      {a?<><div className="assistance-verdict"><h3>辅助观点：{a.bias}</h3><p>{a.summary}</p><p>实际研究知识时点 {a.basis_as_of}；价格覆盖截至 {a.market_data_as_of??run.as_of}（不是历史PIT）；有效至 {new Date(a.valid_until).toLocaleString('zh-CN')} · {Date.now()>Date.parse(a.valid_until)?'已过期，请更新后再判断':'有效期内，新事实可使观点提前失效'}</p></div>
+        <h4>经营研究与量价对照</h4>{a.research_comparison?<p>未验证解释 · {comparisonNames[a.research_comparison.relationship]??a.research_comparison.relationship}：{a.research_comparison.explanation} · 固定快照 {a.research_comparison.snapshot_id??'无'}</p>:<p>此历史量价任务未保存结构化经营对照；不补写为已核对一致。</p>}<h4>依据</h4><ul>{a.evidence.map((e,i)=><li key={i}>[{names[e.source_id]??e.source_id}] {e.reason}</li>)}</ul>
         <h4>反证</h4><ul>{a.counterevidence.map((s,i)=><li key={i}>{s}</li>)}</ul>
         <h4>改变观点的条件</h4><ul>{a.change_conditions.map((s,i)=><li key={i}>{s}</li>)}</ul>
         <h4>缺口与限制</h4><ul>{a.limitations.map((s,i)=><li key={i}>{s}</li>)}</ul></>:<p>尚无模型辅助观点；不会用固定模板冒充模型运行。</p>}
@@ -49,4 +53,3 @@ export function AssistancePanel(){
     </>}
   </section>;
 }
-

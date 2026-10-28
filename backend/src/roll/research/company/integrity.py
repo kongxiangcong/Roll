@@ -1,0 +1,81 @@
+"""Verify research JSON relationships when the existing backup enumerates files."""
+import json
+
+from .service import fail, verified
+
+
+def validate_references(db):
+    names = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    if 'company_research_companies' not in names:
+        return
+    companies = [verified(json.loads(r[0])) for r in db.execute('SELECT value FROM company_research_companies')]
+    company_ids = {c['company_id'] for c in companies}
+    listings = {r[0]: verified(json.loads(r[1])) for r in db.execute('SELECT version_id,value FROM company_research_listings')}
+    archives = {r[0]: json.loads(r[1]) for r in db.execute('SELECT sha256,value FROM evidence_archives')}
+    materials = {r[0]: verified(json.loads(r[1])) for r in db.execute('SELECT material_id,value FROM company_research_materials')}
+    facts = {r[0]: verified(json.loads(r[1])) for r in db.execute('SELECT version_id,value FROM company_research_facts')}
+
+    def require(condition):
+        if not condition:
+            fail('RESEARCH_REFERENCE_INVALID', 'Company research references are missing or inconsistent', 409)
+
+    for company in companies:
+        for listing in company['listings']:
+            verified(listing)
+            require(listing['company_id'] == company['company_id'] and listings.get(listing['version_id']) == listing)
+    for material in materials.values():
+        require(material['company_id'] in company_ids)
+        archive = material['archive']
+        require(archives.get(archive['sha256']) == archive and material['raw_sha256'] == archive['sha256'])
+    for fact in facts.values():
+        material = materials.get(fact['material_id'])
+        require(material and material['company_id'] == fact['company_id'] and
+                material['archive']['sha256'] == fact['archive_sha256'])
+        if fact['supersedes']:
+            parent = facts.get(fact['supersedes'])
+            require(parent and parent['company_id'] == fact['company_id'] and parent['fact_id'] == fact['fact_id'])
+    for row in db.execute('SELECT value FROM company_research_conflict_resolutions'):
+        resolution = verified(json.loads(row[0]))
+        require(resolution['company_id'] in company_ids)
+        for version_id in resolution['version_ids']:
+            fact = facts.get(version_id)
+            require(fact and fact['company_id'] == resolution['company_id'] and fact['fact_id'] == resolution['fact_id'])
+        require(resolution['selected_version_id'] is None or resolution['selected_version_id'] in resolution['version_ids'])
+    for row in db.execute('SELECT value FROM company_research_checks'):
+        check = verified(json.loads(row[0]))
+        require(check['company_id'] in company_ids)
+        for material_id in check['material_ids']:
+            require(material_id in materials and materials[material_id]['company_id'] == check['company_id'])
+    for scope, raw in db.execute('SELECT scope,result FROM company_research_commands'):
+        command_result = verified(json.loads(raw))
+        if scope.startswith('daily-update:'):
+            company_id = command_result['company_id']
+            require(scope == 'daily-update:'+company_id and company_id in company_ids)
+            check = command_result['check']
+            saved = db.execute('SELECT value FROM company_research_checks WHERE check_id=?', (check['check_id'],)).fetchone()
+            require(saved and verified(json.loads(saved[0])) == check and check['company_id'] == company_id)
+            for field, table, key in [('snapshot_id','snapshots','snapshot_id'),('analysis_input_id','inputs','input_id')]:
+                if command_result.get(field):
+                    saved = db.execute(f'SELECT value FROM company_research_{table} WHERE {key}=?', (command_result[field],)).fetchone()
+                    require(saved and verified(json.loads(saved[0]))['company_id'] == company_id)
+    from .analysis_integrity import validate_analysis
+    validate_analysis(db, archives, materials, facts, companies)
+
+    from .valuation_integrity import validate_valuations
+    validate_valuations(db, archives, companies)
+    from .economic_integrity import validate_economics
+    validate_economics(db, archives)
+    from .change_integrity import validate_changes
+    validate_changes(db, archives)
+    from .report_integrity import validate_reports
+    validate_reports(db, archives)
+    from .feature_integrity import validate_features
+    validate_features(db, archives)
+    if 'company_research_financial_adaptations' in names:
+        for row in db.execute('SELECT value FROM company_research_financial_adaptations'):
+            adaptation=verified(json.loads(row[0]))
+            material=materials.get(adaptation['material_id'])
+            require(material and material['company_id']==adaptation['company_id'])
+            for identifier in adaptation['fact_version_ids']:
+                fact=facts.get(identifier)
+                require(fact and fact['company_id']==adaptation['company_id'] and fact['material_id']==adaptation['material_id'])

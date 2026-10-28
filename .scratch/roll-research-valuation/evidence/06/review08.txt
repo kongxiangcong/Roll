@@ -1,0 +1,46 @@
+...F..                                                                   [100%]
+================================== FAILURES ===================================
+_ test_incompatible_valuation_bases_keep_both_references_without_subtraction[scope] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-review08/test_incompatible_valuation_ba2')
+incompatible = 'scope'
+
+    @pytest.mark.parametrize('incompatible', ['units', 'currency', 'scope', 'horizon', 'method'])
+    def test_incompatible_valuation_bases_keep_both_references_without_subtraction(tmp_path, incompatible):
+        from test_shared_evidence import service
+        from test_economic_review import operating_request
+        from roll.research.company import ChangeSetCommand
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        previous = research.calculate_operating_valuation(command)
+        old = research.analysis_snapshot(previous['snapshot_id'])
+        changed = command.model_copy(deep=True); changed.snapshot_id=old['snapshot_id']; changed.idempotency_key='incompatible'
+        if incompatible == 'method':
+            changed.economic_basis['applicability']['category'] = 'FINANCIAL'
+        elif incompatible == 'horizon':
+            year = copy.deepcopy(changed.drivers['scenarios'][0]['years'][-1]); year['period']='2028-01-01/2028-12-31'
+            changed.drivers['scenarios'][0]['years'].append(year)
+            for key, p in list(changed.drivers['provenance'].items()):
+                if key.startswith('scenarios/0/years/1/'):
+                    changed.drivers['provenance'][key.replace('/1/', '/2/')] = dict(p, period=year['period'])
+        else:
+            if incompatible == 'units': changed.config['metadata'].update(amount_unit='unit', shares_unit='share')
+            if incompatible == 'currency': changed.config['metadata']['currency']='HKD'
+            for p in [*changed.provenance.values(), *changed.drivers['provenance'].values()]:
+                if incompatible == 'units': p['unit']={'million':'unit','million_shares':'share'}.get(p['unit'],p['unit'])
+                if incompatible == 'currency' and p['currency']=='CNY': p['currency']='HKD'
+                if incompatible == 'scope': p['scope']='SEGMENT_ONLY'
+        newer = research.calculate_operating_valuation(changed)
+        result = research.compare_snapshots(ChangeSetCommand(old_snapshot_id=old['snapshot_id'], new_snapshot_id=newer['snapshot_id'], idempotency_key='incompatible'))
+        method = result['changes']['VALUATION_ASSUMPTION_OR_METHOD']
+>       assert method['status'] == 'NOT_COMPARABLE'
+E       AssertionError: assert 'COMPARABLE' == 'NOT_COMPARABLE'
+E         
+E         - NOT_COMPARABLE
+E         ? ----
+E         + COMPARABLE
+
+backend\tests\company_research\test_changes.py:262: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_incompatible_valuation_bases_keep_both_references_without_subtraction[scope]
+1 failed, 5 passed, 9 deselected in 41.43s

@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_reinterpreting_same_facts_is_not_new_operating_evidence_or_refreshed_material _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-red07/test_reinterpreting_same_facts0')
+
+    def test_reinterpreting_same_facts_is_not_new_operating_evidence_or_refreshed_material(tmp_path):
+        from test_shared_evidence import service, company
+        from test_analysis_snapshots import evidence, freeze, candidate
+        from roll.research.company import ChangeSetCommand
+        research = service(tmp_path)
+        issuer = research.register(company()); _, fact = evidence(research, issuer)
+        packet = freeze(research, issuer, fact)
+        old = research.apply_analysis_candidate(packet['input_id'], candidate(packet, fact))
+        packet = freeze(research, issuer, fact, parent_snapshot_id=old['snapshot_id'])
+        draft = candidate(packet, fact); draft['hypotheses'][0].update(previous_version_id=old['hypothesis_version_ids'][0], change_reason='Same facts, reconsidered research judgment')
+        new = research.apply_analysis_candidate(packet['input_id'], draft)
+        result = research.compare_snapshots(ChangeSetCommand(old_snapshot_id=old['snapshot_id'], new_snapshot_id=new['snapshot_id'], idempotency_key='reinterpret'))
+>       assert result['changes']['OPERATING_EVIDENCE']['evidence_changed'] is False
+E       assert True is False
+
+backend\tests\company_research\test_changes.py:198: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_reinterpreting_same_facts_is_not_new_operating_evidence_or_refreshed_material
+1 failed, 8 deselected in 6.95s

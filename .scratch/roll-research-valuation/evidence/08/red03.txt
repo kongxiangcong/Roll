@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_report_acquires_bounded_registered_source_retains_failure_and_shared_material _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red03/test_report_acquires_bounded_r0')
+
+    def test_report_acquires_bounded_registered_source_retains_failure_and_shared_material(tmp_path):
+        import httpx
+        from roll.research.company.reports import ReportCommand
+        from test_shared_evidence import material_input
+        research=service(tmp_path)
+        issuer=research.register(company())
+        snapshot=published(research,issuer)
+        calls=[]
+        def respond(request):
+            calls.append(str(request.url))
+            return httpx.Response(200,content=b'%PDF-1.7 METHOD original retained') if len(calls)==1 else httpx.Response(503)
+        research.evidence.transport=httpx.MockTransport(respond)
+        metadata=material_input(issuer['company_id'])
+        metadata.update(source_url='https://static.cninfo.com.cn/finalpage/2026-01-01/report.PDF',media_type='application/pdf')
+        source=dict(material=metadata,category='������¶',identity_basis='METHOD confirmed issuer PDF URL')
+>       job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],
+            as_of='2026-02-01T00:00:00+00:00',idempotency_key='sources',sources=[source,{**source,'category':'��ҵʱ��'}]))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ReportCommand
+E       sources
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=[{'material': {'company_i...firmed issuer PDF URL'}], input_type=list]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+backend\tests\company_research\test_report_pipeline.py:67: ValidationError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_report_acquires_bounded_registered_source_retains_failure_and_shared_material
+1 failed, 2 deselected in 6.47s

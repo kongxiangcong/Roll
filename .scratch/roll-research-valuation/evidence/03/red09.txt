@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___________ test_reusing_published_input_does_not_call_model_again ____________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red09/test_reusing_published_input_d0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000013ED9485BA0>
+
+    def test_reusing_published_input_does_not_call_model_again(tmp_path, monkeypatch):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer)
+        packet = freeze(research, issuer, fact)
+        saved = research.apply_analysis_candidate(packet['input_id'], candidate(packet, fact))
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE', raising=False)
+        reused = research.run_analysis(packet['input_id'])
+>       assert reused['status'] == 'COMPLETE' and reused['reused'] is True
+E       AssertionError: assert ('UNAVAILABLE' == 'COMPLETE'
+E         
+E         - COMPLETE
+E         + UNAVAILABLE)
+
+backend\tests\company_research\test_analysis_snapshots.py:262: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_reusing_published_input_does_not_call_model_again
+1 failed, 10 deselected in 5.71s

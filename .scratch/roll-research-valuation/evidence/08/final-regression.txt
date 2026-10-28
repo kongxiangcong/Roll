@@ -1,0 +1,64 @@
+........................................................................ [ 40%]
+................................................................... [ 77%]
+......F.........F.......................                                 [100%]
+================================== FAILURES ===================================
+_ test_normal_close_keeps_actual_gap_and_overdue_calendar_maintenance_checked_once_on_resume _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-final01/test_normal_close_keeps_actual0')
+
+    def test_normal_close_keeps_actual_gap_and_overdue_calendar_maintenance_checked_once_on_resume(tmp_path):
+        clock=[datetime.fromisoformat('2026-10-08T16:00:00+08:00')]
+        with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+            registration=client.post('/api/reviews/maintenance',json={'kind':'WEEKLY','exchange':'SSE',
+                'first_due_at':'2026-10-09T16:00:00+08:00'})
+            assert registration.status_code==201,registration.text
+            schedule=registration.json()
+            assert schedule['next_due_at']=='2026-10-09T16:00:00+08:00'
+            assert client.get('/api/reviews/maintenance/checks').json()==[]
+        clock[0]=datetime.fromisoformat('2026-10-12T10:00:00+08:00')
+        with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+            response=client.post('/api/reviews/recover')
+            assert response.status_code==202,response.text
+            recovered=wait_result(client,response.json()['task_id'])
+            coverage=client.get('/api/reviews/coverage').json()
+            gap=coverage['gaps'][-1]
+            assert gap['start']=='2026-10-08T16:00:00+08:00'
+            assert gap['end']=='2026-10-12T10:00:00+08:00'
+            assert gap['reason']=='NORMAL_OFFLINE_NO_COVERAGE_PROMISED'
+            assert recovered['result']['forward_sample_created'] is False
+            checks=client.post('/api/reviews/maintenance/check').json()
+            assert len(checks)==1
+            assert checks[0]['schedule_id']==schedule['schedule_id']
+            assert checks[0]['scheduled_at']=='2026-10-09T16:00:00+08:00'
+            assert checks[0]['checked_at']=='2026-10-12T10:00:00+08:00'
+            assert checks[0]['status']=='OVERDUE_CHECKED'
+>           assert checks[0]['business_checks']['mature_labels']['status']=='NOT_CONNECTED'
+E           AssertionError: assert 'CHECKED' == 'NOT_CONNECTED'
+E             
+E             - NOT_CONNECTED
+E             + CHECKED
+
+backend\tests\application\test_reviews.py:192: AssertionError
+_ test_running_day_audit_records_only_actual_seen_days_without_creating_observations _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-final01/test_running_day_audit_records0')
+
+    def test_running_day_audit_records_only_actual_seen_days_without_creating_observations(tmp_path):
+        clock=[datetime.fromisoformat('2026-10-08T10:00:00+08:00')]
+        with TestClient(create_app(tmp_path,review_clock=lambda:clock[0])) as client:
+            for _ in range(100):
+                response=client.get('/api/reviews/audits')
+                if response.status_code==200 and response.json():break
+                time.sleep(.02)
+            assert response.status_code==200,response.text
+            first=response.json();assert [a['trade_date'] for a in first]==['2026-10-08']
+            assert first[0]['task_id'] is None and first[0]['snapshot_id'] is None
+            assert first[0]['origin']=='RUNNING_DAY_CHECK'
+>           assert first[0]['metrics']['unfinished_execution_intents']['value'] is None
+E           assert 0 is None
+
+backend\tests\application\test_reviews.py:443: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_reviews.py::test_normal_close_keeps_actual_gap_and_overdue_calendar_maintenance_checked_once_on_resume
+FAILED backend\tests\application\test_reviews.py::test_running_day_audit_records_only_actual_seen_days_without_creating_observations
+2 failed, 177 passed, 5 subtests passed in 959.72s (0:15:59)

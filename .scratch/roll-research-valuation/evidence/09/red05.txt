@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_pdf_formats_blank_separated_report_tables_as_tables ___________
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv09-red05/test_pdf_formats_blank_separat0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A17EADAEA0>
+
+    def test_pdf_formats_blank_separated_report_tables_as_tables(tmp_path, monkeypatch):
+        from roll.research.company.report_deliveries import DeliveryCommand
+        from pypdf import PdfReader
+        from io import BytesIO
+        research,report=published_report(tmp_path,monkeypatch)
+        delivery=research.report_deliveries.create(DeliveryCommand(report_id=report['report_id'],idempotency_key='tables'))
+        assert delivery['status']=='COMPLETE',delivery
+        raw,_,_=research.report_deliveries.download(delivery['delivery_id'],'pdf')
+        text='\n'.join(p.extract_text() for p in PdfReader(BytesIO(raw)).pages)
+>       assert '|---|' not in text
+E       AssertionError: assert '|---|' not in 'Roll �� PART...������ĵ���ȡ��ԭ��\n'
+E         
+E         '|---|' is contained here:
+E           ��|״̬|��Ŀ��|
+E           |---|---|
+E           |UNKNOWN|38|
+E           ���Ĳ��� ������߽�
+E           �ɼ۽������꣺���޿��õ�ͬ�ھ��۸���ӯ��ʱ��δ�ж���ת���м̻������...
+E         
+E         ...Full output truncated (250 lines hidden), use '-vv' to show
+
+backend\tests\company_research\test_report_deliveries.py:130: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_deliveries.py::test_pdf_formats_blank_separated_report_tables_as_tables
+1 failed in 21.08s

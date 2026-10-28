@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\run_real_cases.py", line 209, in <module>
+    main()
+    ~~~~^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\run_real_cases.py", line 70, in main
+    add(key, f['value'], 'share' if key.startswith('share_count') else 'unit',
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None if key.startswith('share_count') else 'CNY', f['period_start'], f['period_end'],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        page=str(f['pdf_page_1based']), source=f['source_id'])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\run_real_cases.py", line 52, in add
+    materials[group] = research.import_material(MaterialCommand(company_id=identity['company_id'],
+                       ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        source_id=source, origin_root_id=source_meta['source_url'], source_url=source_meta['source_url'],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        limitations=['Actual import occurs now; source acquired2026-10-26 UTC; no historical PIT',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      'unit=unit means whole CNY with unchanged numeric scale; share means individual shares']))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CompanyResearch.import_material() missing 1 required positional argument: 'content'

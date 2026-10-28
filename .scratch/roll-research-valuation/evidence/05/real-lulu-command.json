@@ -1,0 +1,3122 @@
+{
+  "snapshot_id": "c54935d7-760e-4dbd-9156-2f0b4a686a26",
+  "config": {
+    "metadata": {
+      "company": "承德露露股份公司",
+      "as_of": "2026-10-26T18:35:27.267742+00:00",
+      "currency": "CNY",
+      "amount_unit": "unit",
+      "shares_unit": "share",
+      "sources": [
+        "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+        "0177067a-6d57-46a4-b98e-d0f804df10c1",
+        "c44ce8df-bd62-41f6-8881-bbfca303405d",
+        "003390a4-ef1e-4e0f-ba50-3342ffb91a5d",
+        "03b51fdc-9cde-4324-9dc2-7049d6b66cc7",
+        "5d2d1693-821c-4cfd-a0e0-1b8051d1d229",
+        "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+        "cbcd489d-8096-4433-b359-2d9a2b8eca97",
+        "51bf4241-9eb3-41fc-8b34-15b591181b74",
+        "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+        "c30b8fbb-40a5-4db5-832d-099229b50708",
+        "d98d3c60-338b-4eea-8e52-5908accdd4dd",
+        "020ab1c1-c077-466a-bc5f-2224fc32e21d",
+        "b22cca12-8061-4b87-94d5-dc422dcddb63",
+        "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+        "8385dee3-e572-4e09-8860-26e69108baa8",
+        "64209081-038d-4324-8b8d-2066a023607e",
+        "ff7650e5-c879-45a5-967c-bcdac4dedd87",
+        "a2b06827-8a0b-4b90-9254-fc3df6c55108",
+        "6e02c4d0-a15a-488d-87b0-0c2f777952a4",
+        "943c4d34-ae46-4c17-8d37-d6f4f12d7ecb",
+        "71f77529-6e52-4808-8471-1165ac0ca616",
+        "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+        "2391133f-98ac-44d8-9928-027fe405eb55",
+        "eea63c62-a966-48ec-8013-dd286a35f33b",
+        "017ee892-e81f-49d6-aa85-547d1009ff0f",
+        "a9c21a21-6ee3-4564-ba12-90a0554a2ebd",
+        "a4c03793-fc74-43fb-8074-7ec295deeae3",
+        "40397dbf-ffea-4555-8419-79097bc1a8ce",
+        "0b29aa4a-ea08-45ab-a173-132dce785e40",
+        "d0e3884c-3c54-4564-b399-e344158aa4f3",
+        "68194232-a8ce-4ce4-8678-3fdda82876a9",
+        "ed35a805-ee19-49af-b522-e2aafceffd33",
+        "c52886dc-8672-484d-9b86-cb3a162844e6",
+        "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4",
+        "b03f71e4-228a-4bbf-9cf3-5579b879de54",
+        "15ef32ac-8489-4bf3-8d80-cfb6d3a76449",
+        "8c09dc5c-e6aa-4481-a285-81310a53f312",
+        "bfc29237-e59c-4d35-85dc-13aef3f7db0e",
+        "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+        "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+        "1a171fae-762e-4905-aac1-9e3a781c6e2f",
+        "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+        "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+        "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+        "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+        "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+        "e63eb52e-e053-409f-abd9-cff14f906be4",
+        "e928d6b0-c483-4801-a8d9-e6c06bbb010f",
+        "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+        "27b316af-9845-46b1-b579-781f5c9fa1f6"
+      ],
+      "assumptions": [
+        "dated-steady-state"
+      ]
+    },
+    "cash_flow_basis": "FCFF",
+    "shares": 1020000074.0,
+    "wacc": 0.04603798052754006,
+    "terminal_g": 0,
+    "equity_bridge": [
+      {
+        "name": "Debt leases repurchase and capital-project payable",
+        "component_id": "liabilities",
+        "amount": 718230829.51,
+        "source": "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+        "treatment": "deduct"
+      },
+      {
+        "name": "Assumed collectible excess cash",
+        "component_id": "excess-cash",
+        "amount": -3439300400.135,
+        "source": "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+        "treatment": "add"
+      }
+    ]
+  },
+  "assumptions": [
+    {
+      "assumption_id": "dated-steady-state",
+      "statement": "2025FY financial baseline, current knowledge; flat volume/price/mix, zero growth and working-capital change, normalized margins; no current-fair-price claim. Maintenance and lease renewals equal full D&A. Actual capex and WC cash release are not repeated. Operating cash reserve equals one quarter of the core operating-expense proxy including noncash costs, not actual cash expense; deposits assumed collectible. No new dilution; repurchase and capital AP obligations deducted once with gross reported shares.",
+      "anchor_fact_version_ids": [
+        "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+        "0177067a-6d57-46a4-b98e-d0f804df10c1",
+        "c44ce8df-bd62-41f6-8881-bbfca303405d",
+        "003390a4-ef1e-4e0f-ba50-3342ffb91a5d",
+        "03b51fdc-9cde-4324-9dc2-7049d6b66cc7",
+        "5d2d1693-821c-4cfd-a0e0-1b8051d1d229",
+        "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+        "cbcd489d-8096-4433-b359-2d9a2b8eca97",
+        "51bf4241-9eb3-41fc-8b34-15b591181b74",
+        "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+        "c30b8fbb-40a5-4db5-832d-099229b50708",
+        "d98d3c60-338b-4eea-8e52-5908accdd4dd",
+        "020ab1c1-c077-466a-bc5f-2224fc32e21d",
+        "b22cca12-8061-4b87-94d5-dc422dcddb63",
+        "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+        "8385dee3-e572-4e09-8860-26e69108baa8",
+        "64209081-038d-4324-8b8d-2066a023607e",
+        "ff7650e5-c879-45a5-967c-bcdac4dedd87",
+        "a2b06827-8a0b-4b90-9254-fc3df6c55108",
+        "6e02c4d0-a15a-488d-87b0-0c2f777952a4",
+        "943c4d34-ae46-4c17-8d37-d6f4f12d7ecb",
+        "71f77529-6e52-4808-8471-1165ac0ca616",
+        "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+        "2391133f-98ac-44d8-9928-027fe405eb55",
+        "eea63c62-a966-48ec-8013-dd286a35f33b",
+        "017ee892-e81f-49d6-aa85-547d1009ff0f",
+        "a9c21a21-6ee3-4564-ba12-90a0554a2ebd",
+        "a4c03793-fc74-43fb-8074-7ec295deeae3",
+        "40397dbf-ffea-4555-8419-79097bc1a8ce",
+        "0b29aa4a-ea08-45ab-a173-132dce785e40",
+        "d0e3884c-3c54-4564-b399-e344158aa4f3",
+        "68194232-a8ce-4ce4-8678-3fdda82876a9",
+        "ed35a805-ee19-49af-b522-e2aafceffd33",
+        "c52886dc-8672-484d-9b86-cb3a162844e6",
+        "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4",
+        "b03f71e4-228a-4bbf-9cf3-5579b879de54",
+        "15ef32ac-8489-4bf3-8d80-cfb6d3a76449",
+        "8c09dc5c-e6aa-4481-a285-81310a53f312",
+        "bfc29237-e59c-4d35-85dc-13aef3f7db0e",
+        "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+        "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+        "1a171fae-762e-4905-aac1-9e3a781c6e2f",
+        "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+        "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+        "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+        "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+        "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+        "e63eb52e-e053-409f-abd9-cff14f906be4",
+        "e928d6b0-c483-4801-a8d9-e6c06bbb010f",
+        "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+        "27b316af-9845-46b1-b579-781f5c9fa1f6"
+      ],
+      "hypothesis_version_ids": []
+    }
+  ],
+  "provenance": {
+    "shares": {
+      "kind": "DISCLOSED",
+      "references": [
+        "6e02c4d0-a15a-488d-87b0-0c2f777952a4"
+      ],
+      "unit": "share",
+      "currency": null,
+      "scope": "CONSOLIDATED",
+      "period": "2025-12-31/2025-12-31"
+    },
+    "equity_bridge/0/amount": {
+      "kind": "DERIVED",
+      "references": [
+        "4f2772fd-fb3c-41b3-8331-ee16a83ff411"
+      ],
+      "unit": "unit",
+      "currency": "CNY",
+      "scope": "CONSOLIDATED",
+      "period": "2025-12-31/2025-12-31"
+    },
+    "equity_bridge/1/amount": {
+      "kind": "ASSUMED",
+      "references": [
+        "dated-steady-state"
+      ],
+      "unit": "unit",
+      "currency": "CNY",
+      "scope": "CONSOLIDATED",
+      "period": "2025-01-01/2025-12-31"
+    },
+    "wacc": {
+      "kind": "ASSUMED",
+      "references": [
+        "dated-steady-state"
+      ],
+      "unit": "ratio",
+      "currency": null,
+      "scope": "CONSOLIDATED",
+      "period": "2026-10-26"
+    },
+    "terminal_g": {
+      "kind": "ASSUMED",
+      "references": [
+        "dated-steady-state"
+      ],
+      "unit": "ratio",
+      "currency": null,
+      "scope": "CONSOLIDATED",
+      "period": "STEADY_STATE"
+    }
+  },
+  "parent_version_id": null,
+  "change_reason": "Real-source2025 financial baseline conditional model; preserve current-pricing gaps",
+  "idempotency_key": "real-lulu-baseline-v1",
+  "drivers": {
+    "scenarios": [
+      {
+        "name": "baseline",
+        "base_revenue": 3173554539.83,
+        "years": [
+          {
+            "period": "2026-01-01/2026-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2027-01-01/2027-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2028-01-01/2028-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2029-01-01/2029-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2030-01-01/2030-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          }
+        ]
+      },
+      {
+        "name": "margin-stress",
+        "base_revenue": 3173554539.83,
+        "years": [
+          {
+            "period": "2026-01-01/2026-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2027-01-01/2027-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2028-01-01/2028-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2029-01-01/2029-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          },
+          {
+            "period": "2030-01-01/2030-12-31",
+            "revenue_driver": {
+              "volume_growth": 0,
+              "price_growth": 0
+            },
+            "operating_margin": 0.2624088983561661,
+            "tax_rate": 0.25,
+            "depreciation": 47326934.25,
+            "maintenance_capex": 47326934.25,
+            "growth_capex": 0,
+            "delta_working_capital": 0,
+            "invested_capital": 769428590.835
+          }
+        ]
+      }
+    ],
+    "normalizations": [
+      {
+        "adjustment_id": "baseline-2026-margin",
+        "target": "scenarios/0/years/0/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.010796962497722051,
+        "after": 0.25161193585844405,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2026-01-01/2026-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2026-01-01/2026-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2026-01-01/2026-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "baseline-2027-margin",
+        "target": "scenarios/0/years/1/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.010796962497722051,
+        "after": 0.25161193585844405,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2027-01-01/2027-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2027-01-01/2027-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2027-01-01/2027-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "baseline-2028-margin",
+        "target": "scenarios/0/years/2/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.010796962497722051,
+        "after": 0.25161193585844405,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2028-01-01/2028-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2028-01-01/2028-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2028-01-01/2028-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "baseline-2029-margin",
+        "target": "scenarios/0/years/3/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.010796962497722051,
+        "after": 0.25161193585844405,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2029-01-01/2029-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2029-01-01/2029-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2029-01-01/2029-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "baseline-2030-margin",
+        "target": "scenarios/0/years/4/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.010796962497722051,
+        "after": 0.25161193585844405,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2030-01-01/2030-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2030-01-01/2030-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2030-01-01/2030-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "margin-stress-2026-margin",
+        "target": "scenarios/1/years/0/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.0424088983561661,
+        "after": 0.22,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2026-01-01/2026-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2026-01-01/2026-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2026-01-01/2026-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "margin-stress-2027-margin",
+        "target": "scenarios/1/years/1/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.0424088983561661,
+        "after": 0.22,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2027-01-01/2027-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2027-01-01/2027-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2027-01-01/2027-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "margin-stress-2028-margin",
+        "target": "scenarios/1/years/2/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.0424088983561661,
+        "after": 0.22,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2028-01-01/2028-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2028-01-01/2028-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2028-01-01/2028-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "margin-stress-2029-margin",
+        "target": "scenarios/1/years/3/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.0424088983561661,
+        "after": 0.22,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2029-01-01/2029-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2029-01-01/2029-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2029-01-01/2029-12-31"
+          }
+        }
+      },
+      {
+        "adjustment_id": "margin-stress-2030-margin",
+        "target": "scenarios/1/years/4/operating_margin",
+        "before": 0.2624088983561661,
+        "delta": -0.0424088983561661,
+        "after": 0.22,
+        "formula": "before + delta",
+        "reason": "Reported operating profit832768950.67 -> core802208126.13 by revenue minus COGS/surcharges/selling/admin/research, excluding all finance/gains/impairments, then normalize to2024 observed core margin or explicit22% stress. One combined adjustment per target; no complete-cycle claim.",
+        "references": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1"
+        ],
+        "provenance": {
+          "before": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2030-01-01/2030-12-31"
+          },
+          "delta": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2030-01-01/2030-12-31"
+          },
+          "after": {
+            "kind": "ASSUMED",
+            "references": [
+              "dated-steady-state"
+            ],
+            "unit": "ratio",
+            "currency": null,
+            "scope": "CONSOLIDATED",
+            "period": "2030-01-01/2030-12-31"
+          }
+        }
+      }
+    ],
+    "provenance": {
+      "scenarios/0/base_revenue": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2025-01-01/2025-12-31"
+      },
+      "scenarios/0/years/0/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/0/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/0/years/1/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/1/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/0/years/2/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/2/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/0/years/3/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/3/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/0/years/4/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/0/years/4/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "basis/terminal/roic/baseline": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "STEADY_STATE"
+      },
+      "scenarios/1/base_revenue": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2025-01-01/2025-12-31"
+      },
+      "scenarios/1/years/0/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/0/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-01-01/2026-12-31"
+      },
+      "scenarios/1/years/1/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/1/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2027-01-01/2027-12-31"
+      },
+      "scenarios/1/years/2/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/2/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2028-01-01/2028-12-31"
+      },
+      "scenarios/1/years/3/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/3/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2029-01-01/2029-12-31"
+      },
+      "scenarios/1/years/4/operating_margin": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/depreciation": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/maintenance_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/growth_capex": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/delta_working_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/invested_capital": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "unit",
+        "currency": "CNY",
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/revenue_driver/volume_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "scenarios/1/years/4/revenue_driver/price_growth": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2030-01-01/2030-12-31"
+      },
+      "basis/terminal/roic/margin-stress": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "STEADY_STATE"
+      },
+      "basis/wacc/risk_free": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-10-26"
+      },
+      "basis/wacc/beta": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-10-26"
+      },
+      "basis/wacc/equity_risk_premium": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-10-26"
+      },
+      "basis/wacc/cost_of_debt": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-10-26"
+      },
+      "basis/wacc/equity_weight": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-10-26"
+      },
+      "basis/wacc/debt_weight": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-10-26"
+      },
+      "basis/wacc/tax_rate": {
+        "kind": "ASSUMED",
+        "references": [
+          "dated-steady-state"
+        ],
+        "unit": "ratio",
+        "currency": null,
+        "scope": "CONSOLIDATED",
+        "period": "2026-10-26"
+      }
+    }
+  },
+  "economic_basis": {
+    "applicability": {
+      "category": "NON_FINANCIAL",
+      "reason": "Manufacturing beverage subsidiaries; related finance-company deposits are counterparties, not consolidated financial operations",
+      "references": [
+        "741985a1-01b6-4cf5-ac1d-1f29dad6e0e4"
+      ]
+    },
+    "wacc": {
+      "risk_free": 0.018473,
+      "beta": 0.5676693222947232,
+      "equity_risk_premium": 0.0514,
+      "cost_of_debt": 0.0299,
+      "equity_weight": 0.9360497246535183,
+      "debt_weight": 0.0639502753464817,
+      "tax_rate": 0.25,
+      "currency": "CNY",
+      "as_of": "2026-10-26",
+      "tax_shield_reason": "Statutory25% usable shield assumed;2025 bank+lease interest debt592328455.05 and approximately8.67bn market equity imply weights. Repurchase/capital AP excluded from WACC D but bridge deducted. Beta=.54*(1+.75*D/E), asset industry proxyJan2026 not company measured beta. TotalChinaERP5.14% already includes country0.91%, simplified beta-scaled totalERP assumption. Riskfree2025-12-31=1.8473%; historical debt2.99% proxy, no current quote",
+      "references": [
+        "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+        "8c09dc5c-e6aa-4481-a285-81310a53f312",
+        "5abbce78-c69f-40a4-a82b-3ddb07851dca",
+        "27b316af-9845-46b1-b579-781f5c9fa1f6"
+      ]
+    },
+    "terminal": {
+      "roic": {
+        "baseline": 0.7783414317101471,
+        "margin-stress": 0.6805524324274052
+      },
+      "maintenance_reason": "Zero growth and zero net reinvestment; maintenance including capitalized lease renewals equals full D&A by assumption, not disclosed maintenance spending",
+      "references": [
+        "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+      ]
+    },
+    "bridge": {
+      "shares_reason": "Gross year-end shares used, no treasury-share netting; no new dilution assumed. Repurchase liability deducted once in debt.",
+      "references": [
+        "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+        "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+        "e928d6b0-c483-4801-a8d9-e6c06bbb010f",
+        "b03f71e4-228a-4bbf-9cf3-5579b879de54"
+      ],
+      "components": [
+        {
+          "component_id": "liabilities",
+          "economic_id": "interest-and-repurchase-obligations",
+          "category": "DEBT",
+          "amount": 718230829.51,
+          "reason": "Loans + leases + restricted-share repurchase + recognized capital-project payable; the latter excluded from operating NWC and not deducted again in maintenance capex. No treasury-stock double deduction",
+          "references": [
+            "4f2772fd-fb3c-41b3-8331-ee16a83ff411"
+          ],
+          "included_in_fcff": false
+        },
+        {
+          "component_id": "excess-cash",
+          "economic_id": "cash-after-operating-reserve",
+          "category": "CASH",
+          "amount": -3439300400.135,
+          "reason": "Cash minus quarter-year core expense reserve; related deposits assumed collectible; all finance income excluded from EBIT",
+          "references": [
+            "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+          ],
+          "included_in_fcff": false
+        }
+      ],
+      "exclusions": [
+        {
+          "category": "RESTRICTED_CASH",
+          "reason": "Issuer explicitly reports no pledged/frozen cash; no separate addback",
+          "references": [
+            "943c4d34-ae46-4c17-8d37-d6f4f12d7ecb"
+          ]
+        },
+        {
+          "category": "NCI",
+          "reason": "Total-parent equity difference0, all subsidiaries100% owned",
+          "references": [
+            "e928d6b0-c483-4801-a8d9-e6c06bbb010f"
+          ]
+        },
+        {
+          "category": "NONOPERATING_ASSETS",
+          "reason": "No addback beyond cash; exhaustive2025 balance-line residual0, no claim of economic value0; finance deposits already included once in cash",
+          "references": [
+            "15ef32ac-8489-4bf3-8d80-cfb6d3a76449"
+          ]
+        },
+        {
+          "category": "ASSOCIATES",
+          "reason": "Fully impaired book value, conservative assumed no economic recovery addback; excluded from core profit",
+          "references": [
+            "b03f71e4-228a-4bbf-9cf3-5579b879de54"
+          ]
+        }
+      ],
+      "overlap_reason": "Cash excluded from earnings before adding excess cash; all debt/lease/repurchase obligations deducted once; no separate inventory-share or associate addback"
+    },
+    "limitations": [
+      "Consolidated PRC-GAAP CNY yuan/SHARE; do not substitute parent-company values.",
+      "2025FY basis with actual 2026 acquisition is not historical PIT or a current balance.",
+      "2025 CFO includes276916417.60 cash WC release; do not extrapolate to perpetual FCFF.",
+      "Debt/lease and restricted-share repurchase obligations need consistent bridge and share policy.",
+      "AP includes capital-project payables; operating WC definitions and growth/reinvestment must be explicit.",
+      "D&A, lease renewals, capitalized leases, maintenance-vs-expansion require a consistent policy; project capex is not maintenance.",
+      "Related finance-company deposits are unrestricted by issuer disclosure, but are not independently verified risk-free/excess cash.",
+      "2026Q3 issuer announcement discovered; provider numeric data not yet verified against official-host rawPDF, do not hide negative YTD CFO or call annual cash bridge current.",
+      "No CODEX, training, probability, account or qualification change made.",
+      "BASELINE_RESEARCH only:2025 financial/bridge basis, actual current acquisition and discount-rate assumptions. Current pricing is blocked pending2026Q3 reconciliation, commitments and post-quarter share cancellation verification; Q3 cash/investment assets differ materially from2025.",
+      "Operating cash reserve and collectible related deposits are assumptions; no independent credit appraisal. Noncash financial investment book residual0 is not an appraised economic recovery value.",
+      "Core margin excludes gains and impairments by explicit definition;2024-margin benchmark and22% stress are assumptions, not forecasts or full-cycle normalization.",
+      "Capital employed includes explicitly retained operating cash and gross repurchase liability; stable capital-turnover/zero-growth model only. No price-implied reverse analysis, probabilities or expected-return assertion.",
+      "WACC uses CNY government-yield riskfree proxy without sovereign-spread subtraction, China totalERP includes country risk once, Jan2026 global industry asset-beta proxy relevered by approximate2025 marketE and book interestD. These are justified proxies with model risk, not a measured issuer beta/current market WACC; simplified common beta scaling of totalERP is explicit.",
+      "Reported2025 material commitment disclosure is none; recognized capital-project payables are deducted once. This does not imply no future replacement spending or optional project plans. Quarter operating-expense cash reserve is an assumption including noncash expenses."
+    ],
+    "valuation_basis": {
+      "valuation_basis_date": "2025-12-31",
+      "financial_period_end": "2025-12-31",
+      "bridge_as_of": "2025-12-31",
+      "latest_known_financial_period_end": "2026-09-30",
+      "current_pricing_gaps": [
+        "2026Q3 bridge, investment assets and capital commitments not fully reconciled;2025 bridge is not current"
+      ]
+    },
+    "assumption_basis": {
+      "config/wacc": {
+        "reason": "WACC=(RF+relevered beta*China totalERP)*wE + historical debt cost*(1-tax)*wD = 0.04603798052754006; no duplicate country premium.",
+        "support_fact_version_ids": [
+          "8c09dc5c-e6aa-4481-a285-81310a53f312",
+          "bfc29237-e59c-4d35-85dc-13aef3f7db0e",
+          "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Industry/country/rounded-capital proxies; see each constituent audit"
+        ]
+      },
+      "config/terminal_g": {
+        "reason": "Zero nominal steady growth is a conservative no-expansion scenario, not extrapolation of2025 CFO release or a statement of actual future demand.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat volume, price and mix must hold; optional expansion benefits excluded"
+        ]
+      },
+      "config/equity_bridge/1/amount": {
+        "reason": "Collectible cash4032137003.56 minus reserve(3173554539.83-802208126.13)/4=592836603.425; excess cash=3439300400.135. Finance income excluded from EBIT.",
+        "support_fact_version_ids": [
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18",
+          "8385dee3-e572-4e09-8860-26e69108baa8",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Quarter operating-expense proxy includes noncash costs; reserve adequacy and counterparty recovery not independently appraised"
+        ]
+      },
+      "drivers/scenarios/0/base_revenue": {
+        "reason": "Base revenue equals actual2025 consolidated revenue without scale conversion; flat fixed mix links volume/price growth to whole-group revenue.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Model uses full consolidated revenue, not group profit divided by partial product tonnage"
+        ]
+      },
+      "drivers/scenarios/0/years/0/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/0/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/0/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/0/years/0/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/0/years/0/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/0/years/0/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/0/years/0/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/0/years/0/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/0/years/0/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/0/years/1/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/1/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/1/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/0/years/1/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/0/years/1/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/0/years/1/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/0/years/1/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/0/years/1/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/0/years/1/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/0/years/2/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/2/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/2/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/0/years/2/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/0/years/2/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/0/years/2/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/0/years/2/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/0/years/2/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/0/years/2/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/0/years/3/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/3/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/3/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/0/years/3/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/0/years/3/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/0/years/3/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/0/years/3/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/0/years/3/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/0/years/3/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/0/years/4/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/4/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/0/years/4/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/0/years/4/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/0/years/4/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/0/years/4/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/0/years/4/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/0/years/4/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/0/years/4/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/basis/terminal/roic/baseline": {
+        "reason": "Endogenous steady NOPAT/normalized capital proxy=0.7783414317101471; capital=parent equity+bridge obligations-excess cash, no growth net reinvestment required.",
+        "support_fact_version_ids": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Steady capital-turnover and retained operating-cash reserve are assumptions; ROIC not independent validation"
+        ]
+      },
+      "drivers/scenarios/1/base_revenue": {
+        "reason": "Base revenue equals actual2025 consolidated revenue without scale conversion; flat fixed mix links volume/price growth to whole-group revenue.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Model uses full consolidated revenue, not group profit divided by partial product tonnage"
+        ]
+      },
+      "drivers/scenarios/1/years/0/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/0/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/0/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/1/years/0/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/1/years/0/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/1/years/0/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/1/years/0/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/1/years/0/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/1/years/0/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/1/years/1/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/1/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/1/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/1/years/1/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/1/years/1/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/1/years/1/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/1/years/1/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/1/years/1/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/1/years/1/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/1/years/2/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/2/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/2/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/1/years/2/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/1/years/2/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/1/years/2/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/1/years/2/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/1/years/2/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/1/years/2/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/1/years/3/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/3/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/3/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/1/years/3/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/1/years/3/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/1/years/3/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/1/years/3/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/1/years/3/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/1/years/3/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/scenarios/1/years/4/operating_margin": {
+        "reason": "Begin at reported2025 operating-profit/revenue, apply single explicit normalization: remove finance/other gains/impairments, then2024 core-margin benchmark or22% margin stress.",
+        "support_fact_version_ids": [
+          "b5bfe69d-8f56-4e74-a54f-30c805e500fa",
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "4d866f20-e882-4e5f-b95e-8c3f4c8258a1",
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Core-profit definition, benchmark and stress are research choices; recurring impairments may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/4/tax_rate": {
+        "reason": "Use disclosed statutory25% operating-tax proxy; accrued statutory tax differs from actual cash tax.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No tax-loss refund credited; future tax policy and deductions may differ"
+        ]
+      },
+      "drivers/scenarios/1/years/4/depreciation": {
+        "reason": "Carry full2025 fixed+ROU+intangible+deferred amortization total47326934.25 into stable asset base.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Not a projection of future expansion commissioning or accelerated depreciation"
+        ]
+      },
+      "drivers/scenarios/1/years/4/maintenance_capex": {
+        "reason": "Assume maintenance and capitalized lease renewals equal full D&A47326934.25; actual cashcapex184906387.79 shown separately and not called maintenance.",
+        "support_fact_version_ids": [
+          "d1ea0138-f4d3-42b8-b8c3-6a23f7f00272",
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Replacement spending can exceed D&A; optional expansion excluded; recognized capital AP deducted separately once"
+        ]
+      },
+      "drivers/scenarios/1/years/4/growth_capex": {
+        "reason": "Zero incremental growth capex in the no-growth scenario;2025 actualcapex and material-commitment disclosure retained, recognized capital AP bridge deducted once.",
+        "support_fact_version_ids": [
+          "1f2656ad-e301-4f06-971b-1fe81b00f6ce",
+          "017ee892-e81f-49d6-aa85-547d1009ff0f"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No unearned expansion benefit; no-disclosed-important-commitment is not a forecast of zero future spending"
+        ]
+      },
+      "drivers/scenarios/1/years/4/delta_working_capital": {
+        "reason": "Steady-state delta operating NWC0; do not repeat2025 CFO inventory/receivable/payable release276916417.60. Goods AP and capital AP remain separated.",
+        "support_fact_version_ids": [
+          "71f77529-6e52-4808-8471-1165ac0ca616",
+          "90420d5b-ec8d-4ef0-87cd-649359ecafb5",
+          "2391133f-98ac-44d8-9928-027fe405eb55"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Flat steady balances assumed; actual full operating NWC classification requires further future reconciliation"
+        ]
+      },
+      "drivers/scenarios/1/years/4/invested_capital": {
+        "reason": "Normalized capital proxy=769428590.835=parent equity3490498161.46 + bridge obligations718230829.51 - assumed excess cash3439300400.135; cash reserve remains operational.",
+        "support_fact_version_ids": [
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Capital/ROIC proxy depends on explicit reserve/obligation treatment, stable turnover only"
+        ]
+      },
+      "drivers/scenarios/1/years/4/revenue_driver/volume_growth": {
+        "reason": "Flat aggregate sales-activity volume index with fixed product mix; actual2025/24 consolidated revenues are the demand anchors.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Scenario assumption, not a reported physical group volume series"
+        ]
+      },
+      "drivers/scenarios/1/years/4/revenue_driver/price_growth": {
+        "reason": "Flat nominal price/mix index; primary beverage source separately gives revenue/ton and other revenue, no group unit-profit inference.",
+        "support_fact_version_ids": [
+          "9d4b1c09-9223-4b2c-b7cc-274a42048b4d",
+          "a9c21a21-6ee3-4564-ba12-90a0554a2ebd"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Price/mix and seasonality may change; no retail per-can price claim"
+        ]
+      },
+      "drivers/basis/terminal/roic/margin-stress": {
+        "reason": "Endogenous steady NOPAT/normalized capital proxy=0.6805524324274052; capital=parent equity+bridge obligations-excess cash, no growth net reinvestment required.",
+        "support_fact_version_ids": [
+          "234fdf0d-22b2-4385-a6c2-4e33023ce546",
+          "13f02bda-b8d7-4cfe-ad23-972f95b31889",
+          "4f2772fd-fb3c-41b3-8331-ee16a83ff411",
+          "02f51ec5-5c98-48e7-b620-d185a9a78e18"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Steady capital-turnover and retained operating-cash reserve are assumptions; ROIC not independent validation"
+        ]
+      },
+      "drivers/basis/wacc/risk_free": {
+        "reason": "Use dated2025-12-31 CNY10Y government yield1.8473% as riskfree benchmark proxy; no additional default-spread subtraction under this convention.",
+        "support_fact_version_ids": [
+          "8c09dc5c-e6aa-4481-a285-81310a53f312"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Government benchmark is a proxy; other defaultfree conventions change discount rate"
+        ]
+      },
+      "drivers/basis/wacc/beta": {
+        "reason": "Cash-corrected unlevered global soft-beverage beta0.54 * (1+(1-25%)*592328455.05/8670000000) = 0.5676693222947232; industry business-risk proxy relevered using issuer debt/equity proxy.",
+        "support_fact_version_ids": [
+          "37f5583e-ecce-4ef1-80fe-f45b6e33973e",
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+          "64209081-038d-4324-8b8d-2066a023607e",
+          "ff7650e5-c879-45a5-967c-bcdac4dedd87"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Jan2026 global94-firm industry proxy is not a measured000848 equity beta; marketE rounded and bookD proxies market debt"
+        ]
+      },
+      "drivers/basis/wacc/equity_risk_premium": {
+        "reason": "Author Jan5 2026 China rating-based totalERP5.14%=mature4.23%+country0.91%; use total once with beta-scaled common country exposure.",
+        "support_fact_version_ids": [
+          "bfc29237-e59c-4d35-85dc-13aef3f7db0e"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "After-anchor public source, current acquisition, not2025 historical PIT; country exposure scaling is a simplifying convention"
+        ]
+      },
+      "drivers/basis/wacc/cost_of_debt": {
+        "reason": "Use disclosed2025 guaranteed-loan2.99% as conservative upper historical borrowing-cost proxy; credit-loan range2.44%-2.88%.",
+        "support_fact_version_ids": [
+          "27b316af-9845-46b1-b579-781f5c9fa1f6"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Proxy for forward debt cost, not a current quote or duration-matched bond yield"
+        ]
+      },
+      "drivers/basis/wacc/equity_weight": {
+        "reason": "E/(D+E)=8670000000/(592328455.05+8670000000)=0.9360497246535183; excludes repurchase and capital AP from interest-bearing WACC D.",
+        "support_fact_version_ids": [
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb",
+          "64209081-038d-4324-8b8d-2066a023607e",
+          "ff7650e5-c879-45a5-967c-bcdac4dedd87"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "Rounded marketE and book interestD approximation; not arbitrary target weights"
+        ]
+      },
+      "drivers/basis/wacc/debt_weight": {
+        "reason": "D/(D+E)=592328455.05/(592328455.05+8670000000)=0.0639502753464817; only bank+capitalized-lease debt receives shield.",
+        "support_fact_version_ids": [
+          "64209081-038d-4324-8b8d-2066a023607e",
+          "ff7650e5-c879-45a5-967c-bcdac4dedd87",
+          "a43c7e7e-e43c-47cd-81a7-ae0a21847ebb"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "BookD proxies nontraded market debt; repurchase/capital AP only in bridge"
+        ]
+      },
+      "drivers/basis/wacc/tax_rate": {
+        "reason": "Disclosed statutory25% rate applied to positive operating profit and assumed usable interest tax shield; current cash tax need not equal this accrual proxy.",
+        "support_fact_version_ids": [
+          "5abbce78-c69f-40a4-a82b-3ddb07851dca"
+        ],
+        "counter_fact_version_ids": [],
+        "limitations": [
+          "No automatic tax refund on losses; future shield usability is conditional"
+        ]
+      }
+    }
+  }
+}

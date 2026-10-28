@@ -1,8 +1,8 @@
 # 持续投研与条件估值
 
-更新：2026-10-26。分组：分析能力。用户已同意主线并确认下述补强；已发布实施规格v1.0与顺序任务，尚未开发。
+更新：2026-10-28。分组：分析能力。用户已同意主线并确认下述补强；实施01–11完成，12联合真实验收保持blocked，整体未完成。P1自动估值编排/P3已修复；真实批次4/16、纠错2/2，Lulu三候选BLOCKED、JCC一次经营分析COMPLETE，未生成新的可用自动估值/完整报告/PDF。自然worker无auth健康，11:37:07+08实际周期0/2；A2/A6/A7/A8完整链未通过，见[当前覆盖矩阵](../../../.scratch/roll-research-valuation/evidence/12/coverage.md)。下文保留最初讨论依据，不作为当前实施状态。
 
-实施入口：[spec](../../../.scratch/roll-research-valuation/spec.md)、[12张tickets执行索引](../../../.scratch/roll-research-valuation/issues/README.md)。按01→12顺序执行；下一票01。规格默认完整研报含估值专章、网页及Markdown/PDF交付，单独估值导出不作为首版验收项。后续实施以spec及票为准，白板保留讨论依据。
+实施入口：[spec](../../../.scratch/roll-research-valuation/spec.md)、[12张tickets执行索引](../../../.scratch/roll-research-valuation/issues/README.md)。已按01→12顺序推进，当前12真实验收未关闭。规格默认完整研报含估值专章、网页及Markdown/PDF交付，单独估值导出不作为首版验收项。当前状态以spec及票为准，白板保留讨论依据，不以PARTIAL或来源准备替代FULL。
 
 ## 目标与边界
 
@@ -79,3 +79,7 @@
 - Damodaran 增长教学页：https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/growth.htm 。增长、再投资与资本回报的一致性；只读原文，不能代替公司现金流拆分。
 - Campbell/Giglio/Polk，What Drives Booms and Busts in Value?，NBER Working Paper 31859（2023）：https://www.nber.org/papers/w31859 。检索摘要讨论现金流、折现率及波动消息；正文访问403，未复现，不作A股迁移证据。
 - Microsoft Qlib，main 文档：https://github.com/microsoft/qlib/blob/main/docs/component/data.rst 。只读当前文档，未固定提交或运行；可借鉴量化数据/实验组织，不建议整体迁移，也不补足Roll历史可得性与校准证据。
+
+## 2026-10-28 联合验收检查点
+
+01–11已实现；12新增官方来源取得/核查、当前API/真实网页新任务、固定core与旧版本不可变、实际重启和隔离恢复。无auth新任务的12个UNAVAILABLE不是12个真实生成章节；原报告及新报告均PARTIAL，当前估值仍blocked。具体[覆盖矩阵](../../../.scratch/roll-research-valuation/evidence/12/coverage.md)与[输入/编排差距](../../../.scratch/roll-research-valuation/evidence/12/readiness.md)保留A6/A7/A8 NOT_PASSED。自然周期当前0/2，已隔离接入原research盘后worker，不改时钟/不补造/不新建平台automation。最终review的自动估值编排缺失由单一fix实施者修复后继续真实验收；不宣称功能完成或概率提升。

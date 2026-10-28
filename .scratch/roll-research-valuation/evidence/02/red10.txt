@@ -1,0 +1,10 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_identity_and_material_commands_reject_incompatible_existing_identity_and_unsafe_url _
+backend\tests\company_research\test_shared_evidence.py:239: in test_identity_and_material_commands_reject_incompatible_existing_identity_and_unsafe_url
+    with pytest.raises(HTTPException) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_identity_and_material_commands_reject_incompatible_existing_identity_and_unsafe_url
+1 failed, 9 deselected in 6.72s

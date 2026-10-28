@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_pdf_failure_retains_markdown_and_retry_creates_new_delivery _______
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv09-red02/test_pdf_failure_retains_markd0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017F6B300050>
+
+    def test_pdf_failure_retains_markdown_and_retry_creates_new_delivery(tmp_path, monkeypatch):
+        from roll.research.company.report_deliveries import DeliveryCommand
+        research, report = published_report(tmp_path, monkeypatch)
+        monkeypatch.setenv('ROLL_REPORT_FONT', str(tmp_path/'missing.ttf'))
+>       failed = research.report_deliveries.create(DeliveryCommand(report_id=report['report_id'], idempotency_key='missing-font'))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_report_deliveries.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\report_deliveries.py:66: in create
+    fail('PDF_NOT_AVAILABLE', 'PDF renderer is not configured')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'PDF_NOT_AVAILABLE', reason = 'PDF renderer is not configured'
+status = 422, context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'PDF_NOT_AVAILABLE', 'reason': 'PDF renderer is not configured', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_deliveries.py::test_pdf_failure_retains_markdown_and_retry_creates_new_delivery
+1 failed in 16.87s

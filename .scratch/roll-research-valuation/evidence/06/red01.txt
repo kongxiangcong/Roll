@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_perpetual_conditions_separate_rate_change_from_operating_evidence ____
+
+    def test_perpetual_conditions_separate_rate_change_from_operating_evidence():
+>       from roll.research.company.calculator import compare_perpetuity
+E       ImportError: cannot import name 'compare_perpetuity' from 'roll.research.company.calculator' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket06\backend\src\roll\research\company\calculator.py)
+
+backend\tests\company_research\test_changes.py:6: ImportError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_perpetual_conditions_separate_rate_change_from_operating_evidence
+1 failed in 1.67s

@@ -1,0 +1,19 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_change_set_freezes_explicit_snapshots_new_fact_and_hypothesis_counterevidence _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-green02/test_change_set_freezes_explic0')
+
+    def test_change_set_freezes_explicit_snapshots_new_fact_and_hypothesis_counterevidence(tmp_path):
+        from test_shared_evidence import service
+        from roll.research.company import ChangeSetCommand
+        research = service(tmp_path)
+        old, new, fact = research_pair(research)
+>       saved = research.compare_snapshots(ChangeSetCommand(old_snapshot_id=old['snapshot_id'], new_snapshot_id=new['snapshot_id'], idempotency_key='compare'))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CompanyResearch' object has no attribute 'compare_snapshots'
+
+backend\tests\company_research\test_changes.py:37: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_change_set_freezes_explicit_snapshots_new_fact_and_hypothesis_counterevidence
+1 failed, 1 passed in 10.27s

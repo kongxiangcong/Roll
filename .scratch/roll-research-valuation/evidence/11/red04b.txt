@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_feature_http_protocol_is_read_only_and_inconclusive_without_bound_baseline _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv11-red04b/test_feature_http_protocol_is_0')
+
+    def test_feature_http_protocol_is_read_only_and_inconclusive_without_bound_baseline(tmp_path):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from roll.research.company.api import router
+        research = service(tmp_path)
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        app = FastAPI(); app.include_router(router(research))
+        with TestClient(app) as client:
+            base='/api/company-research'
+>           assert client.get(base+'/feature-schema').status_code == 200
+E           AssertionError: assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+E            +    where <Response [404 Not Found]> = get(('/api/company-research' + '/feature-schema'))
+E            +      where get = <starlette.testclient.TestClient object at 0x00000223681457F0>.get
+
+backend\tests\company_research\test_research_features.py:99: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_research_features.py::test_feature_http_protocol_is_read_only_and_inconclusive_without_bound_baseline
+1 failed, 3 deselected in 9.62s

@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_backup_restores_frozen_snapshot_and_refuses_corrupt_analysis_record ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/worktrees/rv-ticket03/.scratch/rv03-test-red06/test_backup_restores_frozen_sn0')
+
+    def test_backup_restores_frozen_snapshot_and_refuses_corrupt_analysis_record(tmp_path):
+        import json
+        import sqlite3
+        from roll.runtime.backups import Backups, restore_at_start
+        research = service(tmp_path / 'source')
+        issuer = research.register(company())
+        _, fact = evidence(research, issuer)
+        packet = freeze(research, issuer, fact)
+        saved = research.apply_analysis_candidate(packet['input_id'], candidate(packet, fact))
+        backups = Backups(tmp_path / 'source')
+        bundle = backups.export(backups.create()['backup_id'])
+        restored_backups = Backups(tmp_path / 'restored')
+        restored_backups.stage_restore(bundle)
+        restore_at_start(restored_backups)
+        restored = service(tmp_path / 'restored')
+        assert restored.analysis_input(packet['input_id']) == packet
+        assert restored.analysis_snapshot(saved['snapshot_id'], purpose='REPORT') == saved
+        assert restored.operating_hypothesis(saved['hypothesis_version_ids'][0]) == saved['core']['hypotheses'][0]
+        with sqlite3.connect(research.ledger.path) as db:
+            corrupt = {**saved, 'input_id': 'missing-input'}
+            db.execute('UPDATE company_research_snapshots SET value=? WHERE snapshot_id=?', (json.dumps(corrupt), saved['snapshot_id']))
+>       with pytest.raises(HTTPException) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_analysis_snapshots.py:162: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_analysis_snapshots.py::test_backup_restores_frozen_snapshot_and_refuses_corrupt_analysis_record
+1 failed, 5 deselected in 12.68s

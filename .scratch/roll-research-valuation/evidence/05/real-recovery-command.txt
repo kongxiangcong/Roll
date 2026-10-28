@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\verify_saved_cases.py", line 58, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\verify_saved_cases.py", line 24, in main
+    research = service(receipt['data_directory']); ids = receipt['result']
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\.scratch\roll-research-valuation\evidence\05\verify_saved_cases.py", line 16, in service
+    ledger = Ledger(path)
+  File "D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket05\backend\src\roll\accounts\ledger.py", line 116, in __init__
+    directory.mkdir(parents=True, exist_ok=True)
+    ^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'mkdir'

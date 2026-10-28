@@ -23,3 +23,5 @@ main:has(>.workbench){max-width:1360px;margin:32px auto;padding-inline:40px}
 
 .workbench .wb-account-jump{display:none}.wb-heading-tools{display:flex;align-items:center;gap:12px}
 @media(max-width:760px){.workbench .wb-account-jump{display:block;background:transparent;border:0;padding:4px;margin:0}.wb-heading-tools{justify-content:space-between;width:100%}}
+
+.company-daily{border-top:1px solid #ddd;margin:1.5rem 0;padding:1rem 0;overflow-wrap:anywhere}.company-daily pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8rem}.company-daily select{max-width:100%}.company-changes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1rem}.company-update{margin-top:1rem}.company-update label{display:block}.company-daily a{display:inline-block;margin-right:1rem}.workbench select{max-width:100%}

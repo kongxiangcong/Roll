@@ -91,8 +91,8 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         return assistance.start(command)
 
     @app.get('/api/assistance/runs')
-    def assistance_history():
-        return assistance.history()
+    def assistance_history(instrument: str | None = None):
+        return assistance.history(instrument)
 
     @app.get('/api/assistance/runs/{identifier}')
     def assistance_get(identifier: str):
@@ -146,6 +146,11 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     market = MarketDirectory(ledger)
     app.state.market = market
     evidence=EvidenceStore(ledger,market,market_transport,baostock_worker)
+    from roll.research.company import CompanyResearch
+    from roll.research.company.api import router as company_research_router
+    app.state.company_research = CompanyResearch(evidence)
+    assistance.market, assistance.research = market, app.state.company_research
+    app.include_router(company_research_router(app.state.company_research))
     authority_supplements = AuthoritySupplements(evidence)
     app.state.authority_supplements = authority_supplements
 
@@ -1058,6 +1063,7 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def research_checkpoint(protocol_id:str,command:CheckpointCommand):
         return research.checkpoint(protocol_id,command)
     reviews=Reviews(ledger,market,evidence,review_clock,worker_enabled=runtime_role != "API")
+    reviews.company_reports=app.state.company_research.reports
     reviews.forward=forward
     reviews.dated_daily=dated_daily
     app.state.reviews=reviews
@@ -1551,6 +1557,11 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     observation_updates=ObservationUpdates(reviews,financial,financial_statements,financial_observations,news,sentiment,sentiment_series,prospective.sources,notifications)
     reviews.observation_updates=observation_updates
     app.state.observation_updates=observation_updates
+    observation_updates.research = app.state.company_research
+    app.state.company_research.reports.collectors=[
+        dict(service=financial,command=IncomeCommand,source_id='akshare-financial-income'),
+        dict(service=financial_statements,command=IncomeCommand,source_id='akshare-financial-supplement'),
+        dict(service=news,command=NewsCommand,source_id='akshare-news')]
 
     @app.get('/api/observation-updates/{instrument}')
     def observation_updates_status(instrument:str):return observation_updates.listing(instrument)

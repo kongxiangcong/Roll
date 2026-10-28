@@ -1,0 +1,149 @@
+{
+  "acquisition": {
+    "network_check_performed": false,
+    "reason": "显式REUSE已有资料",
+    "status": "NOT_REQUESTED"
+  },
+  "additional_material_ids": [
+    "b8341b40-36eb-43e1-8b8b-69aea9a85b95",
+    "2aef453b-e941-4f18-a474-6ff93f0e34fe"
+  ],
+  "as_of": "2026-10-26T22:14:45.094830+00:00",
+  "attempts": 0,
+  "cancel_requested_at": "2026-10-26T22:38:23.434791+00:00",
+  "checkpoints": [
+    {
+      "completed_at": "2026-10-26T22:24:12.938887+00:00",
+      "section_count": 0,
+      "stage": "ACQUISITION"
+    },
+    {
+      "completed_at": "2026-10-26T22:24:12.966613+00:00",
+      "section_count": 0,
+      "stage": "SHARED_FACTS"
+    },
+    {
+      "completed_at": "2026-10-26T22:24:12.996053+00:00",
+      "section_count": 0,
+      "stage": "ANALYSIS"
+    },
+    {
+      "completed_at": "2026-10-26T22:24:15.205018+00:00",
+      "section_count": 0,
+      "stage": "VALUATION"
+    },
+    {
+      "completed_at": "2026-10-26T22:30:12.524255+00:00",
+      "section_count": 1,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:31:11.888195+00:00",
+      "section_count": 2,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:32:15.638398+00:00",
+      "section_count": 3,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:33:30.510638+00:00",
+      "section_count": 4,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:34:22.878897+00:00",
+      "section_count": 5,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:35:27.902596+00:00",
+      "section_count": 6,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:36:29.894511+00:00",
+      "section_count": 7,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:37:19.170675+00:00",
+      "section_count": 8,
+      "stage": "CHAPTERS"
+    },
+    {
+      "completed_at": "2026-10-26T22:38:23.602841+00:00",
+      "section_count": 9,
+      "stage": "CHAPTERS"
+    }
+  ],
+  "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+  "content_sha256": "14ad7724b2cb8516bc58633e5ade582be35b5765d8bb80bf2abd90e396dd1e35",
+  "created_at": "2026-10-26T22:14:45.981787+00:00",
+  "errors": [
+    {
+      "code": "FAILED",
+      "section_id": "2",
+      "stage": "CHAPTERS"
+    },
+    {
+      "code": "CANCELLED",
+      "section_id": "9",
+      "stage": "CHAPTERS"
+    }
+  ],
+  "historical_pit_eligible": false,
+  "host_owner": {
+    "creation_ticks": 134375273676881515,
+    "pid": 23596
+  },
+  "idempotency_key": "rv08-real-report02-subheads",
+  "input_id": "33ee7a98-3a94-479a-8eca-131264e6a07a",
+  "job_id": "82629305-575a-45b7-bf25-d6b0b03de028",
+  "last_advanced_at": "2026-10-26T22:38:23.602857+00:00",
+  "model": "gpt-6.1-sol",
+  "parent_job_id": "d60722dc-5dc3-4dcf-8938-e8e9d7424a77",
+  "parent_report_id": null,
+  "peer_comparison_basis": {},
+  "peer_snapshot_ids": [],
+  "phase_started_at": "2026-10-26T22:37:19.298759+00:00",
+  "report_id": null,
+  "request_cutoff": "2026-10-26T22:14:45.094830+00:00",
+  "request_sha256": "f4b9017984c0b550c2904a04758b54eccefd4caff39a29a131f9788e8f9e979e",
+  "requested_at": "2026-10-26T22:14:45.981762+00:00",
+  "risk_workpaper": [],
+  "schema_version": 1,
+  "section_ids": [
+    "e607d506-cae1-4cfa-ad54-16b79a47a608",
+    "40ce7c77-40b8-43dc-b5bd-3ad8aa178f17",
+    "9ca8b0b4-2df4-4de9-9e15-2f55e3178ee2",
+    "531fb3c0-4b24-490b-8db9-cad599609d31",
+    "935651ba-6d8a-436b-8f20-6867dd57a857",
+    "afebcb44-7ad9-4df7-ba0e-ec34ff6289e1",
+    "e6338e26-7446-4fbf-97d3-a3f7d407fac3",
+    "60ba4e47-da65-4755-bb7b-e017dad82deb",
+    "2b2358c6-4a7e-4fa4-b2da-ac3f70de5f86"
+  ],
+  "snapshot_id": "7a430e8b-4172-4598-af21-6fe8600b6b93",
+  "source_gaps": [
+    "PINNED_SHARED_CORE; 新取得但无结构化依据的材料不修改固定核心，后续新任务才能纳入分析"
+  ],
+  "source_mode": "REUSE",
+  "source_quotes": [],
+  "sources": [],
+  "stage": "CHAPTERS",
+  "status": "CANCELLED",
+  "template_binding": {
+    "gate_map_sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401",
+    "manifest_sha256": "d00b827b702487e69254a4f8d2d9508bf71bfcf363f8c0fa24351b82a6b4682f",
+    "template_id": "roll-company-research-v1",
+    "version": "08.2"
+  },
+  "worker_lease_owner": {
+    "creation_ticks": 134375273676881515,
+    "nonce": "6eaaf809-02a2-4f3b-a703-f0476da3423d",
+    "pid": 23596
+  },
+  "workflow": "REPORT"
+}

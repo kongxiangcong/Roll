@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_archive_refresh_no_new_material_reuses_snapshot_and_failure_can_retry __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red03/test_archive_refresh_no_new_ma0')
+
+    def test_archive_refresh_no_new_material_reuses_snapshot_and_failure_can_retry(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        def empty(scope):
+            return []
+>       a = research.refresh_daily(issuer['company_id'], 'archive01', empty)
+            ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CompanyResearch' object has no attribute 'refresh_daily'
+
+backend\tests\company_research\test_daily_research.py:86: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_archive_refresh_no_new_material_reuses_snapshot_and_failure_can_retry
+1 failed, 2 deselected in 6.41s

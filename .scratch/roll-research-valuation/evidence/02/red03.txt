@@ -1,0 +1,9 @@
+..F                                                                      [100%]
+================================== FAILURES ===================================
+_ test_fact_restatement_and_conflict_keep_both_references_and_company_isolation _
+backend\tests\company_research\test_shared_evidence.py:63: in test_fact_restatement_and_conflict_keep_both_references_and_company_isolation
+    from roll.research.company import MaterialCommand, FactCommand, ConflictResolution
+E   ImportError: cannot import name 'FactCommand' from 'roll.research.company' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket02\backend\src\roll\research\company\__init__.py)
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_shared_evidence.py::test_fact_restatement_and_conflict_keep_both_references_and_company_isolation
+1 failed, 2 passed in 9.97s

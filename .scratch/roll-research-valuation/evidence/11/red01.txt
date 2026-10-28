@@ -1,0 +1,17 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_fixed_features_keep_unknowns_and_sources_without_changing_shared_research _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv11-red01/test_fixed_features_keep_unkno0')
+
+    def test_fixed_features_keep_unknowns_and_sources_without_changing_shared_research(tmp_path):
+        research = service(tmp_path)
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+>       from roll.research.company.features import FeatureExportCommand
+E       ModuleNotFoundError: No module named 'roll.research.company.features'
+
+backend\tests\company_research\test_research_features.py:16: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_research_features.py::test_fixed_features_keep_unknowns_and_sources_without_changing_shared_research
+1 failed in 15.56s

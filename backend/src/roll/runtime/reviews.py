@@ -181,6 +181,8 @@ class Reviews:
             if not self.capabilities or self.capabilities.lifecycle()['observations_allowed']:
                 if self.dated_daily:self.dated_daily.work()
                 if self.forward:self.forward.work()
+            if getattr(self,'company_reports',None):
+                self.company_reports.work(self.owner,self.stop)
             self.stop.wait(.05)
 
     def check_running_day(self):

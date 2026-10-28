@@ -1,0 +1,119 @@
+{
+  "reason": "EXPLICIT_CANCELLATION_SUPERSEDED_BY_HOST_08_5",
+  "new_job_id": "cf414530-5dee-45d3-af28-0e7e3f9321ae",
+  "new_revision_id": "aed147d2-5b5b-409c-80c5-872e88c75828",
+  "old_job": {
+    "acquisition": {
+      "network_check_performed": false,
+      "reason": "显式REUSE已有资料",
+      "status": "NOT_REQUESTED"
+    },
+    "additional_material_ids": [
+      "b8341b40-36eb-43e1-8b8b-69aea9a85b95",
+      "2aef453b-e941-4f18-a474-6ff93f0e34fe"
+    ],
+    "as_of": "2026-10-26T22:14:45.094830+00:00",
+    "attempts": 0,
+    "cancel_requested_at": "2026-10-27T01:31:20.158770+00:00",
+    "checkpoints": [
+      {
+        "completed_at": "2026-10-27T00:17:35.774802+00:00",
+        "section_count": 1,
+        "stage": "CHAPTERS"
+      },
+      {
+        "completed_at": "2026-10-27T00:17:35.941659+00:00",
+        "section_count": 2,
+        "stage": "CHAPTERS"
+      },
+      {
+        "completed_at": "2026-10-27T00:17:36.119535+00:00",
+        "section_count": 3,
+        "stage": "CHAPTERS"
+      },
+      {
+        "completed_at": "2026-10-27T00:17:36.585184+00:00",
+        "section_count": 4,
+        "stage": "CHAPTERS"
+      },
+      {
+        "completed_at": "2026-10-27T00:17:36.796676+00:00",
+        "section_count": 5,
+        "stage": "CHAPTERS"
+      },
+      {
+        "completed_at": "2026-10-27T00:17:37.039680+00:00",
+        "section_count": 6,
+        "stage": "CHAPTERS"
+      },
+      {
+        "completed_at": "2026-10-27T00:17:37.284897+00:00",
+        "section_count": 7,
+        "stage": "CHAPTERS"
+      },
+      {
+        "completed_at": "2026-10-27T00:17:37.506062+00:00",
+        "section_count": 8,
+        "stage": "CHAPTERS"
+      }
+    ],
+    "company_id": "54abcc3d-67c2-453e-83b4-8fdc92b7a292",
+    "content_sha256": "45f7b72af43b26a5c95d9d1aa55fa482732738d080bbb65ce8f87020a3b0a632",
+    "created_at": "2026-10-27T00:07:42.739540+00:00",
+    "errors": [],
+    "historical_pit_eligible": false,
+    "host_owner": {
+      "creation_ticks": 134375338526282434,
+      "pid": 20400
+    },
+    "host_revision_archive": {
+      "bytes": 36624,
+      "kind": "REPORT_HOST_REVISION",
+      "path": "raw/c943f2edd0f2d86c94d34eb3a696f77f0a3698d580b0d38444e272285d1a6371.raw",
+      "sha256": "c943f2edd0f2d86c94d34eb3a696f77f0a3698d580b0d38444e272285d1a6371"
+    },
+    "host_revision_id": "6008a00c-d3d9-4ed4-ad19-570430712ef2",
+    "idempotency_key": "rv08-host-revalidation04-sourceful-appendices",
+    "input_id": "33ee7a98-3a94-479a-8eca-131264e6a07a",
+    "job_id": "416d3883-f0a6-4454-a40d-3104c018ba0f",
+    "last_advanced_at": "2026-10-27T00:17:37.506076+00:00",
+    "model": "gpt-6.1-sol",
+    "parent_job_id": "82629305-575a-45b7-bf25-d6b0b03de028",
+    "parent_report_id": null,
+    "peer_comparison_basis": {},
+    "peer_snapshot_ids": [],
+    "phase_started_at": "2026-10-27T00:17:37.333534+00:00",
+    "report_id": null,
+    "request_cutoff": "2026-10-26T22:14:45.094830+00:00",
+    "request_sha256": "55db9da8819df2a2900762d0d0d9d656b7eba33aa9533fea10901738fc8ff14d",
+    "requested_at": "2026-10-26T22:14:45.981762+00:00",
+    "risk_workpaper": [],
+    "schema_version": 1,
+    "section_ids": [
+      "118109cd-98bb-4dea-83d3-2afa4b5401b9",
+      "820915b6-d2a1-4c61-9095-77b0448a382b",
+      "252fd0e6-e6e6-4a9e-b113-2c233214fb7f",
+      "30c2044f-f102-4500-a772-264f697af624",
+      "7eb44783-f96d-4ee3-a5ff-0ac649ae1f33",
+      "00dc20f1-d26e-483b-a0f2-536a3609d9b4",
+      "f08d4759-2780-4c5a-a3d6-b42902cb9a00",
+      "7ea7dd28-40d2-40ba-b7d5-d8200e71a5f6"
+    ],
+    "snapshot_id": "7a430e8b-4172-4598-af21-6fe8600b6b93",
+    "source_gaps": [
+      "PINNED_SHARED_CORE; 新取得但无结构化依据的材料不修改固定核心，后续新任务才能纳入分析"
+    ],
+    "source_mode": "REUSE",
+    "source_quotes": [],
+    "sources": [],
+    "stage": "CHAPTERS",
+    "status": "CANCELLED",
+    "template_binding": {
+      "gate_map_sha256": "6e94bd58c22f005065ff0d748daee1ba88acac20aee384d04abf245a69827401",
+      "manifest_sha256": "d00b827b702487e69254a4f8d2d9508bf71bfcf363f8c0fa24351b82a6b4682f",
+      "template_id": "roll-company-research-v1",
+      "version": "08.2"
+    },
+    "workflow": "REPORT"
+  }
+}

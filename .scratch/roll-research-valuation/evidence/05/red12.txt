@@ -1,0 +1,24 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_current_view_uses_read_time_and_detects_new_disclosures_without_rewriting_snapshot _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red12/test_current_view_uses_read_ti0')
+
+    def test_current_view_uses_read_time_and_detects_new_disclosures_without_rewriting_snapshot(tmp_path):
+        from test_shared_evidence import service, material_input
+        from roll.research.company import MaterialCommand, FactCommand
+        research = service(tmp_path)
+        command, original = operating_request(research)
+        command.config['metadata']['as_of'] = '2025-12-31'
+        command.economic_basis['wacc']['as_of'] = '2025-12-31'
+        command.economic_basis['valuation_basis'] = dict(valuation_basis_date='2025-12-31', financial_period_end='2025-12-31', bridge_as_of='2025-12-31', latest_known_financial_period_end='2025-12-31', current_pricing_gaps=[])
+        result = research.calculate_operating_valuation(command)
+        saved = research.analysis_snapshot(result['snapshot_id'])
+        current = research.valuation_presentation(result['review_id'])
+>       assert current['usable_range'] is False and current['evaluated_at'] > '2026-01-01'
+E       assert (True is False)
+
+backend\tests\company_research\test_economic_review.py:371: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_current_view_uses_read_time_and_detects_new_disclosures_without_rewriting_snapshot
+1 failed, 1 passed, 20 deselected in 14.75s

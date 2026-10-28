@@ -1,0 +1,13 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_news_association_body_receipt_and_existing_reprint_root_are_preserved __
+backend\tests\application\test_company_research_sources.py:69: in test_news_association_body_receipt_and_existing_reprint_root_are_preserved
+    assert rerun["status"] == "PARTIAL", rerun
+E   AssertionError: {'basis': 'METHOD exact article content under another URL', 'capture_archive_bindings': {'1': '56e7fc42de112a079d1022c... 3, 'max_bytes': 8388608, 'max_calls': 8, 'redirects': 0, ...}, 'errors': ['NEWS_SDK_INSTRUMENT_OR_URL_MISMATCH'], ...}
+E   assert 'FAILED' == 'PARTIAL'
+E     
+E     - PARTIAL
+E     + FAILED
+=========================== short test summary info ===========================
+FAILED backend\tests\application\test_company_research_sources.py::test_news_association_body_receipt_and_existing_reprint_root_are_preserved
+1 failed, 1 passed in 14.03s

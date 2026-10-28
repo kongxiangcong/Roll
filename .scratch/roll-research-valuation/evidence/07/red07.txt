@@ -1,0 +1,38 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_daily_backup_restores_core_checks_and_refuses_rehashed_cross_company_binding _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv07-red07/test_daily_backup_restores_cor0')
+
+    def test_daily_backup_restores_core_checks_and_refuses_rehashed_cross_company_binding(tmp_path):
+        import json
+        from roll.runtime.backups import Backups, restore_at_start
+        from roll.research.company.service import record
+        research = service(tmp_path/'source')
+        issuer = research.register(company())
+        snapshot = published(research, issuer)
+        update = research.refresh_daily(issuer['company_id'], 'saved-check', lambda scope: [])
+        backups = Backups(tmp_path/'source')
+        bundle = backups.export(backups.create()['backup_id'])
+        restored = Backups(tmp_path/'restored')
+        restored.stage_restore(bundle)
+        restore_at_start(restored)
+        recovered = service(tmp_path/'restored')
+        view = recovered.daily_view(issuer['company_id'], snapshot['snapshot_id'])
+        assert view['snapshot'] == snapshot
+        assert view['latest_checks'][0]['check_id'] == update['check']['check_id']
+        other = research.register(company('�ڶ��ҹ�˾', ['�ڶ���˾'], [dict(exchange='SZSE', code='000848', share_class='A', currency='CNY')]))
+        other_snapshot = published(research, other)
+        with research.ledger.connection() as db:
+            corrupted = {k:v for k,v in update.items() if k!='content_sha256'}
+            corrupted['snapshot_id'] = other_snapshot['snapshot_id']
+            db.execute('UPDATE company_research_commands SET result=? WHERE scope=? AND key=?',
+                (json.dumps(record(corrupted)), 'daily-update:'+issuer['company_id'], 'saved-check'))
+>       with pytest.raises(HTTPException) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_daily_research.py:174: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_daily_research.py::test_daily_backup_restores_core_checks_and_refuses_rehashed_cross_company_binding
+1 failed, 4 deselected in 10.88s

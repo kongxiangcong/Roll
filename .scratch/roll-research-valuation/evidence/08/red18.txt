@@ -1,0 +1,54 @@
+FF...                                                                    [100%]
+================================== FAILURES ===================================
+____ test_literal_money_keeps_evidenced_currency_scale_in_prose_and_table _____
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red18/test_literal_money_keeps_evide0')
+
+    def test_literal_money_keeps_evidenced_currency_scale_in_prose_and_table(tmp_path):
+        from roll.research.company.report_runtime import ReportRuntime
+        research,job,packet,fact=packet_with_fact(tmp_path)
+        token='{{fact:'+fact['version_id']+'}}'
+        candidate=dict(section_id='1',input_sha256=packet['packet_sha256'],paragraphs=[dict(text='��¶���Ϊ'+token+'��\n|��Ŀ|ֵ|\n|---|---|\n|���|'+token+'|',fact_version_ids=[fact['version_id']])],gaps=[])
+        rendered,refs=ReportRuntime(research.reports).validate(candidate,packet,'1')
+>       assert rendered.count('802208126.13 Ԫ��CNY��')==2
+E       AssertionError: assert 0 == 2
+E        +  where 0 = <built-in method count of str object at 0x000002CB775C81B0>('802208126.13 Ԫ��CNY��')
+E        +    where <built-in method count of str object at 0x000002CB775C81B0> = '��¶���Ϊ802208126.13 unit��\n|��Ŀ|ֵ|\n|---|---|\n|���|802208126.13 unit| [ԭ�� ҳ��δ֪ / ����δ֪](/api/company-research/materials/403c5228-173a-40bd-a98e-260d1c663d3b/original)'.count
+
+backend\tests\company_research\test_report_revisions.py:27: AssertionError
+_ test_conceptual_unit_definition_is_distinct_from_company_quantity[\u5b9a\u4e49\u6700\u5c0f\u89c2\u5bdf\u5355\u4f4d\u4e3a\u540c\u89c4\u683c\u4ea7\u54c1\u7684\u4e00\u7f50\uff0c\u6216\u89c4\u683c\u56fa\u5b9a\u7684\u4e00\u7bb1\u3002\u9500\u91cf\u4e0e\u5355\u4f4d\u6bdb\u5229\u672a\u77e5\u3002] _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red18/test_conceptual_unit_definitio0')
+text = '������С�۲쵥λΪͬ����Ʒ��һ�ޣ�����̶���һ�䡣�����뵥λë��δ֪��'
+
+    @pytest.mark.parametrize('text',['������С�۲쵥λΪͬ����Ʒ��һ�ޣ�����̶���һ�䡣�����뵥λë��δ֪��','��˾����һ���Ʒ��','��˾�����ʰٷ�֮��ʮ��','��˾ë��Ϊ������Ԫ��'])
+    def test_conceptual_unit_definition_is_distinct_from_company_quantity(tmp_path,text):
+        from roll.research.company.report_runtime import ReportRuntime
+        research,job,packet,fact=packet_with_fact(tmp_path)
+        candidate=dict(section_id='2',input_sha256=packet['packet_sha256'],paragraphs=[dict(text=text,fact_version_ids=[])],gaps=[])
+        if text.startswith('����'):
+>           assert 'һ��' in ReportRuntime(research.reports).validate(candidate,packet,'2')[0]
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_report_revisions.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\report_runtime.py:125: in validate
+    self.check_text(stripped,paragraph_index=paragraph_index)
+backend\src\roll\research\company\report_runtime.py:149: in check_text
+    fail(code,'Chapter candidate contains an unbound number or active content; original output retained',
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'UNBOUND_FINANCIAL_NUMBER'
+reason = 'Chapter candidate contains an unbound number or active content; original output retained'
+status = 422
+context = {'offending_sample': 'Ϊͬ����Ʒ��һ�ޣ�����̶���һ�䡣�����뵥λë��δ֪��', 'paragraph_index': 0}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 422: {'code': 'UNBOUND_FINANCIAL_NUMBER', 'reason': 'Chapter candidate contains an unbound number or active content; original output retained', 'context': {'paragraph_index': 0, 'offending_sample': 'Ϊͬ����Ʒ��һ�ޣ�����̶���һ�䡣�����뵥λë��δ֪��'}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_revisions.py::test_literal_money_keeps_evidenced_currency_scale_in_prose_and_table
+FAILED backend\tests\company_research\test_report_revisions.py::test_conceptual_unit_definition_is_distinct_from_company_quantity[\u5b9a\u4e49\u6700\u5c0f\u89c2\u5bdf\u5355\u4f4d\u4e3a\u540c\u89c4\u683c\u4ea7\u54c1\u7684\u4e00\u7f50\uff0c\u6216\u89c4\u683c\u56fa\u5b9a\u7684\u4e00\u7bb1\u3002\u9500\u91cf\u4e0e\u5355\u4f4d\u6bdb\u5229\u672a\u77e5\u3002]
+2 failed, 3 passed in 30.34s

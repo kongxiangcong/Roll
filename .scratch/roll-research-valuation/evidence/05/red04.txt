@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_frozen_cyclical_group_evidence_cannot_be_bypassed_by_plain_category_or_strings _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red04/test_frozen_cyclical_group_evi0')
+
+    def test_frozen_cyclical_group_evidence_cannot_be_bypassed_by_plain_category_or_strings(tmp_path):
+        from datetime import datetime, timezone
+        from test_shared_evidence import service
+        from test_analysis_snapshots import evidence, candidate
+        from roll.research.company import AnalysisCommand
+        research = service(tmp_path)
+        command, original = operating_request(research)
+        issuer = research.company(original['company_id'])
+        _, fact = evidence(research, issuer, 'Copper LME commodity price cycle; trading business and financial segment plus associate scope remain unreconciled')
+        packet = research.freeze_analysis(AnalysisCommand(company_id=issuer['company_id'], as_of=datetime.now(timezone.utc).isoformat(),
+            fact_version_ids=original['fact_version_ids'] + [fact['version_id']], parent_snapshot_id=original['snapshot_id']))
+        cand = candidate(packet, fact)
+        cand['hypotheses'][0]['previous_version_id'] = original['hypothesis_version_ids'][0]
+        snapshot = research.apply_analysis_candidate(packet['input_id'], cand)
+        command.snapshot_id = snapshot['snapshot_id']
+        command.assumptions[0]['hypothesis_version_ids'] = []
+        command.economic_basis['applicability'].update(category='NON_FINANCIAL', cycle_normalization='two-year mean', segment_basis='done')
+        result = research.calculate_operating_valuation(command)
+        view = research.valuation_presentation(result['review_id'])
+>       assert view['review']['status'] == 'blocked' and view['scenarios'] == []
+E       AssertionError: assert ('conditional' == 'blocked'
+E         
+E         - blocked
+E         + conditional)
+
+backend\tests\company_research\test_economic_review.py:142: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_frozen_cyclical_group_evidence_cannot_be_bypassed_by_plain_category_or_strings
+1 failed, 4 deselected in 7.34s

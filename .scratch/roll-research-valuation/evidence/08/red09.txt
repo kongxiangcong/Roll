@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_report_cutoff_rejects_a_pinned_snapshot_with_later_reporting_period ___
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red09/test_report_cutoff_rejects_a_p0')
+
+    def test_report_cutoff_rejects_a_pinned_snapshot_with_later_reporting_period(tmp_path):
+        import pytest
+        from fastapi import HTTPException
+        from roll.research.company.reports import ReportCommand
+        research=service(tmp_path);issuer=research.register(company());snapshot=published(research,issuer)
+        # This instant is Dec30 in Shanghai despite the input's Dec31 date.
+>       with pytest.raises(HTTPException) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'fastapi.exceptions.HTTPException'>
+
+backend\tests\company_research\test_report_pipeline.py:245: Failed
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_report_cutoff_rejects_a_pinned_snapshot_with_later_reporting_period
+1 failed, 8 deselected in 6.31s

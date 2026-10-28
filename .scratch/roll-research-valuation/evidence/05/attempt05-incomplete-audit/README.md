@@ -1,0 +1,1 @@
+Development failure retained: economic-review-1 incorrectly allowed incomplete per-input audit as conditional. These immutable results are NOT qualified positive evidence. Policy2 blocks missing/unrelated numeric rationale; final case uses a new isolated store and new record IDs.

@@ -1,0 +1,42 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_unreviewed_diagnostic_public_view_hides_prices_and_model_cannot_self_upgrade _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red06/test_unreviewed_diagnostic_pub0')
+
+    def test_unreviewed_diagnostic_public_view_hides_prices_and_model_cannot_self_upgrade(tmp_path):
+        from test_shared_evidence import service
+        from test_valuation import valuation_request
+        from fastapi import HTTPException
+        research = service(tmp_path)
+        raw_command, _ = valuation_request(research)
+        raw = research.calculate_valuation(raw_command)
+>       view = research.valuation_presentation(raw['valuation_id'])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\company_research\test_economic_review.py:182: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\research\company\service.py:564: in valuation_presentation
+    return self.economics.presentation(identifier)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\economics.py:334: in presentation
+    review = self.research.economic_review(identifier)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\service.py:561: in economic_review
+    return self.economics.read('economic_reviews', 'review_id', identifier)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\roll\research\company\economics.py:248: in read
+    fail('ECONOMIC_REVIEW_NOT_FOUND', 'Operating model or review not registered', 404)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'ECONOMIC_REVIEW_NOT_FOUND'
+reason = 'Operating model or review not registered', status = 404, context = {}
+
+    def fail(code, reason, status=422, **context):
+>       raise HTTPException(status, {'code': code, 'reason': reason, 'context': context, 'retryable': False})
+E       fastapi.exceptions.HTTPException: 404: {'code': 'ECONOMIC_REVIEW_NOT_FOUND', 'reason': 'Operating model or review not registered', 'context': {}, 'retryable': False}
+
+backend\src\roll\research\company\service.py:17: HTTPException
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_unreviewed_diagnostic_public_view_hides_prices_and_model_cannot_self_upgrade
+1 failed, 6 deselected in 7.07s

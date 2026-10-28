@@ -1,0 +1,15 @@
+[]
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: Timeout 10000ms exceeded.
+Call log:
+  - navigating to "http://127.0.0.1:5250/", waiting until "load"
+
+    at D:\dsh-proj\Roll\.scratch\worktrees\rv-review-fix\frontend\scripts\company-report-check.mjs:39:13 {
+  name: 'TimeoutError'
+}
+
+Node.js v25.8.1

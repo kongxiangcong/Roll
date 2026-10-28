@@ -1,0 +1,27 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_cancel_retry_and_restart_preserve_fixed_input_without_duplicate_publication _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv08-red04/test_cancel_retry_and_restart_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228ED4B4180>
+
+    def test_cancel_retry_and_restart_preserve_fixed_input_without_duplicate_publication(tmp_path,monkeypatch):
+        from roll.research.company.reports import ReportCommand
+        monkeypatch.delenv('ROLL_CODEX_AUTH_FILE',raising=False)
+        research=service(tmp_path)
+        issuer=research.register(company())
+        snapshot=published(research,issuer)
+        job=research.reports.start(ReportCommand(company_id=issuer['company_id'],snapshot_id=snapshot['snapshot_id'],
+            as_of='2026-02-01T00:00:00+00:00',source_mode='REUSE',idempotency_key='retry'))
+        for _ in range(4):
+            job=research.reports.advance(job['job_id'])
+        fixed=job['input_id']
+        assert fixed
+>       cancelled=research.reports.cancel(job['job_id'])
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ReportState' object has no attribute 'cancel'
+
+backend\tests\company_research\test_report_pipeline.py:93: AttributeError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_pipeline.py::test_cancel_retry_and_restart_preserve_fixed_input_without_duplicate_publication
+1 failed, 1 passed, 2 deselected in 11.18s

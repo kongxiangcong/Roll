@@ -1,0 +1,23 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_normalization_is_applied_once_with_before_after_formula_and_original_evidence _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv05-red02/test_normalization_is_applied_0')
+
+    def test_normalization_is_applied_once_with_before_after_formula_and_original_evidence(tmp_path):
+        from test_shared_evidence import service
+        research = service(tmp_path)
+        command, _ = operating_request(research)
+        ref = command.config['metadata']['sources'][0]
+        command.drivers['normalizations'] = [dict(adjustment_id='maintenance-basis', target='scenarios/0/years/0/maintenance_capex',
+            before=20, delta=5, after=25, formula='before + delta', reason='METHOD maintenance underinvestment normalization', references=[ref],
+            provenance={k: dict(command.drivers['provenance']['scenarios/0/years/0/maintenance_capex']) for k in ['before', 'delta', 'after']})]
+        result = research.calculate_operating_valuation(command)
+        model = research.operating_model(result['operating_model_id'])
+>       assert model['cashflows'][0]['years'][0]['fcff'] == 145
+E       assert 150.0 == 145
+
+backend\tests\company_research\test_economic_review.py:96: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_economic_review.py::test_normalization_is_applied_once_with_before_after_formula_and_original_evidence
+1 failed, 2 deselected in 6.65s

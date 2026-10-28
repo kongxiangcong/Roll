@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_http_delivery_downloads_registered_files_and_rejects_arbitrary_paths __
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv09-red03b/test_http_delivery_downloads_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B97211EEA0>
+
+    def test_http_delivery_downloads_registered_files_and_rejects_arbitrary_paths(tmp_path, monkeypatch):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from roll.research.company.api import router
+        research, report = published_report(tmp_path, monkeypatch)
+        app=FastAPI();app.include_router(router(research))
+        with TestClient(app) as client:
+            response=client.post('/api/company-research/report-deliveries',json=dict(report_id=report['report_id'],idempotency_key='api',render_pdf=False))
+>           assert response.status_code==201, response.text
+E           AssertionError: {"detail":"Not Found"}
+E           assert 404 == 201
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+backend\tests\company_research\test_report_deliveries.py:57: AssertionError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_report_deliveries.py::test_http_delivery_downloads_registered_files_and_rejects_arbitrary_paths
+1 failed in 15.34s

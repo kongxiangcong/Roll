@@ -1,0 +1,15 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_change_set_freezes_explicit_snapshots_new_fact_and_hypothesis_counterevidence _
+
+tmp_path = WindowsPath('D:/dsh-proj/Roll/.scratch/rv06-red02/test_change_set_freezes_explic0')
+
+    def test_change_set_freezes_explicit_snapshots_new_fact_and_hypothesis_counterevidence(tmp_path):
+        from test_shared_evidence import service
+>       from roll.research.company import ChangeSetCommand
+E       ImportError: cannot import name 'ChangeSetCommand' from 'roll.research.company' (D:\dsh-proj\Roll\.scratch\worktrees\rv-ticket06\backend\src\roll\research\company\__init__.py)
+
+backend\tests\company_research\test_changes.py:34: ImportError
+=========================== short test summary info ===========================
+FAILED backend\tests\company_research\test_changes.py::test_change_set_freezes_explicit_snapshots_new_fact_and_hypothesis_counterevidence
+1 failed, 1 deselected in 2.74s

@@ -1,4 +1,6 @@
 # Original market authority bytes are fingerprinted; never normalize line endings.
+# Frozen third-party research source bytes retain their original license/hash snapshot.
+docs/reference/deep-dive-research/20261026/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Preserve captured ticket19 collection and verification receipt bytes.
 .scratch/roll-p0/evidence/19-completion-2026-10-09/*.json -text whitespace=cr-at-eol
 .scratch/roll-p0/evidence/19-completion-2026-10-09/*.txt -text whitespace=-blank-at-eol,cr-at-eol
@@ -170,3 +172,65 @@ backend/src/roll/market/financial_reference/*.pdf binary
 .scratch/roll-capability-expansion/evidence/10-statements/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 
 .scratch/roll-capability-expansion/evidence/11-metrics/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+# Preserve ticket02 captured test/real-import receipts, including Windows output bytes.
+.scratch/roll-research-valuation/evidence/02/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/02/*.json -text whitespace=cr-at-eol
+# Preserve ticket03 original model text and captured Windows process evidence.
+.scratch/roll-research-valuation/evidence/03/**/*.raw binary
+.scratch/roll-research-valuation/evidence/03/*.raw binary
+.scratch/roll-research-valuation/evidence/03/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/03/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/03/**/*.json -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/03/*.json -text whitespace=cr-at-eol
+
+# Ticket04 calculator license originals and captured Windows verification bytes.
+backend/src/roll/research/company/valuation_reference/original_fundamental_valuation.py -text whitespace=cr-at-eol
+backend/src/roll/research/company/valuation_reference/LICENSE -text whitespace=cr-at-eol
+backend/src/roll/research/company/valuation_reference/equity-research-LICENSE.txt -text whitespace=cr-at-eol
+backend/src/roll/research/company/valuation_reference/THIRD_PARTY_NOTICES.md -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/04/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/04/*.json -text whitespace=cr-at-eol
+
+# Ticket05 frozen public-source originals and captured verification bytes.
+.scratch/roll-research-valuation/evidence/05/source-data/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
+.scratch/roll-research-valuation/evidence/05/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/05/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/05/*.json -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/05/**/*.json -text whitespace=cr-at-eol
+
+# Ticket06 captured test and METHOD-only comparison receipts.
+.scratch/roll-research-valuation/evidence/06/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/06/*.json -text whitespace=cr-at-eol
+
+# Ticket07 captured Windows commands and actual/synthetic execution receipts.
+.scratch/roll-research-valuation/evidence/07/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/07/*.json -text whitespace=cr-at-eol
+
+# Ticket08 bundled template authority and exact captured verification bytes.
+backend/src/roll/research/company/report_reference/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/08/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+.scratch/roll-research-valuation/evidence/08/*.json -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/08/captured/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Preserve frozen host source bytes used by ticket08 runtime/revalidation archives.
+backend/src/roll/research/company/report*.py -text whitespace=cr-at-eol
+backend/src/roll/agents/company_report_runtime.py -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/08/preview*/** -text whitespace=cr-at-eol
+.scratch/roll-research-valuation/evidence/08/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Ticket09 actual delivery bytes, immutable manifests and captured verification.
+.scratch/roll-research-valuation/evidence/09/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Ticket10 real browser downloads and public UI verification bytes.
+.scratch/roll-research-valuation/evidence/10/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Ticket11 immutable feature exports, preregistration and actual verification bytes.
+.scratch/roll-research-valuation/evidence/11/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Ticket12 actual source, browser, restart and isolated recovery receipts.
+.scratch/roll-research-valuation/evidence/12/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Final-review immutable candidate commands, source contract and METHOD receipts.
+.scratch/roll-research-valuation/evidence/final-review-fix/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+backend/src/roll/agents/company_valuation_runtime.py -text whitespace=cr-at-eol
+backend/src/roll/research/company/valuation_candidate_contract.md -text whitespace=cr-at-eol

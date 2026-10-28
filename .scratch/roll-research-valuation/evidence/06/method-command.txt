@@ -1,0 +1,47 @@
+{
+  "classification": "SYNTHETIC_METHOD_ONLY_NOT_ACTUAL_FINANCIAL_FORECAST_OR_QUOTE",
+  "network_calls": 0,
+  "model_calls": 0,
+  "old_snapshot_id": "d2848ce4-43e8-43cd-81d7-c2eb0e2f5cb6",
+  "new_snapshot_id": "5a8fa21e-ccab-41f8-96a4-2505bbb9d2c2",
+  "change_set_id": "3291f76e-2d09-40c4-91e4-96c4222fad94",
+  "change_set_sha256": "55a287f0465ea8063df5dd38ecd52eb72c50b814f47200af5f066e074e053820",
+  "comparison_archive": {
+    "bytes": 102958,
+    "kind": "COMPANY_RESEARCH_CHANGE_SET",
+    "path": "raw/8c4e6b72c7b1f80785bfcd5ccd8d844793d80f9cc36bb28df916ea1829ed67ab.raw",
+    "sha256": "8c4e6b72c7b1f80785bfcd5ccd8d844793d80f9cc36bb28df916ea1829ed67ab"
+  },
+  "backup_sha256": "5c6c3e085a69457f9c70872816d2b8059161b569c2558df81d0a17da16880aac",
+  "restored_exact": true,
+  "replay": {
+    "change_set_id": "3291f76e-2d09-40c4-91e4-96c4222fad94",
+    "matches_saved_comparison": true,
+    "network_calls": 0,
+    "model_calls": 0,
+    "information_state_replayed_at_saved_time": true
+  },
+  "account_version": 0,
+  "perpetual_example": {
+    "old_value": 1000.0,
+    "new_value": 1250.0,
+    "value_change_fraction": 0.25,
+    "operating_change": false,
+    "old_price_conditions": {
+      "fixed_old_rate_required_cashflow": 100.0,
+      "fixed_old_cashflow_required_rate": 0.1
+    },
+    "new_price_conditions": {
+      "fixed_old_rate_required_cashflow": 125.0,
+      "fixed_old_cashflow_required_rate": 0.08
+    },
+    "market_cause_identified": false
+  },
+  "source_files_04_unchanged": true,
+  "scenario_equity_minus_market": [
+    299.9999999999998,
+    450.0,
+    200.0,
+    612.5
+  ]
+}

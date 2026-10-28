@@ -1,0 +1,154 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_model_comparison_references_the_fixed_shared_snapshot_and_rejects_another_version _
+
+    def test_model_comparison_references_the_fixed_shared_snapshot_and_rejects_another_version():
+        material = {'sources': [{'source_id': 'sz.000848'}], 'as_of':'2026-10-27T03:00:00+08:00',
+            'market_data_as_of':'2026-10-26', 'valid_until':'2026-10-27T15:00:00+08:00',
+            'company_research': {'snapshot': {'snapshot_id':'fixed-version', 'core_sha256':'saved-core'}}}
+        output = dict(material_sha256=hashlib.sha256(encode(material).encode()).hexdigest(), bias='ƫ��',summary='Synthetic technical view',
+            evidence=[dict(source_id='sz.000848',reason='Synthetic price evidence')],counterevidence=['Synthetic countercase'],
+            change_conditions=['New verified evidence'], limitations=['Unverified research interpretation'],
+            research_comparison=dict(snapshot_id='other-version',relationship='TENSION',explanation='Synthetic operating conditions and short-term price direction differ'))
+        with pytest.raises(ValueError, match='ASSESSMENT_RESEARCH_SNAPSHOT_MISMATCH'):
+>           publish(None, {}, material, {}, encode(output))
+
+backend\tests\test_assistance.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\src\roll\agents\assistance_runtime.py:30: in publish
+    jsonschema.validate(candidate, OUTPUT)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+instance = {'bias': 'ƫ��', 'change_conditions': ['New verified evidence'], 'counterevidence': ['Synthetic countercase'], 'evidence': [{'reason': 'Synthetic price evidence', 'source_id': 'sz.000848'}], ...}
+schema = {'additionalProperties': False, 'properties': {'bias': {'enum': ['ƫ��', 'ƫ��', '����', '�޷��ж�'], 'type': 'string'}, 'change...ed': ['material_sha256', 'bias', 'summary', 'evidence', 'counterevidence', 'change_conditions', ...], 'type': 'object'}
+cls = <class 'jsonschema.validators.Draft202012Validator'>, args = ()
+kwargs = {}
+validator = Draft202012Validator(schema={'additionalProperties': False, 'properties': {'bias': {'enum': ['ƫ��', 'ƫ��', '����', '�޷��ж�']...', 'bias', 'summary', 'evidence', 'counterevidence', 'change_conditions', ...], 'type': 'object'}, format_checker=None)
+error = <ValidationError: "Additional properties are not allowed ('research_comparison' was unexpected)">
+
+    def validate(instance, schema, cls=None, *args, **kwargs):  # noqa: D417
+        """
+        Validate an instance under the given schema.
+    
+            >>> validate([2, 3, 4], {"maxItems": 2})
+            Traceback (most recent call last):
+                ...
+            ValidationError: [2, 3, 4] is too long
+    
+        :func:`~jsonschema.validators.validate` will first verify that the
+        provided schema is itself valid, since not doing so can lead to less
+        obvious error messages and fail in less obvious or consistent ways.
+    
+        If you know you have a valid schema already, especially
+        if you intend to validate multiple instances with
+        the same schema, you likely would prefer using the
+        `jsonschema.protocols.Validator.validate` method directly on a
+        specific validator (e.g. ``Draft202012Validator.validate``).
+    
+    
+        Arguments:
+    
+            instance:
+    
+                The instance to validate
+    
+            schema:
+    
+                The schema to validate with
+    
+            cls (jsonschema.protocols.Validator):
+    
+                The class that will be used to validate the instance.
+    
+        If the ``cls`` argument is not provided, two things will happen
+        in accordance with the specification. First, if the schema has a
+        :kw:`$schema` keyword containing a known meta-schema [#]_ then the
+        proper validator will be used. The specification recommends that
+        all schemas contain :kw:`$schema` properties for this reason. If no
+        :kw:`$schema` property is found, the default validator class is the
+        latest released draft.
+    
+        Any other provided positional and keyword arguments will be passed
+        on when instantiating the ``cls``.
+    
+        Raises:
+    
+            `jsonschema.exceptions.ValidationError`:
+    
+                if the instance is invalid
+    
+            `jsonschema.exceptions.SchemaError`:
+    
+                if the schema itself is invalid
+    
+        .. rubric:: Footnotes
+        .. [#] known by a validator registered with
+            `jsonschema.validators.validates`
+    
+        """
+        if cls is None:
+            cls = validator_for(schema)
+    
+        cls.check_schema(schema)
+        validator = cls(schema, *args, **kwargs)
+        error = exceptions.best_match(validator.iter_errors(instance))
+        if error is not None:
+>           raise error
+E           jsonschema.exceptions.ValidationError: Additional properties are not allowed ('research_comparison' was unexpected)
+E           
+E           Failed validating 'additionalProperties' in schema:
+E               {'type': 'object',
+E                'properties': {'material_sha256': {'type': 'string', 'minLength': 1},
+E                               'bias': {'type': 'string',
+E                                        'enum': ['ƫ��', 'ƫ��', '����', '�޷��ж�']},
+E                               'summary': {'type': 'string', 'minLength': 1},
+E                               'evidence': {'type': 'array',
+E                                            'minItems': 1,
+E                                            'items': {'type': 'object',
+E                                                      'properties': {'source_id': {'type': 'string',
+E                                                                                   'minLength': 1},
+E                                                                     'reason': {'type': 'string',
+E                                                                                'minLength': 1}},
+E                                                      'required': ['source_id',
+E                                                                   'reason'],
+E                                                      'additionalProperties': False}},
+E                               'counterevidence': {'type': 'array',
+E                                                   'minItems': 1,
+E                                                   'items': {'type': 'string',
+E                                                             'minLength': 1}},
+E                               'change_conditions': {'type': 'array',
+E                                                     'minItems': 1,
+E                                                     'items': {'type': 'string',
+E                                                               'minLength': 1}},
+E                               'limitations': {'type': 'array',
+E                                               'minItems': 1,
+E                                               'items': {'type': 'string',
+E                                                         'minLength': 1}}},
+E                'required': ['material_sha256',
+E                             'bias',
+E                             'summary',
+E                             'evidence',
+E                             'counterevidence',
+E                             'change_conditions',
+E                             'limitations'],
+E                'additionalProperties': False}
+E           
+E           On instance:
+E               {'bias': 'ƫ��',
+E                'change_conditions': ['New verified evidence'],
+E                'counterevidence': ['Synthetic countercase'],
+E                'evidence': [{'reason': 'Synthetic price evidence',
+E                              'source_id': 'sz.000848'}],
+E                'limitations': ['Unverified research interpretation'],
+E                'material_sha256': '8184af3fc8d9a7ac00d43d39cd0764c0dfb3e3c5ace6bf927297b0d60116a12d',
+E                'research_comparison': {'explanation': 'Synthetic operating '
+E                                                       'conditions and short-term '
+E                                                       'price direction differ',
+E                                        'relationship': 'TENSION',
+E                                        'snapshot_id': 'other-version'},
+E                'summary': 'Synthetic technical view'}
+
+..\..\..\backend\.venv\Lib\site-packages\jsonschema\validators.py:1332: ValidationError
+=========================== short test summary info ===========================
+FAILED backend\tests\test_assistance.py::test_model_comparison_references_the_fixed_shared_snapshot_and_rejects_another_version
+1 failed, 11 deselected in 3.04s
