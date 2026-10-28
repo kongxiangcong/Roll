@@ -1,6 +1,6 @@
 # 公司研究使用与恢复
 
-当前交付为研究功能与局部真实验收；[联合矩阵](../../.scratch/roll-research-valuation/evidence/12/coverage.md)仍有未通过项，不能把PARTIAL或CURRENT_PRICING blocked显示成完整可用估值。自动估值编排修复8dd639已并入，真实新候选仍待具体人类授权执行，见evidence12/checkpoint03-pending-human.md。
+当前交付为研究功能与局部真实验收；[联合矩阵](../../.scratch/roll-research-valuation/evidence/12/coverage.md)仍有未通过项，不能把PARTIAL或CURRENT_PRICING blocked显示成完整可用估值。自动估值编排修复8dd639已并入；具体人类授权后实际两次运行结果是Lulu新候选BLOCKED、JCC新经营分析COMPLETE，章节未发，见evidence12/authorized04.md。
 
 ## 日常与独立报告
 

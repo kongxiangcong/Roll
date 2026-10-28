@@ -1,0 +1,113 @@
+{
+  "actual_runs": {
+    "lulu": {
+      "run_id": "fff7d56d-2f44-4d46-9877-a56ab31c4489",
+      "status": "BLOCKED",
+      "resolved_model": "gpt-6.1-sol",
+      "provider": "openai",
+      "elapsed_seconds": 37.942,
+      "raw_sha256": "a11d62d2e1389a2d9da5bd81d623f0f9922c399eb90a8047b68aac19368613cd",
+      "raw_bytes": 2245,
+      "token_usage": {
+        "last": {
+          "cacheWriteInputTokens": 0,
+          "cachedInputTokens": 0,
+          "inputTokens": 45942,
+          "outputTokens": 635,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 46577
+        },
+        "modelContextWindow": 475000,
+        "total": {
+          "cacheWriteInputTokens": 0,
+          "cachedInputTokens": 0,
+          "inputTokens": 45942,
+          "outputTokens": 635,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 46577
+        }
+      },
+      "tools": [],
+      "source_code_hashes": {
+        "agents/codex_process.py": "e827bfbf152776a77bb0426c2f41042aa52d7367376de54e693eb818a9fa086a",
+        "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+        "agents/company_report_runtime.py": "9478e977d96551d97f30460223c223b5c0231ac75376ee37fe9ccee6e1506749",
+        "agents/company_valuation_runtime.py": "09f05279d77c0e82410edcc56970afc5aed761dea9ef0f5ff2ebc924d7b48ee7",
+        "research/company/calculator.py": "036c70504306768f9260e7e0868b3fc479d9c6077f230e70d09666fc0866a251",
+        "research/company/economics.py": "a28ef1aef7747053115444183696aef21f6145fc48b9b289ddbd49397023fa0d",
+        "research/company/report_archive.py": "0bc6cd9be0a929d37f6231787952bc3715f7872a43b0c87cf029ec66831b4c86",
+        "research/company/report_coverage.py": "580246250ee83f48a0a2537fe643e7f260806ea0f6c3c7ee86062b525f68a7ed",
+        "research/company/report_data.py": "83bdfa853cef396b61e0f8574fc9c4c63eac32bb5e900870e59ef9cbc1a254a6",
+        "research/company/report_integrity.py": "1cc0640459630a64a5d8d96ed57d3e6578d42519fd4b225d2c1fb1909049e229",
+        "research/company/report_quality.py": "dca3ba28239c62c534c84c429e89dc597840e34eaa2b806e8b841419e9919c69",
+        "research/company/report_quote_worker.py": "e728167530941481745554f96611d72c69a3186bb77f027853d1c985ad418643",
+        "research/company/report_quotes.py": "6437a9672ec37c5ccd5e405e2382aae517126ce41206281c22a5000a6cc172c6",
+        "research/company/report_revisions.py": "249edb2f9e709712948ea68d343b728f38043041318d1d14295d250da50bdb35",
+        "research/company/report_runtime.py": "b568bae0793d0ed3458868663a44a6266a5730ff603320ed4ace3be84e5a02c1",
+        "research/company/report_sources.py": "b880a40ca146141a165e2f205a785ded5a1e19f66847a578b9a28e9cf6ba7321",
+        "research/company/report_summary.py": "b86ac571b10ef3ec2b914005c909d426185b23e42ef8297484df7dad7cef6fff",
+        "research/company/report_template.py": "d6b330c6496c998160a04abcab3c0c0f61801289996e573beee5668f7b71101a",
+        "research/company/report_valuation.py": "5bc5705880c64ae07f2dfac3d36080b971eec7e8617cdd80b3d5e10ec268f006",
+        "research/company/report_values.py": "aee80d28093293da837a6d4864556293b5ecb430e6373863ea2cf812d249cc10",
+        "research/company/report_workpapers.py": "31d1463add3841fc282a8b6124969a98edc13103eda5578550216f8a47fe7267",
+        "research/company/reports.py": "f4420ad1019c240fbec0656d36ced7739a13727869dbd23a8e334c7519d5e2eb",
+        "research/company/valuation.py": "c3ea3b85c4c94b197f6bb19b193a636ebae22bdd330d0af2577a768d0bad7fa6",
+        "research/company/valuation_candidate_contract.md": "670a2ed42b2e169e022d827c7c156701142d147e3d15cc95f8aefa373bf61fd7",
+        "research/company/valuation_reference/fundamental_valuation.py": "c6351d80e26f9cc8fdfaa9c0fdf80c7d7c93e12ba68b77f5667cd565ed82eda9"
+      }
+    },
+    "jcc": {
+      "run_id": "a572ee2d-62da-428f-a655-a48c1e32d988",
+      "status": "COMPLETE",
+      "resolved_model": "gpt-6.1-sol",
+      "provider": "openai",
+      "elapsed_seconds": 61.871,
+      "raw_sha256": "a11b11505b7afa850f9651a02cb9312f62e7a4d8cb0c02a48ce20a0c126a83ea",
+      "raw_bytes": 9714,
+      "token_usage": {
+        "last": {
+          "cacheWriteInputTokens": 0,
+          "cachedInputTokens": 0,
+          "inputTokens": 33659,
+          "outputTokens": 2928,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 36587
+        },
+        "modelContextWindow": 475000,
+        "total": {
+          "cacheWriteInputTokens": 0,
+          "cachedInputTokens": 0,
+          "inputTokens": 33659,
+          "outputTokens": 2928,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 36587
+        }
+      },
+      "tools": [],
+      "source_code_hashes": {
+        "agents/codex_process.py": "e827bfbf152776a77bb0426c2f41042aa52d7367376de54e693eb818a9fa086a",
+        "agents/codex_worker.py": "92886c9818221051402832c0b8f43a4a98203677473295b069cbf005f982798e",
+        "agents/company_analysis_runtime.py": "d2777dff77ecabdc147054928a22078b0180c1475f0fd390a8a4be3264565b3d",
+        "research/company/analysis.py": "1ec5ee095554eb5b7f4e9837d34b30296db185b24ebb1bac1d5c1ab9433906ac",
+        "research/company/candidates.py": "707f6e32e45d47dd2f3e118a09731bc847842f12ba5ac8d40c87e767c054ef05",
+        "research/company/model_runtime.py": "2ba53bdacd4d3ff99a23ca06654fc137a842f2250a29180eff923ec9dd0a8a21"
+      }
+    }
+  },
+  "model_calls_total": 2,
+  "remaining_hard_budget": 14,
+  "lulu_new_valuation": false,
+  "lulu_new_chapters": 0,
+  "lulu_correction_attempts": 0,
+  "lulu_job_status": "QUEUED",
+  "jcc_new_snapshot_id": "34f7ffea-f855-48b8-9a87-d1e33c4569b1",
+  "jcc_new_core_sha256": "977a3bcb8f3cf4731a9ba776155b61cc27ef943d57356c1cebbcb86d0a44b0de",
+  "jcc_hypotheses": 3,
+  "jcc_valuation_usable": false,
+  "jcc_old_snapshot_unchanged": true,
+  "original_reports_delivery_unchanged": true,
+  "account_version": 0,
+  "no_global_worker_auth": true,
+  "fit_started": false,
+  "sealed_read": false
+}
