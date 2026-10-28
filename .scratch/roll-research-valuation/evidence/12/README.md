@@ -1,6 +1,6 @@
 # 12 联合真实验收检查点
 
-2026-10-28 Asia/Shanghai。**Completion: blocked，整体未完成**。01–11实现已合入7816d24；本票没有生产源码修改。最终两轴review另发现自动估值编排接线缺口，root已安排唯一修复实施者；不得将现有手工建立的05估值复用路径当作新公司自动估值已实现。
+2026-10-28 Asia/Shanghai。**Completion: blocked，整体未完成**。本票没有另改生产源码；统一review修复已合入8dd639，原P1/P3经两focused verification确认解决。当前真实新queued job、exact候选wire、静态差异与待人类授权边界见[checkpoint03](checkpoint03-pending-human.md)。尚未发送新增模型请求，不用已有05估值复用路径替代新自动估值实证。
 
 本票新增实际来源、当前代码HTTP、真实网页新任务、重启及新目录恢复证据，详见[覆盖矩阵](coverage.md)、[最小差距与输入准备](readiness.md)、[运行/恢复交接](../../../../docs/research/company-research-usage.md)。未以旧证据目录整理、METHOD或新PARTIAL版本关闭本票。
 
