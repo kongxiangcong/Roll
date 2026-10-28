@@ -87,9 +87,13 @@ Missing A/H class, price, FX or incompatible date/units refuses the reverse comp
 
 The package includes byte-exact frozen upstream code, the adapted calculator, da-damu MIT/license scope and Sirius MIT notices. Original/adapted/wrapper hashes are part of every saved algorithm record, and all sources/input/results are registered with canonical `EvidenceStore` descriptors under raw paths. Existing `Backups` enumerates these originals and validates snapshot/version/identity/archive links and hashes on export/recovery. No network or model is needed for arithmetic, replay or backup.
 
-## Automatic report candidate wire (version 1)
+## Automatic report candidate wire (version 1.1: date and optional-component clarification)
 
 The response envelope is `{snapshot_id,input_sha256,command_json,gaps}`. `command_json` is null for unsupported inputs; otherwise it encodes only `{config,assumptions,provenance,change_reason,drivers,economic_basis}`. Snapshot, idempotency and parent binding are host owned. Never include `review`, `status`, precomputed FCFF or result prices. Every number remains a value plus exact-path origin, not prose.
+
+WACC date semantics: `wacc.as_of` and the date portion of `config.metadata.as_of` are calculation metadata, not assertions that every source was observed that day. Preserve the actual observation/period dates of every source; never relabel an older rate, ERP or beta as a same-day observation. The existing host rate check accepts a matching sourced numeric rate whose fact.period_end is no later than wacc.as_of; it does not require equal dates. For BASELINE_RESEARCH, dated inputs/proxies may be considered only with relevant source evidence, explicit proxy/staleness assumptions, economic rationale and limitations accepted by the existing05 checks. Beta, ERP and target financing weights remain explicit supported research assumptions. This does not establish data sufficiency or relax independent CURRENT_PRICING/bridge/known-disclosure guards.
+
+Optional components are evaluated separately: absent or unsupported EPV/reverse DCF should be marked not applicable or as component-specific gaps, rather than automatically treating an otherwise adequately sourced DCF as wholly blocked. Unknown critical operating capital, cash, debt or other required balances still require evidence or a blocked outcome; never fill unknowns with zero or self-sign review status. No formula, numeric-origin requirement or economic-review threshold changes here.
 
 Additional exact field names for the existing economic contract:
 
