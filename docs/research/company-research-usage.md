@@ -33,6 +33,8 @@
 
 验收worker显式清除ROLL_CODEX/ROLL_DEEPSEEK配置、不读取.env：新事实需要模型时正常记录UNAVAILABLE，绝不擅自外发。两关注research_postclose已开启且news_refresh=true；其它三盘后类别关闭。不把旧source disabled、scope unsupported或ARCHIVES_ONLY记为真实公源完成。
 
+后续08:23实际发现两个JCC AKShare source原关闭，已仅在daily隔离副本经原policy API启用到revision2，原范围/预算不变，worker02带已装AKShare1.19.1/Trafilatura2.3.1解释器，仍无auth。一份手动真实probe取得财务/部分新闻并适配22新facts；新经营analysis明确UNAVAILABLE、旧core保留。详见evidence12/postcheckpoint02；手动任务scheduled_checkpoint=null，不算自然盘后周期。
+
 当前自然周期0/2；最早候选10月28和29日15:05 Asia/Shanghai，实际线上当前交易日才调度。主机休眠/离线不补造过去日期；轮询worker健康不增加周期。后续按GET observation-updates各证券检查实际scheduled_checkpoint、started/finished、receipt、scope、check/model状态及error；一日同证券相同key不重复。未启用新平台automation。
 
 ## 备份、恢复、重启与接管

@@ -1,0 +1,54 @@
+{
+  "kind": "LOCAL_PREVIEW_ONLY_NOT_SEND_AUTHORIZATION",
+  "company_id": "469c1865-a145-4a47-a8ec-3056eeff81a2",
+  "company_name": "江西铜业股份有限公司",
+  "input_id": "4b2f8962-30d7-447e-a9db-ae2f077b783f",
+  "input_sha256": "dd87478d752209bbc4ce6b577068dacd3bbfda4e900f31c22aab892d4f3e863f",
+  "previous_unavailable_run_id": "df662b1b-8fda-469c-9751-7caabccda0c4",
+  "model": "gpt-6.1-sol",
+  "provider_destination": "OpenAI through existing ChatGPT subscription CODEX",
+  "wire_bytes": 92358,
+  "wire_sha256": "a10d0bfd5249b96fc7cd9af37e2a99fc92e5e3cc0f25334339fe6e0d3a4f208f",
+  "tools": [],
+  "maximum_model_turns": 1,
+  "timeout_seconds": 90,
+  "runtime_operations": 8,
+  "source_tool_calls": 0,
+  "fact_count": 32,
+  "fact_kinds": {
+    "DISCLOSED": 32
+  },
+  "payload_keys": [
+    "as_of",
+    "authority",
+    "company",
+    "conflict_resolutions",
+    "conflicts",
+    "evidence_gap_reason",
+    "facts",
+    "historical_pit_eligible",
+    "materials",
+    "prior_hypotheses"
+  ],
+  "source_urls": [
+    "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/lrbAjaxNew?companyType=4&reportDateType=0&reportType=1&code=SH600362&dates=2026-06-30%2C2026-03-31%2C2025-12-31%2C2025-09-30%2C2025-06-30",
+    "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/xjllbAjaxNew?companyType=4&reportDateType=0&reportType=1&dates=2026-06-30%2C2026-03-31%2C2025-12-31%2C2025-09-30%2C2025-06-30&code=SH600362",
+    "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/zcfzbAjaxNew?companyType=4&reportDateType=0&reportType=1&dates=2026-06-30%2C2026-03-31%2C2025-12-31%2C2025-09-30%2C2025-06-30&code=SH600362",
+    "https://www.hkexnews.hk/listedco/listconews/sehk/2026/0327/2026032700133_c.pdf"
+  ],
+  "exposure": [
+    "Public issuer/AKShare-derived financial facts and original source references",
+    "Saved research hypotheses/derived facts where present, limitations and evidence conflicts",
+    "Internal company/input/fact/material/version IDs and hashes"
+  ],
+  "excluded": [
+    "Account holdings/events/credentials",
+    "SEALED data",
+    "Old experiment budget/training writes",
+    "Source tools/browser/files/MCP/skills/subagents/other external destinations"
+  ],
+  "model_calls": 0,
+  "source_network_calls": 0,
+  "auth_read": false,
+  "execution_constraint": "If later specifically approved, execute only this frozen wire/input once with retained failures; do not enable model auth on the ongoing daily worker"
+}

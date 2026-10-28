@@ -1,0 +1,35 @@
+{
+  "job_id": "bbd96eaf-77bc-4f7c-be0d-698e79868f9d",
+  "instrument": "SSE:600362",
+  "command": {
+    "idempotency_key": "actual12-public-source-probe-01",
+    "basis": "Actual12 one manual public JCC-only connectivity check before natural checkpoint; not a postclose cycle; no model auth",
+    "kind": "RESEARCH",
+    "refresh_sources": true,
+    "retry_rejected": false
+  },
+  "settings": {
+    "financial_postclose": false,
+    "market_postclose": false,
+    "research_postclose": true,
+    "basis": "Actual12 isolated natural postclose acceptance; existing bounded public sources where supported; no model auth; no offline/backfill or other postclose kinds",
+    "changed_at": "2026-10-27T16:56:41.556857+00:00",
+    "classify": false,
+    "enabled": true,
+    "instrument": "SSE:600362",
+    "news_postclose": false,
+    "news_refresh": true,
+    "profile": "legacy",
+    "revision": 4
+  },
+  "status": "QUEUED",
+  "created_at": "2026-10-28T00:27:23.530039+00:00",
+  "started_at": null,
+  "finished_at": null,
+  "scheduled_checkpoint": null,
+  "observation_id": null,
+  "error": null,
+  "namespace": "OBSERVATION_ONLY",
+  "forecast_archive_created": false,
+  "external_notification_enabled": false
+}
