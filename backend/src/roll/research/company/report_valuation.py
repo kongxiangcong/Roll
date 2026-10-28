@@ -134,5 +134,3 @@ class ReportValuationRuntime(AnalysisRuntime):
             self.save(run)
         return {**(result or dict(status=run['status'], gaps=[run.get('error', {}).get('code', run['status'])])),
                 'run_id': run['run_id'], 'source_snapshot_id': snapshot['snapshot_id']}
-
-

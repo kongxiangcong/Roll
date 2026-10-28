@@ -167,7 +167,3 @@ print(json.dumps(dict(kind='completed',status='completed',output=open(%r,encodin
     assert packet['payload']['valuation_presentation']['scenarios'] == []
     assert packet['payload']['valuation_purpose'] == 'CURRENT_PRICING'
     assert expected in packet['payload']['source_gaps']
-
-
-
-
