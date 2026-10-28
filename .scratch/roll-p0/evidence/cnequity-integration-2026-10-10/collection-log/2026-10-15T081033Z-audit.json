@@ -1,0 +1,503 @@
+{
+  "heartbeat_id": "2026-10-15T081033Z",
+  "collector_exit_code": 0,
+  "summary_assertion_exit_code": 1,
+  "strict_summary_retained": true,
+  "stderr_bytes": 0,
+  "existing_protected_records_unchanged": true,
+  "existing_protected_record_changes": {},
+  "new_protected_tables": {
+    "research_probability_references": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_block_references": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_complete_protocols": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_protocol_validations": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_cost_stresses": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_migration_audits": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_threshold_runs": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_entry_stresses": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_registered_controls": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_cash_controls": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_time_segments": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_probability_bindings": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_joint_stresses": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_evidence_reviews": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_joint_reviews": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_completion_checks": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_primary_centers": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_model_replays": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_successor_input_consumers": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_performance_reports": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "existing_source_policies_unchanged": true,
+  "existing_source_policy_changes": {},
+  "new_source_policies": {
+    "akshare-financial-em": {
+      "adapter_version": "akshare-1.19.1-income-raw-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-15新增利润表来源，按单证券显式启用",
+      "changed_at": "2026-10-15T08:11:50.407221+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": false,
+      "engine": "AKSHARE",
+      "failure_threshold": 3,
+      "group": "FINANCIAL",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "akshare-financial-em",
+      "license": "AKShare 1.19.1 MIT; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "AKShare 东财利润表",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Source-bound statement proof or explicit UNKNOWN; no historical PIT claim",
+      "upstream": "EASTMONEY"
+    }
+  },
+  "runtime_unchanged": true,
+  "cleaning_reports": [
+    {
+      "source_id": "cnequity-tdx-daily",
+      "sha256": "f23a1a98ba7826b84b1695c94f2bd744126757e31b7456f2485eb9c0f569307b",
+      "report": {
+        "accepted_rows": 28,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-15T08:12:52.761898+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "input_rows": 28,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "897746db6ef970bf14f142c2e273bcb1598a3d4697bed7f8f3d7ba63c348d980",
+          "0dcf9513f77a6d90a2dcc2c459ed30e839a6050781dce891302a1c13b256b4ee"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "095ee1d9-a7fe-436e-abc1-8dcfdd37123e",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-tdx-daily"
+      }
+    },
+    {
+      "source_id": "cnequity-eastmoney-daily",
+      "sha256": "4c570e8ee67a39d326853f17e1f989af57da0d06e8b184fca2f0b8bd6e042431",
+      "report": {
+        "accepted_rows": 0,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-15T08:12:54.894758+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [
+          {
+            "code": "EASTMONEY_DAILY_SOURCE_FAILED",
+            "group": "DAILY",
+            "source_id": "cnequity-eastmoney-daily"
+          },
+          {
+            "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+            "group": "DAILY",
+            "source_id": "cnequity-eastmoney-daily"
+          },
+          {
+            "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+            "group": "DAILY",
+            "source_id": "cnequity-eastmoney-daily"
+          }
+        ],
+        "input_rows": 0,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "f63bd8624f79b06d5fb6022a263db711ece6ea5082331f51c5535fd07525843e"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "ae566e5d-2782-4d68-8d46-63f8e1402962",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-eastmoney-daily"
+      }
+    },
+    {
+      "source_id": "cnequity-eastmoney-status",
+      "sha256": "b4540bd98b297bfd01926f2059b71113fecc1abc3c4a88da52e1585c30298c0c",
+      "report": {
+        "accepted_rows": 0,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-15T08:12:56.989624+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [
+          {
+            "code": "SOURCE_FAILED_RuntimeError",
+            "group": "STATUS",
+            "source_id": "cnequity-eastmoney-status"
+          },
+          {
+            "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+            "group": "STATUS",
+            "source_id": "cnequity-eastmoney-status"
+          },
+          {
+            "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+            "group": "STATUS",
+            "source_id": "cnequity-eastmoney-status"
+          }
+        ],
+        "input_rows": 0,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "8d36313065b770bc993e1d48fd35c53f75f94aa530c543f4343afa605c327240"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "a965165e-c053-4d77-ad54-2a1f04179154",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-eastmoney-status"
+      }
+    },
+    {
+      "source_id": "cnequity-eastmoney-actions",
+      "sha256": "d1ffce583c4121e8ce563f150350ee3c96da47b6a234cafdc21c8ff579a79de7",
+      "report": {
+        "accepted_rows": 0,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-15T08:12:58.958582+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "input_rows": 0,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "ea6528a2204b61a7ee34683a73ca00f8afdc86aadf3f765d4dae39bbfb19dbe7",
+          "54ab54344cd96721d4618dbcc130530260cfa390228998c410c428157a0893b1"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "6e7d05fd-1e16-495c-bc29-b9306b160c31",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-eastmoney-actions"
+      }
+    },
+    {
+      "source_id": "cnequity-cninfo-announcements",
+      "sha256": "6ca865bc6f081e4393f1e6cf607748231e441c23fd873ea2d245b1a3f752cd33",
+      "report": {
+        "accepted_rows": 0,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-15T08:13:00.963256+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [
+          {
+            "code": "SOURCE_FAILED_HTTPStatusError",
+            "group": "ANNOUNCEMENTS",
+            "source_id": "cnequity-cninfo-announcements"
+          },
+          {
+            "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+            "group": "ANNOUNCEMENTS",
+            "source_id": "cnequity-cninfo-announcements"
+          }
+        ],
+        "input_rows": 0,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "915f3a7abdcaefeb404f5f2ae5349b8a8ebdb53b0c9b3659a12d0813ccb5f191",
+          "b0c7358b07577116fd0346e0a623144df2426d2f584acee08ce0ac1a98da870f"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "ba432bd7-ba43-4cf5-940b-39e2e8a53d4b",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-cninfo-announcements"
+      }
+    }
+  ],
+  "quarantined_rows": 0,
+  "comparison_id": "912fe0d0-76fc-4b36-bfeb-4534e588924b",
+  "previous_difference_count": 88,
+  "current_difference_count": 88,
+  "new_difference_field_types": [],
+  "source_winner": null,
+  "dated_daily_receipt": {
+    "archive": {
+      "bytes": 3176,
+      "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+      "kind": "SSE_DAILY_RECEIPT",
+      "path": "raw/7064d87f726026aec1fe5267e940b8b728fc47aac581baede537c0cb356d15f8.raw",
+      "sha256": "7064d87f726026aec1fe5267e940b8b728fc47aac581baede537c0cb356d15f8"
+    },
+    "basis": "User-authorized real post-close chain; one dated daily request, no retry/backfill",
+    "capability": "NOT_GRANTED",
+    "capture_plan": {
+      "created_at": "2026-10-15T08:13:02.796106+00:00",
+      "fallbacks": 0,
+      "follow_redirects": false,
+      "host_date": "2026-10-15",
+      "max_bytes": 1048576,
+      "parameters": {
+        "SEC_CODE": "600362",
+        "TX_DATE": "2026-10-15",
+        "TX_DATE_MON": "",
+        "TX_DATE_YEAR": "",
+        "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C"
+      },
+      "parser_fingerprint": "bf74a1b74d465eca02a4bce43ffe434369315312fa4d0165061cbdebc3572a40",
+      "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+      "request_budget_calls": 1,
+      "retries": 0,
+      "source_id": "sse-dated-daily-statistic",
+      "timeout_seconds": 15,
+      "unit_sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "url": "https://query.sse.com.cn/commonQuery.do"
+    },
+    "capture_plan_archive": {
+      "bytes": 639,
+      "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+      "kind": "SSE_DAILY_FINITE_PLAN",
+      "path": "raw/588ce7aef8c8ef3aaecc17f1e50c208a67c700840f3cf936450733fe53b51e9a.raw",
+      "sha256": "588ce7aef8c8ef3aaecc17f1e50c208a67c700840f3cf936450733fe53b51e9a"
+    },
+    "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+    "fact": null,
+    "forward_started_at": null,
+    "gaps": [
+      "SSE_DAILY_ROW_MISSING_OR_DUPLICATED",
+      "COMPLETE_STATUS_ACTIONS_AND_SESSION_AUTHORITY_REQUIRED"
+    ],
+    "host_date": "2026-10-15",
+    "instrument": "SSE:600362",
+    "network_calls": 1,
+    "normalized_known_at": "2026-10-15T08:13:02.998502+00:00",
+    "parameters": {
+      "SEC_CODE": "600362",
+      "TX_DATE": "2026-10-15",
+      "TX_DATE_MON": "",
+      "TX_DATE_YEAR": "",
+      "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C"
+    },
+    "parser_fingerprint": "bf74a1b74d465eca02a4bce43ffe434369315312fa4d0165061cbdebc3572a40",
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "receipt_id": "79e09ae7-90aa-4939-9b0c-052de970eff8",
+    "request_budget_calls": 1,
+    "response": {
+      "archive": {
+        "bytes": 509,
+        "evidence_kind": "REAL_SOURCE_ASSESSMENT",
+        "kind": "SSE_DATED_DAILY_RAW",
+        "original_complete": true,
+        "parameters": {
+          "SEC_CODE": "600362",
+          "TX_DATE": "2026-10-15",
+          "TX_DATE_MON": "",
+          "TX_DATE_YEAR": "",
+          "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C"
+        },
+        "path": "raw/87c53c172a0a97189c5f1860a4bb8640699a4f194918a5be408f5ef742c61328.raw",
+        "received_at": "2026-10-15T08:13:02.976088+00:00",
+        "sha256": "87c53c172a0a97189c5f1860a4bb8640699a4f194918a5be408f5ef742c61328",
+        "source_id": "sse-dated-daily-statistic",
+        "source_url": "https://query.sse.com.cn/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C&SEC_CODE=600362&TX_DATE=2026-10-15&TX_DATE_MON=&TX_DATE_YEAR=",
+        "status_code": 200
+      },
+      "error": null,
+      "original_complete": true,
+      "status_code": 200
+    },
+    "source_id": "sse-dated-daily-statistic",
+    "started_at": "2026-10-15T08:13:02.796106+00:00",
+    "status": "FAILED",
+    "system_usable": false,
+    "unit_source": {
+      "bytes": 277193,
+      "date_precision": "RECEIPT_INSTANT_NOT_ORIGINAL_PUBLICATION",
+      "headers": {
+        "Content-Length": "277193",
+        "Content-Type": "application/javascript",
+        "Date": "Fri, 09 Oct 2026 02:53:32 GMT"
+      },
+      "http_status": 200,
+      "path": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f.raw",
+      "received_at": "2026-10-09T02:53:32.816585+00:00",
+      "role": "daily_units",
+      "sha256": "478fb2a72fc5a3725088adb208756e88171f79628956a9f5ca67c900d37def2f",
+      "status": "RESPONSE_ARCHIVED",
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_stocksDepositoryReceipts_2021.js"
+    }
+  },
+  "dated_daily_response": {
+    "actionErrors": [],
+    "actionMessages": [],
+    "fieldErrors": {},
+    "isPagination": "false",
+    "jsonCallBack": null,
+    "locale": "en_CN",
+    "pageHelp": {
+      "beginPage": 1,
+      "cacheSize": 5,
+      "data": null,
+      "endDate": null,
+      "endPage": null,
+      "objectResult": null,
+      "pageCount": null,
+      "pageNo": 1,
+      "pageSize": 10,
+      "pageSizeWithOutLimit": 10,
+      "searchDate": null,
+      "sort": null,
+      "startDate": null,
+      "total": 0
+    },
+    "pageNo": null,
+    "pageSize": null,
+    "queryDate": "",
+    "result": [],
+    "securityCode": "",
+    "sqlId": "COMMON_SSE_CP_GPJCTPZ_GPLB_CJGK_MRGK_C",
+    "texts": null,
+    "type": "",
+    "validateCode": ""
+  },
+  "dated_daily_job": {
+    "day": "2026-10-15",
+    "finished_at": "2026-10-15T08:13:02.998502+00:00",
+    "host_owner": {
+      "creation_ticks": 134365255561360763,
+      "pid": 29548
+    },
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "receipt_id": "79e09ae7-90aa-4939-9b0c-052de970eff8",
+    "request_budget_calls": 1,
+    "started_at": "2026-10-15T08:13:02.796106+00:00",
+    "state": "RECORDED"
+  },
+  "dated_daily_offline_replays": [
+    {
+      "packet_id": "0c169838-f82e-41f9-88d8-f5436d2c6d07",
+      "packet_type": "DATED_DAILY_SUCCESSOR",
+      "matches_original": true,
+      "network_calls": 0,
+      "forward_admissible": false,
+      "capability": "NOT_GRANTED"
+    },
+    {
+      "packet_id": "c2b68bd9-2336-49fc-bbd9-292c30e50840",
+      "packet_type": "DATED_DAILY_SUCCESSOR",
+      "matches_original": true,
+      "network_calls": 0,
+      "forward_admissible": false,
+      "capability": "NOT_GRANTED"
+    }
+  ],
+  "backup_revalidation": {
+    "backup_id": "1c6ab618-8315-4302-a80f-5ee10f69a68d",
+    "reason": "PROSPECTIVE_COLLECTION",
+    "attachments": 191,
+    "state": "PASS"
+  },
+  "readiness": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "state": "COLLECTING",
+    "real_recorded_sessions": 3,
+    "real_context_sessions": 30,
+    "batches": 62,
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "minimum_calibration_examples_per_class": 20,
+    "minimum_effective_time_blocks": 30,
+    "requirements": [
+      "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+      "COMPLETE_STATUS_ACTIONS_AND_RULES",
+      "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+      "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+      "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+      "CONFIRMATORY_AND_FORWARD_VALIDATION",
+      "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+    ],
+    "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+  },
+  "notification_required": true,
+  "notification_reasons": [
+    "EASTMONEY_DAILY_AND_STATUS_ACQUIRED_TO_FAILED",
+    "SSE_DATED_DAILY_EMPTY_RESULT",
+    "STARTUP_EMPTY_TABLES_AND_DISABLED_SOURCE_REGISTRATION"
+  ]
+}

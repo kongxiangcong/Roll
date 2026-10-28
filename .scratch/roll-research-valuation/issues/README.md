@@ -1,0 +1,38 @@
+# 估值与投研开发执行索引
+
+依据：[实施规格](../spec.md) v1.0。顺序：**01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12**。
+
+所有票分诊为ready-for-agent，依赖通过才可执行。Completion独立记录完成状态，不新增分诊标签。当前下一票：**01**。本轮未开始开发。
+
+| 顺序 | 任务 | 依赖 | Completion |
+| --- | --- | --- | --- |
+| 01 | [冻结双工作流合同与参考能力映射](01-contracts-and-source-map.md) | 无 | not-started |
+| 02 | [实现公司身份、共享证据与核查记录](02-shared-evidence-and-identity.md) | 01 | not-started |
+| 03 | [实现经营假设及共享分析快照](03-research-state-and-snapshots.md) | 02 | not-started |
+| 04 | [接入可复算条件估值计算器](04-conditional-valuation-engine.md) | 03 | not-started |
+| 05 | [连接经营驱动、正常化与经济审核](05-operating-drivers-and-review.md) | 04 | not-started |
+| 06 | [实现三类变化与信息状态比较](06-daily-change-decomposition.md) | 05 | not-started |
+| 07 | [将持续投研与估值融入每日使用](07-daily-research-integration.md) | 06 | not-started |
+| 08 | [实现投研与估值完整报告流水线](08-report-template-and-pipeline.md) | 07 | not-started |
+| 09 | [实现Markdown/PDF交付与版本恢复](09-report-artifacts-and-recovery.md) | 08 | not-started |
+| 10 | [交付独立公司研报入口及共享联动](10-report-workflow-ui.md) | 09 | not-started |
+| 11 | [提供研究特征快照与增量验证协议](11-probability-research-interface.md) | 10 | not-started |
+| 12 | [完成双工作流真实联合验收与交接](12-integrated-real-acceptance.md) | 11 | not-started |
+
+## 执行规则
+
+1. 阅读项目AGENTS.md、本spec、当前票和前票验收。不要从UI按钮或复制脚本跳过共享数据与合同。
+2. 更新当前票Completion为in-progress。保持已确认业务边界，完成本票实现及验证。
+3. 将证据写入 `../evidence/NN/`；只有验收成立才标complete，同步本索引并将下一票改为执行入口。
+4. 遇阻写blocked、原因、已完成工作、缺口和解除条件；不得把失败写成通过或擅自跳到依赖票。
+5. 变更依赖或验收须明确修订spec/票并留理由；普通实现选择无需反复询问。
+6. 12票完成后才关闭整体功能。研究结论为负、估值局部blocked可以是正确业务结果，但不能替代要求的真实正向完整链验收。
+
+## 阶段成果
+
+- 01—06：共享公司研究、条件估值与变化比较基础。
+- 07：日常分析可用切片。
+- 08—10：独立完整研报可用切片。
+- 11：概率研究输入和协议，不自动训练或改概率。
+- 12：真实联合交付与恢复验证。
+

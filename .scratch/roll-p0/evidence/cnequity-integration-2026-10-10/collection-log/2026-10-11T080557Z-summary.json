@@ -1,0 +1,158 @@
+{
+  "heartbeat_id": "2026-10-11T080557Z",
+  "completed_at": "2026-10-11T08:08:58.807072+00:00",
+  "added_fact_versions": 81,
+  "added_batches": 6,
+  "integrity": {
+    "checked_at": "2026-10-11T08:08:58.807072+00:00",
+    "sqlite": "ok",
+    "archives_checked": 79,
+    "archive_failures": [],
+    "ok": true,
+    "reference_failures": [],
+    "facts_checked": 369,
+    "network_calls": 0,
+    "system_usable": false,
+    "consistent": true
+  },
+  "backup_id": "9c5b4dd9-1eca-45ce-9e77-3b1fe37961ae",
+  "backup_status": "COMPLETE",
+  "readiness": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "state": "COLLECTING",
+    "real_recorded_sessions": 0,
+    "real_context_sessions": 27,
+    "batches": 38,
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "minimum_calibration_examples_per_class": 20,
+    "minimum_effective_time_blocks": 30,
+    "requirements": [
+      "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+      "COMPLETE_STATUS_ACTIONS_AND_RULES",
+      "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+      "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+      "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+      "CONFIRMATORY_AND_FORWARD_VALIDATION",
+      "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+    ],
+    "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+  },
+  "protected_state_unchanged": false,
+  "source_policies_unchanged": false,
+  "runtime_unchanged": true,
+  "new_failed_sources": [],
+  "sources": [
+    {
+      "id": "sohu-daily",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-11T08:08:36.935778+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "71a60b73-5335-46da-a7b1-fce032942709",
+        "last_success_at": "2026-10-11T08:08:36.935778+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "sina-quote",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-11T08:08:37.064372+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "71a60b73-5335-46da-a7b1-fce032942709",
+        "last_success_at": "2026-10-11T08:08:37.064372+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "eastmoney-actions",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-11T08:08:37.211781+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "71a60b73-5335-46da-a7b1-fce032942709",
+        "last_success_at": "2026-10-11T08:08:37.211781+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "eastmoney-announcements",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-11T08:08:37.548677+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "71a60b73-5335-46da-a7b1-fce032942709",
+        "last_success_at": "2026-10-11T08:08:37.548677+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-tdx-daily",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-11T08:08:49.729155+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "fa826667-fd59-4949-b7a8-00e221c91bd6",
+        "last_success_at": "2026-10-11T08:08:49.729155+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-eastmoney-daily",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-11T08:08:51.632143+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "8ea1784f-6d1c-4744-939f-ff800723181c",
+        "last_success_at": "2026-10-11T08:08:51.632143+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-eastmoney-status",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "id": "cnequity-eastmoney-actions",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-11T08:08:53.604922+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "bbecada2-ba04-4cb0-a8c2-3a2fab0ae202",
+        "last_success_at": "2026-10-11T08:08:53.604922+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-cninfo-announcements",
+      "health": {
+        "consecutive_failures": 5,
+        "last_attempt_at": "2026-10-11T08:08:55.453447+00:00",
+        "last_code": "ACQUISITION_OR_CLEANING_FAILED",
+        "last_run_id": "14693622-6a67-4635-b2b1-04f944e96c78",
+        "retry_after": "2026-10-11T09:08:55.453466+00:00",
+        "state": "FAILED"
+      }
+    },
+    {
+      "id": "sse-closing-board",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    }
+  ],
+  "notification_required": true
+}

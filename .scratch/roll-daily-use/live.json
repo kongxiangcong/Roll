@@ -1,0 +1,97 @@
+{
+  "account_before_sha256": "c2b2dc1f922d22b42aa852747acfe3cb1fdce82cb52a5133d85402a38848d6ab",
+  "backup_created": true,
+  "jobs": {
+    "MARKET": "607cb685-11e2-478a-b0dd-3d4ce6dbe11b",
+    "FINANCIAL": "bd421617-e059-466a-9ab1-ea7d0e42ebfa",
+    "NEWS": "cc06b048-26e5-4cad-963a-24c27e2b62cc"
+  },
+  "results": {
+    "MARKET": {
+      "status": "COMPLETE",
+      "error": null,
+      "errors": [],
+      "result": [
+        {
+          "run_id": "f1e6e99e-406f-42d7-8b53-11b779b543d7",
+          "source": "SOHU_DAILY_SINA_QUOTE",
+          "status": "COMPLETE"
+        }
+      ],
+      "created_at": "2026-10-20T15:17:33.525532+00:00",
+      "finished_at": "2026-10-20T15:17:43.903691+00:00",
+      "observation_id": "f876ca3e-83d7-4ff3-9b8e-a7703ded24eb",
+      "cache_reused": false
+    },
+    "FINANCIAL": {
+      "status": "COMPLETE",
+      "error": null,
+      "errors": [],
+      "result": [
+        {
+          "evidence_kind": "REAL_ACQUISITION",
+          "network_calls": 3,
+          "run_id": "05c45c35-03d6-4822-9e4d-bab620e7c208",
+          "source": "akshare-financial-em",
+          "status": "COMPLETE"
+        },
+        {
+          "evidence_kind": "REAL_ACQUISITION",
+          "network_calls": 5,
+          "run_id": "c412f4a5-1158-4c88-b88c-8c766599b070",
+          "source": "akshare-financial-em",
+          "status": "COMPLETE"
+        }
+      ],
+      "created_at": "2026-10-20T15:17:33.575974+00:00",
+      "finished_at": "2026-10-20T15:18:03.333385+00:00",
+      "observation_id": "005986ef-d770-4d75-939c-1f077d57d5a6",
+      "cache_reused": false
+    },
+    "NEWS": {
+      "status": "COMPLETE",
+      "error": null,
+      "errors": [],
+      "result": [
+        {
+          "evidence_kind": "REAL_ACQUISITION",
+          "network_calls": 4,
+          "run_id": "4074581d-9710-4f26-9c57-f63b56620cd7",
+          "source": "akshare-news-em",
+          "status": "PARTIAL"
+        }
+      ],
+      "created_at": "2026-10-20T15:17:33.614812+00:00",
+      "finished_at": "2026-10-20T15:18:16.647104+00:00",
+      "observation_id": "748b0713-2525-4395-91d9-4dab82ec1131",
+      "cache_reused": false
+    }
+  },
+  "worker": "RUNNING",
+  "settings": {
+    "financial_postclose": true,
+    "market_postclose": true,
+    "basis": "2026-10-20 用户授权单股日常闭环；模型验证独立，不启动训练或正式建议",
+    "changed_at": "2026-10-20T15:17:33.510445+00:00",
+    "classify": false,
+    "enabled": true,
+    "instrument": "SSE:600362",
+    "news_postclose": true,
+    "news_refresh": true,
+    "profile": "legacy",
+    "revision": 2
+  },
+  "account_unchanged": true,
+  "formal_state": "UNGRANTED",
+  "api": "ok",
+  "data_summary": {
+    "financial_periods": 4,
+    "latest_financial_period": "2026-06-30",
+    "financial_status": "FRESH",
+    "news_facts": 10,
+    "unique_news_events": 10,
+    "observation_count": 4,
+    "pending_jobs": 0,
+    "latest_news_source_errors": []
+  }
+}

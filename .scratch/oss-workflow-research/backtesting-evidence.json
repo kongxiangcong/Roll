@@ -1,0 +1,34 @@
+{
+  "purpose": "UPSTREAM_OFFLINE_EXAMPLE_NOT_ROLL_OR_A_SHARE_ACCEPTANCE",
+  "package": "backtesting",
+  "version": "0.6.6",
+  "data": "upstream packaged GOOG historical sample; not current Roll data",
+  "rows": 2148,
+  "start": "2004-08-19 00:00:00",
+  "end": "2013-03-01 00:00:00",
+  "data_csv_sha256": "7de260d2cbcea634a75495590aa13d3b61dd3a2a6089873f876d8e0fcdaa499c",
+  "network": "socket connection attempts rejected during probe",
+  "full_ohlcv": {
+    "trades": 93,
+    "return_percent": 462.6351934000004,
+    "buy_hold_return_percent": 607.3703606212162,
+    "max_drawdown_percent": -33.93159182905461,
+    "warnings": [
+      "Some trades remain open at the end of backtest. Use `Backtest(..., finalize_trades=True)` to close them and include them in stats."
+    ]
+  },
+  "without_volume": {
+    "trades": 93,
+    "return_percent": 462.6351934000004,
+    "buy_hold_return_percent": 607.3703606212162,
+    "max_drawdown_percent": -33.93159182905461,
+    "warnings": [
+      "Some trades remain open at the end of backtest. Use `Backtest(..., finalize_trades=True)` to close them and include them in stats."
+    ]
+  },
+  "missing_close": {
+    "rejected": true,
+    "error": "Some OHLC values are missing (NaN). Please strip those lines with `df.dropna()` or fill them in with `df.interpolate()` or whatever."
+  },
+  "elapsed_seconds": 0.1089
+}

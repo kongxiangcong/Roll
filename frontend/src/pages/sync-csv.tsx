@@ -14,7 +14,7 @@ function issues(value:unknown):string{
   const item=value as {row?:number;reason?:unknown};
   return item?.row!==undefined?`${item.row?'第'+item.row+'行':'文件'}：${issues(item.reason)}`:JSON.stringify(value);
 }
-export function SyncCsv({account,onDone}:{account:Account;onDone:()=>void}){
+export function SyncCsv({account,onDone,onConfirmed}:{account:Account;onDone:()=>void;onConfirmed?:()=>void}){
   const [file,setFile]=useState<File|null>(null),[encoding,setEncoding]=useState('utf-8');
   const [revisionOf,setRevisionOf]=useState<string|null>(null);
   const [draft,setDraft]=useState<CsvDraft|null>(null),[key,setKey]=useState(''),[receipt,setReceipt]=useState<Receipt|null>(null);
@@ -27,7 +27,8 @@ export function SyncCsv({account,onDone}:{account:Account;onDone:()=>void}){
     const response=await fetch(`/api/account/csv/drafts?${query}`,{method:'POST',headers:{'Content-Type':'text/csv'},body:file});
     const value=await response.json();if(!response.ok)throw new Error(issues(value.detail));remember(value,crypto.randomUUID());
   }catch(e){setError(String(e));}finally{setBusy(false);}}
-  async function confirm(){setBusy(true);setError('');try{setReceipt(await request<Receipt>('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key}));sessionStorage.removeItem('roll.pending-csv');}catch(e){setError(String(e));}finally{setBusy(false);}}
+  function confirmed(receipt:Receipt){setReceipt(receipt);onConfirmed?.();}
+  async function confirm(){setBusy(true);setError('');try{confirmed(await request<Receipt>('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key}));sessionStorage.removeItem('roll.pending-csv');}catch(e){setError(String(e));}finally{setBusy(false);}}
   async function revise(){setBusy(true);setError('');try{const current=await request<Account>('/account');remember(await request<CsvDraft>(`/account/csv/drafts/${draft!.draft_id}/revise`,{encoding,expected_account_version:current.version}),crypto.randomUUID());}catch(e){setError(String(e));}finally{setBusy(false);}}
   if(receipt)return <section><h2>CSV整批已确认，回执已保存</h2><p>账户版本 {receipt.account_version} · 回执 {receipt.receipt_id}</p><button onClick={async()=>{try{await request(`/account/receipts/${receipt.receipt_id}`);setQueried(true);}catch(e){setError(String(e));}}}>查询CSV回执</button>{queried&&<p role="status">CSV回执查询成功</p>}<button onClick={onDone}>回到今天</button>{error&&<p role="alert">{error}</p>}</section>;
   return <section><h2>Roll CSV导入</h2><p>初始现金、持仓与权限使用同一基线文件；后续事件按文件行顺序整批确认。上传和预览不会入账。</p><p><a href="/api/account/csv/template" download>下载Roll CSV模板</a> · ROLL-CSV-3 · <a href="/api/account/csv/guide" target="_blank" rel="noreferrer">字段填写说明</a></p>

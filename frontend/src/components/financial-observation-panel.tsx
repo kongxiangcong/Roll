@@ -37,7 +37,8 @@ export function FinancialObservationPanel({instrument,replay=false}:{instrument:
     <details><summary>观察版本、限制与依据</summary>
      <ul>{value?.versions.map(v=><li key={v.observation_id}>{v.version} · {v.known_by} · {STATE[v.status]??v.status} · {v.created_at}</li>)}</ul>
      <ul>{current.limitations.map((item,index)=><li key={index}>{item}</li>)}</ul>
-     <p>来源事实 {Object.keys(current.source_versions).length} 个 · 网络调用 {current.network_calls} · 系统可用 {current.system_usable?'是':'否'} · 能力 {current.capability}</p>
+     <p>来源事实 {Object.keys(current.source_versions).length} 个 · 网络调用 {current.network_calls} · 策略资格状态 {current.capability}</p>
+     <p>策略资格状态不代表财务观察是否可用；请结合本次观察状态、数据时点和缺口阅读结果。</p>
     </details>
    </>}
   </section>}

@@ -1,0 +1,6 @@
+# Single-screen terminal redesign
+Integrate + redesign under editorial-ui. Replaces card-wall visuals, preserves account/research APIs and all prior contract fixes. Original reference: workbench-decision-evidence/evidence/original-prototype.html and workbench-prototype-preview.png. Use neutral dark/light themes, blue actions, red rise/green fall only. Fixed viewport, persistent chart, top task tabs, collapsible rails and bounded secondary detail pane. Account edits stay modal. No live services, model calls, accounts, deployment.
+Targets 1440x900,1366x768,1280x720; compact 1024x600, narrow and 200% accessible local scrolling. Theme persists; all popovers/charts inherit tokens. First gate controlled visual slice; then keyboard/tab/resize/contract regression and independent review. Baseline copies protect existing user work.
+
+## Approved production continuation
+Visual layout approved by user. Remove redundant instruction/corner text; preserve concise freshness, gaps/errors and model-cost disclosure on demand. Existing real API integration is retained; no static-only delivery. Keep unrelated concurrent backend edits. Finish chart validation, compact interaction, theme persistence controlled testing, final independent review and same-build demo. No real services/accounts/model costs.

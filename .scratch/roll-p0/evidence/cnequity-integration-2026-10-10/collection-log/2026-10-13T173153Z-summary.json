@@ -1,0 +1,191 @@
+{
+  "heartbeat_id": "2026-10-13T173153Z",
+  "completed_at": "2026-10-13T17:33:50.646348+00:00",
+  "added_fact_versions": 82,
+  "added_batches": 6,
+  "integrity": {
+    "checked_at": "2026-10-13T17:33:50.646348+00:00",
+    "sqlite": "ok",
+    "archives_checked": 127,
+    "archive_failures": [],
+    "ok": true,
+    "reference_failures": [],
+    "facts_checked": 506,
+    "network_calls": 0,
+    "system_usable": false,
+    "consistent": true
+  },
+  "backup_id": "4e97d4ae-5adb-4b39-bda3-6bef50981b68",
+  "backup_status": "COMPLETE",
+  "readiness": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "state": "COLLECTING",
+    "real_recorded_sessions": 2,
+    "real_context_sessions": 29,
+    "batches": 50,
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "minimum_calibration_examples_per_class": 20,
+    "minimum_effective_time_blocks": 30,
+    "requirements": [
+      "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+      "COMPLETE_STATUS_ACTIONS_AND_RULES",
+      "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+      "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+      "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+      "CONFIRMATORY_AND_FORWARD_VALIDATION",
+      "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+    ],
+    "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+  },
+  "protected_state_unchanged": true,
+  "source_policies_unchanged": true,
+  "runtime_unchanged": true,
+  "new_failed_sources": [],
+  "sources": [
+    {
+      "id": "sohu-daily",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:23.013180+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "34bb8639-737c-4292-9cc3-73e317a9936f",
+        "last_success_at": "2026-10-13T17:33:23.013180+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "sina-quote",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:23.203902+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "34bb8639-737c-4292-9cc3-73e317a9936f",
+        "last_success_at": "2026-10-13T17:33:23.203902+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "eastmoney-actions",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:23.361101+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "34bb8639-737c-4292-9cc3-73e317a9936f",
+        "last_success_at": "2026-10-13T17:33:23.361101+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "eastmoney-announcements",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:24.086993+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "34bb8639-737c-4292-9cc3-73e317a9936f",
+        "last_success_at": "2026-10-13T17:33:24.086993+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-tdx-daily",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:36.996052+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "91f10e43-cc7d-4032-8389-f09507ca3d38",
+        "last_success_at": "2026-10-13T17:33:36.996052+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-eastmoney-daily",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:38.981693+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "74550c8e-7ae2-458c-97d4-da1139842f86",
+        "last_success_at": "2026-10-13T17:33:38.981693+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-eastmoney-status",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:41.232889+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "dd85138a-3b40-4d57-980a-cc3dc1095d5e",
+        "last_success_at": "2026-10-13T17:33:41.232889+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-eastmoney-actions",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-13T17:33:43.249480+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "7efe93d7-106d-460c-a8c5-31a9eff8ae8d",
+        "last_success_at": "2026-10-13T17:33:43.249480+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "id": "cnequity-cninfo-announcements",
+      "health": {
+        "consecutive_failures": 7,
+        "last_attempt_at": "2026-10-13T17:33:45.337554+00:00",
+        "last_code": "ACQUISITION_OR_CLEANING_FAILED",
+        "last_run_id": "6b0b632c-8d0d-4fc0-8635-f173ade6b816",
+        "retry_after": "2026-10-13T18:33:45.337576+00:00",
+        "state": "FAILED"
+      }
+    },
+    {
+      "id": "sse-closing-board",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "id": "sse-company-client-contract",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "id": "sse-suspension-date",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "id": "sse-stock-suspension-interval",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "id": "sse-company-action-pages",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    }
+  ],
+  "notification_required": false
+}

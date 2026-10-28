@@ -1,0 +1,3 @@
+const {chromium}=require('D:/dsh-proj/Roll/frontend/node_modules/@playwright/test');
+(async()=>{const b=await chromium.launch({channel:'chrome'});const p=await b.newPage({viewport:{width:1440,height:1400}});await p.goto('file:///E:/workspace/codex/2026-10-28/task/workbench-prototype.html');await p.screenshot({path:'roll-workbench.png'});await p.locator('#panel [data-detail="probability"]').click();await p.screenshot({path:'roll-probability.png'});await p.locator('#close').click();await p.locator('#panel [data-detail="backtest"]').click();await p.screenshot({path:'roll-backtest.png'});await b.close()})();
+

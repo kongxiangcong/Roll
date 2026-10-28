@@ -49,6 +49,7 @@ class Reviews:
         self.worker_enabled=worker_enabled
         self.resolutions=None
         self.forward=None
+        self.dated_daily=None
         self.clock=clock or (lambda:datetime.now(timezone.utc))
         self.owner={'pid':os.getpid(),'creation_ticks':process_creation(os.getpid()),'nonce':str(uuid4())}
         self.stop=threading.Event()
@@ -177,7 +178,9 @@ class Reviews:
                 except HTTPException as error:self.worker_error={'code':'CAPABILITY_MONITORING_RETRY_REQUIRED','message':str(error.detail),'occurred_at':now()}
             if getattr(self, 'observation_updates', None) and (not self.capabilities or self.capabilities.lifecycle()['observations_allowed']):
                 self.observation_updates.work(self.clock(), self.stop)
-            if self.forward and (not self.capabilities or self.capabilities.lifecycle()['observations_allowed']):self.forward.work()
+            if not self.capabilities or self.capabilities.lifecycle()['observations_allowed']:
+                if self.dated_daily:self.dated_daily.work()
+                if self.forward:self.forward.work()
             self.stop.wait(.05)
 
     def check_running_day(self):

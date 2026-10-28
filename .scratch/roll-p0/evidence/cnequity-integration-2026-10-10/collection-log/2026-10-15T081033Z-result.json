@@ -1,0 +1,805 @@
+{
+  "data_dir": "D:\\dsh-proj\\Roll\\.roll-data\\pit",
+  "plan": {
+    "basis": "2026-10-10用户决定从今开始自建PIT数据库，停止追寻旧PIT；数据与验证满足前不启用",
+    "capability": "NOT_GRANTED",
+    "forward_started_at": null,
+    "instrument": "SSE:600362",
+    "namespace": "PROSPECTIVE",
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "source_policy": {
+      "adjustments": "EASTMONEY",
+      "daily": "SOHU",
+      "historical_pit_search": false,
+      "lookback_calendar_days": 45,
+      "quote": "SINA"
+    },
+    "started_at": "2026-10-10T00:27:17.363282+00:00"
+  },
+  "batch": {
+    "batch_id": "670843db-49fe-49a9-b05f-90ca55d4852a",
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "run_id": "c2b5cef9-748b-4fe4-b4f5-933286c5a9a6",
+    "snapshot_id": "0d783fee-5bb7-4589-8016-0327c63b497a",
+    "recorded_at": "2026-10-15T08:12:41.334082+00:00",
+    "collection_code_sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+    "source_adapter_version": "08-market-v1",
+    "known_at": "2026-10-15T08:12:41.334082+00:00",
+    "status": "PARTIAL",
+    "fact_count": 30,
+    "evidence_kind": "REAL_ACQUISITION",
+    "gaps": [
+      {
+        "code": "CURRENT_STATUS_UNKNOWN",
+        "group": "STATUS",
+        "instrument": "SSE:600362"
+      },
+      {
+        "code": "NO_ORIGINAL_IN_BOUNDED_METADATA_PAGE",
+        "group": "ADJUSTMENTS",
+        "instrument": "SSE:600362"
+      }
+    ],
+    "capability": "NOT_GRANTED",
+    "supplemental_batches": [
+      {
+        "batch_id": "c9345efd-c353-42c7-be07-770dec68d36c",
+        "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+        "run_id": "095ee1d9-a7fe-436e-abc1-8dcfdd37123e",
+        "snapshot_id": "c522a2d7-3060-4e1b-806c-3eb6ca9eed16",
+        "recorded_at": "2026-10-15T08:13:01.032790+00:00",
+        "collection_code_sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "source_adapter_version": "prospective-cleaning-v1",
+        "known_at": "2026-10-15T08:13:01.032790+00:00",
+        "status": "COMPLETE",
+        "fact_count": 28,
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "capability": "NOT_GRANTED"
+      },
+      {
+        "batch_id": "e312ee37-bd38-4e2f-b5dc-3a7506dda882",
+        "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+        "run_id": "ae566e5d-2782-4d68-8d46-63f8e1402962",
+        "snapshot_id": "9c8fed0f-ee88-40d5-9734-487989b62986",
+        "recorded_at": "2026-10-15T08:13:01.075965+00:00",
+        "collection_code_sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "source_adapter_version": "prospective-cleaning-v1",
+        "known_at": "2026-10-15T08:13:01.075965+00:00",
+        "status": "FAILED",
+        "fact_count": 0,
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [
+          {
+            "code": "EASTMONEY_DAILY_SOURCE_FAILED",
+            "group": "DAILY",
+            "source_id": "cnequity-eastmoney-daily"
+          },
+          {
+            "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+            "group": "DAILY",
+            "source_id": "cnequity-eastmoney-daily"
+          },
+          {
+            "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+            "group": "DAILY",
+            "source_id": "cnequity-eastmoney-daily"
+          }
+        ],
+        "capability": "NOT_GRANTED"
+      },
+      {
+        "batch_id": "03166ff9-8c4e-4648-a9c4-b948e8128a07",
+        "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+        "run_id": "a965165e-c053-4d77-ad54-2a1f04179154",
+        "snapshot_id": "1ca16c99-5ed1-4055-a42b-e46d5f34ba8f",
+        "recorded_at": "2026-10-15T08:13:01.116043+00:00",
+        "collection_code_sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "source_adapter_version": "prospective-cleaning-v1",
+        "known_at": "2026-10-15T08:13:01.116043+00:00",
+        "status": "FAILED",
+        "fact_count": 0,
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [
+          {
+            "code": "SOURCE_FAILED_RuntimeError",
+            "group": "STATUS",
+            "source_id": "cnequity-eastmoney-status"
+          },
+          {
+            "code": "SOURCE_RESPONSE_ORIGINAL_MISSING",
+            "group": "STATUS",
+            "source_id": "cnequity-eastmoney-status"
+          },
+          {
+            "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+            "group": "STATUS",
+            "source_id": "cnequity-eastmoney-status"
+          }
+        ],
+        "capability": "NOT_GRANTED"
+      },
+      {
+        "batch_id": "db2771e9-d9de-41a2-9507-92ae89bd5029",
+        "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+        "run_id": "6e7d05fd-1e16-495c-bc29-b9306b160c31",
+        "snapshot_id": "e0f1faf8-f8de-4249-b1e8-4494fa47a8f7",
+        "recorded_at": "2026-10-15T08:13:01.159344+00:00",
+        "collection_code_sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "source_adapter_version": "prospective-cleaning-v1",
+        "known_at": "2026-10-15T08:13:01.159344+00:00",
+        "status": "COMPLETE",
+        "fact_count": 0,
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "capability": "NOT_GRANTED"
+      },
+      {
+        "batch_id": "7f751379-272b-4ec2-8cca-a9780a512c44",
+        "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+        "run_id": "ba432bd7-ba43-4cf5-940b-39e2e8a53d4b",
+        "snapshot_id": "96637670-02ba-4992-990f-b64759bab472",
+        "recorded_at": "2026-10-15T08:13:01.196576+00:00",
+        "collection_code_sha256": "55ca36e6d76ca5fe5bf1210f9281bc4dce100ad593d3e8c562c17880bb407f83",
+        "source_adapter_version": "prospective-cleaning-v1",
+        "known_at": "2026-10-15T08:13:01.196576+00:00",
+        "status": "FAILED",
+        "fact_count": 0,
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [
+          {
+            "code": "SOURCE_FAILED_HTTPStatusError",
+            "group": "ANNOUNCEMENTS",
+            "source_id": "cnequity-cninfo-announcements"
+          },
+          {
+            "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+            "group": "ANNOUNCEMENTS",
+            "source_id": "cnequity-cninfo-announcements"
+          }
+        ],
+        "capability": "NOT_GRANTED"
+      }
+    ],
+    "comparison_id": "912fe0d0-76fc-4b36-bfeb-4534e588924b",
+    "unresolved_comparisons": 88
+  },
+  "readiness": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "state": "COLLECTING",
+    "real_recorded_sessions": 3,
+    "real_context_sessions": 30,
+    "batches": 62,
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "minimum_calibration_examples_per_class": 20,
+    "minimum_effective_time_blocks": 30,
+    "requirements": [
+      "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+      "COMPLETE_STATUS_ACTIONS_AND_RULES",
+      "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+      "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+      "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+      "CONFIRMATORY_AND_FORWARD_VALIDATION",
+      "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+    ],
+    "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+  },
+  "sources": [
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.174666+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "sohu-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "搜狐日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "SOHU",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-15T08:12:39.539136+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "c2b5cef9-748b-4fe4-b4f5-933286c5a9a6",
+        "last_success_at": "2026-10-15T08:12:39.539136+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.175421+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "QUOTE",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "sina-quote",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "新浪报价与状态线索",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "SINA",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-15T08:12:39.730725+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "c2b5cef9-748b-4fe4-b4f5-933286c5a9a6",
+        "last_success_at": "2026-10-15T08:12:39.730725+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.176118+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "ADJUSTMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "eastmoney-actions",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "东财权益线索",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-15T08:12:39.895514+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "c2b5cef9-748b-4fe4-b4f5-933286c5a9a6",
+        "last_success_at": "2026-10-15T08:12:39.895514+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "ROLL_PROSPECTIVE",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.177009+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "ANNOUNCEMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "eastmoney-announcements",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "东财公告原件",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-15T08:12:40.285232+00:00",
+        "last_code": "HTTP_ACQUIRED",
+        "last_run_id": "c2b5cef9-748b-4fe4-b4f5-933286c5a9a6",
+        "last_success_at": "2026-10-15T08:12:40.285232+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.177670+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-tdx-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 通达信日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "TDX",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-15T08:12:52.758141+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "095ee1d9-a7fe-436e-abc1-8dcfdd37123e",
+        "last_success_at": "2026-10-15T08:12:52.758141+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.178487+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-daily",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财日线",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 1,
+        "last_attempt_at": "2026-10-15T08:12:54.890784+00:00",
+        "last_code": "ACQUISITION_OR_CLEANING_FAILED",
+        "last_run_id": "ae566e5d-2782-4d68-8d46-63f8e1402962",
+        "last_success_at": "2026-10-14T12:24:27.531116+00:00",
+        "retry_after": null,
+        "state": "FAILED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.179177+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "STATUS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-status",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财交易状态",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 1,
+        "last_attempt_at": "2026-10-15T08:12:56.985579+00:00",
+        "last_code": "ACQUISITION_OR_CLEANING_FAILED",
+        "last_run_id": "a965165e-c053-4d77-ad54-2a1f04179154",
+        "last_success_at": "2026-10-14T12:24:30.858180+00:00",
+        "retry_after": null,
+        "state": "FAILED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.179835+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "ADJUSTMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-eastmoney-actions",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 东财公司行为",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "EASTMONEY",
+      "health": {
+        "consecutive_failures": 0,
+        "last_attempt_at": "2026-10-15T08:12:58.954210+00:00",
+        "last_code": "ACQUIRED",
+        "last_run_id": "6e7d05fd-1e16-495c-bc29-b9306b160c31",
+        "last_success_at": "2026-10-15T08:12:58.954210+00:00",
+        "retry_after": null,
+        "state": "ACQUIRED"
+      }
+    },
+    {
+      "adapter_version": "cnequity-c118038ea82b",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-10用户授权持续采集与CNEquity补充接入",
+      "changed_at": "2026-10-10T03:42:37.180469+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "CNEQUITY",
+      "failure_threshold": 3,
+      "group": "ANNOUNCEMENTS",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "cnequity-cninfo-announcements",
+      "license": "Apache-2.0 code; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "CNEquity 巨潮公告索引",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Pinned adapter contract plus row-level quantity/amount checks; complete source coverage not asserted",
+      "upstream": "CNINFO",
+      "health": {
+        "consecutive_failures": 9,
+        "last_attempt_at": "2026-10-15T08:13:00.959809+00:00",
+        "last_code": "ACQUISITION_OR_CLEANING_FAILED",
+        "last_run_id": "ba432bd7-ba43-4cf5-940b-39e2e8a53d4b",
+        "retry_after": "2026-10-15T09:13:00.959823+00:00",
+        "state": "FAILED"
+      }
+    },
+    {
+      "adapter_version": "source-bound-post-close-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-11授权继续30宿主producer工程与公开来源核验",
+      "changed_at": "2026-10-11T08:08:12.107119+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "sse-closing-board",
+      "license": "Roll adaptation; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 1,
+      "name": "上交所盘后原始快照",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 15,
+      "unit_scope": "SSE board original units/session turnover scope UNVERIFIED; not model-admissible",
+      "upstream": "SSE",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "source-bound-sse-company-client-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-11授权同官方company客户端有限两源合同",
+      "changed_at": "2026-10-12T08:11:01.243640+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "STATUS",
+      "historical_revision_proof": "RECEIVED_ORIGINAL_NOT_HISTORICAL_PIT",
+      "id": "sse-company-client-contract",
+      "license": "Roll adaptation; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 2,
+      "name": "上交所公司行情字段原件",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 15,
+      "unit_scope": "Official client display transforms only; sessions/full listing-risk/effective coverage UNKNOWN",
+      "upstream": "SSE",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "source-bound-sse-suspension-date-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-11授权有限指定日期官方SSE source assessment",
+      "changed_at": "2026-10-12T08:11:01.246345+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "STATUS",
+      "historical_revision_proof": "RECEIVED_ORIGINAL_ONLY_NOT_HISTORICAL_PIT",
+      "id": "sse-suspension-date",
+      "license": "Roll adaptation; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 2,
+      "name": "上交所指定日期停牌观察",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 15,
+      "unit_scope": "Returned suspension schedules only; absence/resumption/full status UNKNOWN",
+      "upstream": "SSE",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "source-bound-sse-stock-interval-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-11授权新stock SSE有限独立来源评估",
+      "changed_at": "2026-10-12T08:11:01.247002+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "STATUS",
+      "historical_revision_proof": "CURRENT_RECEIVED_ORIGINAL_NOT_HISTORICAL_PIT",
+      "id": "sse-stock-suspension-interval",
+      "license": "Roll adaptation; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 3,
+      "name": "上交所证券停牌区间原件",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 15,
+      "unit_scope": "Reported date/interval schedules; latest trade day and actual resumption UNKNOWN",
+      "upstream": "SSE",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "sse-action-raw-first-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-11授权具体两公司行动raw-first来源评估",
+      "changed_at": "2026-10-12T08:11:01.248066+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "ADJUSTMENTS",
+      "historical_revision_proof": "RECEIVED_ORIGINAL_NOT_HISTORICAL_PIT",
+      "id": "sse-company-action-pages",
+      "license": "Roll adaptation; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 2,
+      "name": "上交所公司行动首分页原件",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 15,
+      "unit_scope": "First-page raw originals only; dates/category/version/payment/full coverage UNKNOWN",
+      "upstream": "SSE",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    },
+    {
+      "adapter_version": "sse-dated-daily-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-14用户授权优先真实盘后预测归档工程",
+      "changed_at": "2026-10-14T15:40:25.850122+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": true,
+      "engine": "ROLL",
+      "failure_threshold": 3,
+      "group": "DAILY",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "sse-dated-daily-statistic",
+      "license": "Roll adaptation; upstream data rights separate",
+      "max_bytes": 1048576,
+      "max_calls": 1,
+      "name": "上交所指定交易日日线统计",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 15,
+      "unit_scope": "Official dated daily statistic; full status/actions/session authority separate",
+      "upstream": "SSE",
+      "health": {
+        "consecutive_failures": 1,
+        "last_attempt_at": "2026-10-15T08:13:03.038307+00:00",
+        "last_code": "FAILED",
+        "last_run_id": "79e09ae7-90aa-4939-9b0c-052de970eff8",
+        "last_success_at": "2026-10-14T15:40:26.795453+00:00",
+        "retry_after": null,
+        "state": "FAILED"
+      }
+    },
+    {
+      "adapter_version": "akshare-1.19.1-income-raw-v1",
+      "authentication": "PUBLIC_NO_CREDENTIAL",
+      "basis": "2026-10-15新增利润表来源，按单证券显式启用",
+      "changed_at": "2026-10-15T08:11:50.407221+00:00",
+      "cleaning_version": "prospective-cleaning-v1",
+      "commit": null,
+      "cooldown_seconds": 3600,
+      "enabled": false,
+      "engine": "AKSHARE",
+      "failure_threshold": 3,
+      "group": "FINANCIAL",
+      "historical_revision_proof": "PROSPECTIVE_HOST_RECEIPTS_ONLY",
+      "id": "akshare-financial-em",
+      "license": "AKShare 1.19.1 MIT; upstream data rights separate",
+      "max_bytes": 8388608,
+      "max_calls": 8,
+      "name": "AKShare 东财利润表",
+      "qualification": "NOT_GRANTED",
+      "retries": 0,
+      "revision": 1,
+      "scope": [
+        "SSE:600362"
+      ],
+      "source_selection": "EXPLICIT_SUPPLEMENT; NO_SOURCE_WINNER",
+      "timeout_seconds": 18,
+      "unit_scope": "Source-bound statement proof or explicit UNKNOWN; no historical PIT claim",
+      "upstream": "EASTMONEY",
+      "health": {
+        "state": "NOT_YET_ACQUIRED",
+        "consecutive_failures": 0
+      }
+    }
+  ],
+  "integrity": {
+    "checked_at": "2026-10-15T08:13:17.103793+00:00",
+    "sqlite": "ok",
+    "archives_checked": 191,
+    "archive_failures": [],
+    "ok": true,
+    "reference_failures": [],
+    "facts_checked": 649,
+    "network_calls": 0,
+    "system_usable": false,
+    "consistent": true
+  },
+  "backup": {
+    "backup_id": "1c6ab618-8315-4302-a80f-5ee10f69a68d",
+    "status": "COMPLETE",
+    "reason": "PROSPECTIVE_COLLECTION",
+    "completed_at": "2026-10-15T08:13:18.228781+00:00",
+    "restore_point": {
+      "account_version": 0,
+      "event_count": 0,
+      "account_confirmed_at": null,
+      "capture_finished_at": "2026-10-15T08:13:17.164937+00:00"
+    },
+    "published_at": "2026-10-15T08:13:18.228798+00:00",
+    "attachment_count": 191,
+    "change_fingerprint": "8d55fc921d725e7fc1ee25e654bca5400805d1fa5f492aeb3fb1cf75aab8f047"
+  },
+  "dated_daily_archive": {
+    "receipt_id": "79e09ae7-90aa-4939-9b0c-052de970eff8",
+    "packet_id": "c2b68bd9-2336-49fc-bbd9-292c30e50840",
+    "status": "FAILED",
+    "forward_admissible": false,
+    "gaps": [
+      "SSE_DAILY_ROW_MISSING_OR_DUPLICATED",
+      "COMPLETE_STATUS_ACTIONS_AND_SESSION_AUTHORITY_REQUIRED"
+    ]
+  }
+}

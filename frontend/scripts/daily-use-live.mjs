@@ -6,9 +6,10 @@ const browser=await chromium.launch({channel:'chrome',headless:true});
 try{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   await page.goto('http://127.0.0.1:5173');
-  await page.getByRole('heading',{name:'江西铜业 · 日常使用'}).waitFor();
-  await page.getByRole('region',{name:'日常观察状态'}).waitFor();
+  await page.getByRole('heading',{name:'江西铜业 日常使用'}).waitFor();
   await page.screenshot({path:output+'/live-desktop.png'});
+  await page.getByRole('tab',{name:'事实与来源'}).click();
+  await page.getByRole('region',{name:'日常观察状态'}).waitFor();
   await page.getByText('财务观察',{exact:true}).first().click();
   await page.getByRole('button',{name:'查看财务观察',exact:true}).click();
   await page.getByRole('region',{name:'财务观察内容'}).waitFor();

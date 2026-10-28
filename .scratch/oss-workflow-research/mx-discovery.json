@@ -1,0 +1,302 @@
+{
+  "credential_configured": true,
+  "initialize": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "protocolVersion": "2025-11-25",
+      "capabilities": {
+        "tools": {
+          "listChanged": false
+        }
+      },
+      "serverInfo": {
+        "name": "mx-ds-mcp",
+        "version": "1.0.0"
+      }
+    }
+  },
+  "tools_list": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+      "tools": [
+        {
+          "name": "mx_ashare_finance_data",
+          "title": "mx_ashare_finance_data",
+          "description": "基于东方财富数据库，支持自然语言查询A股金融数据，覆盖A股股票基本资料、行情与技术指标、财务与估值、股本与股东结构、公司事件（IPO/增减持/股权激励/风险事件等）、量化风险指标（alpha/beta/夏普）等，单次请求最多支持500只股票，可发起多次请求。例如：格力电器的上市时间与最近5日的涨跌幅与换手率",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_bond_finance_data",
+          "title": "mx_bond_finance_data",
+          "description": "基于东方财富数据库，支持自然语言查询债券金融数据，覆盖债券基本信息与发行兑付、行情报价与估值分析（久期/凸性）、发债主体财务指标，以及信用评级、回购、可转债转股条款等特殊指标，单次请求最多支持500只债券，可发起多次请求。例如：23广东11、19黑龙江债01的发行期限与发行总额",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_comprehensive_finance_data",
+          "title": "mx_comprehensive_finance_data",
+          "description": "基于东方财富数据库，支持自然语言综合性查询金融数据。当无法确定品种，或标的属于其他/跨市场品种（如期货、期权、日股、韩股、台股、德股，以及企业发行人、非上市公司等）时使用本工具；已明确为 A 股/港股/美股/基金/债券/指数板块时，优先使用对应专用工具。单次请求最多支持 500 只证券或实体，可发起多次请求。例如：华为技术有限公司的企业基本信息；沪铜主连近5日行情；某台股/韩股的基本资料与估值。",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_finance_search_news",
+          "title": "mx_finance_search_news",
+          "description": "基于东方财富数据库,新闻资讯相关片段检索。\n适用:查询个股、行业、板块、指数、宏观策略等新闻资讯、研究报告、评级观点、目标价、投资逻辑、盈利预测、风险提示、行业趋势判断等文本内容。典型问句涉及:最新研报、券商怎么看、评级变化、目标价、投资建议、行业研究观点、发布的新闻。\n不适用:查询上市公司公告/交易所公告用mx_finance_search_notice;查询实时或历史行情、财务、估值等具体数值指标用对应品种金融数据工具;按条件筛选标的用mx_stocks_screener。例:中信证券最新研报观点、券商怎么看半导体硅片行业、贵州茅台近期评级和目标价",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "新闻资讯查询问句,建议包含证券/行业/板块/主题、关注内容和时间范围"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_finance_search_notice",
+          "title": "mx_finance_search_notice",
+          "description": "基于东方财富数据库,搜索公告与官方披露文件。\n适用:查询上市公司公告、基金公告、债券公告、港美股公告、交易所公告、监管披露、定期报告、临时公告、重大事项公告等文本内容。典型问句涉及:最近发生了什么、最新公告、定增/并购重组/股权激励/分红/减持/风险提示/问询函/年报半年报内容等。\n不适用:查询券商研报和投资观点用mx_finance_search_news;查询行情、财务、估值、股本股东等结构化数值指标用对应品种金融数据工具;按条件筛选标的用mx_stocks_screener。例:中信证券最近公告、格力电器最新分红公告、寒武纪近期重大事项公告",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "公告查询问句,建议包含证券/主体、公告类型或关注事项和时间范围"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_fund_finance_data",
+          "title": "mx_fund_finance_data",
+          "description": "基于东方财富数据库，支持自然语言查询基金金融数据，覆盖基金基本资料与发行信息、行情与业绩绩效（净值/收益率/排名/alpha/beta）、报告期财务与分红、份额与持有人结构、资产配置与持仓明细、基金公司维度指标，单次请求最多支持500只基金，可发起多次请求。例如：工银双盈债券A(010068)的发行日期与发行费率",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_hk_finance_data",
+          "title": "mx_hk_finance_data",
+          "description": "基于东方财富数据库，支持自然语言查询港股金融数据，覆盖港股证券与公司基本资料、股本与股东结构、行情与技术指标、量化风险指标、财务三表与估值盈利预测，以及IPO/回购/分红等，单次请求最多支持500只股票，可发起多次请求。例如：智谱、minimax的所属行业、上市日期与发行价",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_index_block_finance_data",
+          "title": "mx_index_block_finance_data",
+          "description": "基于东方财富数据库，支持自然语言查询指数或板块金融数据，覆盖指数及行业、概念、市场板块的行情、技术指标、财务估值，以及成分股聚合指标，单次请求最多支持500个指数/板块，可发起多次请求。例如：沪深300、中证200过去10个交易日的涨跌幅和收盘点数",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_macro_data",
+          "title": "mx_macro_data",
+          "description": "基于东方财富数据库，查询宏观经济、行业经济与大宗商品高频/历史指标数据。\n适用：全球及中国宏观指标、区域经济指标、行业景气与产业链数据、主要产品产量/销量/进出口/库存/开工率/价格等指标；覆盖能源、金属、化工、农产品、新能源、光伏、锂电、半导体等行业的量价数据。典型查询包括：GDP、CPI、PPI、M2、社融、利率、进出口、工业增加值、地区经济数据，以及多晶硅、硅片、电池片、组件、碳酸锂、原油、铜、螺纹钢、煤炭、PTA等商品或行业指标的最新价格、历史走势、同比/环比变化。\n不适用：查询个股、基金、债券、港美股等具体证券的行情、财务、估值、股东、公告和事件数据，应使用对应品种金融数据工具；按条件筛选证券应使用筛选工具。\n",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "查询宏观经济或行业经济指标的问句，请尽量明确指标名称、品种/行业、地区、时间范围、频率、统计口径、单位或需要的维度。"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_stocks_screener",
+          "title": "mx_stocks_screener",
+          "description": "基于东方财富数据库，按条件筛选多只标的或主体（选股/选基等）。适用：用户尚无明确标的、需要按条件找出一批满足要求的标的或主体，而非查询某个已知标的的明细数据；支持A股、港股、美股、退市股（退市A股+退市B股）、基金（场内外公募基金产品；不支持行情指标）、ETF（支持行情指标）、基金公司、可转债、期货（国内期货；不支持国际期货）、板块（行业、概念、地区、大盘指数）。不同品种需各自单独调用：每个 query 仅覆盖单一品种，若用户同时涉及多品种，按品种拆成多次请求，禁止在同一 query 中混筛。典型问句涉及：排名（市盈率最低的 50 只、近一月收益率最高的基金）、条件过滤（股价大于 500 元、涨幅超 5%、成交额居前的股票）、多条件组合与多标的对比筛选。",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "mx_us_finance_data",
+          "title": "mx_us_finance_data",
+          "description": "基于东方财富数据库，支持自然语言查询美股金融数据，覆盖美股证券与公司基本资料、股本与股东结构、行情与技术指标、量化风险指标、财务三表与估值盈利预测，以及IPO/回购/分红等，单次请求最多支持500只股票，可发起多次请求。例如：苹果和特斯拉近10个交易日的涨跌幅、换手率",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "问句"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "title": "",
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "heartbeat_id": "2026-10-14T122227Z",
+  "collector_exit_code": 0,
+  "stderr_bytes": 0,
+  "protected_state_unchanged": true,
+  "source_policies_unchanged": true,
+  "runtime_unchanged": true,
+  "source_state_transitions": [],
+  "cleaning_reports": [
+    {
+      "source_id": "cnequity-tdx-daily",
+      "sha256": "2db89d5f818549b148d89d30c906f2ed2c8cc6e441eeb0cb67f23e0e952ef475",
+      "report": {
+        "accepted_rows": 27,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-14T12:24:24.798551+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "input_rows": 27,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "a605a947a24272093eae30dc91a3e71f936db24d7aebf66b59e814cc6f86faf6",
+          "42b9130fb216dc2a277ecb0c115824607eeb0cf1a16833bb653a85b0a56fe3fe"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "2fd1fb75-0d8d-480b-869a-449fd05c5a0a",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-tdx-daily"
+      }
+    },
+    {
+      "source_id": "cnequity-eastmoney-daily",
+      "sha256": "c324c36dfd1014f257de97f1916a29fa35c1ccfff30fcca3a9091f443e9a2b03",
+      "report": {
+        "accepted_rows": 27,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-14T12:24:27.535667+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "input_rows": 27,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "a3cb1a8aa827310d1aa5685b3d47f898d3d0b18f2ad88fb5b5c348860064f4bf",
+          "5cddf8fefea50d41770eae721d0356cfba9db13c383c41c9f77a525b70fb4f83"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "3652d9cc-3b4e-424d-ae02-863608ec9b78",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-eastmoney-daily"
+      }
+    },
+    {
+      "source_id": "cnequity-eastmoney-status",
+      "sha256": "c20353d4241341ce320e6f42eab8f850e2cb63ffd57cb41a1d8bbcf751fe9bdd",
+      "report": {
+        "accepted_rows": 1,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-14T12:24:30.862939+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "input_rows": 1,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "0d3e437ce4e92af34f623022b3c6fafdeae546b8a549af14066a40285490f2f2",
+          "5b6e7301d49d6a2421c5f134627836416350effee5fc09a2ee6b926fba9b6c1d",
+          "20a6ced4d38d407ef11f083770cfdd6edcbe5d0dd8da9b2f9923b12fef6ea63f",
+          "0545517c0de5bfc02daf35261cdfba739ae421340110815f2904585a13ab6346",
+          "2207c5f3cbef8e6899e73a8ee558193edf55af413e2973801266644e6b45e6d7",
+          "73b54c666fcfd52f2f9af6cab3bdbdf1d6c96bcfa6e42169d9b384f833361dc3",
+          "d86581a135bd641e01dfe61f0c922b3f35f73ff85e5637d55aa3d35d3226ecc8"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "00956d4c-5ba3-4e6a-b4f4-7fb1cdd28a64",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-eastmoney-status"
+      }
+    },
+    {
+      "source_id": "cnequity-eastmoney-actions",
+      "sha256": "79a0b320f1c91d2481983d59c8ea118efcd8e067ce520f6da0a8329a553d2882",
+      "report": {
+        "accepted_rows": 0,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-14T12:24:33.447889+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [],
+        "input_rows": 0,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "ea6528a2204b61a7ee34683a73ca00f8afdc86aadf3f765d4dae39bbfb19dbe7",
+          "0e900de740f4dca32b2edb2e983ebeb71bfd68657fd50e666d5d2957ed9a3be8"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "f4c64e56-cfe9-46f1-aaa0-131423ec2858",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-eastmoney-actions"
+      }
+    },
+    {
+      "source_id": "cnequity-cninfo-announcements",
+      "sha256": "d64318fd45173149ff5e0e5c348e61fd755d1e145031de11a98569a6ab809cb9",
+      "report": {
+        "accepted_rows": 0,
+        "cleaning_version": "prospective-cleaning-v1",
+        "created_at": "2026-10-14T12:24:36.192595+00:00",
+        "evidence_kind": "REAL_ACQUISITION",
+        "gaps": [
+          {
+            "code": "SOURCE_FAILED_HTTPStatusError",
+            "group": "ANNOUNCEMENTS",
+            "source_id": "cnequity-cninfo-announcements"
+          },
+          {
+            "code": "NO_ACCEPTED_ROWS_IN_BOUNDED_QUERY",
+            "group": "ANNOUNCEMENTS",
+            "source_id": "cnequity-cninfo-announcements"
+          }
+        ],
+        "input_rows": 0,
+        "quarantined_rows": [],
+        "raw_hashes": [
+          "915f3a7abdcaefeb404f5f2ae5349b8a8ebdb53b0c9b3659a12d0813ccb5f191",
+          "e6e68df52d84bbdb3de96fd9e245cbaf05b67f563e709c52a16be5bc588630e0"
+        ],
+        "roll_code_sha256": {
+          "cnequity.py": "013060ac15d87779a7c9467b26cc0d96559f7323631e1e62ea7d20d458695966",
+          "cnequity_process.py": "5f1a8d0ccf99fdb0170e97a54cc7a6ea85328cb8939884196b1ca16b76d7237c",
+          "collection_cleaning.py": "38935886670dd293ae1c60c5eaebdd94922a2b1d619d88f055d56e705e2d955d"
+        },
+        "run_id": "491d1f97-cbee-410a-9093-1bb86bde3175",
+        "source_commit": "c118038ea82b5bb78783c0c17a1d9251b36de71d",
+        "source_id": "cnequity-cninfo-announcements"
+      }
+    }
+  ],
+  "quarantined_rows": 0,
+  "current_day_daily_completion": [
+    {
+      "source_id": "sohu-daily",
+      "trade_date": "2026-10-14",
+      "completion_state": "UNCONFIRMED_CURRENT_DAY",
+      "model_daily_input_allowed": false,
+      "errors": []
+    },
+    {
+      "source_id": "cnequity-tdx-daily",
+      "trade_date": "2026-10-14",
+      "completion_state": "UNCONFIRMED_CURRENT_DAY",
+      "model_daily_input_allowed": false,
+      "errors": []
+    },
+    {
+      "source_id": "cnequity-eastmoney-daily",
+      "trade_date": "2026-10-14",
+      "completion_state": "UNCONFIRMED_CURRENT_DAY",
+      "model_daily_input_allowed": false,
+      "errors": []
+    }
+  ],
+  "previous_difference_count": 85,
+  "current_difference_count": 88,
+  "new_difference_field_types": [],
+  "source_winner": null,
+  "backup_revalidation": {
+    "backup_id": "ad4eb31b-0bed-454e-8be4-2dc95f5903da",
+    "reason": "PROSPECTIVE_COLLECTION",
+    "attachments": 150,
+    "state": "PASS"
+  },
+  "readiness": {
+    "plan_id": "3f71d3f8-ceb0-4747-aaa7-87894edc589a",
+    "started_at": "2026-10-10T00:27:17.363282+00:00",
+    "state": "COLLECTING",
+    "real_recorded_sessions": 2,
+    "real_context_sessions": 29,
+    "batches": 56,
+    "system_usable": false,
+    "capability": "NOT_GRANTED",
+    "minimum_calibration_examples_per_class": 20,
+    "minimum_effective_time_blocks": 30,
+    "requirements": [
+      "CONTIGUOUS_ASOF_FEATURE_LOOKBACK_21",
+      "COMPLETE_STATUS_ACTIONS_AND_RULES",
+      "PREREGISTERED_DEV_CAL_WINDOWS_AND_MATURE_LABELS",
+      "REAL_CALIBRATION_SUPPORT_BOTH_CLASSES_20",
+      "REAL_MODEL_AND_CALIBRATOR_FREEZE",
+      "CONFIRMATORY_AND_FORWARD_VALIDATION",
+      "MODEL_REVIEW_AND_CAPABILITY_GRANT"
+    ],
+    "readiness_basis": "行数只说明采集覆盖；资料、成熟支持、验证和资格全部满足后方可用。"
+  },
+  "notification_required": false,
+  "environment_note": "Two initial read-only launcher calls failed with HRESULT 0x80070020; same reads completed via authorized escalation; collector exit0 and stderr0."
+}
