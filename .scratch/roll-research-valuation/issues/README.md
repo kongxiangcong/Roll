@@ -53,3 +53,5 @@
 12本地资本准备05已保存同原件完整diff与未执行新候选preview，见[证据](../evidence/12/capital-prep05/README.md)。不是新估值成功；原预算2/16及A6/A7/A8未通过不变。
 
 12同原件纠错06已真实运行BLOCKED并定点恢复，见[证据](../evidence/12/correction06/README.md)。当前3/16/纠错1；未追加12章或纠错2，整体仍未完成。
+
+12最终有界实测4/16、纠错2/2，Lulu三BLOCKED/JCC一COMPLETE；P1已修，但完整A2/A6/A7/A8未过。11:37:07+08自然worker无auth健康/0实际周期；额外来源仅本地准备。见[08](../evidence/12/correction08/README.md)和[当前矩阵](../evidence/12/coverage.md)，整体未关闭。
