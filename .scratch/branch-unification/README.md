@@ -62,6 +62,9 @@ real-model or investment-quality acceptance. The user's latest instruction to
 keep model requests offline remains in force; the previous four real requests
 are preserved and no remaining chapter allocation was used.
 
-The integration is local only. The primary worktree is to fast-forward to this
-verified combined history; local main is to fast-forward to remote main. No push,
-PR or deployment is included.
+The integration is local only. The primary worktree has fast-forwarded to the
+verified combined history on `codex/roll-capability-expansion`. Local main has
+fast-forwarded to remote main `aa7b71cc` (0 ahead / 0 behind). The combined code
+commit `b69b25a5` contains every commit of remote main, remote terminal workbench
+and local research/valuation (0 missing commits from each). The primary and
+integration worktrees were clean. No push, PR or deployment is included.
