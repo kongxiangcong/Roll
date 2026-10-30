@@ -1,0 +1,46 @@
+{
+  "api": {
+    "status": "ok",
+    "runtime_role": "API",
+    "environment": "local"
+  },
+  "policy": {
+    "version": "official-first-v1",
+    "default": "OFFICIAL_FIRST",
+    "chains": {
+      "DAILY": [
+        "FUYAO",
+        "EASTMONEY",
+        "BAOSTOCK",
+        "SOHU",
+        "TENCENT"
+      ],
+      "BACKGROUND_DAILY": [
+        "FUYAO",
+        "TENCENT"
+      ],
+      "QUOTE": [
+        "SINA",
+        "TENCENT",
+        "FUYAO"
+      ],
+      "ADJUSTMENTS": [
+        "FUYAO",
+        "EASTMONEY",
+        "BAOSTOCK"
+      ]
+    },
+    "research": [
+      "MIAOXIANG",
+      "FUYAO_REFERENCE",
+      "ISSUER_ORIGINAL_OR_EXISTING_PUBLIC_COLLECTOR"
+    ],
+    "comparison": "OPT_IN_SAME_DATE_ADJUSTMENT_UNIT; INDEPENDENCE_UNPROVEN",
+    "quote_limit": "FUYAO_PER_INSTRUMENT_TIME_UNKNOWN",
+    "cooldown_seconds": 300
+  },
+  "worker_state": "RUNNING",
+  "backlog": 0,
+  "running": 0,
+  "checked_at": "2026-10-29T00:46:41.2408799+08:00"
+}

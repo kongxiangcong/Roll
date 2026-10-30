@@ -1368,6 +1368,11 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
     def data_resolution_replay(replay_id:str):
         return research.market_input_exposed(evidence.get('source_resolution_replays',replay_id),'resolution-replay-query')
 
+    @app.get('/api/data/source-policy')
+    def data_source_policy():
+        from roll.market.source_policy import describe
+        return describe()
+
     @app.get('/api/data/sources')
     def data_sources():
         return REGISTRY+[p for p in prospective.sources.listing() if p['engine']=='CNEQUITY']
@@ -1612,6 +1617,12 @@ def _create_app(directory: Path | None = None, market_transport=None, market_clo
         dict(service=financial,command=IncomeCommand,source_id='akshare-financial-income'),
         dict(service=financial_statements,command=IncomeCommand,source_id='akshare-financial-supplement'),
         dict(service=news,command=NewsCommand,source_id='akshare-news')]
+    if os.environ.get('ROLL_DATA_SOURCE_POLICY')=='OFFICIAL_FIRST':
+        from roll.research.company.supplier_references import SupplierReferences
+        supplier_references=SupplierReferences(app.state.company_research)
+        app.state.company_research.reports.collectors.insert(0,
+            dict(service=supplier_references,command=IncomeCommand,source_id='official-supplier-research'))
+        observation_updates.supplier_references=supplier_references
 
     @app.get('/api/observation-updates/{instrument}')
     def observation_updates_status(instrument:str):return observation_updates.listing(instrument)

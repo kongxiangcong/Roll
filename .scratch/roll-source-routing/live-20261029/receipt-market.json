@@ -1,0 +1,240 @@
+{
+  "policy": {
+    "version": "official-first-v1",
+    "default": "OFFICIAL_FIRST",
+    "chains": {
+      "DAILY": [
+        "FUYAO",
+        "EASTMONEY",
+        "BAOSTOCK",
+        "SOHU",
+        "TENCENT"
+      ],
+      "BACKGROUND_DAILY": [
+        "FUYAO",
+        "TENCENT"
+      ],
+      "QUOTE": [
+        "SINA",
+        "TENCENT",
+        "FUYAO"
+      ],
+      "ADJUSTMENTS": [
+        "FUYAO",
+        "EASTMONEY",
+        "BAOSTOCK"
+      ]
+    },
+    "research": [
+      "MIAOXIANG",
+      "ISSUER_ORIGINAL_OR_EXISTING_PUBLIC_COLLECTOR"
+    ],
+    "comparison": "OPT_IN_SAME_DATE_ADJUSTMENT_UNIT; INDEPENDENCE_UNPROVEN",
+    "quote_limit": "FUYAO_PER_INSTRUMENT_TIME_UNKNOWN",
+    "cooldown_seconds": 300
+  },
+  "account_version": 0,
+  "results": [
+    {
+      "groups": [
+        "DAILY",
+        "QUOTE"
+      ],
+      "run_id": "29e8089b-9d04-497b-bf80-ed74749b4421",
+      "status": "COMPLETE",
+      "evidence_kind": "REAL_ACQUISITION",
+      "sources": [
+        "fuyao-daily",
+        "sina-quote"
+      ],
+      "facts": 17,
+      "latest_daily": "2026-10-28",
+      "calls": 8,
+      "gaps": [],
+      "attempts": [
+        {
+          "provider": "EASTMONEY",
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "request_id": "f7628977-d1c5-44bd-9bf9-a4d8a0396210",
+          "run_id": "16eab8bf-f3e8-4244-bc68-9d60d4f4f527",
+          "status": "FAILED",
+          "gaps": [
+            {
+              "instrument": "SSE:600362",
+              "group": "DAILY",
+              "code": "RemoteProtocolError",
+              "reason": "Server disconnected without sending a response.",
+              "adjustment": "RAW"
+            },
+            {
+              "instrument": "SSE:600362",
+              "group": "DAILY",
+              "code": "RemoteProtocolError",
+              "reason": "Server disconnected without sending a response.",
+              "adjustment": "FORWARD_CURRENT_VERSION"
+            }
+          ],
+          "role": "COMPARISON"
+        },
+        {
+          "provider": "BAOSTOCK",
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "request_id": "c8d96e39-6bbf-44ed-aff2-6bb906923f22",
+          "run_id": "61e87a70-c273-4d45-a9d9-f8a1bb12ae82",
+          "status": "COMPLETE",
+          "gaps": [],
+          "role": "COMPARISON"
+        },
+        {
+          "provider": "TENCENT",
+          "instrument": "SSE:600362",
+          "group": "QUOTE",
+          "request_id": "14dd4e5b-7151-49ad-b972-ea880e7aa064",
+          "run_id": "8af6091d-e88b-4a59-981c-a0c85d208b2f",
+          "status": "COMPLETE",
+          "gaps": [],
+          "role": "COMPARISON"
+        }
+      ],
+      "comparisons": [
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-19",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-20",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-21",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-22",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-23",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-26",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-27",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "trade_date": "2026-10-28",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "c8f23c1632dfc5ba0b8a9cf7943badfcb6e25b7abd9b5ded77bde53798a85ef1",
+            "7627cd40ffb9d54e2ce7945b9f9409e6a4db1b037a876126db660f6d61301569"
+          ],
+          "result": "MATCHED_AVAILABLE_PRICES",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        },
+        {
+          "instrument": "SSE:600362",
+          "group": "QUOTE",
+          "trade_date": "2026-10-28",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "ddc7ec7b3986e1269f2ab23680feda555dc54bdf0c86fca95e00730f2945f683",
+            "2cd95f6a00e755edf2886e03c04f6bbfd3be30a23007423b8c3abb773f792b96"
+          ],
+          "result": "NOT_COMPARABLE",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        }
+      ],
+      "references": [],
+      "replay_network_calls": 0
+    }
+  ],
+  "scope": "REAL_SINGLE_STOCK_BOUNDED_CHECK; NOT_FULL_MARKET_PIT_OR_FINANCIAL_QUALIFICATION",
+  "code_hashes": {
+    "evidence.py": "f77d1d702471f15cba92a70b312ebcedc7e150bb4e69e9cfba017740c8dffede",
+    "source_policy.py": "d96933d521b8b958588466e76a6f87c10ea182414bf4578736c149843eaf1b76",
+    "research_context.py": "d3baa281ec54485e5250c65338c84738fe6d1828655fe95a1aca7fd54ba43409",
+    "miaoxiang.py": "34e51da666cf5144700345f35591f06f0262cf24bb5929eae7e68e7ca8572099"
+  }
+}

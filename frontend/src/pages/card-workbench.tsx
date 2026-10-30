@@ -52,7 +52,7 @@ export function CardWorkbench({account,onRefresh}:{account:Account;onRefresh:()=
    const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
    for(const symbols of groups){
     try{
-     const req=await request<{request_id:string}>('/data/requests',{instruments:symbols,groups:['QUOTE'],purpose:'OBSERVATION',start_date:day,end_date:day,quote_source:'SINA',max_calls:Math.min(30,symbols.length*2),timeout_seconds:18,max_decoded_bytes:1048576,max_total_decoded_bytes:2097152});
+     const req=await request<{request_id:string}>('/data/requests',{instruments:symbols,groups:['QUOTE'],purpose:'OBSERVATION',start_date:day,end_date:day,quote_source:'AUTO',max_calls:Math.min(30,symbols.length*2),timeout_seconds:18,max_decoded_bytes:1048576,max_total_decoded_bytes:2097152});
      const result=await request<{status:string;gaps:{code:string}[]}>(`/data/requests/${req.request_id}/retrieve`,{});
      if(result.status!=='COMPLETE'||result.gaps?.length)partial=true;
     }catch(e){partial=true;notes.push(`${symbols.join('、')} 报价未更新：${String(e)}`)}

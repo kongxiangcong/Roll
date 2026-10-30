@@ -1,0 +1,153 @@
+{
+  "policy": {
+    "version": "official-first-v1",
+    "default": "OFFICIAL_FIRST",
+    "chains": {
+      "DAILY": [
+        "FUYAO",
+        "EASTMONEY",
+        "BAOSTOCK",
+        "SOHU",
+        "TENCENT"
+      ],
+      "BACKGROUND_DAILY": [
+        "FUYAO",
+        "TENCENT"
+      ],
+      "QUOTE": [
+        "SINA",
+        "TENCENT",
+        "FUYAO"
+      ],
+      "ADJUSTMENTS": [
+        "FUYAO",
+        "EASTMONEY",
+        "BAOSTOCK"
+      ]
+    },
+    "research": [
+      "MIAOXIANG",
+      "ISSUER_ORIGINAL_OR_EXISTING_PUBLIC_COLLECTOR"
+    ],
+    "comparison": "OPT_IN_SAME_DATE_ADJUSTMENT_UNIT; INDEPENDENCE_UNPROVEN",
+    "quote_limit": "FUYAO_PER_INSTRUMENT_TIME_UNKNOWN",
+    "cooldown_seconds": 300
+  },
+  "account_version": 0,
+  "results": [
+    {
+      "groups": [
+        "DAILY",
+        "QUOTE"
+      ],
+      "run_id": "d48b8074-3f35-46cb-a15f-72488cfe501b",
+      "status": "COMPLETE",
+      "evidence_kind": "REAL_ACQUISITION",
+      "sources": [
+        "fuyao-daily",
+        "sina-quote"
+      ],
+      "facts": 17,
+      "latest_daily": "2026-10-28",
+      "calls": 6,
+      "gaps": [],
+      "attempts": [
+        {
+          "provider": "EASTMONEY",
+          "instrument": "SSE:600362",
+          "group": "DAILY",
+          "request_id": "5c518a57-65a1-46bd-b915-46656dd40407",
+          "run_id": "f9dbf184-9210-4359-bc9c-f2bb49ccad74",
+          "status": "FAILED",
+          "gaps": [
+            {
+              "instrument": "SSE:600362",
+              "group": "DAILY",
+              "code": "RemoteProtocolError",
+              "reason": "Server disconnected without sending a response.",
+              "adjustment": "RAW"
+            },
+            {
+              "instrument": "SSE:600362",
+              "group": "DAILY",
+              "code": "RemoteProtocolError",
+              "reason": "Server disconnected without sending a response.",
+              "adjustment": "FORWARD_CURRENT_VERSION"
+            }
+          ],
+          "role": "COMPARISON"
+        },
+        {
+          "provider": "TENCENT",
+          "instrument": "SSE:600362",
+          "group": "QUOTE",
+          "request_id": "18a43227-e664-44ef-958e-cf74fdfe949e",
+          "run_id": "2fab35ed-c01b-41d7-b00f-30f166f2347d",
+          "status": "COMPLETE",
+          "gaps": [],
+          "role": "COMPARISON"
+        }
+      ],
+      "comparisons": [
+        {
+          "instrument": "SSE:600362",
+          "group": "QUOTE",
+          "trade_date": "2026-10-28",
+          "adjustment": "RAW",
+          "basis_raw_hashes": [
+            "ddc7ec7b3986e1269f2ab23680feda555dc54bdf0c86fca95e00730f2945f683",
+            "2cd95f6a00e755edf2886e03c04f6bbfd3be30a23007423b8c3abb773f792b96"
+          ],
+          "result": "NOT_COMPARABLE",
+          "differing_fields": [],
+          "independence": "UNPROVEN",
+          "meaning": "Reference comparison only; matching prices do not establish PIT or independent production"
+        }
+      ],
+      "references": [],
+      "replay_network_calls": 0
+    },
+    {
+      "groups": [
+        "PERFORMANCE"
+      ],
+      "run_id": "edf611c4-075a-4d23-8da7-23af82ebee04",
+      "status": "PARTIAL",
+      "evidence_kind": "REAL_ACQUISITION",
+      "sources": [
+        "eastmoney-performance"
+      ],
+      "facts": 2,
+      "latest_daily": null,
+      "calls": 6,
+      "gaps": [
+        {
+          "instrument": "SSE:600362",
+          "group": "PERFORMANCE",
+          "code": "RemoteProtocolError",
+          "reason": "Server disconnected without sending a response.",
+          "art_code": "AN202608251828417518"
+        }
+      ],
+      "attempts": [],
+      "comparisons": [],
+      "references": [
+        {
+          "admitted_as_fact": false,
+          "historical_pit": false,
+          "instrument": "SSE:600362",
+          "provider": "MIAOXIANG",
+          "raw_hashes": [
+            "eff2d7a33d7cdcd6007ccf8de6d431d75a5ef7827c658543bbf41b639db879b9",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "0de41f13edceb1d90476cbbdf5cbf61bdd597b139d890b99ac3fed4f885d0ff8"
+          ],
+          "received_at": "2026-10-28T16:26:56.731464+00:00",
+          "status": "ACQUIRED_REFERENCE"
+        }
+      ],
+      "replay_network_calls": 0
+    }
+  ],
+  "scope": "REAL_SINGLE_STOCK_BOUNDED_CHECK; NOT_FULL_MARKET_PIT_OR_FINANCIAL_QUALIFICATION"
+}

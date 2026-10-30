@@ -9,6 +9,9 @@ from pypdf import PdfReader
 from roll.market.rules import SHANGHAI
 
 REGISTRY=[
+    {'id':'miaoxiang-research','groups':['RESEARCH_CONTEXT'],'host':'mxapi.eastmoney.com',
+     'depth':'Bounded supplier MCP research reference; not admitted issuer/market facts',
+     'unit_scope':'Provider-declared fields only; original disclosure and per-field verification required'},
     {'id':'eastmoney-daily','groups':['DAILY'],'host':'push2his.eastmoney.com','depth':'explicit bounded day interval; fqt=0/1 separate versions','unit_scope':'HAND conversion currently evidenced only confirmed SSE MAIN ordinary STOCK; remaining scopes UNKNOWN'},
     {'id':'sohu-daily','groups':['DAILY'],'host':'q.stock.sohu.com','depth':'explicit single bounded day query; RAW only; actual rows recorded, no total/completeness proof','unit_scope':'Supplier historical table: HAND, amount TEN_THOUSAND_CNY; shares conversion confirmed SSE MAIN ordinary STOCK only; no status/calendar/actions/PIT proof','documentation':'https://q.stock.sohu.com/cn/600362/lshq.shtml'},
     {'id':'tencent-quote','groups':['QUOTE','STATUS'],'host':'qt.gtimg.cn','depth':'last reported quote; upstream timestamp can be stale','unit_scope':'reported volume retained; packed amount field35 yuan; no volume conversion outside evidenced scope'},
@@ -23,6 +26,12 @@ for entry in REGISTRY:
     entry.update(adapter_version='sohu-raw-v1' if entry['id']=='sohu-daily' else '07-market-v1',authentication='PUBLIC_NO_CREDENTIAL',
         permission_basis='Unauthenticated public request actually tested; no commercial redistribution license asserted',
         historical_revision_proof='NOT_AVAILABLE',retries=0,source_selection='PREDECLARED_PRIMARY_NOT_AUTOMATIC_FALLBACK')
+    if entry['id'] in {'eastmoney-daily','sohu-daily','tencent-quote','tencent-index-daily','tencent-daily','eastmoney-actions'}:
+        entry['source_selection']='AUTO_WHEN_REQUESTED_OR_EXPLICIT_PRIMARY'
+    if entry['id']=='miaoxiang-research':
+        entry.update(authentication='HOST_EM_API_KEY',adapter_version='mx-mcp-bounded-v1',
+            permission_basis='User-authorized existing credential; provider research reference, no redistribution license asserted',
+            source_selection='AUTO_RESEARCH_REFERENCE_OR_EXPLICIT')
 
 SINA_UNIT_BASIS={'url':'https://n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7',
     'sha256':'f41849458131169afb92f0ea1b266841052419867f9ea3b363e0fafaa4ebc3ee',
@@ -33,7 +42,7 @@ REGISTRY.append({'id':'sina-quote','groups':['QUOTE','STATUS'],'host':'hq.sinajs
     'authentication':'PUBLIC_NO_CREDENTIAL','permission_basis':'Public supplier page/linked parser and actual quote GET; no commercial redistribution license asserted',
     'depth':'last reported quote, Referer finance.sina.com.cn; no historic quote/PIT proof',
     'unit_scope':SINA_UNIT_BASIS,'historical_revision_proof':'NOT_AVAILABLE','retries':0,
-    'source_selection':'EXPLICIT_PRIMARY_OR_BOUNDED_RESOLUTION_ALTERNATE'})
+    'source_selection':'AUTO_PRIMARY_OR_ALTERNATE_OR_EXPLICIT'})
 
 
 for identifier,groups in [('fuyao-daily',['DAILY']),('fuyao-index-daily',['DAILY']),('fuyao-actions',['ADJUSTMENTS']),('fuyao-quote',['QUOTE','STATUS'])]:
@@ -42,7 +51,7 @@ for identifier,groups in [('fuyao-daily',['DAILY']),('fuyao-index-daily',['DAILY
         'depth':'Explicit bounded single instrument/window; history may be current revision; no total/completeness certification',
         'unit_scope':'Official public prices: volume shares, turnover CNY; corporate actions pretax cash per share/date precision',
         'historical_revision_proof':'NOT_AVAILABLE','historical_status_proof':'NOT_AVAILABLE','retries':0,
-        'source_selection':'EXPLICIT_PRIMARY','documentation':'https://fuyao.aicubes.cn/llms-full.txt'})
+        'source_selection':'AUTO_OFFICIAL_FIRST_OR_EXPLICIT','documentation':'https://fuyao.aicubes.cn/llms-full.txt'})
 
 
 def source_json(content):
@@ -256,5 +265,5 @@ for identifier,groups in [('baostock-daily',['DAILY','STATUS']),('baostock-calen
         'authentication':'EXPLICIT_API_KEY_VIP_OR_PUBLIC_ANONYMOUS_NO_FALLBACK','allowed_hosts':['vip-api.baostock.com:10030','public-api.baostock.com:10030'],'permission_basis':'User-provided key; actual acceptance recorded separately',
         'depth':'Explicit single stock/date range or operate year; bounded socket calls including login/pagination; zero retries',
         'unit_scope':'RAW adjustflag3; shares/CNY; tradestatus/isST only; event date precision; no full special-status proof',
-        'historical_revision_proof':'NOT_AVAILABLE','retries':0,'source_selection':'EXPLICIT_PRIMARY',
+        'historical_revision_proof':'NOT_AVAILABLE','retries':0,'source_selection':'AUTO_ALTERNATE_OR_EXPLICIT_PRIMARY',
         'documentation':'https://www.baostock.com/mainContent?file=stockKData.md'})

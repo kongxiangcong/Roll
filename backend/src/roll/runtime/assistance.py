@@ -155,7 +155,7 @@ class Assistance:
                 'account_context': 'UNKNOWN', 'formal_authority': False}
             root = Path(__file__).parents[1]
             run['code_hashes'] = {name: hashlib.sha256((root/name).read_bytes()).hexdigest() for name in
-                ['runtime/assistance.py', 'research/exploratory.py', 'agents/assistance_runtime.py', 'agents/codex_process.py', 'agents/codex_worker.py', 'market/baostock.py', 'market/baostock_process.py']}
+                ['runtime/assistance.py', 'research/exploratory.py', 'agents/assistance_runtime.py', 'agents/codex_process.py', 'agents/codex_worker.py', 'market/baostock.py', 'market/baostock_process.py','market/assistance_sources.py','market/fuyao.py','market/source_policy.py']}
             db.execute('INSERT INTO assistance_runs VALUES(?,?)', (run['run_id'], encode(run)))
             db.commit()
             cancel = threading.Event()
@@ -170,10 +170,14 @@ class Assistance:
         return ('sh.' if instrument.startswith('SSE:') else 'sz.') + instrument.split(':')[1]
 
     def source(self, run, symbol, cancel):
+        from roll.market.assistance_sources import source
+        return source(self,run,symbol,cancel)
+
+    def _baostock_source(self, run, symbol, cancel, *, deadline=None, max_calls=5, max_bytes=2*1024*1024):
         stock = symbol == self.stock_symbol(run)
         fields = FIELDS if stock else 'date,code,open,high,low,close,preclose,volume,amount,pctChg'
         wire, result = acquire({'auth_mode': 'PUBLIC', 'group': 'DAILY', 'symbol': symbol, 'fields': fields,
-            'start_date': run['start_date'], 'end_date': run['as_of']}, time.monotonic()+30, cancel, 2*1024*1024, 5)
+            'start_date': run['start_date'], 'end_date': run['as_of']}, deadline or time.monotonic()+30, cancel, max_bytes, max_calls)
         mapped = rows(result)
         if not mapped or any(r['code'] != symbol or not run['start_date'] <= r['date'] <= run['as_of'] for r in mapped):
             raise ValueError('SOURCE_IDENTITY_OR_DATE_RANGE_INVALID')

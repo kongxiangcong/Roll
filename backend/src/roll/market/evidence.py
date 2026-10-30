@@ -20,7 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from roll.accounts.ledger import encode, now
 from roll.market.directory import ScopeCommand
 from roll.market.rules import SHANGHAI
-from roll.market import source_facts, fuyao, baostock, sohu
+from roll.market import source_facts, fuyao, baostock, sohu, source_policy
 
 ADAPTER_VERSION='08-market-v1'
 GROUPS=['DAILY','QUOTE','ADJUSTMENTS','ANNOUNCEMENTS','PERFORMANCE','MAJOR_EVENTS','STATUS','CALENDAR']
@@ -39,9 +39,11 @@ class DataRequest(BaseModel):
     max_total_decoded_bytes:int=Field(default=30*16*1024*1024,ge=1,le=30*16*1024*1024)
     timeout_seconds:int=Field(default=40,ge=1,le=60)
     max_calls:int=Field(default=20,ge=1,le=30)
-    daily_source:Literal['EASTMONEY','TENCENT','FUYAO','BAOSTOCK','SOHU']|None=None
-    quote_source:Literal['TENCENT','SINA','FUYAO']='TENCENT'
-    adjustment_source:Literal['EASTMONEY','FUYAO','BAOSTOCK']='EASTMONEY'
+    daily_source:Literal['AUTO','EASTMONEY','TENCENT','FUYAO','BAOSTOCK','SOHU']|None=None
+    quote_source:Literal['AUTO','TENCENT','SINA','FUYAO']='TENCENT'
+    adjustment_source:Literal['AUTO','EASTMONEY','FUYAO','BAOSTOCK']='EASTMONEY'
+    research_source:Literal['AUTO','MIAOXIANG','ORIGINAL']='ORIGINAL'
+    compare_sources:bool=False
     status_source:Literal['QUOTE','BAOSTOCK']='QUOTE'
     calendar_source:Literal['BAOSTOCK']='BAOSTOCK'
     baostock_auth_mode:Literal['API_KEY','PUBLIC']='API_KEY'
@@ -122,6 +124,13 @@ class EvidenceStore:
         return json.loads(row[0])
 
     def request(self,command:DataRequest):
+        routing=source_policy.resolve(command)
+        research_source=command.research_source
+        research_fallback=research_source=='AUTO' or (os.environ.get('ROLL_DATA_SOURCE_POLICY')=='OFFICIAL_FIRST' and 'research_source' not in command.model_fields_set)
+        if research_fallback:
+            research_source='MIAOXIANG'
+        if routing:
+            command=command.model_copy(update={source_policy.FIELDS[group]:chain[0] for group,chain in routing.items()})
         if command.start_date>command.end_date:
             raise HTTPException(422,'开始日期不得晚于结束日期')
         cutoff=command.cutoff or datetime.fromisoformat(now())
@@ -146,6 +155,7 @@ class EvidenceStore:
             {'exchange','code','board','instrument_type','name','revision','effective_at','confirmed_at'}}
             for m in listing['members'] if m['instrument'] in command.instruments}
         result={**command.model_dump(mode='json'),'daily_source':source,'request_id':str(uuid4()),'cutoff':cutoff.isoformat(),
+            'source_routing':routing,'source_policy_version':source_policy.VERSION,'research_source':research_source,'research_fallback':research_fallback,
             'cutoff_basis':'EVENT_OR_SOURCE_DISCLOSURE_BOUND_NOT_PAST_KNOWLEDGE_PROOF',
             'scope':scope,'identity_context':identities,'created_at':now(),'technical_limits':{'max_calls':command.max_calls,
                 'timeout_seconds':command.timeout_seconds,'max_response_bytes':16*1024*1024,'max_decoded_bytes':command.max_decoded_bytes,'max_total_decoded_bytes':command.max_total_decoded_bytes,'retries':0}}
@@ -194,7 +204,7 @@ class EvidenceStore:
                 **values,'volume_reported':values['volume_hands'],'source_volume_unit':'HAND' if unit_verified else 'UNKNOWN',
                 'volume_shares':shares,'volume_unit':'SHARE' if unit_verified else 'UNKNOWN',
                 'conversion_basis':'已确认SSE主板普通股票；成交量手数与成交额/OHLC核对；1手100股' if unit_verified else None,
-                'adjustment':adjustment,'adjustment_version':archive['sha256'] if adjustment!='RAW' else None,
+                'adjustment':adjustment,'adjustment_version':archive['sha256'] if adjustment!='RAW' else None,'currency':'CNY',
                 'completion_state':completion,'quality':'INVALID' if errors else 'BASIC_CHECKED_SINGLE_SOURCE',
                 'errors':errors,'limitations':limitations,'model_daily_input_allowed':not errors and not limitations and completion.startswith('COMPLETE'),
                 'volume_state':'MISSING' if values['volume_hands'] is None else 'ZERO_REPORTED' if Decimal(values['volume_hands'])==0 else 'REPORTED',
@@ -220,7 +230,9 @@ class EvidenceStore:
             'config_fingerprint':hashlib.sha256(encode({'limits':request['technical_limits'],'daily_source':request.get('daily_source','EASTMONEY'),
                 'quote_source':request.get('quote_source','TENCENT'),'adjustment_source':request.get('adjustment_source','EASTMONEY'),
                 'baostock_auth_mode':request.get('baostock_auth_mode','API_KEY'),'adapter_version':ADAPTER_VERSION,'runtime_versions':self.runtime_versions,
-                'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_facts.__file__,fuyao.__file__,baostock.__file__,sohu.__file__,Path(baostock.__file__).with_name('baostock_process.py')]]}).encode()).hexdigest(),
+                'source_routing':request.get('source_routing',{}),'compare_sources':request.get('compare_sources',False),
+                'research_source':request.get('research_source','ORIGINAL'),'research_fallback':request.get('research_fallback',False),
+                'adapter_code_hashes':[hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in [__file__,source_policy.__file__,Path(__file__).with_name('miaoxiang.py'),Path(__file__).with_name('research_context.py'),source_facts.__file__,fuyao.__file__,baostock.__file__,sohu.__file__,Path(baostock.__file__).with_name('baostock_process.py')]]}).encode()).hexdigest(),
             'evidence_kind':self.evidence_kind,'started_at':now(),'status':'RUNNING','tools':[],'gaps':[]}
         if acquisition_limits:
             run['acquisition_limits']={k:acquisition_limits[k] for k in ['max_response_bytes','max_total_bytes','max_decoded_bytes','max_total_decoded_bytes'] if k in acquisition_limits}
@@ -234,6 +246,10 @@ class EvidenceStore:
         max_decoded_bytes=min(request['technical_limits'].get('max_decoded_bytes',16*1024*1024),(acquisition_limits or {}).get('max_decoded_bytes',max_response_bytes))
         max_total_decoded_bytes=min(request['technical_limits'].get('max_total_decoded_bytes',30*16*1024*1024),(acquisition_limits or {}).get('max_total_decoded_bytes',max_total_bytes))
         total_bytes=0;total_decoded_bytes=0
+        research_context=[]
+        if request.get('research_source')=='MIAOXIANG' and set(request['groups'])&{'PERFORMANCE','ANNOUNCEMENTS','MAJOR_EVENTS'}:
+            from roll.market.research_context import collect
+            research_context,total_bytes=collect(self,request,run,archives,deadline,cancel_event,min(max_total_bytes,max_response_bytes))
         with httpx.Client(transport=self.transport,follow_redirects=False) as client:
             def fetch(source_id,instrument,group,url,params=None,headers=None,**context):
                 nonlocal total_bytes
@@ -243,13 +259,15 @@ class EvidenceStore:
                 if sum(t.get('network_calls',1) for t in run['tools'])>=request['max_calls'] or time.monotonic()>=deadline or (cancel_event and cancel_event.is_set()) or total_bytes>=max_total_bytes:
                     run['gaps'].append({'instrument':instrument,'group':group,'code':'TECHNICAL_LIMIT',**context});return None
                 tool={'source_id':source_id,'instrument':instrument,'group':group,'started_at':now(),
-                    'method':'GET','source_url':str(httpx.Request('GET',url,params=params).url),**context}
+                    'method':'GET','network_calls':0,'source_url':str(httpx.Request('GET',url,params=params).url),**context}
                 run['tools'].append(tool)
                 try:
                     if source_id.startswith('fuyao-'):
+                        if source_policy.health(self,'FUYAO') or source_policy.health(self,source_id):raise ValueError('FUYAO_COOLDOWN_ACTIVE')
                         credential=os.environ.get('FUYAO_API_KEY')
                         if not credential:raise ValueError('FUYAO_CREDENTIAL_NOT_CONFIGURED')
                         headers={'X-api-key':credential}
+                    tool['network_calls']=1
                     with client.stream('GET',url,params=params,headers=headers,timeout=min(10,max(.1,deadline-time.monotonic()))) as response:
                         content=bytearray()
                         for chunk in response.iter_bytes(4096):
@@ -267,6 +285,16 @@ class EvidenceStore:
                         archive=self.archive(bytes(content),'RAW_RESPONSE',source_id=source_id,source_url=str(response.url),
                             received_at=now(),http_status=response.status_code,evidence_kind=self.evidence_kind)
                     archives.append(archive);tool.update(raw_hash=archive['sha256'],http_status=response.status_code)
+                    if source_id.startswith('fuyao-'):
+                        if response.status_code in {401,403,429}:
+                            source_policy.health(self,'FUYAO','HTTP_'+str(response.status_code))
+                        if response.status_code==200:
+                            try:
+                                business=source_facts.source_json(bytes(content)).get('code')
+                            except (ValueError,UnicodeError):business=None
+                            if type(business) is int and business!=0:
+                                if business in {2001,2003,4001}:source_policy.health(self,source_id if business==2003 else 'FUYAO','BUSINESS_'+str(business))
+                                raise ValueError('FUYAO_BUSINESS_ERROR_'+str(business))
                     response.raise_for_status();tool.update(status='ARCHIVED',finished_at=now(),received_bytes=len(content))
                     if collection_source_policy:collection_source_policy.outcome(source_id,True,'HTTP_ACQUIRED',run['run_id'])
                     return archive,bytes(content)
@@ -461,6 +489,12 @@ class EvidenceStore:
                                 if document:
                                     fact=parsed(group,instrument,lambda:source_facts.original(detail[1],detail[0],instrument,group,row,document[0],document[1]))
                                     if fact:facts.append(fact)
+        if request.get('source_routing'):
+            total_bytes,total_decoded_bytes=source_policy.complete(self,request,run,facts,archives,coverage,
+                deadline=deadline,cancel_event=cancel_event,total_bytes=total_bytes,total_decoded_bytes=total_decoded_bytes,
+                limits={'max_response_bytes':max_response_bytes,'max_total_bytes':max_total_bytes,
+                    'max_decoded_bytes':max_decoded_bytes,'max_total_decoded_bytes':max_total_decoded_bytes},
+                collection_source_policy=collection_source_policy)
         for instrument in request['instruments']:
             for group in request['groups']:
                 rows=[f for f in facts if f['instrument']==instrument and f['group']==group]
@@ -539,6 +573,8 @@ class EvidenceStore:
         buffer=BytesIO();pq.write_table(table,buffer)
         parquet=self.archive(buffer.getvalue(),'NORMALIZED_PARQUET','parquet',adapter_version=ADAPTER_VERSION)
         snapshot={'snapshot_id':str(uuid4()),'run_id':run['run_id'],'request_id':request_id,'facts':facts,
+            'source_routing':request.get('source_routing',{}),'source_attempts':run.get('source_attempts',[]),
+            'source_comparisons':run.get('source_comparisons',[]),'research_context':research_context,
             'archives':archives,'parquet':parquet,'coverage':coverage,'observations':observations,'gaps':run['gaps'],
             'requested_instruments':request['instruments'],'requested_groups':request['groups'],
             'created_at':now(),'requested_cutoff':request['cutoff'],'namespace':'HISTORICAL' if request['purpose']=='RESEARCH' else 'ACTUAL',

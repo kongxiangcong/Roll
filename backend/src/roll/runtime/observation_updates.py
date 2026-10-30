@@ -411,6 +411,8 @@ class ObservationUpdates:
                 raise HTTPException(409, 'COMPANY_IDENTITY_'+identity['status'])
             company_id = identity['company']['company_id']
             if job['command']['refresh_sources']:
+                if getattr(self,'supplier_references',None):
+                    await self.refresh(self.supplier_references,job,'official-supplier-research',receipts,errors)
                 if instrument == 'SSE:600362':
                     for service in (self.financial, self.supplement, self.news):
                         await self.refresh(service, job, 'akshare-news-em' if service is self.news else 'akshare-financial-em', receipts, errors)
@@ -458,7 +460,7 @@ class ObservationUpdates:
                 request = self.reviews.evidence.request(DataRequest(
                     instruments=[instrument], groups=['DAILY', 'QUOTE'], purpose='OBSERVATION',
                     start_date=day-timedelta(days=90), end_date=day, cutoff=cutoff,
-                    daily_source='SOHU', quote_source='SINA', max_calls=2, timeout_seconds=18,
+                    daily_source='AUTO', quote_source='AUTO', max_calls=6, timeout_seconds=18,
                     max_decoded_bytes=1048576, max_total_decoded_bytes=2097152))
                 cancelled = threading.Event()
                 try:
@@ -467,7 +469,7 @@ class ObservationUpdates:
                         acquisition_limits={'max_response_bytes':1048576, 'max_total_bytes':2097152})
                 finally:
                     cancelled.set()
-                receipts.append({'source': 'SOHU_DAILY_SINA_QUOTE', 'run_id': run['run_id'], 'status': run['status']})
+                receipts.append({'source': 'AUTO_MARKET_ROUTING', 'run_id': run['run_id'], 'status': run['status']})
                 errors.extend(str(gap.get('code', 'SOURCE_GAP')) for gap in run['gaps'])
             else:
                 receipts.append({'source': 'SOHU_DAILY_SINA_QUOTE', 'refresh': 'NOT_REQUESTED_SAVED_FACTS_ONLY'})
