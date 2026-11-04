@@ -1,0 +1,21 @@
+import {useEffect,useState} from 'react';
+import {useChartSize} from './chart-size';
+export type PriceRow={date:string;open?:string;high?:string;low?:string;close:string;volume?:string};
+const num=(n:number)=>new Intl.NumberFormat('zh-CN',{maximumFractionDigits:2}).format(n);
+export function PriceChart({rows,instrument}:{rows:PriceRow[];instrument:string}){
+ const [index,setIndex]=useState<number|null>(null);
+ useEffect(()=>setIndex(null),[instrument,rows]);
+ const valid=rows.filter(r=>['open','high','low','close'].every(k=>r[k as keyof PriceRow]!=null&&String(r[k as keyof PriceRow]).trim()!==''&&Number.isFinite(Number(r[k as keyof PriceRow]))&&Number(r[k as keyof PriceRow])>0)&&Number(r.high)>=Math.max(Number(r.open),Number(r.close))&&Number(r.low)<=Math.min(Number(r.open),Number(r.close)));
+ const enabled=valid.length===rows.length&&valid.length>=2;
+ const {ref,width,height}=useChartSize(enabled,{width:960,height:400});
+ const plotWidth=Math.max(60,width-86),plotHeight=Math.max(40,height-110),volumeBottom=height-28;
+ if(valid.length!==rows.length||valid.length<2)return <div className="cw-empty" role="status">{rows.length?'OHLC 数据不完整，暂无法显示日K线。':'暂无日线，开始研究后查看。'}</div>;
+ const lo=Math.min(...valid.map(r=>Number(r.low))),hi=Math.max(...valid.map(r=>Number(r.high))),pad=(hi-lo)*.08||1,min=lo-pad,max=hi+pad;
+ const x=(i:number)=>12+(i+.5)*plotWidth/valid.length,y=(v:number)=>12+(max-v)/(max-min)*plotHeight;
+ const selected=index==null?valid.length-1:Math.min(index,valid.length-1),r=valid[selected],change=Number(r.close)-Number(r.open),volumeMax=Math.max(0,...valid.map(r=>Number(r.volume)).filter(v=>Number.isFinite(v)&&v>=0));
+ return <div className="cw-price-chart"><div className="cw-chart-readout" aria-live="polite">{r.date} · 开 {num(Number(r.open))}　高 {num(Number(r.high))}　低 {num(Number(r.low))}　收 {num(Number(r.close))} <span className={change===0?'cw-flat':change>0?'cw-up':'cw-down'}>{change===0?'持平 ':change>0?'上涨 +':'下跌 '}{num(change)}（较开盘）</span></div><svg ref={ref} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${instrument} 已保存日K线与成交量，左右方向键逐日查看`} tabIndex={0} onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();setIndex(Math.max(0,Math.min(valid.length-1,selected+(e.key==='ArrowLeft'?-1:1))))}else if(e.key==='Home'){e.preventDefault();setIndex(0)}else if(e.key==='End'){e.preventDefault();setIndex(valid.length-1)}}} onPointerMove={e=>{const rect=e.currentTarget.getBoundingClientRect();setIndex(Math.max(0,Math.min(valid.length-1,Math.floor((e.clientX-rect.left-12)/plotWidth*valid.length))))}} onPointerLeave={()=>setIndex(null)}>
+ {[0,.25,.5,.75,1].map(t=><g key={t}><line x1="12" x2={12+plotWidth} y1={12+t*plotHeight} y2={12+t*plotHeight} className="cw-chart-axis"/><text x={20+plotWidth} y={16+t*plotHeight}>{num(max-t*(max-min))}</text></g>)}
+ {valid.map((p,i)=>{const o=Number(p.open),c=Number(p.close),w=Math.max(1,Math.min(12,plotWidth/valid.length*.65));return <g key={p.date+i} className={c===o?'cw-flat':c>o?'cw-up':'cw-down'}><line x1={x(i)} x2={x(i)} y1={y(Number(p.high))} y2={y(Number(p.low))} stroke="currentColor"/><rect x={x(i)-w/2} y={y(Math.max(o,c))} width={w} height={Math.max(1,Math.abs(y(o)-y(c)))} fill="currentColor"/>{p.volume!=null&&Number.isFinite(Number(p.volume))&&Number(p.volume)>=0&&volumeMax>0&&<rect opacity=".55" x={x(i)-w/2} width={w} y={volumeBottom-Number(p.volume)/volumeMax*36} height={Number(p.volume)/volumeMax*36} fill="currentColor"/>}</g>})}
+ {[5,20].map(period=><polyline key={period} className={'cw-ma-'+period} fill="none" strokeWidth="1.5" vectorEffect="non-scaling-stroke" points={valid.flatMap((_,i)=>i+1<period?[]:[`${x(i)},${y(valid.slice(i-period+1,i+1).reduce((sum,p)=>sum+Number(p.close),0)/period)}`]).join(' ')}/>)}
+ <line x1={x(selected)} x2={x(selected)} y1="12" y2={volumeBottom} className="cw-crosshair"/><line x1="12" x2={12+plotWidth} y1={y(Number(r.close))} y2={y(Number(r.close))} className="cw-crosshair"/><text x="12" y={height-5}>{valid[0].date}</text><text x={Math.max(12,plotWidth-66)} y={height-5}>{valid.at(-1)!.date}</text><text x="12" y={volumeBottom-40}>{volumeMax?'成交量 / 股':'成交量暂缺'}</text></svg><p className="cw-small">MA5 / MA20 · 日K（红涨绿跌，较开盘）</p></div>
+}

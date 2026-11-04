@@ -12,7 +12,7 @@ function display(value:unknown,field:string){
   return String(value);
 }
 
-export function SyncCash({account,onDone}:{account:Account;onDone:()=>void}){
+export function SyncCash({account,onDone,onConfirmed}:{account:Account;onDone:()=>void;onConfirmed?:()=>void}){
   const [kind,setKind]=useState('CASH_IN'),[record,setRecord]=useState<string>(()=>crypto.randomUUID()),[amount,setAmount]=useState(''),[target,setTarget]=useState('');
   const [security,setSecurity]=useState(''),[quantity,setQuantity]=useState(''),[itemType,setItemType]=useState('DIVIDEND'),[available,setAvailable]=useState('');
   const [rightsFee,setRightsFee]=useState('');
@@ -31,7 +31,8 @@ export function SyncCash({account,onDone}:{account:Account;onDone:()=>void}){
       :{...common,instrument:optional(security),amount:optional(amount),broker_available_after:optional(available)};
     const value=await request<Draft>('/account/drafts',{kind,expected_account_version:account.version,payload});const k=crypto.randomUUID();setDraft(value);setKey(k);sessionStorage.setItem('roll.pending-CASH_EVENT',JSON.stringify({draft_id:value.draft_id,key:k}));
   }catch(e){setError(String(e));}finally{setBusy(false);}}
-  async function confirm(){setBusy(true);setError('');try{setReceipt(await request<Receipt>('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key}));sessionStorage.removeItem('roll.pending-CASH_EVENT');}catch(e){setError(String(e));}finally{setBusy(false);}}
+  function confirmed(receipt:Receipt){setReceipt(receipt);onConfirmed?.();}
+  async function confirm(){setBusy(true);setError('');try{confirmed(await request<Receipt>('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key}));sessionStorage.removeItem('roll.pending-CASH_EVENT');}catch(e){setError(String(e));}finally{setBusy(false);}}
   async function saveHint(){setError('');try{const saved=await request<{learned_at:string}>('/account/equity-hints',{source:hintSource,declared_at:optional(declared),instrument:optional(security),content});setHintStatus(`待核材料已保存，获知于 ${saved.learned_at}；实际现金与持仓未变化。`);}catch(e){setError(String(e));}}
   if(receipt)return <section><h2>已确认，回执已保存</h2><p>账户版本 {receipt.account_version} · 回执 {receipt.receipt_id}</p><button onClick={async()=>{try{setReceipt(await request<Receipt>(`/account/receipts/${receipt.receipt_id}`));setQueried(true);}catch(e){setError(String(e));}}}>查询回执</button>{queried&&<p role="status">回执查询成功</p>}<button onClick={onDone}>回到今天</button>{error&&<p role="alert">{error}</p>}</section>;
   return <section><h2>资金与权益</h2><p>仅确认个人账户实际事实。未到账应收/应付单列；公告和网页说法保存为待核材料。</p>

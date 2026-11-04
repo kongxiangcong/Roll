@@ -5,7 +5,7 @@ import {Intent,IntentList} from '../components/execution-intents';
 const dateInput=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);
 const blankToNull=(value:string)=>value.trim()===''?null:value.trim();
 const diffLabels:Record<string,string>={cash_balance:'账面现金',positions:'持仓与取得成本',conservative_available:'估计保守可用资金',broker_available:'已核对券商可用资金',net_result_state:'费用与结果状态'};
-export function SyncFill({account,mode,onDone,defaultCode=''}:{account:Account;mode:'FILL'|'FEE_ADJUSTMENT';onDone:()=>void;defaultCode?:string}){
+export function SyncFill({account,mode,onDone,onConfirmed,defaultCode=''}:{account:Account;mode:'FILL'|'FEE_ADJUSTMENT';onDone:()=>void;onConfirmed?:()=>void;defaultCode?:string}){
   const [effective,setEffective]=useState(dateInput),[source,setSource]=useState('用户核对成交回报');
   const [market,setMarket]=useState('SSE'),[code,setCode]=useState(defaultCode),[direction,setDirection]=useState('BUY');
   const [quantity,setQuantity]=useState(''),[price,setPrice]=useState(''),[fillId,setFillId]=useState(''),[orderId,setOrderId]=useState('');
@@ -29,7 +29,8 @@ export function SyncFill({account,mode,onDone,defaultCode=''}:{account:Account;m
       const k=crypto.randomUUID();setDraft(d);setKey(k);sessionStorage.setItem(storageKey,JSON.stringify({draft_id:d.draft_id,key:k,allocations}));
     }catch(e){setError(String(e));}finally{setBusy(false);}
   }
-  async function confirm(){setBusy(true);setError('');try{setReceipt(await request<Receipt>('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key,fill_allocations:mode==='FILL'?allocations.map(a=>({...a,fill_record_id:(draft!.command!.payload as {record_id:string}).record_id,association_status:'USER_CONFIRMED'})):[]}));sessionStorage.removeItem(storageKey);}catch(e){setError(String(e));}finally{setBusy(false);}}
+  function confirmed(receipt:Receipt){setReceipt(receipt);onConfirmed?.();}
+  async function confirm(){setBusy(true);setError('');try{confirmed(await request<Receipt>('/account/confirm',{draft_id:draft!.draft_id,idempotency_key:key,fill_allocations:mode==='FILL'?allocations.map(a=>({...a,fill_record_id:(draft!.command!.payload as {record_id:string}).record_id,association_status:'USER_CONFIRMED'})):[]}));sessionStorage.removeItem(storageKey);}catch(e){setError(String(e));}finally{setBusy(false);}}
   if(receipt)return <section><h2>{mode==='FILL'?'实际成交':'费用调整'}已确认，回执已保存</h2><p>账户版本 {receipt.account_version} · 确认于 {new Date(receipt.confirmed_at).toLocaleString('zh-CN')}</p><p>回执 {receipt.receipt_id}</p><button onClick={async()=>{try{await request<Receipt>(`/account/receipts/${receipt.receipt_id}`);setQueried(true);}catch(e){setError(String(e));}}}>查询成交回执</button>{queried&&<p role="status">回执查询成功</p>}<button className="primary" onClick={onDone}>回到今天</button></section>;
   return <section><h2>{mode==='FILL'?'同步实际成交':'补充实际费用'}</h2><p>仅同步券商已发生的事实。没有建议或没有按建议执行也可记录；关联不明可留空；只有你明确选择的分配才记录建议关联。</p>
     {!draft?<form onSubmit={e=>{e.preventDefault();void preview();}}><label>实际发生时点<input type="datetime-local" required value={effective} onChange={e=>setEffective(e.target.value)}/></label><label>成交依据与来源<input required value={source} onChange={e=>setSource(e.target.value)}/></label>
