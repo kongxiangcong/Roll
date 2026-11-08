@@ -1,9 +1,118 @@
 from datetime import datetime, timedelta
 from fastapi.testclient import TestClient
 from roll.app import create_app
+from roll.market.rules import SHANGHAI
 from roll.runtime.daily_reports import market_metrics
 from test_news_events import register
 from test_fills import establish
+from test_account import baseline, submit
+from test_funding import funding
+
+
+def test_workbench_reviews_the_selected_report_and_preserves_earlier_unknowns(tmp_path):
+    with TestClient(create_app(tmp_path, runtime_role='API')) as client:
+        command = baseline()
+        command['payload']['positions'][0]['instrument'] = 'SSE:600362'
+        assert submit(client, command, 'review-baseline').status_code == 200
+        register(client, 'SSE:600362', '江西铜业', '600362')
+        first = client.post('/api/daily-reports', json={}).json()
+        path = f"/api/daily-reports/{first['report_id']}/review"
+        response = client.get(path)
+        assert response.status_code == 200, response.text
+        original = response.json()
+        assert original['known_by'] == first['known_by']
+        assert original['comparison'] is None
+        assert original['account']['cash_weight_pct'] is None
+        assert original['account']['constraints_status'] == 'UNKNOWN'
+        assert original['holdings'][0]['status'] == 'INSUFFICIENT'
+        note = client.post('/api/daily-reports/notes', json={
+            'idempotency_key': 'review-due', 'report_id': first['report_id'], 'instrument': 'SSE:600362',
+            'thesis': '需求支撑', 'invalidation': '需求减弱', 'due_date': first['day'],
+        }).json()
+        second = client.post('/api/daily-reports', json={}).json()
+        review = client.get(f"/api/daily-reports/{second['report_id']}/review").json()
+        assert review['comparison']['report_id'] == first['report_id']
+        holding = review['holdings'][0]
+        assert holding['status'] == 'REVIEW_REQUIRED'
+        assert holding['judgments'][0]['note_id'] == note['note_id']
+        assert holding['judgments'][0]['state'] == 'DUE_FOR_REVIEW'
+        assert holding['judgments'][0]['due_date'] == first['day']
+        assert client.get(path).json() == original
+
+
+def test_workbench_no_new_review_requires_explicit_scope_and_usable_price(tmp_path, monkeypatch):
+    with TestClient(create_app(tmp_path, runtime_role='API')) as client:
+        command = baseline()
+        command['payload']['positions'][0]['instrument'] = 'SSE:600362'
+        assert submit(client, command, 'price-baseline').status_code == 200
+        register(client, 'SSE:600362', '江西铜业', '600362')
+        state = {'close': '19', 'days_ago': 0, 'document_hash': 'ORIGINAL'}
+
+        def archived_prices(listing, cutoff):
+            day = cutoff.astimezone(SHANGHAI).date() - timedelta(days=state['days_ago'])
+            bar = {'trade_date': day.isoformat(), 'close': state['close'],
+                   'raw_hash': 'ARCHIVED-PRICE', 'available_at': cutoff.replace(microsecond=0).isoformat()}
+            announcement = {'group': 'ANNOUNCEMENTS', 'art_code': 'notice-1', 'title': '原件',
+                            'raw_hash': 'ARCHIVED-INDEX', 'document_hash': state['document_hash']}
+            return [{'instrument': 'SSE:600362', 'last_complete_daily': bar,
+                     'company_facts': [announcement]}], [], [], []
+
+        monkeypatch.setattr(client.app.state.reviews, 'facts_at', archived_prices)
+
+        def publish_review():
+            report = client.post('/api/daily-reports', json={}).json()
+            response = client.get(f"/api/daily-reports/{report['report_id']}/review")
+            assert response.status_code == 200, response.text
+            return response.json()['holdings'][0]
+
+        first = client.post('/api/daily-reports', json={}).json()
+        note = {'report_id': first['report_id'], 'instrument': 'SSE:600362', 'idempotency_key': 'price-general',
+                'thesis': '继续观察', 'invalidation': '价格达 20 元', 'comparator': 'ABOVE', 'threshold': 20}
+        general = client.post('/api/daily-reports/notes', json=note).json()
+        assert publish_review()['status'] == 'INSUFFICIENT'
+        scoped = client.post('/api/daily-reports/notes', json={
+            **note, 'idempotency_key': 'price-only', 'parent_note_id': general['note_id'], 'price_only': True,
+        })
+        assert scoped.status_code == 201, scoped.text
+        state['close'] = '19.50'
+        checked = publish_review()
+        assert checked['status'] == 'NO_NEW_REVIEW'
+        assert checked['judgments'][0]['price_state'] == 'NOT_TRIGGERED'
+        assert any(item['kind'] == 'NEWS' and item['status'] == 'UNKNOWN' for item in checked['changes'])
+        state['close'] = '20'
+        crossed = publish_review()
+        assert crossed['status'] == 'REVIEW_REQUIRED'
+        assert crossed['judgments'][0]['price_state'] == 'TRIGGERED'
+        state['days_ago'] = 1
+        assert publish_review()['status'] == 'INSUFFICIENT'
+        state.update(days_ago=0, close='19.50', document_hash='CORRECTED-ORIGINAL')
+        correction = publish_review()
+        assert correction['status'] == 'REVIEW_REQUIRED'
+        assert correction['judgments'][0]['price_state'] == 'NOT_TRIGGERED'
+        assert any('CORRECTED-ORIGINAL' in item['references'] for item in correction['changes'])
+
+
+def test_workbench_funding_checks_keep_the_report_version_and_boundaries(tmp_path):
+    with TestClient(create_app(tmp_path, runtime_role='API')) as client:
+        establish(client)
+        first_funding = funding(cash_reserve='100000.00', total_exposure='0.00', single_exposure='0.00')
+        assert client.post('/api/funding/confirm', json=first_funding).status_code == 200
+        first = client.post('/api/daily-reports', json={}).json()
+        path = f"/api/daily-reports/{first['report_id']}/review"
+        original = client.get(path).json()
+        summary = original['account']
+        assert summary['cash_weight_pct'] == 100 and summary['largest_weight_pct'] == 0
+        assert summary['funding_version'] == 1
+        assert summary['constraints_status'] == 'UNKNOWN'
+        assert {row['kind'] for row in summary['constraints_checks']} == {
+            'TOTAL_EXPOSURE', 'SINGLE_EXPOSURE', 'BOOK_CASH_RESERVE',
+        }
+        assert all(row['status'] == 'WITHIN_BOUNDARY' for row in summary['constraints_checks'])
+        assert client.post('/api/funding/confirm', json=funding(1, pause=True)).status_code == 200
+        second = client.post('/api/daily-reports', json={}).json()
+        next_review = client.get(f"/api/daily-reports/{second['report_id']}/review").json()
+        assert next_review['account']['constraints_status'] == 'PAUSED'
+        assert client.get(path).json() == original
 
 
 def test_market_metrics_exact_window_and_unknowns():
