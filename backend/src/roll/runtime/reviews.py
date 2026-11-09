@@ -463,7 +463,9 @@ class Reviews:
                 if set(o['basis_raw_hashes']) & hashes and datetime.fromisoformat(o.get('observed_at') or snapshot['created_at'])<=knowledge)
         instruments=[]
         gaps=[]
-        facts=list({(f['instrument'],f['group'],f['raw_hash'],f.get('trade_date'),f.get('art_code'),f.get('report_period')):f for f in reversed(facts)}.values())
+        facts=list({(f['instrument'],f['group'],f['raw_hash'],f.get('trade_date'),f.get('art_code'),
+                     f.get('event_identity'),f.get('document_hash'),f.get('report_period')):f
+                    for f in reversed(facts)}.values())
         observations=list({(o['instrument'],o['kind'],tuple(o['basis_raw_hashes'])):o for o in reversed(observations)}.values())
         session=cutoff.astimezone(SHANGHAI).date()
         calendar=self.market.rules.calendar('SSE',session,cutoff)
