@@ -28,7 +28,19 @@ def account_command(args):
     return ledger.account()
 
 
+def sync_command(args):
+    from roll.market.inputs import sync_inputs
+
+    if args.daily_only:
+        return sync_market(args.data_dir, args.start, args.end)
+    if args.market_inputs:
+        return sync_inputs(args.data_dir, args.start, args.end, groups=args.group)
+    daily = sync_market(args.data_dir, args.start, args.end)
+    return {"daily": daily, "market_inputs": sync_inputs(args.data_dir, args.start, args.end, groups=args.group)}
+
+
 def main(argv=None):
+    from roll.market.inputs import SYNC_GROUPS, UNITS, input_status, read_inputs
     parser = argparse.ArgumentParser(prog="roll")
     parser.add_argument("--data-dir", type=Path, default=data_directory() / "v2")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -48,7 +60,18 @@ def main(argv=None):
     sync = commands.add_parser("sync", help="同步盘后行情")
     sync.add_argument("--start")
     sync.add_argument("--end")
-    sync.set_defaults(run=lambda a: sync_market(a.data_dir, a.start, a.end))
+    subset = sync.add_mutually_exclusive_group()
+    subset.add_argument("--market-inputs", action="store_true", help="仅同步 AKShare 市场输入")
+    subset.add_argument("--daily-only", action="store_true", help="仅同步股票及指数日线")
+    sync.add_argument("--group", choices=SYNC_GROUPS, action="append", help="指定 AKShare 输入，可重复")
+    sync.set_defaults(run=sync_command)
+    inputs = commands.add_parser("inputs", help="离线查看 AKShare 历史、单位与缺项")
+    inputs.add_argument("series", choices=UNITS, nargs="?")
+    inputs.add_argument("symbol", nargs="?", default="CN")
+    inputs.add_argument("--start")
+    inputs.add_argument("--end")
+    inputs.set_defaults(run=lambda a: {"units": UNITS[a.series], "rows": read_inputs(
+        a.data_dir, a.series, a.symbol, a.start, a.end)} if a.series else input_status(a.data_dir, a.start, a.end))
     prices = commands.add_parser("prices", help="离线读取行情")
     prices.add_argument("symbol")
     prices.add_argument("--start")
