@@ -109,6 +109,11 @@ def main(argv=None):
     gauge = commands.add_parser("barometer", help="读取指定交易日的实时工作台晴雨表")
     gauge.add_argument("trade_date", metavar="YYYY-MM-DD")
     gauge.set_defaults(run=lambda a: barometer_at(a.data_dir, a.trade_date))
+    from roll.backtest import run_backtest
+    backtest = commands.add_parser("backtest", help="比较晴雨表控仓与 510300.SH 买入持有")
+    backtest.add_argument("--start", default="2020-01-01")
+    backtest.add_argument("--end", help="默认取最近可得的完整 ETF 交易日")
+    backtest.set_defaults(run=lambda a: run_backtest(a.data_dir, a.start, a.end))
     args = parser.parse_args(argv)
     try:
         result = args.run(args)
