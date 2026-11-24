@@ -9,6 +9,7 @@ from roll.accounts.csv_import import CsvImports
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.config import active_watchlist, data_directory
 from roll.market.daily import sync_market, read_bars, read_indicators
+from roll.reports import freeze_report, read_report, report_markdown
 
 
 def account_command(args):
@@ -59,6 +60,12 @@ def main(argv=None):
     prices.add_argument("--indicators", action="store_true", help="附带同锚点的 MA20、MA60 和 ATR14")
     prices.set_defaults(run=lambda a: (read_indicators if a.indicators else read_bars)(
         a.data_dir, a.symbol, a.start, a.end, a.adjustment))
+    report = commands.add_parser("report", help="冻结或重读盘后日报")
+    report.add_argument("operation", choices=["freeze", "read"])
+    report.add_argument("trade_date", metavar="YYYY-MM-DD")
+    report.add_argument("--format", choices=["json", "markdown"], default="json")
+    report.set_defaults(run=lambda a: (freeze_report if a.operation == "freeze" else read_report)(
+        a.data_dir, a.trade_date))
     args = parser.parse_args(argv)
     try:
         result = args.run(args)
@@ -66,7 +73,10 @@ def main(argv=None):
         parser.exit(1, json.dumps(error.detail, ensure_ascii=False) + "\n")
     except (ValueError, OSError) as error:
         parser.exit(1, str(error) + "\n")
-    print(json.dumps(result, ensure_ascii=False))
+    if args.command == "report" and args.format == "markdown":
+        print(report_markdown(result))
+    else:
+        print(json.dumps(result, ensure_ascii=False))
 
 
 if __name__ == "__main__":

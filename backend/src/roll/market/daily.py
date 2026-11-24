@@ -8,7 +8,7 @@ from pathlib import Path
 
 import httpx
 
-from roll.config import active_watchlist, load_runtime_environment, load_watchlist
+from roll.config import load_runtime_environment, load_watchlist
 from roll.db import connect
 
 
@@ -20,7 +20,7 @@ ZERO = Decimal(0)
 ONE = Decimal(1)
 
 
-def _initialize(db):
+def initialize_market(db):
     db.executescript("""
         CREATE TABLE IF NOT EXISTS daily_bars (
             symbol TEXT, trade_date TEXT, open_raw TEXT NOT NULL, high_raw TEXT NOT NULL,
@@ -209,7 +209,7 @@ def sync_market(data_dir: Path, start=None, end=None, *, client=None, watchlist=
     symbols["000300.SH"] = "index"
     connection = nullcontext(client) if client is not None else httpx.Client()
     with connection as client, connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
+        initialize_market(db)
         db.execute("CREATE TABLE IF NOT EXISTS watchlist_config(id INTEGER PRIMARY KEY, items TEXT NOT NULL)")
         db.execute("INSERT OR REPLACE INTO watchlist_config VALUES (1,?)", (json.dumps(items, ensure_ascii=False),))
         for symbol, kind in symbols.items():
@@ -243,7 +243,7 @@ def _history(data_dir, symbol, start, end, adjustment, indicators):
     if adjustment not in {"raw", "forward", "backward"}:
         raise ValueError("未知行情口径")
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
+        initialize_market(db)
         rows = db.execute("""SELECT * FROM daily_bars WHERE symbol=? AND trade_date BETWEEN ? AND ?
                              ORDER BY trade_date""", (symbol, "" if indicators else start or "", end or "9999")).fetchall()
         actions = {r["ex_date"]: (Decimal(r["multiplier"]), Decimal(r["offset_yuan"]))
@@ -282,22 +282,27 @@ def _history(data_dir, symbol, start, end, adjustment, indicators):
 
 def market_status(data_dir: Path, end=None):
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
-        rows = []
-        symbols = dict(SYMBOLS)
-        if db.execute("SELECT 1 FROM sqlite_master WHERE name='watchlist_config'").fetchone():
-            symbols = {item["code"]: "stock" for item in active_watchlist(data_dir)}
-            symbols["000300.SH"] = "index"
-        for symbol, kind in symbols.items():
-            bounds = db.execute("""SELECT MIN(trade_date) first_date, MAX(trade_date) last_date,
-                                   COUNT(*) count FROM daily_bars WHERE symbol=? AND trade_date<=?""",
-                                (symbol, end or "9999")).fetchone()
-            last = db.execute("SELECT close_raw FROM daily_bars WHERE symbol=? AND trade_date=?",
-                              (symbol, bounds["last_date"])).fetchone()
-            status = db.execute("SELECT last_success_at, error FROM daily_sync WHERE symbol=?", (symbol,)).fetchone()
-            gaps = [dict(r) for r in db.execute(
-                "SELECT start,end,error FROM daily_gaps WHERE symbol=? AND start<=? ORDER BY start",
-                (symbol, end or "9999"))]
-            rows.append({"symbol": symbol, "kind": kind, "gaps": gaps, **dict(bounds), "close": last[0] if last else None,
-                         "last_success_at": status[0] if status else None, "error": status[1] if status else None})
-        return rows
+        initialize_market(db)
+        return status_in_transaction(db, end)
+
+
+def status_in_transaction(db, end):
+    rows = []
+    symbols = dict(SYMBOLS)
+    if db.execute("SELECT 1 FROM sqlite_master WHERE name='watchlist_config'").fetchone():
+        config = db.execute("SELECT items FROM watchlist_config WHERE id=1").fetchone()
+        symbols = {item["code"]: "stock" for item in json.loads(config[0])} if config else {}
+        symbols["000300.SH"] = "index"
+    for symbol, kind in symbols.items():
+        bounds = db.execute("""SELECT MIN(trade_date) first_date, MAX(trade_date) last_date,
+                               COUNT(*) count FROM daily_bars WHERE symbol=? AND trade_date<=?""",
+                            (symbol, end or "9999")).fetchone()
+        last = db.execute("SELECT close_raw FROM daily_bars WHERE symbol=? AND trade_date=?",
+                          (symbol, bounds["last_date"])).fetchone()
+        status = db.execute("SELECT last_success_at, error FROM daily_sync WHERE symbol=?", (symbol,)).fetchone()
+        gaps = [dict(r) for r in db.execute(
+            "SELECT start,end,error FROM daily_gaps WHERE symbol=? AND start<=? ORDER BY start",
+            (symbol, end or "9999"))]
+        rows.append({"symbol": symbol, "kind": kind, "gaps": gaps, **dict(bounds), "close": last[0] if last else None,
+                     "last_success_at": status[0] if status else None, "error": status[1] if status else None})
+    return rows
