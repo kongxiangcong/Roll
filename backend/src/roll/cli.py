@@ -8,7 +8,7 @@ from fastapi import HTTPException
 from roll.accounts.csv_import import CsvImports
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.barometer import barometer_at
-from roll.calibration import historical_calibration
+from roll.calibration import historical_calibration, forward_statistics
 from roll.config import active_watchlist, data_directory
 from roll.market.daily import sync_market, read_bars, read_indicators
 from roll.market.financials import sync_financials, financial_light
@@ -114,6 +114,10 @@ def main(argv=None):
     calibration.add_argument("--start", required=True)
     calibration.add_argument("--end", required=True)
     calibration.set_defaults(run=lambda a: historical_calibration(a.data_dir, a.start, a.end))
+    forward = commands.add_parser("forward", help="查看所选期间实际冻结的前向预测与成熟成绩")
+    forward.add_argument("--start", required=True)
+    forward.add_argument("--end", required=True)
+    forward.set_defaults(run=lambda a: forward_statistics(a.data_dir, a.start, a.end))
     args = parser.parse_args(argv)
     try:
         result = args.run(args)

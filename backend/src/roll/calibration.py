@@ -6,6 +6,7 @@ from decimal import Decimal, InvalidOperation
 
 from roll.barometer import scores_in_transaction
 from roll.db import connect
+from roll.market.calendar import is_session
 from roll.market.daily import SHANGHAI, initialize_market
 from roll.market.inputs import initialize_inputs
 from roll.statistics import brier
@@ -115,5 +116,73 @@ def historical_calibration(data_dir: Path, start: str, end: str):
         initialize_calibration(db)
         db.execute("BEGIN IMMEDIATE")
         result = calibration_in_transaction(db, start, end)
+        db.commit()
+        return result
+
+
+def initialize_forward(db):
+    db.execute("""CREATE TABLE IF NOT EXISTS forward_forecasts (
+        trade_date TEXT PRIMARY KEY REFERENCES frozen_reports(trade_date) DEFERRABLE INITIALLY DEFERRED,
+        cutoff_at TEXT NOT NULL, regime TEXT NOT NULL, mature_sample_count INTEGER NOT NULL,
+        probability REAL NOT NULL CHECK (probability BETWEEN 0 AND 1), index_close TEXT)""")
+    db.execute("""CREATE TABLE IF NOT EXISTS forward_labels (
+        trade_date TEXT PRIMARY KEY REFERENCES forward_forecasts(trade_date),
+        maturity_date TEXT NOT NULL, outcome INTEGER NOT NULL CHECK (outcome IN (0,1)))""")
+
+
+def register_frozen_forecast(db, report):
+    day, cutoff = report["trade_date"], datetime.fromisoformat(report["cutoff_at"]).astimezone(SHANGHAI)
+    prediction = report["calibration"]
+    if (day != cutoff.date().isoformat() or cutoff.time() < time(15) or prediction["trade_date"] != day
+            or prediction["regime"] is None or prediction["probability"] is None):
+        return
+    db.execute("""INSERT INTO forward_forecasts VALUES (?,?,?,?,?,(
+        SELECT close_raw FROM daily_bars WHERE symbol='000300.SH' AND trade_date=?))""",
+               (day, cutoff.isoformat(), prediction["regime"], prediction["mature_sample_count"],
+                prediction["probability"], day))
+
+
+def forward_in_transaction(db, start, end):
+    """Evaluate predictions dated in the period using closes available through its end."""
+    cursor, stop = date.fromisoformat(start), date.fromisoformat(end)
+    sessions = []
+    while cursor <= stop:
+        if is_session(cursor):
+            sessions.append(cursor.isoformat())
+        cursor += timedelta(days=1)
+    positions = {day: index for index, day in enumerate(sessions)}
+    predictions = [dict(r) for r in db.execute(
+        "SELECT * FROM forward_forecasts WHERE trade_date BETWEEN ? AND ? ORDER BY trade_date", (start, end))]
+    labels = {r["trade_date"]: dict(r) for r in db.execute(
+        "SELECT * FROM forward_labels WHERE trade_date>=? AND maturity_date<=?", (start, end))}
+    closes = dict(db.execute("SELECT trade_date,close_raw FROM daily_bars WHERE symbol='000300.SH' "
+                             "AND trade_date BETWEEN ? AND ?", (start, end)))
+    for row in predictions:
+        day = row["trade_date"]
+        target = positions[day] + HORIZON
+        if day not in labels and target < len(sessions):
+            maturity = sessions[target]
+            outcome = index_label(row["index_close"] or closes.get(day), closes.get(maturity))
+            if outcome is not None:
+                db.execute("INSERT INTO forward_labels VALUES (?,?,?)", (day, maturity, outcome))
+                labels[day] = {"maturity_date": maturity, "outcome": outcome}
+        row.update(maturity_date=None, outcome=None)
+        row.update(labels.get(day, {}))
+    scored = [(r["probability"], r["outcome"]) for r in predictions if r["outcome"] is not None]
+    return {"start": start, "end": end, "trading_days": len(sessions),
+            "registered_count": len(predictions), "mature_count": len(scored), "brier_count": len(scored),
+            "brier": brier(scored), "predictions": predictions}
+
+
+def forward_statistics(data_dir: Path, start: str, end: str):
+    start, end = date.fromisoformat(start).isoformat(), date.fromisoformat(end).isoformat()
+    if start > end:
+        raise ValueError("起始日期晚于截止日")
+    end = min(end, _last_completed_day())
+    with connect(data_dir / "roll.sqlite3") as db:
+        initialize_market(db)
+        initialize_forward(db)
+        db.execute("BEGIN IMMEDIATE")
+        result = forward_in_transaction(db, start, end)
         db.commit()
         return result
