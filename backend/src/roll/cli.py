@@ -8,6 +8,7 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.config import data_directory
+from roll.market.daily import sync_market, read_bars
 
 
 def account_command(args):
@@ -32,6 +33,16 @@ def main(argv=None):
     confirm = operations.add_parser("confirm", help="确认草稿并取得回执")
     confirm.add_argument("draft_id")
     confirm.add_argument("key", help="该次确认的幂等键，重试时使用同一个键")
+    sync = commands.add_parser("sync", help="同步盘后行情")
+    sync.add_argument("--start")
+    sync.add_argument("--end")
+    sync.set_defaults(run=lambda a: sync_market(a.data_dir, a.start, a.end))
+    prices = commands.add_parser("prices", help="离线读取行情")
+    prices.add_argument("symbol")
+    prices.add_argument("--start")
+    prices.add_argument("--end")
+    prices.add_argument("--adjustment", choices=["raw", "forward", "backward"], default="raw")
+    prices.set_defaults(run=lambda a: read_bars(a.data_dir, a.symbol, a.start, a.end, a.adjustment))
     args = parser.parse_args(argv)
     try:
         result = args.run(args)
