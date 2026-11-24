@@ -240,14 +240,18 @@ def read_indicators(data_dir: Path, symbol, start=None, end=None, adjustment="fo
 
 
 def _history(data_dir, symbol, start, end, adjustment, indicators):
-    if adjustment not in {"raw", "forward", "backward"}:
-        raise ValueError("未知行情口径")
     with connect(data_dir / "roll.sqlite3") as db:
         initialize_market(db)
-        rows = db.execute("""SELECT * FROM daily_bars WHERE symbol=? AND trade_date BETWEEN ? AND ?
-                             ORDER BY trade_date""", (symbol, "" if indicators else start or "", end or "9999")).fetchall()
-        actions = {r["ex_date"]: (Decimal(r["multiplier"]), Decimal(r["offset_yuan"]))
-                   for r in db.execute("SELECT * FROM adjustment_factors WHERE symbol=?", (symbol,))}
+        return history_in_transaction(db, symbol, start, end, adjustment, indicators)
+
+
+def history_in_transaction(db, symbol, start, end, adjustment, indicators):
+    if adjustment not in {"raw", "forward", "backward"}:
+        raise ValueError("未知行情口径")
+    rows = db.execute("""SELECT * FROM daily_bars WHERE symbol=? AND trade_date BETWEEN ? AND ?
+                         ORDER BY trade_date""", (symbol, "" if indicators else start or "", end or "9999")).fetchall()
+    actions = {r["ex_date"]: (Decimal(r["multiplier"]), Decimal(r["offset_yuan"]))
+               for r in db.execute("SELECT * FROM adjustment_factors WHERE symbol=?", (symbol,))}
     first = next((row["trade_date"] for row in rows if row["trade_date"] >= (start or "")), None)
     if first is None:
         return []

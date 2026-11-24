@@ -97,11 +97,15 @@ def _previous(period):
 
 
 def financial_light(data_dir, symbol, as_of):
-    day = date.fromisoformat(as_of).isoformat()
     with connect(data_dir / "roll.sqlite3") as db:
         db.executescript(SCHEMA)
-        rows = db.execute("""SELECT * FROM fundamentals WHERE symbol=? AND available_from<=?
-                             AND period<=? ORDER BY period,available_from,observed_at,rowid""",(symbol,day,day)).fetchall()
+        return financial_light_in_transaction(db, symbol, as_of)
+
+
+def financial_light_in_transaction(db, symbol, as_of):
+    day = date.fromisoformat(as_of).isoformat()
+    rows = db.execute("""SELECT * FROM fundamentals WHERE symbol=? AND available_from<=?
+                         AND period<=? ORDER BY period,available_from,observed_at,rowid""",(symbol,day,day)).fetchall()
     periods = {}
     for row in rows:
         periods.setdefault(row["period"], {})[row["series"]] = row
