@@ -30,17 +30,28 @@ def account_command(args):
 
 
 def sync_command(args):
+    from roll.market.inputs import sync_inputs
+
     if args.financials_only:
-        items = active_watchlist(args.data_dir)
+        from roll.config import load_watchlist
+        items = load_watchlist(args.watchlist) if args.watchlist else active_watchlist(args.data_dir)
         return sync_financials(args.data_dir, [item["code"] for item in items])
-    daily = sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
     if args.daily_only:
-        return daily
-    symbols = [item["symbol"] for item in daily if item["kind"] == "stock"]
-    return {"daily": daily, "financials": sync_financials(args.data_dir, symbols)}
+        return sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
+    if args.market_inputs:
+        from roll.config import load_watchlist
+        items = load_watchlist(args.watchlist) if args.watchlist else active_watchlist(args.data_dir)
+        return sync_inputs(args.data_dir, args.start, args.end, groups=args.group,
+                           sector_etfs=[item["sector_etf"] for item in items])
+    daily = sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
+    sector_etfs = [item["sector_etf"] for item in active_watchlist(args.data_dir)]
+    return {"daily": daily, "market_inputs": sync_inputs(
+        args.data_dir, args.start, args.end, groups=args.group, sector_etfs=sector_etfs),
+            "financials": sync_financials(args.data_dir, [r["symbol"] for r in daily if r["kind"] == "stock"])}
 
 
 def main(argv=None):
+    from roll.market.inputs import SYNC_GROUPS, UNITS, input_status, read_inputs
     parser = argparse.ArgumentParser(prog="roll")
     parser.add_argument("--data-dir", type=Path, default=data_directory() / "v2")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -60,11 +71,20 @@ def main(argv=None):
     sync = commands.add_parser("sync", help="同步盘后行情")
     sync.add_argument("--start")
     sync.add_argument("--end")
-    sync.add_argument("--watchlist", type=Path, help="跟踪池 YAML 路径")
-    parts = sync.add_mutually_exclusive_group()
-    parts.add_argument("--daily-only", action="store_true", help="仅同步扶摇日线")
-    parts.add_argument("--financials-only", action="store_true", help="仅同步已生效跟踪池的财报")
+    subset = sync.add_mutually_exclusive_group()
+    subset.add_argument("--market-inputs", action="store_true", help="仅同步 AKShare 市场输入")
+    subset.add_argument("--financials-only", action="store_true", help="仅同步跟踪池财报")
+    subset.add_argument("--daily-only", action="store_true", help="仅同步股票及指数日线")
+    sync.add_argument("--group", choices=SYNC_GROUPS, action="append", help="指定 AKShare 输入，可重复")
     sync.set_defaults(run=sync_command)
+    inputs = commands.add_parser("inputs", help="离线查看 AKShare 历史、单位与缺项")
+    inputs.add_argument("series", choices=UNITS, nargs="?")
+    inputs.add_argument("symbol", nargs="?", default="CN")
+    inputs.add_argument("--start")
+    inputs.add_argument("--end")
+    inputs.set_defaults(run=lambda a: {"units": UNITS[a.series], "rows": read_inputs(
+        a.data_dir, a.series, a.symbol, a.start, a.end)} if a.series else input_status(a.data_dir, a.start, a.end))
+    sync.add_argument("--watchlist", type=Path, help="跟踪池 YAML 路径")
     financial = commands.add_parser("financials", help="按披露日回放个股财报灯")
     financial.add_argument("symbol")
     financial.add_argument("--as-of", required=True, metavar="YYYY-MM-DD")
