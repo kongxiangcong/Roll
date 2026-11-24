@@ -1,21 +1,19 @@
 [project]
 name = "roll"
-version = "0.1.0"
+version = "2.1.0"
+description = "Roll 个人盘后工作台"
 requires-python = ">=3.12"
 dependencies = [
-    "baostock==0.9.4",
+    "akshare==1.19.1",
     "fastapi==0.141.1",
-    "uvicorn==0.52.4",
     "httpx==0.28.1",
-    "pyarrow==25.0.1",
-    "pypdf==6.19.0",
-    "openai-codex==0.161.0",
-    "openai-agents==0.23.1",
-    "openai==3.26.0",
-    "httpx2==2.13.1",
-    "jsonschema==4.26.0",
-    "pywin32==312; sys_platform == 'win32'",
+    "pydantic>=2,<3",
+    "pyyaml>=6,<7",
+    "uvicorn==0.52.4",
 ]
+
+[project.scripts]
+roll = "roll.cli:main"
 
 [dependency-groups]
 dev = ["pytest==9.0.2"]
@@ -26,4 +24,4 @@ build-backend = "hatchling.build"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src", "tests/support"]
+pythonpath = ["src"]
