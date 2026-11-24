@@ -7,8 +7,6 @@ import hashlib
 import json
 import os
 import re
-import sqlite3
-from contextlib import contextmanager
 from datetime import datetime, timezone
 from decimal import Decimal, localcontext
 from pathlib import Path
@@ -16,6 +14,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 from pydantic import BaseModel, ConfigDict, Field
+from roll.db import connect
 from roll.accounts.fills import actual_fill, fee_adjustment
 from roll.accounts.cash_events import CASH_KINDS, EVENT_FIELDS, actual_cash, stamp_cash
 from roll.accounts.corrections import active_events, correction_event, fact_command
@@ -113,10 +112,8 @@ def empty_account():
 class Ledger:
     def __init__(self, directory: Path):
         self.execution_intents = None
-        directory.mkdir(parents=True, exist_ok=True)
         self.path = directory / "roll.sqlite3"
         with self.connection() as db:
-            db.execute("PRAGMA journal_mode=WAL")
             db.executescript("""
                 CREATE TABLE IF NOT EXISTS account_versions(version INTEGER PRIMARY KEY, snapshot TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS account_drafts(id TEXT PRIMARY KEY, command TEXT NOT NULL, preview TEXT NOT NULL, created_at TEXT NOT NULL);
@@ -125,25 +122,16 @@ class Ledger:
                 CREATE TABLE IF NOT EXISTS account_audit(id TEXT PRIMARY KEY, version INTEGER NOT NULL, entry TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS account_equity_hints(id TEXT PRIMARY KEY, material TEXT NOT NULL);
             """)
-            if db.execute("PRAGMA user_version").fetchone()[0] == 0:
-                db.execute("PRAGMA user_version=1")
-            if db.execute("PRAGMA user_version").fetchone()[0] == 1:
+            if db.execute("PRAGMA user_version").fetchone()[0] < 2:
                 db.execute("BEGIN IMMEDIATE")
-                if db.execute("PRAGMA user_version").fetchone()[0] == 1:
+                if db.execute("PRAGMA user_version").fetchone()[0] < 2:
                     db.execute("ALTER TABLE account_drafts ADD COLUMN status TEXT NOT NULL DEFAULT 'READY'")
                     db.execute("ALTER TABLE account_drafts ADD COLUMN issues TEXT NOT NULL DEFAULT '[]'")
                     db.execute("PRAGMA user_version=2")
                 db.commit()
 
-    @contextmanager
     def connection(self):
-        db = sqlite3.connect(self.path, timeout=10, isolation_level=None)
-        db.row_factory = sqlite3.Row
-        db.execute("PRAGMA synchronous=FULL")
-        try:
-            yield db
-        finally:
-            db.close()
+        return connect(self.path)
 
     def account(self, version=None, db=None):
         if db is None:
