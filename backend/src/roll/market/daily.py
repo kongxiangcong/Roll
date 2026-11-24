@@ -18,7 +18,7 @@ ZERO = Decimal(0)
 ONE = Decimal(1)
 
 
-def _initialize(db):
+def initialize_market(db):
     db.executescript("""
         CREATE TABLE IF NOT EXISTS daily_bars (
             symbol TEXT, trade_date TEXT, open_raw TEXT NOT NULL, high_raw TEXT NOT NULL,
@@ -174,7 +174,7 @@ def sync_market(data_dir: Path, start=None, end=None, *, client=None):
         with httpx.Client() as live:
             return sync_market(data_dir, start, end, client=live)
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
+        initialize_market(db)
         for symbol, kind in SYMBOLS.items():
             try:
                 _sync_symbol(db, client, symbol, kind, start, end, today)
@@ -190,7 +190,7 @@ def read_bars(data_dir: Path, symbol, start=None, end=None, adjustment="raw"):
     if adjustment not in {"raw", "forward", "backward"}:
         raise ValueError("未知行情口径")
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
+        initialize_market(db)
         rows = db.execute("""SELECT * FROM daily_bars WHERE symbol=? AND trade_date BETWEEN ? AND ?
                              ORDER BY trade_date""", (symbol, start or "", end or "9999")).fetchall()
         actions = {r["ex_date"]: (Decimal(r["multiplier"]), Decimal(r["offset_yuan"]))
@@ -209,15 +209,19 @@ def read_bars(data_dir: Path, symbol, start=None, end=None, adjustment="raw"):
 
 def market_status(data_dir: Path, end=None):
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
-        rows = []
-        for symbol, kind in SYMBOLS.items():
-            bounds = db.execute("""SELECT MIN(trade_date) first_date, MAX(trade_date) last_date,
-                                   COUNT(*) count FROM daily_bars WHERE symbol=? AND trade_date<=?""",
-                                (symbol, end or "9999")).fetchone()
-            last = db.execute("SELECT close_raw FROM daily_bars WHERE symbol=? AND trade_date=?",
-                              (symbol, bounds["last_date"])).fetchone()
-            status = db.execute("SELECT last_success_at, error FROM daily_sync WHERE symbol=?", (symbol,)).fetchone()
-            rows.append({"symbol": symbol, "kind": kind, **dict(bounds), "close": last[0] if last else None,
-                         "last_success_at": status[0] if status else None, "error": status[1] if status else None})
-        return rows
+        initialize_market(db)
+        return status_in_transaction(db, end)
+
+
+def status_in_transaction(db, end):
+    rows = []
+    for symbol, kind in SYMBOLS.items():
+        bounds = db.execute("""SELECT MIN(trade_date) first_date, MAX(trade_date) last_date,
+                               COUNT(*) count FROM daily_bars WHERE symbol=? AND trade_date<=?""",
+                            (symbol, end or "9999")).fetchone()
+        last = db.execute("SELECT close_raw FROM daily_bars WHERE symbol=? AND trade_date=?",
+                          (symbol, bounds["last_date"])).fetchone()
+        status = db.execute("SELECT last_success_at, error FROM daily_sync WHERE symbol=?", (symbol,)).fetchone()
+        rows.append({"symbol": symbol, "kind": kind, **dict(bounds), "close": last[0] if last else None,
+                     "last_success_at": status[0] if status else None, "error": status[1] if status else None})
+    return rows
