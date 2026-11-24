@@ -4,7 +4,10 @@ import json
 from pathlib import Path
 
 from roll.accounts.ledger import Ledger
+from roll.calibration import calibration_in_transaction, initialize_calibration
 from roll.db import connect
+from roll.risk import risk_in_transaction
+from roll.market.financials import SCHEMA as FINANCIAL_SCHEMA
 from roll.barometer import scores_in_transaction
 from roll.market.inputs import initialize_inputs
 from roll.market.calendar import is_session
@@ -34,6 +37,8 @@ def freeze_report(data_dir: Path, trade_date: str):
     with connect(ledger.path) as db:
         initialize_market(db)
         initialize_inputs(db)
+        db.executescript(FINANCIAL_SCHEMA)
+        initialize_calibration(db)
         db.execute(SCHEMA)
         db.execute("BEGIN IMMEDIATE")
         row = db.execute("SELECT content FROM frozen_reports WHERE trade_date=?", (trade_date,)).fetchone()
@@ -52,7 +57,9 @@ def freeze_report(data_dir: Path, trade_date: str):
                         "positions": [{k: p[k] for k in ("instrument", "quantity", "sellable_quantity")}
                                       for p in snapshot["positions"]]},
             "market": market, "obtained": obtained, "missing": missing + barometer["missing"],
+            "risk": risk_in_transaction(db, trade_date, snapshot, barometer),
             "barometer": barometer,
+            "calibration": calibration_in_transaction(db, trade_date, trade_date)["current"],
         }
         db.execute("INSERT INTO frozen_reports VALUES (?,?)", (trade_date, json.dumps(report, ensure_ascii=False)))
         db.commit()
@@ -87,4 +94,40 @@ def report_markdown(report):
         lines.extend(["", f"仓位档 {show(barometer['regime'])}", "", "| 市场维度 | 得分 |", "|---|---:|"])
         for key, name in (("trend", "趋势与波动"), ("funding", "资金"), ("breadth", "广度"), ("valuation", "估值")):
             lines.append(f"| {name} | {show(barometer['dimensions'][key])} |")
+    if "risk" in report:
+        risk = report["risk"]
+        portfolio = risk["portfolio"]
+        lines.extend(["", "## 持仓风险", "", f"行情截止 {risk['market_cutoff_at']}",
+                      f"总资产（元）{show(portfolio['assets'])}，持仓市值（元）{show(portfolio['market_value'])}"])
+        if portfolio["position_fraction"] is not None:
+            lines.append(f"实际仓位 {float(portfolio['position_fraction']):.2%}")
+        if portfolio["overage_amount"] is not None:
+            lines.append(f"总仓位超限 {portfolio['overage_percentage_points']} 个百分点，{portfolio['overage_amount']} 元")
+        if portfolio["missing"]:
+            lines.append("账户缺项 " + "、".join(portfolio["missing"]))
+        for card in risk["cards"]:
+            lines.extend(["", f"### {card['symbol']} {card['name'] or ''}", "",
+                          f"收盘 {show(card['close'])} 元，交易日 {show(card['trade_date'])}，"
+                          + ("行情已过期" if card['price_stale'] else "行情截至当日"),
+                          f"账户有效时点 {show(card['account_effective_at'])}，"
+                          + ("账户记录早于估值日或未知" if card['account_stale'] else "当日账户记录"),
+                          f"行业 ETF 20 日相对收益 {show(card['sector_excess_return20'])}，"
+                          f"ATR14 {show(card['atr14'])}，移动止损价 {show(card['atr_stop_price'])}，"
+                          f"前 20 日最低收盘 {show(card['previous_low20'])}",
+                          f"财报灯 {dict(red='红', green='绿', unknown='未知')[card['financial_light']['status']]}"])
+            if card["atr_stop_breached"]:
+                lines.append("已跌破移动止损价")
+            if card["below_low20"]:
+                lines.append("已跌破前 20 日最低收盘价")
+            if card["single_overage"] is not None:
+                lines.append(f"单票超限 {card['single_overage']} 元，可卖 {show(card['sellable_quantity'])} 股，"
+                             f"参考 {show(card['reference_shares'])} 股")
+            if card["missing"]:
+                lines.append("个股缺项 " + "、".join(card["missing"]))
+    if "calibration" in report:
+        current = report["calibration"]
+        p = current["probability"]
+        lines.extend(["", "## 同档历史校准", "", f"档位 {show(current['regime'])}",
+                      f"已成熟样本 {current['mature_sample_count']}",
+                      "20 个后续交易日上涨频率 " + (f"{p:.2%}" if p is not None else "暂无")])
     return "\n".join(lines)

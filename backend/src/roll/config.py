@@ -79,10 +79,14 @@ def load_watchlist(path=None):
 
 def active_watchlist(data_dir):
     from roll.db import connect
-    import json
     with connect(data_dir / "roll.sqlite3") as db:
-        if db.execute("SELECT 1 FROM sqlite_master WHERE name='watchlist_config'").fetchone():
-            row = db.execute("SELECT items FROM watchlist_config WHERE id=1").fetchone()
-            if row:
-                return json.loads(row[0])
+        return active_watchlist_in_transaction(db)
+
+
+def active_watchlist_in_transaction(db):
+    import json
+    if db.execute("SELECT 1 FROM sqlite_master WHERE name='watchlist_config'").fetchone():
+        row = db.execute("SELECT items FROM watchlist_config WHERE id=1").fetchone()
+        if row:
+            return json.loads(row[0])
     return []
