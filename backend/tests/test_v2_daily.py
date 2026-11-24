@@ -27,7 +27,10 @@ def test_sync_history_reanchors_and_survives_partial_failure(tmp_path, monkeypat
             data = {"thscode": symbol, "item": []}
             if "adjust" in args:
                 data["adjust"] = args["adjust"]
-            for day, raw in [("2025-07-21", 21.70), ("2025-07-22", 22.00)]:
+            prices = [("2025-07-21", 21.70), ("2025-07-22", 22.00)]
+            if symbol == "000300.SH":
+                prices.extend((f"2025-07-{d}", 4100) for d in (16, 17, 18))
+            for day, raw in prices:
                 if not int(args["start"]) <= millis(day) <= int(args["end"]):
                     continue
                 value = 21 if args.get("adjust") == "forward" and day.endswith("21") else raw
@@ -51,3 +54,16 @@ def test_sync_history_reanchors_and_survives_partial_failure(tmp_path, monkeypat
     assert stock["error"] and stock["last_success_at"] and stock["count"] == 2
     assert stock["last_date"] == "2025-07-22"
     assert next(row for row in market_status(tmp_path) if row["symbol"] == "000300.SH")["error"] is None
+
+
+def test_intraday_explicit_end_rejected_before_any_market_write(tmp_path,monkeypatch):
+    from datetime import datetime
+    import pytest
+    import roll.market.daily as daily
+    class Morning(datetime):
+        @classmethod
+        def now(cls, tz=None): return cls(2025,7,22,10,30,tzinfo=tz)
+    monkeypatch.setattr(daily,"datetime", Morning)
+    with pytest.raises(ValueError):
+        daily.sync_market(tmp_path,"2025-07-21","2025-07-22")
+    assert not (tmp_path/"roll.sqlite3").exists()

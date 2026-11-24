@@ -10,6 +10,7 @@ import httpx
 
 from roll.config import load_runtime_environment, load_watchlist
 from roll.db import connect
+from roll.market.calendar import extended_sessions, is_session, latest_session
 
 
 FUYAO = "https://fuyao.aicubes.cn"
@@ -177,7 +178,7 @@ def _sync_window(db, client, symbol, kind, start, end, today):
             if any(abs(price * scale + shift - target) > Decimal("0.011")
                    for price, target in zip(values, check[day])):
                 raise ValueError(f"{day} 除权因子与扶摇前复权 OHLC 不符")
-    if not bars:
+    if kind == "stock" and not bars:
         raise ValueError("请求区间无日线")
     db.execute("BEGIN IMMEDIATE")
     try:
@@ -189,8 +190,33 @@ def _sync_window(db, client, symbol, kind, start, end, today):
             db.executemany("INSERT INTO adjustment_factors VALUES (?,?,?,?)",
                            [(symbol, day, str(s), str(b)) for day, (s, b) in actions.items()])
         _clear_gaps(db, symbol, start, end)
-        db.execute("INSERT OR REPLACE INTO daily_sync VALUES (?,?,NULL)",
-                   (symbol, datetime.now(SHANGHAI).isoformat()))
+        if kind == "index":
+            extension = extended_sessions(db)
+            stored = {r[0] for r in db.execute(
+                "SELECT trade_date FROM daily_bars WHERE symbol=? AND trade_date BETWEEN ? AND ?",
+                (symbol, start, end))}
+            missing_start = missing_end = None
+            cursor, stop = date.fromisoformat(start), date.fromisoformat(end)
+            gaps = []
+            while cursor <= stop:
+                d = cursor.isoformat()
+                if is_session(cursor, extension):
+                    if d not in stored:
+                        missing_start = missing_start or d
+                        missing_end = d
+                    elif missing_start:
+                        gaps.append((symbol, missing_start, missing_end, "指数缺交易日日线"))
+                        missing_start = missing_end = None
+                cursor += timedelta(days=1)
+            if missing_start:
+                gaps.append((symbol, missing_start, missing_end, "指数缺交易日日线"))
+            db.executemany("INSERT INTO daily_gaps VALUES (?,?,?,?)", gaps)
+        remaining = db.execute("SELECT error FROM daily_gaps WHERE symbol=? ORDER BY start LIMIT 1",
+                               (symbol,)).fetchone()
+        success = datetime.now(SHANGHAI).isoformat() if bars else None
+        db.execute("""INSERT INTO daily_sync VALUES (?,?,?) ON CONFLICT(symbol) DO UPDATE SET
+                      last_success_at=COALESCE(excluded.last_success_at,daily_sync.last_success_at),
+                      error=excluded.error""", (symbol, success, remaining[0] if remaining else None))
         db.commit()
     except Exception:
         db.rollback()
@@ -201,8 +227,13 @@ def sync_market(data_dir: Path, start=None, end=None, *, client=None, watchlist=
     load_runtime_environment()
     now = datetime.now(SHANGHAI)
     today = now.date().isoformat()
-    end = end or (now.date() if now.hour >= 15 else now.date() - timedelta(days=1)).isoformat()
-    if date.fromisoformat(end) > now.date() or (start and date.fromisoformat(start) > date.fromisoformat(end)):
+    wall_cutoff = now.date() if now.hour >= 15 else now.date() - timedelta(days=1)
+    if end and date.fromisoformat(end) > wall_cutoff:
+        raise ValueError("请求截止日尚未收盘")
+    with connect(data_dir / "roll.sqlite3") as db:
+        last, _ = latest_session(db, wall_cutoff)
+    end = end or last.isoformat()
+    if date.fromisoformat(end) > last or (start and date.fromisoformat(start) > date.fromisoformat(end)):
         raise ValueError("无效行情日期区间")
     items = load_watchlist(watchlist)
     symbols = {item["code"]: "stock" for item in items}

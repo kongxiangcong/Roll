@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from roll.db import connect
+from roll.market.akshare_inputs import SourceFailure, share_units
 
 BROAD_ETFS = ("510300.SH", "510500.SH", "159915.SZ", "588000.SH")
 UNITS = {
@@ -30,6 +31,8 @@ def initialize_inputs(db):
         CREATE TABLE IF NOT EXISTS market_inputs (
             series TEXT, symbol TEXT, trade_date TEXT, observation TEXT NOT NULL,
             PRIMARY KEY(series,symbol,trade_date));
+        CREATE TABLE IF NOT EXISTS market_input_failures (
+            series TEXT, symbol TEXT, trade_date TEXT, error TEXT NOT NULL, PRIMARY KEY(series,symbol,trade_date));
         CREATE TABLE IF NOT EXISTS market_input_status (
             series TEXT, symbol TEXT, last_success_at TEXT, last_error TEXT,
             PRIMARY KEY(series,symbol));
@@ -37,10 +40,20 @@ def initialize_inputs(db):
 
 
 def input_rows(db, series, symbol, start, end):
-    return [{"trade_date": day, **json.loads(payload)} for day, payload in db.execute(
+    rows = [{"trade_date": day, **json.loads(payload)} for day, payload in db.execute(
         "SELECT trade_date,observation FROM market_inputs WHERE series=? AND symbol=? "
         "AND trade_date BETWEEN ? AND ? ORDER BY trade_date",
         (series, symbol, start or "", end or "9999"))]
+    if series == "etf_shares":
+        normalized = []
+        for row in rows:
+            try:
+                row["shares"] = share_units(row["shares"])
+            except (ValueError, ArithmeticError):
+                continue
+            normalized.append(row)
+        return normalized
+    return rows
 
 
 def read_inputs(data_dir: Path, series: str, symbol: str, start=None, end=None):
@@ -78,24 +91,32 @@ def _record_status(db, series, symbol, success, error):
 def _sync_group(db, source, series, symbol, days):
     wanted = set(days)
     observations = {}
-    problems = []
+    failures = {}
+    fetch_error = None
     try:
         method = getattr(source, series.removeprefix("etf_"))
         for day, fields in method(symbol, days):
             if day not in wanted:
                 continue
+            if isinstance(fields, SourceFailure):
+                failures[day] = fields.error
+                continue
             if day in observations:
                 raise ValueError("重复观察日")
             observations[day] = fields
     except Exception as exc:
-        problems.append(f"{series} 获取失败 ({type(exc).__name__})")
-    missing = sorted(wanted - observations.keys())
-    if missing:
-        problems.append(f"缺少 {len(missing)} 个交易日：" + "、".join(missing[:8]))
+        fetch_error = type(exc).__name__
+    for day in wanted - observations.keys():
+        failures.setdefault(day, fetch_error or "来源未返回该日")
     db.execute("BEGIN IMMEDIATE")
     try:
         _save(db, series, symbol, observations.items())
-        _record_status(db, series, symbol, bool(observations), "；".join(problems) or None)
+        db.executemany("DELETE FROM market_input_failures WHERE series=? AND symbol=? AND trade_date=?",
+                       ((series, symbol, day) for day in observations))
+        db.executemany("INSERT OR REPLACE INTO market_input_failures VALUES(?,?,?,?)",
+                       ((series,symbol,day,error) for day,error in failures.items()))
+        message = f"缺少 {len(failures)} 个交易日：" + "、".join(sorted(failures)[:8]) if failures else None
+        _record_status(db, series, symbol, bool(observations), message)
         db.commit()
     except Exception:
         db.rollback()
@@ -105,11 +126,17 @@ def _sync_group(db, source, series, symbol, days):
 def input_status(data_dir, start=None, end=None):
     with connect(data_dir / "roll.sqlite3") as db:
         initialize_inputs(db)
-        return [{**dict(row), "units": UNITS[row["series"]]} for row in db.execute("""
+        result = [{**dict(row), "units": UNITS[row["series"]]} for row in db.execute("""
             SELECT s.*,MIN(m.trade_date) first_date,MAX(m.trade_date) last_date,
                 COUNT(m.trade_date) count FROM market_input_status s LEFT JOIN market_inputs m
                 ON s.series=m.series AND s.symbol=m.symbol AND m.trade_date BETWEEN ? AND ?
                 GROUP BY s.series,s.symbol ORDER BY s.series,s.symbol""", (start or "", end or "9999"))]
+        for row in result:
+            row["failed_dates"] = [dict(r) for r in db.execute(
+                "SELECT trade_date,error FROM market_input_failures WHERE series=? AND symbol=? "
+                "AND trade_date BETWEEN ? AND ? ORDER BY trade_date",
+                (row["series"],row["symbol"],start or "",end or "9999"))]
+        return result
 
 
 def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None, sector_etfs=(), source=None):
@@ -145,9 +172,11 @@ def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None
         except Exception as exc:
             db.rollback()
             _record_status(db, "calendar", "CN", False, f"交易日历获取失败 ({type(exc).__name__})")
-    def sync_series(series):
+    def sync_series(series, exchange=None):
         if series.startswith("etf_"):
-            symbols = tuple(dict.fromkeys((*funds, *sector_etfs))) if series == "etf_bars" else funds
+            symbols = tuple(dict.fromkeys((*funds, *sector_etfs)))
+            if exchange:
+                symbols = tuple(s for s in symbols if s.endswith("."+exchange))
         else:
             symbols = ("000300.SH",) if series == "valuation" else ("CN",)
         with connect(data_dir / "roll.sqlite3") as db:
@@ -165,8 +194,10 @@ def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None
                 else:
                     _record_status(db, series, symbol, False, "请求范围无已知交易日")
 
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        jobs = [pool.submit(copy_context().run, sync_series, series) for series in dict.fromkeys(groups)]
+    streams = [(series, exchange) for series in dict.fromkeys(groups)
+               for exchange in (("SH","SZ") if series == "etf_shares" else (None,))]
+    with ThreadPoolExecutor(max_workers=len(streams)) as pool:
+        jobs = [pool.submit(copy_context().run, sync_series, series, exchange) for series,exchange in streams]
         for job in jobs:
             job.result()
     return input_status(data_dir)

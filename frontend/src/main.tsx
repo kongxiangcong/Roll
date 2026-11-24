@@ -18,11 +18,14 @@ function App() {
     new URLSearchParams(location.search).get("day") || "",
   );
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   useEffect(() => {
-    if (!day)
-      api<{ trade_date: string }>("/api/session")
-        .then((r) => setDay(r.trade_date))
-        .catch((e) => setError(e.message));
+    api<{ trade_date: string; notice?: string }>("/api/session")
+      .then((r) => {
+        if (!day) setDay(r.trade_date);
+        setNotice(r.notice || "");
+      })
+      .catch((e) => setError(e.message));
   }, []);
   function changeDay(value: string) {
     if (!value) return;
@@ -72,7 +75,7 @@ function App() {
             />
           </label>
         </header>
-        <Message error={error} />
+        <Message error={error} text={notice} />
         {day &&
           (path === "/holdings" ? (
             <Holdings key={day} day={day} />

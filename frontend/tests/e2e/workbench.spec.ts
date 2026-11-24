@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import { execFileSync } from "node:child_process";
+import path from "node:path";
 import { readFile } from "node:fs/promises";
 
 test("盘后同步、记账、冻结导出和双组合回测", async ({ page }) => {
@@ -69,4 +71,32 @@ test("盘后同步、记账、冻结导出和双组合回测", async ({ page }) 
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+});
+
+test("冻结时覆盖率70%，补齐后工作台100%且重读仍为70%", async ({ page }) => {
+  await page.goto("/?day=2024-11-01");
+  const latest = page.getByRole("region", { name: "最新工作台" });
+  const frozen = page.getByRole("region", { name: "冻结快照" });
+  await expect(latest).toContainText("70%");
+  await page.getByRole("button", { name: "冻结日报", exact: true }).click();
+  await expect(frozen).toContainText("70%");
+  const base = path.resolve("../.scratch/e2e");
+  const dbDir = await readFile(
+    path.join(base, "current-" + (process.env.ROLL_E2E_PORT || "18091")),
+    "utf8",
+  );
+  const python =
+    process.env.ROLL_TEST_PYTHON ||
+    path.resolve(
+      "../backend/.venv",
+      process.platform === "win32" ? "Scripts/python.exe" : "bin/python",
+    );
+  execFileSync(python, ["tests/e2e/seed.py", dbDir, "backfill"], {
+    env: { ...process.env, PYTHONPATH: path.resolve("../backend/src") },
+  });
+  await page.reload();
+  await expect(latest).toContainText("100%");
+  await page.getByRole("button", { name: "重读日报" }).click();
+  await expect(frozen).toContainText("70%");
+  await expect(frozen).toContainText("000300.SH");
 });

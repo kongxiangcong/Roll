@@ -30,6 +30,7 @@ type Card = {
   position_fraction: Numeric;
   sector_etf: string | null;
   sector_excess_return20: Numeric;
+  sector_net_flow5_yuan: Numeric;
   atr14: Numeric;
   atr_stop_multiplier: Numeric;
   atr_stop_price: Numeric;
@@ -42,6 +43,7 @@ type Card = {
   missing: string[];
   account_effective_at: string | null;
   financial_light: {
+    unverified_versions?: { period: string; source: string; missing: string }[];
     status: string;
     report_period: string | null;
     announce_date: string | null;
@@ -458,6 +460,10 @@ export default function Holdings({ day }: { day: string }) {
                   ["行业 ETF", c.sector_etf || "—"],
                   ["行业 20 日超额收益", pct(c.sector_excess_return20)],
                   [
+                    "行业 ETF 近 5 日净流入（元）",
+                    fmt(c.sector_net_flow5_yuan),
+                  ],
+                  [
                     "ATR14 / 止损倍数",
                     fmt(c.atr14, 3) + " / " + fmt(c.atr_stop_multiplier),
                   ],
@@ -497,6 +503,9 @@ export default function Holdings({ day }: { day: string }) {
                 {[
                   ...c.financial_light.reasons,
                   ...c.financial_light.missing,
+                  ...(c.financial_light.unverified_versions || []).map(
+                    (v) => v.period + " · " + v.source + " · " + v.missing,
+                  ),
                   ...c.missing,
                 ].map((v, i) => (
                   <p key={i}>{v}</p>

@@ -59,6 +59,14 @@ def _store(db, symbol, series, records, timestamp):
 
 
 def sync_financials(data_dir, symbols, *, sdk=None):
+    if sdk is not None:
+        return _sync_financials(data_dir, symbols, sdk)
+    from roll.market.akshare_timeout import bounded_requests
+    with bounded_requests(300):
+        return _sync_financials(data_dir, symbols, None)
+
+
+def _sync_financials(data_dir, symbols, sdk):
     result = []
     with connect(data_dir / "roll.sqlite3") as db:
         db.executescript(SCHEMA)
@@ -104,8 +112,12 @@ def financial_light(data_dir, symbol, as_of):
 
 def financial_light_in_transaction(db, symbol, as_of):
     day = date.fromisoformat(as_of).isoformat()
-    rows = db.execute("""SELECT * FROM fundamentals WHERE symbol=? AND available_from<=?
+    rows = db.execute("""SELECT * FROM fundamentals WHERE symbol=? AND announce_date<=?
                          AND period<=? ORDER BY period,available_from,observed_at,rowid""",(symbol,day,day)).fetchall()
+    unverified = db.execute("""SELECT period,series,notice_date,update_date,observed_at
+                               FROM fundamentals WHERE symbol=? AND announce_date IS NULL
+                               AND available_from<=? AND period<=? ORDER BY period DESC, observed_at DESC""",
+                            (symbol,day,day)).fetchall()
     periods = {}
     for row in rows:
         periods.setdefault(row["period"], {})[row["series"]] = row
@@ -157,4 +169,7 @@ def financial_light_in_transaction(db, symbol, as_of):
             "revenue_yoy_pct":revenue,"deducted_profit_yoy_pct":profit,"debt_ratio_pct":debt,
             "cashflow_quarter_yuan":str(cash) if cash is not None else None,
             "prior_cashflow_quarter_yuan":str(prior_cash) if prior_cash is not None else None,
-            "versions":versions}
+            "versions":versions,
+            "unverified_versions":[{**dict(r), "missing":"该版本披露日未经核实",
+                "source":"stock_financial_analysis_indicator_em" if r["series"]=="indicators"
+                else "stock_cash_flow_sheet_by_report_em"} for r in unverified if r["period"] >= (period or "")]}

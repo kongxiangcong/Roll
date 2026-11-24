@@ -6,7 +6,7 @@ from roll.accounts.ledger import Ledger
 from roll.barometer import scores_in_transaction
 from roll.config import active_watchlist_in_transaction
 from roll.db import connect
-from roll.market.calendar import is_session
+from roll.market.calendar import extended_sessions, is_session
 from roll.market.daily import SHANGHAI, history_in_transaction, initialize_market
 from roll.market.financials import SCHEMA as FINANCIAL_SCHEMA, financial_light_in_transaction
 from roll.market.inputs import initialize_inputs, input_rows
@@ -96,12 +96,32 @@ def _excess_return(db, sector, day, benchmark):
     cursor = date.fromisoformat(first)
     finish = date.fromisoformat(day)
     count = 0
+    extension = extended_sessions(db)
     while cursor < finish:
         cursor += timedelta(days=1)
-        count += is_session(cursor)
+        count += is_session(cursor, extension)
     if count != 20:
         return None
     return prices[day]/prices[first] - Decimal(benchmark[-1]["close"])/Decimal(benchmark[-21]["close"])
+
+
+def _sector_flow(db, sector, day):
+    if not sector:
+        return None
+    # Five same-day NAVs and the prior session's closing share count.
+    finish = date.fromisoformat(day)
+    extension = extended_sessions(db)
+    sessions = [str(finish-timedelta(days=i)) for i in range(40)
+                if is_session(finish-timedelta(days=i), extension)][:6]
+    if len(sessions) != 6 or sessions[0] != day:
+        return None
+    shares = {r["trade_date"]: Decimal(r["shares"]) for r in
+              input_rows(db, "etf_shares", sector, sessions[-1], day)}
+    nav = {r["trade_date"]: Decimal(r["nav"]) for r in
+           input_rows(db, "etf_nav", sector, sessions[-2], day)}
+    if not all(d in shares for d in sessions) or not all(nav.get(d, 0) > 0 for d in sessions[:-1]):
+        return None
+    return sum((shares[d]-shares[prior])*nav[d] for d, prior in zip(sessions, sessions[1:]))
 
 
 def risk_in_transaction(db, day, account, barometer):
@@ -132,6 +152,9 @@ def risk_in_transaction(db, day, account, barometer):
         rs = _excess_return(db, config.get("sector_etf"), day, benchmark)
         if rs is None:
             missing.append("缺行业 ETF 或基准同日的 20 日收益")
+        flow = _sector_flow(db, config.get("sector_etf"), day)
+        if flow is None:
+            missing.append("行业 ETF 近 5 个连续交易日的份额或净值不足")
         atr = Decimal(latest["atr14"]) if latest.get("atr14") is not None else None
         if atr is None:
             missing.append("缺 ATR14")
@@ -156,6 +179,7 @@ def risk_in_transaction(db, day, account, barometer):
             "quantity":_text(quantity), "market_value":_text(holding_value), "position_cap":config.get("max_position_pct"),
             "position_fraction":None, "single_overage":None, "reference_shares":None,
             "sellable_quantity":_text(sellable), "sector_excess_return20":_text(rs),
+            "sector_net_flow5_yuan":_text(flow),
             "ma20":latest.get("ma20"), "atr14":_text(atr), "atr_stop_multiplier":multiplier,
             "highest_close_since_entry":_text(peak), "atr_stop_price":_text(stop),
             "atr_stop_breached":price < stop if stop is not None else None,
@@ -192,10 +216,10 @@ def risk_in_transaction(db, day, account, barometer):
 
 def risk_at(data_dir, trade_date):
     day = date.fromisoformat(trade_date)
-    if not is_session(day):
-        raise ValueError("请选择交易日")
     ledger = Ledger(data_dir)
     with connect(ledger.path) as db:
+        if not is_session(day, extended_sessions(db)):
+            raise ValueError('请选择已核实的交易日')
         initialize_market(db)
         initialize_inputs(db)
         db.executescript(FINANCIAL_SCHEMA)

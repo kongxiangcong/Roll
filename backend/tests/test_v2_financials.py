@@ -63,3 +63,35 @@ def test_latest_update_without_matching_disclosure_cannot_be_backdated(tmp_path)
     sync_financials(tmp_path,["600362.SH"],sdk=feed)
     replay = financial_light(tmp_path,"600362.SH","2025-05-13")
     assert replay["status"] == "unknown" and replay["report_period"] is None
+
+
+def test_unverified_revision_cannot_supersede_an_established_disclosure(tmp_path):
+    initial = record("2025-03-31","2025-04-25",TOTALOPERATEREVETZ=12,KCFJCXSYJLRTZ=30,ZCFZL=50)
+    feed = FinancialFeed([initial], [])
+    sync_financials(tmp_path,["600362.SH"],sdk=feed)
+    feed.indicators = [{**initial,"TOTALOPERATEREVETZ":-11,"KCFJCXSYJLRTZ":-21,"UPDATE_DATE":"2025-05-12"}]
+    sync_financials(tmp_path,["600362.SH"],sdk=feed)
+    visible=financial_light(tmp_path,"600362.SH","2030-01-01")
+    assert visible["status"]=="green" and visible["announce_date"]=="2025-04-25"
+    assert visible["unverified_versions"][0]["source"]=="stock_financial_analysis_indicator_em"
+
+
+def test_production_financial_sync_bounds_sdk_http_calls(tmp_path, monkeypatch):
+    import sys
+    import requests
+    from types import SimpleNamespace
+    timeouts = []
+
+    def transport(self, request, **kwargs):
+        timeouts.append(kwargs["timeout"])
+        raise requests.ReadTimeout()
+
+    def sdk_call(**kwargs):
+        requests.get("https://example.invalid/")
+
+    monkeypatch.setattr(requests.Session, "send", transport)
+    monkeypatch.setitem(sys.modules, "akshare", SimpleNamespace(
+        stock_financial_analysis_indicator_em=sdk_call, stock_cash_flow_sheet_by_report_em=sdk_call))
+    result = sync_financials(tmp_path, ["600362.SH"])
+    assert len(timeouts) == 2 and all(0 < value <= 22 for value in timeouts)
+    assert all(row["error"] for row in result)

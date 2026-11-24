@@ -1,5 +1,5 @@
 """Shanghai exchange sessions from the adapted annual notices and corrections."""
-from datetime import date
+from datetime import date, timedelta
 
 
 HOLIDAYS_2026 = [
@@ -49,7 +49,29 @@ SSE_CALENDAR_CORRECTIONS = {
 }
 
 
-def is_session(day: date) -> bool:
+LAST_NOTICE_DAY = date(2026, 12, 31)
+
+
+def extended_sessions(db):
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='market_inputs'").fetchone():
+        return frozenset()
+    return frozenset(r[0] for r in db.execute(
+        "SELECT trade_date FROM market_inputs WHERE series='calendar' AND symbol='CN' AND trade_date>?",
+        (LAST_NOTICE_DAY.isoformat(),)))
+
+
+def latest_session(db, cutoff_day):
+    extension = extended_sessions(db)
+    known_through = max(LAST_NOTICE_DAY, date.fromisoformat(max(extension)) if extension else LAST_NOTICE_DAY)
+    cursor = min(known_through, cutoff_day)
+    if cursor.year < min(SSE_HISTORICAL_HOLIDAYS):
+        raise ValueError('没有此日期之前的已核实交易日')
+    while not is_session(cursor, extension):
+        cursor -= timedelta(days=1)
+    return cursor, cutoff_day > known_through
+
+
+def is_session(day: date, extension=None) -> bool:
     year = day.year
     if year == 2026:
         ranges = HOLIDAYS_2026
@@ -59,5 +81,7 @@ def is_session(day: date) -> bool:
         ]
         ranges = [(f"{year}-{start}", f"{year}-{end}") for start, end in periods]
     else:
+        if extension is not None:
+            return day.isoformat() in extension
         raise ValueError(f"缺少 {year} 年交易日历")
     return day.weekday() < 5 and not any(start <= day.isoformat() <= end for start, end in ranges)

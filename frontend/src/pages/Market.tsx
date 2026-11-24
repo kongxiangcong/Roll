@@ -39,8 +39,28 @@ type MarketData = {
     last_date: string;
     count: number;
     last_error: string | null;
+    failed_dates?: { trade_date: string; error: string }[];
   }[];
   calibration: { mature_sample_count: number; probability: number | null };
+};
+type FrozenReport = {
+  cutoff_at: string;
+  barometer: MarketData["barometer"];
+  risk?: {
+    portfolio: { assets: Numeric; market_value: Numeric; missing: string[] };
+    cards: {
+      symbol: string;
+      sector_net_flow5_yuan?: Numeric;
+      missing: string[];
+    }[];
+  };
+  account: {
+    cash_balance: Numeric;
+    positions: { instrument: string; quantity: Numeric }[];
+  };
+  market: Quote[];
+  obtained: string[];
+  missing: string[];
 };
 type Receipt = {
   error?: string;
@@ -78,7 +98,7 @@ export default function Market({ day }: { day: string }) {
     [busy, setBusy] = useState("");
   const [note, setNote] = useState(""),
     [fault, setFault] = useState(""),
-    [frozen, setFrozen] = useState("");
+    [frozen, setFrozen] = useState<FrozenReport | null>(null);
   const b = data?.barometer;
   async function sync() {
     setBusy("sync");
@@ -119,11 +139,11 @@ export default function Market({ day }: { day: string }) {
     setFault("");
     setNote("");
     try {
-      const result = await api<{ cutoff_at: string }>(
+      const result = await api<FrozenReport>(
         read ? `/api/reports/${day}/export?format=json` : `/api/reports/${day}`,
         { method: read ? "GET" : "POST" },
       );
-      setFrozen(result.cutoff_at);
+      setFrozen(result);
     } catch (e) {
       setFault((e as Error).message);
     } finally {
@@ -136,7 +156,7 @@ export default function Market({ day }: { day: string }) {
       {!data && !error && <Message text="读取盘后行情…" />}
       {b && (
         <>
-          <section className="hero">
+          <section className="hero" aria-label="最新工作台">
             <div>
               <span className="smallcap">市场总分</span>
               <div className="score">
@@ -273,6 +293,13 @@ export default function Market({ day }: { day: string }) {
                   {seriesNames[r.series] || r.series} · {r.symbol} ·{" "}
                   {r.first_date || "—"} 至 {r.last_date || "—"} · {r.count} 条{" "}
                   {r.last_error}
+                  {!!r.failed_dates?.length && (
+                    <small>
+                      {r.failed_dates
+                        .map((f) => f.trade_date + " " + f.error)
+                        .join("、")}
+                    </small>
+                  )}
                 </p>
               ))}
             </details>
@@ -281,7 +308,7 @@ export default function Market({ day }: { day: string }) {
         <Panel title="冻结日报">
           <p className="muted">
             {frozen
-              ? "冻结截止 " + stamp(frozen)
+              ? "冻结截止 " + stamp(frozen.cutoff_at)
               : "首次生成后固定当日内容和截止时间。"}
           </p>
           <div className="actions">
@@ -306,6 +333,81 @@ export default function Market({ day }: { day: string }) {
           )}
         </Panel>
       </div>
+      {frozen && (
+        <section aria-label="冻结快照">
+          <Panel
+            title="冻结快照"
+            action={<span className="muted">{stamp(frozen.cutoff_at)}</span>}
+          >
+            <div className="stats">
+              <Metric label="冻结总分" value={fmt(frozen.barometer.score, 1)} />
+              <Metric
+                label="冻结覆盖率"
+                value={pct(frozen.barometer.coverage)}
+              />
+              <Metric
+                label="冻结仓位上限"
+                value={pct(frozen.barometer.position_cap)}
+              />
+              <Metric
+                label="总资产（元）"
+                value={fmt(frozen.risk?.portfolio.assets)}
+              />
+              <Metric
+                label="现金余额（元）"
+                value={fmt(frozen.account.cash_balance)}
+              />
+              <Metric
+                label="持仓市值（元）"
+                value={fmt(frozen.risk?.portfolio.market_value)}
+              />
+            </div>
+            <p>
+              持仓 ·{" "}
+              {frozen.account.positions
+                .map((p) => p.instrument + " " + p.quantity + " 股")
+                .join("、") || "暂无持仓"}
+            </p>
+            <div className="scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>证券</th>
+                    <th>冻结收盘价 / 点位</th>
+                    <th>行情交易日</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {frozen.market.map((q) => (
+                    <tr key={q.symbol}>
+                      <td>{q.symbol}</td>
+                      <td>{fmt(q.close)}</td>
+                      <td>{q.last_date || "暂无"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {frozen.risk?.cards.map((card) => (
+              <p key={card.symbol}>
+                {card.symbol} · 行业 ETF 近 5 日净流入（元）{" "}
+                {fmt(card.sector_net_flow5_yuan)}
+                {!!card.missing.length && (
+                  <small>缺项 · {card.missing.join("、")}</small>
+                )}
+              </p>
+            ))}
+            <p>已取得 · {frozen.obtained.join("、") || "暂无"}</p>
+            <p>
+              缺项 ·{" "}
+              {[
+                ...frozen.missing,
+                ...(frozen.risk?.portfolio.missing || []),
+              ].join("、") || "无"}
+            </p>
+          </Panel>
+        </section>
+      )}
     </>
   );
 }

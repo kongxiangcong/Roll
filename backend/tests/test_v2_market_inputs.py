@@ -79,3 +79,45 @@ def test_cli_syncs_raw_etf_bars_and_exports_the_same_observation(tmp_path, monke
     main(prefix + ["inputs", "etf_bars", "510300.SH"])
     assert json.loads(capsys.readouterr().out)["rows"] == [{
         "trade_date": "2025-07-22", "open": "4.158", "high": "4.2", "low": "4.111", "close": "4.19"}]
+
+
+def test_daily_source_failure_is_isolated_and_exchange_calls_are_shared(tmp_path):
+    from collections import Counter
+    from roll.market.akshare_inputs import AkshareInputs
+
+    class Frame:
+        def __init__(self, rows): self.rows = rows
+        def to_dict(self, _): return self.rows
+
+    class SDK:
+        calls = Counter()
+
+        def fund_etf_scale_sse(self, date):
+            self.calls["share",date] += 1
+            if date == "20250722": raise TimeoutError()
+            days = date[:4]+"-"+date[4:6]+"-"+date[6:]
+            return Frame([{"基金代码":c,"统计日期":days,"基金份额":54810487699.99999} for c in ("510300","510500")])
+
+        def fund_scale_daily_szse(self, **params):
+            self.calls["sz",params["start_date"]] += 1
+            return Frame([{"基金代码":"159915","日期":"2025-07-23","基金份额":100}])
+
+        def stock_sse_deal_daily(self, date):
+            if date == "20250722": raise TimeoutError()
+            return Frame([{"单日情况":"成交金额","主板A":1,"科创板":1}])
+
+        def stock_szse_summary(self, date):
+            return Frame([{"证券类别":"主板A股","成交金额":3},{"证券类别":"创业板A股","成交金额":2}])
+
+    source=AkshareInputs(SDK())
+    result=sync_inputs(tmp_path,"2025-07-21","2025-07-23",source=source,
+                       funds=["510300.SH","510500.SH","159915.SZ"],groups=["etf_shares","turnover"])
+    assert source.sdk.calls["share","20250722"] == 1
+    for symbol in ("510300.SH","510500.SH"):
+        rows=read_inputs(tmp_path,"etf_shares",symbol)
+        assert [r["trade_date"] for r in rows] == ["2025-07-21","2025-07-23"]
+        assert all(r["shares"]=="54810487700" for r in rows)
+        status=next(r for r in result if r["symbol"]==symbol)
+        assert status["failed_dates"]==[{"trade_date":"2025-07-22","error":"TimeoutError"}]
+    assert len(read_inputs(tmp_path,"etf_shares","159915.SZ"))==1
+    assert [r["trade_date"] for r in read_inputs(tmp_path,"turnover","CN")]==["2025-07-21","2025-07-23"]

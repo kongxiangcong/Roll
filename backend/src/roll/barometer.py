@@ -5,7 +5,7 @@ from pathlib import Path
 from statistics import fmean
 
 from roll.db import connect
-from roll.market.calendar import is_session
+from roll.market.calendar import extended_sessions, is_session
 from roll.market.daily import initialize_market
 from roll.market.inputs import BROAD_ETFS, initialize_inputs, input_rows
 
@@ -79,20 +79,20 @@ def score_features(features):
             "coverage": weight / 100, "score": score, "regime": regime, "position_cap": cap, "missing": missing}
 
 
-def _sessions(start, end):
+def _sessions(start, end, extension):
     """Include up to 1259 verified prior sessions for the longest feature window."""
     first, last = date.fromisoformat(start), date.fromisoformat(end)
     if first > last:
         raise ValueError("起始日期晚于截止日")
     cursor, warmup = first - timedelta(days=1), []
     while len(warmup) < 1259 and cursor.year >= 2013:
-        if is_session(cursor):
+        if is_session(cursor, extension):
             warmup.append(cursor.isoformat())
         cursor -= timedelta(days=1)
     days = warmup[::-1]
     cursor = first
     while cursor <= last:
-        if is_session(cursor):
+        if is_session(cursor, extension):
             days.append(cursor.isoformat())
         cursor += timedelta(days=1)
     return days
@@ -162,7 +162,7 @@ def _feature_history(db, days):
 
 
 def scores_in_transaction(db, start: str, end: str):
-    days = _sessions(start, end)
+    days = _sessions(start, end, extended_sessions(db))
     if not days or days[-1] < start:
         return []
     history = _feature_history(db, days).loc[start:end]

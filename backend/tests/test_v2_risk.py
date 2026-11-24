@@ -48,6 +48,11 @@ def test_real_account_lots_and_same_day_frozen_risk(tmp_path):
             db.execute("INSERT INTO daily_bars VALUES(?,?,?,?,?,?)",("000300.SH",day,"100","100","100","100"))
             db.execute("INSERT INTO market_inputs VALUES('etf_bars','512400.SH',?,?)",
                        (day,json.dumps({"close":"2" if day==days[0] else "1"})))
+        for i, session in enumerate(reversed(days[:6])):
+            db.execute("INSERT INTO market_inputs VALUES('etf_shares','512400.SH',?,?)",
+                       (session,json.dumps({"shares": str(1000+i)})))
+            db.execute("INSERT INTO market_inputs VALUES('etf_nav','512400.SH',?,?)",
+                       (session,json.dumps({"nav": str(i+1)})))
     day="2025-08-01"
     risk=risk_at(tmp_path,day)
     card,=risk["cards"]
@@ -56,7 +61,16 @@ def test_real_account_lots_and_same_day_frozen_risk(tmp_path):
     assert card["sellable_quantity"]=="100" and card["below_low20"] and card["atr_stop_breached"]
     assert card["sector_excess_return20"]=="1" and card["highest_close_since_entry"]=="12"
     assert card["account_confirmed_at"] and card["trade_date"]==day and not card["price_stale"]
-    assert freeze_report(tmp_path,day)["risk"]==risk
+    from roll.barometer import barometer_at
+    from roll.reports import report_markdown
+    score = barometer_at(tmp_path,day)
+    assert card["sector_net_flow5_yuan"] == "20"
+    frozen = freeze_report(tmp_path,day)
+    assert frozen["risk"]==risk and "净流入额 20 元" in report_markdown(frozen)
+    with ledger.connection() as db:
+        db.execute("DELETE FROM market_inputs WHERE series='etf_shares' AND trade_date=?", (days[2],))
+    assert risk_at(tmp_path,day)["cards"][0]["sector_net_flow5_yuan"] is None
+    assert barometer_at(tmp_path,day) == score
     with ledger.connection() as db:
         db.execute("UPDATE daily_bars SET close_raw='11' WHERE symbol='600362.SH' AND trade_date=?",(day,))
     assert risk_at(tmp_path,day)["cards"][0]["close"]=="11"

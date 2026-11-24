@@ -1,11 +1,15 @@
 import { spawn, spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const base = path.join(root, ".scratch", "e2e");
 mkdirSync(base, { recursive: true });
 const data = mkdtempSync(path.join(base, "run-"));
+writeFileSync(
+  path.join(base, "current-" + (process.env.ROLL_E2E_PORT || "18091")),
+  data,
+);
 const python =
   process.env.ROLL_TEST_PYTHON ||
   path.join(

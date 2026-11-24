@@ -13,7 +13,7 @@ from roll.risk import risk_in_transaction
 from roll.market.financials import SCHEMA as FINANCIAL_SCHEMA
 from roll.barometer import scores_in_transaction
 from roll.market.inputs import initialize_inputs
-from roll.market.calendar import is_session
+from roll.market.calendar import extended_sessions, is_session
 from roll.market.daily import SHANGHAI, initialize_market, status_in_transaction
 
 
@@ -33,11 +33,13 @@ def read_report(data_dir: Path, trade_date: str):
 def freeze_report(data_dir: Path, trade_date: str):
     day = date.fromisoformat(trade_date)
     now = datetime.now(SHANGHAI)
-    if not is_session(day) or datetime.combine(day, time(15), SHANGHAI) > now:
+    if datetime.combine(day, time(15), SHANGHAI) > now:
         raise ValueError("请选择已经收盘的交易日")
     trade_date = day.isoformat()
     ledger = Ledger(data_dir)
     with connect(ledger.path) as db:
+        if not is_session(day, extended_sessions(db)):
+            raise ValueError('请选择已核实的交易日')
         initialize_market(db)
         initialize_inputs(db)
         db.executescript(FINANCIAL_SCHEMA)
@@ -119,9 +121,12 @@ def report_markdown(report):
                           f"账户有效时点 {show(card['account_effective_at'])}，"
                           + ("账户记录早于估值日或未知" if card['account_stale'] else "当日账户记录"),
                           f"行业 ETF 20 日相对收益 {show(card['sector_excess_return20'])}，"
+                          f"行业 ETF 近 5 日净流入额 {show(card.get('sector_net_flow5_yuan'))} 元，"
                           f"ATR14 {show(card['atr14'])}，移动止损价 {show(card['atr_stop_price'])}，"
                           f"前 20 日最低收盘 {show(card['previous_low20'])}",
                           f"财报灯 {dict(red='红', green='绿', unknown='未知')[card['financial_light']['status']]}"])
+            for version in card["financial_light"].get("unverified_versions", []):
+                lines.append(f"{version['period']} {version['source']}：{version['missing']}")
             if card["atr_stop_breached"]:
                 lines.append("已跌破移动止损价")
             if card["below_low20"]:

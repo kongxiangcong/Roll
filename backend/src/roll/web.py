@@ -16,7 +16,8 @@ from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.backtest import run_backtest
 from roll.barometer import barometer_at
 from roll.calibration import forward_statistics, historical_calibration
-from roll.market.calendar import is_session
+from roll.market.calendar import latest_session
+from roll.db import connect
 from roll.market.daily import SHANGHAI, market_status
 from roll.market.inputs import input_status
 from roll.market.sync import sync_workbench
@@ -30,12 +31,13 @@ class SyncRequest(BaseModel):
     end: date | None = None
 
 
-def last_session():
+def last_session(data_dir):
     now = datetime.now(SHANGHAI)
     day = now.date() if now.time() >= time(15) else now.date() - timedelta(days=1)
-    while not is_session(day):
-        day -= timedelta(days=1)
-    return day.isoformat()
+    with connect(data_dir / "roll.sqlite3") as db:
+        latest, stale = latest_session(db, day)
+    return {"trade_date":latest.isoformat(), "calendar_stale":stale,
+            "notice":"日历尚未覆盖今天，当前显示最近已核实交易日。请同步市场输入更新交易日历。" if stale else None}
 
 
 def create_app(data_dir: Path):
@@ -58,7 +60,7 @@ def create_app(data_dir: Path):
 
     @app.get("/api/session")
     def session():
-        return {"trade_date": last_session()}
+        return last_session(data_dir)
 
     @app.get("/api/market")
     def market(day: date):

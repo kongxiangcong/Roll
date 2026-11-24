@@ -6,7 +6,7 @@ from decimal import Decimal, InvalidOperation
 
 from roll.barometer import scores_in_transaction
 from roll.db import connect
-from roll.market.calendar import is_session
+from roll.market.calendar import extended_sessions, is_session
 from roll.market.daily import SHANGHAI, initialize_market
 from roll.market.inputs import initialize_inputs
 from roll.statistics import brier
@@ -146,8 +146,9 @@ def forward_in_transaction(db, start, end):
     """Evaluate predictions dated in the period using closes available through its end."""
     cursor, stop = date.fromisoformat(start), date.fromisoformat(end)
     sessions = []
+    extension = extended_sessions(db)
     while cursor <= stop:
-        if is_session(cursor):
+        if is_session(cursor, extension):
             sessions.append(cursor.isoformat())
         cursor += timedelta(days=1)
     positions = {day: index for index, day in enumerate(sessions)}

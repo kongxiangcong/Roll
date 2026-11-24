@@ -2,6 +2,8 @@
 from datetime import date, timedelta
 from decimal import Decimal
 from functools import cached_property
+from dataclasses import dataclass
+from math import ulp
 
 
 def number(value):
@@ -9,6 +11,20 @@ def number(value):
     if not parsed.is_finite() or parsed < 0:
         raise ValueError("缺失或无效的市场数据")
     return parsed
+
+
+@dataclass(frozen=True)
+class SourceFailure:
+    error: str
+
+
+def share_units(value):
+    units = number(value)
+    nearest = units.to_integral_value()
+    tolerance = min(Decimal("0.001"), Decimal(str(2 * ulp(float(units)))))
+    if abs(units - nearest) > tolerance:
+        raise ValueError("ETF 份额不是整数")
+    return format(nearest, "f")
 
 
 def compact(day):
@@ -23,6 +39,7 @@ class AkshareInputs:
     def __init__(self, sdk=None):
         self._sdk = sdk
         self._shanghai_shares = {}
+        self._shenzhen_shares = {}
 
     @cached_property
     def sdk(self):
@@ -67,22 +84,43 @@ class AkshareInputs:
         if exchange == "SH":
             for day in days:
                 if day not in self._shanghai_shares:
-                    frame = self.sdk.fund_etf_scale_sse(date=compact(day))
-                    # AKShare already converts SSE's ten-thousand-unit figure to units.
-                    self._shanghai_shares[day] = {
-                        r["基金代码"]: r["基金份额"] for r in frame.to_dict("records")
-                        if dated(r["统计日期"]) == day}
-                if code in self._shanghai_shares[day]:
-                    yield day, {"shares": str(number(self._shanghai_shares[day][code]))}
+                    try:
+                        records = self.sdk.fund_etf_scale_sse(date=compact(day)).to_dict("records")
+                        self._shanghai_shares[day] = {
+                            r["基金代码"]: r["基金份额"] for r in records if dated(r["统计日期"]) == day
+                        }
+                    except Exception as exc:
+                        self._shanghai_shares[day] = SourceFailure(type(exc).__name__)
+                values = self._shanghai_shares[day]
+                if isinstance(values, SourceFailure):
+                    yield day, values
+                elif code in values:
+                    try:
+                        yield day, {"shares": share_units(values[code])}
+                    except (ValueError, ArithmeticError) as exc:
+                        yield day, SourceFailure(type(exc).__name__)
         elif exchange == "SZ":
-            # The exchange limits each query to six calendar months.
             for i in range(0, len(days), 75):
                 window = days[i:i + 75]
-                frame = self.sdk.fund_scale_daily_szse(start_date=compact(window[0]),
-                                                       end_date=compact(window[-1]), symbol="ETF")
-                for row in frame.to_dict("records"):
+                key = window[0], window[-1]
+                if key not in self._shenzhen_shares:
+                    try:
+                        frame = self.sdk.fund_scale_daily_szse(start_date=compact(key[0]), end_date=compact(key[1]), symbol="ETF")
+                        self._shenzhen_shares[key] = frame.to_dict("records")
+                    except Exception as exc:
+                        self._shenzhen_shares[key] = SourceFailure(type(exc).__name__)
+                rows = self._shenzhen_shares[key]
+                if isinstance(rows, SourceFailure):
+                    for day in window:
+                        yield day, rows
+                    continue
+                for row in rows:
                     if row["基金代码"] == code:
-                        yield dated(row["日期"]), {"shares": str(number(row["基金份额"]))}
+                        day = dated(row["日期"])
+                        try:
+                            yield day, {"shares": share_units(row["基金份额"])}
+                        except (ValueError, ArithmeticError) as exc:
+                            yield day, SourceFailure(type(exc).__name__)
         else:
             raise ValueError("未知交易所")
 
@@ -103,14 +141,17 @@ class AkshareInputs:
 
     def turnover(self, symbol, days):
         for day in days:
-            sh = self.sdk.stock_sse_deal_daily(date=compact(day)).to_dict("records")
-            sz = self.sdk.stock_szse_summary(date=compact(day)).to_dict("records")
-            amount = next(r for r in sh if r["单日情况"] == "成交金额")
-            amounts = {r["证券类别"]: r["成交金额"] for r in sz}
-            # Exclude B shares, ETFs and buybacks. Shenzhen SME board was separate until 2021.
-            sz_a = number(amounts["主板A股"]) + number(amounts["创业板A股"]) + number(amounts.get("中小板", 0))
-            sh_a = number(amount["主板A"]) + number(amount["科创板"])
-            yield day, {"turnover_yuan": str(sh_a * 100_000_000 + sz_a)}
+            try:
+                sh = self.sdk.stock_sse_deal_daily(date=compact(day)).to_dict("records")
+                sz = self.sdk.stock_szse_summary(date=compact(day)).to_dict("records")
+                amount = next(r for r in sh if r["单日情况"] == "成交金额")
+                amounts = {r["证券类别"]: r["成交金额"] for r in sz}
+                # Exclude B shares, ETFs and buybacks. Shenzhen SME board was separate until 2021.
+                sz_a = number(amounts["主板A股"]) + number(amounts["创业板A股"]) + number(amounts.get("中小板", 0))
+                sh_a = number(amount["主板A"]) + number(amount["科创板"])
+                yield day, {"turnover_yuan": str(sh_a * 100_000_000 + sz_a)}
+            except Exception as exc:
+                yield day, SourceFailure(type(exc).__name__)
 
     def valuation(self, symbol, days):
         pe = self.sdk.stock_index_pe_lg(symbol="沪深300").to_dict("records")
@@ -129,6 +170,9 @@ class AkshareInputs:
         for day in days:
             if day not in daily:
                 continue
-            sz = self.sdk.stock_margin_szse(date=compact(day)).to_dict("records")
-            if len(sz) == 1:
-                yield day, {"balance_yuan": str(daily[day] + number(sz[0]["融资融券余额"]) * 100_000_000)}
+            try:
+                sz = self.sdk.stock_margin_szse(date=compact(day)).to_dict("records")
+                if len(sz) == 1:
+                    yield day, {"balance_yuan": str(daily[day] + number(sz[0]["融资融券余额"]) * 100_000_000)}
+            except Exception as exc:
+                yield day, SourceFailure(type(exc).__name__)

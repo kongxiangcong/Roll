@@ -65,14 +65,51 @@ def test_index_keeps_new_year_when_old_window_fails_and_retries_gap(tmp_path, mo
         requested.append(start)
         if start == _millis("2023-01-01") and not allowed:
             return httpx.Response(200, json={"code": 1003})
-        row = {"date_ms": start, **{k+"_price": 4100 for k in ("open", "high", "low", "close")}}
-        return httpx.Response(200, json={"code":0,"data":{"thscode":"000300.SH","item":[row]}})
+        from datetime import datetime,timedelta
+        from roll.market.calendar import is_session
+        from roll.market.daily import SHANGHAI
+        cursor = datetime.fromtimestamp(start / 1000, SHANGHAI).date()
+        last = datetime.fromtimestamp(int(request.url.params["end"]) / 1000, SHANGHAI).date()
+        rows = []
+        while cursor <= last:
+            if is_session(cursor) and (allowed or str(cursor) != "2024-01-04"):
+                rows.append({"date_ms": _millis(str(cursor)), **{k+"_price": 4100 for k in ("open","high","low","close")}})
+            cursor += timedelta(days=1)
+        return httpx.Response(200, json={"code":0,"data":{"thscode":"000300.SH","item":rows}})
     with httpx.Client(transport=httpx.MockTransport(provider)) as client:
         first, = sync_market(tmp_path, "2023-01-01", "2024-01-10", client=client, watchlist=config)
-        assert first["last_date"] == "2024-01-01" and first["gaps"][0]["start"] == "2023-01-01"
+        assert first["last_date"] == "2024-01-10" and first["gaps"][0]["start"] == "2023-01-01"
+        assert first["gaps"][1] == {"start":"2024-01-04","end":"2024-01-04","error":"指数缺交易日日线"}
         assert "1003" in first["gaps"][0]["error"]
         allowed = True
         requested.clear()
         updated, = sync_market(tmp_path, None, "2024-01-11", client=client, watchlist=config)
         assert _millis("2023-01-01") in requested
-        assert updated["gaps"] == [] and updated["first_date"] == "2023-01-01"
+        assert updated["gaps"] == [] and updated["first_date"] == "2023-01-03"
+
+
+def test_empty_index_window_keeps_actual_last_success(tmp_path, monkeypatch):
+    from roll.market.daily import _millis
+
+    monkeypatch.setenv("FUYAO_API_KEY", "test")
+    config = tmp_path / "empty.yaml"
+    config.write_text("watchlist: []", encoding="utf-8")
+    rows = []
+
+    def provider(request):
+        return httpx.Response(200, json={"code": 0, "data": {"thscode": "000300.SH", "item": rows}})
+
+    with httpx.Client(transport=httpx.MockTransport(provider)) as client:
+        def sync(day):
+            row, = sync_market(tmp_path, day, day, client=client, watchlist=config)
+            return row
+
+        first = sync("2025-07-21")
+        assert first["last_success_at"] is None and first["count"] == 0 and first["gaps"]
+        rows.append({"date_ms": _millis("2025-07-21"), **{k+"_price": 100 for k in ("open","high","low","close")}})
+        successful = sync("2025-07-21")
+        assert successful["last_success_at"] and successful["gaps"] == []
+        rows.clear()
+        assert sync("2025-07-26")["last_success_at"] == successful["last_success_at"]
+        failed = sync("2025-07-22")
+        assert failed["last_success_at"] == successful["last_success_at"] and failed["gaps"]
