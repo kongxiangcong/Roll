@@ -25,7 +25,7 @@ SYNC_GROUPS = tuple(k for k in UNITS if k not in {"etf_flow", "calendar"})
 SHANGHAI = timezone(timedelta(hours=8))
 
 
-def _initialize(db):
+def initialize_inputs(db):
     db.executescript("""
         CREATE TABLE IF NOT EXISTS market_inputs (
             series TEXT, symbol TEXT, trade_date TEXT, observation TEXT NOT NULL,
@@ -36,7 +36,7 @@ def _initialize(db):
     """)
 
 
-def _rows(db, series, symbol, start, end):
+def input_rows(db, series, symbol, start, end):
     return [{"trade_date": day, **json.loads(payload)} for day, payload in db.execute(
         "SELECT trade_date,observation FROM market_inputs WHERE series=? AND symbol=? "
         "AND trade_date BETWEEN ? AND ? ORDER BY trade_date",
@@ -48,15 +48,15 @@ def read_inputs(data_dir: Path, series: str, symbol: str, start=None, end=None):
     if series not in UNITS:
         raise ValueError("未知市场数据类型")
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
+        initialize_inputs(db)
         if series != "etf_flow":
-            return _rows(db, series, symbol, start, end)
+            return input_rows(db, series, symbol, start, end)
         previous = db.execute("SELECT MAX(trade_date) FROM market_inputs WHERE series='calendar' "
                               "AND symbol='CN' AND trade_date<?", (start or "",)).fetchone()[0]
-        days = [r["trade_date"] for r in _rows(db, "calendar", "CN", previous or start, end)]
+        days = [r["trade_date"] for r in input_rows(db, "calendar", "CN", previous or start, end)]
         shares = {r["trade_date"]: Decimal(r["shares"])
-                  for r in _rows(db, "etf_shares", symbol, previous or start, end)}
-        nav = {r["trade_date"]: Decimal(r["nav"]) for r in _rows(db, "etf_nav", symbol, start, end)}
+                  for r in input_rows(db, "etf_shares", symbol, previous or start, end)}
+        nav = {r["trade_date"]: Decimal(r["nav"]) for r in input_rows(db, "etf_nav", symbol, start, end)}
     return [{"trade_date": day, "previous_trade_date": prev,
              "net_flow_yuan": str((shares[day] - shares[prev]) * nav[day])}
             for prev, day in pairwise(days) if prev in shares and day in shares and day in nav]
@@ -104,7 +104,7 @@ def _sync_group(db, source, series, symbol, days):
 
 def input_status(data_dir, start=None, end=None):
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
+        initialize_inputs(db)
         return [{**dict(row), "units": UNITS[row["series"]]} for row in db.execute("""
             SELECT s.*,MIN(m.trade_date) first_date,MAX(m.trade_date) last_date,
                 COUNT(m.trade_date) count FROM market_input_status s LEFT JOIN market_inputs m
@@ -133,7 +133,7 @@ def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None
 
     funds = tuple(funds or BROAD_ETFS)
     with connect(data_dir / "roll.sqlite3") as db:
-        _initialize(db)
+        initialize_inputs(db)
         try:
             calendar = sorted(set(day for day in source.calendar() if day <= last_complete.isoformat()))
             if not calendar:
@@ -159,7 +159,7 @@ def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None
                                      (series, symbol, finish.isoformat())).fetchone()
                     if row[0]:
                         first = min(begin, date.fromisoformat(row[0]) - timedelta(days=5))
-                days = [r["trade_date"] for r in _rows(db, "calendar", "CN", first.isoformat(), finish.isoformat())]
+                days = [r["trade_date"] for r in input_rows(db, "calendar", "CN", first.isoformat(), finish.isoformat())]
                 if days:
                     _sync_group(db, source, series, symbol, days)
                 else:

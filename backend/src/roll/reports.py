@@ -5,6 +5,8 @@ from pathlib import Path
 
 from roll.accounts.ledger import Ledger
 from roll.db import connect
+from roll.barometer import scores_in_transaction
+from roll.market.inputs import initialize_inputs
 from roll.market.calendar import is_session
 from roll.market.daily import SHANGHAI, initialize_market, status_in_transaction
 
@@ -31,6 +33,7 @@ def freeze_report(data_dir: Path, trade_date: str):
     ledger = Ledger(data_dir)
     with connect(ledger.path) as db:
         initialize_market(db)
+        initialize_inputs(db)
         db.execute(SCHEMA)
         db.execute("BEGIN IMMEDIATE")
         row = db.execute("SELECT content FROM frozen_reports WHERE trade_date=?", (trade_date,)).fetchone()
@@ -42,18 +45,14 @@ def freeze_report(data_dir: Path, trade_date: str):
         market = status_in_transaction(db, trade_date)
         obtained = [row["symbol"] for row in market if row["close"] is not None]
         missing = [row["symbol"] for row in market if row["close"] is None]
-        missing_inputs = ["两市成交额", "四只宽基 ETF 份额及单位净值", "两市两融余额",
-                          "每日上涨与下跌家数", "沪深 300 PE(TTM) 与 PB"]
-        index = next(row for row in market if row["symbol"] == "000300.SH")
-        if index["count"] < 270:
-            missing_inputs.append("沪深 300 波动分位预热所需 270 个收盘")
+        barometer = scores_in_transaction(db, trade_date, trade_date)[0]
         report = {
             "trade_date": trade_date, "cutoff_at": cutoff,
             "account": {"cash_balance": snapshot["cash_balance"], "confirmed_at": snapshot["confirmed_at"],
                         "positions": [{k: p[k] for k in ("instrument", "quantity", "sellable_quantity")}
                                       for p in snapshot["positions"]]},
-            "market": market, "obtained": obtained, "missing": missing + missing_inputs,
-            "barometer": {"status": "今日晴雨表不可用", "coverage": 0, "score": None, "position_cap": None},
+            "market": market, "obtained": obtained, "missing": missing + barometer["missing"],
+            "barometer": barometer,
         }
         db.execute("INSERT INTO frozen_reports VALUES (?,?)", (trade_date, json.dumps(report, ensure_ascii=False)))
         db.commit()
@@ -78,8 +77,14 @@ def report_markdown(report):
         cells = (row[key] for key in ("symbol", "kind", "close", "first_date", "last_date", "count",
                                       "last_success_at", "error"))
         lines.append("| " + " | ".join(show(v) for v in cells) + " |")
+    cap = barometer["position_cap"]
+    cap_text = f"{cap:.0%}" if cap is not None and "dimensions" in barometer else show(cap)
     lines.extend(["", "## 晴雨表", "", barometer["status"], f"覆盖率 {barometer['coverage']:.0%}",
-                  f"总分 {show(barometer['score'])}", f"总仓位上限 {show(barometer['position_cap'])}",
+                  f"总分 {show(barometer['score'])}", f"总仓位上限 {cap_text}",
                   "", "已取得：" + ("、".join(report["obtained"]) or "暂无"),
                   "", "缺项：" + ("、".join(report["missing"]) or "无")])
+    if "dimensions" in barometer:
+        lines.extend(["", f"仓位档 {show(barometer['regime'])}", "", "| 市场维度 | 得分 |", "|---|---:|"])
+        for key, name in (("trend", "趋势与波动"), ("funding", "资金"), ("breadth", "广度"), ("valuation", "估值")):
+            lines.append(f"| {name} | {show(barometer['dimensions'][key])} |")
     return "\n".join(lines)
