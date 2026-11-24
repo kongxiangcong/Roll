@@ -4,7 +4,10 @@ import json
 from pathlib import Path
 
 from roll.accounts.ledger import Ledger
-from roll.calibration import calibration_in_transaction, initialize_calibration
+from roll.calibration import (
+    calibration_in_transaction, forward_in_transaction, initialize_calibration,
+    initialize_forward, register_frozen_forecast,
+)
 from roll.db import connect
 from roll.risk import risk_in_transaction
 from roll.market.financials import SCHEMA as FINANCIAL_SCHEMA
@@ -40,6 +43,7 @@ def freeze_report(data_dir: Path, trade_date: str):
         db.executescript(FINANCIAL_SCHEMA)
         initialize_calibration(db)
         db.execute(SCHEMA)
+        initialize_forward(db)
         db.execute("BEGIN IMMEDIATE")
         row = db.execute("SELECT content FROM frozen_reports WHERE trade_date=?", (trade_date,)).fetchone()
         if row:
@@ -61,6 +65,9 @@ def freeze_report(data_dir: Path, trade_date: str):
             "barometer": barometer,
             "calibration": calibration_in_transaction(db, trade_date, trade_date)["current"],
         }
+        register_frozen_forecast(db, report)
+        forward = forward_in_transaction(db, day.replace(month=1, day=1).isoformat(), trade_date)
+        report["forward"] = {k: v for k, v in forward.items() if k != "predictions"}
         db.execute("INSERT INTO frozen_reports VALUES (?,?)", (trade_date, json.dumps(report, ensure_ascii=False)))
         db.commit()
         return report
@@ -130,4 +137,10 @@ def report_markdown(report):
         lines.extend(["", "## 同档历史校准", "", f"档位 {show(current['regime'])}",
                       f"已成熟样本 {current['mature_sample_count']}",
                       "20 个后续交易日上涨频率 " + (f"{p:.2%}" if p is not None else "暂无")])
+    if "forward" in report:
+        forward = report["forward"]
+        lines.extend(["", "## 实际冻结预测", "", f"统计期 {forward['start']} 至 {forward['end']}",
+                      f"交易日 {forward['trading_days']}，实际登记 {forward['registered_count']}，"
+                      f"已成熟 {forward['mature_count']}，Brier 分母 {forward['brier_count']}",
+                      f"Brier {show(forward['brier'])}"])
     return "\n".join(lines)
