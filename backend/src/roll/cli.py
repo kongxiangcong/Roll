@@ -10,6 +10,7 @@ from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.barometer import barometer_at
 from roll.config import active_watchlist, data_directory
 from roll.market.daily import sync_market, read_bars, read_indicators
+from roll.market.financials import sync_financials, financial_light
 from roll.reports import freeze_report, read_report, report_markdown
 
 
@@ -32,6 +33,10 @@ def account_command(args):
 def sync_command(args):
     from roll.market.inputs import sync_inputs
 
+    if args.financials_only:
+        from roll.config import load_watchlist
+        items = load_watchlist(args.watchlist) if args.watchlist else active_watchlist(args.data_dir)
+        return sync_financials(args.data_dir, [item["code"] for item in items])
     if args.daily_only:
         return sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
     if args.market_inputs:
@@ -42,7 +47,8 @@ def sync_command(args):
     daily = sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
     sector_etfs = [item["sector_etf"] for item in active_watchlist(args.data_dir)]
     return {"daily": daily, "market_inputs": sync_inputs(
-        args.data_dir, args.start, args.end, groups=args.group, sector_etfs=sector_etfs)}
+        args.data_dir, args.start, args.end, groups=args.group, sector_etfs=sector_etfs),
+            "financials": sync_financials(args.data_dir, [r["symbol"] for r in daily if r["kind"] == "stock"])}
 
 
 def main(argv=None):
@@ -68,6 +74,7 @@ def main(argv=None):
     sync.add_argument("--end")
     subset = sync.add_mutually_exclusive_group()
     subset.add_argument("--market-inputs", action="store_true", help="仅同步 AKShare 市场输入")
+    subset.add_argument("--financials-only", action="store_true", help="仅同步跟踪池财报")
     subset.add_argument("--daily-only", action="store_true", help="仅同步股票及指数日线")
     sync.add_argument("--group", choices=SYNC_GROUPS, action="append", help="指定 AKShare 输入，可重复")
     sync.set_defaults(run=sync_command)
@@ -79,6 +86,10 @@ def main(argv=None):
     inputs.set_defaults(run=lambda a: {"units": UNITS[a.series], "rows": read_inputs(
         a.data_dir, a.series, a.symbol, a.start, a.end)} if a.series else input_status(a.data_dir, a.start, a.end))
     sync.add_argument("--watchlist", type=Path, help="跟踪池 YAML 路径")
+    financial = commands.add_parser("financials", help="按披露日回放个股财报灯")
+    financial.add_argument("symbol")
+    financial.add_argument("--as-of", required=True, metavar="YYYY-MM-DD")
+    financial.set_defaults(run=lambda a: financial_light(a.data_dir, a.symbol, a.as_of))
     watch = commands.add_parser("watchlist", help="读取上次同步生效的跟踪池")
     watch.set_defaults(run=lambda a: active_watchlist(a.data_dir))
     prices = commands.add_parser("prices", help="离线读取行情")
