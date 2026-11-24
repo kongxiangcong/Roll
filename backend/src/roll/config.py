@@ -49,3 +49,40 @@ def data_directory() -> Path:
     if os.name == "nt":
         return Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "Roll"
     return Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")) / "roll"
+
+DEFAULT_WATCHLIST = Path(__file__).resolve().parents[3] / "config" / "watchlist.yaml"
+
+
+def load_watchlist(path=None):
+    import yaml
+    from pydantic import BaseModel, Field, ConfigDict, TypeAdapter
+
+    class WatchItem(BaseModel):
+        model_config = ConfigDict(extra="forbid", str_strip_whitespace=True, allow_inf_nan=False)
+        code: str = Field(pattern=r"^[0-9]{6}\.(SH|SZ)$")
+        sector_etf: str = Field(pattern=r"^[0-9]{6}\.(SH|SZ)$")
+        name: str = Field(min_length=1)
+        max_position_pct: float = Field(ge=0, le=1)
+        atr_stop_multiplier: float = Field(gt=0)
+
+    try:
+        values = yaml.safe_load(Path(path or DEFAULT_WATCHLIST).read_text(encoding="utf-8-sig"))
+    except yaml.YAMLError as error:
+        raise ValueError("跟踪池 YAML 语法错误") from error
+    if not isinstance(values, dict) or set(values) != {"watchlist"}:
+        raise ValueError("跟踪池 YAML 顶层须有 watchlist")
+    items = TypeAdapter(list[WatchItem]).validate_python(values["watchlist"])
+    if len({item.code for item in items}) != len(items) or any(item.code == "000300.SH" for item in items):
+        raise ValueError("跟踪池证券重复或包含沪深 300 指数")
+    return [item.model_dump() for item in items]
+
+
+def active_watchlist(data_dir):
+    from roll.db import connect
+    import json
+    with connect(data_dir / "roll.sqlite3") as db:
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='watchlist_config'").fetchone():
+            row = db.execute("SELECT items FROM watchlist_config WHERE id=1").fetchone()
+            if row:
+                return json.loads(row[0])
+    return []

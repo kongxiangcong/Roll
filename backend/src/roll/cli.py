@@ -7,9 +7,9 @@ import sys
 from fastapi import HTTPException
 from roll.accounts.csv_import import CsvImports
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
-from roll.config import data_directory
+from roll.config import active_watchlist, data_directory
+from roll.market.daily import sync_market, read_bars, read_indicators
 from roll.reports import freeze_report, read_report, report_markdown
-from roll.market.daily import sync_market, read_bars
 
 
 def account_command(args):
@@ -48,13 +48,18 @@ def main(argv=None):
     sync = commands.add_parser("sync", help="同步盘后行情")
     sync.add_argument("--start")
     sync.add_argument("--end")
-    sync.set_defaults(run=lambda a: sync_market(a.data_dir, a.start, a.end))
+    sync.add_argument("--watchlist", type=Path, help="跟踪池 YAML 路径")
+    sync.set_defaults(run=lambda a: sync_market(a.data_dir, a.start, a.end, watchlist=a.watchlist))
+    watch = commands.add_parser("watchlist", help="读取上次同步生效的跟踪池")
+    watch.set_defaults(run=lambda a: active_watchlist(a.data_dir))
     prices = commands.add_parser("prices", help="离线读取行情")
     prices.add_argument("symbol")
     prices.add_argument("--start")
     prices.add_argument("--end")
     prices.add_argument("--adjustment", choices=["raw", "forward", "backward"], default="raw")
-    prices.set_defaults(run=lambda a: read_bars(a.data_dir, a.symbol, a.start, a.end, a.adjustment))
+    prices.add_argument("--indicators", action="store_true", help="附带同锚点的 MA20、MA60 和 ATR14")
+    prices.set_defaults(run=lambda a: (read_indicators if a.indicators else read_bars)(
+        a.data_dir, a.symbol, a.start, a.end, a.adjustment))
     report = commands.add_parser("report", help="冻结或重读盘后日报")
     report.add_argument("operation", choices=["freeze", "read"])
     report.add_argument("trade_date", metavar="YYYY-MM-DD")
