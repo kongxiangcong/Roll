@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from roll.accounts.ledger import Ledger
+from roll.calibration import calibration_in_transaction, initialize_calibration
 from roll.db import connect
 from roll.risk import risk_in_transaction
 from roll.market.financials import SCHEMA as FINANCIAL_SCHEMA
@@ -37,6 +38,7 @@ def freeze_report(data_dir: Path, trade_date: str):
         initialize_market(db)
         initialize_inputs(db)
         db.executescript(FINANCIAL_SCHEMA)
+        initialize_calibration(db)
         db.execute(SCHEMA)
         db.execute("BEGIN IMMEDIATE")
         row = db.execute("SELECT content FROM frozen_reports WHERE trade_date=?", (trade_date,)).fetchone()
@@ -55,7 +57,9 @@ def freeze_report(data_dir: Path, trade_date: str):
                         "positions": [{k: p[k] for k in ("instrument", "quantity", "sellable_quantity")}
                                       for p in snapshot["positions"]]},
             "market": market, "obtained": obtained, "missing": missing + barometer["missing"],
-            "barometer": barometer, "risk": risk_in_transaction(db, trade_date, snapshot, barometer),
+            "risk": risk_in_transaction(db, trade_date, snapshot, barometer),
+            "barometer": barometer,
+            "calibration": calibration_in_transaction(db, trade_date, trade_date)["current"],
         }
         db.execute("INSERT INTO frozen_reports VALUES (?,?)", (trade_date, json.dumps(report, ensure_ascii=False)))
         db.commit()
@@ -120,4 +124,10 @@ def report_markdown(report):
                              f"参考 {show(card['reference_shares'])} 股")
             if card["missing"]:
                 lines.append("个股缺项 " + "、".join(card["missing"]))
+    if "calibration" in report:
+        current = report["calibration"]
+        p = current["probability"]
+        lines.extend(["", "## 同档历史校准", "", f"档位 {show(current['regime'])}",
+                      f"已成熟样本 {current['mature_sample_count']}",
+                      "20 个后续交易日上涨频率 " + (f"{p:.2%}" if p is not None else "暂无")])
     return "\n".join(lines)
