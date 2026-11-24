@@ -392,6 +392,18 @@ class Ledger:
             raise HTTPException(404, "回执不存在")
         return json.loads(row["receipt"])
 
+    def account_for_receipt(self, receipt_id):
+        receipt = self.receipt(receipt_id)
+        account = self.account(version=receipt["account_version"])
+        return {
+            "receipt_id": receipt_id,
+            "account_version": account["version"],
+            "confirmed_at": account["confirmed_at"],
+            "cash_balance": account["cash_balance"],
+            "positions": account["positions"],
+            "fills": account.get("fills", []),
+        }
+
     def events(self,db=None):
         if db is None:
             with self.connection() as connection:
