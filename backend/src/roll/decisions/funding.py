@@ -145,16 +145,16 @@ class Funding:
             """)
             db.execute("INSERT OR IGNORE INTO schema_migrations VALUES(?,?)", ("10-funding-v1", now()))
 
-    def current(self, version=None, db=None):
+    def current(self, version=None, db=None, *, include_recovery=True):
         if db is None:
             with self.ledger.connection() as connection:
-                return self.current(version, connection)
+                return self.current(version, connection, include_recovery=include_recovery)
         row = db.execute("SELECT snapshot FROM funding_versions ORDER BY version DESC LIMIT 1" if version is None
                          else "SELECT snapshot FROM funding_versions WHERE version=?", () if version is None else (version,)).fetchone()
         if row:
             value=json.loads(row[0])
             recovery=getattr(self,"loss_recovery",None)
-            return recovery.effective(value,db) if recovery and version is None else value
+            return recovery.effective(value,db) if include_recovery and recovery and version is None else value
         if version not in (None, 0):
             raise HTTPException(404, "资金授权版本不存在")
         return {"version": 0, "state": "UNCONFIRMED", "loss_status": "PENDING_FACTS",

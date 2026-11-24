@@ -17,3 +17,20 @@ body.roll-terminal #root{height:100%;display:flex;flex-direction:column;min-heig
 .cw-layout{position:relative}@media(max-width:1050px),(max-height:650px){.cw-account{top:0;bottom:0}}@media(max-width:700px){.cw-watch{top:0;bottom:0}}
 .cw-watch{grid-column:1;grid-row:1}.cw-center{grid-column:2;grid-row:1}.cw-account{grid-column:3;grid-row:1}body.roll-terminal #root>header .brand{flex:0 0 auto;margin:0;width:auto}body.roll-terminal #root>header nav{flex:1;min-width:0;justify-content:flex-end}@media(max-width:700px){body.roll-terminal #root>header nav{justify-content:flex-start}}
 .cw-price-chart svg{min-height:160px}@media(max-width:700px),(max-height:650px){.cw-price-panel{overflow:auto}.cw-price-chart{flex:none;min-height:210px}.cw-price-chart svg{height:160px;flex:none}}
+
+.cw .cw-layout.cw-review-mode{grid-template-columns:minmax(0,1fr)}
+.cw-review-mode .cw-center{grid-column:1;grid-template-rows:minmax(0,1fr)}
+.cw-daily-review{max-width:900px;margin:0 auto;padding:4px 8px;overflow-wrap:anywhere}
+.cw-daily-review a{color:var(--cw-blue)}
+.cw-daily-review>.cw-card-head{flex-wrap:wrap}
+.cw-daily-review .cw-review-account,.cw-review-question{margin:16px 0;padding:12px;border:1px solid var(--cw-line)}
+.cw-daily-review .cw-review-question h3{margin:0 0 8px;font-size:15px}
+.cw-review-question article+article{border-top:1px solid var(--cw-line);margin-top:12px;padding-top:12px}
+.cw-review-question h4{margin:0 0 6px}
+.cw-daily-review select{max-width:100%}
+.cw .daily-judgment-form textarea{background:var(--cw-panel);color:var(--cw-text);border:1px solid var(--cw-muted);padding:6px 10px;font:inherit;min-height:64px}
+.cw .daily-judgment-form fieldset{border:1px solid var(--cw-line);margin:8px 0;padding:12px}
+.daily-judgment-form label{margin-bottom:8px}
+.daily-judgment-form .daily-judgment-check{display:flex;gap:6px;align-items:center;justify-content:flex-start}
+.daily-judgment-form .daily-judgment-check input{width:auto;min-height:0}
+.cw-research-assessment{border-top:1px solid var(--cw-line);margin-top:16px;padding-top:8px}

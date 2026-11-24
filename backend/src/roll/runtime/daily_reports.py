@@ -12,6 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field, AnyHttpUrl
 from roll.accounts.ledger import encode, now
 from roll.accounts.valuation import ValuationRequest, fees
 from roll.market.rules import SHANGHAI
+from roll.runtime.daily_report_review import build_review
 
 VERSION = 'daily-report-v1'
 
@@ -70,6 +71,7 @@ class NoteCommand(BaseModel):
     outcome: Literal['WATCH', 'ACTED', 'NO_ACTION', 'REVIEWED'] = 'WATCH'
     comparator: Literal['ABOVE', 'BELOW'] | None = None
     threshold: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    price_only: bool = False
     due_date: date | None = None
     parent_note_id: str | None = None
     fill_record_id: str | None = None
@@ -90,9 +92,10 @@ class BreadthCommand(BaseModel):
 
 
 class DailyReports:
-    def __init__(self, ledger, market, reviews, valuations, updates, financial, news):
+    def __init__(self, ledger, market, reviews, valuations, updates, financial, news, funding):
         self.ledger, self.market, self.reviews = ledger, market, reviews
         self.valuations, self.updates, self.financial, self.news = valuations, updates, financial, news
+        self.funding = funding
         with ledger.connection() as db:
             db.executescript('''
                 CREATE TABLE IF NOT EXISTS daily_reports(id TEXT PRIMARY KEY,day TEXT,revision INTEGER,input_hash TEXT,value TEXT,UNIQUE(day,revision));
@@ -112,17 +115,28 @@ class DailyReports:
         if digest(value['inputs']) != value['input_sha256']: raise HTTPException(409, 'DAILY_REPORT_INPUT_CORRUPT')
         return value
 
+    def review(self, identifier):
+        report = self.get(identifier)
+        predecessor_id = report.get('previous_report_id')
+        return build_review(report, self.get(predecessor_id) if predecessor_id else None)
+
     def notes(self):
         with self.ledger.connection() as db:
             return [json.loads(r[0]) for r in db.execute('SELECT value FROM daily_notes ORDER BY rowid')]
 
     def note(self, command):
-        value = command.model_dump(mode='json'); hashed = digest(value)
+        # Keep older idempotency keys valid when the optional scope is omitted.
+        value = command.model_dump(mode='json')
+        if not command.price_only:
+            value.pop('price_only')
+        hashed = digest(value)
         report = self.get(command.report_id)
         if not command.thesis.strip() or not command.invalidation.strip(): raise HTTPException(422, 'NOTE_TEXT_REQUIRED')
         if command.instrument not in {m['instrument'] for m in report['inputs']['listing']['members']}:
             raise HTTPException(422, 'NOTE_INSTRUMENT_NOT_IN_REPORT')
         if (command.comparator is None) != (command.threshold is None): raise HTTPException(422, 'CONDITION_PAIR_REQUIRED')
+        if command.price_only and command.threshold is None:
+            raise HTTPException(422, 'PRICE_ONLY_REQUIRES_THRESHOLD')
         if command.fill_record_id and command.fill_record_id not in {f['record_id'] for f in self.ledger.account().get('fills', []) if f['instrument']==command.instrument}:
             raise HTTPException(422, 'CONFIRMED_FILL_NOT_FOUND')
         if command.outcome == 'ACTED' and not command.fill_record_id: raise HTTPException(422, 'ACTED_REQUIRES_CONFIRMED_FILL')
@@ -157,6 +171,14 @@ class DailyReports:
 
     def publish(self):
         stamp = datetime.fromisoformat(now()); day = stamp.astimezone(SHANGHAI).date().isoformat()
+        authorization = self.funding.current(include_recovery=False)
+        if authorization['version'] and all(datetime.fromisoformat(authorization[k]) <= stamp
+                                            for k in ('confirmed_at', 'effective_at')):
+            authorization = {key: authorization[key] for key in (
+                'version', 'scope_kind', 'scope_id', 'state', 'total_exposure', 'single_exposure', 'cash_reserve',
+            )}
+        else:
+            authorization = None
         listing = self.market.listing(); account = self.ledger.account(listing['account_version'])
         if account.get('confirmed_at') and datetime.fromisoformat(account['confirmed_at'])>stamp:
             raise HTTPException(409,'ACCOUNT_CHANGED_RETRY_REPORT')
@@ -204,6 +226,8 @@ class DailyReports:
         inputs={'version':VERSION,'day':day,'account':account,'listing':listing,'market_rows':rows,
                 'market_versions':versions,'observations':observations,'gaps':gaps,'news':news,'financial':financial,
                 'jobs':jobs,'indices':metrics,'breadth':breadth,'notes':notes,'module_errors':failures}
+        if authorization:
+            inputs['funding'] = authorization
         # Financial observations have stable IDs and source cutoffs. No fresh wall time in the input hash.
         hashed=digest(inputs)
         previous=self.history(1)
