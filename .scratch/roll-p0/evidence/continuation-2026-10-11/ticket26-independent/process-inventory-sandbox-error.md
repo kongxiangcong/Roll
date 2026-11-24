@@ -1,1 +1,0 @@
-The first sandbox Get-CimInstance Win32_Process query was denied by CIM access policy. Its empty pipeline was not accepted as proof that hosts stopped. A scoped host-side query is recorded separately in stopped-processes.json; no provider, profile or credential lookup was performed.

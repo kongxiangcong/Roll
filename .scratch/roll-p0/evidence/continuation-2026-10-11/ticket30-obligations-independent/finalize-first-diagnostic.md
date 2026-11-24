@@ -1,1 +1,0 @@
-The first finalizer exited 1 on `KeyError: cash_mapping_hash` when comparing the proof envelope. The source proof envelope stores cash_mapping_hash in each notice, not as a top-level key. No product source or data changed. Corrected finalizer compares all 14 entire notice dictionaries, including their per-notice cash_mapping_hash, before recording success.
