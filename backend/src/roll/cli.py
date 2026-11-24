@@ -5,11 +5,11 @@ from pathlib import Path
 import sys
 
 from fastapi import HTTPException
-from pydantic import ValidationError
 from roll.accounts.csv_import import CsvImports
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
-from roll.config import data_directory
-from roll.market.daily import sync_market, read_bars
+from roll.config import active_watchlist, data_directory
+from roll.market.daily import sync_market, read_bars, read_indicators
+from roll.reports import freeze_report, read_report, report_markdown
 
 
 def account_command(args):
@@ -32,11 +32,16 @@ def sync_command(args):
     from roll.market.inputs import sync_inputs
 
     if args.daily_only:
-        return sync_market(args.data_dir, args.start, args.end)
+        return sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
     if args.market_inputs:
-        return sync_inputs(args.data_dir, args.start, args.end, groups=args.group)
-    daily = sync_market(args.data_dir, args.start, args.end)
-    return {"daily": daily, "market_inputs": sync_inputs(args.data_dir, args.start, args.end, groups=args.group)}
+        from roll.config import load_watchlist
+        items = load_watchlist(args.watchlist) if args.watchlist else active_watchlist(args.data_dir)
+        return sync_inputs(args.data_dir, args.start, args.end, groups=args.group,
+                           sector_etfs=[item["sector_etf"] for item in items])
+    daily = sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
+    sector_etfs = [item["sector_etf"] for item in active_watchlist(args.data_dir)]
+    return {"daily": daily, "market_inputs": sync_inputs(
+        args.data_dir, args.start, args.end, groups=args.group, sector_etfs=sector_etfs)}
 
 
 def main(argv=None):
@@ -72,20 +77,34 @@ def main(argv=None):
     inputs.add_argument("--end")
     inputs.set_defaults(run=lambda a: {"units": UNITS[a.series], "rows": read_inputs(
         a.data_dir, a.series, a.symbol, a.start, a.end)} if a.series else input_status(a.data_dir, a.start, a.end))
+    sync.add_argument("--watchlist", type=Path, help="跟踪池 YAML 路径")
+    watch = commands.add_parser("watchlist", help="读取上次同步生效的跟踪池")
+    watch.set_defaults(run=lambda a: active_watchlist(a.data_dir))
     prices = commands.add_parser("prices", help="离线读取行情")
     prices.add_argument("symbol")
     prices.add_argument("--start")
     prices.add_argument("--end")
     prices.add_argument("--adjustment", choices=["raw", "forward", "backward"], default="raw")
-    prices.set_defaults(run=lambda a: read_bars(a.data_dir, a.symbol, a.start, a.end, a.adjustment))
+    prices.add_argument("--indicators", action="store_true", help="附带同锚点的 MA20、MA60 和 ATR14")
+    prices.set_defaults(run=lambda a: (read_indicators if a.indicators else read_bars)(
+        a.data_dir, a.symbol, a.start, a.end, a.adjustment))
+    report = commands.add_parser("report", help="冻结或重读盘后日报")
+    report.add_argument("operation", choices=["freeze", "read"])
+    report.add_argument("trade_date", metavar="YYYY-MM-DD")
+    report.add_argument("--format", choices=["json", "markdown"], default="json")
+    report.set_defaults(run=lambda a: (freeze_report if a.operation == "freeze" else read_report)(
+        a.data_dir, a.trade_date))
     args = parser.parse_args(argv)
     try:
         result = args.run(args)
     except HTTPException as error:
         parser.exit(1, json.dumps(error.detail, ensure_ascii=False) + "\n")
-    except (ValidationError, OSError) as error:
+    except (ValueError, OSError) as error:
         parser.exit(1, str(error) + "\n")
-    print(json.dumps(result, ensure_ascii=False))
+    if args.command == "report" and args.format == "markdown":
+        print(report_markdown(result))
+    else:
+        print(json.dumps(result, ensure_ascii=False))
 
 
 if __name__ == "__main__":

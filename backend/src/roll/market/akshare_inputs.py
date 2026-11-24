@@ -1,5 +1,5 @@
 """AKShare field mapping for dated mainland-market inputs."""
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 from functools import cached_property
 
@@ -33,7 +33,22 @@ class AkshareInputs:
         return akshare
 
     def calendar(self):
-        return [dated(r["trade_date"]) for r in self.sdk.tool_trade_date_hist_sina().to_dict("records")]
+        from roll.market.calendar import is_session, SSE_HISTORICAL_HOLIDAYS
+
+        # Use the shared exchange calendar for years covered by the annual notices.
+        # Extend the calendar from AKShare when the bundled notices run out.
+        first = date(min(SSE_HISTORICAL_HOLIDAYS), 1, 1)
+        last = date(2026, 12, 31)
+        days = []
+        day = first
+        while day <= last:
+            if is_session(day):
+                days.append(day.isoformat())
+            day += timedelta(days=1)
+        if date.today() > last:
+            observed = self.sdk.tool_trade_date_hist_sina().to_dict("records")
+            days.extend(dated(r["trade_date"]) for r in observed if dated(r["trade_date"]) > last.isoformat())
+        return days
 
     def bars(self, symbol, days):
         code, exchange = symbol.split(".")
