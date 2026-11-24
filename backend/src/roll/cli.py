@@ -11,6 +11,7 @@ from roll.barometer import barometer_at
 from roll.config import active_watchlist, data_directory
 from roll.market.daily import sync_market, read_bars, read_indicators
 from roll.market.financials import sync_financials, financial_light
+from roll.risk import risk_at
 from roll.reports import freeze_report, read_report, report_markdown
 
 
@@ -90,6 +91,9 @@ def main(argv=None):
     financial.add_argument("symbol")
     financial.add_argument("--as-of", required=True, metavar="YYYY-MM-DD")
     financial.set_defaults(run=lambda a: financial_light(a.data_dir, a.symbol, a.as_of))
+    risk = commands.add_parser("risk", help="按交易日查看持仓与个股风险")
+    risk.add_argument("trade_date")
+    risk.set_defaults(run=lambda a: risk_at(a.data_dir, a.trade_date))
     watch = commands.add_parser("watchlist", help="读取上次同步生效的跟踪池")
     watch.set_defaults(run=lambda a: active_watchlist(a.data_dir))
     prices = commands.add_parser("prices", help="离线读取行情")
