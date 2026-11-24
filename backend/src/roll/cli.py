@@ -9,6 +9,7 @@ from roll.accounts.csv_import import CsvImports
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.config import active_watchlist, data_directory
 from roll.market.daily import sync_market, read_bars, read_indicators
+from roll.market.financials import sync_financials, financial_light
 from roll.reports import freeze_report, read_report, report_markdown
 
 
@@ -26,6 +27,17 @@ def account_command(args):
         command = ConfirmCommand(draft_id=args.draft_id, idempotency_key=args.key)
         return ledger.confirm(command)
     return ledger.account()
+
+
+def sync_command(args):
+    if args.financials_only:
+        items = active_watchlist(args.data_dir)
+        return sync_financials(args.data_dir, [item["code"] for item in items])
+    daily = sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
+    if args.daily_only:
+        return daily
+    symbols = [item["symbol"] for item in daily if item["kind"] == "stock"]
+    return {"daily": daily, "financials": sync_financials(args.data_dir, symbols)}
 
 
 def main(argv=None):
@@ -49,7 +61,14 @@ def main(argv=None):
     sync.add_argument("--start")
     sync.add_argument("--end")
     sync.add_argument("--watchlist", type=Path, help="跟踪池 YAML 路径")
-    sync.set_defaults(run=lambda a: sync_market(a.data_dir, a.start, a.end, watchlist=a.watchlist))
+    parts = sync.add_mutually_exclusive_group()
+    parts.add_argument("--daily-only", action="store_true", help="仅同步扶摇日线")
+    parts.add_argument("--financials-only", action="store_true", help="仅同步已生效跟踪池的财报")
+    sync.set_defaults(run=sync_command)
+    financial = commands.add_parser("financials", help="按披露日回放个股财报灯")
+    financial.add_argument("symbol")
+    financial.add_argument("--as-of", required=True, metavar="YYYY-MM-DD")
+    financial.set_defaults(run=lambda a: financial_light(a.data_dir, a.symbol, a.as_of))
     watch = commands.add_parser("watchlist", help="读取上次同步生效的跟踪池")
     watch.set_defaults(run=lambda a: active_watchlist(a.data_dir))
     prices = commands.add_parser("prices", help="离线读取行情")
