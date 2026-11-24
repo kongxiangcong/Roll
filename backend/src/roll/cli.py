@@ -10,8 +10,8 @@ from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.barometer import barometer_at
 from roll.calibration import historical_calibration, forward_statistics
 from roll.config import active_watchlist, data_directory
-from roll.market.daily import sync_market, read_bars, read_indicators
-from roll.market.financials import sync_financials, financial_light
+from roll.market.daily import read_bars, read_indicators
+from roll.market.financials import financial_light
 from roll.risk import risk_at
 from roll.reports import freeze_report, read_report, report_markdown
 
@@ -33,24 +33,11 @@ def account_command(args):
 
 
 def sync_command(args):
-    from roll.market.inputs import sync_inputs
-
-    if args.financials_only:
-        from roll.config import load_watchlist
-        items = load_watchlist(args.watchlist) if args.watchlist else active_watchlist(args.data_dir)
-        return sync_financials(args.data_dir, [item["code"] for item in items])
-    if args.daily_only:
-        return sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
-    if args.market_inputs:
-        from roll.config import load_watchlist
-        items = load_watchlist(args.watchlist) if args.watchlist else active_watchlist(args.data_dir)
-        return sync_inputs(args.data_dir, args.start, args.end, groups=args.group,
-                           sector_etfs=[item["sector_etf"] for item in items])
-    daily = sync_market(args.data_dir, args.start, args.end, watchlist=args.watchlist)
-    sector_etfs = [item["sector_etf"] for item in active_watchlist(args.data_dir)]
-    return {"daily": daily, "market_inputs": sync_inputs(
-        args.data_dir, args.start, args.end, groups=args.group, sector_etfs=sector_etfs),
-            "financials": sync_financials(args.data_dir, [r["symbol"] for r in daily if r["kind"] == "stock"])}
+    from roll.market.sync import sync_workbench
+    return sync_workbench(
+        args.data_dir, args.start, args.end, scope=args.sync_scope,
+        watchlist=args.watchlist, groups=args.group,
+    )
 
 
 def main(argv=None):
@@ -75,11 +62,11 @@ def main(argv=None):
     sync.add_argument("--start")
     sync.add_argument("--end")
     subset = sync.add_mutually_exclusive_group()
-    subset.add_argument("--market-inputs", action="store_true", help="仅同步 AKShare 市场输入")
-    subset.add_argument("--financials-only", action="store_true", help="仅同步跟踪池财报")
-    subset.add_argument("--daily-only", action="store_true", help="仅同步股票及指数日线")
+    subset.add_argument("--market-inputs", dest="sync_scope", action="store_const", const="inputs", help="仅同步 AKShare 市场输入")
+    subset.add_argument("--financials-only", dest="sync_scope", action="store_const", const="financials", help="仅同步跟踪池财报")
+    subset.add_argument("--daily-only", dest="sync_scope", action="store_const", const="daily", help="仅同步股票及指数日线")
     sync.add_argument("--group", choices=SYNC_GROUPS, action="append", help="指定 AKShare 输入，可重复")
-    sync.set_defaults(run=sync_command)
+    sync.set_defaults(run=sync_command, sync_scope="all")
     inputs = commands.add_parser("inputs", help="离线查看 AKShare 历史、单位与缺项")
     inputs.add_argument("series", choices=UNITS, nargs="?")
     inputs.add_argument("symbol", nargs="?", default="CN")
@@ -127,7 +114,12 @@ def main(argv=None):
     forward.add_argument("--start", required=True)
     forward.add_argument("--end", required=True)
     forward.set_defaults(run=lambda a: forward_statistics(a.data_dir, a.start, a.end))
+    server = commands.add_parser("serve",help="启动本机网页工作台")
+    server.add_argument("--port",type=int,default=8010)
     args = parser.parse_args(argv)
+    if args.command == "serve":
+        from roll.web import serve
+        return serve(args.data_dir,args.port)
     try:
         result = args.run(args)
     except HTTPException as error:

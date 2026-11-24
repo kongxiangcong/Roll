@@ -4,13 +4,20 @@ Roll 在 Windows 上按需运行。记账、日线、冻结日报共用本机 SQ
 
 ## 安装与启动
 
-在仓库根目录运行以下 PowerShell 命令。需安装 uv，建议使用 Python 3.13。
+本机需安装 uv 和 Node.js（含 npm），推荐 Python 3.13。无参数运行 `scripts/start.ps1` 会准备前端依赖、从当前源码构建静态页面，并在同一个回环服务中提供网页与 API。脚本可从其他目录用绝对路径运行。启动后打开 [本机工作台](http://127.0.0.1:8010)，在启动窗口按 Ctrl+C 停止。
 
 ```powershell
 uv sync --project backend --locked --python 3.13
-uv run --project backend --locked roll --help
-.\scripts\start.ps1 account show
+.\scripts\start.ps1
 ```
+
+网页由三个按需读取的页面组成。
+
+- **今日晴雨表**显示交易日总分、四维覆盖、仓位上限、同档成熟样本与行情缺口。可以同步全部或指定类型、冻结日报，并下载 JSON 或 Markdown。
+- **持仓与跟踪池**显示实际仓位、个股上限、可卖量、行业相对收益、ATR 和财报灯。记账先预览再确认，并用回执核对余额与数量。跟踪池在 `config/watchlist.yaml` 编辑，下一次同步生效。
+- **回测与校准**按所选区间比较 510300.SH 双组合扣费曲线与成本，分别列出历史四档复算和实际冻结的前向预测。
+
+也可运行 `scripts/start.ps1 serve --port 8020` 更换端口。依赖已安装且 `frontend/dist` 已构建时，直接执行 `uv run --project backend --locked roll serve` 即可启动。需要另一份本地账本时，在命令前指定 `--data-dir DIR`，如 `scripts/start.ps1 --data-dir D:\RollData serve`。
 
 ## 首笔账户与成交
 
@@ -50,6 +57,13 @@ uv run --project backend --locked roll account confirm $draft.draft_id opening
 ```
 
 第一次显式生成交易日报即保存其内容和截止时间。反复读取、再次冻结、同步和后续记账均保留这份历史结果。
+
+将页面下载的 Markdown 或 JSON 文件交给 WorkBuddy 即可离线读取。也可在 PowerShell 7 将 CLI 导出存成 UTF-8 文件。两种格式保留首次冻结的 `cutoff_at` 和同一组账户、行情与风险结果。
+
+```powershell
+.\scripts\start.ps1 report read 2025-08-01 --format markdown | Set-Content -Encoding utf8 roll-2025-08-01.md
+.\scripts\start.ps1 report read 2025-08-01 --format json | Set-Content -Encoding utf8 roll-2025-08-01.json
+```
 
 ## 单 ETF 控仓回测
 
