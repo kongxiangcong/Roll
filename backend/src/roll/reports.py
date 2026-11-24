@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from roll.accounts.ledger import Ledger
+from roll.calibration import calibration_in_transaction, initialize_calibration
 from roll.db import connect
 from roll.barometer import scores_in_transaction
 from roll.market.inputs import initialize_inputs
@@ -34,6 +35,7 @@ def freeze_report(data_dir: Path, trade_date: str):
     with connect(ledger.path) as db:
         initialize_market(db)
         initialize_inputs(db)
+        initialize_calibration(db)
         db.execute(SCHEMA)
         db.execute("BEGIN IMMEDIATE")
         row = db.execute("SELECT content FROM frozen_reports WHERE trade_date=?", (trade_date,)).fetchone()
@@ -53,6 +55,7 @@ def freeze_report(data_dir: Path, trade_date: str):
                                       for p in snapshot["positions"]]},
             "market": market, "obtained": obtained, "missing": missing + barometer["missing"],
             "barometer": barometer,
+            "calibration": calibration_in_transaction(db, trade_date, trade_date)["current"],
         }
         db.execute("INSERT INTO frozen_reports VALUES (?,?)", (trade_date, json.dumps(report, ensure_ascii=False)))
         db.commit()
@@ -87,4 +90,10 @@ def report_markdown(report):
         lines.extend(["", f"仓位档 {show(barometer['regime'])}", "", "| 市场维度 | 得分 |", "|---|---:|"])
         for key, name in (("trend", "趋势与波动"), ("funding", "资金"), ("breadth", "广度"), ("valuation", "估值")):
             lines.append(f"| {name} | {show(barometer['dimensions'][key])} |")
+    if "calibration" in report:
+        current = report["calibration"]
+        p = current["probability"]
+        lines.extend(["", "## 同档历史校准", "", f"档位 {show(current['regime'])}",
+                      f"已成熟样本 {current['mature_sample_count']}",
+                      "20 个后续交易日上涨频率 " + (f"{p:.2%}" if p is not None else "暂无")])
     return "\n".join(lines)

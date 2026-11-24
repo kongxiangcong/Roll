@@ -8,6 +8,7 @@ from fastapi import HTTPException
 from roll.accounts.csv_import import CsvImports
 from roll.accounts.ledger import ConfirmCommand, DraftCommand, Ledger
 from roll.barometer import barometer_at
+from roll.calibration import historical_calibration
 from roll.config import active_watchlist, data_directory
 from roll.market.daily import sync_market, read_bars, read_indicators
 from roll.market.financials import sync_financials, financial_light
@@ -109,6 +110,10 @@ def main(argv=None):
     gauge = commands.add_parser("barometer", help="读取指定交易日的实时工作台晴雨表")
     gauge.add_argument("trade_date", metavar="YYYY-MM-DD")
     gauge.set_defaults(run=lambda a: barometer_at(a.data_dir, a.trade_date))
+    calibration = commands.add_parser("calibration", help="查看所选期间四档历史预测及 Brier")
+    calibration.add_argument("--start", required=True)
+    calibration.add_argument("--end", required=True)
+    calibration.set_defaults(run=lambda a: historical_calibration(a.data_dir, a.start, a.end))
     args = parser.parse_args(argv)
     try:
         result = args.run(args)
