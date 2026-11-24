@@ -1,6 +1,6 @@
 # Roll v2.1 · 个人盘后工作台重构
 
-Status: ready-for-agent
+Status: resolved
 
 ## Problem Statement
 
@@ -85,3 +85,11 @@ Status: ready-for-agent
 第二周完成评分表及晴雨表，第三周验证单 ETF 控仓与四档校准，第四周贯通网页、命令行和 WorkBuddy。首周可独立开工。评分表具体数值留至第二周晴雨表实现前冻结。当前交付为实施规格，实际数据覆盖、回测结果和切换完成情况以实施验收记录为准。
 
 本规格综合 2026-11-24 的 Q1–Q21。未被修订的指标细节、初始配置和清理对象见设计原稿，重叠条款按 v2.1 决定执行。[v2.1 评审决定](../../docs/design/roll_v2_1_refactoring_spec.md) · [v2 设计原稿](../../docs/design/roll_v2_refactoring_spec.md)
+
+## 实施与验收记录
+
+2026-11-25，15 张实施票均已解决，默认入口切换到 v2。集成分支为 `codex/roll-v2-1-refactoring`，v0 保存在 `archive/v0-legacy`（`eefe2c57`）。工程与规格审查的修复位于 `6402f6ae`，两组复审均已通过。最终集成分支在 Windows 宿主通过全部 42 项后端测试和 2 项浏览器端到端测试。以下验收产物保存在本机工作区。
+
+- Windows 原生 Chrome 通过同一份 Playwright 配置跑通同步、记账、回测、冻结、导出和重读。真实扶摇行情单独核对。覆盖率 70% 冻结、补数到 100%、重读仍为 70% 的页面用例使用确定性输入。
+- 首周离线冻结见 [JSON](../v21-acceptance/week1/frozen.json)。最终联网浏览器流程的[冻结日报](../v21-acceptance/browser/final-report.md)由本机 WorkBuddy Markdown 阅读组件在禁用外网的环境中渲染，并核对冻结截止时间。
+- 独立真实行情库覆盖 2020-01-02 至 2026-11-24，510300.SH 原始日线共 1,670 个交易日。沪深 300 实得 1,211 行，四只宽基 ETF 的单位净值各补取 330 日。ETF 份额存在请求超时，历史广度与日频估值也有缺口。2020–2023 的 970 日及 2024 起的 700 日均未达到 65% 的整维覆盖率。控仓组全程持有现金，历史 Brier 分母为零，当前数据无法评价控仓效果。[回测明细](../v21-acceptance/history-confirmation/backtest.json) · [历史校准](../v21-acceptance/history-confirmation/calibration.json)
