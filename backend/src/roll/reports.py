@@ -5,8 +5,7 @@ from pathlib import Path
 
 from roll.accounts.ledger import Ledger
 from roll.calibration import (
-    calibration_in_transaction, forward_in_transaction, initialize_calibration,
-    initialize_forward, register_frozen_forecast,
+    calibration_in_transaction, forward_in_transaction, initialize_forward, register_frozen_forecast,
 )
 from roll.db import connect
 from roll.risk import risk_in_transaction
@@ -43,7 +42,6 @@ def freeze_report(data_dir: Path, trade_date: str):
         initialize_market(db)
         initialize_inputs(db)
         db.executescript(FINANCIAL_SCHEMA)
-        initialize_calibration(db)
         db.execute(SCHEMA)
         initialize_forward(db)
         db.execute("BEGIN IMMEDIATE")

@@ -71,9 +71,24 @@ def test_unverified_revision_cannot_supersede_an_established_disclosure(tmp_path
     sync_financials(tmp_path,["600362.SH"],sdk=feed)
     feed.indicators = [{**initial,"TOTALOPERATEREVETZ":-11,"KCFJCXSYJLRTZ":-21,"UPDATE_DATE":"2025-05-12"}]
     sync_financials(tmp_path,["600362.SH"],sdk=feed)
-    visible=financial_light(tmp_path,"600362.SH","2030-01-01")
+    visible=financial_light(tmp_path,"600362.SH","2025-07-01")
     assert visible["status"]=="green" and visible["announce_date"]=="2025-04-25"
-    assert visible["unverified_versions"][0]["source"]=="stock_financial_analysis_indicator_em"
+    stale=financial_light(tmp_path,"600362.SH","2025-09-01")
+    assert stale["status"]=="unknown" and stale["report_period"] is None
+    assert "2025-06-30" in stale["missing"][0]
+
+
+def test_known_new_disclosure_blocks_old_green_without_backfilling_revision(tmp_path):
+    fields = dict(TOTALOPERATEREVETZ=12, KCFJCXSYJLRTZ=30, ZCFZL=50)
+    last_year = record("2024-12-31", "2025-04-20", **fields)
+    revised = record("2025-03-31", "2025-04-29", **fields)
+    revised["UPDATE_DATE"] = "2026-04-29"
+    sync_financials(tmp_path, ["600362.SH"], sdk=FinancialFeed([last_year, revised], []))
+    assert financial_light(tmp_path, "600362.SH", "2025-04-28")["status"] == "green"
+    result = financial_light(tmp_path, "600362.SH", "2025-04-29")
+    assert result["status"] == "unknown" and result["report_period"] is None
+    assert result["revenue_yoy_pct"] is None
+    assert result["missing"] == ["2025-03-31 财报已披露，但当时版本未经核实"]
 
 
 def test_production_financial_sync_bounds_sdk_http_calls(tmp_path, monkeypatch):

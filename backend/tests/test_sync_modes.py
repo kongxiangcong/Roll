@@ -30,10 +30,12 @@ def test_daily_sync_doesnt_replay_old_gaps_and_index_backfill_skips_covered_wind
     with connect(tmp_path / "roll.sqlite3") as db:
         initialize_market(db)
         begin = (today - timedelta(days=180)).isoformat()
-        assert list(_windows(db, "000300.SH", None, str(today), recent_only=True)) == [(begin, str(today))]
+        assert list(_windows(db, "000300.SH", None, str(today))) == [(begin, str(today))]
+        assert list(_windows(db, "000300.SH", "2020-01-01", "2020-09-01")) == [
+            ("2020-01-01", "2020-09-01")]
         db.execute("INSERT INTO daily_gaps VALUES ('000300.SH', '2020-01-02', '2020-01-03', 'source gap')")
         db.execute("INSERT INTO daily_bars VALUES ('000300.SH', '2025-07-21', '1', '1', '1', '1')")
-        assert list(_windows(db, "000300.SH", None, str(today), recent_only=True)) == [
+        assert list(_windows(db, "000300.SH", None, str(today))) == [
             ("2025-07-16", str(today))]
     sync_market(tmp_path, str(today), str(today), client=object(), index_only=True)
     with connect(tmp_path / "roll.sqlite3") as db:

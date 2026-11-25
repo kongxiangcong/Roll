@@ -30,7 +30,7 @@ def test_cold_start_matures_on_twentieth_session_and_counts_only_scored_predicti
     assert all(r["outcome"] is None and r["probability"] is None for r in incomplete)
 
 
-def test_calibration_archive_retains_probability_after_source_revisions(tmp_path, monkeypatch):
+def test_calibration_recomputes_after_backfill_without_persisting_a_replay(tmp_path, monkeypatch):
     from roll.barometer import score_features
     from roll.calibration import historical_calibration
     from roll.db import connect
@@ -48,18 +48,31 @@ def test_calibration_archive_retains_probability_after_source_revisions(tmp_path
     monkeypatch.setattr("roll.calibration.scores_in_transaction", scores)
     with connect(tmp_path / "roll.sqlite3") as db:
         initialize_market(db)
-        for i in (0, 20, 40):
+        for i in (20, 40):
             close = str(101 if i == 20 else 100)
             db.execute("INSERT INTO daily_bars VALUES ('000300.SH',?,?,?,?,?)",
                        (sessions[i], close, close, close, close))
+    from fastapi.testclient import TestClient
+    from roll.web import create_app
+
+    client = TestClient(create_app(tmp_path))
+    request = "/api/market?day=" + sessions[20]
+    response = client.get(request)
+    assert response.status_code == 200
+    assert response.json()["calibration"]["probability"] is None
     first = historical_calibration(tmp_path, sessions[0], sessions[20])
-    assert first["current"]["probability"] == 1
+    assert first["current"]["probability"] is None
     assert first["by_regime"]["防守"]["brier_count"] == 0
     with connect(tmp_path / "roll.sqlite3") as db:
-        db.execute("UPDATE daily_bars SET close_raw='200' WHERE symbol='000300.SH' AND trade_date=?", (sessions[0],))
+        assert db.execute("SELECT name FROM sqlite_master WHERE name LIKE 'replay_%'").fetchall() == []
+        db.execute("INSERT INTO daily_bars VALUES ('000300.SH',?,'100','100','100','100')", (sessions[0],))
+    response = client.get(request)
+    assert response.status_code == 200
+    assert response.json()["calibration"]["probability"] == 1
     after = historical_calibration(tmp_path, sessions[20], sessions[40])
     assert after["forecasts"][0]["probability"] == 1
     assert after["by_regime"]["防守"]["brier_count"] == 1
+    assert after["by_regime"]["防守"]["brier"] == 1
     assert after["by_regime"]["防守"]["predictions"] == 1
     earlier = historical_calibration(tmp_path, sessions[0], sessions[0])
     assert earlier["forecasts"][0]["probability"] is None and earlier["forecasts"][0]["outcome"] is None

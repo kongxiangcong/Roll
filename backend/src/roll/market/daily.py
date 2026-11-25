@@ -126,19 +126,17 @@ def _transform(actions, day, anchor):
     return scale, shift
 
 
-def _windows(db, symbol, start, end, *, recent_only=False):
+def _windows(db, symbol, start, end):
     finish = date.fromisoformat(end)
     pending = []
     if start is None:
         last = db.execute("SELECT MAX(trade_date) FROM daily_bars WHERE symbol=?", (symbol,)).fetchone()[0]
-        floor = finish - timedelta(days=180 if recent_only else 365 * 6)
-        first = min(date.fromisoformat(last), finish) - timedelta(days=5) if last else floor
-        if recent_only:
-            first = max(floor, first)
-        pending.extend((max(floor, date.fromisoformat(r[0])) if recent_only else date.fromisoformat(r[0]),
-                        min(date.fromisoformat(r[1]), finish))
-                       for r in db.execute("SELECT start,end FROM daily_gaps WHERE symbol=? AND start<=?",
-                                           (symbol, end)) if not recent_only or r[1] >= floor.isoformat())
+        floor = finish - timedelta(days=180)
+        first = max(floor, min(date.fromisoformat(last), finish) - timedelta(days=5)) if last else floor
+        pending.extend((max(floor, date.fromisoformat(left)), min(date.fromisoformat(right), finish))
+                       for left, right in db.execute(
+                           "SELECT start,end FROM daily_gaps WHERE symbol=? AND start<=? AND end>=?",
+                           (symbol, end, floor.isoformat())))
     else:
         first = date.fromisoformat(start)
     pending.append((first, finish))
@@ -228,7 +226,7 @@ def _sync_window(db, client, symbol, kind, start, end, today):
 
 
 def sync_market(data_dir: Path, start=None, end=None, *, client=None, watchlist=None,
-                recent_only=False, index_only=False):
+                index_only=False):
     load_runtime_environment()
     now = datetime.now(SHANGHAI)
     today = now.date().isoformat()
@@ -250,7 +248,7 @@ def sync_market(data_dir: Path, start=None, end=None, *, client=None, watchlist=
             db.execute("CREATE TABLE IF NOT EXISTS watchlist_config(id INTEGER PRIMARY KEY, items TEXT NOT NULL)")
             db.execute("INSERT OR REPLACE INTO watchlist_config VALUES (1,?)", (json.dumps(items, ensure_ascii=False),))
         for symbol, kind in symbols.items():
-            for left, right in _windows(db, symbol, start, end, recent_only=recent_only):
+            for left, right in _windows(db, symbol, start, end):
                 if index_only:
                     stored = {r[0] for r in db.execute(
                         "SELECT trade_date FROM daily_bars WHERE symbol=? AND trade_date BETWEEN ? AND ?",

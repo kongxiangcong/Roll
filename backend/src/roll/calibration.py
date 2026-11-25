@@ -25,9 +25,8 @@ def index_label(start_close, end_close):
     return int(end > start)
 
 
-def replay_predictions(sessions, closes, archived=None, labels=None):
+def replay_predictions(sessions, closes):
     """Consume the complete ordered exchange calendar, including sessions without a signal/close."""
-    archived, labels = archived or {}, labels or {}
     counts, ups, forecasts = Counter(), Counter(), {}
     for i, session in enumerate(sessions):
         day = session["trade_date"]
@@ -35,16 +34,12 @@ def replay_predictions(sessions, closes, archived=None, labels=None):
             origin = sessions[i - HORIZON]["trade_date"]
             prior = forecasts.get(origin)
             if prior:
-                outcome = labels.get(origin)
-                if outcome is None:
-                    outcome = index_label(closes.get(origin), closes.get(day))
+                outcome = index_label(closes.get(origin), closes.get(day))
                 if outcome is not None:
                     prior.update(maturity_date=day, outcome=outcome)
                     counts[prior["regime"]] += 1
                     ups[prior["regime"]] += outcome
-        if day in archived:
-            forecast = dict(archived[day])
-        elif (regime := session["regime"]) is not None:
+        if (regime := session["regime"]) is not None:
             count = counts[regime]
             forecast = {"trade_date": day, "regime": regime, "mature_sample_count": count,
                         "probability": ups[regime] / count if count else None}
@@ -67,34 +62,18 @@ def summarize(forecasts):
     return result
 
 
-def initialize_calibration(db):
-    db.execute("""CREATE TABLE IF NOT EXISTS replay_forecasts (
-        trade_date TEXT PRIMARY KEY, regime TEXT NOT NULL,
-        mature_sample_count INTEGER NOT NULL, probability REAL)""")
-    db.execute("""CREATE TABLE IF NOT EXISTS replay_labels (
-        trade_date TEXT PRIMARY KEY REFERENCES replay_forecasts(trade_date),
-        maturity_date TEXT NOT NULL, outcome INTEGER NOT NULL CHECK (outcome IN (0,1)))""")
-
-
 def _last_completed_day():
     now = datetime.now(SHANGHAI)
     return (now.date() if now.time() >= time(15) else now.date() - timedelta(days=1)).isoformat()
 
 
 def calibration_in_transaction(db, start, end):
-    """Archive reconstructed forecasts and append labels in the caller's transaction."""
+    """Replay against the caller's market-data snapshot without freezing any result."""
     replay_start = "2020-01-01"
     sessions = scores_in_transaction(db, replay_start, end) if end >= replay_start else []
-    archived = {r["trade_date"]: dict(r) for r in db.execute(
-        "SELECT * FROM replay_forecasts WHERE trade_date<=? ORDER BY trade_date", (end,))}
-    labels = dict(db.execute("SELECT trade_date,outcome FROM replay_labels WHERE maturity_date<=?", (end,)))
     closes = dict(db.execute("SELECT trade_date,close_raw FROM daily_bars WHERE symbol='000300.SH' "
                              "AND trade_date BETWEEN ? AND ?", (replay_start, end)))
-    forecasts = replay_predictions(sessions, closes, archived, labels)
-    db.executemany("INSERT INTO replay_forecasts VALUES (:trade_date,:regime,:mature_sample_count,:probability)",
-                   (r for r in forecasts if r["trade_date"] not in archived))
-    db.executemany("INSERT INTO replay_labels VALUES (:trade_date,:maturity_date,:outcome)",
-                   (r for r in forecasts if r["outcome"] is not None and r["trade_date"] not in labels))
+    forecasts = replay_predictions(sessions, closes)
     selected = [r for r in forecasts if r["trade_date"] >= start]
     latest = sessions[-1] if sessions else None
     regime = latest["regime"] if latest else None
@@ -113,11 +92,8 @@ def historical_calibration(data_dir: Path, start: str, end: str):
     with connect(data_dir / "roll.sqlite3") as db:
         initialize_market(db)
         initialize_inputs(db)
-        initialize_calibration(db)
-        db.execute("BEGIN IMMEDIATE")
-        result = calibration_in_transaction(db, start, end)
-        db.commit()
-        return result
+        db.execute("BEGIN")
+        return calibration_in_transaction(db, start, end)
 
 
 def initialize_forward(db):

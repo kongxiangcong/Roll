@@ -32,7 +32,7 @@ def sync_workbench(
             groups=groups,
             sector_etfs=[item["sector_etf"] for item in items],
         )
-    daily = sync_market(data_dir, start, end, watchlist=watchlist, recent_only=scope == "all")
+    daily = sync_market(data_dir, start, end, watchlist=watchlist)
     if scope == "daily":
         return daily
     items = active_watchlist(data_dir)
