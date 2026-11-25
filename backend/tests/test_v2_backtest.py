@@ -27,6 +27,10 @@ def test_only_changed_valid_regime_trades_next_open_and_every_holding_day_counts
     assert strategy["metrics"]["maximum_drawdown"] > .078
     assert strategy["trades"][0]["price"] == "10.005"
     assert Decimal(strategy["trades"][0]["fee_yuan"]) == Decimal("18.61")
+    sell = strategy["trades"][1]
+    assert Decimal(sell["gross_yuan"]) == Decimal("25987.000")
+    # 7.80 commission + 0.26 simulated transfer fee; no 12.99 stamp duty.
+    assert Decimal(sell["fee_yuan"]) == Decimal("8.06")
     assert len(result["buy_hold"]["trades"]) == 1
     assert result["buy_hold"]["trades"][0]["trade_date"] == DAYS[0]
 
@@ -68,6 +72,9 @@ def test_cli_shows_independent_fit_and_test_windows_and_signal_coverage(tmp_path
     fit, test = report["periods"]
     assert (fit["period"], fit["sessions"], test["period"], test["sessions"]) == ("定权期", 1, "样本外", 2)
     assert test["valid_signals"] == 0 and test["missing_prices"] == []
+    assert report["status"] == "无有效档位，当前历史数据不足以评价控仓效果"
+    assert report["fees"]["sell_tax_rate"] == "0"
+    assert test["dimension_coverage"]["funding"] == {"available_days": 0, "longest_gap_days": 2}
     assert test["strategy"]["status"] == "无有效档位，保持现金"
     assert test["buy_hold"]["trades"][0]["trade_date"] == "2024-01-02"
 

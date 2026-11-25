@@ -65,6 +65,9 @@ test("盘后同步、记账、冻结导出和双组合回测", async ({ page }) 
   await expect(
     page.getByRole("heading", { name: "样本外 · 扣费净值" }),
   ).toBeVisible();
+  await expect(page.getByText("无有效档位，当前历史数据不足以评价控仓效果")).toBeVisible();
+  await page.getByText(/行情缺口.*信号缺失/).first().click();
+  await expect(page.getByText(/市场广度：.*最长连续缺口/)).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
     await page.evaluate(

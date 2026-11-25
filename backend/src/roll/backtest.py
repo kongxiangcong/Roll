@@ -5,7 +5,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from decimal import Decimal, ROUND_HALF_UP
 
-from roll.barometer import scores_in_transaction
+from roll.barometer import WEIGHTS, scores_in_transaction
 from roll.costs import execution_price, transaction_cost
 from roll.db import connect
 from roll.market.calendar import is_session
@@ -20,7 +20,7 @@ INITIAL_CASH = Decimal("100000")
 COMMISSION = Decimal("0.0003")
 MINIMUM = Decimal("5")
 TRANSFER = Decimal("0.00001")
-SELL_TAX = Decimal("0.0005")
+SELL_TAX = Decimal("0")  # 510300.SH ETF sells are exempt from securities stamp duty.
 SLIPPAGE = Decimal("0.0005")
 TICK = Decimal("0.001")
 ZERO = Decimal(0)
@@ -112,6 +112,21 @@ class Portfolio:
                 "skipped": self.skips}
 
 
+def dimension_coverage(signals):
+    result = {}
+    for name in WEIGHTS:
+        available = longest = streak = 0
+        for signal in signals:
+            if signal.get("dimensions", {}).get(name) is None:
+                streak += 1
+                longest = max(longest, streak)
+            else:
+                available += 1
+                streak = 0
+        result[name] = {"available_days": available, "longest_gap_days": longest}
+    return result
+
+
 def compare_sessions(signals, bars, initial=INITIAL_CASH):
     """Each signal row identifies one expected exchange session, including unavailable regimes."""
     initial = Decimal(str(initial))
@@ -153,6 +168,7 @@ def compare_sessions(signals, bars, initial=INITIAL_CASH):
             last_regime = regime
         previous_close = close
     return {"sessions": len(signals), "valid_signals": valid_signals,
+            "dimension_coverage": dimension_coverage(signals),
             "missing_input_days": dict(Counter(reason for s in signals for reason in s.get("missing", ()))),
             "regime_days": dict(Counter(s["regime"] for s in signals if s["regime"] is not None)),
             "missing_signals": len(signals) - valid_signals, "missing_prices": missing_prices,
@@ -203,5 +219,10 @@ def run_backtest(data_dir: Path, start="2020-01-01", end=None, initial=INITIAL_C
         if window:
             report["periods"].append({"period": name, "start": window[0]["trade_date"], "end": window[-1]["trade_date"],
                                       **compare_sessions(window, bars, initial)})
-    report["status"] = "已完成" if report["periods"] else "区间内没有交易日"
+    if not report["periods"]:
+        report["status"] = "区间内没有交易日"
+    elif not any(p["valid_signals"] for p in report["periods"]):
+        report["status"] = "无有效档位，当前历史数据不足以评价控仓效果"
+    else:
+        report["status"] = "已完成"
     return report
