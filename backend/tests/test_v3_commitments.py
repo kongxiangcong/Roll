@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from decimal import Decimal
 from io import StringIO
 import json
 
@@ -66,9 +67,9 @@ def _fill(data_dir, monkeypatch, plan_id, *, known_at=FILL_AT, **fields):
     })
 
 
-def test_unfilled_cash_expires_at_close_after_reopening_the_cli(tmp_path, monkeypatch):
+def test_partial_fill_releases_unused_cash_at_close_after_reopening_the_cli(tmp_path, monkeypatch):
     original = _plan(tmp_path, monkeypatch)
-    assert original["cash_reserved"] == "1000.0000"
+    assert Decimal(original["cash_reserved"]) == 1000
 
     initial = _show(tmp_path, monkeypatch, CUTOFF)
     assert initial["remaining_commitment"] == "1000"
@@ -83,6 +84,14 @@ def test_unfilled_cash_expires_at_close_after_reopening_the_cli(tmp_path, monkey
     assert after_close["remaining_commitment"] == "0"
     assert after_close["cash_available_to_allocate"] == "1400"
     assert _cli(tmp_path, monkeypatch, "plan", "--plan-id", original["plan_id"]) == original
+
+
+def test_first_read_after_close_releases_an_entire_unfilled_plan(tmp_path, monkeypatch):
+    plan_id = _plan(tmp_path, monkeypatch)["plan_id"]
+    after_close = _show(tmp_path, monkeypatch, CLOSE, "--plan-id", plan_id)
+    details, = after_close["plans"]
+    assert details["confirmed_fill_amount"] == details["remaining_amount"] == "0"
+    assert after_close["cash_available_to_allocate"] == "1800"
 
 
 def test_expiring_condition_leaves_only_the_pending_order_and_cancellation_releases_it(tmp_path, monkeypatch):
@@ -120,3 +129,65 @@ def test_expiring_condition_leaves_only_the_pending_order_and_cancellation_relea
     assert cancelled["remaining_commitment"] == "0"
     assert cancelled["cash_available_to_allocate"] == "1400"
     assert _cli(tmp_path, monkeypatch, "plan", "--plan-id", plan_id) == plan
+
+
+def test_late_fill_and_its_correction_enter_the_cash_projection_at_their_knowledge_times(tmp_path, monkeypatch):
+    plan_id = _plan(tmp_path, monkeypatch)["plan_id"]
+    order_at = "2026-11-30T09:30:00+08:00"
+    reported_at = "2026-11-30T16:10:00+08:00"
+    corrected_at = "2026-12-01T10:00:00+08:00"
+    voided_at = "2026-12-02T10:00:00+08:00"
+    _cli(tmp_path, monkeypatch, "commitments", "order", "--book-id", BOOK, payload={
+        "plan_id": plan_id, "event_id": "submitted", "order_id": "broker-order-01", "status": "pending",
+        "effective_at": order_at, "known_at": order_at,
+    })
+    _fill(tmp_path, monkeypatch, plan_id, known_at=reported_at)
+    _fill(tmp_path, monkeypatch, plan_id, known_at=reported_at)
+    for event_id, knowledge, replacement in (
+        ("broker-correction", corrected_at, {"quantity": 20}),
+        ("broker-void", voided_at, None),
+    ):
+        _cli(tmp_path, monkeypatch, "account", "correct", "--book-id", BOOK, payload={
+            "event_id": event_id, "target_event_id": "broker-fill", "replacement": replacement, "known_at": knowledge,
+        })
+
+    before_report = _show(tmp_path, monkeypatch, CLOSE)
+    assert before_report["cash"] == "1800"
+    assert before_report["remaining_commitment"] == "1000"
+    retroactive = _show(tmp_path, monkeypatch, CLOSE, "--known-at", reported_at)
+    assert retroactive["cash"] == "1400"
+    assert retroactive["remaining_commitment"] == "600"
+
+    assert _show(tmp_path, monkeypatch, "2026-11-30T09:30:30+08:00", "--known-at", corrected_at)[
+        "remaining_commitment"] == "1000"
+    corrected = _show(tmp_path, monkeypatch, corrected_at)
+    assert corrected["cash"] == "1597.5"
+    assert corrected["remaining_commitment"] == "797.5"
+    assert _show(tmp_path, monkeypatch, voided_at)["remaining_commitment"] == "1000"
+
+
+def test_a_new_decision_uses_the_cash_committed_by_the_order_on_the_previous_revision(tmp_path, monkeypatch):
+    original = _plan(tmp_path, monkeypatch)
+    plan_id = original["plan_id"]
+    submitted_at = "2026-11-27T16:03:00+08:00"
+    rerun_at = "2026-11-27T16:05:00+08:00"
+    order = {"plan_id": plan_id, "event_id": "submitted", "order_id": "broker-order-01", "status": "pending",
+             "effective_at": submitted_at, "known_at": submitted_at, "max_amount": "1000", "broker_frozen": "300",
+             "broker_available_cash": "1500"}
+    _cli(tmp_path, monkeypatch, "commitments", "order", "--book-id", BOOK, payload=order)
+
+    args = ("plan", "--book-id", BOOK, "--as-of", rerun_at, "--simulate", "--price-only",
+            "--strategy-version", original["strategy_version"])
+    revised, = _cli(tmp_path, monkeypatch, *args)["plans"]
+    constraints = revised["account_constraints"]
+    assert revised["action"] == "WATCH"
+    assert revised["replaces_plan_id"] == plan_id
+    assert constraints["existing_reservations_net_of_broker"] == "700"
+    assert constraints["cash_available_to_allocate"] == "800"
+
+    after_replacement = _show(tmp_path, monkeypatch, rerun_at)
+    assert after_replacement["plans"][0]["plan_id"] == plan_id
+    assert after_replacement["cash_available_to_allocate"] == "800"
+    assert _cli(tmp_path, monkeypatch, "plan", "--plan-id", plan_id) == original
+    account = _cli(tmp_path, monkeypatch, "account", "show", "--snapshot-id", original["account_snapshot_id"])
+    assert account["available_cash"] == "1800"

@@ -22,9 +22,10 @@ def register_commitment_commands(commands):
          "可填写 known_at 和 description。"),
         ("order", "登记券商委托或结果",
          "输入 plan_id、order_id、event_id、status (pending/cancelled/expired/filled)、effective_at。"
-         "可填写 known_at、含费上限 max_amount、order_quantity、仍反映在券商可用现金中的 "
-         "broker_frozen，以及券商确认的余额 broker_available_cash。成交通过 account fill 登记，"
-         "可填写 broker_order_id 和 broker_available_after。"),
+         "max_amount（含费上限）与 order_quantity 默认沿用计划。可填写 known_at、券商可用现金中"
+         "已扣除的同笔冻结款 broker_frozen，以及券商确认的余额 broker_available_cash。"
+         "成交通过 account fill 登记，使用 broker_order_id 关联委托，并用 broker_available_after"
+         "记录券商当时的可用余额。"),
     ):
         operation = operations.add_parser(name, help=help_text, description=f"从标准输入读取 JSON。{description}")
         operation.add_argument("--book-id", default="real")

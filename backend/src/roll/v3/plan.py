@@ -263,7 +263,10 @@ class PlanLedger:
 def _nonnegative(value):
     if value is None:
         return None
-    amount = Decimal(str(value))
+    try:
+        amount = Decimal(str(value))
+    except InvalidOperation as error:
+        raise ValueError("委托金额、冻结金额及可用现金须为非负金额") from error
     if not amount.is_finite() or amount < 0:
         raise ValueError("委托金额、冻结金额及可用现金须为非负金额")
     return money(amount)
