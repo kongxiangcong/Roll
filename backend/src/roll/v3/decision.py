@@ -459,7 +459,7 @@ def decide(data: DecisionData, account: AccountSnapshot, budget: RiskBudget | No
         buy_restrictions = p2
         if rules.allow_price_only:
             buy_restrictions = [reason for reason in p2 if reason in {"FUNDAMENTAL_FAIL", "THESIS_BROKEN"}
-                                or reason.startswith("TRIGGER_")]
+                                or reason.startswith("TRIGGER_FIRED:")]
             p2 = [*p2, "PRICE_ONLY_SIMULATION"]
         account_constraints = {
             "cash": account.cash, "broker_available_cash": account.available_cash,

@@ -30,6 +30,9 @@ def _get(client, token, path, symbol, params):
     if response.status_code != 200:
         raise ValueError(f'扶摇 HTTP {response.status_code}')
     body = json.loads(response.content, parse_float=Decimal)
+    # For this event endpoint, 3002 reports that the requested window has no events.
+    if path == ACTION_PATH and body['code'] == 3002:
+        return {'item': []}
     if body['code'] != 0:
         raise ValueError(f"扶摇业务码 {body['code']}")
     data = body['data']

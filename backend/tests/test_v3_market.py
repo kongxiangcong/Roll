@@ -184,3 +184,32 @@ def test_market_sync_accepts_the_public_etf_proxy_without_fuyao_credentials(tmp_
     assert row['source'] == 'tencent'
     assert row['payload']['volume'] == '75047900'
     assert row['payload']['amount'] == '55164700'
+
+
+def test_fuyao_no_events_uses_the_previous_close_as_reference(tmp_path, monkeypatch):
+    from datetime import datetime, timezone, timedelta
+
+    import httpx
+
+    local = timezone(timedelta(hours=8))
+
+    def provider(request):
+        if request.url.path.endswith('/adjustment-factors'):
+            return httpx.Response(200, json={'code': 3002, 'msg': 'No adjustment events'})
+        rows = [
+            {'date_ms': int(datetime(2025, 7, day, tzinfo=local).timestamp() * 1000),
+             'open_price': value, 'close_price': value, 'low_price': value, 'high_price': value}
+            for day, value in [(23, 24), (24, 25)]
+        ]
+        return httpx.Response(200, json={'code': 0, 'data': {'item': rows}})
+
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    monkeypatch.setenv('FUYAO_API_KEY', 'fixture')
+    client = httpx.Client(transport=httpx.MockTransport(provider))
+    monkeypatch.setattr(httpx, 'Client', lambda: client)
+
+    synced = command(tmp_path, 'sync', '600362.SH', '--start', '2025-07-24', '--end', '2025-07-24')
+    assert synced['failures'] == []
+    row, = command(tmp_path, 'read', synced['snapshot']['snapshot_id'])['observations']
+    assert row['payload']['pre_close'] == '24'
+    assert row['payload']['pre_close_basis'] == 'prior_close_no_adjustment_factor'

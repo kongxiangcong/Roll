@@ -100,10 +100,16 @@ def test_two_buys_allocate_one_account_in_registered_order(tmp_path):
         "simulation_eligible": True, "status": "frozen",
     }
     rules = DecisionRules(simulated=True, strategy_versions=(version,), allow_price_only=True)
+    dossier = {
+        "version": "published-fixture", "review_status": "published",
+        "fundamental_gate": "unknown", "thesis_status": "watch",
+        "invalidation_triggers": [{"id": "financial-flag", "effect": "block_new_risk"}],
+    }
 
     def plans(symbols):
         data = DecisionData(CUTOFF, "2026-11-30", "fixture", {symbol: security for symbol in symbols})
-        return decide(data, account, account.risk_budget, {}, {symbol: [entry] for symbol in symbols}, rules)
+        return decide(data, account, account.risk_budget, {symbol: dossier for symbol in symbols},
+                      {symbol: [entry] for symbol in symbols}, rules)
 
     direct = plans((first, second))
     assert [plan.as_dict() for plan in direct] == [plan.as_dict() for plan in plans((second, first))]
@@ -112,6 +118,7 @@ def test_two_buys_allocate_one_account_in_registered_order(tmp_path):
     ]
     assert str(sum(plan.cash_reserved for plan in direct)) == "1005.01"
     assert direct[1].reasons["P4"] == ["SHARED_CASH_OR_RISK_BELOW_MINIMUM_ORDER"]
+    assert "TRIGGER_UNKNOWN:financial-flag" in direct[0].reasons["P2"]
 
 
 def test_expired_research_and_suspended_risk_exit_are_explicit(tmp_path):
