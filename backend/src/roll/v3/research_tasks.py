@@ -53,6 +53,8 @@ def task_database(data_dir, *, write=False):
 
 
 def get_task(data_dir, task_id):
+    from roll.v3.development_archive import read_development_archives
+
     with task_database(data_dir) as db:
         row = db.execute(
             "SELECT manifest, parent_task_id FROM research_task "
@@ -60,11 +62,15 @@ def get_task(data_dir, task_id):
         ).fetchone()
         if not row:
             raise ValueError(f"无此研究任务：{task_id}")
+        task = {"task_id": task_id, "parent_task_id": row["parent_task_id"], "manifest": json.loads(row["manifest"])}
+        if is_development(task["manifest"]):
+            # Read archives first so every archived attempt appears in the subsequent attempt list.
+            task["archives"] = read_development_archives(db, task_id)
         attempts = db.execute(
             "SELECT receipt FROM research_attempt WHERE task_id=? ORDER BY rowid", (task_id,)
         ).fetchall()
-    return {"task_id": task_id, "parent_task_id": row["parent_task_id"], "manifest": json.loads(row["manifest"]),
-            "attempts": [read_receipt(data_dir, json.loads(item["receipt"])) for item in attempts]}
+    task["attempts"] = [read_receipt(data_dir, json.loads(item["receipt"])) for item in attempts]
+    return task
 
 
 def get_attempt(data_dir, attempt_id):

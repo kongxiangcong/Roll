@@ -370,8 +370,8 @@ def store_development_receipt(db, task_id, receipt):
                (task_id, receipt["receipt_id"], json_text(receipt)))
 
 
-def read_development_receipt(data_dir, task_id):
-    with database(data_dir) as db:
+def read_development_receipt(data_dir, task_id, *, db=None):
+    with database(data_dir, db=db) as db:
         ensure_schema(db, _SCHEMA)
         row = db.execute("SELECT receipt FROM research_development_receipt WHERE task_id=?", (task_id,)).fetchone()
     if row is None:
