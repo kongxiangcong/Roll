@@ -209,7 +209,7 @@ class DecisionLedger:
             ensure_schema(db, _SCHEMA)
             return self._view(db, self._require_registration(db, registration_id), instant(as_of))
 
-    def registrations(self, *, book_id="real", start=None, end=None, as_of=None, mode=None):
+    def registrations(self, *, book_id="real", start=None, end=None, as_of=None, mode=None, db=None):
         """Read committed registrations known at the requested observation time."""
         start = date.fromisoformat(start).isoformat() if start else None
         end = date.fromisoformat(end).isoformat() if end else None
@@ -218,7 +218,7 @@ class DecisionLedger:
         if mode is not None and mode not in MODES:
             raise ValueError(f"未知登记模式 {mode}")
         clock = instant(as_of)
-        with database(self.data_dir) as db:
+        with database(self.data_dir, db=db) as db:
             ensure_schema(db, _SCHEMA)
             records = self._registered(db, book_id, start=start, end=end, as_of=clock, mode=mode)
             return [self._view(db, record, clock) for record in records]
