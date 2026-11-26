@@ -22,6 +22,26 @@ roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --quest
 
 用 `research task show 任务ID` 重读冻结清单，用 `research task attempt 尝试ID` 重读结果。`research task supplement 任务ID --material report.json` 或 `--snapshot 新快照ID` 生成关联任务。`research task retry 任务ID` 复用冻结清单，用新回执的版本按 `research show 标的 --draft --version 版本` 审阅。
 
+## 用 Codex 研究一份公开摘录
+
+在已登录 Codex 的 Ubuntu 24.04 x86_64 主机上，先用 `codex --version` 确认版本为 `codex-cli 0.172.0`。与离线示例使用相同的材料 JSON，在命令中显式选择执行器。`--timeout` 是本次尝试的总秒数，默认 180 秒。
+
+```sh
+roll research task run 600362.SH --executor codex --timeout 180 \
+  --snapshot "$SNAPSHOT" --as-of "$AS_OF" --material report.json \
+  --question "报告第 12 页披露的累计经营活动现金流量净额是多少？"
+```
+
+运行时终端会显示任务 ID 和尝试 ID。另开终端并使用同一数据目录，即可执行以下命令。
+
+```sh
+roll research task attempt "$ATTEMPT_ID"
+roll research task cancel "$ATTEMPT_ID"
+roll research task retry "$TASK_ID" --executor codex --timeout 180
+```
+
+取消后查看 `cancelled` 回执，超时为 `timed_out`，执行者意外退出为 `interrupted`。同输入重试生成独立回执；补材料时用 `research task supplement "$TASK_ID" --executor codex --material 新材料.json`。遇到 `failed` 时，查看 `failure_kind` 与 `error`。`configuration` 提示应检查的安装或登录配置，`cli_exit` 给出服务或运行失败的诊断，`invalid_response` 表示结果未通过格式或证据校验。`log_ref` 和 `input_ref`（如有）均相对于 Roll 数据目录。取得 `draft_ready` 后用回执中的 `draft_version` 审阅，再具名发布。
+
 ## 江西铜业示例
 
 两份草稿基于 2026 年 11 月 26 日核对的公开材料。初版提出盈利兑现假设，刷新版纳入实际回购进展。证据表保存披露日期与材料核对时间，发布命令另行记录实际发布时间。两份示例的有效期分别截至北京时间 2026 年 12 月 1 日和 12 月 4 日零时。

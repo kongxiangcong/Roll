@@ -1,0 +1,77 @@
+{
+  "attempt_id": "attempt-3ea6fa67605b4a39bdcae7154f89c802",
+  "cli_version": "codex-cli 0.172.0",
+  "draft_version": "attempt-3ea6fa67605b4a39bdcae7154f89c802",
+  "executor": "codex",
+  "exit_code": 0,
+  "gaps": [
+    {
+      "blocking": false,
+      "reason": "单期累计净额只能判断该期净额是否为正，不能判断经营现金流能否持续为正。",
+      "required_evidence": "多期可比经营现金流数据，以及营运资金变动和一次性因素的说明。"
+    },
+    {
+      "blocking": false,
+      "reason": "本次单项门禁不验证投资逻辑，也不构成策略准入。",
+      "required_evidence": "明确的投资逻辑及其验证证据、具体策略的准入规则及相应证据。"
+    }
+  ],
+  "input_ref": "research-attempts/attempt-3ea6fa67605b4a39bdcae7154f89c802/public-input.json",
+  "input_sha256": "68bcce22bb5a9338df5e39db96e25b1fc73a12d39575f7702b25214a233b2630",
+  "log_ref": "research-attempts/attempt-3ea6fa67605b4a39bdcae7154f89c802/diagnostic.jsonl",
+  "manifest_sha256": "842d441dbb4de5ef4696b58f6a2be1d5f584ac95fa227001e15e535ebbf9c341",
+  "permissions": {
+    "approval": "never",
+    "disabled_features": [
+      "shell_tool",
+      "unified_exec",
+      "view_image",
+      "apps",
+      "plugins",
+      "hooks",
+      "code_mode",
+      "code_mode_host",
+      "browser_use",
+      "computer_use",
+      "in_app_browser",
+      "image_generation",
+      "multi_agent",
+      "multi_agent_v2",
+      "skill_search",
+      "sleep_tool",
+      "goals",
+      "tool_suggest",
+      "api_key_model_discovery",
+      "shell_snapshot",
+      "enable_request_compression"
+    ],
+    "ephemeral": true,
+    "isolated_home": true,
+    "model": "gpt-6.2-sol",
+    "model_catalog": "bundled, shell disabled",
+    "sandbox": "read-only",
+    "settings": [
+      "project_root_markers=[\".roll-codex-root\"]",
+      "mcp_servers={}",
+      "analytics.enabled=false",
+      "feedback.enabled=false",
+      "web_search=\"disabled\"",
+      "project_doc_max_bytes=0",
+      "tools.update_plan.enabled=false",
+      "tools.experimental_request_user_input.enabled=false",
+      "agents.enabled=false",
+      "include_apps_instructions=false",
+      "include_collaboration_mode_instructions=false",
+      "include_environment_context=false",
+      "include_permissions_instructions=false",
+      "skills.include_instructions=false",
+      "cloud.skills.enabled=false",
+      "orchestrator.mcp.enabled=false"
+    ],
+    "tools": []
+  },
+  "platform": "Ubuntu 24.04.5 LTS / Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "receipt_version": 2,
+  "status": "draft_ready",
+  "task_id": "task-c34b389365a84c7985cf839e99016aaf"
+}
