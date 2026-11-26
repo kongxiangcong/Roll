@@ -160,3 +160,27 @@ def test_benchmark_sync_fills_uncovered_fuyao_window_with_tencent(tmp_path, monk
     assert rows[0]['payload']['close'] == '4152.24'
     assert rows[0]['payload']['volume'] == '14940525400'
     assert rows[0]['payload']['amount'] == '225374307900'
+
+
+def test_market_sync_accepts_the_public_etf_proxy_without_fuyao_credentials(tmp_path, monkeypatch):
+    import httpx
+
+    def etf(request):
+        assert request.url.host == 'proxy.finance.qq.com'
+        assert request.url.params['param'].startswith('sh512400,day,')
+        assert request.url.params['param'].endswith(',640,')
+        assert 'X-api-key' not in request.headers
+        return httpx.Response(200, json={'data': {'sh512400': {'day': [
+            ['2020-01-02', '0.738', '0.736', '0.741', '0.727', '750479.00', {}, '0.00', '5516.47'],
+        ]}}})
+
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    monkeypatch.delenv('FUYAO_API_KEY', raising=False)
+    client = httpx.Client(transport=httpx.MockTransport(etf))
+    monkeypatch.setattr(httpx, 'Client', lambda: client)
+
+    synced = command(tmp_path, 'sync', '512400.SH', '--start', '2020-01-02', '--end', '2020-01-02')
+    row, = command(tmp_path, 'read', synced['snapshot']['snapshot_id'])['observations']
+    assert row['source'] == 'tencent'
+    assert row['payload']['volume'] == '75047900'
+    assert row['payload']['amount'] == '55164700'

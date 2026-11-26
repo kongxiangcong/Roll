@@ -16,7 +16,8 @@ from roll.v3.market import (
 
 
 FUYAO = 'https://fuyao.aicubes.cn'
-TENCENT_INDEX = 'https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get'
+TENCENT_KLINE = 'https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get'
+INDUSTRY_PROXY = '512400.SH'
 ACTION_PATH = '/api/a-share/corporate-actions/adjustment-factors'
 OHLC = ('open', 'high', 'low', 'close')
 DEFAULT_SYMBOLS = ('600362.SH', '000300.SH')
@@ -166,16 +167,20 @@ def _bars(client, token, symbol, start, end, *, index, factors):
         )
 
 
-def _benchmark_fallback(client, start, end):
+def _tencent_bars(client, symbol, start, end):
+    is_proxy = symbol == INDUSTRY_PROXY
+    price_unit = 'CNY/share' if is_proxy else 'index_point'
     lookback = _previous_session(start)
+    ticker = 'sh' + symbol.split('.')[0]
+    adjustment = '' if is_proxy else 'qfq'
     response = client.get(
-        TENCENT_INDEX,
-        params={'param': f'sh000300,day,{lookback},{end},640,qfq'},
+        TENCENT_KLINE,
+        params={'param': f'{ticker},day,{lookback},{end},640,{adjustment}'},
         timeout=20,
     )
     response.raise_for_status()
     received = datetime.now(timezone.utc)
-    data = response.json()['data']['sh000300']['day']
+    data = response.json()['data'][ticker]['day']
     previous = None
     for item in data:
         day, opening, close, high, low, hands = item[:6]
@@ -188,15 +193,16 @@ def _benchmark_fallback(client, start, end):
                    'volume': _number(int(Decimal(hands) * 100)),
                    'amount': _number(int(Decimal(item[8]) * 10_000))}
             yield _observed_row(
-                '000300.SH', day, TENCENT_INDEX, received, source='tencent', series='daily_bar',
-                at=time(15, 5), unit={'price': 'index_point', 'volume': 'share', 'amount': 'CNY'},
+                symbol, day, TENCENT_KLINE, received, source='tencent', series='daily_bar',
+                at=time(15, 5), unit={'price': price_unit, 'volume': 'share', 'amount': 'CNY'},
                 payload=bar,
             )
-            yield _observed_row(
-                '000300.SH', day, TENCENT_INDEX, received, source='tencent', series='daily_open',
-                at=time(9, 30), unit={'price': 'index_point'}, payload=open_payload,
-                reconstruction_only=True,
-            )
+            if not is_proxy:
+                yield _observed_row(
+                    symbol, day, TENCENT_KLINE, received, source='tencent', series='daily_open',
+                    at=time(9, 30), unit={'price': price_unit}, payload=open_payload,
+                    reconstruction_only=True,
+                )
         previous = close
 
 
@@ -213,9 +219,12 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
 
     symbols = tuple(dict.fromkeys(symbol.upper() for symbol in symbols))
     index_symbols = {'000300.SH', *(symbol.upper() for symbol in indices)}
-    scope = [dict(series=series, symbol=symbol, start=str(start), end=str(end))
-             for symbol in symbols for series in (*PRICE_SERIES, 'adjustment_factor')
-             if series != 'adjustment_factor' or symbol not in index_symbols and not symbol.endswith('.TI')]
+    scope = []
+    for symbol in symbols:
+        series = ('daily_bar',) if symbol == INDUSTRY_PROXY else PRICE_SERIES
+        if symbol != INDUSTRY_PROXY and symbol not in index_symbols and not symbol.endswith('.TI'):
+            series = (*series, 'adjustment_factor')
+        scope.extend(dict(series=item, symbol=symbol, start=str(start), end=str(end)) for item in series)
     failures = []
     fallbacks = []
     operations = []
@@ -227,14 +236,23 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
 
     appended = 0
     if operations:
-        load_runtime_environment()
-        token = os.environ.get('FUYAO_API_KEY')
-        if not token:
-            raise ValueError('FUYAO_API_KEY 未配置')
+        token = None
+        if any(symbol != INDUSTRY_PROXY for symbol, _, _ in operations):
+            load_runtime_environment()
+            token = os.environ.get('FUYAO_API_KEY')
+            if not token:
+                raise ValueError('FUYAO_API_KEY 未配置')
         with httpx.Client() as client:
             for symbol, left, right in operations:
                 index = symbol in index_symbols or symbol.endswith('.TI')
                 window = {'symbol': symbol, 'start': str(left), 'end': str(right)}
+                if symbol == INDUSTRY_PROXY:
+                    try:
+                        rows = list(_tencent_bars(client, symbol, left, right))
+                        appended += append_observations(data_dir, rows)['appended']
+                    except (ValueError, KeyError, IndexError, httpx.HTTPError) as error:
+                        failures.append({**window, 'series': 'daily_bar', 'source': 'tencent', 'error': str(error)})
+                    continue
                 factors = None
                 if not index:
                     try:
@@ -255,7 +273,7 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
                     seen = {row['trade_date'] for row in rows if row['series'] == 'daily_bar'}
                     for gap_start, gap_end in _ranges(left, right, seen):
                         try:
-                            rows = list(_benchmark_fallback(client, gap_start, gap_end))
+                            rows = list(_tencent_bars(client, symbol, gap_start, gap_end))
                             appended += append_observations(data_dir, rows)['appended']
                         except (ValueError, KeyError, IndexError, httpx.HTTPError) as error:
                             failures.append({**window, 'series': 'daily_bar', 'source': 'tencent',
