@@ -380,21 +380,25 @@ async function researchPage(reference) {
   const snapshotField = input("冻结快照标识", "snapshot_id", { required: "" });
   const startField = input("研究起始日", "start", { type: "date", required: "" });
   const endField = input("研究截止日（可选）", "end", { type: "date" });
+  const choices = snapshots.map(item => {
+    const bars = item.scope.filter(range => range.symbol === scope.symbol && range.series === "daily_bar");
+    const start = bars.map(range => range.start).sort()[0];
+    const end = bars.map(range => range.end).sort().at(-1);
+    return { ...item, start, end, span: Date.parse(end) - Date.parse(start) };
+  });
   const selection = select("已冻结快照", "snapshot", [["", "手动输入快照标识"],
-    ...snapshots.map(item => [item.snapshot_id, `${item.as_of.slice(0, 10)} · ${label(item.use_mode)} · ${shorten(item.snapshot_id)}`])],
+    ...choices.map(item => [item.snapshot_id, `${item.start} — ${item.end} · ${label(item.use_mode)} · ${shorten(item.snapshot_id)}`])],
   );
   const snapshotMenu = selection.querySelector("select");
   function fillSnapshot() {
-    const snapshotId = snapshotMenu.value;
-    snapshotField.querySelector("input").value = snapshotId;
-    const scopes = snapshots.find(item => item.snapshot_id === snapshotId)?.scope ?? [];
-    const quoteScopes = scopes.filter(item => item.symbol === scope.symbol && item.series === "daily_bar");
-    startField.querySelector("input").value = quoteScopes.map(item => item.start).sort()[0] ?? "2020-01-02";
+    const snapshot = choices.find(item => item.snapshot_id === snapshotMenu.value);
+    snapshotField.querySelector("input").value = snapshot?.snapshot_id ?? "";
+    startField.querySelector("input").value = snapshot?.start ?? "2020-01-02";
     endField.querySelector("input").value = "";
   }
   snapshotMenu.addEventListener("change", fillSnapshot);
-  const historical = snapshots.find(item => item.use_mode !== "LIVE_RUN");
-  snapshotMenu.value = historical?.snapshot_id ?? snapshots[0]?.snapshot_id ?? "";
+  const historical = choices.filter(item => item.use_mode !== "LIVE_RUN").sort((a, b) => b.span - a.span)[0];
+  snapshotMenu.value = historical?.snapshot_id ?? choices[0]?.snapshot_id ?? "";
   fillSnapshot();
 
   const followups = node("div", {});
