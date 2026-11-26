@@ -102,6 +102,10 @@ def _coverage(start, end, sessions, unknown, rows, snapshot_coverage):
         'suspended_dates': [day for day in sessions if day in rows
                             and rows[day]['payload'].get('trading_status') == 'suspended'],
         'gap_dates': [day for day in sessions if day not in rows],
+        'field_counts': {
+            field: sum(_number(row['payload'].get(field)) is not None for row in rows.values())
+            for field in ('open', 'high', 'low', 'close', 'volume', 'amount')
+        },
         'unusable_dates': [day for day in sessions if day in rows
                            and not _effective(rows[day])
                            and rows[day]['payload'].get('trading_status') != 'suspended'],

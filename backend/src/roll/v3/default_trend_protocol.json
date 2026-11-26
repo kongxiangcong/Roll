@@ -1,0 +1,66 @@
+{
+  "family": "daily-trend",
+  "hypothesis": {
+    "id": "600362-daily-trend-continuation",
+    "statement": "江西铜业的中期价格趋势有延续性。按预登记均线规则降低趋势转弱时的风险敞口，在交易成本后仍可获得高于不主动交易的收益，并较买入持有降低回撤。"
+  },
+  "strategy": {
+    "name": "600362.SH 日频趋势",
+    "logic_version": "total-return-sma-v1",
+    "scope": {"symbols": ["600362.SH"], "frequency": "daily", "side": "long_only"},
+    "features": [
+      "原始收盘价、交易状态、公司行动调整因子中的实际每股股息和送转比例",
+      "用当日之前及当日生效且在信号截止时点可见的现金分派和送转股构建总回报指数，不使用未来复权因子"
+    ],
+    "parameters": {"fast": 20, "slow": 60},
+    "entry": "连续预热完成后，短均线严格高于长均线时目标为共同风险预算允许的最大配置。",
+    "exit": "短均线不高于长均线时目标为零。缺项、停牌或预热不足时无目标；已有持仓按账户风险规则处理。",
+    "decision_priority": 100,
+    "signal_time": "交易所当地 15:05 或实际盘后裁决时点。历史重建以 15:05 为每日截止。",
+    "execution_time": "下一交易日开盘，使用原始开盘价及开盘可见的可执行性条件。未成交保留原因，下一次盘后独立裁决。",
+    "risk": "不做空、不使用杠杆，服从共同账户现金、仓位、合规执行与其他已发布风险限制。"
+  },
+  "initial_cash_cny": "100000",
+  "baselines": {
+    "buy_and_hold": "同一初始现金或持仓批次。首个可执行开盘按共同风险预算配置至上限，此后持有并结算公司行动。",
+    "no_active_trading": "沿用同一初始现金和股数，不新增主动交易，持仓按同样口径结算公司行动。"
+  },
+  "costs": {
+    "commission_rate": "0.0003",
+    "minimum_commission_yuan": "5",
+    "slippage_rate": "0.0005",
+    "stock_rates": {
+      "transfer_before_2022-04-29": "0.00002",
+      "transfer_from_2022-04-29": "0.00001",
+      "sell_stamp_before_2023-08-28": "0.001",
+      "sell_stamp_from_2023-08-28": "0.0005"
+    },
+    "dividend_tax_basis": "pre_personal_dividend_tax",
+    "comparison_basis": "股息红利税前、含交易成本"
+  },
+  "decision_order": ["P0", "P1", "P2", "P3", "P4"],
+  "windows": {
+    "development": {"start": "2020-01-02", "end": "2023-12-29"},
+    "acceptance": {"start": "2024-01-02", "end": "2026-11-25"}
+  },
+  "evaluation": {
+    "max_independent_acceptance_runs": 1,
+    "min_acceptance_evaluable_sessions": 500,
+    "min_acceptance_completed_round_trips": 5,
+    "max_return_lag_to_buy_and_hold": "0.10",
+    "rules": [
+      "要求持仓路径相关输入无未解决的重大缺口，三条路径同窗、同初始批次、同成本及权益口径。",
+      "样本外至少有 500 个可评价交易日和 5 次完整往返。覆盖或交易不足给出证据不足。",
+      "样本外累计净收益须高于不主动交易，最大回撤须低于买入持有，且累计净收益落后买入持有不超过 10 个百分点。",
+      "三个连续账本跨窗口延续；样本外收益与回撤以区间起点共同计量时点的各路径净值为基准。",
+      "独立验收窗口只揭示一次。已经查看的区间用于比较与解释，后续版本须另有独立证据。",
+      "通过历史验收后，须再独立通过至少 20 个连续真实交易日前向影子观察，并显式登记生产准入。"
+    ],
+    "report_metrics": [
+      "total_return", "excess_return", "max_drawdown", "volatility", "downside_risk",
+      "fills", "win_rate", "profit_loss_ratio", "turnover", "costs", "failed_fills",
+      "coverage", "development", "acceptance"
+    ],
+    "min_forward_sessions": 20
+  }
+}

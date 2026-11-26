@@ -9,15 +9,20 @@ from roll.config import data_directory, load_runtime_environment
 
 def parser():
     from roll.v3.account_cli import register_account_commands
+    from roll.v3.entitlements import register_entitlement_commands
     from roll.v3.market_cli import register as register_market
+    from roll.v3.market_research import register_market_research
     from roll.v3.research import register_research_commands
+    from roll.v3.strategy_cli import register as register_strategy
 
     root = argparse.ArgumentParser(prog="roll", description="Roll v3 个股研究与盘后工作台")
     root.add_argument("--data-dir", type=Path, help="本地 v3 数据目录")
     commands = root.add_subparsers(dest="command", required=True)
     register_market(commands)
     register_account_commands(commands)
-    register_research_commands(commands)
+    register_entitlement_commands(commands)
+    register_market_research(register_research_commands(commands))
+    register_strategy(commands)
     serve = commands.add_parser("serve", help="打开本地工作台")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8765)

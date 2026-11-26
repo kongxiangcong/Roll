@@ -9,7 +9,7 @@ from pathlib import Path
 from sqlite3 import Connection
 
 from roll.market.calendar import LAST_NOTICE_DAY, is_session
-from roll.v3.storage import SHANGHAI, database, instant
+from roll.v3.storage import SHANGHAI, database, instant, session_time
 
 
 CENT = Decimal("0.01")
@@ -108,6 +108,22 @@ class RiskBudget:
 
 
 @dataclass(frozen=True)
+class Receivable:
+    action_key: str
+    symbol: str
+    source_lot_id: str
+    record_date: str
+    ex_date: str
+    kind: str
+    due_date: str | None
+    amount: Decimal = Decimal(0)
+    quantity: int = 0
+
+    def __post_init__(self):
+        object.__setattr__(self, "amount", _decimal(self.amount))
+
+
+@dataclass(frozen=True)
 class AccountSnapshot:
     snapshot_id: str
     book_id: str
@@ -118,6 +134,7 @@ class AccountSnapshot:
     lots: tuple[PositionLot, ...]
     through_event_id: str
     risk_budget: RiskBudget | None = None
+    receivables: tuple[Receivable, ...] = ()
 
     def known_sellable(self, symbol: str, session: date | str) -> int | None:
         quantities = [lot.sellable_quantity(session) for lot in self.lots if lot.symbol == symbol]
@@ -218,7 +235,38 @@ def _apply_cash(snapshot, delta, broker_available_after):
     return replace(snapshot, cash=cash, available_cash=available)
 
 
+def _apply_entitlement_posting(snapshot, event, payload):
+    action_key, kind = payload["action_key"], payload["kind"]
+    due = tuple(r for r in snapshot.receivables if (r.action_key, r.kind) == (action_key, kind))
+    snapshot = replace(snapshot, receivables=tuple(r for r in snapshot.receivables if r not in due))
+    actual = payload["actual"]
+    if kind == "cash":
+        amount = _decimal(actual) if actual is not None else sum((r.amount for r in due), Decimal(0))
+        return _apply_cash(snapshot, amount, payload["broker_available_after"])
+
+    quantity = actual if actual is not None else sum(r.quantity for r in due)
+    day = _trade_date(event["effective_at"]).isoformat()
+    lots = list(snapshot.lots)
+    event_id = event["event_id"]
+    allocations = []
+    for receivable in due:
+        shares = min(quantity, receivable.quantity)
+        allocations.append((receivable.source_lot_id, shares))
+        quantity -= shares
+    allocations.append((None, quantity))
+    for index, (source_lot_id, shares) in enumerate(allocations):
+        if shares:
+            lots.append(PositionLot(
+                f"{event_id}:{index}", payload["symbol"], shares,
+                acquired_on=day, sellable_on=payload["sellable_on"],
+                source_event_id=event_id, source_lot_id=source_lot_id,
+            ))
+    return replace(snapshot, lots=tuple(lots))
+
+
 def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
+    from roll.v3.entitlements import CompanyAction, accrue_receivables
+
     if not facts or facts[0]["kind"] != "BASELINE":
         raise ValueError(f"账本 {book_id} 在指定时点没有已知基线")
     baseline = json.loads(facts[0]["payload"])
@@ -242,16 +290,42 @@ def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
             None if replacement is None else {**(effective[target] or originals[target]), **replacement}
         )
 
+    actions = {}
+    for event in sorted(
+        (event for event in facts[1:] if event["kind"] == "COMPANY_ACTION"),
+        key=lambda event: (event["known_at"], event["seq"]),
+    ):
+        action = CompanyAction(**effective[event["event_id"]])
+        actions[action.key] = (event["event_id"], action)
+    action_events = {event_id: action for event_id, action in actions.values()}
+    record_dates = sorted({action.record_date for action in action_events.values()})
+    record_cutoffs = iter((_timestamp(session_time(day, 15)), day) for day in record_dates)
+    record_close = next(record_cutoffs, None)
+    record_lots = {}
+    posted = set()
+
     for event in facts[1:]:
         payload = effective.get(event["event_id"])
         if payload is None:
             continue
+        while record_close is not None and record_close[0] < event["effective_at"]:
+            record_lots[record_close[1]] = snapshot.lots
+            record_close = next(record_cutoffs, None)
         if event["kind"] == "FILL":
             snapshot = _apply_fill(snapshot, event["event_id"], event["effective_at"], payload)
         elif event["kind"] == "CASH":
             snapshot = _apply_cash(snapshot, _decimal(payload["delta"]), payload["broker_available_after"])
         elif event["kind"] == "SHARES":
             snapshot = replace(snapshot, lots=(*snapshot.lots, PositionLot(**payload["lot"])))
+        elif action := action_events.get(event["event_id"]):
+            receivables = tuple(
+                item for item in accrue_receivables(action, record_lots.get(action.record_date, ()))
+                if (item.action_key, item.kind) not in posted
+            )
+            snapshot = replace(snapshot, receivables=(*snapshot.receivables, *receivables))
+        elif event["kind"] == "ENTITLEMENT_POSTING":
+            snapshot = _apply_entitlement_posting(snapshot, event, payload)
+            posted.add((payload["action_key"], payload["kind"]))
     return snapshot
 
 
@@ -345,6 +419,28 @@ class AccountLedger:
                       source="broker", plan_id=None) -> str:
         payload = {"lot": asdict(replace(lot, source_event_id=lot.source_event_id or event_id))}
         return self._record(book_id, event_id, "SHARES", effective_at, known_at, source, plan_id, payload)
+
+    def record_company_action(self, book_id, *, action, effective_at, known_at) -> str:
+        payload = asdict(action)
+        version = sha256(_encode(payload).encode()).hexdigest()
+        return self._record(
+            book_id, f"{action.key}:{version}", "COMPANY_ACTION",
+            effective_at, known_at, action.source or "company-action", None, payload,
+        )
+
+    def record_entitlement_posting(self, book_id, *, action_key, symbol, kind, effective_at, known_at,
+                                   source, actual=None, sellable_on=None, broker_available_after=None,
+                                   broker_event_id=None) -> str:
+        payload = {
+            "action_key": action_key, "symbol": symbol, "kind": kind,
+            "actual": _shares(actual) if kind == "shares" and actual is not None else _decimal(actual),
+            "sellable_on": sellable_on, "broker_available_after": _decimal(broker_available_after),
+            "broker_event_id": broker_event_id,
+        }
+        return self._record(
+            book_id, f"{action_key}:{kind}", "ENTITLEMENT_POSTING",
+            effective_at, known_at, source, None, payload,
+        )
 
     def correct(self, book_id, *, event_id, target_event_id, replacement, known_at=None,
                 source="user-confirmed", reason=None) -> str:
@@ -466,6 +562,8 @@ class AccountLedger:
                     snapshot = replace(snapshot, risk_budget=budget)
             payload = asdict(snapshot)
             del payload["snapshot_id"]
+            if not snapshot.receivables:
+                del payload["receivables"]
             encoded = _encode(payload)
             snapshot_id = sha256(encoded.encode()).hexdigest()
             db.execute(
@@ -485,6 +583,7 @@ class AccountLedger:
         value["cash"] = _decimal(value["cash"])
         value["available_cash"] = _decimal(value["available_cash"])
         value["lots"] = tuple(PositionLot(**lot) for lot in value["lots"])
+        value["receivables"] = tuple(Receivable(**item) for item in value.get("receivables", ()))
         if value["risk_budget"] is not None:
             value["risk_budget"] = RiskBudget(**value["risk_budget"])
         return AccountSnapshot(snapshot_id, **value)
