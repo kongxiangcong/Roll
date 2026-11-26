@@ -17,6 +17,10 @@ CREATE TABLE IF NOT EXISTS research_task (
     task_id TEXT PRIMARY KEY,
     manifest TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS research_task_parent (
+    task_id TEXT PRIMARY KEY REFERENCES research_task(task_id),
+    parent_task_id TEXT NOT NULL REFERENCES research_task(task_id)
+);
 CREATE TABLE IF NOT EXISTS research_attempt (
     attempt_id TEXT PRIMARY KEY,
     task_id TEXT NOT NULL REFERENCES research_task(task_id),
@@ -35,13 +39,16 @@ def task_database(data_dir, *, write=False):
 
 def get_task(data_dir, task_id):
     with task_database(data_dir) as db:
-        row = db.execute("SELECT manifest FROM research_task WHERE task_id=?", (task_id,)).fetchone()
+        row = db.execute(
+            "SELECT manifest, parent_task_id FROM research_task "
+            "LEFT JOIN research_task_parent USING(task_id) WHERE task_id=?", (task_id,)
+        ).fetchone()
         if not row:
             raise ValueError(f"无此研究任务：{task_id}")
         attempts = db.execute(
             "SELECT receipt FROM research_attempt WHERE task_id=? ORDER BY rowid", (task_id,)
         ).fetchall()
-    return {"task_id": task_id, "manifest": json.loads(row["manifest"]),
+    return {"task_id": task_id, "parent_task_id": row["parent_task_id"], "manifest": json.loads(row["manifest"]),
             "attempts": [json.loads(item["receipt"]) for item in attempts]}
 
 
@@ -128,13 +135,16 @@ def execute_attempt(data_dir, manifest, receipt, *, executor=None):
     return receipt
 
 
-def start_task(data_dir, manifest, *, executor=None):
+def start_task(data_dir, manifest, *, executor=None, parent_task_id=None):
     task_id = "task-" + uuid4().hex
     attempt_id = "attempt-" + uuid4().hex
     receipt = {"task_id": task_id, "attempt_id": attempt_id, "status": "running",
                "gaps": [], "draft_version": None}
     with task_database(data_dir, write=True) as db:
         db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, json_text(manifest)))
+        if parent_task_id is not None:
+            db.execute("INSERT INTO research_task_parent VALUES (?,?)", (task_id, parent_task_id))
+            receipt["parent_task_id"] = parent_task_id
         db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
     return execute_attempt(data_dir, manifest, receipt, executor=executor)
 
@@ -143,6 +153,33 @@ def run_task(data_dir, symbol, *, question, snapshot_id, as_of, materials=(), re
     manifest = freeze_manifest(data_dir, symbol, question=question, snapshot_id=snapshot_id,
                                as_of=as_of, materials=materials, required_titles=required_titles)
     return start_task(data_dir, manifest, executor=executor)
+
+
+def supplement_task(data_dir, parent_task_id, *, materials=(), snapshot_id=None, as_of=None, executor=None):
+    manifest = get_task(data_dir, parent_task_id)["manifest"]
+    cutoff = utc_timestamp(as_of) if as_of is not None else manifest["as_of"]
+    for item in manifest["materials"]:
+        if item["received_at"] > cutoff:
+            raise ValueError(f'公告「{item["title"]}」取得时间晚于任务截止时点')
+    snapshot = snapshot_id if snapshot_id is not None else manifest["snapshot_id"]
+    new_basis = snapshot != manifest["snapshot_id"] or cutoff != manifest["as_of"]
+    if new_basis:
+        market = export_market_research(data_dir, manifest["symbol"], snapshot_id=snapshot, as_of=cutoff)
+        manifest.update(snapshot_id=snapshot, market=market, purpose=market["snapshot"]["use_mode"])
+    if cutoff != manifest["as_of"]:
+        manifest["as_of"] = cutoff
+        manifest["dossier"] = ResearchDossiers(data_dir).public_version(manifest["symbol"], cutoff)
+    known = {item["id"] for item in manifest["materials"]}
+    additions = []
+    for path in materials:
+        item = freeze_material(path, cutoff)
+        if item["id"] not in known:
+            additions.append(item)
+            known.add(item["id"])
+    if not new_basis and not additions:
+        raise ValueError("补证须提供新材料、行情快照或截止时点；相同清单请重试原任务")
+    manifest["materials"].extend(additions)
+    return start_task(data_dir, manifest, parent_task_id=parent_task_id, executor=executor)
 
 
 def register_task_commands(research):
@@ -157,6 +194,13 @@ def register_task_commands(research):
     run.add_argument("--require", action="append", default=[], help="回答问题所需的公告标题，可重复")
     run.set_defaults(handler=lambda a, d: run_task(d, a.symbol, question=a.question,
                      snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require))
+    supplement = commands.add_parser("supplement", help="沿用原问题及标的，补证并创建关联任务")
+    supplement.add_argument("task_id", help="父任务 ID")
+    supplement.add_argument("--material", action="append", default=[], metavar="JSON", help="新增公告元数据 JSON")
+    supplement.add_argument("--snapshot", help="新行情快照 ID，默认沿用父任务")
+    supplement.add_argument("--as-of", help="新研究截止时点，默认沿用父任务")
+    supplement.set_defaults(handler=lambda a, d: supplement_task(d, a.task_id, materials=a.material,
+                            snapshot_id=a.snapshot, as_of=a.as_of))
     show = commands.add_parser("show", help="读取任务的公开清单与历次尝试")
     show.add_argument("task_id")
     show.set_defaults(handler=lambda a, d: get_task(d, a.task_id))
