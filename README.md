@@ -17,12 +17,12 @@ uv run --project backend --locked roll serve
 ## 同步与研究
 
 ```sh
-roll market sync 600362.SH 000300.SH --start 2020-01-02
+roll market sync 600362.SH 000300.SH 512400.SH --start 2020-01-02
 roll research sync-industry --start 2020-01-02
 roll market import config/research/600362.SH/dividends.json
 ```
 
-扶摇同步读取环境变量 `FUYAO_API_KEY`。可用 `ROLL_ENV_FILE` 指向本机配置文件。沪深 300 的扶摇缺口走公共指数补源。已有行情日期默认复用本地版本，`--refresh` 用来采集来源修订。申万同步使用系统 HTTPS 证书链，也可用 `--ca-file` 指定有效的 CA 文件。
+扶摇同步读取环境变量 `FUYAO_API_KEY`。可用 `ROLL_ENV_FILE` 指向本机配置文件。沪深 300 的扶摇缺口走公共指数补源，512400.SH 同步公共原价。已有行情日期默认复用本地版本，`--refresh` 用来采集来源修订。申万同步使用系统 HTTPS 证书链，也可用 `--ca-file` 指定有效的 CA 文件。
 
 用 `roll market freeze` 指定证券、区间、序列和用途，输出快照标识。以 `roll research export 600362.SH --snapshot ID` 获取冻结的多周期指标与覆盖。三种用途分别支持严格历史时点、显式假设下的历史重建，以及包含实际取得时间约束的日常运行。已冻结输出可离线读取。
 
@@ -33,3 +33,9 @@ roll market import config/research/600362.SH/dividends.json
 用 `roll account init --help` 查看基线字段。基线现金、券商可用现金、批次和预算由用户填入本地 JSON。资金预算用 `roll account budget` 登记，仓位比例使用 0 至 1。用 `roll account fill` 和 `roll account correct` 记录已核对的券商成交及更正，重复提交保留原流水标识。每个账本由 `--book-id` 独立标识。
 
 `roll strategy freeze` 登记江西铜业 20/60 日频趋势协议及冻结策略版本。协议规定开发与样本外区间、全现金和已有持仓的双基准口径、模拟费用及独立验收标准。结果保留实验与策略注册状态。
+
+## 盘后计划与预留
+
+`roll plan` 根据当前已取得的行情、已发布的研究、策略注册状态及账户预算，冻结下一交易日的唯一方案。用 `--preview` 先看候选及 P0–P4 理由，用 `--plan-id ID` 重读任意已发布版本。
+
+`roll commitments show` 核对剩余预留和当前可分配现金。单日预留到目标交易日收盘自动释放。用 `roll commitments condition` 登记跨日条件，用 `roll commitments order` 登记券商未决、撤单或失效。成交金额以 `roll account fill` 录入的实际含费值为准。已从券商可用余额扣除的本笔冻结款填入 `broker_frozen`，并录入券商确认的可用余额。后续成交可用 `broker_order_id` 关联委托。

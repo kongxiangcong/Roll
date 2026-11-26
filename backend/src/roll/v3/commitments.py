@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS commitment_event (
     UNIQUE (book_id, event_id)
 );
 CREATE INDEX IF NOT EXISTS commitment_event_order ON commitment_event(book_id, kind, reference_id);
+CREATE INDEX IF NOT EXISTS commitment_event_cutoff ON commitment_event(plan_id, effective_at, known_at);
 """
 
 
