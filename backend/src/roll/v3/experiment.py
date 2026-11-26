@@ -310,9 +310,14 @@ def _development_regimes(data_dir, snapshot_id, trace):
 
 def _action_phase(data_dir, db, scope, at, previous_cutoff, previous):
     record = read_snapshot(data_dir, series="corporate_action", cutoff=at, db=db, **scope)
+    return company_action_changes(record["observations"], at, previous_cutoff, previous)
+
+
+def company_action_changes(observations, at, previous_cutoff, previous):
+    """Resolve new, changed and due entitlements from observations visible at one phase."""
     visible = {}
     issues = []
-    for row in record["observations"]:
+    for row in observations:
         try:
             action = CompanyAction.from_observation(row)
             term_dates = (action.record_date, action.ex_date, action.payment_date, action.listing_date)
@@ -320,7 +325,7 @@ def _action_phase(data_dir, db, scope, at, previous_cutoff, previous):
                 raise ValueError("公司行动日期须为 ISO 日期")
             if any(not rate.is_finite() or rate < 0 for rate in (action.cash_per_share, action.shares_per_share)):
                 raise ValueError("权益比例须为非负数")
-        except (KeyError, ValueError, InvalidOperation):
+        except (KeyError, TypeError, ValueError, InvalidOperation):
             issues.append((row["trade_date"], "INVALID_CORPORATE_ACTION", ()))
             continue
         visible[action.key] = action
@@ -351,7 +356,7 @@ def _terms(action):
     )
 
 
-def _economic_action_gap(bar, factors, actions):
+def economic_action_gap(bar, factors, actions):
     if any((action.cash_per_share and not action.payment_date)
            or (action.shares_per_share and not action.listing_date) for action in actions):
         return "ENTITLEMENT_SETTLEMENT_DATE_MISSING"
@@ -424,7 +429,7 @@ def _market_inputs(data_dir, configuration, *, end=None):
                 cutoff=close_times[day], db=db,
             )["observations"]
             actions_today = [action for action in prior_actions.values() if action.ex_date == day]
-            issue = _economic_action_gap(mark["payload"] if mark else {}, factors, actions_today)
+            issue = economic_action_gap(mark["payload"] if mark else {}, factors, actions_today)
             issues = [*open_issues, *close_issues]
             if issue:
                 record_dates = tuple(action.record_date for action in actions_today)

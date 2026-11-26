@@ -494,6 +494,17 @@ def start_task(data_dir, manifest, *, executor=_DEFAULT_HARNESS, parent_task_id=
                                 parent_task_id=parent_task_id, executor=executor)
 
 
+def record_task_result(data_dir, manifest, result):
+    """Save a task that has reached a terminal result without invoking a research executor."""
+    task_id = "task-" + uuid4().hex
+    attempt_id = "attempt-" + uuid4().hex
+    receipt = {"gaps": [], "draft_version": None, **result, "task_id": task_id, "attempt_id": attempt_id}
+    with task_database(data_dir, write=True) as db:
+        db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, json_text(manifest)))
+        db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
+    return receipt
+
+
 def retry_task(data_dir, task_id, *, executor=_DEFAULT_HARNESS):
     with task_database(data_dir) as db:
         active = db.execute(
@@ -530,9 +541,11 @@ def supplement_task(data_dir, parent_task_id, *, materials=(), snapshot_id=None,
 
 
 def register_task_commands(research):
+    from roll.v3.development_cli import register_development_commands
     from roll.v3.harness_settings import select_harness
 
     commands = research.add_parser("task", help="研究任务").add_subparsers(required=True)
+    register_development_commands(commands)
     run = commands.add_parser("run", help="冻结公开输入并执行首次研究")
     run.add_argument("symbol")
     run.add_argument("--question", required=True)

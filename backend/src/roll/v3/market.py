@@ -224,13 +224,17 @@ def _visible_at(row, snapshot):
     return verified or row['available_at'] or assumed or row['received_at']
 
 
-def _choose(rows, snapshot, cutoff):
+def _choose(rows, snapshot, cutoff, *, strict_receipt=False):
     if not rows:
         return None, 'missing'
     current = {}
     for row in rows:
         visible_at = _visible_at(row, snapshot)
-        if visible_at is None or visible_at > cutoff:
+        if visible_at is None:
+            continue
+        if strict_receipt and snapshot['use_mode'] == STRICT_HISTORICAL_AS_OF:
+            visible_at = max(visible_at, row['received_at'])
+        if visible_at > cutoff:
             continue
         source = row['source']
         if source not in current or (visible_at, row['seq']) > (
@@ -315,7 +319,7 @@ def _coverage(scope, observations, states, warmup):
 
 
 def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, start=None, end=None,
-                  cutoff=None, warmup=0, db=None):
+                  cutoff=None, warmup=0, db=None, strict_receipt=False):
     """Inspect a frozen observation range and its coverage at a decision cutoff."""
     with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
@@ -331,7 +335,7 @@ def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, sta
                 if key[0] > cutoff_day:
                     states[key] = 'not_visible'
                     continue
-                observation, states[key] = _choose(rows, snapshot, cutoff)
+                observation, states[key] = _choose(rows, snapshot, cutoff, strict_receipt=strict_receipt)
                 if observation:
                     observations.append(observation)
                     selected[observation['seq']] = observation
@@ -358,23 +362,34 @@ def read_research_features(data_dir, snapshot_id, *, symbol, cutoff, db=None):
     return {feature: observation for feature, (_, observation) in latest.items() if observation is not None}
 
 
-def snapshot_windows(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs):
-    """Resolve one time cutoff per trading date without querying each session."""
+def snapshot_window_selections(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs,
+                               strict_receipt=False):
+    """Resolve item versions and quality at a separate cutoff for each trading date."""
     if not cutoffs:
         return {}
     with database(data_dir) as db:
-        db.executescript(_SCHEMA)
+        ensure_schema(db, _SCHEMA)
         snapshot = _snapshot(db, snapshot_id)
         versions = {}
         for scope in _ranges(snapshot, series, symbol, min(cutoffs), max(cutoffs)):
             versions.update(_observations(db, snapshot, scope))
-    result = {}
-    for day, cutoff in cutoffs.items():
-        cutoff = min(utc_timestamp(cutoff), snapshot['as_of'])
-        cutoff_day = str(datetime.fromisoformat(cutoff).astimezone(SHANGHAI).date())
-        rows = versions.get((day, ''), ()) if day <= cutoff_day else ()
-        result[day] = _choose(rows, snapshot, cutoff)[0]
+    result = {day: {} for day in cutoffs}
+    timestamps = {day: min(utc_timestamp(at), snapshot['as_of']) for day, at in cutoffs.items()}
+    cutoff_days = {day: str(instant(at).date()) for day, at in timestamps.items()}
+    for (day, item_id), rows in versions.items():
+        if day not in result:
+            continue
+        result[day][item_id] = (
+            _choose(rows, snapshot, timestamps[day], strict_receipt=strict_receipt)
+            if day <= cutoff_days[day] else (None, 'not_visible')
+        )
     return result
+
+
+def snapshot_windows(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs):
+    """Resolve the default item at one time cutoff per trading date."""
+    selected = snapshot_window_selections(data_dir, snapshot_id, series=series, symbol=symbol, cutoffs=cutoffs)
+    return {day: items.get('', (None, 'missing'))[0] for day, items in selected.items()}
 
 
 def available_dates(data_dir, *, series, symbol, start, end, as_of):
