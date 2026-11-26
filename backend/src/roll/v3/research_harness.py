@@ -13,6 +13,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, FiniteFloat, field_validator, model_validator
 
+from roll.v3.development_interpretation import DevelopmentReply, INSTRUCTIONS as DEVELOPMENT_INSTRUCTIONS, is_development
 from roll.v3.research import material_evidence
 from roll.v3.storage import instant
 
@@ -171,13 +172,25 @@ def record_input(public, receipt, data_dir):
     return prompt
 
 
-def read_reply(output, public):
+def harness_request(manifest):
+    from roll.v3.research_tasks import preflight_gaps
+
+    if is_development(manifest):
+        return manifest, DEVELOPMENT_INSTRUCTIONS, DevelopmentReply, False
+    public = public_text(manifest)
+    blocked = preflight_gaps(manifest) or any(gap["blocking"] for gap in public["unreadable_materials"])
+    return public, INSTRUCTIONS, Reply, blocked
+
+
+def read_reply(output, public, response_model):
     if not output.is_file():
         raise HarnessFailure("invalid_response", "助手正常退出但没有最终回包")
     try:
-        reply = Reply.model_validate_json(output.read_bytes(), strict=True).model_dump()
+        reply = response_model.model_validate_json(output.read_bytes(), strict=True).model_dump()
     except ValueError:
-        raise HarnessFailure("invalid_response", "助手最终回包与研究草稿或证据缺口格式不符") from None
+        raise HarnessFailure("invalid_response", "助手最终回包与本次研究要求的格式不符") from None
+    if response_model is DevelopmentReply:
+        return reply
     if any(not gap["reason"].strip() or not gap["required_evidence"].strip() for gap in reply["gaps"]):
         raise HarnessFailure("invalid_response", "证据缺口须说明原因和所需材料")
     blocking = any(gap["blocking"] for gap in reply["gaps"])
