@@ -4,6 +4,8 @@
 
 Markdown 开头可用一对 `---` 包围 YAML 元数据。导入普通 Markdown 时，文件名（不含扩展名）作为草稿版本。发布时需要 `valid_until`，结论时点 `as_of` 缺省为导入时间。证据记录使用 `id`、`title`、`source`、`locator` 和 `url` 或 `document_id`，并可记录发行人、披露时间和实际取得时间。取得时间缺省为导入时间。结构化约束可在 `constraint_basis` 下列出支持它的证据 ID 或研究理由，确认人及发布时刻由发布命令写入。
 
+新发布的档案如设 `fundamental_gate: pass`，须在 `constraint_basis.fundamental_gate.evidence_refs` 引用本档案已登记的对应证据。设 `thesis_status: intact` 或给出非空 `strategy_whitelist` 时，对应字段须引用证据或用 `rationale` 写明人工判断理由。人工判断随发布记录确认人，沿用档案有效期。用 `roll plan --preview` 查看生效档案的逐项依据。
+
 ## 离线研究任务
 
 用 `research task run` 固定问题、证据依据、行情快照和带时区的截止时点。下面的 `SNAPSHOT` 和 `AS_OF` 取自本地行情快照与研究截止时间。

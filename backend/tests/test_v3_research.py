@@ -85,6 +85,34 @@ def test_published_dossier_has_an_explicit_window_and_provenance(tmp_path):
     assert research_cli(tmp_path, "show", "600362.SH", "--version", "initial") == published
 
 
+def test_publish_requires_field_basis_for_risk_permissions(tmp_path):
+    now = datetime.now(UTC)
+    path = _write_draft(tmp_path, "basis", (now - timedelta(minutes=1)).isoformat(),
+                        (now + timedelta(days=2)).isoformat(), thesis_status="intact")
+    text = path.read_text().replace("fundamental_gate: unknown", "fundamental_gate: pass")
+    text = text.replace("strategy_whitelist: []", "strategy_whitelist: [daily-trend]")
+
+    def publish(markdown):
+        path.write_text(markdown, encoding="utf-8")
+        research_cli(tmp_path, "draft", "600362.SH", str(path))
+        return research_cli(tmp_path, "publish", "600362.SH", "basis", "--reviewer", "复核人")
+
+    with pytest.raises(ValueError, match="constraint_basis.fundamental_gate"):
+        publish(text)
+    text = text.replace("constraint_basis:", "constraint_basis:\n  fundamental_gate:\n    evidence_refs: [quarterly-report]")
+    with pytest.raises(ValueError, match="strategy_whitelist"):
+        publish(text)
+    text = text.replace("constraint_basis:", "constraint_basis:\n  strategy_whitelist:\n    rationale: 仅允许已复核的趋势规则")
+    with pytest.raises(ValueError, match="thesis_status"):
+        publish(text.replace("  thesis_status:\n    evidence_refs: [quarterly-report]", '  thesis_status:\n    rationale: "   "'))
+    assert research_cli(tmp_path, "show", "600362.SH") is None
+    result = publish(text)
+    assert result["constraint_basis"]["fundamental_gate"] == {"evidence_refs": ["quarterly-report"]}
+    assert result["constraint_basis"]["strategy_whitelist"] == {
+        "confirmed_by": "复核人", "rationale": "仅允许已复核的趋势规则",
+    }
+
+
 def test_refresh_replaces_only_the_effective_version_and_keeps_the_original(tmp_path):
     now = datetime.now(UTC)
     as_of = (now - timedelta(minutes=1)).isoformat()

@@ -47,6 +47,17 @@ def test_workbench_review_carries_evidence_into_a_new_dossier_version(tmp_path, 
     draft.write_text("""---
 valid_until: "2026-12-15T00:00:00+08:00"
 fundamental_gate: pass
+evidence:
+  - id: quarterly-report
+    title: 演练用季报
+    source: 测试材料
+    document_id: quarterly-report
+    locator: 合并现金流量表
+constraint_basis:
+  fundamental_gate:
+    evidence_refs: [quarterly-report]
+  thesis_status:
+    rationale: 演练假设由研究者定期复核
 thesis_status: intact
 hypothesis: 收盘维持在十元以上
 invalidation_triggers:
@@ -74,6 +85,10 @@ invalidation_triggers:
         assert before["real_plan"]["action"] == "WATCH"
         assert before["shadow_plan"]["action"] == "BUY"
         assert before["real_plan"]["dossier_version"] == "copper-v1"
+        research_basis = before["real_plan"]["research"]["constraint_basis"]
+        assert research_basis["fundamental_gate"]["evidence_refs"] == ["quarterly-report"]
+        assert research_basis["thesis_status"]["confirmed_by"] == "研究者"
+        assert research_basis["thesis_status"]["rationale"] == "演练假设由研究者定期复核"
 
         settled = browser.post(f"/api/reviews/{key}/settle", json={"now": NEXT_OPEN})
         assert settled.status_code == 200, settled.text

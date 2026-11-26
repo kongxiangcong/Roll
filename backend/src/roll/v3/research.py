@@ -104,8 +104,19 @@ def _validated_draft(draft, *, reviewer=None):
             raise ValueError(f"constraint_basis.{constraint} 须列出依据")
         refs = _check_refs(entry.get("evidence_refs", []), evidence, f"constraint_basis.{constraint}")
         basis[constraint] = {"evidence_refs": refs} if refs or reviewer is None else {"confirmed_by": reviewer}
-        if entry.get("rationale"):
-            basis[constraint]["rationale"] = entry["rationale"]
+        rationale = entry.get("rationale")
+        if rationale is not None and not isinstance(rationale, str):
+            raise ValueError(f"constraint_basis.{constraint}.rationale 须为文字")
+        if rationale and rationale.strip():
+            basis[constraint]["rationale"] = rationale.strip()
+
+    if reviewer is not None:
+        if fundamental_gate == "pass" and not basis["fundamental_gate"].get("evidence_refs"):
+            raise ValueError("fundamental_gate=pass 须在 constraint_basis.fundamental_gate 引用对应证据")
+        for field, permits_risk in (("thesis_status", thesis_status == "intact"),
+                                    ("strategy_whitelist", bool(whitelist))):
+            if permits_risk and not (basis[field].get("evidence_refs") or basis[field].get("rationale")):
+                raise ValueError(f"constraint_basis.{field} 须引用证据或写明人工判断理由")
 
     return {
         **draft,
