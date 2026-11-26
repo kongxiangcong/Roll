@@ -39,3 +39,13 @@ roll market import config/research/600362.SH/dividends.json
 `roll plan` 根据当前已取得的行情、已发布的研究、策略注册状态及账户预算，冻结下一交易日的唯一方案。用 `--preview` 先看候选及 P0–P4 理由，用 `--plan-id ID` 重读任意已发布版本。
 
 `roll commitments show` 核对剩余预留和当前可分配现金。单日预留到目标交易日收盘自动释放。用 `roll commitments condition` 登记跨日条件，用 `roll commitments order` 登记券商未决、撤单或失效。成交金额以 `roll account fill` 录入的实际含费值为准。已从券商可用余额扣除的本笔冻结款填入 `broker_frozen`，并录入券商确认的可用余额。后续成交可用 `broker_order_id` 关联委托。
+
+## 前向复盘
+
+盘后用 `roll review register` 在同一次登记中冻结正式方案和独立影子方案。可用 `--strategy-version VERSION --price-only` 指定已冻结的量价候选供影子账户运行。用 `roll review settle REGISTRATION_ID` 结算已到期的影子方案，随后用 `roll review show REGISTRATION_ID` 对照原计划、模拟结果及实际执行。
+
+实际确认、拒绝和未执行原因通过 `roll review outcome` 追加。已成交时输入券商核对的流水。带证据的偏差可用 `roll review finding` 提交复核，并将已触发的证伪条件关联到当时档案。
+
+为真实前向的开盘撮合准备 `daily_open` 行情观察。以 `market import` 录入原始开盘、参考昨收、交易状态、来源、实际取得时间及可得证据。使用开盘后才取得的历史日线投影时，应选择重建用途。缺少及时的开盘证据会留下具体的未成交原因。用 `review list --start DATE --end DATE` 检查按交易所日历漏登的日期，`--mode rehearsal` 和 `--mode reconstructed` 的记录单独留存。
+
+[工程验收与实测记录](.scratch/roll-v3-trading-pipeline/acceptance.md)

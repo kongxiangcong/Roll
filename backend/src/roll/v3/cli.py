@@ -17,6 +17,7 @@ def parser():
     from roll.v3.market_research import register_market_research
     from roll.v3.plan_cli import register_plan_commands
     from roll.v3.research import register_research_commands
+    from roll.v3.review_cli import register_review_commands
     from roll.v3.strategy_cli import register as register_strategy
 
     root = argparse.ArgumentParser(prog="roll", description="Roll v3 个股研究与盘后工作台")
@@ -31,6 +32,7 @@ def parser():
     register_experiment_commands(commands)
     register_plan_commands(commands)
     register_commitment_commands(commands)
+    register_review_commands(commands)
     serve = commands.add_parser("serve", help="打开本地工作台")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8765)
