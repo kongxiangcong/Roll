@@ -28,3 +28,5 @@ roll --data-dir "$roll_research_demo_dir" research inputs 600362.SH
 发版时可用 `--effective-at` 指定未来的生效时点。以 `research show 600362.SH --as-of` 配合带时区的 ISO 8601 时刻回读当时的有效档案。到期时应核对新增公告并更新有效期，再以新版本发布。
 
 `600362.SH/dividends.json` 记录了 2020 至 2026 年 11 月 25 日的八次 A 股权益分派。数据来自发行人实施公告，可用 `roll market import config/research/600362.SH/dividends.json` 追加到本地数据目录。每条记录保留公告定位、实际核对时间和可得时间依据。登记日、除息日及支付日来自原公告。每股实际派息用于在途权益和到账核算，除息参考扣减用于交易报价。
+
+刷新版的经营现金流门禁读取结构化证据。用 `roll market import config/research/600362.SH/2026q3-cashflow-observation.json` 录入发行人三季报中的原始金额。档案用 `feature`、`operator` 和 `threshold` 声明可执行条件，正文保留研究推理。 [三季报第 12 页](https://static.cninfo.com.cn/finalpage/2026-10-29/1225636802.PDF#page=12)
