@@ -320,3 +320,56 @@ def test_attempts_assign_independent_versions_to_same_named_executor_results(tmp
         draft = run(["research", "show", SYMBOL, "--draft", "--version", receipt["draft_version"]],
                     data_dir=tmp_path)
         assert draft["attempt_id"] == receipt["attempt_id"]
+
+
+def test_plan_history_uses_only_the_reviewed_effective_attempt(tmp_path, snapshot, monkeypatch):
+    from datetime import datetime
+
+    from test_v3_account import BASELINE, account
+    from test_v3_research import _write_draft
+
+    # Anchor publication time so the historical session cutoffs work on future runs.
+    class FixedClock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return datetime.fromisoformat("2026-11-26T16:00:00+08:00").astimezone(tz)
+
+    monkeypatch.setattr("roll.v3.storage.datetime", FixedClock)
+    account(tmp_path, monkeypatch, "init", payload=BASELINE)
+    cutoff = "2026-11-26T16:00:00+08:00"
+    effective = "2026-12-04T00:00:00+08:00"
+
+    def cli(*args):
+        return run(args, data_dir=tmp_path)
+
+    old = _write_draft(tmp_path, "old", "2026-11-25T16:00:00+08:00", effective)
+    cli("research", "draft", SYMBOL, str(old))
+    cli("research", "publish", SYMBOL, "old", "--reviewer", "研究者")
+    original, = cli("plan", "--symbol", SYMBOL, "--as-of", cutoff)["plans"]
+
+    def preview(at=cutoff):
+        return cli("plan", "--preview", "--symbol", SYMBOL, "--as-of", at,
+                   "--snapshot-id", original["snapshot_id"])
+
+    baseline = preview()
+    assert baseline["plans"][0]["dossier_version"] == "old"
+    parent = task_cli(tmp_path, "run", SYMBOL, "--snapshot", snapshot, "--as-of", cutoff,
+                      "--question", QUESTION, "--require", "现金流说明")
+    assert parent["status"] == "blocked"
+    assert preview() == baseline
+    path = material_file(tmp_path, "现金流说明", excerpt="销售回款增加")
+    first = task_cli(tmp_path, "supplement", parent["task_id"], "--material", path)
+    assert first["status"] == "draft_ready"
+    assert preview() == baseline
+    second = task_cli(tmp_path, "retry", first["task_id"])
+    assert second["status"] == "draft_ready"
+    assert second["draft_version"] != first["draft_version"]
+    assert preview() == baseline
+
+    cli("research", "publish", SYMBOL, first["draft_version"], "--reviewer", "研究者",
+        "--effective-at", effective)
+    before, = preview("2026-12-03T15:30:00+08:00")["plans"]
+    during, = preview("2026-12-04T15:30:00+08:00")["plans"]
+    assert (before["dossier_version"], before["research"]["status"]) == ("old", "active")
+    assert (during["dossier_version"], during["research"]["status"]) == (first["draft_version"], "active")
+    assert cli("plan", "--plan-id", original["plan_id"]) == original
