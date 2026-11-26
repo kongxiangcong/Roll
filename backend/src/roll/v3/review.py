@@ -1,7 +1,7 @@
 """Decision ledger for forward registration, shadow execution and actual outcomes."""
 from dataclasses import asdict
 from datetime import date
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from hashlib import sha256
 import json
 
@@ -13,6 +13,7 @@ from roll.v3.execution import EXECUTION_RULES_VERSION, ExecutionRules, OpeningQu
 from roll.v3.industry_sources import STOCK
 from roll.v3.market import LIVE_RUN, RECONSTRUCTED_RESEARCH, freeze_snapshot, read_snapshot, utc_timestamp
 from roll.v3.plan import generate_plans
+from roll.v3.research import ResearchDossiers
 from roll.v3.storage import database, ensure_schema, instant, json_text, session_time
 from roll.v3.strategy import StrategyRegistry
 
@@ -61,7 +62,7 @@ def _clock(mode, now):
     if mode not in MODES:
         raise ValueError(f"未知登记模式 {mode}")
     if mode == "live" and now is not None:
-        raise ValueError("真实前向登记须使用当前系统时间，固定时钟请使用演练模式")
+        raise ValueError("真实前向记录须使用当前系统时间，固定时钟请使用演练模式")
     return instant(now)
 
 
@@ -80,6 +81,14 @@ def _symbols(account):
     return {lot.symbol for lot in account.lots} | {item.symbol for item in account.receivables}
 
 
+def _raw_mark(value):
+    try:
+        price = Decimal(str(value))
+    except InvalidOperation:
+        return None
+    return price if price.is_finite() and price > 0 else None
+
+
 class DecisionLedger:
     """Read original decisions and append receipts as each execution phase becomes known."""
 
@@ -87,7 +96,7 @@ class DecisionLedger:
         self.data_dir = data_dir
 
     def register(self, *, book_id="real", as_of=None, symbols=(), strategy_versions=(), mode="live",
-                 price_only=False, snapshot_id=None, now=None):
+                 price_only=None, snapshot_id=None, now=None):
         clock = _clock(mode, now)
         cutoff = instant(as_of) if as_of is not None else clock
         day = cutoff.date()
@@ -95,8 +104,6 @@ class DecisionLedger:
             raise ValueError("请使用原始账户登记复盘")
         if not is_session(day) or not session_time(day, 15) <= cutoff <= clock:
             raise ValueError("请使用交易日收盘后、当前时点以前的裁决时间")
-        if mode in {"live", "rehearsal"} and clock.date() != day:
-            raise ValueError("已过登记日，请使用 reconstructed 模式重建")
         if mode == "reconstructed" and day >= clock.date():
             raise ValueError("历史重建需要已过去的交易日")
 
@@ -110,6 +117,8 @@ class DecisionLedger:
             cached = self._registration(db, registration_id)
             if cached is not None:
                 return self._view(db, cached, clock)
+            if mode in {"live", "rehearsal"} and clock.date() != day:
+                raise ValueError("已过登记日，请使用 reconstructed 模式重建")
 
             previous = self._registered(db, book_id, mode=mode)
             if mode == "reconstructed":
@@ -121,8 +130,12 @@ class DecisionLedger:
 
             ledger = AccountLedger(self.data_dir, db=db)
             registry = StrategyRegistry(self.data_dir)
-            selected = {symbol.upper() for symbol in symbols or (STOCK,)}
-            versions = sorted(set(strategy_versions))
+            last = previous[-1] if previous else None
+            prior_symbols = [entry["symbol"] for entry in last["plans"]] if last else [STOCK]
+            selected = {symbol.upper() for symbol in symbols or prior_symbols}
+            versions = sorted(set(strategy_versions or (last["strategy_versions"] if last else ())))
+            if price_only is None:
+                price_only = last.get("shadow_price_only", False) if last else False
             for version in versions:
                 strategy = registry.get(version, cutoff, db=db)
                 if strategy is None:
@@ -131,6 +144,11 @@ class DecisionLedger:
 
             if not previous:
                 baseline = ledger.snapshot(book_id, as_of=cutoff)
+                selected.update(_symbols(baseline))
+                if mode == "live":
+                    baseline, _ = self._settle_actions(
+                        db, book_id, selected, cutoff, LIVE_RUN, simulated=False,
+                    )
                 _clone(ledger, shadow_book, baseline, cutoff)
                 if actual_book != book_id:
                     _clone(ledger, actual_book, baseline, cutoff)
@@ -144,10 +162,11 @@ class DecisionLedger:
             accounts = [ledger.snapshot(book, as_of=cutoff) for book, _ in books]
             for account in accounts:
                 selected.update(_symbols(account))
-            for (book, simulated), account in zip(books, accounts):
-                if book == book_id and mode == "reconstructed":
+            for book, simulated in books:
+                if book == book_id and (mode == "reconstructed" or not previous):
                     continue
-                self._settle_actions(db, book, account, selected, cutoff, LIVE_RUN, simulated=simulated)
+                use_mode = RECONSTRUCTED_RESEARCH if mode == "reconstructed" else LIVE_RUN
+                self._settle_actions(db, book, selected, cutoff, use_mode, simulated=simulated, clock=clock)
 
             real = generate_plans(
                 self.data_dir, book_id=actual_book, as_of=cutoff, symbols=selected,
@@ -159,6 +178,8 @@ class DecisionLedger:
                 snapshot_id=snapshot_id if mode == "reconstructed" else real["snapshot_id"],
                 simulated=True, strategy_versions=versions, allow_price_only=price_only,
                 db=db, published_at=clock,
+                market_mode=RECONSTRUCTED_RESEARCH if mode == "reconstructed" else LIVE_RUN,
+                market_as_of=clock if mode == "reconstructed" else None,
             )
             real_plans = {plan["symbol"]: plan for plan in real["plans"]}
             if mode == "reconstructed":
@@ -173,7 +194,7 @@ class DecisionLedger:
                 "decision_date": today, "decision_at": real["as_of"], "session": real["session"],
                 "registered_at": utc_timestamp(clock), "shadow_book_id": shadow_book, "actual_book_id": actual_book,
                 "strategy_versions": versions, "baseline_account_snapshot_id": anchor,
-                "shadow_accounting_basis": SIMULATION_BASIS, "plans": plans,
+                "shadow_accounting_basis": SIMULATION_BASIS, "shadow_price_only": price_only, "plans": plans,
             }
             db.execute(
                 "INSERT INTO forward_registration VALUES (?, ?, ?, ?, ?, ?)",
@@ -202,6 +223,23 @@ class DecisionLedger:
             records = self._registered(db, book_id, start=start, end=end, as_of=clock, mode=mode)
             return [self._view(db, record, clock) for record in records]
 
+    def research_followups(self, symbol, *, mode="live", as_of=None):
+        cutoff = utc_timestamp(as_of)
+        with database(self.data_dir) as db:
+            ensure_schema(db, _SCHEMA)
+            rows = db.execute(
+                """SELECT e.recorded_at, e.payload FROM forward_event e
+                   JOIN forward_registration r ON r.registration_id = e.registration_id
+                   WHERE e.symbol = ? AND e.kind = 'finding' AND r.mode = ? AND e.recorded_at <= ?
+                   ORDER BY e.recorded_at, e.seq""",
+                (symbol.upper(), mode, cutoff),
+            )
+            followups = {}
+            for row in rows:
+                if item := json.loads(row["payload"]).get("research_followup"):
+                    followups.setdefault(item["followup_id"], {**item, "recorded_at": row["recorded_at"]})
+            return list(followups.values())
+
     def settle(self, registration_id, *, now=None):
         with database(self.data_dir, write=True) as db:
             ensure_schema(db, _SCHEMA)
@@ -216,15 +254,15 @@ class DecisionLedger:
                 self._settle_record(db, prior, clock, clock)
             return self._view(db, record, clock)
 
-    def _settle_actions(self, db, book_id, account, symbols, cutoff, mode, *, simulated):
+    def _settle_actions(self, db, book_id, symbols, cutoff, mode, *, simulated, clock=None):
         ledger = AccountLedger(self.data_dir, db=db)
         baseline = ledger.trade_log(book_id, as_of=cutoff)[0]
         first = instant(baseline["effective_at"]).date().isoformat()
         last = cutoff.date().isoformat()
         scope = [{"series": "corporate_action", "symbol": symbol, "start": first, "end": last}
                  for symbol in symbols]
-        snapshot = freeze_snapshot(self.data_dir, as_of=cutoff, use_mode=mode, scope=scope, db=db)
-        actions = read_company_actions(self.data_dir, snapshot["snapshot_id"], db=db)
+        snapshot = freeze_snapshot(self.data_dir, as_of=clock or cutoff, use_mode=mode, scope=scope, db=db)
+        actions = read_company_actions(self.data_dir, snapshot["snapshot_id"], cutoff=cutoff, db=db)
         settled = settle_entitlements(
             self.data_dir, book_id, actions, as_of=cutoff, simulated=simulated, db=db,
         )
@@ -241,17 +279,17 @@ class DecisionLedger:
         symbols = [plan["symbol"] for plan in record["plans"]]
         use_mode = LIVE_RUN if record["mode"] == "live" else RECONSTRUCTED_RESEARCH
         if self._receipt(db, record, "open") is None:
-            account = ledger.snapshot(book, as_of=opening)
             account, entitlement_id = self._settle_actions(
-                db, book, account, symbols, opening, use_mode, simulated=True,
+                db, book, symbols, opening, use_mode, simulated=True, clock=clock,
             )
             opening_scope = [{"series": "daily_open", "symbol": symbol, "start": session, "end": session}
                              for symbol in symbols]
             frozen = freeze_snapshot(self.data_dir, as_of=clock, use_mode=use_mode, scope=opening_scope, db=db)
+            opening_inputs = read_snapshot(
+                self.data_dir, frozen["snapshot_id"], series="daily_open", cutoff=opening, db=db,
+            )
             openings = {
-                row["symbol"]: row for row in read_snapshot(
-                    self.data_dir, frozen["snapshot_id"], series="daily_open", cutoff=opening, db=db,
-                )["observations"] if not row["item_id"]
+                row["symbol"]: row for row in opening_inputs["observations"] if not row["item_id"]
             }
             results = {}
             for entry in record["plans"]:
@@ -259,13 +297,17 @@ class DecisionLedger:
                 symbol = plan["symbol"]
                 intent = execution_intent(plan)
                 before = account.snapshot_id
+                evidence = openings.get(symbol)
+                evidence_status = "AVAILABLE" if evidence else "MISSING_OR_NOT_VISIBLE"
+                if evidence and record["mode"] == "live" and not evidence["available_evidence"]:
+                    evidence = None
+                    evidence_status = "TIMING_UNVERIFIED"
                 if intent is None:
                     result = {"status": "OBSERVED", "reason": plan["action"], "fill": None,
                               "opening": None, "intent": None}
                 else:
                     if plan["execution_rules_version"] != EXECUTION_RULES_VERSION:
                         raise ValueError("当前执行核不支持该计划冻结的规则版本")
-                    evidence = openings.get(symbol)
                     quote = OpeningQuote.from_payload(
                         symbol, session, evidence["payload"], observation_seq=evidence["seq"],
                     ) if evidence else None
@@ -280,14 +322,14 @@ class DecisionLedger:
                 results[symbol] = {
                     **result, "session": session, "recorded_at": utc_timestamp(clock),
                     "opening_snapshot_id": frozen["snapshot_id"], "entitlement_snapshot_id": entitlement_id,
+                    "opening_evidence_status": evidence_status,
                     "before_account_snapshot_id": before, "account": account.as_dict(),
                     "after_account_snapshot_id": account.snapshot_id,
                 }
             self._save_receipt(db, record, "open", clock, results)
         if through >= closing and self._receipt(db, record, "close") is None:
-            account = ledger.snapshot(book, as_of=closing)
             account, entitlement_id = self._settle_actions(
-                db, book, account, symbols, closing, use_mode, simulated=True,
+                db, book, symbols, closing, use_mode, simulated=True, clock=clock,
             )
             marks = freeze_snapshot(
                 self.data_dir, as_of=clock, use_mode=use_mode, db=db,
@@ -297,7 +339,7 @@ class DecisionLedger:
             rows = read_snapshot(
                 self.data_dir, marks["snapshot_id"], cutoff=closing, db=db,
             )["observations"]
-            prices = {row["symbol"]: row["payload"].get("close") for row in rows if not row["item_id"]}
+            prices = {row["symbol"]: _raw_mark(row["payload"].get("close")) for row in rows if not row["item_id"]}
             needed = {lot.symbol for lot in account.lots} | {r.symbol for r in account.receivables if r.quantity}
             missing = sorted(symbol for symbol in needed if prices.get(symbol) is None)
             self._save_receipt(db, record, "close", clock, {
@@ -325,13 +367,13 @@ class DecisionLedger:
 
     @staticmethod
     def _registered(db, book_id, *, start=None, end=None, as_of=None, mode=None):
+        cutoff = utc_timestamp(as_of) if as_of is not None else None
         rows = db.execute(
             """SELECT payload FROM forward_registration WHERE book_id = ?
                AND (? IS NULL OR decision_date >= ?) AND (? IS NULL OR decision_date <= ?)
                AND (? IS NULL OR registered_at <= ?) AND (? IS NULL OR mode = ?)
                ORDER BY decision_date, mode""",
-            (book_id, start, start, end, end, utc_timestamp(as_of) if as_of else None,
-             utc_timestamp(as_of) if as_of else None, mode, mode),
+            (book_id, start, start, end, end, cutoff, cutoff, mode, mode),
         )
         return [json.loads(row["payload"]) for row in rows]
 
@@ -441,10 +483,17 @@ class DecisionLedger:
         if trigger_id:
             if trigger_id not in {trigger["id"] for trigger in plan["research"].get("triggers", ())}:
                 raise ValueError("证伪条件须来自原计划引用的已发布档案")
+            dossier = ResearchDossiers(self.data_dir).version(plan["symbol"], plan["dossier_version"], db=db)
+            trigger = next(
+                item for item in dossier["invalidation_triggers"]
+                if item.get("id", item.get("feature", "unnamed")) == trigger_id
+            )
             data["research_followup"] = {
                 "followup_id": _identity("research", record["registration_id"], plan["plan_id"], trigger_id),
                 "symbol": plan["symbol"], "dossier_version": plan["dossier_version"],
                 "trigger_id": trigger_id, "plan_id": plan["plan_id"],
+                "hypothesis": trigger.get("hypothesis", dossier.get("hypothesis", trigger.get("condition"))),
+                "trigger": trigger, "status": "open",
                 "registration_id": record["registration_id"], "evidence_refs": refs,
             }
         self._append_event(db, record, _identity("finding", data), "finding", data, clock)
@@ -498,7 +547,7 @@ class DecisionLedger:
         outcomes = [event for event in events if event["kind"] == "outcome"]
         findings = [event for event in events if event["kind"] == "finding"]
         account_events = ledger.trade_log(record["actual_book_id"], as_of=clock, plan_id=plan["plan_id"])
-        fills = [event for event in account_events if event["kind"] == "FILL"]
+        fills = ledger.effective_fills(record["actual_book_id"], as_of=clock, plan_id=plan["plan_id"])
         trades = plan["action"] in {"BUY", "SELL"}
         due = clock >= session_time(record["session"], 15)
         status = "UNREPORTED" if due and trades else "OBSERVED" if due else "PENDING"
@@ -520,10 +569,17 @@ class DecisionLedger:
                                            "OPEN_OUTSIDE_PRICE_BAND", "UNKNOWN_SELLABLE_SHARES"}:
             comparisons.append({"category": "data_quality", "reason": shadow["reason"],
                                 "evidence_refs": [shadow["opening_snapshot_id"]]})
-        if trades and status in {"REJECTED", "NOT_EXECUTED", "DEVIATION"}:
+        if status == "DEVIATION" or (trades and status in {"REJECTED", "NOT_EXECUTED"}):
             comparisons.append({"category": "user_deviation", "reason": status})
-        if fills and any(instant(event["effective_at"]).date().isoformat() != plan["session"] for event in fills):
-            comparisons.append({"category": "execution_deviation", "reason": "OUTSIDE_TARGET_SESSION"})
+        if trades and fills:
+            start, end = (instant(plan["execution_window"][key]) for key in ("start", "end"))
+            outside = [event["event_id"] for event in fills if not start <= instant(event["effective_at"]) <= end]
+            if outside:
+                comparisons.append({"category": "execution_deviation", "reason": "OUTSIDE_EXECUTION_WINDOW",
+                                    "evidence_refs": outside})
+            if status == "PARTIAL":
+                comparisons.append({"category": "execution_deviation", "reason": "PARTIAL_BROKER_FILL",
+                                    "evidence_refs": [event["event_id"] for event in fills]})
 
         return {
             **entry, "shadow": shadow,

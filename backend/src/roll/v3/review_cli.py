@@ -1,8 +1,10 @@
 """CLI adapters for the decision ledger."""
+from argparse import BooleanOptionalAction
 from decimal import Decimal
 import json
 import sys
 
+from roll.market.calendar import LAST_NOTICE_DAY
 from roll.v3.review import DecisionLedger, FINDING_CATEGORIES, MODES, OUTCOMES
 from roll.v3.storage import instant, sessions
 
@@ -16,7 +18,7 @@ def register_review_commands(commands):
     register.add_argument("--as-of", help="交易日盘后裁决截止时点")
     register.add_argument("--symbol", action="append")
     register.add_argument("--strategy-version", action="append")
-    register.add_argument("--price-only", action="store_true", help="影子策略使用已冻结的独立量价口径")
+    register.add_argument("--price-only", action=BooleanOptionalAction, help="影子策略使用已冻结的独立量价口径")
     register.add_argument("--snapshot-id", help="使用已有行情快照，重建模式下用于影子计划")
     register.add_argument("--mode", choices=MODES, default="live")
     register.add_argument("--now", help="指定演练或重建的时钟")
@@ -86,9 +88,18 @@ def _list(args, data_dir):
         book_id=args.book_id, start=args.start, end=args.end, as_of=clock,
     )
     live = {record["decision_date"] for record in records if record["mode"] == "live"}
-    gaps = [day for day in sessions(args.start, min(args.end, clock.date().isoformat())) if day not in live
-            and (day < clock.date().isoformat() or clock.hour >= 15)] if args.start else []
-    return {"registrations": records, "missing_live_dates": gaps}
+    today = clock.date().isoformat()
+    requested_end = min(args.end, today) if args.end else today
+    calendar_end = LAST_NOTICE_DAY.isoformat()
+    gaps = [
+        day for day in sessions(args.start, min(requested_end, calendar_end))
+        if day not in live and (day < today or clock.hour >= 15)
+    ] if args.start else []
+    return {
+        "registrations": records, "missing_live_dates": gaps,
+        "calendar_known_through": calendar_end,
+        "calendar_coverage_complete": requested_end <= calendar_end if args.end else None,
+    }
 
 
 def _outcome(args, data_dir):

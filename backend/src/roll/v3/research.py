@@ -225,9 +225,9 @@ class ResearchDossiers:
                   publication["valid_until"], json_text(publication)))
         return publication
 
-    def version(self, symbol, version):
+    def version(self, symbol, version, *, db=None):
         """Read an immutable publication by its reference, including expired versions."""
-        with self._connect() as db:
+        with self._connect(db=db) as db:
             row = db.execute("""
                 SELECT payload FROM research_version WHERE symbol = ? AND version = ?
             """, (symbol.upper(), version)).fetchone()
@@ -292,6 +292,12 @@ def _inputs(args, data_dir):
     return ResearchDossiers(data_dir).inputs(args.symbol, args.as_of)
 
 
+def _followups(args, data_dir):
+    from roll.v3.review import DecisionLedger
+
+    return DecisionLedger(data_dir).research_followups(args.symbol, mode=args.mode, as_of=args.as_of)
+
+
 def register_research_commands(commands):
     research = commands.add_parser("research", help="导入、发布和读取个股研究档案")
     operations = research.add_subparsers(dest="research_operation", required=True)
@@ -320,4 +326,10 @@ def register_research_commands(commands):
     inputs.add_argument("symbol")
     inputs.add_argument("--as-of")
     inputs.set_defaults(handler=_inputs)
+
+    followups = operations.add_parser("followups", help="查看本标的由复盘证据触发的重新研究事项")
+    followups.add_argument("symbol")
+    followups.add_argument("--mode", choices=("live", "rehearsal", "reconstructed"), default="live")
+    followups.add_argument("--as-of")
+    followups.set_defaults(handler=_followups)
     return operations

@@ -109,7 +109,7 @@ def settle_entitlements(data_dir, book_id, actions, *, as_of, known_at=None, sim
     if simulated:
         for receivable in baseline["payload"].get("receivables", ()):
             _post_due(ledger, book_id, receivable["action_key"], receivable["symbol"], receivable["kind"],
-                      receivable["due_date"], as_of, known_at)
+                      receivable["due_date"], as_of, known_at, not_before=instant(baseline["effective_at"]))
     return ledger.snapshot(book_id, as_of=as_of, known_at=known_at)
 
 
@@ -123,11 +123,13 @@ def _post_simulated(ledger, book_id, action, as_of, known_at):
         _post_due(ledger, book_id, action.key, action.symbol, kind, day, as_of, known_at)
 
 
-def _post_due(ledger, book_id, action_key, symbol, kind, day, as_of, known_at):
+def _post_due(ledger, book_id, action_key, symbol, kind, day, as_of, known_at, *, not_before=None):
     if day is None:
         return
     hour, minute = (9, 30) if kind == "shares" else (15, 0)
     posting = session_time(day, hour, minute)
+    if not_before is not None:
+        posting = max(posting, not_before)
     if posting <= as_of:
         ledger.record_entitlement_posting(
             book_id, action_key=action_key, symbol=symbol, kind=kind,

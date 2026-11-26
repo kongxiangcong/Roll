@@ -291,14 +291,14 @@ def _industry(data_dir, snapshot_id, symbol, day, cutoff, db):
     return next(iter(indices)) if len(indices) == 1 else None
 
 
-def _freeze_market(data_dir, symbols, start, day, cutoff, db):
+def _freeze_market(data_dir, symbols, start, day, cutoff, db, *, market_mode, market_as_of):
     scope = _scope(symbols, DEFAULT_BENCHMARK, start, day)
-    initial = freeze_snapshot(data_dir, as_of=cutoff, use_mode=LIVE_RUN, scope=scope, db=db)
+    initial = freeze_snapshot(data_dir, as_of=market_as_of, use_mode=market_mode, scope=scope, db=db)
     industries = {_industry(data_dir, initial["snapshot_id"], symbol, day, cutoff, db) for symbol in symbols}
     if industries - {None}:
         scope.extend(dict(series="daily_bar", symbol=code, start=start, end=day)
                      for code in sorted(industries - {None}))
-        return freeze_snapshot(data_dir, as_of=cutoff, use_mode=LIVE_RUN, scope=scope, db=db)
+        return freeze_snapshot(data_dir, as_of=market_as_of, use_mode=market_mode, scope=scope, db=db)
     return initial
 
 
@@ -376,7 +376,7 @@ def _load_inputs(data_dir, snapshot, symbols, registry, day, session, cutoff, ru
 
 def generate_plans(data_dir, *, book_id="real", as_of=None, symbols=(), snapshot_id=None, simulated=False,
                    strategy_versions=(), publish=True, db=None, allow_price_only=False, published_at=None,
-                   rules=None):
+                   rules=None, market_mode=LIVE_RUN, market_as_of=None):
     """Freeze and publish the next-session account plan; a caller can join it to an outer transaction."""
     cutoff = instant(as_of)
     day = cutoff.date()
@@ -386,6 +386,8 @@ def generate_plans(data_dir, *, book_id="real", as_of=None, symbols=(), snapshot
     inputs = rules or DecisionRules(simulated, tuple(strategy_versions), allow_price_only=allow_price_only)
     if inputs.simulated and book_id == "real" and publish:
         raise ValueError("模拟计划须写入独立账本，或使用预览")
+    if not inputs.simulated and market_mode != LIVE_RUN:
+        raise ValueError("真实账户计划须使用保留实际取得时间的 LIVE_RUN 数据快照")
     with database(data_dir, write=True, db=db) as connection:
         account = AccountLedger(data_dir, db=connection).snapshot(book_id, as_of=cutoff)
         selected = sorted({symbol.upper() for symbol in symbols or (STOCK,)}
@@ -406,7 +408,10 @@ def generate_plans(data_dir, *, book_id="real", as_of=None, symbols=(), snapshot
             slowest = max((entry["strategy"]["parameters"]["slow"] for entries in registry.values()
                            for entry in entries), default=60)
             start = max(day - timedelta(days=max(120, slowest * 3)), date(2013, 1, 1)).isoformat()
-            snapshot = _freeze_market(data_dir, selected, start, day.isoformat(), cutoff, connection)
+            snapshot = _freeze_market(
+                data_dir, selected, start, day.isoformat(), cutoff, connection,
+                market_mode=market_mode, market_as_of=market_as_of or cutoff,
+            )
         data = _load_inputs(data_dir, snapshot, selected, registry, day.isoformat(), session, cutoff, inputs, connection)
         ledger = PlanLedger(data_dir, db=connection)
         reservations = ledger.reservations(book_id, as_of=cutoff, replacing_session=session, replacing_symbols=selected)
