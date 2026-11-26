@@ -8,8 +8,12 @@ from math import isfinite, sqrt
 from pathlib import Path
 from statistics import fmean, stdev
 
+import httpx
+
 from roll.market.calendar import LAST_NOTICE_DAY, is_session
-from roll.v3.industry_sources import MEMBERSHIP_FIELDS, METALS_ETF, STOCK, shenwan_observations
+from roll.v3.industry_sources import (
+    INDUSTRIAL_METALS, MEMBERSHIP_FIELDS, METALS_ETF, STOCK, fetch_shenwan, shenwan_observations,
+)
 from roll.v3.market import SHANGHAI, append_observations, get_snapshot, read_snapshot, utc_timestamp
 
 
@@ -326,6 +330,19 @@ def _import_industry(args, data_dir):
     return append_observations(data_dir, rows)
 
 
+def _sync_industry(args, data_dir):
+    try:
+        trend, membership = fetch_shenwan(args.ca_file)
+    except httpx.HTTPError as error:
+        raise ValueError(f'申万工业金属同步失败：{error}') from error
+    received = datetime.fromisoformat(trend['received_at']).astimezone(SHANGHAI)
+    latest = received.date() if received.time() >= time(15, 5) else received.date() - timedelta(days=1)
+    end = args.end or latest.isoformat()
+    rows = shenwan_observations(trend, membership, start=args.start, end=end)
+    return {'symbol': INDUSTRIAL_METALS, 'requested_start': args.start, 'requested_end': end,
+            **append_observations(data_dir, rows)}
+
+
 def register_market_research(research_subparsers):
     export = research_subparsers.add_parser('export', help='从数据快照导出公开行情、覆盖及多周期指标')
     export.add_argument('symbol')
@@ -342,3 +359,9 @@ def register_market_research(research_subparsers):
     industry.add_argument('--start', default=DEFAULT_START)
     industry.add_argument('--end')
     industry.set_defaults(handler=_import_industry)
+
+    sync = research_subparsers.add_parser('sync-industry', help='同步申万工业金属原始日线与江西铜业归属')
+    sync.add_argument('--start', default=DEFAULT_START)
+    sync.add_argument('--end')
+    sync.add_argument('--ca-file', help='采用指定证书文件验证申万的 HTTPS 证书链')
+    sync.set_defaults(handler=_sync_industry)

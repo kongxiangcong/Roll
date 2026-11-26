@@ -138,3 +138,25 @@ def test_window_return_uses_the_frozen_effective_adjustment(tmp_path):
     assert security['windows']['5']['annualized_volatility'] == pytest.approx(0)
     assert security['windows']['5']['max_drawdown'] == pytest.approx(0)
     assert security['adjustment_factors'][0]['trade_date'] == days[1]
+
+
+def test_research_sync_industry_reads_publisher_quotes_and_membership(tmp_path, monkeypatch):
+    import httpx
+
+    def publisher(request):
+        assert request.url.params['swindexcode'] == '801055'
+        if request.url.path.endswith('/trend/'):
+            data = [{'swindexcode': '801055', 'bargaindate': '2025-07-22', 'openindex': 100,
+                     'maxindex': 105, 'minindex': 98, 'closeindex': 102,
+                     'bargainamount': 3, 'bargainsum': 25}]
+        else:
+            assert request.url.path.endswith('/component_stocks/')
+            data = {'results': [{'stockcode': '600362', 'stockname': '江西铜业',
+                                 'beginningdate': '2021-12-13T08:00:00+08:00'}]}
+        return httpx.Response(200, json={'code': '200', 'data': data})
+
+    client = httpx.Client(transport=httpx.MockTransport(publisher))
+    monkeypatch.setattr(httpx, 'Client', lambda **_options: client)
+    result = command(tmp_path, 'research', 'sync-industry', '--end', '2025-07-22')
+    assert result['appended'] == 2
+    assert result['symbol'] == '801055.SI'
