@@ -2,6 +2,9 @@
 
 Status: ready-for-agent
 
+Resolution: completed
+Closed: 2026-11-26
+
 ## Problem Statement
 
 研究者要核查江西铜业（600362.SH）的一个具体问题。M0a 已能导出行情、导入草稿和人工发布研究档案，但研究者仍需自行记住每次用了哪份公告、为何缺证，以及审阅版本来自哪次执行。同名草稿可以被再次导入，单凭最新草稿无法可靠回答这些问题。
@@ -55,3 +58,7 @@ Status: ready-for-agent
 ## Further Notes
 
 02、03 可按任务和尝试 ID 消费冻结输入及结果引用。阶段范围见[阶段 01 设计](../../docs/design/roll-v3-research-pipeline/01-offline-research-cli.md)，编排与发布边界见 [ADR 0006](../../docs/adr/0006-roll-orchestrates-research-and-decisions.md)，计划对照取自 [M0 验收依据](../roll-v3-trading-pipeline/acceptance.md)。
+
+## Comments
+
+五张实施票已关闭。代码审查修复后的提交 `a7dc251` 在 M0a 新副本上通过断网复验。父任务 `task-11e277f6e8594776bf613721eceae27a` 返回阻塞性缺证。补证后的任务 `task-4e1ee73336df4496a0a5ac8c184e56cb` 产生 A（`attempt-30c18a9c88e545ba97cd152f4987186e`）与 B（`attempt-99a4f728e0d94d0c90b0d9b0a74ece0d`）。三个阶段的计划预览均与基线逐字段一致，显式发布 A 后按生效窗口选档正确，原冻结计划按 ID 重读与归档一致。完整后端测试 115 项通过。复验沿用[实施票 05 的快照、时点及核对口径](issues/05-verify-plan-history.md)。
