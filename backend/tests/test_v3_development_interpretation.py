@@ -250,3 +250,30 @@ emit(id=msg["id"], result={"stopReason": "end_turn"})
     raw, = capture.read_text().splitlines()
     assert raw == (tmp_path / attempt["input_ref"]).read_text()
     assert json.loads(raw)["receipt_id"] == attempt["report"]["receipt_id"]
+
+
+def test_compact_input_keeps_the_fill_linked_to_a_sampled_market_block(tmp_path, monkeypatch):
+    days = list(sessions("2023-01-03", "2023-12-29"))[-130:]
+    _, rows = _quotes(days[0])
+    signal_day, trade_day = days[91:93]
+    for i, day in enumerate(days):
+        rows[3 * i + 1]["payload"]["close"] = str(100 + i if day != signal_day else 100)
+        if day != trade_day:
+            rows[3 * i + 2]["payload"]["trading_status"] = "suspended"
+    snapshot = load_snapshot(tmp_path, rows)
+    install_cli(tmp_path, monkeypatch, "raw = sys.stdin.read()\n" + _REPLY + """
+Path(sys.argv[sys.argv.index("--output-last-message")+1]).write_text(json.dumps(answer))
+""")
+
+    attempt = cli(tmp_path, "research", "task", "development", "--preset", PRESET, "--snapshot", snapshot,
+                  "--executor", "codex")
+    assert attempt["status"] == "report_ready", attempt
+    public = json.loads((tmp_path / attempt["input_ref"]).read_bytes())
+    evidence = public["evidence"]
+    signal = evidence[f"signal:{signal_day}"]
+    assert signal["direct_market_block"] is True
+    trade_ref = f"trade:e0:{trade_day}"
+    assert signal["paths"]["e0"]["next_open"]["trade_ref"] == trade_ref
+    assert evidence[trade_ref]["quantity"] == 9800
+    counts = public["evidence_coverage"]["trades"]
+    assert counts["available"] > counts["included"] == 40
