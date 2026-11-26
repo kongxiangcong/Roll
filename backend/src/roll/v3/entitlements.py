@@ -6,7 +6,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from roll.v3.account import AccountLedger, AccountSnapshot, CENT, Receivable
 from roll.v3.market import read_snapshot
-from roll.v3.storage import database, instant, session_time
+from roll.v3.storage import database, instant, json_text, session_time
 
 
 SIMULATION_BASIS = "股息红利税前、含交易成本"
@@ -180,13 +180,15 @@ def register_entitlement_commands(commands):
         operation = operations.add_parser(name, help=help_text)
         operation.add_argument("--book-id", default="real")
         operation.add_argument("--snapshot-id", required=True, help="行情数据快照")
-        operation.add_argument("--as-of", required=True)
         operation.add_argument("--known-at")
         operation.set_defaults(handler=handler)
         if name == "settle":
+            operation.add_argument("--as-of", required=True)
             operation.add_argument("--simulated", action="store_true", help="以公告日期结转模拟权益")
         else:
-            operation.add_argument("--account-snapshot-id", help="按已冻结的账户状态估值")
+            cutoff = operation.add_mutually_exclusive_group(required=True)
+            cutoff.add_argument("--as-of")
+            cutoff.add_argument("--account-snapshot-id", help="按已冻结的账户状态估值")
 
     confirm = operations.add_parser(
         "confirm", help="从标准输入登记券商实际到账权益",
@@ -196,13 +198,22 @@ def register_entitlement_commands(commands):
     confirm.add_argument("--book-id", default="real")
     confirm.set_defaults(handler=_confirm)
 
+    evidence = operations.add_parser("evidence", help="核对公告派息、除息参考扣减和原始开盘行情")
+    evidence.add_argument("--snapshot-id", required=True)
+    evidence.add_argument("--symbol", required=True)
+    evidence.add_argument("--ex-date", required=True)
+    evidence.set_defaults(handler=_evidence)
+
 
 def _settle(args, data_dir):
     actions = read_company_actions(data_dir, args.snapshot_id, cutoff=args.known_at or args.as_of)
     snapshot = settle_entitlements(
         data_dir, args.book_id, actions, as_of=args.as_of, known_at=args.known_at, simulated=args.simulated,
     )
-    return {"account": snapshot.as_dict(), "basis": SIMULATION_BASIS if args.simulated else REAL_ACCOUNT_BASIS}
+    return {
+        "account": snapshot.as_dict(), "market_snapshot_id": args.snapshot_id,
+        "basis": SIMULATION_BASIS if args.simulated else REAL_ACCOUNT_BASIS,
+    }
 
 
 def _value(args, data_dir):
@@ -218,10 +229,24 @@ def _value(args, data_dir):
         for row in rows if row["symbol"] in symbols and row["payload"].get("close") is not None
     }
     valuation = value_account(account, {symbol: quote["close"] for symbol, quote in prices.items()})
-    return {"account": account.as_dict(), "prices": prices, "valuation": valuation.as_dict()}
+    return {
+        "account": account.as_dict(), "market_snapshot_id": args.snapshot_id,
+        "prices": prices, "valuation": valuation.as_dict(),
+    }
 
 
 def _confirm(args, data_dir):
     payload = json.load(sys.stdin, parse_float=Decimal)
     event_id = record_broker_entitlement(data_dir, args.book_id, **payload)
     return {"book_id": args.book_id, "event_id": event_id}
+
+
+def _evidence(args, data_dir):
+    scope = dict(symbol=args.symbol, start=args.ex_date, end=args.ex_date)
+    actions = read_company_actions(data_dir, args.snapshot_id, **scope)
+    opening = read_snapshot(data_dir, args.snapshot_id, series="daily_open", **scope)["observations"]
+    return {
+        "snapshot_id": args.snapshot_id,
+        "actions": [json.loads(json_text(asdict(action))) for action in actions],
+        "opening": next(iter(opening), None),
+    }

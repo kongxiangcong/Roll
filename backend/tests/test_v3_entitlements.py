@@ -1,5 +1,6 @@
 import io
 import json
+from pathlib import Path
 
 from roll.v3.cli import run
 
@@ -120,3 +121,70 @@ def test_broker_receipt_posted_before_ex_date_also_clears_the_entitlement(tmp_pa
     })
     book = close(tmp_path, EX_DATE, snapshot_id, book="real", simulated=False)
     assert book["valuation"] == {"cash": "98", "position_value": "900", "receivable_value": "0", "nav": "998"}
+
+
+def test_real_account_keeps_the_record_date_entitlement_after_sale_until_actual_receipt(tmp_path, monkeypatch):
+    snapshot_id = seed(tmp_path, monkeypatch, book="real")
+    input_cli(tmp_path, monkeypatch, "account", "fill", payload={
+        "event_id": "broker-sale",
+        "symbol": SYMBOL,
+        "side": "SELL",
+        "quantity": 100,
+        "price": "9",
+        "effective_at": f"{EX_DATE}T10:00:00+08:00",
+        "known_at": f"{EX_DATE}T10:00:00+08:00",
+    })
+    pending = close(tmp_path, POST_DATE, snapshot_id, book="real", simulated=False)
+    assert pending["valuation"] == {"cash": "900", "position_value": "0", "receivable_value": "100", "nav": "1000"}
+    receipt = {
+        "symbol": SYMBOL, "action_id": "distribution", "kind": "cash", "actual": "100",
+        "broker_event_id": "broker-credit", "effective_at": f"{POST_DATE}T15:00:00+08:00",
+        "known_at": f"{POST_DATE}T15:00:00+08:00",
+    }
+    for _ in range(2):
+        input_cli(tmp_path, monkeypatch, "entitlements", "confirm", payload=receipt)
+    input_cli(tmp_path, monkeypatch, "account", "cash", payload={
+        "event_id": "broker-tax", "reason": "dividend-tax", "delta": "-2", "effective_at": f"{POST_DATE}T15:30:00+08:00",
+        "known_at": f"{POST_DATE}T15:30:00+08:00",
+    })
+    paid = close(tmp_path, POST_DATE, snapshot_id, book="real", simulated=False)
+    assert paid["valuation"] == {"cash": "998", "position_value": "0", "receivable_value": "0", "nav": "998"}
+    assert paid["account"]["available_cash"] == "998"
+
+
+def test_registered_quantity_uses_positions_at_the_record_date_close(tmp_path, monkeypatch):
+    snapshot_id = seed(tmp_path, monkeypatch)
+    input_cli(tmp_path, monkeypatch, "account", "shares", "--book-id", BOOK, payload={
+        "event_id": "after-close-transfer",
+        "effective_at": f"{RECORD_DATE}T16:00:00+08:00",
+        "known_at": f"{RECORD_DATE}T16:00:00+08:00",
+        "lot": {"lot_id": "late-lot", "symbol": SYMBOL, "quantity": 100, "known_sellable": 100},
+    })
+    pending = close(tmp_path, EX_DATE, snapshot_id)
+    assert pending["valuation"]["position_value"] == "1800"
+    assert pending["valuation"]["receivable_value"] == "100"
+
+
+def test_ex_dividend_evidence_distinguishes_the_notice_from_raw_opening_quotes(tmp_path):
+    recorded = Path(__file__).resolve().parents[2] / "config/research/600362.SH/dividends.json"
+    cli(tmp_path, "market", "import", str(recorded))
+    quotes = tmp_path / "opening.json"
+    quotes.write_text(json.dumps([{
+        "series": "daily_open", "symbol": SYMBOL, "trade_date": EX_DATE, "source": "fuyao",
+        "source_ref": "https://fuyao.aicubes.cn/api/a-share/prices/historical",
+        "received_at": "2026-11-26T14:00:00+08:00", "assumed_available_at": f"{EX_DATE}T09:30:00+08:00",
+        "availability_assumption": "archived raw opening",
+        "payload": {"open": "23.73", "prior_close": "24.40", "pre_close": "23.70"},
+    }]))
+    cli(tmp_path, "market", "import", str(quotes))
+    frozen = cli(tmp_path, "market", "freeze", SYMBOL, "--start", RECORD_DATE, "--end", EX_DATE,
+                 "--as-of", "2026-11-26T15:00:00+08:00", "--series", "corporate_action", "--series", "daily_open")
+    result = cli(tmp_path, "entitlements", "evidence", "--snapshot-id", frozen["snapshot_id"],
+                 "--symbol", SYMBOL, "--ex-date", EX_DATE)
+
+    action, = result["actions"]
+    assert (action["record_date"], action["payment_date"]) == (RECORD_DATE, EX_DATE)
+    assert (action["cash_per_share"], action["reference_deduction"]) == ("0.70", "0.6965")
+    assert action["source_ref"].endswith("1224163682.PDF")
+    assert result["opening"]["payload"] == {"open": "23.73", "prior_close": "24.40", "pre_close": "23.70"}
+    assert result["opening"]["source"] == "fuyao"

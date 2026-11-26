@@ -9,7 +9,7 @@ from pathlib import Path
 from sqlite3 import Connection
 
 from roll.market.calendar import LAST_NOTICE_DAY, is_session
-from roll.v3.storage import SHANGHAI, database, instant
+from roll.v3.storage import SHANGHAI, database, instant, session_time
 
 
 CENT = Decimal("0.01")
@@ -288,8 +288,9 @@ def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
         action = CompanyAction(**effective[event["event_id"]])
         actions[action.key] = (event["event_id"], action)
     action_events = {event_id: action for event_id, action in actions.values()}
-    record_dates = iter(sorted({action.record_date for action in action_events.values()}))
-    record_date = next(record_dates, None)
+    record_dates = sorted({action.record_date for action in action_events.values()})
+    record_cutoffs = iter((_timestamp(session_time(day, 15)), day) for day in record_dates)
+    record_close = next(record_cutoffs, None)
     record_lots = {}
     posted = set()
 
@@ -297,11 +298,9 @@ def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
         payload = effective.get(event["event_id"])
         if payload is None:
             continue
-        if record_date is not None:
-            day = _trade_date(event["effective_at"]).isoformat()
-            while record_date is not None and record_date < day:
-                record_lots[record_date] = snapshot.lots
-                record_date = next(record_dates, None)
+        while record_close is not None and record_close[0] < event["effective_at"]:
+            record_lots[record_close[1]] = snapshot.lots
+            record_close = next(record_cutoffs, None)
         if event["kind"] == "FILL":
             snapshot = _apply_fill(snapshot, event["event_id"], event["effective_at"], payload)
         elif event["kind"] == "CASH":
