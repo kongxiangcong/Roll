@@ -16,6 +16,7 @@ from roll.v3.market import (
 
 
 FUYAO = 'https://fuyao.aicubes.cn'
+TENCENT_INDEX = 'https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get'
 ACTION_PATH = '/api/a-share/corporate-actions/adjustment-factors'
 OHLC = ('open', 'high', 'low', 'close')
 DEFAULT_SYMBOLS = ('600362.SH', '000300.SH')
@@ -71,12 +72,12 @@ def _ranges(start, end, available):
 
 
 def _observed_row(symbol, day, path, received_at, *, series, at, unit, payload,
-                  reconstruction_only=False, quality='usable'):
+                  reconstruction_only=False, quality='usable', source='fuyao'):
     return {
-        'series': series, 'symbol': symbol, 'trade_date': str(day), 'source': 'fuyao',
-        'source_ref': FUYAO + path, 'received_at': received_at,
+        'series': series, 'symbol': symbol, 'trade_date': str(day), 'source': source,
+        'source_ref': FUYAO + path if source == 'fuyao' else path, 'received_at': received_at,
         'assumed_available_at': _local_time(day, at), 'availability_assumption':
-            f'Shanghai {at:%H:%M} reconstruction from Fuyao historical observations',
+            f'Shanghai {at:%H:%M} reconstruction from {source} historical observations',
         'unit': unit, 'payload': payload, 'reconstruction_only': reconstruction_only, 'quality': quality,
     }
 
@@ -165,6 +166,40 @@ def _bars(client, token, symbol, start, end, *, index, factors):
         )
 
 
+def _benchmark_fallback(client, start, end):
+    lookback = _previous_session(start)
+    response = client.get(
+        TENCENT_INDEX,
+        params={'param': f'sh000300,day,{lookback},{end},640,qfq'},
+        timeout=20,
+    )
+    response.raise_for_status()
+    received = datetime.now(timezone.utc)
+    data = response.json()['data']['sh000300']['day']
+    previous = None
+    for item in data:
+        day, opening, close, high, low, hands = item[:6]
+        day = date.fromisoformat(day)
+        if start <= day <= end:
+            open_payload = {'open': opening, 'prior_close': previous, 'pre_close': previous,
+                            'pre_close_basis': 'prior_raw_close', 'trading_status': 'trading'}
+            # The index endpoint reports board lots and ten-thousands of yuan.
+            bar = {**open_payload, 'close': close, 'high': high, 'low': low,
+                   'volume': _number(int(Decimal(hands) * 100)),
+                   'amount': _number(int(Decimal(item[8]) * 10_000))}
+            yield _observed_row(
+                '000300.SH', day, TENCENT_INDEX, received, source='tencent', series='daily_bar',
+                at=time(15, 5), unit={'price': 'index_point', 'volume': 'share', 'amount': 'CNY'},
+                payload=bar,
+            )
+            yield _observed_row(
+                '000300.SH', day, TENCENT_INDEX, received, source='tencent', series='daily_open',
+                at=time(9, 30), unit={'price': 'index_point'}, payload=open_payload,
+                reconstruction_only=True,
+            )
+        previous = close
+
+
 def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', end=None,
                       indices=(), refresh=False, warmup=0):
     now = datetime.now(SHANGHAI)
@@ -182,6 +217,7 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
              for symbol in symbols for series in (*PRICE_SERIES, 'adjustment_factor')
              if series != 'adjustment_factor' or symbol not in index_symbols and not symbol.endswith('.TI')]
     failures = []
+    fallbacks = []
     operations = []
     for symbol in symbols:
         available = set() if refresh else available_dates(
@@ -210,9 +246,23 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
                     rows = list(_bars(client, token, symbol, left, right, index=index, factors=factors))
                     appended += append_observations(data_dir, rows)['appended']
                 except (ValueError, KeyError, TypeError, InvalidOperation, httpx.HTTPError) as error:
-                    failures.append({**window, 'series': 'daily_bar', 'error': str(error)})
+                    if symbol != '000300.SH':
+                        failures.append({**window, 'series': 'daily_bar', 'error': str(error)})
+                        continue
+                    rows = []
+                    fallbacks.append({**window, 'source': 'tencent', 'fuyao_error': str(error)})
+                if symbol == '000300.SH':
+                    seen = {row['trade_date'] for row in rows if row['series'] == 'daily_bar'}
+                    for gap_start, gap_end in _ranges(left, right, seen):
+                        try:
+                            rows = list(_benchmark_fallback(client, gap_start, gap_end))
+                            appended += append_observations(data_dir, rows)['appended']
+                        except (ValueError, KeyError, IndexError, httpx.HTTPError) as error:
+                            failures.append({**window, 'series': 'daily_bar', 'source': 'tencent',
+                                             'error': str(error)})
 
     snapshot = freeze_snapshot(data_dir, as_of=datetime.now(timezone.utc),
                                use_mode=RECONSTRUCTED_RESEARCH, scope=scope)
     report = read_snapshot(data_dir, snapshot['snapshot_id'], warmup=warmup)
-    return {'snapshot': snapshot, 'appended': appended, 'failures': failures, 'coverage': report['coverage']}
+    return {'snapshot': snapshot, 'appended': appended, 'failures': failures,
+            'fallbacks': fallbacks, 'coverage': report['coverage']}
