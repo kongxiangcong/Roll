@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from roll.v3.account import AccountLedger
 from roll.v3.experiment import list_experiments, read_experiment
+from roll.v3.harness_settings import settings as harness_settings
 from roll.v3.market import list_snapshots
 from roll.v3.market_research import DEFAULT_BENCHMARK, DEFAULT_START, export_market_research
 from roll.v3.plan import PlanLedger, generate_plans
@@ -18,6 +19,10 @@ from roll.v3.strategy import StrategyRegistry
 
 
 ASSETS = Path(__file__).with_name("workbench")
+
+
+class HarnessSelection(BaseModel):
+    name: str | None
 
 
 class DraftInput(BaseModel):
@@ -77,6 +82,14 @@ def create_app(data_dir):
     @app.get("/")
     def index():
         return FileResponse(ASSETS / "index.html")
+
+    @app.get("/api/settings/research-harness")
+    def get_harness():
+        return harness_settings(data_dir)
+
+    @app.post("/api/settings/research-harness")
+    def set_harness(selection: HarnessSelection):
+        return harness_settings(data_dir, save=True, selection=selection.name)
 
     @app.get("/api/market/snapshots")
     def snapshots(symbol: str):

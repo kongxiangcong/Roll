@@ -44,21 +44,21 @@ class ProcessConfigurationError(ValueError):
     pass
 
 
-def run_process(argv, *, cwd, env, lock, check_state, input=b""):
+def run_process(argv, *, cwd, env, lock, check_state, input=b"", cleanup=()):
     import json
     from tempfile import TemporaryFile
     import subprocess
     import sys
 
     if sys.platform != "linux":
-        raise ProcessConfigurationError("Codex 进程回收配置要求 Linux")
+        raise ProcessConfigurationError("研究进程回收配置要求 Linux")
     supervisor = Path(__file__).with_name("research_supervisor.py").resolve()
     read_fd, write_fd = os.pipe()
     with (os.fdopen(read_fd, "rb") as worker, os.fdopen(write_fd, "wb") as owner,
           TemporaryFile() as status, TemporaryFile() as public_input):
         public_input.write(input)
         public_input.seek(0)
-        helper = [sys.executable, "-I", "-S", str(supervisor), str(worker.fileno()), str(status.fileno()), *argv]
+        helper = [sys.executable, "-I", "-S", str(supervisor), str(worker.fileno()), str(status.fileno()), json.dumps(cleanup), *argv]
         check_state()
         with subprocess.Popen(helper, stdin=public_input, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                               cwd=cwd, env=env, start_new_session=True,

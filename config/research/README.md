@@ -22,6 +22,32 @@ roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --quest
 
 用 `research task show 任务ID` 重读冻结清单，用 `research task attempt 尝试ID` 重读结果。`research task supplement 任务ID --material report.json` 或 `--snapshot 新快照ID` 生成关联任务。`research task retry 任务ID` 复用冻结清单，用新回执的版本按 `research show 标的 --draft --version 版本` 审阅。
 
+## 选择研究助手
+
+`run`、`retry` 和 `supplement` 在创建每次尝试时选择助手。优先使用本次命令的 `--executor 名称`，其次使用工作台「个股研究 → 研究助手」保存的选择，最后使用当前数据目录的 `research-harnesses.toml` 中的 `default`。全新数据目录默认使用 `offline`。工作台选择「跟随配置」即可恢复文件默认值。CLI 和工作台须使用同一个数据目录。
+
+内置 `codex` 使用原生 CLI。其他助手通过 ACP v1 stdio 注册；下面示例采用 Focus 对 agy 和 dsh 的启动参数。镜像名仅为示例，先将装有对应 CLI 的可信镜像构建或载入本机 Docker，再填入实际名称。Roll 使用镜像 ID 运行，尝试回执保留该 ID。
+
+```toml
+default = "offline"
+
+[acp.agy]
+image = "roll-agy:local"
+command = ["agy", "acp"]
+login_volume = "roll-agy-login"
+
+[acp.dsh]
+image = "roll-dsh:local"
+command = ["dsh", "--profile", "acp"]
+credential_env = "DEEPSEEK_API_KEY"
+```
+
+使用 `agy` 的持久登录时，在同一镜像中完成提供方登录，将专用 Docker 命名卷挂在 `/home/research` 并设置 `HOME=/home/research`。dsh 的例子从启动 Roll 的进程环境读取指定变量。每个镜像应包含 CLI 所需的程序和 profile，支持只读根文件系统以及可写的临时目录和 HOME。凭据值由部署环境管理。
+
+ACP 助手在 Linux 上的独立容器中运行。Roll 只发送冻结的公开输入和草稿格式，关闭客户端文件、终端与 MCP 能力，并拒绝权限申请。容器有自己的回环地址，Roll 数据目录不挂入容器。镜像中的助手原生工具由镜像配置控制；对于只允许访问模型服务的部署，将 `network` 指向已配置出站限制的 Docker 网络。缺省为 Docker 的 `bridge`。选择 `none` 可用于离线助手或协议演练。
+
+例如 `roll research task retry "$TASK_ID" --executor agy` 使用同一份冻结清单产生一次新的尝试。工作台保存为 dsh 后，省略 `--executor` 即使用 dsh。所有执行器共用任务回执、草稿校验和人工发布入口。
+
 ## 用 Codex 研究一份公开摘录
 
 在已登录 Codex 的 Ubuntu 24.04 x86_64 主机上，先用 `codex --version` 确认版本为 `codex-cli 0.172.0`。与离线示例使用相同的材料 JSON，在命令中显式选择执行器。`--timeout` 是本次尝试的总秒数，默认 180 秒。

@@ -366,14 +366,33 @@ function researchForms(basePath, result, activeVersion) {
   );
 }
 
+async function researchHarnessPanel() {
+  const path = "/api/settings/research-harness";
+  try {
+    const harness = await api(path);
+    const choices = [["", `跟随配置（${harness.default}）`],
+      ...harness.available.map(name => [name, name])];
+    if (harness.override && !harness.available.includes(harness.override)) {
+      choices.push([harness.override, `${harness.override}（配置已移除，请重新选择）`]);
+    }
+    return panel("研究助手", form("保存设置", async fields => {
+      const saved = await api(path, {}, { name: fields.harness });
+      return `下次研究使用 ${saved.selected}。`;
+    }, select("新尝试默认使用", "harness", choices, harness.override || "")));
+  } catch (error) {
+    return panel("研究助手", note(error.message));
+  }
+}
+
 async function researchPage(reference) {
   const symbol = encodeURIComponent(scope.symbol);
   const base = `/api/research/${symbol}`;
   const cutoff = { as_of: scope.as_of };
-  const [dossier, sources, snapshots] = await Promise.all([
+  const [dossier, sources, snapshots, harnessPanel] = await Promise.all([
     api(`${base}/dossiers`, { ...cutoff, version: reference }),
     api(`${base}/inputs`, cutoff),
     api("/api/market/snapshots", { symbol: scope.symbol }),
+    researchHarnessPanel(),
   ]);
   const current = node("div", {}, dossierView(dossier, sources.evidence));
   const coverage = node("div", { class: "stack" });
@@ -424,7 +443,8 @@ async function researchPage(reference) {
           modesField(),
         ), followups),
     ),
-    node("div", { class: "stack" }, researchForms(base, current, reference),
+    node("div", { class: "stack" }, harnessPanel,
+      researchForms(base, current, reference),
       panel("历史档案", lookup("已发布的档案版本", "version", "research"))),
   );
 }
