@@ -9,6 +9,7 @@ from tempfile import TemporaryDirectory
 
 from roll.v3.account import AccountLedger
 from roll.v3.decision import DECISION_RULES_VERSION
+from roll.v3.development_attribution import attribute_development
 from roll.v3.development_experiment import (
     PATHS, development_preset, freeze_development_inputs, observation_reference, public_manifest,
 )
@@ -324,6 +325,7 @@ def calculate_development(inputs, *, market_always_true=False):
         },
         "market_condition": "always_true" if market_always_true else "strictly_above_average",
     }
+    receipt["attribution"] = attribute_development(receipt)
     if not market_always_true:
         receipt["self_check"] = _check_always_true(inputs)
         if not receipt["self_check"]["passed"]:
@@ -384,7 +386,7 @@ def verify_development(data_dir, task_id):
         raise ValueError(f"研究任务的开发计算失败，无法核验实验结果：{task_id}")
     _, recomputed = prepare_development(data_dir, previous["snapshot_id"], preset_id=previous["preset_id"])
     checks = {name: name in recomputed and json_text(previous[name]) == json_text(recomputed[name])
-              for name in ("input_ref", "sample", "metrics", "opportunities", "coverage", "sessions", "self_check")
+              for name in ("input_ref", "sample", "metrics", "opportunities", "coverage", "sessions", "self_check", "attribution")
               if name in previous}
     checks["receipt_id"] = previous["receipt_id"] == recomputed["receipt_id"]
     return {
