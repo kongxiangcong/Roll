@@ -42,7 +42,15 @@ def json_text(value):
 
 
 @contextmanager
-def database(data_dir, *, write=False):
+def database(data_dir, *, write=False, db=None):
+    if db is not None:
+        if write and not db.in_transaction:
+            with db:
+                db.execute("BEGIN IMMEDIATE")
+                yield db
+        else:
+            yield db
+        return
     directory = Path(data_dir).expanduser()
     directory.mkdir(parents=True, exist_ok=True)
     with closing(sqlite3.connect(directory / "roll-v3.sqlite3", timeout=15)) as db, db:
@@ -50,3 +58,10 @@ def database(data_dir, *, write=False):
         if write:
             db.execute("BEGIN IMMEDIATE")
         yield db
+
+
+def ensure_schema(db, schema):
+    """Initialize known static DDL without implicitly committing an outer transaction."""
+    for statement in schema.split(";"):
+        if statement.strip():
+            db.execute(statement)

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from roll.v3.market import get_snapshot, read_snapshot, utc_timestamp
-from roll.v3.storage import database, instant, json_text, session_time, sessions
+from roll.v3.storage import database, ensure_schema, instant, json_text, session_time, sessions
 
 
 _DEFAULT_PROTOCOL = Path(__file__).with_name("default_trend_protocol.json")
@@ -185,21 +185,21 @@ class StrategyRegistry:
             row = db.execute("SELECT * FROM strategy_version WHERE version=?", (version,)).fetchone()
             return _registration(db, row, max(row["frozen_at"], frozen_at))
 
-    def get(self, version, as_of=None):
+    def get(self, version, as_of=None, *, db=None):
         """Read a specific version as it was registered at a given cutoff."""
         as_of = utc_timestamp(as_of)
-        with database(self.data_dir) as db:
-            db.executescript(_SCHEMA)
+        with database(self.data_dir, db=db) as db:
+            ensure_schema(db, _SCHEMA)
             row = db.execute(
                 "SELECT * FROM strategy_version WHERE version=? AND frozen_at<=?", (version, as_of),
             ).fetchone()
             return _registration(db, row, as_of) if row else None
 
-    def for_symbol(self, symbol, as_of=None, *, simulated=False, versions=()):
+    def for_symbol(self, symbol, as_of=None, *, simulated=False, versions=(), include_ineligible=False, db=None):
         """Return eligible versions. Simulation requires explicit selection of a candidate."""
         as_of = utc_timestamp(as_of)
-        with database(self.data_dir) as db:
-            db.executescript(_SCHEMA)
+        with database(self.data_dir, db=db) as db:
+            ensure_schema(db, _SCHEMA)
             rows = db.execute(
                 "SELECT * FROM strategy_version WHERE frozen_at<=? ORDER BY version", (as_of,),
             ).fetchall()
@@ -207,10 +207,13 @@ class StrategyRegistry:
         return [
             entry for entry in entries
             if symbol.upper() in entry["scope"]["symbols"]
-            and (not versions or entry["strategy"]["version"] in versions)
             and (
-                entry["production_eligible"]
-                or (simulated and entry["strategy"]["version"] in versions and entry["simulation_eligible"])
+                include_ineligible or (
+                    (not versions or entry["strategy"]["version"] in versions)
+                    and (entry["production_eligible"] or (
+                        simulated and entry["strategy"]["version"] in versions and entry["simulation_eligible"]
+                    ))
+                )
             )
         ]
 
@@ -396,8 +399,8 @@ def _bars_start(snapshot, symbol, fallback):
     )
 
 
-def _strategy(data_dir, version, symbol):
-    entry = StrategyRegistry(data_dir).get(version)
+def _strategy(data_dir, version, symbol, *, as_of=None, db=None):
+    entry = StrategyRegistry(data_dir).get(version, as_of, db=db)
     if entry is None:
         raise ValueError(f"策略版本不存在 {version}")
     strategy = entry["strategy"]
@@ -406,7 +409,7 @@ def _strategy(data_dir, version, symbol):
     return strategy
 
 
-def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of):
+def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of, *, db=None):
     parameters = strategy["parameters"]
     result = {
         "trade_date": day,
@@ -427,7 +430,7 @@ def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of):
         return {**result, "missing": [{"trade_date": day, "reason": reason}]}
 
     inputs = {
-        "symbol": symbol, "start": window[0], "end": day, "cutoff": data_cutoff,
+        "symbol": symbol, "start": window[0], "end": day, "cutoff": data_cutoff, "db": db,
     }
     bars = read_snapshot(data_dir, snapshot["snapshot_id"], **inputs)["observations"]
     factors = read_snapshot(
@@ -500,13 +503,13 @@ def replay_signals(data_dir, version, snapshot_id, *, symbol, start, end):
     ]
 
 
-def signal_at(data_dir, version, snapshot_id, *, symbol, as_of):
+def signal_at(data_dir, version, snapshot_id, *, symbol, as_of, db=None):
     """Compute the most recent trading-session signal from the actual decision cutoff."""
     symbol = symbol.upper()
-    strategy = _strategy(data_dir, version, symbol)
-    snapshot = get_snapshot(data_dir, snapshot_id)
+    strategy = _strategy(data_dir, version, symbol, as_of=as_of, db=db)
+    snapshot = get_snapshot(data_dir, snapshot_id, db=db)
     cutoff = instant(as_of)
     day = cutoff.date().isoformat()
     earliest = _bars_start(snapshot, symbol, day)
     window = list(sessions(min(day, earliest), day))[-strategy["parameters"]["slow"]:]
-    return _signal(data_dir, strategy, snapshot, symbol, window[-1] if window else day, window, cutoff)
+    return _signal(data_dir, strategy, snapshot, symbol, window[-1] if window else day, window, cutoff, db=db)

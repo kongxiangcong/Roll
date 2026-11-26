@@ -131,8 +131,8 @@ class ResearchDossiers:
         self.data_dir = data_dir
 
     @contextmanager
-    def _connect(self, *, write=False):
-        with database(self.data_dir, write=write) as db:
+    def _connect(self, *, write=False, db=None):
+        with database(self.data_dir, write=write, db=db) as db:
             db.execute("""
                 CREATE TABLE IF NOT EXISTS research_draft (
                     symbol TEXT NOT NULL,
@@ -236,13 +236,19 @@ class ResearchDossiers:
     def active(self, symbol, as_of=None):
         """Read only the version in effect at the decision cutoff."""
         cutoff = _timestamp(as_of)
-        with self._connect() as db:
+        result = self.effective_version(symbol, cutoff)
+        return result if result and cutoff < result["valid_until"] else None
+
+    def effective_version(self, symbol, as_of=None, *, db=None):
+        """Read the last effective publication, retaining its expiration for arbitration."""
+        cutoff = _timestamp(as_of)
+        with self._connect(db=db) as db:
             row = db.execute("""
                 SELECT payload, valid_until FROM research_version
                 WHERE symbol = ? AND published_at <= ? AND effective_at <= ?
                 ORDER BY effective_at DESC, published_at DESC, version DESC LIMIT 1
             """, (symbol.upper(), cutoff, cutoff)).fetchone()
-        return json.loads(row["payload"]) if row and cutoff < row["valid_until"] else None
+        return json.loads(row["payload"]) if row else None
 
     def inputs(self, symbol, as_of=None):
         """Export the public source references available through the research entrance."""

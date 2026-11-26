@@ -6,7 +6,7 @@ from hashlib import sha256
 import json
 
 from roll.market.calendar import is_session
-from roll.v3.storage import SHANGHAI, database, instant
+from roll.v3.storage import SHANGHAI, database, ensure_schema, instant
 
 
 STRICT_HISTORICAL_AS_OF = 'STRICT_HISTORICAL_AS_OF'
@@ -114,7 +114,7 @@ def _waterline(db):
     return db.execute('SELECT COALESCE(MAX(seq), 0) FROM observation').fetchone()[0]
 
 
-def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY):
+def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY, db=None):
     """Freeze an observation waterline, input scope, purpose and version-selection policy."""
     if use_mode not in USE_MODES:
         raise ValueError(f'未知快照用途 {use_mode}')
@@ -127,29 +127,27 @@ def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT
         raise ValueError('快照需要有效的输入区间')
     normalized = [dict(series=series, symbol=symbol, start=start, end=end)
                   for series, symbol, start, end in scope]
-    with database(data_dir) as db:
-        db.executescript(_SCHEMA)
-        db.execute('BEGIN IMMEDIATE')
+    with database(data_dir, write=True, db=db) as connection:
+        ensure_schema(connection, _SCHEMA)
         snapshot = {
-            'as_of': utc_timestamp(as_of), 'max_seq': _waterline(db), 'use_mode': use_mode,
+            'as_of': utc_timestamp(as_of), 'max_seq': _waterline(connection), 'use_mode': use_mode,
             'scope': normalized, 'selection_rules_version': SELECTION_RULES_VERSION,
             'source_priority': list(dict.fromkeys(source_priority)),
         }
         snapshot_id = sha256(_encode(snapshot).encode()).hexdigest()
-        db.execute("""
+        connection.execute("""
             INSERT OR IGNORE INTO data_snapshot(snapshot_id,as_of,max_seq,use_mode,scope,
                                                selection_rules_version,source_priority)
             VALUES(?,?,?,?,?,?,?)
         """, (snapshot_id, snapshot['as_of'], snapshot['max_seq'], use_mode, _encode(normalized),
               SELECTION_RULES_VERSION, _encode(snapshot['source_priority'])))
-        db.commit()
     return {'snapshot_id': snapshot_id, **snapshot}
 
 
-def get_snapshot(data_dir, snapshot_id):
-    with database(data_dir) as db:
-        db.executescript(_SCHEMA)
-        return _snapshot(db, snapshot_id)
+def get_snapshot(data_dir, snapshot_id, *, db=None):
+    with database(data_dir, db=db) as connection:
+        ensure_schema(connection, _SCHEMA)
+        return _snapshot(connection, snapshot_id)
 
 
 def _snapshot(db, snapshot_id):
@@ -292,11 +290,11 @@ def _coverage(scope, observations, states, warmup):
 
 
 def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, start=None, end=None,
-                  cutoff=None, warmup=0):
+                  cutoff=None, warmup=0, db=None):
     """Inspect a frozen observation range and its coverage at a decision cutoff."""
-    with database(data_dir) as db:
-        db.executescript(_SCHEMA)
-        snapshot = _snapshot(db, snapshot_id)
+    with database(data_dir, db=db) as connection:
+        ensure_schema(connection, _SCHEMA)
+        snapshot = _snapshot(connection, snapshot_id)
         cutoff = min(utc_timestamp(cutoff), snapshot['as_of']) if cutoff else snapshot['as_of']
         cutoff_day = str(datetime.fromisoformat(cutoff).astimezone(SHANGHAI).date())
         selected = {}
@@ -304,7 +302,7 @@ def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, sta
         for scope in _ranges(snapshot, series, symbol, start, end):
             observations = []
             states = {}
-            for key, rows in _observations(db, snapshot, scope).items():
+            for key, rows in _observations(connection, snapshot, scope).items():
                 if key[0] > cutoff_day:
                     states[key] = 'not_visible'
                     continue

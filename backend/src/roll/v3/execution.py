@@ -137,6 +137,11 @@ def _board(symbol, session):
     return None
 
 
+def supports_security(symbol, session):
+    """Return whether the frozen execution model covers this security."""
+    return _board(symbol, date.fromisoformat(str(session))) is not None
+
+
 def _buy_quantities(board, quantity, rules):
     minimum, increment, maximum = ORDER_SIZES[board]
     step = lcm(increment, rules.lot_size)
