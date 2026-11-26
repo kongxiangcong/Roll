@@ -126,3 +126,37 @@ def test_fuyao_sync_replays_raw_market_fields_and_open_projection(tmp_path, monk
     assert command(tmp_path, 'read', live['snapshot_id'], '--series', 'daily_open')['observations'] == []
     assert command(tmp_path, 'read', live['snapshot_id'], '--series', 'daily_bar',
                    '--cutoff', cutoff)['observations'] == []
+
+
+def test_benchmark_sync_fills_uncovered_fuyao_window_with_tencent(tmp_path, monkeypatch):
+    import httpx
+
+    requests = []
+
+    def prices(request):
+        requests.append(request)
+        if request.url.host == 'fuyao.aicubes.cn':
+            return httpx.Response(200, json={'code': 1003})
+        assert request.url.host == 'proxy.finance.qq.com'
+        assert 'X-api-key' not in request.headers
+        return httpx.Response(200, json={'data': {'sh000300': {'day': [
+            ['2020-01-02', '4093.93', '4152.24', '4161.18', '4093.93',
+             '149405254.00', {}, '1.36', '22537430.79'],
+        ]}}})
+
+    monkeypatch.setenv('ROLL_ENV', 'test')
+    monkeypatch.setenv('FUYAO_API_KEY', 'fixture')
+    client = httpx.Client(transport=httpx.MockTransport(prices))
+    monkeypatch.setattr(httpx, 'Client', lambda: client)
+
+    scope = ('000300.SH', '--start', '2020-01-02', '--end', '2020-01-02')
+    synced = command(tmp_path, 'sync', *scope)
+    assert synced['coverage'][0]['effective_count'] == 1
+    assert synced['failures'] == []
+    assert len(requests) == 2
+    assert command(tmp_path, 'sync', *scope)['appended'] == 0
+    rows = command(tmp_path, 'read', synced['snapshot']['snapshot_id'])['observations']
+    assert rows[0]['source'] == 'tencent'
+    assert rows[0]['payload']['close'] == '4152.24'
+    assert rows[0]['payload']['volume'] == '14940525400'
+    assert rows[0]['payload']['amount'] == '225374307900'
