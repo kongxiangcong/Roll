@@ -1,6 +1,7 @@
 """Import and publish research independently of any account."""
 from contextlib import contextmanager
 from datetime import UTC
+from hashlib import sha256
 import json
 from pathlib import Path
 
@@ -249,6 +250,16 @@ class ResearchDossiers:
                 ORDER BY effective_at DESC, published_at DESC, version DESC LIMIT 1
             """, (symbol.upper(), cutoff, cutoff)).fetchone()
         return json.loads(row["payload"]) if row else None
+
+    def public_version(self, symbol, as_of):
+        """Freeze only the active dossier reference and its public evidence metadata."""
+        version = self.active(symbol, as_of)
+        if version is None:
+            return None
+        public = {"symbol": version["symbol"], "version": version["version"],
+                  "evidence": [{key: item[key] for key in _PUBLIC_EVIDENCE_FIELDS if key in item}
+                               for item in version["evidence"]]}
+        return {**public, "sha256": sha256(json_text(public).encode()).hexdigest()}
 
     def inputs(self, symbol, as_of=None):
         """Export the public source references available through the research entrance."""
