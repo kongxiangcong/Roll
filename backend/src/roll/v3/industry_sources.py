@@ -1,7 +1,11 @@
 """Normalize the publisher's industrial-metals index and membership captures."""
 
 from datetime import datetime, time
+import json
+import ssl
 from urllib.parse import urlencode
+
+import httpx
 
 from roll.v3.market import SHANGHAI
 
@@ -21,6 +25,21 @@ MEMBERSHIP_FIELDS = (
     'index_symbol', 'index_name', 'classification', 'classification_ref',
     'effective_start', 'effective_end', 'member_name', 'membership_basis',
 )
+
+
+def fetch_shenwan(ca_file=None):
+    """Fetch the publisher's separate quote and membership datasets."""
+    verification = ssl.create_default_context(cafile=ca_file) if ca_file else True
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                             "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"}
+    with httpx.Client(headers=headers, verify=verification, timeout=20) as client:
+        def capture(route, **params):
+            response = client.get(f"{SHENWAN}/{route}/", params={"swindexcode": "801055", **params})
+            response.raise_for_status()
+            return {"received_at": datetime.now(SHANGHAI).isoformat(),
+                    "data": json.loads(response.content, parse_float=str)}
+
+        return capture("trend", period="DAY"), capture("details/component_stocks", page=1, page_size=10000)
 
 
 def _public_data(capture):
