@@ -1,6 +1,7 @@
 """Freeze the public inputs to one offline research question and record each attempt."""
 import base64
 import json
+import time
 from contextlib import contextmanager
 from datetime import timedelta
 from hashlib import sha256
@@ -59,6 +60,33 @@ def get_attempt(data_dir, attempt_id):
     if not row:
         raise ValueError(f"无此研究尝试：{attempt_id}")
     return json.loads(row["receipt"])
+
+
+def store_receipt(db, receipt):
+    db.execute("UPDATE research_attempt SET receipt=? WHERE attempt_id=?",
+               (json_text(receipt), receipt["attempt_id"]))
+    return receipt
+
+
+def cancelled(receipt):
+    return {**receipt, "status": "cancelled", "termination_reason": "cancelled", "error": "用户取消了研究尝试"}
+
+
+def cancel_attempt(data_dir, attempt_id):
+    with task_database(data_dir, write=True) as db:
+        row = db.execute("SELECT receipt FROM research_attempt WHERE attempt_id=?", (attempt_id,)).fetchone()
+        if not row:
+            raise ValueError(f"无此研究尝试：{attempt_id}")
+        receipt = json.loads(row["receipt"])
+        if receipt["status"] == "running":
+            receipt["status"] = "cancelling"
+            store_receipt(db, receipt)
+        elif receipt["status"] == "pending":
+            return store_receipt(db, cancelled(receipt))
+    while receipt["status"] == "cancelling":
+        time.sleep(0.05)
+        receipt = get_attempt(data_dir, attempt_id)
+    return receipt
 
 
 def freeze_material(path, cutoff):
@@ -255,6 +283,8 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
             current = db.execute("SELECT receipt FROM research_attempt WHERE attempt_id=?",
                                  (attempt_id,)).fetchone()
             stored = json.loads(current["receipt"])
+            if stored["status"] == "cancelling":
+                return store_receipt(db, cancelled(receipt))
             if stored["status"] != "running":
                 return stored
             if draft is not None:
@@ -288,6 +318,12 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
 
 
 def register_attempt(db, task_id, parent_task_id):
+    active = db.execute(
+        "SELECT attempt_id FROM research_attempt WHERE task_id=? "
+        "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id,),
+    ).fetchone()
+    if active:
+        raise ValueError(f"研究任务已有进行中的尝试：{active['attempt_id']}")
     attempt_id = "attempt-" + uuid4().hex
     receipt = {"task_id": task_id, "attempt_id": attempt_id, "status": "pending",
                "gaps": [], "draft_version": None}
@@ -369,6 +405,9 @@ def register_task_commands(research):
     show = commands.add_parser("show", help="读取任务的公开清单与历次尝试")
     show.add_argument("task_id")
     show.set_defaults(handler=lambda a, d: get_task(d, a.task_id))
+    cancel = commands.add_parser("cancel", help="取消正在运行的研究尝试并等候清理")
+    cancel.add_argument("attempt_id")
+    cancel.set_defaults(handler=lambda a, d: cancel_attempt(d, a.attempt_id))
     attempt = commands.add_parser("attempt", help="按 ID 读取单次尝试结果")
     attempt.add_argument("attempt_id")
     attempt.set_defaults(handler=lambda a, d: get_attempt(d, a.attempt_id))
