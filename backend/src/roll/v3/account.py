@@ -198,6 +198,16 @@ def _apply_fill(snapshot, event_id, effective_at, payload):
     return _apply_cash(replace(snapshot, lots=lots), delta, payload["broker_available_after"])
 
 
+def apply_fill(snapshot: AccountSnapshot, *, event_id, symbol, side, quantity, price, effective_at,
+               fee=0, sellable_on=None) -> AccountSnapshot:
+    """Project the same cash and lot changes as a recorded fill, without writing a ledger."""
+    effective_at = _timestamp(effective_at)
+    payload = _fill_payload(symbol, side, quantity, price, fee, sellable_on)
+    projected = _apply_fill(snapshot, event_id, effective_at, payload)
+    return replace(projected, snapshot_id="", through_event_id=event_id, effective_at=effective_at,
+                   known_at=max(_timestamp(snapshot.known_at), effective_at))
+
+
 def _apply_cash(snapshot, delta, broker_available_after):
     available = _decimal(broker_available_after)
     if available is None and snapshot.available_cash is not None:
