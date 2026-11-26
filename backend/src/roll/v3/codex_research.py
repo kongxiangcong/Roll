@@ -2,14 +2,19 @@
 import json
 import math
 import os
+import platform
 import re
+import shutil
+from contextlib import contextmanager
+from datetime import timedelta
 from hashlib import sha256
+from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
-from pathlib import Path
-import platform
-import shutil
+
+from roll.v3.research import material_evidence
+from roll.v3.storage import instant
 
 
 class CodexFailure(ValueError):
@@ -28,20 +33,44 @@ class CodexExecutor:
         log_ref = Path("research-attempts", attempt_id, "diagnostic.jsonl")
         log = Path(data_dir) / log_ref
         log.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
-        metadata = {"executor": "codex", "platform": platform.platform(), "cli_version": None,
-                    "permissions": {"tools": [], "sandbox": "read-only", "approval": "never"},
+        permissions = {"tools": [], "sandbox": "read-only", "approval": "never", "model": MODEL,
+                       "disabled_features": list(DISABLED_FEATURES), "settings": list(SETTINGS),
+                       "isolated_home": True, "ephemeral": True, "model_catalog": "bundled, shell disabled"}
+        system = platform.platform()
+        if platform.system() == "Linux":
+            try:
+                system = platform.freedesktop_os_release()["PRETTY_NAME"] + " / " + system
+            except (OSError, KeyError):
+                pass
+        metadata = {"executor": "codex", "platform": system, "cli_version": None,
+                    "permissions": permissions,
                     "exit_code": None, "log_ref": str(log_ref)}
         log.write_text(json.dumps({"attempt_id": attempt_id, **metadata}) + "\n", encoding="utf-8")
         return metadata
 
     def run(self, manifest, receipt, data_dir, run_process):
+        log = Path(data_dir) / receipt["log_ref"]
+        event = {}
+        try:
+            return self._execute(manifest, receipt, data_dir, run_process)
+        except CodexFailure as error:
+            # Only Roll-owned diagnostic text may be persisted. CLI streams may contain auth data.
+            event.update(failure_kind=error.kind, error=str(error))
+            raise
+        finally:
+            event.update(cli_version=receipt["cli_version"], exit_code=receipt["exit_code"])
+            if "input_sha256" in receipt:
+                event["input_sha256"] = receipt["input_sha256"]
+            with log.open("a", encoding="utf-8") as stream:
+                print(json.dumps(event, ensure_ascii=False), file=stream)
+
+    def _execute(self, manifest, receipt, data_dir, run_process):
+        from roll.v3.research_tasks import preflight_gaps
+
         executable = shutil.which("codex")
         if not executable:
             raise CodexFailure("configuration", "找不到 codex 可执行文件，请检查 PATH 和安装版本")
-        from tempfile import TemporaryDirectory
-
-        with TemporaryDirectory(prefix="roll-codex-") as directory:
-            work = Path(directory)
+        with runtime_directory(data_dir, receipt["attempt_id"]) as work:
             # No project or user configuration, inherited process environment, or session history.
             home = work / "home"
             home.mkdir(mode=0o700)
@@ -56,69 +85,25 @@ class CodexExecutor:
                 raise CodexFailure("configuration", f"该权限配置要求 codex-cli 0.172.0，实际版本为 {actual}")
             if platform.system() != "Linux" or platform.machine() != "x86_64":
                 raise CodexFailure("configuration", "该权限配置要求 x86_64 Linux")
-            if Path("/etc/codex").exists():
-                raise CodexFailure("configuration", "检测到尚未验证的系统 Codex 配置 /etc/codex")
-            catalog = run_process([executable, "debug", "models", "--bundled"], cwd=work, env=env)
-            try:
-                models = json.loads(catalog.stdout)["models"]
-                model = next(model for model in models if model["slug"] == MODEL)
-            except (ValueError, KeyError, StopIteration, TypeError):
-                raise CodexFailure("configuration", "Codex 内置目录未提供已验证的研究模型") from None
-            if catalog.returncode:
-                raise CodexFailure("configuration", "无法读取 Codex 内置模型目录")
-            model.update(tool_mode="default", shell_type="disabled", apply_patch_tool_type=None,
-                         experimental_supported_tools=[], supports_search_tool=False,
-                         include_skills_usage_instructions=False, include_plugin_usage_instructions=False,
-                         include_apps_usage_instructions=False)
-            model.pop("multi_agent_version", None)
-            (work / "catalog.json").write_text(json.dumps({"models": [model]}))
-            (work / "instructions.txt").write_text(INSTRUCTIONS, encoding="utf-8")
-            (work / "response.json").write_text(json.dumps(Reply.model_json_schema()))
-            auth = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "auth.json"
-            key = os.environ.get("CODEX_API_KEY") or os.environ.get("OPENAI_API_KEY")
-            if key:
-                env["CODEX_API_KEY"] = key
-            elif auth.is_file():
-                (home / "auth.json").symlink_to(auth.resolve())
-            else:
-                raise CodexFailure("configuration", "未找到 Codex 登录，请先执行 codex login")
-            output = work / "last-message"
-            args = [executable, "--no-daemon", "-a", "never", "exec", "--ignore-rules", "--ignore-user-config",
-                    "--strict-config", "--ephemeral", "--skip-git-repo-check", "--sandbox", "read-only",
-                    "--color", "never", "-m", MODEL, "--output-schema", str(work / "response.json"),
-                    "--output-last-message", str(output)]
-            for feature in DISABLED_FEATURES:
-                args.extend(["--disable", feature])
-            args.extend(["--enable", "skip_host_skill_discovery"])
-            for setting in (*SETTINGS, f'model_catalog_json="{work / "catalog.json"}"',
-                            f'model_instructions_file="{work / "instructions.txt"}"'):
-                args.extend(["-c", setting])
             public = public_text(manifest)
+            if preflight_gaps(manifest) or any(gap["blocking"] for gap in public["unreadable_materials"]):
+                return {"gaps": public["unreadable_materials"]}
+            managed = Path("/etc/codex")
+            if managed.is_dir() and any(managed.iterdir()):
+                raise CodexFailure("configuration", "检测到尚未验证的系统 Codex 配置 /etc/codex")
+            configure_model(executable, work, env, run_process)
+            attach_login(home, env)
+            output = work / "last-message"
             prompt = json.dumps(public, ensure_ascii=False, separators=(",", ":")).encode()
             receipt["input_sha256"] = sha256(prompt).hexdigest()
-            proc = run_process([*args, "-"], cwd=work, env=env, input=prompt)
+            input_ref = Path(receipt["log_ref"]).with_name("public-input.json")
+            (Path(data_dir) / input_ref).write_bytes(prompt)
+            receipt["input_ref"] = str(input_ref)
+            proc = run_process(exec_command(executable, work), cwd=work, env=env, input=prompt)
             receipt["exit_code"] = proc.returncode
-            log = Path(data_dir) / receipt["log_ref"]
-            with log.open("a", encoding="utf-8") as stream:
-                print(json.dumps({"cli_version": actual, "exit_code": proc.returncode,
-                                  "input_sha256": receipt["input_sha256"]}), file=stream)
             if proc.returncode:
                 raise classify_exit(proc)
-            if not output.is_file():
-                raise CodexFailure("invalid_response", "Codex 正常退出但没有最终回包")
-            try:
-                reply = Reply.model_validate_json(output.read_bytes(), strict=True).model_dump()
-            except ValueError:
-                raise CodexFailure("invalid_response", "Codex 最终回包与研究草稿或证据缺口格式不符") from None
-            if reply["draft"]:
-                refs = {item["id"]: item for item in public["evidence"]}
-                try:
-                    reply["draft"]["evidence"] = [refs[ref] for ref in reply["draft"]["evidence_refs"]]
-                except KeyError:
-                    raise CodexFailure("invalid_response", "草稿引用了本次公开输入以外的证据") from None
-            elif not any(gap["blocking"] for gap in reply["gaps"]):
-                raise CodexFailure("invalid_response", "Codex 最终回包须给出草稿或阻塞缺口")
-            return reply
+            return read_reply(output, public)
 
 
 MODEL = "gpt-6.2-sol"
@@ -128,7 +113,21 @@ DISABLED_FEATURES = (
     "skill_search", "sleep_tool", "goals", "tool_suggest", "api_key_model_discovery", "shell_snapshot",
     "enable_request_compression",
 )
+
+
+@contextmanager
+def runtime_directory(data_dir, attempt_id):
+    root = Path(data_dir).resolve() / "research-attempts" / attempt_id / "runtime"
+    root.mkdir(mode=0o700)
+    try:
+        (root / ".roll-codex-root").touch()
+        yield root
+    finally:
+        shutil.rmtree(root)
+
+
 SETTINGS = (
+    'project_root_markers=[".roll-codex-root"]', "mcp_servers={}", "analytics.enabled=false", "feedback.enabled=false",
     'web_search="disabled"', "project_doc_max_bytes=0", "tools.update_plan.enabled=false",
     "tools.experimental_request_user_input.enabled=false", "agents.enabled=false", "include_apps_instructions=false",
     "include_collaboration_mode_instructions=false", "include_environment_context=false",
@@ -187,24 +186,114 @@ class Reply(Contract):
     draft: Draft | None
 
 
+def configure_model(executable, work, env, run_process):
+    catalog = run_process([executable, "debug", "models", "--bundled"], cwd=work, env=env)
+    try:
+        models = json.loads(catalog.stdout)["models"]
+        model = next(model for model in models if model["slug"] == MODEL)
+    except (ValueError, KeyError, StopIteration, TypeError):
+        raise CodexFailure("configuration", "Codex 内置目录未提供已验证的研究模型") from None
+    if catalog.returncode:
+        raise CodexFailure("configuration", "无法读取 Codex 内置模型目录")
+    model.update(tool_mode="default", shell_type="disabled", apply_patch_tool_type=None,
+                 experimental_supported_tools=[], supports_search_tool=False,
+                 include_skills_usage_instructions=False, include_plugin_usage_instructions=False,
+                 include_apps_usage_instructions=False)
+    model.pop("multi_agent_version", None)
+    (work / "catalog.json").write_text(json.dumps({"models": [model]}))
+    (work / "instructions.txt").write_text(INSTRUCTIONS, encoding="utf-8")
+    (work / "response.json").write_text(json.dumps(Reply.model_json_schema()))
+
+
+def attach_login(home, env):
+    auth = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "auth.json"
+    key = os.environ.get("CODEX_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    if key:
+        env["CODEX_API_KEY"] = key
+    elif auth.is_file():
+        # This CLI's file credential store updates auth.json in place. Share its
+        # locking files as well, while excluding global instructions/plugins.
+        auth_dir = auth.parent.resolve()
+        for name in ("auth.json", "auth.lock", "auth.json.lock"):
+            (home / name).symlink_to(auth_dir / name)
+    else:
+        raise CodexFailure("configuration", "未找到 Codex 登录，请先执行 codex login")
+
+
+def exec_command(executable, work):
+    args = [executable, "--no-daemon", "-a", "never", "exec", "--ignore-rules", "--ignore-user-config",
+            "--strict-config", "--ephemeral", "--skip-git-repo-check", "--sandbox", "read-only",
+            "--color", "never", "-m", MODEL, "--output-schema", str(work / "response.json"),
+            "--output-last-message", str(work / "last-message")]
+    for feature in DISABLED_FEATURES:
+        args.extend(["--disable", feature])
+    args.extend(["--enable", "skip_host_skill_discovery"])
+    files = {"model_catalog_json": work / "catalog.json", "model_instructions_file": work / "instructions.txt"}
+    for setting in SETTINGS:
+        args.extend(["-c", setting])
+    for name, path in files.items():
+        args.extend(["-c", f"{name}={json.dumps(str(path), ensure_ascii=False)}"])
+    return [*args, "-"]
+
+
+def read_reply(output, public):
+    if not output.is_file():
+        raise CodexFailure("invalid_response", "Codex 正常退出但没有最终回包")
+    try:
+        reply = Reply.model_validate_json(output.read_bytes(), strict=True).model_dump()
+    except ValueError:
+        raise CodexFailure("invalid_response", "Codex 最终回包与研究草稿或证据缺口格式不符") from None
+    if any(not gap["reason"].strip() or not gap["required_evidence"].strip() for gap in reply["gaps"]):
+        raise CodexFailure("invalid_response", "证据缺口须说明原因和所需材料")
+    blocking = any(gap["blocking"] for gap in reply["gaps"])
+    if reply["draft"]:
+        if blocking:
+            raise CodexFailure("invalid_response", "阻塞缺口与可交付草稿互相冲突")
+        draft = reply["draft"]
+        # Model-authored rationale cannot act as the reviewer's confirmation.
+        risk_fields = {"fundamental_gate": draft["fundamental_gate"] == "pass",
+                       "thesis_status": draft["thesis_status"] == "intact",
+                       "strategy_whitelist": bool(draft["strategy_whitelist"])}
+        for field, permits_risk in risk_fields.items():
+            if permits_risk and not draft["constraint_basis"][field]["evidence_refs"]:
+                raise CodexFailure("invalid_response", f"{field} 放开风险须引用字段证据，仅有推断请保留未知")
+        refs = {item["id"]: item for item in public["evidence"]}
+        try:
+            reply["draft"]["evidence"] = [refs[ref] for ref in reply["draft"]["evidence_refs"]]
+        except KeyError:
+            raise CodexFailure("invalid_response", "草稿引用了本次公开输入以外的证据") from None
+    elif not blocking:
+        raise CodexFailure("invalid_response", "Codex 最终回包须给出草稿或阻塞缺口")
+    reply["gaps"].extend(public["unreadable_materials"])
+    return reply
+
+
 def public_text(manifest):
-    from datetime import timedelta
-    from roll.v3.research import material_evidence
-    from roll.v3.research_tasks import market_finding
-    from roll.v3.storage import instant
+    from roll.v3.research_tasks import market_observations
 
     public = {key: manifest[key] for key in ("symbol", "as_of", "question", "snapshot_id", "purpose", "required_titles")}
     public["basis"] = manifest.get("basis", "announcement")
     public["suggested_valid_until"] = (instant(manifest["as_of"]) + timedelta(days=30)).isoformat()
     public["market_reference"] = manifest["market"]["reference"]
-    public["materials"] = [item for item in manifest["materials"] if item["encoding"] == "utf-8"]
+    public["materials"] = [item for item in manifest["materials"]
+                           if item["encoding"] == "utf-8" and item["content"].strip()
+                           and not item["content"].startswith("%PDF-") and "\x00" not in item["content"]]
+    readable_titles = {item["title"] for item in public["materials"]}
+    public["unreadable_materials"] = [
+        {"required_evidence": item["title"] + "（" + item["locator"] + "）的可读原文或摘录",
+         "reason": "冻结附件没有可直接核对的文本", "blocking": (
+             item["title"] in manifest["required_titles"] and item["title"] not in readable_titles
+             or public["basis"] == "announcement" and not readable_titles)}
+        for item in manifest["materials"] if item not in public["materials"]
+    ]
     public["evidence"] = [material_evidence(item) for item in public["materials"]]
     if manifest["dossier"]:
         public["dossier"] = manifest["dossier"]
         public["evidence"].extend(manifest["dossier"]["evidence"])
-    finding = market_finding(manifest)
+    finding = market_observations(manifest)
     if finding:
         public["market_finding"] = finding[1]
+        public["market_observations"] = finding[2]
         public["evidence"].append(finding[0])
     return public
 
@@ -217,4 +306,12 @@ def classify_exit(proc):
     if any(token in diagnostic for token in (b"error loading config", b"error loading configuration",
                                              b"unknown feature", b"unknown field", b"invalid config")):
         return CodexFailure("configuration", "Codex 未能启用已验证的权限配置，请核对 CLI 安装")
-    return CodexFailure("cli_exit", f"Codex 运行或模型服务失败，CLI 退出码 {proc.returncode}")
+    if b"429" in diagnostic:
+        reason = "模型服务请求受限，请核对额度或稍后人工重试"
+    elif b"503" in diagnostic or b"502" in diagnostic:
+        reason = "模型服务暂时不可用，可稍后人工重试"
+    elif b"context_length_exceeded" in diagnostic:
+        reason = "公开输入超过模型上下文，请缩短材料摘录并发起关联任务"
+    else:
+        reason = "Codex 运行或服务连接失败，请核对网络和服务状态"
+    return CodexFailure("cli_exit", f"{reason}（CLI 退出码 {proc.returncode}）")
