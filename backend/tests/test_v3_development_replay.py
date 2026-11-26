@@ -149,3 +149,22 @@ def test_development_records_a_retrievable_failure_at_the_freeze_stage(tmp_path)
     assert report["snapshot_id"] == snapshot_id
     assert report["failure_stage"] == "freeze_inputs"
     assert snapshot_id in report["error"]
+
+
+def test_development_applies_minimum_commission_to_an_add_on_and_compares_both_baselines(tmp_path):
+    start = list(sessions("2023-01-03", "2023-12-29"))[-64]
+    days, rows = _quotes(start)
+    rows[3 * 61 + 2]["payload"]["open"] = "9.99"
+    snapshot = load_snapshot(tmp_path, rows)
+
+    attempt = command(tmp_path, "research", "task", "development", "--preset", PRESET, "--snapshot", snapshot)
+    report = command(tmp_path, "research", "task", "development-receipt", attempt["task_id"])
+
+    add_on = report["sessions"][2]["paths"]["e0"]["execution"]["fill"]
+    assert report["sessions"][2]["date"] == days[61]
+    assert add_on["quantity"] == 100 and Decimal(add_on["fee"]) == Decimal("5.01")
+    metrics = report["metrics"]["e0"]
+    assert metrics["total_return"] == "0.0976758"
+    assert metrics["costs"] == "35.42" and metrics["slippage_cost"] == "98"
+    assert metrics["excess_return_vs_buy_and_hold"] == "0.0009599"
+    assert metrics["excess_return_vs_no_active_trading"] == metrics["total_return"]
