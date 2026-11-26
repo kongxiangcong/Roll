@@ -181,6 +181,20 @@ def run_experiment(data_dir, version, snapshot_id, *, run_id=None, at=None, init
     return result
 
 
+def list_experiments(data_dir, symbol):
+    """List completed runs for a security without loading the daily traces."""
+    with database(data_dir) as db:
+        ensure_schema(db, _SCHEMA)
+        rows = db.execute("""
+            SELECT run_id, report_id, frozen_at,
+                   json_extract(configuration, '$.strategy.version') AS strategy_version
+            FROM experiment_run
+            WHERE report_id IS NOT NULL AND json_extract(configuration, '$.symbol') = ?
+            ORDER BY frozen_at DESC, run_id
+        """, (symbol.upper(),)).fetchall()
+    return [dict(row) for row in rows]
+
+
 def read_experiment(data_dir, run_id, *, trace=False):
     row = _saved_run(data_dir, run_id)
     if row["report"] is None:

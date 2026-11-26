@@ -144,6 +144,21 @@ def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT
     return {'snapshot_id': snapshot_id, **snapshot}
 
 
+def list_snapshots(data_dir, symbol):
+    """List stored daily-bar snapshots for research selection."""
+    with database(data_dir) as db:
+        ensure_schema(db, _SCHEMA)
+        rows = db.execute("""
+            SELECT snapshot_id, as_of, use_mode, scope FROM data_snapshot AS snapshot
+            WHERE EXISTS (
+                SELECT 1 FROM json_each(snapshot.scope)
+                WHERE json_extract(value, '$.symbol') = ? AND json_extract(value, '$.series') = 'daily_bar'
+            )
+            ORDER BY as_of DESC, max_seq DESC, snapshot_id
+        """, (symbol.upper(),)).fetchall()
+    return [{**dict(row), 'scope': json.loads(row['scope'])} for row in rows]
+
+
 def get_snapshot(data_dir, snapshot_id, *, db=None):
     with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
