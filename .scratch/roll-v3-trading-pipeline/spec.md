@@ -1,6 +1,8 @@
 # Roll v3 · 单股研究、盘后计划与前向复盘
 
-Status: ready-for-agent
+Status: ready-for-human
+
+Resolution: M0a 已验收。M0b 工具已交付，真实运行签收待连续 20 日记录。 [验收记录](acceptance.md)
 
 ## Problem Statement
 
