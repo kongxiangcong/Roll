@@ -8,6 +8,9 @@ thesis_status: watch
 strategy_whitelist: []
 invalidation_triggers:
   - id: operating-cash-flow-nonpositive
+    feature: operating_cash_flow_ytd_cny
+    operator: "<="
+    threshold: 0
     source: 江西铜业最新正式定期报告或更正公告
     data_required: 合并现金流量表的年初至报告期末经营活动现金流量净额
     condition: 最新披露或更正后的累计经营活动现金流量净额小于等于零

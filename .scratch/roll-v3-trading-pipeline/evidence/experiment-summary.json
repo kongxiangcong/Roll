@@ -1,0 +1,663 @@
+{
+  "baseline_overlap_reason": "买入持有发生独立配置或净值路径不同",
+  "baseline_paths_overlap": false,
+  "books": {
+    "buy_and_hold": "experiment:m0a-jxcc-default:buy_and_hold",
+    "no_active_trading": "experiment:m0a-jxcc-default:no_active_trading",
+    "trend": "experiment:m0a-jxcc-default:trend"
+  },
+  "boundary": {
+    "initial_mark": {
+      "buy_and_hold": {
+        "cash": "100000",
+        "nav": "100000",
+        "position_value": "0",
+        "receivable_value": "0"
+      },
+      "no_active_trading": {
+        "cash": "100000",
+        "nav": "100000",
+        "position_value": "0",
+        "receivable_value": "0"
+      },
+      "trend": {
+        "cash": "100000",
+        "nav": "100000",
+        "position_value": "0",
+        "receivable_value": "0"
+      }
+    },
+    "last_session": "2026-11-25",
+    "pending_intents": {},
+    "pending_policy": "冻结结束后的开盘不在本次试验内，悬而未决意图不计入成交或成交失败。",
+    "pre_window": {
+      "basis": "RECONSTRUCTED_PREVIOUS_RAW_CLOSE",
+      "close": "16.93",
+      "date": "2019-12-31",
+      "decision": {
+        "account_constraints": {
+          "account_value": "100000",
+          "broker_available_cash": "100000",
+          "budget_expires_at": null,
+          "cash": "100000",
+          "cash_available_to_allocate": "100000",
+          "cash_reserve": "0",
+          "existing_position_value": null,
+          "existing_reservations_net_of_broker": "0",
+          "funds_needed_at": null,
+          "max_industry_exposure": "1",
+          "max_symbol_exposure": "1",
+          "max_total_exposure": "1",
+          "symbol_value_limit": "100000",
+          "total_reserved_and_position_value": "0",
+          "unpriced_holdings": [],
+          "value_available_to_allocate": "100000"
+        },
+        "account_snapshot_id": "2b0a0955037b81f935054b6fa2a39008d819ad6f38ae5cdc2302c21a4703c377",
+        "action": "BUY",
+        "allowed_directions": [
+          "BUY"
+        ],
+        "as_of": "2019-12-31T07:05:00.000000+00:00",
+        "book_id": "experiment:m0a-jxcc-default:buy_and_hold",
+        "budget_id": "experiment-budget-774cf7f549db8280",
+        "cancel_conditions": [
+          "SUPERSEDED",
+          "SESSION_EXPIRED",
+          "PRESET_RISK_PAUSE"
+        ],
+        "candidates": [
+          {
+            "acceptance_run_id": null,
+            "applicability_reasons": [],
+            "evidence_ref": null,
+            "exit_rule": "同一初始现金或持仓批次。首个可执行开盘按共同风险预算配置至上限，此后持有并结算公司行动。",
+            "family": "daily-trend",
+            "priority": 100,
+            "protocol_version": "protocol-b9ffbd4bcd786105",
+            "publication": null,
+            "registry_status": "frozen",
+            "risk": "不做空、不使用杠杆，服从共同账户现金、仓位、合规执行与其他已发布风险限制。",
+            "selected": true,
+            "selection_reasons": [
+              "BUY_WITHIN_SHARED_LIMITS"
+            ],
+            "signal": "initial_allocation",
+            "signal_missing": [],
+            "signal_status": "ready",
+            "simulation_only": true,
+            "strategy_version": "buy-and-hold-initial-allocation-v1",
+            "target_fraction": "1"
+          }
+        ],
+        "cash_reserved": "99918.97",
+        "confirmation_status": "PENDING",
+        "current_quantity": 0,
+        "decision_rules_version": "after-close-p0-p4-v1",
+        "dossier_version": null,
+        "estimated_fees": "31.97",
+        "execution_conditions": [
+          "TARGET_SESSION_OPEN",
+          "CONFIRM_TRADING_STATUS_PRICE_BANDS_AND_SELLABLE_SHARES",
+          "LIMIT_TO_ORDER_SHARES_AND_RESERVED_CASH"
+        ],
+        "execution_parameters": {
+          "commission_rate": "0.0003",
+          "lot_size": 1,
+          "minimum_commission": "5",
+          "slippage_rate": "0.0005"
+        },
+        "execution_rules_version": "a-share-next-open-v1",
+        "execution_window": {
+          "end": "2020-01-02T01:30:00.000000+00:00",
+          "start": "2020-01-02T01:30:00.000000+00:00"
+        },
+        "exit_conditions": [
+          "PUBLISHED_INVALIDATION",
+          "ACCOUNT_RISK_LIMIT",
+          "FROZEN_STRATEGY_EXIT_SIGNAL"
+        ],
+        "if_unfilled": "RECORD_REASON_AND_WAIT_FOR_NEXT_AFTER_CLOSE_DECISION",
+        "industry": null,
+        "industry_state": "unknown",
+        "intraday_actions": [
+          "CHECK_PRESET_CONDITIONS",
+          "PAUSE_OR_CANCEL",
+          "APPLY_PRESET_RISK_EXIT_IF_EXECUTABLE"
+        ],
+        "limit_price": null,
+        "market_state": "unknown",
+        "plan_id": "experiment:m0a-jxcc-default:buy_and_hold:2019-12-31",
+        "quantity": 5900,
+        "reasons": {
+          "P0": [
+            "CONFIRM_OPENING_STATUS_AND_PRICE_BANDS"
+          ],
+          "P1": [
+            "RISK_BUDGET_WITHIN_LIMITS"
+          ],
+          "P2": [
+            "DOSSIER_MISSING",
+            "PRICE_ONLY_SIMULATION"
+          ],
+          "P3": [
+            "STRATEGY_ELIGIBLE"
+          ],
+          "P4": [
+            "BUY_WITHIN_SHARED_LIMITS"
+          ]
+        },
+        "research": {
+          "status": "missing"
+        },
+        "sellable_quantity": 0,
+        "session": "2020-01-02",
+        "simulated": true,
+        "snapshot_id": "a67c1c43cf4f284460ed6e987f8fd1a8a2f4e9f1720d9a431efe993901167bcb",
+        "stock_state": "unknown",
+        "strategy_version": "buy-and-hold-initial-allocation-v1",
+        "symbol": "600362.SH",
+        "target_fraction": "1",
+        "target_quantity": 5900,
+        "valid_until": "2020-01-02T07:00:00.000000+00:00"
+      },
+      "observation": {
+        "availability_assumption": "当日上海 09:30 原始开盘可用，历史日线只投影开盘字段",
+        "reconstruction_only": true,
+        "selected_available_at": "2020-01-02T01:30:00.000000+00:00",
+        "seq": 8362,
+        "source": "fuyao",
+        "source_ref": "https://fuyao.aicubes.cn/api/a-share/prices/historical"
+      },
+      "pending_intent": {
+        "cash_limit": "99918.97",
+        "decision_at": "2019-12-31T07:05:00.000000+00:00",
+        "intent_id": "experiment:m0a-jxcc-default:buy_and_hold:2019-12-31",
+        "limit_price": null,
+        "quantity": 5900,
+        "side": "BUY",
+        "symbol": "600362.SH",
+        "target_session": "2020-01-02"
+      }
+    }
+  },
+  "configuration": {
+    "experiment_version": "continuous-trend-experiment-v1",
+    "initial": {
+      "available_cash": "100000",
+      "cash": "100000",
+      "lots": [],
+      "risk_budget": {
+        "cash_reserve": "0",
+        "max_industry_exposure": "1",
+        "max_symbol_exposure": "1",
+        "max_total_exposure": "1"
+      }
+    },
+    "market_snapshot": {
+      "as_of": "2026-11-26T06:35:00.566787+00:00",
+      "max_seq": 15045,
+      "scope": [
+        {
+          "end": "2026-11-25",
+          "series": "adjustment_factor",
+          "start": "2020-01-02",
+          "symbol": "000300.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "adjustment_factor",
+          "start": "2020-01-02",
+          "symbol": "512400.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "adjustment_factor",
+          "start": "2020-01-02",
+          "symbol": "600362.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "adjustment_factor",
+          "start": "2020-01-02",
+          "symbol": "801055.SI"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "corporate_action",
+          "start": "2020-01-02",
+          "symbol": "000300.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "corporate_action",
+          "start": "2020-01-02",
+          "symbol": "512400.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "corporate_action",
+          "start": "2020-01-02",
+          "symbol": "600362.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "corporate_action",
+          "start": "2020-01-02",
+          "symbol": "801055.SI"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_bar",
+          "start": "2020-01-02",
+          "symbol": "000300.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_bar",
+          "start": "2020-01-02",
+          "symbol": "512400.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_bar",
+          "start": "2020-01-02",
+          "symbol": "600362.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_bar",
+          "start": "2020-01-02",
+          "symbol": "801055.SI"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_open",
+          "start": "2020-01-02",
+          "symbol": "000300.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_open",
+          "start": "2020-01-02",
+          "symbol": "512400.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_open",
+          "start": "2020-01-02",
+          "symbol": "600362.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "daily_open",
+          "start": "2020-01-02",
+          "symbol": "801055.SI"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "industry_membership",
+          "start": "2020-01-02",
+          "symbol": "000300.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "industry_membership",
+          "start": "2020-01-02",
+          "symbol": "512400.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "industry_membership",
+          "start": "2020-01-02",
+          "symbol": "600362.SH"
+        },
+        {
+          "end": "2026-11-25",
+          "series": "industry_membership",
+          "start": "2020-01-02",
+          "symbol": "801055.SI"
+        }
+      ],
+      "selection_rules_version": "market-v1",
+      "snapshot_id": "a67c1c43cf4f284460ed6e987f8fd1a8a2f4e9f1720d9a431efe993901167bcb",
+      "source_priority": [
+        "issuer-cninfo",
+        "fuyao",
+        "shenwan",
+        "shenwan-analysis",
+        "tencent",
+        "eastmoney"
+      ],
+      "use_mode": "RECONSTRUCTED_RESEARCH"
+    },
+    "protocol": {
+      "baselines": {
+        "buy_and_hold": "同一初始现金或持仓批次。首个可执行开盘按共同风险预算配置至上限，此后持有并结算公司行动。",
+        "no_active_trading": "沿用同一初始现金和股数，不新增主动交易，持仓按同样口径结算公司行动。"
+      },
+      "costs": {
+        "commission_rate": "0.0003",
+        "comparison_basis": "股息红利税前、含交易成本",
+        "dividend_tax_basis": "pre_personal_dividend_tax",
+        "minimum_commission_yuan": "5",
+        "slippage_rate": "0.0005",
+        "stock_rates": {
+          "sell_stamp_before_2023-08-28": "0.001",
+          "sell_stamp_from_2023-08-28": "0.0005",
+          "transfer_before_2022-04-29": "0.00002",
+          "transfer_from_2022-04-29": "0.00001"
+        }
+      },
+      "decision_order": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "evaluation": {
+        "max_independent_acceptance_runs": 1,
+        "max_return_lag_to_buy_and_hold": "0.10",
+        "min_acceptance_completed_round_trips": 5,
+        "min_acceptance_evaluable_sessions": 500,
+        "min_forward_sessions": 20,
+        "report_metrics": [
+          "total_return",
+          "excess_return",
+          "max_drawdown",
+          "volatility",
+          "downside_risk",
+          "fills",
+          "win_rate",
+          "profit_loss_ratio",
+          "turnover",
+          "costs",
+          "failed_fills",
+          "coverage",
+          "development",
+          "acceptance"
+        ],
+        "rules": [
+          "要求持仓路径相关输入无未解决的重大缺口，三条路径同窗、同初始批次、同成本及权益口径。",
+          "样本外至少有 500 个可评价交易日和 5 次完整往返。覆盖或交易不足给出证据不足。",
+          "样本外累计净收益须高于不主动交易，最大回撤须低于买入持有，且累计净收益落后买入持有不超过 10 个百分点。",
+          "三个连续账本跨窗口延续；样本外收益与回撤以区间起点共同计量时点的各路径净值为基准。",
+          "独立验收窗口只揭示一次。已经查看的区间用于比较与解释，后续版本须另有独立证据。",
+          "通过历史验收后，须再独立通过至少 20 个连续真实交易日前向影子观察，并显式登记生产准入。"
+        ]
+      },
+      "family": "daily-trend",
+      "hypothesis": {
+        "id": "600362-daily-trend-continuation",
+        "statement": "江西铜业的中期价格趋势有延续性。按预登记均线规则降低趋势转弱时的风险敞口，在交易成本后仍可获得高于不主动交易的收益，并较买入持有降低回撤。"
+      },
+      "initial_cash_cny": "100000",
+      "strategy_version": "daily-trend-a1ec1690f0f3932d",
+      "version": "protocol-b9ffbd4bcd786105",
+      "windows": {
+        "acceptance": {
+          "end": "2026-11-25",
+          "start": "2024-01-02"
+        },
+        "development": {
+          "end": "2023-12-29",
+          "start": "2020-01-02"
+        }
+      }
+    },
+    "replay_only": false,
+    "research_ref": "600362.SH/2026q3-cashflow",
+    "rules": {
+      "accounting_basis": "股息红利税前、含交易成本",
+      "availability": "按冻结来源记录的可得性证据或重建假设逐时点读取。原始日线盘后 15:05，开盘观测 09:30，只消费开盘字段。首日昨收可从开盘记录中前一交易日的原始收盘字段重建。",
+      "date_only_cash_dividend": "15:00 Asia/Shanghai",
+      "decision": "after-close-p0-p4-v1",
+      "decision_cutoff": "15:05 Asia/Shanghai",
+      "execution": "a-share-next-open-v1",
+      "execution_cutoff": "09:30 Asia/Shanghai",
+      "execution_parameters": {
+        "commission_rate": "0.0003",
+        "lot_size": 1,
+        "minimum_commission": "5",
+        "slippage_rate": "0.0005"
+      },
+      "external_reservations": [],
+      "previous_close_fallback": true,
+      "price_bands": "按开盘记录和对应交易日规则。未提供特殊价格限制时按规则推导板块涨跌幅。",
+      "price_only_simulation": true,
+      "research_dossiers": [],
+      "share_listing": "09:30 Asia/Shanghai",
+      "valuation": "同日原始收盘价。确认停牌且当天无权益变化时可沿用上一已知原始收盘价。"
+    },
+    "strategy": {
+      "decision_priority": 100,
+      "entry": "连续预热完成后，短均线严格高于长均线时目标为共同风险预算允许的最大配置。",
+      "execution_time": "下一交易日开盘，使用原始开盘价及开盘可见的可执行性条件。未成交保留原因，下一次盘后独立裁决。",
+      "exit": "短均线不高于长均线时目标为零。缺项、停牌或预热不足时无目标；已有持仓按账户风险规则处理。",
+      "features": [
+        "原始收盘价、交易状态、公司行动调整因子中的实际每股股息和送转比例",
+        "用当日之前及当日生效且在信号截止时点可见的现金分派和送转股构建总回报指数，不使用未来复权因子"
+      ],
+      "logic_version": "total-return-sma-v1",
+      "name": "600362.SH 日频趋势",
+      "parameters": {
+        "fast": 20,
+        "slow": 60
+      },
+      "risk": "不做空、不使用杠杆，服从共同账户现金、仓位、合规执行与其他已发布风险限制。",
+      "scope": {
+        "frequency": "daily",
+        "side": "long_only",
+        "symbols": [
+          "600362.SH"
+        ]
+      },
+      "signal_time": "交易所当地 15:05 或实际盘后裁决时点。历史重建以 15:05 为每日截止。",
+      "version": "daily-trend-a1ec1690f0f3932d"
+    },
+    "strategy_frozen_at": "2026-11-26T06:37:55.950289+00:00",
+    "symbol": "600362.SH"
+  },
+  "coverage": {
+    "confirmed_suspensions": [],
+    "path_gaps": [],
+    "sessions": 1671,
+    "signal_status": {
+      "ready": 1612,
+      "warmup": 59
+    }
+  },
+  "exposure": {
+    "independent": true,
+    "opened_at": "2026-11-26T07:01:07.024491+00:00",
+    "run_id": "m0a-jxcc-default",
+    "use": "independent_acceptance"
+  },
+  "independent": true,
+  "independent_baselines": 2,
+  "limitations": [
+    "单标的冻结试验，试验次数和候选假设见协议。不同历史阶段的结果分别列出。",
+    "本协议固定参数和成本，仅登记一个独立验收运行；未登记参数或成本敏感性试验。",
+    "历史重建及历史验收只形成研究证据。策略生产准入由注册表另行登记。"
+  ],
+  "metric_basis": {
+    "base": "窗口首日之前最近交易日的各账本收盘净值，开发期起点使用共同初始资产。",
+    "daily_risk": "日收益标准差和零目标下行偏差，按每年 252 个交易日年化。",
+    "drawdown": "包含起点净值，报告从历史峰值到后续低点的最大跌幅。",
+    "round_trips": "从零股票风险敞口买入再回到零，买入与平仓均须在窗口内，收益含已确认股息和费用。",
+    "turnover": "窗口买卖总成交金额除以窗口日末平均净值。"
+  },
+  "report_id": "experiment-result-a5da9c812eaa9e1fecacfad6b024da0b45f39fc80d63a99a26775aa21f492c85",
+  "run_id": "m0a-jxcc-default",
+  "verdict": "pass",
+  "verdict_reasons": [],
+  "windows": {
+    "acceptance": {
+      "base_date": "2023-12-29",
+      "end": "2026-11-25",
+      "evaluable_sessions": 701,
+      "paths": {
+        "buy_and_hold": {
+          "completed_round_trips": 0,
+          "costs": "0",
+          "downside_risk": 0.2822553821514832,
+          "end_nav": "181806.32",
+          "failed_fills": 0,
+          "fills": 0,
+          "gross_traded": "0",
+          "losses": 0,
+          "max_drawdown": "0.5737332392484160684133899193",
+          "nonexecution_reasons": {},
+          "partial_fills": 0,
+          "path_complete": true,
+          "profit_loss_ratio": null,
+          "slippage_cost": "0",
+          "start_nav": "111510.32",
+          "total_return": "0.63039905185457274268426456",
+          "turnover": "0",
+          "valued_sessions": 701,
+          "volatility": 0.43083254319948633,
+          "win_rate": null,
+          "wins": 0
+        },
+        "no_active_trading": {
+          "completed_round_trips": 0,
+          "costs": "0",
+          "downside_risk": 0.0,
+          "end_nav": "100000",
+          "failed_fills": 0,
+          "fills": 0,
+          "gross_traded": "0",
+          "losses": 0,
+          "max_drawdown": "0",
+          "nonexecution_reasons": {},
+          "partial_fills": 0,
+          "path_complete": true,
+          "profit_loss_ratio": null,
+          "slippage_cost": "0",
+          "start_nav": "100000",
+          "total_return": "0",
+          "turnover": "0",
+          "valued_sessions": 701,
+          "volatility": 0.0,
+          "win_rate": null,
+          "wins": 0
+        },
+        "trend": {
+          "completed_round_trips": 7,
+          "costs": "1670.45",
+          "downside_risk": 0.22785752827106623,
+          "end_nav": "271991.68",
+          "excess_return_vs_buy_and_hold": "0.57931418602435287812400665",
+          "excess_return_vs_no_active_trading": "1.20971323787892562080827121",
+          "failed_fills": 1,
+          "fills": 22,
+          "gross_traded": "2863349",
+          "losses": 5,
+          "max_drawdown": "0.4763531987004752876382494107",
+          "nonexecution_reasons": {
+            "INSUFFICIENT_CASH": 3
+          },
+          "partial_fills": 2,
+          "path_complete": true,
+          "profit_loss_ratio": "8.035555651716684332556510029",
+          "slippage_cost": "1290",
+          "start_nav": "123089.13",
+          "total_return": "1.20971323787892562080827121",
+          "turnover": "12.97708312540630279748529428",
+          "valued_sessions": 701,
+          "volatility": 0.3606945929460563,
+          "win_rate": "0.2857142857142857142857142857",
+          "wins": 2
+        }
+      },
+      "sessions": 701,
+      "start": "2024-01-02"
+    },
+    "development": {
+      "base_date": "2019-12-31",
+      "end": "2023-12-29",
+      "evaluable_sessions": 911,
+      "paths": {
+        "buy_and_hold": {
+          "completed_round_trips": 0,
+          "costs": "31.68",
+          "downside_risk": 0.26071737371330284,
+          "end_nav": "111510.32",
+          "failed_fills": 0,
+          "fills": 1,
+          "gross_traded": "99006",
+          "losses": 0,
+          "max_drawdown": "0.4914433730736908497342323216",
+          "nonexecution_reasons": {
+            "INSUFFICIENT_CASH": 1
+          },
+          "partial_fills": 1,
+          "path_complete": true,
+          "profit_loss_ratio": null,
+          "slippage_cost": "58",
+          "start_nav": "100000",
+          "total_return": "0.1151032",
+          "turnover": "0.8640652138004339451676769934",
+          "valued_sessions": 970,
+          "volatility": 0.3861625052937673,
+          "win_rate": null,
+          "wins": 0
+        },
+        "no_active_trading": {
+          "completed_round_trips": 0,
+          "costs": "0",
+          "downside_risk": 0.0,
+          "end_nav": "100000",
+          "failed_fills": 0,
+          "fills": 0,
+          "gross_traded": "0",
+          "losses": 0,
+          "max_drawdown": "0",
+          "nonexecution_reasons": {},
+          "partial_fills": 0,
+          "path_complete": true,
+          "profit_loss_ratio": null,
+          "slippage_cost": "0",
+          "start_nav": "100000",
+          "total_return": "0",
+          "turnover": "0",
+          "valued_sessions": 970,
+          "volatility": 0.0,
+          "win_rate": null,
+          "wins": 0
+        },
+        "trend": {
+          "completed_round_trips": 7,
+          "costs": "1426.87",
+          "downside_risk": 0.2042591613631605,
+          "end_nav": "123089.13",
+          "excess_return_vs_buy_and_hold": "0.1157881",
+          "excess_return_vs_no_active_trading": "0.2308913",
+          "failed_fills": 4,
+          "fills": 20,
+          "gross_traded": "1777134",
+          "losses": 4,
+          "max_drawdown": "0.4361339634536538166867148643",
+          "nonexecution_reasons": {
+            "INSUFFICIENT_CASH": 9
+          },
+          "partial_fills": 5,
+          "path_complete": true,
+          "profit_loss_ratio": "2.028816027127558034065327082",
+          "slippage_cost": "914",
+          "start_nav": "100000",
+          "total_return": "0.2308913",
+          "turnover": "13.97684742081628407541800935",
+          "valued_sessions": 970,
+          "volatility": 0.31473810860818596,
+          "win_rate": "0.4285714285714285714285714286",
+          "wins": 3
+        }
+      },
+      "sessions": 970,
+      "start": "2020-01-02"
+    }
+  }
+}

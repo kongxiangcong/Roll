@@ -1,0 +1,114 @@
+{
+  "source_experiment": "experiment-result-a5da9c812eaa9e1fecacfad6b024da0b45f39fc80d63a99a26775aa21f492c85",
+  "scope": {
+    "end": "2023-12-29",
+    "start": "2020-01-02"
+  },
+  "protocol": {
+    "recorded_at": "2026-11-26T15:30:05.692751+08:00",
+    "scenarios": [
+      [
+        "baseline",
+        20,
+        60,
+        1
+      ],
+      [
+        "fast-15",
+        15,
+        60,
+        1
+      ],
+      [
+        "slow-80",
+        20,
+        80,
+        1
+      ],
+      [
+        "higher-costs",
+        20,
+        60,
+        2
+      ]
+    ],
+    "use": "development_descriptive_stress",
+    "sees_independent_acceptance": false,
+    "fee_stress": "双边佣金、每笔最低佣金、滑点加倍。保留实验登记的法定交易费用。",
+    "market_regimes": "交易日前已知的沪深300收盘价相对前20个收盘均值。两状态按日归纳持仓账本结果。"
+  },
+  "paths": {
+    "baseline": {
+      "total_return": "0.2308913",
+      "max_drawdown": "0.4361339634536538166867148643",
+      "fills": 20,
+      "costs": "1426.87",
+      "turnover": "13.97684742081628407541800935"
+    },
+    "fast-15": {
+      "total_return": "0.0315027",
+      "max_drawdown": "0.4633389029423626376422581853",
+      "fills": 25,
+      "costs": "1566.73",
+      "turnover": "18.21682379998924840427270047"
+    },
+    "slow-80": {
+      "total_return": "0.2130136",
+      "max_drawdown": "0.390082725576606711750092995",
+      "fills": 19,
+      "costs": "1464.64",
+      "turnover": "13.9996801310615807117436103"
+    },
+    "higher-costs": {
+      "total_return": "0.2165646",
+      "max_drawdown": "0.440476570036956297373423349",
+      "fills": 18,
+      "costs": "1951.54",
+      "turnover": "13.93407287630704266336571567"
+    }
+  },
+  "market_regimes": {
+    "unknown": {
+      "buy_and_hold": {
+        "days": 19,
+        "average_daily_return": "-0.009955267423374973678994752747"
+      },
+      "no_active_trading": {
+        "days": 19,
+        "average_daily_return": "0"
+      },
+      "trend": {
+        "days": 19,
+        "average_daily_return": "0"
+      }
+    },
+    "at_or_below_ma20": {
+      "buy_and_hold": {
+        "days": 522,
+        "average_daily_return": "-0.00019190576600938269710487635"
+      },
+      "no_active_trading": {
+        "days": 522,
+        "average_daily_return": "0"
+      },
+      "trend": {
+        "days": 522,
+        "average_daily_return": "-0.001059565082807942539917170652"
+      }
+    },
+    "above_ma20": {
+      "buy_and_hold": {
+        "days": 428,
+        "average_daily_return": "0.001591087821040226679170967761"
+      },
+      "no_active_trading": {
+        "days": 428,
+        "average_daily_return": "0"
+      },
+      "trend": {
+        "days": 428,
+        "average_daily_return": "0.002219177748307535192967537365"
+      }
+    }
+  }
+}
