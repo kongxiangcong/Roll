@@ -40,9 +40,9 @@ class CompanyAction:
         return f"entitlement:{self.symbol}:{self.action_id}"
 
 
-def read_company_actions(data_dir, snapshot_id, *, symbol=None, cutoff=None, start=None, end=None):
+def read_company_actions(data_dir, snapshot_id, *, symbol=None, cutoff=None, start=None, end=None, db=None):
     rows = read_snapshot(data_dir, snapshot_id, series="corporate_action", symbol=symbol,
-                         cutoff=cutoff, start=start, end=end)["observations"]
+                         cutoff=cutoff, start=start, end=end, db=db)["observations"]
     actions = []
     for row in rows:
         terms = row["payload"]
@@ -97,7 +97,8 @@ def settle_entitlements(data_dir, book_id, actions, *, as_of, known_at=None, sim
     existing = ledger.trade_log(book_id, as_of=as_of, known_at=known_at)
     if not existing:
         raise ValueError(f"账本 {book_id} 在指定时点没有已知基线")
-    baseline_day = instant(existing[0]["effective_at"]).date().isoformat()
+    baseline = existing[0]
+    baseline_day = instant(baseline["effective_at"]).date().isoformat()
     for action in actions:
         ex = session_time(action.ex_date, 0)
         if action.record_date < baseline_day or ex > as_of:
@@ -105,25 +106,34 @@ def settle_entitlements(data_dir, book_id, actions, *, as_of, known_at=None, sim
         ledger.record_company_action(book_id, action=action, effective_at=ex, known_at=known_at)
         if simulated:
             _post_simulated(ledger, book_id, action, as_of, known_at)
+    if simulated:
+        for receivable in baseline["payload"].get("receivables", ()):
+            _post_due(ledger, book_id, receivable["action_key"], receivable["symbol"], receivable["kind"],
+                      receivable["due_date"], as_of, known_at)
     return ledger.snapshot(book_id, as_of=as_of, known_at=known_at)
 
 
 def _post_simulated(ledger, book_id, action, as_of, known_at):
     # Date-only cash notices do not establish pre-open spending power. Bonus
     # shares enter on the published listing session when they become tradable.
-    for kind, day, hour, minute in (
-        ("cash", action.payment_date if action.cash_per_share else None, 15, 0),
-        ("shares", action.listing_date if action.shares_per_share else None, 9, 30),
+    for kind, day in (
+        ("cash", action.payment_date if action.cash_per_share else None),
+        ("shares", action.listing_date if action.shares_per_share else None),
     ):
-        if day is None:
-            continue
-        posting = session_time(day, hour, minute)
-        if posting <= as_of:
-            ledger.record_entitlement_posting(
-                book_id, action_key=action.key, symbol=action.symbol, kind=kind,
-                effective_at=posting, known_at=known_at, source="simulated-company-action",
-                sellable_on=day if kind == "shares" else None,
-            )
+        _post_due(ledger, book_id, action.key, action.symbol, kind, day, as_of, known_at)
+
+
+def _post_due(ledger, book_id, action_key, symbol, kind, day, as_of, known_at):
+    if day is None:
+        return
+    hour, minute = (9, 30) if kind == "shares" else (15, 0)
+    posting = session_time(day, hour, minute)
+    if posting <= as_of:
+        ledger.record_entitlement_posting(
+            book_id, action_key=action_key, symbol=symbol, kind=kind,
+            effective_at=posting, known_at=known_at, source="simulated-company-action",
+            sellable_on=day if kind == "shares" else None,
+        )
 
 
 def record_broker_entitlement(data_dir, book_id, *, symbol, action_id, kind, broker_event_id,

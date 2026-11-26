@@ -274,6 +274,7 @@ def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
         "", book_id, effective_at, known_at, _decimal(baseline["cash"]),
         _decimal(baseline["available_cash"]), tuple(PositionLot(**lot) for lot in baseline["lots"]),
         max(facts, key=lambda event: event["seq"])["event_id"],
+        receivables=tuple(Receivable(**item) for item in baseline.get("receivables", ())),
     )
 
     originals = {event["event_id"]: json.loads(event["payload"]) for event in facts[1:] if event["kind"] != "CORRECTION"}
@@ -391,7 +392,7 @@ class AccountLedger:
             yield self._db
 
     def initialize(self, book_id, *, cash, available_cash=None, lots=(), effective_at,
-                   known_at=None, source="user-confirmed") -> str:
+                   known_at=None, source="user-confirmed", receivables=()) -> str:
         payload = {
             "cash": _decimal(cash),
             "available_cash": _decimal(available_cash),
@@ -400,6 +401,8 @@ class AccountLedger:
                 for lot in lots
             ],
         }
+        if receivables:
+            payload["receivables"] = [asdict(item) for item in receivables]
         return self._record(book_id, "baseline", "BASELINE", effective_at, known_at, source, None, payload)
 
     def record_fill(self, book_id, *, event_id, symbol, side, quantity, price, effective_at,
