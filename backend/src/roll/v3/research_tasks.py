@@ -3,6 +3,9 @@ import base64
 import json
 import time
 import sys
+import re
+import shutil
+import sqlite3
 from contextlib import contextmanager
 from datetime import timedelta
 from hashlib import sha256
@@ -76,9 +79,18 @@ def abandon(db, receipt):
 
 
 def read_receipt(data_dir, receipt):
-    if receipt["status"] in ACTIVE:
-        with attempt_lock(data_dir, receipt["attempt_id"]) as lock:
+    # Stage 01 had neither an owner lock nor a process identity to check.
+    if receipt["status"] in ACTIVE and receipt.get("receipt_version") == 2:
+        with attempt_lock(data_dir, receipt["attempt_id"], observe=True) as lock:
             if lock is not None:
+                if receipt.get("executor") == "codex":
+                    # Only a dead Roll owner's read waits. Its orphaned subreaper holds
+                    # the child lock until every descendant has actually been reaped.
+                    with attempt_lock(data_dir, receipt["attempt_id"], children=True, wait=True):
+                        if re.fullmatch(r"attempt-[0-9a-f]{32}", receipt["attempt_id"]):
+                            runtime = Path(data_dir) / "research-attempts" / receipt["attempt_id"] / "runtime"
+                            if runtime.exists():
+                                shutil.rmtree(runtime)
                 with task_database(data_dir, write=True) as db:
                     row = db.execute("SELECT receipt FROM research_attempt WHERE attempt_id=?",
                                      (receipt["attempt_id"],)).fetchone()
@@ -103,11 +115,18 @@ def cancel_attempt(data_dir, attempt_id):
         if not row:
             raise ValueError(f"无此研究尝试：{attempt_id}")
         receipt = json.loads(row["receipt"])
+        if receipt["status"] == "running" and receipt.get("receipt_version") != 2:
+            # A stage 01 offline executor uses the same commit-time status check.
+            return store_receipt(db, cancelled(receipt))
         if receipt["status"] == "running":
-            receipt["status"] = "cancelling"
-            store_receipt(db, receipt)
+            with attempt_lock(data_dir, attempt_id, observe=True) as vacant:
+                if vacant is None:
+                    receipt["status"] = "cancelling"
+                    store_receipt(db, receipt)
         elif receipt["status"] == "pending":
             return store_receipt(db, cancelled(receipt))
+    if receipt["status"] == "running":
+        return read_receipt(data_dir, receipt)
     while receipt["status"] == "cancelling":
         time.sleep(0.05)
         receipt = get_attempt(data_dir, attempt_id)
@@ -290,11 +309,50 @@ def offline_executor(manifest):
 
 
 def execute_attempt(data_dir, attempt_id, *, executor=None):
-    # A delivered attempt ID is idempotent. New attempts are claimed at registration.
+    # Stage 01 registered a pending row in a transaction prior to claiming it.
+    # Modern registrations are already running by the time another caller can read them.
+    if get_attempt(data_dir, attempt_id)["status"] == "pending":
+        with attempt_lock(data_dir, attempt_id) as lock:
+            if lock is not None:
+                with task_database(data_dir, write=True) as db:
+                    row = db.execute(
+                        "SELECT receipt, manifest FROM research_attempt JOIN research_task USING(task_id) "
+                        "WHERE attempt_id=?", (attempt_id,),
+                    ).fetchone()
+                    receipt = json.loads(row["receipt"])
+                    if receipt["status"] != "pending":
+                        return receipt
+                    ensure_no_other_owner(db, receipt["task_id"], attempt_id)
+                    prepare_claim(data_dir, receipt, row["manifest"], executor)
+                    store_receipt(db, receipt)
+                if receipt["status"] == "running":
+                    return run_claimed(data_dir, receipt, row["manifest"], executor)
+                return receipt
     return get_attempt(data_dir, attempt_id)
 
 
-def run_claimed(data_dir, receipt, frozen, executor, lock):
+def ensure_no_other_owner(db, task_id, attempt_id):
+    active = db.execute(
+        "SELECT attempt_id FROM research_attempt WHERE task_id=? AND attempt_id!=? "
+        "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id, attempt_id),
+    ).fetchone()
+    if active:
+        raise ValueError(f"研究任务已有进行中的尝试：{active['attempt_id']}")
+
+
+def prepare_claim(data_dir, receipt, frozen, executor):
+    receipt.update(status="running", receipt_version=2, manifest_sha256=sha256(frozen.encode()).hexdigest())
+    if isinstance(executor, CodexExecutor):
+        if not re.fullmatch(r"attempt-[0-9a-f]{32}", receipt["attempt_id"]):
+            raise ValueError("尝试 ID 无法用于受限 Codex 执行")
+        try:
+            receipt.update(executor.initial_receipt(data_dir, receipt["attempt_id"]))
+        except OSError as error:
+            receipt.update(executor="codex", status="failed", failure_kind="configuration",
+                           log_ref=None, exit_code=None, error=f"无法创建尝试日志（errno={error.errno}）")
+
+
+def run_claimed(data_dir, receipt, frozen, executor):
     attempt_id = receipt["attempt_id"]
     codex = isinstance(executor, CodexExecutor)
     deadline = time.monotonic() + executor.timeout if codex else None
@@ -313,7 +371,10 @@ def run_claimed(data_dir, receipt, frozen, executor, lock):
         with task_database(data_dir, write=True) as db:
             db.execute("UPDATE research_attempt SET receipt=? WHERE attempt_id=? "
                        "AND json_extract(receipt, '$.status')='running'", (json_text(receipt), attempt_id))
-        process = run_process(argv, lock=lock, check_state=check_state, **kwargs)
+        with attempt_lock(data_dir, attempt_id, children=True) as children:
+            if children is None:
+                raise AttemptStopped("interrupted", "前一个研究命令尚未退出")
+            process = run_process(argv, lock=children, check_state=check_state, **kwargs)
         if process.returncode < 0:
             receipt["exit_code"] = process.returncode
             raise AttemptStopped("interrupted", f"研究命令被信号 {-process.returncode} 终止")
@@ -366,8 +427,15 @@ def run_claimed(data_dir, receipt, frozen, executor, lock):
             return commit(cancelled(receipt))
         commit({**receipt, "status": "interrupted", "termination_reason": "interrupted", "error": "用户中断研究执行"})
         raise
+    except OSError as error:
+        if codex:
+            return commit({**receipt, "status": "failed", "failure_kind": "configuration",
+                           "error": f"无法使用本地研究运行环境（errno={error.errno}）"})
+        return commit({**receipt, "status": "failed", "error": str(error)})
+    except sqlite3.Error as error:
+        return commit({**receipt, "status": "failed", "failure_kind": "storage", "error": str(error)})
     except Exception as error:
-        if receipt.get("executor") == "codex":
+        if codex:
             receipt["failure_kind"] = "invalid_response"
         return commit({**receipt, "status": "failed", "error": str(error)})
 
@@ -387,30 +455,20 @@ def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=Non
                     raise ValueError(f"无此研究任务：{task_id}")
                 parent_task_id = row["parent_task_id"]
                 frozen = row["manifest"]
-                rows = db.execute(
-                    "SELECT receipt FROM research_attempt WHERE task_id=? "
-                    "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id,),
-                ).fetchall()
-                for row in rows:
-                    active = json.loads(row["receipt"])
-                    with attempt_lock(data_dir, active["attempt_id"]) as previous:
-                        if previous is None:
-                            raise ValueError(f"研究任务已有进行中的尝试：{active['attempt_id']}")
-                        abandon(db, active)
+                ensure_no_other_owner(db, task_id, attempt_id)
             else:
                 frozen = json_text(manifest)
                 db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, frozen))
                 if parent_task_id is not None:
                     db.execute("INSERT INTO research_task_parent VALUES (?,?)", (task_id, parent_task_id))
-            receipt = {"task_id": task_id, "attempt_id": attempt_id, "status": "running",
-                       "manifest_sha256": sha256(frozen.encode()).hexdigest(),
-                       "gaps": [], "draft_version": None}
-            if isinstance(executor, CodexExecutor):
-                receipt.update(executor.initial_receipt(data_dir, attempt_id))
+            receipt = {"task_id": task_id, "attempt_id": attempt_id, "gaps": [], "draft_version": None}
+            prepare_claim(data_dir, receipt, frozen, executor)
             if parent_task_id is not None:
                 receipt["parent_task_id"] = parent_task_id
             db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
-        return run_claimed(data_dir, receipt, frozen, executor, lock)
+        if receipt["status"] == "failed":
+            return receipt
+        return run_claimed(data_dir, receipt, frozen, executor)
 
 
 def start_task(data_dir, manifest, *, executor=None, parent_task_id=None):
@@ -419,6 +477,13 @@ def start_task(data_dir, manifest, *, executor=None, parent_task_id=None):
 
 
 def retry_task(data_dir, task_id, *, executor=None):
+    with task_database(data_dir) as db:
+        active = db.execute(
+            "SELECT receipt FROM research_attempt WHERE task_id=? "
+            "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id,),
+        ).fetchall()
+    for row in active:
+        read_receipt(data_dir, json.loads(row["receipt"]))
     return register_and_execute(data_dir, task_id, executor=executor)
 
 

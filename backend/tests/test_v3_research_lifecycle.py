@@ -1,11 +1,13 @@
 import json
-import pytest
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from threading import Event
 
+import pytest
+
 from roll.v3.research_tasks import offline_executor, retry_task
+from test_v3_codex_research import install_cli
 from test_v3_research_tasks import material_file, snapshot, start
 
 
@@ -81,7 +83,8 @@ def test_cancellation_during_delivery_keeps_receipt_and_draft_consistent(tmp_pat
     assert json.loads(cli(tmp_path, 'research', 'task', 'cancel', original['attempt_id']).stdout) == original
 
 
-def test_killed_owner_can_be_retried_with_its_original_manifest(tmp_path, snapshot):
+@pytest.mark.parametrize("cancel_after_exit", [False, True])
+def test_killed_owner_can_be_retried_with_its_original_manifest(tmp_path, snapshot, cancel_after_exit):
     from pathlib import Path
     import time
 
@@ -110,6 +113,9 @@ retry_task(sys.argv[1], sys.argv[2], executor=wait)
     finally:
         owner.kill()
         owner.wait()
+    if cancel_after_exit:
+        dead = visible["attempts"][-1]["attempt_id"]
+        assert json.loads(cli(tmp_path, 'research', 'task', 'cancel', dead).stdout)['status'] == 'interrupted'
     retried = json.loads(cli(tmp_path, 'research', 'task', 'retry', task_id).stdout)
     recovered = json.loads(cli(tmp_path, 'research', 'task', 'show', task_id).stdout)
     assert [item['status'] for item in recovered['attempts']] == ['draft_ready', 'interrupted', 'draft_ready']
@@ -130,16 +136,9 @@ def test_stop_reaps_all_codex_descendants_and_releases_the_task(tmp_path, snapsh
     original = start(tmp_path, snapshot, '--material', material_file(tmp_path, '季报', excerpt='经营现金流增加'))
     task_id = original['task_id']
     marker = tmp_path / 'pids.json'
-    fake = tmp_path / 'codex'
     # A descendant escapes the original process group. The OS probe checks for zombies too.
-    fake.write_text(f"""#!{sys.executable}
-import json, os, pathlib, subprocess, sys, time
-if '--version' in sys.argv:
-    print('codex-cli 0.172.0')
-    sys.exit()
-if 'debug' in sys.argv:
-    print(json.dumps({{'models': [{{'slug': 'gpt-6.2-sol'}}]}}))
-    sys.exit()
+    install_cli(tmp_path, monkeypatch, f"""
+import os, pathlib, subprocess, time
 assert 'exec' in sys.argv
 child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'], start_new_session=True)
 pathlib.Path({str(marker)!r}).write_text(json.dumps([os.getpid(), child.pid]))
@@ -149,10 +148,6 @@ if {reason == 'signal'!r}:
     os.kill(os.getpid(), 9)
 time.sleep(30)
 """)
-    fake.chmod(0o700)
-    monkeypatch.setenv('PATH', str(tmp_path) + os.pathsep + os.environ['PATH'])
-    monkeypatch.setenv('CODEX_API_KEY', 'fake')
-    monkeypatch.setenv('CODEX_HOME', str(tmp_path / 'empty-home'))
     timeout = '1.5' if reason == 'timed_out' else '30'
     args = [sys.executable, '-m', 'roll.v3.cli', '--data-dir', str(tmp_path),
             'research', 'task', 'retry', task_id, '--executor', 'codex', '--timeout', timeout]
@@ -171,9 +166,16 @@ time.sleep(30)
         assert (tmp_path / visible['log_ref']).is_file()
         attempt_id = visible['attempt_id']
         if reason == 'cancelled':
+            from test_v3_account import BASELINE
+            assert json.loads(cli(tmp_path, 'account', 'init', payload=BASELINE).stdout)['book_id'] == 'real'
+            duplicate = cli(tmp_path, 'research', 'task', 'retry', task_id, check=False)
+            assert duplicate.returncode == 2 and attempt_id in duplicate.stderr
             json.loads(cli(tmp_path, 'research', 'task', 'cancel', attempt_id).stdout)
         elif reason == 'interrupted':
             owner.kill()
+            owner.wait(timeout=5)
+            # Even an already-open caller can retry while the orphan supervisor is reaping.
+            assert retry_task(tmp_path, task_id)['status'] == 'draft_ready'
         elif reason == 'signal':
             (tmp_path / 'exit-now').touch()
         expected = 'interrupted' if reason == 'signal' else reason
@@ -188,8 +190,13 @@ time.sleep(30)
         assert receipt['draft_version'] is None
         assert all(not Path(f'/proc/{pid}').exists() for pid in pids)
         old_log = (tmp_path / receipt['log_ref']).read_bytes()
-        fake.write_text(f'#!{sys.executable}\nprint("unexpected version")\n')
+        pids.clear()
+        install_cli(tmp_path, monkeypatch, """
+gap = {"reason": "缺少对照期", "required_evidence": "上期公告", "blocking": True}
+Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps({"draft": None, "gaps": [gap]}))
+""")
         retried = json.loads(cli(tmp_path, 'research', 'task', 'retry', task_id, '--executor', 'codex').stdout)
+        assert retried['status'] == 'blocked' and retried['gaps'][0]['required_evidence'] == '上期公告'
         assert retried['attempt_id'] != attempt_id and retried['log_ref'] != receipt['log_ref']
         assert retried['manifest_sha256'] == receipt['manifest_sha256'] == original['manifest_sha256']
         assert (tmp_path / receipt['log_ref']).read_bytes() == old_log
@@ -203,3 +210,53 @@ time.sleep(30)
                 os.kill(pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
+
+
+def test_unwritable_attempt_log_leaves_replayable_configuration_error(tmp_path, snapshot, monkeypatch):
+    from uuid import UUID
+    from roll.v3 import research_tasks
+
+    task = start(tmp_path, snapshot)
+    attempt_id = 'attempt-' + UUID(int=450).hex
+    directory = tmp_path / 'research-attempts' / attempt_id
+    directory.write_text('file occupies the log directory')
+    monkeypatch.setattr(research_tasks, 'uuid4', lambda: UUID(int=450))
+    from roll.v3.cli import run
+    receipt = run(['research', 'task', 'retry', task['task_id'], '--executor', 'codex'], data_dir=tmp_path)
+    assert receipt['status'] == 'failed' and receipt['failure_kind'] == 'configuration'
+    assert receipt['log_ref'] is None and receipt['draft_version'] is None
+    assert json.loads(cli(tmp_path, 'research', 'task', 'attempt', attempt_id).stdout) == receipt
+
+
+def test_show_preserves_running_receipt_from_pre_lock_roll(tmp_path, snapshot):
+    import sqlite3
+
+    first = start(tmp_path, snapshot)
+    legacy = {"task_id": first["task_id"], "attempt_id": "attempt-old", "status": "running",
+              "draft_version": None, "gaps": []}
+    # A stage 01 installation has no owner lock. Lack of a lock cannot prove that it has exited.
+    with sqlite3.connect(tmp_path / "roll-v3.sqlite3") as db:
+        db.execute("INSERT INTO research_attempt VALUES (?,?,?)",
+                   (legacy["attempt_id"], legacy["task_id"], json.dumps(legacy)))
+    assert json.loads(cli(tmp_path, 'research', 'task', 'attempt', 'attempt-old').stdout) == legacy
+    duplicate = cli(tmp_path, 'research', 'task', 'retry', first['task_id'], check=False)
+    assert duplicate.returncode == 2 and 'attempt-old' in duplicate.stderr
+    cancelled = json.loads(cli(tmp_path, 'research', 'task', 'cancel', 'attempt-old').stdout)
+    assert cancelled['status'] == 'cancelled'
+    assert json.loads(cli(tmp_path, 'research', 'task', 'retry', first['task_id']).stdout)['status'] == 'blocked'
+
+
+def test_pre_lock_pending_delivery_can_still_run_the_injected_executor(tmp_path, snapshot):
+    import sqlite3
+    from roll.v3.research_tasks import execute_attempt
+
+    first = start(tmp_path, snapshot, '--material', material_file(tmp_path, '季报', excerpt='回款增加'))
+    legacy = {"task_id": first["task_id"], "attempt_id": "attempt-" + "a" * 32, "status": "pending",
+              "draft_version": None, "gaps": []}
+    with sqlite3.connect(tmp_path / "roll-v3.sqlite3") as db:
+        db.execute("INSERT INTO research_attempt VALUES (?,?,?)",
+                   (legacy["attempt_id"], legacy["task_id"], json.dumps(legacy)))
+    gap = {"reason": "缺少对照期", "required_evidence": "上期公告", "blocking": True}
+    receipt = execute_attempt(tmp_path, legacy["attempt_id"], executor=lambda manifest: {"gaps": [gap]})
+    assert receipt["status"] == "blocked" and receipt["gaps"] == [gap]
+    assert json.loads(cli(tmp_path, 'research', 'task', 'attempt', legacy["attempt_id"]).stdout) == receipt

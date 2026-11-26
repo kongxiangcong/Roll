@@ -6,30 +6,32 @@ from pathlib import Path
 
 
 @contextmanager
-def attempt_lock(data_dir, attempt_id):
+def attempt_lock(data_dir, attempt_id, *, children=False, wait=False, observe=False):
     # The path is also safe for receipts from databases with older identifier formats.
     name = sha256(attempt_id.encode()).hexdigest()
+    if children:
+        name += ".children"
     directory = Path(data_dir) / "research-attempts" / "locks"
     directory.mkdir(mode=0o700, parents=True, exist_ok=True)
     with (directory / name).open("a+b") as handle:
+        acquired = True
         if os.name == "nt":
             import msvcrt
             handle.seek(0)
             try:
-                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK if wait else msvcrt.LK_NBLCK, 1)
             except OSError:
-                yield None
-                return
+                acquired = False
         else:
             import fcntl
             try:
-                fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                kind = fcntl.LOCK_SH if observe else fcntl.LOCK_EX
+                fcntl.flock(handle, kind if wait else kind | fcntl.LOCK_NB)
             except BlockingIOError:
-                yield None
-                return
+                acquired = False
         # On Linux supervisors inherit the same open file description. Closing the
         # owner's copy must not explicitly unlock it while a supervisor is alive.
-        yield handle
+        yield handle if acquired else None
 
 
 class AttemptStopped(Exception):
