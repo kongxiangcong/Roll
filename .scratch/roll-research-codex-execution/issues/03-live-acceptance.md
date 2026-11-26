@@ -94,3 +94,18 @@ roll_copy plan --plan-id 65a4dae479fd3278cb52250927c91ef8daa835f2348aad2a4d7a123
 ### 目标机权限、进程和全套回归
 
 集成提交从仓库根目录运行 `python -m pytest -q backend/tests`，141 项通过，耗时 97.62 秒，有一条既有 Starlette TestClient 弃用提示。实际 CLI 权限探针覆盖合成的 API key 和 ChatGPT 登录。宿主成功读取探针文件并访问回环服务，Codex 请求的工具列表为空，服务发出的两个强制工具调用均返回不支持，回环日志仅登记宿主对照。受控助手验证了取消、超时和执行者死亡后的进程树清理、同输入重试、同库并发读写与唯一终态。两组探针可分别用 `python -m pytest -q backend/tests/test_v3_codex_permissions.py` 与 `python -m pytest -q backend/tests/test_v3_research_lifecycle.py` 复跑。[权限观测](01-confined-codex.md) · [进程和同库写入观测](02-lifecycle.md)
+
+### 复审后重跑：从真实草稿到计划中的证伪观测
+
+2026-11-26，在修复提交 `d87b9d6` 上另取 M0a 副本 `/tmp/roll-stage02-reviewed-acceptance-u20oc0y6`。摘录和计划基线与首轮逐字节相同。新问题指定 Roll 的经营现金流观测名，要求写出数值条件和仅能人工核对的持续性条件。以相同的 `--executor codex --timeout 180`、快照、截止时间和材料运行一次正式 CLI。另一个 CLI 进程先读到 `running`；本次执行退出码 0，状态 `draft_ready`。任务为 `task-ad2c1d5892dd483b89f427cdbf68307e`，尝试和草稿版本为 `attempt-753e9b8687d245628953e400faaed404`。独立重读的清单 SHA-256 为 `fcb7d9b78a6c35f851677897f83019d911d03910e40e2932e1d79abdbf899d42`，发送的公开输入为 `042a6793c6de75718248f326299642865fb2960d0e158774ca8e333acc37ec69`。重跑可使用上文同一组命令，将 `input` 指向 `$ev/reviewed/public-input.json`，并将 `COPY` 指向新副本。[本轮问题与公开输入](../evidence/reviewed/public-input.json) · [回执](../evidence/reviewed/receipt.json)
+
+真实草稿将当期 14,162,724,945 元和第 12 页材料绑定到 `fundamental_gate=pass`；投资逻辑保留 `unknown`，策略白名单为空。按该尝试版本和工程验收署名发布，登记于 `2026-11-26T14:24:13.996615Z`，自 `2026-12-04T00:00:00+08:00` 生效，有效期至 `2026-12-26T07:38:52.909461Z`。在相同快照、账本和标的上，12 月 3 日 15:30 引用旧版，12 月 4 日 15:30 引用该真实版本，计划为 WATCH。计划内的字段依据、确认人、有效期与发布档案相同。[真实草稿](../evidence/reviewed/draft.md) · [生效计划的研究字段与观测](../evidence/reviewed/plan-research.json)
+
+| 条件与检查方式 | 已生效计划的观测 |
+| --- | --- |
+| `operating_cash_flow_ytd_nonpositive` 在 `operating_cash_flow_ytd_cny <= 0` 时 `block_new_risk` | `status=false`。计划保留对应摘录 ID，以及发行人观测 `seq=15053`、期末 `2026-09-30`、值 `14162724945`、选定可用时间 `2026-11-26T07:34:09.393912Z`、来源 `issuer-cninfo` 和[发行人第 12 页](https://static.cninfo.com.cn/finalpage/2026-10-29/1225636802.PDF#page=12)。这些观测字段与副本基线逐项相等。 |
+| `cash_flow_sustainability_review` 要求复核多期数据、营运资本及一次性因素，效果为 `require_research` | `status=null`，没有关联数值观测；草稿列出所需材料且比较字段为空。 |
+
+本轮真实验收覆盖正值下数值条件未触发，以及人工研究条件保留未知。受控子进程用已登记的负值观测独立覆盖数值条件触发，计划登记对应 `TRIGGER_FIRED`。回读原冻结计划、两次独立读取新尝试、草稿与任务清单均逐字段相等，原截止的计划预览也与发布前基线一致。[受控触发条件测试](../../../backend/tests/test_v3_codex_research.py)
+
+`d87b9d6` 的后端全量回归通过 149 项，耗时 106.05 秒，保留一条既有 Starlette TestClient 弃用提示。在本验收工作树单独运行可执行条件和不完整条件两组用例，通过 5 项，耗时 3.70 秒。
