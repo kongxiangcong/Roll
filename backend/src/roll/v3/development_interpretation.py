@@ -18,6 +18,7 @@ INSTRUCTIONS = """只用本次冻结的江西铜业 E0/E1 开发实验输入回�
 在 uncertainties 说明样本、重建口径或差异集中等限制，在 gaps 说明缺少的证据及其影响。
 coverage 有路径或输入范围缺口时须记录在 gaps。gaps 的 evidence_refs 只填关联的已知证据，确实无可用引用时填空列表。
 公开证据列出部分可定位记录，evidence_coverage 给出完整记录数与本次提供数。避免用摘录推算整体结果。
+记录内的关联键用于在完整回执中定位，只有 evidence 的顶层键是本次可引述的证据。
 说明中的实验数值只通过 metrics 引述；日期可通过 evidence_refs 定位。
 没有足够依据时可提交有引用的描述性结论，或将 claims 留空并说明 gaps。
 新条件只写入 follow_up。开发期模拟不能据此推广到其他窗口、标的或实盘。"""
@@ -106,7 +107,7 @@ def _signal(row):
         **_select(row, "date", "common_evaluable", "direct_market_block", "candidate_difference",
                   "prior_filter_signal_ref"),
         "stock": {**_select(stock, "status", "signal"),
-                  **_select(stock.get("conditions", {}), "fast_average", "slow_average", "above_slow_average")},
+                  **_select(stock.get("conditions") or {}, "fast_average", "slow_average", "above_slow_average")},
         "market": _select(row["market"], "status", "close", "average", "above_average"),
         "paths": paths,
     }
@@ -150,25 +151,34 @@ def _public_evidence(receipt):
         evidence.update(rows)
         counts[kind] = {"available": total, "included": len(rows)}
 
-    trades = attribution.get("trades")
-    if trades is None:
-        trades = list(_legacy_trades(receipt))
-    add("trades", len(trades), {
-        row["ref"]: _select(row, "path", "date", "signal_ref", "status", "reason", "side", "quantity",
-                            "intended_quantity", "price", "fee", "gross", "slippage_cost")
-        for row in _endpoints(trades, 40)
-    })
-
     signals = attribution.get("signals", [])
     direct = [row for row in signals if row["direct_market_block"]]
     different = [row for row in signals if row["candidate_difference"] and not row["direct_market_block"]]
-    cited = {row["signal_ref"] for row in evidence.values() if "signal_ref" in row}
-    cited_signals = [row for row in signals if row["ref"] in cited]
-    signal_samples = [*_endpoints(direct, 6), *_endpoints(different, 6), *_endpoints(cited_signals, 10)]
-    add("signals", len(signals), {row["ref"]: _signal(row) for row in signal_samples})
+    difference_samples = [*_endpoints(direct, 6), *_endpoints(different, 6)]
 
     segments = attribution.get("segments", [])
     largest = sorted(segments, key=lambda row: abs(Decimal(row["net_difference"] or 0)), reverse=True)
+    important_trades = {path["next_open"]["trade_ref"] for row in difference_samples for path in row["paths"].values()}
+    if largest:
+        for path in largest[0]["paths"].values():
+            important_trades.update(_endpoints(path["trade_refs"], 4))
+
+    trades = attribution.get("trades")
+    if trades is None:
+        trades = list(_legacy_trades(receipt))
+    primary = [row for row in trades if row["ref"] in important_trades]
+    remaining = [row for row in trades if row["ref"] not in important_trades]
+    trade_samples = [*primary, *_endpoints(remaining, 40 - len(primary))]
+    add("trades", len(trades), {
+        row["ref"]: _select(row, "path", "date", "signal_ref", "status", "reason", "side", "quantity",
+                            "intended_quantity", "price", "fee", "gross", "slippage_cost")
+        for row in trade_samples
+    })
+
+    cited = {row["signal_ref"] for row in trade_samples if "signal_ref" in row}
+    cited_signals = [row for row in signals if row["ref"] in cited]
+    signal_samples = [*difference_samples, *_endpoints(cited_signals, 10)]
+    add("signals", len(signals), {row["ref"]: _signal(row) for row in signal_samples})
     add("segments", len(segments), {row["ref"]: _segment(row) for row in largest[:12]})
     drawdowns = attribution.get("drawdowns", {})
     add("drawdowns", len(drawdowns), {row["ref"]: _drawdown(row) for row in drawdowns.values()})
