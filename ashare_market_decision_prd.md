@@ -1,5 +1,7 @@
 # A股账户镜像与量化决策系统
 
+> **历史文档（v0）**：不再作为当前实现或验收依据。请以 [v2.1 修订规格](docs/design/architecture/roll_v2_1_refactoring_spec.md) 和 [当前使用说明](README.md) 为准。
+
 ## 项目详细需求与实施方案
 
 版本：V1.3  

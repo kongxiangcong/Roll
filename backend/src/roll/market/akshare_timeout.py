@@ -9,6 +9,10 @@ _deadline = ContextVar("roll_akshare_deadline", default=None)
 _lock = Lock()
 
 
+class RequestBudgetExpired(TimeoutError):
+    """The sync deadline expired before this HTTP request could be sent."""
+
+
 def _install(requests):
     # The SDK uses module-level requests.get and does not expose its HTTP session.
     # Other threads/requests retain their original timeout semantics.
@@ -23,7 +27,7 @@ def _install(requests):
             if deadline is not None:
                 remaining = deadline - monotonic()
                 if remaining <= 0:
-                    raise TimeoutError("市场请求时限已到")
+                    raise RequestBudgetExpired("同步请求预算耗尽，未发送 HTTP 请求")
                 requested = kwargs.get("timeout")
                 cap = min(22.0, remaining)
                 if isinstance(requested, (int, float)):

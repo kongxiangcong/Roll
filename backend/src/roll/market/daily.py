@@ -131,10 +131,12 @@ def _windows(db, symbol, start, end):
     pending = []
     if start is None:
         last = db.execute("SELECT MAX(trade_date) FROM daily_bars WHERE symbol=?", (symbol,)).fetchone()[0]
-        first = min(date.fromisoformat(last), finish)-timedelta(days=5) if last else finish-timedelta(days=365*6)
-        pending.extend((date.fromisoformat(r[0]), min(date.fromisoformat(r[1]), finish))
-                       for r in db.execute("SELECT start,end FROM daily_gaps WHERE symbol=? AND start<=?",
-                                           (symbol, end)))
+        floor = finish - timedelta(days=180)
+        first = max(floor, min(date.fromisoformat(last), finish) - timedelta(days=5)) if last else floor
+        pending.extend((max(floor, date.fromisoformat(left)), min(date.fromisoformat(right), finish))
+                       for left, right in db.execute(
+                           "SELECT start,end FROM daily_gaps WHERE symbol=? AND start<=? AND end>=?",
+                           (symbol, end, floor.isoformat())))
     else:
         first = date.fromisoformat(start)
     pending.append((first, finish))
@@ -223,7 +225,8 @@ def _sync_window(db, client, symbol, kind, start, end, today):
         raise
 
 
-def sync_market(data_dir: Path, start=None, end=None, *, client=None, watchlist=None):
+def sync_market(data_dir: Path, start=None, end=None, *, client=None, watchlist=None,
+                index_only=False):
     load_runtime_environment()
     now = datetime.now(SHANGHAI)
     today = now.date().isoformat()
@@ -235,16 +238,28 @@ def sync_market(data_dir: Path, start=None, end=None, *, client=None, watchlist=
     end = end or last.isoformat()
     if date.fromisoformat(end) > last or (start and date.fromisoformat(start) > date.fromisoformat(end)):
         raise ValueError("无效行情日期区间")
-    items = load_watchlist(watchlist)
+    items = [] if index_only else load_watchlist(watchlist)
     symbols = {item["code"]: "stock" for item in items}
     symbols["000300.SH"] = "index"
     connection = nullcontext(client) if client is not None else httpx.Client()
     with connection as client, connect(data_dir / "roll.sqlite3") as db:
         initialize_market(db)
-        db.execute("CREATE TABLE IF NOT EXISTS watchlist_config(id INTEGER PRIMARY KEY, items TEXT NOT NULL)")
-        db.execute("INSERT OR REPLACE INTO watchlist_config VALUES (1,?)", (json.dumps(items, ensure_ascii=False),))
+        if not index_only:
+            db.execute("CREATE TABLE IF NOT EXISTS watchlist_config(id INTEGER PRIMARY KEY, items TEXT NOT NULL)")
+            db.execute("INSERT OR REPLACE INTO watchlist_config VALUES (1,?)", (json.dumps(items, ensure_ascii=False),))
         for symbol, kind in symbols.items():
             for left, right in _windows(db, symbol, start, end):
+                if index_only:
+                    stored = {r[0] for r in db.execute(
+                        "SELECT trade_date FROM daily_bars WHERE symbol=? AND trade_date BETWEEN ? AND ?",
+                        (symbol, left, right))}
+                    extension = extended_sessions(db)
+                    cursor, stop = date.fromisoformat(left), date.fromisoformat(right)
+                    while cursor <= stop and (cursor.isoformat() in stored or not is_session(cursor, extension)):
+                        cursor += timedelta(days=1)
+                    if cursor > stop:
+                        continue
+                    left = cursor.isoformat()
                 try:
                     _sync_window(db, client, symbol, kind, left, right, today)
                 except (ValueError, KeyError, TypeError, InvalidOperation, httpx.HTTPError) as exc:

@@ -84,6 +84,11 @@ def test_index_keeps_new_year_when_old_window_fails_and_retries_gap(tmp_path, mo
         allowed = True
         requested.clear()
         updated, = sync_market(tmp_path, None, "2024-01-11", client=client, watchlist=config)
+        assert _millis("2023-01-01") not in requested
+        assert updated["last_date"] == "2024-01-11"
+        assert len(updated["gaps"]) == 1 and updated["gaps"][0]["start"] == "2023-01-01"
+        updated, = sync_market(tmp_path, updated["gaps"][0]["start"], updated["gaps"][0]["end"],
+                               client=client, watchlist=config)
         assert _millis("2023-01-01") in requested
         assert updated["gaps"] == [] and updated["first_date"] == "2023-01-03"
 

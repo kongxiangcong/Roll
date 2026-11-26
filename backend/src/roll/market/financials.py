@@ -104,6 +104,19 @@ def _previous(period):
 
 
 
+def _due_period(day):
+    # A calendar-year A-share issuer: Q1 by April, H1 by August, Q3 by October.
+    # The year-end report is due at the same time as the following Q1.
+    year = day.year
+    if day.month >= 11:
+        return f"{year}-09-30"
+    if day.month >= 9:
+        return f"{year}-06-30"
+    if day.month >= 5:
+        return f"{year}-03-31"
+    return f"{year - 1}-09-30"
+
+
 def financial_light(data_dir, symbol, as_of):
     with connect(data_dir / "roll.sqlite3") as db:
         db.executescript(SCHEMA)
@@ -122,6 +135,16 @@ def financial_light_in_transaction(db, symbol, as_of):
     for row in rows:
         periods.setdefault(row["period"], {})[row["series"]] = row
     period = max(periods, default=None)
+    # A disclosure date can establish that a report existed, not what its older version said.
+    disclosed = db.execute("""SELECT MAX(period) FROM fundamentals WHERE symbol=?
+                               AND notice_date>=period AND notice_date<=?""", (symbol,day)).fetchone()[0]
+    due = _due_period(date.fromisoformat(day))
+    required = max(due, disclosed or "")
+    blocked = None
+    if period is None or period < required:
+        blocked = (f"{required} 财报已披露，但当时版本未经核实" if disclosed == required
+                   else f"{required} 财报缺少可核实版本，不能用旧期次判断")
+        period = None
     latest = periods.get(period, {})
     indicators = json.loads(latest["indicators"]["metrics"]) if "indicators" in latest else {}
     revenue, profit, debt = (indicators.get(k) for k in FIELDS["indicators"])
@@ -146,8 +169,10 @@ def financial_light_in_transaction(db, symbol, as_of):
     cash = quarter(period) if period else None
     prior_cash = quarter(_previous(period)) if period else None
     reasons = []
-    missing = []
+    missing = [blocked] if blocked else []
     def check(label, conditions):
+        if blocked:
+            return
         if all(value is True for value in conditions.values()):
             reasons.append(label)
         elif False not in conditions.values():

@@ -65,6 +65,8 @@ def main(argv=None):
     subset.add_argument("--market-inputs", dest="sync_scope", action="store_const", const="inputs", help="仅同步 AKShare 市场输入")
     subset.add_argument("--financials-only", dest="sync_scope", action="store_const", const="financials", help="仅同步跟踪池财报")
     subset.add_argument("--daily-only", dest="sync_scope", action="store_const", const="daily", help="仅同步股票及指数日线")
+    subset.add_argument("--backfill", dest="sync_scope", action="store_const", const="backfill",
+                        help="离线回测补库：沪深300与所选市场输入，需指定最多93个自然日")
     sync.add_argument("--group", choices=SYNC_GROUPS, action="append", help="指定 AKShare 输入，可重复")
     sync.set_defaults(run=sync_command, sync_scope="all")
     inputs = commands.add_parser("inputs", help="离线查看 AKShare 历史、单位与缺项")

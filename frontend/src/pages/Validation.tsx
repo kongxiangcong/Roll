@@ -22,6 +22,7 @@ type Period = {
   sessions: number;
   valid_signals: number;
   missing_signals: number;
+  dimension_coverage: Record<string, {available_days: number; longest_gap_days: number}>;
   missing_prices: { trade_date: string; fields: string[] }[];
   strategy: Leg;
   buy_hold: Leg;
@@ -49,6 +50,13 @@ type Calibration = {
     brier: Numeric;
     brier_count: number;
   };
+};
+
+const dimensionNames: Record<string, string> = {
+  trend: "趋势与波动",
+  funding: "资金",
+  breadth: "市场广度",
+  valuation: "估值",
 };
 
 function Curve({ period }: { period: Period }) {
@@ -242,6 +250,12 @@ export default function Validation({ day }: { day: string }) {
               行情缺口 {p.missing_prices.length} 日 · 信号缺失{" "}
               {p.missing_signals} 日
             </summary>
+            {Object.entries(p.dimension_coverage).map(([key, value]) => (
+              <p key={key}>
+                {dimensionNames[key]}：{value.available_days} / {p.sessions} 日可用，
+                最长连续缺口 {value.longest_gap_days} 个交易日
+              </p>
+            ))}
             {p.missing_prices.length ? (
               p.missing_prices.map((r) => (
                 <p key={r.trade_date}>

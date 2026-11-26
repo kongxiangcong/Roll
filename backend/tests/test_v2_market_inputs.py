@@ -4,6 +4,43 @@ from decimal import Decimal
 from roll.market.inputs import read_inputs, sync_inputs
 
 
+def test_historical_backfill_retries_only_missing_market_input_dates(tmp_path):
+    class PartialSource(MarketSource):
+        calls = []
+
+        def turnover(self, symbol, days):
+            self.calls.append(list(days))
+            take = days[::2] if len(self.calls) == 1 else days
+            return [(d, {"turnover_yuan": "100"}) for d in take]
+
+    source = PartialSource()
+    expected = source.calendar()
+    for _ in range(3):
+        status = sync_inputs(tmp_path, expected[0], expected[-1], groups=["turnover"],
+                             source=source, missing_only=True)
+    assert source.calls == [expected, expected[1::2]]
+    row = next(r for r in status if r["series"] == "turnover")
+    assert row["count"] == 4
+    assert row["failed_dates"] == []
+
+
+def test_expired_budget_is_distinct_from_source_timeout(monkeypatch):
+    import requests
+    from roll.market import akshare_timeout
+
+    def unexpected_send(*args, **kwargs):
+        raise AssertionError("expired budget must not send a request")
+
+    monkeypatch.setattr(requests.Session, "send", unexpected_send)
+    with akshare_timeout.bounded_requests(0):
+        try:
+            requests.get("https://example.invalid/")
+        except akshare_timeout.RequestBudgetExpired:
+            pass
+        else:
+            raise AssertionError("missing budget failure")
+
+
 class MarketSource:
     def calendar(self):
         return ["2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24"]

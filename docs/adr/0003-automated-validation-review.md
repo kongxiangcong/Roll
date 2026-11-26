@@ -1,8 +1,10 @@
 ---
-status: accepted
+status: superseded
 ---
 
 # 用自动验证与模型技术审阅替换必须由专业人士独立复核的准入前提
+
+> **已被 v2.1 取代。** G1–G7、资格审批及资金授权门禁不适用于当前盘后工作台。见 [当前使用说明](../../README.md) 和 [v2.1 修订规格](../design/architecture/roll_v2_1_refactoring_spec.md)。下文仅作历史记录。
 
 2026-10-11后端范围修订：当前模型技术审阅仅CODEX，DeepSeek与双后端验收不作后续完成前提；依据[用户明确范围](../../.scratch/roll-p0/provider-scope-2026-10-11.md)。下列后端选择保留为历史，自动验证、宿主确定性检查、人工复核缺失说明及正式启用门槛仍全部有效。
 

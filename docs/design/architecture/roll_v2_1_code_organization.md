@@ -1,6 +1,6 @@
 # Roll v2.1 代码组织方案
 
-2026-11-25 确认。Roll 在 Windows 本机以 Python 模块化单体运行，共用一个 SQLite 数据库。下面的目录是 v2 的目标布局，按交付周次建立。产品行为和验收以[实施规格](../../.scratch/roll-v2-1-refactoring/spec.md)为准。代码归属与依赖方向以本方案为准，取代 [v2 原稿](roll_v2_refactoring_spec.md)中的目标目录草图。
+2026-11-25 确认。Roll 在 Windows 本机以 Python 模块化单体运行，共用一个 SQLite 数据库。下面的目录是 v2 的目标布局，按交付周次建立。产品行为和验收以[实施规格](../../../.scratch/roll-v2-1-refactoring/spec.md)为准。代码归属与依赖方向以本方案为准，取代 [v2 原稿](roll_v2_refactoring_spec.md)中的目标目录草图。
 
 ## 目标布局
 

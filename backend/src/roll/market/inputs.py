@@ -23,6 +23,7 @@ UNITS = {
     "calendar": {},
 }
 SYNC_GROUPS = tuple(k for k in UNITS if k not in {"etf_flow", "calendar"})
+BACKFILL_GROUPS = tuple(k for k in SYNC_GROUPS if k not in {"breadth", "valuation"})
 SHANGHAI = timezone(timedelta(hours=8))
 
 
@@ -139,14 +140,14 @@ def input_status(data_dir, start=None, end=None):
         return result
 
 
-def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None, sector_etfs=(), source=None):
+def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None, sector_etfs=(), source=None, missing_only=False):
     from roll.market.akshare_inputs import AkshareInputs
     from roll.market.akshare_timeout import bounded_requests
 
     if source is None:
         with bounded_requests(300 if start else 180):
             return sync_inputs(data_dir, start, end, groups=groups, funds=funds,
-                               sector_etfs=sector_etfs, source=AkshareInputs())
+                               sector_etfs=sector_etfs, source=AkshareInputs(), missing_only=missing_only)
 
     groups = tuple(groups or SYNC_GROUPS)
     if set(groups) - set(SYNC_GROUPS):
@@ -187,10 +188,16 @@ def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None
                                      "series=? AND symbol=? AND trade_date<=?",
                                      (series, symbol, finish.isoformat())).fetchone()
                     if row[0]:
-                        first = min(begin, date.fromisoformat(row[0]) - timedelta(days=5))
+                        first = max(finish - timedelta(days=30),
+                                    min(begin, date.fromisoformat(row[0]) - timedelta(days=5)))
                 days = [r["trade_date"] for r in input_rows(db, "calendar", "CN", first.isoformat(), finish.isoformat())]
                 if days:
-                    _sync_group(db, source, series, symbol, days)
+                    if missing_only:
+                        present = {r["trade_date"] for r in input_rows(db, series, symbol,
+                                                                      days[0], days[-1])}
+                        days = [day for day in days if day not in present]
+                    if days:
+                        _sync_group(db, source, series, symbol, days)
                 else:
                     _record_status(db, series, symbol, False, "请求范围无已知交易日")
 
@@ -200,4 +207,4 @@ def sync_inputs(data_dir: Path, start=None, end=None, *, groups=None, funds=None
         jobs = [pool.submit(copy_context().run, sync_series, series, exchange) for series,exchange in streams]
         for job in jobs:
             job.result()
-    return input_status(data_dir)
+    return input_status(data_dir, start, end) if missing_only else input_status(data_dir)
