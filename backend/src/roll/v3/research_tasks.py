@@ -267,7 +267,17 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
         with task_database(data_dir) as db:
             frozen = db.execute("SELECT manifest FROM research_task WHERE task_id=?", (receipt["task_id"],)).fetchone()
         manifest = json.loads(frozen["manifest"])
-        result = (executor or offline_executor)(json.loads(frozen["manifest"]))
+        from roll.v3.codex_research import CodexExecutor, CodexFailure
+        if isinstance(executor, CodexExecutor):
+            import subprocess
+            receipt.update(executor.initial_receipt(data_dir, attempt_id))
+            try:
+                result = executor.run(manifest, receipt, data_dir,
+                                      lambda argv, **kwargs: subprocess.run(argv, capture_output=True, timeout=executor.timeout, **kwargs))
+            except CodexFailure as error:
+                return commit({**receipt, "status": "failed", "failure_kind": error.kind, "error": str(error)})
+        else:
+            result = (executor or offline_executor)(json.loads(frozen["manifest"]))
         gaps = preflight_gaps(manifest)
         for gap in result["gaps"]:
             if (not isinstance(gap.get("blocking"), bool) or not gap.get("reason")
@@ -284,6 +294,8 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
         commit({**receipt, "status": "interrupted", "error": "用户中断研究执行"})
         raise
     except Exception as error:
+        if receipt.get("executor") == "codex":
+            receipt["failure_kind"] = "invalid_response"
         return commit({**receipt, "status": "failed", "error": str(error)})
 
 
@@ -344,7 +356,12 @@ def supplement_task(data_dir, parent_task_id, *, materials=(), snapshot_id=None,
 
 
 def register_task_commands(research):
-    commands = research.add_parser("task", help="离线研究任务").add_subparsers(required=True)
+    from roll.v3.codex_research import CodexExecutor
+
+    def selected(args):
+        return CodexExecutor(args.timeout) if args.executor == "codex" else None
+
+    commands = research.add_parser("task", help="研究任务").add_subparsers(required=True)
     run = commands.add_parser("run", help="冻结公开输入并执行首次研究")
     run.add_argument("symbol")
     run.add_argument("--question", required=True)
@@ -355,17 +372,20 @@ def register_task_commands(research):
     run.add_argument("--basis", choices=BASIS, help="问题依赖的公开证据类型")
     run.add_argument("--require", action="append", default=[], help="回答问题所需的公告标题，可重复")
     run.set_defaults(handler=lambda a, d: run_task(d, a.symbol, question=a.question,
-                     snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require, basis=a.basis))
+                     snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require, basis=a.basis, executor=selected(a)))
     retry = commands.add_parser("retry", help="用原任务冻结的公开输入执行新尝试")
     retry.add_argument("task_id")
-    retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id))
+    retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id, executor=selected(a)))
     supplement = commands.add_parser("supplement", help="沿用原问题及标的，补证并创建关联任务")
     supplement.add_argument("task_id", help="父任务 ID")
     supplement.add_argument("--material", action="append", default=[], metavar="JSON", help="新增公告元数据 JSON")
     supplement.add_argument("--snapshot", help="新行情快照 ID，默认沿用父任务")
     supplement.add_argument("--as-of", help="新研究截止时点，默认沿用父任务")
     supplement.set_defaults(handler=lambda a, d: supplement_task(d, a.task_id, materials=a.material,
-                            snapshot_id=a.snapshot, as_of=a.as_of))
+                            snapshot_id=a.snapshot, as_of=a.as_of, executor=selected(a)))
+    for command in (run, retry, supplement):
+        command.add_argument("--executor", choices=("offline", "codex"), default="offline", help="默认离线执行")
+        command.add_argument("--timeout", type=float, default=180, metavar="SECONDS", help="Codex 尝试的总时限")
     show = commands.add_parser("show", help="读取任务的公开清单与历次尝试")
     show.add_argument("task_id")
     show.set_defaults(handler=lambda a, d: get_task(d, a.task_id))
