@@ -8,6 +8,7 @@ from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
 
+from roll.v3.research_lifecycle import attempt_lock
 from roll.v3.market import utc_timestamp
 from roll.v3.market_research import export_market_research
 from roll.v3.research import ResearchDossiers, material_evidence, prepare_task_draft
@@ -51,7 +52,7 @@ def get_task(data_dir, task_id):
             "SELECT receipt FROM research_attempt WHERE task_id=? ORDER BY rowid", (task_id,)
         ).fetchall()
     return {"task_id": task_id, "parent_task_id": row["parent_task_id"], "manifest": json.loads(row["manifest"]),
-            "attempts": [json.loads(item["receipt"]) for item in attempts]}
+            "attempts": [read_receipt(data_dir, json.loads(item["receipt"])) for item in attempts]}
 
 
 def get_attempt(data_dir, attempt_id):
@@ -59,7 +60,29 @@ def get_attempt(data_dir, attempt_id):
         row = db.execute("SELECT receipt FROM research_attempt WHERE attempt_id=?", (attempt_id,)).fetchone()
     if not row:
         raise ValueError(f"无此研究尝试：{attempt_id}")
-    return json.loads(row["receipt"])
+    return read_receipt(data_dir, json.loads(row["receipt"]))
+
+
+ACTIVE = ("running", "cancelling", "pending")
+
+
+def abandon(db, receipt):
+    if receipt["status"] == "cancelling":
+        return store_receipt(db, cancelled(receipt))
+    return store_receipt(db, {**receipt, "status": "interrupted", "termination_reason": "interrupted",
+                              "error": "执行者已退出，研究尝试中断"})
+
+
+def read_receipt(data_dir, receipt):
+    if receipt["status"] in ACTIVE:
+        with attempt_lock(data_dir, receipt["attempt_id"]) as lock:
+            if lock is not None:
+                with task_database(data_dir, write=True) as db:
+                    row = db.execute("SELECT receipt FROM research_attempt WHERE attempt_id=?",
+                                     (receipt["attempt_id"],)).fetchone()
+                    current = json.loads(row["receipt"])
+                    return abandon(db, current) if current["status"] in ACTIVE else current
+    return receipt
 
 
 def store_receipt(db, receipt):
@@ -265,18 +288,12 @@ def offline_executor(manifest):
 
 
 def execute_attempt(data_dir, attempt_id, *, executor=None):
-    with task_database(data_dir, write=True) as db:
-        row = db.execute(
-            "SELECT receipt FROM research_attempt WHERE attempt_id=?",
-            (attempt_id,),
-        ).fetchone()
-        if not row:
-            raise ValueError(f"无此研究尝试：{attempt_id}")
-        receipt = json.loads(row["receipt"])
-        if receipt["status"] != "pending":
-            return receipt
-        receipt["status"] = "running"
-        db.execute("UPDATE research_attempt SET receipt=? WHERE attempt_id=?", (json_text(receipt), attempt_id))
+    # A delivered attempt ID is idempotent. New attempts are claimed at registration.
+    return get_attempt(data_dir, attempt_id)
+
+
+def run_claimed(data_dir, receipt, frozen, executor, lock):
+    attempt_id = receipt["attempt_id"]
 
     def commit(completed, draft=None):
         with task_database(data_dir, write=True) as db:
@@ -294,10 +311,8 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
         return completed
 
     try:
-        with task_database(data_dir) as db:
-            frozen = db.execute("SELECT manifest FROM research_task WHERE task_id=?", (receipt["task_id"],)).fetchone()
-        manifest = json.loads(frozen["manifest"])
-        result = (executor or offline_executor)(json.loads(frozen["manifest"]))
+        manifest = json.loads(frozen)
+        result = (executor or offline_executor)(json.loads(frozen))
         gaps = preflight_gaps(manifest)
         for gap in result["gaps"]:
             if (not isinstance(gap.get("blocking"), bool) or not gap.get("reason")
@@ -317,42 +332,52 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
         return commit({**receipt, "status": "failed", "error": str(error)})
 
 
-def register_attempt(db, task_id, parent_task_id):
-    active = db.execute(
-        "SELECT attempt_id FROM research_attempt WHERE task_id=? "
-        "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id,),
-    ).fetchone()
-    if active:
-        raise ValueError(f"研究任务已有进行中的尝试：{active['attempt_id']}")
+def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=None, executor=None):
     attempt_id = "attempt-" + uuid4().hex
-    receipt = {"task_id": task_id, "attempt_id": attempt_id, "status": "pending",
-               "gaps": [], "draft_version": None}
-    if parent_task_id is not None:
-        receipt["parent_task_id"] = parent_task_id
-    db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
-    return attempt_id
+    with attempt_lock(data_dir, attempt_id) as lock:
+        if lock is None:
+            raise ValueError(f"研究尝试 ID 已被占用：{attempt_id}")
+        with task_database(data_dir, write=True) as db:
+            if manifest is None:
+                row = db.execute(
+                    "SELECT manifest, parent_task_id FROM research_task LEFT JOIN research_task_parent USING(task_id) "
+                    "WHERE task_id=?", (task_id,),
+                ).fetchone()
+                if row is None:
+                    raise ValueError(f"无此研究任务：{task_id}")
+                parent_task_id = row["parent_task_id"]
+                frozen = row["manifest"]
+                rows = db.execute(
+                    "SELECT receipt FROM research_attempt WHERE task_id=? "
+                    "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id,),
+                ).fetchall()
+                for row in rows:
+                    active = json.loads(row["receipt"])
+                    with attempt_lock(data_dir, active["attempt_id"]) as previous:
+                        if previous is None:
+                            raise ValueError(f"研究任务已有进行中的尝试：{active['attempt_id']}")
+                        abandon(db, active)
+            else:
+                frozen = json_text(manifest)
+                db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, frozen))
+                if parent_task_id is not None:
+                    db.execute("INSERT INTO research_task_parent VALUES (?,?)", (task_id, parent_task_id))
+            receipt = {"task_id": task_id, "attempt_id": attempt_id, "status": "running",
+                       "manifest_sha256": sha256(frozen.encode()).hexdigest(),
+                       "gaps": [], "draft_version": None}
+            if parent_task_id is not None:
+                receipt["parent_task_id"] = parent_task_id
+            db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
+        return run_claimed(data_dir, receipt, frozen, executor, lock)
 
 
 def start_task(data_dir, manifest, *, executor=None, parent_task_id=None):
-    task_id = "task-" + uuid4().hex
-    with task_database(data_dir, write=True) as db:
-        db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, json_text(manifest)))
-        if parent_task_id is not None:
-            db.execute("INSERT INTO research_task_parent VALUES (?,?)", (task_id, parent_task_id))
-        attempt_id = register_attempt(db, task_id, parent_task_id)
-    return execute_attempt(data_dir, attempt_id, executor=executor)
+    return register_and_execute(data_dir, "task-" + uuid4().hex, manifest=manifest,
+                                parent_task_id=parent_task_id, executor=executor)
 
 
 def retry_task(data_dir, task_id, *, executor=None):
-    with task_database(data_dir, write=True) as db:
-        row = db.execute(
-            "SELECT parent_task_id FROM research_task LEFT JOIN research_task_parent USING(task_id) "
-            "WHERE task_id=?", (task_id,)
-        ).fetchone()
-        if row is None:
-            raise ValueError(f"无此研究任务：{task_id}")
-        attempt_id = register_attempt(db, task_id, row["parent_task_id"])
-    return execute_attempt(data_dir, attempt_id, executor=executor)
+    return register_and_execute(data_dir, task_id, executor=executor)
 
 
 def run_task(data_dir, symbol, *, question, snapshot_id, as_of, materials=(), required_titles=(), basis=None, executor=None):
