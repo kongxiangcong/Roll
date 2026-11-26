@@ -290,3 +290,35 @@ def test_shadow_carries_starting_receivables_and_posts_cash_at_due_close(tmp_pat
     real = cli(tmp_path, "account", "show", "--as-of", NEXT_CLOSE)
     assert real["cash"] == "1000"
     assert real["receivables"][0]["amount"] == "50"
+
+
+def test_live_review_completes_a_close_received_after_the_target_cutoff(tmp_path, monkeypatch):
+    from roll.v3 import review
+    from roll.v3.storage import instant
+
+    now = DECISION
+    monkeypatch.setattr(review, "instant", lambda value=None: instant(value or now))
+    cli(tmp_path, "account", "init", payload={
+        "cash": "1000", "available_cash": "1000", "effective_at": DECISION, "known_at": DECISION,
+        "lots": [{"lot_id": "holding", "symbol": SYMBOL, "quantity": 100, "known_sellable": 100}],
+    })
+    first = cli(tmp_path, "review", "register")
+    key = first["registration_id"]
+
+    now = NEXT_CLOSE
+    pending = cli(tmp_path, "review", "settle", key)
+    assert pending["shadow_closing"]["missing_marks"] == [SYMBOL]
+
+    now = "2026-11-30T16:15:00+08:00"
+    path = tmp_path / "actual-close.json"
+    path.write_text(json.dumps([{
+        "series": "daily_bar", "symbol": SYMBOL, "trade_date": "2026-11-30",
+        "source": "verified-sample", "received_at": now, "payload": {"close": "11.25"},
+    }]))
+    cli(tmp_path, "market", "import", str(path))
+
+    complete = cli(tmp_path, "review", "settle", key)
+    assert complete["shadow_closing"]["missing_marks"] == []
+    assert Decimal(complete["shadow_closing"]["valuation"]["nav"]) == Decimal("2125.00")
+    assert cli(tmp_path, "review", "show", key, "--as-of", NEXT_CLOSE) == pending
+    assert cli(tmp_path, "review", "settle", key) == complete

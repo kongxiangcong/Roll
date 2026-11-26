@@ -12,6 +12,8 @@ uv run --project backend --locked roll --help
 uv run --project backend --locked roll serve
 ```
 
+浏览器打开本机回环地址。Windows 也可运行 `scripts/start.ps1`。 [本地工作台](http://127.0.0.1:8765)
+
 下文的 `roll` 指项目环境中的命令。也可以用 `uv run --project backend --locked roll` 执行。
 
 ## 同步与研究

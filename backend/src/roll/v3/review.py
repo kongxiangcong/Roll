@@ -327,7 +327,10 @@ class DecisionLedger:
                     "after_account_snapshot_id": account.snapshot_id,
                 }
             self._save_receipt(db, record, "open", clock, results)
-        if through >= closing and self._receipt(db, record, "close") is None:
+        if through >= closing:
+            previous = self._closing_receipt(db, record)
+            if previous is not None and not previous["missing_marks"]:
+                return
             account, entitlement_id = self._settle_actions(
                 db, book, symbols, closing, use_mode, simulated=True, clock=clock,
             )
@@ -336,15 +339,20 @@ class DecisionLedger:
                 scope=[{"series": "daily_bar", "symbol": symbol, "start": session, "end": session}
                        for symbol in symbols],
             )
+            mark_cutoff = through if use_mode == LIVE_RUN else closing
             rows = read_snapshot(
-                self.data_dir, marks["snapshot_id"], cutoff=closing, db=db,
+                self.data_dir, marks["snapshot_id"], cutoff=mark_cutoff, db=db,
             )["observations"]
             prices = {row["symbol"]: _raw_mark(row["payload"].get("close")) for row in rows if not row["item_id"]}
             needed = {lot.symbol for lot in account.lots} | {r.symbol for r in account.receivables if r.quantity}
             missing = sorted(symbol for symbol in needed if prices.get(symbol) is None)
-            self._save_receipt(db, record, "close", clock, {
+            if previous is not None and missing:
+                return
+            stage = "close-verified" if previous is not None else "close"
+            self._save_receipt(db, record, stage, clock, {
                 "account": account.as_dict(), "market_snapshot_id": marks["snapshot_id"],
                 "entitlement_snapshot_id": entitlement_id, "missing_marks": missing,
+                "recorded_at": utc_timestamp(clock),
                 "valuation": None if missing else value_account(account, prices).as_dict(),
             })
 
@@ -364,6 +372,10 @@ class DecisionLedger:
         if row is None or (as_of is not None and row["recorded_at"] > utc_timestamp(as_of)):
             return None
         return json.loads(row["payload"])
+
+    def _closing_receipt(self, db, record, as_of=None):
+        return (self._receipt(db, record, "close-verified", as_of)
+                or self._receipt(db, record, "close", as_of))
 
     @staticmethod
     def _registered(db, book_id, *, start=None, end=None, as_of=None, mode=None):
@@ -532,7 +544,7 @@ class DecisionLedger:
         opening = self._receipt(db, record, "open", clock) or {}
         ledger = AccountLedger(self.data_dir, db=db)
         return {
-            **record, "shadow_closing": self._receipt(db, record, "close", clock),
+            **record, "shadow_closing": self._closing_receipt(db, record, clock),
             "plans": [
                 self._review_plan(record, entry, opening.get(entry["symbol"]), ledger, events, clock)
                 for entry in record["plans"]
