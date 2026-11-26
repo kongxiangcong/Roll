@@ -209,6 +209,17 @@ class ResearchDossiers:
         }
         payload = json_text(draft)
         with self._connect(write=True) as db:
+            # Each attempt reserves its ID as the dossier version before execution.
+            tasks_exist = db.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='research_attempt'"
+            ).fetchone()
+            if tasks_exist and db.execute(
+                "SELECT 1 FROM research_attempt JOIN research_task USING(task_id) "
+                "WHERE attempt_id=? AND json_extract(manifest, '$.symbol')=?", (version, symbol)
+            ).fetchone():
+                raise ValueError(f"研究尝试持有的版本不可覆盖：{symbol} {version}")
+            if "task_id" in metadata or "attempt_id" in metadata:
+                raise ValueError("研究任务及尝试来源由 Roll 登记")
             db.execute("""
                 INSERT INTO research_draft (symbol, version, imported_at, payload)
                 VALUES (?, ?, ?, ?)

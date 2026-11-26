@@ -192,17 +192,35 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
         return commit({**receipt, "status": "failed", "error": str(error)})
 
 
-def start_task(data_dir, manifest, *, executor=None, parent_task_id=None):
-    task_id = "task-" + uuid4().hex
+def register_attempt(db, task_id, parent_task_id):
     attempt_id = "attempt-" + uuid4().hex
     receipt = {"task_id": task_id, "attempt_id": attempt_id, "status": "running",
                "gaps": [], "draft_version": None}
+    if parent_task_id is not None:
+        receipt["parent_task_id"] = parent_task_id
+    db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
+    return attempt_id
+
+
+def start_task(data_dir, manifest, *, executor=None, parent_task_id=None):
+    task_id = "task-" + uuid4().hex
     with task_database(data_dir, write=True) as db:
         db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, json_text(manifest)))
         if parent_task_id is not None:
             db.execute("INSERT INTO research_task_parent VALUES (?,?)", (task_id, parent_task_id))
-            receipt["parent_task_id"] = parent_task_id
-        db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
+        attempt_id = register_attempt(db, task_id, parent_task_id)
+    return execute_attempt(data_dir, attempt_id, executor=executor)
+
+
+def retry_task(data_dir, task_id, *, executor=None):
+    with task_database(data_dir, write=True) as db:
+        row = db.execute(
+            "SELECT parent_task_id FROM research_task LEFT JOIN research_task_parent USING(task_id) "
+            "WHERE task_id=?", (task_id,)
+        ).fetchone()
+        if row is None:
+            raise ValueError(f"无此研究任务：{task_id}")
+        attempt_id = register_attempt(db, task_id, row["parent_task_id"])
     return execute_attempt(data_dir, attempt_id, executor=executor)
 
 
@@ -251,6 +269,9 @@ def register_task_commands(research):
     run.add_argument("--require", action="append", default=[], help="回答问题所需的公告标题，可重复")
     run.set_defaults(handler=lambda a, d: run_task(d, a.symbol, question=a.question,
                      snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require))
+    retry = commands.add_parser("retry", help="用原任务冻结的公开输入执行新尝试")
+    retry.add_argument("task_id")
+    retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id))
     supplement = commands.add_parser("supplement", help="沿用原问题及标的，补证并创建关联任务")
     supplement.add_argument("task_id", help="父任务 ID")
     supplement.add_argument("--material", action="append", default=[], metavar="JSON", help="新增公告元数据 JSON")
