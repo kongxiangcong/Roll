@@ -2,7 +2,7 @@
 
 from roll.v3.development_experiment import PRESET_ID, development_preset
 from roll.v3.development_replay import (
-    development_attempt_fields, prepare_development, read_development_receipt, verify_development,
+    prepare_development, read_development_receipt, verify_development,
 )
 
 
@@ -12,6 +12,9 @@ def register_development_commands(commands):
     run = commands.add_parser("development", help="用冻结快照发起江西铜业 E0/E1 开发实验任务")
     run.add_argument("--preset", choices=(PRESET_ID,), required=True)
     run.add_argument("--snapshot", required=True, help="本地冻结数据快照 ID")
+    from roll.v3.research_tasks import add_executor_options
+
+    add_executor_options(run)
     run.set_defaults(handler=_run)
     receipt = commands.add_parser("development-receipt", help="读取任务的冻结开发回执及逐日轨迹")
     receipt.add_argument("task_id")
@@ -22,7 +25,8 @@ def register_development_commands(commands):
 
 
 def _run(args, data_dir):
-    from roll.v3.research_tasks import record_task_result
+    from roll.v3.research_tasks import start_task
 
     manifest, receipt = prepare_development(data_dir, args.snapshot, preset_id=args.preset)
-    return record_task_result(data_dir, manifest, development_attempt_fields(receipt), development_receipt=receipt)
+    return start_task(data_dir, manifest, executor_name=args.executor, timeout=args.timeout,
+                      development_receipt=receipt)

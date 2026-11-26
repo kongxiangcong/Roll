@@ -5,8 +5,9 @@ from pathlib import Path
 import shutil
 import sys
 
-from roll.v3.research_harness import (HarnessFailure, INSTRUCTIONS, Reply, ResearchHarness, public_text,
-                                      read_reply, record_input, runtime_directory)
+from roll.v3.research_harness import (
+    HarnessFailure, ResearchHarness, harness_request, read_reply, record_input, runtime_directory,
+)
 
 
 class AcpExecutor(ResearchHarness):
@@ -21,10 +22,8 @@ class AcpExecutor(ResearchHarness):
                 "host_mounts": [], "network": self.profile.network}
 
     def _execute(self, manifest, receipt, data_dir, run_process):
-        from roll.v3.research_tasks import preflight_gaps
-
-        public = public_text(manifest)
-        if preflight_gaps(manifest) or any(gap["blocking"] for gap in public["unreadable_materials"]):
+        public, instructions, response_model, blocked = harness_request(manifest)
+        if blocked:
             return {"gaps": public["unreadable_materials"]}
         engine = shutil.which("docker")
         if not engine:
@@ -54,8 +53,8 @@ class AcpExecutor(ResearchHarness):
                 args.extend(["--env", key])
             args.extend(["--entrypoint", self.profile.command[0], image_id, *self.profile.command[1:]])
             frozen = record_input(public, receipt, data_dir)
-            prompt = (INSTRUCTIONS + "\n最终答复只输出一个符合下列 schema 的 JSON 对象。\n"
-                      + json.dumps(Reply.model_json_schema(), ensure_ascii=False) + "\n" + frozen.decode())
+            prompt = (instructions + "\n最终答复只输出一个符合下列 schema 的 JSON 对象。\n"
+                      + json.dumps(response_model.model_json_schema(), ensure_ascii=False) + "\n" + frozen.decode())
             bridge = Path(__file__).with_name("acp_stdio.py")
             proc = run_process([sys.executable, "-I", "-S", str(bridge), *args], cwd=work, env=env,
                                input=prompt.encode(), cleanup=[engine, "rm", "-f", name])
@@ -70,4 +69,4 @@ class AcpExecutor(ResearchHarness):
             if len(lines) >= 3 and lines[0] in (b"```json", b"```") and lines[-1] == b"```":
                 response = b"\n".join(lines[1:-1])
             output.write_bytes(response)
-            return read_reply(output, public)
+            return read_reply(output, public, response_model)

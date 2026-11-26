@@ -12,6 +12,9 @@ from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
 
+from roll.v3.development_interpretation import (
+    is_development, offline_interpretation, prepare_development_report, public_development_input,
+)
 from roll.v3.research_harness import ResearchHarness, HarnessFailure
 from roll.v3.research_lifecycle import AttemptStopped, ProcessConfigurationError, attempt_lock, run_process
 from roll.v3.market import utc_timestamp
@@ -34,7 +37,11 @@ CREATE TABLE IF NOT EXISTS research_attempt (
     task_id TEXT NOT NULL REFERENCES research_task(task_id),
     receipt TEXT NOT NULL
 );
-CREATE INDEX IF NOT EXISTS research_attempt_task ON research_attempt(task_id)
+CREATE INDEX IF NOT EXISTS research_attempt_task ON research_attempt(task_id);
+CREATE TABLE IF NOT EXISTS research_development_public_input (
+    task_id TEXT PRIMARY KEY REFERENCES research_task(task_id),
+    public_input TEXT NOT NULL
+)
 """
 
 
@@ -359,7 +366,7 @@ def prepare_claim(data_dir, receipt, frozen, executor):
                            log_ref=None, exit_code=None, error=f"无法创建尝试日志（errno={error.errno}）")
 
 
-def run_claimed(data_dir, receipt, frozen, executor):
+def run_claimed(data_dir, receipt, frozen, executor, *, development_public=None):
     attempt_id = receipt["attempt_id"]
     external = isinstance(executor, ResearchHarness)
     deadline = time.monotonic() + executor.timeout if external else None
@@ -396,7 +403,7 @@ def run_claimed(data_dir, receipt, frozen, executor):
                 return store_receipt(db, cancelled(receipt))
             if stored["status"] != "running":
                 return stored
-            if external and completed["status"] in ("blocked", "draft_ready") and time.monotonic() >= deadline:
+            if external and completed["status"] in ("blocked", "draft_ready", "report_ready") and time.monotonic() >= deadline:
                 return store_receipt(db, {**receipt, "status": "timed_out", "termination_reason": "timed_out",
                                           "error": "研究尝试超过配置的时限"})
             if draft is not None:
@@ -409,9 +416,15 @@ def run_claimed(data_dir, receipt, frozen, executor):
         manifest = json.loads(frozen)
         if external:
             print(f'研究任务 {receipt["task_id"]}  尝试 {attempt_id}', file=sys.stderr, flush=True)
-            result = executor.run(manifest, receipt, data_dir, supervised)
+            result = executor.run(development_public or manifest, receipt, data_dir, supervised)
+        elif development_public is not None:
+            result = (executor or offline_interpretation)(development_public)
         else:
-            result = (executor or offline_executor)(json.loads(frozen))
+            result = (executor or offline_executor)(manifest)
+        if development_public is not None:
+            report = prepare_development_report(result, receipt, development_public)
+            return commit({**receipt, "status": "report_ready", "report_version": report["version"],
+                           "report": report, "gaps": report["gaps"]})
         gaps = preflight_gaps(manifest)
         for gap in result["gaps"]:
             if (not isinstance(gap.get("blocking"), bool) or not gap.get("reason")
@@ -447,10 +460,21 @@ def run_claimed(data_dir, receipt, frozen, executor):
         return commit({**receipt, "status": "failed", "error": str(error)})
 
 
-def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=None, executor=_DEFAULT_HARNESS):
-    if executor is _DEFAULT_HARNESS:
-        from roll.v3.harness_settings import select_harness
-        executor = select_harness(data_dir, None, 180)
+def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=None,
+                         executor=_DEFAULT_HARNESS, executor_name=None, timeout=180, development_receipt=None):
+    from roll.v3.development_replay import development_attempt_fields, store_development_receipt
+    from roll.v3.harness_settings import select_harness
+
+    configuration_error = None
+    if executor is _DEFAULT_HARNESS and (development_receipt is None or development_receipt["status"] == "computed"):
+        try:
+            executor = select_harness(data_dir, executor_name, timeout)
+        except (OSError, ValueError) as error:
+            if development_receipt is None:
+                raise
+            configuration_error = (str(error) if isinstance(error, ValueError)
+                                   else f"无法读取研究助手设置（errno={error.errno}）")
+
     attempt_id = "attempt-" + uuid4().hex
     lock_error = None
     with ExitStack() as stack:
@@ -478,46 +502,64 @@ def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=Non
                 if parent_task_id is not None:
                     db.execute("INSERT INTO research_task_parent VALUES (?,?)", (task_id, parent_task_id))
             receipt = {"task_id": task_id, "attempt_id": attempt_id, "gaps": [], "draft_version": None}
-            prepare_claim(data_dir, receipt, frozen, executor)
-            if lock_error is not None:
-                receipt.update(status="failed", failure_kind="configuration", error=lock_error)
+            development_public = None
+            if development_receipt is not None:
+                receipt.update(development_attempt_fields(development_receipt))
+                if manifest is not None:
+                    store_development_receipt(db, task_id, development_receipt)
+                if development_receipt["status"] == "computed":
+                    receipt["development_input_ref"] = development_receipt["input_ref"]
+                    try:
+                        development_public = frozen_development_public(db, task_id, frozen, development_receipt)
+                    except HarnessFailure as error:
+                        configuration_error = str(error)
+            if development_receipt is None or development_receipt["status"] == "computed":
+                prepare_claim(data_dir, receipt, frozen, executor)
+                error = lock_error or configuration_error
+                if error:
+                    receipt.update(status="failed", failure_kind="configuration", error=error)
             if parent_task_id is not None:
                 receipt["parent_task_id"] = parent_task_id
             db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
-        if receipt["status"] == "failed":
+        if receipt["status"] != "running":
             return receipt
-        return run_claimed(data_dir, receipt, frozen, executor)
+        return run_claimed(data_dir, receipt, frozen, executor, development_public=development_public)
 
 
-def start_task(data_dir, manifest, *, executor=_DEFAULT_HARNESS, parent_task_id=None):
-    return register_and_execute(data_dir, "task-" + uuid4().hex, manifest=manifest,
-                                parent_task_id=parent_task_id, executor=executor)
+def frozen_development_public(db, task_id, frozen, development_receipt):
+    row = db.execute("SELECT public_input FROM research_development_public_input WHERE task_id=?", (task_id,)).fetchone()
+    if row:
+        return json.loads(row["public_input"])
+    try:
+        public = json_text(public_development_input(json.loads(frozen), development_receipt))
+    except Exception:
+        raise HarnessFailure("configuration", "无法从冻结开发回执构造公开研究输入") from None
+    db.execute("INSERT INTO research_development_public_input VALUES (?,?)", (task_id, public))
+    return json.loads(public)
 
 
-def record_task_result(data_dir, manifest, result, *, development_receipt=None):
-    """Save a task that has reached a terminal result without invoking a research executor."""
-    task_id = "task-" + uuid4().hex
-    attempt_id = "attempt-" + uuid4().hex
-    receipt = {"gaps": [], "draft_version": None, **result, "task_id": task_id, "attempt_id": attempt_id}
-    with task_database(data_dir, write=True) as db:
-        db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, json_text(manifest)))
-        if development_receipt is not None:
-            from roll.v3.development_replay import store_development_receipt
-
-            store_development_receipt(db, task_id, development_receipt)
-        db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
-    return receipt
+def start_task(data_dir, manifest, *, executor=_DEFAULT_HARNESS, parent_task_id=None,
+               executor_name=None, timeout=180, development_receipt=None):
+    return register_and_execute(data_dir, "task-" + uuid4().hex, manifest=manifest, parent_task_id=parent_task_id,
+                                executor=executor, executor_name=executor_name, timeout=timeout,
+                                development_receipt=development_receipt)
 
 
-def retry_task(data_dir, task_id, *, executor=_DEFAULT_HARNESS):
+def retry_task(data_dir, task_id, *, executor=_DEFAULT_HARNESS, executor_name=None, timeout=180):
+    from roll.v3.development_replay import read_development_receipt
+
     with task_database(data_dir) as db:
+        task = db.execute("SELECT json_extract(manifest, '$.kind') AS kind FROM research_task WHERE task_id=?",
+                          (task_id,)).fetchone()
         active = db.execute(
             "SELECT receipt FROM research_attempt WHERE task_id=? "
             f"AND json_extract(receipt, '$.status') IN ({ACTIVE_PARAMS})", (task_id, *ACTIVE),
         ).fetchall()
     for row in active:
         read_receipt(data_dir, json.loads(row["receipt"]))
-    return register_and_execute(data_dir, task_id, executor=executor)
+    development_receipt = read_development_receipt(data_dir, task_id) if task and is_development(dict(task)) else None
+    return register_and_execute(data_dir, task_id, executor=executor, executor_name=executor_name,
+                                timeout=timeout, development_receipt=development_receipt)
 
 
 def run_task(data_dir, symbol, *, question, snapshot_id, as_of, materials=(), required_titles=(), basis=None, executor=_DEFAULT_HARNESS):
@@ -528,6 +570,8 @@ def run_task(data_dir, symbol, *, question, snapshot_id, as_of, materials=(), re
 
 def supplement_task(data_dir, parent_task_id, *, materials=(), snapshot_id=None, as_of=None, executor=_DEFAULT_HARNESS):
     manifest = get_task(data_dir, parent_task_id)["manifest"]
+    if is_development(manifest):
+        raise ValueError("开发任务使用冻结预设与快照；更换快照请发起新的开发实验")
     cutoff = utc_timestamp(as_of) if as_of is not None else manifest["as_of"]
     combined = collect_materials(materials, cutoff, manifest["materials"])
     snapshot = snapshot_id if snapshot_id is not None else manifest["snapshot_id"]
@@ -542,6 +586,11 @@ def supplement_task(data_dir, parent_task_id, *, materials=(), snapshot_id=None,
         raise ValueError("补证须提供新材料、行情快照或截止时点；相同清单请重试原任务")
     manifest["materials"] = combined
     return start_task(data_dir, manifest, parent_task_id=parent_task_id, executor=executor)
+
+
+def add_executor_options(command):
+    command.add_argument("--executor", metavar="HARNESS", help="覆盖研究助手设置，如 offline、codex 或已配置的 ACP 名称")
+    command.add_argument("--timeout", type=float, default=180, metavar="SECONDS", help="外部助手尝试的总时限")
 
 
 def register_task_commands(research):
@@ -564,7 +613,7 @@ def register_task_commands(research):
                      basis=a.basis, executor=select_harness(d, a.executor, a.timeout)))
     retry = commands.add_parser("retry", help="用原任务冻结的公开输入执行新尝试")
     retry.add_argument("task_id")
-    retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id, executor=select_harness(d, a.executor, a.timeout)))
+    retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id, executor_name=a.executor, timeout=a.timeout))
     supplement = commands.add_parser("supplement", help="沿用原问题及标的，补证并创建关联任务")
     supplement.add_argument("task_id", help="父任务 ID")
     supplement.add_argument("--material", action="append", default=[], metavar="JSON", help="新增公告元数据 JSON")
@@ -573,8 +622,7 @@ def register_task_commands(research):
     supplement.set_defaults(handler=lambda a, d: supplement_task(d, a.task_id, materials=a.material,
                             snapshot_id=a.snapshot, as_of=a.as_of, executor=select_harness(d, a.executor, a.timeout)))
     for command in (run, retry, supplement):
-        command.add_argument("--executor", metavar="HARNESS", help="覆盖研究助手设置，如 offline、codex 或已配置的 ACP 名称")
-        command.add_argument("--timeout", type=float, default=180, metavar="SECONDS", help="外部助手尝试的总时限")
+        add_executor_options(command)
     show = commands.add_parser("show", help="读取任务的公开清单与历次尝试")
     show.add_argument("task_id")
     show.set_defaults(handler=lambda a, d: get_task(d, a.task_id))

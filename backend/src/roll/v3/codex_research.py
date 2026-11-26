@@ -6,8 +6,9 @@ import re
 import shutil
 from pathlib import Path
 
-from roll.v3.research_harness import (HarnessFailure, INSTRUCTIONS, Reply, ResearchHarness,
-                                      public_text, read_reply, record_input, runtime_directory)
+from roll.v3.research_harness import (
+    HarnessFailure, ResearchHarness, harness_request, read_reply, record_input, runtime_directory,
+)
 
 
 class CodexExecutor(ResearchHarness):
@@ -19,8 +20,6 @@ class CodexExecutor(ResearchHarness):
                        "isolated_home": True, "ephemeral": True, "model_catalog": "bundled, shell disabled"}
 
     def _execute(self, manifest, receipt, data_dir, run_process):
-        from roll.v3.research_tasks import preflight_gaps
-
         executable = shutil.which("codex")
         if not executable:
             raise HarnessFailure("configuration", "找不到 codex 可执行文件，请检查 PATH 和安装版本")
@@ -40,13 +39,13 @@ class CodexExecutor(ResearchHarness):
                 raise HarnessFailure("configuration", f"该权限配置要求 codex-cli 0.172.0，实际版本为 {actual}")
             if platform.system() != "Linux" or platform.machine() != "x86_64":
                 raise HarnessFailure("configuration", "该权限配置要求 x86_64 Linux")
-            public = public_text(manifest)
-            if preflight_gaps(manifest) or any(gap["blocking"] for gap in public["unreadable_materials"]):
+            public, instructions, response_model, blocked = harness_request(manifest)
+            if blocked:
                 return {"gaps": public["unreadable_materials"]}
             managed = Path("/etc/codex")
             if managed.is_dir() and any(managed.iterdir()):
                 raise HarnessFailure("configuration", "检测到尚未验证的系统 Codex 配置 /etc/codex")
-            configure_model(executable, work, env, run_process)
+            configure_model(executable, work, env, run_process, instructions, response_model)
             attach_login(home, env)
             output = work / "last-message"
             prompt = record_input(public, receipt, data_dir)
@@ -54,7 +53,7 @@ class CodexExecutor(ResearchHarness):
             receipt["exit_code"] = proc.returncode
             if proc.returncode:
                 raise classify_exit(proc)
-            return read_reply(output, public)
+            return read_reply(output, public, response_model)
 
 
 MODEL = "gpt-6.2-sol"
@@ -74,7 +73,7 @@ SETTINGS = (
     "include_permissions_instructions=false", "skills.include_instructions=false", "cloud.skills.enabled=false",
     "orchestrator.mcp.enabled=false",
 )
-def configure_model(executable, work, env, run_process):
+def configure_model(executable, work, env, run_process, instructions, response_model):
     catalog = run_process([executable, "debug", "models", "--bundled"], cwd=work, env=env)
     try:
         models = json.loads(catalog.stdout)["models"]
@@ -89,8 +88,8 @@ def configure_model(executable, work, env, run_process):
                  include_apps_usage_instructions=False)
     model.pop("multi_agent_version", None)
     (work / "catalog.json").write_text(json.dumps({"models": [model]}))
-    (work / "instructions.txt").write_text(INSTRUCTIONS, encoding="utf-8")
-    (work / "response.json").write_text(json.dumps(Reply.model_json_schema()))
+    (work / "instructions.txt").write_text(instructions, encoding="utf-8")
+    (work / "response.json").write_text(json.dumps(response_model.model_json_schema()))
 
 
 def attach_login(home, env):
