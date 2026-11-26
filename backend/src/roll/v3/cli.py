@@ -10,6 +10,7 @@ from roll.config import data_directory, load_runtime_environment
 def parser():
     from roll.v3.account_cli import register_account_commands
     from roll.v3.entitlements import register_entitlement_commands
+    from roll.v3.execution_cli import register_execution_commands
     from roll.v3.market_cli import register as register_market
     from roll.v3.market_research import register_market_research
     from roll.v3.research import register_research_commands
@@ -21,6 +22,7 @@ def parser():
     register_market(commands)
     register_account_commands(commands)
     register_entitlement_commands(commands)
+    register_execution_commands(commands)
     register_market_research(register_research_commands(commands))
     register_strategy(commands)
     serve = commands.add_parser("serve", help="打开本地工作台")
