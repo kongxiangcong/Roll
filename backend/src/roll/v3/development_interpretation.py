@@ -106,7 +106,7 @@ def _signal(row):
         **_select(row, "date", "common_evaluable", "direct_market_block", "candidate_difference",
                   "prior_filter_signal_ref"),
         "stock": {**_select(stock, "status", "signal"),
-                  **_select(stock.get("conditions", {}), "fast_average", "slow_average", "above_slow_average")},
+                  **_select(stock.get("conditions") or {}, "fast_average", "slow_average", "above_slow_average")},
         "market": _select(row["market"], "status", "close", "average", "above_average"),
         "paths": paths,
     }
