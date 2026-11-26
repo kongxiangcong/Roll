@@ -487,10 +487,10 @@ def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of, *, db=None
     }
 
 
-def replay_signals(data_dir, version, snapshot_id, *, symbol, start, end):
+def replay_signals(data_dir, version, snapshot_id, *, symbol, start, end, registered_at=None):
     """Replay every trading day's signal at that day's frozen 15:05 cutoff."""
     symbol = symbol.upper()
-    strategy = _strategy(data_dir, version, symbol)
+    strategy = _strategy(data_dir, version, symbol, as_of=registered_at)
     snapshot = get_snapshot(data_dir, snapshot_id)
     slow = strategy["parameters"]["slow"]
     earliest = _bars_start(snapshot, symbol, start)

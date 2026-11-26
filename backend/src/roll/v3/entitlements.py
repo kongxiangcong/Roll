@@ -39,22 +39,23 @@ class CompanyAction:
     def key(self):
         return f"entitlement:{self.symbol}:{self.action_id}"
 
-
-def read_company_actions(data_dir, snapshot_id, *, symbol=None, cutoff=None, start=None, end=None):
-    rows = read_snapshot(data_dir, snapshot_id, series="corporate_action", symbol=symbol,
-                         cutoff=cutoff, start=start, end=end)["observations"]
-    actions = []
-    for row in rows:
+    @classmethod
+    def from_observation(cls, row):
         terms = row["payload"]
-        actions.append(CompanyAction(
+        return cls(
             action_id=row["item_id"] or row["trade_date"], symbol=row["symbol"],
             record_date=terms["record_date"], ex_date=terms.get("ex_date", row["trade_date"]),
             payment_date=terms.get("payment_date"), listing_date=terms.get("listing_date"),
             cash_per_share=terms.get("cash_per_share") or 0, shares_per_share=terms.get("shares_per_share") or 0,
             reference_deduction=terms.get("reference_deduction"),
             source=row["source"], source_ref=row["source_ref"] or terms.get("source_url"), observation_seq=row["seq"],
-        ))
-    return tuple(actions)
+        )
+
+
+def read_company_actions(data_dir, snapshot_id, *, symbol=None, cutoff=None, start=None, end=None):
+    rows = read_snapshot(data_dir, snapshot_id, series="corporate_action", symbol=symbol,
+                         cutoff=cutoff, start=start, end=end)["observations"]
+    return tuple(CompanyAction.from_observation(row) for row in rows)
 
 
 def accrue_receivables(action: CompanyAction, record_lots) -> tuple[Receivable, ...]:
