@@ -165,3 +165,54 @@ def test_outside_material_leaves_frozen_development_inputs_unchanged(tmp_path):
     before, after = first["sample"]["by_date"], later["sample"]["by_date"]
     assert before[days[-1]]["e0"] != after[days[-1]]["e0"]
     assert all(before[day] == after[day] for day in days[:-1])
+
+
+def test_strict_development_uses_verified_historical_availability(tmp_path):
+    days = list(sessions("2023-01-03", "2023-12-29"))[-65:]
+    rows = [
+        observation(day, symbol=symbol, close=str(100 + index),
+                    available_at=f"{day}T15:05:00+08:00",
+                    available_evidence=f"official-close-{day}" if index != 61 else None)
+        for index, day in enumerate(days) for symbol in ("600362.SH", "000300.SH")
+    ]
+    snapshot = load_snapshot(tmp_path, rows, mode="STRICT_HISTORICAL_AS_OF")
+
+    manifest = create_manifest(tmp_path, snapshot)
+
+    assert manifest["sample"]["common_evaluable_dates"] == days[59:61]
+    assert manifest["sample"]["losses"][days[61]] == [
+        {"feature": "e0", "reason": "not_visible"}, {"feature": "market", "reason": "not_visible"},
+    ]
+    assert manifest["sample"]["by_date"][days[59]]["stock_observation"]["selected_available_at"].startswith(days[59])
+    assert manifest["snapshot"]["sources"][0]["last_received_at"].startswith("2026-11-25")
+
+
+def test_development_applies_earlier_bar_revisions_only_at_later_signal_cutoffs(tmp_path):
+    days = list(sessions("2023-01-03", "2023-12-29"))[-80:]
+    rows = [observation(day, close=str(100 + i)) for i, day in enumerate(days)]
+    rows += [observation(day, symbol="000300.SH", close=str(100 + i)) for i, day in enumerate(days)]
+    baseline = create_manifest(tmp_path, load_snapshot(tmp_path, rows))["sample"]["by_date"]
+    revised = load_snapshot(tmp_path, [
+        observation(days[20], close="1800", revision="corrected-stock", available_at=f"{days[62]}T15:05:00+08:00"),
+        observation(days[57], symbol="000300.SH", close="300", revision="corrected-index",
+                    available_at=f"{days[62]}T15:05:00+08:00"),
+        observation(days[53], symbol="000300.SH", withdrawn=True, revision="withdrawn-index",
+                    available_at=f"{days[65]}T15:05:00+08:00"),
+    ])
+
+    manifest = create_manifest(tmp_path, revised)
+    signals = manifest["sample"]["by_date"]
+
+    assert all(signals[day] == baseline[day] for day in days[:62])
+    assert baseline[days[62]]["e0"]["signal"] == "long"
+    assert signals[days[62]]["e0"]["signal"] == "flat"
+    assert signals[days[62]]["market"]["average"] == "159.65"
+    assert {ref["revision"] for ref in signals[days[62]]["revised_feature_observations"]} == {
+        "corrected-stock", "corrected-index",
+    }
+    assert signals[days[65]]["market"]["status"] == "missing"
+    assert signals[days[65]]["reasons"] == [
+        {"feature": "market", "reason": "withdrawn", "observation_date": days[53]},
+    ]
+    assert signals[days[72]]["market"]["status"] == "missing"
+    assert signals[days[73]]["common_evaluable"]

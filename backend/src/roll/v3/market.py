@@ -1,5 +1,6 @@
 """Append-only market observations and offline DataSnapshot selection."""
 
+from bisect import bisect_left
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 from hashlib import sha256
@@ -224,7 +225,7 @@ def _visible_at(row, snapshot):
     return verified or row['available_at'] or assumed or row['received_at']
 
 
-def _choose(rows, snapshot, cutoff, *, strict_receipt=False):
+def _choose(rows, snapshot, cutoff):
     if not rows:
         return None, 'missing'
     current = {}
@@ -232,8 +233,6 @@ def _choose(rows, snapshot, cutoff, *, strict_receipt=False):
         visible_at = _visible_at(row, snapshot)
         if visible_at is None:
             continue
-        if strict_receipt and snapshot['use_mode'] == STRICT_HISTORICAL_AS_OF:
-            visible_at = max(visible_at, row['received_at'])
         if visible_at > cutoff:
             continue
         source = row['source']
@@ -319,7 +318,7 @@ def _coverage(scope, observations, states, warmup):
 
 
 def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, start=None, end=None,
-                  cutoff=None, warmup=0, db=None, strict_receipt=False):
+                  cutoff=None, warmup=0, db=None):
     """Inspect a frozen observation range and its coverage at a decision cutoff."""
     with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
@@ -335,7 +334,7 @@ def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, sta
                 if key[0] > cutoff_day:
                     states[key] = 'not_visible'
                     continue
-                observation, states[key] = _choose(rows, snapshot, cutoff, strict_receipt=strict_receipt)
+                observation, states[key] = _choose(rows, snapshot, cutoff)
                 if observation:
                     observations.append(observation)
                     selected[observation['seq']] = observation
@@ -362,9 +361,10 @@ def read_research_features(data_dir, snapshot_id, *, symbol, cutoff, db=None):
     return {feature: observation for feature, (_, observation) in latest.items() if observation is not None}
 
 
-def snapshot_window_selections(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs,
-                               strict_receipt=False):
-    """Resolve item versions and quality at a separate cutoff for each trading date."""
+def snapshot_rolling_selections(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs, lookback):
+    """Return selection changes within a rolling trading-session window at each cutoff."""
+    if lookback < 1:
+        raise ValueError('历史选择窗口至少包含一个交易日')
     if not cutoffs:
         return {}
     with database(data_dir) as db:
@@ -373,17 +373,36 @@ def snapshot_window_selections(data_dir, snapshot_id, *, series='daily_bar', sym
         versions = {}
         for scope in _ranges(snapshot, series, symbol, min(cutoffs), max(cutoffs)):
             versions.update(_observations(db, snapshot, scope))
-    result = {day: {} for day in cutoffs}
-    timestamps = {day: min(utc_timestamp(at), snapshot['as_of']) for day, at in cutoffs.items()}
-    cutoff_days = {day: str(instant(at).date()) for day, at in timestamps.items()}
+    days = sorted(cutoffs)
+    result = {day: {} for day in days}
+    positions = {day: index for index, day in enumerate(days)}
+    timestamps = [min(utc_timestamp(cutoffs[day]), snapshot['as_of']) for day in days]
+    cutoff_days = [str(instant(at).date()) for at in timestamps]
     for (day, item_id), rows in versions.items():
-        if day not in result:
+        if day not in positions:
             continue
-        result[day][item_id] = (
-            _choose(rows, snapshot, timestamps[day], strict_receipt=strict_receipt)
-            if day <= cutoff_days[day] else (None, 'not_visible')
-        )
+        first = positions[day]
+        end = min(first + lookback, len(days))
+        changes = {first}
+        for row in rows:
+            availability = _visible_at(row, snapshot)
+            if availability is not None and timestamps[first] < availability <= timestamps[end - 1]:
+                changes.add(bisect_left(timestamps, availability, first, end))
+        previous = None
+        for index in sorted(changes):
+            selection = (_choose(rows, snapshot, timestamps[index])
+                         if day <= cutoff_days[index] else (None, 'not_visible'))
+            if selection != previous:
+                result[days[index]][day, item_id] = selection
+                previous = selection
     return result
+
+
+def snapshot_window_selections(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs):
+    """Resolve item versions and quality at a separate cutoff for each trading date."""
+    selected = snapshot_rolling_selections(data_dir, snapshot_id, series=series, symbol=symbol,
+                                           cutoffs=cutoffs, lookback=1)
+    return {day: {item_id: value for (_, item_id), value in selected[day].items()} for day in cutoffs}
 
 
 def snapshot_windows(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs):

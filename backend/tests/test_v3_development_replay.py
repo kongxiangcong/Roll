@@ -5,6 +5,8 @@ import subprocess
 import sys
 from decimal import Decimal
 
+import pytest
+
 from roll.v3.storage import sessions
 from test_v3_development_inputs import PRESET, command, load_snapshot, observation
 
@@ -111,6 +113,51 @@ def test_common_gaps_preserve_an_exit_and_entitlement_and_verify_offline(tmp_pat
     assert verification["verified"] is True
     assert all(verification["checks"][name] for name in ("metrics", "opportunities", "coverage", "sessions", "self_check"))
     assert command(tmp_path, "strategy", "show", strategy) == registry
+
+
+@pytest.mark.parametrize(("factor", "expected_loss"), [
+    (None, "MISSING_ADJUSTMENT_FACTOR"), ("0.3", "ENTITLEMENT_TERMS_UNVERIFIED"),
+])
+def test_unverified_dividend_economics_interrupt_the_common_sample(tmp_path, factor, expected_loss):
+    start = list(sessions("2023-01-03", "2023-12-29"))[-75]
+    days, rows = _quotes(start)
+    for index in range(len(days)):
+        rows[3 * index + 1]["payload"]["close"] = str(100 + index)
+    ex = days[59]
+    rows.append(observation(ex, series="corporate_action", item_id="dividend",
+                            payload={"record_date": days[58], "ex_date": ex, "cash_per_share": "0.2",
+                                     "payment_date": days[63]}))
+    if factor is not None:
+        rows.append(observation(ex, series="adjustment_factor",
+                                payload={"dividend_per_share": factor, "bonus_per_share": "0"}))
+
+    snapshot = load_snapshot(tmp_path, rows)
+    attempt = command(tmp_path, "research", "task", "development", "--preset", PRESET, "--snapshot", snapshot)
+    receipt = command(tmp_path, "research", "task", "development-receipt", attempt["task_id"])
+
+    assert attempt["status"] == "blocked"
+    assert receipt["sample"]["losses"][ex] == [{"feature": "adjustment_factor", "reason": expected_loss}]
+    assert receipt["sample"]["losses"][days[60]] == [{"feature": "e0", "reason": "warmup"}]
+    assert receipt["sample"]["common_evaluable_dates"] == []
+
+
+def test_missing_dividend_payment_date_preserves_verified_signal_economics(tmp_path):
+    days, rows = _quotes(list(sessions("2023-01-03", "2023-12-29"))[-75])
+    ex = days[64]
+    rows[3 * 64]["payload"].update(close="9.8", pre_close_basis="fuyao_adjustment_factor")
+    rows += [
+        observation(ex, series="adjustment_factor", payload={"dividend_per_share": "0.2", "bonus_per_share": "0"}),
+        observation(ex, series="corporate_action", item_id="dividend",
+                    payload={"record_date": days[63], "ex_date": ex, "cash_per_share": "0.2"}),
+    ]
+    snapshot = load_snapshot(tmp_path, rows)
+    attempt = command(tmp_path, "research", "task", "development", "--preset", PRESET, "--snapshot", snapshot)
+    receipt = command(tmp_path, "research", "task", "development-receipt", attempt["task_id"])
+
+    assert ex in receipt["sample"]["common_evaluable_dates"]
+    assert receipt["sample"]["by_date"][ex]["e0"]["status"] == "ready"
+    gap, = [gap for gap in receipt["coverage"]["path_gaps"] if gap["reason"] == "ENTITLEMENT_SETTLEMENT_DATE_MISSING"]
+    assert gap["date"] == ex and gap["paths"] == ["buy_and_hold", "e0", "e1"]
 
 
 def test_later_unusable_marks_flag_only_the_affected_paths_and_preserve_prior_fills(tmp_path):

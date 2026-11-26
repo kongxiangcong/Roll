@@ -95,6 +95,7 @@ def test_receipt_reconciles_a_difference_concentrated_in_one_segment(tmp_path):
     assert comparison["dominant_absolute_share"] == "1"
     assert comparison["total_net_difference"] == comparison["attributed_net_difference"] == "-288.05"
     assert comparison["residual_net_difference"] == "0"
+    assert attribution["basis"]["costs_only"].startswith("仅当")
 
 
 def test_receipt_can_explain_a_flat_price_difference_entirely_by_execution_costs(tmp_path):

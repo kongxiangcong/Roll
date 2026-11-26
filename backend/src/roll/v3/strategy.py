@@ -399,12 +399,21 @@ def trend_economic_close(bar, factors):
     return close * (1 + bonus) + cash, None
 
 
-def trend_conditions(index, parameters, base_session):
+def evaluate_trend_window(window, parameters):
+    """Evaluate the frozen trend over a complete window of raw and economic closes."""
+    index = [Decimal(100)]
+    previous_close = window[0][1]
+    for _, close, economic_close in window[1:]:
+        level = index[-1]
+        index.append(level if economic_close == previous_close else level * economic_close / previous_close)
+        previous_close = close
     fast_average = sum(index[-parameters["fast"]:]) / parameters["fast"]
     slow_average = sum(index) / parameters["slow"]
+    rising = fast_average > slow_average
     return {
-        "fast_average": format(fast_average, "f"), "slow_average": format(slow_average, "f"),
-        "above_slow_average": fast_average > slow_average, "base_session": base_session,
+        "status": "ready", "signal": "long" if rising else "flat", "target_fraction": "1" if rising else "0",
+        "conditions": {"fast_average": format(fast_average, "f"), "slow_average": format(slow_average, "f"),
+                       "above_slow_average": rising, "base_session": window[0][0]},
     }
 
 
@@ -458,11 +467,11 @@ def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of, *, db=None
     for row in factors:
         factors_by_day.setdefault(row["trade_date"], []).append(row["payload"])
 
-    index = []
-    previous_close = None
+    valid_window = []
     for session in window:
         bar = bars_by_day.get(session)
         close = _number(bar.get("close")) if bar else None
+        economic_close = close
         if bar is None:
             reason = "daily_bar"
         elif bar.get("trading_status") != "trading":
@@ -471,31 +480,19 @@ def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of, *, db=None
             reason = "close"
         elif session == window[0]:
             reason = None
-            index.append(Decimal(100))
         else:
             economic_close, reason = trend_economic_close(bar, factors_by_day.get(session, []))
-            if reason is None and previous_close is not None and index:
-                level = index[-1]
-                index.append(level if economic_close == previous_close else level * economic_close / previous_close)
         if reason:
             result["missing"].append({"trade_date": session, "reason": reason})
-        previous_close = close
+        else:
+            valid_window.append((session, close, economic_close))
 
     result["available_sessions"] = len(window) - len(result["missing"])
     if result["missing"]:
         return result
-    if len(index) < parameters["slow"]:
+    if len(valid_window) < parameters["slow"]:
         return {**result, "status": "warmup"}
-
-    conditions = trend_conditions(index, parameters, window[0])
-    rising = conditions["above_slow_average"]
-    return {
-        **result,
-        "status": "ready",
-        "signal": "long" if rising else "flat",
-        "target_fraction": "1" if rising else "0",
-        "conditions": conditions,
-    }
+    return {**result, **evaluate_trend_window(valid_window, parameters)}
 
 
 def replay_signals(data_dir, version, snapshot_id, *, symbol, start, end, registered_at=None):

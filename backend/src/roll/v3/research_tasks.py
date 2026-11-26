@@ -7,6 +7,7 @@ import re
 import shutil
 import sqlite3
 from contextlib import ExitStack, contextmanager
+from copy import deepcopy
 from datetime import timedelta
 from hashlib import sha256
 from pathlib import Path
@@ -420,13 +421,14 @@ def run_claimed(data_dir, receipt, frozen, executor, *, development_public=None)
 
     try:
         manifest = json.loads(frozen)
+        public = deepcopy(development_public) if development_public is not None else json.loads(frozen)
         if external:
             print(f'研究任务 {receipt["task_id"]}  尝试 {attempt_id}', file=sys.stderr, flush=True)
-            result = executor.run(development_public or manifest, receipt, data_dir, supervised)
+            result = executor.run(public, receipt, data_dir, supervised)
         elif development_public is not None:
-            result = (executor or offline_interpretation)(development_public)
+            result = (executor or offline_interpretation)(public)
         else:
-            result = (executor or offline_executor)(manifest)
+            result = (executor or offline_executor)(public)
         if development_public is not None:
             report = prepare_development_report(result, receipt, development_public)
             return commit({**receipt, "status": "report_ready", "report_version": report["version"],

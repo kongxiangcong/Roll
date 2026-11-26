@@ -47,7 +47,8 @@ def _trades(trace):
 
 
 def _coverage_ref(date, gap):
-    return f"coverage:{date}:{gap['feature']}:{gap['reason']}"
+    ref = f"coverage:{date}:{gap['feature']}:{gap['reason']}"
+    return f"{ref}:{gap['observation_date']}" if "observation_date" in gap else ref
 
 
 def _path_gap_ref(gap):
@@ -318,7 +319,7 @@ def attribute_development(receipt):
             "positions": "按交易日列出开盘撮合前、撮合后及收盘股份，含在途股份。同日清仓后恢复持仓的过程保留在持仓明细。现金应收继续计价。",
             "segments": "仅合并日期重叠的持仓段。每段以段首前一收盘至段末收盘的净值变化归因，除以共同期初净值得收益贡献。",
             "comparison": "差异方向为 E1 减 E0，金额单位为人民币。集中度按各段净值差异绝对值之和计算，段外差异单列。",
-            "costs_only": "逐日将累计交易费用及滑点加回净值，两条曲线在该口径下逐日相同。",
+            "costs_only": "仅当存在累计交易费用或滑点差异，且逐日将累计交易费用及滑点加回净值后两条曲线逐日相同，才归为费用差异。",
             "drawdowns": "峰谷按各路径每日收盘净值计算。等值峰或回撤幅度重复时取先出现的日期。",
         },
         "metrics": {f"metric:{path}:{metric}": {"path": path, "metric": metric, "value": value}

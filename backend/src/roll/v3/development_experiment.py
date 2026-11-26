@@ -7,13 +7,13 @@ from decimal import Decimal, InvalidOperation
 from hashlib import sha256
 from urllib.parse import urlsplit, urlunsplit
 
-from roll.v3.experiment import company_action_changes, economic_action_gap
+from roll.v3.experiment import company_action_changes, economic_action_gap, economic_terms_gap
 from roll.v3.market import (
     RECONSTRUCTED_RESEARCH, STRICT_HISTORICAL_AS_OF, get_snapshot, read_snapshot,
-    snapshot_window_selections, utc_timestamp,
+    snapshot_rolling_selections, utc_timestamp,
 )
 from roll.v3.storage import database, json_text, session_time, sessions
-from roll.v3.strategy import default_trend_definition, trend_conditions, trend_economic_close
+from roll.v3.strategy import default_trend_definition, evaluate_trend_window, trend_economic_close
 
 
 PRESET_ID = "jxcc-e0-e1-v1"
@@ -30,6 +30,7 @@ _PROVENANCE = (
     "seq", "series", "symbol", "trade_date", "item_id", "source", "revision", "received_at",
     "selected_available_at", "availability_assumption", "reconstruction_only",
 )
+_SELECTION_STATES = {"usable", "missing", "not_visible", "unusable", "conflict", "withdrawn"}
 
 
 def development_preset(preset_id=PRESET_ID):
@@ -82,31 +83,39 @@ def _project(row):
     }
 
 
-def _selections(data_dir, snapshot_id, symbol, series, cutoffs, witnessed):
-    selected = snapshot_window_selections(
-        data_dir, snapshot_id, series=series, symbol=symbol, cutoffs=cutoffs, strict_receipt=True,
+def _selection_state(state):
+    return state if state in _SELECTION_STATES else "unusable"
+
+
+def _selections(data_dir, snapshot_id, symbol, series, cutoffs, witnessed, *, lookback=1):
+    selected = snapshot_rolling_selections(
+        data_dir, snapshot_id, series=series, symbol=symbol, cutoffs=cutoffs, lookback=lookback,
     )
-    for items in selected.values():
-        for key, (row, state) in items.items():
-            if row:
-                projected = _project(row)
-                items[key] = (projected, state)
+    daily, revisions = {}, {}
+    for cutoff_day, items in selected.items():
+        daily[cutoff_day] = {}
+        for (observed_day, item_id), (row, state) in items.items():
+            projected = _project(row) if row else None
+            selection = (projected, _selection_state(state))
+            if observed_day == cutoff_day:
+                daily[cutoff_day][item_id] = selection
+            else:
+                revisions.setdefault(cutoff_day, {}).setdefault(observed_day, {})[item_id] = selection
+            if projected and observed_day == cutoff_day:
                 witnessed[row["seq"]] = projected
-    return selected
+    return daily, revisions
 
 
-def _daily_quotes(data_dir, snapshot_id, symbol, series, cutoffs, witnessed):
-    selected = _selections(data_dir, snapshot_id, symbol, series, cutoffs, witnessed)
-    return {day: items.get("", (None, "missing")) for day, items in selected.items()}
+def _daily_quotes(selections):
+    return {day: items.get("", (None, "missing")) for day, items in selections.items()}
 
 
 def _read_actions(data_dir, snapshot_id, symbol, days, closes, factors, openings, evenings, witnessed):
-    prior_actions, details, failures = {}, {}, {}
+    prior_actions, details, evidence = {}, {}, {}
     previous_cutoff = session_time(days[0], 0)
     with database(data_dir) as db:
         for day in days:
-            scope = {"series": "corporate_action", "symbol": symbol, "start": days[0], "end": day,
-                     "db": db, "strict_receipt": True}
+            scope = {"series": "corporate_action", "symbol": symbol, "start": days[0], "end": day, "db": db}
             at_open = read_snapshot(data_dir, snapshot_id, cutoff=openings[day], **scope)
             at_close = read_snapshot(data_dir, snapshot_id, cutoff=evenings[day], **scope)
             projected = []
@@ -132,23 +141,29 @@ def _read_actions(data_dir, snapshot_id, symbol, days, closes, factors, openings
             previous_cutoff = evenings[day]
             mark = closes[day][0]
             selected_factors = [row for row, _ in factors[day].values() if row]
-            actions_today = [action for action in prior_actions.values() if action.ex_date == day]
+            actions_by_ex_date = defaultdict(list)
+            for action in prior_actions.values():
+                actions_by_ex_date[action.ex_date].append(action)
+            actions_today = actions_by_ex_date.get(day, ())
             issue = economic_action_gap(mark["payload"] if mark else {}, selected_factors, actions_today)
             issues = [*open_issues, *close_issues]
             if issue:
                 issues.append((day, issue, tuple(action.record_date for action in actions_today)))
-            states = {state for scope_coverage in at_close["coverage"]
-                      for state in scope_coverage["quality_by_date"].get(day, ()) if state != "usable"}
-            for state in sorted(states):
+            states_by_date = defaultdict(set)
+            for scope_coverage in at_close["coverage"]:
+                for observed, states in scope_coverage["quality_by_date"].items():
+                    states_by_date[observed].update(_selection_state(state) for state in states if state != "usable")
+            for state in sorted(states_by_date.get(day, ())):
                 issues.append((day, f"CORPORATE_ACTION_{state.upper()}", ()))
             for state in sorted({state for _, state in factors[day].values() if state != "usable"}):
                 issues.append((day, f"ADJUSTMENT_FACTOR_{state.upper()}", ()))
-            if any(reason == "INVALID_CORPORATE_ACTION" and date == day for date, reason, _ in close_issues):
-                states.add("unusable")
+            for observed, reason, _ in close_issues:
+                if reason == "INVALID_CORPORATE_ACTION":
+                    states_by_date[observed].add("unusable")
             details[day] = {"opening": opening, "closing": closing, "issues": issues,
                             "factors": [factor["seq"] for factor in selected_factors]}
-            failures[day] = sorted(states)
-    return details, failures
+            evidence[day] = (actions_by_ex_date, states_by_date)
+    return details, evidence
 
 
 def _close(row, status, *, require_trading=False):
@@ -176,61 +191,108 @@ def _stock_signal(day, at, preset, history, reasons):
               "symbol": preset["symbol"], "status": "missing" if reasons else "warmup", "signal": None,
               "target_fraction": None, "conditions": None, "required_sessions": required,
               "available_sessions": len(history),
-              "missing": [{"trade_date": day, "reason": reason} for reason in reasons]}
-    if len(history) == required:
-        index = [Decimal(100)]
-        for (_, previous, _), (_, _, economic) in zip(history, list(history)[1:]):
-            level = index[-1]
-            index.append(level if economic == previous else level * economic / previous)
-        conditions = trend_conditions(index, parameters, history[0][0])
-        rising = conditions["above_slow_average"]
-        result.update(status="ready", conditions=conditions, signal="long" if rising else "flat",
-                      target_fraction="1" if rising else "0")
+              "missing": [{"trade_date": reason.get("observation_date", day), "reason": reason["reason"]}
+                          for reason in reasons]}
+    if not reasons and len(history) == required:
+        result.update(evaluate_trend_window(list(history), parameters))
     return result
 
 
-def _common_sample(preset, days, evenings, stock, benchmark, factors, action_failures):
+def _stock_input(stock_selection, factors, actions, action_failures, *, base):
+    stock_row, stock_status = stock_selection
+    close, stock_issue = _close(stock_row, stock_status, require_trading=True)
+    reasons = [{"feature": "e0", "reason": stock_issue}] if stock_issue else []
+    factor_rows = [row for row, _ in factors.values() if row]
+    factor_failures = sorted({state for _, state in factors.values() if state != "usable"})
+    reasons.extend({"feature": "adjustment_factor", "reason": state} for state in factor_failures)
+    reasons.extend({"feature": "corporate_action", "reason": state} for state in sorted(action_failures))
+    bar = stock_row["payload"] if stock_row else {}
+    terms_issue = economic_terms_gap(bar, factor_rows, actions)
+    if terms_issue:
+        reasons.append({"feature": "adjustment_factor", "reason": terms_issue})
+    economic = close
+    if not reasons and (not base or factor_rows):
+        economic, issue = trend_economic_close(bar, [row["payload"] for row in factor_rows])
+        if issue:
+            reasons.append({"feature": "adjustment_factor", "reason": issue})
+    return close, economic, reasons
+
+
+def _common_sample(preset, days, evenings, stock_series, index_series, factor_series, action_evidence, witnessed):
     nominal = preset["protocol"]["windows"]["development"]
+    stock, stock_revisions = stock_series
+    benchmark, market_revisions = index_series
+    factors, factor_revisions = factor_series
+    stock_versions, market_versions, factor_versions = stock.copy(), benchmark.copy(), factors.copy()
     stock_history = deque(maxlen=preset["e0"]["parameters"]["slow"])
     market_history = deque(maxlen=preset["e1"]["lookback_sessions"])
     by_date, losses, common = {}, {}, []
     restarted = {"e0": False, "market": False}
     warmup_day_counts = Counter()
     for day in days:
-        stock_row, stock_status = stock[day]
-        stock_close, stock_issue = _close(stock_row, stock_status, require_trading=True)
-        stock_reasons = [{"feature": "e0", "reason": stock_issue}] if stock_issue else []
-        factor_rows = [row["payload"] for row, _ in factors[day].values() if row]
-        factor_failures = sorted({state for _, state in factors[day].values() if state != "usable"})
-        stock_reasons.extend({"feature": "adjustment_factor", "reason": state} for state in factor_failures)
-        stock_reasons.extend({"feature": "corporate_action", "reason": state} for state in action_failures[day])
-        economic = stock_close
-        if stock_close is not None and (stock_history or factor_rows) and not factor_failures:
-            economic, issue = trend_economic_close(stock_row["payload"], factor_rows)
-            if issue:
-                stock_reasons.append({"feature": "adjustment_factor", "reason": issue})
+        stock_versions.update({past: items[""] for past, items in stock_revisions.get(day, {}).items() if "" in items})
+        market_versions.update({past: items[""] for past, items in market_revisions.get(day, {}).items() if "" in items})
+        for past, items in factor_revisions.get(day, {}).items():
+            factor_versions[past] = {**factor_versions[past], **items}
+        actions, action_failures = action_evidence[day]
+        stock_close, economic, stock_reasons = _stock_input(
+            stock[day], factors[day], actions.get(day, ()), action_failures.get(day, ()), base=not stock_history,
+        )
+        revised = {}
+
+        def record_revision(row, original):
+            if row and row != original:
+                witnessed[row["seq"]] = row
+                revised[row["seq"]] = observation_reference(row)
+
+        window = []
         if stock_reasons:
             restarted["e0"] |= bool(stock_history)
             stock_history.clear()
         else:
-            stock_history.append((day, stock_close, economic))
-        e0 = _stock_signal(day, evenings[day], preset, stock_history, [item["reason"] for item in stock_reasons])
+            stock_history.append(day)
+            for past in list(stock_history)[:-1]:
+                close, past_economic, unavailable = _stock_input(
+                    stock_versions[past], factor_versions[past], actions.get(past, ()), action_failures.get(past, ()),
+                    base=past == stock_history[0],
+                )
+                record_revision(stock_versions[past][0], stock[past][0])
+                for item_id, (row, _) in factor_versions[past].items():
+                    record_revision(row, factors[past].get(item_id, (None, "missing"))[0])
+                original_actions = {action.observation_seq for action in action_evidence[past][0].get(past, ())}
+                for action in actions.get(past, ()):
+                    if action.observation_seq not in original_actions:
+                        record_revision(witnessed[action.observation_seq], None)
+                stock_reasons.extend({**reason, "observation_date": past} for reason in unavailable)
+                if not unavailable:
+                    window.append((past, close, past_economic))
+            window.append((day, stock_close, economic))
+        e0 = _stock_signal(day, evenings[day], preset, window, stock_reasons)
 
         market_close, market_issue = _close(*benchmark[day])
+        market_reasons = [{"feature": "market", "reason": market_issue}] if market_issue else []
+        market_window = []
         if market_issue:
             restarted["market"] |= bool(market_history)
             market_history.clear()
         else:
-            market_history.append(market_close)
-        average = sum(market_history) / len(market_history) if len(market_history) == market_history.maxlen else None
-        market = {"status": "ready" if average is not None else "missing" if market_issue else "warmup",
+            market_history.append(day)
+            for past in market_history:
+                close, unavailable = _close(*market_versions[past])
+                record_revision(market_versions[past][0], benchmark[past][0])
+                if unavailable:
+                    market_reasons.append({"feature": "market", "reason": unavailable, "observation_date": past})
+                else:
+                    market_window.append(close)
+        average = sum(market_window) / len(market_window) if len(market_window) == market_history.maxlen else None
+        market = {"status": "ready" if average is not None else "missing" if market_reasons else "warmup",
                   "close": format(market_close, "f") if market_close is not None else None,
                   "average": format(average, "f") if average is not None else None,
                   "above_average": market_close > average if average is not None else None,
-                  "available_sessions": len(market_history), "required_sessions": market_history.maxlen}
+                  "available_sessions": len(market_window), "required_sessions": market_history.maxlen}
         reasons = stock_reasons or ([{"feature": "e0", "reason": "warmup"}] if e0["status"] == "warmup" else [])
         if market["status"] != "ready":
-            reasons.append({"feature": "market", "reason": market_issue or "warmup"})
+            reasons.extend(market_reasons or [{"feature": "market", "reason": "warmup"}])
         if reasons:
             losses[day] = reasons
         else:
@@ -240,8 +302,10 @@ def _common_sample(preset, days, evenings, stock, benchmark, factors, action_fai
         warmup_day_counts.update(f"{feature}:{kind}" for feature, kind in preparation.items())
         by_date[day] = {"e0": e0, "market": market, "common_evaluable": not reasons, "reasons": reasons,
                         "preparation": preparation,
-                        "stock_observation": observation_reference(stock_row),
+                        "stock_observation": observation_reference(stock[day][0]),
                         "index_observation": observation_reference(benchmark[day][0])}
+        if revised:
+            by_date[day]["revised_feature_observations"] = list(revised.values())
     return {
         "nominal_window": nominal, "effective_window": {"start": common[0], "end": nominal["end"]} if common else None,
         "candidate_day_count": len(days), "common_evaluable_day_count": len(common), "common_evaluable_dates": common,
@@ -273,7 +337,7 @@ def _snapshot_audit(snapshot, witnessed):
         "snapshot_id": snapshot["snapshot_id"], "as_of": snapshot["as_of"], "use_mode": snapshot["use_mode"],
         "selection_rules_version": snapshot["selection_rules_version"], "sources": sources,
         "availability_basis": ("逐日以冻结记录的历史证据或显式重建假设判断；实际取得时间以来源记录为准。"
-                               if reconstructed else "逐日使用同时具备披露证据与实际取得时间的记录。"),
+                               if reconstructed else "逐日按有证据的历史可得时间选取记录，并保留实际取得时间。"),
         "risks": ["同一数据序列可能只选到一个来源，来源的独立核验与版本修订可能影响重建结果。"],
         "external_data_requests": 0, "paid_data_cost_cny": "0",
     }
@@ -292,12 +356,22 @@ def freeze_development_inputs(data_dir, snapshot_id, *, preset_id):
     openings = {day: session_time(day, 9, 30) for day in days}
     symbol = preset["symbol"]
     witnessed = {}
-    stock = _daily_quotes(data_dir, snapshot_id, symbol, "daily_bar", evenings, witnessed)
-    index = _daily_quotes(data_dir, snapshot_id, preset["e1"]["symbol"], "daily_bar", evenings, witnessed)
-    opened = _daily_quotes(data_dir, snapshot_id, symbol, "daily_open", openings, witnessed)
-    factors = _selections(data_dir, snapshot_id, symbol, "adjustment_factor", evenings, witnessed)
-    actions, failures = _read_actions(data_dir, snapshot_id, symbol, days, stock, factors, openings, evenings, witnessed)
-    sample = _common_sample(preset, days, evenings, stock, index, factors, failures)
+    slow = preset["e0"]["parameters"]["slow"]
+    stock_selections, stock_revisions = _selections(
+        data_dir, snapshot_id, symbol, "daily_bar", evenings, witnessed, lookback=slow,
+    )
+    index_selections, index_revisions = _selections(
+        data_dir, snapshot_id, preset["e1"]["symbol"], "daily_bar", evenings, witnessed,
+        lookback=preset["e1"]["lookback_sessions"],
+    )
+    open_selections, _ = _selections(data_dir, snapshot_id, symbol, "daily_open", openings, witnessed)
+    factors, factor_revisions = _selections(data_dir, snapshot_id, symbol, "adjustment_factor", evenings, witnessed,
+                                           lookback=slow)
+    stock, index, opened = map(_daily_quotes, (stock_selections, index_selections, open_selections))
+    actions, action_evidence = _read_actions(data_dir, snapshot_id, symbol, days, stock, factors, openings, evenings,
+                                             witnessed)
+    sample = _common_sample(preset, days, evenings, (stock, stock_revisions), (index, index_revisions),
+                            (factors, factor_revisions), action_evidence, witnessed)
     covered = {item["series"] for item in snapshot["scope"]
                if item["symbol"] == symbol and item["start"] <= start and item["end"] >= end}
     entitlement_scope = {

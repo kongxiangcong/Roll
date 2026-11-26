@@ -360,6 +360,11 @@ def economic_action_gap(bar, factors, actions):
     if any((action.cash_per_share and not action.payment_date)
            or (action.shares_per_share and not action.listing_date) for action in actions):
         return "ENTITLEMENT_SETTLEMENT_DATE_MISSING"
+    return economic_terms_gap(bar, factors, actions)
+
+
+def economic_terms_gap(bar, factors, actions):
+    """Verify ex-date inputs shared by economic returns and entitlement accounting."""
     if not factors:
         if actions or bar.get("pre_close_basis") == "fuyao_adjustment_factor":
             return "MISSING_ADJUSTMENT_FACTOR"

@@ -16,7 +16,7 @@ INSTRUCTIONS = """只用本次冻结的江西铜业 E0/E1 开发实验输入回�
 用 evidence_refs 引用 evidence 的确切键，结合模拟成交、信号或区段说明差异；有对应依据时至少引用一项。
 区分市场条件直接拦截与后续现金持仓分化，说明费用、最大回撤和相对两个基准的表现是否支持判断。
 在 uncertainties 说明样本、重建口径或差异集中等限制，在 gaps 说明缺少的证据及其影响。
-coverage 有路径或输入范围缺口时须记录在 gaps。gaps 的 evidence_refs 只填关联的已知证据，确实无可用引用时填空列表。
+coverage 有路径、输入范围或对照缺口时须记录在 gaps。gaps 的 evidence_refs 只填关联的已知证据，确实无可用引用时填空列表。
 公开证据列出部分可定位记录，evidence_coverage 给出完整记录数与本次提供数。避免用摘录推算整体结果。
 记录内的关联键用于在完整回执中定位，只有 evidence 的顶层键是本次可引述的证据。
 说明中的实验数值只通过 metrics 引述；日期可通过 evidence_refs 定位。
@@ -190,10 +190,10 @@ def _public_evidence(receipt):
     for ref, gap in gaps.items():
         key = (gap.get("feature"), gap["phase"], gap["reason"], tuple(gap.get("paths", ())))
         groups.setdefault(key, []).append((ref, gap))
-    representatives = [(rows[0][0], {**_select(rows[0][1], "date", "feature", "phase", "reason", "paths",
-                                               "observation_quality", "affected_metrics"),
+    representatives = [(rows[0][0], {**_select(rows[0][1], "date", "observation_date", "feature", "phase", "reason", "paths",
+                                               "observation_quality", "affected_metrics", "required_evidence"),
                                       "similar_records": len(rows)}) for rows in groups.values()]
-    representatives.sort(key=lambda pair: pair[1]["phase"] == "signal_coverage")
+    representatives.sort(key=lambda pair: (pair[1]["phase"] != "comparison", pair[1]["phase"] == "signal_coverage"))
     add("gaps", len(gaps), dict(representatives[:18]))
     return evidence, counts
 
@@ -250,6 +250,7 @@ def public_development_input(manifest, receipt):
             **_select(opportunities, "nominal_signal_days", "common_evaluable_days", "coverage_loss_days",
                       "coverage_losses_by_reason", "warmup_days_by_feature"),
             "path_gap_count": len(coverage["path_gaps"]), "input_scope_gaps": coverage["input_scope_gaps"],
+            "comparison_gap_count": sum(gap["phase"] == "comparison" for gap in attribution.get("gaps", {}).values()),
         },
         "opportunities": {
             **_select(opportunities, "evaluable_buy_candidates", "buy_candidates_blocked_by_coverage"),
@@ -272,8 +273,12 @@ def public_development_input(manifest, receipt):
     }
 
 
-def _known_gaps(public):
+def _path_or_scope_gaps(public):
     return bool(public["coverage"]["path_gap_count"] or public["coverage"]["input_scope_gaps"])
+
+
+def _comparison_gaps(public):
+    return {ref: item for ref, item in public["evidence"].items() if item.get("phase") == "comparison"}
 
 
 def offline_interpretation(public):
@@ -285,7 +290,12 @@ def offline_interpretation(public):
         "required_evidence": "缺口日期的估值、撮合或权益依据",
         "evidence_refs": [ref for ref, item in public["evidence"].items()
                           if item.get("phase") in ("valuation", "execution", "entitlement", "decision")],
-    }] if _known_gaps(public) else []
+    }] if _path_or_scope_gaps(public) else []
+    gaps.extend({
+        "reason": "冻结回执中没有可供对照的模拟成交。",
+        "required_evidence": item.get("required_evidence", "开发窗口内至少一笔可核对的模拟成交。"),
+        "evidence_refs": [ref],
+    } for ref, item in _comparison_gaps(public).items())
     return {
         "claims": [{
             "interpretation": "两条模拟路径的交易费用见引述指标。",
@@ -312,8 +322,8 @@ def prepare_development_report(result, attempt, public):
     reply = DevelopmentReply.model_validate(result, strict=True).model_dump()
     if not reply["claims"] and not reply["gaps"]:
         raise ValueError("开发解读须提供有冻结依据的结论或证据缺口")
-    if _known_gaps(public) and not reply["gaps"]:
-        raise ValueError("开发解读须说明冻结回执中的路径或输入范围缺口")
+    if (_path_or_scope_gaps(public) or _comparison_gaps(public)) and not reply["gaps"]:
+        raise ValueError("开发解读须说明冻结回执中的证据缺口")
     if any(not text.strip() for text in (*reply["uncertainties"], *reply["follow_up"])):
         raise ValueError("研究局限和后续线索须有明确说明")
     located = set(public["evidence"])

@@ -9,7 +9,7 @@ import pytest
 
 from roll.v3.storage import sessions
 from test_v3_codex_research import install_cli
-from test_v3_development_inputs import PRESET, load_snapshot, observation
+from test_v3_development_inputs import PRESET, command, load_snapshot, observation
 from test_v3_development_replay import _quotes
 
 
@@ -129,6 +129,70 @@ def test_uncomputed_development_receipts_skip_the_assistant_on_start_and_retry(t
             assert "report" not in attempt
         assert retry["attempt_id"] != first["attempt_id"]
     assert not marker.exists()
+
+
+def test_development_executor_cannot_change_the_frozen_metric_used_to_check_its_reply(tmp_path, monkeypatch):
+    from roll.v3 import harness_settings
+    from roll.v3.development_interpretation import offline_interpretation
+
+    def executor(public):
+        public["metrics"]["metric:e0:costs"] = "999.99"
+        return offline_interpretation(public)
+
+    snapshot = development_snapshot(tmp_path)
+    monkeypatch.setattr(harness_settings, "select_harness", lambda *_: executor)
+    attempt = command(tmp_path, "research", "task", "development", "--preset", PRESET, "--snapshot", snapshot)
+
+    assert attempt["status"] == "failed"
+    assert "指标数值与冻结回执不符" in attempt["error"]
+    assert command(tmp_path, "research", "task", "attempt", attempt["attempt_id"]) == attempt
+
+
+def test_interpretation_requires_and_cites_the_absence_of_comparable_fills(tmp_path, monkeypatch):
+    from roll.v3 import harness_settings
+    from roll.v3.development_interpretation import offline_interpretation
+
+    def omit_gap(public):
+        return {**offline_interpretation(public), "gaps": []}
+
+    start = list(sessions("2023-01-03", "2023-12-29"))[-65]
+    days, rows = _quotes(start)
+    rows[3 * 59]["payload"]["close"] = "9"
+    rows = [row for row in rows if row["symbol"] != "000300.SH" or row["trade_date"] < days[60]]
+    snapshot = load_snapshot(tmp_path, rows)
+    with monkeypatch.context() as patch:
+        patch.setattr(harness_settings, "select_harness", lambda *_: omit_gap)
+        attempt = command(tmp_path, "research", "task", "development", "--preset", PRESET, "--snapshot", snapshot)
+
+    assert attempt["status"] == "failed"
+    assert "证据缺口" in attempt["error"]
+    retry = command(tmp_path, "research", "task", "retry", attempt["task_id"], "--executor", "offline")
+    assert retry["status"] == "report_ready"
+    assert retry["report"]["gaps"][0]["evidence_refs"] == ["gap:comparison:no_fills"]
+
+
+def test_development_reports_quality_loss_without_echoing_imported_quality_text(tmp_path, monkeypatch):
+    from roll.v3 import harness_settings
+    from roll.v3.development_interpretation import offline_interpretation
+
+    captured = []
+
+    def executor(public):
+        captured.append(public)
+        return offline_interpretation(public)
+
+    days, rows = _quotes(list(sessions("2023-01-03", "2023-12-29"))[-75])
+    marker = "private-unstructured-quality-text"
+    rows[3 * 65 + 1]["quality"] = marker
+    snapshot = load_snapshot(tmp_path, rows)
+    monkeypatch.setattr(harness_settings, "select_harness", lambda *_: executor)
+    attempt = command(tmp_path, "research", "task", "development", "--preset", PRESET, "--snapshot", snapshot)
+
+    assert attempt["status"] == "report_ready", attempt
+    public, = captured
+    assert marker not in json.dumps(public)
+    assert public["coverage"]["coverage_losses_by_reason"]["market:unusable"] == 1
+    assert public["evidence"][f"coverage:{days[65]}:market:unusable"]["reason"] == "unusable"
 
 
 @pytest.mark.parametrize("outcome", ["failed", "timed_out", "cancelled", "invalid_response"])
