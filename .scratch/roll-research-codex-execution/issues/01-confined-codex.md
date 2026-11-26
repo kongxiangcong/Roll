@@ -2,6 +2,10 @@
 
 Status: ready-for-agent
 
+Resolution: completed
+
+Closed: 2026-11-26
+
 Blocked by: 无，可直接开始
 
 ## What to build

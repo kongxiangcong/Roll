@@ -2,6 +2,10 @@
 
 Status: ready-for-agent
 
+Resolution: completed
+
+Closed: 2026-11-26
+
 ## Problem Statement
 
 研究者已经能为一只股票冻结公开材料、重读证据缺口并按版本发布研究档案。阶段 01 的离线执行桩能证明这条流程可重放，但要用真实助手回答问题，研究者仍需把材料交给另一个程序，再把回答带回 Roll。他很难核对助手实际看到了什么、失败后该补材料还是重跑，以及正在审阅的判断究竟来自哪次执行。Roll 的本地 SQLite 同时存有账户、成交与风险预算，直接在工作目录启动助手也会带来额外的读取权限。
@@ -57,3 +61,7 @@ Status: ready-for-agent
 ## Further Notes
 
 阶段 03 可将 Roll 已计算的开发实验回执作为冻结公开输入，复用本轮的单次执行和按尝试读取结果的路径。本阶段以公开材料完成一次真实个股研究即可验收。[阶段 02 设计](../../docs/design/roll-v3-research-pipeline/02-codex-execution.md) · [执行隔离评审](../../docs/design/roll-v3-research-pipeline/roll_v3_harness_feasibility.md) · [阶段 01 规格](../roll-research-offline-cli/spec.md) · [研究编排决策](../../docs/adr/0006-roll-orchestrates-research-and-decisions.md)
+
+## Comments
+
+2026-11-26，三张实施票均已验收。复审修复提交 `d87b9d6` 通过全部 149 项后端测试。Ubuntu 目标机上的真实 Codex 尝试 `attempt-753e9b8687d245628953e400faaed404` 返回待审草稿。发布在 M0a 副本中进行，生效计划按观测 15053 核对经营现金流阈值，持续性问题保留为人工研究事项。[权限探针](issues/01-confined-codex.md) · [停止与恢复](issues/02-lifecycle.md) · [真实研究及复审后验收](issues/03-live-acceptance.md)
