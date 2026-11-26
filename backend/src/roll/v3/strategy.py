@@ -491,6 +491,11 @@ def replay_signals(data_dir, version, snapshot_id, *, symbol, start, end, regist
     symbol = symbol.upper()
     strategy = _strategy(data_dir, version, symbol, as_of=registered_at)
     snapshot = get_snapshot(data_dir, snapshot_id)
+    return replay_frozen_signals(data_dir, strategy, snapshot, symbol=symbol, start=start, end=end)
+
+
+def replay_frozen_signals(data_dir, strategy, snapshot, *, symbol, start, end):
+    """Use the same historical signal calculation for an in-memory development variant."""
     slow = strategy["parameters"]["slow"]
     earliest = _bars_start(snapshot, symbol, start)
     start, end = _date_window(start, end)

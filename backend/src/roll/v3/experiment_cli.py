@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-from roll.v3.experiment import read_experiment, run_experiment, verify_experiment
+from roll.v3.experiment import development_robustness, read_experiment, run_experiment, verify_experiment
 
 
 def register_experiment_commands(commands):
@@ -28,6 +28,12 @@ def register_experiment_commands(commands):
     verify.add_argument("run_id", metavar="RUN_OR_REPORT_ID")
     verify.set_defaults(handler=_verify)
 
+    robustness = actions.add_parser("robustness", help="仅在开发窗口比较参数、成本和市场状态")
+    robustness.add_argument("run_id", metavar="RUN_OR_REPORT_ID")
+    robustness.add_argument("--parameters", nargs=2, action="append", type=int, default=[], metavar=("FAST", "SLOW"))
+    robustness.add_argument("--cost-multiplier", default="2")
+    robustness.set_defaults(handler=_robustness)
+
 
 def _run(args, data_dir):
     initial = json.loads(args.initial.read_text(encoding="utf-8"), parse_float=str) if args.initial else None
@@ -43,3 +49,9 @@ def _show(args, data_dir):
 
 def _verify(args, data_dir):
     return verify_experiment(data_dir, args.run_id)
+
+
+
+def _robustness(args, data_dir):
+    return development_robustness(data_dir, args.run_id,
+                                  parameters=args.parameters, cost_multiplier=args.cost_multiplier)

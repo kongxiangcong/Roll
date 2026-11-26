@@ -62,11 +62,11 @@ def row(day, series, time, payload, **extra):
             "payload": payload, **extra}
 
 
-def load(data_dir, rows, start, end, at):
+def load(data_dir, rows, start, end, at, *, symbols=("600362.SH",)):
     incoming = data_dir / "fixture-market.json"
     incoming.write_text(json.dumps(rows), encoding="utf-8")
     command(data_dir, "market", "import", str(incoming))
-    return command(data_dir, "market", "freeze", "600362.SH", "--start", start, "--end", end,
+    return command(data_dir, "market", "freeze", *symbols, "--start", start, "--end", end,
                    "--series", "daily_bar", "--series", "daily_open",
                    "--series", "corporate_action", "--series", "adjustment_factor",
                    "--as-of", at)["snapshot_id"]
@@ -156,3 +156,30 @@ def test_experiment_distinguishes_opening_gaps_from_suspension_and_counts_matchi
     assert by_day["2024-01-04"]["paths"]["no_active_trading"]["account"]["cash"] == "2000"
     assert result["windows"]["acceptance"]["paths"]["trend"]["total_return"] is None
     assert result["windows"]["acceptance"]["paths"]["buy_and_hold"]["total_return"] is not None
+
+
+def test_development_robustness_preserves_the_frozen_run_and_reads_no_acceptance_sessions(tmp_path):
+    rows, start, end, at = fixture(tmp_path)
+    rows = [item for item in rows if (item["trade_date"], item["series"]) != ("2024-01-02", "daily_open")]
+    benchmark_days = list(sessions(start, "2020-02-15"))[:21]
+    rows.extend(row(day, "daily_bar", "15:05", {"close": index + 100}, symbol="000300.SH")
+                for index, day in enumerate(benchmark_days))
+    snapshot = load(tmp_path, rows, start, end, at, symbols=("600362.SH", "000300.SH"))
+    version = command(tmp_path, "strategy", "freeze", "--fast", "1", "--slow", "2",
+                      "--acceptance-end", end, "--at", at)["strategy"]["version"]
+    result = command(tmp_path, "experiment", "run", version, snapshot, "--at", at)
+    original = command(tmp_path, "strategy", "show", version, "--as-of", at)
+    assert any(gap["date"] == "2024-01-02" for gap in result["coverage"]["path_gaps"])
+
+    report = command(tmp_path, "experiment", "robustness", result["run_id"], "--parameters", "1", "3")
+    assert report["scope"] == {"start": "2020-01-02", "end": "2023-12-29"}
+    assert report["source_experiment"] == result["report_id"]
+    assert report["use"] == "development_descriptive_stress"
+    assert report["scenarios"]["baseline"]["paths"] == result["windows"]["development"]["paths"]
+    assert report["scenarios"]["higher-costs"]["cost_multiplier"] == "2"
+    assert report["scenarios"]["sma-1-3"]["parameters"] == {"fast": 1, "slow": 3}
+    assert all(scenario["path_gaps"] == [] for scenario in report["scenarios"].values())
+    assert report["market_regimes"]["above_ma20"]["trend"]["days"] == 2
+    assert report["market_regimes"]["unknown"]["trend"]["days"] == 967
+    assert command(tmp_path, "strategy", "show", version, "--as-of", at) == original
+    assert command(tmp_path, "experiment", "show", result["report_id"]) == result

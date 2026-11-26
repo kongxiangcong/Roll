@@ -1,5 +1,6 @@
 """Replay a frozen trend candidate and its two continuous control accounts."""
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
+from copy import deepcopy
 from dataclasses import asdict, dataclass, field, replace
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
@@ -17,8 +18,9 @@ from roll.v3.execution import EXECUTION_RULES_VERSION, ExecutionIntent, Executio
 from roll.v3.market import (
     RECONSTRUCTED_RESEARCH, STRICT_HISTORICAL_AS_OF, get_snapshot, read_snapshot, snapshot_windows, utc_timestamp,
 )
+from roll.v3.market_research import DEFAULT_BENCHMARK
 from roll.v3.storage import database, ensure_schema, json_text, session_time, sessions
-from roll.v3.strategy import StrategyRegistry, replay_signals
+from roll.v3.strategy import StrategyRegistry, replay_frozen_signals, replay_signals
 
 
 EXPERIMENT_VERSION = "continuous-trend-experiment-v1"
@@ -121,10 +123,11 @@ def _configuration(entry, snapshot, initial, replay, research_ref):
     }
 
 
-def _saved_run(data_dir, reference):
+def _saved_run(data_dir, reference, *, include_report=True):
     with database(data_dir) as db:
         ensure_schema(db, _SCHEMA)
-        row = db.execute("SELECT * FROM experiment_run WHERE run_id=? OR report_id=?",
+        columns = "*" if include_report else "run_id, configuration, report_id"
+        row = db.execute(f"SELECT {columns} FROM experiment_run WHERE run_id=? OR report_id=?",
                          (reference, reference)).fetchone()
     if row is None:
         raise ValueError(f"没有实验运行 {reference}")
@@ -223,6 +226,88 @@ def verify_experiment(data_dir, run_id):
     }
 
 
+def development_robustness(data_dir, run_id, *, parameters=(), cost_multiplier=2):
+    """Compare parameter and cost scenarios using only the source experiment's development window."""
+    row = _saved_run(data_dir, run_id, include_report=False)
+    if row["report_id"] is None:
+        raise ValueError("鲁棒性比较需要已完成的冻结实验")
+    source = json.loads(row["configuration"])
+    if source["experiment_version"] != EXPERIMENT_VERSION:
+        raise ValueError("当前回测版本无法重建该实验的开发窗口")
+    params = source["strategy"]["parameters"]
+    multiplier = _number(cost_multiplier)
+    if multiplier is None or multiplier <= ZERO:
+        raise ValueError("成本倍数须为有限正数")
+    variants = {"baseline": (params, Decimal(1)), "higher-costs": (params, multiplier)}
+    for fast, slow in parameters:
+        if not 0 < fast < slow:
+            raise ValueError("均线窗口须满足 0 < fast < slow")
+        variants[f"sma-{fast}-{slow}"] = ({"fast": fast, "slow": slow}, Decimal(1))
+
+    scope = source["protocol"]["windows"]["development"]
+    market = _market_inputs(data_dir, source, end=scope["end"])
+    exposure = {"independent": False, "use": "comparison_only"}
+    scenarios = {}
+    with TemporaryDirectory(prefix="roll-development-") as directory:
+        for name, (values, cost) in variants.items():
+            config = deepcopy(source)
+            config["replay_only"] = True
+            config["strategy"]["parameters"] = values
+            execution = config["rules"]["execution_parameters"]
+            for key in ("commission_rate", "minimum_commission", "slippage_rate"):
+                execution[key] = str(Decimal(execution[key]) * cost)
+            scenario_market = market
+            if values != params and market["days"]:
+                signals = replay_frozen_signals(
+                    data_dir, config["strategy"], source["market_snapshot"], symbol=source["symbol"],
+                    start=market["days"][0], end=market["days"][-1],
+                )
+                scenario_market = {**market, "signals": {item["trade_date"]: item for item in signals}}
+            with database(Path(directory), write=True) as db:
+                report = _replay(Path(directory), db, f"development:{name}", config, exposure, scenario_market)
+            scenarios[name] = {
+                "parameters": values, "cost_multiplier": str(cost),
+                "paths": report["windows"]["development"]["paths"], "path_gaps": report["coverage"]["path_gaps"],
+            }
+            if name == "baseline":
+                regimes = _development_regimes(data_dir, source["market_snapshot"]["snapshot_id"], report["sessions"])
+    return {
+        "source_experiment": row["report_id"], "scope": scope, "use": "development_descriptive_stress",
+        "scenarios": scenarios,
+        "cost_basis": "按倍数调整佣金、最低佣金和滑点，法定交易费用沿用原规则。",
+        "regime_basis": "按前一交易日已知沪深 300 收盘相对于最近 20 个收盘均值分组。",
+        "market_regimes": regimes,
+    }
+
+
+def _development_regimes(data_dir, snapshot_id, trace):
+    benchmark = snapshot_windows(data_dir, snapshot_id, symbol=DEFAULT_BENCHMARK,
+                                 cutoffs={item["date"]: session_time(item["date"], 15, 5) for item in trace})
+    history = deque(maxlen=20)
+    previous = {}
+    groups = defaultdict(lambda: defaultdict(list))
+    for item in trace:
+        state = "unknown"
+        if len(history) == 20:
+            state = "above_ma20" if history[-1] > sum(history) / len(history) else "at_or_below_ma20"
+        for path, detail in item["paths"].items():
+            value = _number(detail["valuation"]["nav"]) if detail["valuation"] else None
+            if value is not None and (prior := previous.get(path)):
+                groups[state][path].append(value / prior - 1)
+            previous[path] = value
+        bar = benchmark[item["date"]]
+        close = _price(bar["payload"].get("close")) if bar else None
+        if close is None:
+            history.clear()
+        else:
+            history.append(close)
+    return {
+        state: {path: {"days": len(values), "average_daily_return": str(sum(values) / len(values))}
+                for path, values in paths.items()}
+        for state, paths in groups.items()
+    }
+
+
 def _action_phase(data_dir, db, scope, at, previous_cutoff, previous):
     record = read_snapshot(data_dir, series="corporate_action", cutoff=at, db=db, **scope)
     visible = {}
@@ -290,11 +375,12 @@ def _economic_action_gap(bar, factors, actions):
     return None
 
 
-def _market_inputs(data_dir, configuration):
+def _market_inputs(data_dir, configuration, *, end=None):
     snapshot = configuration["market_snapshot"]
     symbol, snapshot_id = configuration["symbol"], snapshot["snapshot_id"]
     windows = configuration["protocol"]["windows"]
-    start, end = windows["development"]["start"], windows["acceptance"]["end"]
+    start = windows["development"]["start"]
+    end = end or windows["acceptance"]["end"]
     days = list(sessions(start, min(end, LAST_NOTICE_DAY.isoformat())))
     market = {"days": days, "gaps": [], "opens": {}, "closes": {}, "actions": {}, "signals": {}}
     covered = {item["series"] for item in snapshot["scope"]
