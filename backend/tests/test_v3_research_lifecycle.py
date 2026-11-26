@@ -260,3 +260,20 @@ def test_pre_lock_pending_delivery_can_still_run_the_injected_executor(tmp_path,
     receipt = execute_attempt(tmp_path, legacy["attempt_id"], executor=lambda manifest: {"gaps": [gap]})
     assert receipt["status"] == "blocked" and receipt["gaps"] == [gap]
     assert json.loads(cli(tmp_path, 'research', 'task', 'attempt', legacy["attempt_id"]).stdout) == receipt
+
+
+def test_unavailable_lock_directory_records_failed_start_and_allows_retry(tmp_path, snapshot):
+    from test_v3_research_tasks import task_cli
+
+    locks = tmp_path / "research-attempts" / "locks"
+    locks.parent.mkdir()
+    locks.touch()
+    report = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    failed = start(tmp_path, snapshot, "--executor", "codex", "--material", report)
+    assert failed["status"] == "failed" and failed["failure_kind"] == "configuration"
+    assert "运行锁" in failed["error"] and failed["draft_version"] is None
+    assert task_cli(tmp_path, "attempt", failed["attempt_id"]) == failed
+    locks.unlink()
+    retry = task_cli(tmp_path, "retry", failed["task_id"])
+    assert retry["status"] == "draft_ready" and retry["manifest_sha256"] == failed["manifest_sha256"]
+    assert task_cli(tmp_path, "show", failed["task_id"])["attempts"] == [failed, retry]

@@ -148,3 +148,105 @@ Path(sys.argv[sys.argv.index("--output-last-message")+1]).write_text(json.dumps(
     row, = public["market_observations"]
     assert row["trade_date"] == "2025-07-21" and row["payload"]["close"] == "21.5"
     assert f"seq={row['seq']}" in public["evidence"][0]["locator"]
+
+
+def test_risk_field_requires_evidence_content_in_this_prompt(tmp_path, snapshot, monkeypatch):
+    from datetime import UTC, datetime, timedelta
+    from test_v3_research import _write_draft, research_cli
+
+    now = datetime.now(UTC)
+    path = _write_draft(tmp_path, "old", (now - timedelta(days=1)).isoformat(),
+                        (now + timedelta(days=30)).isoformat())
+    research_cli(tmp_path, "draft", "600362.SH", str(path))
+    published = research_cli(tmp_path, "publish", "600362.SH", "old", "--reviewer", "研究者")
+    report = material_file(tmp_path, "新季报", excerpt="经营活动现金流量净额为正。")
+    reply = """
+draft["fundamental_gate"] = "pass"
+draft["evidence_refs"].append("quarterly-report")
+draft["constraint_basis"]["fundamental_gate"] = {"evidence_refs": [basis_ref], "rationale": "经营现金流量净额为正"}
+Path(sys.argv[sys.argv.index("--output-last-message")+1]).write_text(json.dumps({"draft":draft, "gaps":[]}))
+"""
+    install_cli(tmp_path, monkeypatch, FAKE_DRAFT + 'basis_ref = "quarterly-report"\n' + reply)
+    failed = start(tmp_path, snapshot, "--executor", "codex", "--as-of", published["published_at"],
+                   "--material", report)
+    assert failed["status"] == "failed" and failed["failure_kind"] == "invalid_response", failed
+    assert "fundamental_gate" in failed["error"]
+    assert failed["draft_version"] is None
+    install_cli(tmp_path, monkeypatch, FAKE_DRAFT + 'basis_ref = ref\n' + reply)
+    retried = task_cli(tmp_path, "retry", failed["task_id"], "--executor", "codex")
+    assert retried["status"] == "draft_ready", retried
+    public = json.loads((tmp_path / retried["input_ref"]).read_bytes())
+    assert public["metadata_only_refs"] == ["quarterly-report"]
+
+
+def test_delayed_cli_reader_receives_entire_large_announcement(tmp_path, snapshot, monkeypatch):
+    excerpt = "现金流数据。" * 16000 + "尾注"
+    install_cli(tmp_path, monkeypatch, "import time\ntime.sleep(.25)\n" + FAKE_DRAFT + """
+assert public["materials"][0]["content"].endswith("尾注")
+Path(sys.argv[sys.argv.index("--output-last-message")+1]).write_text(json.dumps({"draft":draft,"gaps":[]}))
+""")
+    report = material_file(tmp_path, "季报", excerpt=excerpt)
+    receipt = start(tmp_path, snapshot, "--executor", "codex", "--timeout", "4", "--material", report)
+    assert receipt["status"] == "draft_ready", receipt
+
+
+def test_published_codex_triggers_are_evaluated_against_plan_observations(tmp_path, snapshot, monkeypatch):
+    from datetime import datetime
+    from roll.v3.cli import run
+    from test_v3_account import BASELINE, account
+
+    cutoff = "2026-11-27T16:00:00+08:00"
+
+    class FixedClock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return datetime.fromisoformat(cutoff).astimezone(tz)
+
+    monkeypatch.setattr("roll.v3.storage.datetime", FixedClock)
+    account(tmp_path, monkeypatch, "init", payload=BASELINE)
+    market = tmp_path / "cash-flow.json"
+    market.write_text(json.dumps([{
+        "series": "research_feature", "symbol": "600362.SH", "trade_date": "2026-09-30",
+        "source": "季报", "source_ref": "quarterly#cash-flow", "available_at": cutoff,
+        "received_at": cutoff, "payload": {"feature": "operating_cash_flow_ytd_cny", "value": "-100"},
+    }]))
+    run(["market", "import", str(market)], data_dir=tmp_path)
+    install_cli(tmp_path, monkeypatch, FAKE_DRAFT + """
+common = {"evidence_refs":[ref], "source":"季报", "data_required":"累计经营现金流",
+          "feature":None, "operator":None, "threshold":None}
+numeric = dict(common, feature="operating_cash_flow_ytd_cny", operator="<=", effect="block_new_risk")
+draft["invalidation_triggers"] = [
+    dict(numeric, id="nonpositive", threshold=0, condition="累计经营现金流不高于零"),
+    dict(numeric, id="below-floor", threshold=-200, condition="累计经营现金流不高于负二百"),
+    dict(common, id="revised", effect="pause", condition="是否已披露财报更正"),
+    dict(common, id="annual-review", effect="require_research", condition="复核年度合并口径"),
+]
+Path(sys.argv[sys.argv.index("--output-last-message")+1]).write_text(json.dumps({"draft":draft,"gaps":[]}))
+""")
+    report = material_file(tmp_path, "季报", excerpt="本期累计经营现金流为负一百元。")
+    receipt = start(tmp_path, snapshot, "--as-of", cutoff, "--executor", "codex", "--material", report)
+    assert receipt["status"] == "draft_ready", receipt
+    run(["research", "publish", "600362.SH", receipt["draft_version"], "--reviewer", "研究者"], data_dir=tmp_path)
+    plan, = run(["plan", "--as-of", cutoff, "--preview", "--symbol", "600362.SH"], data_dir=tmp_path)["plans"]
+    triggers = plan["research"]["triggers"]
+    assert [item["status"] for item in triggers] == [True, False, None, None]
+    assert triggers[0]["observation"]["source_ref"] == "quarterly#cash-flow"
+    assert [item for item in plan["reasons"]["P2"] if item.startswith("TRIGGER_")] == [
+        "TRIGGER_FIRED:nonpositive", "TRIGGER_UNKNOWN:revised",
+    ]
+
+
+@pytest.mark.parametrize("operator, threshold, effect", [
+    ("<=", None, "block_new_risk"), (None, 0, "block_new_risk"),
+    ("<=", "亏损", "block_new_risk"), ("<=", 0, "unknown-effect"),
+])
+def test_codex_rejects_incomplete_or_contradictory_triggers(tmp_path, snapshot, monkeypatch, operator, threshold, effect):
+    trigger = {"id": "cash-flow", "feature": "ocf", "operator": operator, "threshold": threshold,
+               "condition": "累计经营现金流小于等于零", "effect": effect,
+               "source": "季报", "data_required": "合并现金流量表", "evidence_refs": []}
+    install_cli(tmp_path, monkeypatch, FAKE_DRAFT + f'draft["invalidation_triggers"] = [{trigger!r}]\n' + """
+Path(sys.argv[sys.argv.index("--output-last-message")+1]).write_text(json.dumps({"draft":draft,"gaps":[]}))
+""")
+    report = material_file(tmp_path, "季报", excerpt="累计经营现金流量净额为正。")
+    receipt = start(tmp_path, snapshot, "--executor", "codex", "--material", report)
+    assert receipt["failure_kind"] == "invalid_response" and receipt["draft_version"] is None

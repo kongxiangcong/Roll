@@ -6,7 +6,7 @@ import sys
 import re
 import shutil
 import sqlite3
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from datetime import timedelta
 from hashlib import sha256
 from pathlib import Path
@@ -69,6 +69,7 @@ def get_attempt(data_dir, attempt_id):
 
 
 ACTIVE = ("running", "cancelling", "pending")
+ACTIVE_PARAMS = ", ".join("?" for _ in ACTIVE)
 
 
 def abandon(db, receipt):
@@ -339,7 +340,7 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
 def ensure_no_other_owner(db, task_id, attempt_id):
     active = db.execute(
         "SELECT attempt_id FROM research_attempt WHERE task_id=? AND attempt_id!=? "
-        "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id, attempt_id),
+        f"AND json_extract(receipt, '$.status') IN ({ACTIVE_PARAMS})", (task_id, attempt_id, *ACTIVE),
     ).fetchone()
     if active:
         raise ValueError(f"研究任务已有进行中的尝试：{active['attempt_id']}")
@@ -447,9 +448,15 @@ def run_claimed(data_dir, receipt, frozen, executor):
 
 def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=None, executor=None):
     attempt_id = "attempt-" + uuid4().hex
-    with attempt_lock(data_dir, attempt_id) as lock:
-        if lock is None:
-            raise ValueError(f"研究尝试 ID 已被占用：{attempt_id}")
+    lock_error = None
+    with ExitStack() as stack:
+        try:
+            lock = stack.enter_context(attempt_lock(data_dir, attempt_id))
+        except OSError as error:
+            lock_error = f"无法创建研究运行锁（errno={error.errno}）"
+        else:
+            if lock is None:
+                raise ValueError(f"研究尝试 ID 已被占用：{attempt_id}")
         with task_database(data_dir, write=True) as db:
             if manifest is None:
                 row = db.execute(
@@ -468,6 +475,8 @@ def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=Non
                     db.execute("INSERT INTO research_task_parent VALUES (?,?)", (task_id, parent_task_id))
             receipt = {"task_id": task_id, "attempt_id": attempt_id, "gaps": [], "draft_version": None}
             prepare_claim(data_dir, receipt, frozen, executor)
+            if lock_error is not None:
+                receipt.update(status="failed", failure_kind="configuration", error=lock_error)
             if parent_task_id is not None:
                 receipt["parent_task_id"] = parent_task_id
             db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
@@ -485,7 +494,7 @@ def retry_task(data_dir, task_id, *, executor=None):
     with task_database(data_dir) as db:
         active = db.execute(
             "SELECT receipt FROM research_attempt WHERE task_id=? "
-            "AND json_extract(receipt, '$.status') IN ('pending','running','cancelling')", (task_id,),
+            f"AND json_extract(receipt, '$.status') IN ({ACTIVE_PARAMS})", (task_id, *ACTIVE),
         ).fetchall()
     for row in active:
         read_receipt(data_dir, json.loads(row["receipt"]))
