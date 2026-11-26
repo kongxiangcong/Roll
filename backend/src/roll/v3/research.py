@@ -55,15 +55,13 @@ def _check_refs(refs, available, field):
     return refs
 
 
-def _publication(draft, reviewer, published_at, effective_at):
+def _validated_draft(draft, *, reviewer=None):
     as_of = _timestamp(draft.get("as_of") or draft["imported_at"])
     if not draft.get("valid_until"):
-        raise ValueError("发布档案须提供 valid_until")
+        raise ValueError("档案须提供 valid_until")
     valid_until = _timestamp(draft["valid_until"])
-    if as_of > published_at:
-        raise ValueError("档案结论时点不可晚于发布时间")
-    if not published_at <= effective_at < valid_until:
-        raise ValueError("档案须在发布时或之后生效，且生效时点须早于有效期截止")
+    if valid_until <= as_of:
+        raise ValueError("档案有效期截止须晚于结论时点")
 
     fundamental_gate = draft.get("fundamental_gate", "unknown")
     thesis_status = draft.get("thesis_status", "unknown")
@@ -105,7 +103,7 @@ def _publication(draft, reviewer, published_at, effective_at):
         if not isinstance(entry, dict):
             raise ValueError(f"constraint_basis.{constraint} 须列出依据")
         refs = _check_refs(entry.get("evidence_refs", []), evidence, f"constraint_basis.{constraint}")
-        basis[constraint] = {"evidence_refs": refs} if refs else {"confirmed_by": reviewer}
+        basis[constraint] = {"evidence_refs": refs} if refs or reviewer is None else {"confirmed_by": reviewer}
         if entry.get("rationale"):
             basis[constraint]["rationale"] = entry["rationale"]
 
@@ -120,11 +118,46 @@ def _publication(draft, reviewer, published_at, effective_at):
         "evidence_refs": evidence_refs,
         "evidence": list(evidence.values()),
         "constraint_basis": basis,
+    }
+
+
+def _publication(draft, reviewer, published_at, effective_at):
+    draft = _validated_draft(draft, reviewer=reviewer)
+    if draft["as_of"] > published_at:
+        raise ValueError("档案结论时点不可晚于发布时间")
+    if not published_at <= effective_at < draft["valid_until"]:
+        raise ValueError("档案须在发布时或之后生效，且生效时点须早于有效期截止")
+    return {
+        **draft,
         "review_status": "published",
         "reviewer": reviewer,
         "published_at": published_at,
         "effective_at": effective_at,
     }
+
+
+def prepare_task_draft(result, receipt, manifest, gaps):
+    draft = {**result, "task_id": receipt["task_id"], "attempt_id": receipt["attempt_id"],
+             "version": receipt["attempt_id"], "gaps": gaps, "imported_at": _timestamp(),
+             "review_status": "draft", "reviewer": None, "published_at": None, "effective_at": None}
+    if draft.get("symbol") != manifest["symbol"]:
+        raise ValueError("草稿标的与任务标的不符")
+    if not draft.get("as_of") or _timestamp(draft["as_of"]) != manifest["as_of"]:
+        raise ValueError("草稿结论时点与任务截止时点不符")
+    draft = _validated_draft(draft)
+    if not draft["evidence_refs"]:
+        raise ValueError("研究草稿须引用本次清单的证据")
+    allowed = [{k: v for k, v in item.items() if k not in ("content", "encoding")}
+               for item in manifest["materials"]]
+    if manifest["dossier"]:
+        allowed.extend(manifest["dossier"]["evidence"])
+    if any(item not in allowed for item in draft["evidence"]):
+        raise ValueError("草稿证据不属于本次清单或来源元数据不符")
+    body = draft.pop("markdown")
+    if not isinstance(body, str) or not body.strip():
+        raise ValueError("研究草稿须提供正文")
+    draft["markdown"] = "---\n" + yaml.safe_dump(draft, allow_unicode=True) + "---\n" + body
+    return draft
 
 
 class ResearchDossiers:
@@ -183,6 +216,12 @@ class ResearchDossiers:
                 SET imported_at = excluded.imported_at, payload = excluded.payload
             """, (symbol, version, imported_at, payload))
         return json.loads(payload)
+
+    def save_task_draft(self, draft, *, db):
+        with self._connect(write=True, db=db) as db:
+            db.execute("INSERT INTO research_draft (symbol, version, imported_at, payload) VALUES (?,?,?,?)",
+                       (draft["symbol"], draft["version"], draft["imported_at"], json_text(draft)))
+        return draft
 
     def draft(self, symbol, version=None):
         with self._connect() as db:

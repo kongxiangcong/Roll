@@ -107,3 +107,130 @@ def test_executor_sees_only_frozen_public_inputs(tmp_path, monkeypatch, snapshot
     assert marker not in json.dumps(seen)
     assert seen[0]["dossier"] is None
     assert seen[0]["materials"][0]["content"] == "经营现金流为正"
+
+
+def test_material_alone_delivers_versioned_draft_without_a_prior_publication(tmp_path, snapshot):
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = start(tmp_path, snapshot, "--material", path)
+    assert receipt["status"] == "draft_ready"
+    task = task_cli(tmp_path, "show", receipt["task_id"])
+    assert task["attempts"] == [task_cli(tmp_path, "attempt", receipt["attempt_id"])]
+    material, = task["manifest"]["materials"]
+    draft = run(["research", "show", SYMBOL, "--draft", "--version", receipt["draft_version"]],
+                data_dir=tmp_path)
+    evidence, = draft["evidence"]
+    assert draft["evidence_refs"] == [material["id"]]
+    assert evidence["locator"] == "第三节"
+    assert evidence["sha256"] == sha256("销售回款增加".encode()).hexdigest()
+    assert draft["task_id"] == receipt["task_id"]
+    assert draft["attempt_id"] == receipt["attempt_id"]
+    assert "销售回款增加" in draft["markdown"]
+
+
+def test_preflight_gap_survives_executor_that_reports_only_other_gaps(tmp_path, snapshot):
+    from roll.v3.research_tasks import run_task
+
+    def executor(manifest):
+        return {"gaps": [{"reason": "缺少对照期", "required_evidence": "上期季报", "blocking": False}]}
+
+    receipt = run_task(tmp_path, SYMBOL, question=QUESTION, as_of=AS_OF, snapshot_id=snapshot,
+                       required_titles=["本期季报"], executor=executor)
+    assert receipt["status"] == "blocked"
+    assert {gap["required_evidence"]: gap["blocking"] for gap in receipt["gaps"]} == {
+        "本期季报": True, "上期季报": False}
+
+
+def test_draft_explains_nonblocking_limitation_on_industry_comparison(tmp_path, snapshot):
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = start(tmp_path, snapshot, "--material", path)
+    draft = run(["research", "show", SYMBOL, "--draft", "--version", receipt["draft_version"]],
+                data_dir=tmp_path)
+    gap, = receipt["gaps"]
+    assert gap["blocking"] is False
+    assert "行业" in gap["reason"]
+    assert draft["gaps"] == [gap]
+
+
+@pytest.mark.parametrize("invalid, reason", [
+    ("symbol", "标的"), ("as_of", "截止时点"), ("received_at", "取得时间"),
+    ("foreign_material", "清单"), ("mutated_locator", "清单"), ("missing_ref", "未登记"),
+    ("trigger_ref", "未登记"), ("empty_evidence", "证据"),
+])
+def test_invalid_executor_draft_leaves_readable_failure(tmp_path, snapshot, invalid, reason):
+    from roll.v3.research_tasks import offline_executor, run_task
+
+    def executor(manifest):
+        if invalid == "mutated_locator":
+            manifest["materials"][0]["locator"] = "伪造章节"
+        result = offline_executor(manifest)
+        draft = result["draft"]
+        if invalid == "symbol":
+            draft["symbol"] = "000001.SZ"
+        if invalid == "as_of":
+            draft["as_of"] = "2025-07-25T00:00:00Z"
+        if invalid == "received_at":
+            draft["evidence"][0]["received_at"] = "2025-07-25T00:00:00Z"
+        if invalid == "foreign_material":
+            draft["evidence"][0]["id"] = "material-from-another-manifest"
+            draft["evidence_refs"] = [draft["evidence"][0]["id"]]
+        if invalid == "missing_ref":
+            draft["evidence_refs"] = ["missing"]
+        if invalid == "trigger_ref":
+            draft["invalidation_triggers"] = [{"evidence_refs": ["missing"]}]
+        if invalid == "empty_evidence":
+            draft.update(evidence=[], evidence_refs=[])
+        return result
+
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = run_task(tmp_path, SYMBOL, question=QUESTION, as_of=AS_OF, snapshot_id=snapshot,
+                       materials=[path], executor=executor)
+    assert receipt["status"] == "failed"
+    assert reason in receipt["error"]
+    assert task_cli(tmp_path, "attempt", receipt["attempt_id"]) == receipt
+    assert receipt["draft_version"] is None
+    assert run(["research", "show", SYMBOL, "--draft"], data_dir=tmp_path) is None
+
+
+def test_failed_receipt_write_rolls_back_draft(tmp_path, snapshot):
+    import sqlite3
+    from roll.v3.research_tasks import offline_executor, run_task
+
+    def executor(manifest):
+        with sqlite3.connect(tmp_path / "roll-v3.sqlite3") as db:
+            db.execute("""
+                CREATE TRIGGER simulate_full_disk BEFORE UPDATE ON research_attempt
+                WHEN json_extract(NEW.receipt, '$.status') = 'draft_ready'
+                BEGIN SELECT RAISE(ABORT, 'simulated full disk'); END
+            """)
+        return offline_executor(manifest)
+
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = run_task(tmp_path, SYMBOL, question=QUESTION, as_of=AS_OF, snapshot_id=snapshot,
+                       materials=[path], executor=executor)
+    assert receipt["status"] == "failed"
+    assert "simulated full disk" in receipt["error"]
+    assert task_cli(tmp_path, "attempt", receipt["attempt_id"]) == receipt
+    assert run(["research", "show", SYMBOL, "--draft"], data_dir=tmp_path) is None
+
+
+@pytest.mark.parametrize("late_failure", [True, False])
+def test_late_callback_preserves_first_committed_result(tmp_path, snapshot, monkeypatch, late_failure):
+    from uuid import UUID
+    from roll.v3 import research_tasks
+
+    ids = iter([UUID(int=1), UUID(int=2)])
+    monkeypatch.setattr(research_tasks, "uuid4", lambda: next(ids))
+    attempt_id = "attempt-" + UUID(int=2).hex
+    first = []
+
+    def slower_executor(manifest):
+        first.append(research_tasks.execute_attempt(tmp_path, attempt_id))
+        if late_failure:
+            raise ValueError("过期执行失败")
+        return {"gaps": [{"blocking": True, "required_evidence": "旧材料", "reason": "迟到回包"}]}
+
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = research_tasks.run_task(tmp_path, SYMBOL, question=QUESTION, as_of=AS_OF,
+                                      snapshot_id=snapshot, materials=[path], executor=slower_executor)
+    assert receipt == first[0] == task_cli(tmp_path, "attempt", attempt_id)
+    assert receipt["status"] == "draft_ready"

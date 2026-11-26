@@ -2,14 +2,15 @@
 import base64
 import json
 from contextlib import contextmanager
+from datetime import timedelta
 from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
 
 from roll.v3.market import utc_timestamp
 from roll.v3.market_research import export_market_research
-from roll.v3.research import ResearchDossiers
-from roll.v3.storage import database, ensure_schema, json_text
+from roll.v3.research import ResearchDossiers, prepare_task_draft
+from roll.v3.storage import database, ensure_schema, instant, json_text
 
 
 _SCHEMA = """
@@ -109,23 +110,79 @@ def freeze_manifest(data_dir, symbol, *, question, snapshot_id, as_of, materials
     }
 
 
-def offline_executor(manifest):
+def preflight_gaps(manifest):
     titles = {item["title"] for item in manifest["materials"]}
-    needed = manifest["required_titles"] or [f'可核对「{manifest["question"]}」的公开公告']
-    return {"gaps": [{"reason": "缺少回答本问题所需的公告原文或可定位摘录",
-                      "required_evidence": title, "blocking": True} for title in needed if title not in titles]}
+    needed = manifest["required_titles"]
+    if not titles and not needed:
+        needed = [f'可核对「{manifest["question"]}」的公开公告']
+    return [{"reason": "缺少回答本问题所需的公告原文或可定位摘录",
+             "required_evidence": title, "blocking": True} for title in needed if title not in titles]
 
 
-def execute_attempt(data_dir, manifest, receipt, *, executor=None):
+def offline_executor(manifest):
+    if preflight_gaps(manifest):
+        return {"gaps": []}
+    gaps = []
+    if any(item["kind"] != "industry_index" for item in manifest["market"]["industry_comparisons"]):
+        gaps.append({"required_evidence": "完整的行业指数行情与成分归属",
+                     "reason": "部分日期缺少行业对照，草稿仅核对公告，无法据此判断相对行业表现",
+                     "blocking": False})
+    evidence = [{k: v for k, v in item.items() if k not in ("content", "encoding")}
+                for item in manifest["materials"]]
+    lines = [f'# {manifest["question"]}', "", "离线执行桩汇集的公开材料，供人工核对。"]
+    for item in manifest["materials"]:
+        lines.extend(["", f'## {item["title"]}（{item["locator"]}）',
+                      item["content"] if item["encoding"] == "utf-8" else "原文件见冻结清单。"])
+    return {"gaps": gaps, "draft": {
+        "symbol": manifest["symbol"], "as_of": manifest["as_of"],
+        "valid_until": (instant(manifest["as_of"]) + timedelta(days=30)).isoformat(),
+        "evidence": evidence, "evidence_refs": [item["id"] for item in evidence],
+        "markdown": "\n".join(lines),
+    }}
+
+
+def execute_attempt(data_dir, attempt_id, *, executor=None):
+    with task_database(data_dir) as db:
+        row = db.execute(
+            "SELECT receipt, manifest FROM research_attempt JOIN research_task USING(task_id) WHERE attempt_id=?",
+            (attempt_id,),
+        ).fetchone()
+    if not row:
+        raise ValueError(f"无此研究尝试：{attempt_id}")
+    receipt = json.loads(row["receipt"])
+    if receipt["status"] != "running":
+        return receipt
+    manifest = json.loads(row["manifest"])
+
+    def commit(completed, draft=None):
+        with task_database(data_dir, write=True) as db:
+            current = db.execute("SELECT receipt FROM research_attempt WHERE attempt_id=?",
+                                 (attempt_id,)).fetchone()
+            stored = json.loads(current["receipt"])
+            if stored["status"] != "running":
+                return stored
+            if draft is not None:
+                ResearchDossiers(data_dir).save_task_draft(draft, db=db)
+            db.execute("UPDATE research_attempt SET receipt=? WHERE attempt_id=?",
+                       (json_text(completed), attempt_id))
+        return completed
+
     try:
-        result = (executor or offline_executor)(manifest)
-        receipt = {**receipt, "status": "blocked", "gaps": result["gaps"]}
+        result = (executor or offline_executor)(json.loads(row["manifest"]))
+        gaps = preflight_gaps(manifest)
+        for gap in result["gaps"]:
+            if (not isinstance(gap.get("blocking"), bool) or not gap.get("reason")
+                    or not gap.get("required_evidence")):
+                raise ValueError("证据缺口须说明所需材料、原因和阻塞性")
+            if gap not in gaps:
+                gaps.append(gap)
+        if any(gap["blocking"] for gap in gaps):
+            return commit({**receipt, "status": "blocked", "gaps": gaps})
+        draft = prepare_task_draft(result["draft"], receipt, manifest, gaps)
+        return commit({**receipt, "status": "draft_ready", "draft_version": draft["version"],
+                       "gaps": gaps}, draft)
     except Exception as error:
-        receipt = {**receipt, "status": "failed", "error": str(error)}
-    with task_database(data_dir, write=True) as db:
-        db.execute("UPDATE research_attempt SET receipt=? WHERE attempt_id=?",
-                   (json_text(receipt), receipt["attempt_id"]))
-    return receipt
+        return commit({**receipt, "status": "failed", "error": str(error)})
 
 
 def start_task(data_dir, manifest, *, executor=None):
@@ -136,7 +193,7 @@ def start_task(data_dir, manifest, *, executor=None):
     with task_database(data_dir, write=True) as db:
         db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, json_text(manifest)))
         db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
-    return execute_attempt(data_dir, manifest, receipt, executor=executor)
+    return execute_attempt(data_dir, attempt_id, executor=executor)
 
 
 def run_task(data_dir, symbol, *, question, snapshot_id, as_of, materials=(), required_titles=(), executor=None):
