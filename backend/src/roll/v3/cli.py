@@ -9,6 +9,7 @@ from roll.config import data_directory
 
 def parser():
     from roll.v3.account_cli import register_account_commands
+    from roll.v3.commitment_cli import register_commitment_commands
     from roll.v3.entitlements import register_entitlement_commands
     from roll.v3.execution_cli import register_execution_commands
     from roll.v3.market_cli import register as register_market
@@ -27,6 +28,7 @@ def parser():
     register_market_research(register_research_commands(commands))
     register_strategy(commands)
     register_plan_commands(commands)
+    register_commitment_commands(commands)
     serve = commands.add_parser("serve", help="打开本地工作台")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8765)
