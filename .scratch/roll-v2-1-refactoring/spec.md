@@ -33,7 +33,7 @@ Status: resolved
 
 ## Implementation Decisions
 
-目录布局、模块职责、SQLite 数据归属及分周装配顺序按已确认的 [Roll v2.1 代码组织方案](../../docs/design/roll_v2_1_code_organization.md)执行。
+目录布局、模块职责、SQLite 数据归属及分周装配顺序按已确认的 [Roll v2.1 代码组织方案](../../docs/design/architecture/roll_v2_1_code_organization.md)执行。
 
 ### 交付与切换
 
@@ -84,7 +84,7 @@ Status: resolved
 
 第二周完成评分表及晴雨表，第三周验证单 ETF 控仓与四档校准，第四周贯通网页、命令行和 WorkBuddy。首周可独立开工。评分表具体数值留至第二周晴雨表实现前冻结。当前交付为实施规格，实际数据覆盖、回测结果和切换完成情况以实施验收记录为准。
 
-本规格综合 2026-11-24 的 Q1–Q21。未被修订的指标细节、初始配置和清理对象见设计原稿，重叠条款按 v2.1 决定执行。[v2.1 评审决定](../../docs/design/roll_v2_1_refactoring_spec.md) · [v2 设计原稿](../../docs/design/roll_v2_refactoring_spec.md)
+本规格综合 2026-11-24 的 Q1–Q21。未被修订的指标细节、初始配置和清理对象见设计原稿，重叠条款按 v2.1 决定执行。[v2.1 评审决定](../../docs/design/architecture/roll_v2_1_refactoring_spec.md) · [v2 设计原稿](../../docs/design/architecture/roll_v2_refactoring_spec.md)
 
 ## 实施与验收记录
 

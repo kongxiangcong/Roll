@@ -88,4 +88,4 @@ uv run --project backend --locked roll account confirm $draft.draft_id opening
 
 v2 从空账本启动，保留 Decimal 账户事件、交易日历、整手与 T+1 规则和历史重建的时点边界。v2 废止 ADR 0003 的 G1–G7、资格审批与资金授权门禁。旧实现及其契约可在本地归档分支 `archive/v0-legacy` 的提交 `eefe2c57` 复查。
 
-[代码组织方案](docs/design/roll_v2_1_code_organization.md) · [v2.1 评审决定](docs/design/roll_v2_1_refactoring_spec.md)
+[代码组织方案](docs/design/architecture/roll_v2_1_code_organization.md) · [v2.1 评审决定](docs/design/architecture/roll_v2_1_refactoring_spec.md)
