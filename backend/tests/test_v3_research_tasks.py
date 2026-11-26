@@ -213,35 +213,42 @@ def test_failed_receipt_write_rolls_back_draft(tmp_path, snapshot):
     assert run(["research", "show", SYMBOL, "--draft"], data_dir=tmp_path) is None
 
 
-@pytest.mark.parametrize("late_result", ["failure", "blocked", "draft"])
-def test_late_callback_preserves_first_committed_result(tmp_path, snapshot, monkeypatch, late_result):
+def test_concurrent_delivery_only_runs_one_executor(tmp_path, snapshot, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Event
     from uuid import UUID
     from roll.v3 import research_tasks
 
     ids = iter([UUID(int=1), UUID(int=2)])
     monkeypatch.setattr(research_tasks, "uuid4", lambda: next(ids))
     attempt_id = "attempt-" + UUID(int=2).hex
-    first = []
+    entered, release = Event(), Event()
+    calls = []
 
-    def slower_executor(manifest):
-        first.append(research_tasks.execute_attempt(tmp_path, attempt_id))
-        if late_result == "draft":
-            result = research_tasks.offline_executor(manifest)
-            result["draft"]["markdown"] = "第二次回包"
-            return result
-        if late_result == "failure":
-            raise ValueError("过期执行失败")
-        return {"gaps": [{"blocking": True, "required_evidence": "旧材料", "reason": "迟到回包"}]}
+    def owner(manifest):
+        entered.set()
+        assert release.wait(5)
+        return research_tasks.offline_executor(manifest)
 
-    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
-    receipt = research_tasks.run_task(tmp_path, SYMBOL, question=QUESTION, as_of=AS_OF,
-                                      snapshot_id=snapshot, materials=[path], executor=slower_executor)
-    assert receipt == first[0] == task_cli(tmp_path, "attempt", attempt_id)
+    def duplicate(manifest):
+        calls.append(True)
+        raise ValueError("重复执行")
+
+    with ThreadPoolExecutor() as pool:
+        path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+        result = pool.submit(research_tasks.run_task, tmp_path, SYMBOL, question=QUESTION,
+                             as_of=AS_OF, snapshot_id=snapshot, materials=[path], executor=owner)
+        assert entered.wait(5)
+        try:
+            duplicate_receipt = research_tasks.execute_attempt(tmp_path, attempt_id, executor=duplicate)
+        finally:
+            release.set()
+    receipt = result.result()
+    assert not calls
+    assert duplicate_receipt["status"] == "running"
     assert receipt["status"] == "draft_ready"
-    draft = run(["research", "show", SYMBOL, "--draft", "--version", receipt["draft_version"]],
-                data_dir=tmp_path)
-    assert "销售回款增加" in draft["markdown"]
-    assert "第二次回包" not in draft["markdown"]
+    assert research_tasks.execute_attempt(tmp_path, attempt_id, executor=duplicate) == receipt
+    assert not calls
 
 
 def test_retry_keeps_frozen_inputs_and_can_publish_earlier_attempt(tmp_path, snapshot):
@@ -373,3 +380,90 @@ def test_plan_history_uses_only_the_reviewed_effective_attempt(tmp_path, snapsho
     assert (before["dossier_version"], before["research"]["status"]) == ("old", "active")
     assert (during["dossier_version"], during["research"]["status"]) == (first["draft_version"], "active")
     assert cli("plan", "--plan-id", original["plan_id"]) == original
+
+def test_ctrl_c_records_interrupted_attempt(tmp_path, snapshot, monkeypatch):
+    from uuid import UUID
+    from roll.v3 import research_tasks
+
+    ids = iter([UUID(int=1), UUID(int=2)])
+    monkeypatch.setattr(research_tasks, "uuid4", lambda: next(ids))
+
+    def interrupt(manifest):
+        raise KeyboardInterrupt
+
+    with pytest.raises(KeyboardInterrupt):
+        research_tasks.run_task(tmp_path, SYMBOL, question=QUESTION, as_of=AS_OF,
+                                snapshot_id=snapshot, executor=interrupt)
+    receipt = task_cli(tmp_path, "attempt", "attempt-" + UUID(int=2).hex)
+    assert receipt["status"] == "interrupted"
+    assert "中断" in receipt["error"]
+    assert receipt["draft_version"] is None
+
+def test_repeated_material_is_frozen_once(tmp_path, snapshot):
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = start(tmp_path, snapshot, "--material", path, "--material", path)
+    assert receipt["status"] == "draft_ready"
+    assert len(task_cli(tmp_path, "show", receipt["task_id"])["manifest"]["materials"]) == 1
+
+def test_stock_close_draft_uses_frozen_quote_without_announcement(tmp_path, snapshot):
+    receipt = start(tmp_path, snapshot, "--question", "最近交易日的收盘价是多少？", "--basis", "stock-close")
+    assert receipt["status"] == "draft_ready"
+    manifest = task_cli(tmp_path, "show", receipt["task_id"])["manifest"]
+    draft = run(["research", "show", SYMBOL, "--draft", "--version", receipt["draft_version"]], data_dir=tmp_path)
+    assert "2025-07-21" in draft["markdown"] and "21.5 CNY/share" in draft["markdown"]
+    evidence, = draft["evidence"]
+    assert evidence["document_id"] == manifest["market"]["reference"]
+    assert draft["evidence_refs"] == [evidence["id"]]
+    assert manifest["basis"] == "stock-close"
+
+def test_industry_comparison_uses_aligned_five_session_return(tmp_path):
+    days = ["2025-07-" + day for day in ("14", "15", "16", "17", "18", "21")]
+    index = "801055.SI"
+    rows = [observation(code, day, 110 if code == SYMBOL and day == days[-1] else 100)
+            for day in days for code in (SYMBOL, index)]
+    rows.append({**observation(SYMBOL, days[0], 100), "series": "industry_membership",
+                 "payload": {"effective_start": days[0], "effective_end": days[-1], "index_symbol": index}})
+    snapshot = import_and_freeze(tmp_path, rows, start=days[0], end=days[-1])
+    receipt = start(tmp_path, snapshot, "--question", "个股近五日相对行业表现如何？", "--basis", "industry-comparison")
+    assert receipt["status"] == "draft_ready"
+    draft = run(["research", "show", SYMBOL, "--draft", "--version", receipt["draft_version"]], data_dir=tmp_path)
+    assert "10.00 个百分点" in draft["markdown"]
+    assert index in draft["markdown"] and days[0] in draft["markdown"] and days[-1] in draft["markdown"]
+    evidence, = draft["evidence"]
+    assert draft["evidence_refs"] == [evidence["id"]]
+    assert evidence["document_id"] == task_cli(tmp_path, "show", receipt["task_id"])["manifest"]["market"]["reference"]
+
+@pytest.mark.parametrize("question", ["是否跑赢行业？", "最近收盘价是多少？"])
+def test_market_wording_prompts_for_precise_basis(tmp_path, snapshot, question):
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    with pytest.raises(ValueError, match="--basis"):
+        start(tmp_path, snapshot, "--question", question, "--material", path)
+
+@pytest.mark.parametrize("basis,dependency", [
+    ("stock-close", "收盘价"), ("industry-comparison", "行业指数"),
+])
+def test_announcement_cannot_replace_required_market_evidence(tmp_path, basis, dependency):
+    quote = observation(SYMBOL, "2025-07-21", 21.5, trading_status="suspended")
+    snapshot = import_and_freeze(tmp_path, [quote], start=quote["trade_date"], end=quote["trade_date"])
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = start(tmp_path, snapshot, "--basis", basis, "--material", path)
+    assert receipt["status"] == "blocked"
+    gap, = receipt["gaps"]
+    assert gap["blocking"] and dependency in gap["required_evidence"]
+    assert receipt["draft_version"] is None
+
+
+def test_executor_cannot_replace_market_citation_with_announcement(tmp_path, snapshot):
+    from roll.v3.research_tasks import run_task, offline_executor
+
+    def executor(manifest):
+        result = offline_executor(manifest)
+        evidence = result["draft"]["evidence"][0]
+        result["draft"].update(evidence=[evidence], evidence_refs=[evidence["id"]])
+        return result
+
+    path = material_file(tmp_path, "季报", excerpt="销售回款增加")
+    receipt = run_task(tmp_path, SYMBOL, question="核对最近收盘价", basis="stock-close", as_of=AS_OF,
+                       snapshot_id=snapshot, materials=[path], executor=executor)
+    assert receipt["status"] == "failed"
+    assert "行情证据" in receipt["error"]

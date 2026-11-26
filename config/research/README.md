@@ -4,6 +4,22 @@
 
 Markdown 开头可用一对 `---` 包围 YAML 元数据。导入普通 Markdown 时，文件名（不含扩展名）作为草稿版本。发布时需要 `valid_until`，结论时点 `as_of` 缺省为导入时间。证据记录使用 `id`、`title`、`source`、`locator` 和 `url` 或 `document_id`，并可记录发行人、披露时间和实际取得时间。取得时间缺省为导入时间。结构化约束可在 `constraint_basis` 下列出支持它的证据 ID 或研究理由，确认人及发布时刻由发布命令写入。
 
+## 离线研究任务
+
+用 `research task run` 固定问题、证据依据、行情快照和带时区的截止时点。下面的 `SNAPSHOT` 和 `AS_OF` 取自本地行情快照与研究截止时间。
+
+```sh
+roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --question "核对经营现金流变化原因" --basis announcement --require "季报" --material report.json
+roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --question "最近交易日的收盘价是多少？" --basis stock-close
+roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --question "近五日个股相对行业的收益率差是多少？" --basis industry-comparison
+```
+
+公告问题默认使用 `announcement`。每份 `--material` JSON 填写 `title`、`source`、`locator`、`url` 或 `document_id`、实际取得时间 `received_at`，以及原文摘录 `excerpt` 或本地文件路径 `file`。可重复传入 `--material` 和必要公告标题 `--require`。
+
+`stock-close` 核对快照覆盖范围内最近交易日的有效收盘价。`industry-comparison` 取该交易日结束的五个交易日收益率差，需要已确认的行业归属、行业指数和个股连续六个有效收盘价。草稿给出实际区间、数值和冻结行情引用。行情材料取得时间须在任务截止时点以内。缺少所选依据时按尝试返回阻塞缺口。
+
+用 `research task show 任务ID` 重读冻结清单，用 `research task attempt 尝试ID` 重读结果。`research task supplement 任务ID --material report.json` 或 `--snapshot 新快照ID` 生成关联任务。`research task retry 任务ID` 复用冻结清单，用新回执的版本按 `research show 标的 --draft --version 版本` 审阅。
+
 ## 江西铜业示例
 
 两份草稿基于 2026 年 11 月 26 日核对的公开材料。初版提出盈利兑现假设，刷新版纳入实际回购进展。证据表保存披露日期与材料核对时间，发布命令另行记录实际发布时间。两份示例的有效期分别截至北京时间 2026 年 12 月 1 日和 12 月 4 日零时。

@@ -136,7 +136,11 @@ def _publication(draft, reviewer, published_at, effective_at):
     }
 
 
-def prepare_task_draft(result, receipt, manifest, gaps):
+def material_evidence(item):
+    return {key: value for key, value in item.items() if key not in ("content", "encoding")}
+
+
+def prepare_task_draft(result, receipt, manifest, gaps, market_finding=None):
     draft = {**result, "task_id": receipt["task_id"], "attempt_id": receipt["attempt_id"],
              "version": receipt["attempt_id"], "gaps": gaps, "imported_at": _timestamp(),
              "review_status": "draft", "reviewer": None, "published_at": None, "effective_at": None}
@@ -147,8 +151,12 @@ def prepare_task_draft(result, receipt, manifest, gaps):
     draft = _validated_draft(draft)
     if not draft["evidence_refs"]:
         raise ValueError("研究草稿须引用本次清单的证据")
-    allowed = [{k: v for k, v in item.items() if k not in ("content", "encoding")}
-               for item in manifest["materials"]]
+    allowed = [material_evidence(item) for item in manifest["materials"]]
+    if market_finding:
+        evidence, _ = market_finding
+        allowed.append(evidence)
+        if evidence["id"] not in draft["evidence_refs"]:
+            raise ValueError("草稿须引用本问题所需的冻结行情证据")
     if manifest["dossier"]:
         allowed.extend(manifest["dossier"]["evidence"])
     if any(item not in allowed for item in draft["evidence"]):
