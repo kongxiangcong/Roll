@@ -145,6 +145,11 @@ def freeze_manifest(data_dir, symbol, *, question, snapshot_id, as_of, materials
 
 
 def market_finding(manifest):
+    finding = market_observations(manifest)
+    return finding[:2] if finding else None
+
+
+def market_observations(manifest):
     if manifest.get("basis", "announcement") == "announcement":
         return None
     market = manifest["market"]
@@ -192,7 +197,7 @@ def market_citation(manifest, locator, rows, summary):
     evidence = {"id": reference + "#" + basis, "title": BASIS[basis], "locator": locator,
                 "source": "、".join(sorted({row["source"] for row in rows})), "document_id": reference,
                 "received_at": received_at}
-    return evidence, summary
+    return evidence, summary, rows
 
 
 def preflight_gaps(manifest):
@@ -372,7 +377,8 @@ def register_task_commands(research):
     run.add_argument("--basis", choices=BASIS, help="问题依赖的公开证据类型")
     run.add_argument("--require", action="append", default=[], help="回答问题所需的公告标题，可重复")
     run.set_defaults(handler=lambda a, d: run_task(d, a.symbol, question=a.question,
-                     snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require, basis=a.basis, executor=selected(a)))
+                     snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require,
+                     basis=a.basis, executor=selected(a)))
     retry = commands.add_parser("retry", help="用原任务冻结的公开输入执行新尝试")
     retry.add_argument("task_id")
     retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id, executor=selected(a)))
