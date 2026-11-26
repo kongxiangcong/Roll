@@ -1,4 +1,5 @@
 import json
+import pytest
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -116,3 +117,89 @@ retry_task(sys.argv[1], sys.argv[2], executor=wait)
     assert interrupted['termination_reason'] == 'interrupted' and interrupted['draft_version'] is None
     assert visible['manifest'] == recovered['manifest']
     assert len({item['manifest_sha256'] for item in [original, interrupted, retried]}) == 1
+
+
+@pytest.mark.skipif(sys.platform != "linux", reason="Linux Codex subprocess acceptance")
+@pytest.mark.parametrize("reason", ["timed_out", "cancelled", "interrupted", "signal"])
+def test_stop_reaps_all_codex_descendants_and_releases_the_task(tmp_path, snapshot, monkeypatch, reason):
+    import os
+    from pathlib import Path
+    import signal
+    import time
+
+    original = start(tmp_path, snapshot, '--material', material_file(tmp_path, '季报', excerpt='经营现金流增加'))
+    task_id = original['task_id']
+    marker = tmp_path / 'pids.json'
+    fake = tmp_path / 'codex'
+    # A descendant escapes the original process group. The OS probe checks for zombies too.
+    fake.write_text(f"""#!{sys.executable}
+import json, os, pathlib, subprocess, sys, time
+if '--version' in sys.argv:
+    print('codex-cli 0.172.0')
+    sys.exit()
+if 'debug' in sys.argv:
+    print(json.dumps({{'models': [{{'slug': 'gpt-6.2-sol'}}]}}))
+    sys.exit()
+assert 'exec' in sys.argv
+child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'], start_new_session=True)
+pathlib.Path({str(marker)!r}).write_text(json.dumps([os.getpid(), child.pid]))
+if {reason == 'signal'!r}:
+    while not pathlib.Path({str(tmp_path / 'exit-now')!r}).exists():
+        time.sleep(.01)
+    os.kill(os.getpid(), 9)
+time.sleep(30)
+""")
+    fake.chmod(0o700)
+    monkeypatch.setenv('PATH', str(tmp_path) + os.pathsep + os.environ['PATH'])
+    monkeypatch.setenv('CODEX_API_KEY', 'fake')
+    monkeypatch.setenv('CODEX_HOME', str(tmp_path / 'empty-home'))
+    timeout = '1.5' if reason == 'timed_out' else '30'
+    args = [sys.executable, '-m', 'roll.v3.cli', '--data-dir', str(tmp_path),
+            'research', 'task', 'retry', task_id, '--executor', 'codex', '--timeout', timeout]
+    owner = subprocess.Popen(args, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    pids = []
+    try:
+        deadline = time.monotonic() + 5
+        while not marker.exists():
+            assert owner.poll() is None, owner.communicate()
+            assert time.monotonic() < deadline
+            time.sleep(.02)
+        pids = json.loads(marker.read_text())
+        visible = json.loads(cli(tmp_path, 'research', 'task', 'show', task_id).stdout)['attempts'][-1]
+        assert visible['status'] == 'running' and visible['executor'] == 'codex'
+        assert visible['cli_version'] == 'codex-cli 0.172.0' and visible['input_sha256']
+        assert (tmp_path / visible['log_ref']).is_file()
+        attempt_id = visible['attempt_id']
+        if reason == 'cancelled':
+            json.loads(cli(tmp_path, 'research', 'task', 'cancel', attempt_id).stdout)
+        elif reason == 'interrupted':
+            owner.kill()
+        elif reason == 'signal':
+            (tmp_path / 'exit-now').touch()
+        expected = 'interrupted' if reason == 'signal' else reason
+        out, err = owner.communicate(timeout=7)
+        if reason != 'interrupted':
+            assert owner.returncode == 0, err
+            assert json.loads(out)['status'] == expected
+        receipt = json.loads(cli(tmp_path, 'research', 'task', 'attempt', attempt_id).stdout)
+        assert receipt['status'] == receipt['termination_reason'] == expected
+        if reason == 'signal':
+            assert receipt['exit_code'] == -9
+        assert receipt['draft_version'] is None
+        assert all(not Path(f'/proc/{pid}').exists() for pid in pids)
+        old_log = (tmp_path / receipt['log_ref']).read_bytes()
+        fake.write_text(f'#!{sys.executable}\nprint("unexpected version")\n')
+        retried = json.loads(cli(tmp_path, 'research', 'task', 'retry', task_id, '--executor', 'codex').stdout)
+        assert retried['attempt_id'] != attempt_id and retried['log_ref'] != receipt['log_ref']
+        assert retried['manifest_sha256'] == receipt['manifest_sha256'] == original['manifest_sha256']
+        assert (tmp_path / receipt['log_ref']).read_bytes() == old_log
+        assert json.loads(cli(tmp_path, 'research', 'task', 'attempt', attempt_id).stdout) == receipt
+    finally:
+        if owner.poll() is None:
+            owner.kill()
+            owner.wait(timeout=5)
+        for pid in pids:
+            try:
+                os.kill(pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass

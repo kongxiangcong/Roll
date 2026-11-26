@@ -30,3 +30,53 @@ def attempt_lock(data_dir, attempt_id):
         # On Linux supervisors inherit the same open file description. Closing the
         # owner's copy must not explicitly unlock it while a supervisor is alive.
         yield handle
+
+
+class AttemptStopped(Exception):
+    def __init__(self, status, message):
+        super().__init__(message)
+        self.status = status
+
+
+class ProcessConfigurationError(ValueError):
+    pass
+
+
+def run_process(argv, *, cwd, env, lock, check_state, input=b""):
+    import json
+    from tempfile import TemporaryFile
+    import subprocess
+    import sys
+
+    if sys.platform != "linux":
+        raise ProcessConfigurationError("Codex 进程回收配置要求 Linux")
+    supervisor = Path(__file__).with_name("research_supervisor.py").resolve()
+    read_fd, write_fd = os.pipe()
+    with os.fdopen(read_fd, "rb") as worker, os.fdopen(write_fd, "wb") as owner, TemporaryFile() as status:
+        helper = [sys.executable, "-I", "-S", str(supervisor), str(worker.fileno()), str(status.fileno()), *argv]
+        check_state()
+        with subprocess.Popen(helper, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              cwd=cwd, env=env, start_new_session=True,
+                              pass_fds=(worker.fileno(), status.fileno(), lock.fileno())) as proc:
+            worker.close()
+            try:
+                while True:
+                    try:
+                        stdout, stderr = proc.communicate(input=input, timeout=.1)
+                        break
+                    except subprocess.TimeoutExpired:
+                        input = None
+                        check_state()
+                check_state()
+                status.seek(0)
+                outcome = status.read(1024)
+            finally:
+                # EOF wakes the subreaper on cancellation, timeout and owner SIGKILL.
+                owner.close()
+                proc.wait()
+    if not outcome:
+        raise AttemptStopped("interrupted", "进程监护程序意外退出")
+    result = json.loads(outcome)
+    if "error" in result:
+        raise ProcessConfigurationError(f"无法启动研究命令或 Linux 进程监护程序（errno={result['error']}）")
+    return subprocess.CompletedProcess(argv, result["returncode"], stdout, stderr)

@@ -2,13 +2,15 @@
 import base64
 import json
 import time
+import sys
 from contextlib import contextmanager
 from datetime import timedelta
 from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
 
-from roll.v3.research_lifecycle import attempt_lock
+from roll.v3.codex_research import CodexExecutor, CodexFailure
+from roll.v3.research_lifecycle import AttemptStopped, ProcessConfigurationError, attempt_lock, run_process
 from roll.v3.market import utc_timestamp
 from roll.v3.market_research import export_market_research
 from roll.v3.research import ResearchDossiers, material_evidence, prepare_task_draft
@@ -294,6 +296,28 @@ def execute_attempt(data_dir, attempt_id, *, executor=None):
 
 def run_claimed(data_dir, receipt, frozen, executor, lock):
     attempt_id = receipt["attempt_id"]
+    codex = isinstance(executor, CodexExecutor)
+    deadline = time.monotonic() + executor.timeout if codex else None
+
+    def check_state():
+        with task_database(data_dir) as db:
+            row = db.execute("SELECT json_extract(receipt, '$.status') FROM research_attempt WHERE attempt_id=?",
+                             (attempt_id,)).fetchone()
+        if row[0] == "cancelling":
+            raise AttemptStopped("cancelled", "用户取消了研究尝试")
+        if time.monotonic() >= deadline:
+            raise AttemptStopped("timed_out", "研究尝试超过配置的时限")
+
+    def supervised(argv, **kwargs):
+        # Publish new metadata (e.g. verified CLI version) before the next command waits.
+        with task_database(data_dir, write=True) as db:
+            db.execute("UPDATE research_attempt SET receipt=? WHERE attempt_id=? "
+                       "AND json_extract(receipt, '$.status')='running'", (json_text(receipt), attempt_id))
+        process = run_process(argv, lock=lock, check_state=check_state, **kwargs)
+        if process.returncode < 0:
+            receipt["exit_code"] = process.returncode
+            raise AttemptStopped("interrupted", f"研究命令被信号 {-process.returncode} 终止")
+        return process
 
     def commit(completed, draft=None):
         with task_database(data_dir, write=True) as db:
@@ -304,6 +328,9 @@ def run_claimed(data_dir, receipt, frozen, executor, lock):
                 return store_receipt(db, cancelled(receipt))
             if stored["status"] != "running":
                 return stored
+            if codex and completed["status"] in ("blocked", "draft_ready") and time.monotonic() >= deadline:
+                return store_receipt(db, {**receipt, "status": "timed_out", "termination_reason": "timed_out",
+                                          "error": "研究尝试超过配置的时限"})
             if draft is not None:
                 ResearchDossiers(data_dir).save_task_draft(draft, db=db)
             db.execute("UPDATE research_attempt SET receipt=? WHERE attempt_id=?",
@@ -312,7 +339,11 @@ def run_claimed(data_dir, receipt, frozen, executor, lock):
 
     try:
         manifest = json.loads(frozen)
-        result = (executor or offline_executor)(json.loads(frozen))
+        if codex:
+            print(f'研究任务 {receipt["task_id"]}  尝试 {attempt_id}', file=sys.stderr, flush=True)
+            result = executor.run(manifest, receipt, data_dir, supervised)
+        else:
+            result = (executor or offline_executor)(json.loads(frozen))
         gaps = preflight_gaps(manifest)
         for gap in result["gaps"]:
             if (not isinstance(gap.get("blocking"), bool) or not gap.get("reason")
@@ -325,10 +356,19 @@ def run_claimed(data_dir, receipt, frozen, executor, lock):
         draft = prepare_task_draft(result["draft"], receipt, manifest, gaps, market_finding(manifest))
         return commit({**receipt, "status": "draft_ready", "draft_version": draft["version"],
                        "gaps": gaps}, draft)
+    except AttemptStopped as error:
+        return commit({**receipt, "status": error.status, "termination_reason": error.status, "error": str(error)})
+    except (CodexFailure, ProcessConfigurationError) as error:
+        kind = error.kind if isinstance(error, CodexFailure) else "configuration"
+        return commit({**receipt, "status": "failed", "failure_kind": kind, "error": str(error)})
     except KeyboardInterrupt:
-        commit({**receipt, "status": "interrupted", "error": "用户中断研究执行"})
+        if codex:
+            return commit(cancelled(receipt))
+        commit({**receipt, "status": "interrupted", "termination_reason": "interrupted", "error": "用户中断研究执行"})
         raise
     except Exception as error:
+        if receipt.get("executor") == "codex":
+            receipt["failure_kind"] = "invalid_response"
         return commit({**receipt, "status": "failed", "error": str(error)})
 
 
@@ -365,6 +405,8 @@ def register_and_execute(data_dir, task_id, *, manifest=None, parent_task_id=Non
             receipt = {"task_id": task_id, "attempt_id": attempt_id, "status": "running",
                        "manifest_sha256": sha256(frozen.encode()).hexdigest(),
                        "gaps": [], "draft_version": None}
+            if isinstance(executor, CodexExecutor):
+                receipt.update(executor.initial_receipt(data_dir, attempt_id))
             if parent_task_id is not None:
                 receipt["parent_task_id"] = parent_task_id
             db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
@@ -405,7 +447,12 @@ def supplement_task(data_dir, parent_task_id, *, materials=(), snapshot_id=None,
 
 
 def register_task_commands(research):
-    commands = research.add_parser("task", help="离线研究任务").add_subparsers(required=True)
+    from roll.v3.codex_research import CodexExecutor
+
+    def selected(args):
+        return CodexExecutor(args.timeout) if args.executor == "codex" else None
+
+    commands = research.add_parser("task", help="研究任务").add_subparsers(required=True)
     run = commands.add_parser("run", help="冻结公开输入并执行首次研究")
     run.add_argument("symbol")
     run.add_argument("--question", required=True)
@@ -416,17 +463,20 @@ def register_task_commands(research):
     run.add_argument("--basis", choices=BASIS, help="问题依赖的公开证据类型")
     run.add_argument("--require", action="append", default=[], help="回答问题所需的公告标题，可重复")
     run.set_defaults(handler=lambda a, d: run_task(d, a.symbol, question=a.question,
-                     snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require, basis=a.basis))
+                     snapshot_id=a.snapshot, as_of=a.as_of, materials=a.material, required_titles=a.require, basis=a.basis, executor=selected(a)))
     retry = commands.add_parser("retry", help="用原任务冻结的公开输入执行新尝试")
     retry.add_argument("task_id")
-    retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id))
+    retry.set_defaults(handler=lambda a, d: retry_task(d, a.task_id, executor=selected(a)))
     supplement = commands.add_parser("supplement", help="沿用原问题及标的，补证并创建关联任务")
     supplement.add_argument("task_id", help="父任务 ID")
     supplement.add_argument("--material", action="append", default=[], metavar="JSON", help="新增公告元数据 JSON")
     supplement.add_argument("--snapshot", help="新行情快照 ID，默认沿用父任务")
     supplement.add_argument("--as-of", help="新研究截止时点，默认沿用父任务")
     supplement.set_defaults(handler=lambda a, d: supplement_task(d, a.task_id, materials=a.material,
-                            snapshot_id=a.snapshot, as_of=a.as_of))
+                            snapshot_id=a.snapshot, as_of=a.as_of, executor=selected(a)))
+    for command in (run, retry, supplement):
+        command.add_argument("--executor", choices=("offline", "codex"), default="offline", help="默认离线执行")
+        command.add_argument("--timeout", type=float, default=180, metavar="SECONDS", help="Codex 尝试的总时限")
     show = commands.add_parser("show", help="读取任务的公开清单与历次尝试")
     show.add_argument("task_id")
     show.set_defaults(handler=lambda a, d: get_task(d, a.task_id))
