@@ -12,7 +12,7 @@ def register_account_commands(commands):
     operations = account.add_subparsers(required=True)
 
     writes = (
-        ("init", _initialize, "建立现金及持仓基线，字段 cash、available_cash、lots、effective_at"),
+        ("init", _initialize, "建立现金及持仓基线，字段 cash、available_cash、lots、effective_at、simulated（默认 false）"),
         ("fill", _record_event, "录入券商成交，字段 event_id、symbol、side、quantity、price、fee、effective_at"),
         ("correct", _record_event, "更正成交，字段 event_id、target_event_id、replacement、known_at"),
         ("cash", _record_event, "登记资金变动，字段 event_id、delta、effective_at"),

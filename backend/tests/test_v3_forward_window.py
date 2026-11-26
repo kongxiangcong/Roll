@@ -176,3 +176,61 @@ def test_audit_reports_missing_exchange_calendar_without_guessing_weekdays(tmp_p
     assert audit["missing_live_dates"] == ["2026-12-31"]
     with pytest.raises(ValueError, match="交易所日历"):
         window(tmp_path, "signoff", "--start", "2026-12-31")
+
+
+@pytest.mark.parametrize("version_matched", [True, False])
+def test_strategy_forward_result_requires_the_signed_version_and_due_shadow_results(
+    tmp_path, trading_clock, version_matched,
+):
+    from roll.v3.strategy import StrategyRegistry
+
+    symbol = "600362.SH"
+    accepted_at = "2026-10-07T16:00:00+08:00"
+    strategy = run(("strategy", "freeze", "--fast", "1", "--slow", "2", "--at", accepted_at,
+                    "--acceptance-end", "2026-09-30"), data_dir=tmp_path)
+    version = strategy["strategy"]["version"]
+    other_version = run(("strategy", "freeze", "--fast", "1", "--slow", "3", "--at", accepted_at,
+                         "--acceptance-end", "2026-09-30"), data_dir=tmp_path)["strategy"]["version"]
+    snapshot = run(("market", "freeze", symbol, "--start", "2020-01-02", "--end", "2026-09-30",
+                    "--series", "daily_bar", "--series", "adjustment_factor", "--as-of", accepted_at),
+                   data_dir=tmp_path)
+    run(("strategy", "open-acceptance", version, snapshot["snapshot_id"], "history", "--at", accepted_at),
+        data_dir=tmp_path)
+    StrategyRegistry(tmp_path).record_historical_result(
+        version, run_id="history", verdict="pass", evidence_ref="historical-test", recorded_at=accepted_at,
+    )
+    quotes = tmp_path / "forward-quotes.json"
+    quotes.write_text(json.dumps([{
+        "series": "daily_bar", "symbol": symbol, "trade_date": day, "source": "fixture",
+        "available_at": f"{day}T15:05:00+08:00", "received_at": f"{day}T15:05:00+08:00",
+        "payload": {"close": "10", "prior_close": "10", "pre_close": "10", "trading_status": "trading"},
+    } for day in ("2026-09-29", "2026-09-30", *TWENTY_SESSIONS)]), encoding="utf-8")
+    run(("market", "import", str(quotes)), data_dir=tmp_path)
+
+    for day in TWENTY_SESSIONS:
+        trading_clock(day)
+        requested = other_version if not version_matched and day == TWENTY_SESSIONS[-1] else version
+        last = run(("review", "register", "--strategy-version", requested, "--price-only"), data_dir=tmp_path)
+    signoff = window(tmp_path, "signoff")
+    verdict = ("strategy", "forward-result", version, signoff["signoff_id"], "pass")
+
+    if version_matched:
+        with pytest.raises(ValueError, match="尚未结算"):
+            run((*verdict, "--at", "2026-11-04T17:00:00+08:00"), data_dir=tmp_path)
+    trading_clock("2026-11-05")
+    run(("review", "settle", last["registration_id"]), data_dir=tmp_path)
+    recorded_at = "2026-11-05T16:00:00+08:00"
+
+    if not version_matched:
+        with pytest.raises(ValueError, match="策略版本"):
+            run((*verdict, "--at", recorded_at), data_dir=tmp_path)
+        return
+
+    evaluated = run((*verdict, "--at", recorded_at), data_dir=tmp_path)
+    assert evaluated["status"] == "accepted"
+    assert evaluated["production_eligible"] is False
+    assert evaluated["forward_review"]["session_dates"] == list(TWENTY_SESSIONS)
+    assert evaluated["forward_review"]["registration_ids"] == signoff["window"]["registration_ids"]
+    assert evaluated["forward_review"]["signoff_id"] == signoff["signoff_id"]
+    assert evaluated == run((*verdict, "--at", recorded_at), data_dir=tmp_path)
+    assert run(("strategy", "admit", version, "--at", recorded_at), data_dir=tmp_path)["production_eligible"]

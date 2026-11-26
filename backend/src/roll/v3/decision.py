@@ -46,6 +46,7 @@ class SecurityInput:
     upper_limit: Decimal | None = None
     lower_limit: Decimal | None = None
     features: Mapping[str, object] = field(default_factory=dict)
+    feature_observations: Mapping[str, dict] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -305,8 +306,11 @@ def _research(dossier, as_of, security):
         status = _trigger_state(trigger, security.features)
         name = trigger.get("id", trigger.get("feature", "unnamed"))
         effect = trigger.get("effect")
-        triggers.append({"id": name, "status": status, "effect": effect,
-                         "evidence_refs": trigger.get("evidence_refs", ())})
+        trace = {"id": name, "status": status, "effect": effect, "evidence_refs": trigger.get("evidence_refs", ())}
+        feature = trigger.get("feature") or trigger.get("id")
+        if isinstance(feature, str) and feature in security.feature_observations:
+            trace["observation"] = security.feature_observations[feature]
+        triggers.append(trace)
         if effect in ("block_new_risk", "pause", "pause_strategy", "risk_exit", "exit"):
             if status is None:
                 reasons.append(f"TRIGGER_UNKNOWN:{name}")
@@ -320,6 +324,8 @@ def _research(dossier, as_of, security):
 
 
 def _strategy_options(entries, symbol, data, security, research, rules):
+    paused = any(trigger["status"] is True and trigger["effect"] in ("pause", "pause_strategy")
+                 for trigger in research.get("triggers", ()))
     options = []
     for entry in entries:
         strategy = entry["strategy"]
@@ -336,6 +342,8 @@ def _strategy_options(entries, symbol, data, security, research, rules):
             exclusions.append("STRATEGY_NOT_REQUESTED")
         if entry.get("status") in ("suspended", "retired"):
             exclusions.append("STRATEGY_UNAVAILABLE")
+        if paused:
+            exclusions.append("STRATEGY_PAUSED_BY_RESEARCH")
         if symbol not in scope.get("symbols", ()):
             exclusions.append("SECURITY_OUT_OF_SCOPE")
         if not rules.allow_price_only and (research["status"] != "active" or not (

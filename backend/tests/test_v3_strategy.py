@@ -138,7 +138,6 @@ def test_production_admission_requires_independent_history_and_consecutive_forwa
     import pytest
 
     from roll.v3.market import RECONSTRUCTED_RESEARCH, freeze_snapshot
-    from roll.v3.storage import sessions
     from roll.v3.strategy import StrategyRegistry
 
     registry = StrategyRegistry(tmp_path)
@@ -162,20 +161,6 @@ def test_production_admission_requires_independent_history_and_consecutive_forwa
     with pytest.raises(ValueError, match="前向"):
         command(tmp_path, "admit", version, "--at", before)
 
-    forward_sessions = list(sessions("2026-11-27", "2026-12-24"))
-    review_at = "2026-12-24T15:10:00+08:00"
-    with pytest.raises(ValueError, match="连续"):
-        registry.record_forward_result(
-            version, session_dates=forward_sessions[:-1], verdict="pass",
-            evidence_ref="short-shadow-window", recorded_at=review_at,
-        )
-    registry.record_forward_result(
-        version, session_dates=forward_sessions, verdict="pass",
-        evidence_ref="shadow-window-1", recorded_at=review_at,
-    )
-    assert command(tmp_path, "registry", "600362.SH", "--as-of", review_at) == []
-    admitted_at = "2026-12-24T17:00:00+08:00"
-    assert command(tmp_path, "admit", version, "--at", admitted_at)["status"] == "admitted"
-    visible = command(tmp_path, "registry", "600362.SH", "--as-of", admitted_at)
-    assert [item["strategy"]["version"] for item in visible] == [version]
-    assert command(tmp_path, "show", version, "--as-of", review_at)["status"] == "accepted"
+    with pytest.raises(ValueError, match="签收记录不存在"):
+        command(tmp_path, "forward-result", version, "invented-signoff", "pass", "--at", "2026-12-28T16:00:00+08:00")
+    assert command(tmp_path, "show", version, "--as-of", "2026-12-28T17:00:00+08:00")["forward_review"] is None

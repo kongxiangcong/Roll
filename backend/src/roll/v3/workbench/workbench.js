@@ -529,6 +529,7 @@ function recordView(review) {
       ["影子账本", id(review.shadow_book_id)]], "references"),
     ...review.plans.map(entry => {
       const real = entry.real_plan;
+      const active = entry.active_real_plan;
       const paper = entry.shadow_plan;
       const shadow = entry.shadow;
       const report = entry.actual.events.at(-1);
@@ -538,6 +539,9 @@ function recordView(review) {
           ["正式计划", action(real.action), real.quantity,
             review.mode === "reconstructed" ? details("读取历史裁决", planView(real)) :
               link("plans", real.plan_id, shorten(real.plan_id))],
+          ...(active && active.plan_id !== real.plan_id ? [
+            ["修订计划", action(active.action), active.quantity, link("plans", active.plan_id, shorten(active.plan_id))],
+          ] : []),
           ["影子计划", action(paper.action), paper.quantity,
             link("plans", paper.plan_id, shorten(paper.plan_id))],
           ["影子结算", shadow ? action(shadow.status) : "待结算", shadow?.fill?.quantity,

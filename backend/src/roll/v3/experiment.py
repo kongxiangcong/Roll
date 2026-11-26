@@ -479,7 +479,7 @@ def _replay(data_dir, db, run_id, configuration, exposure, market):
             ledger.initialize(
                 book.book_id, cash=initial["cash"], available_cash=initial["available_cash"],
                 lots=[PositionLot(**lot) for lot in initial["lots"]], effective_at=prior_cutoff,
-                known_at=prior_cutoff, source="frozen-experiment-baseline",
+                known_at=prior_cutoff, source="frozen-experiment-baseline", simulated=True,
             )
             ledger.set_risk_budget(
                 book.book_id, budget_id=f"experiment-budget-{_digest(initial['risk_budget'])[:16]}",

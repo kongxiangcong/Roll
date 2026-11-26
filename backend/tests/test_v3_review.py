@@ -322,3 +322,119 @@ def test_live_review_completes_a_close_received_after_the_target_cutoff(tmp_path
     assert Decimal(complete["shadow_closing"]["valuation"]["nav"]) == Decimal("2125.00")
     assert cli(tmp_path, "review", "show", key, "--as-of", NEXT_CLOSE) == pending
     assert cli(tmp_path, "review", "settle", key) == complete
+
+
+def test_review_replays_original_watch_and_counts_fills_on_the_published_sell_revision(tmp_path, monkeypatch):
+    from roll.v3 import plan, research, review
+    from roll.v3.storage import instant
+
+    now = DECISION
+    monkeypatch.setattr(review, "instant", lambda value=None: instant(value or now))
+    monkeypatch.setattr(research, "instant", lambda value=None: instant(value or now))
+    utc_timestamp = plan.utc_timestamp
+    monkeypatch.setattr(plan, "utc_timestamp", lambda value=None: utc_timestamp(value or now))
+    seed_trend(tmp_path)
+    cli(tmp_path, "account", "shares", payload={
+        "event_id": "original-shares", "effective_at": DECISION, "known_at": DECISION,
+        "lot": {"lot_id": "original", "symbol": SYMBOL, "quantity": 100, "known_sellable": 100},
+    })
+    registered = cli(tmp_path, "review", "register")
+    key = registered["registration_id"]
+    original, = registered["plans"]
+    assert original["real_plan"]["action"] == "WATCH"
+
+    now = "2026-11-27T17:00:00+08:00"
+    dossier = tmp_path / "broken.md"
+    dossier.write_text('---\nvalid_until: "2026-12-10T00:00:00+08:00"\n'
+                       'fundamental_gate: fail\nthesis_status: broken\n---\n# 假设已失效\n', encoding="utf-8")
+    cli(tmp_path, "research", "draft", SYMBOL, str(dossier))
+    cli(tmp_path, "research", "publish", SYMBOL, "broken", "--reviewer", "研究者")
+    revised, = cli(tmp_path, "plan", "--as-of", now)["plans"]
+    assert revised["action"] == "SELL"
+    assert revised["replaces_plan_id"] == original["real_plan"]["plan_id"]
+
+    now = NEXT_CLOSE
+    fill = {"symbol": SYMBOL, "effective_at": NEXT_OPEN, "side": "SELL", "quantity": 50, "price": "10.90"}
+    cli(tmp_path, "account", "fill", payload={
+        **fill, "event_id": "broker-sale-a", "plan_id": revised["plan_id"], "known_at": now,
+    })
+    first, = cli(tmp_path, "review", "show", key)["plans"]
+    assert first["actual"]["status"] == "PARTIAL"
+    result = cli(tmp_path, "review", "outcome", key, SYMBOL, "filled", payload={
+        **fill, "event_id": "broker-sale-b",
+    })
+    current, = result["plans"]
+    assert current["real_plan"] == original["real_plan"]
+    assert current["active_real_plan"] == revised
+    assert current["actual"]["status"] == "FILLED"
+    assert [fill["plan_id"] for fill in current["actual"]["fills"]] == [revised["plan_id"]] * 2
+    assert current["actual"]["events"][0]["plan_id"] == revised["plan_id"]
+    assert cli(tmp_path, "review", "show", key, "--as-of", DECISION) == registered
+    assert cli(tmp_path, "plan", "--plan-id", original["real_plan"]["plan_id"]) == original["real_plan"]
+
+
+@pytest.mark.parametrize("effect", ["pause", "pause_strategy"])
+def test_a_structured_research_pause_blocks_a_strategy_sale_but_keeps_the_risk_exit(tmp_path, monkeypatch, effect):
+    from roll.v3 import research
+    from roll.v3.storage import instant
+
+    now = "2026-11-27T15:30:00+08:00"
+    monkeypatch.setattr(research, "instant", lambda value=None: instant(value or now))
+    symbol = SYMBOL
+    book = "independent-simulation"
+    cli(tmp_path, "account", "init", "--book-id", book, payload={
+        "cash": "0", "available_cash": "0", "effective_at": DECISION, "known_at": DECISION, "simulated": True,
+        "lots": [{"lot_id": "held", "symbol": symbol, "quantity": 100, "known_sellable": 100}],
+    })
+    version = seed_trend(tmp_path)
+    correction = tmp_path / "pause-inputs.json"
+    correction.write_text(json.dumps([
+        {"series": "daily_bar", "symbol": symbol, "trade_date": "2026-11-27", "source": "fixture",
+         "available_at": "2026-11-27T15:10:00+08:00", "received_at": "2026-11-27T15:10:00+08:00",
+         "payload": {"close": "9", "prior_close": "10", "pre_close": "10", "trading_status": "trading"}},
+        {"series": "research_feature", "symbol": symbol, "trade_date": "2026-09-30",
+         "source": "filing", "source_ref": "fixture-filing#cash-flow",
+         "available_at": "2026-11-27T15:55:00+08:00", "received_at": "2026-11-27T17:00:00+08:00",
+         "payload": {"feature": "operating_cash_flow_ytd_cny", "value": "-100"}},
+    ]))
+    cli(tmp_path, "market", "import", str(correction))
+
+    def publish(name, thesis):
+        path = tmp_path / f"{name}.md"
+        path.write_text(f"""---
+valid_until: "2026-12-15T00:00:00+08:00"
+fundamental_gate: pass
+thesis_status: {thesis}
+invalidation_triggers:
+  - id: cash-pause
+    feature: operating_cash_flow_ytd_cny
+    operator: "<="
+    threshold: 0
+    effect: {effect}
+---
+# 经营现金流暂停条件
+""", encoding="utf-8")
+        cli(tmp_path, "research", "draft", symbol, str(path))
+        cli(tmp_path, "research", "publish", symbol, name, "--reviewer", "研究者")
+
+    def next_plan(cutoff):
+        result = cli(tmp_path, "plan", "--book-id", book, "--as-of", cutoff, "--simulate", "--preview",
+                     "--price-only", "--strategy-version", version)
+        return result["plans"][0]
+
+    publish("paused", "intact")
+    before = next_plan(DECISION)
+    assert before["action"] == "SELL"
+    assert "TRIGGER_UNKNOWN:cash-pause" in before["reasons"]["P2"]
+    after = next_plan("2026-11-27T17:15:00+08:00")
+    assert after["action"] == "WATCH"
+    assert "TRIGGER_FIRED:cash-pause" in after["reasons"]["P2"]
+    assert "STRATEGY_PAUSED_BY_RESEARCH" in after["candidates"][0]["selection_reasons"]
+    assert after["research"]["triggers"][0]["observation"]["source_ref"] == "fixture-filing#cash-flow"
+
+    now = "2026-11-27T17:30:00+08:00"
+    publish("risk", "broken")
+    risk_exit = next_plan(now)
+    assert risk_exit["action"] == "SELL"
+    assert risk_exit["strategy_version"] is None
+    assert risk_exit["reasons"]["P4"] == ["RISK_EXIT"]

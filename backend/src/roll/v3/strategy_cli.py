@@ -41,6 +41,12 @@ def _open_acceptance(args, data_dir):
     )
 
 
+def _forward_result(args, data_dir):
+    return StrategyRegistry(data_dir).record_forward_result(
+        args.version, signoff_id=args.signoff_id, verdict=args.verdict, recorded_at=args.at,
+    )
+
+
 def _admit(args, data_dir):
     return StrategyRegistry(data_dir).admit(args.version, effective_at=args.at)
 
@@ -90,6 +96,13 @@ def register(subparsers):
     acceptance.add_argument("run_id")
     acceptance.add_argument("--at")
     acceptance.set_defaults(handler=_open_acceptance)
+
+    forward = actions.add_parser("forward-result", help="根据已签收且结算的真实影子窗口登记策略前向结论")
+    forward.add_argument("version")
+    forward.add_argument("signoff_id")
+    forward.add_argument("verdict", choices=("pass", "fail", "insufficient"))
+    forward.add_argument("--at")
+    forward.set_defaults(handler=_forward_result)
 
     admit = actions.add_parser("admit", help="发布通过独立验收及前向观察的策略")
     admit.add_argument("version")

@@ -80,8 +80,6 @@ def accrue_receivables(action: CompanyAction, record_lots) -> tuple[Receivable, 
 
 def settle_entitlements(data_dir, book_id, actions, *, as_of, known_at=None, simulated=False, db=None) -> AccountSnapshot:
     """Recognize announced entitlements and post due simulated distributions atomically."""
-    if simulated and book_id == "real":
-        raise ValueError("模拟结算需要使用独立的账本")
     if db is None:
         with database(data_dir, write=True) as connection:
             return settle_entitlements(data_dir, book_id, actions, as_of=as_of, known_at=known_at,
@@ -95,6 +93,7 @@ def settle_entitlements(data_dir, book_id, actions, *, as_of, known_at=None, sim
     as_of = instant(as_of)
     known_at = instant(known_at) if known_at is not None else as_of
     ledger = AccountLedger(data_dir, db=db)
+    ledger.require_role(book_id, simulated=simulated)
     existing = ledger.trade_log(book_id, as_of=as_of, known_at=known_at)
     if not existing:
         raise ValueError(f"账本 {book_id} 在指定时点没有已知基线")
@@ -144,7 +143,9 @@ def record_broker_entitlement(data_dir, book_id, *, symbol, action_id, kind, bro
                               broker_available_after=None, sellable_on=None):
     if kind not in {"cash", "shares"} or Decimal(str(actual)) < 0:
         raise ValueError("到账权益需要现金或股份类型及非负实际到账量")
+    symbol = symbol.upper()
     ledger = AccountLedger(data_dir)
+    ledger.require_role(book_id, simulated=False)
     return ledger.record_entitlement_posting(
         book_id, action_key=f"entitlement:{symbol}:{action_id}", symbol=symbol, kind=kind,
         effective_at=effective_at, known_at=known_at, source=source, actual=actual,

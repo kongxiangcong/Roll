@@ -72,8 +72,18 @@ def append_observations(data_dir, observations):
         db.execute('BEGIN IMMEDIATE')
         first = _waterline(db)
         for item in observations:
-            key = (item['series'], item['symbol'].upper(), str(date.fromisoformat(item['trade_date'])),
-                   item.get('item_id', ''), item['source'])
+            series = item['series']
+            item_id = item.get('item_id', '')
+            payload = item.get('payload', {})
+            if series == 'research_feature':
+                feature = payload.get('feature', item_id) if isinstance(payload, dict) else None
+                if (not isinstance(feature, str) or not feature.strip() or (item_id and item_id != feature)
+                        or not (item.get('withdrawn') or type(payload.get('value')) in (str, bool, int, float))):
+                    raise ValueError("research_feature 须指定一致的特征标识及标量 value")
+                item_id = feature
+                payload = {**payload, 'feature': feature}
+            key = (series, item['symbol'].upper(), str(date.fromisoformat(item['trade_date'])),
+                   item_id, item['source'])
             version = {
                 'source_ref': item.get('source_ref'),
                 'revision': item.get('revision'),
@@ -85,7 +95,7 @@ def append_observations(data_dir, observations):
                 'quality': item.get('quality', 'usable'),
                 'reconstruction_only': int(item.get('reconstruction_only', False)),
                 'withdrawn': int(item.get('withdrawn', False)),
-                'payload': _encode(item.get('payload', {})),
+                'payload': _encode(payload),
             }
             previous = db.execute("""
                 SELECT * FROM observation
@@ -330,6 +340,22 @@ def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, sta
             'observations': sorted(selected.values(), key=lambda row: (
                 row['trade_date'], row['series'], row['symbol'], row['item_id'])),
             'coverage': coverage}
+
+
+def read_research_features(data_dir, snapshot_id, *, symbol, cutoff, db=None):
+    """Resolve the latest visible observation period for each structured research feature."""
+    with database(data_dir, db=db) as connection:
+        ensure_schema(connection, _SCHEMA)
+        snapshot = _snapshot(connection, snapshot_id)
+        cutoff = min(utc_timestamp(cutoff), snapshot['as_of'])
+        day = str(instant(cutoff).date())
+        latest = {}
+        for scope in _ranges(snapshot, 'research_feature', symbol, None, day):
+            for (period, feature), observations in _observations(connection, snapshot, scope).items():
+                observation, status = _choose(observations, snapshot, cutoff)
+                if status != 'not_visible' and (feature not in latest or period >= latest[feature][0]):
+                    latest[feature] = period, observation
+    return {feature: observation for feature, (_, observation) in latest.items() if observation is not None}
 
 
 def snapshot_windows(data_dir, snapshot_id, *, series='daily_bar', symbol, cutoffs):

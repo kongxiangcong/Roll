@@ -24,6 +24,7 @@ def input_cli(tmp_path, monkeypatch, *args, payload):
 def seed(tmp_path, monkeypatch, *, book=BOOK, cash_per_share="1", shares_per_share="0", ex_price="9"):
     input_cli(tmp_path, monkeypatch, "account", "init", "--book-id", book, payload={
         "cash": "0",
+        "simulated": book == BOOK,
         "available_cash": "0",
         "effective_at": f"{RECORD_DATE}T15:00:00+08:00",
         "known_at": f"{RECORD_DATE}T15:00:00+08:00",
@@ -188,3 +189,14 @@ def test_ex_dividend_evidence_distinguishes_the_notice_from_raw_opening_quotes(t
     assert action["source_ref"].endswith("1224163682.PDF")
     assert result["opening"]["payload"] == {"open": "23.73", "prior_close": "24.40", "pre_close": "23.70"}
     assert result["opening"]["source"] == "fuyao"
+
+
+def test_simulated_entitlements_cannot_credit_a_named_broker_book(tmp_path, monkeypatch):
+    import pytest
+
+    snapshot_id = seed(tmp_path, monkeypatch, book="broker1")
+    with pytest.raises(ValueError, match="独立.*账本"):
+        close(tmp_path, POST_DATE, snapshot_id, book="broker1")
+    pending = close(tmp_path, POST_DATE, snapshot_id, book="broker1", simulated=False)
+    assert pending["account"]["cash"] == "0"
+    assert pending["valuation"]["receivable_value"] == "100"

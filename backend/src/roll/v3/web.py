@@ -54,6 +54,7 @@ class OutcomeInput(ReviewClock):
     status: str
     reason: str | None = None
     reported_at: str | None = None
+    plan_id: str | None = None
     fill: dict | None = None
 
 

@@ -83,7 +83,7 @@ def _session(live, clock):
     plans = []
     for entry in live["plans"]:
         symbol = entry["symbol"]
-        actual = _actual(entry, clock)
+        actual = _actual(entry)
         if actual["status"] == "UNREPORTED":
             blockers.append(_issue(day, "ACTUAL_OUTCOME_MISSING", symbol))
         elif actual["status"] in {"PENDING", "CONFIRMED"}:
@@ -104,6 +104,8 @@ def _session(live, clock):
         plans.append({
             "symbol": symbol, "actual": actual, "shadow": shadow,
             "real_plan": {key: entry["real_plan"][key] for key in _PLAN_FIELDS},
+            "active_real_plan": {key: entry["active_real_plan"][key] for key in _PLAN_FIELDS},
+            "real_plan_revisions": entry["real_plan_revisions"],
             "shadow_plan": {key: entry["shadow_plan"][key] for key in _PLAN_FIELDS},
         })
 
@@ -129,13 +131,11 @@ def _session(live, clock):
     }
 
 
-def _actual(entry, clock):
+def _actual(entry):
     actual = entry["actual"]
-    plan = entry["real_plan"]
+    plan = entry["active_real_plan"]
     status = actual["status"]
-    if status == "CONFIRMED" and clock >= instant(plan["valid_until"]):
-        status = "UNREPORTED" if plan["action"] in {"BUY", "SELL"} else "OBSERVED"
-    reason = next((event["reason"] for event in reversed(actual["events"]) if event["status"] == status), None)
+    reason = next((event["reason"] for event in reversed(actual["events"]) if event["status"] == status and event["plan_id"] == plan["plan_id"]), None)
     if not reason:
         reason = {
             "OBSERVED": plan["action"], "UNREPORTED": "RESULT_NOT_REPORTED",
@@ -192,13 +192,53 @@ def signoff(data_dir, *, book_id="real", start=None, end=None):
         return receipt
 
 
-def show(data_dir, signoff_id):
-    with database(data_dir) as db:
+def show(data_dir, signoff_id, *, db=None):
+    with database(data_dir, db=db) as db:
         ensure_schema(db, _SCHEMA)
         receipt = _signed(db, signoff_id)
     if receipt is None:
         raise ValueError(f"M0b 签收记录不存在：{signoff_id}")
     return receipt
+
+
+def strategy_evidence(data_dir, signoff_id, *, version, symbols, minimum, as_of, db):
+    """Resolve the signed registrations and their matured, version-matched shadow results."""
+    signed = show(data_dir, signoff_id, db=db)
+    cutoff = instant(as_of)
+    if cutoff < instant(signed["signed_off_at"]):
+        raise ValueError("策略复核时点早于 M0b 签收")
+    window = signed["window"]
+    records = DecisionLedger(data_dir).registrations(
+        book_id=signed["book_id"], mode="live", start=window["start"], end=window["end"], as_of=cutoff, db=db,
+    )
+    dates = [record["decision_date"] for record in records]
+    ids = [record["registration_id"] for record in records]
+    shadow_books = {record["shadow_book_id"] for record in records}
+    if (len(records) < minimum or dates != list(sessions(window["start"], window["end"]))
+            or ids != window["registration_ids"] or len(shadow_books) != 1):
+        raise ValueError(f"前向复核须有至少 {minimum} 个连续且已签收的真实前向交易日")
+    required_symbols = set(symbols)
+    for record in records:
+        day = record["decision_date"]
+        plans = {entry["symbol"]: entry for entry in record["plans"]}
+        if version not in record["strategy_versions"] or not required_symbols <= plans.keys():
+            raise ValueError(f"{day} 未登记该策略版本的完整影子计划")
+        if not record["shadow_closing"] or record["shadow_closing"]["missing_marks"]:
+            raise ValueError(f"{day} 的影子收盘结果尚未结算或缺少估值")
+        for symbol in symbols:
+            entry = plans[symbol]
+            plan = entry["shadow_plan"]
+            candidate = next((item for item in plan["candidates"] if item["strategy_version"] == version), None)
+            if candidate is None or plan["strategy_version"] not in (None, version):
+                raise ValueError(f"{day} 的 {symbol} 影子裁决与该策略版本不匹配")
+            if candidate["signal_status"] != "ready" and "SUSPENDED_AT_CUTOFF" not in plan["reasons"]["P0"]:
+                raise ValueError(f"{day} 的 {symbol} 缺少该策略版本可评价的影子信号")
+            if not entry["shadow"] or entry["shadow"]["reason"] in _SHADOW_INPUT_GAPS:
+                raise ValueError(f"{day} 的 {symbol} 影子开盘结果尚未结算或缺少数据")
+    return {
+        "signoff_id": signoff_id, "session_dates": dates, "registration_ids": ids,
+        "shadow_book_id": next(iter(shadow_books)), "first_decision_at": records[0]["decision_at"],
+    }
 
 
 def _signed(db, signoff_id):

@@ -14,7 +14,7 @@ from roll.v3.account import AccountLedger
 from roll.v3.commitments import SCHEMA as COMMITMENT_SCHEMA, money, project_reservation
 from roll.v3.decision import DecisionData, DecisionRules, SecurityInput, decide, uncommitted_cash
 from roll.v3.industry_sources import STOCK
-from roll.v3.market import LIVE_RUN, freeze_snapshot, get_snapshot, read_snapshot, utc_timestamp
+from roll.v3.market import LIVE_RUN, freeze_snapshot, get_snapshot, read_research_features, read_snapshot, utc_timestamp
 from roll.v3.market_research import DEFAULT_BENCHMARK
 from roll.v3.research import ResearchDossiers
 from roll.v3.storage import database, ensure_schema, instant, json_text, session_time, sessions
@@ -74,6 +74,18 @@ class PlanLedger:
                 """SELECT r.payload FROM active_plan a JOIN plan_revision r ON a.plan_id = r.plan_id
                    WHERE a.book_id = ? AND (? IS NULL OR a.session = ?) ORDER BY a.session, a.symbol""",
                 (book_id, session, session),
+            ).fetchall()
+        return [json.loads(row["payload"]) for row in rows]
+
+    def revisions(self, book_id, session, *, as_of):
+        """Read revisions from a session that had been published by the observation time."""
+        cutoff = utc_timestamp(as_of)
+        with database(self.data_dir, db=self.db) as db:
+            ensure_schema(db, _SCHEMA)
+            rows = db.execute(
+                """SELECT payload FROM plan_revision
+                   WHERE book_id = ? AND session = ? AND as_of <= ? AND published_at <= ?
+                   ORDER BY symbol, revision""", (book_id, session, cutoff, cutoff),
             ).fetchall()
         return [json.loads(row["payload"]) for row in rows]
 
@@ -211,12 +223,14 @@ class PlanLedger:
     def publish(self, plans, *, published_at=None):
         """Atomically save revisions, replace current pointers and register maximum cash commitments."""
         plans = tuple(plans)
-        identity = {(plan.book_id, plan.session, plan.as_of) for plan in plans}
+        identity = {(plan.book_id, plan.session, plan.as_of, plan.simulated) for plan in plans}
         if len(identity) > 1 or len({plan.symbol for plan in plans}) != len(plans):
             raise ValueError("一次计划发布须使用同一账户、裁决时点与交易时段，每个标的仅一份")
         published_at = utc_timestamp(published_at)
         with database(self.data_dir, write=True, db=self.db) as db:
             ensure_schema(db, _SCHEMA)
+            if plans:
+                AccountLedger(self.data_dir, db=db).require_role(plans[0].book_id, simulated=plans[0].simulated)
             return [self._publish(db, plan, published_at) for plan in plans]
 
     def _publish(self, db, plan, published_at):
@@ -294,8 +308,12 @@ def _industry(data_dir, snapshot_id, symbol, day, cutoff, db):
     return next(iter(indices)) if len(indices) == 1 else None
 
 
-def _freeze_market(data_dir, symbols, start, day, cutoff, db, *, market_mode, market_as_of):
+def _freeze_market(data_dir, symbols, start, day, cutoff, db, *, market_mode, market_as_of, dossiers):
     scope = _scope(symbols, DEFAULT_BENCHMARK, start, day)
+    scope.extend(
+        dict(series="research_feature", symbol=symbol, start="1900-01-01", end=day)
+        for symbol, dossier in dossiers.items() if dossier and dossier.get("invalidation_triggers")
+    )
     initial = freeze_snapshot(data_dir, as_of=market_as_of, use_mode=market_mode, scope=scope, db=db)
     industries = {_industry(data_dir, initial["snapshot_id"], symbol, day, cutoff, db) for symbol in symbols}
     if industries - {None}:
@@ -363,15 +381,23 @@ def _load_inputs(data_dir, snapshot, symbols, registry, day, session, cutoff, ru
         trading_status = bar.get("trading_status", "unknown")
         if trading_status == "trading" and close is None:
             trading_status = "unknown"
+        research_facts = read_research_features(data_dir, snapshot_id, symbol=symbol, cutoff=cutoff, db=db)
+        market_features = dict(close=close, market_state=market_state, industry_state=industry_state,
+                               stock_state=stock_state, suspended=trading_status == "suspended",
+                               trading_status_unknown=trading_status == "unknown", close_unavailable=close is None,
+                               volume=bar.get("volume"), amount=bar.get("amount"),
+                               turnover_rate=bar.get("turnover_rate"))
+        features = {**{name: row["payload"].get("value") for name, row in research_facts.items()}, **market_features}
         security = SecurityInput(
             close=mark, trading_status=trading_status, industry=industry,
             industry_state=industry_state, stock_state=stock_state, signals=signals,
             upper_limit=_observed_price(bar.get("upper_limit")), lower_limit=_observed_price(bar.get("lower_limit")),
-            features={"close": close, "market_state": market_state, "industry_state": industry_state,
-                      "stock_state": stock_state, "suspended": trading_status == "suspended",
-                      "trading_status_unknown": trading_status == "unknown",
-                      "close_unavailable": close is None, "volume": bar.get("volume"),
-                      "amount": bar.get("amount"), "turnover_rate": bar.get("turnover_rate")},
+            features=features,
+            feature_observations={
+                name: {**{field: row[field] for field in ("seq", "trade_date", "source", "source_ref",
+                                                         "selected_available_at")}, "value": features[name]}
+                for name, row in research_facts.items() if name not in market_features
+            },
         )
         securities[symbol] = security
     return DecisionData(cutoff, session, snapshot_id, securities, states[DEFAULT_BENCHMARK])
@@ -387,12 +413,13 @@ def generate_plans(data_dir, *, book_id="real", as_of=None, symbols=(), snapshot
         raise ValueError("计划须在交易日收盘后生成，请指定对应的盘后裁决时间")
     session = next_trading_day(day).isoformat()
     inputs = rules or DecisionRules(simulated, tuple(strategy_versions), allow_price_only=allow_price_only)
-    if inputs.simulated and book_id == "real" and publish:
-        raise ValueError("模拟计划须写入独立账本，或使用预览")
     if not inputs.simulated and market_mode != LIVE_RUN:
         raise ValueError("真实账户计划须使用保留实际取得时间的 LIVE_RUN 数据快照")
     with database(data_dir, write=True, db=db) as connection:
-        account = AccountLedger(data_dir, db=connection).snapshot(book_id, as_of=cutoff)
+        accounts = AccountLedger(data_dir, db=connection)
+        if publish:
+            accounts.require_role(book_id, simulated=inputs.simulated)
+        account = accounts.snapshot(book_id, as_of=cutoff)
         selected = sorted({symbol.upper() for symbol in symbols or (STOCK,)}
                           | {lot.symbol for lot in account.lots}
                           | {receivable.symbol for receivable in account.receivables})
@@ -413,7 +440,7 @@ def generate_plans(data_dir, *, book_id="real", as_of=None, symbols=(), snapshot
             start = max(day - timedelta(days=max(120, slowest * 3)), date(2013, 1, 1)).isoformat()
             snapshot = _freeze_market(
                 data_dir, selected, start, day.isoformat(), cutoff, connection,
-                market_mode=market_mode, market_as_of=market_as_of or cutoff,
+                market_mode=market_mode, market_as_of=market_as_of or cutoff, dossiers=dossiers,
             )
         data = _load_inputs(data_dir, snapshot, selected, registry, day.isoformat(), session, cutoff, inputs, connection)
         ledger = PlanLedger(data_dir, db=connection)

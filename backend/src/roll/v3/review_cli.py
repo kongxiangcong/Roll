@@ -50,6 +50,7 @@ def register_review_commands(commands):
     outcome.add_argument("symbol")
     outcome.add_argument("status", choices=OUTCOMES)
     outcome.add_argument("--reason")
+    outcome.add_argument("--plan-id", help="关联特定的已发布真实计划版本")
     outcome.add_argument("--reported-at")
     outcome.add_argument("--now", help="指定演练时钟")
     outcome.set_defaults(handler=_outcome)
@@ -107,7 +108,7 @@ def _outcome(args, data_dir):
     return DecisionLedger(data_dir).record_outcome(
         args.registration_id, args.symbol, args.status, reason=args.reason or payload.pop("reason", None),
         reported_at=args.reported_at or payload.pop("reported_at", None),
-        fill=payload if args.status == "filled" else None, now=args.now,
+        fill=payload if args.status == "filled" else None, plan_id=args.plan_id, now=args.now,
     )
 
 

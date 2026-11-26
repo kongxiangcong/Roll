@@ -162,3 +162,17 @@ def test_account_books_from_the_same_lots_evolve_independently(tmp_path, monkeyp
     log = account(tmp_path, monkeypatch, "log", "--book-id", "shadow", "--as-of", AFTER_FILL,
                   "--plan-id", "plan-22")
     assert [event["event_id"] for event in log] == ["broker-22"]
+
+
+def test_lowercase_baseline_and_fill_symbols_use_the_same_position(tmp_path, monkeypatch):
+    baseline = {**BASELINE, "lots": [{**BASELINE["lots"][0], "symbol": "600362.sh"}]}
+    account(tmp_path, monkeypatch, "init", payload=baseline)
+    account(tmp_path, monkeypatch, "fill", payload={**FILL, "symbol": "600362.Sh", "side": "SELL"})
+
+    snapshot = account(tmp_path, monkeypatch, "show", "--as-of", AFTER_FILL)
+    assert snapshot["known_sellable"] == {"600362.SH": 100}
+    assert [(lot["symbol"], lot["quantity"]) for lot in snapshot["lots"]] == [("600362.SH", 200)]
+    fill, = [
+        event for event in account(tmp_path, monkeypatch, "log", "--as-of", AFTER_FILL) if event["kind"] == "FILL"
+    ]
+    assert fill["payload"]["symbol"] == "600362.SH"

@@ -1,4 +1,5 @@
 """Decision ledger for forward registration, shadow execution and actual outcomes."""
+from collections import defaultdict
 from dataclasses import asdict
 from datetime import date
 from decimal import Decimal, InvalidOperation
@@ -12,7 +13,7 @@ from roll.v3.entitlements import SIMULATION_BASIS, read_company_actions, settle_
 from roll.v3.execution import EXECUTION_RULES_VERSION, ExecutionRules, OpeningQuote, execute
 from roll.v3.industry_sources import STOCK
 from roll.v3.market import LIVE_RUN, RECONSTRUCTED_RESEARCH, freeze_snapshot, read_snapshot, utc_timestamp
-from roll.v3.plan import generate_plans
+from roll.v3.plan import PlanLedger, generate_plans
 from roll.v3.research import ResearchDossiers
 from roll.v3.storage import database, ensure_schema, instant, json_text, session_time
 from roll.v3.strategy import StrategyRegistry
@@ -66,10 +67,11 @@ def _clock(mode, now):
     return instant(now)
 
 
-def _clone(ledger, book_id, account, cutoff):
+def _clone(ledger, book_id, account, cutoff, *, simulated):
     ledger.initialize(
         book_id, cash=account.cash, available_cash=account.available_cash, lots=account.lots,
         receivables=account.receivables, effective_at=cutoff, known_at=cutoff, source="forward-baseline",
+        simulated=simulated,
     )
     if account.risk_budget:
         budget = asdict(account.risk_budget)
@@ -129,6 +131,7 @@ class DecisionLedger:
                 self._settle_record(db, record, cutoff, clock)
 
             ledger = AccountLedger(self.data_dir, db=db)
+            ledger.require_role(book_id, simulated=False)
             registry = StrategyRegistry(self.data_dir)
             last = previous[-1] if previous else None
             prior_symbols = [entry["symbol"] for entry in last["plans"]] if last else [STOCK]
@@ -149,9 +152,9 @@ class DecisionLedger:
                     baseline, _ = self._settle_actions(
                         db, book_id, selected, cutoff, LIVE_RUN, simulated=False,
                     )
-                _clone(ledger, shadow_book, baseline, cutoff)
+                _clone(ledger, shadow_book, baseline, cutoff, simulated=True)
                 if actual_book != book_id:
-                    _clone(ledger, actual_book, baseline, cutoff)
+                    _clone(ledger, actual_book, baseline, cutoff, simulated=False)
                 anchor = baseline.snapshot_id
             else:
                 anchor = previous[0]["baseline_account_snapshot_id"]
@@ -191,7 +194,7 @@ class DecisionLedger:
             ]
             record = {
                 "registration_id": registration_id, "book_id": book_id, "mode": mode,
-                "decision_date": today, "decision_at": real["as_of"], "session": real["session"],
+                "decision_date": today, "decision_at": str(real["as_of"]), "session": real["session"],
                 "registered_at": utc_timestamp(clock), "shadow_book_id": shadow_book, "actual_book_id": actual_book,
                 "strategy_versions": versions, "baseline_account_snapshot_id": anchor,
                 "shadow_accounting_basis": SIMULATION_BASIS, "shadow_price_only": price_only, "plans": plans,
@@ -403,7 +406,7 @@ class DecisionLedger:
         return record
 
     def record_outcome(self, registration_id, symbol, status, *, reason=None, fill=None,
-                       reported_at=None, event_id=None, now=None):
+                       reported_at=None, event_id=None, plan_id=None, now=None):
         if status not in OUTCOMES:
             raise ValueError(f"未知实际结果 {status}")
         if status in {"rejected", "not_executed"} and not (reason and reason.strip()):
@@ -417,10 +420,18 @@ class DecisionLedger:
             if record["mode"] == "reconstructed":
                 raise ValueError("历史重建不能登记实际执行，请关联原始前向计划或录入账户流水")
             entry = self._visible_plan(record, symbol, clock)
-            plan = entry["real_plan"]
             reported = instant(reported_at) if reported_at else None
             if reported and reported > clock:
                 raise ValueError("券商回报时间不能晚于本次获知时间")
+            occurred = instant(fill["effective_at"]) if fill and fill.get("effective_at") else None
+            revisions = self._real_revisions(db, record, clock)[entry["symbol"]]
+            matching = [
+                plan for plan in revisions if (plan_id is None or plan["plan_id"] == plan_id)
+                and (occurred is None or instant(plan["published_at"]) <= occurred)
+            ]
+            if not matching:
+                raise ValueError("结果须关联该标的与交易日已发布的真实计划版本")
+            plan = matching[-1]
             data = {
                 "symbol": plan["symbol"], "plan_id": plan["plan_id"], "status": status.upper(),
                 "reason": reason, "reported_at": utc_timestamp(reported) if reported else None,
@@ -528,6 +539,18 @@ class DecisionLedger:
             (registration_id, event_id, kind, payload["symbol"], utc_timestamp(clock), encoded),
         )
 
+    def _real_revisions(self, db, record, clock):
+        if record["mode"] == "reconstructed":
+            return {entry["symbol"]: [entry["real_plan"]] for entry in record["plans"]}
+        by_symbol = defaultdict(list)
+        for plan in PlanLedger(self.data_dir, db=db).revisions(record["actual_book_id"], record["session"], as_of=clock):
+            if not plan["simulated"]:
+                by_symbol[plan["symbol"]].append(plan)
+        return {
+            entry["symbol"]: by_symbol[entry["symbol"]] or [entry["real_plan"]]
+            for entry in record["plans"]
+        }
+
     def _view(self, db, record, clock):
         if clock < instant(record["registered_at"]):
             raise ValueError("该时点尚未登记此复盘")
@@ -543,38 +566,56 @@ class DecisionLedger:
         ]
         opening = self._receipt(db, record, "open", clock) or {}
         ledger = AccountLedger(self.data_dir, db=db)
+        book_id = record["actual_book_id"]
+        account_events = ledger.trade_log(book_id, as_of=clock)
+        fills = ledger.effective_fills(book_id, as_of=clock)
+        revisions = self._real_revisions(db, record, clock)
         return {
-            **record, "shadow_closing": self._closing_receipt(db, record, clock),
+            **record, "as_of": utc_timestamp(clock), "shadow_closing": self._closing_receipt(db, record, clock),
             "plans": [
-                self._review_plan(record, entry, opening.get(entry["symbol"]), ledger, events, clock)
+                self._review_plan(record, entry, revisions[entry["symbol"]], opening.get(entry["symbol"]),
+                                  events, account_events, fills, clock)
                 for entry in record["plans"]
             ],
         }
 
     @staticmethod
-    def _review_plan(record, entry, shadow, ledger, events, clock):
+    def _review_plan(record, entry, revisions, shadow, events, account_events, fills, clock):
         symbol = entry["symbol"]
-        plan = entry["real_plan"]
+        active = revisions[-1]
+        plans = {plan["plan_id"]: plan for plan in revisions}
         events = [event for event in events if event["symbol"] == symbol]
         outcomes = [event for event in events if event["kind"] == "outcome"]
         findings = [event for event in events if event["kind"] == "finding"]
-        account_events = ledger.trade_log(record["actual_book_id"], as_of=clock, plan_id=plan["plan_id"])
-        fills = ledger.effective_fills(record["actual_book_id"], as_of=clock, plan_id=plan["plan_id"])
-        trades = plan["action"] in {"BUY", "SELL"}
-        due = clock >= session_time(record["session"], 15)
+        account_events = [event for event in account_events if event["plan_id"] in plans]
+        fills = [fill for fill in fills if fill["plan_id"] in plans]
+        trades = active["action"] in {"BUY", "SELL"}
+        due = clock >= instant(active["valid_until"])
         status = "UNREPORTED" if due and trades else "OBSERVED" if due else "PENDING"
         if record["mode"] == "reconstructed":
             status = "HISTORICAL_RECONSTRUCTION"
-        reports = [event for event in outcomes if event["status"] != "FILLED"]
-        if reports:
+        reports = [event for event in outcomes if event["plan_id"] == active["plan_id"] and event["status"] != "FILLED"]
+        if reports and not (due and reports[-1]["status"] == "CONFIRMED"):
             status = reports[-1]["status"]
-        if fills:
-            aligned = [event for event in fills if event["payload"]["side"] == plan["action"]]
-            quantity = sum(event["payload"]["quantity"] for event in aligned)
-            if len(aligned) != len(fills) or quantity > plan["quantity"]:
-                status = "DEVIATION"
-            else:
-                status = "FILLED" if quantity == plan["quantity"] else "PARTIAL"
+
+        filled = defaultdict(int)
+        deviated = []
+        outside = []
+        for fill in fills:
+            plan = plans[fill["plan_id"]]
+            if (fill["payload"]["side"] != plan["action"] or fill["payload"]["symbol"] != symbol):
+                deviated.append(fill["event_id"])
+                continue
+            filled[plan["plan_id"]] += fill["payload"]["quantity"]
+            start, end = (instant(plan["execution_window"][key]) for key in ("start", "end"))
+            if not start <= instant(fill["effective_at"]) <= end:
+                outside.append(fill["event_id"])
+        if deviated or any(quantity > plans[plan_id]["quantity"] for plan_id, quantity in filled.items()):
+            status = "DEVIATION"
+        elif filled:
+            selected = active if trades else next(plan for plan in reversed(revisions) if plan["plan_id"] in filled)
+            if quantity := filled[selected["plan_id"]]:
+                status = "FILLED" if quantity == selected["quantity"] else "PARTIAL"
 
         comparisons = []
         if shadow and shadow["reason"] in {"MISSING_OPENING", "UNKNOWN_OPENING", "MISSING_REFERENCE_CLOSE",
@@ -583,18 +624,16 @@ class DecisionLedger:
                                 "evidence_refs": [shadow["opening_snapshot_id"]]})
         if status == "DEVIATION" or (trades and status in {"REJECTED", "NOT_EXECUTED"}):
             comparisons.append({"category": "user_deviation", "reason": status})
-        if trades and fills:
-            start, end = (instant(plan["execution_window"][key]) for key in ("start", "end"))
-            outside = [event["event_id"] for event in fills if not start <= instant(event["effective_at"]) <= end]
-            if outside:
-                comparisons.append({"category": "execution_deviation", "reason": "OUTSIDE_EXECUTION_WINDOW",
-                                    "evidence_refs": outside})
-            if status == "PARTIAL":
-                comparisons.append({"category": "execution_deviation", "reason": "PARTIAL_BROKER_FILL",
-                                    "evidence_refs": [event["event_id"] for event in fills]})
+        if outside:
+            comparisons.append({"category": "execution_deviation", "reason": "OUTSIDE_EXECUTION_WINDOW",
+                                "evidence_refs": outside})
+        if status == "PARTIAL":
+            comparisons.append({"category": "execution_deviation", "reason": "PARTIAL_BROKER_FILL",
+                                "evidence_refs": [event["event_id"] for event in fills]})
 
         return {
-            **entry, "shadow": shadow,
+            **entry, "shadow": shadow, "active_real_plan": active,
+            "real_plan_revisions": [plan["plan_id"] for plan in revisions],
             "actual": {"status": status, "events": outcomes, "account_events": account_events, "fills": fills},
             "findings": findings, "deviations": comparisons,
         }

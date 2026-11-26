@@ -40,7 +40,8 @@ def _seed_trend(data_dir, *books):
 
     ledger = AccountLedger(data_dir)
     for book in books:
-        ledger.initialize(book, cash="2200", available_cash="2200", effective_at=CUTOFF, known_at=CUTOFF)
+        ledger.initialize(book, cash="2200", available_cash="2200", effective_at=CUTOFF, known_at=CUTOFF,
+                          simulated=book != "real")
         ledger.set_risk_budget(
             book, budget_id="fixture-budget", effective_at=CUTOFF, known_at=CUTOFF, cash_reserve="0",
             max_total_exposure="1", max_symbol_exposure="1", max_industry_exposure="1",
@@ -147,3 +148,28 @@ def test_expired_research_and_suspended_risk_exit_are_explicit(tmp_path):
     assert active.action == "RISK_EXIT_PENDING"
     assert active.quantity == 0
     assert "SUSPENDED_AT_CUTOFF" in active.reasons["P0"]
+
+
+def test_simulated_plan_requires_a_book_initialized_for_simulation(tmp_path, monkeypatch):
+    import io
+    import json
+
+    import pytest
+
+    from roll.v3.cli import run
+
+    def call(*args, payload=None):
+        if payload is not None:
+            monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps(payload)))
+        return run(args, data_dir=tmp_path)
+
+    baseline = {"cash": "2200", "effective_at": CUTOFF, "known_at": CUTOFF}
+    call("account", "init", "--book-id", "broker1", payload=baseline)
+    with pytest.raises(ValueError, match="独立.*账本"):
+        call("plan", "--book-id", "broker1", "--as-of", CUTOFF, "--simulate")
+
+    call("account", "init", "--book-id", "exercise", payload={**baseline, "simulated": True})
+    simulated, = call("plan", "--book-id", "exercise", "--as-of", CUTOFF, "--simulate")["plans"]
+    assert simulated["simulated"] is True
+    with pytest.raises(ValueError, match="真实.*账本"):
+        call("plan", "--book-id", "exercise", "--as-of", CUTOFF)

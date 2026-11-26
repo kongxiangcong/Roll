@@ -36,7 +36,7 @@ def _plan(data_dir, monkeypatch):
     utc_timestamp = plan.utc_timestamp
     monkeypatch.setattr(plan, "utc_timestamp", lambda value=None: utc_timestamp(value or CUTOFF))
     _cli(data_dir, monkeypatch, "account", "init", "--book-id", BOOK, payload={
-        "cash": "1800", "available_cash": "1800", "effective_at": CUTOFF, "known_at": CUTOFF,
+        "cash": "1800", "available_cash": "1800", "effective_at": CUTOFF, "known_at": CUTOFF, "simulated": True,
     })
     _cli(data_dir, monkeypatch, "account", "budget", "--book-id", BOOK, payload={
         "budget_id": "full", "effective_at": CUTOFF, "known_at": CUTOFF, "cash_reserve": "0",

@@ -104,7 +104,7 @@ def _registration(db, row, as_of):
         verdict, "evaluating" if acceptance else "frozen",
     )
     publication = _latest_event(db, row["version"], as_of, ("admitted", "suspended", "retired"))
-    if publication:
+    if publication and (publication["kind"] != "admitted" or publication.get("forward_signoff_id")):
         status = publication["kind"]
     return {
         "strategy": strategy,
@@ -287,32 +287,30 @@ class StrategyRegistry:
             ).fetchone()
             return _run(row)
 
-    def record_forward_result(self, version, *, session_dates, verdict, evidence_ref, recorded_at=None):
-        """Register the evaluator's review of live, non-backfilled shadow sessions."""
-        if verdict not in ("pass", "fail", "insufficient") or not evidence_ref:
-            raise ValueError("前向结论须为 pass、fail 或 insufficient，并引用影子账本证据")
-        days = list(session_dates)
+    def record_forward_result(self, version, *, signoff_id, verdict, recorded_at=None):
+        """Attach the evaluator's verdict to an existing, matured live shadow window."""
+        from roll.v3.forward_window import strategy_evidence
+
+        if verdict not in ("pass", "fail", "insufficient"):
+            raise ValueError("前向结论须为 pass、fail 或 insufficient")
         recorded_at = utc_timestamp(recorded_at)
-        with database(self.data_dir) as db:
-            db.executescript(_SCHEMA)
-            db.execute("BEGIN IMMEDIATE")
+        with database(self.data_dir, write=True) as db:
+            ensure_schema(db, _SCHEMA)
             row = _require_version(db, version, recorded_at)
             entry = _registration(db, row, recorded_at)
             historical = entry["acceptance"]["independent_run"]
-            minimum = entry["protocol"]["evaluation"]["min_forward_sessions"]
-            if verdict == "pass":
-                if not historical or historical["verdict"] != "pass":
-                    raise ValueError("前向通过须建立在独立历史验收通过之后")
-                if len(days) < minimum or days != list(sessions(days[0], days[-1])):
-                    raise ValueError(f"前向通过须有至少 {minimum} 个连续交易日")
-                start = utc_timestamp(session_time(days[0], 15, 5))
-                end = utc_timestamp(session_time(days[-1], 15, 5))
-                if days[0] <= historical["end"] or start <= historical["recorded_at"] or end > recorded_at:
-                    raise ValueError("前向观察须在历史验收完成后开始，并在复核时完成")
-
-            detail = {"verdict": verdict, "evidence_ref": evidence_ref, "session_dates": days}
+            if not historical or historical["verdict"] != "pass":
+                raise ValueError("策略前向复核须建立在独立历史验收通过之后")
+            evidence = strategy_evidence(
+                self.data_dir, signoff_id, version=version, symbols=entry["scope"]["symbols"],
+                minimum=entry["protocol"]["evaluation"]["min_forward_sessions"], as_of=recorded_at, db=db,
+            )
+            first = utc_timestamp(evidence["first_decision_at"])
+            if evidence["session_dates"][0] <= historical["end"] or first <= historical["recorded_at"]:
+                raise ValueError("前向观察须在独立历史验收完成后开始")
+            detail = {"verdict": verdict, "evidence_ref": f"m0b:{signoff_id}", **evidence}
             last = entry["forward_review"]
-            if not last or any(last[key] != value for key, value in detail.items()):
+            if not last or any(last.get(key) != value for key, value in detail.items()):
                 _append_event(db, version, "forward_review", recorded_at, detail)
             return _registration(db, row, recorded_at)
 
@@ -330,12 +328,13 @@ class StrategyRegistry:
                 raise ValueError("准入须有独立历史验收通过的记录")
 
             forward = entry["forward_review"]
-            if not forward or forward["verdict"] != "pass":
-                raise ValueError("准入须有通过的前向影子观察记录")
+            if not forward or forward["verdict"] != "pass" or not forward.get("signoff_id"):
+                raise ValueError("准入须有通过且关联 M0b 签收的前向影子观察记录")
             history = entry["acceptance"]["independent_run"]
             _append_event(db, version, "admitted", effective_at, {
                 "historical_evidence_ref": history["evidence_ref"],
                 "forward_evidence_ref": forward["evidence_ref"],
+                "forward_signoff_id": forward["signoff_id"],
             })
             return _registration(db, row, effective_at)
 

@@ -64,6 +64,7 @@ class PositionLot:
     source_lot_id: str | None = None
 
     def __post_init__(self):
+        object.__setattr__(self, "symbol", self.symbol.upper())
         object.__setattr__(self, "cost", _decimal(self.cost))
         object.__setattr__(self, "quantity", _shares(self.quantity))
         if self.known_sellable is not None:
@@ -120,6 +121,7 @@ class Receivable:
     quantity: int = 0
 
     def __post_init__(self):
+        object.__setattr__(self, "symbol", self.symbol.upper())
         object.__setattr__(self, "amount", _decimal(self.amount))
 
 
@@ -137,7 +139,7 @@ class AccountSnapshot:
     receivables: tuple[Receivable, ...] = ()
 
     def known_sellable(self, symbol: str, session: date | str) -> int | None:
-        quantities = [lot.sellable_quantity(session) for lot in self.lots if lot.symbol == symbol]
+        quantities = [lot.sellable_quantity(session) for lot in self.lots if lot.symbol == symbol.upper()]
         confirmed = [quantity for quantity in quantities if quantity is not None]
         return sum(confirmed) if confirmed or not quantities else None
 
@@ -185,7 +187,7 @@ def _fill_payload(symbol, side, quantity, price, fee=0, sellable_on=None, broker
     if side.upper() not in {"BUY", "SELL"} or quantity <= 0 or price <= 0 or fee < 0:
         raise ValueError("成交需要买卖方向、正股数和价格，以及非负费用")
     payload = {
-        "symbol": symbol,
+        "symbol": symbol.upper(),
         "side": side.upper(),
         "quantity": quantity,
         "price": price,
@@ -284,7 +286,19 @@ def _effective_payloads(facts):
         effective[target] = (
             None if replacement is None else {**(effective[target] or originals[target]), **replacement}
         )
+    for event in facts:
+        if event["kind"] == "FILL" and (payload := effective[event["event_id"]]) is not None:
+            effective[event["event_id"]] = {**payload, "symbol": payload["symbol"].upper()}
     return effective
+
+
+def _baseline_role(book_id, source, payload):
+    if "simulated" in payload:
+        return payload["simulated"]
+    return (
+        source == "forward-baseline" and book_id.startswith("review:shadow:")
+        or source == "frozen-experiment-baseline" and book_id.startswith("experiment:")
+    )
 
 
 def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
@@ -403,8 +417,11 @@ class AccountLedger:
             yield self._db
 
     def initialize(self, book_id, *, cash, available_cash=None, lots=(), effective_at,
-                   known_at=None, source="user-confirmed", receivables=()) -> str:
+                   known_at=None, source="user-confirmed", receivables=(), simulated=False) -> str:
+        if type(simulated) is not bool:
+            raise ValueError("账本 simulated 须为 JSON 布尔值")
         payload = {
+            "simulated": simulated,
             "cash": _decimal(cash),
             "available_cash": _decimal(available_cash),
             "lots": [
@@ -415,6 +432,18 @@ class AccountLedger:
         if receivables:
             payload["receivables"] = [asdict(item) for item in receivables]
         return self._record(book_id, "baseline", "BASELINE", effective_at, known_at, source, None, payload)
+
+    def require_role(self, book_id, *, simulated):
+        with self._connection() as db:
+            row = db.execute(
+                "SELECT source, payload FROM trade_log WHERE book_id = ? AND event_id = 'baseline'", (book_id,),
+            ).fetchone()
+        if row is None:
+            raise ValueError(f"账本 {book_id} 没有已知基线")
+        if _baseline_role(book_id, row["source"], json.loads(row["payload"])) != simulated:
+            if simulated:
+                raise ValueError("模拟写入需要使用独立的模拟账本")
+            raise ValueError("真实操作需要使用真实账本")
 
     def record_fill(self, book_id, *, event_id, symbol, side, quantity, price, effective_at,
                     fee=0, known_at=None, sellable_on=None, broker_available_after=None,
@@ -493,7 +522,22 @@ class AccountLedger:
             "SELECT * FROM trade_log WHERE book_id = ? AND event_id = ?", (book_id, event_id)
         ).fetchone()
         if existing is not None:
-            if any(existing[key] != value for key, value in event.items() if key != "known_at"):
+            previous_payload = json.loads(existing["payload"])
+            if kind == existing["kind"] == "BASELINE":
+                previous_payload["simulated"] = _baseline_role(book_id, existing["source"], previous_payload)
+                previous_payload["lots"] = [asdict(PositionLot(**lot)) for lot in previous_payload["lots"]]
+                if previous_payload.get("receivables"):
+                    previous_payload["receivables"] = [
+                        asdict(Receivable(**item)) for item in previous_payload["receivables"]
+                    ]
+            if kind == existing["kind"] == "FILL":
+                previous_payload["symbol"] = previous_payload["symbol"].upper()
+            if kind == existing["kind"] == "CORRECTION" and (replacement := previous_payload["replacement"]):
+                if "symbol" in replacement:
+                    replacement["symbol"] = replacement["symbol"].upper()
+            if (_encode(previous_payload) != encoded
+                    or any(existing[key] != value for key, value in event.items()
+                           if key not in {"known_at", "payload"})):
                 raise ValueError(f"流水标识 {event_id} 已用于另一条事实，请录入更正")
             return event_id
 
