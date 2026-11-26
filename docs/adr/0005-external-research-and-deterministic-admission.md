@@ -1,8 +1,11 @@
 ---
 status: accepted
+partially_superseded_by: ADR-0006
 ---
 
 # 研究助手外置，并以确定性实验准入与本地裁决隔离研究和生产决策
+
+> **2026-11-26 修订。** 下段的单向研究调用约定已由 ADR 0006 取代。现行决定由 Roll 发起和编排研究任务。本文关于人工发布、独立历史与前向评估、显式准入和确定性盘后裁决的规定继续生效。[ADR 0006](0006-roll-orchestrates-research-and-decisions.md)
 
 Roll v3 采用“人或外部研究助手 → 本地 Roll CLI”单向研究交互，取代 [ADR 0001](0001-default-engineering-route.md) 在应用内集成 Agents SDK 的路线，并拒绝在盘后决策阶段调用大语言模型给出动作倾向。外部助手仅可通过 CLI 读取指定标的的公开行情、归因指标与公告材料并起草 `ResearchDossier`；经研究者确认发布后，档案中的结构化约束（`fundamental_gate`、`thesis_status`、`strategy_whitelist`、`invalidation_triggers`）与有效期才进入生产读取范围。`AccountSnapshot`、`TradeLog` 与 `RiskBudget` 严格留在本地账户与决策模块，确保盘后 `decide` 全程零模型调用、断网可重放，且不会出现规则计划与模型倾向并存的双重口径。
 
