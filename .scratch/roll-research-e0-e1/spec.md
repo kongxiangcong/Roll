@@ -2,6 +2,10 @@
 
 Status: ready-for-agent
 
+Resolution: completed
+
+Closed: 2026-11-27
+
 ## Problem Statement
 
 研究者想知道，在同一组交易机会中，给江西铜业的日频趋势策略增加一个沪深 300 入场条件，究竟改变了哪几笔交易、多少费用和哪一段回撤。现有开发分析能按大盘状态分组统计日均收益，却无法说明过滤入场后，现金、持仓和后续交易会怎样演化。现有正式实验入口及其回放模式都会登记样本揭示，无法用于这项纯开发期研究。
@@ -60,3 +64,7 @@ Status: ready-for-agent
 ## Further Notes
 
 阶段 01 的离线任务入口可支持开发和复算，阶段验收使用阶段 02 的真实助手。阶段 04 按任务读取开发回执、逐笔和分段归因、已审解读及停止或继续的理由。后续 E3 宽基 ETF 资金接入与缓存复核见数据能力与专项评估文档。[阶段 03 设计](../../docs/design/roll-v3-research-pipeline/03-development-experiment.md) · [冻结趋势协议](../../backend/src/roll/v3/default_trend_protocol.json) · [重建研究口径](../../docs/adr/0004-reconstructed-price-volume-research.md) · [研究编排决定](../../docs/adr/0006-roll-orchestrates-research-and-decisions.md) · [数据接入与能力](../../docs/design/data/roll-data-capabilities.md) · [宽基 ETF 资金评估](../../docs/design/data/broad-etf-flow-review.md) · [阶段 04 交接](../../docs/design/roll-v3-research-pipeline/04-workbench-followup.md)
+
+## Comments
+
+2026-11-27，五项任务在 `feat/roll-research-e0-e1` 完成。冻结快照的四条模拟路径、恒真检查和离线复算通过。最终真实助手报告经指定尝试和版本归档。正式记录指纹与盘后预览逐项对照一致，原 M0a 回执可离线复算。复审修复提交 `b9a5bed` 的 192 项后端测试全部通过。[联验记录与命令](issues/05-archive-live-experiment.md)
