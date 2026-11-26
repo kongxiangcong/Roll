@@ -77,3 +77,66 @@ def test_frozen_trend_remains_observation_in_real_book_and_can_buy_in_shadow(tmp
     assert simulated["cash_reserved"] == "1105.01"
     assert simulated["strategy_version"] == version
     assert "PRICE_ONLY_SIMULATION" in simulated["reasons"]["P2"]
+
+
+def test_two_buys_allocate_one_account_in_registered_order(tmp_path):
+    from roll.v3.decision import DecisionData, DecisionRules, SecurityInput, decide
+
+    first, second = "600111.SH", "600362.SH"
+    version = "trend-fixture"
+    ledger = AccountLedger(tmp_path)
+    ledger.initialize("shadow", cash="1100", available_cash="1100", effective_at=CUTOFF, known_at=CUTOFF)
+    ledger.set_risk_budget(
+        "shadow", budget_id="one-lot", effective_at=CUTOFF, known_at=CUTOFF, cash_reserve="0",
+        max_total_exposure="1", max_symbol_exposure="1", max_industry_exposure="1",
+    )
+    account = ledger.snapshot("shadow", as_of=CUTOFF)
+    security = SecurityInput(
+        close="10", trading_status="trading", industry="industrial-metals",
+        signals={version: {"status": "ready", "signal": "long", "target_fraction": "1"}},
+    )
+    entry = {
+        "strategy": {"version": version, "scope": {"symbols": [first, second]}},
+        "simulation_eligible": True, "status": "frozen",
+    }
+    rules = DecisionRules(simulated=True, strategy_versions=(version,), allow_price_only=True)
+
+    def plans(symbols):
+        data = DecisionData(CUTOFF, "2026-11-30", "fixture", {symbol: security for symbol in symbols})
+        return decide(data, account, account.risk_budget, {}, {symbol: [entry] for symbol in symbols}, rules)
+
+    direct = plans((first, second))
+    assert [plan.as_dict() for plan in direct] == [plan.as_dict() for plan in plans((second, first))]
+    assert [(plan.symbol, plan.action, plan.quantity) for plan in direct] == [
+        (first, "BUY", 100), (second, "WATCH", 0),
+    ]
+    assert str(sum(plan.cash_reserved for plan in direct)) == "1005.01"
+    assert direct[1].reasons["P4"] == ["SHARED_CASH_OR_RISK_BELOW_MINIMUM_ORDER"]
+
+
+def test_expired_research_and_suspended_risk_exit_are_explicit(tmp_path):
+    from roll.v3.account import PositionLot
+    from roll.v3.decision import DecisionData, SecurityInput, decide
+
+    ledger = AccountLedger(tmp_path)
+    ledger.initialize(
+        "real", cash="0", available_cash="0", effective_at=CUTOFF, known_at=CUTOFF,
+        lots=(PositionLot("initial", SYMBOL, 100, known_sellable=100),),
+    )
+    account = ledger.snapshot("real", as_of=CUTOFF)
+    data = DecisionData(CUTOFF, "2026-11-30", "fixture", {
+        SYMBOL: SecurityInput(close="10", trading_status="suspended"),
+    })
+    published = {"version": "risk-fixture", "review_status": "published",
+                 "fundamental_gate": "fail", "thesis_status": "broken"}
+    expired, = decide(data, account, None, {SYMBOL: {
+        **published, "valid_until": CUTOFF,
+    }}, {})
+    assert expired.action == "WATCH"
+    assert expired.reasons["P2"] == ["DOSSIER_EXPIRED"]
+    active, = decide(data, account, None, {SYMBOL: {
+        **published, "valid_until": "2026-11-30T16:00:00+08:00",
+    }}, {})
+    assert active.action == "RISK_EXIT_PENDING"
+    assert active.quantity == 0
+    assert "SUSPENDED_AT_CUTOFF" in active.reasons["P0"]
