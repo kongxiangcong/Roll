@@ -494,13 +494,17 @@ def start_task(data_dir, manifest, *, executor=_DEFAULT_HARNESS, parent_task_id=
                                 parent_task_id=parent_task_id, executor=executor)
 
 
-def record_task_result(data_dir, manifest, result):
+def record_task_result(data_dir, manifest, result, *, development_receipt=None):
     """Save a task that has reached a terminal result without invoking a research executor."""
     task_id = "task-" + uuid4().hex
     attempt_id = "attempt-" + uuid4().hex
     receipt = {"gaps": [], "draft_version": None, **result, "task_id": task_id, "attempt_id": attempt_id}
     with task_database(data_dir, write=True) as db:
         db.execute("INSERT INTO research_task VALUES (?,?)", (task_id, json_text(manifest)))
+        if development_receipt is not None:
+            from roll.v3.development_replay import store_development_receipt
+
+            store_development_receipt(db, task_id, development_receipt)
         db.execute("INSERT INTO research_attempt VALUES (?,?,?)", (attempt_id, task_id, json_text(receipt)))
     return receipt
 

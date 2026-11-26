@@ -450,7 +450,7 @@ class _Book:
     holding_days: set[str] = field(default_factory=set)
 
     def target(self, signal):
-        if self.name == "trend":
+        if self.name in ("trend", "e0", "e1"):
             return signal
         if self.name == "buy_and_hold" and not self.configured:
             return {"status": "ready", "signal": "initial_allocation", "target_fraction": "1"}
@@ -522,6 +522,18 @@ def _account_at(ledger, data_dir, db, book, actions, at):
     if actions:
         return settle_entitlements(data_dir, book.book_id, actions, as_of=at, simulated=True, db=db)
     return ledger.snapshot(book.book_id, as_of=at)
+
+
+def _execute_pending(ledger, book, quote, account, rules, at):
+    if not book.pending:
+        return {"status": "NO_INTENT", "reason": None, "fill": None}
+    outcome = execute(book.pending, quote, account, rules)
+    if outcome.fill:
+        ledger.record_fill(book.book_id, **outcome.fill.ledger_fields(), known_at=at,
+                           source="historical-simulation", plan_id=book.pending.intent_id)
+        if book.name == "buy_and_hold":
+            book.configured = True
+    return outcome.as_dict()
 
 
 def _intent_payload(intent, session):
@@ -607,17 +619,9 @@ def _replay(data_dir, db, run_id, configuration, exposure, market):
             paths = {}
             for book in books:
                 open_account = _account_at(ledger, data_dir, db, book, action["opening"], open_at)
-                execution = {"status": "NO_INTENT", "reason": None, "fill": None}
-                if book.pending:
-                    outcome = execute(book.pending, open_quote, open_account, rules)
-                    execution = outcome.as_dict()
-                    if outcome.reason in EXECUTION_GAPS:
-                        gaps[day, outcome.reason].add(book.name)
-                    if outcome.fill:
-                        ledger.record_fill(book.book_id, **outcome.fill.ledger_fields(), known_at=open_at,
-                                           source="historical-simulation", plan_id=book.pending.intent_id)
-                        if book.name == "buy_and_hold":
-                            book.configured = True
+                execution = _execute_pending(ledger, book, open_quote, open_account, rules, open_at)
+                if execution["reason"] in EXECUTION_GAPS:
+                    gaps[day, execution["reason"]].add(book.name)
                 account = _account_at(ledger, data_dir, db, book, action["closing"], close_at)
                 valuation = _valuation(account, symbol, close)
                 if valuation is None:

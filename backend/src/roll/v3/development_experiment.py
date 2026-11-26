@@ -43,6 +43,8 @@ def development_preset(preset_id=PRESET_ID):
     protocol["windows"] = {"development": source["windows"]["development"]}
     return {
         "id": PRESET_ID, "symbol": "600362.SH", "strategy": strategy, "protocol": protocol,
+        "simulation_risk_budget": {"cash_reserve": "0", "max_total_exposure": "1",
+                                   "max_symbol_exposure": "1", "max_industry_exposure": "1"},
         "e0": {"feature": "total_return_index", "parameters": strategy["parameters"], "entry_operator": ">"},
         "e1": {"symbol": "000300.SH", "feature": "raw_close", "lookback_sessions": 20,
                "includes_signal_day": True, "entry_operator": ">", "applies_to": "buy_only"},
@@ -163,6 +165,10 @@ def _close(row, status, *, require_trading=False):
     return (close, None) if close.is_finite() and close > 0 else (None, "close")
 
 
+def observation_reference(row):
+    return {key: value for key, value in row.items() if key != "payload"} if row else None
+
+
 def _stock_signal(day, at, preset, history, reasons):
     parameters = preset["e0"]["parameters"]
     required = parameters["slow"]
@@ -188,6 +194,8 @@ def _common_sample(preset, days, evenings, stock, benchmark, factors, action_fai
     stock_history = deque(maxlen=preset["e0"]["parameters"]["slow"])
     market_history = deque(maxlen=preset["e1"]["lookback_sessions"])
     by_date, losses, common = {}, {}, []
+    restarted = {"e0": False, "market": False}
+    warmup_day_counts = Counter()
     for day in days:
         stock_row, stock_status = stock[day]
         stock_close, stock_issue = _close(stock_row, stock_status, require_trading=True)
@@ -202,6 +210,7 @@ def _common_sample(preset, days, evenings, stock, benchmark, factors, action_fai
             if issue:
                 stock_reasons.append({"feature": "adjustment_factor", "reason": issue})
         if stock_reasons:
+            restarted["e0"] |= bool(stock_history)
             stock_history.clear()
         else:
             stock_history.append((day, stock_close, economic))
@@ -209,6 +218,7 @@ def _common_sample(preset, days, evenings, stock, benchmark, factors, action_fai
 
         market_close, market_issue = _close(*benchmark[day])
         if market_issue:
+            restarted["market"] |= bool(market_history)
             market_history.clear()
         else:
             market_history.append(market_close)
@@ -225,11 +235,18 @@ def _common_sample(preset, days, evenings, stock, benchmark, factors, action_fai
             losses[day] = reasons
         else:
             common.append(day)
-        by_date[day] = {"e0": e0, "market": market, "common_evaluable": not reasons, "reasons": reasons}
+        preparation = {feature: "restarted_warmup" if restarted[feature] else "initial_warmup"
+                       for feature, status in (("e0", e0["status"]), ("market", market["status"])) if status == "warmup"}
+        warmup_day_counts.update(f"{feature}:{kind}" for feature, kind in preparation.items())
+        by_date[day] = {"e0": e0, "market": market, "common_evaluable": not reasons, "reasons": reasons,
+                        "preparation": preparation,
+                        "stock_observation": observation_reference(stock_row),
+                        "index_observation": observation_reference(benchmark[day][0])}
     return {
         "nominal_window": nominal, "effective_window": {"start": common[0], "end": nominal["end"]} if common else None,
         "candidate_day_count": len(days), "common_evaluable_day_count": len(common), "common_evaluable_dates": common,
         "loss_day_count": len(losses), "losses": losses, "by_date": by_date,
+        "warmup_day_counts": dict(warmup_day_counts),
         "loss_reason_counts": dict(Counter(f'{item["feature"]}:{item["reason"]}'
                                              for reasons in losses.values() for item in reasons)),
     }
@@ -283,16 +300,29 @@ def freeze_development_inputs(data_dir, snapshot_id, *, preset_id):
     sample = _common_sample(preset, days, evenings, stock, index, factors, failures)
     covered = {item["series"] for item in snapshot["scope"]
                if item["symbol"] == symbol and item["start"] <= start and item["end"] >= end}
+    entitlement_scope = {
+        series: [(item["start"], item["end"]) for item in snapshot["scope"]
+                 if item["symbol"] == symbol and item["series"] == series]
+        for series in ("corporate_action", "adjustment_factor")
+    }
     market = {
         "days": days, "gaps": [(start, f"SNAPSHOT_SCOPE_MISSING:{series}", PATHS)
                                for series in _FIELDS if series not in covered],
         "opens": {day: row for day, (row, _) in opened.items()},
+        "opening_quality": {day: state for day, (_, state) in opened.items()},
+        "closing_quality": {day: state for day, (_, state) in stock.items()},
+        "missing_entitlement_scope": {
+            day: [series for series, intervals in entitlement_scope.items()
+                  if not any(first <= day <= last for first, last in intervals)] for day in days
+        },
         "closes": {day: row for day, (row, _) in stock.items()},
         "actions": actions, "signals": {day: detail["e0"] for day, detail in sample["by_date"].items()},
     }
     snapshot_metadata = _snapshot_audit(snapshot, witnessed)
     # Track the snapshot reference separately so unrelated imports cannot change the bounded input identity.
     binding = {"preset": preset, "sample": sample, "gaps": market["gaps"],
+               "opening_quality": market["opening_quality"], "closing_quality": market["closing_quality"],
+               "missing_entitlement_scope": market["missing_entitlement_scope"],
                "snapshot": {key: snapshot_metadata[key] for key in ("use_mode", "selection_rules_version")},
                "observations": list(witnessed.values()),
                "actions": {day: {**detail, "opening": [asdict(action) for action in detail["opening"]],
