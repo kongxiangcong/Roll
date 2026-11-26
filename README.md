@@ -51,3 +51,5 @@ roll market import config/research/600362.SH/dividends.json
 为真实前向的开盘撮合准备 `daily_open` 行情观察。以 `market import` 录入原始开盘、参考昨收、交易状态、来源、实际取得时间及可得证据。使用开盘后才取得的历史日线投影时，应选择重建用途。缺少及时的开盘证据会留下具体的未成交原因。用 `review list --start DATE --end DATE` 检查按交易所日历漏登的日期，`--mode rehearsal` 和 `--mode reconstructed` 的记录单独留存。
 
 [工程验收与实测记录](.scratch/roll-v3-trading-pipeline/acceptance.md)
+
+`roll forward-window audit` 按交易所日历核对连续 20 个真实盘后登记日，列出待执行、已结算及异常。可以传入 `--start DATE --end DATE` 核对指定区间。窗口齐备后用 `roll forward-window signoff` 冻结验收回执，并用 `roll forward-window show SIGNOFF_ID` 重读。
