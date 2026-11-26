@@ -4,7 +4,7 @@ import json
 import sys
 from pathlib import Path
 
-from roll.config import data_directory, load_runtime_environment
+from roll.config import data_directory
 
 
 def parser():
@@ -40,7 +40,6 @@ def run(argv=None, *, data_dir=None):
 
 
 def main(argv=None):
-    load_runtime_environment()
     try:
         result = run(argv)
     except (FileNotFoundError, KeyError, ValueError) as error:

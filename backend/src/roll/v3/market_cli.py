@@ -45,7 +45,7 @@ def register(subparsers):
     market = subparsers.add_parser('market', help='行情同步与数据快照')
     action = market.add_subparsers(required=True)
 
-    sync = action.add_parser('sync', help='同步扶摇原始日线和除权因子并冻结快照')
+    sync = action.add_parser('sync', help='同步原始日线与除权因子并冻结快照')
     sync.add_argument('symbols', nargs='*')
     sync.add_argument('--start', default='2020-01-02')
     sync.add_argument('--end')

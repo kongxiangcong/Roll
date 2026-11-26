@@ -17,12 +17,12 @@ uv run --project backend --locked roll serve
 ## 同步与研究
 
 ```sh
-roll market sync 600362.SH 000300.SH --start 2020-01-02
+roll market sync 600362.SH 000300.SH 512400.SH --start 2020-01-02
 roll research sync-industry --start 2020-01-02
 roll market import config/research/600362.SH/dividends.json
 ```
 
-扶摇同步读取环境变量 `FUYAO_API_KEY`。可用 `ROLL_ENV_FILE` 指向本机配置文件。沪深 300 的扶摇缺口走公共指数补源。已有行情日期默认复用本地版本，`--refresh` 用来采集来源修订。申万同步使用系统 HTTPS 证书链，也可用 `--ca-file` 指定有效的 CA 文件。
+扶摇同步读取环境变量 `FUYAO_API_KEY`。可用 `ROLL_ENV_FILE` 指向本机配置文件。沪深 300 的扶摇缺口走公共指数补源，512400.SH 同步公共原价。已有行情日期默认复用本地版本，`--refresh` 用来采集来源修订。申万同步使用系统 HTTPS 证书链，也可用 `--ca-file` 指定有效的 CA 文件。
 
 用 `roll market freeze` 指定证券、区间、序列和用途，输出快照标识。以 `roll research export 600362.SH --snapshot ID` 获取冻结的多周期指标与覆盖。三种用途分别支持严格历史时点、显式假设下的历史重建，以及包含实际取得时间约束的日常运行。已冻结输出可离线读取。
 
