@@ -1,4 +1,5 @@
 """Local after-close input freezing and immutable TradingPlan publication."""
+from collections import defaultdict
 from dataclasses import replace
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
@@ -10,7 +11,8 @@ from sqlite3 import Connection
 from roll.market.calendar import is_session
 from roll.market.rules import next_trading_day
 from roll.v3.account import AccountLedger
-from roll.v3.decision import DecisionData, DecisionRules, PlanReservation, SecurityInput, decide
+from roll.v3.commitments import SCHEMA as COMMITMENT_SCHEMA, money, project_reservation
+from roll.v3.decision import DecisionData, DecisionRules, SecurityInput, decide, uncommitted_cash
 from roll.v3.industry_sources import STOCK
 from roll.v3.market import LIVE_RUN, freeze_snapshot, get_snapshot, read_snapshot, utc_timestamp
 from roll.v3.market_research import DEFAULT_BENCHMARK
@@ -47,7 +49,7 @@ CREATE TABLE IF NOT EXISTS plan_reservation (
     order_quantity INTEGER NOT NULL,
     expires_at TEXT NOT NULL
 );
-"""
+""" + COMMITMENT_SCHEMA
 
 
 class PlanLedger:
@@ -75,9 +77,15 @@ class PlanLedger:
             ).fetchall()
         return [json.loads(row["payload"]) for row in rows]
 
-    def reservations(self, book_id, *, as_of, replacing_session=None, replacing_symbols=None):
-        """Read unexpired reservations on versions visible at the decision cutoff."""
+    def reservations(self, book_id, *, as_of, known_at=None, replacing_session=None, replacing_symbols=None):
+        """Read commitments visible to the next account-wide decision."""
+        balances = self._reservation_balances(book_id, as_of, known_at, replacing_session, replacing_symbols)
+        return tuple(reservation for _, reservation in balances if reservation.remaining or reservation.quantity)
+
+    def _reservation_balances(self, book_id, as_of, known_at, replacing_session=None, replacing_symbols=None,
+                              plan_id=None):
         as_of = utc_timestamp(as_of)
+        known_at = utc_timestamp(known_at) if known_at is not None else as_of
         with database(self.data_dir, db=self.db) as db:
             ensure_schema(db, _SCHEMA)
             rows = db.execute(
@@ -87,17 +95,118 @@ class PlanLedger:
                        ) AS latest FROM plan_revision
                        WHERE book_id = ? AND as_of <= ? AND published_at <= ?
                    )
-                   SELECT v.symbol, v.session, r.max_amount, r.order_quantity
-                   FROM visible_plans v JOIN plan_reservation r ON v.plan_id = r.plan_id
-                   WHERE v.latest = 1 AND r.expires_at > ? ORDER BY v.session, v.symbol""",
-                (book_id, as_of, as_of, as_of),
+                   SELECT v.plan_id, v.symbol, v.session, v.latest, json_extract(v.payload, '$.action') AS side,
+                          COALESCE(r.max_amount, '0') AS max_amount,
+                          COALESCE(r.order_quantity, json_extract(v.payload, '$.quantity')) AS order_quantity,
+                          COALESCE(r.expires_at, v.valid_until) AS expires_at
+                   FROM visible_plans v LEFT JOIN plan_reservation r ON v.plan_id = r.plan_id
+                   WHERE side IN ('BUY', 'SELL') AND (v.plan_id = ? OR (
+                       v.latest = 1 AND COALESCE(r.expires_at, v.valid_until) > ?
+                   ) OR EXISTS (
+                       SELECT 1 FROM commitment_event c
+                       WHERE c.plan_id = v.plan_id AND c.effective_at <= ? AND c.known_at <= ?
+                   )) ORDER BY v.session, v.symbol, v.revision""",
+                (book_id, as_of, known_at, plan_id, as_of, as_of, known_at),
             ).fetchall()
-        return tuple(
-            PlanReservation(row["symbol"], row["max_amount"], row["order_quantity"])
-            for row in rows
-            if row["session"] != replacing_session
-            or (replacing_symbols is not None and row["symbol"] not in replacing_symbols)
+            if not rows:
+                return []
+            events = defaultdict(list)
+            for event in db.execute(
+                """SELECT * FROM commitment_event WHERE book_id = ? AND effective_at <= ? AND known_at <= ?
+                   ORDER BY effective_at, known_at, seq""", (book_id, as_of, known_at),
+            ):
+                events[event["plan_id"]].append(event)
+            fills = defaultdict(list)
+            for fill in AccountLedger(self.data_dir, db=db).effective_fills(book_id, as_of=as_of, known_at=known_at):
+                fills[fill["plan_id"]].append(fill)
+        return [project_reservation(row, events[row["plan_id"]], fills[row["plan_id"]], as_of=as_of,
+                                    replacing_session=replacing_session, replacing_symbols=replacing_symbols)
+                for row in rows]
+
+    def commitment_summary(self, book_id, *, as_of=None, known_at=None, plan_id=None):
+        """Read current commitments and their impact on the broker's available cash."""
+        as_of = utc_timestamp(as_of)
+        with database(self.data_dir, write=True, db=self.db) as db:
+            account = AccountLedger(self.data_dir, db=db).snapshot(book_id, as_of=as_of, known_at=known_at)
+            balances = PlanLedger(self.data_dir, db=db)._reservation_balances(book_id, as_of, known_at, plan_id=plan_id)
+        remaining = sum((reservation.remaining for _, reservation in balances), Decimal(0))
+        broker_offset = sum((reservation.broker_offset for _, reservation in balances), Decimal(0))
+        budget = account.risk_budget
+        net = remaining - broker_offset
+        return {"book_id": book_id, "as_of": as_of, "known_at": account.known_at,
+                "account_snapshot_id": account.snapshot_id, "cash": money(account.cash),
+                "broker_available_cash": money(account.available_cash),
+                "cash_reserve": money(budget.cash_reserve) if budget else None,
+                "remaining_commitment": money(remaining), "broker_frozen_offset": money(broker_offset),
+                "net_commitment": money(net), "cash_available_to_allocate": money(uncommitted_cash(account, budget, net)),
+                "plans": [details for details, reservation in balances if details["plan_id"] == plan_id
+                          or (plan_id is None and (reservation.remaining or reservation.quantity))]}
+
+    def record_condition(self, book_id, *, plan_id, event_id, status, effective_at, expires_at=None,
+                         description=None, known_at=None):
+        """Register or revoke the user's cross-day execution condition."""
+        effective_at = utc_timestamp(effective_at)
+        expires_at = utc_timestamp(expires_at) if expires_at is not None else None
+        if status not in {"active", "revoked"} or (status == "active" and not (expires_at and expires_at > effective_at)):
+            raise ValueError("跨日条件状态须为 active 或 revoked，生效条件须指定晚于生效时间的有效期")
+        return self._record_commitment(
+            book_id, plan_id, event_id, "condition", plan_id, status, effective_at, known_at,
+            {"expires_at": expires_at, "description": description},
         )
+
+    def record_order(self, book_id, *, plan_id, order_id, event_id, status, effective_at,
+                     known_at=None, max_amount=None, order_quantity=None, broker_frozen=None,
+                     broker_available_cash=None):
+        """Register a user-confirmed external order or a subsequent broker result."""
+        if not order_id or status not in {"pending", "cancelled", "expired", "filled"}:
+            raise ValueError("委托须包含券商委托标识，状态须为 pending、cancelled、expired 或 filled")
+        if order_quantity is not None and (type(order_quantity) is not int or order_quantity <= 0):
+            raise ValueError("委托股数须为正整数")
+        amounts = {key: _nonnegative(value) for key, value in {
+            "max_amount": max_amount, "broker_frozen": broker_frozen,
+            "broker_available_cash": broker_available_cash,
+        }.items()}
+        return self._record_commitment(
+            book_id, plan_id, event_id, "order", order_id, status, utc_timestamp(effective_at), known_at,
+            {"order_quantity": order_quantity, **amounts},
+        )
+
+    def _record_commitment(self, book_id, plan_id, event_id, kind, reference, status, effective_at, known_at, payload):
+        known_at = utc_timestamp(known_at)
+        encoded = json_text(payload)
+        with database(self.data_dir, write=True, db=self.db) as db:
+            ensure_schema(db, _SCHEMA)
+            plan = db.execute("SELECT payload FROM plan_revision WHERE book_id = ? AND plan_id = ?",
+                              (book_id, plan_id)).fetchone()
+            if plan is None or json.loads(plan["payload"])["action"] not in {"BUY", "SELL"}:
+                raise ValueError(f"找不到账本 {book_id} 可登记承诺的交易计划 {plan_id}")
+            state = (plan_id, kind, reference, status, effective_at, encoded)
+            previous = db.execute(
+                """SELECT plan_id, kind, reference_id, status, effective_at, payload FROM commitment_event
+                   WHERE book_id = ? AND event_id = ?""", (book_id, event_id),
+            ).fetchone()
+            if previous is not None:
+                if tuple(previous) != state:
+                    raise ValueError(f"承诺事件标识 {event_id} 已用于另一条事实，请使用新标识")
+                return event_id
+            if kind == "order" and db.execute(
+                """SELECT 1 FROM commitment_event
+                   WHERE book_id = ? AND kind = 'order' AND reference_id = ? AND plan_id <> ? LIMIT 1""",
+                (book_id, reference, plan_id),
+            ).fetchone() is not None:
+                raise ValueError(f"券商委托 {reference} 已关联其他计划版本")
+            db.execute(
+                """INSERT INTO commitment_event (book_id, event_id, plan_id, kind, reference_id, status,
+                                                 effective_at, payload, known_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (book_id, event_id, *state, known_at),
+            )
+            if payload.get("broker_available_cash") is not None:
+                AccountLedger(self.data_dir, db=db).record_cash(
+                    book_id, event_id=f"order:{event_id}", delta=0, effective_at=effective_at, known_at=known_at,
+                    broker_available_after=payload["broker_available_cash"], plan_id=plan_id,
+                    reason=f"券商委托 {reference} 回报的可用现金", source="broker",
+                )
+        return event_id
 
     def publish(self, plans, *, published_at=None):
         """Atomically save revisions, replace current pointers and register maximum cash commitments."""
@@ -142,13 +251,22 @@ class PlanLedger:
                ON CONFLICT (book_id, symbol, session) DO UPDATE SET plan_id = excluded.plan_id""",
             (*key, plan_id),
         )
-        if plan.cash_reserved:
+        if plan.action in {"BUY", "SELL"}:
             db.execute(
                 """INSERT INTO plan_reservation (plan_id, max_amount, order_quantity, expires_at)
                    VALUES (?, ?, ?, ?)""",
                 (plan_id, str(plan.cash_reserved), plan.quantity, plan.valid_until),
             )
         return stored
+
+
+def _nonnegative(value):
+    if value is None:
+        return None
+    amount = Decimal(str(value))
+    if not amount.is_finite() or amount < 0:
+        raise ValueError("委托金额、冻结金额及可用现金须为非负金额")
+    return money(amount)
 
 
 def _scope(symbols, benchmark, start, day):

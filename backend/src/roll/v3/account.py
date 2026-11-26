@@ -177,13 +177,14 @@ def _consume_lots(lots, symbol, session, quantity):
     return tuple(lot for lot in remaining if lot is not None)
 
 
-def _fill_payload(symbol, side, quantity, price, fee=0, sellable_on=None, broker_available_after=None):
+def _fill_payload(symbol, side, quantity, price, fee=0, sellable_on=None, broker_available_after=None,
+                  broker_order_id=None):
     quantity = _shares(quantity)
     price = _decimal(price)
     fee = _decimal(fee)
     if side.upper() not in {"BUY", "SELL"} or quantity <= 0 or price <= 0 or fee < 0:
         raise ValueError("成交需要买卖方向、正股数和价格，以及非负费用")
-    return {
+    payload = {
         "symbol": symbol,
         "side": side.upper(),
         "quantity": quantity,
@@ -192,11 +193,14 @@ def _fill_payload(symbol, side, quantity, price, fee=0, sellable_on=None, broker
         "sellable_on": sellable_on.isoformat() if isinstance(sellable_on, date) else sellable_on,
         "broker_available_after": _decimal(broker_available_after),
     }
+    if broker_order_id is not None:
+        payload["broker_order_id"] = broker_order_id
+    return payload
 
 
 def _apply_fill(snapshot, event_id, effective_at, payload):
     quantity = payload["quantity"]
-    gross = (quantity * _decimal(payload["price"])).quantize(CENT, rounding=ROUND_HALF_UP)
+    gross = fill_gross(quantity, payload["price"])
     fee = _decimal(payload["fee"])
     symbol = payload["symbol"]
     acquired_on = _trade_date(effective_at)
@@ -213,6 +217,10 @@ def _apply_fill(snapshot, event_id, effective_at, payload):
         lots = _consume_lots(snapshot.lots, symbol, acquired_on, quantity)
 
     return _apply_cash(replace(snapshot, lots=lots), delta, payload["broker_available_after"])
+
+
+def fill_gross(quantity, price):
+    return (quantity * _decimal(price)).quantize(CENT, rounding=ROUND_HALF_UP)
 
 
 def apply_fill(snapshot: AccountSnapshot, *, event_id, symbol, side, quantity, price, effective_at,
@@ -264,6 +272,21 @@ def _apply_entitlement_posting(snapshot, event, payload):
     return replace(snapshot, lots=tuple(lots))
 
 
+def _effective_payloads(facts):
+    originals = {event["event_id"]: event["payload"] for event in facts if event["kind"] != "CORRECTION"}
+    effective = originals.copy()
+    corrections = sorted((event for event in facts if event["kind"] == "CORRECTION"),
+                         key=lambda event: (event["known_at"], event["seq"]))
+    for correction in corrections:
+        payload = correction["payload"]
+        target = payload["target_event_id"]
+        replacement = payload["replacement"]
+        effective[target] = (
+            None if replacement is None else {**(effective[target] or originals[target]), **replacement}
+        )
+    return effective
+
+
 def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
     from roll.v3.entitlements import CompanyAction, accrue_receivables
 
@@ -277,19 +300,7 @@ def _project(book_id, effective_at, known_at, facts) -> AccountSnapshot:
         receivables=tuple(Receivable(**item) for item in baseline.get("receivables", ())),
     )
 
-    originals = {event["event_id"]: json.loads(event["payload"]) for event in facts[1:] if event["kind"] != "CORRECTION"}
-    effective = originals.copy()
-    corrections = sorted(
-        (event for event in facts if event["kind"] == "CORRECTION"),
-        key=lambda event: (event["known_at"], event["seq"]),
-    )
-    for correction in corrections:
-        payload = json.loads(correction["payload"])
-        target = payload["target_event_id"]
-        replacement = payload["replacement"]
-        effective[target] = (
-            None if replacement is None else {**(effective[target] or originals[target]), **replacement}
-        )
+    effective = _effective_payloads([{**dict(event), "payload": json.loads(event["payload"])} for event in facts[1:]])
 
     actions = {}
     for event in sorted(
@@ -407,8 +418,8 @@ class AccountLedger:
 
     def record_fill(self, book_id, *, event_id, symbol, side, quantity, price, effective_at,
                     fee=0, known_at=None, sellable_on=None, broker_available_after=None,
-                    source="broker", plan_id=None) -> str:
-        payload = _fill_payload(symbol, side, quantity, price, fee, sellable_on, broker_available_after)
+                    source="broker", plan_id=None, broker_order_id=None) -> str:
+        payload = _fill_payload(symbol, side, quantity, price, fee, sellable_on, broker_available_after, broker_order_id)
         return self._record(book_id, event_id, "FILL", effective_at, known_at, source, plan_id, payload)
 
     def record_cash(self, book_id, *, event_id, delta, effective_at, known_at=None,
@@ -459,7 +470,7 @@ class AccountLedger:
             if replacement is not None:
                 original = json.loads(target["payload"])
                 normalized = _fill_payload(**{**original, **replacement})
-                replacement = {key: normalized[key] for key in replacement}
+                replacement = {key: normalized.get(key) for key in replacement}
             payload = {"target_event_id": target_event_id, "replacement": replacement, "reason": reason}
             return self._append(
                 db, book_id, event_id, "CORRECTION", target["effective_at"], known_at,
@@ -512,6 +523,14 @@ class AccountLedger:
             {**dict(row), "payload": json.loads(row["payload"])}
             for row in rows
         ]
+
+    def effective_fills(self, book_id, *, as_of, known_at=None, plan_id=None):
+        """Return fill facts with the same visible corrections used for account snapshots."""
+        facts = [event for event in self.trade_log(book_id, as_of=as_of, known_at=known_at, plan_id=plan_id)
+                 if event["kind"] in {"FILL", "CORRECTION"}]
+        effective = _effective_payloads(facts)
+        return [{**event, "payload": effective[event["event_id"]]} for event in facts
+                if event["kind"] == "FILL" and effective[event["event_id"]] is not None]
 
     def set_risk_budget(self, book_id, *, budget_id, effective_at, cash_reserve, max_total_exposure,
                         max_symbol_exposure, max_industry_exposure, known_at=None, expires_at=None,

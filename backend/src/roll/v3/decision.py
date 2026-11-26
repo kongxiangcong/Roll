@@ -168,6 +168,13 @@ def _valuation(account, securities):
     return holdings, marked_shares, priced, nav, unpriced
 
 
+def uncommitted_cash(account, budget, committed):
+    """Cash available after the local reserve and commitments net of broker freezing."""
+    if account.available_cash is None or budget is None:
+        return None
+    return max(ZERO, min(account.cash, account.available_cash) - budget.cash_reserve - committed)
+
+
 @dataclass
 class _Capacity:
     budget: RiskBudget | None
@@ -211,7 +218,7 @@ class _Capacity:
         budget_reasons.extend(reason for condition, reason in checks if condition)
         cash = ZERO
         if not budget_reasons:
-            cash = max(ZERO, min(account.cash, account.available_cash) - budget.cash_reserve - committed)
+            cash = uncommitted_cash(account, budget, committed)
         return cls(budget, nav, cash, committed, current, sum(current.values(), ZERO),
                    industry, industry[None], budget_reasons), sell_reserved
 
