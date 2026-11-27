@@ -4,7 +4,7 @@ status: accepted
 
 # 将当前历史版本的量价重建研究与严格历史时点资格分开
 
-> **v0 研究流程的历史记录。** “历史重建不等同于当时可得证据”的原则保留；当前回测与前向检验以 [v2.1 规格](../design/architecture/roll_v2_1_refactoring_spec.md) 为准，不继承 ADR 0003 的资格门禁。
+> **v3 适用范围。** 将“基于显式可得性假设的重建研究（`RECONSTRUCTED_RESEARCH`）”与“具备可核验披露及接收时间的严格历史时点用途（`STRICT_HISTORICAL_AS_OF`）”分开的原则在 v3 数据基础层继续有效，见 [v3 时点快照与版本选择](../design/architecture/roll_v3_trading_pipeline_spec.md#111-sqlite-与低成本时点快照)。下文针对 v0 单票逻辑回归模型（`PRICE_VOLUME_LOGIT_RECONSTRUCTED_V2`）及旧分片预算的具体约定仅作历史记录，v3 第一阶段不建设单票高维或逻辑回归概率模型，见 [v3 概率边界](../design/architecture/roll_v3_trading_pipeline_spec.md#83-概率模型验收与输出)。
 
 2026-10-10 用户明确授权 ticket 19 使用当前取得的真实历史版本完成研究训练、时间隔离校准及模型工件冻结。此前把完整历史原版存证与修订链作为所有拟合的统一前提，会同时拒绝可追溯的重建研究。本决策只修改这一用途边界，保留 ADR 0003 的正式资格要求。
 

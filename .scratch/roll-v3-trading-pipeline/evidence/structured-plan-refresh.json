@@ -1,0 +1,369 @@
+{
+  "latest_plan": {
+    "account_constraints": {
+      "account_value": "100000",
+      "broker_available_cash": "100000",
+      "budget_expires_at": null,
+      "cash": "100000",
+      "cash_available_to_allocate": "100000",
+      "cash_reserve": "0",
+      "existing_position_value": null,
+      "existing_reservations_net_of_broker": "0",
+      "funds_needed_at": null,
+      "max_industry_exposure": "1",
+      "max_symbol_exposure": "1",
+      "max_total_exposure": "1",
+      "symbol_value_limit": "100000",
+      "total_reserved_and_position_value": "0",
+      "unpriced_holdings": [],
+      "value_available_to_allocate": "100000"
+    },
+    "account_snapshot_id": "a3a733d7f33fd4d9d7ffb052a95e9470dbdf98f080309642416180a257963d65",
+    "action": "WATCH",
+    "allowed_directions": [
+      "BUY"
+    ],
+    "as_of": "2026-11-26T07:38:52.909461+00:00",
+    "book_id": "m0a-example",
+    "budget_id": "m0a-common-budget",
+    "cancel_conditions": [
+      "SUPERSEDED",
+      "SESSION_EXPIRED",
+      "PRESET_RISK_PAUSE"
+    ],
+    "candidates": [
+      {
+        "acceptance_run_id": "m0a-jxcc-default",
+        "applicability_reasons": [
+          "STRATEGY_NOT_ADMITTED",
+          "STRATEGY_NOT_WHITELISTED"
+        ],
+        "evidence_ref": "experiment-result-a5da9c812eaa9e1fecacfad6b024da0b45f39fc80d63a99a26775aa21f492c85",
+        "exit_rule": "短均线不高于长均线时目标为零。缺项、停牌或预热不足时无目标；已有持仓按账户风险规则处理。",
+        "family": "daily-trend",
+        "priority": 100,
+        "protocol_version": "protocol-b9ffbd4bcd786105",
+        "publication": null,
+        "registry_status": "accepted",
+        "risk": "不做空、不使用杠杆，服从共同账户现金、仓位、合规执行与其他已发布风险限制。",
+        "selected": false,
+        "selection_reasons": [
+          "STRATEGY_NOT_ADMITTED",
+          "STRATEGY_NOT_WHITELISTED",
+          "NO_READY_SIGNAL"
+        ],
+        "signal": null,
+        "signal_missing": [],
+        "signal_status": "missing",
+        "simulation_only": true,
+        "strategy_version": "daily-trend-a1ec1690f0f3932d",
+        "target_fraction": null
+      }
+    ],
+    "cash_reserved": "0",
+    "confirmation_status": "PENDING",
+    "current_quantity": 0,
+    "decision_rules_version": "after-close-p0-p4-v1",
+    "dossier_version": "2026q3-buyback",
+    "estimated_fees": "0",
+    "execution_conditions": [
+      "TARGET_SESSION_OPEN",
+      "CONFIRM_TRADING_STATUS_PRICE_BANDS_AND_SELLABLE_SHARES",
+      "LIMIT_TO_ORDER_SHARES_AND_RESERVED_CASH"
+    ],
+    "execution_parameters": {
+      "commission_rate": "0.0003",
+      "lot_size": 1,
+      "minimum_commission": "5",
+      "slippage_rate": "0.0005"
+    },
+    "execution_rules_version": "a-share-next-open-v1",
+    "execution_window": {
+      "end": "2026-11-27T01:30:00.000000+00:00",
+      "start": "2026-11-27T01:30:00.000000+00:00"
+    },
+    "exit_conditions": [
+      "PUBLISHED_INVALIDATION",
+      "ACCOUNT_RISK_LIMIT",
+      "FROZEN_STRATEGY_EXIT_SIGNAL"
+    ],
+    "if_unfilled": "RECORD_REASON_AND_WAIT_FOR_NEXT_AFTER_CLOSE_DECISION",
+    "industry": "801055.SI",
+    "industry_state": "unknown",
+    "intraday_actions": [
+      "CHECK_PRESET_CONDITIONS",
+      "PAUSE_OR_CANCEL",
+      "APPLY_PRESET_RISK_EXIT_IF_EXECUTABLE"
+    ],
+    "limit_price": null,
+    "market_state": "downtrend",
+    "quantity": 0,
+    "reasons": {
+      "P0": [
+        "CONFIRM_OPENING_STATUS_AND_PRICE_BANDS"
+      ],
+      "P1": [
+        "RISK_BUDGET_WITHIN_LIMITS"
+      ],
+      "P2": [
+        "THESIS_WATCH"
+      ],
+      "P3": [
+        "daily-trend-a1ec1690f0f3932d:STRATEGY_NOT_ADMITTED",
+        "daily-trend-a1ec1690f0f3932d:STRATEGY_NOT_WHITELISTED"
+      ],
+      "P4": [
+        "NO_FEASIBLE_STRATEGY"
+      ]
+    },
+    "research": {
+      "evidence_refs": [
+        "2026q3-report",
+        "2026h1-report",
+        "icsg-2026-10",
+        "2026-051",
+        "2026-053"
+      ],
+      "fundamental_gate": "pass",
+      "status": "active",
+      "strategy_whitelist": [],
+      "thesis_status": "watch",
+      "triggers": [
+        {
+          "effect": "block_new_risk",
+          "evidence_refs": [
+            "2026q3-report"
+          ],
+          "id": "operating-cash-flow-nonpositive",
+          "observation": {
+            "selected_available_at": "2026-11-26T07:34:09.393912+00:00",
+            "seq": 15053,
+            "source": "issuer-cninfo",
+            "source_ref": "https://static.cninfo.com.cn/finalpage/2026-10-29/1225636802.PDF#page=12",
+            "trade_date": "2026-09-30",
+            "value": "14162724945"
+          },
+          "status": false
+        },
+        {
+          "effect": "require_research",
+          "evidence_refs": [
+            "2026q3-report"
+          ],
+          "id": "cash-flow-hypothesis-falsified",
+          "status": null
+        }
+      ],
+      "valid_until": "2026-12-03T16:00:00.000000+00:00",
+      "version": "2026q3-buyback"
+    },
+    "sellable_quantity": 0,
+    "session": "2026-11-27",
+    "simulated": false,
+    "snapshot_id": "b6cac86c682fbe7d9cfeadbe65553567419472da29fd96304dfa7b55b228ce22",
+    "stock_state": "downtrend",
+    "strategy_version": null,
+    "symbol": "600362.SH",
+    "target_fraction": null,
+    "target_quantity": 0,
+    "valid_until": "2026-11-27T07:00:00.000000+00:00",
+    "plan_id": "37801ce472d9bb95137a67a897a0e90b081a1d09ce995e224375efc803f7e465",
+    "revision": 2,
+    "replaces_plan_id": "65a4dae479fd3278cb52250927c91ef8daa835f2348aad2a4d7a1232558be9ab",
+    "published_at": "2026-11-26T07:38:52.925270+00:00"
+  },
+  "cash_flow_observation": {
+    "seq": 15053,
+    "series": "research_feature",
+    "symbol": "600362.SH",
+    "trade_date": "2026-09-30",
+    "item_id": "operating_cash_flow_ytd_cny",
+    "source": "issuer-cninfo",
+    "source_ref": "https://static.cninfo.com.cn/finalpage/2026-10-29/1225636802.PDF#page=12",
+    "revision": "1225636802",
+    "available_at": "2026-10-29T16:00:00.000000+00:00",
+    "available_evidence": "巨潮公告目录披露日期 2026-10-29，次日零时为保守可得上界",
+    "received_at": "2026-11-26T07:34:09.393912+00:00",
+    "assumed_available_at": null,
+    "availability_assumption": null,
+    "unit": {
+      "value": "CNY"
+    },
+    "quality": "usable",
+    "reconstruction_only": false,
+    "withdrawn": false,
+    "payload": {
+      "feature": "operating_cash_flow_ytd_cny",
+      "locator": "第 12 页合并现金流量表",
+      "period": "2026-01–09",
+      "value": "14162724945"
+    },
+    "supersedes_seq": null,
+    "selected_available_at": "2026-11-26T07:34:09.393912+00:00",
+    "alternative_sources": []
+  },
+  "previous_frozen_plan": {
+    "account_constraints": {
+      "account_value": "100000",
+      "broker_available_cash": "100000",
+      "budget_expires_at": null,
+      "cash": "100000",
+      "cash_available_to_allocate": "100000",
+      "cash_reserve": "0",
+      "existing_position_value": null,
+      "existing_reservations_net_of_broker": "0",
+      "funds_needed_at": null,
+      "max_industry_exposure": "1",
+      "max_symbol_exposure": "1",
+      "max_total_exposure": "1",
+      "symbol_value_limit": "100000",
+      "total_reserved_and_position_value": "0",
+      "unpriced_holdings": [],
+      "value_available_to_allocate": "100000"
+    },
+    "account_snapshot_id": "4d6b58f08024c29b9bb0103a8402cfd5f766a54e6d2cc474b83e6cd70e7d7164",
+    "action": "WATCH",
+    "allowed_directions": [
+      "BUY"
+    ],
+    "as_of": "2026-11-26T07:08:01.695432+00:00",
+    "book_id": "m0a-example",
+    "budget_id": "m0a-common-budget",
+    "cancel_conditions": [
+      "SUPERSEDED",
+      "SESSION_EXPIRED",
+      "PRESET_RISK_PAUSE"
+    ],
+    "candidates": [
+      {
+        "acceptance_run_id": "m0a-jxcc-default",
+        "applicability_reasons": [
+          "STRATEGY_NOT_ADMITTED",
+          "STRATEGY_NOT_WHITELISTED"
+        ],
+        "evidence_ref": "experiment-result-a5da9c812eaa9e1fecacfad6b024da0b45f39fc80d63a99a26775aa21f492c85",
+        "exit_rule": "短均线不高于长均线时目标为零。缺项、停牌或预热不足时无目标；已有持仓按账户风险规则处理。",
+        "family": "daily-trend",
+        "priority": 100,
+        "protocol_version": "protocol-b9ffbd4bcd786105",
+        "publication": null,
+        "registry_status": "accepted",
+        "risk": "不做空、不使用杠杆，服从共同账户现金、仓位、合规执行与其他已发布风险限制。",
+        "selected": false,
+        "selection_reasons": [
+          "STRATEGY_NOT_ADMITTED",
+          "STRATEGY_NOT_WHITELISTED",
+          "NO_READY_SIGNAL"
+        ],
+        "signal": null,
+        "signal_missing": [],
+        "signal_status": "missing",
+        "simulation_only": true,
+        "strategy_version": "daily-trend-a1ec1690f0f3932d",
+        "target_fraction": null
+      }
+    ],
+    "cash_reserved": "0",
+    "confirmation_status": "PENDING",
+    "current_quantity": 0,
+    "decision_rules_version": "after-close-p0-p4-v1",
+    "dossier_version": "2026q3-cashflow",
+    "estimated_fees": "0",
+    "execution_conditions": [
+      "TARGET_SESSION_OPEN",
+      "CONFIRM_TRADING_STATUS_PRICE_BANDS_AND_SELLABLE_SHARES",
+      "LIMIT_TO_ORDER_SHARES_AND_RESERVED_CASH"
+    ],
+    "execution_parameters": {
+      "commission_rate": "0.0003",
+      "lot_size": 1,
+      "minimum_commission": "5",
+      "slippage_rate": "0.0005"
+    },
+    "execution_rules_version": "a-share-next-open-v1",
+    "execution_window": {
+      "end": "2026-11-27T01:30:00.000000+00:00",
+      "start": "2026-11-27T01:30:00.000000+00:00"
+    },
+    "exit_conditions": [
+      "PUBLISHED_INVALIDATION",
+      "ACCOUNT_RISK_LIMIT",
+      "FROZEN_STRATEGY_EXIT_SIGNAL"
+    ],
+    "if_unfilled": "RECORD_REASON_AND_WAIT_FOR_NEXT_AFTER_CLOSE_DECISION",
+    "industry": "801055.SI",
+    "industry_state": "unknown",
+    "intraday_actions": [
+      "CHECK_PRESET_CONDITIONS",
+      "PAUSE_OR_CANCEL",
+      "APPLY_PRESET_RISK_EXIT_IF_EXECUTABLE"
+    ],
+    "limit_price": null,
+    "market_state": "downtrend",
+    "quantity": 0,
+    "reasons": {
+      "P0": [
+        "CONFIRM_OPENING_STATUS_AND_PRICE_BANDS"
+      ],
+      "P1": [
+        "RISK_BUDGET_WITHIN_LIMITS"
+      ],
+      "P2": [
+        "THESIS_WATCH",
+        "TRIGGER_UNKNOWN:operating-cash-flow-nonpositive"
+      ],
+      "P3": [
+        "daily-trend-a1ec1690f0f3932d:STRATEGY_NOT_ADMITTED",
+        "daily-trend-a1ec1690f0f3932d:STRATEGY_NOT_WHITELISTED"
+      ],
+      "P4": [
+        "NO_FEASIBLE_STRATEGY"
+      ]
+    },
+    "research": {
+      "evidence_refs": [
+        "2026q3-report",
+        "2026h1-report",
+        "icsg-2026-10"
+      ],
+      "fundamental_gate": "pass",
+      "status": "active",
+      "strategy_whitelist": [],
+      "thesis_status": "watch",
+      "triggers": [
+        {
+          "effect": "block_new_risk",
+          "evidence_refs": [
+            "2026q3-report"
+          ],
+          "id": "operating-cash-flow-nonpositive",
+          "status": null
+        },
+        {
+          "effect": "require_research",
+          "evidence_refs": [
+            "2026q3-report"
+          ],
+          "id": "cash-flow-hypothesis-falsified",
+          "status": null
+        }
+      ],
+      "valid_until": "2026-11-30T16:00:00.000000+00:00",
+      "version": "2026q3-cashflow"
+    },
+    "sellable_quantity": 0,
+    "session": "2026-11-27",
+    "simulated": false,
+    "snapshot_id": "c1b7d7b82ffeff92ca3f52eab86c8656cccdb7d427f4cfba76468af7004c5759",
+    "stock_state": "downtrend",
+    "strategy_version": null,
+    "symbol": "600362.SH",
+    "target_fraction": null,
+    "target_quantity": 0,
+    "valid_until": "2026-11-27T07:00:00.000000+00:00",
+    "plan_id": "65a4dae479fd3278cb52250927c91ef8daa835f2348aad2a4d7a1232558be9ab",
+    "revision": 1,
+    "replaces_plan_id": null,
+    "published_at": "2026-11-26T07:08:01.705159+00:00"
+  }
+}
