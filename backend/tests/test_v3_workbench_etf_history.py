@@ -62,6 +62,15 @@ def test_window_counts_applicable_fund_days_and_skips_exchange_holidays(tmp_path
     assert windows['21']['start_date'] == '2026-09-28'
 
 
+def test_missing_window_after_older_inputs_counts_as_a_coverage_gap(tmp_path):
+    _import(tmp_path, [_etf('510050.SH', 'etf_nav', '2024-10-14', '2')])
+    history = _history(tmp_path, trade_date=SESSIONS[-1], symbol='510050.SH', as_of=CLOCK)
+    week = next(window for window in history['windows'] if window['key'] == '5')
+    assert week['start_date'] == SESSIONS[0]
+    assert (week['valid_count'], week['expected_count'], week['flow_cny']) == (0, 5, None)
+    assert week['insufficient_history'] is False
+
+
 def _bar(symbol, day, *, received_at=CLOCK, close='3910.25'):
     return {
         'series': 'daily_bar', 'symbol': symbol, 'trade_date': day, 'source': 'fuyao',
@@ -133,6 +142,7 @@ def test_daily_report_waterline_pins_both_etf_and_index_inputs(tmp_path):
     ])
     with TestClient(create_app(tmp_path)) as browser:
         daily = browser.get('/api/market/etf', params={'trade_date': day, 'as_of': CLOCK}).json()
+        frozen = browser.post('/api/market/etf/reports', json={'trade_date': day, 'as_of': CLOCK}).json()
     _import(tmp_path, [
         _etf('510050.SH', 'etf_nav', day, '2'),
         _bar('000016.SH', day, close='3911.25'),
@@ -141,10 +151,20 @@ def test_daily_report_waterline_pins_both_etf_and_index_inputs(tmp_path):
     anchored = _history(tmp_path, trade_date=day, symbol='510050.SH', as_of=daily['as_of'],
                         max_seq=daily['snapshot']['max_seq'])
     current = _history(tmp_path, trade_date=day, symbol='510050.SH', as_of=CLOCK)
+    reopened = _history(tmp_path, report_id=frozen['report_id'], symbol='510050.SH')
+    assert reopened['report_id'] == frozen['report_id']
+    assert reopened['snapshot'] == frozen['snapshot']
     assert anchored['days'][-1]['flow_yi'] == '0.2'
     assert anchored['days'][-1]['index_ohlc']['close'] == '3910.25'
+    assert reopened['days'][-1] == anchored['days'][-1]
     assert current['days'][-1]['flow_yi'] == '0.4'
     assert current['days'][-1]['index_ohlc']['close'] == '3911.25'
+    with TestClient(create_app(tmp_path)) as browser:
+        previous_daily = browser.get(f"/api/market/etf/reports/{frozen['report_id']}",
+                                     params={'trade_date': previous}).json()
+    assert previous_daily['trade_date'] == previous
+    assert previous_daily['snapshot'] == frozen['snapshot']
+    assert previous_daily['report_id'] == frozen['report_id']
 
 
 def test_disclosed_history_uses_each_days_available_membership(tmp_path):

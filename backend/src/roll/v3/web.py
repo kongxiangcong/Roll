@@ -15,11 +15,12 @@ from roll.v3.development_interpretation import is_development
 from roll.v3.development_replay import prepare_development, read_development_receipt
 from roll.v3.etf_basket import FIXED_BASKET_VERSION, build_etf_daily_report
 from roll.v3.etf_history import build_etf_history_report
+from roll.v3.etf_replay import freeze_etf_report, replay_etf_report
 from roll.v3.etf_sync import EtfSyncRunner
 from roll.v3.experiment import list_experiments, read_experiment
 from roll.v3.harness_settings import settings as harness_settings
 from roll.v3.industry import build_industry_report
-from roll.v3.market import list_snapshots, utc_timestamp
+from roll.v3.market import LIVE_RUN, list_snapshots, utc_timestamp
 from roll.v3.market_research import DEFAULT_BENCHMARK, DEFAULT_START, export_market_research
 from roll.v3.market_sources import sync_daily_market
 from roll.v3.overview import MarketSyncRunner, build_market_watchlist, build_overview, market_trade_dates
@@ -173,6 +174,16 @@ class EtfSyncInput(BaseModel):
     refresh: bool = False
 
 
+class EtfReportInput(BaseModel):
+    trade_date: date | None = None
+    basket_version: str | None = None
+    as_of: str | None = None
+    use_mode: str = LIVE_RUN
+    max_seq: int | None = Field(default=None, ge=0)
+    captured_at: str | None = None
+    disclosure_cutoff: str | None = None
+
+
 def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=sync_daily_market):
     runner = ResearchRunner(data_dir, default_executor=research_executor)
     sync_runner = MarketSyncRunner(data_dir, sync_fn=market_sync_fn)
@@ -247,20 +258,29 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
         return sync_runner.start(payload.symbols or None, start=payload.start, refresh=payload.refresh)
 
     @app.get("/api/market/etf")
-    def get_etf_daily_report(trade_date: date | None = None, basket_version: str = FIXED_BASKET_VERSION,
-                             as_of: str | None = None):
+    def get_etf_daily_report(trade_date: date | None = None, basket_version: str | None = None,
+                             as_of: str | None = None, use_mode: str = LIVE_RUN):
         return build_etf_daily_report(data_dir, trade_date=trade_date.isoformat() if trade_date else None,
-                                      basket_version=basket_version, as_of=as_of)
+                                      basket_version=basket_version, as_of=as_of, use_mode=use_mode)
+
+    @app.post("/api/market/etf/reports")
+    def freeze_etf_daily_report(payload: EtfReportInput):
+        return freeze_etf_report(data_dir, **payload.model_dump(mode='json'))
+
+    @app.get("/api/market/etf/reports/{report_id}")
+    def replay_etf_daily_report(report_id: str, trade_date: date | None = None):
+        return replay_etf_report(data_dir, report_id, trade_date=trade_date.isoformat() if trade_date else None)
 
     @app.get("/api/market/etf/history")
-    def get_etf_history(trade_date: date, basket_version: str = FIXED_BASKET_VERSION,
+    def get_etf_history(trade_date: date | None = None, basket_version: str | None = None,
                         index_code: str | None = None, symbol: str | None = None,
-                        as_of: str | None = None, max_seq: int | None = None, membership: str = "fixed"):
-        if max_seq is not None and max_seq < 0:
-            raise ValueError('观测水位不能为负数')
+                        as_of: str | None = None, max_seq: int | None = None, membership: str = "fixed",
+                        use_mode: str = LIVE_RUN, captured_at: str | None = None,
+                        disclosure_cutoff: str | None = None, report_id: str | None = None):
         return build_etf_history_report(
-            data_dir, trade_date=trade_date.isoformat(), basket_version=basket_version,
+            data_dir, trade_date=trade_date.isoformat() if trade_date else None, basket_version=basket_version,
             index_code=index_code, symbol=symbol, as_of=as_of, max_seq=max_seq, membership=membership,
+            use_mode=use_mode, captured_at=captured_at, disclosure_cutoff=disclosure_cutoff, report_id=report_id,
         )
 
     @app.get("/api/market/etf/sync/status")

@@ -130,7 +130,7 @@ def test_daily_workbench_shows_fixed_and_as_of_rule_pool_with_separate_evidence(
         assert result.is_success, result.text
         report = result.json()
         older = browser.get('/api/market/etf', params={
-            'trade_date': '2026-11-26', 'as_of': AFTER_RECEIPT,
+            'trade_date': '2026-11-26', 'as_of': '2026-11-26T23:59:59+08:00',
         }).json()
 
     assert report['summary']['expected_count'] == 35
@@ -146,3 +146,24 @@ def test_daily_workbench_shows_fixed_and_as_of_rule_pool_with_separate_evidence(
     assert report['disclosures']['events'][0]['scope'] == 'etf_category'
     assert older['comparison_baskets']['disclosed']['summary']['expected_count'] == 0
     assert older['disclosures']['event_status'] == 'no_verified_event'
+
+
+def test_frozen_daily_report_pins_disclosure_receipts_and_rule_pool(tmp_path):
+    from fastapi.testclient import TestClient
+
+    from roll.v3.web import create_app
+
+    params = {'trade_date': DAY, 'as_of': AFTER_RECEIPT}
+    with TestClient(create_app(tmp_path)) as browser:
+        response = browser.post('/api/market/etf/reports', json=params)
+        assert response.is_success, response.text
+        frozen = response.json()
+        assert frozen['snapshot']['selection_rules_version'] == 'market-etf-disclosures-v1'
+        assert frozen['disclosures']['rule_pool']['member_count'] == 0
+        assert frozen['disclosures']['events'] == []
+
+        run((*CLI, 'import', str(PROOF)), data_dir=tmp_path)
+        current = browser.get('/api/market/etf', params=params).json()
+        assert current['disclosures']['rule_pool']['member_count'] == 1
+        assert current['disclosures']['events'][0]['scope'] == 'etf_category'
+        assert browser.get(f"/api/market/etf/reports/{frozen['report_id']}").json() == frozen

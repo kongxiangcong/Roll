@@ -281,7 +281,7 @@ export function createEtfHistory(report, { api, themeState, selectTradeDate }, m
       }),
       renderTimeline(history, days, themeState, day => {
         themeState.historyShowDaily = true;
-        selectTradeDate(day);
+        selectTradeDate(day, { preserveEtfReport: Boolean(report.report_id) });
       }),
     );
     if (focusWindow) node.querySelector('.etf-history-window[aria-pressed="true"]')?.focus({ preventScroll: true });
@@ -294,10 +294,13 @@ export function createEtfHistory(report, { api, themeState, selectTradeDate }, m
     const ticket = ++request;
     showStatus("正在读取本地历史…");
     try {
-      const history = await api("/api/market/etf/history", { params: {
-        trade_date: report.trade_date, basket_version: report.basket.eligibility_catalog_version || report.basket.version,
-        index_code: indexCode, symbol, membership, as_of: report.as_of, max_seq: report.snapshot.max_seq,
-      } });
+      const params = { trade_date: report.trade_date, index_code: indexCode, symbol, membership };
+      const anchor = report.report_id ? { report_id: report.report_id } : {
+        basket_version: report.basket.eligibility_catalog_version || report.basket.version,
+        as_of: report.as_of, max_seq: report.snapshot.max_seq, use_mode: report.use_mode,
+        captured_at: report.snapshot.as_of, disclosure_cutoff: report.disclosures?.cutoff,
+      };
+      const history = await api("/api/market/etf/history", { params: { ...params, ...anchor } });
       if (ticket === request) show(history, false);
     } catch (error) {
       if (ticket === request) showStatus(error.message);
