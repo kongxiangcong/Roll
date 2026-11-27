@@ -1,6 +1,6 @@
 # Roll 投研台 · 市场观察与宽基 ETF 报表
 
-Status: ready-for-agent
+Status: resolved
 
 ## Problem Statement
 
@@ -70,3 +70,7 @@ Roll 投研台提供「概览、市场、交易与复盘、研究」。进入「
 | [05](issues/05-as-of-revisions.md) | 迟到修订和历史时点 | 03 |
 | [06](issues/06-industry-view.md) | 行业主题 | 01 |
 | [07](issues/07-disclosed-holdings.md) | 汇金披露与篮子归属 | 03 |
+
+## Completion
+
+七张票完成，集成分支为 `feat/roll-market-workbench`。[CLI 与工作台验收](acceptance.md)
