@@ -188,6 +188,22 @@ a { color: inherit; text-decoration: none; }
 }
 .market-row-label strong { white-space: nowrap; }
 .market-row-label:hover strong { color: var(--primary); }
+.market-industry-detail-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.market-industry-detail-head .focus-header { justify-content: start; }
+.market-industry-chart { margin: 0 0 12px; }
+.market-industry-chart-body { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px; }
+.market-industry-chart canvas { display: block; width: 100%; height: 118px; }
+.market-industry-axis {
+  display: flex; flex-direction: column; justify-content: space-between; align-items: end;
+  padding-block: 2px; font-size: 11px;
+}
+.market-industry-legend { display: inline-flex; align-items: center; gap: 5px; }
+.market-industry-legend i { width: 11px; height: 3px; border-radius: 2px; }
+.market-industry-sources p { margin-bottom: 5px; }
+.market-industry-sources a { color: var(--primary); font-size: 12px; }
+.market-industry-sources a:hover { text-decoration: underline; }
 .watch-code { font-size: 11px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 .inline-add { display: flex; gap: 8px; }
 .inline-add input {
