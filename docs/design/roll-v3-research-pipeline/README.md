@@ -2,9 +2,9 @@
 
 底层数据流严格遵循 `Data Foundation → Research → Experiment → Decision → Review` 五模块与双流水线契约；工作台界面则从用户日常看盘与低频推演视角组织，不在常规视图堆砌快照哈希、证据原文或审计回执。跟进江西铜业的新公告或证伪线索时，研究者在**个股逻辑研究**视图审阅并显式发布 `ResearchDossier`。比较历史趋势规则时，Roll 先计算约定的 E0/E1 对照，助手读取回执并解释结果，研究者在**策略对照实验**视图内审阅归档。实验报告只归属 `Experiment`，盘后 `Decision` 仍只读取生效的个股档案及 `StrategyRegistry` 准入状态。[ADR 0006](../../adr/0006-roll-orchestrates-research-and-decisions.md)
 
-## 五轮开发
+## 阶段规划
 
-每一行对应一轮 `to-spec → to-tickets → implement-spec`。01–03 在正式 CLI 验证单次研究编排与开发实验隔离；04 将研究、实验归档与复盘跟进按正确模块边界接入工作台并清理审计噪音；05 落地以自选池和市场/账户大纲为核心的全景看盘主界面。[主方案 §12–§13](../architecture/roll_v3_trading_pipeline_spec.md#12-产品功能入口)
+每一行对应一轮 `to-spec → to-tickets → implement-spec`。01–03 在正式 CLI 验证单次研究编排与开发实验隔离；04 将研究、实验归档与复盘跟进按正确模块边界接入工作台并清理审计噪音；05 交付全景看盘主界面，06 在此基础上重组为四栏，并交付市场报表与本地时点回放。[主方案 §12–§13](../architecture/roll_v3_trading_pipeline_spec.md#12-产品功能入口)
 
 | 阶段与规划文件 | 开始条件 | 本轮交付的验收证据 |
 | --- | --- | --- |
@@ -13,10 +13,11 @@
 | [03 · 江西铜业 E0/E1 开发实验](03-development-experiment.md) | 01 后即可离线开发并复算，在 02 交付后联验真实助手 | 一份按固定预设计算的回执，以及一次助手调用写成的实验解读。核对当前个股档案、正式样本揭示和策略资格。 |
 | [04 · 工作台模块归位、审阅与复盘跟进](04-workbench-followup.md) | 02、03 已完成联验 | 研究与策略实验室分栏承载个股档案更新（`Research`）与 03 开发报告归档（`Experiment`），复盘页可脱敏发起证伪跟进；常规界面去除哈希与原始 JSON 噪音，研究期间可在同库完成盘后登记。 |
 | [05 · 全景看盘主台、自选联动与日常同步](05-workbench-overview.md) | 04 闭环已跑通 | 主界面同屏联动 A 股/ETF 环境卡、个人财务大纲卡、自选股涨跌列表、单股量价/策略快照与待复盘提示框，支持网页端日常数据同步及单股下钻决策复盘。 |
+| [06 · Roll 投研台与市场报表](06-market-workbench.md) | 05 工作台已可运行 | 四栏导航，市场内看宽基 ETF、行业与观察池；从 SQLite 重放篮子申赎与当时覆盖。 |
 
 ## 每轮如何使用
 
-1. **to-spec** 按已接受的 ADR、主方案和当期阶段规划，将范围与验收场景写入 `.scratch/<阶段标识>/spec.md`。阶段标识列在四份规划首页。原始方案按上传时的版本存档，遇到不同表述，以当期规划及评审取舍解释具体做法。[方案原文](Roll_V3_Research_Pipeline_Design.md) · [可行性评审与取舍](roll_v3_harness_feasibility.md#carbon-复核与取舍) · [Carbon High 评审回执](agy-carbon-high-review.md)
+1. **to-spec** 按已接受的 ADR、主方案和当期阶段规划，将范围与验收场景写入 `.scratch/<阶段标识>/spec.md`。各阶段标识见对应规划首页。原始方案按上传时的版本存档，遇到不同表述，以当期规划及评审取舍解释具体做法。[方案原文](Roll_V3_Research_Pipeline_Design.md) · [可行性评审与取舍](roll_v3_harness_feasibility.md#carbon-复核与取舍) · [Carbon High 评审回执](agy-carbon-high-review.md)
 2. **to-tickets** 根据该份规格拆工单，逐个放入同目录的 `issues/`，阶段之间只传递已约定的输入、输出和验收证据。
 3. **implement-spec** 依规格实施，通过正式 `roll` 入口跑验收。第 04 阶段增加工作台实测。保存可重放的输入引用、命令和回执，供下一轮引用。[本地工单约定](../../agents/issue-tracker.md)
 
@@ -24,6 +25,6 @@ M1 用一次助手调用、人工重试和任务状态查询。补证后创建�
 
 ## 与其他里程碑的关系
 
-M0b 与四个阶段并行，以真实交易日的盘后登记及到期结果计数。工程验证使用验收库副本或演练账本。真实前向开盘行情自动采集可独立开发，当前已有 `roll market import` 入口。[M0b 工单](../../../.scratch/roll-v3-trading-pipeline/issues/13-m0b-forward-window.md)
+M0b 独立于上述开发阶段，以真实交易日的盘后登记及到期结果计数。工程验证使用验收库副本或演练账本。真实前向开盘行情自动采集可独立开发，当前已有 `roll market import` 入口。[M0b 工单](../../../.scratch/roll-v3-trading-pipeline/issues/13-m0b-forward-window.md)
 
-这四轮交付 M1 的单次编排和第一组增量实验。后续可复用同一实验入口研究 E2 行业、E3 ETF 资金和 E4 历史基本面，各按数据覆盖及可得时间单独立项。多策略准入、跨标的概率和有限多轮研究分别归 M2、M3、M4。[后续开发路线](../architecture/roll_v3_trading_pipeline_spec.md#13-开发路线与里程碑验收)
+阶段 01–04 交付 M1 的单次编排、第一组增量实验与工作台接入，05–06 演进工作台布局与市场数据。后续可复用同一实验入口研究 E2 行业、E3 ETF 资金和 E4 历史基本面，各按数据覆盖及可得时间单独立项。多策略准入、跨标的概率和有限多轮研究分别归 M2、M3、M4。[后续开发路线](../architecture/roll_v3_trading_pipeline_spec.md#13-开发路线与里程碑验收)
