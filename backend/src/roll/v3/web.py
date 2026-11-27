@@ -14,6 +14,7 @@ from roll.v3.development_experiment import PRESET_ID, development_preset
 from roll.v3.development_interpretation import is_development
 from roll.v3.development_replay import prepare_development, read_development_receipt
 from roll.v3.etf_basket import FIXED_BASKET_VERSION, build_etf_daily_report
+from roll.v3.etf_history import build_etf_history_report
 from roll.v3.etf_sync import EtfSyncRunner
 from roll.v3.experiment import list_experiments, read_experiment
 from roll.v3.harness_settings import settings as harness_settings
@@ -250,6 +251,17 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
                              as_of: str | None = None):
         return build_etf_daily_report(data_dir, trade_date=trade_date.isoformat() if trade_date else None,
                                       basket_version=basket_version, as_of=as_of)
+
+    @app.get("/api/market/etf/history")
+    def get_etf_history(trade_date: date, basket_version: str = FIXED_BASKET_VERSION,
+                        index_code: str | None = None, symbol: str | None = None,
+                        as_of: str | None = None, max_seq: int | None = None):
+        if max_seq is not None and max_seq < 0:
+            raise ValueError('观测水位不能为负数')
+        return build_etf_history_report(
+            data_dir, trade_date=trade_date.isoformat(), basket_version=basket_version,
+            index_code=index_code, symbol=symbol, as_of=as_of, max_seq=max_seq,
+        )
 
     @app.get("/api/market/etf/sync/status")
     def etf_sync_status():
