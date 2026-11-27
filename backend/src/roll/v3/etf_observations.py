@@ -54,16 +54,24 @@ def etf_observation(item):
         raise ValueError(f'ETF 观察项日期 {day} 须为交易日')
     if not item.get('source') or not item.get('source_ref') or not item.get('received_at'):
         raise ValueError('ETF 观察项须保留来源、原始定位和实际取得时刻')
+    if isinstance(item['received_at'], str) and len(item['received_at']) <= 10:
+        raise ValueError('ETF 观察项的实际取得时间须具体到时刻')
     payload = item.get('payload', {})
     if not isinstance(payload, dict) or not isinstance(payload.get('verified', False), bool):
         raise ValueError('ETF 观察项须以 payload 保存原值和核验状态')
     raw_date = payload.get('source_date', str(day))
     date.fromisoformat(raw_date)
     disclosed = payload.get('disclosed_date')
+    available = item.get('available_at')
+    if isinstance(available, str) and len(available) == 10:
+        if disclosed is not None and disclosed != available:
+            raise ValueError('ETF 观察项的披露日期不一致')
+        disclosed, available = available, None
     if disclosed is not None:
         date.fromisoformat(disclosed)
         if not item.get('available_evidence'):
             raise ValueError('ETF 披露日期须提供可核验的披露依据')
+        payload = {**payload, 'disclosed_date': disclosed}
 
     quality = item.get('quality', 'usable')
     value = payload.get('value')
@@ -71,6 +79,7 @@ def etf_observation(item):
     if amount is None and quality == 'usable' and not item.get('withdrawn'):
         raise ValueError('ETF 可用观察项须提供有效的十进制数值')
     return {**item, 'symbol': symbol, 'trade_date': str(day), 'quality': quality,
+            'available_at': available,
             'payload': {**payload, 'value': str(value) if value is not None else None,
                         'source_date': raw_date, 'verified': payload.get('verified', False)}}
 

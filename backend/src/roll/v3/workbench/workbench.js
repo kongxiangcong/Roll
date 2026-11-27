@@ -310,8 +310,9 @@ async function renderMarket() {
   if (!isCurrent()) return;
   const observationDay = tradeDate || dates.latest_trade_date || dates.last_closed_trade_date;
   tradeDatePill.textContent = dates.latest_trade_date || "暂无行情";
-  const selectTradeDate = day => {
+  const selectTradeDate = (day, { preserveEtfReport = false } = {}) => {
     state.market.tradeDate = day || null;
+    if (!preserveEtfReport) state.market.themes.etf.reportId = undefined;
     render();
   };
   const dateInput = el("input", {

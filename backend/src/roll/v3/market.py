@@ -166,12 +166,19 @@ def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT
     with database(data_dir, write=True, db=db) as connection:
         snapshot = prepare_snapshot(data_dir, as_of=as_of, use_mode=use_mode, scope=scope,
                                     source_priority=source_priority, db=connection)
-        snapshot_id = sha256(_encode(snapshot).encode()).hexdigest()
+        return persist_snapshot(data_dir, snapshot, db=connection)
+
+
+def persist_snapshot(data_dir, snapshot, *, db=None):
+    """Store a DataSnapshot already prepared in the caller's transaction."""
+    snapshot_id = sha256(_encode(snapshot).encode()).hexdigest()
+    with database(data_dir, write=True, db=db) as connection:
+        ensure_schema(connection, _SCHEMA)
         connection.execute("""
             INSERT OR IGNORE INTO data_snapshot(snapshot_id,as_of,max_seq,use_mode,scope,
                                                selection_rules_version,source_priority)
             VALUES(?,?,?,?,?,?,?)
-        """, (snapshot_id, snapshot['as_of'], snapshot['max_seq'], use_mode, _encode(snapshot['scope']),
+        """, (snapshot_id, snapshot['as_of'], snapshot['max_seq'], snapshot['use_mode'], _encode(snapshot['scope']),
               snapshot['selection_rules_version'], _encode(snapshot['source_priority'])))
     return {'snapshot_id': snapshot_id, **snapshot}
 
