@@ -178,7 +178,7 @@ def _record_result(data_dir, rows, expected, error=None):
     return append_observations(data_dir, observations)['appended'], gaps
 
 
-def sync_etf_market(data_dir, *, symbols, start, end, refresh=False):
+def sync_etf_market(data_dir, *, symbols, start, end, refresh=False, on_progress=None):
     """Acquire missing observations and freeze even when a requested field is late."""
     now = datetime.now(SHANGHAI)
     left, right = date.fromisoformat(start), date.fromisoformat(end)
@@ -206,6 +206,29 @@ def sync_etf_market(data_dir, *, symbols, start, end, refresh=False):
     szse = {symbol: days for symbol, days in shares.items() if exchange_source(symbol) == 'szse' and days}
     failures = []
     appended = 0
+    fields = {}
+    for series, expected_days in (('etf_shares', share_days), ('etf_nav', days)):
+        expected = len(symbols) * len(expected_days)
+        cached = expected - sum(len(pending) for pending in missing[series].values())
+        fields[series] = {'expected': expected, 'completed': cached, 'failed': 0, 'succeeded': cached}
+
+    def progress():
+        return {'appended': appended, 'failures': list(failures),
+                'fields': {series: dict(status) for series, status in fields.items()}}
+
+    def publish():
+        if on_progress:
+            on_progress(progress())
+
+    def record_progress(source, series, size, gaps):
+        status = fields[series]
+        status['completed'] += size
+        status['failed'] += len(gaps)
+        status['succeeded'] += size - len(gaps)
+        failures.extend({'series': series, 'source': source, **gap} for gap in gaps)
+        publish()
+
+    publish()
     if any(sse.values()) or szse or any(nav.values()):
         token = None
         token_error = None
@@ -228,8 +251,9 @@ def sync_etf_market(data_dir, *, symbols, start, end, refresh=False):
                 if not dates:
                     continue
                 if token_error:
-                    failures.extend({'series': 'etf_nav', 'source': 'fuyao', 'symbol': symbol,
-                                     'trade_date': day, 'error': token_error} for day in sorted(dates))
+                    record_progress('fuyao', 'etf_nav', len(dates), [
+                        {'symbol': symbol, 'trade_date': day, 'error': token_error} for day in sorted(dates)
+                    ])
                     continue
                 operations.append(('fuyao', 'etf_nav', _fuyao_nav(client, token, symbol, dates, now.date()),
                                    [(symbol, day) for day in sorted(dates)]))
@@ -243,7 +267,7 @@ def sync_etf_market(data_dir, *, symbols, start, end, refresh=False):
                     failure = str(error)
                 stored, gaps = _record_result(data_dir, acquired, expected, failure)
                 appended += stored
-                failures.extend({'series': series, 'source': source, **gap} for gap in gaps)
+                record_progress(source, series, len(expected), gaps)
 
     return {'snapshot': freeze_etf_snapshot(data_dir, symbols=symbols, start=start, end=end),
-            'appended': appended, 'failures': failures, 'paid_budget': 0, 'paid_requests': 0}
+            **progress(), 'paid_budget': 0, 'paid_requests': 0}
