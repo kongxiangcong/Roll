@@ -5,6 +5,9 @@ const signClass = value => value?.startsWith("+") ? "up" : value?.startsWith("-"
 const timeFormat = new Intl.DateTimeFormat("zh-CN", {
   timeZone: "Asia/Shanghai", dateStyle: "short", timeStyle: "short", hour12: false,
 });
+const disclosureTimeFormat = new Intl.DateTimeFormat("zh-CN", {
+  timeZone: "Asia/Shanghai", dateStyle: "short", timeStyle: "medium", hour12: false,
+});
 const FIELD_NAMES = {
   shares: "当日份额", previous_shares: "前交易日份额", nav: "当日单位净值", split: "份额折算",
   membership: "适用区间", etf_shares: "交易所份额", etf_nav: "单位净值",
@@ -47,6 +50,69 @@ function evidenceLink(ref, label = "原始来源") {
   return ref ? el("span", { class: "card-sub" }, ref) : null;
 }
 
+function renderDisclosureSource(record) {
+  return el("div", { class: "stack" },
+    el("div", { class: "etf-report-meta muted" },
+      el("span", {}, `披露日 ${record.disclosed_date || "未知"}`),
+      el("span", {}, `公开时刻 ${record.disclosed_at ? disclosureTimeFormat.format(new Date(record.disclosed_at)) : "未知"}`),
+      el("span", {}, `Roll 取得 ${disclosureTimeFormat.format(new Date(record.received_at))}`),
+      el("span", {}, `本口径可见 ${disclosureTimeFormat.format(new Date(record.selected_available_at))}`),
+    ),
+    el("div", { class: "etf-evidence-line" }, evidenceLink(record.source_ref, record.title),
+      el("span", { class: "card-sub" }, record.source_locator)),
+  );
+}
+
+function renderDisclosureEvent(event) {
+  const scopes = {
+    etf_category: event.scope_label || "ETF 类别", index: `指数 ${event.index_code}`, fund: `基金 ${event.symbol}`,
+  };
+  return el("div", { class: "stack" },
+    el("strong", {}, `${event.holder} · 公告范围 ${scopes[event.scope]}`),
+    event.summary ? el("p", {}, event.summary) : null,
+    el("div", { class: "etf-report-meta muted" },
+      el("span", {}, `交易日 ${event.event_trade_date || "未披露"}`),
+      el("span", {}, `金额 ${event.amount_cny == null ? "未披露" : `${event.amount_cny} 元`}`),
+      el("span", {}, `份额 ${event.shares == null ? "未披露" : `${event.shares} 份`}`)),
+    renderDisclosureSource(event),
+  );
+}
+
+function renderDisclosureEvents(disclosures) {
+  if (!disclosures) return null;
+  return el("section", { class: "card stack", "aria-label": "已核实增持公告" },
+    el("h2", { class: "card-title" }, "已核实增持公告"),
+    disclosures.events.length ? disclosures.events.map(renderDisclosureEvent)
+      : el("p", { class: "card-sub" }, "截至所选时点，暂无已核实增持公告。"),
+  );
+}
+
+function renderFundDisclosures(disclosure) {
+  if (!disclosure) return null;
+  const { latest_report: latest, basis_report: basis, holders, events } = disclosure;
+  const status = { listed: "已列示", not_listed_in_report: "本期未列示", no_comparable_report: "暂无可比披露" };
+  return el("div", { class: "stack" },
+    el("h4", {}, "报告期机构持仓"),
+    latest && latest.report_id !== basis?.report_id ? el("div", { class: "stack" },
+      el("p", {}, `${latest.report_period_end} 期末报告无可比实名名单${basis ? `，沿用 ${basis.report_period_end} 期末披露。` : "。"}`),
+      renderDisclosureSource(latest),
+    ) : null,
+    basis ? el("div", { class: "stack" },
+      el("p", {}, `持仓披露期末 ${basis.report_period_end}`),
+      holders.map(holder => el("div", { class: "etf-evidence-line" },
+        el("strong", {}, holder.holder),
+        el("span", {}, status[holder.status]),
+        holder.status === "listed" ? el("span", { class: "num" },
+          `${holder.shares == null ? "份额未披露" : `${holder.shares} 份`} · ${holder.listed_shares_pct == null ? "占比未披露" : `占上市总份额 ${holder.listed_shares_pct}%`}`) : null,
+      )),
+      renderDisclosureSource(basis),
+    ) : el("p", { class: "card-sub" }, "暂无可比实名持仓披露。"),
+    el("h4", {}, "该基金的已核实增持公告"),
+    events.length ? events.map(renderDisclosureEvent)
+      : el("p", { class: "card-sub" }, "截至所选时点，暂无指向该基金的已核实增持公告。"),
+  );
+}
+
 function metric(label, value, description, valueClass = "") {
   return el("div", { class: "kpi" },
     el("span", { class: "kpi-label" }, label),
@@ -63,11 +129,12 @@ function latestField(label, field) {
 
 export function renderEtfSummary(report, { selectTradeDate }) {
   const { basket, summary } = report;
+  const disclosed = Boolean(basket.eligibility_catalog_version);
   return el("section", { class: "card stack", "aria-label": "篮子日报" },
     el("div", { class: "etf-report-header" },
       el("div", {},
         el("h1", {}, basket.name),
-        el("p", { class: "card-sub" }, `版本 ${basket.version} · 按固定名单回看`),
+        el("p", { class: "card-sub" }, `版本 ${basket.version} · ${disclosed ? "按所选时点的实名披露" : "按固定名单回看"}`),
       ),
       evidenceLink(basket.basket_sample_ref, "对照名单"),
     ),
@@ -80,12 +147,12 @@ export function renderEtfSummary(report, { selectTradeDate }) {
     el("div", { class: "etf-report-metrics" },
       metric("估算净申赎（亿元）", number(summary.flow_display_yi), flowStatus(summary), signClass(summary.flow_display_yi)),
       metric("可算 / 应有", coverage(summary), "只基金"),
-      metric("最近完整日报", report.latest_complete_date || "—",
+      disclosed ? null : metric("最近完整日报", report.latest_complete_date || "—",
         report.latest_complete_date && report.latest_complete_date !== report.trade_date
           ? el("button", { type: "button", class: "btn btn-sm", onclick: () => selectTradeDate(report.latest_complete_date) }, "查看最近完整日报")
           : null),
     ),
-    el("div", { class: "etf-report-meta muted" },
+    disclosed ? null : el("div", { class: "etf-report-meta muted" },
       latestField("最近可用份额", report.latest_fields.shares),
       latestField("最近可用净值", report.latest_fields.nav),
     ),
@@ -189,7 +256,7 @@ function renderInputEvidence(label, day, field) {
   );
 }
 
-export function renderEtfFundDetail(fund) {
+export function renderEtfFundDetail(fund, disclosure) {
   if (!fund) return el("div", { class: "empty-state" }, "选择一只基金核对份额、净值和来源。");
   const { inputs } = fund;
   return el("div", { class: "stack" },
@@ -208,7 +275,7 @@ export function renderEtfFundDetail(fund) {
         el("dt", {}, `折算后前日份额（份） · 折算比例 ${fund.split_ratio}`),
         el("dd", { class: "num" }, number(fund.comparable_previous_shares)),
       ] : null,
-      el("dt", {}, "估算净申赎贡献（亿元）"), el("dd", { class: `num ${signClass(fund.flow_display_yi)}` }, number(fund.flow_yi)),
+      el("dt", {}, "全体持有人估算净申赎贡献（亿元）"), el("dd", { class: `num ${signClass(fund.flow_display_yi)}` }, number(fund.flow_yi)),
     ),
     el("p", { class: "card-sub" }, fundStatus(fund)),
     fund.applicable ? el("details", { class: "etf-evidence" },
@@ -219,6 +286,7 @@ export function renderEtfFundDetail(fund) {
       inputs.split.candidates.length || fund.missing.split
         ? renderInputEvidence(FIELD_NAMES.split, fund.trade_date, inputs.split) : null,
     ) : evidenceLink(fund.listing_source_ref, `上市日期 ${fund.listing_date}`),
+    renderFundDisclosures(disclosure),
   );
 }
 
@@ -284,7 +352,8 @@ export function renderEtfDailyReport(report, { themeState }) {
       }),
     );
     fundCard.querySelector(".market-table").scrollTop = previousScroll || 0;
-    detail.replaceChildren(el("h2", { class: "card-title" }, "基金详情"), renderEtfFundDetail(selectedFund));
+    const disclosure = report.disclosures?.funds[selectedFund?.symbol];
+    detail.replaceChildren(el("h2", { class: "card-title" }, "基金详情"), renderEtfFundDetail(selectedFund, disclosure));
   }
 
   draw();
@@ -295,12 +364,48 @@ export function readEtfReport(api, tradeDate, themeState) {
   return api("/api/market/etf", { params: { trade_date: tradeDate, basket_version: themeState.basketVersion } });
 }
 
+export function renderEtfBasketReports(report, context, status) {
+  const { themeState } = context;
+  const display = el("div", { class: "stack" });
+  const controls = new Map();
+  const comparisons = report.comparison_baskets;
+
+  function draw() {
+    const membership = themeState.membership === "disclosed" && comparisons ? "disclosed" : "fixed";
+    const selected = membership === "disclosed" ? { ...report, ...comparisons.disclosed } : report;
+    for (const [key, button] of controls) button.setAttribute("aria-pressed", String(key === membership));
+    display.replaceChildren(renderEtfSummary(selected, context), renderEtfDailyReport(selected, context));
+  }
+
+  const selector = comparisons ? el("section", { class: "card stack", "aria-label": "篮子口径" },
+    el("h2", { class: "card-title" }, "篮子口径"),
+    marketTable({
+      label: "固定与披露规则口径对照",
+      columns: [{ label: "篮子" }, { label: "可算 / 应有", numeric: true }, { label: "净申赎（亿元）", numeric: true }],
+      rows: Object.entries(comparisons).map(([key, { basket, summary }]) => {
+        const button = el("button", { type: "button", class: "market-row-label", onclick: () => {
+          themeState.membership = key;
+          draw();
+        } }, basket.name);
+        controls.set(key, button);
+        return el("tr", {}, el("td", {}, button), el("td", { class: "num" }, coverage(summary)),
+          el("td", { class: `num ${signClass(summary.flow_display_yi)}` }, number(summary.flow_display_yi)));
+      }),
+    }),
+    el("p", { class: "card-sub" }, `披露规则池截止 ${disclosureTimeFormat.format(new Date(report.disclosures.cutoff))}`,
+      report.disclosures.availability_assumption === "date_only_next_day_shanghai_and_catalog_listing_period"
+        ? " · 披露时点重建，只有披露日的原件自上海时间次日零点可见" : null),
+  ) : null;
+  draw();
+  return el("div", { class: "stack" }, selector, renderEtfSync(report, context, status), display,
+    renderDisclosureEvents(report.disclosures));
+}
+
 export async function renderMarketEtf(context) {
   const { api, tradeDate, themeState } = context;
   const [report, status] = await Promise.all([
     readEtfReport(api, tradeDate, themeState),
     api("/api/market/etf/sync/status").catch(() => ({ status: "unknown" })),
   ]);
-  return el("div", { class: "stack" }, renderEtfSummary(report, context), renderEtfSync(report, context, status),
-    renderEtfDailyReport(report, context));
+  return renderEtfBasketReports(report, context, status);
 }

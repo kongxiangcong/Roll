@@ -8,6 +8,7 @@ from pathlib import Path
 
 from roll.market.calendar import is_session, latest_session
 from roll.v3.etf import etf_snapshot_scope, previous_etf_session, read_etf_days
+from roll.v3.etf_disclosures import etf_disclosure_scope, read_etf_disclosures
 from roll.v3.market import LIVE_RUN, _SCHEMA as MARKET_SCHEMA, prepare_snapshot, utc_timestamp
 from roll.v3.storage import database, ensure_schema, instant, sessions
 
@@ -165,6 +166,27 @@ def _field_dates_and_complete_report(report, candidates, members, read_day):
     return {field: latest_fields.get(field) for field in _DAILY_FIELDS}, latest_complete_date
 
 
+def attach_etf_disclosures(data_dir, report, *, snapshot, members, trade_date, cutoff=None, db=None):
+    """Pair fixed and point-in-time fund contributions without changing their inputs."""
+    disclosures = read_etf_disclosures(data_dir, snapshot, members=members, trade_date=trade_date,
+                                       cutoff=cutoff, db=db)
+    pool = disclosures['rule_pool']
+    included = {member['symbol'] for member in pool['members']}
+    disclosed = _daily_report(trade_date, [row for row in report['funds'] if row['symbol'] in included])
+    disclosed['basket'] = {
+        'version': pool['version'], 'name': pool['name'],
+        'member_count': pool['member_count'], 'eligibility_catalog_version': report['basket']['version'],
+    }
+    return {
+        **report,
+        'comparison_baskets': {
+            'fixed': {'basket': report['basket'], 'summary': report['summary']},
+            'disclosed': disclosed,
+        },
+        'disclosures': {key: value for key, value in disclosures.items() if key != 'snapshot'},
+    }
+
+
 def build_etf_daily_report(data_dir, *, trade_date=None, basket_version=FIXED_BASKET_VERSION, as_of=None):
     """Read a local daily report, keeping observation day and input cutoff explicit."""
     basket = get_fixed_basket(basket_version)
@@ -180,9 +202,10 @@ def build_etf_daily_report(data_dir, *, trade_date=None, basket_version=FIXED_BA
         candidates = _candidate_dates(db, members, selected.isoformat(), utc_timestamp(viewed))
         day = selected.isoformat() if trade_date else next(iter(candidates), selected.isoformat())
         start = min(day, *candidates) if candidates else day
+        symbols = [item['symbol'] for item in members]
         snapshot = prepare_snapshot(
             data_dir, as_of=viewed, use_mode=LIVE_RUN, db=db,
-            scope=etf_snapshot_scope([item['symbol'] for item in members], start, day),
+            scope=etf_snapshot_scope(symbols, start, day) + etf_disclosure_scope(symbols, day),
         )
 
         def read_day(selected_day):
@@ -191,8 +214,9 @@ def build_etf_daily_report(data_dir, *, trade_date=None, basket_version=FIXED_BA
 
         report = read_day(day)
         latest_fields, latest_complete = _field_dates_and_complete_report(report, candidates, members, read_day)
-    return {
-        **report, 'basket': basket, 'as_of': snapshot['as_of'], 'view_date': viewed.date().isoformat(),
-        'snapshot': snapshot, 'calculation_version': ETF_CALCULATION_VERSION,
-        'latest_fields': latest_fields, 'latest_complete_date': latest_complete,
-    }
+        report = {
+            **report, 'basket': basket, 'as_of': snapshot['as_of'], 'view_date': viewed.date().isoformat(),
+            'snapshot': snapshot, 'calculation_version': ETF_CALCULATION_VERSION,
+            'latest_fields': latest_fields, 'latest_complete_date': latest_complete,
+        }
+        return attach_etf_disclosures(data_dir, report, snapshot=snapshot, members=members, trade_date=day, db=db)
