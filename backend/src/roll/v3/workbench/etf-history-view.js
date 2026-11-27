@@ -251,7 +251,7 @@ function renderTimeline(report, days, themeState, select) {
   );
 }
 
-export function createEtfHistory(report, { api, themeState, selectTradeDate }) {
+export function createEtfHistory(report, { api, themeState, selectTradeDate }, membership) {
   const node = el("section", { class: "card stack etf-history", "aria-label": "ETF 历史报表" });
   let request = 0;
   let selectedScope;
@@ -295,8 +295,8 @@ export function createEtfHistory(report, { api, themeState, selectTradeDate }) {
     showStatus("正在读取本地历史…");
     try {
       const history = await api("/api/market/etf/history", { params: {
-        trade_date: report.trade_date, basket_version: report.basket.version,
-        index_code: indexCode, symbol, as_of: report.as_of, max_seq: report.snapshot.max_seq,
+        trade_date: report.trade_date, basket_version: report.basket.eligibility_catalog_version || report.basket.version,
+        index_code: indexCode, symbol, membership, as_of: report.as_of, max_seq: report.snapshot.max_seq,
       } });
       if (ticket === request) show(history, false);
     } catch (error) {

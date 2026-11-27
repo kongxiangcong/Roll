@@ -255,12 +255,12 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
     @app.get("/api/market/etf/history")
     def get_etf_history(trade_date: date, basket_version: str = FIXED_BASKET_VERSION,
                         index_code: str | None = None, symbol: str | None = None,
-                        as_of: str | None = None, max_seq: int | None = None):
+                        as_of: str | None = None, max_seq: int | None = None, membership: str = "fixed"):
         if max_seq is not None and max_seq < 0:
             raise ValueError('观测水位不能为负数')
         return build_etf_history_report(
             data_dir, trade_date=trade_date.isoformat(), basket_version=basket_version,
-            index_code=index_code, symbol=symbol, as_of=as_of, max_seq=max_seq,
+            index_code=index_code, symbol=symbol, as_of=as_of, max_seq=max_seq, membership=membership,
         )
 
     @app.get("/api/market/etf/sync/status")

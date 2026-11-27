@@ -6,12 +6,18 @@ import json
 import re
 
 from roll.market.calendar import is_session
-from roll.v3.storage import SHANGHAI
+from roll.v3.storage import SHANGHAI, instant
 
 
 ETF_UNITS = {'etf_shares': '份', 'etf_nav': '元/份', 'etf_split': '新份/旧份'}
 ETF_SERIES = tuple(ETF_UNITS)
 ETF_SELECTION_RULES = 'market-etf-v1'
+DISCLOSURE_SELECTION_RULES = 'market-etf-disclosures-v1'
+HOLDING_REPORT_SERIES = 'etf_holding_report'
+DISCLOSURE_EVENT_SERIES = 'etf_disclosure_event'
+DISCLOSURE_SERIES = (HOLDING_REPORT_SERIES, DISCLOSURE_EVENT_SERIES)
+DISCLOSURE_EVENT_SYMBOL = 'ETF-DISCLOSURES'
+DISCLOSURE_SCOPES = ('etf_category', 'index', 'fund')
 
 
 def etf_symbol(symbol):
@@ -154,3 +160,77 @@ def select_etf_observation(candidates):
             if value is not None and value != selected_value:
                 row['difference'] = 'value_mismatch'
     return {**head, 'alternative_sources': [row['source'] for row in candidates if row is not head]}, 'usable'
+
+
+def _optional_decimal(value, *, limit=None):
+    if value is None:
+        return None
+    amount = _amount(value, allow_zero=True)
+    if amount is None or (limit is not None and amount > limit):
+        raise ValueError('ETF 披露数值须为非负十进制数值或空值')
+    return str(value)
+
+
+def disclosure_observation(item):
+    """Validate the verified source facts and preserve their publication precision."""
+    if not all(isinstance(item.get(key), str) and item[key].strip() for key in
+               ('source', 'source_ref', 'available_evidence', 'received_at', 'item_id')):
+        raise ValueError('ETF 披露须保留标识、核验依据、原始来源和实际取得时间')
+    payload = item.get('payload')
+    if not isinstance(payload, dict) or not isinstance(payload.get('title'), str) or not payload['title'].strip():
+        raise ValueError('ETF 披露须保留原件标题')
+    disclosed_on = payload.get('disclosed_date')
+    if disclosed_on is not None:
+        disclosed_on = str(date.fromisoformat(disclosed_on))
+    if item.get('available_at'):
+        exact_date = instant(item['available_at']).date().isoformat()
+        if disclosed_on and disclosed_on != exact_date:
+            raise ValueError('ETF 披露日期和公开时间不一致')
+        disclosed_on = exact_date
+    elif disclosed_on and instant(item['received_at']).date().isoformat() < disclosed_on:
+        raise ValueError('仅有披露日的 ETF 原件须在披露日或之后实际取得')
+
+    symbol = item['symbol']
+    day = str(date.fromisoformat(item['trade_date']))
+    if item['series'] == HOLDING_REPORT_SERIES:
+        symbol = etf_symbol(symbol)
+        if disclosed_on and disclosed_on < day:
+            raise ValueError('ETF 定期报告披露日早于报告期末')
+        comparable = payload.get('comparable_named_holders')
+        holders = payload.get('holders')
+        if type(comparable) is not bool or not isinstance(holders, list) or (holders and not comparable):
+            raise ValueError('ETF 定期报告须标注实名名单是否可比')
+        normalized = []
+        names = set()
+        for holder in holders:
+            if not isinstance(holder, dict) or not isinstance(holder.get('holder'), str) or not holder['holder'].strip():
+                raise ValueError('ETF 定期报告须使用原件列示的持有人全名')
+            name = holder['holder']
+            if name in names:
+                raise ValueError('同一份定期报告不能重复列示同一主体')
+            names.add(name)
+            normalized.append({**holder, 'shares': _optional_decimal(holder.get('shares')),
+                               'listed_shares_pct': _optional_decimal(holder.get('listed_shares_pct'), limit=100)})
+        payload = {**payload, 'holders': normalized}
+    else:
+        if symbol != DISCLOSURE_EVENT_SYMBOL or (disclosed_on and day != disclosed_on):
+            raise ValueError('ETF 增持公告须按披露日登记在公告范围内')
+        scope = payload.get('scope')
+        target = payload.get('symbol')
+        index = payload.get('index_code')
+        if (scope not in DISCLOSURE_SCOPES or (scope == 'fund') != (target is not None)
+                or (scope == 'index') != (index is not None)
+                or (target is not None and not isinstance(target, str))
+                or (index is not None and (not isinstance(index, str) or not index.strip()))):
+            raise ValueError('ETF 增持公告范围须与原件的 ETF 类别、指数或单只基金一致')
+        if not isinstance(payload.get('holder'), str) or not payload['holder'].strip():
+            raise ValueError('ETF 增持公告须保留主体')
+        event_day = payload.get('event_trade_date')
+        payload = {
+            **payload, 'symbol': etf_symbol(target) if target else None, 'index_code': index,
+            'event_trade_date': str(date.fromisoformat(event_day)) if event_day else None,
+            'amount_cny': _optional_decimal(payload.get('amount_cny')),
+            'shares': _optional_decimal(payload.get('shares')),
+        }
+    return {**item, 'symbol': symbol, 'trade_date': day,
+            'payload': {**payload, 'disclosed_date': disclosed_on}}

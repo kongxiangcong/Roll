@@ -5,7 +5,11 @@ from decimal import Decimal, InvalidOperation
 
 from roll.market.calendar import SSE_HISTORICAL_HOLIDAYS, is_session, latest_session
 from roll.v3.etf import etf_snapshot_scope
-from roll.v3.etf_basket import FIXED_BASKET_VERSION, get_fixed_basket, read_basket_days, summarize_etf_rows
+from roll.v3.etf_basket import FIXED_BASKET_VERSION, _daily_report, get_fixed_basket, read_basket_days, summarize_etf_rows
+from roll.v3.etf_disclosures import (
+    DISCLOSED_BASKET_NAME, DISCLOSED_BASKET_VERSION, etf_disclosure_day_cutoff, etf_disclosure_scope,
+    read_etf_disclosures,
+)
 from roll.v3.market import LIVE_RUN, _SCHEMA as MARKET_SCHEMA, prepare_snapshot, read_snapshot, utc_timestamp
 from roll.v3.overview import BENCHMARK_SYMBOL
 from roll.v3.storage import database, ensure_schema, instant, sessions
@@ -105,10 +109,25 @@ def _selected_members(members, index_code, symbol):
     return selected
 
 
+def _apply_disclosed_membership(data_dir, snapshot, members, daily, cutoff, db):
+    reports = []
+    for report in daily:
+        day = report['trade_date']
+        disclosed = read_etf_disclosures(
+            data_dir, snapshot, members=members, trade_date=day, db=db,
+            cutoff=min(cutoff, utc_timestamp(etf_disclosure_day_cutoff(day))),
+        )
+        symbols = {member['symbol'] for member in disclosed['rule_pool']['members']}
+        reports.append(_daily_report(day, [fund for fund in report['funds'] if fund['symbol'] in symbols]))
+    return reports
+
+
 def build_etf_history_report(data_dir, *, trade_date, index_code=None, symbol=None,
-                             basket_version=FIXED_BASKET_VERSION, as_of=None, max_seq=None,
+                             basket_version=FIXED_BASKET_VERSION, membership='fixed', as_of=None, max_seq=None,
                              snapshot=None, cutoff=None, basket=None):
     """Read cumulative coverage and aligned daily series against one local waterline."""
+    if membership not in {'fixed', 'disclosed'}:
+        raise ValueError('未知 ETF 历史篮子口径')
     basket = get_fixed_basket(basket_version) if basket is None else basket
     members = _selected_members(basket['members'], index_code, symbol)
     identity = members[0]
@@ -126,9 +145,11 @@ def build_etf_history_report(data_dir, *, trade_date, index_code=None, symbol=No
         calendar = _calendar_windows(trade_date)
         first = min(days[0] for days in calendar.values())
         if snapshot is None:
+            scope = _input_scope(members, first, trade_date)
+            if membership == 'disclosed':
+                scope += etf_disclosure_scope([member['symbol'] for member in members], trade_date)
             snapshot = prepare_snapshot(
-                data_dir, as_of=viewed, use_mode=LIVE_RUN,
-                scope=_input_scope(members, first, trade_date), db=db,
+                data_dir, as_of=viewed, use_mode=LIVE_RUN, scope=scope, db=db,
             )
             if max_seq is not None:
                 snapshot['max_seq'] = min(max_seq, snapshot['max_seq'])
@@ -137,19 +158,28 @@ def build_etf_history_report(data_dir, *, trade_date, index_code=None, symbol=No
             data_dir, snapshot, members=members, start=first, end=trade_date, cutoff=cutoff, db=db,
         )
         candles = _index_candles(data_dir, snapshot, index_symbol, first, trade_date, cutoff, db)
+        if membership == 'disclosed':
+            daily = _apply_disclosed_membership(data_dir, snapshot, members, daily, cutoff, db)
 
     first_data = next((report['trade_date'] for report in daily if report['data_date']), None)
     if any(fund['previous_shares'] is not None for fund in daily[0]['funds']):
         first_data = first
+    basket_meta = {key: value for key, value in basket.items() if key != 'members'}
+    if membership == 'disclosed':
+        basket_meta = {
+            'version': DISCLOSED_BASKET_VERSION, 'name': DISCLOSED_BASKET_NAME,
+            'eligibility_catalog_version': basket['version'], 'history_label': '按各交易日可见披露归属',
+        }
     return {
         'trade_date': trade_date, 'as_of': cutoff, 'first_data_date': first_data,
-        'basket': {key: value for key, value in basket.items() if key != 'members'},
+        'basket': basket_meta,
         'index_code': identity['index_code'] if grouped else None,
         'index_symbol': index_symbol, 'index_name': identity['index_name'] if grouped else '沪深 300',
         'group_name': identity['group_name'] if grouped else None,
         'symbol': identity['symbol'] if symbol else None, 'fund_name': identity['name'] if symbol else None,
         'listing_date': identity['listing_date'] if symbol else None,
         'snapshot': snapshot,
-        'windows': _window_totals(calendar, {report['trade_date']: report for report in daily}, first_data),
+        'windows': _window_totals(calendar, {report['trade_date']: report for report in daily},
+                                  first_data or trade_date),
         'days': [_day_summary(report, candles.get(report['trade_date'])) for report in daily],
     }

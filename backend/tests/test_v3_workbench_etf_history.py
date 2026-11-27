@@ -1,6 +1,7 @@
 """Exercise the ETF history report from CLI ingestion through the workbench API."""
 
 import json
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
@@ -144,3 +145,23 @@ def test_daily_report_waterline_pins_both_etf_and_index_inputs(tmp_path):
     assert anchored['days'][-1]['index_ohlc']['close'] == '3910.25'
     assert current['days'][-1]['flow_yi'] == '0.4'
     assert current['days'][-1]['index_ohlc']['close'] == '3911.25'
+
+
+def test_disclosed_history_uses_each_days_available_membership(tmp_path):
+    published = '2026-11-27T17:00:00+08:00'
+    previous, day = '2026-11-26', '2026-11-27'
+    source = Path(__file__).with_name('fixtures') / 'etf_disclosures_510300.json'
+    run(('market', 'etf', 'disclosures', 'import', str(source)), data_dir=tmp_path)
+    _import(tmp_path, [
+        _etf('510300.SH', 'etf_shares', previous, '100000000'),
+        _etf('510300.SH', 'etf_nav', previous, '1'),
+        _etf('510300.SH', 'etf_shares', day, '130000000', received_at=published),
+        _etf('510300.SH', 'etf_nav', day, '2', received_at=published),
+    ])
+    history = _history(tmp_path, trade_date=day, index_code='000300', as_of=published, membership='disclosed')
+    assert history['basket']['version'] == 'huijin-disclosed-wide-v1'
+    before, after = history['days'][-2:]
+    assert (before['trade_date'], before['expected_count'], before['flow_cny']) == (previous, 0, None)
+    assert (after['trade_date'], after['expected_count'], after['flow_cny']) == (day, 1, '60000000')
+    week = next(window for window in history['windows'] if window['key'] == '5')
+    assert (week['valid_count'], week['expected_count']) == (1, 1)
