@@ -8,7 +8,8 @@ import os
 import httpx
 
 from roll.config import load_runtime_environment
-from roll.market.calendar import LAST_NOTICE_DAY, is_session
+from roll.market.calendar import SSE_HISTORICAL_HOLIDAYS, extended_sessions, is_session, latest_session
+from roll.v3.storage import database
 from roll.v3.market import (
     RECONSTRUCTED_RESEARCH, SHANGHAI, append_observations, available_dates,
     freeze_snapshot, read_snapshot,
@@ -57,19 +58,21 @@ def _number(value):
     return format(Decimal(str(value)), 'f') if value is not None else None
 
 
-def _previous_session(day):
+def _previous_session(day, extension):
     day -= timedelta(days=1)
-    while not is_session(day):
+    while day.year >= min(SSE_HISTORICAL_HOLIDAYS):
+        if is_session(day, extension):
+            return day
         day -= timedelta(days=1)
-    return day
+    return None
 
 
-def _ranges(start, end, available):
+def _ranges(start, end, available, extension):
     cursor = start
     while cursor <= end:
         right = min(end, date(cursor.year, 12, 31))
         days = [cursor + timedelta(days=offset) for offset in range((right - cursor).days + 1)]
-        missing = [day for day in days if is_session(day) and str(day) not in available]
+        missing = [day for day in days if is_session(day, extension) and str(day) not in available]
         if missing:
             yield missing[0], missing[-1]
         cursor = right + timedelta(days=1)
@@ -125,8 +128,8 @@ def _basis(prior_close, factor, factors_known):
     return str(price), 'fuyao_adjustment_factor'
 
 
-def _bars(client, token, symbol, start, end, *, index, factors):
-    lookback = _previous_session(start)
+def _bars(client, token, symbol, start, end, *, index, factors, extension):
+    lookback = _previous_session(start, extension) or start
     path = '/api/a-share-index/prices/historical' if index else '/api/a-share/prices/historical'
     params = {'start': _millis(lookback, time.min), 'end': _millis(end, time.max), 'interval': '1d'}
     if not index:
@@ -138,7 +141,7 @@ def _bars(client, token, symbol, start, end, *, index, factors):
     rows = {}
     for item in data['item']:
         day = _day(item['date_ms'])
-        if not lookback <= day <= end:
+        if not lookback <= day <= end or not is_session(day, extension):
             continue
         if day in rows:
             raise ValueError(f'扶摇返回重复行情日期 {day}')
@@ -149,7 +152,7 @@ def _bars(client, token, symbol, start, end, *, index, factors):
         if day < start:
             continue
         prices = {key: _number(item.get(key + '_price')) for key in OHLC}
-        previous = rows.get(_previous_session(day), {})
+        previous = rows.get(_previous_session(day, extension), {})
         prior = _number(previous.get('close_price'))
         pre_close, pre_close_basis = _basis(prior, (factors or {}).get(day), index or factors is not None)
         status = 'trading' if prices['open'] is not None and Decimal(prices['open']) > 0 else 'unknown'
@@ -170,10 +173,10 @@ def _bars(client, token, symbol, start, end, *, index, factors):
         )
 
 
-def _tencent_bars(client, symbol, start, end):
+def _tencent_bars(client, symbol, start, end, extension):
     is_proxy = symbol == INDUSTRY_PROXY
     price_unit = 'CNY/share' if is_proxy else 'index_point'
-    lookback = _previous_session(start)
+    lookback = _previous_session(start, extension) or start
     ticker = 'sh' + symbol.split('.')[0]
     adjustment = '' if is_proxy else 'qfq'
     response = client.get(
@@ -188,7 +191,9 @@ def _tencent_bars(client, symbol, start, end):
     for item in data:
         day, opening, close, high, low, hands = item[:6]
         day = date.fromisoformat(day)
-        if start <= day <= end:
+        if not lookback <= day <= end or not is_session(day, extension):
+            continue
+        if start <= day:
             open_payload = {'open': opening, 'prior_close': previous, 'pre_close': previous,
                             'pre_close_basis': 'prior_raw_close', 'trading_status': 'trading'}
             # The index endpoint reports board lots and ten-thousands of yuan.
@@ -213,9 +218,9 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
                       indices=(), refresh=False, warmup=0):
     now = datetime.now(SHANGHAI)
     last = now.date() if now.time() >= time(15, 5) else now.date() - timedelta(days=1)
-    last = min(last, LAST_NOTICE_DAY)
-    while not is_session(last):
-        last -= timedelta(days=1)
+    with database(data_dir) as db:
+        last, _ = latest_session(db, last)
+        extension = extended_sessions(db)
     start, end = date.fromisoformat(start), date.fromisoformat(end) if end else last
     if start > end or end > last:
         raise ValueError('请选择已收盘的行情区间')
@@ -235,7 +240,7 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
         available = set() if refresh else available_dates(
             data_dir, series='daily_bar', symbol=symbol, start=str(start), end=str(end), as_of=now,
         )
-        operations.extend((symbol, left, right) for left, right in _ranges(start, end, available))
+        operations.extend((symbol, left, right) for left, right in _ranges(start, end, available, extension))
 
     appended = 0
     if operations:
@@ -251,7 +256,7 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
                 window = {'symbol': symbol, 'start': str(left), 'end': str(right)}
                 if symbol == INDUSTRY_PROXY:
                     try:
-                        rows = list(_tencent_bars(client, symbol, left, right))
+                        rows = list(_tencent_bars(client, symbol, left, right, extension))
                         appended += append_observations(data_dir, rows)['appended']
                     except (ValueError, KeyError, IndexError, httpx.HTTPError) as error:
                         failures.append({**window, 'series': 'daily_bar', 'source': 'tencent', 'error': str(error)})
@@ -264,7 +269,7 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
                     except (ValueError, KeyError, TypeError, InvalidOperation, httpx.HTTPError) as error:
                         failures.append({**window, 'series': 'adjustment_factor', 'error': str(error)})
                 try:
-                    rows = list(_bars(client, token, symbol, left, right, index=index, factors=factors))
+                    rows = list(_bars(client, token, symbol, left, right, index=index, factors=factors, extension=extension))
                     appended += append_observations(data_dir, rows)['appended']
                 except (ValueError, KeyError, TypeError, InvalidOperation, httpx.HTTPError) as error:
                     if symbol != '000300.SH':
@@ -274,9 +279,9 @@ def sync_daily_market(data_dir, *, symbols=DEFAULT_SYMBOLS, start='2020-01-02', 
                     fallbacks.append({**window, 'source': 'tencent', 'fuyao_error': str(error)})
                 if symbol == '000300.SH':
                     seen = {row['trade_date'] for row in rows if row['series'] == 'daily_bar'}
-                    for gap_start, gap_end in _ranges(left, right, seen):
+                    for gap_start, gap_end in _ranges(left, right, seen, extension):
                         try:
-                            rows = list(_tencent_bars(client, symbol, gap_start, gap_end))
+                            rows = list(_tencent_bars(client, symbol, gap_start, gap_end, extension))
                             appended += append_observations(data_dir, rows)['appended']
                         except (ValueError, KeyError, IndexError, httpx.HTTPError) as error:
                             failures.append({**window, 'series': 'daily_bar', 'source': 'tencent',

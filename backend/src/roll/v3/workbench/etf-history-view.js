@@ -25,10 +25,10 @@ function dateButton(date, selected, onSelect) {
 function renderWindows(windows, active, selectWindow) {
   return el("div", { class: "etf-history-windows", "aria-label": "净申赎累计窗口" },
     windows.map(window => {
-      const range = window.start_date ? `${window.start_date} 至 ${window.end_date}` : "暂无可用期";
-      const short = window.insufficient_history
-        ? ` · 不足期 ${window.session_count}/${window.requested_session_count} 日` : "";
-      const status = window.start_date ? FLOW_STATUS[window.flow_status] : "暂无数据";
+      const range = `${window.window_start_date} 至 ${window.window_end_date}`;
+      const short = window.insufficient_history && (window.start_date
+        ? `记录始于 ${window.start_date} · 不足期 ${window.session_count}/${window.requested_session_count} 日`
+        : "暂无历史记录");
       return el("button", {
         type: "button", class: "etf-history-window", "aria-pressed": active === window.key ? "true" : "false",
         onclick: () => selectWindow(window.key),
@@ -36,8 +36,9 @@ function renderWindows(windows, active, selectWindow) {
       el("strong", {}, WINDOW_NAMES[window.key]),
       el("span", { class: `num etf-history-window-value ${amountColor(window.flow_display_yi)}` },
         valueText(window.flow_display_yi)),
-      el("span", { class: "card-sub" }, `${coverage(window)} 基金日 · ${status}`),
-      el("span", { class: "card-sub" }, `${range}${short}`));
+      el("span", { class: "card-sub" }, `${coverage(window)} 基金日 · ${FLOW_STATUS[window.flow_status]}`),
+      el("span", { class: "card-sub" }, range),
+      short ? el("span", { class: "card-sub" }, short) : null);
     }),
   );
 }

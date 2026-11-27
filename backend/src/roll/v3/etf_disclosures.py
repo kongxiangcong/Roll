@@ -66,7 +66,7 @@ def _fund_disclosure(reports, events):
 
 
 def _eligible(member, trade_date, cutoff, use_mode):
-    if not member['eligible_by_wide_index_type']:
+    if not member.get('eligible_by_wide_index_type'):
         return False
     if trade_date < max(member['listing_date'], member['effective_from']):
         return False

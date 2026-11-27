@@ -12,7 +12,7 @@ const disclosureTimeFormat = new Intl.DateTimeFormat("zh-CN", {
 });
 const FIELD_NAMES = {
   shares: "当日份额", previous_shares: "前交易日份额", nav: "当日单位净值", split: "份额折算",
-  membership: "适用区间", etf_shares: "交易所份额", etf_nav: "单位净值",
+  membership: "适用区间", etf_shares: "交易所份额", etf_nav: "单位净值", daily_bar: "跟踪指数日线",
 };
 const STATUS_NAMES = {
   missing: "缺少数据", not_visible: "截止时刻尚未可见", withdrawn: "已撤回",
@@ -20,7 +20,10 @@ const STATUS_NAMES = {
   invalid_value: "原始数值无效", conversion_basis_unverified: "折算依据待核验",
   not_listed: "尚未上市", outside_membership: "不在篮子生效区间",
 };
-const SOURCES = { sse: "上交所", szse: "深交所", fuyao: "扶摇", fund_manager: "基金管理人", eastmoney: "东方财富" };
+const SOURCES = {
+  sse: "上交所", szse: "深交所", fuyao: "扶摇", fund_manager: "基金管理人",
+  eastmoney: "东方财富", tencent: "腾讯行情", unmapped: "未映射来源",
+};
 
 function coverage(summary) {
   return `${summary.valid_count}/${summary.expected_count}`;
@@ -392,8 +395,37 @@ export function readEtfReport(api, tradeDate, themeState) {
   } });
 }
 
-export function renderEtfBasketReports(report, context, status) {
+function renderBasketVersions(versions, report, { themeState, refresh }) {
+  const frozen = Boolean(report?.report_id);
+  const version = frozen ? report.basket.version : themeState.basketVersion;
+  const choices = versions.map(item => el("option", { value: item.version }, `${item.name}（${item.version}）`));
+  if (version && !versions.some(item => item.version === version)) {
+    choices.push(el("option", { value: version, disabled: true },
+      frozen ? `${report.basket.name}（${version}）` : `截止时刻未提供所选版本（${version}）`));
+  }
+  const select = el("select", {
+    id: "etf-basket-version", disabled: frozen,
+    onchange: () => {
+      themeState.basketVersion = select.value || undefined;
+      themeState.indexCode = undefined;
+      themeState.selectedSymbol = undefined;
+      themeState.focusBasketVersion = true;
+      refresh();
+    },
+  }, el("option", { value: "" }, "使用最新可用版本"), choices);
+  select.value = version || "";
+  if (themeState.focusBasketVersion) {
+    themeState.focusBasketVersion = false;
+    requestAnimationFrame(() => select.isConnected && select.focus({ preventScroll: true }));
+  }
+  return el("div", { class: "etf-replay-form" },
+    el("label", { for: "etf-basket-version" }, "固定对照篮子版本"), select,
+    frozen ? el("span", { class: "card-sub" }, "已随报表冻结") : null);
+}
+
+export function renderEtfBasketReports(report, context, status, versions) {
   const { themeState } = context;
+  const summary = el("div");
   const display = el("div", { class: "stack" });
   const controls = new Map();
   const comparisons = report.comparison_baskets;
@@ -402,13 +434,15 @@ export function renderEtfBasketReports(report, context, status) {
     const membership = themeState.membership === "disclosed" && comparisons ? "disclosed" : "fixed";
     const selected = membership === "disclosed" ? { ...report, ...comparisons.disclosed } : report;
     for (const [key, button] of controls) button.setAttribute("aria-pressed", String(key === membership));
-    const history = createEtfHistory(selected, context, membership);
-    display.replaceChildren(renderEtfSummary(selected, context),
-      renderEtfDailyReport(selected, { ...context, onHistoryScope: history.setScope }), history.node);
+    const history = createEtfHistory(report, context, membership);
+    summary.replaceChildren(renderEtfSummary(selected, context));
+    const daily = renderEtfDailyReport(selected, { ...context, onHistoryScope: history.setScope });
+    display.replaceChildren(history.node, daily);
   }
 
   const selector = comparisons ? el("section", { class: "card stack", "aria-label": "篮子口径" },
     el("h2", { class: "card-title" }, "篮子口径"),
+    renderBasketVersions(versions, report, context),
     marketTable({
       label: "固定与披露规则口径对照",
       columns: [{ label: "篮子" }, { label: "可算 / 应有", numeric: true }, { label: "净申赎（亿元）", numeric: true }],
@@ -427,16 +461,19 @@ export function renderEtfBasketReports(report, context, status) {
         ? " · 披露时点重建，只有披露日的原件自上海时间次日零点可见" : null),
   ) : null;
   draw();
-  return el("div", { class: "stack" }, selector, report.report_id ? null : renderEtfSync(report, context, status), display,
-    renderDisclosureEvents(report.disclosures));
+  return el("div", { class: "stack" }, summary, selector, renderEtfReplay(context, report),
+    report.report_id ? null : renderEtfSync(report, context, status), display, renderDisclosureEvents(report.disclosures));
 }
 
 export async function renderMarketEtf(context) {
   const { api, tradeDate, themeState } = context;
-  const [report, status] = await Promise.all([
+  const [report, status, versions] = await Promise.all([
     readEtfReport(api, tradeDate, themeState).catch(error => ({ error: error.message })),
     api("/api/market/etf/sync/status").catch(() => ({ status: "unknown" })),
+    api("/api/market/etf/baskets", { params: { as_of: themeState.asOf } }).catch(() => []),
   ]);
-  if (report.error) return renderEtfReplay(context, null, report.error);
-  return el("div", { class: "stack" }, renderEtfReplay(context, report), renderEtfBasketReports(report, context, status));
+  if (report.error) return el("div", { class: "stack" },
+    el("div", { class: "card" }, renderBasketVersions(versions, null, context)),
+    renderEtfReplay(context, null, report.error));
+  return renderEtfBasketReports(report, context, status, versions);
 }

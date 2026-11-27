@@ -2,10 +2,11 @@
 
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
+from itertools import groupby
 
 from roll.v3.etf_basket import (
-    ETF_HISTORY_WINDOWS, _daily_report, etf_history_calendar, prepare_etf_report,
-    read_basket_days, summarize_etf_rows,
+    ETF_HISTORY_WINDOWS, _daily_report, disclosure_catalog_at, etf_history_calendar, prepare_etf_report,
+    read_basket_days, report_catalog_timeline, summarize_etf_rows,
 )
 from roll.v3.etf_disclosures import (
     DISCLOSED_BASKET_NAME, DISCLOSED_BASKET_VERSION, etf_disclosure_day_cutoff,
@@ -26,7 +27,7 @@ def _window_totals(calendar, reports, start):
     for key, requested in ETF_HISTORY_WINDOWS:
         days = calendar[key]
         available = [day for day in days if start is not None and day >= start]
-        totals = summarize_etf_rows(fund for day in available for fund in reports[day]['funds'])
+        totals = summarize_etf_rows(fund for day in days for fund in reports[day]['funds'])
         result.append({
             'key': key, 'start_date': available[0] if available else None,
             'end_date': available[-1] if available else None, 'session_count': len(available),
@@ -38,11 +39,11 @@ def _window_totals(calendar, reports, start):
     return result
 
 
-def _index_candles(data_dir, snapshot, symbol, start, end, cutoff, db):
+def read_index_candles(data_dir, snapshot, symbol, start, end, cutoff, db):
     if not symbol:
         return {}
     observations = read_snapshot(
-        data_dir, snapshot, symbol=symbol, start=start, end=end, cutoff=cutoff, db=db,
+        data_dir, snapshot, series='daily_bar', symbol=symbol, start=start, end=end, cutoff=cutoff, db=db,
     )['observations']
     candles = {}
     for row in observations:
@@ -68,6 +69,8 @@ def _day_summary(report, candle):
     summary = report['summary']
     return {
         'trade_date': report['trade_date'], 'data_date': report['data_date'],
+        **({'eligibility_catalog_version': report['eligibility_catalog_version']}
+           if 'eligibility_catalog_version' in report else {}),
         'index_ohlc': candle,
         **{field: summary[field] for field in _FLOW_FIELDS},
         'assets_yi': summary['assets_yi'], 'assets_cny': summary['assets_cny'],
@@ -77,13 +80,10 @@ def _day_summary(report, candle):
     }
 
 
-def _selected_members(members, index_code, symbol):
-    selected = [member for member in members
-                if (index_code is None or member['index_code'] == index_code)
-                and (symbol is None or member['symbol'] == symbol.upper())]
-    if not selected:
-        raise ValueError('所选指数或基金不在篮子内')
-    return selected
+def _matching_members(members, index_code, symbol):
+    return [member for member in members
+            if (index_code is None or member['index_code'] == index_code)
+            and (symbol is None or member['symbol'] == symbol.upper())]
 
 
 def _history_start(data_dir, snapshot, members, daily, cutoff, db):
@@ -108,17 +108,28 @@ def _history_start(data_dir, snapshot, members, daily, cutoff, db):
     return recent
 
 
-def _apply_disclosed_membership(data_dir, snapshot, members, daily, cutoff, db):
+def _read_disclosed_history(data_dir, context, days, *, index_code, symbol, extension, db):
+    snapshot = context['snapshot']
+    cutoff = context.get('disclosure_cutoff', context['cutoff'])
+    selected = days[-1]
     reports = []
-    selected = daily[-1]['trade_date']
-    for report in daily:
-        day = report['trade_date']
-        disclosed = read_etf_disclosures(
-            data_dir, snapshot, members=members, trade_date=day, db=db,
-            cutoff=cutoff if day == selected else min(cutoff, utc_timestamp(etf_disclosure_day_cutoff(day))),
-        )
-        symbols = {member['symbol'] for member in disclosed['rule_pool']['members']}
-        reports.append(_daily_report(day, [fund for fund in report['funds'] if fund['symbol'] in symbols]))
+    for catalog, dates in groupby(days, key=lambda day: disclosure_catalog_at(context, day)):
+        dates = list(dates)
+        members = _matching_members(catalog['members'], index_code, symbol)
+        members = [member for member in members if member.get('eligible_by_wide_index_type')]
+        daily = read_basket_days(data_dir, snapshot, members=members, start=dates[0], end=dates[-1],
+                                 cutoff=context['cutoff'], extension=extension, db=db)
+        for report in daily:
+            day = report['trade_date']
+            symbols = set()
+            if members:
+                disclosed = read_etf_disclosures(
+                    data_dir, snapshot, members=members, trade_date=day, db=db,
+                    cutoff=cutoff if day == selected else min(cutoff, utc_timestamp(etf_disclosure_day_cutoff(day))),
+                )
+                symbols = {member['symbol'] for member in disclosed['rule_pool']['members']}
+            report = _daily_report(day, [fund for fund in report['funds'] if fund['symbol'] in symbols])
+            reports.append({**report, 'eligibility_catalog_version': catalog['version']})
     return reports
 
 
@@ -141,27 +152,36 @@ def build_etf_history_report(data_dir, *, trade_date=None, index_code=None, symb
             )
         basket, snapshot, cutoff = context['basket'], context['snapshot'], context['cutoff']
         trade_date = context['trade_date']
-        members = _selected_members(basket['members'], index_code, symbol)
+        identities = basket['members'] if membership == 'fixed' else [
+            member for catalog in reversed(report_catalog_timeline(context)) for member in catalog['members']
+        ]
+        members = _matching_members(identities, index_code, symbol)
+        if not members:
+            raise ValueError('所选指数或基金不在篮子内')
         identity = members[0]
         grouped = index_code is not None or symbol is not None
         index_symbol = identity['index_symbol'] if grouped else BENCHMARK_SYMBOL
-        calendar = etf_history_calendar(trade_date)
+        extension = frozenset(context.get('calendar_extension', ()))
+        calendar = etf_history_calendar(trade_date, extension)
         first = min(days[0] for days in calendar.values())
-        daily = read_basket_days(
-            data_dir, snapshot, members=members, start=first, end=trade_date, cutoff=cutoff, db=db,
-        )
-        first_data = _history_start(data_dir, snapshot, members, daily, cutoff, db)
-        candles = _index_candles(data_dir, snapshot, index_symbol, first, trade_date, cutoff, db)
         if membership == 'disclosed':
-            daily = _apply_disclosed_membership(
-                data_dir, snapshot, members, daily, context.get('disclosure_cutoff', cutoff), db,
-            )
+            days = max(calendar.values(), key=len)
+            daily = _read_disclosed_history(data_dir, context, days, index_code=index_code, symbol=symbol,
+                                            extension=extension, db=db)
+            first_data = next((report['trade_date'] for report in daily if report['data_date']), None)
+        else:
+            daily = read_basket_days(data_dir, snapshot, members=members, start=first, end=trade_date,
+                                     cutoff=cutoff, db=db, extension=extension)
+            first_data = _history_start(data_dir, snapshot, members, daily, cutoff, db)
+        candles = read_index_candles(data_dir, snapshot, index_symbol, first, trade_date, cutoff, db)
+
 
     basket_meta = {key: value for key, value in basket.items() if key != 'members'}
     if membership == 'disclosed':
         basket_meta = {
             'version': DISCLOSED_BASKET_VERSION, 'name': DISCLOSED_BASKET_NAME,
-            'eligibility_catalog_version': basket['version'], 'history_label': '按历史日披露归属',
+            'eligibility_catalog_version': daily[-1]['eligibility_catalog_version'],
+            'history_label': '按历史日披露归属',
         }
     return {
         'trade_date': trade_date, 'as_of': cutoff, 'first_data_date': first_data,
@@ -172,7 +192,6 @@ def build_etf_history_report(data_dir, *, trade_date=None, index_code=None, symb
         'symbol': identity['symbol'] if symbol else None, 'fund_name': identity['name'] if symbol else None,
         'listing_date': identity['listing_date'] if symbol else None,
         'snapshot': snapshot, 'report_id': report_id, 'use_mode': snapshot['use_mode'],
-        'windows': _window_totals(calendar, {report['trade_date']: report for report in daily},
-                                  first_data or trade_date),
+        'windows': _window_totals(calendar, {report['trade_date']: report for report in daily}, first_data),
         'days': [_day_summary(report, candles.get(report['trade_date'])) for report in daily],
     }

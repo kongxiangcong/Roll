@@ -6,6 +6,7 @@ import math
 import threading
 
 from roll.market.calendar import extended_sessions, is_session, latest_session
+from roll.v3.etf_observations import ETF_SELECTION_RULES
 from roll.v3.account import AccountLedger
 from roll.v3.market import DEFAULT_SOURCE_PRIORITY, LIVE_RUN, _SCHEMA as MARKET_SCHEMA, _choose, utc_timestamp
 from roll.v3.market_sources import INDUSTRY_PROXY, sync_daily_market
@@ -179,13 +180,21 @@ def market_trade_dates(data_dir, *, as_of=None):
     with database(data_dir) as db:
         ensure_schema(db, MARKET_SCHEMA)
         last_closed, _ = latest_session(db, clock.date() - timedelta(days=clock.time() < time(15)))
-        latest = db.execute(
-            """SELECT MAX(trade_date) FROM observation
-               WHERE trade_date <= ? AND received_at <= ? AND (available_at IS NULL OR available_at <= ?)
-                 AND quality = 'usable' AND withdrawn = 0 AND reconstruction_only = 0
-                 AND series IN ('daily_bar', 'etf_shares', 'etf_nav')""",
-            (last_closed.isoformat(), utc_timestamp(clock), utc_timestamp(clock)),
-        ).fetchone()[0]
+        extension = extended_sessions(db)
+        cutoff = utc_timestamp(clock)
+        rows = db.execute(
+            """SELECT * FROM observation
+               WHERE trade_date <= ? AND received_at <= ?
+                 AND series IN ('daily_bar', 'etf_shares', 'etf_nav')
+                 AND (series != 'daily_bar' OR item_id = '')
+               ORDER BY trade_date DESC, series, symbol""",
+            (last_closed.isoformat(), cutoff),
+        )
+        policy = {"use_mode": LIVE_RUN, "selection_rules_version": ETF_SELECTION_RULES,
+                  "source_priority": DEFAULT_SOURCE_PRIORITY}
+        latest = next((day for (day, _, _), versions in groupby(
+            rows, key=lambda row: (row["trade_date"], row["series"], row["symbol"]),
+        ) if is_session(date.fromisoformat(day), extension) and _choose(list(versions), policy, cutoff)[0]), None)
     return {"latest_trade_date": latest, "last_closed_trade_date": last_closed.isoformat()}
 
 

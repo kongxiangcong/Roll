@@ -16,7 +16,8 @@ from roll.v3.etf import freeze_etf_snapshot, previous_etf_session
 from roll.v3.etf_observations import ETF_UNITS, etf_symbol, exchange_source
 from roll.v3.market import LIVE_RUN, append_observations, available_dates
 from roll.v3.market_sources import FUYAO, _get as get_fuyao
-from roll.v3.storage import SHANGHAI, sessions
+from roll.market.calendar import extended_sessions
+from roll.v3.storage import database, SHANGHAI, sessions
 
 
 SSE_URL = 'https://query.sse.com.cn/commonQuery.do'
@@ -184,11 +185,13 @@ def sync_etf_market(data_dir, *, symbols, start, end, refresh=False, on_progress
     left, right = date.fromisoformat(start), date.fromisoformat(end)
     if right > now.date() or (right - left).days > 31:
         raise ValueError('ETF 同步须选择截至今日且不超过 32 个自然日的区间')
-    days = list(sessions(start, end))
+    with database(data_dir) as db:
+        extension = extended_sessions(db)
+    days = list(sessions(start, end, extension))
     symbols = tuple(dict.fromkeys(map(etf_symbol, symbols)))
     if not days or not symbols:
         raise ValueError('ETF 同步须指定基金和含交易日的区间')
-    previous = previous_etf_session(days[0])
+    previous = previous_etf_session(days[0], extension)
     share_days = [previous, *days] if previous else days
     missing = {}
     for series, expected_days in (('etf_shares', share_days), ('etf_nav', days)):

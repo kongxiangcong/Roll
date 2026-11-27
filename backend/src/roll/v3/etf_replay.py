@@ -44,7 +44,8 @@ def load_frozen_etf_report(data_dir, report_id, *, trade_date=None, db):
         raise ValueError(f'ETF 报表快照不存在 {report_id}')
     context = {**json.loads(row['manifest']), 'snapshot': get_snapshot(data_dir, row['snapshot_id'], db=db)}
     if trade_date is not None and trade_date != context['trade_date']:
-        if trade_date > context['trade_date'] or not is_session(date.fromisoformat(trade_date)):
+        extension = frozenset(context.get('calendar_extension', ()))
+        if trade_date > context['trade_date'] or not is_session(date.fromisoformat(trade_date), extension):
             raise ValueError('请选择快照观察日或之前的交易日')
         context['trade_date'] = trade_date
         if 'disclosure_cutoff' in context:

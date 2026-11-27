@@ -6,7 +6,7 @@ from datetime import date, datetime, timedelta, timezone
 from hashlib import sha256
 import json
 
-from roll.market.calendar import is_session
+from roll.market.calendar import extended_sessions, is_session
 from roll.v3.etf_observations import (
     DISCLOSURE_SELECTION_RULES, DISCLOSURE_SERIES, ETF_SELECTION_RULES, ETF_SERIES, disclosure_observation,
     etf_observation, etf_visible_at, select_etf_observation,
@@ -76,10 +76,11 @@ def append_observations(data_dir, observations):
         db.executescript(_SCHEMA)
         db.execute('BEGIN IMMEDIATE')
         first = _waterline(db)
+        extension = extended_sessions(db)
         for item in observations:
             series = item['series']
             if series in ETF_SERIES:
-                item = etf_observation(item)
+                item = etf_observation(item, extension=extension)
             elif series in DISCLOSURE_SERIES:
                 item = disclosure_observation(item)
             item_id = item.get('item_id', '')
