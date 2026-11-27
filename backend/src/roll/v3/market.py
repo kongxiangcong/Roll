@@ -130,8 +130,8 @@ def _waterline(db):
     return db.execute('SELECT COALESCE(MAX(seq), 0) FROM observation').fetchone()[0]
 
 
-def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY, db=None):
-    """Freeze an observation waterline, input scope, purpose and version-selection policy."""
+def prepare_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY, db=None):
+    """Capture inputs and a waterline for a local read without storing a new snapshot."""
     if use_mode not in USE_MODES:
         raise ValueError(f'未知快照用途 {use_mode}')
     scope = sorted({
@@ -144,20 +144,27 @@ def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT
     normalized = [dict(series=series, symbol=symbol, start=start, end=end)
                   for series, symbol, start, end in scope]
     rules = ETF_SELECTION_RULES if any(series in ETF_SERIES for series, *_ in scope) else SELECTION_RULES_VERSION
-    with database(data_dir, write=True, db=db) as connection:
+    with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
-        snapshot = {
+        return {
             'as_of': utc_timestamp(as_of), 'max_seq': _waterline(connection), 'use_mode': use_mode,
             'scope': normalized, 'selection_rules_version': rules,
             'source_priority': list(dict.fromkeys(source_priority)),
         }
+
+
+def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY, db=None):
+    """Freeze an observation waterline, input scope, purpose and version-selection policy."""
+    with database(data_dir, write=True, db=db) as connection:
+        snapshot = prepare_snapshot(data_dir, as_of=as_of, use_mode=use_mode, scope=scope,
+                                    source_priority=source_priority, db=connection)
         snapshot_id = sha256(_encode(snapshot).encode()).hexdigest()
         connection.execute("""
             INSERT OR IGNORE INTO data_snapshot(snapshot_id,as_of,max_seq,use_mode,scope,
                                                selection_rules_version,source_priority)
             VALUES(?,?,?,?,?,?,?)
-        """, (snapshot_id, snapshot['as_of'], snapshot['max_seq'], use_mode, _encode(normalized),
-              rules, _encode(snapshot['source_priority'])))
+        """, (snapshot_id, snapshot['as_of'], snapshot['max_seq'], use_mode, _encode(snapshot['scope']),
+              snapshot['selection_rules_version'], _encode(snapshot['source_priority'])))
     return {'snapshot_id': snapshot_id, **snapshot}
 
 
@@ -341,10 +348,10 @@ def _coverage(scope, observations, states, warmup):
 
 def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, start=None, end=None,
                   cutoff=None, warmup=0, include_candidates=False, db=None):
-    """Inspect a frozen observation range and its coverage at a decision cutoff."""
+    """Inspect a persisted snapshot or a locally prepared observation waterline."""
     with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
-        snapshot = _snapshot(connection, snapshot_id)
+        snapshot = snapshot_id if isinstance(snapshot_id, dict) else _snapshot(connection, snapshot_id)
         cutoff = min(utc_timestamp(cutoff), snapshot['as_of']) if cutoff else snapshot['as_of']
         cutoff_day = str(datetime.fromisoformat(cutoff).astimezone(SHANGHAI).date())
         selected = {}

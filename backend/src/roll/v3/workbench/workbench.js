@@ -1,4 +1,5 @@
 import { el, marketMasterDetail, marketTable } from "./market-view.js";
+import { renderMarketEtf } from "./etf-view.js";
 import { renderIndustryView } from "./industry-view.js";
 
 const app = document.querySelector("#app");
@@ -96,7 +97,7 @@ async function api(path, { method = "GET", params, body } = {}) {
 }
 
 const MARKET_THEMES = {
-  etf: { label: "宽基 ETF", render: () => marketEmpty("暂无宽基 ETF 数据") },
+  etf: { label: "宽基 ETF", render: renderMarketEtf },
   industry: { label: "行业", render: renderIndustryView },
   watchlist: { label: "观察池", render: renderMarketWatchlist },
 };
@@ -307,15 +308,18 @@ async function renderMarket() {
     && state.market.theme === theme && state.bookId === bookId;
   const dates = await api("/api/market/dates");
   if (!isCurrent()) return;
-  const observationDay = tradeDate || dates.latest_trade_date;
+  const observationDay = tradeDate || dates.latest_trade_date || dates.last_closed_trade_date;
   tradeDatePill.textContent = dates.latest_trade_date || "暂无行情";
+  const selectTradeDate = day => {
+    state.market.tradeDate = day || null;
+    render();
+  };
   const dateInput = el("input", {
     type: "date", id: "observation-date",
     max: dates.last_closed_trade_date, value: observationDay,
     onchange: () => {
       if (!dateInput.reportValidity()) return;
-      state.market.tradeDate = dateInput.value || null;
-      render();
+      selectTradeDate(dateInput.value);
     },
   });
   const controls = el("div", { class: "market-controls card" },
@@ -329,13 +333,13 @@ async function renderMarket() {
       dateInput,
       tradeDate ? el("button", {
         type: "button", class: "btn btn-sm",
-        onclick: () => { state.market.tradeDate = null; render(); },
+        onclick: () => selectTradeDate(null),
       }, "最新") : null,
     ),
   );
   const themeState = themes[theme];
   const refresh = () => { if (state.view === "market" && state.market.theme === theme) render(); };
-  const context = { tradeDate: observationDay, bookId, themeState, refresh, api };
+  const context = { tradeDate: observationDay, bookId, themeState, refresh, selectTradeDate, api };
   let content;
   try {
     content = await MARKET_THEMES[theme].render(context);

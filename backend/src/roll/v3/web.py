@@ -13,6 +13,8 @@ from roll.v3.development_archive import archive_development
 from roll.v3.development_experiment import PRESET_ID, development_preset
 from roll.v3.development_interpretation import is_development
 from roll.v3.development_replay import prepare_development, read_development_receipt
+from roll.v3.etf_basket import FIXED_BASKET_VERSION, build_etf_daily_report
+from roll.v3.etf_sync import EtfSyncRunner
 from roll.v3.experiment import list_experiments, read_experiment
 from roll.v3.harness_settings import settings as harness_settings
 from roll.v3.industry import build_industry_report
@@ -164,9 +166,16 @@ class MarketSyncInput(BaseModel):
     refresh: bool = False
 
 
+class EtfSyncInput(BaseModel):
+    trade_date: date
+    basket_version: str = FIXED_BASKET_VERSION
+    refresh: bool = False
+
+
 def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=sync_daily_market):
     runner = ResearchRunner(data_dir, default_executor=research_executor)
     sync_runner = MarketSyncRunner(data_dir, sync_fn=market_sync_fn)
+    etf_sync_runner = EtfSyncRunner(data_dir)
 
     @asynccontextmanager
     async def lifespan(_app):
@@ -235,6 +244,21 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
     @app.post("/api/market/sync")
     def trigger_market_sync(payload: MarketSyncInput):
         return sync_runner.start(payload.symbols or None, start=payload.start, refresh=payload.refresh)
+
+    @app.get("/api/market/etf")
+    def get_etf_daily_report(trade_date: date | None = None, basket_version: str = FIXED_BASKET_VERSION,
+                             as_of: str | None = None):
+        return build_etf_daily_report(data_dir, trade_date=trade_date.isoformat() if trade_date else None,
+                                      basket_version=basket_version, as_of=as_of)
+
+    @app.get("/api/market/etf/sync/status")
+    def etf_sync_status():
+        return etf_sync_runner.status()
+
+    @app.post("/api/market/etf/sync")
+    def trigger_etf_sync(payload: EtfSyncInput):
+        return etf_sync_runner.start(trade_date=payload.trade_date.isoformat(),
+                                     basket_version=payload.basket_version, refresh=payload.refresh)
 
     @app.get("/api/settings/research-harness")
     def get_harness():

@@ -26,16 +26,21 @@ def _etf_sessions(start, end):
     return days
 
 
-def freeze_etf_snapshot(data_dir, *, symbols, start, end, as_of=None, use_mode=LIVE_RUN):
-    """Freeze every field needed to replay ETF daily estimates in the range."""
+def etf_snapshot_scope(symbols, start, end):
+    """Scope ETF estimates including the prior session's shares."""
     days = _etf_sessions(start, end)
     lookback = previous_etf_session(days[0])
-    scope = [
+    return [
         {'series': series, 'symbol': etf_symbol(symbol),
          'start': lookback if series == 'etf_shares' else days[0], 'end': days[-1]}
         for symbol in symbols for series in ETF_SERIES
     ]
-    return freeze_snapshot(data_dir, as_of=instant(as_of), use_mode=use_mode, scope=scope)
+
+
+def freeze_etf_snapshot(data_dir, *, symbols, start, end, as_of=None, use_mode=LIVE_RUN, db=None):
+    """Freeze every field needed to replay ETF daily estimates in the range."""
+    return freeze_snapshot(data_dir, as_of=instant(as_of), use_mode=use_mode,
+                           scope=etf_snapshot_scope(symbols, start, end), db=db)
 
 
 def _field(records, series, day):
