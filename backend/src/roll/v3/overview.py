@@ -1,11 +1,13 @@
 """Aggregated daily overview and non-blocking market sync for the Roll workbench."""
+from datetime import date, time, timedelta
 from decimal import Decimal, InvalidOperation
-import json
+from itertools import groupby
 import math
 import threading
 
+from roll.market.calendar import extended_sessions, is_session, latest_session
 from roll.v3.account import AccountLedger
-from roll.v3.market import _SCHEMA as MARKET_SCHEMA, utc_timestamp
+from roll.v3.market import DEFAULT_SOURCE_PRIORITY, LIVE_RUN, _SCHEMA as MARKET_SCHEMA, _choose, utc_timestamp
 from roll.v3.market_sources import INDUSTRY_PROXY, sync_daily_market
 from roll.v3.plan import PlanLedger
 from roll.v3.research import ResearchDossiers
@@ -29,32 +31,33 @@ def _dec(value):
     return num if num.is_finite() else None
 
 
-def _latest_bars(db, symbol, limit=70):
+def _latest_bars(db, symbol, *, end, cutoff, limit=70):
     rows = db.execute(
-        """SELECT trade_date, payload, seq FROM observation
-           WHERE series = 'daily_bar' AND symbol = ? AND withdrawn = 0 AND quality = 'usable'
-           ORDER BY trade_date DESC, seq DESC""",
-        (symbol.upper(),),
-    ).fetchall()
-    by_date = {}
-    for row in rows:
-        day = row["trade_date"]
-        if day in by_date:
+        """SELECT * FROM observation
+           WHERE series = 'daily_bar' AND symbol = ? AND trade_date <= ? AND item_id = ''
+           ORDER BY trade_date DESC, source, seq""",
+        (symbol.upper(), end),
+    )
+    policy = {"use_mode": LIVE_RUN, "source_priority": DEFAULT_SOURCE_PRIORITY}
+    bars = []
+    for day, versions in groupby(rows, key=lambda row: row["trade_date"]):
+        chosen, _ = _choose(list(versions), policy, cutoff)
+        if not chosen:
             continue
-        payload = json.loads(row["payload"])
+        payload = chosen["payload"]
         close = _dec(payload.get("close"))
         if close is None or close <= 0:
             continue
-        by_date[day] = {
+        bars.append({
             "trade_date": day,
             "close": float(close),
             "prior_close": float(_dec(payload.get("pre_close") or payload.get("prior_close")) or 0) or None,
             "volume": float(_dec(payload.get("volume")) or 0) or None,
             "amount": float(_dec(payload.get("amount")) or 0) or None,
-        }
-        if len(by_date) >= limit:
+        })
+        if len(bars) >= limit:
             break
-    return [by_date[day] for day in sorted(by_date)]
+    return bars[::-1]
 
 
 def _series_metrics(bars):
@@ -66,7 +69,7 @@ def _series_metrics(bars):
         }
     closes = [row["close"] for row in bars]
     last = bars[-1]
-    prev = closes[-2] if len(closes) >= 2 else last["prior_close"]
+    prev = last["prior_close"] or (closes[-2] if len(closes) >= 2 else None)
     change_pct = (last["close"] - prev) / prev if prev and prev > 0 else None
 
     def span_return(days):
@@ -153,41 +156,41 @@ def _plain_plan_summary(plan):
     return "暂无主动交易动作"
 
 
-def build_overview(data_dir, *, book_id="real", as_of=None):
-    cutoff = instant(as_of)
-    cutoff_iso = utc_timestamp(cutoff)
-    watchlist_items = list_watchlist(data_dir)
-    watch_map = {item["symbol"]: item["name"] for item in watchlist_items}
-
-    accounts = AccountLedger(data_dir)
-    account_snap = None
+def _read_account(data_dir, book_id, cutoff):
     try:
-        account_snap = accounts.snapshot(book_id, as_of=cutoff)
+        return AccountLedger(data_dir).snapshot(book_id, as_of=cutoff)
     except ValueError:
-        account_snap = None
+        return None
 
-    held_symbols = []
-    if account_snap is not None:
-        held_symbols = sorted({lot.symbol for lot in account_snap.lots} | {r.symbol for r in account_snap.receivables})
 
-    ordered_symbols = list(dict.fromkeys([*(item["symbol"] for item in watchlist_items), *held_symbols]))
+def _pool_members(data_dir, account):
+    saved = list_watchlist(data_dir)
+    names = {item["symbol"]: item["name"] for item in saved}
+    held = sorted({lot.symbol for lot in account.lots} | {r.symbol for r in account.receivables}) if account else []
+    return names, list(dict.fromkeys([*names, *held]))
 
+
+def _market_metrics(db, symbols, *, end, cutoff):
+    return {symbol: _series_metrics(_latest_bars(db, symbol, end=end, cutoff=cutoff)) for symbol in symbols}
+
+
+def market_trade_dates(data_dir, *, as_of=None):
+    clock = instant(as_of)
     with database(data_dir) as db:
         ensure_schema(db, MARKET_SCHEMA)
-        benchmark_metrics = _series_metrics(_latest_bars(db, BENCHMARK_SYMBOL))
-        etf_metrics = _series_metrics(_latest_bars(db, INDUSTRY_PROXY))
-        industry_metrics = _series_metrics(_latest_bars(db, INDUSTRY_SYMBOL))
-        symbol_metrics = {symbol: _series_metrics(_latest_bars(db, symbol)) for symbol in ordered_symbols}
+        last_closed, _ = latest_session(db, clock.date() - timedelta(days=clock.time() < time(15)))
+        latest = db.execute(
+            """SELECT MAX(trade_date) FROM observation
+               WHERE trade_date <= ? AND received_at <= ? AND (available_at IS NULL OR available_at <= ?)
+                 AND quality = 'usable' AND withdrawn = 0 AND reconstruction_only = 0
+                 AND series IN ('daily_bar', 'etf_shares', 'etf_nav')""",
+            (last_closed.isoformat(), utc_timestamp(clock), utc_timestamp(clock)),
+        ).fetchone()[0]
+    return {"latest_trade_date": latest, "last_closed_trade_date": last_closed.isoformat()}
 
-    trade_dates = [
-        m["trade_date"] for m in [benchmark_metrics, etf_metrics, *symbol_metrics.values()]
-        if m["trade_date"]
-    ]
-    latest_trade_date = max(trade_dates) if trade_dates else None
 
-    # Account summary
+def _account_summary(account_snap, book_id, cutoff, watch_map, symbol_metrics):
     holdings_by_symbol = {}
-    cost_by_symbol = {}
     lots_view = []
     receivables_view = []
     holdings_value = 0.0
@@ -204,7 +207,6 @@ def build_overview(data_dir, *, book_id="real", as_of=None):
             cost_val = float(lot.cost) if lot.cost is not None else None
             if cost_val is not None:
                 total_cost += cost_val
-                cost_by_symbol[lot.symbol] = cost_by_symbol.get(lot.symbol, 0.0) + cost_val
             else:
                 has_full_cost = False
             lots_view.append({
@@ -260,13 +262,17 @@ def build_overview(data_dir, *, book_id="real", as_of=None):
             "receivables": receivables_view,
         }
     else:
-        total_nav = 0.0
         account_summary = {
             "initialized": False, "book_id": book_id, "cash": None, "available_cash": None,
             "holdings_value": 0.0, "receivables_value": 0.0, "total_nav": None, "position_ratio": None,
             "unrealized_pnl": None, "unrealized_pnl_pct": None, "risk_budget": None, "lots": [], "receivables": [],
         }
 
+    return account_summary, holdings_by_symbol
+
+
+def _watchlist_rows(data_dir, *, book_id, cutoff_iso, watch_map, ordered_symbols, symbol_metrics,
+                    position_data, benchmark_metrics, industry_metrics):
     dossiers = ResearchDossiers(data_dir)
     plans = PlanLedger(data_dir)
     registry = StrategyRegistry(data_dir)
@@ -278,9 +284,7 @@ def build_overview(data_dir, *, book_id="real", as_of=None):
     watchlist_rows = []
     for symbol in ordered_symbols:
         m = symbol_metrics[symbol]
-        shares = holdings_by_symbol.get(symbol, 0)
-        mv = (m["close"] * shares) if (m["close"] is not None and shares) else 0.0
-        pos_ratio = (mv / total_nav) if total_nav > 0 else 0.0
+        shares, pos_ratio = position_data[symbol]
         dossier = dossiers.active(symbol, cutoff_iso)
         effective = dossier or dossiers.effective_version(symbol, cutoff_iso)
         if dossier:
@@ -345,6 +349,80 @@ def build_overview(data_dir, *, book_id="real", as_of=None):
             "probability": None,
         })
 
+    return watchlist_rows
+
+
+def _position_data(symbols, account_summary, holdings, metrics, *, unavailable=None):
+    total_nav = account_summary["total_nav"] or 0
+    result = {}
+    for symbol in symbols:
+        shares = holdings.get(symbol, 0)
+        close = metrics[symbol]["close"]
+        ratio = shares * close / total_nav if close is not None and total_nav else unavailable
+        result[symbol] = (shares, ratio)
+    return result
+
+
+def build_market_watchlist(data_dir, *, book_id="real", trade_date=None, as_of=None):
+    now = instant()
+    cutoff = instant(as_of) if as_of else now
+    cutoff_iso = utc_timestamp(cutoff)
+    end = cutoff.date().isoformat()
+    account = _read_account(data_dir, book_id, cutoff)
+    watch_map, symbols = _pool_members(data_dir, account)
+    with database(data_dir) as db:
+        ensure_schema(db, MARKET_SCHEMA)
+        if trade_date:
+            day = date.fromisoformat(trade_date)
+            last_closed, _ = latest_session(db, cutoff.date() - timedelta(days=cutoff.time() < time(15)))
+            if day > last_closed or not is_session(day, extended_sessions(db)):
+                raise ValueError("请选择已收盘的交易日")
+        market_symbols = tuple(dict.fromkeys([BENCHMARK_SYMBOL, INDUSTRY_SYMBOL, *symbols]))
+        current = _market_metrics(db, market_symbols, end=end, cutoff=cutoff_iso)
+        metrics = (
+            _market_metrics(db, market_symbols, end=trade_date, cutoff=cutoff_iso)
+            if trade_date and trade_date != end else current
+        )
+
+    account_summary, holdings = _account_summary(account, book_id, cutoff, watch_map, current)
+    positions = _position_data(symbols, account_summary, holdings, current)
+    return {
+        "trade_date": trade_date or max(
+            (m["trade_date"] for m in metrics.values() if m["trade_date"]), default=None,
+        ),
+        "watchlist_as_of": utc_timestamp(now),
+        "account_as_of": account.effective_at if account else None,
+        "book_id": book_id,
+        "rows": _watchlist_rows(
+            data_dir, book_id=book_id, cutoff_iso=cutoff_iso, watch_map=watch_map, ordered_symbols=symbols,
+            symbol_metrics=metrics, position_data=positions, benchmark_metrics=metrics[BENCHMARK_SYMBOL],
+            industry_metrics=metrics[INDUSTRY_SYMBOL],
+        ),
+    }
+
+
+def build_overview(data_dir, *, book_id="real", as_of=None, include_watchlist=True):
+    cutoff = instant(as_of)
+    cutoff_iso = utc_timestamp(cutoff)
+    account = _read_account(data_dir, book_id, cutoff)
+    watch_map, ordered_symbols = _pool_members(data_dir, account)
+    with database(data_dir) as db:
+        ensure_schema(db, MARKET_SCHEMA)
+        metrics = _market_metrics(
+            db, tuple(dict.fromkeys([BENCHMARK_SYMBOL, INDUSTRY_PROXY, INDUSTRY_SYMBOL, *ordered_symbols])),
+            end=cutoff.date().isoformat(), cutoff=cutoff_iso,
+        )
+    latest_trade_date = max((m["trade_date"] for m in metrics.values() if m["trade_date"]), default=None)
+    account_summary, holdings = _account_summary(account, book_id, cutoff, watch_map, metrics)
+    watchlist_rows = []
+    if include_watchlist:
+        positions = _position_data(ordered_symbols, account_summary, holdings, metrics, unavailable=0.0)
+        watchlist_rows = _watchlist_rows(
+            data_dir, book_id=book_id, cutoff_iso=cutoff_iso, watch_map=watch_map, ordered_symbols=ordered_symbols,
+            symbol_metrics=metrics, position_data=positions,
+            benchmark_metrics=metrics[BENCHMARK_SYMBOL], industry_metrics=metrics[INDUSTRY_SYMBOL],
+        )
+
     # Review todos (concise actionable reminders)
     decisions = DecisionLedger(data_dir)
     recent_reviews = decisions.registrations(book_id=book_id, as_of=cutoff_iso)
@@ -385,9 +463,9 @@ def build_overview(data_dir, *, book_id="real", as_of=None):
         "trade_date": latest_trade_date,
         "as_of": cutoff_iso,
         "market_env": {
-            "benchmark": {"symbol": BENCHMARK_SYMBOL, "name": "沪深 300", **benchmark_metrics},
-            "sector_etf": {"symbol": INDUSTRY_PROXY, "name": "有色金属 ETF", **etf_metrics},
-            "industry": {"symbol": INDUSTRY_SYMBOL, "name": "申万工业金属", **industry_metrics},
+            "benchmark": {"symbol": BENCHMARK_SYMBOL, "name": "沪深 300", **metrics[BENCHMARK_SYMBOL]},
+            "sector_etf": {"symbol": INDUSTRY_PROXY, "name": "有色金属 ETF", **metrics[INDUSTRY_PROXY]},
+            "industry": {"symbol": INDUSTRY_SYMBOL, "name": "申万工业金属", **metrics[INDUSTRY_SYMBOL]},
             "sentiment": None,
             "broad_etf_flow": None,
         },
