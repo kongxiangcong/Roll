@@ -188,7 +188,8 @@ def sync_etf_market(data_dir, *, symbols, start, end, refresh=False, on_progress
     symbols = tuple(dict.fromkeys(map(etf_symbol, symbols)))
     if not days or not symbols:
         raise ValueError('ETF 同步须指定基金和含交易日的区间')
-    share_days = (previous_etf_session(days[0]), *days)
+    previous = previous_etf_session(days[0])
+    share_days = [previous, *days] if previous else days
     missing = {}
     for series, expected_days in (('etf_shares', share_days), ('etf_nav', days)):
         missing[series] = {}

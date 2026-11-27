@@ -1,0 +1,58 @@
+.etf-history { min-width: 0; }
+.etf-history-heading { gap: 4px; }
+.etf-history-windows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 174px), 1fr));
+  gap: 8px;
+}
+.etf-history-window {
+  display: grid; align-content: start; gap: 3px;
+  min-width: 0; padding: 10px 12px;
+  background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  text-align: start; cursor: pointer;
+}
+.etf-history-window:hover { border-color: var(--primary); }
+.etf-history-window[aria-pressed="true"] {
+  border-color: var(--primary); background: var(--primary-soft);
+}
+.etf-history-window-value { font-size: 19px; line-height: 1.25; }
+.etf-history-date-controls { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.etf-history-date-controls select {
+  height: 30px; padding: 0 8px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  background: var(--surface); font-variant-numeric: tabular-nums;
+}
+.etf-history-date-facts { display: flex; flex-wrap: wrap; gap: 2px 12px; }
+.etf-history-plots {
+  --etf-history-axis-width: 56px;
+  display: grid; gap: 8px; min-width: 0; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+}
+.etf-history-plot h3 {
+  margin: 0 0 2px var(--etf-history-axis-width); font-size: 12px; font-weight: 600;
+}
+.etf-history-plot-body {
+  display: grid; grid-template-columns: var(--etf-history-axis-width) minmax(0, 1fr);
+}
+.etf-history-plot-axis {
+  display: flex; flex-direction: column; justify-content: space-between; align-items: end;
+  padding: 0 6px 0 0; color: var(--ink-secondary); font-size: 10px; font-variant-numeric: tabular-nums;
+}
+.etf-history-plot-canvas { position: relative; min-width: 0; }
+.etf-history-plot-canvas canvas { display: block; width: 100%; height: 88px; cursor: crosshair; }
+.etf-history-plot:first-child canvas { height: 136px; }
+.etf-history-plot-empty {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: max-content; max-width: 95%; padding: 2px 6px; pointer-events: none;
+  background: var(--surface); color: var(--ink-secondary); font-size: 11px; text-align: center;
+}
+.etf-history-plot-range { display: flex; justify-content: space-between; gap: 8px; padding-left: var(--etf-history-axis-width); }
+.etf-history-day-table { min-width: 0; }
+.etf-history-day-table summary { width: fit-content; cursor: pointer; }
+.etf-history-day-table .market-table { max-height: 380px; margin-top: 8px; overflow: auto; }
+.etf-history-day-table .clean :is(th, td) { white-space: nowrap; }
+
+@media (max-width: 540px) {
+  .etf-history-windows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .etf-history-plots { --etf-history-axis-width: 44px; padding: 8px 6px 8px 2px; }
+  .etf-history-date-facts { flex: 0 0 100%; }
+}

@@ -3,7 +3,7 @@
 from datetime import date, timedelta
 from decimal import Decimal, localcontext
 
-from roll.market.calendar import is_session
+from roll.market.calendar import SSE_HISTORICAL_HOLIDAYS, is_session
 from roll.v3.etf_observations import ETF_SERIES, etf_symbol
 from roll.v3.market import LIVE_RUN, freeze_snapshot, read_snapshot
 from roll.v3.storage import database, instant, sessions
@@ -14,9 +14,12 @@ def previous_etf_session(trade_date):
     if not is_session(day):
         raise ValueError(f'{day} 不是交易日')
     day -= timedelta(days=1)
-    while not is_session(day):
+    first_year = min(SSE_HISTORICAL_HOLIDAYS)
+    while day.year >= first_year:
+        if is_session(day):
+            return str(day)
         day -= timedelta(days=1)
-    return str(day)
+    return None
 
 
 def _etf_sessions(start, end):
@@ -29,7 +32,7 @@ def _etf_sessions(start, end):
 def etf_snapshot_scope(symbols, start, end):
     """Scope ETF estimates including the prior session's shares."""
     days = _etf_sessions(start, end)
-    lookback = previous_etf_session(days[0])
+    lookback = previous_etf_session(days[0]) or days[0]
     return [
         {'series': series, 'symbol': etf_symbol(symbol),
          'start': lookback if series == 'etf_shares' else days[0], 'end': days[-1]}
@@ -110,7 +113,7 @@ def read_etf_days(data_dir, snapshot_id, *, symbol, start, end, cutoff=None, db=
     records = {}
     with database(data_dir, db=db) as connection:
         for series in ETF_SERIES:
-            report = read_snapshot(data_dir, snapshot_id, series=series, symbol=symbol, start=previous,
+            report = read_snapshot(data_dir, snapshot_id, series=series, symbol=symbol, start=previous or days[0],
                                    end=days[-1], cutoff=cutoff, include_candidates=True, db=connection)
             records[series] = {item['trade_date']: item for item in report['items']}
     return [_etf_day(records, symbol, day, prior)

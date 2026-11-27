@@ -4,22 +4,49 @@ from collections import defaultdict
 from datetime import date, time, timedelta
 from decimal import Decimal, ROUND_HALF_UP, localcontext
 
-from roll.market.calendar import is_session, latest_session
+from roll.market.calendar import SSE_HISTORICAL_HOLIDAYS, is_session, latest_session
 from roll.v3.etf import etf_snapshot_scope, previous_etf_session, read_etf_days
 from roll.v3.etf_basket_versions import FIXED_BASKET_VERSION, get_fixed_basket, resolve_comparison_basket
 from roll.v3.etf_disclosures import etf_disclosure_day_cutoff, etf_disclosure_scope, read_etf_disclosures
 from roll.v3.etf_observations import etf_visible_at
 from roll.v3.market import LIVE_RUN, RECONSTRUCTED_RESEARCH, _SCHEMA as MARKET_SCHEMA, prepare_snapshot, utc_timestamp
+from roll.v3.overview import BENCHMARK_SYMBOL
 from roll.v3.storage import database, ensure_schema, instant, sessions
 
 
 ETF_CALCULATION_VERSION = 'adjacent-session-shares-unit-nav-v1'
+ETF_HISTORY_WINDOWS = (('1', 1), ('5', 5), ('21', 21), ('120', 120), ('242', 242), ('ytd', None))
 _DAILY_FIELDS = {'shares': 'etf_shares', 'nav': 'etf_nav'}
 
 
 def member_applies(member, day):
     return (member['listing_date'] <= day and member['effective_from'] <= day
             and (member['effective_to'] is None or day < member['effective_to']))
+
+
+def etf_history_calendar(trade_date):
+    day = date.fromisoformat(trade_date)
+    first_year = max(min(SSE_HISTORICAL_HOLIDAYS), day.year - 2)
+    calendar = list(sessions(f'{first_year}-01-01', trade_date))
+    if not calendar or calendar[-1] != trade_date:
+        raise ValueError('请选择已收盘的交易日')
+    return {
+        key: calendar[-count:] if count else [day for day in calendar if day[:4] == trade_date[:4]]
+        for key, count in ETF_HISTORY_WINDOWS
+    }
+
+
+def etf_history_scope(members, trade_date, *, earliest_input_date=None):
+    """Capture the ETF, index and disclosure inputs needed by all report windows."""
+    calendar = etf_history_calendar(trade_date)
+    first = min(days[0] for days in calendar.values())
+    symbols = [member['symbol'] for member in members]
+    indexes = {BENCHMARK_SYMBOL, *(member['index_symbol'] for member in members if member['index_symbol'])}
+    return (
+        etf_snapshot_scope(symbols, min(first, earliest_input_date or first), trade_date)
+        + etf_disclosure_scope(symbols, trade_date)
+        + [{'series': 'daily_bar', 'symbol': index, 'start': first, 'end': trade_date} for index in sorted(indexes)]
+    )
 
 
 def _decimal_text(amount):
@@ -208,7 +235,7 @@ def prepare_etf_report(data_dir, *, db, trade_date=None, basket_version=None, as
     candidates = _candidate_dates(db, members, selected, cutoff, snapshot)
     day = selected if trade_date else next(iter(candidates), selected)
     start = min(day, *candidates) if candidates else day
-    scope = etf_snapshot_scope(symbols, start, day) + etf_disclosure_scope(symbols, day)
+    scope = etf_history_scope(members, day, earliest_input_date=start)
     if disclosure_cutoff is not None:
         disclosure_cutoff = utc_timestamp(disclosure_cutoff)
         if disclosure_cutoff > cutoff:

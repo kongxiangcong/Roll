@@ -14,6 +14,7 @@ from roll.v3.development_experiment import PRESET_ID, development_preset
 from roll.v3.development_interpretation import is_development
 from roll.v3.development_replay import prepare_development, read_development_receipt
 from roll.v3.etf_basket import FIXED_BASKET_VERSION, build_etf_daily_report
+from roll.v3.etf_history import build_etf_history_report
 from roll.v3.etf_replay import freeze_etf_report, replay_etf_report
 from roll.v3.etf_sync import EtfSyncRunner
 from roll.v3.experiment import list_experiments, read_experiment
@@ -267,8 +268,20 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
         return freeze_etf_report(data_dir, **payload.model_dump(mode='json'))
 
     @app.get("/api/market/etf/reports/{report_id}")
-    def replay_etf_daily_report(report_id: str):
-        return replay_etf_report(data_dir, report_id)
+    def replay_etf_daily_report(report_id: str, trade_date: date | None = None):
+        return replay_etf_report(data_dir, report_id, trade_date=trade_date.isoformat() if trade_date else None)
+
+    @app.get("/api/market/etf/history")
+    def get_etf_history(trade_date: date | None = None, basket_version: str | None = None,
+                        index_code: str | None = None, symbol: str | None = None,
+                        as_of: str | None = None, max_seq: int | None = None, membership: str = "fixed",
+                        use_mode: str = LIVE_RUN, captured_at: str | None = None,
+                        disclosure_cutoff: str | None = None, report_id: str | None = None):
+        return build_etf_history_report(
+            data_dir, trade_date=trade_date.isoformat() if trade_date else None, basket_version=basket_version,
+            index_code=index_code, symbol=symbol, as_of=as_of, max_seq=max_seq, membership=membership,
+            use_mode=use_mode, captured_at=captured_at, disclosure_cutoff=disclosure_cutoff, report_id=report_id,
+        )
 
     @app.get("/api/market/etf/sync/status")
     def etf_sync_status():

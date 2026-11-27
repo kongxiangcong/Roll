@@ -1,4 +1,5 @@
 import { el, marketMasterDetail, marketTable } from "./market-view.js";
+import { createEtfHistory } from "./etf-history-view.js";
 import { etfReplayQuery, readFrozenEtfReport, renderEtfReplay } from "./etf-replay.js";
 
 const number = value => value == null ? "—" : value;
@@ -263,6 +264,7 @@ function renderInputEvidence(label, day, field) {
 export function renderEtfFundDetail(fund, disclosure) {
   if (!fund) return el("div", { class: "empty-state" }, "选择一只基金核对份额、净值和来源。");
   const { inputs } = fund;
+  const previousDate = fund.previous_trade_date || "暂无可核实前交易日";
   return el("div", { class: "stack" },
     el("div", { class: "etf-report-header" },
       el("div", {},
@@ -272,7 +274,7 @@ export function renderEtfFundDetail(fund, disclosure) {
       evidenceLink(fund.fund_tracking_source_ref, "跟踪依据"),
     ),
     el("dl", { class: "etf-fund-values" },
-      el("dt", {}, `前交易日份额（份） · ${fund.previous_trade_date}`), el("dd", { class: "num" }, number(fund.previous_shares)),
+      el("dt", {}, `前交易日份额（份） · ${previousDate}`), el("dd", { class: "num" }, number(fund.previous_shares)),
       el("dt", {}, `当日份额（份） · ${fund.trade_date}`), el("dd", { class: "num" }, number(fund.shares)),
       el("dt", {}, "当日单位净值（元/份）"), el("dd", { class: "num" }, number(fund.nav)),
       fund.split_ratio != null ? [
@@ -284,7 +286,7 @@ export function renderEtfFundDetail(fund, disclosure) {
     el("p", { class: "card-sub" }, fundStatus(fund)),
     fund.applicable ? el("details", { class: "etf-evidence" },
       el("summary", {}, "核对输入来源"),
-      renderInputEvidence(FIELD_NAMES.previous_shares, fund.previous_trade_date, inputs.previous_shares),
+      renderInputEvidence(FIELD_NAMES.previous_shares, previousDate, inputs.previous_shares),
       renderInputEvidence(FIELD_NAMES.shares, fund.trade_date, inputs.shares),
       renderInputEvidence(FIELD_NAMES.nav, fund.trade_date, inputs.nav),
       inputs.split.candidates.length || fund.missing.split
@@ -294,9 +296,9 @@ export function renderEtfFundDetail(fund, disclosure) {
   );
 }
 
-export function renderEtfDailyReport(report, { themeState }) {
+export function renderEtfDailyReport(report, { themeState, onHistoryScope }) {
   const groupCard = el("section", { class: "card stack", "aria-label": "跟踪指数" });
-  const fundCard = el("section", { class: "card stack", "aria-label": "基金贡献" });
+  const fundCard = el("section", { class: "card stack", "aria-label": "基金贡献", tabindex: -1 });
   const detail = el("section", { class: "card stack", "aria-label": "基金详情", tabindex: -1 });
 
   function draw(preserveFundScroll = false) {
@@ -357,15 +359,34 @@ export function renderEtfDailyReport(report, { themeState }) {
     );
     fundCard.querySelector(".market-table").scrollTop = previousScroll || 0;
     const disclosure = report.disclosures?.funds[selectedFund?.symbol];
-    detail.replaceChildren(el("h2", { class: "card-title" }, "基金详情"), renderEtfFundDetail(selectedFund, disclosure));
+    detail.replaceChildren(
+      el("div", { class: "etf-report-header" }, el("h2", { class: "card-title" }, "基金详情"),
+        selectedFund ? el("button", { class: "btn btn-sm", type: "button", onclick: () => {
+          const fundButtonIndex = funds.indexOf(selectedFund);
+          themeState.selectedSymbol = null;
+          draw(true);
+          fundCard.querySelectorAll(".market-row-label")[fundButtonIndex]?.focus();
+        } }, "返回基金贡献") : null),
+      renderEtfFundDetail(selectedFund, disclosure),
+    );
+    onHistoryScope?.(selectedGroup?.index_code, selectedFund?.symbol);
   }
 
   draw();
+  if (themeState.historyShowDaily) {
+    themeState.historyShowDaily = false;
+    requestAnimationFrame(() => {
+      const target = detail.querySelector(".etf-report-header button") ? detail : fundCard;
+      if (!target.isConnected) return;
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: "nearest" });
+    });
+  }
   return marketMasterDetail(groupCard, el("div", { class: "stack etf-funds" }, fundCard, detail));
 }
 
 export function readEtfReport(api, tradeDate, themeState) {
-  if (themeState.reportId) return readFrozenEtfReport(api, themeState.reportId);
+  if (themeState.reportId) return readFrozenEtfReport(api, themeState.reportId, tradeDate);
   return api("/api/market/etf", { params: {
     trade_date: tradeDate, basket_version: themeState.basketVersion, ...etfReplayQuery(themeState),
   } });
@@ -381,7 +402,9 @@ export function renderEtfBasketReports(report, context, status) {
     const membership = themeState.membership === "disclosed" && comparisons ? "disclosed" : "fixed";
     const selected = membership === "disclosed" ? { ...report, ...comparisons.disclosed } : report;
     for (const [key, button] of controls) button.setAttribute("aria-pressed", String(key === membership));
-    display.replaceChildren(renderEtfSummary(selected, context), renderEtfDailyReport(selected, context));
+    const history = createEtfHistory(selected, context, membership);
+    display.replaceChildren(renderEtfSummary(selected, context),
+      renderEtfDailyReport(selected, { ...context, onHistoryScope: history.setScope }), history.node);
   }
 
   const selector = comparisons ? el("section", { class: "card stack", "aria-label": "篮子口径" },

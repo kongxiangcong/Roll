@@ -15,8 +15,8 @@ export function etfReplayQuery(themeState) {
   return { as_of: themeState.asOf, use_mode: themeState.useMode };
 }
 
-export function readFrozenEtfReport(api, reportId) {
-  return api(reportPath(reportId));
+export function readFrozenEtfReport(api, reportId, tradeDate) {
+  return api(reportPath(reportId), { params: { trade_date: tradeDate } });
 }
 
 export function renderEtfReplay({ api, themeState, refresh, selectTradeDate }, report, error) {
