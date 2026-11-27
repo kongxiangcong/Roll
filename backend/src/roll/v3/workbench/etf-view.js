@@ -109,7 +109,7 @@ function renderEtfSync(report, { api, refresh }, initial) {
     const labels = {
       running: "后台同步中", done: "同步完成", partial: "部分同步完成", error: "同步失败", idle: "尚未同步 ETF",
     };
-    statusArea.replaceChildren(
+    statusArea.replaceChildren(...[
       el("div", { class: "etf-report-meta" },
         el("strong", {}, labels[status.status] || "同步状态不可用"),
         status.trade_date ? el("span", {}, status.trade_date) : null,
@@ -127,7 +127,7 @@ function renderEtfSync(report, { api, refresh }, initial) {
           `${row.trade_date} · ${row.symbol} · ${SOURCES[row.source] || row.source} ${FIELD_NAMES[row.series]} · ${STATUS_NAMES[row.error] || row.error}`,
         ))),
       ) : null,
-    );
+    ].filter(Boolean));
   }
 
   async function start() {
