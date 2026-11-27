@@ -44,3 +44,9 @@ Microsoft Qlib v0.9.7 的记录模板将信号分析和组合回测分析分开�
 | 停止或继续 | 核对改善是否集中于一个窗口。 | 若无实际动作差异，或差异均可由缺数、成本或一次行情解释，归档为描述性结果。若多个不重叠持仓段均有实际差异、且值得区分平均风险暴露与择时，再冻结下一项对照；改善能否推广仍需新的独立数据。 |
 
 **评审纠偏**：已有材料报告分组日均收益，尚未观察到 E1 降低回撤。缺少字段级引用说明人工判断的依据可能偏弱，不能据此推断实验报告能绕过策略准入。本轮交付方法方案，E0/E1 和新增对照仍待运行。[分组原始回执](../../../.scratch/roll-v3-trading-pipeline/evidence/development-robustness.json) · [阶段 3 规划](../../design/roll-v3-research-pipeline/03-development-experiment.md)
+
+## 阶段 03 实跑闭环记录（2026-11-27）
+
+- **验证状态**：已运行并通过验收（分支 `feat/roll-research-e0-e1@8336dd0`，本地复跑 `test_v3_development_*.py` 共 **40 项测试全部通过**）。
+- **实测结论**：在冻结快照 `a67c1c43...` 上完成 E0、E1 及双基准重放、恒真自检与 `codex-cli 0.172.0` 单次受限解读。E1 相对 E0 全窗净值差为 `+2586.24` 元，分布在两个互不重叠且方向相反的持仓并集区段（`segment:2021-08-03:2021-10-22` 与 `segment:2023-07-25:2023-10-18`），已按 `multiple_segments / continue` 归档并预登记下一轮 50% 仓位上限对照口径；`research publish` 拒绝将该实验报告发布为个股档案，`roll plan --preview` 与原 M0a 报告离线复算逐项不变。[联验记录](../../../.scratch/roll-research-e0-e1/issues/05-archive-live-experiment.md)
+- **后续工作台归属**：底层复用 `research_task`（`kind="development_experiment"`），工作台界面将开发实验归位到「研究与策略实验室 · 策略对照实验」，不再混入个股研究视图。详见 [工作台视图与五模块映射白板](../workbench-design/winson-whiteboard.md)。

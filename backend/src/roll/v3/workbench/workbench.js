@@ -1,701 +1,933 @@
-const main = document.querySelector("main");
-const context = document.querySelector("#context");
-const symbolNames = {
-  "600362.SH": "江西铜业",
-  "000300.SH": "沪深 300",
-  "801055.SI": "申万工业金属",
-  "512400.SH": "有色金属 ETF",
+/* Roll v3 Spatial Workbench — Zero evidence, zero audit, layout-driven UI */
+const app = document.querySelector("#app");
+const tradeDatePill = document.querySelector("#trade-date-pill");
+const bookSelect = document.querySelector("#book-select");
+const syncBtn = document.querySelector("#sync-btn");
+const drawerBackdrop = document.querySelector("#drawer-backdrop");
+const drawerBody = document.querySelector("#drawer-body");
+const drawerClose = document.querySelector("#drawer-close");
+const toastEl = document.querySelector("#toast");
+
+const state = {
+  view: "overview",
+  symbol: "600362.SH",
+  bookId: "real",
+  labTab: "research",
+  selectedTaskId: null,
+  selectedDevTaskId: null,
+  overview: null,
+  pollTimer: null,
+  syncTimer: null,
 };
-const labels = {
-  WATCH: "观察", HOLD: "持有", BUY: "买入", SELL: "卖出", RISK_EXIT_PENDING: "退出待执行",
-  FILLED: "已成交", UNFILLED: "未成交", PARTIAL: "部分成交", PENDING: "待核对",
-  OBSERVED: "已观察", UNREPORTED: "待录入", DEVIATION: "执行偏差", CONFIRMED: "已确认",
-  REJECTED: "已拒绝", NOT_EXECUTED: "未执行", HISTORICAL_RECONSTRUCTION: "历史重建",
-  pass: "通过", fail: "未通过", inconclusive: "证据不足", usable: "可用", unknown: "未知",
-  downtrend: "下行趋势", uptrend: "上行趋势", range: "区间震荡",
-  active: "有效", expired: "已过期", missing: "缺失", not_effective: "尚未生效",
-  intact: "有效", watch: "观察", broken: "已证伪", trading: "交易", suspended: "已暂停",
-  admitted: "已准入", accepted: "已通过历史验收", retired: "已退役", frozen: "已冻结",
-  live: "真实前向", rehearsal: "演练", reconstructed: "历史重建",
-  LIVE_RUN: "实际取得时间", STRICT_HISTORICAL_AS_OF: "严格历史时点", RECONSTRUCTED_RESEARCH: "重建研究",
-  research_hypothesis: "研究假设", data_quality: "数据质量",
-  execution_deviation: "执行偏差", user_deviation: "用户偏差",
-  strategy_applicability: "策略适用性", normal_variation: "正常波动",
+
+const LABELS = {
+  WATCH: "观察", HOLD: "持有", BUY: "买入", SELL: "卖出", RISK_EXIT_PENDING: "待退出",
+  uptrend: "多头", downtrend: "空头", range: "震荡", unknown: "—",
+  pass: "通过", fail: "未通过", active: "有效", expired: "已过期", missing: "未建档",
+  intact: "有效", watch: "观察", broken: "已证伪",
+  admitted: "已准入", accepted: "历史通过", frozen: "已冻结", none: "未配置",
+  pending: "排队中", running: "运行中", cancelling: "取消中",
+  draft_ready: "待发布", report_ready: "已出结果", blocked: "缺项阻塞",
+  cancelled: "已取消", interrupted: "已中断", failed: "失败", timed_out: "超时",
+  FILLED: "已成交", UNFILLED: "未成交", PARTIAL: "部分成交", PENDING: "待确认",
+  OBSERVED: "已观察", UNREPORTED: "待录入", DEVIATION: "执行偏差",
+  CONFIRMED: "已确认", REJECTED: "已拒绝", NOT_EXECUTED: "未执行",
+  actions_identical: "动作一致", single_segment: "集中于单段",
+  evidence_insufficient: "样本不足", multiple_segments: "多段存在差异",
+  stop: "停止扩展", continue: "继续研究",
 };
-const reasons = {
-  CLOSE_UNAVAILABLE: "缺少可用收盘价",
-  TRADING_STATUS_UNKNOWN: "交易状态未知",
-  CONFIRM_OPENING_STATUS_AND_PRICE_BANDS: "次日须核查开盘状态与涨跌停边界",
-  SUSPENDED_AT_CUTOFF: "裁决时证券停牌",
-  RISK_BUDGET_WITHIN_LIMITS: "账户符合风险预算",
-  RISK_BUDGET_MISSING: "风险预算缺失",
-  DOSSIER_MISSING: "缺少已发布研究档案",
-  DOSSIER_EXPIRED: "研究档案已过期",
-  FUNDAMENTAL_FAIL: "基本面门禁未通过",
-  FUNDAMENTAL_UNKNOWN: "基本面门禁未知",
-  THESIS_WATCH: "投资逻辑处于观察状态",
-  THESIS_BROKEN: "投资逻辑已证伪",
-  TRIGGER_UNKNOWN: "证伪条件缺少可观测值",
-  TRIGGER_FIRED: "已命中证伪条件",
-  PRICE_ONLY_SIMULATION: "影子采用独立量价口径",
-  STRATEGY_NOT_ADMITTED: "策略尚未准入",
-  STRATEGY_NOT_WHITELISTED: "策略不在研究白名单内",
-  NO_READY_SIGNAL: "缺少可用策略信号",
-  NO_FEASIBLE_STRATEGY: "没有符合约束的主动方案",
-  BUY_WITHIN_SHARED_LIMITS: "买入符合账户共享限额",
-};
-const priorities = ["交易可执行性", "账户风险", "投资逻辑与证据", "策略准入及适用性", "策略信号"];
-const timeFormat = new Intl.DateTimeFormat("zh-CN", {
-  timeZone: "Asia/Shanghai", dateStyle: "medium", timeStyle: "medium",
-});
-const fmtNumber = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 2 });
 
-function node(tag, attributes = {}, ...children) {
-  const element = document.createElement(tag);
-  for (const [name, value] of Object.entries(attributes)) element.setAttribute(name, value);
-  element.append(...children.filter(child => child !== null && child !== undefined));
-  return element;
-}
-
-function add(parent, ...children) {
-  parent.append(...children.filter(child => child !== null && child !== undefined));
-  return parent;
-}
-
-const panel = (title, ...children) => node("section", { class: "panel" },
-  title && node("h3", { class: "panel-title" }, title), ...children);
-const text = value => value == null || value === "" ? "—" : String(value);
-const label = value => labels[value] ?? text(value);
-const amount = value => value == null ? "未知" : `¥${fmtNumber.format(value)}`;
-const pct = value => value == null ? "—" : `${(Number(value) * 100).toFixed(2)}%`;
-const when = value => value ? `${timeFormat.format(new Date(value))}（北京时间）` : "—";
-const empty = message => node("p", { class: "empty" }, message);
-const note = message => node("p", { class: "note" }, message);
-const shorten = value => value.length > 30 ? `${value.slice(0, 22)}…` : value;
-const id = value => node("code", { class: "id" }, text(value));
-const action = value => node("span", { class: value === "SELL" ? "action alert" : "action" }, label(value));
-const route = (section, reference) => `#${section}/${encodeURIComponent(reference)}`;
-const link = (section, reference, title = reference) => node("a", { href: route(section, reference) }, title);
-
-function details(title, child) {
-  return node("details", {}, node("summary", {}, title), child);
-}
-
-function raw(title, content) {
-  const body = typeof content === "string" ? content : JSON.stringify(content, null, 2);
-  return details(title, node("pre", { class: "raw" }, text(body)));
-}
-
-function definition(pairs, className = "facts") {
-  return node("dl", { class: className }, ...pairs.map(([key, value]) => node("div", {},
-    node("dt", {}, key), node("dd", {}, value ?? "—"),
-  )));
-}
-
-function table(columns, rows) {
-  return node("div", { class: "table-scroll" }, node("table", {},
-    node("thead", {}, node("tr", {}, ...columns.map(name => node("th", { scope: "col" }, name)))),
-    node("tbody", {}, ...rows.map(row => node("tr", {}, ...row.map(value => node("td", {}, value ?? "—"))))),
-  ));
-}
-
-function reasonText(code) {
-  const key = code.split(":").find(part => reasons[part]);
-  return node("div", {}, reasons[key] && node("span", {}, reasons[key]), node("code", {}, code));
-}
-
-function input(title, name, options = {}) {
-  return node("label", {}, title, node("input", { name, autocomplete: "off", ...options }));
-}
-
-function area(title, name, options = {}) {
-  return node("label", {}, title, node("textarea", { name, ...options }));
-}
-
-function select(title, name, choices, selected) {
-  const menu = node("select", { name }, ...choices.map(([value, title]) =>
-    node("option", { value }, title)));
-  if (selected != null) menu.value = selected;
-  return node("label", {}, title, menu);
-}
-
-function reading(form) {
-  return Object.fromEntries([...new FormData(form)].map(([key, value]) => [key, value.trim() || null]));
-}
-
-function query(path, params = {}) {
-  const args = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (value != null && value !== "") args.set(key, value);
+const fmtNum = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 2 });
+const el = (tag, attrs = {}, ...children) => {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === "class") node.className = v;
+    else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
+    else node.setAttribute(k, v === true ? "" : String(v));
   }
-  return args.size ? `${path}?${args}` : path;
+  node.append(...children.flat().filter(c => c !== null && c !== undefined && c !== false));
+  return node;
+};
+
+const label = v => LABELS[v] ?? (v ?? "—");
+const money = v => v == null ? "—" : `¥${fmtNum.format(Number(v))}`;
+const price = v => v == null ? "—" : Number(v).toFixed(2);
+const pct = (v, signed = false) => {
+  if (v == null) return "—";
+  const n = Number(v) * 100;
+  return `${signed && n > 0 ? "+" : ""}${n.toFixed(2)}%`;
+};
+const deltaClass = v => v == null || Number(v) === 0 ? "muted" : Number(v) > 0 ? "up" : "down";
+const actionPillClass = a => a === "BUY" ? "pill pill-up" : a === "SELL" ? "pill pill-down" : a === "HOLD" ? "pill pill-primary" : "pill";
+const gatePillClass = g => g === "pass" ? "pill pill-down" : g === "fail" ? "pill pill-up" : "pill pill-warn";
+const thesisPillClass = t => t === "intact" ? "pill pill-down" : t === "broken" ? "pill pill-up" : "pill pill-warn";
+
+let toastTimer = null;
+function showToast(msg, isError = false) {
+  toastEl.textContent = msg;
+  toastEl.className = isError ? "toast error" : "toast";
+  toastEl.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toastEl.hidden = true; }, 3200);
 }
 
-async function api(path, params = {}, body) {
-  const options = body === undefined ? {} : {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  };
-  const response = await fetch(query(path, params), options);
-  const result = await response.json();
-  if (!response.ok) {
-    const detail = Array.isArray(result.detail) ? result.detail.map(item => item.msg).join("，") : result.detail;
-    throw new Error(detail || `请求失败（${response.status}）`);
-  }
-  return result;
-}
-
-function form(button, run, ...fields) {
-  const submit = node("button", {}, button);
-  const status = node("p", { class: "status", role: "status" });
-  const element = node("form", { class: "fields" }, ...fields, node("div", {}, submit), status);
-  element.addEventListener("submit", async event => {
-    event.preventDefault();
-    submit.disabled = true;
-    status.className = "status";
-    status.textContent = "处理中…";
-    try {
-      const message = await run(reading(element), element);
-      status.textContent = message ?? "";
-    } catch (error) {
-      status.className = "status error";
-      status.textContent = error.message;
-    } finally {
-      submit.disabled = false;
+async function api(path, { method = "GET", params, body } = {}) {
+  const url = new URL(path, location.origin);
+  if (params) {
+    for (const [k, v] of Object.entries(params)) {
+      if (v != null && v !== "") url.searchParams.set(k, v);
     }
-  });
-  return element;
+  }
+  const opts = { method };
+  if (body !== undefined) {
+    opts.headers = { "Content-Type": "application/json" };
+    opts.body = JSON.stringify(body);
+  }
+  const res = await fetch(url, opts);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const detail = Array.isArray(data.detail) ? data.detail.map(i => i.msg).join("，") : data.detail;
+    throw new Error(detail || `请求失败 (${res.status})`);
+  }
+  return data;
 }
 
-const names = {
-  plans: "盘后计划", research: "个股研究", experiments: "策略实验", account: "账户镜像", reviews: "复盘登记",
-};
-let scope = reading(context);
-let generation = 0;
-
-function afterClose() {
-  return { book_id: scope.book_id, as_of: scope.as_of, symbols: [scope.symbol] };
-}
-
-function lookup(title, name, section, placeholder = "") {
-  return form("读取", fields => {
-    location.hash = route(section, fields[name]);
-  }, input(title, name, { required: "", placeholder }));
-}
-
-function openReview(result) {
-  const hash = route("reviews", result.registration_id);
-  reviewClocks.set(result.registration_id, result.registered_at);
-  if (location.hash === hash) showPage();
+function go(view, symbol = state.symbol, labTab = state.labTab) {
+  state.view = view;
+  if (symbol) state.symbol = symbol;
+  if (labTab) state.labTab = labTab;
+  const hash = view === "overview" ? "#overview" : `#${view}/${encodeURIComponent(state.symbol)}`;
+  if (location.hash === hash) render();
   else location.hash = hash;
 }
 
-function registrationForm(strategies) {
-  return form("冻结并登记", async fields => {
-    const result = await api("/api/reviews", {}, {
-      ...afterClose(),
-      mode: fields.mode,
-      now: fields.now,
-      price_only: fields.price_only === null ? null : fields.price_only === "true",
-      strategy_versions: fields.version ? [fields.version] : [],
-    });
-    openReview(result);
-  }, select("登记用途", "mode", [["live", "真实前向"], ["rehearsal", "演练"], ["reconstructed", "历史重建"]]),
-  select("候选影子策略", "version", [["", "沿用上次登记"], ...strategies.filter(item => item.simulation_eligible)
-    .map(item => [item.strategy.version, item.strategy.version])]),
-  details("影子口径和演练时钟", node("div", { class: "fields" },
-    select("量价口径", "price_only", [["", "沿用上次登记"], ["true", "独立量价"], ["false", "应用研究约束"]]),
-    input("演练或重建时钟", "now", { placeholder: "ISO 8601 时间，含时区" }),
-  )));
+function parseHash() {
+  const raw = location.hash.slice(1) || "overview";
+  const [view, encodedSymbol] = raw.split("/");
+  if (["overview", "decision", "lab"].includes(view)) state.view = view;
+  else state.view = "overview";
+  if (encodedSymbol) state.symbol = decodeURIComponent(encodedSymbol).toUpperCase();
 }
 
-function planView(plan) {
-  const hero = node("section", { class: "panel hero" },
-    node("h3", { class: "panel-title" }, plan.simulated ? "影子计划" : plan.plan_id ? "生效交易计划" : "裁决预览"),
-    action(plan.action),
-    node("h2", {}, `${symbolNames[plan.symbol] ?? plan.symbol} · ${plan.session}`),
-    note(`裁决截止 ${when(plan.as_of)}`),
-    definition([["计划股数", plan.quantity], ["当前持仓", plan.current_quantity],
-      ["可卖股数", plan.sellable_quantity], ["资金预留", amount(plan.cash_reserved)]]),
-    definition([["市场状态", label(plan.market_state)], ["行业状态", label(plan.industry_state)],
-      ["个股状态", label(plan.stock_state)], ["研究逻辑", label(plan.research.thesis_status ?? plan.research.status)]]),
-  );
-  const decision = panel("P0–P4 裁决",
-    node("ol", { class: "reason-list" }, ...priorities.map((title, index) => {
-      const key = `P${index}`;
-      return node("li", {}, node("strong", {}, `${key} ${title}`),
-        node("div", {}, ...(plan.reasons[key] ?? []).map(reasonText)));
-    })),
-    plan.candidates.length ? details("候选策略与排除依据", table(["策略版本", "注册状态", "取舍依据"],
-      plan.candidates.map(candidate => [
-        candidate.evidence_ref ? link("experiments", candidate.evidence_ref, candidate.strategy_version) :
-          id(candidate.strategy_version),
-        `${label(candidate.registry_status)}${candidate.simulation_only ? " · 仅影子" : ""}`,
-        node("div", {}, ...candidate.selection_reasons.map(reasonText)),
-      ]))) : null,
-  );
-  const trace = panel("执行条件与版本",
-    definition([["所属账本", id(plan.book_id)], ["计划版本", id(plan.plan_id)],
-      ["市场快照", id(plan.snapshot_id)],
-      ["研究档案", plan.dossier_version ? link("research", plan.dossier_version) : "—"],
-      ["账户快照", link("account", plan.account_snapshot_id, shorten(plan.account_snapshot_id))],
-      ["风险预算", id(plan.budget_id)], ["策略版本", id(plan.strategy_version)],
-      ["有效至", when(plan.valid_until)]], "references"),
-    raw("冻结执行条件", {
-      执行时段: plan.execution_window, 执行条件: plan.execution_conditions,
-      撤销条件: plan.cancel_conditions, 退出条件: plan.exit_conditions,
-      未成交处理: plan.if_unfilled, 盘中预设动作: plan.intraday_actions,
-    }),
-    raw("完整计划记录", plan),
-  );
-  return node("div", { class: "stack" }, hero, decision, trace);
+function updateNav() {
+  for (const a of document.querySelectorAll(".seg-nav a")) {
+    if (a.dataset.view === state.view) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  }
 }
 
-async function plansPage(reference) {
-  const [strategies, plans] = await Promise.all([
-    api(`/api/strategies/${encodeURIComponent(scope.symbol)}`, { as_of: scope.as_of }),
-    reference ? api(`/api/plans/${encodeURIComponent(reference)}`).then(plan => [plan]) :
-      api("/api/plans", { book_id: scope.book_id }),
-  ]);
-  const matching = reference ? plans : plans.filter(item => item.symbol === scope.symbol);
-  const latest = matching.at(-1);
-  const result = node("div", { class: "stack" }, latest ? planView(latest) :
-    empty("这个证券和账户暂无已登记计划。可以先预览盘后裁决，再冻结并登记。"));
-  if (matching.length > 1) add(result, panel("近期计划", table(["执行日", "生效方案", "计划版本"],
-    matching.slice(-20).reverse().map(plan => [plan.session, action(plan.action),
-      link("plans", plan.plan_id, shorten(plan.plan_id))]))));
-  const controls = node("div", { class: "stack" }, panel("生成与登记",
-    note("使用上方裁决截止时点。候选策略在连续影子账户运行。"),
-    form("预览裁决", async () => {
-      const { plans } = await api("/api/plans/preview", {}, afterClose());
-      result.replaceChildren(...plans.map(planView));
-    }),
-    node("div", { class: "console" }, registrationForm(strategies))),
-  panel("离线重放", lookup("已发布的计划标识", "plan_id", "plans")));
-  return node("div", { class: "work-layout" }, result, controls);
+/* ---------- Account Detail Drawer ---------- */
+function openAccountDrawer(acct) {
+  drawerBody.replaceChildren(
+    el("div", { class: "kpi-grid-2" },
+      kpi("总资产", money(acct.total_nav)),
+      kpi("可用现金", money(acct.available_cash)),
+      kpi("持仓市值", money(acct.holdings_value)),
+      kpi("在途权益", money(acct.receivables_value)),
+    ),
+    acct.risk_budget ? el("div", { class: "stack" },
+      el("div", { class: "strip-label" }, "风险预算"),
+      el("div", { class: "kpi-grid-2" },
+        kpi("现金保留", money(acct.risk_budget.cash_reserve)),
+        kpi("总仓上限", pct(acct.risk_budget.max_total_exposure)),
+        kpi("单票上限", pct(acct.risk_budget.max_symbol_exposure)),
+        kpi("行业上限", pct(acct.risk_budget.max_industry_exposure)),
+      ),
+    ) : null,
+    el("div", { class: "stack" },
+      el("div", { class: "strip-label" }, "持仓批次"),
+      acct.lots.length ? el("div", { class: "table-wrap" }, el("table", { class: "clean" },
+        el("thead", {}, el("tr", {}, el("th", {}, "标的"), el("th", {}, "股数"), el("th", {}, "可卖"), el("th", {}, "市值"))),
+        el("tbody", {}, acct.lots.map(lot => el("tr", {},
+          el("td", {}, el("strong", {}, lot.name), el("div", { class: "watch-code" }, lot.symbol)),
+          el("td", {}, String(lot.quantity)),
+          el("td", {}, lot.sellable_quantity ?? "—"),
+          el("td", {}, money(lot.market_value)),
+        ))),
+      )) : el("div", { class: "empty-state" }, "暂无持仓"),
+    ),
+    acct.receivables.length ? el("div", { class: "stack" },
+      el("div", { class: "strip-label" }, "在途分红与送股"),
+      el("div", { class: "table-wrap" }, el("table", { class: "clean" },
+        el("thead", {}, el("tr", {}, el("th", {}, "标的"), el("th", {}, "金额"), el("th", {}, "股数"), el("th", {}, "结转日"))),
+        el("tbody", {}, acct.receivables.map(r => el("tr", {},
+          el("td", {}, r.name), el("td", {}, money(r.amount)), el("td", {}, r.quantity || "—"), el("td", {}, r.due_date || "—"),
+        ))),
+      )),
+    ) : null,
+  );
+  drawerBackdrop.hidden = false;
 }
 
-function sourceLink(url, title) {
-  if (typeof url !== "string") return title;
+drawerClose.addEventListener("click", () => { drawerBackdrop.hidden = true; });
+drawerBackdrop.addEventListener("click", e => { if (e.target === drawerBackdrop) drawerBackdrop.hidden = true; });
+
+function kpi(title, value, sub, subClass = "") {
+  return el("div", { class: "kpi" },
+    el("span", { class: "kpi-label" }, title),
+    el("span", { class: `kpi-value ${subClass}` }, value ?? "—"),
+    sub ? el("span", { class: `kpi-sub ${subClass}` }, sub) : null,
+  );
+}
+
+/* ---------- Daily Sync ---------- */
+async function pollSyncStatus() {
+  clearTimeout(state.syncTimer);
   try {
-    const parsed = new URL(url);
-    if (parsed.protocol === "https:" || parsed.protocol === "http:") {
-      return node("a", { href: parsed.href, target: "_blank", rel: "noreferrer noopener" }, title);
+    const st = await api("/api/market/sync/status");
+    if (st.status === "running") {
+      syncBtn.disabled = true;
+      syncBtn.textContent = "同步中…";
+      state.syncTimer = setTimeout(pollSyncStatus, 800);
+    } else {
+      syncBtn.disabled = false;
+      syncBtn.textContent = "同步数据";
+      if (st.status === "done") {
+        showToast(st.error ? `同步完成（${st.error}）` : `已同步最新行情（新增 ${st.appended} 条）`);
+        if (state.view === "overview") render();
+      } else if (st.status === "error") {
+        showToast(st.error || "行情同步失败", true);
+      }
     }
   } catch {
-    return title;
+    syncBtn.disabled = false;
+    syncBtn.textContent = "同步数据";
   }
-  return title;
 }
 
-function evidenceList(evidence) {
-  if (!evidence.length) return empty("当前时点暂无已发布的公开证据。");
-  return node("ul", { class: "evidence-list" }, ...evidence.map(item => node("li", {},
-    sourceLink(item.url, item.title || item.id),
-    node("div", { class: "subtle" }, [item.source, item.locator].filter(Boolean).join(" · ")),
-  )));
-}
-
-function dossierView(dossier, evidence) {
-  if (!dossier) return panel("研究档案", empty("所选时点暂无有效研究档案。"), evidenceList(evidence));
-  return panel("研究档案",
-    definition([["版本", id(dossier.version)], ["基本面门禁", label(dossier.fundamental_gate)],
-      ["投资逻辑", label(dossier.thesis_status)]]),
-    definition([["审核人", dossier.reviewer], ["生效时间", when(dossier.effective_at)],
-      ["有效期至", when(dossier.valid_until)]], "references"),
-    dossier.hypothesis ? node("p", {}, String(dossier.hypothesis)) : null,
-    dossier.invalidation_triggers.length ? details("证伪条件", table(["条件", "比较", "触发影响"],
-      dossier.invalidation_triggers.map(trigger => [
-        id(trigger.id ?? trigger.feature), [trigger.feature, trigger.operator, trigger.threshold].filter(item => item != null).join(" "),
-        trigger.effect,
-      ]))) : null,
-    details("公开证据", evidenceList(dossier.evidence)),
-    raw("档案 Markdown 原文", dossier.markdown),
-  );
-}
-
-function marketView(report, url) {
-  const target = report.securities[report.symbol];
-  const windows = Object.entries(target.windows).map(([days, window]) =>
-    [days, label(window.status), pct(window.return), pct(window.annualized_volatility),
-      pct(window.max_drawdown), pct(report.benchmark.windows[days]?.relative_return)]);
-  return [
-    definition([["研究窗口", `${report.start} — ${report.end}`], ["数据用途", label(report.snapshot.use_mode)],
-      ["有效收盘", `${target.coverage.effective_count} / ${target.coverage.expected_count}`]]),
-    table(["证券", "有效 / 预期交易日", "实际首末日", "停牌", "缺口"], Object.entries(report.securities).map(([code, item]) => {
-      const c = item.coverage;
-      return [symbolNames[code] ?? code, `${c.effective_count} / ${c.expected_count}`,
-        c.first_date ? `${c.first_date} — ${c.last_date}` : "—", c.suspended_dates.length, c.gap_dates.length];
-    })),
-    node("h3", {}, "多周期量价"),
-    table(["交易日", "样本状态", "区间收益", "年化波动", "最大回撤", "对宽基超额"], windows),
-    node("h3", {}, "行业依据"),
-    report.industry_memberships.length ? node("ul", { class: "evidence-list" },
-      ...report.industry_memberships.map(item => node("li", {},
-        sourceLink(item.source_ref, item.payload.index_name ?? item.payload.index_symbol),
-        node("div", { class: "subtle" }, `${item.payload.effective_start} — ${item.payload.effective_end} · ${item.payload.membership_basis}`),
-      ))) : empty("冻结区间内暂无可核验的行业归属证据。"),
-    report.industry_comparisons.length ? details("行业和 ETF 对照区间", table(["证券", "区间", "口径", "20 日相对收益"],
-      report.industry_comparisons.map(item => [item.symbol, `${item.start} — ${item.end}`,
-        item.kind === "etf_proxy" ? "ETF 对照" : "行业比较", pct(item.stock_relative_windows?.["20"]?.relative_return)]))) : null,
-    definition([["行情快照", id(report.snapshot_id)], ["公开导出引用", id(report.reference)]], "references"),
-    node("a", { class: "button secondary", href: url, download: "research-export.json" }, "下载完整公开数据"),
-  ].filter(Boolean);
-}
-
-function researchForms(basePath, result, activeVersion) {
-  const draftText = area("Markdown 草稿", "markdown", { required: "", rows: "8",
-    placeholder: "粘贴含 YAML 元数据的 Markdown" });
-  const version = input("草稿版本", "version", { placeholder: "默认读取 Markdown 中的 version" });
-  const publicationVersion = input("档案版本", "version", { value: activeVersion ?? "", required: "" });
-  return panel("编辑与发布",
-    form("导入草稿", async (fields, element) => {
-      const draft = await api(`${basePath}/drafts`, {}, {
-        version: fields.version, markdown: new FormData(element).get("markdown"),
-      });
-      publicationVersion.querySelector("input").value = draft.version;
-      return `已保存草稿 ${draft.version}`;
-    }, version, draftText),
-    node("div", { class: "console" }, form("确认发布", async fields => {
-      const dossier = await api(`${basePath}/dossiers`, {}, fields);
-      result.replaceChildren(dossierView(dossier, dossier.evidence));
-      return `已发布 ${dossier.version}`;
-    }, publicationVersion, input("审核人", "reviewer", { required: "" }),
-    input("指定生效时间（可选）", "effective_at", { placeholder: "ISO 8601 时间，含时区" }))),
-  );
-}
-
-async function researchHarnessPanel() {
-  const path = "/api/settings/research-harness";
+syncBtn.addEventListener("click", async () => {
+  syncBtn.disabled = true;
+  syncBtn.textContent = "同步中…";
   try {
-    const harness = await api(path);
-    const choices = [["", `跟随配置（${harness.default}）`],
-      ...harness.available.map(name => [name, name])];
-    if (harness.override && !harness.available.includes(harness.override)) {
-      choices.push([harness.override, `${harness.override}（配置已移除，请重新选择）`]);
+    await api("/api/market/sync", { method: "POST", body: {} });
+    pollSyncStatus();
+  } catch (err) {
+    syncBtn.disabled = false;
+    syncBtn.textContent = "同步数据";
+    showToast(err.message, true);
+  }
+});
+
+bookSelect.addEventListener("change", () => {
+  state.bookId = bookSelect.value;
+  render();
+});
+
+/* ---------- View 1: Overview Cockpit ---------- */
+async function renderOverview() {
+  const ov = await api("/api/overview", { params: { book_id: state.bookId } });
+  state.overview = ov;
+  tradeDatePill.textContent = ov.trade_date || "暂无行情";
+  if (ov.watchlist.length && !ov.watchlist.some(i => i.symbol === state.symbol)) {
+    state.symbol = ov.watchlist[0].symbol;
+  }
+
+  const env = ov.market_env;
+  const acct = ov.account_summary;
+  const bench = env.benchmark;
+  const etf = env.sector_etf;
+
+  // Top Row: Market & ETF Card + Account Summary Card
+  const marketCard = el("section", { class: "card" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "市场与 ETF"),
+      el("span", { class: bench.trend_state === "uptrend" ? "pill pill-up" : bench.trend_state === "downtrend" ? "pill pill-down" : "pill" },
+        `沪深 300 · ${label(bench.trend_state)}`),
+    ),
+    el("div", { class: "kpi-grid-2" },
+      kpi("沪深 300", price(bench.close), pct(bench.change_pct, true), deltaClass(bench.change_pct)),
+      kpi(etf.name, price(etf.close), `20日 ${pct(etf.return_20d, true)}`, deltaClass(etf.return_20d)),
+      kpi("大盘情绪", env.sentiment ?? "—"),
+      kpi("宽基 ETF 流向", env.broad_etf_flow ?? "—"),
+    ),
+  );
+
+  const posPct = acct.position_ratio != null ? Math.min(100, Math.max(0, acct.position_ratio * 100)) : 0;
+  const accountCard = el("section", { class: "card" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "个人账户"),
+      el("button", { type: "button", class: "btn btn-ghost btn-sm", onclick: () => openAccountDrawer(acct) }, "明细"),
+    ),
+    el("div", { class: "hero-row" },
+      el("div", { class: "hero-value" }, money(acct.total_nav)),
+      acct.unrealized_pnl != null
+        ? el("span", { class: `pill ${acct.unrealized_pnl >= 0 ? "pill-up" : "pill-down"}` },
+            `${acct.unrealized_pnl >= 0 ? "+" : ""}${money(acct.unrealized_pnl)} (${pct(acct.unrealized_pnl_pct, true)})`)
+        : el("span", { class: "pill" }, acct.initialized ? "已建账" : "未建账"),
+    ),
+    el("div", { class: "bar-track" }, el("div", { class: "bar-fill", style: `width:${posPct.toFixed(1)}%` })),
+    el("div", { class: "kpi-grid-3" },
+      kpi("总仓位", pct(acct.position_ratio)),
+      kpi("可用现金", money(acct.available_cash)),
+      kpi("仓位上限", acct.risk_budget ? pct(acct.risk_budget.max_total_exposure) : "—"),
+    ),
+  );
+
+  // Middle Row: Watchlist Master + Linked Stock Focus Snapshot
+  const addInput = el("input", { placeholder: "代码如 600150.SH", "aria-label": "新增自选股" });
+  const addForm = el("form", {
+    class: "inline-add",
+    onsubmit: async e => {
+      e.preventDefault();
+      const code = addInput.value.trim();
+      if (!code) return;
+      try {
+        await api("/api/watchlist", { method: "POST", body: { symbol: code } });
+        state.symbol = code.toUpperCase();
+        addInput.value = "";
+        showToast(`已加入 ${state.symbol}`);
+        render();
+      } catch (err) { showToast(err.message, true); }
+    },
+  }, addInput, el("button", { type: "submit", class: "btn btn-sm" }, "+"));
+
+  const focusContainer = el("section", { class: "card" });
+  const listContainer = el("div", { class: "watch-list" });
+
+  function paintMasterDetail() {
+    const selected = ov.watchlist.find(item => item.symbol === state.symbol) || ov.watchlist[0];
+    listContainer.replaceChildren(
+      ...ov.watchlist.map(item => el("div", {
+        class: `watch-row ${selected && item.symbol === selected.symbol ? "active" : ""}`,
+        onclick: () => { state.symbol = item.symbol; paintMasterDetail(); },
+      },
+        el("div", {},
+          el("div", { class: "watch-name" }, item.name),
+          el("div", { class: "watch-code" }, `${item.symbol}${item.holding_shares ? ` · 持仓 ${pct(item.position_ratio)}` : ""}`),
+        ),
+        el("div", { class: "watch-price" },
+          el("strong", {}, price(item.close)),
+          el("span", { class: deltaClass(item.change_pct) }, pct(item.change_pct, true)),
+        ),
+        el("span", { class: actionPillClass(item.latest_plan?.action) }, label(item.latest_plan?.action || "WATCH")),
+        el("div", { class: "watch-actions" },
+          el("button", {
+            type: "button", class: "btn btn-ghost btn-xs",
+            onclick: e => { e.stopPropagation(); go("lab", item.symbol, "research"); },
+          }, "研究"),
+          el("button", {
+            type: "button", class: "btn btn-ghost btn-xs",
+            onclick: e => { e.stopPropagation(); go("decision", item.symbol); },
+          }, "复盘"),
+          item.in_watchlist && ov.watchlist.length > 1 ? el("button", {
+            type: "button", class: "icon-btn", "aria-label": "移除",
+            onclick: async e => {
+              e.stopPropagation();
+              await api(`/api/watchlist/${encodeURIComponent(item.symbol)}`, { method: "DELETE" });
+              render();
+            },
+          }, "×") : null,
+        ),
+      )),
+    );
+
+    if (!selected) {
+      focusContainer.replaceChildren(el("div", { class: "empty-state" }, "暂无自选标的"));
+      return;
     }
-    return panel("研究助手", form("保存设置", async fields => {
-      const saved = await api(path, {}, { name: fields.harness });
-      return `下次研究使用 ${saved.selected}。`;
-    }, select("新尝试默认使用", "harness", choices, harness.override || "")));
-  } catch (error) {
-    return panel("研究助手", note(error.message));
-  }
-}
-
-async function researchPage(reference) {
-  const symbol = encodeURIComponent(scope.symbol);
-  const base = `/api/research/${symbol}`;
-  const cutoff = { as_of: scope.as_of };
-  const [dossier, sources, snapshots, harnessPanel] = await Promise.all([
-    api(`${base}/dossiers`, { ...cutoff, version: reference }),
-    api(`${base}/inputs`, cutoff),
-    api("/api/market/snapshots", { symbol: scope.symbol }),
-    researchHarnessPanel(),
-  ]);
-  const current = node("div", {}, dossierView(dossier, sources.evidence));
-  const coverage = node("div", { class: "stack" });
-  const snapshotField = input("冻结快照标识", "snapshot_id", { required: "" });
-  const startField = input("研究起始日", "start", { type: "date", required: "" });
-  const endField = input("研究截止日（可选）", "end", { type: "date" });
-  const choices = snapshots.map(item => {
-    const bars = item.scope.filter(range => range.symbol === scope.symbol && range.series === "daily_bar");
-    const start = bars.map(range => range.start).sort()[0];
-    const end = bars.map(range => range.end).sort().at(-1);
-    return { ...item, start, end, span: Date.parse(end) - Date.parse(start) };
-  });
-  const selection = select("已冻结快照", "snapshot", [["", "手动输入快照标识"],
-    ...choices.map(item => [item.snapshot_id, `${item.start} — ${item.end} · ${label(item.use_mode)} · ${shorten(item.snapshot_id)}`])],
-  );
-  const snapshotMenu = selection.querySelector("select");
-  function fillSnapshot() {
-    const snapshot = choices.find(item => item.snapshot_id === snapshotMenu.value);
-    snapshotField.querySelector("input").value = snapshot?.snapshot_id ?? "";
-    startField.querySelector("input").value = snapshot?.start ?? "2020-01-02";
-    endField.querySelector("input").value = "";
-  }
-  snapshotMenu.addEventListener("change", fillSnapshot);
-  const historical = choices.filter(item => item.use_mode !== "LIVE_RUN").sort((a, b) => b.span - a.span)[0];
-  snapshotMenu.value = historical?.snapshot_id ?? choices[0]?.snapshot_id ?? "";
-  fillSnapshot();
-
-  const followups = node("div", {});
-  const findFollowups = async (mode, asOf) => {
-    const items = await api(`${base}/followups`, { as_of: asOf, mode });
-    followups.replaceChildren(items.length ? table(["原始档案", "证伪条件", "证据与复盘"],
-      items.map(item => [item.dossier_version, id(item.trigger_id),
-        node("div", {}, ...item.evidence_refs.map(ref => node("div", {}, id(ref))),
-          link("reviews", item.registration_id, "查看关联复盘"))])) : empty("这个用途在所选时点暂无待复核事项。"));
-  };
-  return node("div", { class: "work-layout" },
-    node("div", { class: "stack" }, current,
-      panel("公开行情与覆盖",
-        form("读取冻结行情", async ({ snapshot, ...fields }) => {
-          const params = { ...fields, ...cutoff };
-          const report = await api(`${base}/export`, params);
-          coverage.replaceChildren(...marketView(report, query(`${base}/export`, { ...params, download: true })));
-        }, selection, snapshotField, node("div", { class: "two-fields" }, startField, endField)),
-        coverage,
+    const m = selected.metrics;
+    const d = selected.dossier;
+    focusContainer.replaceChildren(
+      el("div", { class: "strip-group" },
+        el("div", { class: "focus-header" },
+          el("div", { class: "focus-id" },
+            el("h2", {}, selected.name),
+            el("span", { class: "muted num" }, selected.symbol),
+          ),
+          el("div", { class: "focus-pills" },
+            el("span", { class: gatePillClass(d.fundamental_gate) }, `基本面 · ${label(d.fundamental_gate)}`),
+            el("span", { class: thesisPillClass(d.thesis_status) }, `逻辑 · ${label(d.thesis_status)}`),
+          ),
+        ),
+        el("div", { class: "strip" },
+          el("div", { class: "strip-label" }, "量价关系"),
+          el("div", { class: "kpi-grid" },
+            kpi("5 日", pct(m.return_5d, true), null, deltaClass(m.return_5d)),
+            kpi("20 日", pct(m.return_20d, true), null, deltaClass(m.return_20d)),
+            kpi("60 日", pct(m.return_60d, true), null, deltaClass(m.return_60d)),
+            kpi("波动 / 回撤", pct(m.volatility_20d), `回撤 ${pct(m.max_drawdown_60d)}`),
+          ),
+        ),
+        el("div", { class: "strip" },
+          el("div", { class: "strip-label" }, "相对强弱与趋势"),
+          el("div", { class: "kpi-grid-3" },
+            kpi("对沪深 300 (20日)", pct(m.rel_benchmark_20d, true), null, deltaClass(m.rel_benchmark_20d)),
+            kpi("对行业 (20日)", pct(m.rel_industry_20d, true), null, deltaClass(m.rel_industry_20d)),
+            kpi("趋势结构", label(m.trend_state)),
+          ),
+        ),
+        el("div", { class: "strip" },
+          el("div", { class: "strip-label" }, "策略 · 概率 · 决策"),
+          el("div", { class: "kpi-grid-3" },
+            kpi("策略状态", label(selected.strategy.status)),
+            kpi("决策概率", selected.probability ?? "—"),
+            kpi("明日动作", label(selected.latest_plan?.action || "WATCH"), selected.latest_plan?.summary || ""),
+          ),
+        ),
+        el("div", { class: "actions" },
+          el("button", { type: "button", class: "btn btn-primary btn-sm", onclick: () => go("decision", selected.symbol) }, "进入决策与复盘"),
+          el("button", { type: "button", class: "btn btn-sm", onclick: () => go("lab", selected.symbol, "research") }, "个股研究"),
+          el("button", { type: "button", class: "btn btn-sm", onclick: () => go("lab", selected.symbol, "experiment") }, "策略实验"),
+        ),
       ),
-      panel("复盘提出的研究事项",
-        form("查询复核事项", async fields => findFollowups(fields.mode, cutoff.as_of),
-          modesField(),
-        ), followups),
-    ),
-    node("div", { class: "stack" }, harnessPanel,
-      researchForms(base, current, reference),
-      panel("历史档案", lookup("已发布的档案版本", "version", "research"))),
-  );
-}
-
-const experimentPaths = [
-  ["trend", "冻结趋势"], ["buy_and_hold", "买入持有"], ["no_active_trading", "不主动交易"],
-];
-
-function experimentView(report) {
-  const configuration = report.configuration;
-  const result = node("div", { class: "stack" }, panel("实验结果",
-    action(report.verdict),
-    definition([["实验运行", id(report.run_id)], ["冻结策略", id(configuration.strategy.version)],
-      ["交易日覆盖", report.coverage.sessions], ["数据路径缺口", report.coverage.path_gaps.length]]),
-    definition([["结果版本", id(report.report_id)], ["市场快照", id(configuration.market_snapshot.snapshot_id)],
-      ["实验协议", id(configuration.protocol.version)], ["研究档案引用", id(configuration.research_ref)]], "references"),
-    node("div", { class: "controls" },
-      node("a", { class: "button secondary", download: "experiment-summary.json",
-        href: query(`/api/experiments/${encodeURIComponent(report.run_id)}`, { download: true }) }, "下载报告"),
-      node("a", { class: "button secondary", download: "experiment-trace.json",
-        href: query(`/api/experiments/${encodeURIComponent(report.run_id)}`, { download: true, trace: true }) }, "下载逐日账本"),
-    ),
-  ));
-  for (const [stage, title] of [["acceptance", "锁定验收"], ["development", "开发窗口"]]) {
-    const window = report.windows[stage];
-    if (!window) continue;
-    add(result, panel(title,
-      note(`${window.start} — ${window.end} · ${window.evaluable_sessions} 个可评估交易日`),
-      table(["路径", "净收益", "最大回撤", "成交笔数", "成本"], experimentPaths.map(([path, name]) => {
-        const metrics = window.paths[path];
-        return [name, pct(metrics.total_return), pct(metrics.max_drawdown), metrics.fills, amount(metrics.costs)];
-      })),
-    ));
+    );
   }
-  if (report.limitations.length || report.verdict_reasons.length) add(result, panel("结果范围",
-    node("ul", { class: "evidence-list" }, ...[...report.limitations, ...report.verdict_reasons]
-      .map(item => node("li", {}, item)))));
-  return result;
+
+  paintMasterDetail();
+
+  const watchlistCard = el("section", { class: "card" },
+    el("div", { class: "card-head" }, el("span", { class: "card-title" }, "自选与持仓"), addForm),
+    listContainer,
+  );
+
+  // Bottom Slim Review Todo Bar
+  const todoBar = el("section", { class: "todo-bar" },
+    el("span", { class: "card-title" }, "复盘中心"),
+    el("div", { class: "todo-items" },
+      ov.review_todos.map(t => el("button", {
+        type: "button", class: "todo-chip",
+        onclick: () => go("decision", t.symbol),
+      },
+        el("span", { class: "dot", style: "color:var(--warn)" }),
+        el("strong", {}, t.name),
+        el("span", { class: "muted" }, t.label),
+      )),
+    ),
+  );
+
+  app.replaceChildren(
+    el("div", { class: "grid-2" }, marketCard, accountCard),
+    el("div", { class: "grid-master" }, watchlistCard, focusContainer),
+    todoBar,
+  );
 }
 
-async function experimentsPage(reference) {
-  const [runs, strategies] = await Promise.all([
-    api("/api/experiments", { symbol: scope.symbol }),
-    api(`/api/strategies/${encodeURIComponent(scope.symbol)}`, { as_of: scope.as_of }),
+/* ---------- Symbol Switcher Bar ---------- */
+function symbolBar(watchlist, targetView) {
+  const items = watchlist?.length ? watchlist : [{ symbol: state.symbol, name: state.symbol }];
+  return el("div", { class: "symbol-chips" },
+    items.map(item => el("button", {
+      type: "button",
+      class: `chip ${item.symbol === state.symbol ? "active" : ""}`,
+      onclick: () => go(targetView, item.symbol),
+    }, item.name)),
+  );
+}
+
+/* ---------- View 2: Stock Decision & Review ---------- */
+function gateStatus(codes) {
+  if (!codes || !codes.length) return { cls: "pass", text: "通过" };
+  if (codes.some(c => /FAIL|BROKEN|SUSPENDED|FIRED/.test(c))) return { cls: "fail", text: "受阻" };
+  if (codes.some(c => /MISSING|EXPIRED|UNKNOWN|WATCH|NOT_ADMITTED|NO_FEASIBLE|LIMIT|RESERVE/.test(c))) {
+    return { cls: "block", text: "限制" };
+  }
+  return { cls: "pass", text: "通过" };
+}
+
+async function renderDecision() {
+  const [watchlist, plans, reviews, strategies, followups] = await Promise.all([
+    api("/api/watchlist"),
+    api("/api/plans", { params: { book_id: state.bookId } }),
+    api("/api/reviews", { params: { book_id: state.bookId } }),
+    api(`/api/strategies/${encodeURIComponent(state.symbol)}`),
+    api(`/api/research/${encodeURIComponent(state.symbol)}/followups`, { params: { mode: state.bookId === "real" ? "live" : "rehearsal" } }).catch(() => []),
   ]);
-  const selected = reference ?? runs[0]?.run_id;
-  const report = selected ? await api(`/api/experiments/${encodeURIComponent(selected)}`) : null;
-  return node("div", { class: "work-layout" },
-    report ? experimentView(report) : empty("当前证券暂无已完成的冻结实验。"),
-    node("div", { class: "stack" }, panel("查找实验",
-      lookup("运行编号或报告版本", "reference", "experiments"),
-      runs.length ? table(["已完成运行", "冻结策略"], runs.map(run =>
-        [link("experiments", run.run_id), id(run.strategy_version)])) : null,
-    ), panel("策略注册",
-      strategies.length ? table(["冻结版本", "注册状态"], strategies.map(item =>
-        [id(item.strategy.version), label(item.status)])) : empty("所选时点暂无冻结的策略版本。"),
-    )),
+
+  const matchingPlans = plans.filter(p => p.symbol === state.symbol);
+  let activePlan = matchingPlans.at(-1) || null;
+  const latestReview = reviews.at(-1) || null;
+  const reviewEntry = latestReview?.plans?.find(p => p.symbol === state.symbol) || null;
+
+  const planBody = el("div", { class: "stack" });
+  function paintPlan(plan) {
+    if (!plan) {
+      planBody.replaceChildren(el("div", { class: "empty-state" }, "暂无已登记计划"));
+      return;
+    }
+    const gates = [
+      ["可执行性", gateStatus(plan.reasons?.P0)],
+      ["账户风控", gateStatus(plan.reasons?.P1)],
+      ["投资逻辑", gateStatus(plan.reasons?.P2)],
+      ["策略准入", gateStatus(plan.reasons?.P3)],
+      ["策略信号", gateStatus(plan.reasons?.P4)],
+    ];
+    planBody.replaceChildren(
+      el("div", { class: "hero-row" },
+        el("span", { class: `${actionPillClass(plan.action)} pill-lg` }, label(plan.action)),
+        el("span", { class: "muted num" }, plan.session || ""),
+      ),
+      el("div", { class: "kpi-grid" },
+        kpi("计划股数", String(plan.quantity ?? 0)),
+        kpi("当前持仓", String(plan.current_quantity ?? 0)),
+        kpi("可卖股数", plan.sellable_quantity ?? "—"),
+        kpi("资金预留", money(plan.cash_reserved)),
+      ),
+      el("div", { class: "gate-row" },
+        gates.map(([name, g]) => el("div", { class: `gate-cell ${g.cls}` },
+          el("span", {}, name), el("strong", {}, g.text),
+        )),
+      ),
+    );
+  }
+  paintPlan(activePlan);
+
+  const strategyOpts = strategies.filter(s => s.simulation_eligible).map(s => s.strategy.version);
+  const modeSel = el("select", {},
+    el("option", { value: "live" }, "真实前向"),
+    el("option", { value: "rehearsal" }, "演练"),
+  );
+  if (state.bookId !== "real") modeSel.value = "rehearsal";
+
+  const planCard = el("section", { class: "card stack" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "明日交易计划"),
+      el("div", { class: "actions" },
+        el("button", {
+          type: "button", class: "btn btn-sm",
+          onclick: async () => {
+            try {
+              const res = await api("/api/plans/preview", {
+                method: "POST", body: { book_id: state.bookId, symbols: [state.symbol] },
+              });
+              if (res.plans?.length) paintPlan(res.plans[0]);
+              showToast("已刷新裁决预览");
+            } catch (err) { showToast(err.message, true); }
+          },
+        }, "预览裁决"),
+        modeSel,
+        el("button", {
+          type: "button", class: "btn btn-primary btn-sm",
+          onclick: async () => {
+            try {
+              await api("/api/reviews", {
+                method: "POST",
+                body: {
+                  book_id: state.bookId, symbols: [state.symbol],
+                  mode: modeSel.value,
+                  strategy_versions: strategyOpts.length ? [strategyOpts[0]] : [],
+                },
+              });
+              showToast("已冻结并登记盘后计划");
+              render();
+            } catch (err) { showToast(err.message, true); }
+          },
+        }, "冻结登记"),
+      ),
+    ),
+    planBody,
+  );
+
+  // Right Card: Execution & Review + Followup Launch
+  const outcomeStatus = el("select", {},
+    el("option", { value: "confirmed" }, "已确认"),
+    el("option", { value: "not_executed" }, "未执行"),
+    el("option", { value: "rejected" }, "已拒绝"),
+  );
+  const outcomeReason = el("input", { placeholder: "说明（未执行/拒绝必填）" });
+
+  const reviewCard = el("section", { class: "card stack" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "执行与复盘"),
+      latestReview ? el("button", {
+        type: "button", class: "btn btn-sm",
+        onclick: async () => {
+          try {
+            await api(`/api/reviews/${encodeURIComponent(latestReview.registration_id)}/settle`, { method: "POST", body: {} });
+            showToast("影子结算已更新");
+            render();
+          } catch (err) { showToast(err.message, true); }
+        },
+      }, "结算影子") : null,
+    ),
+    reviewEntry ? el("div", { class: "kpi-grid-3" },
+      kpi("正式计划", label(reviewEntry.real_plan.action), `${reviewEntry.real_plan.quantity} 股`),
+      kpi("影子模拟", reviewEntry.shadow ? label(reviewEntry.shadow.status) : "待结算", label(reviewEntry.shadow_plan.action)),
+      kpi("实际执行", label(reviewEntry.actual.status)),
+    ) : el("div", { class: "empty-state" }, "暂无复盘记录"),
+    latestReview && reviewEntry ? el("form", {
+      class: "form-grid",
+      onsubmit: async e => {
+        e.preventDefault();
+        try {
+          await api(`/api/reviews/${encodeURIComponent(latestReview.registration_id)}/outcomes`, {
+            method: "POST",
+            body: { symbol: state.symbol, status: outcomeStatus.value, reason: outcomeReason.value.trim() || null },
+          });
+          showToast("已记录实际结果");
+          render();
+        } catch (err) { showToast(err.message, true); }
+      },
+    },
+      el("div", { class: "field-row" },
+        el("div", { class: "field" }, el("label", {}, "执行状态"), outcomeStatus),
+        el("div", { class: "field" }, el("label", {}, "执行备注"), outcomeReason),
+      ),
+      el("div", { class: "actions" }, el("button", { type: "submit", class: "btn btn-sm" }, "保存结果")),
+    ) : null,
+    followups.length ? el("div", { class: "strip" },
+      el("div", { class: "strip-label" }, "待跟进线索"),
+      el("div", { class: "stack" }, followups.map(f => el("div", { class: "task-item" },
+        el("div", { class: "task-top" },
+          el("span", { class: "task-q" }, f.hypothesis || f.trigger_id),
+          el("button", {
+            type: "button", class: "btn btn-primary btn-xs",
+            onclick: async () => {
+              try {
+                const res = await api("/api/research/tasks/from-followup", {
+                  method: "POST", body: { followup_id: f.followup_id },
+                });
+                state.selectedTaskId = res.task_id;
+                showToast("已发起跟进研究");
+                go("lab", state.symbol, "research");
+              } catch (err) { showToast(err.message, true); }
+            },
+          }, "发起跟进研究"),
+        ),
+      ))),
+    ) : null,
+  );
+
+  app.replaceChildren(
+    el("div", { class: "view-bar" }, symbolBar(watchlist, "decision")),
+    el("div", { class: "grid-split" }, planCard, reviewCard),
   );
 }
 
-async function accountPage(reference) {
-  const account = await api("/api/account", {
-    book_id: scope.book_id, as_of: scope.as_of, snapshot_id: reference,
-  });
-  const budget = account.risk_budget;
-  return node("div", { class: "work-layout" },
-    node("div", { class: "stack" }, panel("本地账户镜像",
-      definition([["账本", account.book_id], ["现金", amount(account.cash)],
-        ["券商可用现金", amount(account.available_cash)]]),
-      definition([["账户快照", id(account.snapshot_id)], ["生效截止", when(account.effective_at)],
-        ["获知截止", when(account.known_at)]], "references"),
-      raw("账户快照完整记录", account),
-    ), panel("持仓批次",
-      account.lots.length ? table(["证券", "批次", "持有股数", "取得日期", "批次成本"], account.lots.map(lot =>
-        [lot.symbol, id(lot.lot_id), lot.quantity, lot.acquired_on, amount(lot.cost)])) :
-        empty("该账户快照没有持仓。"),
-      Object.keys(account.known_sellable).length ? definition(Object.entries(account.known_sellable)
-        .map(([symbol, quantity]) => [`${symbol} 已知可卖股数`, quantity ?? "未知"])) : null,
-    ), panel("在途权益", account.receivables.length ?
-      table(["证券", "现金", "股数", "应结转日"], account.receivables.map(item =>
-        [item.symbol, amount(item.amount), item.quantity, item.due_date])) : empty("该账户快照没有在途权益。"),
-    )),
-    node("div", { class: "stack" }, panel("风险预算", budget ? definition([
-      ["版本", id(budget.budget_id)], ["现金保留额", amount(budget.cash_reserve)],
-      ["总仓上限", pct(budget.max_total_exposure)], ["单票上限", pct(budget.max_symbol_exposure)],
-      ["行业上限", pct(budget.max_industry_exposure)], ["有效期", when(budget.expires_at)],
-    ]) : empty("该时点没有有效风险预算。")),
-    panel("历史账户快照", lookup("账户快照标识", "snapshot_id", "account"))),
+/* ---------- View 3: Research & Strategy Lab ---------- */
+function stripFrontmatter(md) {
+  if (!md) return "";
+  const lines = md.replace(/^\ufeff/, "").split("\n");
+  if (lines[0] === "---") {
+    const end = lines.indexOf("---", 1);
+    if (end > 0) return lines.slice(end + 1).join("\n").trim();
+  }
+  return md.trim();
+}
+
+async function renderLab() {
+  clearTimeout(state.pollTimer);
+  const [watchlist, dossier, tasks, devTasks, strategies, experiments] = await Promise.all([
+    api("/api/watchlist"),
+    api(`/api/research/${encodeURIComponent(state.symbol)}/dossiers`).catch(() => null),
+    api("/api/research/tasks", { params: { symbol: state.symbol, kind: "dossier" } }),
+    api("/api/research/tasks", { params: { kind: "development_experiment" } }),
+    api(`/api/strategies/${encodeURIComponent(state.symbol)}`),
+    api("/api/experiments", { params: { symbol: state.symbol } }),
+  ]);
+
+  const seg = el("div", { class: "seg-switch" },
+    el("button", {
+      type: "button", class: state.labTab === "research" ? "active" : "",
+      onclick: () => { state.labTab = "research"; renderLab(); },
+    }, "个股逻辑研究"),
+    el("button", {
+      type: "button", class: state.labTab === "experiment" ? "active" : "",
+      onclick: () => { state.labTab = "experiment"; renderLab(); },
+    }, "策略对照实验"),
+  );
+
+  const hasActive = [...tasks, ...devTasks].some(t => ["pending", "running", "cancelling"].includes(t.latest_attempt?.status));
+  if (hasActive && state.view === "lab") {
+    state.pollTimer = setTimeout(() => { if (state.view === "lab") renderLab(); }, 1500);
+  }
+
+  let content;
+  if (state.labTab === "research") {
+    content = await buildResearchTab(dossier, tasks);
+  } else {
+    content = await buildExperimentTab(devTasks, strategies, experiments);
+  }
+
+  app.replaceChildren(
+    el("div", { class: "view-bar" }, symbolBar(watchlist, "lab"), seg),
+    content,
   );
 }
 
-function modesField() {
-  return select("登记用途", "mode", [["live", "真实前向"], ["rehearsal", "演练"], ["reconstructed", "历史重建"]]);
-}
+async function buildResearchTab(dossier, tasks) {
+  if (tasks.length && !tasks.some(t => t.task_id === state.selectedTaskId)) {
+    state.selectedTaskId = tasks[0].task_id;
+  }
+  const selected = tasks.find(t => t.task_id === state.selectedTaskId) || null;
+  const latestAttempt = selected?.latest_attempt || null;
+  let draftData = null;
+  if (latestAttempt?.draft_version) {
+    draftData = await api(`/api/research/${encodeURIComponent(state.symbol)}/drafts`, {
+      params: { version: latestAttempt.draft_version },
+    }).catch(() => null);
+  }
 
-const reviewClocks = new Map();
+  const thesisCard = el("section", { class: "card stack" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "当前生效逻辑"),
+      dossier ? el("span", { class: "muted num" }, `有效至 ${String(dossier.valid_until || "").slice(0, 10)}`) : null,
+    ),
+    dossier ? el("div", { class: "stack" },
+      el("div", { class: "focus-pills" },
+        el("span", { class: gatePillClass(dossier.fundamental_gate) }, `基本面 · ${label(dossier.fundamental_gate)}`),
+        el("span", { class: thesisPillClass(dossier.thesis_status) }, `逻辑 · ${label(dossier.thesis_status)}`),
+      ),
+      dossier.hypothesis ? el("p", {}, dossier.hypothesis) : null,
+    ) : el("div", { class: "empty-state" }, "尚未发布研究档案"),
+  );
 
-function recordView(review) {
-  return panel("原计划、影子与真实结果",
-    definition([["登记用途", label(review.mode)], ["裁决日", review.decision_date], ["执行日", review.session]]),
-    definition([["登记标识", id(review.registration_id)], ["登记时间", when(review.registered_at)],
-      ["影子账本", id(review.shadow_book_id)]], "references"),
-    ...review.plans.map(entry => {
-      const real = entry.real_plan;
-      const active = entry.active_real_plan;
-      const paper = entry.shadow_plan;
-      const shadow = entry.shadow;
-      const report = entry.actual.events.at(-1);
-      return node("section", { class: "review-item" },
-        node("h3", {}, symbolNames[entry.symbol] ?? entry.symbol),
-        table(["记录", "状态", "数量", "版本 / 结果"], [
-          ["正式计划", action(real.action), real.quantity,
-            review.mode === "reconstructed" ? details("读取历史裁决", planView(real)) :
-              link("plans", real.plan_id, shorten(real.plan_id))],
-          ...(active && active.plan_id !== real.plan_id ? [
-            ["修订计划", action(active.action), active.quantity, link("plans", active.plan_id, shorten(active.plan_id))],
-          ] : []),
-          ["影子计划", action(paper.action), paper.quantity,
-            link("plans", paper.plan_id, shorten(paper.plan_id))],
-          ["影子结算", shadow ? action(shadow.status) : "待结算", shadow?.fill?.quantity,
-            shadow?.fill ? amount(shadow.fill.price) : shadow?.reason],
-          ["实际执行", action(entry.actual.status), entry.actual.fills.reduce((n, fill) => n + fill.payload.quantity, 0),
-            report?.reason],
-        ]),
-        entry.findings.length ? details("复盘归因", table(["分类", "说明", "证据引用"],
-          entry.findings.map(item => [label(item.category), item.reason,
-            node("div", {}, ...item.evidence_refs.map(ref => node("div", {}, id(ref))))]))) : null,
-        entry.deviations.length ? raw("偏差记录", entry.deviations) : null,
+  const taskListCard = el("section", { class: "card stack" },
+    el("div", { class: "card-head" }, el("span", { class: "card-title" }, "研究任务")),
+    tasks.length ? el("div", { class: "stack" }, tasks.map(t => {
+      const att = t.latest_attempt || {};
+      const running = ["pending", "running", "cancelling"].includes(att.status);
+      return el("div", {
+        class: `task-item ${selected && t.task_id === selected.task_id ? "active" : ""}`,
+        onclick: () => { state.selectedTaskId = t.task_id; renderLab(); },
+      },
+        el("div", { class: "task-top" },
+          el("span", { class: "task-q" }, t.question),
+          el("span", { class: running ? "pill pill-primary" : att.status === "draft_ready" ? "pill pill-down" : att.status === "blocked" ? "pill pill-warn" : "pill" },
+            running ? el("span", { class: "dot dot-pulse" }) : null,
+            label(att.status),
+          ),
+        ),
+        el("div", { class: "actions" },
+          running ? el("button", {
+            type: "button", class: "btn btn-danger btn-xs",
+            onclick: async e => {
+              e.stopPropagation();
+              await api(`/api/research/attempts/${encodeURIComponent(att.attempt_id)}/cancel`, { method: "POST" });
+              showToast("已请求取消");
+              renderLab();
+            },
+          }, "取消") : null,
+          !running ? el("button", {
+            type: "button", class: "btn btn-xs",
+            onclick: async e => {
+              e.stopPropagation();
+              await api(`/api/research/tasks/${encodeURIComponent(t.task_id)}/retry`, { method: "POST", body: {} });
+              showToast("已发起重试");
+              renderLab();
+            },
+          }, "重试") : null,
+        ),
       );
-    }),
-    review.shadow_closing ? raw("影子期末估值", review.shadow_closing) : null,
-    raw("完整复盘记录", review),
+    })) : el("div", { class: "empty-state" }, "暂无研究任务"),
+  );
+
+  // Right Column: New Task Form + Selected Draft Review & Publish (ZERO evidence/source lists!)
+  const qInput = el("input", { placeholder: "研究问题", required: true });
+  const basisSel = el("select", {},
+    el("option", { value: "stock-close" }, "收盘量价"),
+    el("option", { value: "industry-comparison" }, "行业相对强弱"),
+    el("option", { value: "announcement" }, "公开材料"),
+  );
+  const newTaskCard = el("section", { class: "card stack" },
+    el("div", { class: "card-head" }, el("span", { class: "card-title" }, "发起研究")),
+    el("form", {
+      class: "form-grid",
+      onsubmit: async e => {
+        e.preventDefault();
+        try {
+          const res = await api("/api/research/tasks", {
+            method: "POST",
+            body: { symbol: state.symbol, question: qInput.value.trim(), basis: basisSel.value },
+          });
+          state.selectedTaskId = res.task_id;
+          qInput.value = "";
+          showToast("研究任务已启动");
+          renderLab();
+        } catch (err) { showToast(err.message, true); }
+      },
+    },
+      el("div", { class: "field" }, el("label", {}, "问题"), qInput),
+      el("div", { class: "field" }, el("label", {}, "研究维度"), basisSel),
+      el("div", { class: "actions" }, el("button", { type: "submit", class: "btn btn-primary btn-sm" }, "发起研究")),
+    ),
+  );
+
+  const reviewerInput = el("input", { placeholder: "确认人", required: true });
+  const draftCard = draftData ? el("section", { class: "card stack" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "草稿审阅与发布"),
+      el("div", { class: "focus-pills" },
+        el("span", { class: gatePillClass(draftData.fundamental_gate) }, label(draftData.fundamental_gate || "unknown")),
+        el("span", { class: thesisPillClass(draftData.thesis_status) }, label(draftData.thesis_status || "unknown")),
+      ),
+    ),
+    el("div", { class: "draft-body" }, stripFrontmatter(draftData.markdown)),
+    el("form", {
+      class: "inline-add",
+      onsubmit: async e => {
+        e.preventDefault();
+        try {
+          await api(`/api/research/${encodeURIComponent(state.symbol)}/dossiers`, {
+            method: "POST",
+            body: { version: draftData.version, reviewer: reviewerInput.value.trim() },
+          });
+          showToast("已发布新版本研究档案");
+          renderLab();
+        } catch (err) { showToast(err.message, true); }
+      },
+    }, reviewerInput, el("button", { type: "submit", class: "btn btn-primary btn-sm" }, "确认发布")),
+  ) : null;
+
+  return el("div", { class: "grid-split" },
+    el("div", { class: "stack" }, thesisCard, taskListCard),
+    el("div", { class: "stack" }, newTaskCard, draftCard),
   );
 }
 
-function outcomeForm(endpoint, symbols, fixedClock, refresh) {
-  const status = select("实际结果", "status", [
-    ["confirmed", "确认"], ["rejected", "拒绝"], ["not_executed", "未执行"], ["filled", "券商成交"],
-  ]);
-  const fillFields = node("fieldset", { class: "fields broker-fill", disabled: "", hidden: "" },
-    node("legend", {}, "券商成交"),
-    input("成交流水编号", "event_id", { required: "" }),
-    input("成交发生时点", "effective_at", { required: "", placeholder: "ISO 8601 时间，含时区" }),
-    select("方向", "side", [["BUY", "买入"], ["SELL", "卖出"]]),
-    input("股数", "quantity", { required: "", type: "number", min: "1", step: "1" }),
-    input("成交价", "price", { required: "", inputmode: "decimal" }),
-    input("实际费用", "fee", { required: "", inputmode: "decimal" }),
-    input("券商回报时点（可选）", "reported_at", { placeholder: "ISO 8601 时间，含时区" }),
+async function buildExperimentTab(devTasks, strategies, experiments) {
+  if (devTasks.length && !devTasks.some(t => t.task_id === state.selectedDevTaskId)) {
+    state.selectedDevTaskId = devTasks[0].task_id;
+  }
+  const selectedDev = devTasks.find(t => t.task_id === state.selectedDevTaskId) || null;
+  let devDetail = null;
+  if (selectedDev) {
+    devDetail = await api(`/api/development/tasks/${encodeURIComponent(selectedDev.task_id)}`).catch(() => null);
+  }
+  let formalReport = null;
+  if (experiments.length) {
+    formalReport = await api(`/api/experiments/${encodeURIComponent(experiments[0].run_id)}`).catch(() => null);
+  }
+
+  // Top Card: Strategy Registry & Formal Backtest Comparison
+  const registryCard = el("section", { class: "card stack" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "策略准入与双基准回测"),
+      strategies.length
+        ? el("span", { class: strategies[0].production_eligible ? "pill pill-down" : "pill pill-warn" },
+            strategies[0].production_eligible ? "生产可用" : label(strategies[0].status))
+        : el("span", { class: "pill" }, "暂无策略"),
+    ),
+    formalReport?.windows?.acceptance ? el("div", { class: "table-wrap" }, el("table", { class: "clean" },
+      el("thead", {}, el("tr", {}, el("th", {}, "策略路径"), el("th", {}, "净收益"), el("th", {}, "最大回撤"), el("th", {}, "成交笔数"))),
+      el("tbody", {}, [
+        ["trend", "冻结趋势"], ["buy_and_hold", "买入持有"], ["no_active_trading", "不主动交易"],
+      ].map(([key, title]) => {
+        const m = formalReport.windows.acceptance.paths[key];
+        return el("tr", {},
+          el("td", {}, el("strong", {}, title)),
+          el("td", { class: deltaClass(m.total_return) }, pct(m.total_return, true)),
+          el("td", {}, pct(m.max_drawdown)),
+          el("td", {}, String(m.fills)),
+        );
+      })),
+    )) : el("div", { class: "empty-state" }, "暂无正式回测"),
   );
-  status.addEventListener("change", () => {
-    const visible = status.querySelector("select").value === "filled";
-    fillFields.disabled = !visible;
-    fillFields.hidden = !visible;
-  });
-  return form("记录实际结果", async fields => {
-    const { symbol, status, reason, reported_at, now, ...fill } = fields;
-    if (status === "filled") fill.quantity = Number(fill.quantity);
-    const review = await api(`${endpoint}/outcomes`, {}, {
-      symbol, status, reason, reported_at, now, fill: status === "filled" ? fill : null,
-    });
-    refresh(review, now);
-    return "已记录实际结果。";
-  }, select("证券", "symbol", symbols), status, input("执行说明", "reason"), fillFields,
-  fixedClock && input("演练时钟", "now", { placeholder: "ISO 8601 时间，含时区" }));
+
+  // Main Card: E0 / E1 Development Comparison & Archive
+  const receipt = devDetail?.development_receipt;
+  const devAttempt = devDetail?.attempts?.at(-1);
+  const archives = selectedDev?.archives || [];
+
+  const conclusionSel = el("select", {},
+    el("option", { value: "actions_identical" }, "动作一致"),
+    el("option", { value: "single_segment" }, "集中于单段"),
+    el("option", { value: "evidence_insufficient" }, "样本不足"),
+    el("option", { value: "multiple_segments" }, "多段存在差异"),
+  );
+  const decisionSel = el("select", {},
+    el("option", { value: "stop" }, "停止扩展"),
+    el("option", { value: "continue" }, "继续研究"),
+  );
+  const revInput = el("input", { placeholder: "审阅人", required: true });
+  const reasonInput = el("input", { placeholder: "停止或继续理由", required: true });
+
+  const devCard = el("section", { class: "card stack" },
+    el("div", { class: "card-head" },
+      el("span", { class: "card-title" }, "开发对照实验（E0 / E1）"),
+      el("button", {
+        type: "button", class: "btn btn-primary btn-sm",
+        onclick: async () => {
+          try {
+            const res = await api("/api/development/tasks", { method: "POST", body: {} });
+            state.selectedDevTaskId = res.task_id;
+            showToast("已发起 E0/E1 对照实验");
+            renderLab();
+          } catch (err) { showToast(err.message, true); }
+        },
+      }, "运行 E0/E1 对照"),
+    ),
+    devTasks.length > 1 ? el("div", { class: "symbol-chips" }, devTasks.slice(0, 6).map((t, idx) =>
+      el("button", {
+        type: "button",
+        class: `chip ${selectedDev && t.task_id === selectedDev.task_id ? "active" : ""}`,
+        onclick: () => { state.selectedDevTaskId = t.task_id; renderLab(); },
+      }, `对照 #${devTasks.length - idx} · ${label(t.latest_attempt?.status)}`),
+    )) : null,
+    receipt?.metrics ? el("div", { class: "stack" },
+      el("div", { class: "kpi-grid" },
+        kpi("E0 净收益", pct(receipt.metrics.e0.total_return, true), `回撤 ${pct(receipt.metrics.e0.max_drawdown)}`, deltaClass(receipt.metrics.e0.total_return)),
+        kpi("E1 净收益", pct(receipt.metrics.e1.total_return, true), `回撤 ${pct(receipt.metrics.e1.max_drawdown)}`, deltaClass(receipt.metrics.e1.total_return)),
+        kpi("拦截买入", String(receipt.opportunities?.market_filter?.blocked_buy_count ?? 0), `候选 ${receipt.opportunities?.market_filter?.eligible_e1_buy_candidates ?? 0}`),
+        kpi("成交对比", `${receipt.metrics.e0.fills} / ${receipt.metrics.e1.fills}`, "E0 / E1"),
+      ),
+      receipt.attribution?.segments?.length ? el("div", { class: "table-wrap" }, el("table", { class: "clean" },
+        el("thead", {}, el("tr", {}, el("th", {}, "持仓区段"), el("th", {}, "净值差异"), el("th", {}, "费用差"))),
+        el("tbody", {}, receipt.attribution.segments.slice(0, 8).map(seg => el("tr", {},
+          el("td", {}, `${seg.start} — ${seg.end}`),
+          el("td", { class: deltaClass(seg.net_difference) }, money(seg.net_difference)),
+          el("td", {}, money(seg.cost_difference)),
+        ))),
+      )) : null,
+      archives.length ? el("div", { class: "focus-pills" },
+        el("span", { class: "pill pill-primary" }, `已归档 · ${label(archives.at(-1).conclusion)} · ${label(archives.at(-1).decision)}`),
+        el("span", { class: "muted" }, archives.at(-1).reason),
+      ) : null,
+      devAttempt?.status === "report_ready" ? el("form", {
+        class: "form-grid strip",
+        onsubmit: async e => {
+          e.preventDefault();
+          try {
+            const segRefs = conclusionSel.value === "multiple_segments"
+              ? (receipt.attribution?.segments || []).filter(s => s.net_difference && Number(s.net_difference) !== 0).slice(0, 2).map(s => s.ref)
+              : [];
+            await api(`/api/development/tasks/${encodeURIComponent(selectedDev.task_id)}/archive`, {
+              method: "POST",
+              body: {
+                attempt_id: devAttempt.attempt_id,
+                report_version: devAttempt.report_version,
+                conclusion: conclusionSel.value,
+                decision: decisionSel.value,
+                reviewer: revInput.value.trim(),
+                reason: reasonInput.value.trim(),
+                segment_refs: segRefs,
+                sizing_rule: decisionSel.value === "continue" ? "固定 50% 仓位上限" : null,
+                measurement: decisionSel.value === "continue" ? "共同起点逐日净值与分段贡献" : null,
+              },
+            });
+            showToast("实验结论已归档");
+            renderLab();
+          } catch (err) { showToast(err.message, true); }
+        },
+      },
+        el("div", { class: "field-row" },
+          el("div", { class: "field" }, el("label", {}, "结论类别"), conclusionSel),
+          el("div", { class: "field" }, el("label", {}, "下一步"), decisionSel),
+        ),
+        el("div", { class: "field-row" },
+          el("div", { class: "field" }, el("label", {}, "审阅人"), revInput),
+          el("div", { class: "field" }, el("label", {}, "理由"), reasonInput),
+        ),
+        el("div", { class: "actions" }, el("button", { type: "submit", class: "btn btn-primary btn-sm" }, "归档实验结论")),
+      ) : null,
+    ) : el("div", { class: "empty-state" }, "暂无开发对照记录"),
+  );
+
+  return el("div", { class: "stack" }, registryCard, devCard);
 }
 
-async function reviewsPage(reference) {
-  const results = node("div", {});
-  const recent = await api("/api/reviews", { book_id: scope.book_id, as_of: scope.as_of });
-  const reviewId = reference ?? recent.at(-1)?.registration_id;
-  const endpoint = reviewId && `/api/reviews/${encodeURIComponent(reviewId)}`;
-  const knownAt = reviewClocks.get(reviewId) ?? scope.as_of;
-  const review = reviewId ? await api(endpoint, { as_of: knownAt }) : null;
-  function refresh(record, time) {
-    if (time) reviewClocks.set(record.registration_id, time);
-    results.replaceChildren(recordView(record));
-  }
-  if (review) refresh(review);
-  else results.replaceChildren(empty("当前账户暂无复盘登记。盘后计划页可冻结并登记。"));
-
-  const side = node("div", { class: "stack" }, panel("查找复盘",
-    lookup("登记标识", "registration_id", "reviews"),
-    recent.length ? table(["裁决日", "登记用途"], recent.slice(-20).reverse().map(item =>
-      [link("reviews", item.registration_id, item.decision_date), label(item.mode)])) : null,
-  ));
-  if (review) {
-    const fixedClock = review.mode !== "live";
-    const selectable = review.plans.map(item => [item.symbol, item.symbol]);
-    const clockField = () => fixedClock && input("演练或重建时钟", "now", {
-      placeholder: "ISO 8601 时间，含时区", value: knownAt ?? "",
-    });
-    add(side, panel("次日结算", form("结算影子账户", async ({ now }) => {
-      refresh(await api(`${endpoint}/settle`, {}, { now }), now);
-      return "该时点的影子结算已核对。";
-    }, clockField())));
-    if (review.mode !== "reconstructed") add(side, panel("实际执行",
-      outcomeForm(endpoint, selectable, fixedClock, refresh)));
-    add(side, panel("复盘归因", form("记录复盘事项", async ({ evidence_refs, ...fields }) => {
-      const evidence = evidence_refs ? evidence_refs.split("\n").map(ref => ref.trim()).filter(Boolean) : [];
-      refresh(await api(`${endpoint}/findings`, {}, { ...fields, evidence_refs: evidence }), fields.now);
-      return "已记录复盘事项。";
-    }, select("证券", "symbol", selectable), select("归因类别", "category", [
-      ["research_hypothesis", "研究假设"], ["strategy_applicability", "策略适用性"],
-      ["data_quality", "数据质量"], ["execution_deviation", "执行偏差"],
-      ["user_deviation", "用户偏差"], ["normal_variation", "正常波动"],
-    ]), input("原档案证伪条件标识（可选）", "trigger_id"),
-    area("归因说明", "reason", { required: "" }), area("证据引用（每行一条）", "evidence_refs"),
-    clockField(),)));
-  }
-  return node("div", { class: "work-layout" }, results, side);
-}
-
-const pages = { plans: plansPage, research: researchPage, experiments: experimentsPage, account: accountPage, reviews: reviewsPage };
-
-function currentSection() {
-  const section = location.hash.slice(1).split("/")[0];
-  return Object.hasOwn(pages, section) ? section : "plans";
-}
-
-async function showPage() {
-  const ticket = ++generation;
-  const section = currentSection();
-  const heading = node("h2", {}, names[section]);
-  const body = node("div", {}, empty("正在读取本地数据…"));
-  main.replaceChildren(node("div", { class: "section-heading" }, heading), body);
-  for (const anchor of document.querySelectorAll("nav a")) {
-    if (anchor.hash === `#${section}`) anchor.setAttribute("aria-current", "page");
-    else anchor.removeAttribute("aria-current");
-  }
+/* ---------- Router ---------- */
+async function render() {
+  parseHash();
+  updateNav();
   try {
-    const encoded = location.hash.slice(1).split("/")[1];
-    const content = await pages[section](encoded ? decodeURIComponent(encoded) : null);
-    if (generation === ticket) body.replaceChildren(content);
-  } catch (error) {
-    if (generation === ticket) body.replaceChildren(node("p", { class: "error", role: "alert" }, error.message));
+    if (state.view === "overview") await renderOverview();
+    else if (state.view === "decision") await renderDecision();
+    else await renderLab();
+  } catch (err) {
+    app.replaceChildren(el("div", { class: "card empty-state" }, err.message));
   }
 }
 
-context.addEventListener("submit", event => {
-  event.preventDefault();
-  const next = reading(context);
-  next.symbol = next.symbol.toUpperCase();
-  context.elements.symbol.value = next.symbol;
-  document.querySelector("#security-name").textContent = symbolNames[next.symbol] ?? "证券工作台";
-  document.querySelector("#security-code").textContent = next.symbol;
-  const changeSecurity = next.symbol !== scope.symbol;
-  scope = next;
-  if (changeSecurity && location.hash.includes("/")) location.hash = currentSection();
-  else showPage();
-});
-window.addEventListener("hashchange", () => {
-  if (location.hash !== "#workspace") showPage();
-});
-showPage();
+window.addEventListener("hashchange", render);
+render();

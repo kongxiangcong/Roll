@@ -412,4 +412,15 @@ def register_research_commands(commands):
     followups.add_argument("--mode", choices=("live", "rehearsal", "reconstructed"), default="live")
     followups.add_argument("--as-of")
     followups.set_defaults(handler=_followups)
+
+    trace = operations.add_parser("trace", help="从已发布档案版本反查本机研究任务、尝试与原复盘线索")
+    trace.add_argument("symbol")
+    trace.add_argument("version")
+    trace.set_defaults(handler=_trace)
     return operations
+
+
+def _trace(args, data_dir):
+    from roll.v3.research_tasks import trace_dossier_origin
+
+    return trace_dossier_origin(data_dir, args.symbol, args.version)

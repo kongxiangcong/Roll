@@ -53,11 +53,15 @@ def database(data_dir, *, write=False, db=None):
         return
     directory = Path(data_dir).expanduser()
     directory.mkdir(parents=True, exist_ok=True)
-    with closing(sqlite3.connect(directory / "roll-v3.sqlite3", timeout=15)) as db, db:
+    with closing(sqlite3.connect(directory / "roll-v3.sqlite3", timeout=15)) as db:
         db.row_factory = sqlite3.Row
-        if write:
-            db.execute("BEGIN IMMEDIATE")
-        yield db
+        db.execute("PRAGMA busy_timeout = 15000")
+        db.execute("PRAGMA journal_mode = WAL")
+        db.execute("PRAGMA synchronous = NORMAL")
+        with db:
+            if write:
+                db.execute("BEGIN IMMEDIATE")
+            yield db
 
 
 def ensure_schema(db, schema):

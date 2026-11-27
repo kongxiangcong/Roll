@@ -10,36 +10,41 @@
   <script type="module" src="/assets/workbench.js"></script>
 </head>
 <body>
-  <a class="skip" href="#workspace">跳至工作区</a>
-  <header class="masthead">
-    <div class="masthead-inner">
-      <a class="brand" href="#plans" aria-label="Roll 盘后工作台">Roll<span>.</span></a>
-      <span class="app-name">盘后工作台</span>
-      <span class="local">本地账本</span>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#overview" aria-label="Roll 盘后工作台">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">Roll</span>
+      </a>
+      <nav class="seg-nav" aria-label="主导航">
+        <a href="#overview" data-view="overview">全景台</a>
+        <a href="#decision" data-view="decision">决策复盘</a>
+        <a href="#lab" data-view="lab">研究实验室</a>
+      </nav>
+      <div class="topbar-actions">
+        <span id="trade-date-pill" class="date-pill">—</span>
+        <select id="book-select" class="book-select" aria-label="账户账本">
+          <option value="real">实盘账本</option>
+          <option value="m0a-example">演练账本</option>
+        </select>
+        <button id="sync-btn" type="button" class="btn btn-primary btn-sm">同步数据</button>
+      </div>
     </div>
   </header>
-  <div class="workspace" id="workspace">
-    <div class="heading">
-      <h1 id="security-name">江西铜业</h1>
-      <span id="security-code" class="security-code">600362.SH</span>
-    </div>
-    <form id="context" class="context">
-      <label>证券代码<input name="symbol" value="600362.SH" required autocomplete="off"></label>
-      <label>账户账本<input name="book_id" value="real" required autocomplete="off"></label>
-      <label class="time-field">裁决截止时点（默认当前）<input name="as_of" placeholder="2026-11-26T16:00:00+08:00" autocomplete="off"></label>
-      <button class="secondary">应用</button>
-    </form>
-    <nav aria-label="工作台导航">
-      <a href="#plans">盘后计划</a>
-      <a href="#research">个股研究</a>
-      <a href="#experiments">策略实验</a>
-      <a href="#account">账户镜像</a>
-      <a href="#reviews">复盘登记</a>
-    </nav>
-    <main id="main" aria-label="工作台结果">
-      <p class="empty">正在加载工作台…</p>
-    </main>
+
+  <main id="app" class="canvas" aria-live="polite"></main>
+
+  <div id="drawer-backdrop" class="drawer-backdrop" hidden>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <div class="drawer-head">
+        <h2 id="drawer-title">账户明细</h2>
+        <button id="drawer-close" type="button" class="icon-btn" aria-label="关闭">✕</button>
+      </div>
+      <div id="drawer-body" class="drawer-body"></div>
+    </aside>
   </div>
-  <noscript><p class="workspace">请启用 JavaScript 使用本地工作台。</p></noscript>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p class="canvas">请启用 JavaScript。</p></noscript>
 </body>
 </html>
