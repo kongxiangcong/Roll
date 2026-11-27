@@ -13,7 +13,8 @@ from roll.v3.development_archive import archive_development
 from roll.v3.development_experiment import PRESET_ID, development_preset
 from roll.v3.development_interpretation import is_development
 from roll.v3.development_replay import prepare_development, read_development_receipt
-from roll.v3.etf_basket import FIXED_BASKET_VERSION, build_etf_daily_report
+from roll.v3.etf_basket import build_etf_daily_report
+from roll.v3.etf_basket_versions import FIXED_BASKET_VERSION, list_comparison_baskets
 from roll.v3.etf_history import build_etf_history_report
 from roll.v3.etf_replay import freeze_etf_report, replay_etf_report
 from roll.v3.etf_sync import EtfSyncRunner
@@ -262,6 +263,10 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
                              as_of: str | None = None, use_mode: str = LIVE_RUN):
         return build_etf_daily_report(data_dir, trade_date=trade_date.isoformat() if trade_date else None,
                                       basket_version=basket_version, as_of=as_of, use_mode=use_mode)
+
+    @app.get("/api/market/etf/baskets")
+    def get_etf_baskets(as_of: str | None = None):
+        return list_comparison_baskets(data_dir, as_of=as_of)
 
     @app.post("/api/market/etf/reports")
     def freeze_etf_daily_report(payload: EtfReportInput):

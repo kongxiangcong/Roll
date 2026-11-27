@@ -117,3 +117,25 @@ def test_industry_workbench_limits_the_list_to_effective_level_one_classificatio
     assert response.status_code == 200, response.text
     assert [row["symbol"] for group in response.json()["groups"] for row in group["rows"]] == ["801050.SI"]
     assert before_version.json()["groups"] == []
+
+
+def test_industry_accepts_scalar_price_units_from_generic_market_import(tmp_path):
+    identity = json.loads(CAPTURE.read_text(encoding="utf-8"))[0]
+    rows = [identity]
+    for symbol, day, close, unit in (
+        ("801050.SI", "2026-11-25", 100, "点"),
+        ("801050.SI", "2026-11-26", 102, "点"),
+        ("000300.SH", "2026-11-25", 100, {"price": "点"}),
+        ("000300.SH", "2026-11-26", 99, "点"),
+    ):
+        rows.append({
+            "series": "daily_bar", "symbol": symbol, "trade_date": day, "source": "fixture",
+            "received_at": f"{day}T15:05:00+08:00", "unit": unit, "payload": {"close": close},
+        })
+    _import_rows(tmp_path, rows)
+
+    with TestClient(create_app(tmp_path)) as browser:
+        response = browser.get("/api/market/industry", params={"trade_date": "2026-11-26", "as_of": CLOCK})
+    assert response.is_success, response.text
+    row, = response.json()["groups"][0]["rows"]
+    assert row["relative_percentage_points"] == 3

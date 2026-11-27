@@ -88,12 +88,16 @@ def _close(row):
     return None
 
 
+def _price_unit(unit):
+    return unit.get("price") if isinstance(unit, dict) else unit
+
+
 def _bar(row, prior, prior_day):
     if row is None:
         return None
     payload = row["payload"]
     close = _close(row)
-    prior_close = _close(prior) if prior and prior["unit"].get("price") == row["unit"].get("price") else None
+    prior_close = _close(prior) if prior and _price_unit(prior["unit"]) == _price_unit(row["unit"]) else None
     # Fuyao's index adapter derives pre_close by an exact previous-session lookup.
     if prior_day and (payload.get("pre_close_trade_date") == prior_day
                       or (row["source"] == "fuyao" and payload.get("pre_close_basis")

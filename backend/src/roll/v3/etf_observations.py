@@ -43,14 +43,14 @@ def _amount(value, *, allow_zero):
     return amount
 
 
-def etf_observation(item):
+def etf_observation(item, *, extension=None):
     """Normalize imported ETF evidence before it enters the shared observation store."""
     series = item['series']
     if series not in ETF_UNITS or item.get('unit') != ETF_UNITS[series]:
         raise ValueError('ETF 观察项单位须为份、元/份或新份/旧份')
     symbol = etf_symbol(item['symbol'])
     day = date.fromisoformat(item['trade_date'])
-    if not is_session(day):
+    if not is_session(day, extension):
         raise ValueError(f'ETF 观察项日期 {day} 须为交易日')
     if not item.get('source') or not item.get('source_ref') or not item.get('received_at'):
         raise ValueError('ETF 观察项须保留来源、原始定位和实际取得时刻')

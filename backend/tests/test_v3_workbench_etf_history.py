@@ -185,3 +185,108 @@ def test_disclosed_history_uses_each_days_available_membership(tmp_path):
     assert (after['trade_date'], after['expected_count'], after['flow_cny']) == (day, 1, '60000000')
     week = next(window for window in history['windows'] if window['key'] == '5')
     assert (week['valid_count'], week['expected_count']) == (1, 1)
+
+
+def test_etf_workbench_and_cli_replay_registered_calendar_sessions(tmp_path):
+    import sqlite3
+
+    previous, day, clock = '2026-12-31', '2027-01-04', '2027-01-04T18:00:00+08:00'
+    with sqlite3.connect(tmp_path / 'roll-v3.sqlite3') as db:
+        db.execute('CREATE TABLE market_inputs (series, symbol, trade_date)')
+        db.execute("INSERT INTO market_inputs VALUES ('calendar', 'CN', ?)", (day,))
+    _import(tmp_path, [
+        _etf('510050.SH', 'etf_shares', previous, '100'),
+        _etf('510050.SH', 'etf_shares', day, '130', received_at=clock),
+        _etf('510050.SH', 'etf_nav', day, '2', received_at=clock),
+    ])
+
+    with TestClient(create_app(tmp_path)) as browser:
+        response = browser.post('/api/market/etf/reports', json={'as_of': clock})
+        assert response.is_success, response.text
+        frozen = response.json()
+        assert frozen['trade_date'] == day
+        assert frozen['summary']['flow_cny'] == '60'
+
+    # Calendar registration is external to the observation store. A frozen report keeps its sessions.
+    with sqlite3.connect(tmp_path / 'roll-v3.sqlite3') as db:
+        db.execute("UPDATE market_inputs SET trade_date='2026-12-30' WHERE trade_date=?", (day,))
+    replay = run(('market', 'etf', 'replay-report', frozen['report_id']), data_dir=tmp_path)
+    assert replay == frozen
+    history = _history(tmp_path, report_id=frozen['report_id'], symbol='510050.SH')
+    assert [row['trade_date'] for row in history['days'][-2:]] == [previous, day]
+    assert history['days'][-1]['flow_cny'] == '60'
+
+
+def test_frozen_history_keeps_index_candles_before_the_original_chart_window(tmp_path):
+    first_chart_day, prior = '2025-10-13', '2025-10-10'
+    _import(tmp_path, [_bar('000016.SH', prior), _bar('000016.SH', first_chart_day)])
+    with TestClient(create_app(tmp_path)) as browser:
+        response = browser.post('/api/market/etf/reports', json={'trade_date': SESSIONS[-1], 'as_of': CLOCK})
+        assert response.is_success, response.text
+        report_id = response.json()['report_id']
+    _import(tmp_path, [_bar('000016.SH', prior, close='3911.25')])
+
+    history = _history(tmp_path, report_id=report_id, trade_date=first_chart_day, index_code='000016')
+    before, selected = history['days'][-2:]
+    assert (before['trade_date'], before['index_ohlc']['close']) == (prior, '3910.25')
+    assert (selected['trade_date'], selected['index_ohlc']['close']) == (first_chart_day, '3910.25')
+
+
+def test_partial_history_counts_every_listed_fund_day_in_the_requested_window(tmp_path):
+    _import(tmp_path, [
+        _etf('510050.SH', 'etf_shares', SESSIONS[-2], '100'),
+        _etf('510050.SH', 'etf_shares', SESSIONS[-1], '120'),
+        _etf('510050.SH', 'etf_nav', SESSIONS[-1], '2'),
+    ])
+    history = _history(tmp_path, trade_date=SESSIONS[-1], symbol='510050.SH', as_of=CLOCK)
+    week = next(window for window in history['windows'] if window['key'] == '5')
+    assert (week['valid_count'], week['expected_count'], week['flow_status']) == (1, 5, 'partial')
+    assert week['flow_cny'] == '40'
+    assert week['window_start_date'] == SESSIONS[0]
+    assert (week['start_date'], week['session_count'], week['insufficient_history']) == (SESSIONS[-2], 2, True)
+
+
+def test_disclosed_history_keeps_a_removed_fund_on_earlier_days_and_pins_its_catalog(tmp_path):
+    previous, first, selected = '2026-11-26', '2026-11-27', '2026-11-30'
+    cutoff = f'{selected}T18:00:00+08:00'
+    source = Path(__file__).with_name('fixtures') / 'etf_disclosures_510300.json'
+    run(('market', 'etf', 'disclosures', 'import', str(source)), data_dir=tmp_path)
+    _import(tmp_path, [
+        _etf('510300.SH', 'etf_shares', previous, '100'),
+        _etf('510300.SH', 'etf_shares', first, '130', received_at=f'{first}T17:00:00+08:00'),
+        _etf('510300.SH', 'etf_nav', first, '2', received_at=f'{first}T17:00:00+08:00'),
+        _etf('510300.SH', 'etf_shares', selected, '160', received_at=cutoff),
+        _etf('510300.SH', 'etf_nav', selected, '2', received_at=cutoff),
+    ])
+    with TestClient(create_app(tmp_path)) as browser:
+        params = {'trade_date': selected, 'as_of': cutoff}
+        response = browser.post('/api/market/etf/reports', json=params)
+        assert response.is_success, response.text
+        prior_report = response.json()
+        chart_query = {'index_code': '000300', 'membership': 'disclosed'}
+        prior_chart = browser.get(HISTORY, params={**chart_query, 'report_id': prior_report['report_id']}).json()
+        sample = next(row for row in prior_report['funds'] if row['symbol'] == '510050.SH')
+        identity = {key: sample[key] for key in (
+            'symbol', 'name', 'fund_manager', 'listing_date', 'listing_source_ref', 'index_code', 'index_symbol',
+            'index_name', 'group_name', 'index_source_ref', 'fund_tracking_source_ref', 'effective_from',
+            'effective_to', 'known_at', 'eligible_by_wide_index_type',
+        )}
+        revisions = tmp_path / 'basket.json'
+        revisions.write_text(json.dumps({
+            **prior_report['basket'], 'version': 'demo-fixed-v2', 'known_at': f'{selected}T15:00:00+08:00',
+            'member_count': 1, 'members': [identity],
+        }), encoding='utf-8')
+        run(('market', 'etf', 'import-basket', str(revisions)), data_dir=tmp_path)
+
+        current = browser.get(HISTORY, params={**params, **chart_query})
+        assert current.is_success, current.text
+        chart = current.json()
+        before, after = chart['days'][-2:]
+        assert (before['trade_date'], before['expected_count'], before['flow_cny']) == (first, 1, '60')
+        assert (after['trade_date'], after['expected_count'], after['flow_cny']) == (selected, 0, None)
+        assert browser.get(HISTORY, params={**chart_query, 'report_id': prior_report['report_id']}).json() == prior_chart
+        refreshed = browser.post('/api/market/etf/reports', json=params).json()
+        earlier = browser.get(f"/api/market/etf/reports/{refreshed['report_id']}", params={'trade_date': first}).json()
+        historical_pool = earlier['comparison_baskets']['disclosed']
+        assert historical_pool['basket']['eligibility_catalog_version'] == 'fixed-35-v1'
+        assert historical_pool['summary']['flow_cny'] == '60'

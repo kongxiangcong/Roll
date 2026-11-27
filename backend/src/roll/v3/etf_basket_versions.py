@@ -92,3 +92,22 @@ def resolve_comparison_basket(db, *, cutoff, version=None):
     if version is not None:
         raise ValueError(f'截止时刻没有可用的 ETF 对照篮子版本 {version}')
     return get_fixed_basket()
+
+
+def comparison_basket_timeline(db, *, cutoff):
+    """Return complete catalog revisions in their observed order, with the shipped baseline first."""
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='etf_basket_version'").fetchone():
+        return [get_fixed_basket()]
+    rows = db.execute("""
+        SELECT manifest FROM etf_basket_version
+        WHERE known_at <= ? ORDER BY known_at, rowid
+    """, (cutoff,))
+    return [get_fixed_basket(), *(json.loads(row['manifest']) for row in rows)]
+
+
+def list_comparison_baskets(data_dir, *, as_of=None):
+    """Expose the available fixed comparisons without loading membership into the browser."""
+    with database(data_dir) as db:
+        timeline = comparison_basket_timeline(db, cutoff=utc_timestamp(as_of))
+    return [{key: basket[key] for key in ('version', 'known_at', 'name', 'member_count')}
+            for basket in reversed(timeline)]
