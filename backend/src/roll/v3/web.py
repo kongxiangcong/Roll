@@ -1,5 +1,6 @@
 """Local HTTP and browser adapters for the Roll v3 application."""
 from contextlib import asynccontextmanager
+from datetime import date
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
@@ -17,7 +18,7 @@ from roll.v3.harness_settings import settings as harness_settings
 from roll.v3.market import list_snapshots, utc_timestamp
 from roll.v3.market_research import DEFAULT_BENCHMARK, DEFAULT_START, export_market_research
 from roll.v3.market_sources import sync_daily_market
-from roll.v3.overview import MarketSyncRunner, build_overview
+from roll.v3.overview import MarketSyncRunner, build_market_watchlist, build_overview, market_trade_dates
 from roll.v3.plan import PlanLedger, generate_plans
 from roll.v3.watchlist import add_watchlist, list_watchlist, remove_watchlist, reorder_watchlist
 from roll.v3.research import ResearchDossiers
@@ -193,8 +194,18 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
         return FileResponse(ASSETS / "index.html")
 
     @app.get("/api/overview")
-    def overview(book_id: str = "real", as_of: str | None = None):
-        return build_overview(data_dir, book_id=book_id, as_of=as_of)
+    def overview(book_id: str = "real", as_of: str | None = None, include_watchlist: bool = True):
+        return build_overview(data_dir, book_id=book_id, as_of=as_of, include_watchlist=include_watchlist)
+
+    @app.get("/api/market/dates")
+    def get_market_dates():
+        return market_trade_dates(data_dir)
+
+    @app.get("/api/market/watchlist")
+    def get_market_watchlist(book_id: str = "real", trade_date: date | None = None, as_of: str | None = None):
+        return build_market_watchlist(
+            data_dir, book_id=book_id, trade_date=trade_date.isoformat() if trade_date else None, as_of=as_of,
+        )
 
     @app.get("/api/watchlist")
     def get_watchlist():
