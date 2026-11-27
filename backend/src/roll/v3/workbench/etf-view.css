@@ -1,9 +1,16 @@
-.etf-report-header, .etf-report-meta, .etf-sync-controls, .etf-evidence-line {
+.etf-report-header, .etf-report-meta, .etf-sync-controls, .etf-evidence-line, .etf-replay-form {
   display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px;
 }
 .etf-report-header { justify-content: space-between; }
 .etf-report-header h1 { font-size: 22px; line-height: 1.35; }
 .etf-report-meta, .etf-sync-controls, .etf-evidence-line { font-size: 13px; }
+.etf-replay-form { font-size: 13px; }
+.etf-replay-form input, .etf-replay-form select {
+  min-width: 0; max-width: 100%; height: 30px; padding: 0 8px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--surface); color: var(--ink);
+}
+#etf-report-reference { width: min(34rem, 100%); }
+.etf-replay [role="status"]:empty { display: none; }
 .etf-report-metrics {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
 }

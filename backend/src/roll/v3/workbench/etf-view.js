@@ -1,4 +1,5 @@
 import { el, marketMasterDetail, marketTable } from "./market-view.js";
+import { etfReplayQuery, readFrozenEtfReport, renderEtfReplay } from "./etf-replay.js";
 
 const number = value => value == null ? "—" : value;
 const signClass = value => value?.startsWith("+") ? "up" : value?.startsWith("-") ? "down" : "muted";
@@ -81,7 +82,7 @@ export function renderEtfSummary(report, { selectTradeDate }) {
       metric("估算净申赎（亿元）", number(summary.flow_display_yi), flowStatus(summary), signClass(summary.flow_display_yi)),
       metric("可算 / 应有", coverage(summary), "只基金"),
       metric("最近完整日报", report.latest_complete_date || "—",
-        report.latest_complete_date && report.latest_complete_date !== report.trade_date
+        !report.report_id && report.latest_complete_date && report.latest_complete_date !== report.trade_date
           ? el("button", { type: "button", class: "btn btn-sm", onclick: () => selectTradeDate(report.latest_complete_date) }, "查看最近完整日报")
           : null),
     ),
@@ -173,6 +174,9 @@ function renderInputEvidence(label, day, field) {
       el("span", {}, SOURCES[field.selected.source] || field.selected.source),
       el("span", { class: "num" }, `${field.selected.payload.raw_value ?? field.selected.payload.value} ${field.selected.payload.raw_unit ?? field.selected.unit}`),
       evidenceLink(field.selected.source_ref),
+      el("span", { class: "card-sub" }, `实际取得 ${timeFormat.format(new Date(field.selected.received_at))}`),
+      field.selected.payload.disclosed_date ? el("span", { class: "card-sub" },
+        `披露日 ${field.selected.payload.disclosed_date}`) : null,
     ) : el("span", { class: "muted" }, STATUS_NAMES[field.status] || field.status),
     field.candidates.filter(candidate => candidate.seq !== field.selected?.seq).map(candidate =>
       el("div", { class: "etf-evidence-line muted" },
@@ -292,15 +296,20 @@ export function renderEtfDailyReport(report, { themeState }) {
 }
 
 export function readEtfReport(api, tradeDate, themeState) {
-  return api("/api/market/etf", { params: { trade_date: tradeDate, basket_version: themeState.basketVersion } });
+  if (themeState.reportId) return readFrozenEtfReport(api, themeState.reportId);
+  return api("/api/market/etf", { params: {
+    trade_date: tradeDate, basket_version: themeState.basketVersion, ...etfReplayQuery(themeState),
+  } });
 }
 
 export async function renderMarketEtf(context) {
   const { api, tradeDate, themeState } = context;
   const [report, status] = await Promise.all([
-    readEtfReport(api, tradeDate, themeState),
+    readEtfReport(api, tradeDate, themeState).catch(error => ({ error: error.message })),
     api("/api/market/etf/sync/status").catch(() => ({ status: "unknown" })),
   ]);
-  return el("div", { class: "stack" }, renderEtfSummary(report, context), renderEtfSync(report, context, status),
+  if (report.error) return renderEtfReplay(context, null, report.error);
+  return el("div", { class: "stack" }, renderEtfReplay(context, report), renderEtfSummary(report, context),
+    report.report_id ? null : renderEtfSync(report, context, status),
     renderEtfDailyReport(report, context));
 }
