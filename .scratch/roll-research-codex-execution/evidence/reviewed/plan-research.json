@@ -1,0 +1,65 @@
+{
+  "action": "WATCH",
+  "as_of": "2026-12-04T07:30:00.000000+00:00",
+  "snapshot_id": "b6cac86c682fbe7d9cfeadbe65553567419472da29fd96304dfa7b55b228ce22",
+  "symbol": "600362.SH",
+  "dossier_version": "attempt-753e9b8687d245628953e400faaed404",
+  "research": {
+    "constraint_basis": {
+      "fundamental_gate": {
+        "evidence_refs": [
+          "material-c85d6bac6b4f1d9c0ffba7e368b2ed6b7b97a3b57d465f73f013af355ad7b687"
+        ],
+        "rationale": "冻结摘录披露的累计经营活动现金流量净额为 14,162,724,945 元，满足严格大于 0 的唯一门禁。"
+      },
+      "invalidation_triggers": {
+        "evidence_refs": [
+          "material-c85d6bac6b4f1d9c0ffba7e368b2ed6b7b97a3b57d465f73f013af355ad7b687"
+        ],
+        "rationale": "冻结摘录界定比较口径；按题设，用 Roll 的最新同口径观测判断是否阻断新增风险。持续性另由人工核对。"
+      },
+      "strategy_whitelist": {
+        "confirmed_by": "Codex 工程验收",
+        "rationale": "基本面门禁通过不等于策略获准；没有足够的策略准入证据。"
+      },
+      "thesis_status": {
+        "confirmed_by": "Codex 工程验收",
+        "rationale": "单期累计净额不足以确认或否定投资逻辑。"
+      }
+    },
+    "evidence_refs": [
+      "material-c85d6bac6b4f1d9c0ffba7e368b2ed6b7b97a3b57d465f73f013af355ad7b687"
+    ],
+    "fundamental_gate": "pass",
+    "reviewer": "Codex 工程验收",
+    "status": "active",
+    "strategy_whitelist": [],
+    "thesis_status": "unknown",
+    "triggers": [
+      {
+        "effect": "block_new_risk",
+        "evidence_refs": [
+          "material-c85d6bac6b4f1d9c0ffba7e368b2ed6b7b97a3b57d465f73f013af355ad7b687"
+        ],
+        "id": "operating_cash_flow_ytd_nonpositive",
+        "observation": {
+          "selected_available_at": "2026-11-26T07:34:09.393912+00:00",
+          "seq": 15053,
+          "source": "issuer-cninfo",
+          "source_ref": "https://static.cninfo.com.cn/finalpage/2026-10-29/1225636802.PDF#page=12",
+          "trade_date": "2026-09-30",
+          "value": "14162724945"
+        },
+        "status": false
+      },
+      {
+        "effect": "require_research",
+        "evidence_refs": [],
+        "id": "cash_flow_sustainability_review",
+        "status": null
+      }
+    ],
+    "valid_until": "2026-12-26T07:38:52.909461+00:00",
+    "version": "attempt-753e9b8687d245628953e400faaed404"
+  }
+}

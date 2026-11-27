@@ -18,6 +18,7 @@ def parser():
     from roll.v3.market_research import register_market_research
     from roll.v3.plan_cli import register_plan_commands
     from roll.v3.research import register_research_commands
+    from roll.v3.research_tasks import register_task_commands
     from roll.v3.review_cli import register_review_commands
     from roll.v3.strategy_cli import register as register_strategy
 
@@ -28,7 +29,9 @@ def parser():
     register_account_commands(commands)
     register_entitlement_commands(commands)
     register_execution_commands(commands)
-    register_market_research(register_research_commands(commands))
+    research = register_research_commands(commands)
+    register_market_research(research)
+    register_task_commands(research)
     register_strategy(commands)
     register_experiment_commands(commands)
     register_plan_commands(commands)

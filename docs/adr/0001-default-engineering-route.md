@@ -4,7 +4,7 @@ status: accepted
 
 # 采用独立 Roll 仓库和模块化单体，保持取证与正式决策权限分离
 
-> **v3 适用范围。** 本地模块化单体及研究取证与正式决策分离继续适用。v3 将研究助手置于 Roll 进程之外，通过本地 CLI 交换公开研究材料和草稿；盘后决策只消费已发布的结构化约束和本地账户状态。下文关于内置 Agents SDK 和指定模型后端的裁决仅适用于早期版本，已被 [ADR 0005](0005-external-research-and-deterministic-admission.md) 取代。另见 [v3 调用边界](../design/architecture/roll_v3_trading_pipeline_spec.md#44-本地-cli-与外部研究助手)。
+> **v3 适用范围。** Roll 采用本地模块化单体，按需调用进程外研究助手处理公开材料。盘后决策读取已发布的研究约束、策略注册状态和本地账户。下文关于内置 Agents SDK 和指定模型后端的裁决仅适用于早期版本。后继决定分别记录研究与生产权限，以及 Roll 的编排职责。[ADR 0005](0005-external-research-and-deterministic-admission.md) · [ADR 0006](0006-roll-orchestrates-research-and-decisions.md)
 
 2026-10-11后端范围修订：用户明确只批准Codex真实审阅，DeepSeek暂不测试且后续忽略。当前仅交付/验收CODEX，以下2026-10-07双后端选择作为历史决定保留，由 v0 范围修订记录（`.scratch/roll-p0/provider-scope-2026-10-11.md`，已归档）覆盖；不删除旧接入证据，也不把排除DeepSeek记为通过。
 

@@ -4,6 +4,70 @@
 
 Markdown 开头可用一对 `---` 包围 YAML 元数据。导入普通 Markdown 时，文件名（不含扩展名）作为草稿版本。发布时需要 `valid_until`，结论时点 `as_of` 缺省为导入时间。证据记录使用 `id`、`title`、`source`、`locator` 和 `url` 或 `document_id`，并可记录发行人、披露时间和实际取得时间。取得时间缺省为导入时间。结构化约束可在 `constraint_basis` 下列出支持它的证据 ID 或研究理由，确认人及发布时刻由发布命令写入。
 
+新发布的档案如设 `fundamental_gate: pass`，须在 `constraint_basis.fundamental_gate.evidence_refs` 引用本档案已登记的对应证据。设 `thesis_status: intact` 或给出非空 `strategy_whitelist` 时，对应字段须引用证据或用 `rationale` 写明人工判断理由。人工判断随发布记录确认人，沿用档案有效期。用 `roll plan --preview` 查看生效档案的逐项依据。
+
+## 离线研究任务
+
+用 `research task run` 固定问题、证据依据、行情快照和带时区的截止时点。下面的 `SNAPSHOT` 和 `AS_OF` 取自本地行情快照与研究截止时间。
+
+```sh
+roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --question "核对经营现金流变化原因" --basis announcement --require "季报" --material report.json
+roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --question "最近交易日的收盘价是多少？" --basis stock-close
+roll research task run 600362.SH --snapshot "$SNAPSHOT" --as-of "$AS_OF" --question "近五日个股相对行业的收益率差是多少？" --basis industry-comparison
+```
+
+公告问题默认使用 `announcement`。每份 `--material` JSON 填写 `title`、`source`、`locator`、`url` 或 `document_id`、实际取得时间 `received_at`，以及原文摘录 `excerpt` 或本地文件路径 `file`。可重复传入 `--material` 和必要公告标题 `--require`。
+
+`stock-close` 核对快照覆盖范围内最近交易日的有效收盘价。`industry-comparison` 取该交易日结束的五个交易日收益率差，需要已确认的行业归属、行业指数和个股连续六个有效收盘价。草稿给出实际区间、数值和冻结行情引用。行情材料取得时间须在任务截止时点以内。缺少所选依据时按尝试返回阻塞缺口。
+
+用 `research task show 任务ID` 重读冻结清单，用 `research task attempt 尝试ID` 重读结果。`research task supplement 任务ID --material report.json` 或 `--snapshot 新快照ID` 生成关联任务。`research task retry 任务ID` 复用冻结清单，用新回执的版本按 `research show 标的 --draft --version 版本` 审阅。
+
+## 选择研究助手
+
+`run`、`retry` 和 `supplement` 在创建每次尝试时选择助手。优先使用本次命令的 `--executor 名称`，其次使用工作台「个股研究 → 研究助手」保存的选择，最后使用当前数据目录的 `research-harnesses.toml` 中的 `default`。全新数据目录默认使用 `offline`。工作台选择「跟随配置」即可恢复文件默认值。CLI 和工作台须使用同一个数据目录。
+
+内置 `codex` 使用原生 CLI。其他助手通过 ACP v1 stdio 注册；下面示例采用 Focus 对 agy 和 dsh 的启动参数。镜像名仅为示例，先将装有对应 CLI 的可信镜像构建或载入本机 Docker，再填入实际名称。Roll 使用镜像 ID 运行，尝试回执保留该 ID。
+
+```toml
+default = "offline"
+
+[acp.agy]
+image = "roll-agy:local"
+command = ["agy", "acp"]
+login_volume = "roll-agy-login"
+
+[acp.dsh]
+image = "roll-dsh:local"
+command = ["dsh", "--profile", "acp"]
+credential_env = "DEEPSEEK_API_KEY"
+```
+
+使用 `agy` 的持久登录时，在同一镜像中完成提供方登录，将专用 Docker 命名卷挂在 `/home/research` 并设置 `HOME=/home/research`。dsh 的例子从启动 Roll 的进程环境读取指定变量。每个镜像应包含 CLI 所需的程序和 profile，支持只读根文件系统以及可写的临时目录和 HOME。凭据值由部署环境管理。
+
+ACP 助手在 Linux 上的独立容器中运行。Roll 只发送冻结的公开输入和草稿格式，关闭客户端文件、终端与 MCP 能力，并拒绝权限申请。容器有自己的回环地址，Roll 数据目录不挂入容器。镜像中的助手原生工具由镜像配置控制；对于只允许访问模型服务的部署，将 `network` 指向已配置出站限制的 Docker 网络。缺省为 Docker 的 `bridge`。选择 `none` 可用于离线助手或协议演练。
+
+例如 `roll research task retry "$TASK_ID" --executor agy` 使用同一份冻结清单产生一次新的尝试。工作台保存为 dsh 后，省略 `--executor` 即使用 dsh。所有执行器共用任务回执、草稿校验和人工发布入口。
+
+## 用 Codex 研究一份公开摘录
+
+在已登录 Codex 的 Ubuntu 24.04 x86_64 主机上，先用 `codex --version` 确认版本为 `codex-cli 0.172.0`。与离线示例使用相同的材料 JSON，在命令中显式选择执行器。`--timeout` 是本次尝试的总秒数，默认 180 秒。
+
+```sh
+roll research task run 600362.SH --executor codex --timeout 180 \
+  --snapshot "$SNAPSHOT" --as-of "$AS_OF" --material report.json \
+  --question "报告第 12 页披露的累计经营活动现金流量净额是多少？"
+```
+
+运行时终端会显示任务 ID 和尝试 ID。另开终端并使用同一数据目录，即可执行以下命令。
+
+```sh
+roll research task attempt "$ATTEMPT_ID"
+roll research task cancel "$ATTEMPT_ID"
+roll research task retry "$TASK_ID" --executor codex --timeout 180
+```
+
+取消后查看 `cancelled` 回执，超时为 `timed_out`，执行者意外退出为 `interrupted`。同输入重试生成独立回执；补材料时用 `research task supplement "$TASK_ID" --executor codex --material 新材料.json`。遇到 `failed` 时，查看 `failure_kind` 与 `error`。`configuration` 提示应检查的安装或登录配置，`cli_exit` 给出服务或运行失败的诊断，`invalid_response` 表示结果未通过格式或证据校验。`log_ref` 和 `input_ref`（如有）均相对于 Roll 数据目录。取得 `draft_ready` 后用回执中的 `draft_version` 审阅，再具名发布。
+
 ## 江西铜业示例
 
 两份草稿基于 2026 年 11 月 26 日核对的公开材料。初版提出盈利兑现假设，刷新版纳入实际回购进展。证据表保存披露日期与材料核对时间，发布命令另行记录实际发布时间。两份示例的有效期分别截至北京时间 2026 年 12 月 1 日和 12 月 4 日零时。

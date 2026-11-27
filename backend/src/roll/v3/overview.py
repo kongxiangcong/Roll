@@ -1,0 +1,453 @@
+"""Aggregated daily overview and non-blocking market sync for the Roll workbench."""
+from decimal import Decimal, InvalidOperation
+import json
+import math
+import threading
+
+from roll.v3.account import AccountLedger
+from roll.v3.market import _SCHEMA as MARKET_SCHEMA, utc_timestamp
+from roll.v3.market_sources import INDUSTRY_PROXY, sync_daily_market
+from roll.v3.plan import PlanLedger
+from roll.v3.research import ResearchDossiers
+from roll.v3.review import DecisionLedger
+from roll.v3.storage import database, ensure_schema, instant
+from roll.v3.strategy import StrategyRegistry
+from roll.v3.watchlist import display_name, list_watchlist
+
+
+BENCHMARK_SYMBOL = "000300.SH"
+INDUSTRY_SYMBOL = "801055.SI"
+
+
+def _dec(value):
+    if value is None:
+        return None
+    try:
+        num = Decimal(str(value))
+    except InvalidOperation:
+        return None
+    return num if num.is_finite() else None
+
+
+def _latest_bars(db, symbol, limit=70):
+    rows = db.execute(
+        """SELECT trade_date, payload, seq FROM observation
+           WHERE series = 'daily_bar' AND symbol = ? AND withdrawn = 0 AND quality = 'usable'
+           ORDER BY trade_date DESC, seq DESC""",
+        (symbol.upper(),),
+    ).fetchall()
+    by_date = {}
+    for row in rows:
+        day = row["trade_date"]
+        if day in by_date:
+            continue
+        payload = json.loads(row["payload"])
+        close = _dec(payload.get("close"))
+        if close is None or close <= 0:
+            continue
+        by_date[day] = {
+            "trade_date": day,
+            "close": float(close),
+            "prior_close": float(_dec(payload.get("pre_close") or payload.get("prior_close")) or 0) or None,
+            "volume": float(_dec(payload.get("volume")) or 0) or None,
+            "amount": float(_dec(payload.get("amount")) or 0) or None,
+        }
+        if len(by_date) >= limit:
+            break
+    return [by_date[day] for day in sorted(by_date)]
+
+
+def _series_metrics(bars):
+    if not bars:
+        return {
+            "trade_date": None, "close": None, "change_pct": None,
+            "return_5d": None, "return_20d": None, "return_60d": None,
+            "volatility_20d": None, "max_drawdown_60d": None, "trend_state": "unknown",
+        }
+    closes = [row["close"] for row in bars]
+    last = bars[-1]
+    prev = closes[-2] if len(closes) >= 2 else last["prior_close"]
+    change_pct = (last["close"] - prev) / prev if prev and prev > 0 else None
+
+    def span_return(days):
+        if len(closes) <= days:
+            return None
+        base = closes[-1 - days]
+        return (closes[-1] - base) / base if base > 0 else None
+
+    vol_20d = None
+    if len(closes) >= 21:
+        rets = [(closes[i] - closes[i - 1]) / closes[i - 1] for i in range(len(closes) - 20, len(closes)) if closes[i - 1] > 0]
+        if len(rets) >= 2:
+            mean = sum(rets) / len(rets)
+            var = sum((r - mean) ** 2 for r in rets) / (len(rets) - 1)
+            vol_20d = math.sqrt(var) * math.sqrt(252)
+
+    mdd_60d = None
+    window = closes[-60:]
+    if len(window) >= 2:
+        peak = window[0]
+        worst = 0.0
+        for price in window:
+            if price > peak:
+                peak = price
+            elif peak > 0:
+                drop = (peak - price) / peak
+                if drop > worst:
+                    worst = drop
+        mdd_60d = worst
+
+    trend_state = "unknown"
+    if len(closes) >= 20:
+        ma20 = sum(closes[-20:]) / 20
+        if len(closes) >= 60:
+            ma60 = sum(closes[-60:]) / 60
+            if closes[-1] > ma20 and ma20 > ma60:
+                trend_state = "uptrend"
+            elif closes[-1] < ma20 and ma20 < ma60:
+                trend_state = "downtrend"
+            else:
+                trend_state = "range"
+        else:
+            trend_state = "uptrend" if closes[-1] > ma20 else "downtrend"
+
+    return {
+        "trade_date": last["trade_date"],
+        "close": round(last["close"], 4),
+        "change_pct": change_pct,
+        "return_5d": span_return(5),
+        "return_20d": span_return(20),
+        "return_60d": span_return(60),
+        "volatility_20d": vol_20d,
+        "max_drawdown_60d": mdd_60d,
+        "trend_state": trend_state,
+    }
+
+
+def _plain_plan_summary(plan):
+    if not plan:
+        return None
+    action = plan.get("action")
+    reasons = plan.get("reasons") or {}
+    p0, p1, p2, p3 = reasons.get("P0", []), reasons.get("P1", []), reasons.get("P2", []), reasons.get("P3", [])
+    if any("SUSPENDED" in code or "CLOSE_UNAVAILABLE" in code for code in p0):
+        return "行情或交易状态受限"
+    if any("RISK_BUDGET_MISSING" in code for code in p1):
+        return "待配置风险预算"
+    if any("LIMIT" in code or "CASH_RESERVE" in code for code in p1):
+        return "触及资金或仓位上限"
+    if any("THESIS_BROKEN" in code or "FUNDAMENTAL_FAIL" in code or "TRIGGER_FIRED" in code for code in p2):
+        return "投资逻辑或门禁受阻"
+    if any("DOSSIER_MISSING" in code or "DOSSIER_EXPIRED" in code for code in p2):
+        return "待更新个股研究结论"
+    if any("THESIS_WATCH" in code or "FUNDAMENTAL_UNKNOWN" in code for code in p2):
+        return "当前维持观察状态"
+    if any("STRATEGY_NOT_ADMITTED" in code or "NO_FEASIBLE_STRATEGY" in code for code in p3):
+        return "策略尚在观察期"
+    if action == "BUY":
+        return f"计划买入 {plan.get('quantity', 0)} 股"
+    if action == "SELL":
+        return f"计划卖出 {plan.get('quantity', 0)} 股"
+    if action == "HOLD":
+        return "维持现有持仓"
+    return "暂无主动交易动作"
+
+
+def build_overview(data_dir, *, book_id="real", as_of=None):
+    cutoff = instant(as_of)
+    cutoff_iso = utc_timestamp(cutoff)
+    watchlist_items = list_watchlist(data_dir)
+    watch_map = {item["symbol"]: item["name"] for item in watchlist_items}
+
+    accounts = AccountLedger(data_dir)
+    account_snap = None
+    try:
+        account_snap = accounts.snapshot(book_id, as_of=cutoff)
+    except ValueError:
+        account_snap = None
+
+    held_symbols = []
+    if account_snap is not None:
+        held_symbols = sorted({lot.symbol for lot in account_snap.lots} | {r.symbol for r in account_snap.receivables})
+
+    ordered_symbols = list(dict.fromkeys([*(item["symbol"] for item in watchlist_items), *held_symbols]))
+
+    with database(data_dir) as db:
+        ensure_schema(db, MARKET_SCHEMA)
+        benchmark_metrics = _series_metrics(_latest_bars(db, BENCHMARK_SYMBOL))
+        etf_metrics = _series_metrics(_latest_bars(db, INDUSTRY_PROXY))
+        industry_metrics = _series_metrics(_latest_bars(db, INDUSTRY_SYMBOL))
+        symbol_metrics = {symbol: _series_metrics(_latest_bars(db, symbol)) for symbol in ordered_symbols}
+
+    trade_dates = [
+        m["trade_date"] for m in [benchmark_metrics, etf_metrics, *symbol_metrics.values()]
+        if m["trade_date"]
+    ]
+    latest_trade_date = max(trade_dates) if trade_dates else None
+
+    # Account summary
+    holdings_by_symbol = {}
+    cost_by_symbol = {}
+    lots_view = []
+    receivables_view = []
+    holdings_value = 0.0
+    receivables_value = 0.0
+    total_cost = 0.0
+    has_full_cost = True
+    if account_snap is not None:
+        for lot in account_snap.lots:
+            holdings_by_symbol[lot.symbol] = holdings_by_symbol.get(lot.symbol, 0) + lot.quantity
+            price = (symbol_metrics.get(lot.symbol) or {}).get("close")
+            mv = price * lot.quantity if price is not None else None
+            if mv is not None:
+                holdings_value += mv
+            cost_val = float(lot.cost) if lot.cost is not None else None
+            if cost_val is not None:
+                total_cost += cost_val
+                cost_by_symbol[lot.symbol] = cost_by_symbol.get(lot.symbol, 0.0) + cost_val
+            else:
+                has_full_cost = False
+            lots_view.append({
+                "symbol": lot.symbol,
+                "name": display_name(lot.symbol, watch_map.get(lot.symbol)),
+                "quantity": lot.quantity,
+                "acquired_on": lot.acquired_on,
+                "sellable_quantity": lot.sellable_quantity(cutoff.date()),
+                "cost": cost_val,
+                "market_value": round(mv, 2) if mv is not None else None,
+            })
+        for rec in account_snap.receivables:
+            val = float(rec.amount)
+            if rec.quantity:
+                price = (symbol_metrics.get(rec.symbol) or {}).get("close")
+                if price is not None:
+                    val += price * rec.quantity
+            receivables_value += val
+            receivables_view.append({
+                "symbol": rec.symbol,
+                "name": display_name(rec.symbol, watch_map.get(rec.symbol)),
+                "kind": rec.kind,
+                "amount": float(rec.amount),
+                "quantity": rec.quantity,
+                "due_date": rec.due_date,
+            })
+        cash = float(account_snap.cash)
+        available_cash = float(account_snap.available_cash) if account_snap.available_cash is not None else None
+        total_nav = cash + holdings_value + receivables_value
+        position_ratio = holdings_value / total_nav if total_nav > 0 else 0.0
+        unrealized_pnl = (holdings_value - total_cost) if (holdings_by_symbol and has_full_cost and total_cost > 0) else None
+        unrealized_pnl_pct = (unrealized_pnl / total_cost) if unrealized_pnl is not None and total_cost > 0 else None
+        budget = account_snap.risk_budget
+        account_summary = {
+            "initialized": True,
+            "book_id": book_id,
+            "cash": round(cash, 2),
+            "available_cash": round(available_cash, 2) if available_cash is not None else None,
+            "holdings_value": round(holdings_value, 2),
+            "receivables_value": round(receivables_value, 2),
+            "total_nav": round(total_nav, 2),
+            "position_ratio": position_ratio,
+            "unrealized_pnl": round(unrealized_pnl, 2) if unrealized_pnl is not None else None,
+            "unrealized_pnl_pct": unrealized_pnl_pct,
+            "risk_budget": {
+                "cash_reserve": float(budget.cash_reserve),
+                "max_total_exposure": float(budget.max_total_exposure),
+                "max_symbol_exposure": float(budget.max_symbol_exposure),
+                "max_industry_exposure": float(budget.max_industry_exposure),
+                "expires_at": budget.expires_at,
+            } if budget else None,
+            "lots": lots_view,
+            "receivables": receivables_view,
+        }
+    else:
+        total_nav = 0.0
+        account_summary = {
+            "initialized": False, "book_id": book_id, "cash": None, "available_cash": None,
+            "holdings_value": 0.0, "receivables_value": 0.0, "total_nav": None, "position_ratio": None,
+            "unrealized_pnl": None, "unrealized_pnl_pct": None, "risk_budget": None, "lots": [], "receivables": [],
+        }
+
+    dossiers = ResearchDossiers(data_dir)
+    plans = PlanLedger(data_dir)
+    registry = StrategyRegistry(data_dir)
+    active_plans = plans.active(book_id)
+    latest_plan_by_symbol = {}
+    for item in active_plans:
+        latest_plan_by_symbol[item["symbol"]] = item
+
+    watchlist_rows = []
+    for symbol in ordered_symbols:
+        m = symbol_metrics[symbol]
+        shares = holdings_by_symbol.get(symbol, 0)
+        mv = (m["close"] * shares) if (m["close"] is not None and shares) else 0.0
+        pos_ratio = (mv / total_nav) if total_nav > 0 else 0.0
+        dossier = dossiers.active(symbol, cutoff_iso)
+        effective = dossier or dossiers.effective_version(symbol, cutoff_iso)
+        if dossier:
+            dossier_view = {
+                "status": "active",
+                "version": dossier["version"],
+                "fundamental_gate": dossier.get("fundamental_gate", "unknown"),
+                "thesis_status": dossier.get("thesis_status", "unknown"),
+                "hypothesis": dossier.get("hypothesis"),
+                "valid_until": dossier.get("valid_until"),
+            }
+        elif effective:
+            dossier_view = {
+                "status": "expired",
+                "version": effective["version"],
+                "fundamental_gate": effective.get("fundamental_gate", "unknown"),
+                "thesis_status": effective.get("thesis_status", "unknown"),
+                "hypothesis": effective.get("hypothesis"),
+                "valid_until": effective.get("valid_until"),
+            }
+        else:
+            dossier_view = {
+                "status": "missing", "version": None, "fundamental_gate": "unknown",
+                "thesis_status": "unknown", "hypothesis": None, "valid_until": None,
+            }
+
+        plan = latest_plan_by_symbol.get(symbol)
+        strategies = registry.for_symbol(symbol, cutoff_iso, include_ineligible=True)
+        admitted = [s for s in strategies if s["production_eligible"]]
+        accepted = [s for s in strategies if s["status"] == "accepted"]
+        rel_bench = (
+            (m["return_20d"] - benchmark_metrics["return_20d"])
+            if (m["return_20d"] is not None and benchmark_metrics["return_20d"] is not None) else None
+        )
+        rel_ind = (
+            (m["return_20d"] - industry_metrics["return_20d"])
+            if (m["return_20d"] is not None and industry_metrics["return_20d"] is not None) else None
+        )
+        watchlist_rows.append({
+            "symbol": symbol,
+            "name": display_name(symbol, watch_map.get(symbol)),
+            "in_watchlist": symbol in watch_map,
+            "trade_date": m["trade_date"],
+            "close": m["close"],
+            "change_pct": m["change_pct"],
+            "holding_shares": shares,
+            "position_ratio": pos_ratio,
+            "metrics": {**m, "rel_benchmark_20d": rel_bench, "rel_industry_20d": rel_ind},
+            "dossier": dossier_view,
+            "latest_plan": {
+                "action": plan["action"],
+                "quantity": plan["quantity"],
+                "session": plan["session"],
+                "summary": _plain_plan_summary(plan),
+            } if plan else None,
+            "strategy": {
+                "total": len(strategies),
+                "admitted": len(admitted),
+                "accepted": len(accepted),
+                "status": "admitted" if admitted else "accepted" if accepted else ("frozen" if strategies else "none"),
+            },
+            "probability": None,
+        })
+
+    # Review todos (concise actionable reminders)
+    decisions = DecisionLedger(data_dir)
+    recent_reviews = decisions.registrations(book_id=book_id, as_of=cutoff_iso)
+    todos = []
+    latest_review = recent_reviews[-1] if recent_reviews else None
+    if latest_review:
+        for entry in latest_review["plans"]:
+            actual_status = entry["actual"]["status"]
+            if entry["shadow"] is None:
+                todos.append({
+                    "kind": "settle",
+                    "symbol": entry["symbol"],
+                    "name": display_name(entry["symbol"], watch_map.get(entry["symbol"])),
+                    "decision_date": latest_review["decision_date"],
+                    "registration_id": latest_review["registration_id"],
+                    "label": "待结算影子",
+                })
+            elif actual_status in ("PENDING", "UNREPORTED"):
+                todos.append({
+                    "kind": "outcome",
+                    "symbol": entry["symbol"],
+                    "name": display_name(entry["symbol"], watch_map.get(entry["symbol"])),
+                    "decision_date": latest_review["decision_date"],
+                    "registration_id": latest_review["registration_id"],
+                    "label": "待确认执行",
+                })
+    if not todos:
+        todos.append({
+            "kind": "register",
+            "symbol": ordered_symbols[0] if ordered_symbols else "600362.SH",
+            "name": display_name(ordered_symbols[0], watch_map.get(ordered_symbols[0])) if ordered_symbols else "江西铜业",
+            "decision_date": latest_trade_date,
+            "registration_id": None,
+            "label": "登记今日盘后计划" if account_summary["initialized"] else "待初始化账户",
+        })
+
+    return {
+        "trade_date": latest_trade_date,
+        "as_of": cutoff_iso,
+        "market_env": {
+            "benchmark": {"symbol": BENCHMARK_SYMBOL, "name": "沪深 300", **benchmark_metrics},
+            "sector_etf": {"symbol": INDUSTRY_PROXY, "name": "有色金属 ETF", **etf_metrics},
+            "industry": {"symbol": INDUSTRY_SYMBOL, "name": "申万工业金属", **industry_metrics},
+            "sentiment": None,
+            "broad_etf_flow": None,
+        },
+        "account_summary": account_summary,
+        "watchlist": watchlist_rows,
+        "review_todos": todos[:4],
+    }
+
+
+class MarketSyncRunner:
+    """Non-blocking daily market sync runner that never invokes any research harness."""
+
+    def __init__(self, data_dir, *, sync_fn=sync_daily_market):
+        self.data_dir = data_dir
+        self._sync_fn = sync_fn
+        self._lock = threading.Lock()
+        self._state = {
+            "status": "idle", "last_synced_at": None, "appended": 0,
+            "symbols": [], "error": None,
+        }
+
+    def status(self):
+        with self._lock:
+            return dict(self._state)
+
+    def start(self, symbols=None, *, start="2020-01-02", refresh=False):
+        with self._lock:
+            if self._state["status"] == "running":
+                return dict(self._state)
+            chosen = list(dict.fromkeys([
+                *(s.upper() for s in (symbols or [item["symbol"] for item in list_watchlist(self.data_dir)])),
+                BENCHMARK_SYMBOL,
+                INDUSTRY_PROXY,
+            ]))
+            self._state = {
+                "status": "running", "last_synced_at": self._state["last_synced_at"],
+                "appended": 0, "symbols": chosen, "error": None,
+            }
+
+        def _worker():
+            try:
+                result = self._sync_fn(self.data_dir, symbols=chosen, start=start, refresh=refresh)
+                with self._lock:
+                    self._state = {
+                        "status": "done",
+                        "last_synced_at": utc_timestamp(None),
+                        "appended": result.get("appended", 0),
+                        "symbols": chosen,
+                        "error": None if not result.get("failures") else f"{len(result['failures'])} 项区间未拉取成功",
+                    }
+            except Exception as error:
+                with self._lock:
+                    self._state = {
+                        "status": "error",
+                        "last_synced_at": self._state["last_synced_at"],
+                        "appended": 0,
+                        "symbols": chosen,
+                        "error": str(error),
+                    }
+
+        thread = threading.Thread(target=_worker, name="roll-market-sync", daemon=True)
+        thread.start()
+        return self.status()

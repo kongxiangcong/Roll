@@ -47,6 +47,25 @@ def _fingerprint(value):
     return sha256(json_text(value).encode()).hexdigest()
 
 
+def default_trend_definition(*, fast=20, slow=60, acceptance_start=None, acceptance_end=None):
+    """Read the versioned default trend specification and protocol without registering them."""
+    if not 0 < fast < slow:
+        raise ValueError("均线窗口须满足 0 < fast < slow")
+    protocol = json.loads(_DEFAULT_PROTOCOL.read_text(encoding="utf-8"))
+    strategy = protocol.pop("strategy")
+    strategy["parameters"] = {"fast": fast, "slow": slow}
+    window = protocol["windows"]["acceptance"]
+    start, end = _date_window(acceptance_start or window["start"], acceptance_end or window["end"])
+    if start <= protocol["windows"]["development"]["end"]:
+        raise ValueError("验收窗口须晚于开发窗口")
+    protocol["windows"]["acceptance"] = {"start": start, "end": end}
+    version = f"{protocol['family']}-{_fingerprint({'strategy': strategy, **protocol})[:16]}"
+    strategy["version"] = version
+    protocol["strategy_version"] = version
+    protocol["version"] = f"protocol-{_fingerprint(protocol)[:16]}"
+    return strategy, protocol
+
+
 def _run(row, as_of=None):
     result = dict(row)
     result["independent"] = bool(row["independent"])
@@ -161,20 +180,10 @@ class StrategyRegistry:
     def freeze_default(self, *, fast=20, slow=60, frozen_at=None,
                        acceptance_start=None, acceptance_end=None):
         """Register an immutable trend candidate. Identical re-registration keeps its version."""
-        if not 0 < fast < slow:
-            raise ValueError("均线窗口须满足 0 < fast < slow")
-        definition = json.loads(_DEFAULT_PROTOCOL.read_text(encoding="utf-8"))
-        strategy = definition.pop("strategy")
-        strategy["parameters"] = {"fast": fast, "slow": slow}
-        window = definition["windows"]["acceptance"]
-        start, end = _date_window(acceptance_start or window["start"], acceptance_end or window["end"])
-        if start <= definition["windows"]["development"]["end"]:
-            raise ValueError("验收窗口须晚于开发窗口")
-        definition["windows"]["acceptance"] = {"start": start, "end": end}
-        version = f"{definition['family']}-{_fingerprint({'strategy': strategy, **definition})[:16]}"
-        strategy["version"] = version
-        definition["strategy_version"] = version
-        definition["version"] = f"protocol-{_fingerprint(definition)[:16]}"
+        strategy, definition = default_trend_definition(
+            fast=fast, slow=slow, acceptance_start=acceptance_start, acceptance_end=acceptance_end,
+        )
+        version = strategy["version"]
         frozen_at = utc_timestamp(frozen_at)
         with database(self.data_dir) as db:
             db.executescript(_SCHEMA)
@@ -364,7 +373,7 @@ def _number(value):
     return number if number.is_finite() else None
 
 
-def _economic_close(bar, factors):
+def trend_economic_close(bar, factors):
     close = _number(bar.get("close"))
     if close is None or close <= 0:
         return None, "close"
@@ -388,6 +397,24 @@ def _economic_close(bar, factors):
     if rights:
         return None, "rights_issue"
     return close * (1 + bonus) + cash, None
+
+
+def evaluate_trend_window(window, parameters):
+    """Evaluate the frozen trend over a complete window of raw and economic closes."""
+    index = [Decimal(100)]
+    previous_close = window[0][1]
+    for _, close, economic_close in window[1:]:
+        level = index[-1]
+        index.append(level if economic_close == previous_close else level * economic_close / previous_close)
+        previous_close = close
+    fast_average = sum(index[-parameters["fast"]:]) / parameters["fast"]
+    slow_average = sum(index) / parameters["slow"]
+    rising = fast_average > slow_average
+    return {
+        "status": "ready", "signal": "long" if rising else "flat", "target_fraction": "1" if rising else "0",
+        "conditions": {"fast_average": format(fast_average, "f"), "slow_average": format(slow_average, "f"),
+                       "above_slow_average": rising, "base_session": window[0][0]},
+    }
 
 
 def _bars_start(snapshot, symbol, fallback):
@@ -440,11 +467,11 @@ def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of, *, db=None
     for row in factors:
         factors_by_day.setdefault(row["trade_date"], []).append(row["payload"])
 
-    index = []
-    previous_close = None
+    valid_window = []
     for session in window:
         bar = bars_by_day.get(session)
         close = _number(bar.get("close")) if bar else None
+        economic_close = close
         if bar is None:
             reason = "daily_bar"
         elif bar.get("trading_status") != "trading":
@@ -453,37 +480,19 @@ def _signal(data_dir, strategy, snapshot, symbol, day, window, as_of, *, db=None
             reason = "close"
         elif session == window[0]:
             reason = None
-            index.append(Decimal(100))
         else:
-            economic_close, reason = _economic_close(bar, factors_by_day.get(session, []))
-            if reason is None and previous_close is not None and index:
-                level = index[-1]
-                index.append(level if economic_close == previous_close else level * economic_close / previous_close)
+            economic_close, reason = trend_economic_close(bar, factors_by_day.get(session, []))
         if reason:
             result["missing"].append({"trade_date": session, "reason": reason})
-        previous_close = close
+        else:
+            valid_window.append((session, close, economic_close))
 
     result["available_sessions"] = len(window) - len(result["missing"])
     if result["missing"]:
         return result
-    if len(index) < parameters["slow"]:
+    if len(valid_window) < parameters["slow"]:
         return {**result, "status": "warmup"}
-
-    fast_average = sum(index[-parameters["fast"]:]) / parameters["fast"]
-    slow_average = sum(index) / parameters["slow"]
-    rising = fast_average > slow_average
-    return {
-        **result,
-        "status": "ready",
-        "signal": "long" if rising else "flat",
-        "target_fraction": "1" if rising else "0",
-        "conditions": {
-            "fast_average": format(fast_average, "f"),
-            "slow_average": format(slow_average, "f"),
-            "above_slow_average": rising,
-            "base_session": window[0],
-        },
-    }
+    return {**result, **evaluate_trend_window(valid_window, parameters)}
 
 
 def replay_signals(data_dir, version, snapshot_id, *, symbol, start, end, registered_at=None):

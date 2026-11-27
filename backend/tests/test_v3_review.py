@@ -198,6 +198,17 @@ def test_triggering_frozen_hypothesis_adds_a_linked_research_followup(tmp_path, 
 version: copper
 valid_until: "2026-12-15T00:00:00+08:00"
 fundamental_gate: pass
+evidence:
+  - id: quarterly-report
+    title: 演练用季报
+    source: 测试材料
+    document_id: quarterly-report
+    locator: 合并现金流量表
+constraint_basis:
+  fundamental_gate:
+    evidence_refs: [quarterly-report]
+  thesis_status:
+    rationale: 演练假设由研究者定期复核
 thesis_status: intact
 hypothesis: 价格维持十元以下
 invalidation_triggers:
@@ -404,6 +415,17 @@ def test_a_structured_research_pause_blocks_a_strategy_sale_but_keeps_the_risk_e
         path.write_text(f"""---
 valid_until: "2026-12-15T00:00:00+08:00"
 fundamental_gate: pass
+evidence:
+  - id: quarterly-report
+    title: 演练用季报
+    source: 测试材料
+    document_id: quarterly-report
+    locator: 合并现金流量表
+constraint_basis:
+  fundamental_gate:
+    evidence_refs: [quarterly-report]
+  thesis_status:
+    rationale: 演练假设由研究者定期复核
 thesis_status: {thesis}
 invalidation_triggers:
   - id: cash-pause

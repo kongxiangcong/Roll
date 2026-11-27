@@ -318,6 +318,7 @@ def _research(dossier, as_of, security):
                 reasons.append(f"TRIGGER_FIRED:{name}")
                 exit_required |= effect in ("risk_exit", "exit")
     result.update(status="active", fundamental_gate=gate, thesis_status=thesis, triggers=triggers,
+                  constraint_basis=dossier.get("constraint_basis", {}), reviewer=dossier.get("reviewer"),
                   evidence_refs=dossier.get("evidence_refs", ()),
                   strategy_whitelist=dossier.get("strategy_whitelist", ()))
     return result, reasons, exit_required
