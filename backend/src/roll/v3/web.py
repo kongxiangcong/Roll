@@ -180,6 +180,7 @@ class EtfReportInput(BaseModel):
     use_mode: str = LIVE_RUN
     max_seq: int | None = Field(default=None, ge=0)
     captured_at: str | None = None
+    disclosure_cutoff: str | None = None
 
 
 def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=sync_daily_market):

@@ -4,10 +4,12 @@ import json
 from pathlib import Path
 
 from roll.v3.etf import freeze_etf_snapshot, read_etf_day
-from roll.v3.etf_basket_versions import append_comparison_basket
-from roll.v3.etf_observations import ETF_SERIES
+from roll.v3.etf_basket_versions import append_comparison_basket, get_fixed_basket
+from roll.v3.etf_disclosures import etf_disclosure_scope, read_etf_disclosures
+from roll.v3.etf_observations import DISCLOSURE_SERIES, ETF_SERIES
 from roll.v3.etf_replay import freeze_etf_report, replay_etf_report
-from roll.v3.market import LIVE_RUN, USE_MODES, append_observations
+from roll.v3.market import LIVE_RUN, USE_MODES, append_observations, freeze_snapshot
+from roll.v3.storage import instant
 
 
 def _sync(args, data_dir):
@@ -37,7 +39,7 @@ def _read(args, data_dir):
 def _freeze_report(args, data_dir):
     return freeze_etf_report(data_dir, trade_date=args.date, basket_version=args.basket_version,
                              as_of=args.as_of, use_mode=args.use_mode, max_seq=args.max_seq,
-                             captured_at=args.captured_at)
+                             captured_at=args.captured_at, disclosure_cutoff=args.disclosure_cutoff)
 
 
 def _replay_report(args, data_dir):
@@ -52,6 +54,7 @@ def _import_basket(args, data_dir):
 def register_etf(subparsers):
     etf = subparsers.add_parser('etf', help='ETF 日终份额、单位净值与净申赎估算')
     commands = etf.add_subparsers(required=True)
+    _register_disclosures(commands)
 
     sync = commands.add_parser('sync', help='同步交易所份额及扶摇单位净值，冻结可用结果')
     sync.add_argument('symbols', nargs='+', help='如 510300.SH 或 159915.SZ')
@@ -94,6 +97,7 @@ def register_etf(subparsers):
     freeze_report.add_argument('--use-mode', choices=USE_MODES, default=LIVE_RUN)
     freeze_report.add_argument('--max-seq', type=int, help='使用指定的输入水位')
     freeze_report.add_argument('--captured-at', help='使用指定的补采水位时刻')
+    freeze_report.add_argument('--disclosure-cutoff', help='沿用已显示的较早披露截止时刻')
     freeze_report.set_defaults(handler=_freeze_report)
 
     replay_report = commands.add_parser('replay-report', help='凭报表引用离线复算宽基 ETF 日报')
@@ -103,3 +107,53 @@ def register_etf(subparsers):
     import_basket = commands.add_parser('import-basket', help='追加附成员身份及获知时刻的 ETF 对照篮子 JSON')
     import_basket.add_argument('file')
     import_basket.set_defaults(handler=_import_basket)
+
+
+def _import_disclosures(args, data_dir):
+    with Path(args.file).open(encoding='utf-8') as incoming:
+        rows = json.load(incoming, parse_float=str)
+    if not isinstance(rows, list) or any(
+            not isinstance(row, dict) or row.get('series') not in DISCLOSURE_SERIES for row in rows):
+        raise ValueError('ETF 披露导入需要由定期报告或增持公告观察项组成的 JSON 数组')
+    return append_observations(data_dir, rows)
+
+
+def _freeze_disclosures(args, data_dir):
+    basket = get_fixed_basket()
+    return freeze_snapshot(
+        data_dir, as_of=instant(args.as_of), use_mode=args.use_mode,
+        scope=etf_disclosure_scope([member['symbol'] for member in basket['members']], args.end),
+    )
+
+
+def _read_disclosures(args, data_dir):
+    return read_etf_disclosures(data_dir, args.snapshot_id, members=get_fixed_basket()['members'],
+                                trade_date=args.date, cutoff=args.cutoff)
+
+
+def _register_disclosures(commands):
+    disclosures = commands.add_parser('disclosures', help='ETF 定期持仓报告与已核实增持公告')
+    actions = disclosures.add_subparsers(required=True)
+
+    ingest = actions.add_parser(
+        'import', help='追加已经核验原件与时间的披露观察项 JSON',
+        description='导入 market 观察项数组。etf_holding_report 使用基金代码及报告期末，'
+        'payload 标注 comparable_named_holders 和 holders。etf_disclosure_event 使用 '
+        'ETF-DISCLOSURES 及原件披露日，payload.scope 为 etf_category、index 或 fund。'
+        'available_at 只填已核实的公开时刻，只有日期时使用 payload.disclosed_date。'
+        'received_at 保存本次实际取得时刻。',
+    )
+    ingest.add_argument('file')
+    ingest.set_defaults(handler=_import_disclosures)
+
+    freeze = actions.add_parser('freeze', help='冻结宽基 ETF 披露的输入范围与水位')
+    freeze.add_argument('--end', required=True)
+    freeze.add_argument('--as-of')
+    freeze.add_argument('--use-mode', choices=USE_MODES, default=LIVE_RUN)
+    freeze.set_defaults(handler=_freeze_disclosures)
+
+    read = actions.add_parser('read', help='按冻结水位、观察日和截止时刻核对披露与规则池')
+    read.add_argument('snapshot_id')
+    read.add_argument('--date', required=True)
+    read.add_argument('--cutoff')
+    read.set_defaults(handler=_read_disclosures)

@@ -7,6 +7,7 @@ from decimal import Decimal, ROUND_HALF_UP, localcontext
 from roll.market.calendar import is_session, latest_session
 from roll.v3.etf import etf_snapshot_scope, previous_etf_session, read_etf_days
 from roll.v3.etf_basket_versions import FIXED_BASKET_VERSION, get_fixed_basket, resolve_comparison_basket
+from roll.v3.etf_disclosures import etf_disclosure_day_cutoff, etf_disclosure_scope, read_etf_disclosures
 from roll.v3.etf_observations import etf_visible_at
 from roll.v3.market import LIVE_RUN, RECONSTRUCTED_RESEARCH, _SCHEMA as MARKET_SCHEMA, prepare_snapshot, utc_timestamp
 from roll.v3.storage import database, ensure_schema, instant, sessions
@@ -158,8 +159,29 @@ def _field_dates_and_complete_report(report, candidates, members, read_day):
     return {field: latest_fields.get(field) for field in _DAILY_FIELDS}, latest_complete_date
 
 
+def attach_etf_disclosures(data_dir, report, *, snapshot, members, trade_date, cutoff=None, db=None):
+    """Pair fixed and point-in-time fund contributions without changing their inputs."""
+    disclosures = read_etf_disclosures(data_dir, snapshot, members=members, trade_date=trade_date,
+                                       cutoff=cutoff, db=db)
+    pool = disclosures['rule_pool']
+    included = {member['symbol'] for member in pool['members']}
+    disclosed = _daily_report(trade_date, [row for row in report['funds'] if row['symbol'] in included])
+    disclosed['basket'] = {
+        'version': pool['version'], 'name': pool['name'],
+        'member_count': pool['member_count'], 'eligibility_catalog_version': report['basket']['version'],
+    }
+    return {
+        **report,
+        'comparison_baskets': {
+            'fixed': {'basket': report['basket'], 'summary': report['summary']},
+            'disclosed': disclosed,
+        },
+        'disclosures': {key: value for key, value in disclosures.items() if key != 'snapshot'},
+    }
+
+
 def prepare_etf_report(data_dir, *, db, trade_date=None, basket_version=None, as_of=None,
-                       use_mode=LIVE_RUN, max_seq=None, captured_at=None):
+                       use_mode=LIVE_RUN, max_seq=None, captured_at=None, disclosure_cutoff=None):
     """Pin the input and identity versions while reading a single SQLite transaction."""
     viewed = instant(as_of)
     cutoff = utc_timestamp(viewed)
@@ -178,7 +200,7 @@ def prepare_etf_report(data_dir, *, db, trade_date=None, basket_version=None, as
         raise ValueError('请选择已收盘的交易日')
     selected = selected.isoformat()
     snapshot = prepare_snapshot(data_dir, as_of=captured, use_mode=use_mode, db=db,
-                                scope=etf_snapshot_scope(symbols, selected, selected))
+                                scope=etf_disclosure_scope(symbols, selected))
     if max_seq is not None:
         if not 0 <= max_seq <= snapshot['max_seq']:
             raise ValueError('ETF 报表的输入水位超出当前数据库')
@@ -186,9 +208,15 @@ def prepare_etf_report(data_dir, *, db, trade_date=None, basket_version=None, as
     candidates = _candidate_dates(db, members, selected, cutoff, snapshot)
     day = selected if trade_date else next(iter(candidates), selected)
     start = min(day, *candidates) if candidates else day
-    scope = etf_snapshot_scope(symbols, start, day)
+    scope = etf_snapshot_scope(symbols, start, day) + etf_disclosure_scope(symbols, day)
+    if disclosure_cutoff is not None:
+        disclosure_cutoff = utc_timestamp(disclosure_cutoff)
+        if disclosure_cutoff > cutoff:
+            raise ValueError('ETF 披露截止时刻不能晚于报表截止时刻')
+    else:
+        disclosure_cutoff = cutoff if as_of else min(cutoff, utc_timestamp(etf_disclosure_day_cutoff(day)))
     return {
-        'trade_date': day, 'cutoff': cutoff, 'basket': basket,
+        'trade_date': day, 'cutoff': cutoff, 'basket': basket, 'disclosure_cutoff': disclosure_cutoff,
         'snapshot': {**snapshot, 'scope': scope}, 'calculation_version': ETF_CALCULATION_VERSION,
     }
 
@@ -208,7 +236,7 @@ def read_etf_report(data_dir, context, *, db):
     report = read_day(day)
     candidates = _candidate_dates(db, members, day, cutoff, snapshot)
     latest_fields, latest_complete = _field_dates_and_complete_report(report, candidates, members, read_day)
-    return {
+    report = {
         **report, 'basket': {key: value for key, value in basket.items() if key != 'members'},
         'as_of': cutoff, 'view_date': instant(cutoff).date().isoformat(), 'use_mode': snapshot['use_mode'],
         'snapshot': snapshot, 'calculation_version': context['calculation_version'],
@@ -218,6 +246,10 @@ def read_etf_report(data_dir, context, *, db):
         ),
         'latest_fields': latest_fields, 'latest_complete_date': latest_complete,
     }
+    if 'disclosure_cutoff' in context:
+        return attach_etf_disclosures(data_dir, report, snapshot=snapshot, members=members, trade_date=day,
+                                      cutoff=context['disclosure_cutoff'], db=db)
+    return report
 
 
 def build_etf_daily_report(data_dir, **options):

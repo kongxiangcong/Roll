@@ -77,6 +77,7 @@ export function renderEtfReplay({ api, themeState, refresh, selectTradeDate }, r
         trade_date: report.trade_date, basket_version: report.basket.version,
         as_of: report.as_of, use_mode: report.use_mode,
         max_seq: report.snapshot.max_seq, captured_at: report.snapshot.as_of,
+        disclosure_cutoff: report.disclosures?.cutoff,
       },
     }), freeze),
   }, "冻结当前报表");

@@ -8,7 +8,8 @@ import json
 
 from roll.market.calendar import is_session
 from roll.v3.etf_observations import (
-    ETF_SELECTION_RULES, ETF_SERIES, etf_observation, etf_visible_at, select_etf_observation,
+    DISCLOSURE_SELECTION_RULES, DISCLOSURE_SERIES, ETF_SELECTION_RULES, ETF_SERIES, disclosure_observation,
+    etf_observation, etf_visible_at, select_etf_observation,
 )
 from roll.v3.storage import SHANGHAI, database, ensure_schema, instant
 
@@ -79,6 +80,8 @@ def append_observations(data_dir, observations):
             series = item['series']
             if series in ETF_SERIES:
                 item = etf_observation(item)
+            elif series in DISCLOSURE_SERIES:
+                item = disclosure_observation(item)
             item_id = item.get('item_id', '')
             payload = item.get('payload', {})
             if series == 'research_feature':
@@ -143,7 +146,12 @@ def prepare_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAUL
         raise ValueError('快照需要有效的输入区间')
     normalized = [dict(series=series, symbol=symbol, start=start, end=end)
                   for series, symbol, start, end in scope]
-    rules = ETF_SELECTION_RULES if any(series in ETF_SERIES for series, *_ in scope) else SELECTION_RULES_VERSION
+    all_series = {series for series, *_ in scope}
+    rules = SELECTION_RULES_VERSION
+    if all_series.intersection(DISCLOSURE_SERIES):
+        rules = DISCLOSURE_SELECTION_RULES
+    elif all_series.intersection(ETF_SERIES):
+        rules = ETF_SELECTION_RULES
     with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
         return {
@@ -203,7 +211,7 @@ def _snapshot(db, snapshot_id):
     result = dict(row)
     result['scope'] = json.loads(result['scope'])
     result['source_priority'] = json.loads(result['source_priority'])
-    if result['selection_rules_version'] not in (SELECTION_RULES_VERSION, ETF_SELECTION_RULES):
+    if result['selection_rules_version'] not in (SELECTION_RULES_VERSION, ETF_SELECTION_RULES, DISCLOSURE_SELECTION_RULES):
         raise ValueError(f"未知选源规则 {result['selection_rules_version']}")
     return result
 
@@ -233,11 +241,11 @@ def _observations(db, snapshot, scope):
 
 def _uses_etf_rules(row, snapshot):
     return (row['series'] in ETF_SERIES
-            and snapshot.get('selection_rules_version') == ETF_SELECTION_RULES)
+            and snapshot.get('selection_rules_version') in (ETF_SELECTION_RULES, DISCLOSURE_SELECTION_RULES))
 
 
 def _visible_at(row, snapshot):
-    if _uses_etf_rules(row, snapshot):
+    if row['series'] in DISCLOSURE_SERIES or _uses_etf_rules(row, snapshot):
         return etf_visible_at(row, snapshot)
     verified = row['available_at'] if row['available_evidence'] else None
     mode = snapshot['use_mode']
