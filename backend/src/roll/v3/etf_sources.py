@@ -63,12 +63,15 @@ def _sse_shares(client, day, symbols):
         symbol = item['SEC_CODE'] + '.SH'
         if symbol not in symbols:
             continue
-        if item['STAT_DATE'] != day:
-            raise ValueError('上交所基金规模表统计日期与请求日期不符')
-        yield _observation(source='sse', series='etf_shares', symbol=symbol, day=day,
+        observed_day = str(date.fromisoformat(item['STAT_DATE']))
+        row = _observation(source='sse', series='etf_shares', symbol=symbol, day=day,
                            raw_date=item['STAT_DATE'], raw_value=item['TOT_VOL'], raw_unit='万份',
                            source_ref=str(response.request.url), received=received, multiplier=10_000,
                            evidence='上交所日终清算后基金规模表，STAT_DATE / TOT_VOL（万份）')
+        if observed_day != day:
+            row['quality'] = 'date_mismatch'
+            row['payload']['source_date'] = observed_day
+        yield row
 
 
 def _excel_text(node):
@@ -154,7 +157,7 @@ def _fuyao_nav(client, token, symbol, days, today):
                            evidence='扶摇历史单位净值，nav_date / unit_nav（元/份）')
 
 
-def _record_result(data_dir, rows, expected):
+def _record_result(data_dir, rows, expected, error=None):
     by_key = defaultdict(list)
     for row in rows:
         by_key[row['symbol'], row['trade_date']].append(row)
@@ -163,7 +166,7 @@ def _record_result(data_dir, rows, expected):
     for symbol, day in expected:
         items = by_key[symbol, day]
         if not items:
-            gaps.append({'symbol': symbol, 'trade_date': day, 'error': '来源未返回该日'})
+            gaps.append({'symbol': symbol, 'trade_date': day, 'error': error or '来源未返回该日'})
             continue
         row = items[0]
         if any(item['payload'] != row['payload'] for item in items[1:]):
@@ -205,9 +208,13 @@ def sync_etf_market(data_dir, *, symbols, start, end, refresh=False):
     appended = 0
     if any(sse.values()) or szse or any(nav.values()):
         token = None
+        token_error = None
         if any(nav.values()):
-            load_runtime_environment()
-            token = os.environ.get('FUYAO_API_KEY')
+            try:
+                load_runtime_environment()
+                token = os.environ.get('FUYAO_API_KEY')
+            except ValueError as error:
+                token_error = str(error)
         with httpx.Client() as client:
             operations = []
             for day, codes in sse.items():
@@ -218,16 +225,24 @@ def sync_etf_market(data_dir, *, symbols, start, end, refresh=False):
                 operations.append(('szse', 'etf_shares', _szse_shares(client, szse),
                                    [(symbol, day) for symbol, dates in szse.items() for day in sorted(dates)]))
             for symbol, dates in nav.items():
-                if dates:
-                    operations.append(('fuyao', 'etf_nav', _fuyao_nav(client, token, symbol, dates, now.date()),
-                                       [(symbol, day) for day in sorted(dates)]))
+                if not dates:
+                    continue
+                if token_error:
+                    failures.extend({'series': 'etf_nav', 'source': 'fuyao', 'symbol': symbol,
+                                     'trade_date': day, 'error': token_error} for day in sorted(dates))
+                    continue
+                operations.append(('fuyao', 'etf_nav', _fuyao_nav(client, token, symbol, dates, now.date()),
+                                   [(symbol, day) for day in sorted(dates)]))
             for source, series, rows, expected in operations:
+                acquired = []
+                failure = None
                 try:
-                    stored, gaps = _record_result(data_dir, list(rows), expected)
-                    appended += stored
+                    acquired.extend(rows)
                 except (ValueError, KeyError, TypeError, IndexError, httpx.HTTPError, BadZipFile,
                         ElementTree.ParseError) as error:
-                    gaps = [{'symbol': symbol, 'trade_date': day, 'error': str(error)} for symbol, day in expected]
+                    failure = str(error)
+                stored, gaps = _record_result(data_dir, acquired, expected, failure)
+                appended += stored
                 failures.extend({'series': series, 'source': source, **gap} for gap in gaps)
 
     return {'snapshot': freeze_etf_snapshot(data_dir, symbols=symbols, start=start, end=end),
