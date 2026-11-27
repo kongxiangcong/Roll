@@ -1,4 +1,4 @@
-# Roll v3 个股研究与盘后工作台
+# Roll 投研台
 
 Roll 使用本地 SQLite 保存行情版本、研究档案、实验、账户和计划。CLI 和网页使用同一应用。缺省数据库文件为 Linux/macOS 的 `~/.local/share/roll/roll-v3.sqlite3` 或 Windows 的 `%LOCALAPPDATA%\Roll\roll-v3.sqlite3`。用 `ROLL_DATA_DIR` 或位置靠前的 `roll --data-dir DIR` 选择独立目录。
 
@@ -30,6 +30,33 @@ roll market import config/research/600362.SH/2026q3-cashflow-observation.json
 用 `roll market freeze` 指定证券、区间、序列和用途，输出快照标识。以 `roll research export 600362.SH --snapshot ID` 获取冻结的多周期指标与覆盖。三种用途分别支持严格历史时点、显式假设下的历史重建，以及包含实际取得时间约束的日常运行。已冻结输出可离线读取。
 
 用 `roll research draft` 导入 Markdown 草稿，核对后用 `roll research publish` 显式发布。样例、字段和发布命令见[研究档案](config/research/README.md)。公开行情及证据导出与账户录入相互独立。
+
+## 市场观察
+
+工作台从「市场」进入宽基 ETF、行业和观察池。宽基 ETF 支持按日期查看总额、指数组和逐基金贡献，金额按相邻交易日总份额之差乘当日单位净值计算。披露的汇金持仓及增持事件各自标注时间和范围；每日金额是篮子内全体持有人的估算净申赎额。
+
+CLI 可以先同步两只 ETF，再凭返回的快照标识离线复算。
+
+```sh
+roll market etf sync 510300.SH 159915.SZ --start 2026-11-26 --end 2026-11-26
+roll market etf read SNAPSHOT_ID 510300.SH --date 2026-11-26
+```
+
+份额读取沪深交易所日终统计，单位净值优先使用扶摇。份额和净值较日线异步发布，报表显示所属日、到齐数和缺项。历史同步按最长 32 个自然日一段进行。快照中的实际取得时间用于还原 Roll 当时可见的数据；补采历史资料可通过明确标识的重建方式阅读。
+
+需要重开同一份报表时，用「冻结当前报表」保存引用，或执行以下命令。
+
+```sh
+roll market etf freeze-report --date 2026-11-26 --as-of 2026-11-26T20:00:00+08:00
+roll market etf replay-report REPORT_ID
+```
+
+验收库可以导入已核实的一个一级行业样本和汇金公开披露。使用真实工作数据时，同样通过导入入口保存实际取得时点与原始定位。[样本验收与来源](.scratch/roll-market-workbench/acceptance.md)
+
+```sh
+roll market import backend/tests/fixtures/market_industry_2026_11_26.json
+roll market etf disclosures import backend/tests/fixtures/etf_disclosures_510300.json
+```
 
 ## 账户与策略
 

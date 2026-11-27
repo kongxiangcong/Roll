@@ -1,0 +1,40 @@
+.etf-report-header, .etf-report-meta, .etf-sync-controls, .etf-evidence-line, .etf-replay-form {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px;
+}
+.etf-report-header { justify-content: space-between; }
+.etf-report-header h1 { font-size: 22px; line-height: 1.35; }
+.etf-report-meta, .etf-sync-controls, .etf-evidence-line { font-size: 13px; }
+.etf-replay-form { font-size: 13px; }
+.etf-replay-form input, .etf-replay-form select {
+  min-width: 0; max-width: 100%; height: 30px; padding: 0 8px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--surface); color: var(--ink);
+}
+#etf-report-reference { width: min(34rem, 100%); }
+.etf-replay [role="status"]:empty { display: none; }
+.etf-report-metrics {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+}
+.etf-report-metrics .kpi:first-child .kpi-value { font-size: 24px; }
+.etf-sync { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px 28px; }
+.etf-sync-controls label { display: flex; align-items: center; gap: 4px; }
+.etf-sync [role="status"] { gap: 6px; }
+.etf-sync-gaps { margin-block: 6px 0; max-height: 12rem; overflow: auto; }
+.etf-funds .market-table { max-height: 25rem; }
+.etf-funds .clean tbody td:last-child { font-size: 12px; color: var(--ink-secondary); }
+.etf-funds .market-row-label strong { white-space: normal; }
+.etf-fund-values {
+  display: grid; grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+  gap: 8px 16px; margin: 0; align-items: baseline;
+}
+.etf-fund-values dt { color: var(--ink-secondary); }
+.etf-fund-values dd { text-align: right; margin: 0; overflow-wrap: anywhere; }
+.etf-input-evidence { padding-block: 8px; display: grid; gap: 4px; }
+.etf-evidence-line { overflow-wrap: anywhere; }
+.etf-evidence summary, .etf-sync summary { cursor: pointer; font-size: 13px; color: var(--primary); }
+.text-link { color: var(--primary); text-decoration: underline; font-size: 13px; }
+
+@media (max-width: 540px) {
+  .etf-report-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .etf-report-metrics .kpi:last-child { grid-column: 1 / -1; }
+  .etf-fund-values { grid-template-columns: minmax(0, 1fr) minmax(0, .7fr); gap: 8px; }
+}

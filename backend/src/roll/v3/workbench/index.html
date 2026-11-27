@@ -5,21 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="no-referrer">
   <meta name="color-scheme" content="light">
-  <title>Roll · 盘后工作台</title>
+  <title>Roll 投研台 · 盘后工作台</title>
   <link rel="stylesheet" href="/assets/workbench.css">
+  <link rel="stylesheet" href="/assets/etf-view.css">
+  <link rel="stylesheet" href="/assets/etf-history-view.css">
   <script type="module" src="/assets/workbench.js"></script>
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="#overview" aria-label="Roll 盘后工作台">
+      <a class="brand" href="#overview" aria-label="Roll 投研台">
         <span class="brand-mark" aria-hidden="true"></span>
-        <span class="brand-text">Roll</span>
+        <span class="brand-text">Roll <span>投研台</span></span>
       </a>
       <nav class="seg-nav" aria-label="主导航">
-        <a href="#overview" data-view="overview">全景台</a>
-        <a href="#decision" data-view="decision">决策复盘</a>
-        <a href="#lab" data-view="lab">研究实验室</a>
+        <a href="#overview" data-view="overview">概览</a>
+        <a href="#market/etf" data-view="market">市场</a>
+        <a href="#decision" data-view="decision">交易与复盘</a>
+        <a href="#lab" data-view="lab">研究</a>
       </nav>
       <div class="topbar-actions">
         <span id="trade-date-pill" class="date-pill">—</span>
@@ -27,7 +30,10 @@
           <option value="real">实盘账本</option>
           <option value="m0a-example">演练账本</option>
         </select>
-        <button id="sync-btn" type="button" class="btn btn-primary btn-sm">同步数据</button>
+        <div class="sync-controls">
+          <span id="sync-status" class="sync-status" role="status">尚未同步</span>
+          <button id="sync-btn" type="button" class="btn btn-primary btn-sm">同步数据</button>
+        </div>
       </div>
     </div>
   </header>

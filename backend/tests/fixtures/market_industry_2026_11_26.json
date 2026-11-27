@@ -1,0 +1,174 @@
+[
+  {
+    "series": "industry_index",
+    "symbol": "801050.SI",
+    "trade_date": "2021-12-13",
+    "source": "shenwan",
+    "source_ref": "https://www.swsresearch.com/institute-sw/api/index_publish/current/?page=1&page_size=50&indextype=%E4%B8%80%E7%BA%A7%E8%A1%8C%E4%B8%9A",
+    "received_at": "2026-11-27T15:26:42.646815+08:00",
+    "available_evidence": "data.results 中 swindexcode=801050；data.count=31；sha256=562ccb881f243ffc7495ed7c6c73083970e536c64a39a413e1e97853c00963d6",
+    "payload": {
+      "name": "有色金属",
+      "level": 1,
+      "classification": "申万行业分类（2021版）",
+      "classification_ref": "https://wxweb.swsresearch.com/swsreport/2021_08/328340.pdf",
+      "effective_start": "2021-12-13",
+      "effective_start_ref": "https://www.jjckb.cn/2021-12/22/c_1310387965.htm",
+      "effective_end": null,
+      "classification_size": 31
+    }
+  },
+  {
+    "series": "daily_bar",
+    "symbol": "801050.SI",
+    "trade_date": "2026-11-24",
+    "source": "shenwan",
+    "source_ref": "https://www.swsresearch.com/institute-sw/api/index_publish/trend/?swindexcode=801050&period=DAY",
+    "received_at": "2026-11-27T15:24:23+08:00",
+    "available_evidence": "data[6496] date=2026-11-24, code=801050, sha256=e6881ec39ec9856ce01f8e0ac3a68490d7f284416b27c3b6885b465bc33e9911",
+    "unit": {
+      "price": "index_point",
+      "volume": "Shenwan bargainamount",
+      "amount": "Shenwan bargainsum"
+    },
+    "payload": {
+      "open": "5997.4",
+      "high": "5999.11",
+      "low": "5698.64",
+      "close": "5713.77",
+      "volume": "43.9775233",
+      "amount": "706.13387573"
+    }
+  },
+  {
+    "series": "daily_bar",
+    "symbol": "801050.SI",
+    "trade_date": "2026-11-25",
+    "source": "shenwan",
+    "source_ref": "https://www.swsresearch.com/institute-sw/api/index_publish/trend/?swindexcode=801050&period=DAY",
+    "received_at": "2026-11-27T15:24:23+08:00",
+    "available_evidence": "data[6497] date=2026-11-25, code=801050, sha256=e6881ec39ec9856ce01f8e0ac3a68490d7f284416b27c3b6885b465bc33e9911",
+    "unit": {
+      "price": "index_point",
+      "volume": "Shenwan bargainamount",
+      "amount": "Shenwan bargainsum"
+    },
+    "payload": {
+      "open": "5592.39",
+      "high": "5725.92",
+      "low": "5544.27",
+      "close": "5544.27",
+      "volume": "37.0427113",
+      "amount": "538.19538836"
+    }
+  },
+  {
+    "series": "daily_bar",
+    "symbol": "801050.SI",
+    "trade_date": "2026-11-26",
+    "source": "shenwan",
+    "source_ref": "https://www.swsresearch.com/institute-sw/api/index_publish/trend/?swindexcode=801050&period=DAY",
+    "received_at": "2026-11-27T15:24:23+08:00",
+    "available_evidence": "data[6498] date=2026-11-26, code=801050, sha256=e6881ec39ec9856ce01f8e0ac3a68490d7f284416b27c3b6885b465bc33e9911",
+    "unit": {
+      "price": "index_point",
+      "volume": "Shenwan bargainamount",
+      "amount": "Shenwan bargainsum"
+    },
+    "payload": {
+      "open": "5638.32",
+      "high": "5741.88",
+      "low": "5580.2",
+      "close": "5641.03",
+      "volume": "40.25708616",
+      "amount": "605.18668354"
+    }
+  },
+  {
+    "series": "daily_bar",
+    "symbol": "000300.SH",
+    "trade_date": "2026-11-24",
+    "source": "fuyao",
+    "source_ref": "https://fuyao.aicubes.cn/api/a-share-index/prices/historical",
+    "available_at": null,
+    "available_evidence": null,
+    "assumed_available_at": "2026-11-24T07:05:00.000000+00:00",
+    "availability_assumption": "当日上海 15:05 日线可用；使用本次补采版本",
+    "received_at": "2026-11-26T06:20:23.394259+00:00",
+    "unit": {
+      "amount": "CNY",
+      "price": "index_point",
+      "volume": "share"
+    },
+    "payload": {
+      "amount": "506865910000",
+      "close": "3963.82",
+      "high": "4011.69",
+      "low": "3957.92",
+      "open": "4004.04",
+      "pre_close": "3958.29",
+      "pre_close_basis": "prior_raw_close",
+      "prior_close": "3958.29",
+      "trading_status": "trading",
+      "volume": "19738123000"
+    }
+  },
+  {
+    "series": "daily_bar",
+    "symbol": "000300.SH",
+    "trade_date": "2026-11-25",
+    "source": "fuyao",
+    "source_ref": "https://fuyao.aicubes.cn/api/a-share-index/prices/historical",
+    "available_at": null,
+    "available_evidence": null,
+    "assumed_available_at": "2026-11-25T07:05:00.000000+00:00",
+    "availability_assumption": "当日上海 15:05 日线可用；使用本次补采版本",
+    "received_at": "2026-11-26T06:20:23.394259+00:00",
+    "unit": {
+      "amount": "CNY",
+      "price": "index_point",
+      "volume": "share"
+    },
+    "payload": {
+      "amount": "410985200000",
+      "close": "3898.24",
+      "high": "3937.33",
+      "low": "3886.92",
+      "open": "3929.84",
+      "pre_close": "3963.82",
+      "pre_close_basis": "prior_raw_close",
+      "prior_close": "3963.82",
+      "trading_status": "trading",
+      "volume": "18177349000"
+    }
+  },
+  {
+    "series": "daily_bar",
+    "symbol": "000300.SH",
+    "trade_date": "2026-11-26",
+    "source": "fuyao",
+    "source_ref": "https://fuyao.aicubes.cn/api/a-share-index/prices/historical",
+    "available_at": null,
+    "available_evidence": null,
+    "assumed_available_at": "2026-11-26T07:05:00.000000+00:00",
+    "availability_assumption": "Shanghai 15:05 reconstruction from fuyao historical observations",
+    "received_at": "2026-11-26T07:05:30.210902+00:00",
+    "unit": {
+      "amount": "CNY",
+      "price": "index_point",
+      "volume": "share"
+    },
+    "payload": {
+      "amount": "371397580000",
+      "close": "3900.55",
+      "high": "3922.29",
+      "low": "3877.82",
+      "open": "3918.02",
+      "pre_close": "3898.24",
+      "pre_close_basis": "prior_close_no_adjustment_factor",
+      "prior_close": "3898.24",
+      "trading_status": "trading",
+      "volume": "15994724000"
+    }
+  }
+]

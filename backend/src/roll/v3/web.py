@@ -1,5 +1,6 @@
 """Local HTTP and browser adapters for the Roll v3 application."""
 from contextlib import asynccontextmanager
+from datetime import date
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
@@ -12,12 +13,18 @@ from roll.v3.development_archive import archive_development
 from roll.v3.development_experiment import PRESET_ID, development_preset
 from roll.v3.development_interpretation import is_development
 from roll.v3.development_replay import prepare_development, read_development_receipt
+from roll.v3.etf_basket import build_etf_daily_report
+from roll.v3.etf_basket_versions import FIXED_BASKET_VERSION, list_comparison_baskets
+from roll.v3.etf_history import build_etf_history_report
+from roll.v3.etf_replay import freeze_etf_report, replay_etf_report
+from roll.v3.etf_sync import EtfSyncRunner
 from roll.v3.experiment import list_experiments, read_experiment
 from roll.v3.harness_settings import settings as harness_settings
-from roll.v3.market import list_snapshots, utc_timestamp
+from roll.v3.industry import build_industry_report
+from roll.v3.market import LIVE_RUN, list_snapshots, utc_timestamp
 from roll.v3.market_research import DEFAULT_BENCHMARK, DEFAULT_START, export_market_research
 from roll.v3.market_sources import sync_daily_market
-from roll.v3.overview import MarketSyncRunner, build_overview
+from roll.v3.overview import MarketSyncRunner, build_market_watchlist, build_overview, market_trade_dates
 from roll.v3.plan import PlanLedger, generate_plans
 from roll.v3.watchlist import add_watchlist, list_watchlist, remove_watchlist, reorder_watchlist
 from roll.v3.research import ResearchDossiers
@@ -162,9 +169,26 @@ class MarketSyncInput(BaseModel):
     refresh: bool = False
 
 
+class EtfSyncInput(BaseModel):
+    trade_date: date
+    basket_version: str = FIXED_BASKET_VERSION
+    refresh: bool = False
+
+
+class EtfReportInput(BaseModel):
+    trade_date: date | None = None
+    basket_version: str | None = None
+    as_of: str | None = None
+    use_mode: str = LIVE_RUN
+    max_seq: int | None = Field(default=None, ge=0)
+    captured_at: str | None = None
+    disclosure_cutoff: str | None = None
+
+
 def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=sync_daily_market):
     runner = ResearchRunner(data_dir, default_executor=research_executor)
     sync_runner = MarketSyncRunner(data_dir, sync_fn=market_sync_fn)
+    etf_sync_runner = EtfSyncRunner(data_dir)
 
     @asynccontextmanager
     async def lifespan(_app):
@@ -193,8 +217,22 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
         return FileResponse(ASSETS / "index.html")
 
     @app.get("/api/overview")
-    def overview(book_id: str = "real", as_of: str | None = None):
-        return build_overview(data_dir, book_id=book_id, as_of=as_of)
+    def overview(book_id: str = "real", as_of: str | None = None, include_watchlist: bool = True):
+        return build_overview(data_dir, book_id=book_id, as_of=as_of, include_watchlist=include_watchlist)
+
+    @app.get("/api/market/dates")
+    def get_market_dates():
+        return market_trade_dates(data_dir)
+
+    @app.get("/api/market/watchlist")
+    def get_market_watchlist(book_id: str = "real", trade_date: date | None = None, as_of: str | None = None):
+        return build_market_watchlist(
+            data_dir, book_id=book_id, trade_date=trade_date.isoformat() if trade_date else None, as_of=as_of,
+        )
+
+    @app.get("/api/market/industry")
+    def get_market_industry(trade_date: date | None = None, as_of: str | None = None):
+        return build_industry_report(data_dir, trade_date=trade_date.isoformat() if trade_date else None, as_of=as_of)
 
     @app.get("/api/watchlist")
     def get_watchlist():
@@ -219,6 +257,45 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
     @app.post("/api/market/sync")
     def trigger_market_sync(payload: MarketSyncInput):
         return sync_runner.start(payload.symbols or None, start=payload.start, refresh=payload.refresh)
+
+    @app.get("/api/market/etf")
+    def get_etf_daily_report(trade_date: date | None = None, basket_version: str | None = None,
+                             as_of: str | None = None, use_mode: str = LIVE_RUN):
+        return build_etf_daily_report(data_dir, trade_date=trade_date.isoformat() if trade_date else None,
+                                      basket_version=basket_version, as_of=as_of, use_mode=use_mode)
+
+    @app.get("/api/market/etf/baskets")
+    def get_etf_baskets(as_of: str | None = None):
+        return list_comparison_baskets(data_dir, as_of=as_of)
+
+    @app.post("/api/market/etf/reports")
+    def freeze_etf_daily_report(payload: EtfReportInput):
+        return freeze_etf_report(data_dir, **payload.model_dump(mode='json'))
+
+    @app.get("/api/market/etf/reports/{report_id}")
+    def replay_etf_daily_report(report_id: str, trade_date: date | None = None):
+        return replay_etf_report(data_dir, report_id, trade_date=trade_date.isoformat() if trade_date else None)
+
+    @app.get("/api/market/etf/history")
+    def get_etf_history(trade_date: date | None = None, basket_version: str | None = None,
+                        index_code: str | None = None, symbol: str | None = None,
+                        as_of: str | None = None, max_seq: int | None = None, membership: str = "fixed",
+                        use_mode: str = LIVE_RUN, captured_at: str | None = None,
+                        disclosure_cutoff: str | None = None, report_id: str | None = None):
+        return build_etf_history_report(
+            data_dir, trade_date=trade_date.isoformat() if trade_date else None, basket_version=basket_version,
+            index_code=index_code, symbol=symbol, as_of=as_of, max_seq=max_seq, membership=membership,
+            use_mode=use_mode, captured_at=captured_at, disclosure_cutoff=disclosure_cutoff, report_id=report_id,
+        )
+
+    @app.get("/api/market/etf/sync/status")
+    def etf_sync_status():
+        return etf_sync_runner.status()
+
+    @app.post("/api/market/etf/sync")
+    def trigger_etf_sync(payload: EtfSyncInput):
+        return etf_sync_runner.start(trade_date=payload.trade_date.isoformat(),
+                                     basket_version=payload.basket_version, refresh=payload.refresh)
 
     @app.get("/api/settings/research-harness")
     def get_harness():

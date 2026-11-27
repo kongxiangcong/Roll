@@ -41,25 +41,31 @@ def display_name(symbol, fallback=None):
     return (fallback or "").strip() or KNOWN_NAMES.get(code) or code
 
 
-def _seed_if_empty(db):
-    count = db.execute("SELECT COUNT(*) FROM watchlist_item").fetchone()[0]
-    if count == 0:
-        now = utc_timestamp(None)
-        for index, (symbol, name) in enumerate(DEFAULT_WATCHLIST):
-            db.execute(
-                "INSERT OR IGNORE INTO watchlist_item (symbol, name, sort_order, added_at) VALUES (?, ?, ?, ?)",
-                (symbol, name, index, now),
-            )
+def _initialize(db):
+    exists = db.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name='watchlist_item'"
+    ).fetchone()
+    if exists:
+        return
+    ensure_schema(db, _SCHEMA)
+    now = utc_timestamp(None)
+    db.executemany(
+        "INSERT INTO watchlist_item (symbol, name, sort_order, added_at) VALUES (?, ?, ?, ?)",
+        [(symbol, name, index, now) for index, (symbol, name) in enumerate(DEFAULT_WATCHLIST)],
+    )
+
+
+def _items(db):
+    rows = db.execute(
+        "SELECT symbol, name, sort_order, added_at FROM watchlist_item ORDER BY sort_order, added_at, symbol"
+    ).fetchall()
+    return [dict(row) for row in rows]
 
 
 def list_watchlist(data_dir):
     with database(data_dir, write=True) as db:
-        ensure_schema(db, _SCHEMA)
-        _seed_if_empty(db)
-        rows = db.execute(
-            "SELECT symbol, name, sort_order, added_at FROM watchlist_item ORDER BY sort_order ASC, added_at ASC"
-        ).fetchall()
-    return [dict(row) for row in rows]
+        _initialize(db)
+        return _items(db)
 
 
 def add_watchlist(data_dir, symbol, *, name=None):
@@ -67,8 +73,7 @@ def add_watchlist(data_dir, symbol, *, name=None):
     label = display_name(code, name)
     now = utc_timestamp(None)
     with database(data_dir, write=True) as db:
-        ensure_schema(db, _SCHEMA)
-        _seed_if_empty(db)
+        _initialize(db)
         existing = db.execute("SELECT symbol, name, sort_order, added_at FROM watchlist_item WHERE symbol=?", (code,)).fetchone()
         if existing:
             if name and name.strip() and existing["name"] != name.strip():
@@ -86,16 +91,19 @@ def add_watchlist(data_dir, symbol, *, name=None):
 def remove_watchlist(data_dir, symbol):
     code = normalize_symbol(symbol)
     with database(data_dir, write=True) as db:
-        ensure_schema(db, _SCHEMA)
-        _seed_if_empty(db)
+        _initialize(db)
         db.execute("DELETE FROM watchlist_item WHERE symbol=?", (code,))
     return {"removed": code}
 
 
 def reorder_watchlist(data_dir, symbols):
-    codes = [normalize_symbol(item) for item in symbols]
+    requested = [normalize_symbol(symbol) for symbol in symbols]
     with database(data_dir, write=True) as db:
-        ensure_schema(db, _SCHEMA)
-        for index, code in enumerate(codes):
-            db.execute("UPDATE watchlist_item SET sort_order=? WHERE symbol=?", (index, code))
-    return list_watchlist(data_dir)
+        _initialize(db)
+        current = {item["symbol"]: item for item in _items(db)}
+        ordered = [code for code in dict.fromkeys([*requested, *current]) if code in current]
+        db.executemany(
+            "UPDATE watchlist_item SET sort_order=? WHERE symbol=?",
+            enumerate(ordered),
+        )
+        return _items(db)

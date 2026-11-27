@@ -1,8 +1,15 @@
-/* Roll v3 Spatial Workbench — Zero evidence, zero audit, layout-driven UI */
+import { el, marketMasterDetail, marketTable } from "./market-view.js";
+import { renderMarketEtf } from "./etf-view.js";
+import { renderIndustryView } from "./industry-view.js";
+
 const app = document.querySelector("#app");
 const tradeDatePill = document.querySelector("#trade-date-pill");
 const bookSelect = document.querySelector("#book-select");
 const syncBtn = document.querySelector("#sync-btn");
+const syncStatus = document.querySelector("#sync-status");
+const dateTimeFormat = new Intl.DateTimeFormat("zh-CN", {
+  timeZone: "Asia/Shanghai", dateStyle: "short", timeStyle: "short",
+});
 const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const drawerBody = document.querySelector("#drawer-body");
 const drawerClose = document.querySelector("#drawer-close");
@@ -15,7 +22,15 @@ const state = {
   labTab: "research",
   selectedTaskId: null,
   selectedDevTaskId: null,
-  overview: null,
+  market: {
+    theme: "etf",
+    tradeDate: null,
+    themes: {
+      etf: {},
+      industry: {},
+      watchlist: { range: "all", selectedSymbol: null },
+    },
+  },
   pollTimer: null,
   syncTimer: null,
 };
@@ -38,18 +53,6 @@ const LABELS = {
 };
 
 const fmtNum = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 2 });
-const el = (tag, attrs = {}, ...children) => {
-  const node = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (v == null || v === false) continue;
-    if (k === "class") node.className = v;
-    else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
-    else node.setAttribute(k, v === true ? "" : String(v));
-  }
-  node.append(...children.flat().filter(c => c !== null && c !== undefined && c !== false));
-  return node;
-};
-
 const label = v => LABELS[v] ?? (v ?? "—");
 const money = v => v == null ? "—" : `¥${fmtNum.format(Number(v))}`;
 const price = v => v == null ? "—" : Number(v).toFixed(2);
@@ -93,27 +96,51 @@ async function api(path, { method = "GET", params, body } = {}) {
   return data;
 }
 
+const MARKET_THEMES = {
+  etf: { label: "宽基 ETF", render: renderMarketEtf },
+  industry: { label: "行业", render: renderIndustryView },
+  watchlist: { label: "观察池", render: renderMarketWatchlist },
+};
+
+function marketHash(theme, symbol = state.market.themes[theme].selectedSymbol) {
+  return `#market/${theme}${theme === "watchlist" && symbol ? `/${encodeURIComponent(symbol)}` : ""}`;
+}
+
 function go(view, symbol = state.symbol, labTab = state.labTab) {
-  state.view = view;
-  if (symbol) state.symbol = symbol;
-  if (labTab) state.labTab = labTab;
-  const hash = view === "overview" ? "#overview" : `#${view}/${encodeURIComponent(state.symbol)}`;
+  const suffix = view === "lab" && labTab === "experiment" ? "/experiment" : "";
+  const hash = view === "overview" ? "#overview" : `#${view}/${encodeURIComponent(symbol)}${suffix}`;
   if (location.hash === hash) render();
   else location.hash = hash;
 }
 
+function decodeSymbol(value) {
+  try {
+    return decodeURIComponent(value || "").toUpperCase();
+  } catch {
+    return "";
+  }
+}
+
 function parseHash() {
-  const raw = location.hash.slice(1) || "overview";
-  const [view, encodedSymbol] = raw.split("/");
-  if (["overview", "decision", "lab"].includes(view)) state.view = view;
-  else state.view = "overview";
-  if (encodedSymbol) state.symbol = decodeURIComponent(encodedSymbol).toUpperCase();
+  const [view, part, option] = (location.hash.slice(1) || "overview").split("/");
+  state.view = ["overview", "market", "decision", "lab"].includes(view) ? view : "overview";
+  if (state.view === "market") {
+    state.market.theme = Object.hasOwn(MARKET_THEMES, part) ? part : state.market.theme;
+    if (state.market.theme === "watchlist" && option) {
+      state.market.themes.watchlist.selectedSymbol = decodeSymbol(option);
+    }
+    return;
+  }
+  const symbol = decodeSymbol(part);
+  if (symbol) state.symbol = symbol;
+  if (state.view === "lab") state.labTab = option === "experiment" ? "experiment" : "research";
 }
 
 function updateNav() {
   for (const a of document.querySelectorAll(".seg-nav a")) {
     if (a.dataset.view === state.view) a.setAttribute("aria-current", "page");
     else a.removeAttribute("aria-current");
+    if (a.dataset.view === "market") a.href = marketHash(state.market.theme);
   }
 }
 
@@ -172,27 +199,33 @@ function kpi(title, value, sub, subClass = "") {
 }
 
 /* ---------- Daily Sync ---------- */
-async function pollSyncStatus() {
+async function pollSyncStatus(announce = false) {
   clearTimeout(state.syncTimer);
   try {
     const st = await api("/api/market/sync/status");
     if (st.status === "running") {
       syncBtn.disabled = true;
       syncBtn.textContent = "同步中…";
-      state.syncTimer = setTimeout(pollSyncStatus, 800);
+      syncStatus.textContent = "后台运行中";
+      state.syncTimer = setTimeout(() => pollSyncStatus(true), 800);
     } else {
       syncBtn.disabled = false;
       syncBtn.textContent = "同步数据";
-      if (st.status === "done") {
+      syncStatus.textContent = st.status === "error" ? "同步失败"
+        : st.status === "done" ? (st.error ? "部分同步" : "已同步") : "尚未同步";
+      syncStatus.title = [st.last_synced_at && `最近同步 ${dateTimeFormat.format(new Date(st.last_synced_at))}`, st.error]
+        .filter(Boolean).join(" · ");
+      if (announce && st.status === "done") {
         showToast(st.error ? `同步完成（${st.error}）` : `已同步最新行情（新增 ${st.appended} 条）`);
-        if (state.view === "overview") render();
-      } else if (st.status === "error") {
+        if (state.view === "overview" || state.view === "market") render();
+      } else if (announce && st.status === "error") {
         showToast(st.error || "行情同步失败", true);
       }
     }
   } catch {
     syncBtn.disabled = false;
     syncBtn.textContent = "同步数据";
+    syncStatus.textContent = "状态不可用";
   }
 }
 
@@ -201,7 +234,7 @@ syncBtn.addEventListener("click", async () => {
   syncBtn.textContent = "同步中…";
   try {
     await api("/api/market/sync", { method: "POST", body: {} });
-    pollSyncStatus();
+    pollSyncStatus(true);
   } catch (err) {
     syncBtn.disabled = false;
     syncBtn.textContent = "同步数据";
@@ -214,39 +247,18 @@ bookSelect.addEventListener("change", () => {
   render();
 });
 
-/* ---------- View 1: Overview Cockpit ---------- */
+/* ---------- Overview ---------- */
 async function renderOverview() {
-  const ov = await api("/api/overview", { params: { book_id: state.bookId } });
-  state.overview = ov;
+  const bookId = state.bookId;
+  const ov = await api("/api/overview", { params: { book_id: bookId, include_watchlist: false } });
+  if (state.view !== "overview" || bookId !== state.bookId) return;
   tradeDatePill.textContent = ov.trade_date || "暂无行情";
-  if (ov.watchlist.length && !ov.watchlist.some(i => i.symbol === state.symbol)) {
-    state.symbol = ov.watchlist[0].symbol;
-  }
-
-  const env = ov.market_env;
   const acct = ov.account_summary;
-  const bench = env.benchmark;
-  const etf = env.sector_etf;
-
-  // Top Row: Market & ETF Card + Account Summary Card
-  const marketCard = el("section", { class: "card" },
-    el("div", { class: "card-head" },
-      el("span", { class: "card-title" }, "市场与 ETF"),
-      el("span", { class: bench.trend_state === "uptrend" ? "pill pill-up" : bench.trend_state === "downtrend" ? "pill pill-down" : "pill" },
-        `沪深 300 · ${label(bench.trend_state)}`),
-    ),
-    el("div", { class: "kpi-grid-2" },
-      kpi("沪深 300", price(bench.close), pct(bench.change_pct, true), deltaClass(bench.change_pct)),
-      kpi(etf.name, price(etf.close), `20日 ${pct(etf.return_20d, true)}`, deltaClass(etf.return_20d)),
-      kpi("大盘情绪", env.sentiment ?? "—"),
-      kpi("宽基 ETF 流向", env.broad_etf_flow ?? "—"),
-    ),
-  );
 
   const posPct = acct.position_ratio != null ? Math.min(100, Math.max(0, acct.position_ratio * 100)) : 0;
   const accountCard = el("section", { class: "card" },
     el("div", { class: "card-head" },
-      el("span", { class: "card-title" }, "个人账户"),
+      el("span", { class: "card-title" }, bookSelect.selectedOptions[0].textContent),
       el("button", { type: "button", class: "btn btn-ghost btn-sm", onclick: () => openAccountDrawer(acct) }, "明细"),
     ),
     el("div", { class: "hero-row" },
@@ -264,126 +276,8 @@ async function renderOverview() {
     ),
   );
 
-  // Middle Row: Watchlist Master + Linked Stock Focus Snapshot
-  const addInput = el("input", { placeholder: "代码如 600150.SH", "aria-label": "新增自选股" });
-  const addForm = el("form", {
-    class: "inline-add",
-    onsubmit: async e => {
-      e.preventDefault();
-      const code = addInput.value.trim();
-      if (!code) return;
-      try {
-        await api("/api/watchlist", { method: "POST", body: { symbol: code } });
-        state.symbol = code.toUpperCase();
-        addInput.value = "";
-        showToast(`已加入 ${state.symbol}`);
-        render();
-      } catch (err) { showToast(err.message, true); }
-    },
-  }, addInput, el("button", { type: "submit", class: "btn btn-sm" }, "+"));
-
-  const focusContainer = el("section", { class: "card" });
-  const listContainer = el("div", { class: "watch-list" });
-
-  function paintMasterDetail() {
-    const selected = ov.watchlist.find(item => item.symbol === state.symbol) || ov.watchlist[0];
-    listContainer.replaceChildren(
-      ...ov.watchlist.map(item => el("div", {
-        class: `watch-row ${selected && item.symbol === selected.symbol ? "active" : ""}`,
-        onclick: () => { state.symbol = item.symbol; paintMasterDetail(); },
-      },
-        el("div", {},
-          el("div", { class: "watch-name" }, item.name),
-          el("div", { class: "watch-code" }, `${item.symbol}${item.holding_shares ? ` · 持仓 ${pct(item.position_ratio)}` : ""}`),
-        ),
-        el("div", { class: "watch-price" },
-          el("strong", {}, price(item.close)),
-          el("span", { class: deltaClass(item.change_pct) }, pct(item.change_pct, true)),
-        ),
-        el("span", { class: actionPillClass(item.latest_plan?.action) }, label(item.latest_plan?.action || "WATCH")),
-        el("div", { class: "watch-actions" },
-          el("button", {
-            type: "button", class: "btn btn-ghost btn-xs",
-            onclick: e => { e.stopPropagation(); go("lab", item.symbol, "research"); },
-          }, "研究"),
-          el("button", {
-            type: "button", class: "btn btn-ghost btn-xs",
-            onclick: e => { e.stopPropagation(); go("decision", item.symbol); },
-          }, "复盘"),
-          item.in_watchlist && ov.watchlist.length > 1 ? el("button", {
-            type: "button", class: "icon-btn", "aria-label": "移除",
-            onclick: async e => {
-              e.stopPropagation();
-              await api(`/api/watchlist/${encodeURIComponent(item.symbol)}`, { method: "DELETE" });
-              render();
-            },
-          }, "×") : null,
-        ),
-      )),
-    );
-
-    if (!selected) {
-      focusContainer.replaceChildren(el("div", { class: "empty-state" }, "暂无自选标的"));
-      return;
-    }
-    const m = selected.metrics;
-    const d = selected.dossier;
-    focusContainer.replaceChildren(
-      el("div", { class: "strip-group" },
-        el("div", { class: "focus-header" },
-          el("div", { class: "focus-id" },
-            el("h2", {}, selected.name),
-            el("span", { class: "muted num" }, selected.symbol),
-          ),
-          el("div", { class: "focus-pills" },
-            el("span", { class: gatePillClass(d.fundamental_gate) }, `基本面 · ${label(d.fundamental_gate)}`),
-            el("span", { class: thesisPillClass(d.thesis_status) }, `逻辑 · ${label(d.thesis_status)}`),
-          ),
-        ),
-        el("div", { class: "strip" },
-          el("div", { class: "strip-label" }, "量价关系"),
-          el("div", { class: "kpi-grid" },
-            kpi("5 日", pct(m.return_5d, true), null, deltaClass(m.return_5d)),
-            kpi("20 日", pct(m.return_20d, true), null, deltaClass(m.return_20d)),
-            kpi("60 日", pct(m.return_60d, true), null, deltaClass(m.return_60d)),
-            kpi("波动 / 回撤", pct(m.volatility_20d), `回撤 ${pct(m.max_drawdown_60d)}`),
-          ),
-        ),
-        el("div", { class: "strip" },
-          el("div", { class: "strip-label" }, "相对强弱与趋势"),
-          el("div", { class: "kpi-grid-3" },
-            kpi("对沪深 300 (20日)", pct(m.rel_benchmark_20d, true), null, deltaClass(m.rel_benchmark_20d)),
-            kpi("对行业 (20日)", pct(m.rel_industry_20d, true), null, deltaClass(m.rel_industry_20d)),
-            kpi("趋势结构", label(m.trend_state)),
-          ),
-        ),
-        el("div", { class: "strip" },
-          el("div", { class: "strip-label" }, "策略 · 概率 · 决策"),
-          el("div", { class: "kpi-grid-3" },
-            kpi("策略状态", label(selected.strategy.status)),
-            kpi("决策概率", selected.probability ?? "—"),
-            kpi("明日动作", label(selected.latest_plan?.action || "WATCH"), selected.latest_plan?.summary || ""),
-          ),
-        ),
-        el("div", { class: "actions" },
-          el("button", { type: "button", class: "btn btn-primary btn-sm", onclick: () => go("decision", selected.symbol) }, "进入决策与复盘"),
-          el("button", { type: "button", class: "btn btn-sm", onclick: () => go("lab", selected.symbol, "research") }, "个股研究"),
-          el("button", { type: "button", class: "btn btn-sm", onclick: () => go("lab", selected.symbol, "experiment") }, "策略实验"),
-        ),
-      ),
-    );
-  }
-
-  paintMasterDetail();
-
-  const watchlistCard = el("section", { class: "card" },
-    el("div", { class: "card-head" }, el("span", { class: "card-title" }, "自选与持仓"), addForm),
-    listContainer,
-  );
-
-  // Bottom Slim Review Todo Bar
   const todoBar = el("section", { class: "todo-bar" },
-    el("span", { class: "card-title" }, "复盘中心"),
+    el("span", { class: "card-title" }, "盘后待办"),
     el("div", { class: "todo-items" },
       ov.review_todos.map(t => el("button", {
         type: "button", class: "todo-chip",
@@ -396,16 +290,250 @@ async function renderOverview() {
     ),
   );
 
-  app.replaceChildren(
-    el("div", { class: "grid-2" }, marketCard, accountCard),
-    el("div", { class: "grid-master" }, watchlistCard, focusContainer),
-    todoBar,
+  app.replaceChildren(el("div", { class: "grid-2" }, accountCard, todoBar));
+}
+
+function marketEmpty(message) {
+  return el("section", { class: "card" }, el("div", { class: "empty-state" }, message));
+}
+
+let marketRender = 0;
+let displayedMarketTheme = null;
+
+async function renderMarket() {
+  const renderId = ++marketRender;
+  const { theme, tradeDate, themes } = state.market;
+  const bookId = state.bookId;
+  const isCurrent = () => renderId === marketRender && state.view === "market"
+    && state.market.theme === theme && state.bookId === bookId;
+  const dates = await api("/api/market/dates");
+  if (!isCurrent()) return;
+  const observationDay = tradeDate || dates.latest_trade_date || dates.last_closed_trade_date;
+  tradeDatePill.textContent = dates.latest_trade_date || "暂无行情";
+  const selectTradeDate = (day, { preserveEtfReport = false } = {}) => {
+    state.market.tradeDate = day || null;
+    if (!preserveEtfReport) state.market.themes.etf.reportId = undefined;
+    render();
+  };
+  const dateInput = el("input", {
+    type: "date", id: "observation-date",
+    max: dates.last_closed_trade_date, value: observationDay,
+    onchange: () => {
+      if (!dateInput.reportValidity()) return;
+      selectTradeDate(dateInput.value);
+    },
+  });
+  const controls = el("div", { class: "market-controls card" },
+    el("nav", { class: "seg-nav market-themes", "aria-label": "市场主题" },
+      Object.entries(MARKET_THEMES).map(([key, item]) => el("a", {
+        href: marketHash(key), "aria-current": key === theme ? "page" : null,
+      }, item.label)),
+    ),
+    el("div", { class: "market-date" },
+      el("label", { for: "observation-date" }, "观察交易日"),
+      dateInput,
+      tradeDate ? el("button", {
+        type: "button", class: "btn btn-sm",
+        onclick: () => selectTradeDate(null),
+      }, "最新") : null,
+    ),
+  );
+  const themeState = themes[theme];
+  const refresh = () => { if (state.view === "market" && state.market.theme === theme) render(); };
+  const context = { tradeDate: observationDay, bookId, themeState, refresh, selectTradeDate, api };
+  let content;
+  try {
+    content = await MARKET_THEMES[theme].render(context);
+  } catch (err) {
+    content = marketEmpty(err.message);
+  }
+  if (!isCurrent()) return;
+  const scroll = displayedMarketTheme === theme ? window.scrollY : (themeState.scrollY || 0);
+  app.replaceChildren(controls, content);
+  displayedMarketTheme = theme;
+  window.scrollTo(0, scroll);
+}
+
+async function renderMarketWatchlist({ tradeDate, bookId, themeState, refresh }) {
+  const pool = await api("/api/market/watchlist", { params: { book_id: bookId, trade_date: tradeDate } });
+  const rows = pool.rows;
+  const watched = rows.filter(row => row.in_watchlist).map(row => row.symbol);
+  const master = el("div", { class: "stack" });
+  const detail = el("section", { class: "card", "aria-label": "标的详情" });
+  const range = el("select", { "aria-label": "观察池范围", onchange: () => {
+    themeState.range = range.value;
+    paintMasterDetail();
+  } },
+    el("option", { value: "all" }, "全部标的"),
+    el("option", { value: "watchlist" }, "自选股"),
+    el("option", { value: "holdings" }, "当前持仓"),
+  );
+  range.value = themeState.range;
+  const addInput = el("input", { placeholder: "代码如 600150.SH", "aria-label": "新增自选股", required: true });
+  const addForm = el("form", {
+    class: "inline-add",
+    onsubmit: async e => {
+      e.preventDefault();
+      const code = addInput.value.trim();
+      if (!code) return;
+      try {
+        const added = await api("/api/watchlist", { method: "POST", body: { symbol: code } });
+        themeState.range = "all";
+        selectRow(added.symbol);
+        showToast(`已加入 ${added.symbol}`);
+        refresh();
+      } catch (err) { showToast(err.message, true); }
+    },
+  }, addInput, el("button", { type: "submit", class: "btn btn-sm" }, "添加"));
+
+  function selectRow(symbol) {
+    themeState.selectedSymbol = symbol;
+    if (state.view === "market" && state.market.theme === "watchlist") {
+      history.replaceState(history.state, "", marketHash("watchlist", symbol));
+      updateNav();
+    }
+  }
+
+  async function moveSelected(symbol, offset) {
+    const ordered = [...watched];
+    const index = ordered.indexOf(symbol);
+    const other = index + offset;
+    [ordered[index], ordered[other]] = [ordered[other], ordered[index]];
+    try {
+      await api("/api/watchlist/order", { method: "PUT", body: { symbols: ordered } });
+      refresh();
+    } catch (err) { showToast(err.message, true); }
+  }
+
+  function watchActions(selected) {
+    if (!selected.in_watchlist) return null;
+    const index = watched.indexOf(selected.symbol);
+    return el("div", { class: "actions strip" },
+      el("button", {
+        type: "button", class: "btn btn-sm", disabled: index === 0,
+        onclick: () => moveSelected(selected.symbol, -1),
+      }, "上移自选"),
+      el("button", {
+        type: "button", class: "btn btn-sm", disabled: index === watched.length - 1,
+        onclick: () => moveSelected(selected.symbol, 1),
+      }, "下移自选"),
+      el("button", {
+        type: "button", class: "btn btn-ghost btn-sm",
+        onclick: async () => {
+          try {
+            await api(`/api/watchlist/${encodeURIComponent(selected.symbol)}`, { method: "DELETE" });
+            refresh();
+          } catch (err) { showToast(err.message, true); }
+        },
+      }, "移除自选"),
+    );
+  }
+
+  function focusDetails(selected) {
+    const m = selected.metrics;
+    const d = selected.dossier;
+    return el("div", { class: "strip-group" },
+      el("div", { class: "focus-header" },
+        el("div", { class: "focus-id" },
+          el("h2", {}, selected.name),
+          el("span", { class: "muted num" }, selected.symbol),
+        ),
+        el("div", { class: "focus-pills" },
+          selected.holding_shares ? el("span", { class: "pill pill-primary" }, `持仓 ${fmtNum.format(selected.holding_shares)} 股`) : null,
+          el("span", { class: gatePillClass(d.fundamental_gate) }, `基本面 · ${label(d.fundamental_gate)}`),
+          el("span", { class: thesisPillClass(d.thesis_status) }, `逻辑 · ${label(d.thesis_status)}`),
+        ),
+      ),
+      el("div", { class: "strip" },
+        el("div", { class: "strip-label" }, m.trade_date ? `量价关系 · ${m.trade_date}` : "量价关系"),
+        el("div", { class: "kpi-grid" },
+          kpi("5 日", pct(m.return_5d, true), null, deltaClass(m.return_5d)),
+          kpi("20 日", pct(m.return_20d, true), null, deltaClass(m.return_20d)),
+          kpi("60 日", pct(m.return_60d, true), null, deltaClass(m.return_60d)),
+          kpi("波动 / 回撤", pct(m.volatility_20d), `回撤 ${pct(m.max_drawdown_60d)}`),
+        ),
+      ),
+      el("div", { class: "strip" },
+        el("div", { class: "strip-label" }, "相对强弱与趋势"),
+        el("div", { class: "kpi-grid-3" },
+          kpi("对沪深 300 (20日)", pct(m.rel_benchmark_20d, true), null, deltaClass(m.rel_benchmark_20d)),
+          kpi("对行业 (20日)", pct(m.rel_industry_20d, true), null, deltaClass(m.rel_industry_20d)),
+          kpi("趋势结构", label(m.trend_state)),
+        ),
+      ),
+      el("div", { class: "strip" },
+        el("div", { class: "strip-label" }, "策略 · 概率 · 决策"),
+        el("div", { class: "kpi-grid-3" },
+          kpi("策略状态", label(selected.strategy.status)),
+          kpi("决策概率", selected.probability ?? "—"),
+          kpi("当前计划", label(selected.latest_plan?.action || "WATCH"), selected.latest_plan?.summary || ""),
+        ),
+      ),
+      el("div", { class: "actions" },
+        el("button", { type: "button", class: "btn btn-primary btn-sm", onclick: () => go("decision", selected.symbol) }, "进入交易与复盘"),
+        el("button", { type: "button", class: "btn btn-sm", onclick: () => go("lab", selected.symbol, "research") }, "个股研究"),
+        el("button", { type: "button", class: "btn btn-sm", onclick: () => go("lab", selected.symbol, "experiment") }, "策略实验"),
+      ),
+    );
+  }
+
+  function paintMasterDetail() {
+    const visible = rows.filter(row => range.value === "all" ||
+      (range.value === "watchlist" ? row.in_watchlist : row.holding_shares > 0));
+    const selected = visible.find(row => row.symbol === themeState.selectedSymbol) || visible[0];
+    const table = {
+      label: "自选与持仓",
+      columns: [
+        { label: "标的" }, { label: "收盘（元）", numeric: true }, { label: "涨跌幅", numeric: true },
+        { label: "行情日" }, { label: "持仓" },
+      ],
+      rows: visible.map(row => el("tr", { class: row.symbol === selected?.symbol ? "market-selected" : null },
+        el("td", {}, el("button", {
+          type: "button", class: "market-row-label", "aria-pressed": row.symbol === selected?.symbol ? "true" : "false",
+          onclick: () => {
+            const previousScroll = master.querySelector(".market-table")?.scrollLeft || 0;
+            selectRow(row.symbol);
+            paintMasterDetail();
+            master.querySelector(".market-selected .market-row-label")?.focus({ preventScroll: true });
+            master.querySelector(".market-table").scrollLeft = previousScroll;
+          },
+        }, el("strong", {}, row.name), " ", el("span", { class: "watch-code" }, row.symbol))),
+        el("td", { class: "num" }, price(row.close)),
+        el("td", { class: `num ${deltaClass(row.change_pct)}` }, pct(row.change_pct, true)),
+        el("td", { class: "market-date-cell" }, row.trade_date || "—"),
+        el("td", {}, row.holding_shares > 0 ? el("span", { class: "pill pill-primary" },
+          row.position_ratio == null ? "持仓" : pct(row.position_ratio),
+        ) : "—"),
+      )),
+    };
+    master.replaceChildren(visible.length ? marketTable(table)
+      : el("div", { class: "empty-state" }, rows.length ? "所选范围暂无标的" : "暂无自选或持仓"));
+    detail.replaceChildren(selected ? focusDetails(selected) : el("div", { class: "empty-state" }, "暂无标的详情"),
+      selected ? watchActions(selected) : null);
+  }
+
+  const metadata = el("div", { class: "card-sub market-metadata" },
+    el("span", {}, `自选读取 ${dateTimeFormat.format(new Date(pool.watchlist_as_of))}`),
+    el("span", {}, pool.account_as_of
+      ? `账户截至 ${dateTimeFormat.format(new Date(pool.account_as_of))}` : "所选账本未建账"),
+  );
+  paintMasterDetail();
+  return marketMasterDetail(
+    el("section", { class: "card stack" },
+      el("div", { class: "card-head market-list-controls" },
+        el("h2", { class: "card-title" }, "自选与持仓"), range, addForm,
+      ),
+      metadata,
+      master,
+    ),
+    detail,
   );
 }
 
 /* ---------- Symbol Switcher Bar ---------- */
 function symbolBar(watchlist, targetView) {
-  const items = watchlist?.length ? watchlist : [{ symbol: state.symbol, name: state.symbol }];
+  const items = [...(watchlist || [])];
+  if (!items.some(item => item.symbol === state.symbol)) items.unshift({ symbol: state.symbol, name: state.symbol });
   return el("div", { class: "symbol-chips" },
     items.map(item => el("button", {
       type: "button",
@@ -426,6 +554,8 @@ function gateStatus(codes) {
 }
 
 async function renderDecision() {
+  const hash = location.hash;
+  const bookId = state.bookId;
   const [watchlist, plans, reviews, strategies, followups] = await Promise.all([
     api("/api/watchlist"),
     api("/api/plans", { params: { book_id: state.bookId } }),
@@ -434,9 +564,10 @@ async function renderDecision() {
     api(`/api/research/${encodeURIComponent(state.symbol)}/followups`, { params: { mode: state.bookId === "real" ? "live" : "rehearsal" } }).catch(() => []),
   ]);
 
+  if (state.view !== "decision" || location.hash !== hash || state.bookId !== bookId) return;
   const matchingPlans = plans.filter(p => p.symbol === state.symbol);
   let activePlan = matchingPlans.at(-1) || null;
-  const latestReview = reviews.at(-1) || null;
+  const latestReview = reviews.findLast(review => review.plans?.some(plan => plan.symbol === state.symbol)) || null;
   const reviewEntry = latestReview?.plans?.find(p => p.symbol === state.symbol) || null;
 
   const planBody = el("div", { class: "stack" });
@@ -606,6 +737,7 @@ function stripFrontmatter(md) {
 }
 
 async function renderLab() {
+  const hash = location.hash;
   clearTimeout(state.pollTimer);
   const [watchlist, dossier, tasks, devTasks, strategies, experiments] = await Promise.all([
     api("/api/watchlist"),
@@ -616,14 +748,15 @@ async function renderLab() {
     api("/api/experiments", { params: { symbol: state.symbol } }),
   ]);
 
+  if (state.view !== "lab" || location.hash !== hash) return;
   const seg = el("div", { class: "seg-switch" },
     el("button", {
       type: "button", class: state.labTab === "research" ? "active" : "",
-      onclick: () => { state.labTab = "research"; renderLab(); },
+      onclick: () => go("lab", state.symbol, "research"),
     }, "个股逻辑研究"),
     el("button", {
       type: "button", class: state.labTab === "experiment" ? "active" : "",
-      onclick: () => { state.labTab = "experiment"; renderLab(); },
+      onclick: () => go("lab", state.symbol, "experiment"),
     }, "策略对照实验"),
   );
 
@@ -639,6 +772,7 @@ async function renderLab() {
     content = await buildExperimentTab(devTasks, strategies, experiments);
   }
 
+  if (state.view !== "lab" || location.hash !== hash) return;
   app.replaceChildren(
     el("div", { class: "view-bar" }, symbolBar(watchlist, "lab"), seg),
     content,
@@ -918,16 +1052,23 @@ async function buildExperimentTab(devTasks, strategies, experiments) {
 
 /* ---------- Router ---------- */
 async function render() {
+  const hash = location.hash;
   parseHash();
+  if (displayedMarketTheme && (state.view !== "market" || displayedMarketTheme !== state.market.theme)) {
+    state.market.themes[displayedMarketTheme].scrollY = window.scrollY;
+    displayedMarketTheme = null;
+  }
   updateNav();
   try {
     if (state.view === "overview") await renderOverview();
+    else if (state.view === "market") await renderMarket();
     else if (state.view === "decision") await renderDecision();
     else await renderLab();
   } catch (err) {
-    app.replaceChildren(el("div", { class: "card empty-state" }, err.message));
+    if (hash === location.hash) app.replaceChildren(el("div", { class: "card empty-state" }, err.message));
   }
 }
 
 window.addEventListener("hashchange", render);
 render();
+pollSyncStatus();

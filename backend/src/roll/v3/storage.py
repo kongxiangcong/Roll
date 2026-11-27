@@ -29,10 +29,10 @@ def session_time(day, hour, minute=0):
     return datetime.combine(day, time(hour, minute), SHANGHAI)
 
 
-def sessions(start, end):
+def sessions(start, end, extension=None):
     day, last = date.fromisoformat(start), date.fromisoformat(end)
     while day <= last:
-        if is_session(day):
+        if is_session(day, extension):
             yield day.isoformat()
         day += timedelta(days=1)
 

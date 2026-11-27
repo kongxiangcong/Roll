@@ -6,7 +6,11 @@ from datetime import date, datetime, timedelta, timezone
 from hashlib import sha256
 import json
 
-from roll.market.calendar import is_session
+from roll.market.calendar import extended_sessions, is_session
+from roll.v3.etf_observations import (
+    DISCLOSURE_SELECTION_RULES, DISCLOSURE_SERIES, ETF_SELECTION_RULES, ETF_SERIES, disclosure_observation,
+    etf_observation, etf_visible_at, select_etf_observation,
+)
 from roll.v3.storage import SHANGHAI, database, ensure_schema, instant
 
 
@@ -72,8 +76,13 @@ def append_observations(data_dir, observations):
         db.executescript(_SCHEMA)
         db.execute('BEGIN IMMEDIATE')
         first = _waterline(db)
+        extension = extended_sessions(db)
         for item in observations:
             series = item['series']
+            if series in ETF_SERIES:
+                item = etf_observation(item, extension=extension)
+            elif series in DISCLOSURE_SERIES:
+                item = disclosure_observation(item)
             item_id = item.get('item_id', '')
             payload = item.get('payload', {})
             if series == 'research_feature':
@@ -125,8 +134,8 @@ def _waterline(db):
     return db.execute('SELECT COALESCE(MAX(seq), 0) FROM observation').fetchone()[0]
 
 
-def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY, db=None):
-    """Freeze an observation waterline, input scope, purpose and version-selection policy."""
+def prepare_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY, db=None):
+    """Capture inputs and a waterline for a local read without storing a new snapshot."""
     if use_mode not in USE_MODES:
         raise ValueError(f'未知快照用途 {use_mode}')
     scope = sorted({
@@ -138,20 +147,40 @@ def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT
         raise ValueError('快照需要有效的输入区间')
     normalized = [dict(series=series, symbol=symbol, start=start, end=end)
                   for series, symbol, start, end in scope]
-    with database(data_dir, write=True, db=db) as connection:
+    all_series = {series for series, *_ in scope}
+    rules = SELECTION_RULES_VERSION
+    if all_series.intersection(DISCLOSURE_SERIES):
+        rules = DISCLOSURE_SELECTION_RULES
+    elif all_series.intersection(ETF_SERIES):
+        rules = ETF_SELECTION_RULES
+    with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
-        snapshot = {
+        return {
             'as_of': utc_timestamp(as_of), 'max_seq': _waterline(connection), 'use_mode': use_mode,
-            'scope': normalized, 'selection_rules_version': SELECTION_RULES_VERSION,
+            'scope': normalized, 'selection_rules_version': rules,
             'source_priority': list(dict.fromkeys(source_priority)),
         }
-        snapshot_id = sha256(_encode(snapshot).encode()).hexdigest()
+
+
+def freeze_snapshot(data_dir, *, as_of, use_mode, scope, source_priority=DEFAULT_SOURCE_PRIORITY, db=None):
+    """Freeze an observation waterline, input scope, purpose and version-selection policy."""
+    with database(data_dir, write=True, db=db) as connection:
+        snapshot = prepare_snapshot(data_dir, as_of=as_of, use_mode=use_mode, scope=scope,
+                                    source_priority=source_priority, db=connection)
+        return persist_snapshot(data_dir, snapshot, db=connection)
+
+
+def persist_snapshot(data_dir, snapshot, *, db=None):
+    """Store a DataSnapshot already prepared in the caller's transaction."""
+    snapshot_id = sha256(_encode(snapshot).encode()).hexdigest()
+    with database(data_dir, write=True, db=db) as connection:
+        ensure_schema(connection, _SCHEMA)
         connection.execute("""
             INSERT OR IGNORE INTO data_snapshot(snapshot_id,as_of,max_seq,use_mode,scope,
                                                selection_rules_version,source_priority)
             VALUES(?,?,?,?,?,?,?)
-        """, (snapshot_id, snapshot['as_of'], snapshot['max_seq'], use_mode, _encode(normalized),
-              SELECTION_RULES_VERSION, _encode(snapshot['source_priority'])))
+        """, (snapshot_id, snapshot['as_of'], snapshot['max_seq'], snapshot['use_mode'], _encode(snapshot['scope']),
+              snapshot['selection_rules_version'], _encode(snapshot['source_priority'])))
     return {'snapshot_id': snapshot_id, **snapshot}
 
 
@@ -183,7 +212,7 @@ def _snapshot(db, snapshot_id):
     result = dict(row)
     result['scope'] = json.loads(result['scope'])
     result['source_priority'] = json.loads(result['source_priority'])
-    if result['selection_rules_version'] != SELECTION_RULES_VERSION:
+    if result['selection_rules_version'] not in (SELECTION_RULES_VERSION, ETF_SELECTION_RULES, DISCLOSURE_SELECTION_RULES):
         raise ValueError(f"未知选源规则 {result['selection_rules_version']}")
     return result
 
@@ -206,11 +235,19 @@ def _observations(db, snapshot, scope):
     """, (snapshot['max_seq'], scope['series'], scope['symbol'], scope['start'], scope['end']))
     groups = defaultdict(list)
     for row in rows:
-        groups[row['trade_date'], row['item_id']].append(row)
+        item_id = '' if _uses_etf_rules(row, snapshot) else row['item_id']
+        groups[row['trade_date'], item_id].append(row)
     return groups
 
 
+def _uses_etf_rules(row, snapshot):
+    return (row['series'] in ETF_SERIES
+            and snapshot.get('selection_rules_version') in (ETF_SELECTION_RULES, DISCLOSURE_SELECTION_RULES))
+
+
 def _visible_at(row, snapshot):
+    if row['series'] in DISCLOSURE_SERIES or _uses_etf_rules(row, snapshot):
+        return etf_visible_at(row, snapshot)
     verified = row['available_at'] if row['available_evidence'] else None
     mode = snapshot['use_mode']
     if row['reconstruction_only'] and mode != RECONSTRUCTED_RESEARCH:
@@ -225,23 +262,36 @@ def _visible_at(row, snapshot):
     return verified or row['available_at'] or assumed or row['received_at']
 
 
-def _choose(rows, snapshot, cutoff):
-    if not rows:
-        return None, 'missing'
+def _current_versions(rows, snapshot, cutoff, *, separate_items=False):
     current = {}
     for row in rows:
         visible_at = _visible_at(row, snapshot)
-        if visible_at is None:
+        if visible_at is None or visible_at > cutoff:
             continue
-        if visible_at > cutoff:
-            continue
-        source = row['source']
-        if source not in current or (visible_at, row['seq']) > (
-            current[source][0], current[source][1]['seq']
-        ):
-            current[source] = (visible_at, row)
+        key = (row['source'], row['item_id']) if separate_items else row['source']
+        if key not in current or (visible_at, row['seq']) > (current[key][0], current[key][1]['seq']):
+            current[key] = (visible_at, row)
+    return current
+
+
+def _decoded_observation(row, visible_at):
+    return {**dict(row), 'payload': json.loads(row['payload']), 'unit': json.loads(row['unit']),
+            'withdrawn': bool(row['withdrawn']), 'reconstruction_only': bool(row['reconstruction_only']),
+            'selected_available_at': visible_at}
+
+
+def _choose(rows, snapshot, cutoff, *, candidates=None):
+    if not rows:
+        return None, 'missing'
+    etf = _uses_etf_rules(rows[0], snapshot)
+    current = _current_versions(rows, snapshot, cutoff, separate_items=etf)
     if not current:
         return None, 'not_visible'
+    if etf:
+        versions = [_decoded_observation(row, at) for at, row in current.values()]
+        if candidates is not None:
+            candidates.extend(versions)
+        return select_etf_observation(versions)
 
     ranking = {source: position for position, source in enumerate(snapshot['source_priority'])}
     candidates = [(ranking.get(source, len(ranking)), row['seq'], row)
@@ -257,12 +307,7 @@ def _choose(rows, snapshot, cutoff):
     if chosen['quality'] != 'usable':
         return None, chosen['quality']
 
-    result = dict(chosen)
-    result['payload'] = json.loads(result['payload'])
-    result['unit'] = json.loads(result['unit'])
-    result['withdrawn'] = bool(result['withdrawn'])
-    result['reconstruction_only'] = bool(result['reconstruction_only'])
-    result['selected_available_at'] = current[chosen['source']][0]
+    result = _decoded_observation(chosen, current[chosen['source']][0])
     result['alternative_sources'] = [row['source'] for _, _, row in candidates[1:]]
     return result, 'usable'
 
@@ -318,23 +363,29 @@ def _coverage(scope, observations, states, warmup):
 
 
 def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, start=None, end=None,
-                  cutoff=None, warmup=0, db=None):
-    """Inspect a frozen observation range and its coverage at a decision cutoff."""
+                  cutoff=None, warmup=0, include_candidates=False, db=None):
+    """Inspect a persisted snapshot or a locally prepared observation waterline."""
     with database(data_dir, db=db) as connection:
         ensure_schema(connection, _SCHEMA)
-        snapshot = _snapshot(connection, snapshot_id)
+        snapshot = snapshot_id if isinstance(snapshot_id, dict) else _snapshot(connection, snapshot_id)
         cutoff = min(utc_timestamp(cutoff), snapshot['as_of']) if cutoff else snapshot['as_of']
         cutoff_day = str(datetime.fromisoformat(cutoff).astimezone(SHANGHAI).date())
         selected = {}
         coverage = []
+        details = []
         for scope in _ranges(snapshot, series, symbol, start, end):
             observations = []
             states = {}
             for key, rows in _observations(connection, snapshot, scope).items():
+                candidates = [] if include_candidates else None
                 if key[0] > cutoff_day:
-                    states[key] = 'not_visible'
-                    continue
-                observation, states[key] = _choose(rows, snapshot, cutoff)
+                    observation, states[key] = None, 'not_visible'
+                else:
+                    observation, states[key] = _choose(rows, snapshot, cutoff, candidates=candidates)
+                if include_candidates:
+                    details.append({'series': scope['series'], 'symbol': scope['symbol'],
+                                    'trade_date': key[0], 'item_id': key[1], 'status': states[key],
+                                    'selected': observation, 'candidates': candidates})
                 if observation:
                     observations.append(observation)
                     selected[observation['seq']] = observation
@@ -342,7 +393,7 @@ def read_snapshot(data_dir, snapshot_id, *, series='daily_bar', symbol=None, sta
     return {'snapshot': snapshot, 'cutoff': cutoff,
             'observations': sorted(selected.values(), key=lambda row: (
                 row['trade_date'], row['series'], row['symbol'], row['item_id'])),
-            'coverage': coverage}
+            'coverage': coverage, **({'items': details} if include_candidates else {})}
 
 
 def read_research_features(data_dir, snapshot_id, *, symbol, cutoff, db=None):
@@ -411,13 +462,14 @@ def snapshot_windows(data_dir, snapshot_id, *, series='daily_bar', symbol, cutof
     return {day: items.get('', (None, 'missing'))[0] for day, items in selected.items()}
 
 
-def available_dates(data_dir, *, series, symbol, start, end, as_of):
+def available_dates(data_dir, *, series, symbol, start, end, as_of, use_mode=RECONSTRUCTED_RESEARCH):
     """Return dates already covered by a usable local observation."""
     as_of = utc_timestamp(as_of)
     with database(data_dir) as db:
         db.executescript(_SCHEMA)
-        snapshot = {'as_of': as_of, 'max_seq': _waterline(db),
-                    'use_mode': RECONSTRUCTED_RESEARCH, 'source_priority': DEFAULT_SOURCE_PRIORITY}
+        rules = ETF_SELECTION_RULES if series in ETF_SERIES else SELECTION_RULES_VERSION
+        snapshot = {'as_of': as_of, 'max_seq': _waterline(db), 'use_mode': use_mode,
+                    'source_priority': DEFAULT_SOURCE_PRIORITY, 'selection_rules_version': rules}
         scope = dict(series=series, symbol=symbol, start=start, end=end)
         return {key[0] for key, rows in _observations(db, snapshot, scope).items()
                 if _choose(rows, snapshot, as_of)[0] is not None}
