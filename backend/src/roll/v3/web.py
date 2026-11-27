@@ -17,6 +17,7 @@ from roll.v3.etf_basket import FIXED_BASKET_VERSION, build_etf_daily_report
 from roll.v3.etf_sync import EtfSyncRunner
 from roll.v3.experiment import list_experiments, read_experiment
 from roll.v3.harness_settings import settings as harness_settings
+from roll.v3.industry import build_industry_report
 from roll.v3.market import list_snapshots, utc_timestamp
 from roll.v3.market_research import DEFAULT_BENCHMARK, DEFAULT_START, export_market_research
 from roll.v3.market_sources import sync_daily_market
@@ -215,6 +216,10 @@ def create_app(data_dir, *, research_executor=_DEFAULT_HARNESS, market_sync_fn=s
         return build_market_watchlist(
             data_dir, book_id=book_id, trade_date=trade_date.isoformat() if trade_date else None, as_of=as_of,
         )
+
+    @app.get("/api/market/industry")
+    def get_market_industry(trade_date: date | None = None, as_of: str | None = None):
+        return build_industry_report(data_dir, trade_date=trade_date.isoformat() if trade_date else None, as_of=as_of)
 
     @app.get("/api/watchlist")
     def get_watchlist():

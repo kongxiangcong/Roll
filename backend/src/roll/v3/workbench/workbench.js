@@ -1,5 +1,6 @@
 import { el, marketMasterDetail, marketTable } from "./market-view.js";
 import { renderMarketEtf } from "./etf-view.js";
+import { renderIndustryView } from "./industry-view.js";
 
 const app = document.querySelector("#app");
 const tradeDatePill = document.querySelector("#trade-date-pill");
@@ -97,7 +98,7 @@ async function api(path, { method = "GET", params, body } = {}) {
 
 const MARKET_THEMES = {
   etf: { label: "宽基 ETF", render: renderMarketEtf },
-  industry: { label: "行业", render: () => marketEmpty("暂无行业行情") },
+  industry: { label: "行业", render: renderIndustryView },
   watchlist: { label: "观察池", render: renderMarketWatchlist },
 };
 
