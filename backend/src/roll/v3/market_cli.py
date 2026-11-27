@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 
+from roll.v3.etf_cli import register_etf
 from roll.v3.market import (
     DEFAULT_SOURCE_PRIORITY, RECONSTRUCTED_RESEARCH, USE_MODES,
     append_observations, freeze_snapshot, get_snapshot, read_snapshot,
@@ -44,6 +45,7 @@ def _read(args, data_dir):
 def register(subparsers):
     market = subparsers.add_parser('market', help='行情同步与数据快照')
     action = market.add_subparsers(required=True)
+    register_etf(action)
 
     sync = action.add_parser('sync', help='同步原始日线与除权因子并冻结快照')
     sync.add_argument('symbols', nargs='*')
